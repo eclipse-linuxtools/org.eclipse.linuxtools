@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.cdt.oprofile.launch"
+   name="%pluginName"
+   version="1.1.0"
+   provider-name="Eclipse.org"
+   class="org.eclipse.cdt.oprofile.launch.LaunchPlugin">
+
+   <runtime>
+      <library name="profilelaunch.jar"/>
+   </runtime>
+   
+   <requires>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.cdt.debug.core"/>
+      <import plugin="org.eclipse.cdt.debug.ui"/>
+      <import plugin="org.eclipse.cdt.launch"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.cdt.oprofile.core"/>
+   </requires>
+
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            name="%profileLaunchConfiguration"
+            delegate="org.eclipse.cdt.oprofile.launch.ProfileLaunchConfigurationDelegate"
+            modes="run"
+            id="org.eclipse.cdt.oprofile.launch.oprofile">
+      </launchConfigurationType>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/profile_run.png"
+            configTypeID="org.eclipse.cdt.oprofile.launch.oprofile"
+            id="org.eclipse.cdt.oprofile.launch.oprofileImage">
+      </launchConfigurationTypeImage>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.eclipse.cdt.oprofile.launch.oprofile"
+            class="org.eclipse.cdt.oprofile.launch.LaunchConfigurationTabGroup"
+            id="org.eclipse.cdt.oprofile.launch.launchConfigurationTabGroup">
+      </launchConfigurationTabGroup>
+   </extension>
+</plugin>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.cdt.oprofile.core"
+   name="%plugin.name"
+   version="1.2.1"
+   provider-name="Eclipse.org"
+   class="org.eclipse.cdt.oprofile.core.OprofileCorePlugin">
+
+   <runtime>
+      <library name="oprofile_core.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.swt"/>
+   </requires>
+
+
+   <extension-point id="OpxmlProvider" name="%opxmlProvider.name" schema="schema/OpxmlProvider.exsd"/>
+   <extension-point id="OpcontrolProvider" name="%opcontrolProvider.name" schema="schema/OpcontrolProvider.exsd"/>
+
+</plugin>

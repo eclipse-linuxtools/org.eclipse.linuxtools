@@ -1,0 +1,106 @@
+2006-08-14  Keith Seitz  <keiths@redhat.com>
+
+	* fraagment.xml: Bump to 1.2.1.
+
+2005-05-27  Jeremy Handcock  <handcock@redhat.com>
+
+	* install: Revert last patch.
+	* update-perms: New.
+
+2005-05-27  Jeremy Handcock  <handcock@redhat.com>
+
+	* install: Set executable bits for `opxml', `opcontrol', and 
+	`uninstall'.
+
+2005-05-27  Jeremy Handcock  <handcock@redhat.com>
+
+	* install: New.
+	* uninstall: New.
+	* build.properties: Include new files.
+
+2005-05-27  Jeremy Handcock  <handcock@redhat.com>
+
+	* .cvsignore: Add bin/.
+	* build.properties: Include about.html.
+	(bin.includes): Include opcontrol-wrappers.
+
+2005-02-04  Keith Seitz  <keiths@redhat.com>
+
+	* fraagment.xml: Bump to 1.2.0. Require core version 1.2.0.
+
+2004-10-13  Jeremy Handcock  <handcock@redhat.com>
+
+	* build.properties (source.oprofile_linux.jar): Include src/, not 
+	src/com/.
+
+2004-07-16  Keith Seitz  <keiths@redhat.com>
+
+	* fragment.xml: Bump version to 1.1.0. Require core version 1.1.0.
+
+2004-07-16  Keith Seitz  <keiths@redhat.com>
+
+	* fragment.xml: Externalize fragment name.
+
+2004-07-14  Keith Seitz  <keiths@redhat.com>
+
+	* build.properties: Include opcontrol, too. Only include src/com/*
+	in binary build. Really should put opxml sources in another
+	directory...
+
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* build.properties: Update.
+	* build.xml: Remove. No longer needed.
+
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* .classpath: Update.
+	* .project: Update.
+	* build.xml: Update.
+	* fragment.xml: Update for Eclipse 3.0.
+
+2004-04-20  Keith Seitz  <keiths@redhat.com>
+
+	* src/com/redhat/eclipse/oprofile/core/linux: New directory.
+	* fragment.xml: Add OpcontrolProvider and OpxmlProvider extensions.
+
+2004-04-04  Keith Seitz  <keiths@redhat.com>
+
+	* opcontrol: New file.
+	* build.xml (gather.bin.parts): Install opcontrol.
+
+2004-03-15  Keith Seitz  <keiths@redhat.com>
+
+	* opcontrol-wrapper.pamd: Remove "/lib/security" from
+	entries -- it's no longer needed.
+
+2003-10-15  Keith Seitz  <keiths@redhat.com>
+
+	* fragment.xml (requires): Remove. There are no requirements.
+
+2003-09-08  Tom Tromey  <tromey@redhat.com>
+
+	* fragment.xml (provider-name): Added ".".
+
+2003-05-19  Keith Seitz  <keiths@redhat.com>
+
+	* build.xml (plugin): It's com.redhat.eclipse.oprofile.core.linux,
+	not com.redhat.eclipse.core.linux...
+
+	* opcontrol-wrapper.pamd: New file.
+	* opcontrol-wrapper.security: New file.
+
+2003-05-07  Keith Seitz  <keiths@redhat.com>
+
+	* fragment.xml: Remove runtime section. The fragment does not
+	produce a jar file.
+
+2003-05-01  Keith Seitz  <keiths@redhat.com>
+
+	* build.xml: New file.
+	* native.xml: New file.
+
+2003-04-04  Keith Seitz  <keiths@redhat.com>
+
+	* build.properties; New file.
+	* fragment.xml: New file.

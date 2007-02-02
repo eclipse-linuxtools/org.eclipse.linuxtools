@@ -1,0 +1,60 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Launching OProfile</title>
+<link rel="stylesheet" href="book.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html">
+<meta http-equiv="Content-Style-Type" content="text/css">
+</head>
+<body>
+
+<h1>Launching OProfile</h1>
+
+<p>In order to collect samples for your system, you must create an OProfile
+launch configuration that specifies, for example, what event to collect.
+To create your own launch configuration, go to <span class="guilabel">Run &gt; Run</span>
+and click on <span class="guilabel">Profile C/C++ Application</span>. 
+The dialog displays the
+different tab groups to configure and run the OProfile daemon:</p>
+
+<ul>
+
+<li>The <span class="guitab">Application</span> tab enables you to specify which 
+C/C++ launch configuration to run after the daemon is started. 
+It is optional.</li>
+
+<li>Click on the <span class="guibutton">Browse</span> button to browse a list 
+of defined C/C++ launch configurations.</li>
+
+<li>The <span class="guitab">Profiling Setup</span> tab defines 
+generic OProfile daemon options, 
+such as the name of the kernel image file in use, logging verbosity, and
+options to separate certain types of samples. 
+The kernel image parameter is <i>required</i>. 
+The launcher will try to guess the correct image file based on the current
+kernel's version. 
+If it is incorrect, enter the 
+correct image filename or use the <span class="guilabel">Browse</span> button to browse
+the file system and select the correct file.</li>
+
+<li>The <span class="guitab">Configuration</span> tab specifies how 
+the daemon will collect events. 
+By default, no counters are enabled. 
+To enable a counter, select
+the appropriate counter number from the combo box at the top of the
+tab and click the <span class="guilabel">Enabled</span> checkbox. 
+Next, select the desired event for
+collection in the <span class="guilabel">Counter settings</span>
+area of the tab.</li>
+
+<li>The <span class="guitab">Common</span> tab is a
+standard Eclipse-defined tab that, for example, enables you to save
+the current launch configuration in the workbench's <span class="guilabel">Run</span>
+menu.</li>
+
+</ul>
+
+<p class="copyright"><a href="../hglegal2004.htm" class="copyright">&nbsp;&#169; Copyright Red Hat 2004.
+All Rights Reserved.</a></p>
+</body>
+</html>

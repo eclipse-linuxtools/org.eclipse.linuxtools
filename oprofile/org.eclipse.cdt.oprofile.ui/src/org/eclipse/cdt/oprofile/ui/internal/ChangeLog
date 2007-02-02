@@ -1,0 +1,26 @@
+2003-07-08  Keith Seitz  <keiths@redhat.com>
+
+	* ProfileElement.java: Remove unused imports.
+
+2003-05-21  Keith Seitz  <keiths@redhat.com>
+
+	* IProfileElement.java: Add copyright notice.
+	* ProfileElement.java: Likewise.
+
+2003-04-22  Keith Seitz  <keiths@redhat.com>
+
+	* ProfileElement.java (getLineNumber): Fix javadoc comment.
+	(getFileName): Ditto.
+	(getAddress): Ditto.
+	(getId): Ditto.
+
+2003-04-04  Keith Seitz  <keiths@redhat.com>
+
+	* ProfileElement.java (SEPARATOR_CHAR): Make protected.
+	(_myId): New method.
+	(getId): Use _myId instead of getLabelText.
+
+2003-03-19  Keith Seitz  <keiths@redhat.com>
+
+	* IProfileElement.java: New file.
+	* ProfileElement.java: New file.

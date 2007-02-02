@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<project name="buildlibrary" default="run" basedir="."> 
+  
+  <!-- The property ${eclipse-home} should be passed into this script -->
+  <!-- Set a meaningful default value for when it is not. -->
+  <property name="eclipse-home" value="${basedir}/../.."/>
+  
+  <!-- Output properties -->
+  <property name="destination" value="${eclipse-home}/org.eclipse.cdt.oprofile.core.linux/os/${baseos}/${basearch}"/>
+  <property name="obj-path" value="${eclipse-home}/org.eclipse.cdt.oprofile.core.linux/src/" />
+  <property name="src-path" value="${eclipse-home}/org.eclipse.cdt.oprofile.core.linux/src/" />
+  <property name="opxml" value="opxml" />
+  <fileset id="opxml-srcs"
+      dir="${src-path}" includes="opxml.cc" />
+  <fileset id="oprofile-lib-srcs"
+      dir="${src-path}"
+      includes="imageheader.cc
+		opinfo.cc
+	        oprofiledb.cc
+		profileimage.cc
+	        sample.cc
+	        samplefile.cc
+	        session.cc
+		sevent.cc
+                stable.cc
+                symbol.cc
+                xmlbuf.cc
+                xmlfmt.cc
+                xmltag.cc" />
+
+  <!-- Generic compiler properties -->
+  <property name="cflags" value="-g -O2" />
+  <property name="cxxflags" value="${cflags} -I." />
+
+  <!-- Linked Library properties -->
+  <property name="oprofile-libop" value="-lop" />
+  <property name="oprofile-libdb" value="-lodb" />
+  <property name="oprofile-libutil++" value="-loputil++" />
+  <property name="oprofile-libutil" value="-loputil" />
+  <property name="extra-oprofile-libs" value="${oprofile-libop} ${oprofile-libdb} ${oprofile-libutil++} ${oprofile-libutil}" />
+
+  <property name="libbfd" value="-lbfd" />
+  <property name="liberty" value="-liberty" />
+  <property name="other-libs" value="${libbfd} ${liberty}" />
+
+  <!-- This target holds all initialization code that needs to be done for
+       all tests that are to be run. Initialization for individual tests
+       should be done within the body of the suite target. -->
+  <target name="init">
+      <tstamp/>
+      <delete>
+          <fileset dir="${obj-path}" includes="${opxml}"/>
+      </delete>
+  </target>
+
+  <!-- This target runs the build. -->
+  <target name="run" depends="init,build">
+  </target>
+  
+  <!-- This target build the library -->
+  <target name="build" depends="build-objs">
+    <echo message="Building ${opxml}"/>
+
+    <!-- Wow, is this kludgy! All this just to get a list of target files... -->
+    <fileset id="objects"
+      dir="${obj-path}"
+      includes="*.o" />
+    <pathconvert pathsep=" " property="objs" refid="objects" />
+
+    <echo message="${CXX} -o ${opxml} ${objs} ${extra-oprofile-libs} ${other-libs}" />
+    <exec executable="${CXX}" dir="${obj-path}/" failonerror="true">
+        <arg value="-o" />
+        <arg value="${opxml}" />
+        <arg line="${objs}" />
+        <arg line="${extra-oprofile-libs}" />
+	<arg line="${other-libs}" />
+    </exec>
+    
+    <!-- Cannot use <copy> task: it cannot preserve permissions (like the
+	 executable bit!) -->
+    <exec executable="mkdir" failonerror="true">
+	<arg value="-p" />
+	<arg value="${destination}" />
+    </exec>
+    <exec executable="cp" dir="${obj-path}" failonerror="true">
+	<arg value="${opxml}" />
+	<arg value="${destination}" />
+    </exec>
+  </target>
+
+  <!-- This target builds all objects needed by the wrapper library -->
+  <target name="build-objs">
+      <echo message="Building oprofile wrapper objects" />
+      <apply executable="${CXX}" dest="${eclipse-home}/" parallel="false"
+          failonerror="true">
+          <arg line="${cxxflags} -c" />
+          <fileset refid="oprofile-lib-srcs" />
+          <fileset refid="opxml-srcs" />
+          <mapper type="glob" from="*.cc" to="*.o" />
+      </apply>
+   </target>
+
+   <!-- This target removes any built files -->
+   <target name="clean">
+       <delete>
+           <fileset dir="${obj-path}" includes="${opxml},**/*.o" />
+           <fileset dir="${destination}" includes="${opxml}" />
+       </delete>
+   </target>
+</project>

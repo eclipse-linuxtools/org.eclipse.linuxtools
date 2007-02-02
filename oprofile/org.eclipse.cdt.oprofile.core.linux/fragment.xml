@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<fragment
+   id="org.eclipse.cdt.oprofile.core.linux"
+   name="%fragment.name.linux"
+   version="1.2.1"
+   provider-name="Eclipse.org"
+   plugin-id="org.eclipse.cdt.oprofile.core"
+   plugin-version="1.2.0"
+   match="greaterOrEqual">
+
+   <runtime>
+      <library name="oprofile_linux.jar"/>
+   </runtime>
+
+   <extension point="org.eclipse.cdt.oprofile.core.OpxmlProvider">
+         <opxmlProvider class="org.eclipse.cdt.oprofile.core.linux.LinuxOpxmlProvider"/>
+   </extension>
+   <extension point="org.eclipse.cdt.oprofile.core.OpcontrolProvider">
+   		<opcontrolProvider class="org.eclipse.cdt.oprofile.core.linux.LinuxOpcontrolProvider"/>
+   	</extension>
+</fragment>

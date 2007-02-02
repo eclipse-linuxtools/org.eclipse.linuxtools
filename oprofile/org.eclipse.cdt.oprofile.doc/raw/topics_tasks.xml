@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!-- ============================================================ -->
+<!-- Define the topics for the Red Hat OProfile Tasks online help -->
+<!-- ============================================================ -->
+ <toc label="OProfile Tasks"><anchor id="opro_tasks" />
+  <topic label="Launching OProfile" href="oprofile-tasks-launch.htm"/><anchor id="opro_launch_task" /> 
+  <topic label="Displaying Samples" href="oprofile-tasks-display-samples.htm"/><anchor id="opro_dsamples_task" />
+  <topic label="Viewing Sample Information" href="oprofile-tasks-view-samples.htm"/><anchor id="opro_vsamples_task" />  
+  <topic label="Viewing Symbol Information" href="oprofile-tasks-view-symbols.htm"/><anchor id="opro_vsymbols_task" />
+  <topic label="Viewing System Profiling Stats" href="oprofile-tasks-view-stats.htm"/><anchor id="opro_vstats_task" />
+  <topic label="Viewing Executable Profiling Stats" href="oprofile-tasks-view-profiles.htm"/><anchor id="opro_vexecs_task" />
+    
+</toc>

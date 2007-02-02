@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!-- ============================================ -->
+<!-- Define the OProfile online help              -->
+<!-- ============================================ -->
+
+<toc label="OProfile User Guide">
+
+<topic label="Getting Started">
+  <topic label="OProfile Basic Tutorial" href="oprofile-tutorial.htm"/> 
+  <topic label="Viewing OProfile Samples" href="oprofile-view-samples.htm"/>
+</topic>
+
+<topic label="Concepts">
+ <topic label="Sessions" href="oprofile-concepts-sessions.htm"/>
+ <topic label="Samples" href="oprofile-concepts-samples.htm"/>
+ <topic label="Sample Files" href="oprofile-concepts-sample-files.htm"/>
+ <topic label="Executables" href="oprofile-concepts-executables.htm"/>
+</topic>
+
+<topic label="Tasks">
+ <topic label="Launching OProfile" href="oprofile-tasks-launch.htm"/>
+  <topic label="Displaying Samples" href="oprofile-tasks-display-samples.htm"/>
+  <topic label="Viewing Sample Information" href="oprofile-tasks-view-samples.htm"/>
+  <topic label="Viewing Symbol Information" href="oprofile-tasks-view-symbols.htm"/>
+  <topic label="Viewing System Profiling Stats" href="oprofile-tasks-view-stats.htm"/>
+  <topic label="Viewing Executable Profiling Stats" href="oprofile-tasks-view-profiles.htm"/>
+</topic>
+
+<!-- <topic label="Reference">
+  <topic label="System Profile Reference" href="oprofile-ref-sys-profile.htm"/>
+  <topic label="Samples Reference" href="oprofile-ref-samples.htm"/>
+  <topic label="Launcher Reference" href="oprofile-ref-launcher.htm"/>
+</topic> -->
+
+</toc>

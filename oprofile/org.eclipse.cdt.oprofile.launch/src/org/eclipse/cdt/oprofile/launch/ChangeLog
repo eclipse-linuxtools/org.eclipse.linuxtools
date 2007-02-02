@@ -1,0 +1,351 @@
+2005-04-14  Keith Seitz  <keiths@redhat.com>
+
+	* oprofilelaunch.properties (tab.event.counterSettings.count.too-small): New
+	property.
+	(tab.profileSetup.kernelImage.kernel.nonexistent): New property.
+	(tab.profileSetup.kernelImage.label.text): Add "(optional)".
+	* OprofileSetupTab.java (_handleButtonSelected): Update launch config dialog.
+	(_handleTextModify): Validate kernel file and allow none to be specified.
+	* OprofileEventConfigTab.java (isValid): Check for valid minimum count, too.
+	(_handleModify): Save the count and check the minimum count.
+	(_getMinCountErrorMessage): New method.
+	(_updateEventDisplayFromSelection): Check for valid minimum count again.
+	Update the launch config dialog.
+	* LaunchOptions.java (isValid): Check if the specified kernel file exists.
+
+2004-08-27  Keith Seitz  <keiths@redhat.com>
+
+	* LaunchOptions.java: New file.
+	* OprofileCounter.java (ARG_COUNTER): Remove.
+	(ARG_EVENT): Remove.
+	(ARG_COUNT): Remove.
+	(ARG_PROFILE_KERNEL): Remove.
+	(ARG_PROFILE_USER): Remove.
+	(ARG_UNIT_MASK): Remove.
+	(ARG_NONE): Remove.
+	(_event): Remove.
+	(_profileKernel): Remove.
+	(_profileUser): Remove.
+	(_count): Remove.
+	(_daemonEvent): New private variable.
+	(OprofileCounter): Remove deleted variables.
+	Initialize _daemonEvent.
+	(saveConfiguration): Use _daemonEvent instead of _event.
+	(loadConfiguration)): Likewise.
+	(getText): Likewise.
+	(getNumber): Likewise.
+	(getEnabled): Likewise.
+	(getEvent): Likewise.
+	(getProfileKernel): Likewise.
+	(getProfileUser): Likewise.
+	(getCount): Likewise.
+	(toArguments): Remove. This is not the right place for this.
+	(getDaemonEvent): New method.
+	(_argEvent): Remove.
+	(_argCount): Remove.
+	(_argProfileKernel): Remove.
+	(_argProfileUser): Remove.
+	(_argUnitMask): Remove.
+	(_argDisabled): Remove.
+	* OprofileOptions.java: Remove.
+	* OprofileSession.java (_options): Change type to LaunchOptions.
+	(OprofileSession): Change _options initialization to match new type.
+	(run): Don't do the whole toArguments thing. Handled elsewhere.
+	Update new IOpcontrolProvider interface setup.
+	* OprofileSetupTab.java (_options): Change type to LaunchOptions.
+	(setDefaults): Change _options initialization to match new type.
+	(createControl): Likewise.
+	(_handleButtonSelected): Use new LaunchOptions API.
+	(_updateDisplay): Likewise.
+
+2004-08-11  Aaron Luchko  <aluchko@redhat.com>
+
+	* OprofileEventConfigTab.java (verifyText): Allow non-text
+	VerifyEvents, such as backspace and delete, to execute, 
+	fixed bug #129271.
+
+2004-07-29  Keith Seitz  <keiths@redhat.com>
+
+	* LaunchConfigurationTabGroup.java (createTabs): Check if
+	the oprofile kernel module is loaded. If not, give user
+	a chance to load it.
+	* OprofileEventConfigTab.java (initializeFrom): Update counter combo
+	and display only if there are counters.
+	Enable counter combo if there are counters.
+	(createControl): Disable counter combo and enabled button.
+	(_currentCounter): Protect against selection index of -1.
+	(_handleModify): Check if _currentCounter is non-null.
+	(_handleProfileUserToggle): Likewise.
+	(_handleProfileKernelToggle): Likewise.
+	(_updateDisplay): Likewise.
+	Enable enble button.
+	(_updateEventDisplayFromSelection): Check if _currentCounter is non-null.
+
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* LaunchPlugin.java (LaunchPlugin): Remove IPluginDescriptor argument.
+	(PLUGIN_ID): New constant.
+	(getUniqueIdentifier): Simplify.
+
+2004-04-20  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileSession.java (run): Use OpcontrolProvider interface.
+
+2004-03-31  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileSession.java (run): Shutdown oprofiled before setting up any new
+	profiling session.
+
+2004-03-29  Keith Seitz  <keiths@redhat.com>
+ 
+	* OprofileEventConfigTab.java (createControl): Add a width hint
+	for the count entry widget.
+ 
+2003-12-25  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileSession.java (run): Use Oprofile.setupDaemon and
+	Oprofile.startDaemon instead of runnng opcontrol directly.
+
+2003-11-14  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileCounter.java (ARG_NONE): New constant.
+	(toArguments): If counter is disabled, output that it is so.
+	(_argDisabled): New method.
+
+	* OprofileSession.cc (run): Don't check if counter is disabled; it
+	doesn't matter. Either way we need to output something for it.
+
+2003-10-20  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileCounter.java (getCount): Use the same algorithm to set
+	default count as Oprofile (based on CPU frequency).
+
+2003-10-10  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileCounter.java (getText): Use MessageFormat to format
+	the text.
+	* oprofilelaunch.properties (oprofileCounter.counterString): Update.
+	
+2003-09-23  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileCounter.java (<init>): By default, collect both user and
+	kernel events.
+
+	* OprofileEventConfigTab.java (_updateEventDisplayFromSelection):
+	If the current count is less than the selected event's minimum count,
+	update the counter and the corresponding  Text widget with the event's
+	minimum count.
+
+	* OprofileSession.java (run): Make sure that the processes' stdout
+	is properly drained -- just a precaution. Later, we should send this
+	to a console.
+
+2003-07-16  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileEventConfigTab.java (isValid): Check if we're collecting
+	at least the minimum count for the event, too.
+	(createControl): Don't set any layout hints until after the right-hand
+	column is created. We can then use the height of this to set a hint
+	for the ListViewer. This works around a bug that has appeared in
+	2.1 with missing scrollbars/ListViewer showing up full size.
+	Call _handleModify to deal with modify events in the count
+	text widget.
+	(_handleModify): "New" method. Copied contents from createControl.
+	Call updateLaunchConfigurationDialog to update Revert, Run, Apply
+	buttons on dialog.
+	(_handleProfileUserToggle): Likewise for updateLaunchConfigurationDialog.
+	(_handleProfileKernelToggle): Likewise.
+	(_handleEnableToggle): Likewise.
+
+2003-07-15  Keith Seitz  <keiths@redhat.com>
+
+	* CLaunchConfigurationTab.java (isValid): Comment out println.
+	* OprofileEventConfigTab.java (isValid): Ditto.
+	(_handleMouseMove): Check if the element at the given index is null.
+	* OprofileSetupTab.java (isValid): Ditto.
+	* OprofileOptions.java (ARG_SEPARATE_ARGS): Mark strings non-nls.
+
+2003-07-08  Keith Seitz  <keiths@redhat.com>
+
+	* LaunchConfigurationTabGroup.java: Remove unused imports.
+	* OprofileEventConfigTab.java: Likewise.
+	* OprofileSession.java: Likewise.
+	* OprofileSetupTab.java: Likewise.
+
+	* CLaunchConfigurationTab.java (handleBrowseCLaunchConfigs): Use
+	Window.OK instead of dialog.OK.
+
+2003-07-02  Keith Seitz  <keiths@redhat.com>
+
+	* CLaunchConfigurationTab.java: ICDTLaunchConfigurationConstants is now
+	in package org.eclipse.cdt.debug.core.
+	* OprofileSession.java: Likewise.
+
+	Merged from branch:
+	2003-06-27  Keith Seitz  <keiths@redhat.com>
+	* OprofileCounter.java (getCounters): Call Oprofile.getNumberCounters
+	instead of Oprofile.get_nr_counters.
+	* OprofileEventConfigTab.java (isValid): Likewise.
+	Ditto for check_event and checkEvent.
+	* OprofileOptions.java: Remove all previously deprecated code.
+	(_bufferSize): Deprecated. Remove all instances from class.
+	(ARG_BUFFER_SIZE): Ditto.
+	* OprofileSetupTab.java: Remove all deprecated code.
+	(_bufferSizeText): Deprecated. Remove all isntances from class.
+	* UnitMaskViewer.java (_displayMask): Use OpUnitMask.getType instead
+	of OpUnitMask.isExclusive.
+
+2003-05-21  Keith Seitz  <keiths@redhat.com>
+
+	* CLaunchConfigurationTab.java: Add copyright notice.
+	* LaunchConfigurationTabGroup.java: Likewise.
+	* LaunchPlugin.java: Likewise.
+	* OprofileCounter.java: Likewise.
+	* OprofileEventConfigTab.java: Likewise.
+	* OprofileLaunchMessages.java: Likewise.
+	* OprofileOptions.java: Likewise.
+	* OprofileSession.java: Likewise.
+	* OprofileSetupTab.java: Likewise.
+	* ProfileLaunchConfigurationDelegate.java: Likewise.
+	* UnitMaskViewer.java: Likewise.
+
+2003-04-25  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileSetupTab.java (_kernelOnlyButton): Deprecate.
+	(_noDaemonButton): Deprecate.
+	(_separateLibrariesButton): New private variable.
+	(_separateKernelButton): New private variable.
+	(createControl): Change button layout to use only one column.
+	Remove deprecated buttons.
+	Add new separate buttons.
+	(_handleButtonSelected): Remove deprecated buttons.
+	Add new separate buttons.
+	(_updateDisplay): Ditto.
+	* OprofileOptions.java (_kernelOnly): Deprecate.
+	(_noDaemon): Deprecate.
+	(_separateSamples): Change to int.
+	(SEPARATE_NONE): New public constant.
+	(SEPARATE_LIBRARY): New public constant.
+	(SEPARATE_KERNEL): New public constant.
+	(SEPARATE_ALL): New public constant.
+	(ARG_KERNEL_ONLY): Deprecate.
+	(ARG_NO_DAEMON): Deprecate.
+	(ARG_SEPARATE_ARGS): New private constant array.
+	(OprofileOptions): Deprecate deprecated options.
+	Set SEPARATE_NONE as the default.
+	(saveConfiguration): Deprecate deprecated options.
+	Add new separate samples.
+	(loadConfiguration): Likewise.
+	(getKernelOnly): Deprecate.
+	(getNoDaemonOnly): Likewise.
+	(setKernelOnly): Deprecate.
+	(setDaemonOnly): Likewise.
+	(getSeparateSamples): Change return type to int.
+	(setSeparateSamples): Change argument type to int.
+	(toArguments): Deprecate deprecated options.
+	(_argNoDaemon): Deprecate.
+	(_argKernelOnly): Likewise.
+	(_argSeparateSamples): Update to match new symantics of argument.
+	* LaunchPlugin.java (ATTR_HASHTABLE_SIZE): Deprecate.
+	(ATTR_NOTE_SIZE): Deprecate.
+	(ATTR_KERNEL_ONLY): Deprecate.
+	(ATTR_OMIT_DAEMON): Deprecate.
+	* oprofilelaunch.properties (tab.profileSetup.separateSamples.check.text):
+	Remove.
+	(tab.profileSetup.separateLibraries.check.text): Add.
+	(tab.profileSetup.separateKernel.check.text): Add.
+
+2003-04-22  Keith Seitz  <keiths@redhat.com>
+
+	* CLaunchConfigurationTab.java (_launch): New varible.
+	(NO_LAUNCH): Remove.
+	(isValid): Remove NO_LAUNCH. Using null instead.
+	(performApply): Save the C launch's memento into the profiler's
+	launch configuration.
+	(initializeFrom): Remove NO_LAUNCH. 
+	Retrieve the C launch configuration from the launch manager and
+	set the name into the UI.
+	(setDefaults): Remove NO_LAUNCH.
+	(handleBrowseCLaunchConfigs): Set _launch to the selected
+	C launch configuration instead just saving the name in the text
+	widget.
+	* OprofileSession.java (_launchConfig): New variable.
+	(OprofileSession): Get the C launch configuration from the
+	profiler launch configuration.
+	(run): Use _runCommand to run commands.
+	Wait for the process to finish executing before continuing.
+	Run the C Launch, if any was selected by the user.
+	(_runCommand): Make return type Process instead of boolean.
+
+2003-04-14  Keith Seitz  <keiths@redhat.com>
+	
+	* CLaunchConfigurationTab.java (isValid): No launch
+	configuration is valid, too.
+
+	* OprofileOptions.java (ARG_BUFFER_SIZE): NOT deprecated.
+	(toArguments): Undeprecate _argBufferSize.
+	(_argBufferSize): Undeprecate.
+
+	* OprofileSession.java (run): Use Oprofile.OPCONTROL.
+	Use _runCommand to setup daemon and start it.
+	(_runCommand): New method.
+
+2003-04-08  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileCounter.java; Remove unnecessary comment.
+	* OprofileOptions.java (ARG_BUFFER_SIZE): Mark deprecated.
+	(ARG_SEPARATE_SAMPLES): Update to work with opcontrol.
+	(toArguments): Deprecate _argBufferSize and _argNoteSize.
+	(_argBufferSize): Deprecate.
+	* OprofileSession.java (OPROFILE_EXECUTABLE): Remove.
+	(run): Use Oprofile.OPCONTROL for exe name.
+	Add "--setup" argument.
+	* oprofilelaunch.properties (oprofileSession.op_start.wrapper.location):
+	Remove.
+
+2003-04-04  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileEventConfigTab.java (_updateDisplay): Use first
+	valid event from counter, which could be different from
+	first event from all counters.
+
+	* OprofileOptions.java (_hashTableSize, _noteSize): Deprecate.
+	(ARG_NOTE_SIZE, ARG_HASH_TABLE_SIZE): Deprecate.
+	(OprofileOptions): Mark deprecated options.
+	(isValid): Ditto.
+	(loadConfiguration): Ditto.
+	(saveConfiguration): Ditto.
+	(getHashTableSize, getNoteSize): Deprecate.
+	(setHashTableSize, setNoteSize): Deprecate.
+	(toArguments): Mark deprecated options.
+	(_argHashTableSize, _argNoteSize): Deprecate.
+	* OprofileSetupTab.java (_hashTableSizeText, _noteSizeText): Deprecate.
+	(createControl): Mark deprecated options.
+	(_handleTextModify): Ditto.
+	(_updateDisplay): Ditto.
+	
+2003-03-27  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileCounter.java (OprofileCounter): When fetching the event
+	list for this counter, pass the counter number. Coincides with
+	change in API to Oprofile.get_events.
+	(getValidEvents): Specify return type of OpEvent[] instead of Object[].
+
+2003-03-27  Keith Seitz  <keiths@redhat.com>
+
+	* UnitMaskViewer.java (_displayMask): Use MAX_BUTTONS instead
+	of array length.
+
+2003-03-19  Keith Seitz  <keiths@redhat.com>
+
+	* CLaunchConfiguration.java: New file.
+	* LaunchConfigurationTabGroup.java: New file.
+	* LaunchPlugin.java: New file.
+	* OprofileCounter.java: New file.
+	* OprofileEventConfigTab.java: New file.
+	* OprofileLaunchMessages.java: New file.
+	* OprofileOptions.java: New file.
+	* OprofileSession.java: New file.
+	* ProfileLaunchConfigurationDelegate.java: New file.
+	* UnitMaskViewer.java: New file.
+	* oprofilelaunch.properties: New file.

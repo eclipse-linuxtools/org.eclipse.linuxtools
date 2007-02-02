@@ -1,0 +1,50 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Viewing OProfile symbol information</title>
+<link rel="stylesheet" href="book.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html">
+<meta http-equiv="Content-Style-Type" content="text/css">
+</head>
+<body>
+
+<h2>Viewing symbol information</h2>
+
+<p>If the executable selected in the 
+<span class="guilabel">System Profile</span> view contains symbol information, 
+expanding the executable name displays a list
+of symbols (or just samples if there is no symbol information).
+Selecting a symbol name causes the <span class="guilabel">Sample</span> view 
+to display a list of samples in the symbol. 
+For each sample, the <span class="guilabel">Sample</span> view displays:</p>
+
+<ul>
+<li>The <span class="guilabel">VMA</span> (address) of the sample.</li>
+
+<li>The total <span class="guilabel">Count</span> of samples collected 
+at the specified VMA.</li>
+
+<li>The percentage (<span class="guilabel">%age</span>) of the samples 
+collected in the symbol at the sample's address.</li>
+
+<li>The <span class="guilabel">Line</span> number in the source file 
+of the sample's address (only if there is debugging information in the executable).</li>
+
+<li>The source file <span class="guilabel">Name</span> in which 
+this sample's address occurs (only
+if there is debugging in the executable).</li>
+
+</ul>
+
+<p>For any executable with debugging information 
+(that is, <span class="guilabel">Line</span> and <span class="guilabel">Name</span> 
+are not blank),
+double-click the sample in the <span class="guibutton">Sample</span> view 
+to open an editor for the source file and position the cursor at the given line number.
+If the source file is in a CDT project, the project's editor will
+open the file; otherwise a generic editor opens the file.</p>
+
+<p class="copyright"><a href="../hglegal2004.htm" class="copyright">&nbsp;&#169; Copyright Red Hat 2004.
+All Rights Reserved.</a></p>
+</body>
+</html>

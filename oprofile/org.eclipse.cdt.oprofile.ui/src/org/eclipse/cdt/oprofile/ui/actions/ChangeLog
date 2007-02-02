@@ -1,0 +1,22 @@
+2004-04-20  Keith Seitz  <keiths@redhat.com>
+
+	* AbstractOprofileUiAction.java: New file.
+	* DumpActionDelegate.java: Extend AbstractOprofileUiAction. Update as necessary.
+	* ShutdownActionDelegate.java: Likewise.
+	* StartCollectionActionDelegate.java: Likewise.
+	* StopCollectionActionDelegate.java: Likewise.
+	* SaveSessionActionDelegate.java: Likewise.
+	(run): Check for the existence of a default session before opening dialog.
+
+2004-01-30  Keith Seitz  <keiths@redhat.com>
+
+	* SaveSessionActionDelegate.java (run): Implement.
+
+2003-12-25  Keith Seitz  <keiths@redhat.comt
+
+	* DumpActionDelegate.java: New file.
+	* SaveSessionActionDelegate.java: New file.
+	* ShutdownActionDelegate.java: New file.
+	* StartCollectionActionDelegate.java: New file.
+	* StopCollectionActionDelegate.java: New file.
+

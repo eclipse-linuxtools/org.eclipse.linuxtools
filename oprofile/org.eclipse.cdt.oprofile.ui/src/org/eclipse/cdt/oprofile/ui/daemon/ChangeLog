@@ -1,0 +1,5 @@
+2003-12-25  Keith Seitz  <keiths@redhat.com>
+
+	* LogReader.java: New file.
+	* OprofileDaemonView.java: New file.
+

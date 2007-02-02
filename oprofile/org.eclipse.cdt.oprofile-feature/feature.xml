@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.cdt.oprofile"
+      label="%featureName"
+      version="1.2.1"
+      provider-name="Eclipse.org"
+      os="linux"
+      ws="gtk"
+      arch="amd64,ia64,PA_RISC,ppc,sparc,x86">
+
+   <description url="oprofile.sourceforge.net">
+      Plugins to support Oprofile.
+   </description>
+
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.cdt.debug.core"/>
+      <import plugin="org.eclipse.cdt.debug.ui"/>
+      <import plugin="org.eclipse.cdt.launch"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.cdt.ui"/>
+      <import plugin="org.eclipse.text"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.cdt.oprofile.core"
+         download-size="0"
+         install-size="0"
+         version="1.2.1"/>
+
+   <plugin
+         id="org.eclipse.cdt.oprofile.core.linux"
+         download-size="0"
+         install-size="0"
+         version="1.2.1"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.oprofile.doc"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"/>
+
+   <plugin
+         id="org.eclipse.cdt.oprofile.launch"
+         download-size="0"
+         install-size="0"
+         version="1.1.0"/>
+
+   <plugin
+         id="org.eclipse.cdt.oprofile.ui"
+         download-size="0"
+         install-size="0"
+         version="1.1.0"/>
+
+</feature>

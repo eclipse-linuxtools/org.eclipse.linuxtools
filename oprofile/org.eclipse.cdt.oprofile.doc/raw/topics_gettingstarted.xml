@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!-- ============================================================ -->
+<!-- Define the topics for the Red Hat OProfile Tasks online help -->
+<!-- ============================================================ -->
+ <toc label="Getting Started with OProfile"><anchor id="opro_start" />
+  <topic label="OProfile Basic Tutorial" href="oprofile-tutorial.htm"/><anchor id="opro_gstutorial" /> 
+  <topic label="Viewing OProfile Samples" href="oprofile-view-samples.htm"/><anchor id="opro_gssamples" />
+    
+</toc>

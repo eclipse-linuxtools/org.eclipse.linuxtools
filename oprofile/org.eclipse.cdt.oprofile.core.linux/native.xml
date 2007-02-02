@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="native" default="build.native" basedir=".">
+
+  <target name="build.native">
+      <ant antfile="build.xml" dir="src">
+          <property name="eclipse-home" value="${basedir}/../../plugins" />
+          <property name="jdk-path" value="${java.home}" />
+          <property name="CXX" value="g++" />
+      </ant>
+  </target>
+
+  <target name="clean">
+      <ant antfile="build.xml" dir="src" target="clean" />
+  </target>
+</project>

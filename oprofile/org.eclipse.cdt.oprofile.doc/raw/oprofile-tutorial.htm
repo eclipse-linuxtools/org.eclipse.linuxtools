@@ -1,0 +1,121 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>OProfile Basic Tutorial</title>
+<link rel="stylesheet" href="book.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html">
+<meta http-equiv="Content-Style-Type" content="text/css">
+</head>
+<body>
+
+<h1>Getting started with OProfile: Basic Tutorial</h1>
+
+<p>This tutorial provides a basic introduction to some of the features of using the 
+<span class="guilabel">OProfile</span> perspective in Eclipse.</p>
+
+<p>The tutorial assumes you have some knowledge of OProfile 
+and that you have developed applications
+using Eclipse's C Development Toolkit (CDT).</p>
+
+<p>For more information:</p>
+
+<ul>
+<li>OProfile: <a href="http://oprofile.sourceforge.net" target="_blank">http://oprofile.sourceforge.net</a></li>
+
+<li>CDT: <a href="http://www.eclipse.org/cdt" target="_blank">http://www.eclipse.org/cdt</a></li>
+</ul>
+
+<div class="note">
+<b>Important:</b> 
+<ul style="margin-bottom:-7px;margin-top:-7px;">
+<li>In order to run OProfile, you <i>must</i> have the root password on the system. 
+The OProfile Plug-ins will authenticate you as the root user every time 
+the OProfile plug-ins first load.</li>
+<li>Your system <b><i>must</i></b> have a supported kernel; only SMP kernels are 
+supported. 
+However, not all SMP kernels are supported. 
+For example, 2.4.21-15.18.ELsmp is an <i>unsupported</i> kernel.
+</li>
+</ul>
+</div>
+
+
+<h2>Launching the OProfile Daemon</h2>
+
+<p>The OProfile daemon controls the configuration and collection status 
+of the OProfile kernel module. 
+In this section you will learn how to configure and launch
+the OProfile daemon.</p>
+
+<ol>
+<li>From the main workbench menu bar, select <span class="guilabel">Run &gt; Run</span> 
+to open the <span class="guilabel">Run</span> dialog.</li>
+
+<li>Click <span class="selectblue">Profile C/C++
+Application</span> and the <span class="guibutton">New</span>
+button to create a new profiling launch configuration.</li>
+
+<li>In the <span class="guitab">Application</span> tab, 
+type a name for the new profiling launch configuration
+in the <span class="guilabel">Name</span> field.
+Next, click <span class="guibutton">Browse</span> to select a CDT launch configuration to run after the OProfile daemon is started. 
+
+<p><img src="images/oprofile-config-app.png"></p>
+</li>
+
+<li>Click the <span class="guitab">Profiling Setup</span> tab. 
+This tab allows you to configure generic OProfile daemon options, 
+including the kernel in use and verbose logging. 
+Enable all of the listed options.
+<p><span style="color:#FF0000; text-decoration:underline; font-weight:bold;">Important:</span>
+Make certain that the kernel file listed is the
+one currently in use.</p>
+
+<p><img src="images/oprofile-config-setup.png"></p>
+</li>
+
+<li>Click the <span class="guitab">Configuration</span> tab. 
+Use this tab to configure what events the performance counters
+will collect. 
+
+<p>Each counter can collect only a single event. 
+When you enable a counter, it chooses the topmost event as 
+the default collection event. 
+You can choose any event in the list to collect; however,
+you cannot collect an event on counter <i>N</i> that is not valid for that counter. 
+You also cannot select multiple events for any given counter.
+</p>
+
+<p>As an example, click <span class="guilabel">Counter: 0</span>
+then the <span class="guilabel">Enabled</span> checkbox. 
+Then select the <span class="selectblue">CPU_CLK_UNHALTED</span>
+event from the list of events. 
+Notice that a description of the
+event is displayed at the bottom of the dialog.
+</p> 
+
+<p><span style="text-decoration:underline; font-weight:bold;">Note:</span> 
+The event list is CPU dependent, therefore you may not see this event listed.
+</p> 
+
+<p>You may want to adjust the <span class="guilabel">Count</span> value:
+smaller values produce more frequent sampling; larger values produce less frequent sampling. 
+Rarer events may need a lower value to obtain a sufficient number of samples.</p>
+<p><span style="color:#FF0000; text-decoration:underline; font-weight:bold;">Warning:</span> 
+Make sure you understand what you are doing when you adjust the count parameter as
+a value that is too low will cause your machine to become unresponsive. 
+If in doubt, use the default values.
+</p>
+
+<p><img src="images/oprofile-config-config.png"></p>
+</li>
+
+<li>Click <span class="guibutton">Apply</span> to save your changes into this launch
+configuration.</li>
+
+</ol>
+
+<p class="copyright"><a href="../hglegal2004.htm" class="copyright">&nbsp;&#169; Copyright Red Hat 2004.
+All Rights Reserved.</a></p>
+</body>
+</html>

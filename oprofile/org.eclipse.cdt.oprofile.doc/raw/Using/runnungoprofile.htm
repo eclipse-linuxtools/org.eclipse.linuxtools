@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<style type="text/css">
+@import url(../notnetscape4.css);
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="STYLESHEET" href="../book.css" charset="ISO-8859-1" type="text/css">
+<title>Profiling your C/C++ application</title>
+</head>
+<body>
+<h1>Profiling your C/C++ application</h1>
+
+<p>Oprofile is a tool that enables you to profile your C/C++ application.
+To run Oprofile:</p>
+
+<ol>
+<li>Load the Eclipse C/C++ perspective:
+from the menu bar choose
+<span class="guilabel">Window > Open Perspective > C/C++ Development</span>.
+</li>
+<li>Next, from the toolbar choose 
+<span class="guilabel">Run > Run</span>.
+The <span class="guilabel">Launch Configurations</span> 
+dialog appears.
+</li>
+<li>In the <span class="guilabel">Launch Configurations</span> dialog,
+choose <span class="guilabel">Profile C/C++ Application > New_configuration</span>. 
+<p><img src="../images/profileLauncher1.png"></p>
+</li>
+<li>Fill in each of the tabs:
+<dl>
+<dt>Application</dt>
+<dd>Use this tab to select a C/C++ launch configuration that the oprofile launcher will run. 
+If you leave this field blank, oprofile gives you the profile of the &quot;idle&quot; system.
+</dd>
+<dt>Profiling Setup</dt>
+<dd>Use this tab to specify system-wide profiling options for the daemon (these settings affect 
+all counters). 
+The dialog queries oprofile for defaults for most of the options, 
+except the four checkboxes at the bottom. 
+These are designed to be reasonable defaults for most Eclipse users. 
+<p><img src="../images/profileLauncher2.png"></p>
+</dd>
+<dt>Configuration</dt>
+<dd>Use this tab to configure the available counters.
+<p><img src="../images/profileLauncher3.png"></p>
+</dd>
+</dl>
+</li>
+<li>
+When the information is complete, click <span class="guibutton">Run</span>. 
+The system authenticates you as root then displays data in two views: 
+<ul>
+<li>A project-centric view (showing only the files in the users project)</li>
+<li>A system-centric view, showing everything.</li>
+</ul>
+You choose these views through the <span class="guilabel">Navigator</span> view. 
+You can:
+<ul>
+<li>Double-click an item to see a separate display that shows all the data and counts for that item.</li>
+<li>Open an editor at the places listed in the navigator.</li> 
+<li>Click on the "System Root" to display the data for "op_time".</li> 
+<li>Click on an object file (executable, shlib, module) to show "op_time -l" for that object.</li> 
+<li>Expand objects and get a list of symbols that have samples.</li> 
+</ul>
+</li>
+</ol>
+
+<p class="note"><span class="notetitle">Note: </span>
+The system authenticates you as root only once per login session).</p>
+
+<p class="copyright"><a href="../hglegal2002.htm" class="copyright">&nbsp;&#169; Copyright Red Hat 2002, 2003.
+All Rights Reserved.</a></p>
+</body>
+</html>

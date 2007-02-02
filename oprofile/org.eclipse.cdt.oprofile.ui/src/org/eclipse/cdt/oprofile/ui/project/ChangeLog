@@ -1,0 +1,53 @@
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* ProjectProfileExecutable.java (getChildren); Catch CModelException.
+	* ProjectProfileProject.java (getChindren): Likewise.
+	* ProjectProfileRoot.java (getChildren): Likewise.
+
+2003-07-08  Keith Seitz  <keiths@redhat.com>
+
+	* ProjectProfileExecutable.java: Remove unused imports.
+	* ProjectProfileFunction.java: Likewise.
+	* ProjectProfileObjectFile.java: Likewise.
+	* ProjectProfileView.java: Likewise.
+
+2003-07-02  Keith Seitz  <keiths@redhat.com>
+
+	* ProjectProfileExecutable.java: IBinaryParser is now in package
+	org.eclipse.cdt.core.
+	ICFile and C_FILE are deprecated. Comment out and note FIXME.
+	(getChildren): Likewise.
+	* ProjectProfileObjectFile.java: ICFile is deprecated. Comment
+	out and note FIXME.
+	(ProjectProfileObjectFile): Likewise.
+	(getChildren): Likewise.
+	(getLabelText): Likewise.
+	* ProjectProfileRoot.java: ICRoot is now ICModel.
+	(_croot): Rename to _cmodel to reflect above. Change all
+	occurrences.
+	* ProjectProfileView.java (createPartControl): getCRoot is now
+	called getCModel.
+
+2003-05-21  Keith Seitz  <keiths@redhat.com>
+
+	* ProjectProfileExecutable.java: Add copyright notice.
+	* ProjectProfileFunction.java: Likewise.
+	* ProjectProfileObjectFile.java: Likewise.
+	* ProjectProfileProject.java: Likewise.
+	* ProjectProfileRoot.java: Likewise.
+	* ProjectProfileShLib.java; Likewise.
+	* ProjectProfileView.java: Likewise.
+
+2003-04-24  Keith Seitz  <keiths@redhat.com>
+
+	* ProjectProfileRoot.java (getChildren): Fix javadoc.
+
+2003-03-19  Keith Seitz  <keiths@redhat.com>
+
+	* ProfjectProfileExecutable.java: New file.
+	* ProjectProfileFunction.java: New file.
+	* ProjectProfileObjectFile.java: New file.
+	* ProjectProfileProject.java: New file.
+	* ProjectProfileRoot.java: New file.
+	* ProjectProfileShLib.java: New file.
+	* ProjectProfileView.java: New file.

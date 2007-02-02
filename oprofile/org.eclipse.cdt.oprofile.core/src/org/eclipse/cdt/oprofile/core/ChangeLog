@@ -1,0 +1,628 @@
+2006-04-28  Keith Seitz  <keiths@redhat.com>
+
+	* OpInfo.java (SearchEventComparator.compare): Compare to String bstr
+	not Object b.
+
+2005-04-14  Keith Seitz  <keiths@redhat.com>
+
+	* ProfileImage.java (Header.event): Now a string variable.
+	(setHeader): Read a string not an int.
+
+	* OpInfo.java (findEvent): Indices greater OR equal to zero are valid.
+
+2005-02-04  Keith Seitz  <keiths@redhat.com>
+
+	* opxml/NumCountersProcessor.java: Remove.
+	* opxml/OpInfoProcessor.java (_numCountersProc): Remove.
+	(startElement): Remove NUM_COUNTERS special case.
+	(endElement): For NUM_COUNTERS, just read a number from the buffer.
+
+2004-08-27  Keith Seitz  <keiths@redhat.com>
+
+	* IOpcontrolProvider.java (setupDaemon): Remove ArrayList parameter: use
+	OprofileDaemonOptions and OprofileDaemonEvent for setup.
+	* IOpxmlProvider.java (debugInfo): SampleFile is gone. Use ProfileImage.
+	* ISample.java: Remove.
+	* ISampleContainer.java: Remove ISample.
+	(setExecutableName): Remove.
+	(getEvent): Remove.
+	(getSampleCount): Add from ISample.
+	* OpInfo.java (SortEventComparator): Sort by event name now, not number.
+	(SearchEventComparator): Likewise for search.
+	(getEvents): Clarify use of -1 to get all events on all counters.
+	(findEvent): Remove counter and event numbers. Search for string name of
+	event.
+	* Oprofile.java (_DEFAULT_SESSION_NAME): New constant.
+	(getEvents): Clarify use of -1 to get all events on all counters.
+	(sampleFileCounter): Remove.
+	(getDebugInfo): SampleFile is gone. Use ProfileImage.
+	(findEvent): Remove counter and event numbers. Search for name of event.
+	(isSeparateSampleFile): Remove.
+	(isDefaultSession): New static method.
+	* OprofileDaemonEvent.java: New class.
+	* OprofileDaemonOptions.java: New class.
+	* ProfileImage.java: Previously SampleFile.java. Remove all occurences
+	of counters and event numbers.
+	(getSampleFile): New method.
+	(setSampleFile): New method.
+	* Sample.java: Change all occurences of SampleFile to ProfileImage.
+	* SampleContainer.java (_counter): Remove.
+	(_demangled_name): Remove.
+	(_containers): Change to ArrayList.
+	(SampleContainer): Remove counter argument.
+	Initialize ArrayList.
+	(getExecutableName): Return the filename of the File.
+	(getSampleContainers): Convert ArrayList into fixed array.
+	(setSampleContainers): Remove.
+	(addSampelContainer): New method.
+	(getCounter): Remove.
+	* SampleFile.java: Renamed to ProfileImage.java to avoid confusion with
+	OProfile's real samplefiles. They're different data models entirely.
+	* SampleFileFilter.java: Remove.
+	* SampleSession.java (SampleSession): Remove counter parameter.
+	Add String event name parameter.
+	(getSampleContainers): Check size of ArrayList instead of null.
+	Return super implementation.
+	(setEvent): Remove.
+	(isDefaultSession): Ask Oprofile module to ascertain if this class
+	is the default session.
+	(getExecutableName): Remove default session junk.
+	* SeparateSampleFileFilter.java: Remove.
+	* opxml/HeaderProcessor.java (COUNTER): Remove.
+	* opxml/SampleProcessor.java: Change all occurences of SampleFile to
+	ProfileImage.
+	* opxml/SamplesProcessor.java (DEMANGLED_NAME): Remove.
+	(IMAGE_TAG): New tag.
+	(_sfile, _samplefiles): Remove.
+	(_session): New variable.
+	(_separates, _separate): Remove.
+	(_currentImage, _imageStack): New variables.
+	(reset): Initialize _session and _imageStack.
+	(startElement): Change SAMPLEFILE_TAG to IMAGE_TAG.
+	If currently constructing an image, push the current image onto the
+	stack. Create the new image.
+	Set _currentImage as the image file for sample processing.
+	(endElement): Add the sample to the current image for end of sample.
+	If processing end of image, check if image stack is empty. If it is, add
+	this toplevel image to the session. Otherwise add the image to the last
+	image on the stack.
+	If processing samplefile, set the ProfileImage's samplefile name.
+	If processing header, set it for the current image.
+	Remove SAMPLES_TAG, DEMANGLED_NAME_TAG processing.
+	* opxml/SessionsProcessor.java (_SESSION_CTR_ATTR): Remove.
+	(startElement): Remove _SESSION_CTR_ATTR. Use current event name to
+	construct session.
+
+2004-07-29  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (initializeOprofileModule): "New" method.
+	(static): Use initializeOprofileModule.
+	(getNumberOfCounters): Check if kernel module is loaded. 
+	(getCpuFrequency): Likewise. 
+	(getEvents): Likewise. 
+	(getDefaultSamplesDirectory): Likewise. 
+	(getLogFile): Likewise. 
+	(findEvent): Likewise. 
+	* OpInfo.java (getInfo): Check if kernel module
+	is loaded before doing any real work.
+
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (getDebugInfo): It works a lot better when opxml
+	runs. Really.
+	* OprofileCorePlugin.java (PLUGIN_ID): New constant.
+	(OprofileCorePlugin): Get rid of IPluginDescriptor argument for 3.0.
+	(getResourceString): Simplify.
+	(getId): Ditto.
+	(getOpxmlProvider): Update for Eclipse 3.0.
+	(getOpcontrolProvider): Likewise.
+
+2004-04-20  Keith Seitz  <keiths@redhat.com>
+
+	* OpxmlException.java: New file.
+	* IOpxmlProvider.java: New file.
+	* IOpcontrolProvider.java: New file.
+	* oprofile.properties (opcontrol_wrapper): Remove.
+	(opxml): Remove.
+	(opcontrolProvider): New properties.
+	(opxmlProvider): New properties.
+	* OprofileCorePlugin.java (getId): Merge content with other implementations
+	scattered about plugins.
+	(getOpxmlProvider): New function.
+	(getOpcontrolProvider): New function. 
+	* Oprofile.java: Use new IOpxmlProvider and IOpcontrolProvider interfaces.
+	Changed all callers.
+	* Opcontrol.java: Remove. (Moved to linux fragment.)
+	* OpInfo.java (getInfo): Use IOpxmlProvider.
+	* opxml/OpxmlConstants.java (HEADER): Remove.
+	Clean up unused comments.
+	* opxml/CheckEventsProcessor.java (_CHECK_EVENTS_TAG): New constant.
+	(endElement): Handle _CHECK_EVENTS_TAG; store result in calldata.
+	(getResult): Remove.
+	* opxml/OpxmlRunner.java: Remove. (Moved to linux fragment.)
+
+2004-04-05  Keith Seitz  <keiths@redhat.com>
+
+	* OprofileCorePlugin.java : Inherit from Plugin, not AbstractUIPlugin.
+
+2004-02-04  Keith Seitz  <keiths@redhat.com>
+
+	* SampleFile.java (SampleFile.Header): Remove members "separateLib"
+	and "separateKernel".
+	(setHeader): Remove processing for deleted members.
+	
+2004-01-30  Keith Seitz  <keiths@redhat.com>
+
+	* Opcontrol.java (_OPD_SAVE_SESSION): It's "--save=", not "--save-session".
+	(saveSession): Append session name to argument.
+	* Oprofile.java (saveDefaultSession): New function.
+
+2003-12-25  Keith Seitz  <keiths@redhat.com>
+
+	* Opcontrol.java: New file.
+	* OpcontrolException.java: New file.
+	* Oprofile.java (OPCONTROL): Remove.
+	(getLogFile): New function.
+	(_initializeOprofile): Use Opcontrol class.
+	(dumpSamples): New function.
+	(setupDaemon): New function.
+	(startDaemon): New function.
+	(startDaemonCollection): New function.
+	(stopDaemonCollection): New function.
+	(shutdownDaemon): New function.
+	(startDaemon): New function.
+	(_getUniqueId): New function.
+	* OprofileCorePlugin.java (getId): New function.
+
+	* oprofile.properties: Remove "-wrapper". Just using "opcontrol" now.
+
+2003-11-25  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (_isKernelModuleLoaded): Remove underscore and
+	make public. Change all callers.
+	(getSessionEvents): If unable to run opxml, return an empty array
+	instead of null.
+	(_initializeOprofile): Open error dialog if the kernel module cannot
+	be loaded.
+	If an exception occurs, save it for use by the error dialog.
+	* opxml/OpxmlRunner.java (run): If the kernel module isn't loaded,
+	don't even bother running opxml -- just return failure.
+	* oprofile.properties (oprofile.init.error.status.message): New	
+	property.
+	(oprofile.init.error.dialog.title): New property.
+	(oprofile.init.error.dialog.message): New property.
+
+2003-11-14  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (getSamples): Pass counter number to opxml's samples.
+	* SampleContainer.java (getCounter): New method.
+	
+2003-10-20  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (getCpuFrequency): New static method.
+	* OpInfo.java (_cpuSpeed): New variable.
+	(setCPUSpeed): New method.
+	(getCPUSpeed): New method.
+	* opxml/OpInfoProcessor.java (endElement): New method. Handle cpu frequency.
+
+2003-10-15  Keith Seitz  <keiths@redhat.com>
+
+	* OpInfo.java: New file.
+	* SessionEvent.java: New file.
+	* ISampleContainer.java (setExecutableName): New method.
+	(getSampleContainers): New method.
+	(getSamples): New method.
+	* Oprofile.java (SortEventComparator): Moved into OpInfo.
+	(SearchEventComparator): Likewise.
+	(_SESSIONS, _SAMPLE_FILES): Remove.
+	(_defaults, _eventList, _nrCounters): Remove.
+	(_info): New private static member.
+	(static block): Call _initializeOprofileCore.
+	(_initializeOprofileCore): New private static method.
+	(getNumberOfCounters): Use _info.
+	(getEvents): Likewise.
+	(_uname): Add i18n marker for string.
+	(_getDefaults): Remove.
+	(getDefaultSamplesDirectory): Use _info.
+	(checkEvent): It's now OPXML_CHECKEVENTS not CHECK_EVENTS.
+	Add calldata argument to OpxmlRunner.run.
+	(getSessions): Renamed to...
+	(getSessionEvents): ...this.
+	Call opxml for the list of sessions.
+	(getSampleFiles): Remove.
+	(_doGetSampleFiles): Remove.
+	(getSamples): New method.
+	(_createFileList): Remove.
+	(demangleFilename): Remove.
+	(getDebugInfo): Rewrite. Now returns all debug info for a given
+	SampleFile.
+	(getSamples): Remove.
+	(_findEvent): Make public and rename to:
+	(findEvent): Use _info.
+	(getEventFromHeader): Remove.
+	(getSeparateSampleFiles): Remove.
+	* Sample.java (DebugInfo.address): New member.
+	(DebugInfo.DebugInfo): New constructor.
+	(setDebugInfo): New method.
+	(_getDebugInfo): Get debug info from _sampleFile.
+	* SampleContainer.java (_samples): New member.
+	(_containers): New member.
+	(SampleContainer(int,File)): Initialize _samples and _containers.
+	(SampleContainer(File)): Call above constructor.
+	(getExecutableName): No need to call Oprofile core -- just return
+	_demangled_name.
+	(setExecutableName): New method.
+	(getSampleContainers): New method.
+	(setSampleContainers): New method.
+	(getSamples): New method.
+	* SampleFile.java (Header): New public class.
+	(_samples, _sampleFiles): Remove.
+	(SampleFile(File)): Change to accept String filename.
+	(getSamples): Remove.
+	(getSampleCount): Rewrite.
+	(getSampleFiles): Removed.
+	(getEvent): Use Oprofile.findEvent and _header to find the event
+	collected in this SampleFile.
+	(setHeader): New method.
+	(getDebugInfo): New method.
+	* SampleSession.java (_sampleFiles): Remove.
+	(_event): New protected member.
+	(SampleSession): Initialize _count and _event, but not _counter; let
+	the superclass do it.
+	(getChildren): Renamed to...
+	(getSampleContainers): ...this.
+	(getSampleCount): Just return count; it will be provided by opxml
+	when the list of sessions is queried.
+	(setSampleCount): New method.
+	(getEvent): Just return the event. It will also be provided by opxml
+	when the list of sessions is queried.
+	(getExecutableName): New method.
+	* oprofile.properties (getSamples.caption): New property.
+	(getSamples.default-session): New property.
+	* opxml/OpInfoProcessor.java: New file.
+	* opxml/SampleProcessor.java: New file.
+	* opxml/SessionsProcessor.java: New file.
+	* opxml/CheckEventsProcessor.java (reset): Add calldata argument.
+	(endElement): Likewise.
+	* opxml/DebugInfoProcessor.java (_FUNCTION_TAG): Remove.
+	(_SOURCEFILE_TAG): Remove.
+	(_LINE_TAG): Remove.
+	(ADDRESS_TAG): New public constant.
+	(_FUNCTION_ATTR): New private constant.
+	(_SOURCEFILE_ATTR): Likewise.
+	(_LINE_ATTR): Likewise.
+	(reset): Remove.
+	(startElement): Add calldata argument.
+	Rewrite to conform to opxml output.
+	(endElement): Likewsie.
+	(getResult): Remove.
+	* opxml/DefaultsProcessor.java (endElement): New method.
+	* opxml/DemangleFilenameProcessor.java:  Delete file.
+	* opxml/EventListProcessor.java (_events): Remove.
+	(_counter): New private member.
+	(_ATTR_EVENT_LIST_COUNTER): New private constant.
+	(MaskProcessor.reset): Add calldata argument.
+	(MaskProcessor.endElement): Add calldata argument.
+	Pass callData to OprofileSAXHandler.getInstance.
+	(UnitMaskProcessor.reset): Add calldata argument.
+	(UnitMaskProcessor.startElement): Add calldata argument.
+	Pass callData to OprofileSAXHandler.getInstance.
+	Pass callData to super.startElement.
+	(UnitMaskProcessor.endElement): More calldata additions.
+	(EventListProcessor): Remove _events.
+	(reset): Remove.
+	(startElement): More calldata additions.
+	Note the counter number for event list tags.
+	(endElement): More calldata additions.
+	Save the current event into the calldata.
+	Pop the processor if the tag is event list.
+	(getResult): Remove.
+	* opxml/HeaderProcessor.java (SEPARATE_LIBS): Update to match opxml.
+	(endElement): New method.
+	* opxml/MapProcessor.java (reset): Add calldata argument.
+	(endElement): Add calldata argument.
+	(getResult): Remove.
+	(getResult(String)): Remove.
+	(getMap): New method.
+	* opxml/NumCountersProcessor.java (_numCounters): Remove.
+	(reset): Add calldata argument.
+	Initialize calldata.
+	(endElement): Add calldata argument.
+	Save number of counters into calldata.
+	If we're done, pop ourselves.
+	(getResult): Remove.
+	* opxml/OprofileSAXHandler.java (_callData): New private member.
+	(_requests): Remove.
+	(ProcessorItem): New private class.
+	(_requestHandlers): Rename to...
+	(_handlerList): ...this.
+	Add list of handlers using ProcessorItems.
+	(getInstance): Add calldata argument.
+	Use _handlerList instead of _requests/_requestList.
+	Set calldata for instance.
+	(setCallData): New method.
+	(getProcessor): Rewrite.
+	(startElement): Pass calldata to reset.
+	Remove dead code.
+	Always call the current processor with the current tag.
+	(endElement): Remove dead code.
+	Pass calldata to endElement.
+	(characters): Remove dead code.
+	Pass calldata to characters.
+	(push): Pass calldata to reset.
+	(pop): Pass calldata to endElement.
+	* opxml/OpxmlConstants.java: Rewrite. All new constant names for
+	new opxml.
+	* opxml/OpxmlRunner.java (run): Add callData argument and pass
+	it when neccessary.
+	* opxml/SamplesProcessor.java: Rewrite. New opxml "samples" request
+	looks nothing like the old one. Or I'm just too lazy to enumerate
+	all the differences. Take your pick.
+	* opxml/XMLProcessor.java: Add calldata arguments to all methods.
+
+2003-09-25  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (SearchEventComparator.compare): Really do what
+	I intended to do yesterday. Really. I mean it this time.
+
+2003-09-24  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (SearchEventComparator.compare): Don't assume that
+	OpEvent is first parameter. By checking which parameter is which,
+	we now satisfy the Comparator.compare requirement that
+	sgn(compare(a,b)) = -sgn(compare(b,a)).
+
+2003-09-23  Keith Seitz  <keiths@redhat.com>
+
+	* opxml/OpxmlRunner.java (run): Explicitly instantiate SAXParser
+	to work around JDK1.4.x xml parser abstraction changes.
+	Use BufferedReader to buffer output of opxml for parsing.
+	Add detail messages in errors.
+
+2003-07-08  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java: Remove unused imports.
+	* SampleFile.java: Likewise.
+	* opxml/CheckEventsProcessor.java: Likewise.
+	* opxml/DebugInfoProcessor.java: Likewise.
+	* opxml/DemangleFilenameProcessor.java: Likewise.
+	* opxml/EventListProcessor.java: Likewise.
+	* opxml/HeaderProcessor.java: Likewise.
+	* opxml/MapProcessor.java: Likewise.
+	* opxml/NumCountersProcessor.java: Likewise.
+	* opxml/OpxmlRunner.java: Likewise.
+	* opxml/SamplesProcessor.java: Likewise.
+
+2003-07-02  Keith Seitz  <keiths@redhat.com>
+
+	Merged from branch:
+	2003-06-27  Keith Seitz  <keiths@redhat.com>
+	* oprofile.properties (opcontrol-wrapper): Fix location munge.
+
+	2003-06-27  Keith Seitz  <keiths@redhat.com>
+	* opxml/CheckEventsProcessor.java: New file.
+	* opxml/DebugInfoProcessor.java: New file.
+	* opxml/DefaultsProcessor.java: New file.
+	* opxml/DemangleFilenameProcessor.java: New file.
+	* opxml/EventListProcessor.java: New file.
+	* opxml/HeaderProcessor.java: New file.
+	* opxml/MapProcessor.java: New file.
+	* opxml/NumCountersProcessor.java: New file.
+	* opxml/OprofileSAXHandler.java: New file.
+	* opxml/OpxmlConstants.java: New file.
+	* opxml/OpxmlRunner.java: New file.
+	* opxml/SamplesProcessor.java: New file.
+	* opxml/XMLProcessor.java: New file.
+	* OpEvent.java (_minCount): New private variable.
+	(setUnitMask): New public method.
+	(setText): New public method.
+	(getTextDescription): No need to fetch description -- just
+	return it.
+	(setTextDescription): New public method.
+	(getMinCount): No need to fetch min count -- just return it.
+	(setMinCount): New public method.
+	(setNumber): New public method.
+	* OpUnitMask.java (UTM_MANDATORY): Drop the "UTM_" prefix.
+	(UTM_BITMASK): Likewise.
+	(UTM_EXCLUSIVE): Likewise.
+	(MaskInfo): New public static class.
+	(OpUnitMask): Remove constructor. No longer needed.
+	(getMaskValue): Update javadoc.
+	(isSet): Update javadoc.
+	Use BITMASK, EXCLUSIVE, and MANDATORY.
+	(setMask): Update javadoc.
+	Use BITMASK, EXCLUSIVE, and MANDATORY.
+	(setMaskDescriptions): New public method.
+	(setMaskValue): Update javadoc.
+	(getText): Update javadoc.
+	(numMasks): Update javadoc.
+	Use BITMASK, EXCLUSIVE, and MANDATORY.
+	(isExclusive): Remove. Use getType instead.
+	(getType): New public method.
+	(setType): New public method.
+	* Oprofile.java: Update class javadoc. Big rewrite.
+	(CPU_NO_GOOD, CPU_PPRO, CPU_PII, CPU_PIII, CPU_ATHLON, CPU_RTC,
+	CPU_IA64, MAX_CPU_TYPE): Remove.
+	(BUFFER_SIZE): Deprecated. Remove.
+	(NOTE_SIZE, HASHTABLE_SIZE): Remove previously deprecated.
+	(MIN, MAX): No longer needed. Remove.
+	(SortEventComparator): New private static class.
+	(SearchEventComparator): New private static class.
+	(static block): Don't load the oprofile library. It's GPL and
+	we're CPL. The two licenses are imcompatible. :-(
+	Instead, check if the kernel module is loaded and initialize
+	the event list.
+	(_defaults): New private member.
+	(_eventList): New private member.
+	(_nrCounters): New private member.
+	(get_cpu_type, get_cpu_type_str): Remove.
+	(get_nr_counter): Renamed to getNumberCounters.
+	(getNumberCounters): New public static method.
+	(_getEvents): Remove.
+	(getEvents): Fetch results from opxml program.
+	(getKernelImageFile): Update javadoc.
+	(_uname): Run the systhem uname instead of using JNI call to the
+	system call of the same name.
+	(get_min_count): Removed. Work done elsewhere.
+	(get_unit_mask_info): Likewise.
+	(get_default_hashtable_size): Remove previously deprecated.
+	(_getDefaults): New private static method.
+	(get_default_buffer_size): Deprecated. Remove.
+	(get_default_note_size): Remove previously deprecated.
+	(get_default_sample_dir): Rename to getDefaultSamplesDirectory and
+	use opxml instead of JNI.
+	(check_event): Rename to checkEvent and use opxml instead of JNI.
+	(_get_limits): Remove.
+	(getSessions): Update javadoc.
+	(_doGetSampleFiles): Add comment.
+	Use getDefaultSamplesDirectory instead of get_default_samples_directory.
+	(sampleFileCounter): Update javadoc.
+	(demangle_filename): Rename to demangelFilename.
+	Use opxml instead of JNI.
+	(get_samples): Rename getSamples.
+	Use opxml instead of JNI.
+	(get_debug_info): Rename getDebugInfo.
+	Update javadoc.
+	Return Sample.DebugInfo instead of void.
+	Use opxml instead of JNI.
+	(getFormattedCounterString): Update javadoc.
+	(_findEvent): New private static method.
+	(get_event_from_header): Rename getEventFromHeader.
+	Use opxml instead of JNI.
+	(getSeparateSampleFiles): Update javadoc.
+	(isSeparateSampleFile): Update javadoc.
+	* Sample.java: Update class javadoc.
+	(NAME_FOR_SYMBOLLESS_SAMPLE): Remove.
+	(Symbol): Make static.
+	(DebugInfo): Likewise.
+	(_exeName): Remove.
+	(_sampleFile): New private member.
+	(Sample): Simplify. Now takes only SampleFile as argument.
+	(hasSymbol): Update javadoc.
+	(getSampleCount): Ditto.
+	(getSymbol): Ditto.
+	(setCount): New public method.
+	(getAddress): Update javadoc.
+	(setAddress): New public method.
+	(getFilename): Update javadoc.
+	(getLineNumber): Likewise.
+	(_getDebugInfo): Call Oprofile.getDebugInfo.
+	* SampleContainer.java (getExecutableName): Call Oprofile.demangleFilename.
+	* SampleFile.java (getSamples): Call Oprofile.getSamples.
+	(getEvent): Call Oprofile.getEventFromHeader.
+	* oprofile.properties (opxml): New property.
+	(unknown-kernel): New property.
+
+2003-05-21  Keith Seitz  <keiths@redhat.com>
+
+	* ISample.java: Add copyright notice.
+	* ISampleContainer.java: Likewise.
+	* OpEvent.java: Likewise.
+	* OpEventLabelProvider.java: Likewise.
+	* OpUnitMask.java: Likewise.
+	* Oprofile.java: Likewise.
+	* OprofileCorePlugin.java: Likewise.
+	* OprofileProperties.java: Likewise.
+	* Sample.java: Likewise.
+	* SampleContainer.java: Likewise.
+	* SampleFile.java: Likewise.
+	* SampleFileFilter.java: Likewise.
+	* SampleSession.java: Likewise.
+	* SeparateSampleFileFilter.java: Likewise.
+
+2003-05-19  Keith Seitz  <keiths@redhat.com>
+
+	* oprofile.properties: Point to installed version of
+	opcontrol-wrapper.
+
+2003-04-25  Keith Seitz  <keiths@redhat.com>
+
+	* SeparateSampleFileFilter.java: New file.
+	* ISampleContainer.java (getChildren): Eradicate.
+	* SampleContainer.java (getExecutableName): Handle case of
+	separate sample file.
+	(getChildren): Remove.
+	* SampleFile.java (_sampleFiles): New protected variable.
+	(getChildren): Rename to getSamples.
+	(getSampleFiles): New method.
+	* SampleFileFilter.java (_what): New private int.
+	(FILTER_SAMPLEFILES): New public constant.
+	(FILTER_SEPARATEFILES): New public constant.
+	(SampleFileFilter): Add "what" argument.
+	(accept): Check "what" files to accept.
+	* Oprofile.java (getSampleFiles): Update javadoc.
+	(_doGetSampleFiles): Tell SampleFileFilter to accept only
+	real sample files.
+	(getSeparateSampleFiles): New method.
+	(isSeparateSampleFile): New method.
+
+2003-04-22  Keith Seitz  <keiths@redhat.com>
+
+	* SampleContainer.java (forCounter): Remove unused method.
+
+2003-04-08  Keith Seitz  <keiths@redhat.com>
+
+	* oprofile.properties: New file.
+	* OprofileProperties.java: New file.
+	* Oprofile.java (OPCONTROL): New static variable.
+	(_OPROFILE_CPU_TYPE_FILES): New static variable.
+	(): Make sure kernel module is loaded before loading
+	oprofile wrapper library.
+	(_checkKernelModuleLoaded): New method.
+	(_isKernelModuleLoaded): New method.
+	(_initializeOprofile): New method.
+
+2003-04-04  Keith Seitz  <keiths@redhat.com>
+
+	* ISampleContainer.java (getEvent): New method.
+	* OpEvent.java (OpEvent): New consturctor.
+	* Oprofile.java (NOTE_SIZE, HASHTABLE_SIZE): Deprecate.
+	(_SESSIONS, _SAMPLE_FILES): New constants.
+	(get_default_buffer_size): Deprecate.
+	(get_default_note_size): Deprecate.
+	(getSessions): New method.
+	(_create_file_list): Rename to _createFileList.
+	(_createFileList): New method.
+	(_doGetSampleFiles): New method.
+	(getSampleFiles): Use _doGetSampleFiles.
+	(get_event_from_header): New method.
+	* SampleContainer.java (SampleContainer): New consturctor.
+	* SampleFile.java (getEvent): New method.
+	* SampleSession.java (_counter): Remove. It's redundant.
+	(SampleSession): Let super class handle counter.
+	Compute list of SampleFiles now.
+	(getChildren): Let constructor get list of SampleFiles. Just
+	return the list.
+	(getEvent): New method.
+	(isDefaultSession): New method.
+
+2003-03-27  Keith Seitz  <keiths@redhat.com>
+
+	* OpUnitMask.java (_exclusiveValues): New private variable.
+	(isSet): Use the bit number as an index into _exclusiveValues
+	for UTM_EXCLUSIVE masks.
+	(setMask): Ditto for the new mask value: use it as an index to
+	set the real mask value.
+
+2003-03-27  Keith Seitz  <keiths@redhat.com>
+
+	* Oprofile.java (OP_SAMPLES_DIR): Remove.
+	(_get_events): Add counter number paramter.
+	(getEvents): Add counter number so that we can return events
+	only valid for the given counter.
+	(get_default_sample_dir): New function.
+	(getSampleFiles): Use get_default_sample_dir instead of OP_SAMPLES_DIR.
+
+2003-03-19  Keith Seitz  <keiths@redhat.com>
+
+	* ISample.java: New file.
+	* ISampleContainer.java: New file.
+	* OpEvent.java: New file.
+	* OpEventLabelProvider.java: New file.
+	* Oprofile.java: New file.
+	* OpUnitMask.java: New file.
+	* Sample.java: New file.
+	* SampleContainer.java: New file.
+	* SampleFile.java: New file.
+	* SampleFileFilter.java: New file.
+	* SampleSession.java: New file.

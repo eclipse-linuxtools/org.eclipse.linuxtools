@@ -1,0 +1,36 @@
+2004-02-25  Keith Seitz  <keiths@redhat.com>
+
+	* daemon_v.gif: New file.
+	* sample_v.gif: New file.
+	* system_v.gif: New file.
+
+2004-02-20  Keith Seitz  <keiths@redhat.com>
+
+	* opersp.gif: New file.
+
+2004-02-09  Keith Seitz  <keiths@redhat.com>
+
+	* stop.gif: Update.
+	* shutdown.gif: Remove.
+
+2004-02-04  Keith Seitz  <keiths@redhat.com>
+
+	* dump.gif: Fix transparency.
+
+2004-02-04  Keith Seitz  <keiths@redhat.com>
+
+	* dump.gif: Update.
+	* savesession.gif: Update.
+	* shutdown.gif: Update.
+	* start.gif: Update.
+	* stop.gif: Update.
+
+2003-12-25  Keith Seitz  <keiths@redhat.com>
+
+	* dump.gif: New file.
+	* savesession.gif: New file.
+	* shutdown.gif: New file.
+	* start.gif: New file.
+	* stop.gif: New file.
+
+

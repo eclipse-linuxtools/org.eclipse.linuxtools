@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# This script installs the files necessary for root authentication when using
+# Eclipse-OProfile.
+
+install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
+install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol

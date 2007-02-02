@@ -1,0 +1,79 @@
+2003-07-29  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePlugin.java (OprofilePlugin): Check if kernel module is
+	loaded. If not, give user a chance to load it.
+
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePlugin.java (OprofilePlugin): Remove IPluginDescriptor argument.
+
+2004-04-20  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePerspective.java: Add missing i18n.
+
+2004-01-30  Keith Seitz  <keiths@redhat.com>
+
+	* oprofileui.properties (savedialog): New properties.
+
+2003-12-25  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePerspective.java (_defineActions): Add new actionSet.
+	(_defineLayout): Add log viewer.
+
+	* OprofilePlugin.java (_sysProfileView): New variable.
+	(ID_VIEW_DAEMON): New constant.
+	(getSystemProfileView): New function.
+	(getSystemProfileView): New function.
+
+2003-10-10  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePlugin.java (getActiveWorkbenchWindow): New method.
+	(getActiveWorkbenchShell): New method.
+	
+2003-07-15  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePerspective.java (_defineAcitons): Add the debug
+	launcher actions.
+
+2003-07-08  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePerspective.java: Remove unused imports.
+	* OprofilePlugin.java: Likewise.
+	* ProfileLabelProvider.java: Likewise.
+
+2003-07-02  Keith Seitz  <keiths@redhat.com>
+
+	* ProfileLabelProvider.java: Remove import of ICRoot.
+
+2003-05-28  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePerspective.java (_defineLayout): Forcibly show the
+	SystemProfileView and the SampleView when the perspective is
+	initially created or reset.
+
+2003-05-21  Keith Seitz  <keiths@redhat.com>
+
+	* BaseProfileView.java: Add copyright notice.
+	* OprofilePerspective.java: Likewise.
+	* OprofilePlugin.java: Likewise.
+	* OprofileUIMessages.java: Likewise.
+	* ProfileContentProvider.java: Likewise.
+	* ProfileLabelProvider.java: Likewise.
+
+2003-04-04  Keith Seitz  <keiths@redhat.com>
+
+	* OprofilePerspective.java (_defineLayout): Add bookmarks.
+
+	* oprofileui.properties (systemProfileRoot.systemRot.text): Remove.
+	(systemProfileView.counter.text): Remove.
+	(systemProfileRoot.defaultSession.text): New property.
+
+2003-03-19  Keith Seitz  <keiths@redhat.com>
+
+	* BaseProfileView.java: New file.
+	* OprofilePerspective.java: New file.
+	* OprofilePlugin.java: New file.
+	* OprofileUIMessages.java: New file.
+	* ProfileContentProvider.java: New file.
+	* ProfileLabelProvider.java: New file.
+	* oprofileui.properties: New file.

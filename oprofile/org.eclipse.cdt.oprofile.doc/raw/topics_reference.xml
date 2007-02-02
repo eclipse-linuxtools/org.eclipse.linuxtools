@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!-- ============================================================= == -->
+<!-- Define the topics for the Red Hat OProfile reference online help -->
+<!-- ================================================================ -->
+ <toc label="OProfile Reference" href="oprofile-ref-oprofile.htm"><anchor id="opro_reference" />
+  <topic label="System Profile Reference" href="oprofile-ref-sys-profile.htm"/><anchor id="opro_sysprof_ref" />
+  <topic label="Samples Reference" href="oprofile-ref-samples.htm"/><anchor id="opro_samples_ref" />
+  <topic label="Launcher Reference" href="oprofile-ref-launcher.htm"/><anchor id="opro_launcher_ref" />  
+  
+</toc>

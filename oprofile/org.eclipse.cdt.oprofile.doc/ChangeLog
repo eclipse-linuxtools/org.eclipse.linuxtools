@@ -1,0 +1,69 @@
+2006-08-11  Keith Seitz  <keiths@redhat.com>
+
+	* build.xml (version.suffix): Move underscore from here ...
+	(full.name): ... to here to support building with 3.2.0.
+
+2004-08-11  Ben Konrath  <bkonrath@redhat.com>
+	* raw/oprofile-view-samples.htm:
+            o addedd new screenshots, removed old ones
+
+2004-08-11  Ben Konrath  <bkonrath@redhat.com>
+	
+	* raw/oprofile-tutorial.htm: 
+            o minor edits for clearity
+            o added new screenshots, removed old ones
+
+2004-07-16  Keith Seitz  <keiths@redhat.com>
+
+	* plugin.properties (pluginName): Rename to be more consistent
+	with the rest of the oprofile plugins.
+	(pluginProvider): Use "Red Hat, Inc." instead of "RedHat.com".
+
+2004-07-15  Keith Seitz  <keiths@redhat.com>
+
+	* build.properties: Denote custom build.
+	* build.xml: Don't udpate (revert last check-in).
+
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* build.properties: Update.
+	* build.xml: Update again.
+
+2004-03-15  Jeremy Handcock  <handcock@redhat.com>
+
+	* raw/oprofile-tutorial.htm: Technical writer edits.
+
+2003-9-11   Phil Muldoon <pmuldoon@redhat.com>
+
+	* toc.xml: Commented out references section in toc.xml
+
+2003-9-10   Phil Muldoon <pmuldoon@redhat.com>
+
+	* raw/hglegal2002.htm: Added
+
+	* raw/*.html: fixed incorrect path to nonetscape and
+						 book.csas
+	   raw/oprofile-tests-display-samples.htm: Fixed broken
+	   					 links
+	   					 
+	   build.xml: Rewrote gather.bin.parts to not use excludes
+	   	
+	   plugin.xml: Changed version to match build.xml
+	   
+	   build.properties: Changed incorrect comments		
+
+	   plugin.properties: Changed provider and title
+	   
+	   
+2003-9-10	Phil Muldoon <pmuldoon@redhat.com>
+
+
+	* Removed doc.zip
+
+2003-08-28  Phil Muldoon <pmuldoon@redhat.com>
+	
+	* Added build.xml
+
+2003-08-27  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* Imported Red Hat OProfile Documentation files

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.eclipse.cdt.oprofile.ui"
+   name="%pluginName"
+   version="1.1.0"
+   provider-name="Eclipse.org"
+   class="org.eclipse.cdt.oprofile.ui.OprofilePlugin">
+
+   <runtime>
+      <library name="oprofileui.jar"/>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.cdt.ui"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.cdt.oprofile.core"/>
+   </requires>
+
+
+<!-- Extensions -->
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="%perspectiveName"
+            class="org.eclipse.cdt.oprofile.ui.OprofilePerspective"
+            id="org.eclipse.cdt.oprofile.ui.perspective"
+	    icon="icons/opersp.gif">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="%projectView"
+            class="org.eclipse.cdt.oprofile.ui.project.ProjectProfileView"
+            id="org.eclipse.cdt.oprofile.ui.project.ProjectProfileView">
+      </view>
+      <view
+            name="%systemView"
+	    icon="icons/system_v.gif"
+            class="org.eclipse.cdt.oprofile.ui.system.SystemProfileView"
+            id="org.eclipse.cdt.oprofile.ui.system.SystemProfileView">
+      </view>
+      <view
+            name="%sampleView"
+	    icon="icons/sample_v.gif"
+            class="org.eclipse.cdt.oprofile.ui.sample.SampleView"
+            id="org.eclipse.cdt.oprofile.ui.sample">
+      </view>
+      <view
+      		name="%daemonView"
+		icon="icons/daemon_v.gif"
+      		class="org.eclipse.cdt.oprofile.ui.daemon.OprofileDaemonView"
+      		id="org.eclipse.cdt.oprofile.ui.daemon">
+      </view>
+	</extension>
+   	
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet id="org.eclipse.cdt.oprofile.ui.contribution.set"
+			label="%actionSet.label"
+			visible="false">
+			
+			<!-- Toolbar extensions -->
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.save"
+				label="%actionSet.save.label"
+				icon="icons/savesession.gif"
+				tooltip="%actionSet.save.toolTip"
+				toolbarPath="Normal/additions/oprofile1"
+				class="org.eclipse.cdt.oprofile.ui.actions.SaveSessionActionDelegate"/>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.dump"
+				label="%actionSet.dump.label"
+				icon="icons/dump.gif"
+				tooltip="%actionSet.dump.toolTip"
+				toolbarPath="Normal/additions/oprofile1"
+				class="org.eclipse.cdt.oprofile.ui.actions.DumpActionDelegate"/>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.stop"
+				label="%actionSet.stopCollection.label"
+				icon="icons/stop.gif"
+				tooltip="%actionSet.stopCollection.toolTip"
+				toolbarPath="Normal/additions/oprofile2"
+				class="org.eclipse.cdt.oprofile.ui.actions.StopCollectionActionDelegate"/>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.start"
+				label="%actionSet.startCollection.label"
+				icon="icons/start.gif"
+				tooltip="%actionSet.startCollection.toolTip"
+				toolbarPath="Normal/additions/oprofile2"
+				class="org.eclipse.cdt.oprofile.ui.actions.StartCollectionActionDelegate"/>
+			
+			<!-- Menu contributions -->
+			<menu id="org.eclipse.cdt.oprofile.ui.contribution.set.menu"
+				label="%actionSet.menu.label"
+				path="additions">
+				<separator name="group1"/>
+				<separator name="group2"/>
+				<separator name="group3"/>
+			</menu>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.menu.shutdown"
+				label="%actionSet.shutdown.label"
+				tooltip="%actionSet.shutdown.toolTip"
+				menubarPath="org.eclipse.cdt.oprofile.ui.contribution.set.menu/group3"
+				class="org.eclipse.cdt.oprofile.ui.actions.ShutdownActionDelegate"/>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.menu.stopCollection"
+				label="%actionSet.stopCollection.label"
+				icon="icons/stop.gif"
+				tooltip="%actionSet.stopCollection.toolTip"
+				menubarPath="org.eclipse.cdt.oprofile.ui.contribution.set.menu/group1"
+				class="org.eclipse.cdt.oprofile.ui.actions.StopCollectionActionDelegate"/>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.menu.startCollection"
+				label="%actionSet.startCollection.label"
+				icon="icons/start.gif"
+				tooltip="%actionSet.startCollection.toolTip"
+				menubarPath="org.eclipse.cdt.oprofile.ui.contribution.set.menu/group1"
+				class="org.eclipse.cdt.oprofile.ui.actions.StartCollectionActionDelegate"/>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.menu.dump"
+				label="%actionSet.dump.label"
+				icon="icons/dump.gif"
+				tooltip="%actionSet.dump.toolTip"
+				menubarPath="org.eclipse.cdt.oprofile.ui.contribution.set.menu/group2"
+				class="org.eclipse.cdt.oprofile.ui.actions.DumpActionDelegate"/>
+			<action id="org.eclipse.cdt.oprofile.ui.contribution.set.menu.save"
+				label="%actionSet.save.label"
+				icon="icons/savesession.gif"
+				tooltip="%actionSet.save.toolTip"
+				menubarPath="org.eclipse.cdt.oprofile.ui.contribution.set.menu/group2"
+				class="org.eclipse.cdt.oprofile.ui.actions.SaveSessionActionDelegate"/>
+		</actionSet>
+	</extension>
+
+</plugin>

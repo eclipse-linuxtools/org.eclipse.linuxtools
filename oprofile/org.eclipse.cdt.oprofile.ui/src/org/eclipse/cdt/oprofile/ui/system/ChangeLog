@@ -1,0 +1,187 @@
+2004-07-29  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileView.java (refreshView): Check if kernel module is loaded.
+	If not, give user a chance to load it.
+
+2004-07-13  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileView.java (_createActions): IWorkbenchConstants is deprecated.
+	 Replace with ActionFactory method.
+
+2004-04-01  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileView.java (_restoreState): Return boolean indicating whether
+	any state was actually restored.
+	Check whether event exists before adding to display list. This can happen
+	when starting up eclipse and the samples have been changed/deleted/moved.
+	(createPartControl): If restoring state fails, display first available
+	event collected. 
+
+2004-03-30  Keith Seitz  <keiths@redhat.com>
+ 
+	* SystemProfileView.java (_updateMenus): Create actions for events.
+	(refreshView): Call _updateMenus.
+	(_createActions): Don't create menu actions here; let _updateMenus do it.
+
+2003-12-25  Keith Seitz <keiths@redhat.com>
+
+	* SystemProfileView.java (createControl): Register with plugin.
+	(dispose): Unregister with plugin.
+	(_refreshView): Renamed to ...
+	(refreshView): ... this.
+
+2003-10-10  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileRootElement.java (_sampleFile): Rename to _container and
+	change type to ISampleContainer for better consistency.
+	(getChildren): Pass the active workbench window's shell to
+	ISampleContainer.getSampleContainers so that a dialog can be displayed
+	during this operation.
+	(getSampleFile): Removed.
+	
+	* SystemProfileSession.java (_count): New variable.
+	(SystemProfileSession): Delay processing of _getProfileElements...
+	(getChildren): ... to here. It was only needed to fill in sample
+	counts, and that is now handled when we are constructed (and shortly
+	thereafter).
+	(hasChildren): Use the sample count to determine if there are children.
+	(_getProfileElements): Pass the active workbench window's shell to
+	ISampleContainer.getSampleContainers so that a dialog can be displayed
+	during this operation.
+	(getSampleCount): Return the SampleSession's sample count, which is known
+	before _getProfileElements is called.
+
+	* SystemProfileView.java (createPartControl): Don't bother with the huge
+	heuristic for figuring out what to display. Just use the first
+	SystemProfileEvent in the event list.
+	(_refreshEvents): Simply using Oprofile.getSessionEvents.
+	(_updateMenus): Don't bother checking whether an event has children
+	to enable it. I think this is not necessary.
+	
+2003-09-18  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileView.java (createPartControl): Don't assume there are events to
+	look at.
+
+2003-07-15  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileView.java (_restoreState): Add IMemento argument.
+	(createPartControl); Pass _memento to _restoreState.
+	(_createActions): Add REFRESH action handler.
+	(_refreshView): New method.
+
+2003-07-08  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileObject.java: Remove unused imports.
+	* SystemProfileSession.java: Likewise.
+	* SystemProfileView.java: Likewise.
+
+2003-07-02  Keith Seitz  <keiths@redhat.com>
+
+	Merge from branch:
+	2003-06-27  Keith Seitz  <keiths@redhat.com>
+	* SystemProfileView.java (_refreshEvents): Call 
+	Oprofile.getNumberOfCounters instead of Oprofile.get_nr_counters.
+
+2003-05-21  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileEvent.java: Add copyright notice.
+	* SystemProfileExecutable.java: Likewise.
+	* SystemProfileObject.java: Likewise.
+	* SystemProfileRootElement.java: Likewise.
+	* SystemProfileSample.java: Likewise.
+	* SystemProfileSession.java: Likewise.
+	* SystemProfileShLib.java: Likewise.
+	* SystemProfileSymbol.java: Likewise.
+	* SystemProfileView.java: Likewise.
+
+2003-04-25  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileRootElement.java (hasChildren): Update comment.
+	(getChildren): Update comment.
+	Check if sample file has any other dependent sample files and
+	report those, too.
+	Use SampleContainer.getSampleFiles instead of SampleContainer.getChildren.
+	
+2003-04-23  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileView.java (saveState): The expandedElements list
+	could be null, so check this before querying its length.
+
+2003-04-04  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileEvent.java: New file.
+	* SystemProfileRoot.java: Remove. Most functionality moved
+	into SystemProfileEvent.
+	* SystemProfileExecutable.java (SystemProfileExeuctable): Take
+	a single ISampleContainer as an argument instead of array.
+	* SystemProfileObject.java (SystemProfileObject): Likewise.
+	* SystemProfileShLib.java (SystemProfileShLib): Likewise.
+	* SystemProfileSystem.java: Remove. Most functionality moved
+	into SystemProfleEvent.
+	* SystemProfileRootElement.java (_sampleContainers): Remove. Use
+	a single SampleFile instead.
+	(SystemProfileRootElement): Save single SampleFile instead of
+	array.
+	(getChildren): Use SampleFile instead of ISampleContainer[].
+	(getLabelText): Likewise.
+	(getSampleFile): New method.
+	* SystemProfileSession.java (SystemProfileSession): Now extends
+	ProfileElement instead of SystemProfileRootElement.
+	(TAG_DEFAULT_SESSION): New constant.
+	(SystemProfileSession): Save session argument and compute list of
+	sample files.
+	(getChildren): Don't compute sample files; constructor already did it.
+	(hasChildren): Don't assume there are children.
+	(getLabelText): If this session represents the "default" session,
+	it's label is set by the properties file. Otherwise return the
+	name of the session.
+	(getProfileElements): Rename to _getProfileElements.
+	Rewrite to work with new layout. (Sessions are no longer SampleContainers)
+	(getSampleCount): New method (from removed files).
+	(_myId): The default session has a special id.
+	* SystemProfileView.java (_current): Change from int to String.
+	(_actions): Change from Action[] to HashMap.
+	(_counters): Remove.
+	(COUNTER_TEXT): Remove.
+	(_eventList): New variable.
+	(TAG_LAST_COUNTER): Rename to TAG_LAST_EVENT.
+	(TAG_COUNTER): Rename to TAG_EVENT.
+	(TAG_NUMBER): Renmae to TAG_EVENT_NAME.
+	(CounterDisplayInfo): Rename to DisplayInfo.
+	(_displays): Change from CounterDisplayInfo[] to HashMap.
+	(createPartControl): Out with counters, in with events. Rewrite.
+	Search for the first collected event with data.
+	(_refreshCounters): Rename to _refreshEvents and rewrite.
+	(_createActions): Rewrite to reflect new model changes.
+	(_showEvent): Rewrite of _showCounter.
+	(_displayEvent): Update.
+	(_restoreState): Update.
+	(_saveDisplayInfo): Update.
+	(_updateMenus): Update. Use event names as menu labels.
+	(saveState): Update.
+
+2003-03-27  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileView.java (createPartControl): Call _refreshCounters,
+	_createActions, and _updateMenus.
+	When looking for a default counter to show, make sure that the counter
+	has sample files associated with it.
+	(_refreshCounters): New function.
+	(_createActions): New function.
+	(_createMenus): Renamed to "_updateMenus".
+	(_updateMenus): Don't create actions here.
+	Disable counter menu items which have no sample files.
+
+2003-03-19  Keith Seitz  <keiths@redhat.com>
+
+	* SystemProfileExecutable.java: New file.
+	* SystemProfileObject.java: New file.
+	* SystemProfileRoot.java: New file.
+	* SystemProfileRootElement.java: New file.
+	* SystemProfileSample.java: New file.
+	* SystemProfileSession.java: New file.
+	* SystemProfileShLib.java: New file.
+	* SystemProfileSymbol.java: New file.
+	* SystemProfileSystem.java: New file.
+	* SystemProfileView.java: New file.

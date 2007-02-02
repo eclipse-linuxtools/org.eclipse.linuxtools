@@ -1,0 +1,57 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Viewing OProfile system profiling statistics</title>
+<link rel="stylesheet" href="book.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html">
+<meta http-equiv="Content-Style-Type" content="text/css">
+</head>
+<body>
+
+<h2>Viewing overall system profiling statistics</h2>
+
+<p>The <span class="guilabel">System Profile</span> view displays <i>sample files</i>,
+that is, files that contain OProfile sample information. 
+These sample files are
+displayed as the original executable for which the sample was taken.
+For example, the sample file
+<span class="filename">/var/lib/oprofile/samples/}home}me}foo#0</span> would be displayed as
+&quot;<span class="filename">/home/me/foo</span>&quot;, since this is the executable 
+from which the event was collected.</p>
+
+<p>To view sample counts for the entire system, select the
+OProfile event to view in the <span class="guilabel">System Profile</span> 
+view's menu. 
+The menu shows a list of all the events collected by all sessions in the
+OProfile samples directory. 
+Note that not all events may exist in all sessions.</p>
+
+<p>After choosing an event, select one of the sessions to view. 
+The <span class="guilabel">System Profile</span> view shows 
+all the executables for which the event was collected. 
+(<i>Executables</i> can be shared libraries and kernel
+modules, as well as conventional executables.) 
+The <span class="guilabel">Sample</span> view displays count 
+information for the samples collected for the chosen session. 
+Specifically, the <span class="guilabel">Sample</span> view shows:</p>
+
+<ul>
+
+<li>The total sample <span class="guilabel">Count</span> 
+for each executable for which there are samples.</li>
+
+<li>The percentage (<span class="guilabel">%age</span>) of the total counts of this session
+collected in this executable.</li>
+
+<li>The <span class="guilabel">Name</span> of the executable.</li>
+
+</ul>
+
+<p>By default, the <span class="guilabel">Sample</span> view sorts the executables in order of
+decreasing sample count; that is, it displays the
+executable with the most samples at the top.</p>
+
+<p class="copyright"><a href="../hglegal2004.htm" class="copyright">&nbsp;&#169; Copyright Red Hat 2004.
+All Rights Reserved.</a></p>
+</body>
+</html>

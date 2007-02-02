@@ -1,0 +1,33 @@
+<!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>OProfile Sessions</title>
+<link rel="stylesheet" href="book.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html">
+<meta http-equiv="Content-Style-Type" content="text/css">
+</head>
+<body>
+
+<h1>OProfile Sessions</h1>
+
+<p>OProfile uses sessions to manage different runs of the OProfile daemon. 
+A <i>session</i> is simply a named collection of sample files. 
+OProfile uses a default unnamed session to contain all collected samples from the
+last run of the profiler. 
+Every time the OProfile daemon runs, it overwrites the default session. 
+To save the current session for
+later comparison, for example, you can use OProfile's <span class="command">opcontrol</span>
+utility to save the session.
+</p>
+
+<p>The Eclipse OProfile plug-ins use the same concept of sessions that OProfile does&mdash;with
+one minor difference: the OProfile default session (which has no
+name) is named &quot;Default&quot; in the user interface. 
+It is this &quot;Default&quot; session that may be saved
+using <span class="command">opcontrol</span>.
+</p>
+
+<p class="copyright"><a href="../hglegal2004.htm" class="copyright">&nbsp;&#169; Copyright Red Hat 2004.
+All Rights Reserved.</a></p>
+</body>
+</html>
