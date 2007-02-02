@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
    id="org.eclipse.linuxtools.rpm.doc"
-   name="RPM Plug-in Documentation (Incubation)"
+   name="%pluginName"
    version="3.0.0"
-   provider-name="Eclipse.org">
+   provider-name="%providerName">
 
    <runtime>
    </runtime>

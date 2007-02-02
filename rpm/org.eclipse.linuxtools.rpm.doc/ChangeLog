@@ -1,8 +1,3 @@
-2007-05-04  Andrew Overholt  <overholt@redhat.com>
-
-	Bug #185598
-	* plugin.xml: Add "Incubation" to Bundle-Name.
-
 2007-01-29  Andrew Overholt  <overholt@redhat.com>
 
 	* build.xml: Re-namespace from cdt to linuxtools.
