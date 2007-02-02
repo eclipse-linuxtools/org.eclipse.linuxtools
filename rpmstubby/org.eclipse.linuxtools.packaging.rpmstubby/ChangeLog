@@ -1,0 +1,11 @@
+2007-01-30  Andrew Overholt  <overholt@redhat.com>
+
+	* bin: Add to svnignore.
+
+2007-01-18  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPlugin.java: Initial checkin.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Likewise.
+	* plugin.xml: Likewise.
+	* build.properties: Likewise.
+	* META-INF/MANIFEST.MF: Likewise.
