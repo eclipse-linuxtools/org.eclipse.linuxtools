@@ -1,0 +1,693 @@
+2007-01-24  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java: 
+	Changed copyright to Phil Muldoon.
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/IParserChangeLogContrib.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/IFormatterChangeLogContrib.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/ChangelogPlugin.java: 
+	Ditto.
+
+2007-01-23  Kyu Lee  <klee@redhat.com>
+
+	* : All .java files has been updated with new copyright/license information.
+
+2007-01-22  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java: 
+	Error checking.
+	* src/com/redhat/eclipse/changelog/core/actions/PatchRangeElement.java: 
+	Minor design changes.
+	* src/com/redhat/eclipse/changelog/core/actions/PatchFile.java: 
+	Ditto.
+	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java: 
+	Files without proper parsers to guess function names generates changelog entry.
+	* plubin.xml: Bumped version to 2.3.4.
+
+2007-01-11  Kyu Lee  <klee@redhat.com>
+
+	* *.java: Updated Copyright notices and license information on all files.
+
+2006-11-16  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java 
+	(getDocumentLocation): Improved error handling. Returns empty string when
+	current editor/workspace is not set properly.
+
+2006-11-15  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java 
+	(execute): Prepare ChangeLog defaults to currently-selected project. BZ#214430.
+
+2006-11-13  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareCommitAction.java
+	New class for implementation of filling clipboard with changes in ChangeLog.
+	
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareCommitHandler.java
+	New class that handles keybinding.
+	
+	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogEditor.java
+	(editorContextMenuAboutToShow): Addes Fomratter action to context menu.
+	(ChangeLogEditor): Ditto.
+	
+	* plugin.xml: Keybindings for changelog formatter and prepare commit added.
+	
+2006-10-13  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Bump to version 2.3.3.
+
+2006-10-06  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Rename of KeyAction class to InsertChangeLogKeyHandler.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogWriter.java :
+	Debug output.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java :
+	Clean up.
+	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java :
+	Replaces KeyAction.java.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java :
+	Removed. Replaced by InsertChangeLogKeyHandler.java.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java :
+	Clean up.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java :
+	Clean up.
+	(execute): Opens resource selection window to let users choose files that will
+	be used in prepare changelog feature.
+	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider :
+	Clean up.
+
+2006-10-03  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/ChangeLogWriter.java :
+	Added.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java:
+	(insertChangelog): Removed. Refactored to a new class ChangeLogWriter.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java: 
+	(run): Uses new ChangeLogWriter class.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java: 
+	(outputMultipleEntryChangeLog): Uses new ChangeLogWriter class.
+
+2006-09-29  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Added prepare changelog key binding(not implemented yet).
+	Bumped version to 2.3.2.
+	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider.java: 
+	Some cleanup.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java: 
+	(parseCurrentFunctionAtOffset): Modified to use new extension manager.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java :
+	Implemented new abstract methods.
+	(run): Runs super's run instead.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java (run): 
+	Uses prepareChangelog instead.
+	(reportErr): New method for reporting errors.
+	(insertChangelog): More generalized, clean, intuitive way of inserting changelog.
+	(getEntryFilePath): Returns file path of changelog entry.
+	(getEditorName): Returns name of responsible editor for file specified in entry.
+	(parseFunctionName): Guesses current function name with given parser from
+	extension point.
+	(getChangelog): Finds/creates Changelog file.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java: 
+	New Class reponsible for binding key to prepare changelog action.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogExtensionManager.java :
+	New Class that manages extensions of changelog.
+	
+
+2006-09-18  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Bump version to 2.3.1.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java (run): 
+	Handles exception when no editor is open.
+
+2006-09-14  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Bump version to 2.3.0 to differentiate with 2.2.X.
+	Fixed key binding.
+	
+2006-09-07  Igor Foox  <ifoox@redhat.com>
+
+	* plugin.xml: Change definition of
+	com.redhat.eclipse.changelog.core.formatterContribution extension to new format.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java
+	(populateFormatList): Change the logic to not add in-file formatters to the
+	preference list.
+	* schema/formatterContribution.exsd: Create new, more extensible, format for the
+	extension, as well as documentation.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java: Change to work
+	with new ChangeLogAction.runParserContributors().
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(outputMultipleEntryChangeLog): Likewise.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java
+	(runFormatterContributor): Change to differentiate between in-file and external
+	formatters and handle them accordingly. Also add caching of formatters so they
+	would not get looped over every time the action gets invoked.
+	(getDocumentLocation): Refactor to use getDocumentIFile().
+	(getDocumentIFile): New method.
+	(setChangeLogFile): Likewise.
+	(addChangeLogEntry): Likewise.
+	(createChangeLog): Formatting fixes.
+	(LoadPreferences): Remove redundant setting of pref_ChangeLogName.
+
+2006-09-01  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java
+	(parseCurrentFunction): Currently not supported.
+	* plugin.xml: Bump version to 2.2.3 for FC6-Test3.
+
+2006-08-30  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/GenerateDiffFile.java Removed.
+	* src/com/redhat/eclipse/changelog/core/actions/StringDiffOperation.java
+	(EMPTY_DIFF): Constant inherited from removed class GenerateDiffFile.
+	* plugin.xml: org.eclipse.team.cvs.core version requirement set to >=3.2.0.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(preapreChangeLog): Adds new files to prepare changelog. RHBug#203438.
+	(parseStandardPatch): When ChangeLog was part of a file path prepareChangelog
+	ignored that file, but now it only ignores a file named 'ChangeLog'.
+
+2006-08-21  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java: Cleaned.
+	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogFormattingStrategy.java
+	(format): Added Content formatting feature.
+
+2006-08-04  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java: Removed
+	unused code due to deprecated method in 3.2.
+	* plugin.xml: Cleaned.
+	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java
+	(parseCurrentFunction): Removed unused code.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUElementScanner.java
+	(GNUElementScanner): More strick coloring for method names.
+	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider.java Removed
+	unused imports.
+	(getResourceMappings, getResourceMapping): Removed unused code.
+
+2006-08-03  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/editors/GNUEditorConfiguration.java
+	(getContentFormatter): Added. Adds context formatter to changelog editor.
+	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogFormattingStrategy.java:
+	Added. Actual implementation that formats text.
+	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogEditor.java
+	(editorContextMenuAboutToShow): Added. Configures changelog editor context
+	menus.
+	* src/com/redhat/eclipse/changelog/core/actions/FormatChangeLogAction.java:
+	Added. Action that formats changelog.
+
+2006-08-01  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Changed version to 2.2.2.
+	* src/com/redhat/eclipse/changelog/core/actions/GenerateDiffFile.java: Removed
+	unused imports.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java
+	(KeyAction): Constructor creates empty actin menu title.
+
+2006-07-31  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Instead of using objectContribution to add action menu, now uses
+	Action Provider for Common Navigator Framework in Eclipse 3.2.
+	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider.java: Added.
+	Provides action menu
+	(Prepare ChangeLog) to UI.* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java (PrepareChangeLogAction):
+	Initializes text of menu button.
+	(preapreChangeLog): projectPath variable is set from IResource of selected
+	object.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java
+	(KeyAction): Initializer sets text of menu button.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java
+	(ChangeLogAction): Now extends Action to be used from ChangeLogActionProvider.
+
+2006-07-25  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java
+	(parseCurrentFunction): Python Parser removed temporarily.
+	* plugin.xml: Changed property of pop-up menu item to work with 3.2.
+	* src/com/redhat/eclipse/changelog/core/actions/StringDiffOperation.java: Added.
+	Replaces GenerateDiffFile which is not supported anymore in 3.2.
+	* src/com/redhat/eclipse/changelog/core/actions/GenerateDiffFile.java: Not used
+	anymore.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(preapreChangeLog): Uses new StringDiffOperation to get diff result.
+
+2006-07-21  Kyu Lee  <klee@redhat.com>
+
+	* Merged from PrepareChangeLogExperiment branch to HEAD.
+
+2006-07-21  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java
+	(parseCurrentFunction): Changed default function name.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(preapreChangeLog): Added information dialog to tell user that there is no
+	change.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUHyperlinkDetector.java:
+	Removed unused field.
+
+2006-07-20  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(run, preapreChangeLog, parseStandardPatch): Added progress monitor.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java
+	(outputChangeLog): Refactored method from ChangeLogAction class.
+	* src/com/redhat/eclipse/changelog/core/actions/GenerateDiffFile.java
+	(run): Changed progress monitor's text.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java: Revactored
+	outputChangeLog method to sub classes.
+
+2006-07-19  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java: Added.
+	Refactoring class for KeyAction and PrepareChangeLogAction.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java:
+	Refactored some methods to ChangeLogAction.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java: Refactored some
+	methods to ChangeLogAction.
+
+2006-07-18  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java
+	(parseCurrentFunction): Added to support new IParserChangeLogContrib.
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java
+	(parseCurrentFunction): Added to support new IParserChangeLogContrib.
+	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java
+	(parseCurrentFunction): Added to support new IParserChangeLogContrib.
+	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java
+	(parseCurrentFunction): Added to support new IParserChangeLogContrib.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(guessFunctionNames): Uses extension point parserContribution.
+	* src/com/redhat/eclipse/changelog/core/IParserChangeLogContrib.java
+	(parseCurrentFunction): New overloaded function that supports input parameters
+	from PrepareChangeLogAction.
+
+2006-07-14  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(parseStandardPatch): Now it parses standard diff instead of unified.
+	* src/com/redhat/eclipse/changelog/core/actions/GenerateDiffFile.java
+	(generateDiff): Changed diff option so that it generates standard diff.
+
+2006-07-13  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(parseStandardPatch): Return type changed.
+	(guessFunctionNames): Return type changed and fixed minor bugs.
+	(run): Added error checking, refactored.
+	* src/com/redhat/eclipse/changelog/core/actions/PatchFile.java
+	(countRanges): Added.
+	* src/com/redhat/eclipse/changelog/core/actions/GenerateDiffFile.java
+	(generateDiff): Renamed the method from generateDiffToClipboard.
+
+2006-07-10  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/actions/PatchRangeElement.java: Added.
+	Class that describes a block of change in a file in patch.
+	* src/com/redhat/eclipse/changelog/core/actions/PatchFile.java: Added. Class
+	that describes a file in patch.
+	* plugin.xml: Added dependencies for CVS diff operation.
+	* src/com/redhat/eclipse/changelog/core/ChangelogPlugin.java: Cleaned import.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java
+	(run): Outputs patch to System.out.
+	(parseUnifiedPatch): Parses a patch(unified diff with remote resource) and
+	stores it in PatchFile array.
+	* src/com/redhat/eclipse/changelog/core/actions/GenerateDiffFile.java: Added.
+	Generates cvs diff from selected resource.
+
+2006-06-23  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Added popup menu for prepare chagelog.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java:
+	Added. Action class that prepares ChangeLog from selected files/folders.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUEditorConfiguration.java
+	(GNUEditorConfiguration): Changed to 0-argument constructor.
+	(setTextEditor): Sets TextEditor(since constructor no longer gets it).
+	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogEditor.java
+	(getConfig): Implemented. Works as expected.
+	* src/com/redhat/eclipse/changelog/core/IEditorChangeLogContrib.java
+	(setTextEditor): Added. Since IConfigurationElement always instantiated using
+	its 0-argument public constructor, we need another way to set TextEditor(Used to
+	be passed in through constructor).
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java
+	(populateEditorList): Fixed minor typo.
+	* src/com/redhat/eclipse/changelog/core/ChangelogPlugin.java
+	(initializeDefaultPreferences): Sets default value for editor.
+
+2006-06-22  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java: Added
+	preference settings for editor.
+	* src/com/redhat/eclipse/changelog/core/strings.properties: Property text for
+	editor added.
+	* schema/editorContribution.exsd: Extension point element was re-defined.
+	* plugin.xml: Extension point element for editor fixed. And cleaned up some
+	extension elements for parsers.
+	* plugin.properties: Added a variable for Editor.
+
+2006-06-21  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Editor extension class has been changed to ChangeLogEditor from
+	GNUChangeLogEditor.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUChangeLogEditor.java:
+	Removed. Replaced with ChangeLogEditor.java.
+	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogEditor.java: Added.
+	Refactored from GNUChangeLogEditor.java. No longer the extension point for
+	editorContribution.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUEditorConfiguration.java: Now
+	this class is the extension point for editorContribution.
+	* src/com/redhat/eclipse/changelog/core/IEditorChangeLogContrib.java: Replaced
+	classes that were required by old extension point to classes required by new
+	extension point.
+
+2006-06-20  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Changed version to 2.1.0.
+	* src/com/redhat/eclipse/changelog/core/editors/FileHyperlink.java: Added. Opens
+	files in new editor window.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUHyperlinkDetector.java
+	(detectHyperlinks): Hyperlink for file names is now type FileHyperlink.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUChangeLogConfiguration.java
+	(GNUChangeLogConfiguration): TextEditor parameter added to determine the path of
+	current project.
+
+2006-06-16  Kyu Lee  <klee@redhat.com>
+
+	* schema/editorContribution.exsd: Added. Schema file for ChangeLog extension
+	point.
+
+2006-06-15  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Added extension point for editorContribution. Fixed editor
+	extension class name.
+	* src/com/redhat/eclipse/changelog/core/IEditorChangeLogContrib.java: Added.
+	Interface for editorContribution extension point.
+	* src/com/redhat/eclipse/changelog/core/editors/IChangeLogColorConstants.java:
+	Added. Holds color scheme for syntax highlighters.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUHyperlinkDetector.java:
+	Added. Detects hyperlinks from GNU style changelogs.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUElementScanner.java: Added.
+	Detects elements from GNU style changelogs.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUChangeLogEditor.java: Added.
+	Main class that defines GNU changelog editor.
+	* src/com/redhat/eclipse/changelog/core/editors/GNUChangeLogConfiguration.java:
+	Added. Configures GNU changelog editor.
+	* src/com/redhat/eclipse/changelog/core/editors/ColorManager.java: Added.
+	Manages color scheme.
+	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogDocumentProvider.java:
+	Added. Connects the file with eidtor.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java: Removed
+	unused imports.
+
+2006-06-09  Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: categoryId is set properly so that keybindings page displays
+	ChangeLog keybinding without error.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java
+	(getHostName): Defaults hostname to 'localhost.localdomain' if it can not be
+	resolved.
+
+2006-06-08  Tom Tromey  <tromey@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java
+	(getUserName): Check for gnu.gcj.user.realname property.
+
+2006-06-08  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java
+	(parseCurrentFunction): Fix RH bug 168694.
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java
+	(parseCurrentFunction): Fix RH bug 168694.
+
+2006-05-31  Andrew Overholt  <overholt@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/strings.properties: Fix typo.
+
+2006-05-23  ifoox  <ifoox@redhat.com>
+
+	* plugin.xml: Bump version to 2.0.4.
+
+2006-05-23  Kyu Lee  <klee@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java
+	(parseCurrentFunction): Fix RH bug 168682.
+
+2006-03-24  Igor Foox  <ifoox@redhat.com>
+
+	* plugin.xml: Bump version to 2.0.3.
+
+2006-03-15  Igor Foox  <ifoox@redhat.com>
+
+	* plugin.xml: Bump version to 2.0.2.
+
+2006-03-11  Tom Tromey  <tromey@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java
+	(findChangeLogEntry): Removed unused code. Only reuse an existing entry if it is
+	at the beginning of the file.
+
+2006-03-11  Tom Tromey  <tromey@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java
+	(createContents): Externalized strings.
+	* src/com/redhat/eclipse/changelog/core/strings.properties: Cleaned up.
+
+2006-03-11  Tom Tromey  <tromey@redhat.com>
+
+	Warning patrol:
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java
+	(createCheckBox): Removed unused method.
+	(createRadioButton): Likewise.
+	(tabForward): Likewise.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java
+	(outputChangeLog): Removed unused variables.
+	(getChangelog): Likewise.
+	(getDocumentName): Removed unused method.
+	(LoadPreferences): Use 'store'.
+	(document, caret_offset): Removed unused fields.
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java
+	(findChangeLogEntry): Removed unused variable.
+
+2005-04-20  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java: Reworked
+	imports
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java: Removed unused
+	imports
+	* plugin.xml: Removed unused dependencies. Added %pyParser as name
+	* plugin.properties: Added pyParser string
+
+2005-03-03  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* plugin.xml: Added python optional dependencies. Added python parser extension
+	contributions
+
+2005-03-02  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java: Added
+
+2005-03-01  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java
+	(findChangeLogEntry): Changed search to regex
+	* schema/formatterContribution.exsd: Added sequence details
+	* schema/parserContribution.exsd: Added sequence detilas
+
+2005-02-25  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* plugin.xml: Made CDT dependencies optional; bumped version.
+
+2004-11-10  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java
+	(mergeChangelog): Fixed extra spaces on continuation line
+	(mergeChangelog): Remove excess spaces from non function guess entries
+	(mergeChangelog): Install a special case where the Date line has been set, and a
+	continuance has neithier a file, nor function entry
+	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java
+	(parseCurrentFunction): Added NPE check for extracted CElement
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java
+	(parseCurrentFunction): Added NPE check for extracted JavaElement
+	* plugin.xml: Extracted strings
+	* plugin.properties: Added strings from plugin.xml Added prefTitle for
+	Preferences Page. Fixed Changelog -> ChangeLog in several places
+	* Cleaned up @author and license headers
+
+2004-09-27  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* plugin.xml: Changed keybinding to Ctrl-Alt-C
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java
+	(formatFunction): Fixed formatting errors with function
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java
+	(parseCurrentFunction): Check JavaElement in JavaParser corresponds to a
+	function or compilation unit.
+	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java
+	(parseCurrentFunction): Check ICElement in CParser corresponds to
+	class,function,enum,struct or a union
+
+2004-09-24  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* plugin.xml : Added org.eclipse.linuxtools.changelog.core.parsers.JavaParser. Added
+	org.eclipse.linuxtools.changelog.core.parsers.CParser. Added
+	org.eclipse.linuxtools.changelog.core.parsers.CompareParser. Added
+	org.eclipse.linuxtools.changelog.core.formatters.GNUFormat Added
+	com.redhat.eclipse.changelog.core.actions.KeyAction Removed
+	com.redhat.eclipse.changelog.core.AddAction Added schema/parserContribution.exsd
+	extension schema ref. Added schema/formatterContribution.exsd extension schema
+	ref.
+	* schema/parserContribution.exsd: Added. Define extension
+	com.redhat.eclipse.changelog.core.parserContribution for parser contributions.
+	* schema/formatterContribution.exsd: Added. Define extension
+	com.redhat.eclipse.changelog.core.formatterContribution for formatter
+	contributions.
+	* src/com/redhat/eclipse/changelog/core/popup/actions/AddAction.java: Removed
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java: Added.
+	Implements IParserChangeLogContrib for parserContribution.
+	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java: Added. Implements
+	IParserChangeLogContrib for parserContribution.
+	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java: Added.
+	Implements IParserChangeLogContrib for parserContribution.
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java: Added.
+	Implements IFormatterChangeLogContrib for formatterContribution. Defined a GNU
+	Style Changelog layout.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java: Added. Calls the
+	relevant parser and formatter module, and creates changelog entries.
+	* src/com/redhat/eclipse/changelog/core/IParserChangeLogContrib.java: Added.
+	Interface for parserContribution extension point.
+	* src/com/redhat/eclipse/changelog/core/IFormatterChangeLogContrib.java: Added.
+	Interface for formatterContribution extension point.
+
+2004-07-19  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* build.properties : Added plugin.properties to bin.includes
+
+2004-07-16  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java
+	(createComposite):
+	* plugin.xml: Fixed provider name. Upgraded version Use plugin.properties where
+	needed
+	* plugin.properties: Added
+
+2004-07-13  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* ChangelogPlugin.java
+	(initializeDefaultPreferences):
+	* Correctly populate programmed defaults
+	* ChangeLogPreferencesPage.java
+	(getUserName): Make static
+	(getHostName): Make static
+	* AddAction.java
+	(outputChangeLog): Fixed NPE on Region when
+	* FindReplaceDocumentAdapter returns a null Region
+
+2004-07-12  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* plugin.xml: Removed unused dependencies
+
+2004-07-12  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* Refactored to com.redhat.eclipse.changelog.core: plugin.xml build.xml
+	src/(...)/popup/actions/AddAction.java src/ChangelogPlugin.java
+	src/ChangeLogPreferences.java src/Messages.Java src/strings.properties
+
+2004-07-09  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* build.xml: 3.0 migration. Regenerated build.xml. Changed classpath. Added
+	baseClassPath variable to work temporarily until releng plug-in is written.
+
+2004-07-08  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* plugin.xml: 3.0 auto migration path
+	* ChangelogPlugin.java : Removed IPluginDescriptor
+	(getResourceBundle): Made failsafe
+	(start(BundleContext context)): Added
+	(stop(BundleContext context)): Added
+	* AddAction.java
+	(openEditor): Modified openEditor to use org.eclipse.ui.ide.IDE.openEditor for
+	3.0 migration
+	(outputChangeLog): Modified IDocument.search() to FindReplaceDocumentAdapter
+	model for 3.0
+
+2004-02-24  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* AddAction.java
+	(guessGenericFunction): Added == as a token
+	(askChangeLogLocation): Add Cancel button check
+
+2004-02-23  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* AddAction.java
+	(outputChangeLog): Fixed gnu continuance bugs
+	(guessGenericFunction): Added +- to delimeters for C nuggets of gold such as
+	(*foo)++;. Added anumber of other tokens2004-02-19 Phil Muldoon <pmuldoon@redhat.com>* AddAction.java (outputChangeLog):
+	Shortened date search delimeter by size of date search string
+
+2004-02-12  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* AddAction.java : Modified class variables scope to private
+	(formatFunctionDetail): Created
+	(guessGenericFunction): Renamed
+	(outputChangeLog): functionDetail and fileDetail evolved out
+	(formatFileDetail): Created
+	(outputChangeLog): Renamed
+	(askChangeLogLocation): Renamed
+	* ChangeLogPreferencesPage.java
+	(initializeValues): refactored
+
+2004-02-10  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* build.xml: Removed classpath versions
+	* build.xml : Changed classpath to reflect gcj build
+	* ChangeLogPreferencesPage.java
+	(getUserName): Added
+	(import) Removed Redundant exports(getHostName): Added
+	(initializeDefaultPreferences): Added sligtly more sensible name and email guess
+	* AddAction.java
+	(OutputChangeLog): Added maintenance boundary paths to file entries for
+	changelogs on maintenance boundaries
+	* plugin.xml: Changed Changelog Entry to Add Changelog Entry
+
+2004-02-05  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* AddAction.java
+	(matchDatePattern): Added function
+	* AddAction.java
+	(OutputChangeLog): Added GNU Style Continuance for single file, multiple
+	function entries
+
+2004-01-30  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* AddAction.java
+	(guessJavaFunction): Changed token
+	* to /*
+	(to fix C pointers)* AddAction.java : Removed various debug System.out's2004-01-22 Phil Muldoon <pmuldoon@redhat.com>* AddAction.java (guessJavaFunction):
+	Fixed Region Info
+	(use both getLinebyOffset).Added Support for functions that span more than one line2004-01-21 Phil Muldoon <pmuldoon@redhat.com>* AddAction.java (formatJavaFunction):
+	Fixed tokenize on parenthesis
+	* AddAction.java
+	(guessJavaFunction): Added parenthesis to tokenizer to assist in tokenzing
+	function headers
+	* plugin.xml: Added #CEditorContext
+	* build.xml: Added
+
+2004-01-21  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* Version 1.0 check-in
+
+2003-11-24  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* Initial check-in. Does not work. Experimental.
