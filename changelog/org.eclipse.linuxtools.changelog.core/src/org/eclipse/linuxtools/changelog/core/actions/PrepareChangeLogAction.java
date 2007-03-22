@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -542,7 +543,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			while (fnmIterator.hasNext())
 				fnames[i++] = (String) fnmIterator.next();
 
-		
+		} catch (JavaModelException e) {
+			ChangelogPlugin.getDefault().getLog().log(
+					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
+							.getMessage(), e));
 		} catch (CoreException e) {
 			ChangelogPlugin.getDefault().getLog().log(
 					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
@@ -551,11 +555,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			ChangelogPlugin.getDefault().getLog().log(
 					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
 							.getMessage(), e));
-		} catch (Exception e) {
-			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
-							.getMessage(), e));
 		}
+
 		return fnames;
 	}
 

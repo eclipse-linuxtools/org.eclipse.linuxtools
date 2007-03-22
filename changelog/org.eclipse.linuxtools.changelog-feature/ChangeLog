@@ -1,31 +1,3 @@
-2007-08-16  Andrew Overholt  <overholt@redhat.com>
-
-	* build.properties: Remove unnecessary stuff from binary build.
-	* feature.xml: Fill in provider and feature name. Don't include C and Java
-	parsers as they are their own features now. Bump to 2.5.1.
-
-2007-08-07  klee  <klee@redhat.com>
-
-	* feature.xml: Fixed dependencies.
-
-2007-08-02  Kyu Lee  <klee@redhat.com>
-
-	* feature.xml: Version bump to 2.5.0.
-
-2007-05-15  Kyu Lee  <klee@redhat.com>
-
-	* feature.xml: Added new parser features.
-
-2007-05-14  Kyu Lee  <klee@redhat.com>
-
-	* feature.xml: Version bump to 2.4.0.
-	Added parser fragments.
-	Removed JDT requirements.
-
-2007-03-27  Ben Konrath  <bkonrath@redhat.com>
-
-	* .svnignore: Rename from .cvsignore.
-
 2007-01-22  Kyu Lee  <klee@redhat.com>
 
 	* epl-v10.html: Added.

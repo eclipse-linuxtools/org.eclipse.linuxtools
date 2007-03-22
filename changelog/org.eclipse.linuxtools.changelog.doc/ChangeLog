@@ -1,16 +1,3 @@
-2007-05-15  Kyu Lee  <klee@redhat.com>
-
-	* build.xml: version bump to 2.4.0.
-
-2007-05-14  Kyu Lee  <klee@redhat.com>
-	
-	* plugin.xml: version bump to 2.4.0.
-
-2007-05-04  Andrew Overholt  <overholt@redhat.com>
-
-	Bug #185598
-	* plugin.xml: Add "Incubation" to Bundle-Name.
-
 2007-01-24  Kyu Lee  <klee@redhat.com>
 
 	* raw/ChangeLogDocs/ChangeLog.html:
