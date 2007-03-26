@@ -1,37 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
-	id="org.eclipse.linuxtools.changelog.core"
-	name="%pluginName"
-	version="2.3.4"
-	provider-name="%providerName"
-	class="org.eclipse.linuxtools.changelog.core.ChangelogPlugin">
-
-	<runtime>
-    <library name="changelog.jar">
-       <export name="*"/>
-    </library>
-	</runtime>
-   
-   	<requires>
-      	<import plugin="org.eclipse.jdt.ui" />
-      	<import plugin="org.eclipse.jdt.core" />
-      	<import plugin="org.eclipse.cdt.ui" optional="true" />
-      	<import plugin="org.eclipse.cdt.core" optional="true" />
-      	<import plugin="org.eclipse.team.ui" />
-      	<import plugin="org.eclipse.compare" />
-    	<import plugin="org.eclipse.ui.ide"/>
-      	<import plugin="org.eclipse.jface.text"/>
-      	<import plugin="org.eclipse.ui.workbench.texteditor"/>
-   	  	<import plugin="org.eclipse.core.resources"/>
-      	<import plugin="org.eclipse.core.runtime"/>
-      	<import plugin="org.eclipse.ui"/>
-        <import plugin="org.eclipse.ui.editors"/>
-        <import plugin="org.eclipse.team.cvs.ui"/>
-        <import plugin="org.eclipse.team.cvs.core" version="3.2.0" match="greaterOrEqual"/>
-        <import plugin="org.eclipse.team.core"/>
-        <import plugin="org.eclipse.ui.navigator"/>
-   	</requires>
+<plugin>
 
     <extension-point id="parserContribution" 
     	name="Changelog Language Parser Contribution" 
@@ -94,29 +63,29 @@
        	</page>
 	</extension>
    		
-	<extension point="com.redhat.eclipse.changelog.core.parserContribution">
+	<extension point="org.eclipse.linuxtools.changelog.core.parserContribution">
 		<parser
 			name="%javaParser"
-			class="org.eclipse.changelog.core.parsers.JavaParser"            	
+			class="org.eclipse.linuxtools.changelog.core.parsers.JavaParser"            	
 			editor="CompilationUnitEditor">
 		</parser>
 		<parser
 			name="%cParser"
-			class="org.eclipse.changelog.core.parsers.CParser"
+			class="org.eclipse.linuxtools.changelog.core.parsers.CParser"
 			editor="CEditor"> 
  		</parser>
  		<parser
 			name="%compareParser"
-			class="org.eclipse.changelog.core.parsers.CompareParser"
+			class="org.eclipse.linuxtools.changelog.core.parsers.CompareParser"
 			editor="CompareEditor">
  		</parser>
 	</extension>
 
     <extension
-        point="com.redhat.eclipse.changelog.core.formatterContribution">
+        point="org.eclipse.linuxtools.changelog.core.formatterContribution">
         <formatter
               inFile="false"
-              class="org.eclipse.changelog.core.formatters.GNUFormat"
+              class="org.eclipse.linuxtools.changelog.core.formatters.GNUFormat"
               id="com.redhat.eclipse.changelog.GNUFormat"
               name="%gnuFormatter">
               <fileName name="ChangeLog" />  
@@ -133,9 +102,9 @@
              name="ChangeLog Editor"/>
     </extension>
     <extension
-          point="com.redhat.eclipse.changelog.core.editorContribution">
+          point="org.eclipse.linuxtools.changelog.core.editorContribution">
        <editor
-             class="org.eclipse.changelog.core.editors.GNUEditorConfiguration"
+             class="org.eclipse.linuxtools.changelog.core.editors.GNUEditorConfiguration"
              id="com.redhat.eclipse.changelog.core.gnueditor"
              name="GNU Editor"/>
     </extension>

@@ -1,3 +1,9 @@
+2007-03-26  Kyu Lee  <klee@redhat.com>
+
+	* META-INF/MANIFEST.MF: Added.
+	* plugin.xml: Migrated require and other declarations to MANIFEST.MF.
+	Fixed extension declarations to work with new namespace.
+
 2007-01-24  Kyu Lee  <klee@redhat.com>
 
 	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java: 
