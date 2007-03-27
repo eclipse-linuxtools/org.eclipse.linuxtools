@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Kyu Lee <klee@redhat.com> - initial API and implementation
+ *    Remy Chi Jian Suen <remy.suen@gmail.com> - clean up internal API references (bug #179389)
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.editors;
 
@@ -17,7 +18,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.compare.CompareEditorInput;
 
-import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -147,8 +147,8 @@ public class GNUHyperlinkDetector implements IHyperlinkDetector {
 			IPath filePath = documentLocation.append(line);
 
 			return new IHyperlink[] { new FileHyperlink(pathRegion,
-					((Workspace) ResourcesPlugin.getWorkspace())
-							.getFileSystemManager().fileForLocation(filePath)) };
+					ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+							filePath)) };
 
 		}
 

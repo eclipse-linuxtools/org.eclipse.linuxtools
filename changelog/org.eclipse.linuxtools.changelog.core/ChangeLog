@@ -1,3 +1,9 @@
+2007-03-27  Ben Konrath  <bkonrath@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java:
+	Don't use internal classes. 
+	* .svnignore: Rename from .cvsignore.
+
 2007-03-26  Kyu Lee  <klee@redhat.com>
 
 	* META-INF/MANIFEST.MF: Added.
