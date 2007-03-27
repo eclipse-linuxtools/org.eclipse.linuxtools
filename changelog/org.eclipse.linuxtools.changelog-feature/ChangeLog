@@ -1,3 +1,7 @@
+2007-03-27  Ben Konrath  <bkonrath@redhat.com>
+
+	* .svnignore: Rename from .cvsignore.
+
 2007-01-22  Kyu Lee  <klee@redhat.com>
 
 	* epl-v10.html: Added.
