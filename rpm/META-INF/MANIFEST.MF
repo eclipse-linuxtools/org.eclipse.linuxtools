@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Specfile Plug-in
-Bundle-SymbolicName: org.eclipse.cdt.rpm.editor; singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui.editor; singleton:=true
 Bundle-Version: 0.0.1
-Bundle-Activator: org.eclipse.cdt.rpm.editor.Activator
+Bundle-Activator: org.eclipse.linuxtools.rpm.ui.editor.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  com.redhat.eclipse.changelog.core
 Eclipse-LazyStart: true
-Export-Package: org.eclipse.cdt.rpm.editor,
- org.eclipse.cdt.rpm.editor.actions,
- org.eclipse.cdt.rpm.editor.outline,
- org.eclipse.cdt.rpm.editor.parser
+Export-Package: org.eclipse.linuxtools.rpm.ui.editor,
+ org.eclipse.linuxtools.rpm.ui.editor.actions,
+ org.eclipse.linuxtools.rpm.ui.editor.outline,
+ org.eclipse.linuxtools.rpm.ui.editor.parser

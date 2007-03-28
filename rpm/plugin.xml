@@ -9,8 +9,8 @@
             extensions="spec"
             icon="icons/rpm.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="org.eclipse.cdt.rpm.editor.SpecfileEditor"
-            id="org.eclipse.cdt.rpm.editor.SpecfileEditor">
+            class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
+            id="org.eclipse.linuxtools.rpm.ui.editor.rpm.editor.SpecfileEditor">
       </editor>
    </extension>
    
@@ -28,29 +28,29 @@
    <extension
          point="com.redhat.eclipse.changelog.core.parserContribution">
       <parser
-            class="org.eclipse.cdt.rpm.editor.actions.SpecfileChangelogParser"
+            class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogParser"
             editor="SpecfileEditor"
             name="SpecfileChangelogParser"/>
    </extension>
    <extension
          point="com.redhat.eclipse.changelog.core.formatterContribution">
       <formatter
-            class="org.eclipse.cdt.rpm.editor.actions.SpecfileChangelogFormatter"
-            id="org.eclipse.cdt.rpm.editor.actions.specfilechangelogformatter"
+            class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogFormatter"
+            id="org.eclipse.linuxtools.rpm.ui.editor.actions.specfilechangelogformatter"
             inFile="true"
             name="SpecfileChangelogFormatter">
          <filePattern pattern=".*\.spec"/>
       </formatter>
    </extension>
    <extension
-         id="org.eclipse.cdt.rpm.editor.popupMenu"
+         id="org.eclipse.linuxtools.rpm.ui.editor.popupMenu"
          point="org.eclipse.ui.popupMenus">
       <viewerContribution
-            id="org.eclipse.cdt.rpm.editor.viewerContribution"
+            id="org.eclipse.linuxtools.rpm.ui.editor.viewerContribution"
             targetID="#TextEditorContext">
          <action
-               class="org.eclipse.cdt.rpm.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
-               id="org.eclipse.cdt.rpm.editor.organizePatchesAction"
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.organizePatchesAction"
                label="Organize patches"
                menubarPath="additions"
                tooltip="Organize patches numerically"/>

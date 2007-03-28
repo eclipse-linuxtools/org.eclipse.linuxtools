@@ -1,3 +1,7 @@
+2007-03-28  Andrew Overholt  <overholt@redhat.com>
+
+        Re-namespace to org.eclipse.linuxtools.rpm.ui.editor.
+
 2007-03-15  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/cdt/rpm/editor/SpecfileReconcilingStrategy.java: New file.
@@ -247,7 +251,7 @@
 	empty, file.
 	* src/org/eclipse/cdt/rpm/editor/parser/Specfile.java: Initialize epoch to -1.
 	* META-INF/MANIFEST.MF: Add exporting of the new
-	org.eclipse.cdt.rpm.editor.actions package. Add dependency on
+	org.eclipse.linuxtools.rpm.ui.editor.actions package. Add dependency on
 	com.redhat.eclipse.changelog.core.
 	* plugin.xml: Remove extension of the org.eclipse.ui.actionSets extension point,
 	add extension of the com.redhat.eclipse.changelog.core.parserContribution and
@@ -335,7 +339,7 @@
 2006-08-29  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/cdt/rpm/editor/parser/tests: Move tests to new plugin
-	org.eclipse.cdt.rpm.editor.tests.
+	org.eclipse.linuxtools.rpm.ui.editor.tests.
 	* .classpath: Remove JUnit from classpath.
 
 2006-08-28  Andrew Overholt  <overholt@redhat.com>
