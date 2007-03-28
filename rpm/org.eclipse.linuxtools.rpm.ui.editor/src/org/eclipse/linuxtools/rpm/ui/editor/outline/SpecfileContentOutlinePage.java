@@ -1,14 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Red Hat - initial API and implementation
- *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.outline;
 
 import org.eclipse.jface.viewers.ISelection;
@@ -63,7 +52,6 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 		}
 	}
 	
-	@Override
 	public void createControl(Composite parent) {
 
 		super.createControl(parent);
@@ -80,7 +68,6 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 	/*
 	 * Change in selection
 	 */
-	@Override
 	public void selectionChanged(SelectionChangedEvent event)
 	{
 		super.selectionChanged(event);
@@ -95,11 +82,12 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 					.getFirstElement();		
 			
 			int start = element.getLineStartPosition();
+			int length = element.getLineEndPosition();
 			try
 			{
-				editor.setHighlightRange(start, 1, true);
+				editor.setHighlightRange(start, length, true);
 			}
-			catch (IllegalArgumentException e)
+			catch (IllegalArgumentException x)
 			{
 				editor.resetHighlightRange();
 			}

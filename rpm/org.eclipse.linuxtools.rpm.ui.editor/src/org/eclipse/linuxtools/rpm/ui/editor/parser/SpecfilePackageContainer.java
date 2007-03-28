@@ -1,26 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Red Hat - initial API and implementation
- *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-
 public class SpecfilePackageContainer extends SpecfileElement {
-	List<SpecfilePackage> packages;
+	List packages;
 	
 	public SpecfilePackageContainer() {
-		packages = new ArrayList<SpecfilePackage>();
+		packages = new ArrayList();
 	}
 	
 	public SpecfilePackage[] getPackages() {
@@ -33,7 +21,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 			}
 			return packs;
 		}catch (Exception e){
-			SpecfileLog.logError(e);
+			e.printStackTrace();
 		}
 		return new SpecfilePackage[0] ;
 	}
@@ -42,14 +30,14 @@ public class SpecfilePackageContainer extends SpecfileElement {
 		packages.add(subPackage);
 	}
 	
-	@Override
 	public int getLineStartPosition() {
 		if ((packages == null) || (packages.size() == 0))
 			return 0;
 		
 		int lowestStartLine = Integer.MAX_VALUE;
 		
-		for (SpecfilePackage subPackage: packages){
+		for (Iterator iter = packages.iterator(); iter.hasNext();) {
+			SpecfilePackage subPackage = (SpecfilePackage) iter.next();
 			if (subPackage.getLineStartPosition() < lowestStartLine)
 				lowestStartLine = subPackage.getLineStartPosition();
 		}
@@ -59,14 +47,14 @@ public class SpecfilePackageContainer extends SpecfileElement {
 		return lowestStartLine;
 	}
 	
-	@Override
 	public int getLineEndPosition() {
 		if ((packages == null) || (packages.size() == 0))
 			return 0;
 
 		int highestEndLine = 0;
-		
-		for (SpecfilePackage subPackage: packages){
+
+		for (Iterator iter = packages.iterator(); iter.hasNext();) {
+			SpecfilePackage subPackage = (SpecfilePackage) iter.next();
 			if (subPackage.getLineStartPosition() > highestEndLine)
 				highestEndLine = subPackage.getLineEndPosition();
 		}
@@ -77,7 +65,8 @@ public class SpecfilePackageContainer extends SpecfileElement {
 	}
 
 	public SpecfilePackage getPackage(String packageName) {
-		for (SpecfilePackage thisPackage: packages) {
+		for (Iterator iter = packages.iterator(); iter.hasNext();) {
+			SpecfilePackage thisPackage = (SpecfilePackage) iter.next();
 			if (thisPackage.getPackageName().equals(thisPackage.resolve(packageName))) {
 				return thisPackage;
 			}

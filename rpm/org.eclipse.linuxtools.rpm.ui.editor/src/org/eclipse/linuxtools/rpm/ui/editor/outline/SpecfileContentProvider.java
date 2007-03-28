@@ -1,14 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Red Hat - initial API and implementation
- *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.outline;
 
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -29,7 +18,7 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 	private IDocumentProvider documentProvider;
 	private Specfile specfile;
 	private SpecfileEditor specEditor;
-	protected final static String SECTION_POSITIONS = "section_positions"; //$NON-NLS-1$
+	protected final static String SECTION_POSITIONS = "section_positions";
 	protected IPositionUpdater positionUpdater = new DefaultPositionUpdater(SECTION_POSITIONS);
 	
 	public SpecfileContentProvider(ITextEditor editor) {
@@ -77,10 +66,10 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement == specfile) {
-			Object[] elms = new Object[1 + 1 + specfile.getSections().size()];
+			Object[] elms = new Object[1 + 1 + specfile.getSections().length];
 			elms[0] = specfile.getPreamble();
 			elms[1] = specfile.getPackages();
-			Object[] sections = specfile.getSections().toArray();
+			Object[] sections = specfile.getSections();
 			for (int i = 0; i < sections.length; i++) {
 				 elms[i + 2] = sections[i];
 			}

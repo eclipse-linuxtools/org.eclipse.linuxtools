@@ -1,44 +1,33 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Red Hat - initial API and implementation
- *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 
 public class SpecfileSource extends SpecfileElement {
 	int number;
 	int lineNumber = -1;
 	String fileName;
-	public enum SourceType { SOURCE, PATCH}
-	SourceType sourceType;
-	List<Integer> linesUsed;
+	static final int SOURCE = 0;
+	static final int PATCH = 1;
+	int sourceType;
+	List linesUsed;
 	
-	public SourceType getSourceType() {
+	public int getSourceType() {
 		return sourceType;
 	}
-	public void setSourceType(SourceType sourceType) {
+	public void setSourceType(int sourceType) {
 		this.sourceType = sourceType;
 	}
 	public SpecfileSource(int number, String fileName) {
-		super("source"); //$NON-NLS-1$
+		super("source");
 		this.number = number;
 		this.fileName = fileName;
-		this.linesUsed = new ArrayList<Integer>();
+		this.linesUsed = new ArrayList();
 	}
 	public String getFileName() {
 		return resolve(fileName);
@@ -53,75 +42,60 @@ public class SpecfileSource extends SpecfileElement {
 		this.number = number;
 	}
 	public void addLineUsed(int lineNumber) {
-		linesUsed.add(Integer.valueOf(lineNumber));
+		linesUsed.add(new Integer(lineNumber));
 	}
 	public void removeLineUsed(int lineNumber) {
-		linesUsed.remove(Integer.valueOf(lineNumber));
+		linesUsed.remove(new Integer(lineNumber));
 	}
-	public List<Integer> getLinesUsed() {
+	public List getLinesUsed() {
 		return linesUsed;
 	}
-	@Override
 	public String toString() {
-		if (sourceType == SourceType.SOURCE)
-			return MessageFormat.format(
-					"Source #{0} (line #{1}, used on lines {2}) -> {3}", //$NON-NLS-1$
-					number, lineNumber, getLinesUsed(), fileName);
-		return MessageFormat.format(
-				"Patch #{0} (line #{1}, used on lines {2}) -> {3}", number, //$NON-NLS-1$
-				lineNumber, getLinesUsed(), fileName);
+		if (sourceType == SOURCE)
+			return "Source #" + number + " (line #" + lineNumber + ", used on lines " + getLinesUsed() + ") -> " + fileName;
+		return "Patch #" + number + " (line #" + lineNumber + ", used on lines " + getLinesUsed() + ") -> " + fileName;
 	}
 	
 	// Note that changeReferences assumes that the number of the source/patch
 	// has *already been set*.  If this is not true, it will simply do nothing
 	public void changeReferences(int oldPatchNumber) {
 		Specfile specfile = this.getSpecfile();
-		Pattern patchPattern;
-		if (oldPatchNumber == 0) {
-			patchPattern = Pattern.compile("%patch" + oldPatchNumber + "|%patch"); //$NON-NLS-1$ //$NON-NLS-2$
-		} else {
-			patchPattern = Pattern.compile("%patch" + oldPatchNumber); //$NON-NLS-1$
-		}
-		for (int lineNumber: getLinesUsed()){
+		Pattern patchPattern = Pattern.compile("%patch" + oldPatchNumber);
+		for (Iterator lineIter = getLinesUsed().iterator(); lineIter.hasNext();) {
+			int lineNumber = ((Integer) lineIter.next()).intValue();
 			String line;
 			try {
 				line = specfile.getLine(lineNumber);
 				Matcher patchMatcher = patchPattern.matcher(line);
 				if (!patchMatcher.find()) {
-					System.out.println(Messages.getString("SpecfileSource.0") + patchPattern.pattern()); //$NON-NLS-1$
+					System.out.println("error:  can't match " + patchPattern.pattern());
 //					throw new BadLocationException("can't match " + patchPattern);
 				}
-				specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), Messages.getString("SpecfileSource.1") + number)); //$NON-NLS-1$
+				specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "%patch" + number));
 			} catch (BadLocationException e) {
-				SpecfileLog.logError(e);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
 	public void changeDeclaration(int oldPatchNumber) {
 		Specfile specfile = this.getSpecfile();
-		Pattern patchPattern;
-		if (oldPatchNumber == 0) {
-			patchPattern = Pattern.compile("Patch" + oldPatchNumber + "|Patch"); //$NON-NLS-1$ //$NON-NLS-2$
-		} else {
-			patchPattern = Pattern.compile("Patch" + oldPatchNumber); //$NON-NLS-1$
-		}
+		Pattern patchPattern = Pattern.compile("Patch" + oldPatchNumber);
 		String line;
 		try {
 			line = specfile.getLine(lineNumber);
 			Matcher patchMatcher = patchPattern.matcher(line);
 			if (!patchMatcher.find())
-				// TODO: Maybe we can throw a exception here.
-				System.out.println(Messages.getString("SpecfileSource.2") + patchPattern.pattern()); //$NON-NLS-1$
-			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number)); //$NON-NLS-1$
+				System.out.println("error");
+			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number));
 		} catch (BadLocationException e) {
-			SpecfileLog.logError(e);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	@Override
 	public int getLineNumber() {
 		return lineNumber;
 	}
-	@Override
 	public void setLineNumber(int lineNumber) {
 		this.lineNumber = lineNumber;
 	}

@@ -1,14 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Red Hat - initial API and implementation
- *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.util.regex.Matcher;
@@ -45,7 +34,6 @@ public class SpecfileElement {
 		this.name = name;
 	}
 	
-	@Override
 	public String toString() {
 		return name;
 	}
@@ -79,22 +67,19 @@ public class SpecfileElement {
 			return toResolve;
 		}
 		String resolved = toResolve;
-		Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
-		try {
-			Matcher variableMatcher = variablePattern.matcher(toResolve);
-			while (variableMatcher.find()) {
-				SpecfileDefine define = specfile
-				.getDefine(variableMatcher.group(1));
-				if (define != null) {
-					resolved = resolved.replaceAll("%\\{" //$NON-NLS-1$
-							+ variableMatcher.group(1) + "\\}", define //$NON-NLS-1$
-							.getStringValue());
-				}
+		
+		Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}");
+		Matcher variableMatcher = variablePattern.matcher(toResolve);
+		while (variableMatcher.find()) {
+			SpecfileDefine define = specfile
+					.getDefine(variableMatcher.group(1));
+			if (define != null) {
+				resolved = resolved.replaceAll("%\\{"
+						+ variableMatcher.group(1) + "\\}", define
+						.getStringValue());
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
 		}
-
+		
 		return resolved;
 	}
 

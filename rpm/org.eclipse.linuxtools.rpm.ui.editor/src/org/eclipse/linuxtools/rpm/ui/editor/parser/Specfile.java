@@ -1,15 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Red Hat - initial API and implementation
- *    Alphonse Van Assche
- *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.util.ArrayList;
@@ -21,149 +9,176 @@ import java.util.Map;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 
 public class Specfile {
+	String name = "";
 
+	int epoch = -1;
+
+	String version;
+
+	String release;
+	
+	String license;
+	
 	SpecfilePreamble preamble;
 	
 	SpecfilePackageContainer packages;
 
-	List<SpecfileSection> sections;
-	List<SpecfileSection> complexSections;
+	List sections;
 
-	Map<String, SpecfileDefine> defines;
+	Map defines;
 
-	Map<Integer, SpecfileSource> sources;
+	Map sources;
 
-	Map<Integer, SpecfileSource> patches;
+	Map patches;
 
 	private IDocument document;
 
 	public Specfile() {
 		packages = new SpecfilePackageContainer();
 		preamble = new SpecfilePreamble();
-		sections = new ArrayList<SpecfileSection>();
-		complexSections = new ArrayList<SpecfileSection>();
-		defines = new HashMap<String, SpecfileDefine>();
-		sources = new HashMap<Integer, SpecfileSource>();
-		patches = new HashMap<Integer, SpecfileSource>();
+		sections = new ArrayList();
+		defines = new HashMap();
+		sources = new HashMap();
+		patches = new HashMap();
 	}
 
-	public List<SpecfileSection> getSections() {
-		return sections;
+	public Specfile(String name) {
+		this();
+		this.name = name;
 	}
-	
-	public List<SpecfileSection> getComplexSections() {
-		return complexSections;
+
+	public Object[] getSections() {
+		return sections.toArray();
 	}
-	
+
 	public SpecfileSource getPatch(int number) {
-		return patches.get(number);
+		return (SpecfileSource) patches.get(new Integer(number));
 	}
 
 	public SpecfileSource getSource(int number) {
-		return sources.get(number);
+		return (SpecfileSource) sources.get(new Integer(number));
 	}
 
 	public String getName() {
-		SpecfileDefine define = getDefine(RpmTags.NAME.toLowerCase());
-		if (define != null){
-			return define.getStringValue();
-		}
-		return " "; //$NON-NLS-1$
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void addSection(SpecfileSection section) {
 		sections.add(section);
 	}
 
-	public void addComplexSection(SpecfileSection section) {
-		complexSections.add(section);
-	}
-	
 	public void addSource(SpecfileSource source) {
-		sources.put(Integer.valueOf(source.getNumber()), source);
+		sources.put(new Integer(source.getNumber()), source);
 	}
 
 	public void addPatch(SpecfileSource patch) {
-		patches.put(Integer.valueOf(patch.getNumber()), patch);
+		patches.put(new Integer(patch.getNumber()), patch);
 	}
 
-    /**
-     * Adds the given define to the map of defines for this specfile.
-     * 
-     * @param define The define to add.
-     */
-    public void addDefine(SpecfileDefine define) {
+        // FIXME: This should instantiate a SpecFileDefine from 2 arguments
+        // so that you don't have to do 
+        // specfile.addDefine( new SpecfileDefine("blah", "bleh", specfile))
+	public void addDefine(SpecfileDefine define) {
 		defines.put(define.getName(), define);
 	}
-    
-    public void addDefine(SpecfileTag tag) {
-		addDefine(new SpecfileDefine(tag));
-	}
-	
+
 	public SpecfileDefine getDefine(String defineName) {
-		return defines.get(defineName);
+		return (SpecfileDefine) defines.get(defineName);
 	}
 
 	public int getEpoch() {
-		SpecfileDefine define = getDefine(RpmTags.EPOCH.toLowerCase());
-		if (define != null){
-			return define.getIntValue();
-		}
-		return -1;
+		return epoch;
+	}
+
+	public void setEpoch(int epoch) {
+		this.epoch = epoch;
 	}
 
 	public String getRelease() {
-		SpecfileDefine define = getDefine(RpmTags.RELEASE.toLowerCase());
-		if (define != null){
-			return define.getStringValue();
-		}
-		return "0"; //$NON-NLS-1$
+		return release;
+	}
+
+	public void setRelease(String release) {
+		this.release = release;
 	}
 
 	public String getVersion() {
-		SpecfileDefine define = getDefine(RpmTags.VERSION.toLowerCase());
-		if (define != null){
-			return define.getStringValue();
-		}
-		return "0"; //$NON-NLS-1$
+		return version;
 	}
 
-	public List<SpecfileSource> getPatches() {
-		List<SpecfileSource> patchesList = new ArrayList<SpecfileSource>(patches.values());
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public Map getPatches() {
+		return patches;
+	}
+
+	public Map getSources() {
+		return sources;
+	}
+
+	public Collection getPatchesAsList() {
+		List patchesList = new ArrayList(patches.values());
 		Collections.sort(patchesList, new SourceComparator());
 		return patchesList;
 	}
 
-	public Collection<SpecfileSource> getSources() {
-		List<SpecfileSource> sourcesList = new ArrayList<SpecfileSource>(sources.values());
+	public Collection getSourcesAsList() {
+		List sourcesList = new ArrayList(sources.values());
 		Collections.sort(sourcesList, new SourceComparator());
 		return sourcesList;
 	}
 
-	public List<SpecfileDefine> getDefines() {
-		List<SpecfileDefine> definesList = new ArrayList<SpecfileDefine>(defines.values());
-		return definesList;
+	public SpecfileSource[] getPatchesAsArray() {
+		return (SpecfileSource[]) getPatchesAsList().toArray(
+				new SpecfileSource[patches.size()]);
 	}
-	
+
+	public SpecfileSource[] getSourcesAsArray() {
+		return (SpecfileSource[]) getSourcesAsList().toArray(
+				new SpecfileSource[sources.size()]);
+	}
+
+	private void printArray(Object[] array) {
+		for (int i = 0; i < array.length; i++) {
+			System.out.println(array[i]);
+		}
+	}
+
 	public void organizePatches() {
-		List<SpecfileSource> patches = getPatches();
+		SpecfileSource[] patches = getPatchesAsArray();
+//		System.out.println("*** Then:");
+//		printArray(patches);
 		int newPatchNumber = 0;
 		int oldPatchNumber = -1;
-		Map<Integer, SpecfileSource> newPatches = new HashMap<Integer, SpecfileSource>();
-		for (SpecfileSource thisPatch: patches) {
+		Map newPatches = new HashMap();
+		for (int i = 0; i < patches.length; i++) {
+			SpecfileSource thisPatch = patches[i];
 			if (thisPatch.getSpecfile() == null)
 				thisPatch.setSpecfile(this);
+			// System.out.println("thisPatch.specfile -> " +
+			// thisPatch.getSpecfile() + " ?=? " + this);
 			oldPatchNumber = thisPatch.getNumber();
 			thisPatch.setNumber(newPatchNumber);
 			thisPatch.changeDeclaration(oldPatchNumber);
 			thisPatch.changeReferences(oldPatchNumber);
-			newPatches.put(Integer.valueOf(newPatchNumber), thisPatch);
+			newPatches.put(new Integer(newPatchNumber), thisPatch);
 			newPatchNumber++;
 		}
 		setPatches(newPatches);
+//		System.out.println("*** Now:");
+//		List newPatchesList = new ArrayList(newPatches.values());
+//		Collections.sort(newPatchesList, new SourceComparator());
+//		SpecfileSource[] newPatchesArray = (SpecfileSource[]) newPatchesList
+//				.toArray(new SpecfileSource[newPatchesList.size()]);
+//		printArray(newPatchesArray);
 	}
 
 	public void setDocument(IDocument specfileDocument) {
@@ -195,17 +210,24 @@ public class Specfile {
 				getLineLength(lineNumber), string);
 	}
 
-	public void setPatches(Map<Integer, SpecfileSource> patches) {
+	public void setPatches(Map patches) {
 		this.patches = patches;
 	}
 
-	@Override
+	public void setSources(Map sources) {
+		this.sources = sources;
+	}
+	
 	public String toString() {
 		return getName();
 	}
 
 	public String getLicense() {
-		return defines.get(RpmTags.LICENSE.toLowerCase()).getStringValue();
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
 	}
 
 	public SpecfilePackageContainer getPackages() {
