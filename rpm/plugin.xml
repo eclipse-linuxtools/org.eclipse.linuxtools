@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="Specfile Editor"
+            extensions="spec"
+            icon="icons/rpm.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.eclipse.cdt.rpm.editor.SpecfileEditor"
+            id="org.eclipse.cdt.rpm.editor.SpecfileEditor">
+      </editor>
+   </extension>
+   
+   <extension
+	   id="specfileerror"
+	   point="org.eclipse.core.resources.markers"
+	   name="Specfile Error Marker">
+	   <super type="org.eclipse.core.resources.problemmarker"/>
+	   <super type="org.eclipse.core.resources.textmarker"/>
+	   <persistent value="true"/>
+	</extension>
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+   </extension>
+   <extension
+         point="com.redhat.eclipse.changelog.core.parserContribution">
+      <parser
+            class="org.eclipse.cdt.rpm.editor.actions.SpecfileChangelogParser"
+            editor="SpecfileEditor"
+            name="SpecfileChangelogParser"/>
+   </extension>
+   <extension
+         point="com.redhat.eclipse.changelog.core.formatterContribution">
+      <formatter
+            class="org.eclipse.cdt.rpm.editor.actions.SpecfileChangelogFormatter"
+            id="org.eclipse.cdt.rpm.editor.actions.specfilechangelogformatter"
+            inFile="true"
+            name="SpecfileChangelogFormatter">
+         <filePattern pattern=".*\.spec"/>
+      </formatter>
+   </extension>
+   <extension
+         id="org.eclipse.cdt.rpm.editor.popupMenu"
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="org.eclipse.cdt.rpm.editor.viewerContribution"
+            targetID="#TextEditorContext">
+         <action
+               class="org.eclipse.cdt.rpm.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+               id="org.eclipse.cdt.rpm.editor.organizePatchesAction"
+               label="Organize patches"
+               menubarPath="additions"
+               tooltip="Organize patches numerically"/>
+      </viewerContribution>
+   </extension>
+
+</plugin>
