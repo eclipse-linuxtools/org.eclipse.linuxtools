@@ -13,8 +13,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 
-public class LinePositionTests extends TestCase {
-
+public class SourceComparatorTests extends TestCase {
 	private SpecfileParser parser;
 	private Specfile specfile;
 	private IFile testFile;
@@ -39,23 +38,25 @@ public class LinePositionTests extends TestCase {
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}
-	public LinePositionTests(String name) {
+	public SourceComparatorTests(String name) {
 		super(name);
 	}
-	
-	public void testLineNumber() {
+
+	public void testPatchComparator() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
 		"Patch2: someotherfile.patch";
 		
 		try {
 			newFile(specText);
 			Collection patches = specfile.getPatchesAsList();
+			int i = 1;
 			for (Iterator iter = patches.iterator(); iter.hasNext();) {
+				i++;
 				SpecfileSource patch = (SpecfileSource) iter.next();
-				if (patch.getNumber() == 2)
-					assertEquals(1, patch.getLineNumber());
-				else if (patch.getNumber() == 3)
-					assertEquals(0, patch.getLineNumber());
+				if (i == 2)
+					assertEquals(2, patch.getNumber());
+				else if (i == 3)
+					assertEquals(3, patch.getNumber());
 				else
 					fail();
 			}
@@ -64,24 +65,17 @@ public class LinePositionTests extends TestCase {
 		}
 	}
 	
-	public void testLineNumber2() {
+	public void testPatchComparator2() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"%patch3";
+		"Patch2: someotherfile.patch";
 		
 		try {
 			newFile(specText);
-			Collection patches = specfile.getPatchesAsList();
-			for (Iterator iter = patches.iterator(); iter.hasNext();) {
-				SpecfileSource patch = (SpecfileSource) iter.next();
-				if (patch.getNumber() == 3) {
-					assertEquals(0, patch.getLineNumber());
-					assertEquals(1, ((Integer) patch.getLinesUsed().get(0)).intValue()); 
-				} else
-					fail();
-			}
+			SpecfileSource[] patches = specfile.getPatchesAsArray();
+			assertEquals(2, patches[0].getNumber());
+			assertEquals(3, patches[1].getNumber());
 		} catch (Exception e) {
 			fail();
 		}
 	}
-
 }
