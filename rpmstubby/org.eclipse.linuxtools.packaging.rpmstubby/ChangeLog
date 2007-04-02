@@ -1,3 +1,7 @@
+2007-04-02  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Remove erroneous dependency on CDT.
+
 2007-01-30  Andrew Overholt  <overholt@redhat.com>
 
 	* bin: Add to svnignore.
