@@ -1,3 +1,8 @@
+2007-03-28  Remy Chi Jian Suen  <remy.suen@gmail.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java:
+	Add support for identifying static initializing blocks per bug #179549.
+
 2007-03-27  Ben Konrath  <bkonrath@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java:

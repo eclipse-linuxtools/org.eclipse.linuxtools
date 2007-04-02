@@ -6,8 +6,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Phil Muldoon <pmuldoon@redhat.com> - initial API and implementation
- *    Kyu Lee <klee@redhat.com>          - bug fixes and improvement 
+ *    Phil Muldoon <pmuldoon@redhat.com>       - initial API and implementation
+ *    Kyu Lee <klee@redhat.com>                - bug fixes and improvement 
+ *    Remy Chi Jian Suen <remy.suen@gmail.com> - support static blocks (#179549)
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.parsers;
 
@@ -59,6 +60,8 @@ public class JavaParser implements IParserChangeLogContrib {
 			break;
 		case IJavaElement.COMPILATION_UNIT:
 			return "";
+		case IJavaElement.INITIALIZER:
+			return "STATIC INITIALIZER";
 		default:
 			IJavaElement tmpMethodType;
 			if (((tmpMethodType = method.getAncestor(IJavaElement.METHOD)) == null)
