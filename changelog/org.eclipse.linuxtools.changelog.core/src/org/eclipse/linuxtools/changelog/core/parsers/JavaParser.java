@@ -61,7 +61,7 @@ public class JavaParser implements IParserChangeLogContrib {
 		case IJavaElement.COMPILATION_UNIT:
 			return "";
 		case IJavaElement.INITIALIZER:
-			return "STATIC INITIALIZER";
+			return "static initializer";
 		default:
 			IJavaElement tmpMethodType;
 			if (((tmpMethodType = method.getAncestor(IJavaElement.METHOD)) == null)
