@@ -1,5 +1,10 @@
 2007-04-02  Andrew Overholt  <overholt@redhat.com>
 
+	* META-INF/MANIFEST.MF: Change Bundle-Vendor to Eclipse.org (#180822).
+	* .settings: Add (#180822).
+
+2007-04-02  Andrew Overholt  <overholt@redhat.com>
+
 	* META-INF/MANIFEST.MF: Remove erroneous dependency on CDT.
 
 2007-01-30  Andrew Overholt  <overholt@redhat.com>

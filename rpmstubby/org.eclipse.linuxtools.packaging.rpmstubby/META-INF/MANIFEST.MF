@@ -4,7 +4,7 @@ Bundle-Name: Feature to RPM specfile Stubber
 Bundle-SymbolicName: org.eclipse.linuxtools.rpmstubby;singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.linuxtools.rpmstubby.StubbyPlugin
-Bundle-Vendor: Red Hat
+Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
