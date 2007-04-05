@@ -43,7 +43,7 @@ public class HeaderRecognitionTest extends TestCase {
 		testDocument = new Document(contents);
 		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
 		parser.setErrorHandler(errorHandler);
-//		specfile = parser.parse(testDocument);
+		specfile = parser.parse(testDocument);
 	}
 	
 	protected void setUp() throws Exception {

@@ -1,3 +1,10 @@
+2007-04-04  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java
+	(newFile): Un-comment creation of specfile object.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* .classpath: New file.  Set J2SE-1.4 as EE.
+
 2007-03-28  Andrew Overholt  <overholt@redhat.com>
 
         Re-namespace to org.eclipse.linuxtools.rpm.ui.editor.tests.
