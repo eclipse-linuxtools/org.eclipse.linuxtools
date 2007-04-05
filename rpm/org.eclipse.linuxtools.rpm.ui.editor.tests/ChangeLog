@@ -1,5 +1,9 @@
 2007-04-05  Andrew Overholt  <overholt@redhat.com>
 
+	* .classpath: Remove spurious junit.jar entry (bug #181238).
+
+2007-04-05  Andrew Overholt  <overholt@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java (newFile): Remove unnecessary specfile instantiation.
 	(setUp): Instantiate specfile object.
 	(testGetComplexSectionName3): Update test to use getPackageName() instead of getName().
