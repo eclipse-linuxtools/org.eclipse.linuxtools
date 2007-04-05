@@ -52,6 +52,15 @@ public class Specfile {
 	public Object[] getSections() {
 		return sections.toArray();
 	}
+	
+	public SpecfileElement[] getSectionsElements() {
+		SpecfileElement[] elements = new SpecfileElement[sections.size()]; 
+		for (int i = 0 ; i < sections.size(); i++) {
+			elements[i] = (SpecfileElement) sections.get(i);
+		}
+		return elements;
+	}
+	
 
 	public SpecfileSource getPatch(int number) {
 		return (SpecfileSource) patches.get(new Integer(number));

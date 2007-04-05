@@ -12,8 +12,6 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -22,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -32,15 +31,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 
 public class SpecfileFoldingStructureProvider {
 
-	
-	private class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
-		public int compare(SpecfileElement element1, SpecfileElement element2) {
-			Integer lineNbr1 = element1.getLineNumber();
-			Integer lineNbr2 = element2.getLineNumber();
-			return lineNbr1.compareTo(lineNbr2);
-		}
-	}
-	
 	private static final Annotation[] EMPTY = new Annotation[] {};
 	private SpecfileEditor sEditor;
 	private IDocument sDocument;
@@ -58,57 +48,60 @@ public class SpecfileFoldingStructureProvider {
 		sDocument = document;
 	}
 
-	public void updateFoldingRegions() {
-		ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
-				.getAdapter(ProjectionAnnotationModel.class);
-		if (model != null)
-			updateFoldingRegions(model);
+	public void updateFoldingRegions(Specfile specfile) {
+		try {
+			ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
+					.getAdapter(ProjectionAnnotationModel.class);
+			if (model != null)
+				updateFoldingRegions(specfile, model);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
 	}
 
-	void updateFoldingRegions(ProjectionAnnotationModel model) {
-		Set<Position> structure = createFoldingStructure(sEditor.getSpecfile());
+	void updateFoldingRegions(Specfile specfile, ProjectionAnnotationModel model)
+			throws BadLocationException {
+		Set/* <Position> */structure = createFoldingStructure(specfile);
 		Annotation[] deletions = computeDifferences(model, structure);
-		Map<Annotation,Position> additions = computeAdditions(structure);
+		Map/* <Annotation,Position> */additions = computeAdditions(structure);
 		if ((deletions.length != 0 || additions.size() != 0)
 				&& (sProgressMonitor == null || !sProgressMonitor.isCanceled()))
 			model.modifyAnnotations(deletions, additions, EMPTY);
 	}
 
-	private Map<Annotation,Position> computeAdditions(Set<Position> currentRegions) {
-		Map<Annotation,Position> additionsMap = new HashMap<Annotation,Position>();
-		for (Position position: currentRegions)
-			additionsMap.put(new ProjectionAnnotation(), position);
+	private Map computeAdditions(Set currentRegions) {
+		Map additionsMap = new HashMap();
+		for (Iterator iter = currentRegions.iterator(); iter.hasNext();)
+			additionsMap.put(new ProjectionAnnotation(), iter.next());
 		return additionsMap;
 	}
 
 	private Annotation[] computeDifferences(ProjectionAnnotationModel model,
-			Set<Position> current) {
-		List<Annotation> deletions = new ArrayList<Annotation>();
-		for (Iterator<Annotation> iter = model.getAnnotationIterator(); iter.hasNext();) {
-			Annotation annotation = iter.next();
+			Set current) {
+		List deletions = new ArrayList();
+		for (Iterator iter = model.getAnnotationIterator(); iter.hasNext();) {
+			Object annotation = iter.next();
 			if (annotation instanceof ProjectionAnnotation) {
-				Position position = model.getPosition(annotation);
+				Position position = model.getPosition((Annotation) annotation);
 				if (current.contains(position))
 					current.remove(position);
 				else
 					deletions.add(annotation);
 			}
 		}
-		return deletions.toArray(new Annotation[deletions.size()]);
+		return (Annotation[]) deletions
+				.toArray(new Annotation[deletions.size()]);
 	}
 
-	private Set<Position> createFoldingStructure(Specfile specfile) {
-		Set<Position> set = new HashSet<Position>();
-		
-		List<SpecfileElement> elements = new ArrayList<SpecfileElement>();
-		elements.addAll(specfile.getSections());
-		elements.addAll(specfile.getComplexSections());
-		Collections.sort(elements, new ElementByLineNbrComparator());
-		addFoldingRegions(set, elements.toArray());
+	private Set createFoldingStructure(Specfile specfile)
+			throws BadLocationException {
+		Set set = new HashSet();
+		addFoldingRegions(set, ((Object[]) specfile.getSections()));
 		return set;
 	}
 
-	private void addFoldingRegions(Set<Position> regions, Object[] elements) {
+	private void addFoldingRegions(Set regions, Object[] elements)
+			throws BadLocationException {
 		Position position;
 		// add folding on the preamble section
 		try {
@@ -118,7 +111,7 @@ public class SpecfileFoldingStructureProvider {
 		} catch (Exception exception){
 			//pass
 		}
-
+		// add folding on all "simple" sections
 		for (int i = 0; i < elements.length; i++) {
 			SpecfileElement startElement = (SpecfileElement) elements[i];
 			int offsetPos = startElement.getLineStartPosition();

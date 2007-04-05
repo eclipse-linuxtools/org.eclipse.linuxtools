@@ -1,14 +1,25 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.jface.text.source.projection.ProjectionSupport;
+import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.texteditor.ContentAssistAction;
+import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SpecfileEditor extends TextEditor {
@@ -17,11 +28,13 @@ public class SpecfileEditor extends TextEditor {
 	private SpecfileContentOutlinePage outlinePage;
 	private IEditorInput input;
 	private Specfile specfile;
+	private ProjectionSupport projectionSupport;
 	private SpecfileParser parser;
 
 	public SpecfileEditor() {
 		super();
 		colorManager = new ColorManager();
+		parser = getParser();
 		setSourceViewerConfiguration(new SpecfileConfiguration(colorManager, this));
 		setDocumentProvider(new SpecfileDocumentProvider());
 	}
@@ -60,8 +73,7 @@ public class SpecfileEditor extends TextEditor {
 			SpecfileErrorHandler specfileErrorHandler = new SpecfileErrorHandler(getInputFile(), document);
 			specfileErrorHandler.removeExistingMarkers();
 
-			parser = getParser();
-			parser.setErrorHandler(specfileErrorHandler);
+			this.parser.setErrorHandler(specfileErrorHandler);
 			specfile = parser.parse(document);
 		}
 		catch (Exception e)
@@ -87,6 +99,11 @@ public class SpecfileEditor extends TextEditor {
 		if (IContentOutlinePage.class.equals(required)) {
 			return getOutlinePage();
 		}
+		if (projectionSupport != null) {
+			Object adapter= projectionSupport.getAdapter(getSourceViewer(), required);
+			if (adapter != null)
+				return adapter;
+		}
 		return super.getAdapter(required);
 	}
 	
@@ -101,6 +118,57 @@ public class SpecfileEditor extends TextEditor {
 	
 	public Specfile getSpecfile() {
 		return specfile;
+	}
+
+	
+	/*
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer(org.eclipse.swt.widgets.Composite, org.eclipse.jface.text.source.IVerticalRuler, int)
+	 */
+	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
+		fAnnotationAccess = createAnnotationAccess();
+		fOverviewRuler = createOverviewRuler(getSharedColors());
+		ISourceViewer viewer= new ProjectionViewer(parent, ruler, fOverviewRuler, true, styles);
+		getSourceViewerDecorationSupport(viewer);
+		return viewer;
+	}
+
+	/*
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createPartControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		ProjectionViewer projectionViewer = (ProjectionViewer) getSourceViewer();
+		projectionSupport = new ProjectionSupport(projectionViewer, getAnnotationAccess(), getSharedColors());
+		projectionSupport.install();
+		projectionViewer.doOperation(ProjectionViewer.TOGGLE);
+	}
+	
+	/*
+	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#createActions()
+	 */
+	protected void createActions() {
+		super.createActions();
+
+		IAction action= new ContentAssistAction(
+				getResourceBundle(),
+				"ContentAssistProposal.",
+				this);
+		action.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
+		setAction("ContentAssist", action);
+		markAsStateDependentAction("ContentAssist", true);
+	}
+	
+	
+	// ContentAssistAction take a ResourceBundle but Resource bundles are not yet implemented on  
+	// a plugin level, so we have add this method here as a quick fix.
+	public ResourceBundle getResourceBundle() {
+		ResourceBundle resourceBundle;
+		try {
+			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorMessages");
+		} catch (MissingResourceException x) {
+			resourceBundle= null;
+		}
+		return resourceBundle;
 	}
 	
 	protected void setSpecfile(Specfile specfile) {

@@ -12,16 +12,16 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
-import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileScanner;
 
 /**
  * This class is used to retrieve and manage the RPM macro 
@@ -30,9 +30,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileScanner;
  */
 public class RpmMacroProposalsList {
 
-	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
-	private Map<String, String> macroMap = new HashMap<String, String>();
+	private Map macroMap = new HashMap();
 
 	private String toStringStr;
 
@@ -47,30 +45,16 @@ public class RpmMacroProposalsList {
 	 * Build the macro list.
 	 */
 	public void buildMacroList() {
-		for (String definedMacro: SpecfileScanner.DEFINED_MACROS){
-			macroMap.put(definedMacro, Messages.RpmMacroProposalsList_0);
-			//TODO find way to provide info about buildin macros.
-		}
 		String macroProposalsPaths = Activator.getDefault()
 				.getPreferenceStore().getString(
 						PreferenceConstants.P_MACRO_PROPOSALS_FILESPATH);
-		String[] paths = macroProposalsPaths.split(";"); //$NON-NLS-1$
+		String[] paths = macroProposalsPaths.split(";");
 		// paths must be reversed because the last value added
 		// into a Map overwrites the first.
 		paths = reverseStringArray(paths);
-		for (String path : paths) {
-			if (!path.equals(EMPTY_STRING)) {
-				File pathFile = new File(path);
-				if (pathFile.exists()) {
-					if (pathFile.isDirectory()) {
-						File[] macrosFiles = pathFile.listFiles();
-						for (File macrosFile : macrosFiles) {
-							addMacroToMap(macrosFile.getAbsolutePath());
-						}
-					} else {
-						addMacroToMap(path);
-					}
-				}
+		for (int i = 0; i < paths.length; i++) {
+			if (!paths[i].equals("")) {
+				addMacroToMap(paths[i]);
 			}
 		}
 	}
@@ -82,30 +66,30 @@ public class RpmMacroProposalsList {
 	 *            macro file definition.
 	 */
 	private void addMacroToMap(String filename) {
-		String line = EMPTY_STRING;
+		String line = "";
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					new FileInputStream(filename)));
 			line = reader.readLine();
-			String key = EMPTY_STRING, value = EMPTY_STRING;
+			String key = "", value = "";
 			while (line != null) {
-				if (line.startsWith("%")) { //$NON-NLS-1$
-					String[] item = line.split("\t+| ", 2); //$NON-NLS-1$
+				if (line.startsWith("%")) {
+					String[] item = line.split("\t+| ", 2);
 					try {
 						// Get values on more than one line
-						if (line.trim().endsWith("\\")) { //$NON-NLS-1$
-							value = "\n"; //$NON-NLS-1$
+						if (line.trim().endsWith("\\")) {
+							value = "\n";
 							boolean isKeyLine = true;
-							while (line.trim().endsWith("\\")) { //$NON-NLS-1$
+							while (line.trim().endsWith("\\")) {
 								if (isKeyLine) {
 									isKeyLine = false;
 									key = item[0];
 									if (item.length > 1)
-										value += item[1].replaceAll("\\", "\n\n");  //$NON-NLS-1$//$NON-NLS-2$
+										value += item[1].replaceAll("\\", "\n\n");
 								} else {
 									value += line.substring(0,
 											line.length() - 1).trim()
-											+ "\n\t"; //$NON-NLS-1$
+											+ "\n\t";
 								}
 								line = reader.readLine();
 							}
@@ -116,18 +100,18 @@ public class RpmMacroProposalsList {
 						key = key.trim();
 						value = value.trim();
 						macroMap.put(key, value);
-						toStringStr += key + ": " + value + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+						toStringStr += key + ": " + value + "\n";
 					} catch (Exception e) {
 						line = reader.readLine();
 						continue;
 					}
-					value = EMPTY_STRING;
-					key = EMPTY_STRING;
+					value = "";
+					key = "";
 				}
 				line = reader.readLine();
 			}
 		} catch (IOException e) {
-			SpecfileLog.logError(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -154,35 +138,41 @@ public class RpmMacroProposalsList {
 	/**
 	 * Get proposals for a given prefix
 	 * 
-	 * @param prefix The prefix to search.
+	 * @param prefix
+	 *            to search
 	 * @return a <code>Map</code> of proposals.
 	 */
-	public Map<String, String> getProposals(String prefix) {
-		Map<String, String> proposalsMap = new HashMap<String, String>(macroMap.size());
+	public Map getProposals(String prefix) {
+		Iterator iterator = macroMap.keySet().iterator();
+		Map proposalsMap = new HashMap(macroMap.size());
+		String key, value;
 		int i = 0;
-		for (Map.Entry<String, String> entry: macroMap.entrySet()) {
+		while (iterator.hasNext()) {
+			key = (String) iterator.next();
 			// Get proposals for macro begin with { char too.
-			if (entry.getKey().startsWith(prefix.replaceFirst("\\{", EMPTY_STRING))) { //$NON-NLS-1$
-				proposalsMap.put(entry.getKey(), entry.getValue());
+			if (key.startsWith(prefix.replaceAll("{", ""))) {
+				value = (String) macroMap.get(key);
+				proposalsMap.put(key, value);
 			}
 			i++;
 		}
 		// Sort proposals
-		Map<String, String> sortedMap = new TreeMap<String, String>(proposalsMap);
+		Map sortedMap = new TreeMap(proposalsMap);
 		return sortedMap;
 	}
 
 	/**
 	 * Get the value for a given macro.
 	 * 
-	 * @param key Key to retrieve value.
+	 * @param key
+	 *            key to retrieve value.
 	 * @return a string representation of the value
 	 */
 	public String getValue(String key) {
-		String value = macroMap.get("%" + key); //$NON-NLS-1$
+		String value = (String) macroMap.get("%" + key);
 		// get proposals for macro contain ? too.
 		if (value == null) {
-			value = macroMap.get(("%" + key).replaceFirst("\\?", EMPTY_STRING)); //$NON-NLS-1$ //$NON-NLS-2$
+			value = (String) macroMap.get(("%" + key).replaceAll("?", ""));
 		}
 		return value;
 	}
@@ -190,7 +180,8 @@ public class RpmMacroProposalsList {
 	/**
 	 * Find a key in the macroMap
 	 * 
-	 * @param keyToFind The key to find.
+	 * @param keyToFind
+	 *            the key to find.
 	 * @return return the value
 	 */
 	public boolean findKey(String keyToFind) {
@@ -201,15 +192,23 @@ public class RpmMacroProposalsList {
 	 * Return the ouput of the <code>rpm --eval</code> command for a given
 	 * macro.
 	 *  
-	 * @param macroName The macro name to eval.
-	 * @return the resolved macro content.
+	 * @param macroName
+	 *            the macro name to eval.
+	 * @return the resoved macro content.
 	 */
 	public static String getMacroEval(String macroName) {
-		String eval = EMPTY_STRING;
+		String 	eval = "";
+		String[] cmd = {"rpm", "--eval", macroName};
 		try {
-			eval = Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
+			Process child = Runtime.getRuntime().exec(cmd);
+			InputStream in = child.getInputStream();
+			int c;
+			while ((c = in.read()) != -1) {
+				eval += ((char) c);
+			}
+			in.close();
 		} catch (IOException e) {
-			SpecfileLog.logError(e);
+			e.printStackTrace();
 		}
 		return eval.trim();
 	}
@@ -219,7 +218,6 @@ public class RpmMacroProposalsList {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	@Override
 	public String toString() {
 		return toStringStr;
 	}

@@ -11,21 +11,33 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -50,16 +62,14 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	 * 
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
-	@Override
 	public void createFieldEditors() {
 		addField(rpmtoolsRadioGroupFieldEditor());	
 		// FIXME: there is validations problem when a FileFieldEditor is used, so 
 		// as a quick fix, StringFieldEditor is used.
 		StringFieldEditor rpmListFieldEditor = new StringFieldEditor(PreferenceConstants.P_RPM_LIST_FILEPATH,
-				Messages.RpmProposalsPreferencePage_0, getFieldEditorParent());
+				"Path to packages list file:", getFieldEditorParent());
 		addField(rpmListFieldEditor);
-		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,Messages.RpmProposalsPreferencePage_1, getFieldEditorParent()));
-		addField(buildTimeListRateFieldEditor());
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_HIDE_PROPOSALS_WARNING,"Hide warning about RPM proposals", getFieldEditorParent()));
 	}
 	
 	/*
@@ -67,61 +77,90 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	 * 
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
-	@Override
 	protected Control createContents(final Composite parent) {
 		Link link= new Link(parent, SWT.NONE);
-		link.setText(Messages.RpmProposalsPreferencePage_2);
+		link.setText("<a href=\"org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage\">Package Information</a> page helps to configure proposal descriptions");
 		link.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				PreferencesUtil.createPreferenceDialogOn(parent.getShell() , e.text, null, null); 
 			}
 		});
 		Composite fieldEditorComposite = (Composite) super
 				.createContents(parent);
+		createBuildListButton(fieldEditorComposite);
 		return fieldEditorComposite;
 	}
 	
 	private FieldEditor rpmtoolsRadioGroupFieldEditor() {
-		ArrayList<String[]> list = new ArrayList<String[]>();
-		list.add(new String[] { Messages.RpmProposalsPreferencePage_3,
-								PreferenceConstants.DP_RPMTOOLS_RPM });
-		/*
-		 * Show only installed tools.
-		 * Don't forgot to add sanity check in Utils.pluginSanityCheck().
-		 */ 
-		if (Utils.fileExist("/usr/bin/yum"))  //$NON-NLS-1$
-			list.add(new String[] { Messages.RpmProposalsPreferencePage_4,
-					PreferenceConstants.DP_RPMTOOLS_YUM });
-		if (Utils.fileExist("/usr/bin/urpmq"))  //$NON-NLS-1$
-			list.add(new String[] { Messages.RpmProposalsPreferencePage_5,
-					PreferenceConstants.DP_RPMTOOLS_URPM });
-
-		String[][] radioItems = new String[list.size()][2];
-		int pos = 0;
-		for (String[] item: list) {
-			radioItems[pos][0] = item[0];
-			radioItems[pos][1] = item[1];
-			pos++;
-			
-		}
-	
 		RadioGroupFieldEditor rpmToolsRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_CURRENT_RPMTOOLS,
-				Messages.RpmProposalsPreferencePage_6, 1, radioItems ,
+				"RPM tools used to build the package list", 1, new String[][] {
+						{ "RPM (Red Hat Package Manager)",
+								PreferenceConstants.DP_RPMTOOLS_RPM },
+						{ "YUM (Yellowdog Updater, Modified)",
+								PreferenceConstants.DP_RPMTOOLS_YUM } },
 				getFieldEditorParent(), true);
 		return rpmToolsRadioGroupEditor;
 	}
 	
-	private FieldEditor buildTimeListRateFieldEditor() { 
-		RadioGroupFieldEditor buildListTimeRateRadioGroupEditor = new RadioGroupFieldEditor(
-				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD,
-				Messages.RpmProposalsPreferencePage_7, 1, new String[][] {
-						{ Messages.RpmProposalsPreferencePage_8, "1" }, //$NON-NLS-1$
-						{ Messages.RpmProposalsPreferencePage_10, "2" }, //$NON-NLS-1$
-						{ Messages.RpmProposalsPreferencePage_12, "3" }}, getFieldEditorParent(), true); //$NON-NLS-1$
-		return buildListTimeRateRadioGroupEditor;
+	public void createBuildListButton(Composite parent) {
+		Button builRpmProposalsButton = new Button(parent,
+				SWT.PUSH);
+		GridData data = new GridData ();
+		data.horizontalAlignment = GridData.END;
+		data.verticalIndent = 10;
+		data.grabExcessHorizontalSpace = true;
+		builRpmProposalsButton.setLayoutData(data);
+		builRpmProposalsButton.setText("Build proposals now ...");
+		builRpmProposalsButton.addListener(SWT.Selection, new Listener() {
+
+			public void handleEvent(Event event) {
+				IRunnableWithProgress runnable = new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						performApply();
+						String rpmListCmd = getPreferenceStore().getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
+						String rpmListFilepath = getPreferenceStore().getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
+						try {
+							String[] cmd = new String[] {"/bin/sh", "-c", rpmListCmd};
+							monitor.beginTask("Get RPM proposals list...", IProgressMonitor.UNKNOWN);
+							Process child = Runtime.getRuntime().exec(cmd);
+							InputStream in = child.getInputStream();
+							BufferedWriter out = new BufferedWriter(new FileWriter(rpmListFilepath, false));
+							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+							monitor.setTaskName("Write RPM proposals list into "
+							+ rpmListFilepath + " file ...");
+							String line;
+							while ((line = reader.readLine()) != null) {
+								monitor.subTask("Add package: " + line);
+								out.write(line + "\n");
+					        }
+							in.close();
+							out.close();
+							// validate the page and hide the error message.
+							setValid(true);
+							setErrorMessage(null);
+						} catch (IOException e) {
+							setErrorMessage("Error when building the RPM packages list:\n" + e.getMessage());
+						} finally {
+							monitor.done();
+						}
+					}
+				};
+				try {
+					ProgressMonitorDialog progressMonitor = new ProgressMonitorDialog(getShell());
+					//FIXME: If we will use a non forked thread, we may implement something to access this 
+					// pref. page outside the main thread. Seems to be easy for Editors but not for Preference pages.
+					progressMonitor.run(false, true, runnable);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
 	}
+
 
 	/*
 	 * (non-Javadoc)

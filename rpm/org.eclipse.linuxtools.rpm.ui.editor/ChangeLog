@@ -1,3 +1,81 @@
+2007-04-04  Andrew Overholt  <overholt@redhat.com>
+
+	This large functionality addition was done by Alphonse Van Assche.  The
+	discussion surrounding it is available at
+	https://bugs.eclipse.org/bugs/show_bug.cgi?id=177220.
+	
+	* .classpath: Add J2SE-1.4 preferred EE.
+	* build.properties: Add icons and templates to binary build.
+	* icons/changelog.gif: Remove apparently unused icon.
+	* META-INF/MANIFEST.MF: Change changelog requirement to new namespace.  Add
+	* plugin.xml: Update class namespace for editor extension.  Update changelog
+	extension point locations.  Add templates and preferences extensions.
+	preferences to package export list.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Add template,
+	contextType, and macro and package completion variables.
+	(getTemplateStore): New method.
+	(getRpmMacroList): Likewise.
+	(getRpmPackageList): Likewise.
+	(getContextTypeRegistry): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java
+	(getReconciler): Change delay to 500 ms.
+	(getContentAssistant): New method.
+	(getInformationControlCreator): New method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java
+	(getAdapter): Add projectionSupport.
+	(getResourceBundle): New method.
+	(createActions): Likewise.
+	(createPartControl): Likewise.
+	(createSourceViewer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditorMessages.properties:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java
+	(getHoverInfo): Add non-%source and non-%patch macro proposals.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java
+	(SpecfileReconcilingStrategy): Add parser and foldingStructureProvider.
+	(setDocument): Implement.
+	(reconcile): Call reconcile().
+	(initialReconcile): New method.  Call reconcile().
+	(reconcile): New method.  Parse and update editor and folding.
+	(setProgressMonitor): New method.
+	(parseSpecfile): Likewise.
+	(updateEditor): Likewise.
+	(updateFolding): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogParser.java:
+	Update changelog import package name.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java
+	(formatTodaysDate): Add locale-based formatting.  Will probably want to re-visit
+	this soon.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java
+	(getSectionsElements): New method.  Used for determining when to offer completion
+	proposals.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
+	(parseComplexDefinition): Add temporary workaround for null errorHandler.
+	(parseSimpleDefinition): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MainPreferencePage.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmInformationsPreferencePage.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java:
+	Likewise.
+	* templates/templates.xml: Likewise.  Templates for completion.
+
 2007-03-28  Andrew Overholt  <overholt@redhat.com>
 
         Re-namespace to org.eclipse.linuxtools.rpm.ui.editor.

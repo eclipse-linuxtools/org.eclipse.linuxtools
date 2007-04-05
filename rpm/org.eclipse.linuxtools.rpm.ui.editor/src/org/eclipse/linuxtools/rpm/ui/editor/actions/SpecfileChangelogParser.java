@@ -1,10 +1,9 @@
 package org.eclipse.linuxtools.rpm.ui.editor.actions;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-
-import com.redhat.eclipse.changelog.core.IParserChangeLogContrib;
 
 public class SpecfileChangelogParser implements IParserChangeLogContrib {
 

@@ -1,10 +1,17 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.internal.text.link.contentassist.HTMLTextPresenter;
+import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
+import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
@@ -13,10 +20,11 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 
 public class SpecfileConfiguration extends SourceViewerConfiguration {
 	private SpecfileDoubleClickStrategy doubleClickStrategy;
-//	private SpecfileTagScanner tagScanner;
 	private SpecfileScanner scanner;
 	private SpecfileChangelogScanner changelogScanner;
 	private ColorManager colorManager;
@@ -91,17 +99,49 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 
 		return reconciler;
 	}
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getReconciler(org.eclipse.jface.text.source.ISourceViewer)
+
+	/*
+	 * @see SourceViewerConfiguration#getReconciler(ISourceViewer)
 	 */
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
 		if (editor != null && editor.isEditable()) {
-			MonoReconciler reconciler= new MonoReconciler(new SpecfileReconcilingStrategy(editor), false);
-			reconciler.setDelay(1000);
+			SpecfileReconcilingStrategy strategy= new SpecfileReconcilingStrategy(editor);
+			MonoReconciler reconciler= new MonoReconciler(strategy, false);
 			reconciler.setProgressMonitor(new NullProgressMonitor());
+			reconciler.setDelay(500);
 			return reconciler;
 		}
 		return null;
 	}
-
+	
+	/*
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getContentAssistant(org.eclipse.jface.text.source.ISourceViewer)
+	 */
+	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
+		ContentAssistant assistant= new ContentAssistant();
+		IContentAssistProcessor processor= new SpecfileCompletionProcessor(editor);
+		// add content assistance to all the supported contentType
+		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(processor, SpecfilePartitionScanner.SPEC_SCRIPT);
+		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_FILES);
+		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_CHANGELOG);		
+		// configure content assistance
+		assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+        IInformationControlCreator controlCreator= getInformationControlCreator();
+		assistant.setInformationControlCreator(controlCreator);
+		assistant.enableAutoInsert(true);
+		assistant.setStatusLineVisible(true);
+		assistant.setStatusMessage("Press Ctrl+Space to see proposals");
+		return assistant;
+	}
+	
+	private IInformationControlCreator getInformationControlCreator() {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				return new DefaultInformationControl(parent, SWT.H_SCROLL
+						| SWT.V_SCROLL, new HTMLTextPresenter(false));
+			}
+		};
+	}
+	
 }

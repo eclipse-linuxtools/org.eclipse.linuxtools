@@ -13,21 +13,13 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePatchMacro;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
+import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 public class SpecfileHover implements ITextHover, ITextHoverExtension {
 
-
-
 	private SpecfileEditor editor;
-
 
 	public SpecfileHover(SpecfileEditor editor) {
 		this.editor = editor;
@@ -59,40 +51,52 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
                 }
                 
 		String macroLower = macroName.toLowerCase();
-                
-                // If there's no such define we try to see if it corresponds to
-                // a Source or Patch declaration
-       
-                Pattern p = Pattern.compile("(source|patch)(\\d*)");
-                Matcher m = p.matcher(macroLower);
-                
-                if (m.matches()){
-                    String digits = m.group(2);
-                    
-                    SpecfileSource source = null;
-                    int number = -1;
-                    
-                    if (digits != null && digits.equals("")){ 
-                        number = 0;
-                    }else if (digits != null && !digits.equals("")){
-                        number =Integer.parseInt(digits);
-                    }
-                    
-                    if (number != -1){
-                        if( m.group(1).equals("source"))
-                            source = spec.getSource(number);
-                        else if (m.group(1).equals("patch"))
-                            source = spec.getPatch(number);
-                        
-                        if (source != null){
-                            value += source.getFileName();
-                            
-                            return value;
-                        }
-                    }
 
-                }
-               
+		// If there's no such define we try to see if it corresponds to
+		// a Source or Patch declaration
+
+		Pattern p = Pattern.compile("(source|patch)(\\d*)");
+		Matcher m = p.matcher(macroLower);
+
+		if (m.matches()) {
+			String digits = m.group(2);
+
+			SpecfileSource source = null;
+			int number = -1;
+
+			if (digits != null && digits.equals("")) {
+				number = 0;
+			} else if (digits != null && !digits.equals("")) {
+				number = Integer.parseInt(digits);
+			}
+
+			if (number != -1) {
+				if (m.group(1).equals("source"))
+					source = spec.getSource(number);
+				else if (m.group(1).equals("patch"))
+					source = spec.getPatch(number);
+
+				if (source != null) {
+					value += source.getFileName();
+
+					return value;
+				}
+			}
+
+		}
+
+       // If it does not correspond to a Patch or Source macro, try to find it
+       // in the macro proposals list.
+       if (Activator.getDefault().getRpmMacroList().findKey("%" + macroName)) {
+    	   String currentConfig = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_MACRO_HOVER_CONTENT);
+    	   // Show content of the macro according with the configuration set
+    	   // in the macro preference page.
+    	   if (currentConfig.equals(PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION))
+    		   value += Activator.getDefault().getRpmMacroList().getValue(macroName);
+    	   else
+    		   value += RpmMacroProposalsList.getMacroEval("%" + macroName);
+           return value;
+       }                 
                 
 		return value;
 	}

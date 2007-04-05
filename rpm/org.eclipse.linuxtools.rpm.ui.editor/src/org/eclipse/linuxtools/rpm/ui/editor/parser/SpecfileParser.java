@@ -235,7 +235,7 @@ public class SpecfileParser {
 			}
 		}
 
-                // if this package is part of the top level pacakge, add it to it
+                // if this package is part of the top level package, add it to it
                 if (toReturn.getPackage() == null){
                     SpecfilePackage topPackage = specfile.getPackage(specfile.getName());
                     if (topPackage == null){
@@ -370,13 +370,17 @@ public class SpecfileParser {
 					if (token.endsWith(":")) {
 						token = token.substring(0, token.length() - 1);
 					} else {
-						// FIXME:  come up with a better error message here
-						// FIXME:  what about descriptions that begin a line with the word "Source" or "Patch"?
-						errorHandler
-						.handleError(new SpecfileParseException(
-								"If this is a Source or Patch directive, it must end with a colon.",
-								lineNumber, 0, lineText.length(),
-								IMarker.SEVERITY_WARNING));
+						// FIXME: (al) Have not found why, but in some case errorHandler is null.
+						// When this exception occurs, folding is not shown.
+						// This fix work at less with the eclipse.spec and eclipse-mylar.spec file.
+						if (errorHandler != null)
+							// FIXME:  come up with a better error message here
+							// FIXME:  what about descriptions that begin a line with the word "Source" or "Patch"?
+							errorHandler
+							.handleError(new SpecfileParseException(
+									"If this is a Source or Patch directive, it must end with a colon.",
+									lineNumber, 0, lineText.length(),
+									IMarker.SEVERITY_WARNING));
 						return null;
 					}
 					if (sourceType == SpecfileSource.PATCH) {
@@ -414,10 +418,14 @@ public class SpecfileParser {
 					if (toReturn != null)
 						toReturn.setFileName(token);
 					if (iter.hasNext()) {
-						errorHandler.handleError(new SpecfileParseException(
-								"Filename cannot be multiple words.",
-								lineNumber, 0, lineText.length(),
-								IMarker.SEVERITY_ERROR));
+						// FIXME: (al) Have not found why, but in some case errorHandler is null.
+						// When this NullPointerException occurs, folding is not shown.
+						// This fix works at least with the eclipse.spec and eclipse-mylar.spec.
+						if (errorHandler != null)
+							errorHandler.handleError(new SpecfileParseException(
+									"Filename cannot be multiple words.",
+									lineNumber, 0, lineText.length(),
+									IMarker.SEVERITY_ERROR));
 					}
 				}
 			}
@@ -448,10 +456,14 @@ public class SpecfileParser {
 								IMarker.SEVERITY_ERROR));
 						return null;
 					} else {
-						errorHandler.handleError(new SpecfileParseException(
-								token.substring(0, token.length() - 1) + " should be an acronym.",
-								lineNumber, 0, lineText.length(),
-								IMarker.SEVERITY_WARNING));
+						// FIXME: (al) Have not found why, but in some case errorHandler is null.
+						// When this NPE occurs, folding is not shown.
+						// This fix works at least with the eclipse.spec and eclipse-mylar.spec
+						if (errorHandler != null)
+							errorHandler.handleError(new SpecfileParseException(
+									token.substring(0, token.length() - 1) + " should be an acronym.",
+									lineNumber, 0, lineText.length(),
+									IMarker.SEVERITY_WARNING));
 					}
 				}
 			} else {

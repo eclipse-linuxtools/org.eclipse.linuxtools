@@ -4,20 +4,22 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
+import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
+import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfilePartitionScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.ui.IEditorPart;
-
-import com.redhat.eclipse.changelog.core.ChangelogPlugin;
-import com.redhat.eclipse.changelog.core.IFormatterChangeLogContrib;
 
 public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
@@ -34,6 +36,8 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                 .resolve(specfile.getVersion());
         String release = specfile.getRelease() == null ? "" : resolveElement
                 .resolve(specfile.getRelease());
+        // remove the dist macro if it exist in the release string.
+        release = release.replaceAll("%{?dist}", "");
         return "* " + formatTodaysDate() + " " + authorName + " " + "<" + authorEmail
                 + ">" + " " + epoch + version + "-" + release;
     }
@@ -158,8 +162,12 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
     private String formatTodaysDate() {
         Calendar cal = new GregorianCalendar();
         cal.setTime(new Date());
+        // Get default locale
+        Locale defaultLocale = Locale.getDefault();
+        Locale.setDefault(new Locale(Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_LOCAL)));
         String date = (new SimpleDateFormat("EEE MMM d yyyy"))
                 .format(new Date());
+        Locale.setDefault(defaultLocale);
         return date;
     }
 
