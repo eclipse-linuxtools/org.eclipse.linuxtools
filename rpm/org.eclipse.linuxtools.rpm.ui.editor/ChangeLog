@@ -1,24 +1,27 @@
+2007-04-05  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java
+	(getProposals): Escape "{" character in regex.
+
 2007-04-04  Andrew Overholt  <overholt@redhat.com>
 
-	This large functionality addition was done by Alphonse Van Assche.  The
+	This large functionality addition was done by Alphonse Van Assche. The
 	discussion surrounding it is available at
 	https://bugs.eclipse.org/bugs/show_bug.cgi?id=177220.
-	
 	* .classpath: Add J2SE-1.4 preferred EE.
 	* build.properties: Add icons and templates to binary build.
 	* icons/changelog.gif: Remove apparently unused icon.
-	* META-INF/MANIFEST.MF: Change changelog requirement to new namespace.  Add
-	* plugin.xml: Update class namespace for editor extension.  Update changelog
-	extension point locations.  Add templates and preferences extensions.
-	preferences to package export list.
+	* META-INF/MANIFEST.MF: Change changelog requirement to new namespace. Add
+	* plugin.xml: Update class namespace for editor extension. Update changelog
+	extension point locations. Add templates and preferences extensions. preferences
+	to package export list.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Add template,
 	contextType, and macro and package completion variables.
 	(getTemplateStore): New method.
 	(getRpmMacroList): Likewise.
 	(getRpmPackageList): Likewise.
 	(getContextTypeRegistry): Likewise.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java:
-	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java: Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java:
 	Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java:
@@ -43,8 +46,8 @@
 	(SpecfileReconcilingStrategy): Add parser and foldingStructureProvider.
 	(setDocument): Implement.
 	(reconcile): Call reconcile().
-	(initialReconcile): New method.  Call reconcile().
-	(reconcile): New method.  Parse and update editor and folding.
+	(initialReconcile): New method. Call reconcile().
+	(reconcile): New method. Parse and update editor and folding.
 	(setProgressMonitor): New method.
 	(parseSpecfile): Likewise.
 	(updateEditor): Likewise.
@@ -52,10 +55,10 @@
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogParser.java:
 	Update changelog import package name.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java
-	(formatTodaysDate): Add locale-based formatting.  Will probably want to re-visit
+	(formatTodaysDate): Add locale-based formatting. Will probably want to re-visit
 	this soon.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java
-	(getSectionsElements): New method.  Used for determining when to offer completion
+	(getSectionsElements): New method. Used for determining when to offer completion
 	proposals.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
 	(parseComplexDefinition): Add temporary workaround for null errorHandler.
@@ -74,11 +77,11 @@
 	Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java:
 	Likewise.
-	* templates/templates.xml: Likewise.  Templates for completion.
+	* templates/templates.xml: Likewise. Templates for completion.
 
 2007-03-28  Andrew Overholt  <overholt@redhat.com>
 
-        Re-namespace to org.eclipse.linuxtools.rpm.ui.editor.
+	Re-namespace to org.eclipse.linuxtools.rpm.ui.editor.
 
 2007-03-15  Andrew Overholt  <overholt@redhat.com>
 
@@ -97,59 +100,54 @@
 
 2007-01-06  Igor Foox  <ifoox@redhat.com>
 
-	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileParser.java (parseSection): 
-	Special case the top level package so that it appears in the outline.
+	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileParser.java
+	(parseSection): Special case the top level package so that it appears in the
+	outline.
 
 2007-01-06  Igor Foox  <ifoox@redhat.com>
 
-	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileSection.java:
-	Rename thePackage field to parentPackage.
+	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileSection.java: Rename thePackage
+	field to parentPackage.
 	(getPackage): Rename thePackage field to parentPackage.
 	(toString): Ditto.
 	(SpecfileSection): Ditto.
 	(setPackage): Ditto.
 	(getPackageName): New method.
-	
-	* src/org/eclipse/cdt/rpm/editor/parser/SpecfilePackage.java:
-	Resubclass based on SpecfileSection instead of SpecfileElement and
-	add a new field packageName. 
+	* src/org/eclipse/cdt/rpm/editor/parser/SpecfilePackage.java: Resubclass based
+	on SpecfileSection instead of SpecfileElement and add a new field packageName.
 	(getPackage): New method.
 	(setPackageName): New method.
 	(getPackageName): New method.
 	(toString): Remove redundant code, change use of getName to getPackageName().
 	(SpecfilePackage): Initialize new fields, pass "package" to super constructor.
-	* src/org/eclipse/cdt/rpm/editor/parser/SpecfilePackageContainer.java (getPackage): 
-	Use getPackageName() instead of getName().
-	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileParser.java (parseSection): Special
-	case ParserPackages from other types of ParserSections.
-	
+	* src/org/eclipse/cdt/rpm/editor/parser/SpecfilePackageContainer.java
+	(getPackage): Use getPackageName() instead of getName().
+	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileParser.java
+	(parseSection): Special case ParserPackages from other types of ParserSections.
 
 2007-01-04  Igor Foox  <ifoox@redhat.com>
 
 	* src/org/eclipse/cdt/rpm/editor/parser/SpecfilePreamble.java: New file.
-	* src/org/eclipse/cdt/rpm/editor/outline/SpecfileContentProvider.java (getChildren):
-	Add the preamble and sections to the children returned for a Specfile.
-	* src/org/eclipse/cdt/rpm/editor/outline/SpecfileLabelProvider.java (getText):
-	Add "Preamble" as the returned text for SpecfilePreamble. 
-	
-	* src/org/eclipse/cdt/rpm/editor/parser/Specfile.java (Specfile):
-	Change preamble to a SpecfilePreamble from a SpecfileElement, intialize it
-	in the constructor.
-	
-	
-	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileParser.java (parseSection): 
-	Add simple, but not complex, sections to the specfile with addSection().
-	Add complex section to a SpecfilePackage hierarchialy, and add the package
-	to the specfile.
+	* src/org/eclipse/cdt/rpm/editor/outline/SpecfileContentProvider.java
+	(getChildren): Add the preamble and sections to the children returned for a
+	Specfile.
+	* src/org/eclipse/cdt/rpm/editor/outline/SpecfileLabelProvider.java
+	(getText): Add "Preamble" as the returned text for SpecfilePreamble.
+	* src/org/eclipse/cdt/rpm/editor/parser/Specfile.java
+	(Specfile): Change preamble to a SpecfilePreamble from a SpecfileElement,
+	intialize it in the constructor.
+	* src/org/eclipse/cdt/rpm/editor/parser/SpecfileParser.java
+	(parseSection): Add simple, but not complex, sections to the specfile with
+	addSection(). Add complex section to a SpecfilePackage hierarchialy, and add the
+	package to the specfile.
 	(parse): Remove if block that dealt with SpecfileSections.
 	(simpleSections): Add javadoc.
 	(complexSections): Add javadoc.
-	
 
 2007-01-03  Andrew Overholt  <overholt@redhat.com>
 
-	* src/org/eclipse/cdt/rpm/editor/parser/SpecfilePackageContainer.java: New
-	file. Container for packages for use in the model and outline.
+	* src/org/eclipse/cdt/rpm/editor/parser/SpecfilePackageContainer.java: New file.
+	Container for packages for use in the model and outline.
 	* src/org/eclipse/cdt/rpm/editor/outline/SpecfileContentProvider.java
 	(SpecfileContentProvider): Set specfile in the constructor.
 	(getElements): Use getChildren.
@@ -183,8 +181,8 @@
 	(getPresentationReconciler): Cleanups.
 	(getTextHover): Likewise.
 	* src/org/eclipse/cdt/rpm/editor/SpecfileHover.java
-	(findWord): Deal with macros without braces (ex. %patch).
-	(getHoverInfo): Fix typo.
+	(findWord): Deal with macros without braces
+	(ex. %patch).(getHoverInfo): Fix typo.
 
 2006-12-18  Igor Foox  <ifoox@redhat.com>
 

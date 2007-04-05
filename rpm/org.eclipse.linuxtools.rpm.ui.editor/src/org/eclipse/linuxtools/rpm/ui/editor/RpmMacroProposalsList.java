@@ -150,7 +150,7 @@ public class RpmMacroProposalsList {
 		while (iterator.hasNext()) {
 			key = (String) iterator.next();
 			// Get proposals for macro begin with { char too.
-			if (key.startsWith(prefix.replaceAll("{", ""))) {
+			if (key.startsWith(prefix.replaceFirst("\\{", ""))) {
 				value = (String) macroMap.get(key);
 				proposalsMap.put(key, value);
 			}
