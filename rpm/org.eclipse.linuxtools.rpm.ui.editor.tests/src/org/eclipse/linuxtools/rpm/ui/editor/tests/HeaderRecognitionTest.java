@@ -43,13 +43,13 @@ public class HeaderRecognitionTest extends TestCase {
 		testDocument = new Document(contents);
 		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
 		parser.setErrorHandler(errorHandler);
-		specfile = parser.parse(testDocument);
 	}
 	
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
+		specfile = new Specfile();
 	}
 	
 	protected void tearDown() throws Exception {
@@ -117,7 +117,7 @@ public class HeaderRecognitionTest extends TestCase {
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(tokens[0].substring(1), section.getName());
-			assertEquals(tokens[2], section.getPackage().getName());
+			assertEquals(tokens[2], section.getPackage().getPackageName());
 		} catch (Exception e) {
 			fail();
 		}
@@ -136,7 +136,7 @@ public class HeaderRecognitionTest extends TestCase {
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(tokens[0].substring(1), section.getName());
-			assertEquals(tokens[2], section.getPackage().getName());
+			assertEquals(tokens[2], section.getPackage().getPackageName());
 		} catch (Exception e) {
 			fail();
 		}
@@ -155,7 +155,7 @@ public class HeaderRecognitionTest extends TestCase {
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(tokens[0].substring(1), section.getName());
-			assertEquals(tokens[2], section.getPackage().getName());
+			assertEquals(tokens[2], section.getPackage().getPackageName());
 		} catch (Exception e) {
 			fail();
 		}

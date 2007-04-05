@@ -1,3 +1,11 @@
+2007-04-05  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java (newFile): Remove unnecessary specfile instantiation.
+	(setUp): Instantiate specfile object.
+	(testGetComplexSectionName3): Update test to use getPackageName() instead of getName().
+	(testGetComplexSectionName4): Likewise.
+	(testGetComplexSectionName5): Likewise.
+
 2007-04-04  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java
