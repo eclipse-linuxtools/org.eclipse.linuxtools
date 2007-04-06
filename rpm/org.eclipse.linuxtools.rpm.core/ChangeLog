@@ -1,5 +1,6 @@
 2007-04-05  Remy Suen  <remy.suen@gmail.com>
 
+	Bug #181249
 	* META-INF/MANIFEST.MF: Initial commit.
 	* build.properties: Include MANIFEST.MF.
 	* plugin.xml: Declare dependency and runtime information in an OSGi
