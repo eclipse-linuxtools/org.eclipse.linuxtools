@@ -172,7 +172,7 @@ public class RpmMacroProposalsList {
 		String value = (String) macroMap.get("%" + key);
 		// get proposals for macro contain ? too.
 		if (value == null) {
-			value = (String) macroMap.get(("%" + key).replaceAll("?", ""));
+			value = (String) macroMap.get(("%" + key).replaceFirst("\\?", ""));
 		}
 		return value;
 	}
