@@ -1,3 +1,8 @@
+2007-04-05  Remy Suen  <remy.suen@gmail.com>
+
+	* META-INF/MANIEST.MF: Set the Bundle-RequiredExecutionEnvironment
+	attribute to J2SE-1.4.
+
 2007-04-05  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java
