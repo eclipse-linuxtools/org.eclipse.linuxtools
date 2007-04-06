@@ -1,3 +1,11 @@
+2007-04-05  Remy Suen  <remy.suen@gmail.com>
+
+	* .classpath: Set required EE.
+	* META-INF/MANIFEST.MF: Initial commit.
+	* build.properties: Include MANIFEST.MF.
+	* plugin.xml: Declare dependency and runtime information in an OSGi
+	manifest.
+
 2007-01-30  Andrew Overholt  <overholt@redhat.com>
 
 	* : Re-namespace from cdt to linuxtools.
