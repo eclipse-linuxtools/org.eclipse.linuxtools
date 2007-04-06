@@ -1,3 +1,10 @@
+2007-01-29  Remy Suen  <remy.suen@gmail.com>
+
+	Bug #181249
+	* META-INF/MANIFEST.MF: Initial import.
+	* .classpath: Set a J2SE-1.4 JRE.
+	* plugin.xml: Migrate dependency information to an OSGi manifest.
+
 2007-01-29  Andrew Overholt  <overholt@redhat.com>
 
 	* : Re-namespace from cdt to linuxtools.

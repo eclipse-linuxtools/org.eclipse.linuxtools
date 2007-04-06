@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RPM UI Plug-in (Incubation)
+Bundle-Name: RPM UI Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui;singleton:=true
 Bundle-Version: 3.0.0
 Bundle-Activator: org.eclipse.linuxtools.rpm.ui.RPMUIPlugin
 Bundle-Vendor: Eclipse.org
-Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-Classpath: RpmUi.jar
 Require-Bundle: org.eclipse.ui.ide,
