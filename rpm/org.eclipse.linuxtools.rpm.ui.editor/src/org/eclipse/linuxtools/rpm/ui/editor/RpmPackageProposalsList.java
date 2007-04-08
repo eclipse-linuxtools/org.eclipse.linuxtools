@@ -131,6 +131,19 @@ public class RpmPackageProposalsList {
 			return proposalsList;
 		}
 	}
+	
+	public String getValue(String key) {
+		Iterator iterator = list.iterator();
+		String item;
+		while (iterator.hasNext()) {
+			item = (String) iterator.next();
+			if (item.equals(key.trim())) {
+				return getRpmInfo(item);
+			}
+		}
+		return null;
+		
+	}
 
 	public String getRpmInfo(String pkgName) {
 		String ret = "";

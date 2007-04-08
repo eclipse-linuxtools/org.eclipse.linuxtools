@@ -27,6 +27,7 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 	private SpecfileDoubleClickStrategy doubleClickStrategy;
 	private SpecfileScanner scanner;
 	private SpecfileChangelogScanner changelogScanner;
+	private SpecfilePackagesScanner packagesScanner;
 	private ColorManager colorManager;
 	private SpecfileHover specfileHover;
 	private SpecfileEditor editor;
@@ -68,6 +69,18 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 		return changelogScanner;
 	}
 	
+	protected SpecfilePackagesScanner getSpecfilePackagesScanner() {
+		if  (packagesScanner == null) {
+			packagesScanner = new SpecfilePackagesScanner(colorManager);
+			packagesScanner.setDefaultReturnToken(
+				new Token(
+					new TextAttribute(
+						colorManager.getColor(ISpecfileColorConstants.DEFAULT))));
+		}
+		return packagesScanner;
+	}
+	
+	
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		if (specfileHover == null)
 			specfileHover = new SpecfileHover(this.editor);
@@ -84,7 +97,11 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 //                dr = new DefaultDamagerRepairer(getSpecfileScanner());
 //                reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_DEFAULT);
 //                reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_DEFAULT);
-                
+
+		dr = new DefaultDamagerRepairer(getSpecfilePackagesScanner());
+		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_PACKAGES);
+		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_PACKAGES);
+		
 		dr = new DefaultDamagerRepairer(getSpecfileScanner());
 		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_SCRIPT);
 		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_SCRIPT);
@@ -125,6 +142,7 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 		assistant.setContentAssistProcessor(processor, SpecfilePartitionScanner.SPEC_SCRIPT);
 		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_FILES);
 		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_CHANGELOG);		
+		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_PACKAGES);	
 		// configure content assistance
 		assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
         IInformationControlCreator controlCreator= getInformationControlCreator();

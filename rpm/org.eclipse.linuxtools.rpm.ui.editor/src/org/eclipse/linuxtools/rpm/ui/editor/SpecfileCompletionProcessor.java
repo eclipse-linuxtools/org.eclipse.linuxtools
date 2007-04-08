@@ -218,9 +218,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private ICompletionProposal[] computeRpmPackageProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		List rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
-		SpecfileElement[] elements = specfile.getSectionsElements();
-		// Show rpm packages proposals only in the preamble section 
-		if (elements.length == 0 || region.getOffset() < elements[0].getLineEndPosition()) {
+		String currentContentType = sEditor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());
+		// Show only proposals on lines begining with Requires, BuildRequires, etc...
+		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PACKAGES)) {
 			if (rpmPkgProposalsList == null)
 				return new ICompletionProposal[0];
 			ArrayList proposals = new ArrayList();

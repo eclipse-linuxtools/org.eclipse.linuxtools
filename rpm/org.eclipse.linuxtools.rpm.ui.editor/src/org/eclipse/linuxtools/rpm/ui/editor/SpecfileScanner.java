@@ -26,15 +26,13 @@ public class SpecfileScanner extends RuleBasedScanner {
 	private static String[] keywords = { "%if", "%ifarch", "%ifnarch", "%else",
 			"%endif" };
 
-	private static String[] tags = { "Prereq", "Summary", "Name", "Version",
-			"Packager", "Requires", "Icon", "URL", "Prefix", "Packager",
+	private static String[] tags = { "Summary", "Name", "Version",
+			"Packager", "Icon", "URL", "Prefix", "Packager",
 			"Group", "License", "Release", "BuildRoot", "Distribution",
 			"Vendor", "Provides", "ExclusiveArch", "ExcludeArch",
-			"ExclusiveOS", "Obsoletes", "BuildArch", "BuildArchitectures",
-			"BuildRequires", "BuildConflicts", "BuildPreReq", "Conflicts",
+			"ExclusiveOS", "BuildArch", "BuildArchitectures",
 			"AutoRequires", "AutoReq", "AutoReqProv", "AutoProv", "Epoch",
-			"ExcludeOS", "Requires(post)", "Requires(postun)", "Requires(pre)",
-			"Requires(preun)" };
+			"ExcludeOS" };
 
 	public SpecfileScanner(ColorManager manager) {
 		IToken sectionToken = new Token(new TextAttribute(manager
@@ -83,7 +81,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 			wordRule.addWord(sections[i], sectionToken);
 		rules.add(wordRule);
 
-		// Name:, PreReq:, ...
+		// Name:, Summary:, ...
 		wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
 		for (int i = 0; i < tags.length; i++)
 			wordRule.addWord(tags[i] + ":", tagToken);

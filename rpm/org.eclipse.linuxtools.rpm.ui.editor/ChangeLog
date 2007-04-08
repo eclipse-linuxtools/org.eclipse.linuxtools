@@ -1,13 +1,48 @@
+2007-04-08  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Remove unneeded
+	RPM tags, these tags are now taken into account by SpecfilePartitionScanner.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java: New
+	file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java: Add
+	__spec_packages partition type. Use SpecfilePackagesScanner.PACKAGES_TAGS.
+	(SpecfilePartitionScanner): Add new scan rules for the__spec_packages partition.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java: Add hover support
+	for RPM packages.
+	(findPackages): New method.
+	(getHoverRegion): Add support for findPackages() method.
+	(getHoverInfo): Get RPM package hover information. Rename macroName to
+	currentSelection to reflect the current code.
+	(getHoverControlCreator): Use HTMLTextPresenter as information control
+	presenter.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Add
+	support for the RPM packages content type.
+	(getSpecfilePackagesScanner): New method.
+	(getPresentationReconciler): Reconcile packages.
+	(getContentAssistant): Set content assistant for packages content type.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: Add
+	completion support for the __spec_packages partition type.
+	(computeRpmPackageProposals): Show only proposals on lines begining with
+	Requires, BuildRequires, etc.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java: Add a
+	method used by SpecfilePartionScanner.getHoverInfo() to retrieve package.
+	information.
+	(getValue): New method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java: New file.
+	Add packages word detection.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/ISpecfileColorConstants.java: Add
+	color constant for packages.
+
 2007-04-06  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java
-	(getValue): Escape "?" character in regex.  Bug #181395.
+	(getValue): Escape "?" character in regex. Bug #181395.
 
 2007-04-05  Remy Suen  <remy.suen@gmail.com>
 
 	Bug #181249
-	* META-INF/MANIEST.MF: Set the Bundle-RequiredExecutionEnvironment
-	attribute to J2SE-1.4.
+	* META-INF/MANIEST.MF: Set the Bundle-RequiredExecutionEnvironment attribute to
+	J2SE-1.4.
 
 2007-04-05  Andrew Overholt  <overholt@redhat.com>
 
