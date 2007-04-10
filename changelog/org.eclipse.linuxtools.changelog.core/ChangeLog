@@ -1,3 +1,8 @@
+2007-04-10 	Kyu Lee  <klee@redhat.com>
+
+	* plugin.xml: Igor's patch to renamespace old com.redhat strings
+	bug #181497.
+
 2007-03-28  Remy Chi Jian Suen  <remy.suen@gmail.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java:

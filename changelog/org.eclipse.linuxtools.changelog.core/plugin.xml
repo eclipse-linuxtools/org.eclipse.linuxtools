@@ -15,49 +15,49 @@
 		<category
 			name="Changelog"
 			description="Changelog key bindings"
-			id="com.redhat.changelog">
+			id="org.eclipse.linuxtools.changelog">
 		</category>
 
 		<command
-        categoryId="com.redhat.changelog"
+        categoryId="org.eclipse.linuxtools.changelog"
         description="%insertCLEntryDesc"
-        id="com.redhat.eclipse.changelog.core.actions.KeyActionCommand"
+        id="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"
         name="%insertCLEntry">
 		</command>
   <command
-        categoryId="com.redhat.changelog"
+        categoryId="org.eclipse.linuxtools.changelog"
         description="Prepares Changelog"
-        id="com.redhat.eclipse.changelog.core.preparechangelog"
+        id="org.eclipse.linuxtools.changelog.core.preparechangelog"
         name="Prepare Changelog"/>
   <command
-        categoryId="com.redhat.changelog"
+        categoryId="org.eclipse.linuxtools.changelog"
         description="Copies latest changelog entry to clipboard"
-        id="com.redhat.eclipse.changelog.core.prepareCommit"
+        id="org.eclipse.linuxtools.changelog.core.prepareCommit"
         name="Prepare Commit"/>
   <command
-        categoryId="com.redhat.changelog"
+        categoryId="org.eclipse.linuxtools.changelog"
         description="Formats ChangeLog"
-        id="com.redhat.eclipse.changelog.core.formatChangeLog"
+        id="org.eclipse.linuxtools.changelog.core.formatChangeLog"
         name="Format ChangeLog"/>
 	</extension>
 	
 	 <!-- Actions -->	
 	<extension point="org.eclipse.ui.actionSets">
- 		<actionSet label="%clActionSet" visible="true" id="com.redhat.eclipse.changelog.actionSet">
+ 		<actionSet label="%clActionSet" visible="true" id="org.eclipse.linuxtools.changelog.actionSet">
         	<action
-            	definitionId="com.redhat.eclipse.changelog.core.actions.KeyActionCommand"
+            	definitionId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"
 				label="%clEntry"
 				class="org.eclipse.linuxtools.changelog.core.actions.InsertChangeLogKeyHandler"
 				tooltip="%clEntry"
 				menubarPath="edit/"
-				id="com.redhat.eclipse.changelog.core.actions.KeyAction">
+				id="org.eclipse.linuxtools.changelog.core.actions.KeyAction">
  			</action>
 		</actionSet>
 	</extension>
        
 	<extension point = "org.eclipse.ui.preferencePages">
 		<page 
-			id="com.redhat.eclipse.changelog.core.Page1"
+			id="org.eclipse.linuxtools.changelog.core.Page1"
 			class="org.eclipse.linuxtools.changelog.core.ChangeLogPreferencesPage"
 			name="%prefTitle">
        	</page>
@@ -86,7 +86,7 @@
         <formatter
               inFile="false"
               class="org.eclipse.linuxtools.changelog.core.formatters.GNUFormat"
-              id="com.redhat.eclipse.changelog.GNUFormat"
+              id="org.eclipse.linuxtools.changelog.GNUFormat"
               name="%gnuFormatter">
               <fileName name="ChangeLog" />  
         </formatter>        
@@ -98,21 +98,21 @@
              default="true"
              filenames="ChangeLog"
              icon="icons/file_obj.gif"
-             id="com.redhat.eclipse.changelog.core.editor6"
+             id="org.eclipse.linuxtools.changelog.core.editor6"
              name="ChangeLog Editor"/>
     </extension>
     <extension
           point="org.eclipse.linuxtools.changelog.core.editorContribution">
        <editor
              class="org.eclipse.linuxtools.changelog.core.editors.GNUEditorConfiguration"
-             id="com.redhat.eclipse.changelog.core.gnueditor"
+             id="org.eclipse.linuxtools.changelog.core.gnueditor"
              name="GNU Editor"/>
     </extension>
     <extension
           point="org.eclipse.ui.navigator.viewer">
        <viewerActionBinding viewerId="org.eclipse.team.cvs.ui.workspaceSynchronization">
           <includes>
-             <actionExtension pattern="com.redhat.eclipse.changelog.core.ui.ChangeLogActioniProvider"/>
+             <actionExtension pattern="org.eclipse.linuxtools.changelog.core.ui.ChangeLogActioniProvider"/>
           </includes>
        </viewerActionBinding>
     </extension>
@@ -120,7 +120,7 @@
           point="org.eclipse.ui.navigator.navigatorContent">
        <actionProvider
              class="org.eclipse.linuxtools.changelog.core.ui.ChangeLogActionProvider"
-             id="com.redhat.eclipse.changelog.core.ui.ChangeLogActioniProvider">
+             id="org.eclipse.linuxtools.changelog.core.ui.ChangeLogActioniProvider">
           <enablement>
              <adapt type="org.eclipse.core.resources.mapping.ResourceMapping"/>
           </enablement>
@@ -129,25 +129,25 @@
     <extension
           point="org.eclipse.ui.bindings">
        <key
-             commandId="com.redhat.eclipse.changelog.core.actions.KeyActionCommand"
+             commandId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"
              contextId="org.eclipse.ui.textEditorScope"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="Ctrl+Alt+C"/>
        <scheme
-             id="com.redhat.changelog.keyscheme.default"
+             id="org.eclipse.linuxtools.changelog.keyscheme.default"
              name="default"/>
        <key
-             commandId="com.redhat.eclipse.changelog.core.preparechangelog"
+             commandId="org.eclipse.linuxtools.changelog.core.preparechangelog"
              contextId="org.eclipse.ui.contexts.window"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="Ctrl+Alt+P"/>
        <key
-             commandId="com.redhat.eclipse.changelog.core.prepareCommit"
+             commandId="org.eclipse.linuxtools.changelog.core.prepareCommit"
              contextId="org.eclipse.ui.textEditorScope"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="Ctrl+Alt+V"/>
        <key
-             commandId="com.redhat.eclipse.changelog.core.formatChangeLog"
+             commandId="org.eclipse.linuxtools.changelog.core.formatChangeLog"
              contextId="org.eclipse.ui.textEditorScope"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="ESC Ctrl+F"/>
@@ -156,15 +156,15 @@
           point="org.eclipse.ui.handlers">
        <handler
              class="org.eclipse.linuxtools.changelog.core.actions.PrepareChangelogKeyHandler"
-             commandId="com.redhat.eclipse.changelog.core.preparechangelog"/>
+             commandId="org.eclipse.linuxtools.changelog.core.preparechangelog"/>
        <handler
              class="org.eclipse.linuxtools.changelog.core.actions.InsertChangeLogKeyHandler"
-             commandId="com.redhat.eclipse.changelog.core.actions.KeyActionCommand"/>
+             commandId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"/>
        <handler
              class="org.eclipse.linuxtools.changelog.core.actions.PrepareCommitHandler"
-             commandId="com.redhat.eclipse.changelog.core.prepareCommit"/>
+             commandId="org.eclipse.linuxtools.changelog.core.prepareCommit"/>
        <handler
              class="org.eclipse.linuxtools.changelog.core.actions.FormatChangeLogAction"
-             commandId="com.redhat.eclipse.changelog.core.formatChangeLog"/>
+             commandId="org.eclipse.linuxtools.changelog.core.formatChangeLog"/>
     </extension>
 </plugin>
