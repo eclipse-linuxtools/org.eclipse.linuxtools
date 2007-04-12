@@ -21,6 +21,8 @@ public class AllTests {
 		suite.addTestSuite(LinePositionTests.class);
 		suite.addTestSuite(SourceComparatorTests.class);
 		suite.addTestSuite(RefactoringTests.class);
+		suite.addTestSuite(RpmMacroProposalsListTests.class);
+		suite.addTestSuite(RpmPackageProposalsListTests.class);
 		//$JUnit-END$
 		return suite;
 	}

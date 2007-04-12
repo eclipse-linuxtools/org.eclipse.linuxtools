@@ -1,3 +1,13 @@
+2007-04-12  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Bug #181236
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTests.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTests.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java
+	(suite): Add new tests.
+
 2007-04-05  Remy Suen  <remy.suen@gmail.com>
 
 	Bug #181249
