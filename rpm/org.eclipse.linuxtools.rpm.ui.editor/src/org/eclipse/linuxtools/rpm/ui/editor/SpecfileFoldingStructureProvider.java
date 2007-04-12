@@ -48,20 +48,20 @@ public class SpecfileFoldingStructureProvider {
 		sDocument = document;
 	}
 
-	public void updateFoldingRegions(Specfile specfile) {
+	public void updateFoldingRegions() {
 		try {
 			ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
 					.getAdapter(ProjectionAnnotationModel.class);
 			if (model != null)
-				updateFoldingRegions(specfile, model);
+				updateFoldingRegions(model);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	void updateFoldingRegions(Specfile specfile, ProjectionAnnotationModel model)
+	void updateFoldingRegions(ProjectionAnnotationModel model)
 			throws BadLocationException {
-		Set/* <Position> */structure = createFoldingStructure(specfile);
+		Set/* <Position> */structure = createFoldingStructure(sEditor.getSpecfile());
 		Annotation[] deletions = computeDifferences(model, structure);
 		Map/* <Annotation,Position> */additions = computeAdditions(structure);
 		if ((deletions.length != 0 || additions.size() != 0)

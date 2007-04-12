@@ -8,14 +8,13 @@ import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
 import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 
 public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
 
 	private IDocument sDocument;
 	private IProgressMonitor sProgressMonitor;
-	private SpecfileParser sParser;
 	private SpecfileFoldingStructureProvider sFoldingStructureProvider;
 	
 	SpecfileContentOutlinePage outline;
@@ -28,23 +27,9 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 		lastRegionOffset = Integer.MAX_VALUE;
 		this.editor = editor;
 		documentProvider = editor.getDocumentProvider();
-		sParser= new SpecfileParser();
 		sFoldingStructureProvider= new SpecfileFoldingStructureProvider(editor);
 	}
 
-	public void reconcile(IRegion partition) {
-		try {
-			Specfile specfile = editor.getSpecfile();
-			SpecfileParser parser = editor.getParser();
-			if (specfile != null) {
-				editor.setSpecfile(parser.parse(documentProvider
-						.getDocument(editor.getEditorInput())));
-				outline.update();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public void setDocument(IDocument document) {
 		sDocument= document;
@@ -65,22 +50,34 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 	}
 
 	private void reconcile() {
-		Specfile specfile= parseSpecfile();
+		Specfile specfile = editor.getSpecfile();
 		if (specfile != null) {
-			updateEditor(specfile);
-			updateFolding(specfile);
+			editor.setSpecfile(editor.getParser().parse(documentProvider
+					.getDocument(editor.getEditorInput())));
+			outline.update();
+			updateFolding();
+			updateEditor();
 		}
 	}
-
-	private Specfile parseSpecfile() {
-		return sParser.parse(sDocument);
+	
+	public void reconcile(IRegion partition) {
+		reconcile();
 	}
 
-	private void updateEditor(final Specfile specfile) {
+	private void updateEditor() {
+		Shell shell= editor.getSite().getShell();
+		if (!(shell == null || shell.isDisposed())) {
+			shell.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					editor.setSpecfile(editor.getParser().parse(documentProvider
+							.getDocument(editor.getEditorInput())));
+				}
+			});
+		}
 		return;
 	}
 
-	private void updateFolding(Specfile specfile) {
-		sFoldingStructureProvider.updateFoldingRegions(specfile);
+	private void updateFolding() {
+		sFoldingStructureProvider.updateFoldingRegions();
 	}
 }
