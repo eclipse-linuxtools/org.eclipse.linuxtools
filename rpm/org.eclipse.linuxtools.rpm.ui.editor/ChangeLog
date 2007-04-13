@@ -1,3 +1,21 @@
+2007-04-10  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java:
+	Update the editor without saving the file.
+	(updateFolding): Don't create a specfile instance.
+	(reconcile): Use the same method to reconcile.
+	(SpecfileReconcilingStrategy): Remove unneeded code.
+	(updateEditor): Update the specfile instance of the editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
+	(parseSimpleDefinition): Cleanup.
+	(parseComplexDefinition): Remove all existing error handler markers before
+	parsing the file.
+	(parse): Remove workarounds which are no longer needed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java
+	(getContextType): Fix array out of bounds bug with incomplete specfiles.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java
+	(updateFoldingRegions): Use the Specfile instance in the editor one.
+
 2007-04-08  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Remove unneeded

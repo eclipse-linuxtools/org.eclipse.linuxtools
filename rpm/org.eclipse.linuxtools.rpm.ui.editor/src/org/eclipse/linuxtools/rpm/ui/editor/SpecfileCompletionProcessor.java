@@ -253,13 +253,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			if (elements.length == 0 || offset < elements[0].getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(PREAMBLE_SECTION_TEMPLATE);
-			} else if (offset < elements[1].getLineEndPosition()) {
+			} else if (elements.length == 1 || offset < elements[1].getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(PRE_SECTION_TEMPLATE);
-			} else if (offset < elements[2].getLineEndPosition()) {
+			} else if (elements.length == 2 || offset < elements[2].getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(BUILD_SECTION_TEMPLATE);
-			} else if (offset < elements[3].getLineEndPosition()) {
+			} else if (elements.length == 3 || offset < elements[3].getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(INSTALL_SECTION_TEMPLATE);
 			} else {
