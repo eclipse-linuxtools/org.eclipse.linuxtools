@@ -1,3 +1,10 @@
+2007-04-16  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite):
+	Add (commented-out) HyperlinkWithMacroTests.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java:
+	New file.
+
 2007-04-12  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Bug #181236
@@ -20,7 +27,8 @@
 
 2007-04-05  Andrew Overholt  <overholt@redhat.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java (newFile): Remove unnecessary specfile instantiation.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java
+	(newFile): Remove unnecessary specfile instantiation.
 	(setUp): Instantiate specfile object.
 	(testGetComplexSectionName3): Update test to use getPackageName() instead of getName().
 	(testGetComplexSectionName4): Likewise.
