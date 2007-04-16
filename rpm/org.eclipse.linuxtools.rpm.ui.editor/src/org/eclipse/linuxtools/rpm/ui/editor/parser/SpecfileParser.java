@@ -140,7 +140,7 @@ public class SpecfileParser {
 			return parseMacro(lineText, specfile, lineNumber);
 		
 		for (int i = 0; i < simpleDefinitions.length; i++) {
-			if (lineText.startsWith(simpleDefinitions[i])) {
+			if (lineText.startsWith(simpleDefinitions[i] + ":")) {
 				if (simpleDefinitions[i].equals("License")) {
 					return parseSimpleDefinition(lineText, specfile, lineNumber, true);
 				} else
@@ -442,20 +442,20 @@ public class SpecfileParser {
 			if (iter.hasNext()) {
 				toReturn = new SpecfileTag(token.substring(0, token.length() - 1).toLowerCase(),
 						(String) iter.next(), specfile);
-				if (iter.hasNext()) {
-					if (!warnMultipleValues) {
-						errorHandler.handleError(new SpecfileParseException(
-								token.substring(0, token.length() - 1) + " cannot have multiple values.",
-								lineNumber, 0, lineText.length(),
-								IMarker.SEVERITY_ERROR));
-						return null;
-					} else {
-						errorHandler.handleError(new SpecfileParseException(
-								token.substring(0, token.length() - 1) + " should be an acronym.",
-								lineNumber, 0, lineText.length(),
-								IMarker.SEVERITY_WARNING));
-					}
+				if (iter.hasNext() && !warnMultipleValues) {
+					errorHandler.handleError(new SpecfileParseException(
+							token.substring(0, token.length() - 1) + " cannot have multiple values.",
+							lineNumber, 0, lineText.length(),
+							IMarker.SEVERITY_ERROR));
+					return null;
 				}
+				// FIXME:  investigate whether we should keep this or not
+//				} else {
+//					errorHandler.handleError(new SpecfileParseException(
+//							token.substring(0, token.length() - 1) + " should be an acronym.",
+//							lineNumber, 0, lineText.length(),
+//							IMarker.SEVERITY_WARNING));
+//				}
 			} else {
 				errorHandler.handleError(new SpecfileParseException(
 						token.substring(0, token.length() - 1) + " declaration without value.", lineNumber,

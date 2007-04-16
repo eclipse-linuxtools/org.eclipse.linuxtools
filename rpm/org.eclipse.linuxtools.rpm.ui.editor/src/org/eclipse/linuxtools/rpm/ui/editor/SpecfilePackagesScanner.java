@@ -24,7 +24,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 
 	protected static final String[] PACKAGES_TAGS = { "BuildRequires", "BuildConflicts",
 			"BuildPreReq", "Requires", "Requires(post)", "Requires(postun)",
-			"Requires(pre)", "Requires(preun)", "Conflicts", "Obsoletes", "Prereq" };
+			"Requires(pre)", "Requires(preun)", "Requires(hint)", "Conflicts", "Obsoletes", "Prereq" };
 
 	public SpecfilePackagesScanner(ColorManager manager) {
 		IToken packageToken = new Token(new TextAttribute(manager
@@ -53,9 +53,13 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 				.getProposals("");
 		Iterator iterator = rpmPackages.iterator();
 		String[] item;
+		char[] startWith = {' ', '\t', ',', ':'};
 		while (iterator.hasNext()) {
 			item = (String[]) iterator.next();
-			wordRule.addWord(item[0], packageToken);
+			// FIXME Perhaps, that can slow down the scanning?
+			for (int i = 0; i < startWith.length; i++) {
+				wordRule.addWord(startWith[i] + item[0], packageToken);
+			}
 		}
 		rules.add(wordRule);
 

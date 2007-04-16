@@ -5,10 +5,10 @@ import org.eclipse.jface.text.rules.IWordDetector;
 public class PackageWordDetector implements IWordDetector {
 
 	public boolean isWordPart(char c) {
-		return Character.isLetterOrDigit(c) || (c == '-');
+		return Character.isLetterOrDigit(c) || (c == '-') || (c == '_');
 	}
 
 	public boolean isWordStart(char c) {
-		return Character.isLetter(c);
+		return (c == ' ') || (c == ',') || (c == '\t') || (c == ':');
 	}
 }

@@ -17,7 +17,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 	private static String[] sections = { "%prep", "%build", "%install", "%pre",
 			"%preun", "%post", "%files", "%changelog", "%package",
-			"%description", "%postun" };
+			"%description", "%postun", "%clean", "%check" };
 
 	private static String[] definedMacros = { "%define", "%make", "%setup",
 			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir",

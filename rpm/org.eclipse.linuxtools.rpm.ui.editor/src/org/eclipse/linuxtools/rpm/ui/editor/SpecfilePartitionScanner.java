@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
@@ -51,6 +52,9 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		for (int i = 0; i < sectionHeaders.length; i++)
 			rules.add(new SectionRule(sectionHeaders[i], sectionEndingHeaders, specScript));
 
+		// comments
+		rules.add(new EndOfLineRule("#", specScript));
+		
 		// %files
 		rules.add(new SectionRule("%files", new String[] { "%files",
 				"%changelog" }, specFiles));

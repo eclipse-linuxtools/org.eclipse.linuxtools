@@ -1,5 +1,23 @@
+2007-04-14  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Bug #182302
+	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java
+	(isWordPart): Detect packages contain '_' char.
+	(isWordStart): Add support for packages begining with ' ' | ',' | '\t' | ':'
+	char.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
+	(parseLine): Fix tags parsing.
+	(parseSimpleDefinition): Don't show warning about acronym error.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java
+	(sections): Add %clean and %check section.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java
+	(PACKAGES_TAGS): Add Requires(hint)
+	(SpecfilePackagesScanner): Detect packages that begin with ' ' | ',' | '\t' |
+	':' char. Add comment support.
+
 2007-04-10  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	Bug #181747
 	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java:
 	New class to resolve macro in URL.
 	(detectHyperlinks): New method.
@@ -10,6 +28,7 @@
 
 2007-04-10  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	Bug #181110
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java:
 	Update the editor without saving the file.
 	(updateFolding): Don't create a specfile instance.
@@ -28,6 +47,7 @@
 
 2007-04-08  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	Bug #181245
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Remove unneeded
 	RPM tags, these tags are now taken into account by SpecfilePartitionScanner.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java: New
