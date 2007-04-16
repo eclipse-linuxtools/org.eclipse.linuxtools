@@ -1,5 +1,15 @@
 2007-04-10  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java:
+	New class to resolve macro in URL.
+	(detectHyperlinks): New method.
+	(URLHyperlinkWithMacroDetector): Likewise.
+	(resolveDefinesInURL): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
+	(getHyperlinkDetectors): Use URLHyperlinkWithMacroDetector.
+
+2007-04-10  Alphonse Van Assche  <alcapcom@gmail.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java:
 	Update the editor without saving the file.
 	(updateFolding): Don't create a specfile instance.
