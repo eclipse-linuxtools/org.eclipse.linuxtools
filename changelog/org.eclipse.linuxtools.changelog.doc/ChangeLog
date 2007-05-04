@@ -1,3 +1,8 @@
+2007-05-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #185598
+	* plugin.xml: Add "Incubation" to Bundle-Name.
+
 2007-01-24  Kyu Lee  <klee@redhat.com>
 
 	* raw/ChangeLogDocs/ChangeLog.html:

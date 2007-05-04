@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
    id="org.eclipse.linuxtools.changelog.doc"
-   name="%pluginName"
+   name="ChangeLog Documentation (Incubation)"
    version="2.3.4"
-   provider-name="%providerName">
+   provider-name="Eclipse.org">
 
    <runtime>
    </runtime>
