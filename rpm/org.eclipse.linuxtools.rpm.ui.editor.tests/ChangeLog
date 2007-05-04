@@ -1,3 +1,8 @@
+2007-05-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #185598
+	* META-INF/MANIFEST.MF: Add "Incubation" to Bundle-Name.  Add Bundle-Vendor.
+
 2007-04-16  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite):
