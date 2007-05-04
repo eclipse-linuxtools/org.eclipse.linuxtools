@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin
    id="org.eclipse.cdt.oprofile.core"
-   name="%plugin.name"
+   name="OProfile core plug-in (Incubation)"
    version="1.2.1"
    provider-name="Eclipse.org"
    class="org.eclipse.cdt.oprofile.core.OprofileCorePlugin">
