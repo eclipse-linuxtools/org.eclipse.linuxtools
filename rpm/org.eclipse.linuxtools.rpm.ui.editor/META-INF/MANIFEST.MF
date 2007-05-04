@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Specfile Plug-in
+Bundle-Name: RPM Specfile Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui.editor; singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.linuxtools.rpm.ui.editor.Activator

@@ -1,3 +1,8 @@
+2007-05-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #185598
+	* META-INF/MANIFEST.MF: Add "Incubation" to Bundle-Name.
+	
 2007-04-14  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Bug #182302
