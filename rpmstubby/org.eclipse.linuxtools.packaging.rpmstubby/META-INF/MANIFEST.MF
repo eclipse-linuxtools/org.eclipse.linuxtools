@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Feature to RPM specfile Stubber
+Bundle-Name: Feature to RPM specfile Stubber (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.rpmstubby;singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.linuxtools.rpmstubby.StubbyPlugin
