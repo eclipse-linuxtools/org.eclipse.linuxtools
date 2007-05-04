@@ -7,10 +7,10 @@
 
 <plugin 
 
-   name = "%pluginName"
+   name = "OProfile Plug-in Documentation (Incubation)"
    id = "org.eclipse.cdt.oprofile.doc"
    version = "1.0.0"
-  provider-name = "%providerName">
+  provider-name = "Eclipse.org">
    <!-- Configure the help contribution for this plugin --> 
    <!-- This part should be in a documentation plugin -->
    <extension point="org.eclipse.help.toc">
