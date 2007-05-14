@@ -1,3 +1,9 @@
+2007-05-14  Kyu Lee  <klee@redhat.com>
+
+	* feature.xml: Version bump to 2.4.0.
+	Added parser fragments.
+	Removed JDT requirements.
+
 2007-03-27  Ben Konrath  <bkonrath@redhat.com>
 
 	* .svnignore: Rename from .cvsignore.
