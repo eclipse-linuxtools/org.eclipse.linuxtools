@@ -6,21 +6,24 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Phil Muldoon <pmuldoon@redhat.com> - initial API and implementation
- *    Kyu Lee <klee@redhat.com>          - bug fixes and improvement 
+ *    Phil Muldoon <pmuldoon@redhat.com>       - initial API and implementation
+ *    Kyu Lee <klee@redhat.com>                - bug fixes and improvement 
+ *    Remy Chi Jian Suen <remy.suen@gmail.com> - support static blocks (#179549)
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.parsers;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
+
+
 
 
 /**
@@ -59,6 +62,8 @@ public class JavaParser implements IParserChangeLogContrib {
 			break;
 		case IJavaElement.COMPILATION_UNIT:
 			return "";
+		case IJavaElement.INITIALIZER:
+			return "static initializer";
 		default:
 			IJavaElement tmpMethodType;
 			if (((tmpMethodType = method.getAncestor(IJavaElement.METHOD)) == null)
@@ -110,12 +115,12 @@ public class JavaParser implements IParserChangeLogContrib {
 	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 
 		// Check for type casting
-		if (!(editor instanceof CompilationUnitEditor))
+		if (!(editor instanceof AbstractDecoratedTextEditor))
 			return "";
 
-		CompilationUnitEditor java_editor = (CompilationUnitEditor) editor;
-		ITextSelection selection = (ITextSelection) java_editor
-				.getSelectionProvider().getSelection();
+		AbstractDecoratedTextEditor java_editor = (AbstractDecoratedTextEditor) editor;
+		
+		ITextSelection selection = (ITextSelection)(java_editor.getSelectionProvider().getSelection());
 
 		IEditorInput input = java_editor.getEditorInput();
 
