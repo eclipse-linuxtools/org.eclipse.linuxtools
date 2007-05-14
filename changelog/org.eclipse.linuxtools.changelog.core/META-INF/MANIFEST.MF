@@ -2,19 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ChangeLog Core Functionality (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.core;singleton:=true
-Bundle-Version: 2.3.4
+Bundle-Version: 2.4.0
 Bundle-Activator: org.eclipse.linuxtools.changelog.core.ChangelogPlugin
 Bundle-Localization: plugin
 Bundle-Vendor: Eclipse.org
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-Classpath: changelog.jar
-Require-Bundle: org.eclipse.jdt.ui,
- org.eclipse.jdt.core,
- org.eclipse.cdt.ui;resolution:=optional,
- org.eclipse.cdt.core;resolution:=optional,
- org.eclipse.team.ui,
- org.eclipse.compare,
+Require-Bundle: org.eclipse.team.ui,
  org.eclipse.ui.ide,
  org.eclipse.jface.text,
  org.eclipse.ui.workbench.texteditor,
@@ -25,10 +20,10 @@ Require-Bundle: org.eclipse.jdt.ui,
  org.eclipse.team.cvs.ui,
  org.eclipse.team.cvs.core;bundle-version="3.2.0",
  org.eclipse.team.core,
- org.eclipse.ui.navigator
+ org.eclipse.ui.navigator,
+ org.eclipse.compare
 Export-Package: org.eclipse.linuxtools.changelog.core,
  org.eclipse.linuxtools.changelog.core.actions,
  org.eclipse.linuxtools.changelog.core.editors,
  org.eclipse.linuxtools.changelog.core.formatters,
- org.eclipse.linuxtools.changelog.core.parsers,
  org.eclipse.linuxtools.changelog.core.ui

@@ -63,23 +63,6 @@
        	</page>
 	</extension>
    		
-	<extension point="org.eclipse.linuxtools.changelog.core.parserContribution">
-		<parser
-			name="%javaParser"
-			class="org.eclipse.linuxtools.changelog.core.parsers.JavaParser"            	
-			editor="CompilationUnitEditor">
-		</parser>
-		<parser
-			name="%cParser"
-			class="org.eclipse.linuxtools.changelog.core.parsers.CParser"
-			editor="CEditor"> 
- 		</parser>
- 		<parser
-			name="%compareParser"
-			class="org.eclipse.linuxtools.changelog.core.parsers.CompareParser"
-			editor="CompareEditor">
- 		</parser>
-	</extension>
 
     <extension
         point="org.eclipse.linuxtools.changelog.core.formatterContribution">

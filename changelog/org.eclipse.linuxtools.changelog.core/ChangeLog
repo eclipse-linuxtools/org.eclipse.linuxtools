@@ -1,3 +1,19 @@
+2007-05-09 	Kyu Lee  <klee@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java:
+	Removed. Now separate javaparser plugin will provide parsing.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/CParser.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/PythonParser.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/CompareParser.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
+	Removed JDT import for JavaModelException which we don't really need.
+	* META-INF/MANIFEST.MF: Removed JDT and CDT dependency because
+	now Java/C parsers are in separate plug-ins.
+	* plugin.xml: Version bump to 2.4.0 and remove parser extensions.
+
 2007-05-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #185598
