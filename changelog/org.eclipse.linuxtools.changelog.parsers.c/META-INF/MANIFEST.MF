@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Changelog C Parser Fragment
+Bundle-SymbolicName: org.eclipse.linuxtools.changelog.parsers.java;singleton:=true
+Bundle-Version: 0.1.0
+Fragment-Host: org.eclipse.linuxtools.changelog.core;bundle-version="2.4.0"
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.cdt.core,
+ org.eclipse.cdt.ui
