@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<fragment>
+   <extension
+         name="compare parser"
+         point="org.eclipse.linuxtools.changelog.core.parserContribution">
+      <parser
+            class="org.eclipse.linuxtools.changelog.core.parsers.CompareParser"
+            editor="CompareEditor"
+            name="org.eclipse.linuxtools.changelog.compareparser.parser1"/>
+   </extension>
+
+</fragment>
