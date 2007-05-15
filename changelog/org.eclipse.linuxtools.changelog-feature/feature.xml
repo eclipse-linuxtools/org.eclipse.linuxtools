@@ -108,6 +108,30 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <discovery label="ChangeLog Plugin Site" url="http://sourceware.org/eclipse/changelog" type="web"/>
    </url>
 
+   <includes
+         id="org.eclipse.linuxtools.changelog.compareEditorParser"
+         version="0.0.0"
+         optional="true"
+         search-location="self"/>
+
+   <includes
+         id="org.eclipse.linuxtools.changelog.cParser"
+         version="0.0.0"
+         optional="true"
+         search-location="self"/>
+
+   <includes
+         id="org.eclipse.linuxtools.changelog.javaParser"
+         version="0.0.0"
+         optional="true"
+         search-location="self"/>
+
+   <includes
+         id="org.eclipse.linuxtools.changelog.pythonParser"
+         version="0.0.0"
+         optional="true"
+         search-location="self"/>
+
    <requires>
       <import plugin="org.eclipse.team.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
@@ -128,44 +152,13 @@ This Agreement is governed by the laws of the State of New York and the intellec
          id="org.eclipse.linuxtools.changelog.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.linuxtools.changelog.doc"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.changelog.javaparser"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.changelog.parsers.compareEditor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.changelog.parsers.java"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.changelog.parsers.python"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
 
 </feature>
