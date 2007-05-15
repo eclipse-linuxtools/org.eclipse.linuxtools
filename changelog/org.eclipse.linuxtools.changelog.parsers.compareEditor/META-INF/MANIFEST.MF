@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Changelog Compare Editor Parser Fragment
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.parsers.compareEditor;singleton:=true
-Bundle-Version: 0.1.0
+Bundle-Version: 1.0.0
 Fragment-Host: org.eclipse.linuxtools.changelog.core;bundle-version="2.4.0"
 Bundle-Localization: plugin
 Bundle-Vendor: Eclipse.org
