@@ -60,7 +60,12 @@ public class SpecfileSource extends SpecfileElement {
 	// has *already been set*.  If this is not true, it will simply do nothing
 	public void changeReferences(int oldPatchNumber) {
 		Specfile specfile = this.getSpecfile();
-		Pattern patchPattern = Pattern.compile("%patch" + oldPatchNumber);
+		Pattern patchPattern;
+		if (oldPatchNumber == 0) {
+			patchPattern = Pattern.compile("%patch" + oldPatchNumber + "|%patch");
+		} else {
+			patchPattern = Pattern.compile("%patch" + oldPatchNumber);
+		}
 		for (Iterator lineIter = getLinesUsed().iterator(); lineIter.hasNext();) {
 			int lineNumber = ((Integer) lineIter.next()).intValue();
 			String line;
@@ -80,13 +85,19 @@ public class SpecfileSource extends SpecfileElement {
 	}
 	public void changeDeclaration(int oldPatchNumber) {
 		Specfile specfile = this.getSpecfile();
-		Pattern patchPattern = Pattern.compile("Patch" + oldPatchNumber);
+		Pattern patchPattern;
+		if (oldPatchNumber == 0) {
+			patchPattern = Pattern.compile("Patch" + oldPatchNumber + "|Patch");
+		} else {
+			patchPattern = Pattern.compile("Patch" + oldPatchNumber);
+		}
 		String line;
 		try {
 			line = specfile.getLine(lineNumber);
 			Matcher patchMatcher = patchPattern.matcher(line);
 			if (!patchMatcher.find())
-				System.out.println("error");
+				// TODO: Maybe we can throw a exception here.
+				System.out.println("error: can't match " + patchPattern.pattern());
 			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number));
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block

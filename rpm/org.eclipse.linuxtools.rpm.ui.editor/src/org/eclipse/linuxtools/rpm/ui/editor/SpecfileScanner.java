@@ -67,7 +67,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 		// %patch[0-9]+[\ \t]
 		rules.add(new StringWithEndingRule("%patch", new PatchNumberDetector(),
-				macroToken, true));
+				macroToken, false ));
 
 		// %if, %else ...
 		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);

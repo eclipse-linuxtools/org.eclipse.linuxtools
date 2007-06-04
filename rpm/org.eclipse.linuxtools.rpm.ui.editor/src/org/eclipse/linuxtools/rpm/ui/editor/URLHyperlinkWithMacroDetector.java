@@ -45,8 +45,7 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 	 */
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
 		IHyperlink[] returned = super.detectHyperlinks(textViewer, region, canShowMultipleHyperlinks);
-		
-		if (returned.length > 0) {
+		if (returned != null && returned.length > 0) {
 		IHyperlink hyperlink = returned[0];
 			if (hyperlink instanceof URLHyperlink) {
 				URLHyperlink urlHyperlink = (URLHyperlink) hyperlink;

@@ -282,13 +282,9 @@ public class SpecfileParser {
 			// %patchN+
 			try {
 				if (token.startsWith("%patch")) {
-					int patchNumber = Integer.parseInt(token.substring(6));
-					if (specfile.getPatch(patchNumber) == null) {
-						errorHandler
-						.handleError(new SpecfileParseException(
-								"Patch number " + patchNumber + " is not defined.",
-								lineNumber, 0, lineText.length(),
-								IMarker.SEVERITY_ERROR));
+					int patchNumber = 0;
+					if (token.length() > 6) {
+						patchNumber = Integer.parseInt(token.substring(6));
 					}
 					toReturn = new SpecfilePatchMacro(patchNumber);
 				}
@@ -382,16 +378,18 @@ public class SpecfileParser {
 						return null;
 					}
 					if (sourceType == SpecfileSource.PATCH) {
-						// FIXME:  is it true that ^Patches must have necessarily
-						// numbers but not sources?
-						number = Integer.parseInt(token.substring(5));
-						if (!("patch" + number).equalsIgnoreCase(token)) {
-							errorHandler
-							.handleError(new SpecfileParseException(
-									"Invalid patch directive.",
-									lineNumber, 0, lineText.length(),
-									IMarker.SEVERITY_ERROR));
-							return null;
+						if (token.length() > 5) {
+							number = Integer.parseInt(token.substring(5));
+							if (!("patch" + number).equalsIgnoreCase(token)) {
+								errorHandler
+								.handleError(new SpecfileParseException(
+										"Invalid patch directive.",
+										lineNumber, 0, lineText.length(),
+										IMarker.SEVERITY_ERROR));
+								return null;
+							}
+						} else {
+							number = 0;
 						}
 					} else {
 						if (token.length() > 6) {

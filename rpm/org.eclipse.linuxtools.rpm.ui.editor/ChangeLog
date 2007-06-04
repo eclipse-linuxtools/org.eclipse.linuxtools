@@ -1,5 +1,19 @@
 2007-06-04  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
+	(parsePatch): Parse %patch macro and Patch: directive without trailing number.
+	(parseComplexDefinition): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSource.java
+	(changeReferences): Likewise.
+	(changeDeclaration): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java
+	(SpecfileScanner): Scan %patch macro without trailing number.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java
+	(detectHyperlinks): Check if IHyperlink[] is not null before try to get the
+	lenght of it.
+
+2007-06-04  Alphonse Van Assche  <alcapcom@gmail.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java 
 	Fix ChangeLog entry action.
 	(formatDateLine): Add escape char in pattern %{?dist} tag.
