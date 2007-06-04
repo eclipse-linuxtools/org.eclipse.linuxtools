@@ -37,7 +37,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
         String release = specfile.getRelease() == null ? "" : resolveElement
                 .resolve(specfile.getRelease());
         // remove the dist macro if it exist in the release string.
-        release = release.replaceAll("%{?dist}", "");
+        release = release.replaceAll("\\%\\{\\?dist\\}", "");
         return "* " + formatTodaysDate() + " " + authorName + " " + "<" + authorEmail
                 + ">" + " " + epoch + version + "-" + release;
     }
