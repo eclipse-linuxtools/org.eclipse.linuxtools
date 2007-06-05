@@ -2,6 +2,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.outline;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
@@ -12,6 +13,11 @@ import org.eclipse.swt.graphics.Image;
 
 public class SpecfileLabelProvider implements ILabelProvider {
 
+	private static final String PREAMBLE_ICON="icons/preamble_obj.gif";
+	private static final String SECTION_ICON="icons/section_obj.gif";
+	private static final String PACKAGES_ICON="icons/packages_obj.gif";
+	private static final String PACKAGE_ICON="icons/package_obj.gif";
+	
 	public SpecfileLabelProvider() {
 		super();
 	}
@@ -30,6 +36,15 @@ public class SpecfileLabelProvider implements ILabelProvider {
 	}
 
 	public Image getImage(Object element) {
+		if (element instanceof SpecfilePackage) {
+			return Activator.getDefault().getImage(PACKAGE_ICON);
+		} else if (element instanceof SpecfileSection) {
+			return Activator.getDefault().getImage(SECTION_ICON);
+		} else if (element instanceof SpecfilePackageContainer) {
+			return Activator.getDefault().getImage(PACKAGES_ICON);
+		}else if (element instanceof SpecfilePreamble) {
+			return Activator.getDefault().getImage(PREAMBLE_ICON);
+		}
 		return null;
 	}
 

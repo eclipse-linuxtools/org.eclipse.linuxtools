@@ -3,8 +3,10 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 import java.io.IOException;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.persistence.TemplateStore;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
 import org.eclipse.ui.editors.text.templates.ContributionTemplateStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -112,6 +114,25 @@ public class Activator extends AbstractUIPlugin {
 			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.changelogSection");			
 		}
 		return fContextTypeRegistry;
+	}
+	
+	/**
+	 * Get a <code>Image</code> object for the given relative path.
+	 * 
+	 * @param imageRelativePath
+	 * 		the relative path to the image.
+	 * @return
+	 * 		a <code>Image</code>
+	 */
+	public Image getImage(String imageRelativePath) {
+		ImageRegistry registry = getImageRegistry();
+		Image image = registry.get(imageRelativePath);
+		if (image == null) {
+			ImageDescriptor desc = getImageDescriptor(imageRelativePath);
+			registry.put(imageRelativePath, desc);
+			image = registry.get(imageRelativePath);
+		}
+		return image;
 	}
 	
 }

@@ -48,9 +48,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
-	private static final String TEMPLATE_ICON = "icons/template.gif";
+	private static final String TEMPLATE_ICON = "icons/template_obj.gif";
 
-	private static final String MACRO_ICON = "icons/rpmmacro.gif";
+	private static final String MACRO_ICON = "icons/macro_obj.gif";
 	
 	private static final String PACKAGE_ICON = "icons/rpm.gif";
 
@@ -158,7 +158,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			int relevance = getRelevance(template, prefix);
 			if (relevance > 0) {
 				matches.add(new TemplateProposal(template, context, region,
-						getImage(TEMPLATE_ICON), relevance));
+						Activator.getDefault().getImage(TEMPLATE_ICON), relevance));
 			}
 		}
 		Collections.sort(matches, proposalComparator);
@@ -192,7 +192,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			key = (String) iterator.next();
 			proposals.add(new CompletionProposal("%{" + key.substring(1) + "}", 
 							region.getOffset(), region.getLength(),
-							key.length() + 2, getImage(MACRO_ICON),
+							key.length() + 2, Activator.getDefault().getImage(MACRO_ICON),
 							key, null, (String) rpmMacroProposalsMap.get(key)));
 		}
 		return (ICompletionProposal[]) proposals
@@ -230,7 +230,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				item = (String[]) iterator.next();
 				proposals.add(new CompletionProposal(item[0], 
 								region.getOffset(), region.getLength(),
-								item[0].length(), getImage(PACKAGE_ICON),
+								item[0].length(), Activator.getDefault().getImage(PACKAGE_ICON),
 								item[0], null, item[1]));
 			}
 			return (ICompletionProposal[]) proposals.toArray(new ICompletionProposal[proposals.size()]);
@@ -335,25 +335,6 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		} catch (BadLocationException e) {
 			return "";
 		}
-	}
-
-	/**
-	 * Get a <code>Image</code> object for the given relative path.
-	 * 
-	 * @param imageRelativePath
-	 * 		the relative path to the image.
-	 * @return
-	 * 		a <code>Image</code>
-	 */
-	private Image getImage(String imageRelativePath) {
-		ImageRegistry registry = Activator.getDefault().getImageRegistry();
-		Image image = registry.get(imageRelativePath);
-		if (image == null) {
-			ImageDescriptor desc = Activator.getImageDescriptor(imageRelativePath);
-			registry.put(imageRelativePath, desc);
-			image = registry.get(imageRelativePath);
-		}
-		return image;
 	}
 
 	/* (non-Javadoc)

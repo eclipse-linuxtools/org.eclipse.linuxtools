@@ -1,4 +1,21 @@
 2007-06-05  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Bug #182633
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java
+	(getImage): New method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileLabelProvider.java
+	(PREAMBLE_ICON): New global var for icon.
+	(SECTION_ICON): Likewise.
+	(PACKAGES_ICON): Likewise.
+	(PACKAGE_ICON): Likewise.
+	(getImage): Take the above icons in account.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java
+	(TEMPLATE_ICON): New global var for icon.
+	(computeTemplateProposals): Using Activator.getImage() method.
+	(computeRpmMacroProposals): Likewise.
+	(computeRpmPackageProposals): Likewise.
+
+2007-06-05  Alphonse Van Assche  <alcapcom@gmail.com>
 	
 	Bug: #184955
 	* plugin.xml: add org.eclipse.ui.editors.markerAnnotationSpecification extension
