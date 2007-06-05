@@ -15,6 +15,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -30,6 +31,7 @@ public class SpecfileEditor extends TextEditor {
 	private Specfile specfile;
 	private ProjectionSupport projectionSupport;
 	private SpecfileParser parser;
+	private RpmMacroOccurrencesUpdater fOccurrencesUpdater;
 
 	public SpecfileEditor() {
 		super();
@@ -141,6 +143,7 @@ public class SpecfileEditor extends TextEditor {
 		projectionSupport = new ProjectionSupport(projectionViewer, getAnnotationAccess(), getSharedColors());
 		projectionSupport.install();
 		projectionViewer.doOperation(ProjectionViewer.TOGGLE);
+		fOccurrencesUpdater = new RpmMacroOccurrencesUpdater(this);
 	}
 	
 	/*
@@ -173,6 +176,17 @@ public class SpecfileEditor extends TextEditor {
 	
 	protected void setSpecfile(Specfile specfile) {
 		this.specfile = specfile;
+		if (fOccurrencesUpdater != null) {
+			Shell shell= getSite().getShell();
+			if (!(shell == null || shell.isDisposed())) {
+				shell.getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						fOccurrencesUpdater.update(getSourceViewer());
+					}
+				});
+			}
+		}
+
 	}
 	
 	public SpecfileParser getParser() {

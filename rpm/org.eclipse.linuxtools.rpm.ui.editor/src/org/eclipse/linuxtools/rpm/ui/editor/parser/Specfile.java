@@ -149,6 +149,16 @@ public class Specfile {
 		return (SpecfileSource[]) getPatchesAsList().toArray(
 				new SpecfileSource[patches.size()]);
 	}
+	
+	public Collection getDefinesAsList() {
+		List definesList = new ArrayList(defines.values());
+		return definesList;
+	}
+	
+	public SpecfileDefine[] getDefinesAsArray() {
+		return (SpecfileDefine[]) getDefinesAsList().toArray(
+				new SpecfileDefine[defines.size()]);
+	}
 
 	public SpecfileSource[] getSourcesAsArray() {
 		return (SpecfileSource[]) getSourcesAsList().toArray(

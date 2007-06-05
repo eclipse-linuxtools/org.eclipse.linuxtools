@@ -19,6 +19,7 @@ import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
+import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
@@ -32,6 +33,7 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 	private ColorManager colorManager;
 	private SpecfileHover specfileHover;
 	private SpecfileEditor editor;
+	private IAnnotationHover annotationHover;
 
 	public SpecfileConfiguration(ColorManager colorManager, SpecfileEditor editor) {
 		this.colorManager = colorManager;
@@ -170,6 +172,15 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 		if (sourceViewer == null)
 			return null;
 		return new IHyperlinkDetector[] { new URLHyperlinkWithMacroDetector(editor.getSpecfile())};
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAnnotationHover(org.eclipse.jface.text.source.ISourceViewer)
+	 */
+	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
+		if (annotationHover == null)
+			annotationHover = new AnnotationHover();
+		return annotationHover;
 	}
 		
 }

@@ -1,3 +1,24 @@
+2007-06-05  Alphonse Van Assche  <alcapcom@gmail.com>
+	
+	Bug: #184955
+	* plugin.xml: add org.eclipse.ui.editors.markerAnnotationSpecification extension
+	point.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java
+	(getHoverInfo): using new methods.
+	(getSourceOrPatchValue): New method used by RpmMacroOccuencesUpdater.
+	(getMacroValueFromMacroList): New method used by RpmMacroOccuencesUpdater.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java
+	(getAnnotationHover): overload of getAnnotationHover() method from
+	SourceViewerConfiguration.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java
+	(getDefinesAsList): New method.
+	(getDefinesAsArray): New method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java: New
+	file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/AnnotationHover.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java
+	(setSpecfile): update macro occurences.
+
 2007-06-04  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java

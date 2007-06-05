@@ -113,4 +113,26 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceInitializer"/>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.eclipse.linuxtools.rpm.ui.editor.highlightannotation"
+            verticalRulerPreferenceKey="highlight.rulers.vertical"
+            textPreferenceKey="highlight.text"
+            colorPreferenceKey="highlight.color"
+            highlightPreferenceKey="highlight.background"
+            textPreferenceValue="false"
+            textStylePreferenceValue="UNDERLINE"
+            overviewRulerPreferenceKey="highlight.rulers.overview"
+            presentationLayer="4"
+            highlightPreferenceValue="true"
+            label="Macro"
+            icon="icons/occurrence_obj.gif"
+            colorPreferenceValue="253,255,155"
+            verticalRulerPreferenceValue="true"
+            overviewRulerPreferenceValue="true"
+            textStylePreferenceKey="highlight.text.style">
+      </specification>
+   </extension>
 </plugin>

@@ -59,56 +59,23 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 
 		// If there's no such define we try to see if it corresponds to
 		// a Source or Patch declaration
-
-		Pattern p = Pattern.compile("(source|patch)(\\d*)");
-		Matcher m = p.matcher(macroLower);
-
-		if (m.matches()) {
-			String digits = m.group(2);
-
-			SpecfileSource source = null;
-			int number = -1;
-
-			if (digits != null && digits.equals("")) {
-				number = 0;
-			} else if (digits != null && !digits.equals("")) {
-				number = Integer.parseInt(digits);
+		String retrivedValue = getSourceOrPatchValue(spec, macroLower);
+		if (retrivedValue != null) 
+			return value += retrivedValue;
+		else {
+			// If it does not correspond to a Patch or Source macro, try to find it
+			// in the macro proposals list.
+			retrivedValue = getMacroValueFromMacroList(currentSelection);
+			if (retrivedValue != null) 
+				return value += retrivedValue;
+			else {
+				// If it does not correspond to a macro in the list, try to find it
+				// in the RPM list. 
+				retrivedValue = Activator.getDefault().getRpmPackageList().getValue(currentSelection.replaceFirst(":",""));
+				if (retrivedValue != null)
+					return retrivedValue;
 			}
-
-			if (number != -1) {
-				if (m.group(1).equals("source"))
-					source = spec.getSource(number);
-				else if (m.group(1).equals("patch"))
-					source = spec.getPatch(number);
-
-				if (source != null) {
-					value += source.getFileName();
-
-					return value;
-				}
-			}
-
 		}
-
-       // If it does not correspond to a Patch or Source macro, try to find it
-       // in the macro proposals list.
-       if (Activator.getDefault().getRpmMacroList().findKey("%" + currentSelection)) {
-    	   String currentConfig = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_MACRO_HOVER_CONTENT);
-    	   // Show content of the macro according with the configuration set
-    	   // in the macro preference page.
-    	   if (currentConfig.equals(PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION))
-    		   value += Activator.getDefault().getRpmMacroList().getValue(currentSelection);
-    	   else
-    		   value += RpmMacroProposalsList.getMacroEval("%" + currentSelection);
-           return value;
-       }
-       
-       // If it does not correspond to a macro in the list, try to find it
-       // in the RPM list. 
-       String packageDescription = Activator.getDefault().getRpmPackageList().getValue(currentSelection.replaceFirst(":",""));
-       if (packageDescription != null)
-    	   return packageDescription;
-       
        // We return null in other cases, so we don't show hover information
        // for unrecognized macros and RPM packages.
        return null;
@@ -248,6 +215,49 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		}
 		return null;
 	}
+	
+	public static String getSourceOrPatchValue(Specfile spec, String patchOrSourceName) {
+		String value = null;
+		Pattern p = Pattern.compile("(source|patch)(\\d*)");
+		Matcher m = p.matcher(patchOrSourceName);
 
+		if (m.matches()) {
+			String digits = m.group(2);
 
+			SpecfileSource source = null;
+			int number = -1;
+
+			if (digits != null && digits.equals("")) {
+				number = 0;
+			} else if (digits != null && !digits.equals("")) {
+				number = Integer.parseInt(digits);
+			}
+
+			if (number != -1) {
+				if (m.group(1).equals("source"))
+					source = spec.getSource(number);
+				else if (m.group(1).equals("patch"))
+					source = spec.getPatch(number);
+
+				if (source != null) {
+					value = source.getFileName();
+				}
+			}
+		}
+		return value;
+	}
+
+	public static String getMacroValueFromMacroList(String macroName) {
+		String value = null;
+		if (Activator.getDefault().getRpmMacroList().findKey("%" + macroName)) {
+			String currentConfig = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_MACRO_HOVER_CONTENT);
+			// Show content of the macro according with the configuration set
+			// in the macro preference page.
+			if (currentConfig.equals(PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION))
+				value = Activator.getDefault().getRpmMacroList().getValue(macroName);
+			else
+				value = RpmMacroProposalsList.getMacroEval("%" + macroName);
+		}
+		return value;
+	}
 }

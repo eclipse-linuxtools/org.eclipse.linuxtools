@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,16 +30,17 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 
 class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 												   
-	private static final String ANNOTATION_TYPE = Activator.PLUGIN_ID + ".highlightannotation"; //$NON-NLS-1$
+	private static final String ANNOTATION_TYPE = Activator.PLUGIN_ID + ".highlightannotation";
 
 	private final SpecfileEditor fEditor;
 
-	private final List<Annotation> fOldAnnotations = new LinkedList<Annotation>();
+	private final List fOldAnnotations = new LinkedList();
 
 	/**
 	 * Creates a new instance on editor <code>specfileEditor</code>.
 	 * 
-	 * @param specfileEditor The editor to mark occurrences on.
+	 * @param editor
+	 *            the editor to mark occurrences on.
 	 */
 	public RpmMacroOccurrencesUpdater(SpecfileEditor specfileEditor) {
 		((IPostSelectionProvider) specfileEditor.getSelectionProvider())
@@ -57,7 +58,8 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Updates the drawn annotations.
 	 * 
-	 * @param viewer The viewer to get the document and annotation model from
+	 * @param viewer
+	 *            the viewer to get the document and annotation model from
 	 */
 	public void update(ISourceViewer viewer) {
 		try {
@@ -72,7 +74,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 			if (isMacro(currentSelectedWord)) {
 				Specfile spec = fEditor.getSpecfile();
 				SpecfileDefine define = spec.getDefine(currentSelectedWord);
-				String word = currentSelectedWord + ": "; //$NON-NLS-1$
+				String word = currentSelectedWord + ": ";
                 if (define != null) {
                 	word += define.getStringValue();
                 } else {
@@ -92,7 +94,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
                 createNewAnnotations(currentSelectedWord, word, document, model);
 			}
 		} catch (BadLocationException e) {
-			SpecfileLog.logError(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -103,7 +105,8 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 *            the annotation model
 	 */
 	private void removeOldAnnotations(IAnnotationModel model) {
-		for (Annotation annotation: fOldAnnotations) {
+		for (Iterator it = fOldAnnotations.iterator(); it.hasNext();) {
+			Annotation annotation = (Annotation) it.next();
 			model.removeAnnotation(annotation);
 		}
 		fOldAnnotations.clear();
@@ -119,15 +122,15 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 *         <code>false</code> otherwise
 	 */
 	private boolean isMacro(String word) {
-		List<SpecfileDefine> defines = getMacros();
+		SpecfileDefine[] defines = getMacros();
 		if (word.length() > 0) {
-			for (SpecfileDefine define: defines) {
-				if (containsWord(define, word)) {
+			for (int i = 0; i < defines.length; i++) {
+				if (containsWord(defines[i], word)) {
 					return true;
 				}
 			}
 			if (Activator.getDefault().getRpmMacroList().getProposals(
-					"%" + word).size() > 0) //$NON-NLS-1$
+					"%" + word).size() > 0)
 				return true;
 		}
 		return false;
@@ -138,14 +141,14 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 * 
 	 * @return the macros from the editor's specfile
 	 */
-	private List<SpecfileDefine> getMacros() {
+	private SpecfileDefine[] getMacros() {
 		Specfile specfile = fEditor.getSpecfile();
 		if (specfile != null) {
-			List<SpecfileDefine> macros = specfile.getDefines();
+			SpecfileDefine[] macros = specfile.getDefinesAsArray();
 			if (macros != null)
 				return macros;
 		}
-		return new ArrayList<SpecfileDefine>();
+		return new SpecfileDefine[0];
 	}
 
 	/**
@@ -197,13 +200,13 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 				word = document.get(offset, end - offset);
 			}
 		} else {
-			word = ""; //$NON-NLS-1$
+			word = "";
 		}
 		return word.toLowerCase();
 	}
 
 	private boolean isDefineChar(char c) {
-		return c != '{' && c != '}' && c != '?' && !Character.isWhitespace(c);
+		return c != '{' && c != '}' && !Character.isWhitespace(c);
 	}
 
 	/**
