@@ -10,41 +10,66 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import org.eclipse.core.runtime.CoreException;
+import java.io.ByteArrayInputStream;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 
-public abstract class AScannerTest extends FileTestCase {
+import junit.framework.TestCase;
+
+abstract class AScannerTest extends TestCase {
+	
+	private SpecfileTestProject testProject;
+
+	private IFile testFile;
+
+	private Document testDocument;
 
 	protected RuleBasedScanner rulesBasedScanner;
 
 	protected abstract String getContents();
-
+	
 	protected abstract RuleBasedScanner getScanner();
-
+	
 	public SpecfileEditor editor;
+	
+	public AScannerTest(String name) {
+		super(name);
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	@Override
-	protected void setUp() throws CoreException {
-		super.setUp();
+	protected void setUp() throws Exception {
+		testProject = new SpecfileTestProject();
+		testFile = testProject.createFile("testspecfile.spec");
 		newFile(getContents());
-		testProject.refresh();
 		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(Activator
 				.getDefault().getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage(), testFile,
-				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+		"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 		editor = (SpecfileEditor) openEditor;
-		editor.doRevertToSaved();
 		rulesBasedScanner = getScanner();
 		rulesBasedScanner.setRange(testDocument, 0, getContents().length());
+	}
+
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		editor.dispose();
+		testProject.dispose();
+	}
+
+	protected void newFile(String contents) throws Exception {
+		testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
+				false, false, null);
+		testDocument = new Document(contents);
 	}
 
 	protected IToken getNextToken() {
@@ -57,4 +82,6 @@ public abstract class AScannerTest extends FileTestCase {
 		}
 		return rulesBasedScanner.nextToken();
 	}
+
+	
 }

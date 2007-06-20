@@ -1,5 +1,18 @@
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java: 
+	Abstract test case class for scanners.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 
+	(suite): Add new test cases classes.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java: 
+	New tests.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfilePackagesScannerTests.java: 
+	New tests.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileChangelogScannerTests.java:
+	New tests.
+
+2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTests.java 
 	(tearDown): Remove method.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java 
