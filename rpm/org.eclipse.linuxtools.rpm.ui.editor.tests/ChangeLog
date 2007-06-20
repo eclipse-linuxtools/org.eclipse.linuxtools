@@ -1,3 +1,15 @@
+2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	* META-INF/MANIFEST.MF: Add  org.eclipse.ui.ide package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java
+	(suite): Enable HyperlinkWithMacroTests.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java
+	(testMacroResolutionInUrl): Using org.eclipse.ui.ide.IDE.openEditor to get the
+	editor instance.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LicenseTagTest.java:
+	(testMultipleLicenseTag): Disable this test case according with the current
+	code.
+
 2007-05-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #185598

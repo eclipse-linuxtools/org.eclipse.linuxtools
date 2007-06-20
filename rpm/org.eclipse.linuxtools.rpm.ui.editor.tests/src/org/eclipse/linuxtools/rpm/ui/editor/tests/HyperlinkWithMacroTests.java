@@ -17,14 +17,16 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.hyperlink.URLHyperlink;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.URLHyperlinkWithMacroDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.ui.IEditorPart;
 
 public class HyperlinkWithMacroTests extends TestCase {
 
@@ -32,6 +34,7 @@ public class HyperlinkWithMacroTests extends TestCase {
 	private SpecfileParser parser;
 	private Specfile specfile;
 	private SpecfileErrorHandler errorHandler;
+	private SpecfileEditor editor;
 	private IFile testFile;
 	private Document testDocument;
 	private URLHyperlinkWithMacroDetector macroDetector;
@@ -64,14 +67,18 @@ public class HyperlinkWithMacroTests extends TestCase {
 			newFile(testText);
 			macroDetector = new URLHyperlinkWithMacroDetector(specfile);
 			IRegion region = new Region(20, 0);
-			ITextViewer textViewer = null;
-			// FIXME: need to get a textViewer here.  Perhaps will have to do something like in AutomakeColourizationTests here:
-			// :pserver:anonymous@sources.redhat.com:/cvs/eclipse
-			// autotools/com.redhat.eclipse.cdt.autotools.tests
-			// src/com/redhat/eclipse/cdt/autotools/tests/editors/AutomakeColourizationTests.java
-			IHyperlink[] returned = macroDetector.detectHyperlinks(textViewer, region, false);
+			IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(
+					Activator.getDefault().getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage(),
+					testFile,
+					"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+
+			editor = (SpecfileEditor) openEditor;
+			IHyperlink[] returned = macroDetector.detectHyperlinks(editor
+					.getSpecfileSourceViewer(), region, false);
 			URLHyperlink url = (URLHyperlink) returned[0];
 			assertEquals("http://www.eclipse.org/", url.getURLString());
+			editor.dispose();
 		} catch (Exception e) {
 			fail();
 		}

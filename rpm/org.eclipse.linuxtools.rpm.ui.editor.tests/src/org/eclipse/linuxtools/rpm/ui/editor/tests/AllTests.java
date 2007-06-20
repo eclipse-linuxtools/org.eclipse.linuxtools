@@ -23,7 +23,7 @@ public class AllTests {
 		suite.addTestSuite(RefactoringTests.class);
 		suite.addTestSuite(RpmMacroProposalsListTests.class);
 		suite.addTestSuite(RpmPackageProposalsListTests.class);
-//		suite.addTestSuite(HyperlinkWithMacroTests.class);
+		suite.addTestSuite(HyperlinkWithMacroTests.class);
 		//$JUnit-END$
 		return suite;
 	}
