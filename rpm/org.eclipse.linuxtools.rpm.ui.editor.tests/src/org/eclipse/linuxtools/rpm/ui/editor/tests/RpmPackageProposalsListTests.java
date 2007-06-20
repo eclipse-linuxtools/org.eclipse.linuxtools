@@ -39,15 +39,6 @@ public class RpmPackageProposalsListTests extends TestCase {
 		packageProposalsList = new RpmPackageProposalsList();
 	}
 
-	protected void tearDown() {
-		String[] cmd = { "rm", "-f", "/tmp/pkglist" };
-		try {
-			Runtime.getRuntime().exec(cmd);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public final void testGetProposals() {
 		List proposals = packageProposalsList.getProposals("setup");
 		if (!(proposals.size() == 1)) {

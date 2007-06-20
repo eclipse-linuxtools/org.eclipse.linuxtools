@@ -1,5 +1,12 @@
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTests.java 
+	(tearDown): Remove method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java 
+	(dispose): Remove /tmp/pkglist file at the end of the test suite.
+	
+2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
+
 	* META-INF/MANIFEST.MF: Add  org.eclipse.ui.ide package.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java
 	(suite): Enable HyperlinkWithMacroTests.

@@ -1,5 +1,7 @@
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import java.io.IOException;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -20,6 +22,12 @@ public class SpecfileTestProject {
 	
 	public void dispose() throws CoreException {
 		project.delete(true, true, null);
+		String[] cmd = { "rm", "-f", "/tmp/pkglist" };
+		try {
+			Runtime.getRuntime().exec(cmd);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public IFile createFile(String filename) throws CoreException {
