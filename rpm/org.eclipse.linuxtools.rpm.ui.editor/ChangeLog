@@ -1,5 +1,11 @@
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java 
+	(dispose): Set specfile field to null, useful for test cases.
+	(getSpecfileSourceViewer): New method used by HyperlinkWithMacroTests.
+	
+2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java 
 	(isDefineChar): Add '?' char as define limiter.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java 

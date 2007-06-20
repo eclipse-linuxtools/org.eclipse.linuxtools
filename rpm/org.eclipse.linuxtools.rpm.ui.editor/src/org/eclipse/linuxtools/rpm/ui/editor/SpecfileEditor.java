@@ -9,6 +9,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
@@ -42,6 +43,10 @@ public class SpecfileEditor extends TextEditor {
 	}
 	public void dispose() {
 		colorManager.dispose();
+		// Set specfile field to null here is useful for test cases because whether 
+		// the specfile in null SpecfileReconcilingStrategy#reconcile don't 
+		// update anything and thus it don't give false stacktraces.
+		specfile = null;
 		super.dispose();
 	}
 
@@ -194,6 +199,16 @@ public class SpecfileEditor extends TextEditor {
 			parser = new SpecfileParser();
 		}
 		return parser;
+	}
+	
+	/**
+	 * Get the spefile source viewer, this method is useful for test cases.
+	 * 
+	 * @return
+	 * 		the specfile source viewer
+	 */
+	public SourceViewer getSpecfileSourceViewer() {
+		return (SourceViewer) getSourceViewer();
 	}
 
 }
