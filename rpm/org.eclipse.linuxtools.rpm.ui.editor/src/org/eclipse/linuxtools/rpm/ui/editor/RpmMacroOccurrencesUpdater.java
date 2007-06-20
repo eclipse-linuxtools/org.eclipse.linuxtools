@@ -206,7 +206,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	}
 
 	private boolean isDefineChar(char c) {
-		return c != '{' && c != '}' && !Character.isWhitespace(c);
+		return c != '{' && c != '}' && c != '?' && !Character.isWhitespace(c);
 	}
 
 	/**
