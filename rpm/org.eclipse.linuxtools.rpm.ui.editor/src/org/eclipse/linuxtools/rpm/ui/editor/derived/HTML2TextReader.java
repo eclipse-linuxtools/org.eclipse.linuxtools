@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2000, 2009 IBM Corporation and others.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
- * 
- *  Contributors:
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.derived;
@@ -34,12 +34,12 @@ import org.eclipse.jface.text.TextPresentation;
 public class HTML2TextReader extends SubstitutionTextReader {
 
 	private static final String EMPTY_STRING= ""; //$NON-NLS-1$
-	private static final Map<String, String> fgEntityLookup;
-	private static final Set<String> fgTags;
+	private static final Map fgEntityLookup;
+	private static final Set fgTags;
 
 	static {
 
-		fgTags= new HashSet<String>();
+		fgTags= new HashSet();
 		fgTags.add("b"); //$NON-NLS-1$
 		fgTags.add("br"); //$NON-NLS-1$
 		fgTags.add("br/"); //$NON-NLS-1$
@@ -58,7 +58,7 @@ public class HTML2TextReader extends SubstitutionTextReader {
 		fgTags.add("pre"); //$NON-NLS-1$
 		fgTags.add("head"); //$NON-NLS-1$
 
-		fgEntityLookup= new HashMap<String, String>(7);
+		fgEntityLookup= new HashMap(7);
 		fgEntityLookup.put("lt", "<"); //$NON-NLS-1$ //$NON-NLS-2$
 		fgEntityLookup.put("gt", ">"); //$NON-NLS-1$ //$NON-NLS-2$
 		fgEntityLookup.put("nbsp", " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -89,7 +89,6 @@ public class HTML2TextReader extends SubstitutionTextReader {
 		fTextPresentation= presentation;
 	}
 
-	@Override
 	public int read() throws IOException {
 		int c= super.read();
 		if (c != -1)
@@ -126,7 +125,6 @@ public class HTML2TextReader extends SubstitutionTextReader {
 	/*
 	 * @see org.eclipse.jdt.internal.ui.text.SubstitutionTextReader#computeSubstitution(int)
 	 */
-	@Override
 	protected String computeSubstitution(int c) throws IOException {
 
 		if (c == '<')
@@ -187,7 +185,7 @@ public class HTML2TextReader extends SubstitutionTextReader {
 
 		if ("li".equals(html)) //$NON-NLS-1$
 			// FIXME: this hard-coded prefix does not work for RTL languages, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=91682
-			return LINE_DELIM + "\t-"; //$NON-NLS-1$
+			return LINE_DELIM + "\t-";
 
 		if ("/b".equals(html)) { //$NON-NLS-1$
 			stopBold();
@@ -299,7 +297,7 @@ public class HTML2TextReader extends SubstitutionTextReader {
 			} catch (NumberFormatException e) {
 			}
 		} else {
-			String str= fgEntityLookup.get(symbol);
+			String str= (String) fgEntityLookup.get(symbol);
 			if (str != null) {
 				return str;
 			}

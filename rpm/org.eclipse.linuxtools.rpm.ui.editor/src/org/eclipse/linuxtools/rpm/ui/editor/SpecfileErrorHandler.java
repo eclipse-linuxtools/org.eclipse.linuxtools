@@ -79,5 +79,13 @@ public class SpecfileErrorHandler {
 			return null;
 		}
 	}
+	
+	public void setFile(IFile file) {
+		this.file = file;
+	}
+	
+	public void setDocument(IDocument document) {
+		this.document = document;
+	}
 
 }

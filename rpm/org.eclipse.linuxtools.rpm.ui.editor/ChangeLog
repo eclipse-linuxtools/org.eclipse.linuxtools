@@ -1,3 +1,28 @@
+2007-06-22  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	* META-INF/MANIFEST.MF: Add new dependencie "com.ibm.icu" for LineBreakingReader
+	derived class.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java:
+	(setDocument): New method. It is used by the rpmlint Plug-In.	
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java: 
+	(setFile): Likewise.
+	(parse): Likewise.	
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java: 
+	Using the derived HTMLTextPresenter class. That make the plugin compatible 
+	with both 3.2 and 3.3 Eclipse versions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/HTML2TextReader.java: New
+	New derived class.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/SubstitutionTextReader.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/SingleCharReader.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/LineBreakingReader.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/HTMLTextPresenter.java:
+	Likewise.
+
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java 

@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2000, 2009 IBM Corporation and others.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
- * 
- *  Contributors:
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
@@ -106,7 +106,6 @@ public abstract class SubstitutionTextReader extends SingleCharReader {
 	/**
 	 * @see Reader#read()
 	 */
-	@Override
 	public int read() throws IOException {
 		int c;
 		do {
@@ -129,15 +128,13 @@ public abstract class SubstitutionTextReader extends SingleCharReader {
 	/**
 	 * @see Reader#ready()
 	 */
-    @Override
-	public boolean ready() throws IOException {
+    public boolean ready() throws IOException {
 		return fReader.ready();
 	}
 
 	/**
 	 * @see Reader#close()
 	 */
-	@Override
 	public void close() throws IOException {
 		fReader.close();
 	}
@@ -145,7 +142,6 @@ public abstract class SubstitutionTextReader extends SingleCharReader {
 	/**
 	 * @see Reader#reset()
 	 */
-	@Override
 	public void reset() throws IOException {
 		fReader.reset();
 		fWasWhiteSpace= true;

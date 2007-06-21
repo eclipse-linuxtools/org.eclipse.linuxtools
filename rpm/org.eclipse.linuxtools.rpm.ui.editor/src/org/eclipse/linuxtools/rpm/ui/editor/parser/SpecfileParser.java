@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 
@@ -17,7 +18,7 @@ public class SpecfileParser {
 	 * -n or -f. Hence they are called simple. This is probably a misleading
 	 * name and it should be renamed to reflect that they are SRPM-wide sections.
 	 */
-	private static String[] simpleSections = { "%prep", "%build", "%install",
+	public static String[] simpleSections = { "%prep", "%build", "%install",
 			"%changelog" };
 
 	/**
@@ -131,6 +132,10 @@ public class SpecfileParser {
 			e.printStackTrace();
 		}
 		return specfile;
+	}
+	
+	public Specfile parse(String specfileContent) {
+		return parse(new Document(specfileContent));
 	}
 
 	public SpecfileElement parseLine(String lineText, Specfile specfile,

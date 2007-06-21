@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2000, 2009 IBM Corporation and others.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
- * 
- *  Contributors:
+ * Copyright (c) 2000, 2006 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.derived;
@@ -55,10 +55,10 @@ public class HTMLTextPresenter implements DefaultInformationControl.IInformation
 		int yoursEnd=   offset + insertLength -1;
 		yoursEnd= Math.max(yoursStart, yoursEnd);
 
-		Iterator<StyleRange> e= presentation.getAllStyleRangeIterator();
+		Iterator e= presentation.getAllStyleRangeIterator();
 		while (e.hasNext()) {
 
-			StyleRange range= e.next();
+			StyleRange range= (StyleRange) e.next();
 
 			int myStart= range.start;
 			int myEnd=   range.start + range.length -1;
