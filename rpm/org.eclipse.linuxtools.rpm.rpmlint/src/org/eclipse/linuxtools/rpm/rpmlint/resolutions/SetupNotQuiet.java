@@ -10,31 +10,38 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
+import org.eclipse.swt.graphics.Image;
+
 public class SetupNotQuiet extends AReplaceTextResolution {
 
-	public static final String ID = "setup-not-quiet"; //$NON-NLS-1$
+	public static final String ID = "setup-not-quiet";
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.rpmlint.quickfixes.AReplaceTextResolution#getOriginalString()
 	 */
-	@Override
 	public String getOriginalString() {
-		return "%setup"; //$NON-NLS-1$
+		return "%setup";
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.rpmlint.quickfixes.AReplaceTextResolution#getReplaceString()
 	 */
-	@Override
 	public String getReplaceString() {
-		return "%setup -q"; //$NON-NLS-1$
+		return "%setup -q";
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.SetupNotQuiet_0;
+		return "Use the -q option to the %setup macro to avoid useless build output from unpacking the sources";
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
+	 */
+	public Image getImage() {
+		return null;
 	}
 
 	/* (non-Javadoc)

@@ -10,15 +10,24 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
+import org.eclipse.swt.graphics.Image;
+
 public class PatchNotApplied extends ARemoveLineResolution {
 
-	public static final String ID = "patch-not-applied"; //$NON-NLS-1$
+	public static String ID = "patch-not-applied";
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.PatchNotApplied_0;
+		return "A patch is included in your package but was not applied. Refer to the patches documentation to see what's wrong.";
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
+	 */
+	public Image getImage() {
+		return null;
 	}
 
 	/* (non-Javadoc)

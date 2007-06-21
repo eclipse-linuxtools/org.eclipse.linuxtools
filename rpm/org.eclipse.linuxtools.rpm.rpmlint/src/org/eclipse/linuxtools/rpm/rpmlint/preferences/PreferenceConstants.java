@@ -18,13 +18,13 @@ public class PreferenceConstants {
 	/*
 	 * keys
 	 */
-	public static final String P_RPMLINT_PATH = "RpmlintPath"; //$NON-NLS-1$
-	public static final String P_RPMLINT_TABS = "RpmlintTab"; //$NON-NLS-1$
-	public static final String P_RPMLINT_SPACES = "RpmlintSpaces"; //$NON-NLS-1$
+	public static final String P_RPMLINT_PATH = "RpmlintPath";
+	public static final String P_RPMLINT_TABS = "RpmlintTab";
+	public static final String P_RPMLINT_SPACES = "RpmlintSpaces";
 	public static final String P_RPMLINT_TABS_AND_SPACES = P_RPMLINT_SPACES;
 	
 	/*
 	 * default values
 	 */
-	public static final String DP_RPMLINT_PATH = "/usr/bin/rpmlint"; //$NON-NLS-1$
+	public static final String DP_RPMLINT_PATH = "/usr/bin/rpmlint";
 }

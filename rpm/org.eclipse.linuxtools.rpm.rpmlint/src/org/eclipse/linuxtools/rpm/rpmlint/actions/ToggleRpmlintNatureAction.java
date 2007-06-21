@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Red Hat - initial API and implementation
- *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.actions;
+
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -32,7 +24,9 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 		if (selection instanceof IStructuredSelection) {
-			for (Object element: ((IStructuredSelection) selection).toList()) {
+			for (Iterator it = ((IStructuredSelection) selection).iterator(); it
+					.hasNext();) {
+				Object element = it.next();
 				IProject project = null;
 				if (element instanceof IProject) {
 					project = (IProject) element;
@@ -64,7 +58,6 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 	 *      org.eclipse.ui.IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		//Do nothing
 	}
 
 	/**
@@ -98,7 +91,6 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
-			//TODO log exception
 		}
 	}
 

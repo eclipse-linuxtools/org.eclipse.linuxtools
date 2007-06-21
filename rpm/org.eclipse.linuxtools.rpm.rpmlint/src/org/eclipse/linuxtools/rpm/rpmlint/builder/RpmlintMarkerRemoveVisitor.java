@@ -10,33 +10,20 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.builder;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
-import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 
-/**
- * Removes all the markers created by rpmlint.
- *
- */
 public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 
-	/**
-	 * Removes all rpmlint markers for spec and rpm files.
-	 * 
-	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
-	 */
 	public boolean visit(IResource resource) throws CoreException {
-		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
-				|| Activator.RPMFILE_EXTENSION.equals(resource
-						.getFileExtension())) {
+		if (resource instanceof IFile && resource.getName().endsWith(".spec")) {
 			RpmlintParser.getInstance().deleteMarkers(resource);
-			// remove internal marks
-			resource.deleteMarkers(
-					SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false,
-					IResource.DEPTH_ZERO);
+			// remove intenal marks
+			resource.deleteMarkers(SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false, IResource.DEPTH_ZERO);
 		}
 		return true;
 	}

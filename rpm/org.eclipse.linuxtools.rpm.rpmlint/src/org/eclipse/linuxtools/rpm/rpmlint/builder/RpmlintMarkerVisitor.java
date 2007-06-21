@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.rpmlint.builder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -21,15 +22,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintItem;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
-import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 
 public class RpmlintMarkerVisitor implements IResourceVisitor {
 
-	private ArrayList<RpmlintItem> rpmlintItems;
+	private ArrayList rpmlintItems;
 	
 	private int lineNumber;
 	
@@ -48,19 +48,21 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	private int charEnd;
 		
 	
-	public RpmlintMarkerVisitor(RpmlintBuilder builder, ArrayList<RpmlintItem> rpmlintItems) {
+	public RpmlintMarkerVisitor(RpmlintBuilder builder, ArrayList rpmlintItems) {
 		this.rpmlintItems = rpmlintItems;
 		this.builder = builder;
-		rpmlintItems = new ArrayList<RpmlintItem>();
+		rpmlintItems = new ArrayList();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) throws CoreException {
-		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())) {
+		if (resource instanceof IFile && resource.getName().endsWith(".spec")) {
 			firstWarningInResource = true;
-			for (RpmlintItem item : rpmlintItems) {
+			Iterator iterator = rpmlintItems.iterator();
+			while(iterator.hasNext()) {
+				RpmlintItem item = (RpmlintItem) iterator.next();
 				if (item.getFileName().equals(resource.getLocation().toOSString())) {
 					currentFile = ((IFile)resource);
 					if (firstWarningInResource) {
@@ -72,11 +74,11 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 
 					specContent = fileToString(currentFile);
 					// FIXME: workaround the wrong line number with configure-without-libdir-spec
-					if (item.getId().equals("configure-without-libdir-spec")) { //$NON-NLS-1$
+					if (item.getId().equals("configure-without-libdir-spec")) {
 						item.setLineNbr(-1);
-						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "./configure"); //$NON-NLS-1$
+						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "./configure");
 						if (lineNumber == -1)
-							lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "%configure"); //$NON-NLS-1$
+							lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "%configure");
 						item.setLineNbr(lineNumber);
 					}
 					
@@ -92,44 +94,16 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					
 					// BTW we mark specfile with the internal marker.
 					builder.getSpecfileParser().setErrorHandler(builder.getSpecfileErrorHandler(currentFile, specContent));
-					builder.getSpecfileParser().setTaskHandler(builder.getSpecfileTaskHandler(currentFile, specContent));
 					builder.getSpecfileParser().parse(specContent);
 
 					document = new Document(specContent);
 					charStart = getLineOffset(lineNumber);
 					charEnd = charStart + getLineLenght(lineNumber);
-					RpmlintParser.getInstance().addMarker((IFile) resource, item.getId() + ": " //$NON-NLS-1$
+					RpmlintParser.getInstance().addMarker((IFile) resource, item.getId() + ": "
 							+ item.getMessage(), lineNumber, charStart, charEnd,
 							item.getSeverity(), item.getId(),
 							item.getReferedContent());
 				}
-			}
-		} else if (Activator.RPMFILE_EXTENSION.equals(resource
-				.getFileExtension())) {
-			firstWarningInResource = true;
-			for (RpmlintItem item : rpmlintItems) {
-					currentFile = ((IFile) resource);
-					if (firstWarningInResource) {
-						RpmlintParser.getInstance().deleteMarkers(resource);
-						// remove internal marks on the current resource
-						currentFile.deleteMarkers(
-								SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID,
-								false, IResource.DEPTH_ZERO);
-						firstWarningInResource = false;
-					}
-
-					// BTW we mark specfile with the internal marker.
-					builder.getSpecfileParser().setErrorHandler(
-							builder.getSpecfileErrorHandler(currentFile,
-									specContent));
-					builder.getSpecfileParser().setTaskHandler(
-							builder.getSpecfileTaskHandler(currentFile,
-									specContent));
-
-					RpmlintParser.getInstance().addMarker((IFile) resource,
-							item.getId() + ": " //$NON-NLS-1$
-									+ item.getMessage(), item.getSeverity(),
-							item.getId(), item.getReferedContent());
 			}
 		}
 		return true;
@@ -154,7 +128,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	}
 	
 	private String fileToString(IFile file) {
-		String ret = ""; //$NON-NLS-1$
+		String ret = "";
 		try {
 			InputStream in = file.getContents();
 			int nbrOfByte = in.available();

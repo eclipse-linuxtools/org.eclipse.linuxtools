@@ -1,27 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Alphonse Van Assche - initial API and implementation
- *******************************************************************************/
-
 package org.eclipse.linuxtools.rpm.rpmlint;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * The logger of convenience for the Rpmlint Plug-In.
+ * The logger of convenience for the Favorites plug-in.
  */
 public class RpmlintLog {
    /**
     * Log the specified information.
     * 
-    * @param message A human-readable message, localized to the
+    * @param message, a human-readable message, localized to the
     *           current locale.
     */
    public static void logInfo(String message) {
@@ -31,18 +20,18 @@ public class RpmlintLog {
    /**
     * Log the specified error.
     * 
-    * @param exception A low-level exception.
+    * @param exception, a low-level exception.
     */
    public static void logError(Throwable exception) {
-      logError(Messages.RpmlintLog_0, exception);
+      logError("Unexpected Exception", exception);
    }
 
    /**
     * Log the specified error.
     * 
-    * @param message A human-readable message, localized to the
+    * @param message, a human-readable message, localized to the
     *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
+    * @param exception, a low-level exception, or <code>null</code>
     *           if not applicable.
     */
    public static void logError(String message, Throwable exception) {
@@ -52,15 +41,18 @@ public class RpmlintLog {
    /**
     * Log the specified information.
     * 
-    * @param severity The severity; one of the following:
+    * @param severity, the severity; one of the following:
     *           <code>IStatus.OK</code>,
     *           <code>IStatus.ERROR</code>,
     *           <code>IStatus.INFO</code>, or
     *           <code>IStatus.WARNING</code>.
-    * @param code The plug-in-specific status code, or <code>OK</code>.
-    * @param message A human-readable message, localized to the
+    * @param pluginId. the unique identifier of the relevant
+    *           plug-in.
+    * @param code, the plug-in-specific status code, or
+    *           <code>OK</code>.
+    * @param message, a human-readable message, localized to the
     *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
+    * @param exception, a low-level exception, or <code>null</code>
     *           if not applicable.
     */
    public static void log(int severity, int code, String message,
@@ -72,18 +64,20 @@ public class RpmlintLog {
    /**
     * Create a status object representing the specified information.
     * 
-    * @param severity The severity; one of the following:
+    * @param severity, the severity; one of the following:
     *           <code>IStatus.OK</code>,
     *           <code>IStatus.ERROR</code>,
     *           <code>IStatus.INFO</code>, or
     *           <code>IStatus.WARNING</code>.
-    * @param code The plug-in-specific status code, or
+    * @param pluginId, the unique identifier of the relevant
+    *           plug-in.
+    * @param code, the plug-in-specific status code, or
     *           <code>OK</code>.
-    * @param message A human-readable message, localized to the
+    * @param message, a human-readable message, localized to the
     *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
+    * @param exception, a low-level exception, or <code>null</code>
     *           if not applicable.
-    * @return the status object (not <code>null</code>).
+    * @return, the status object (not <code>null</code>).
     */
    public static IStatus createStatus(int severity, int code,
          String message, Throwable exception) {
@@ -95,7 +89,7 @@ public class RpmlintLog {
    /**
     * Log the given status.
     * 
-    * @param status The status to log.
+    * @param status, the status to log.
     */
    public static void log(IStatus status) {
 	   Activator.getDefault().getLog().log(status);
