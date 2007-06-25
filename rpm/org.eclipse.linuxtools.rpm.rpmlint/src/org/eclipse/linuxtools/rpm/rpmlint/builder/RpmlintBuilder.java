@@ -67,7 +67,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		getProject().accept(resourceVisitor);
 		checkCancel(monitor);
 		monitor.worked(50);
-		monitor.setTaskName("Retrive rpmlint problems...");
+		monitor.setTaskName("Retrive Rpmlint problems...");
 		ArrayList rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				resourceVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
@@ -78,7 +78,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		RpmlintDeltaVisitor deltaVisitor = new RpmlintDeltaVisitor();
 		delta.accept(deltaVisitor);
 		monitor.worked(50);
-		monitor.setTaskName("Retrive rpmlint problems...");
+		monitor.setTaskName("Retrive Rpmlint problems...");
 		ArrayList rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				deltaVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
@@ -89,7 +89,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		if (rpmlintItems.size() > 0) {
 			checkCancel(monitor);
 			monitor.worked(70);
-			monitor.setTaskName("Add rpmlint problems...");
+			monitor.setTaskName("Add Rpmlint problems...");
 			getProject().accept(new RpmlintMarkerVisitor(this, rpmlintItems));
 			monitor.worked(MAX_WORKS);
 		}

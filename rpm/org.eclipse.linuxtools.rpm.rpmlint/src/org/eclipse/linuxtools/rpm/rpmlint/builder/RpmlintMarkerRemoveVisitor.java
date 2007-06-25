@@ -22,7 +22,7 @@ public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 	public boolean visit(IResource resource) throws CoreException {
 		if (resource instanceof IFile && resource.getName().endsWith(".spec")) {
 			RpmlintParser.getInstance().deleteMarkers(resource);
-			// remove intenal marks
+			// remove internal marks
 			resource.deleteMarkers(SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false, IResource.DEPTH_ZERO);
 		}
 		return true;

@@ -157,11 +157,9 @@ public class RpmlintParser {
 				}
 
 			}
-			
 			// Close the input stream
 			in.close();
 		} catch (IOException e) {
-			e.printStackTrace();
 			RpmlintLog.logError(e);
 		}
 		return rpmlintItems;
@@ -192,9 +190,7 @@ public class RpmlintParser {
 			in = new BufferedInputStream(child.getInputStream());
 		} catch (IOException e) {
 			// FIXME: rpmlint is not installed in the default place -> ask user to open the prefs page.
-			e.printStackTrace();
 			RpmlintLog.logError(e);
-			
 		}
 		return in;
 	}
@@ -227,6 +223,7 @@ public class RpmlintParser {
 			}
 		} catch (IOException e) {
 			// return -1 if an I/O Exception occure.
+			RpmlintLog.logError(e);
 		}
 		return ret;
 	}
