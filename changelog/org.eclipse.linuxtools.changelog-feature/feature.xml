@@ -109,28 +109,14 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </url>
 
    <includes
-         id="org.eclipse.linuxtools.changelog.compareEditorParser"
+         id="org.eclipse.linuxtools.changelog.cParser-feature"
          version="0.0.0"
-         optional="true"
-         search-location="self"/>
-
-   <includes
-         id="org.eclipse.linuxtools.changelog.cParser"
-         version="0.0.0"
-         optional="true"
-         search-location="self"/>
+         optional="true"/>
 
    <includes
          id="org.eclipse.linuxtools.changelog.javaParser"
          version="0.0.0"
-         optional="true"
-         search-location="self"/>
-
-   <includes
-         id="org.eclipse.linuxtools.changelog.pythonParser"
-         version="0.0.0"
-         optional="true"
-         search-location="self"/>
+         optional="true"/>
 
    <requires>
       <import plugin="org.eclipse.team.ui"/>
