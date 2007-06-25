@@ -10,11 +10,32 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.actions;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.mapping.ResourceMapping;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
+import org.eclipse.team.internal.ccvs.core.CVSException;
+import org.eclipse.team.internal.ccvs.core.client.Diff;
+import org.eclipse.team.internal.ccvs.core.client.Command.LocalOption;
+import org.eclipse.ui.IContributorResourceAdapter;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
 /**
  * 

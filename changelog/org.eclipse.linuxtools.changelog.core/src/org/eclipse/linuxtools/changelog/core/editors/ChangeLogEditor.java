@@ -23,6 +23,7 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib;
 import org.eclipse.linuxtools.changelog.core.actions.FormatChangeLogAction;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 

@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.changelog.core.ui;
 
 import org.eclipse.core.resources.mapping.ModelProvider;
 import org.eclipse.core.resources.mapping.ResourceMapping;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.IStructuredSelection;

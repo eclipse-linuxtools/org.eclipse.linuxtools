@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.internal.resources.mapping.SimpleResourceMapping;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.mapping.ResourceMapping;
@@ -38,6 +39,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.changelog.core.ChangeLogWriter;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
+import org.eclipse.team.internal.ccvs.core.CVSException;
+import org.eclipse.team.internal.ccvs.core.client.Diff;
+import org.eclipse.team.internal.ccvs.core.client.Command.LocalOption;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorDescriptor;
@@ -94,10 +98,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		IParserChangeLogContrib parser = extensionManager
 				.getParserContributor(editorName);
 
-		// return empty string if function parser for editorName is not present
-		if (parser==null)
-			return "";
-		
 		try {
 			return parser.parseCurrentFunction(input, offset);
 		} catch (CoreException e) {
@@ -211,7 +211,12 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 		ResourceMapping[] mappings = getResourceMappings(selected.toArray());
 
-		IResource resource = (IResource) element;
+		IResource resource;
+		if (element instanceof SimpleResourceMapping)
+			resource = (IResource) ((SimpleResourceMapping) element)
+					.getModelObject();
+		else
+			resource = (IResource) element;
 
 		projectPath = resource.getProject().getFullPath().toOSString();
 
@@ -220,13 +225,17 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			StringDiffOperation sdo = new StringDiffOperation(getWorkbench()
 					.getActiveWorkbenchWindow().getPartService()
 					.getActivePart(), mappings,
-					false, true,
+					new LocalOption[] { Diff.INCLUDE_NEWFILES }, false, true,
 					ResourcesPlugin.getWorkspace().getRoot().getFullPath());
 
 			sdo.execute(monitor);
 
 			diffResult = sdo.getResult();
-		}catch (Exception e) {
+		} catch (CVSException e) {
+
+			e.printStackTrace();
+			return;
+		} catch (InterruptedException e) {
 
 			e.printStackTrace();
 			return;
@@ -256,7 +265,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// parse the patch and get only info we need
 		// filename, which line has changed.(range)
 
-		
 		monitor.subTask("Parsing diff result");
 		PatchFile[] patchFileInfoList = parseStandardPatch(diffResult,
 				projectPath, monitor);
@@ -280,13 +288,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 			// System.out.println(pf.getPath().toOSString());
 			String[] funcGuessList = guessFunctionNames(pf);
-			
-			String defaultContent = null;
-			
-			if (pf.isNewfile())
-				defaultContent = "New File.";
-			
-			outputMultipleEntryChangeLog(pf.getPath().toOSString(), defaultContent,
+
+			outputMultipleEntryChangeLog(pf.getPath().toOSString(),
 					funcGuessList);
 
 			/*
@@ -302,7 +305,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 	protected IEditorPart changelog;
 
-	public void outputMultipleEntryChangeLog(String entryFileName, String defaultContent,
+	public void outputMultipleEntryChangeLog(String entryFileName,
 			String[] functionGuess) {
 
 		ChangeLogWriter clw = new ChangeLogWriter();
@@ -312,9 +315,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 		// get file path from target file
 		clw.setEntryFilePath(entryFileName);
-		
-		if (defaultContent != null)
-			clw.setDefaultContent(defaultContent);
 
 		// err check. do nothing if no file is being open/edited
 		if (clw.getEntryFilePath() == "") {
@@ -379,7 +379,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		if (st.countTokens() == 0) 
 			return null;
 		int unitwork = 250 / st.countTokens();
-		boolean newFileFlag = false;
 		while (st.hasMoreTokens()) {
 			String ln = st.nextToken();
 			// this line contains file path relative to resource
@@ -399,12 +398,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				inRange = false;
 				continue;
 			}
-			
-			// if this file is a new file, flag it
-			if (ln.indexOf("diff -N") == 0) {
-				newFileFlag = true;
-				continue;
-			}
+
 			if (fileList.size() > 0) {
 
 				PatchFile tpe = (PatchFile) fileList.get(fileList.size() - 1);
@@ -412,12 +406,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 					Matcher linem = lineInfoPattern.matcher(ln);
 
-					// if newfileflag is set, add this info to PatchFile object
-					if (newFileFlag) {
-						tpe.setNewfile(true);
-						newFileFlag=false;
-					}
-					
 					if (linem.matches()) {
 						inRange = true;
 						int from = 1;
@@ -487,13 +475,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	 */
 	private String[] guessFunctionNames(PatchFile patchFileInfo) {
 
-		
-		// if this file is new file, do not guess function files
-		// TODO: create an option to include function names on 
-		// new files or not
-		if (patchFileInfo.isNewfile()) {
-			return new String[]{""};
-		}
+		// NOTE //
+		// some of the codes below only works with java files.
 
 		String[] fnames = new String[0];
 		String editorName = "";
