@@ -1,3 +1,7 @@
+2007-06-25  Kyu Lee  <klee@redhat.com>
+
+	* feature.xml : Includes new parser plugin instead of fragment.
+
 2007-05-15  Kyu Lee  <klee@redhat.com>
 
 	* : Initial import.
