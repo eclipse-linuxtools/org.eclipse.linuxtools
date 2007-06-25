@@ -43,47 +43,46 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
-
 public class SpecfileNewWizardPage extends WizardPage {
-	
+
 	private static final String NAME = "package_name";
 
 	private static final String VERSION = "1.0";
-	
+
 	private static final String SUMMARY = "Summary of the package";
-	
-	private static final String GROUP = "Amusements/Games";	
-	
+
+	private static final String GROUP = "Amusements/Games";
+
 	private static final String LICENSE = "GPL";
-	
+
 	private static final String URL = "http://";
-	
+
 	private static final String SOURCE0 = "archive_name-%{version}";
-	
+
 	private Text projectText;
 
 	private Text nameText;
 
 	private Text versionText;
-	
+
 	private Text summaryText;
 
 	private Combo groupCombo;
-	
+
 	private Text licenseText;
-	
+
 	private Text URLText;
-	
+
 	private Text source0Text;
-	
+
 	private GridData gd;
 
 	private Combo templateCombo;
-	
+
 	private ISelection selection;
-	
+
 	private String selectedTemplate = "minimal";
-	
+
 	private String content;
 
 	/**
@@ -126,7 +125,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 				handleBrowse();
 			}
 		});
-		
+
 		// Template to use
 		label = new Label(container, SWT.NULL);
 		label.setText("Select a Template:");
@@ -138,7 +137,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 			public void modifyText(ModifyEvent e) {
 				selectedTemplate = ((Combo) e.getSource()).getText();
 				InputStream inputStream = runRpmdevNewSpec(selectedTemplate);
-				LineNumberReader reader = new LineNumberReader(new InputStreamReader(inputStream));
+				LineNumberReader reader = new LineNumberReader(
+						new InputStreamReader(inputStream));
 				String line;
 				try {
 					content = "";
@@ -148,25 +148,25 @@ public class SpecfileNewWizardPage extends WizardPage {
 							setTemplateTagValue(nameText, line);
 						}
 						if (line.startsWith("Version:")) {
-							setTemplateTagValue(versionText, line);							
+							setTemplateTagValue(versionText, line);
 						}
 						if (line.startsWith("Summary:")) {
-							setTemplateTagValue(summaryText, line);							
+							setTemplateTagValue(summaryText, line);
 						}
 						if (line.startsWith("Group:")) {
 							String[] items = line.split(":", 2);
 							String value = items[1].trim();
-							if (!value.equals("")) 								
+							if (!value.equals(""))
 								groupCombo.setText(value);
 						}
 						if (line.startsWith("License:")) {
-							setTemplateTagValue(licenseText, line);					
+							setTemplateTagValue(licenseText, line);
 						}
 						if (line.startsWith("URL:")) {
-							setTemplateTagValue(URLText, line);						
+							setTemplateTagValue(URLText, line);
 						}
 						if (line.startsWith("Source0:")) {
-							setTemplateTagValue(source0Text, line);							
+							setTemplateTagValue(source0Text, line);
 						}
 						content += line + "\n";
 					}
@@ -175,16 +175,16 @@ public class SpecfileNewWizardPage extends WizardPage {
 				}
 			}
 		});
-		
+
 		// Package Name
 		nameText = setTextItem(container, "&Name:");
-	    
+
 		// Package Version
-		versionText = setTextItem(container,"&Version:");
-		
+		versionText = setTextItem(container, "&Version:");
+
 		// Package Summary
 		summaryText = setTextItem(container, "&Summary:");
-		
+
 		// Package Group
 		label = new Label(container, SWT.NULL);
 		label.setText("&Group:");
@@ -192,21 +192,21 @@ public class SpecfileNewWizardPage extends WizardPage {
 		populateGroupCombo(groupCombo);
 		// empty label for the last row.
 		label = new Label(container, SWT.NULL);
-		
+
 		// Package License
 		licenseText = setTextItem(container, "&License:");
-		
+
 		// Package URL
 		URLText = setTextItem(container, "&URL:");
-		
+
 		// Package Source0
 		source0Text = setTextItem(container, "Source&0:");
-		
+
 		initialize();
 		dialogChanged();
 		setControl(container);
 	}
-	
+
 	private Text setTextItem(Composite container, String textLabel) {
 		Label label = new Label(container, SWT.NULL);
 		label.setText(textLabel);
@@ -221,7 +221,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		return text;
 	}
-	
+
 	private void setTemplateTagValue(Text text, String line) {
 		String[] items = line.split(":", 2);
 		String value = items[1].trim();
@@ -229,7 +229,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			text.setText(value);
 		}
 	}
-	
+
 	public String getProjectName() {
 		return projectText.getText();
 	}
@@ -237,38 +237,39 @@ public class SpecfileNewWizardPage extends WizardPage {
 	public String getFileName() {
 		return nameText.getText() + ".spec";
 	}
-	
+
 	public String getSelectedTemplate() {
 		return selectedTemplate;
 	}
-	
+
 	public String getContent() {
 		InputStream inputStream = runRpmdevNewSpec(selectedTemplate);
-		LineNumberReader reader = new LineNumberReader(new InputStreamReader(inputStream));
+		LineNumberReader reader = new LineNumberReader(new InputStreamReader(
+				inputStream));
 		String line;
 		try {
 			content = "";
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("Name:")) {
-					line = "Name:" + "           " + nameText.getText();							
+					line = "Name:" + "           " + nameText.getText();
 				}
 				if (line.startsWith("Version:")) {
-					line = "Version:" + "        " + versionText.getText();							
+					line = "Version:" + "        " + versionText.getText();
 				}
 				if (line.startsWith("Summary:")) {
-					line = "Summary:" + "        " + summaryText.getText();							
+					line = "Summary:" + "        " + summaryText.getText();
 				}
 				if (line.startsWith("Group:")) {
-					line = "Group:" + "          " + groupCombo.getText();							
+					line = "Group:" + "          " + groupCombo.getText();
 				}
 				if (line.startsWith("License:")) {
-					line = "License:" + "        " + licenseText.getText();							
+					line = "License:" + "        " + licenseText.getText();
 				}
 				if (line.startsWith("URL:")) {
-					line = "URL:" + "            " + URLText.getText();							
+					line = "URL:" + "            " + URLText.getText();
 				}
 				if (line.startsWith("Source0:")) {
-					line = "Source0:" + "        " + source0Text.getText();							
+					line = "Source0:" + "        " + source0Text.getText();
 				}
 				content += line + "\n";
 			}
@@ -277,7 +278,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		}
 		return content;
 	}
-	
+
 	/**
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
@@ -340,7 +341,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			updateStatus("Spec file name must be specified");
 			return;
 		}
-		
+
 		/*
 		 * Current RPM doc content (4.4.2):
 		 * Names must not include whitespace and may include a hyphen '-'
@@ -350,9 +351,10 @@ public class SpecfileNewWizardPage extends WizardPage {
 		 * 
 		 */
 		String packageName = nameText.getText();
-		if (packageName.contains(" ") || packageName.contains("<") || packageName.contains("=")) {
-			updateStatus("The Name tag must not include whitespace and " +
-					"should not include any numeric operators ('<', '>','=')");
+		if (packageName.contains(" ") || packageName.contains("<")
+				|| packageName.contains(">") || packageName.contains("=")) {
+			updateStatus("The Name tag must not include whitespace and "
+					+ "should not include any numeric operators ('<', '>','=')");
 			return;
 		}
 
@@ -360,7 +362,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			updateStatus("Please, no dashes in the version!");
 			return;
 		}
-		
+
 		updateStatus(null);
 	}
 
@@ -368,7 +370,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		setErrorMessage(message);
 		setPageComplete(message == null);
 	}
-	
+
 	private void setDefaultValues() {
 		nameText.setText(NAME);
 		versionText.setText(VERSION);
@@ -380,21 +382,23 @@ public class SpecfileNewWizardPage extends WizardPage {
 	}
 
 	private void populateTemplateCombo(Combo templateCombo) {
-        // get a list of all files in a directory
-        File dir = new File( "/etc/rpmdevtools" );
-        String[] files = dir.list();
-        String templateCSV = "";
-        for (int i = 0; i < files.length; i++) {
+		// get a list of all files in a directory
+		File dir = new File("/etc/rpmdevtools");
+		String[] files = dir.list();
+		String templateCSV = "";
+		for (int i = 0; i < files.length; i++) {
 			if (files[i].startsWith("spectemplate-"))
-				templateCSV += files[i].split("-", 2)[1].replaceAll("\\.spec", "") + ",";
+				templateCSV += files[i].split("-", 2)[1].replaceAll("\\.spec",
+						"")
+						+ ",";
 		}
-        String[] templates = templateCSV.split(",");
+		String[] templates = templateCSV.split(",");
 		for (int i = 0; i < templates.length; i++) {
 			templateCombo.add(templates[i]);
 		}
 		templateCombo.setText(selectedTemplate);
 	}
-	
+
 	private void populateGroupCombo(Combo groupsCombo) {
 		// FIXME: Can we assume that all distros place 
 		// documentations files in the below path
@@ -419,11 +423,10 @@ public class SpecfileNewWizardPage extends WizardPage {
 		}
 	}
 
-	
 	private BufferedInputStream runRpmdevNewSpec(String template) {
 		BufferedInputStream in = null;
 		// Here we assuming that the rpmdevtools package is installed.
-		String[] cmd = {"rpmdev-newspec", "-o", "-", "-t", template};
+		String[] cmd = { "rpmdev-newspec", "-o", "-", "-t", template };
 		try {
 			Process child = Runtime.getRuntime().exec(cmd);
 			in = new BufferedInputStream(child.getInputStream());
@@ -433,5 +436,5 @@ public class SpecfileNewWizardPage extends WizardPage {
 		}
 		return in;
 	}
-	
+
 }

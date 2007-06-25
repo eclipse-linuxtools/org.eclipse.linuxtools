@@ -1,3 +1,8 @@
+2007-06-25  Alphonse Van Assche   <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
+	(dialogChanged): Forgot to add '>' char as un-acceptable character for the Name tag. 
+
 2007-06-25  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Add a wizard for new specfile based on a template provided by the
