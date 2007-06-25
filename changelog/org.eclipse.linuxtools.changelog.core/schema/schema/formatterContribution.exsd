@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.linuxtools.changelog.core">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.linuxtools.changelog.core" id="formatterContribution" name="Changelog Format Contribution"/>
+      </appInfo>
+      <documentation>
+         This extension point allows contributors to provide a formatter for a new type of changelog file. A formatter is responsible for formatting and inserting the text of the changelog entry into the editor.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="formatter" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="formatter">
+      <annotation>
+         <documentation>
+            &lt;p&gt;
+The &lt;i&gt;formatter&lt;/i&gt; element is the main element in this extension point. It defines a single formatter which is used by the plugin to format changelog entries. There are 2 types of formatters recognized by the plugin.
+&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;In-file changelog formatters&lt;/li&gt;
+&lt;li&gt;External changelog formatters&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;An in-file changelog formatter is used for files (such as an RPM spec file) which contain a changelog section in addition to other information. An external changelog formatter is used for any other type of file, such as text files, source code files, etc., which rely on an external (usually per-project) changelog file. An example of this is the GNU Style ChangeLog formatter.
+&lt;/p&gt;
+
+&lt;p&gt;This element must contain either a &lt;i&gt;filePattern&lt;/i&gt; or a &lt;i&gt;fileName&lt;/i&gt; element. An in-file formatter (one which has the &lt;i&gt;inFile&lt;/i&gt; attribute set to &quot;true&quot;) must use a &lt;i&gt;filePattern&lt;/i&gt; element. An external formatter (one which has the &lt;i&gt;inFile&lt;/i&gt; attribute set to &quot;false&quot;) must use a &lt;i&gt;fileName&lt;/i&gt; element. Failure to do this will result in runtime Exceptions.&lt;/p&gt;
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="filePattern"/>
+            <element ref="fileName"/>
+         </choice>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  The name of the formatter.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  A unique identifier.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  A class implementing &lt;i&gt;org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib&lt;/i&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="inFile" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  Describes whether this formatter is an in-file formatter or an external formatter. See the documentation for the &lt;i&gt;formatter&lt;/i&gt; element for more information.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="filePattern">
+      <annotation>
+         <documentation>
+            This element is used for in-class formatters to indicate what type of files the formatter applies to. The &lt;i&gt;pattern&lt;/i&gt; attribute of this element describes the pattern. Files conforming to the pattern will use this formatter when the changelog action is invoked.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="pattern" type="string" use="required">
+            <annotation>
+               <documentation>
+                  This attribute must contain a String that is a valid java.util.regex type regular expression. This cannot be checked at build time, but the ChangeLog plugin checks this at runtime.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="fileName">
+      <annotation>
+         <documentation>
+            This element is used for external changelog formatters. It describes file name that will be used as the changelog file. For instance the GNU Style formatter uses the filename &apos;ChangeLog&apos;. The &lt;i&gt;name&lt;/i&gt; attribute of this element contains the name of the file.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The value of this attribute must be a valid filename, as this file will be read/written to at runtime.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         0.1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         Extending contributors must supply an implementation of org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib in the &lt;i&gt;class&lt;/i&gt; attribute of the &lt;i&gt;formatter&lt;/i&gt; element.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The GNU Style formatter supplied by the org.eclipse.linuxtools.changelog.core plugin is an example implementation of this extension point. 
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+</schema>
