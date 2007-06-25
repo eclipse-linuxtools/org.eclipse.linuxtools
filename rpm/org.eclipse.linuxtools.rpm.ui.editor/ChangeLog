@@ -1,3 +1,15 @@
+2007-06-25  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Add a wizard for new specfile based on a template provided by the
+	rpmdevtools package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java: New
+	File.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileLog.java:
+	Likewise, The logger of convenience for the Specfile Plug-In.
+	* plugin.xml: Add extensions points for the wizard. 
+
 2007-06-22  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* META-INF/MANIFEST.MF: Add new dependencie "com.ibm.icu" for LineBreakingReader

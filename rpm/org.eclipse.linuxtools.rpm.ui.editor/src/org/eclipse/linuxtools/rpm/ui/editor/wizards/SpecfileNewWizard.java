@@ -20,8 +20,6 @@ import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import java.io.*;
@@ -43,7 +41,6 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	/**
 	 * Adding the page to the wizard.
 	 */
-	@Override
 	public void addPages() {
 		page = new SpecfileNewWizardPage(selection);
 		addPage(page);
@@ -53,7 +50,6 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	 * This method is called when 'Finish' button is pressed in the wizard. We
 	 * will create an operation and run it using wizard as execution context.
 	 */
-	@Override
 	public boolean performFinish() {
 		final String containerName = page.getProjectName();
 		final String fileName = page.getFileName();
@@ -76,9 +72,9 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 		} catch (InterruptedException e) {
 			return false;
 		} catch (InvocationTargetException e) {
-			SpecfileLog.logError(e);
+			e.printStackTrace();
 			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), Messages.SpecfileNewWizard_0, realException
+			MessageDialog.openError(getShell(), "Error", realException
 					.getMessage());
 			return false;
 		}
@@ -93,12 +89,12 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	private void doFinish(String projectName, String fileName,
 			InputStream contentInputStream, IProgressMonitor monitor)
 	throws CoreException {
-		monitor.beginTask(Messages.SpecfileNewWizard_1 + fileName, 2);
+		monitor.beginTask("Creating " + fileName, 2);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource resource = root.findMember(new Path(projectName));
 		if (!resource.exists() || !(resource instanceof IContainer)) {
-			throwCoreException(Messages.SpecfileNewWizard_2 + projectName
-					+ Messages.SpecfileNewWizard_3);
+			throwCoreException("Project \"" + projectName
+					+ "\" does not exist.");
 		}
 		IContainer container = (IContainer) resource;
 		final IFile file = container.getFile(new Path(fileName));
@@ -113,7 +109,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 		} catch (IOException e) {
 		}
 		monitor.worked(1);
-		monitor.setTaskName(Messages.SpecfileNewWizard_4);
+		monitor.setTaskName("Opening file for editing...");
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page = PlatformUI.getWorkbench()
@@ -137,7 +133,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 
 	private void throwCoreException(String message) throws CoreException {
 		IStatus status = new Status(IStatus.ERROR,
-				Activator.PLUGIN_ID, IStatus.OK, message,
+				"org.eclipse.linuxtools.rpm.ui.editor", IStatus.OK, message,
 				null);
 		throw new CoreException(status);
 	}

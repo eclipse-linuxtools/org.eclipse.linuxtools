@@ -135,4 +135,18 @@
             textStylePreferenceKey="highlight.text.style">
       </specification>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.linuxtools.rpm.ui.editor"
+            name="RPM Wizards">
+      </category>
+      <wizard
+            category="org.eclipse.linuxtools.rpm.ui.editor"
+            class="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
+            icon="icons/rpm.gif"
+            id="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
+            name="New specfile based on a template">
+      </wizard>
+   </extension>
 </plugin>

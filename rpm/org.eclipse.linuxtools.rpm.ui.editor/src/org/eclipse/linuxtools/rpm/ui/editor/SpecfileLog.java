@@ -22,7 +22,7 @@ public class SpecfileLog {
    /**
     * Log the specified information.
     * 
-    * @param message A human-readable message, localized to the
+    * @param message, a human-readable message, localized to the
     *           current locale.
     */
    public static void logInfo(String message) {
@@ -32,18 +32,18 @@ public class SpecfileLog {
    /**
     * Log the specified error.
     * 
-    * @param exception A low-level exception.
+    * @param exception, a low-level exception.
     */
    public static void logError(Throwable exception) {
-      logError(Messages.SpecfileLog_0, exception);
+      logError("Unexpected Exception", exception);
    }
 
    /**
     * Log the specified error.
     * 
-    * @param message A human-readable message, localized to the
+    * @param message, a human-readable message, localized to the
     *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
+    * @param exception, a low-level exception, or <code>null</code>
     *           if not applicable.
     */
    public static void logError(String message, Throwable exception) {
@@ -53,16 +53,18 @@ public class SpecfileLog {
    /**
     * Log the specified information.
     * 
-    * @param severity The severity; one of the following:
+    * @param severity, the severity; one of the following:
     *           <code>IStatus.OK</code>,
     *           <code>IStatus.ERROR</code>,
     *           <code>IStatus.INFO</code>, or
     *           <code>IStatus.WARNING</code>.
-    * @param code The plug-in-specific status code, or
+    * @param pluginId. the unique identifier of the relevant
+    *           plug-in.
+    * @param code, the plug-in-specific status code, or
     *           <code>OK</code>.
-    * @param message A human-readable message, localized to the
+    * @param message, a human-readable message, localized to the
     *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
+    * @param exception, a low-level exception, or <code>null</code>
     *           if not applicable.
     */
    public static void log(int severity, int code, String message,
@@ -74,16 +76,18 @@ public class SpecfileLog {
    /**
     * Create a status object representing the specified information.
     * 
-    * @param severity The severity; one of the following:
+    * @param severity, the severity; one of the following:
     *           <code>IStatus.OK</code>,
     *           <code>IStatus.ERROR</code>,
     *           <code>IStatus.INFO</code>, or
     *           <code>IStatus.WARNING</code>.
-    * @param code The plug-in-specific status code, or
+    * @param pluginId, the unique identifier of the relevant
+    *           plug-in.
+    * @param code, the plug-in-specific status code, or
     *           <code>OK</code>.
-    * @param message A human-readable message, localized to the
+    * @param message, a human-readable message, localized to the
     *           current locale.
-    * @param exception A low-level exception, or <code>null</code>
+    * @param exception, a low-level exception, or <code>null</code>
     *           if not applicable.
     * @return, the status object (not <code>null</code>).
     */
@@ -97,7 +101,7 @@ public class SpecfileLog {
    /**
     * Log the given status.
     * 
-    * @param status The status to log.
+    * @param status, the status to log.
     */
    public static void log(IStatus status) {
 	   Activator.getDefault().getLog().log(status);

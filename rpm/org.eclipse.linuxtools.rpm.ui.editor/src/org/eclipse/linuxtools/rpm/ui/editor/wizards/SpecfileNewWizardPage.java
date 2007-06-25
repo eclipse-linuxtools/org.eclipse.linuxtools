@@ -13,27 +13,22 @@ package org.eclipse.linuxtools.rpm.ui.editor.wizards;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -48,57 +43,58 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
+
 public class SpecfileNewWizardPage extends WizardPage {
+	
+	private static final String NAME = "package_name";
 
-	private static final String NAME = "package_name"; //$NON-NLS-1$
-
-	private static final String VERSION = "1.0"; //$NON-NLS-1$
-
-	private static final String SUMMARY = "Summary of the package"; //$NON-NLS-1$
-
-	private static final String GROUP = "Amusements/Games"; //$NON-NLS-1$
-
-	private static final String LICENSE = "GPL"; //$NON-NLS-1$
-
-	private static final String URL = "http://"; //$NON-NLS-1$
-
-	private static final String SOURCE0 = "archive_name-%{version}"; //$NON-NLS-1$
-
+	private static final String VERSION = "1.0";
+	
+	private static final String SUMMARY = "Summary of the package";
+	
+	private static final String GROUP = "Amusements/Games";	
+	
+	private static final String LICENSE = "GPL";
+	
+	private static final String URL = "http://";
+	
+	private static final String SOURCE0 = "archive_name-%{version}";
+	
 	private Text projectText;
 
 	private Text nameText;
 
 	private Text versionText;
-
+	
 	private Text summaryText;
 
 	private Combo groupCombo;
-
+	
 	private Text licenseText;
-
+	
 	private Text URLText;
-
+	
 	private Text source0Text;
-
+	
 	private GridData gd;
 
 	private Combo templateCombo;
-
+	
 	private ISelection selection;
-
-	private String selectedTemplate = "minimal"; //$NON-NLS-1$
-
+	
+	private String selectedTemplate = "minimal";
+	
 	private String content;
 
 	/**
 	 * Constructor for SpecfileNewWizardPage.
 	 * 
-	 * @param selection The selection to put the new spec file in.
+	 * @param pageName
 	 */
 	public SpecfileNewWizardPage(ISelection selection) {
-		super("wizardPage"); //$NON-NLS-1$
-		setTitle(Messages.SpecfileNewWizardPage_9);
-		setDescription(Messages.SpecfileNewWizardPage_10);
+		super("wizardPage");
+		setTitle("New specfile based on a template");
+		setDescription("This wizard creates a new specfile based on a selected template.");
 		this.selection = selection;
 	}
 
@@ -114,7 +110,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 
 		// Project
 		Label label = new Label(container, SWT.NULL);
-		label.setText(Messages.SpecfileNewWizardPage_11);
+		label.setText("&Project:");
 		projectText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectText.setLayoutData(gd);
@@ -124,99 +120,93 @@ public class SpecfileNewWizardPage extends WizardPage {
 			}
 		});
 		Button button = new Button(container, SWT.PUSH);
-		button.setText(Messages.SpecfileNewWizardPage_12);
+		button.setText("Select a project...");
 		button.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleBrowse();
 			}
 		});
-
+		
 		// Template to use
 		label = new Label(container, SWT.NULL);
-		label.setText(Messages.SpecfileNewWizardPage_13);
+		label.setText("Select a Template:");
 		templateCombo = new Combo(container, SWT.NULL);
-		try {
-			populateTemplateCombo(templateCombo);
-		} catch (CoreException e2) {
-			SpecfileLog.logError(e2);
-		}
+		populateTemplateCombo(templateCombo);
 		// empty label for the last row.
 		label = new Label(container, SWT.NULL);
 		templateCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				selectedTemplate = ((Combo) e.getSource()).getText();
 				InputStream inputStream = runRpmdevNewSpec(selectedTemplate);
-				LineNumberReader reader = new LineNumberReader(
-						new InputStreamReader(inputStream));
+				LineNumberReader reader = new LineNumberReader(new InputStreamReader(inputStream));
 				String line;
 				try {
-					content = ""; //$NON-NLS-1$
+					content = "";
 					setDefaultValues();
 					while ((line = reader.readLine()) != null) {
-						if (line.startsWith("Name:")) { //$NON-NLS-1$
+						if (line.startsWith("Name:")) {
 							setTemplateTagValue(nameText, line);
 						}
-						if (line.startsWith("Version:")) { //$NON-NLS-1$
-							setTemplateTagValue(versionText, line);
+						if (line.startsWith("Version:")) {
+							setTemplateTagValue(versionText, line);							
 						}
-						if (line.startsWith("Summary:")) { //$NON-NLS-1$
-							setTemplateTagValue(summaryText, line);
+						if (line.startsWith("Summary:")) {
+							setTemplateTagValue(summaryText, line);							
 						}
-						if (line.startsWith("Group:")) { //$NON-NLS-1$
-							String[] items = line.split(":", 2); //$NON-NLS-1$
+						if (line.startsWith("Group:")) {
+							String[] items = line.split(":", 2);
 							String value = items[1].trim();
-							if (!value.equals("")) //$NON-NLS-1$
+							if (!value.equals("")) 								
 								groupCombo.setText(value);
 						}
-						if (line.startsWith("License:")) { //$NON-NLS-1$
-							setTemplateTagValue(licenseText, line);
+						if (line.startsWith("License:")) {
+							setTemplateTagValue(licenseText, line);					
 						}
-						if (line.startsWith("URL:")) { //$NON-NLS-1$
-							setTemplateTagValue(URLText, line);
+						if (line.startsWith("URL:")) {
+							setTemplateTagValue(URLText, line);						
 						}
-						if (line.startsWith("Source0:")) { //$NON-NLS-1$
-							setTemplateTagValue(source0Text, line);
+						if (line.startsWith("Source0:")) {
+							setTemplateTagValue(source0Text, line);							
 						}
-						content += line + '\n';
+						content += line + "\n";
 					}
 				} catch (IOException e1) {
 					SpecfileLog.logError(e1);
 				}
 			}
 		});
-
+		
 		// Package Name
-		nameText = setTextItem(container, Messages.SpecfileNewWizardPage_14);
-
+		nameText = setTextItem(container, "&Name:");
+	    
 		// Package Version
-		versionText = setTextItem(container, Messages.SpecfileNewWizardPage_15);
-
+		versionText = setTextItem(container,"&Version:");
+		
 		// Package Summary
-		summaryText = setTextItem(container, Messages.SpecfileNewWizardPage_16);
-
+		summaryText = setTextItem(container, "&Summary:");
+		
 		// Package Group
 		label = new Label(container, SWT.NULL);
-		label.setText(Messages.SpecfileNewWizardPage_17);
+		label.setText("&Group:");
 		groupCombo = new Combo(container, SWT.NULL);
 		populateGroupCombo(groupCombo);
 		// empty label for the last row.
 		label = new Label(container, SWT.NULL);
-
+		
 		// Package License
-		licenseText = setTextItem(container, Messages.SpecfileNewWizardPage_18);
-
+		licenseText = setTextItem(container, "&License:");
+		
 		// Package URL
-		URLText = setTextItem(container, Messages.SpecfileNewWizardPage_19);
-
+		URLText = setTextItem(container, "&URL:");
+		
 		// Package Source0
-		source0Text = setTextItem(container, Messages.SpecfileNewWizardPage_20);
-
+		source0Text = setTextItem(container, "Source&0:");
+		
 		initialize();
 		dialogChanged();
 		setControl(container);
 	}
-
+	
 	private Text setTextItem(Composite container, String textLabel) {
 		Label label = new Label(container, SWT.NULL);
 		label.setText(textLabel);
@@ -231,64 +221,63 @@ public class SpecfileNewWizardPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		return text;
 	}
-
+	
 	private void setTemplateTagValue(Text text, String line) {
-		String[] items = line.split(":", 2); //$NON-NLS-1$
+		String[] items = line.split(":", 2);
 		String value = items[1].trim();
-		if (!value.equals("")) { //$NON-NLS-1$
+		if (!value.equals("")) {
 			text.setText(value);
 		}
 	}
-
+	
 	public String getProjectName() {
 		return projectText.getText();
 	}
 
 	public String getFileName() {
-		return nameText.getText() + ".spec"; //$NON-NLS-1$
+		return nameText.getText() + ".spec";
 	}
-
+	
 	public String getSelectedTemplate() {
 		return selectedTemplate;
 	}
-
+	
 	public String getContent() {
 		InputStream inputStream = runRpmdevNewSpec(selectedTemplate);
-		LineNumberReader reader = new LineNumberReader(new InputStreamReader(
-				inputStream));
+		LineNumberReader reader = new LineNumberReader(new InputStreamReader(inputStream));
 		String line;
 		try {
-			content = ""; //$NON-NLS-1$
+			content = "";
 			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("Name:")) { //$NON-NLS-1$
-					line = "Name:" + "           " + nameText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (line.startsWith("Name:")) {
+					line = "Name:" + "           " + nameText.getText();							
 				}
-				if (line.startsWith("Version:")) { //$NON-NLS-1$
-					line = "Version:" + "        " + versionText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (line.startsWith("Version:")) {
+					line = "Version:" + "        " + versionText.getText();							
 				}
-				if (line.startsWith("Summary:")) { //$NON-NLS-1$
-					line = "Summary:" + "        " + summaryText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (line.startsWith("Summary:")) {
+					line = "Summary:" + "        " + summaryText.getText();							
 				}
-				if (line.startsWith("Group:")) { //$NON-NLS-1$
-					line = "Group:" + "          " + groupCombo.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (line.startsWith("Group:")) {
+					line = "Group:" + "          " + groupCombo.getText();							
 				}
-				if (line.startsWith("License:")) { //$NON-NLS-1$
-					line = "License:" + "        " + licenseText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (line.startsWith("License:")) {
+					line = "License:" + "        " + licenseText.getText();							
 				}
-				if (line.startsWith("URL:")) { //$NON-NLS-1$
-					line = "URL:" + "            " + URLText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (line.startsWith("URL:")) {
+					line = "URL:" + "            " + URLText.getText();							
 				}
-				if (line.startsWith("Source0:")) { //$NON-NLS-1$
-					line = "Source0:" + "        " + source0Text.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+				if (line.startsWith("Source0:")) {
+					line = "Source0:" + "        " + source0Text.getText();							
 				}
-				content += line + '\n';
+				content += line + "\n";
 			}
 		} catch (IOException e1) {
 			SpecfileLog.logError(e1);
 		}
 		return content;
 	}
-
+	
 	/**
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
@@ -318,8 +307,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 	private void handleBrowse() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
 				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false,
-				Messages.SpecfileNewWizardPage_21);
-		if (dialog.open() == Window.OK) {
+				"Select new file container");
+		if (dialog.open() == ContainerSelectionDialog.OK) {
 			Object[] result = dialog.getResult();
 			if (result.length == 1) {
 				projectText.setText(((Path) result[0]).toString());
@@ -335,23 +324,23 @@ public class SpecfileNewWizardPage extends WizardPage {
 				.findMember(new Path(getProjectName()));
 		String fileName = getFileName();
 		if (getProjectName().length() == 0) {
-			updateStatus(Messages.SpecfileNewWizardPage_22);
+			updateStatus("File container must be specified");
 			return;
 		}
 		if (container == null
 				|| (container.getType() & (IResource.PROJECT | IResource.FOLDER)) == 0) {
-			updateStatus(Messages.SpecfileNewWizardPage_23);
+			updateStatus("The Project must exist");
 			return;
 		}
 		if (!container.isAccessible()) {
-			updateStatus(Messages.SpecfileNewWizardPage_24);
+			updateStatus("Project must be writable");
 			return;
 		}
 		if (fileName.length() == 0) {
-			updateStatus(Messages.SpecfileNewWizardPage_25);
+			updateStatus("Spec file name must be specified");
 			return;
 		}
-
+		
 		/*
 		 * Current RPM doc content (4.4.2):
 		 * Names must not include whitespace and may include a hyphen '-'
@@ -361,18 +350,17 @@ public class SpecfileNewWizardPage extends WizardPage {
 		 * 
 		 */
 		String packageName = nameText.getText();
-		if (packageName.indexOf(" ") != -1 || packageName.indexOf("<") != -1 //$NON-NLS-1$ //$NON-NLS-2$
-				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1){ //$NON-NLS-1$ //$NON-NLS-2$
-			updateStatus(Messages.SpecfileNewWizardPage_26
-					+ Messages.SpecfileNewWizardPage_27);
+		if (packageName.contains(" ") || packageName.contains("<") || packageName.contains("=")) {
+			updateStatus("The Name tag must not include whitespace and " +
+					"should not include any numeric operators ('<', '>','=')");
 			return;
 		}
 
-		if (versionText.getText().indexOf("-") > -1) { //$NON-NLS-1$
-			updateStatus(Messages.SpecfileNewWizardPage_28);
+		if (versionText.getText().contains("-")) {
+			updateStatus("Please, no dashes in the version!");
 			return;
 		}
-
+		
 		updateStatus(null);
 	}
 
@@ -380,7 +368,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		setErrorMessage(message);
 		setPageComplete(message == null);
 	}
-
+	
 	private void setDefaultValues() {
 		nameText.setText(NAME);
 		versionText.setText(VERSION);
@@ -391,40 +379,54 @@ public class SpecfileNewWizardPage extends WizardPage {
 		source0Text.setText(SOURCE0);
 	}
 
-	private void populateTemplateCombo(Combo templateCombo) throws CoreException {
-		// get a list of all files in a directory
-		File dir = new File("/etc/rpmdevtools"); //$NON-NLS-1$
-		String[] files = dir.list();
-		if (dir.exists()) {
-			String templateCSV = ""; //$NON-NLS-1$
-			for (String file : files) {
-				if (file.startsWith("spectemplate-")) //$NON-NLS-1$
-					templateCSV += file.split("-", 2)[1].replaceAll("\\.spec", //$NON-NLS-1$ //$NON-NLS-2$
-							"") //$NON-NLS-1$
-							+ ","; //$NON-NLS-1$
-			}
-			String[] templates = templateCSV.split(","); //$NON-NLS-1$
-			for (String template: templates) {
-				templateCombo.add(template);
-			}
-			templateCombo.setText(selectedTemplate);			
-		} else {
-			throwCoreException(Messages.SpecfileNewWizardPage_29);
+	private void populateTemplateCombo(Combo templateCombo) {
+        // get a list of all files in a directory
+        File dir = new File( "/etc/rpmdevtools" );
+        String[] files = dir.list();
+        String templateCSV = "";
+        for (int i = 0; i < files.length; i++) {
+			if (files[i].startsWith("spectemplate-"))
+				templateCSV += files[i].split("-", 2)[1].replaceAll("\\.spec", "") + ",";
 		}
+        String[] templates = templateCSV.split(",");
+		for (int i = 0; i < templates.length; i++) {
+			templateCombo.add(templates[i]);
+		}
+		templateCombo.setText(selectedTemplate);
 	}
-
+	
 	private void populateGroupCombo(Combo groupsCombo) {
-		List<String> rpmGroups = Activator.getDefault().getRpmGroups();
-		for (String rpmGroup : rpmGroups) {
-			groupsCombo.add(rpmGroup);
+		// FIXME: Can we assume that all distros place 
+		// documentations files in the below path
+		String docDir = "/usr/share/doc/";
+		File dir = new File(docDir);
+		String files[] = dir.list(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.startsWith("rpm-");
+			}
+		});
+		try {
+			// Normally only one version of RPM is installed on a system,
+			// so we take the first one here.
+			LineNumberReader reader = new LineNumberReader(new FileReader(
+					docDir + files[0] + "/GROUPS"));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				groupsCombo.add(line);
+			}
+		} catch (IOException e) {
+			SpecfileLog.logError(e);
 		}
 	}
 
+	
 	private BufferedInputStream runRpmdevNewSpec(String template) {
 		BufferedInputStream in = null;
 		// Here we assuming that the rpmdevtools package is installed.
+		String[] cmd = {"rpmdev-newspec", "-o", "-", "-t", template};
 		try {
-			in = Utils.runCommandToInputStream("rpmdev-newspec", "-o", "-", "-t", template ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			Process child = Runtime.getRuntime().exec(cmd);
+			in = new BufferedInputStream(child.getInputStream());
 		} catch (IOException e) {
 			// FIXME: rpmdev-newspec is not in the system $PATH, what should we do here?.
 			SpecfileLog.logError(e);
@@ -432,11 +434,4 @@ public class SpecfileNewWizardPage extends WizardPage {
 		return in;
 	}
 	
-	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR,
-				Activator.PLUGIN_ID, IStatus.OK, message,
-				null);
-		throw new CoreException(status);
-	}
-
 }
