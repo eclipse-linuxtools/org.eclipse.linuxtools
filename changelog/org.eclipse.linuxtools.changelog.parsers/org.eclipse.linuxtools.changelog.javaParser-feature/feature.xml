@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.changelog.javaParser-feature"
+      id="org.eclipse.linuxtools.changelog.javaParser"
       label="Changelog Java Parser"
       version="1.0.0">
 
@@ -218,12 +218,15 @@ litigation.
       <discovery label="ChangeLog Plugin Site" url="http://sourceware.org/eclipse/changelog"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.linuxtools.changelog.core" version="2.4.1" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="org.eclipse.linuxtools.changelog.parsers.java"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
 </feature>
