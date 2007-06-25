@@ -1,3 +1,9 @@
+2007-06-25  Kyu Lee  <klee@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java
+	(StringDiffOperation): Added support for Eclipse 3.3
+	* META-INF/MANIFEST.MF: Version bump to 2.4.1 and add dependency for Eclipse 3.3.
+
 2007-05-09 	Kyu Lee  <klee@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java:

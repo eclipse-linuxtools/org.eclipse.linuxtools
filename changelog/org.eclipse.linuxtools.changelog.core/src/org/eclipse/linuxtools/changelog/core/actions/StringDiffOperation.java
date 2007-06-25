@@ -39,7 +39,7 @@ public class StringDiffOperation extends DiffOperation {
 	   
 	public StringDiffOperation(IWorkbenchPart part, ResourceMapping[] mappings, LocalOption[] options, boolean isMultiPatch, boolean includeFullPathInformation, IPath patchRoot) {
 		super(part, mappings, options, isMultiPatch, includeFullPathInformation,
-				patchRoot);
+				patchRoot,null);
 		
 	}
 	

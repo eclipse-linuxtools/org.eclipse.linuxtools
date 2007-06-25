@@ -97,6 +97,11 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 		IParserChangeLogContrib parser = extensionManager
 				.getParserContributor(editorName);
+		
+		
+		if (parser == null)  {
+			return "";
+		}
 
 		try {
 			return parser.parseCurrentFunction(input, offset);
@@ -265,6 +270,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// parse the patch and get only info we need
 		// filename, which line has changed.(range)
 
+		
 		monitor.subTask("Parsing diff result");
 		PatchFile[] patchFileInfoList = parseStandardPatch(diffResult,
 				projectPath, monitor);
