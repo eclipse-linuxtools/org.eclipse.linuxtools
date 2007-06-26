@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
 
 public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 
@@ -30,12 +31,13 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 				&& delta.getResource().getName().endsWith(".spec")) {
 			IResource resource = delta.getResource();
 			switch (delta.getKind()) {
-			// we previsiting resources to be able to run the rpmlint command
-			// only once. That improve drasticaly the perfs.
+			// we first visiting resources to be able to run the rpmlint command
+			// only once. That improve drastically the performance.
 			case IResourceDelta.ADDED:
 				paths.add(resource.getLocation().toOSString());
 				break;
 			case IResourceDelta.CHANGED:
+				RpmlintParser.getInstance().deleteMarkers(resource);
 				paths.add(resource.getLocation().toOSString());
 				break;
 			}

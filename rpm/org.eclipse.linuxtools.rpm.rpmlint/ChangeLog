@@ -1,3 +1,8 @@
+2007-06-26  Alphonse Van Assche   <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintDeltaVisitor.java:
+	(visit): Remove old markers when a resource is modified.
+
 2007-06-25  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java:
