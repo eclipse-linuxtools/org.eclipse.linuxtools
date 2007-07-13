@@ -1,3 +1,10 @@
+2007-07-13  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java:
+	Fix copyright.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java:
+	Likewise.
+
 2007-07-05  Andrew Overholt  <overholt@redhat.com>
 
 	* Too many files to list: Add standard copyright and license header.
