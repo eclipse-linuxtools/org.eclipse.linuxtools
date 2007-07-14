@@ -32,6 +32,7 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.linuxtools.rpm.ui.editor.derived.AnnotationHover;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;

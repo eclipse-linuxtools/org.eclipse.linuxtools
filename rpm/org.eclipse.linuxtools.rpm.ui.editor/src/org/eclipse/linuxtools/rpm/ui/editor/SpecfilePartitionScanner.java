@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Red Hat - initial API and implementation
+ *    Alphonse Van Assche
  *******************************************************************************/
 
 package org.eclipse.linuxtools.rpm.ui.editor;

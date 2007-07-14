@@ -1,3 +1,11 @@
+2007-07-14  Alphonse Van Assche   <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java: 
+	Replace String#contains by String#indexOf for JRE 1.4 compatibility.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: 
+	Moving Annotation Hover to derived package.
+	* Too many files to list: Add contributor line.
+	
 2007-07-13  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java:
