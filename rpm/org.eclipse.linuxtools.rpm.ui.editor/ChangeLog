@@ -1,3 +1,12 @@
+2007-07-16  Alphonse Van Assche   <alcapcom@gmail.com>
+
+	Implement toggle comment like in JDT.
+	* plugin.xml: 
+	Add comment toggle action.
+	Add our document provider.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java: 
+	New action.
+
 2007-07-14  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java: 

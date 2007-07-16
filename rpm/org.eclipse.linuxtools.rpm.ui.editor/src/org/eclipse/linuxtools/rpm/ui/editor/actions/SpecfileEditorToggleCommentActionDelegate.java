@@ -20,29 +20,26 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class SpecfileEditorToggleCommentActionDelegate implements
-		IEditorActionDelegate, IWorkbenchWindowActionDelegate {
+		IEditorActionDelegate {
 
 	SpecfileEditor editor;
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
+	 * @see org.eclipse.ui.IEditorActionDelegate#setActiveEditor(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.ui.IEditorPart)
 	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-		if (Activator.getActiveEditor() instanceof SpecfileEditor)
-			editor = (SpecfileEditor) Activator.getActiveEditor();
+	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
+		if (targetEditor instanceof SpecfileEditor) {
+			editor = (SpecfileEditor) targetEditor;
+		}
 	}
 
 	/*
@@ -56,21 +53,21 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 				.getSelection();
 		if (currentSelection instanceof ITextSelection) {
 			ITextSelection selection = (ITextSelection) currentSelection;
-			String selectedContent = ""; //$NON-NLS-1$
+			String selectedContent = "";
 			try {
 				int begin = document.getLineOffset(selection.getStartLine());
-				StringBuilder sb = new StringBuilder(document.get().substring(0,
+				StringBuffer sb = new StringBuffer(document.get().substring(0,
 						begin));
 				String content = document.get().substring(begin,
 						selection.getOffset() + selection.getLength());
 				if (linesContentCommentChar(content)) {
 					if (selection.getStartLine() == selection.getEndLine()) {
-						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content; 
+						selectedContent = "#" + content;
 					} else
-						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$
+						selectedContent = "#" + content.replaceAll("\n", "\n#");
 				} else {
-					selectedContent = content.replaceFirst(ISpecfileSpecialSymbols.COMMENT_START, "").replaceAll( //$NON-NLS-1$
-							"\n#", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+					selectedContent = content.replaceFirst("#", "").replaceAll(
+							"\n#", "\n");
 				}
 				sb.append(selectedContent);
 				sb.append(document.get().substring(
@@ -83,6 +80,15 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 				SpecfileLog.logError(e);
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.jface.viewers.ISelection)
+	 */
+	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
 	/**
@@ -99,7 +105,7 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 		boolean ret = false;
 		try {
 			while ((line = reader.readLine()) != null) {
-				if (line.startsWith(ISpecfileSpecialSymbols.COMMENT_START)) 
+				if (line.startsWith("#"))
 					ret = false;
 				else
 					return true;
@@ -111,31 +117,4 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 		return ret;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-	 */
-	public void dispose() {
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-	 */
-	public void init(IWorkbenchWindow window) {
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IEditorActionDelegate#setActiveEditor(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IEditorPart)
-	 */
-	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-
-	}
 }

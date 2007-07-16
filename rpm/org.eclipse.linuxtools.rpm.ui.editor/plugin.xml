@@ -24,6 +24,10 @@
 	</extension>
    <extension
          point="org.eclipse.ui.editors.documentProviders">
+      <provider
+            class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileDocumentProvider"
+            id="org.eclipse.linuxtools.rpm.ui.editor.specfileDocumentProvider">
+      </provider>
    </extension>
    <extension
          point="org.eclipse.linuxtools.changelog.core.parserContribution">
@@ -42,6 +46,8 @@
          <filePattern pattern=".*\.spec"/>
       </formatter>
    </extension>
+   
+   <!-- Editor actions and key binding -->
    <extension
          id="org.eclipse.linuxtools.rpm.ui.editor.popupMenu"
          point="org.eclipse.ui.popupMenus">
@@ -53,9 +59,20 @@
                id="org.eclipse.linuxtools.rpm.ui.editor.organizePatchesAction"
                label="Organize patches"
                menubarPath="additions"
-               tooltip="Organize patches numerically"/>
+               tooltip="Organize patches numerically">
+         </action>
+         <action
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.toggleCommentAction"
+               label="Toggle Comments"
+               menubarPath="additions"
+               tooltip="Add or Remove Comments"
+               definitionId="org.eclipse.linuxtools.specfile.command.comment">
+         </action>
       </viewerContribution>
-   </extension>
+   </extension>   
+   <!-- End of Editor actions and key binding -->
+   
    <extension
          point="org.eclipse.ui.editors.templates">
       <contextType
