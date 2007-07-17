@@ -11,17 +11,6 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -31,13 +20,9 @@ import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -69,7 +54,8 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		StringFieldEditor rpmListFieldEditor = new StringFieldEditor(PreferenceConstants.P_RPM_LIST_FILEPATH,
 				"Path to packages list file:", getFieldEditorParent());
 		addField(rpmListFieldEditor);
-		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_HIDE_PROPOSALS_WARNING,"Hide warning about RPM proposals", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,"Automatically build the RPM packages proposals list", getFieldEditorParent()));
+		addField(buildListTimeRate());
 	}
 	
 	/*
@@ -87,7 +73,6 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		});
 		Composite fieldEditorComposite = (Composite) super
 				.createContents(parent);
-		createBuildListButton(fieldEditorComposite);
 		return fieldEditorComposite;
 	}
 	
@@ -103,64 +88,15 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		return rpmToolsRadioGroupEditor;
 	}
 	
-	public void createBuildListButton(Composite parent) {
-		Button builRpmProposalsButton = new Button(parent,
-				SWT.PUSH);
-		GridData data = new GridData ();
-		data.horizontalAlignment = GridData.END;
-		data.verticalIndent = 10;
-		data.grabExcessHorizontalSpace = true;
-		builRpmProposalsButton.setLayoutData(data);
-		builRpmProposalsButton.setText("Build proposals now ...");
-		builRpmProposalsButton.addListener(SWT.Selection, new Listener() {
-
-			public void handleEvent(Event event) {
-				IRunnableWithProgress runnable = new IRunnableWithProgress() {
-					public void run(IProgressMonitor monitor)
-							throws InvocationTargetException,
-							InterruptedException {
-						performApply();
-						String rpmListCmd = getPreferenceStore().getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
-						String rpmListFilepath = getPreferenceStore().getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
-						try {
-							String[] cmd = new String[] {"/bin/sh", "-c", rpmListCmd};
-							monitor.beginTask("Get RPM proposals list...", IProgressMonitor.UNKNOWN);
-							Process child = Runtime.getRuntime().exec(cmd);
-							InputStream in = child.getInputStream();
-							BufferedWriter out = new BufferedWriter(new FileWriter(rpmListFilepath, false));
-							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-							monitor.setTaskName("Write RPM proposals list into "
-							+ rpmListFilepath + " file ...");
-							String line;
-							while ((line = reader.readLine()) != null) {
-								monitor.subTask("Add package: " + line);
-								out.write(line + "\n");
-					        }
-							in.close();
-							out.close();
-							// validate the page and hide the error message.
-							setValid(true);
-							setErrorMessage(null);
-						} catch (IOException e) {
-							setErrorMessage("Error when building the RPM packages list:\n" + e.getMessage());
-						} finally {
-							monitor.done();
-						}
-					}
-				};
-				try {
-					ProgressMonitorDialog progressMonitor = new ProgressMonitorDialog(getShell());
-					//FIXME: If we will use a non forked thread, we may implement something to access this 
-					// pref. page outside the main thread. Seems to be easy for Editors but not for Preference pages.
-					progressMonitor.run(false, true, runnable);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-		});
+	private FieldEditor buildListTimeRate() { 
+		RadioGroupFieldEditor buildListTimeRateRadioGroupEditor = new RadioGroupFieldEditor(
+				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD,
+				"Proposals RPM list build rate", 1, new String[][] {
+						{ "Each time that the workbench is open", "1" },
+						{ "Once a week", "2" },
+						{ "Once a month", "3" }}, getFieldEditorParent(), true);
+		return buildListTimeRateRadioGroupEditor;
 	}
-
 
 	/*
 	 * (non-Javadoc)

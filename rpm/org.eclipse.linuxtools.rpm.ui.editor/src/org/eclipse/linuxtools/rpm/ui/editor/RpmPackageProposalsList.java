@@ -26,14 +26,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 
 /**
  * This class is used to retrieve and manage the RPM package proposals.
@@ -58,41 +52,9 @@ public class RpmPackageProposalsList {
 				line = reader.readLine();
 			}
 		} catch (IOException e) {
-			boolean isOk = showProposalsWarningDialog();
-			if (isOk) {
-				PreferenceDialog preferenceDialog = PreferencesUtil
-				.createPreferenceDialogOn(
-						Activator.getDefault().getWorkbench()
-						.getActiveWorkbenchWindow().getShell(),
-						"org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage",
-						null, null);
-				PreferencePage page = (PreferencePage) preferenceDialog.getSelectedPage();
-				page.setErrorMessage(Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_RPM_LIST_FILEPATH) + " file do not exist.\nplease click on the 'Build Proposals Now' button");
-				page.setValid(false);
-				preferenceDialog.open();
-			}
+			RpmPackageBuildProposalsJob.initializeList();
+			SpecfileLog.logError(e);
 		}
-	}
-
-	private boolean showProposalsWarningDialog() {
-		boolean toogleState = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_RPM_LIST_HIDE_PROPOSALS_WARNING);
-		boolean isOK = false;
-		if (!toogleState)  {
-			MessageDialogWithToggle dialog = MessageDialogWithToggle
-			.openYesNoQuestion(
-					Display.getCurrent().getActiveShell(),
-					"No RPM package proposals available",
-					"RPM packages proposals file does not exist.\nDo you want to open the RPM completion preference page\nwhere you can create this file?",
-					"Do not show this warning anymore", toogleState, Activator.getDefault().getPreferenceStore(),
-					PreferenceConstants.P_RPM_LIST_HIDE_PROPOSALS_WARNING);
-			if (dialog.getReturnCode() == IDialogConstants.YES_ID) {
-				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_RPM_LIST_HIDE_PROPOSALS_WARNING, true);
-				isOK = true;
-			} else {
-				isOK = false;
-			}
-		}
-		return isOK;
 	}
 
 	public List getProposals(String prefix) {

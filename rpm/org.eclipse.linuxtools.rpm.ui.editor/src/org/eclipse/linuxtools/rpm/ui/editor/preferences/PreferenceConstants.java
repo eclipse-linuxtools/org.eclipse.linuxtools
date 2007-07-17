@@ -23,7 +23,9 @@ public class PreferenceConstants {
 	public static final String P_RPM_LIST_FILEPATH = "rpmListFilePath";	
 	public static final String P_RPM_LIST_MAX_PROPOSALS = "rpmListMaxProposalsInfo";
 	public static final String P_CURRENT_RPMTOOLS = "currentRpmtools";
-	public static final String P_RPM_LIST_HIDE_PROPOSALS_WARNING = "rpmListHideProposalsWarning";
+	public static final String P_RPM_LIST_BACKGROUND_BUILD = "rpmListBackgroundBuild";
+	public static final String P_RPM_LIST_BUILD_PERIOD = "rpmListBuildPeriod";
+	public static final String P_RPM_LIST_LAST_BUILD = "rpmLisMastBuild";
 	// macro
 	public static final String P_MACRO_PROPOSALS_FILESPATH = "macroProposalsFilespath";
 	public static final String P_MACRO_HOVER_CONTENT_VIEWCONTENT = "macroHoverViewContent";	
@@ -54,7 +56,12 @@ public class PreferenceConstants {
 	public static final String DP_RPM_LIST_MAX_PROPOSALS = "10";
 	public static final String DP_RPMTOOLS_RPM = "rpm -qa --qf '%{NAME}\\n'";
 	public static final String DP_RPMTOOLS_YUM = "yum -C list all | grep - | cut -d \".\" -f 1";
-	public static final String DP_RPM_LIST_HIDE_PROPOSALS_WARNING = "false";
+	//public static final String DP_RPM_LIST_HIDE_PROPOSALS_WARNING = "false";
+	public static final boolean DP_RPM_LIST_BACKGROUND_BUILD = true;
+	public static final String DP_RPM_LIST_BUILD_PERIOD = "1";
+	//public static final String DP_RPM_LIST_LAST_BUILD = "";
+	
+	
 	// macro
 	public static final String DP_MACRO_PROPOSALS_FILESPATH = System.getProperty("user.home") + "/.rpmmacros;/usr/lib/rpm/macros";
 	// changelog

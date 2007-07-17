@@ -42,7 +42,7 @@ public class Activator extends AbstractUIPlugin {
 	private RpmMacroProposalsList macrosList ;
 	
 	// RPM package list
-	private RpmPackageProposalsList packagesList ;
+	public static RpmPackageProposalsList packagesList ;
 	
 	/**
 	 * The constructor
@@ -57,6 +57,9 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		RpmPackageBuildProposalsJob.setPropertyChangeListener(true);
+		RpmPackageBuildProposalsJob.update();
+
 	}
 
 	/*
@@ -65,6 +68,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		RpmPackageBuildProposalsJob.setPropertyChangeListener(false);
 		super.stop(context);
 	}
 

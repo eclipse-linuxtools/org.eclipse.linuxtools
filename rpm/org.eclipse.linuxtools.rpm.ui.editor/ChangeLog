@@ -1,3 +1,20 @@
+2007-07-17  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Build RPM proposal list in a background task job, the list can be update when
+	the plugin is loader, once a week or once a month.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java:
+	New Class that initialize and update the packages proposal list.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java:
+	Add property change listener and call RpmPackageBuildProposalsJob#update in the start method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java:
+	Updating to use the new job to update package proposal list strategy.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java:
+	Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java: 
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java:
+	Likewise. 
+
 2007-07-17  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: 

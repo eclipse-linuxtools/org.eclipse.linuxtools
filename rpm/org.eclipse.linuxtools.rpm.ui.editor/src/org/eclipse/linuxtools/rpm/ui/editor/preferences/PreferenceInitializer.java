@@ -31,11 +31,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
 		store.setDefault(PreferenceConstants.P_RPM_LIST_FILEPATH, PreferenceConstants.DP_RPM_LIST_FILEPATH);
 		store.setDefault(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS, PreferenceConstants.DP_RPM_LIST_MAX_PROPOSALS);
-		store.setDefault(PreferenceConstants.P_RPM_LIST_HIDE_PROPOSALS_WARNING, PreferenceConstants.DP_RPM_LIST_HIDE_PROPOSALS_WARNING);		
+		store.setDefault(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, PreferenceConstants.DP_RPM_LIST_BACKGROUND_BUILD);
+		store.setDefault(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, PreferenceConstants.DP_RPM_LIST_BUILD_PERIOD);
 		store.setDefault(PreferenceConstants.P_MACRO_PROPOSALS_FILESPATH, PreferenceConstants.DP_MACRO_PROPOSALS_FILESPATH);
 		store.setDefault(PreferenceConstants.P_CHANGELOG_LOCAL, PreferenceConstants.DP_CHANGELOG_LOCAL);
 		store.setDefault(PreferenceConstants.P_MACRO_HOVER_CONTENT, PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION);
-		// RPM informations
 		store.setDefault(PreferenceConstants.P_RPMINFO_NAME, PreferenceConstants.DP_RPMINFO_NAME);
 		store.setDefault(PreferenceConstants.P_RPMINFO_VERSION, PreferenceConstants.DP_RPMINFO_VERSION);
 		store.setDefault(PreferenceConstants.P_RPMINFO_RELEASE, PreferenceConstants.DP_RPMINFO_RELEASE);
