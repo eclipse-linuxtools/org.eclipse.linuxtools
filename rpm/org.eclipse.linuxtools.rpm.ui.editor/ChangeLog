@@ -1,3 +1,14 @@
+2007-07-17  Alphonse Van Assche   <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: 
+	Add defines in proposals.
+	Don't show templates in package context and retrieve proposals only when it's needed.
+	Cleanup javadoc and remove some unneeded methods args.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java:
+	(getDefinesName): New method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java: 
+	Cleanup.
+
 2007-07-16  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	Implement toggle comment like in JDT.

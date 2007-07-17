@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Alphonse Van Assche and others
+ * Copyright (c) 2007 Alphonse Van Assche and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,6 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 		return returned;
 	}
 	
-	
 	/**
 	 * Resolve defines for a give URL string, if a define is not found or if there 
 	 * is some other error, the original string is returned.
@@ -84,7 +83,6 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 			// e.printStackTrace();
 			return originalUrlString;
 		}
-		
 	}
 
 }
