@@ -351,8 +351,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 		 * 
 		 */
 		String packageName = nameText.getText();
-		if (packageName.indexOf(" ") == -1 || packageName.indexOf("<") == -1
-				|| packageName.indexOf(">") == -1 || packageName.indexOf("=") == -1){
+		if (packageName.indexOf(" ") != -1 || packageName.indexOf("<") != -1
+				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1){
 			updateStatus("The Name tag must not include whitespace and "
 					+ "should not include any numeric operators ('<', '>','=')");
 			return;

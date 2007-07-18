@@ -1,3 +1,8 @@
+2007-07-18  Alphonse Van Assche   <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java: 
+	(dialogChanged): Fix a little mistake with String#indexOf 
+
 2007-07-17  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Build RPM proposal list in a background task job, the list can be update when
