@@ -2,11 +2,11 @@
 <feature
       id="org.eclipse.linuxtools.rpm.ui.editor"
       label="%featureName"
-      version="0.4.2.qualifier"
+      version="0.1"
       provider-name="%featureProvider"
       plugin="org.eclipse.linuxtools.rpm.ui.editor">
 
-   <description url="http://www.eclipse.org/linuxtools/">
+   <description>
       %description
    </description>
 
@@ -17,10 +17,6 @@
    <license url="%licenseURL">
       %license
    </license>
-
-   <url>
-      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
-   </url>
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
@@ -49,11 +45,5 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.rpm.ui.editor.doc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
 </feature>
