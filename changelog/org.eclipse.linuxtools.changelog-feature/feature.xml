@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.changelog"
       label="%featureName"
-      version="2.4.0"
+      version="2.5.0"
       provider-name="%providerName">
 
    <description url="http://www.redhat.com">

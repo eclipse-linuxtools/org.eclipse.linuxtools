@@ -1,6 +1,11 @@
+2007-08-02  Kyu Lee  <klee@redhat.com>
+
+	* feature.xml: Version bump to 2.5.0.
+
 2007-05-15  Kyu Lee  <klee@redhat.com>
 
 	* feature.xml: Added new parser features.
+	
 
 2007-05-14  Kyu Lee  <klee@redhat.com>
 
