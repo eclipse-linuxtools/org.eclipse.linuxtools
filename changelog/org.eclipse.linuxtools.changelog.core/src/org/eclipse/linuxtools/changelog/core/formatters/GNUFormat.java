@@ -49,7 +49,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 	}
 	
 	
-	public String mergeChangelog(String dateLine, String functionGuess,
+	public String mergeChangelog(String dateLine, String functionGuess,String defaultContent,
 			IEditorPart changelog, String changeLogLocation, String fileLocation) {
 		
 		String fileDetail = formatFileDetail(changeLogLocation, fileLocation);
@@ -158,7 +158,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 					} else {
 						try {
 							changelog_doc.replace(offset_end, 0, TAB
-									+ "* " + fileDetail + functionSpacer+function+functionSpacer + "\n"); //$NON-NLS-1$
+									+ "* " + fileDetail + functionSpacer+function+functionSpacer + defaultContent + "\n"); //$NON-NLS-1$
 						} catch (BadLocationException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -166,7 +166,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 						
 						ITextEditor edit = (ITextEditor) changelog;
 						edit.selectAndReveal(offset_end + fileDetail.length()
-								+ function.length() +functionSpacer.length()*2 + 3, 0);
+								+ function.length() +functionSpacer.length()*2 + 3 + defaultContent.length(), 0);
 						multipleEntrySuccess = true;
 					}
 					
@@ -292,7 +292,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				changelog_doc);
 		IRegion region = null;
 		try {
-			region = findDocumentAptd.find(0, entry, true, false, false, true);
+			region = findDocumentAptd.find(0, entry, true, false,/*whole world */ false, true);
 		} catch (BadLocationException e) {
 			ChangelogPlugin.getDefault().getLog().log(
 					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e

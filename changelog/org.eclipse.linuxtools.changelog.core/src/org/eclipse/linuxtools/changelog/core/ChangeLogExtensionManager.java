@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
+
 /**
  * This class will manage extension related operations.
  * 
@@ -31,7 +32,9 @@ import org.eclipse.core.runtime.Status;
  */
 public class ChangeLogExtensionManager {
 
+	
 	private static final ChangeLogExtensionManager exm = new ChangeLogExtensionManager();
+	
 
 	// These are used as a simple cache so we don't have to iterate over
 	// all extensions to formatContribution every time the action is invoked.
@@ -46,14 +49,14 @@ public class ChangeLogExtensionManager {
 	protected IParserChangeLogContrib parserContributor = null;
 
 	protected IFormatterChangeLogContrib formatterContributor = null;
-
+	
 	protected IConfigurationElement formatterConfigElementToUse = null;
-
+	
 	private ChangeLogExtensionManager() {
 		getParserContributions();
 		getFormatterContributions();
 	}
-
+	
 	public static ChangeLogExtensionManager getExtensionManager() {
 		return exm;
 	}
@@ -73,25 +76,19 @@ public class ChangeLogExtensionManager {
 	}
 
 	public IParserChangeLogContrib getParserContributor(String editorName) {
-
 		
-		if (parserExtensions != null) {
+		 if (parserExtensions != null) {
 			IConfigurationElement[] elements = parserExtensions
 					.getConfigurationElements();
 			for (int i = 0; i < elements.length; i++) {
-				
 				if (elements[i].getName().equals("parser")
 						&& (elements[i].getAttribute("editor")
 								.equals(editorName))) {
-					
 					//$NON-NLS-1$
 					try {
 						IConfigurationElement bob = elements[i];
-						
-						
 						parserContributor = (IParserChangeLogContrib) bob
 								.createExecutableExtension("class");
-						
 						return parserContributor;
 					} catch (CoreException e) {
 						ChangelogPlugin.getDefault().getLog().log(
@@ -102,30 +99,35 @@ public class ChangeLogExtensionManager {
 				}
 			}
 		}
-
+		
+		
+		
 		return null;
 	}
 
+
+
+	
 	public IConfigurationElement getFormatterConfigElement() {
 		return formatterConfigElementToUse;
 	}
-
+	
 	/**
-	 * Fetches formatterName formatter from extension, but if there exists a
-	 * inline formatter for entryFileName, then it uses that inline formatter.
+	 * Fetches formatterName formatter from extension, but if there exists a inline
+	 * formatter for entryFileName, then it uses that inline formatter.
 	 */
-	public IFormatterChangeLogContrib getFormatterContributor(
-			String entryFilePath, String formatterName) {
-
+	public IFormatterChangeLogContrib getFormatterContributor(String entryFilePath, String formatterName) {
+		
+		
 		// extract just file name;
 		String fileName;
-
+	
 		int lastDir = entryFilePath.lastIndexOf('/');
-		if ((lastDir >= 0) && (lastDir + 1 <= entryFilePath.length()))
-			fileName = entryFilePath.substring(lastDir + 1, entryFilePath
-					.length());
+		if ((lastDir >= 0) && (lastDir +1 <= entryFilePath.length()))
+			fileName = entryFilePath.substring(lastDir + 1, entryFilePath.length());
 		else
 			fileName = entryFilePath;
+		
 
 		// IFile file = null;
 
@@ -241,6 +243,8 @@ public class ChangeLogExtensionManager {
 			}
 		}
 
+		
+		
 		try {
 			return (IFormatterChangeLogContrib) formatterConfigElementToUse
 					.createExecutableExtension("class");
@@ -251,7 +255,8 @@ public class ChangeLogExtensionManager {
 							.getMessage(), e));
 			e.printStackTrace();
 		}
-
+		
+		
 		return null;
 	}
 }

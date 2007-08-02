@@ -18,6 +18,7 @@ import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.team.internal.ccvs.core.CVSException;
+import org.eclipse.team.internal.ccvs.core.client.Diff;
 import org.eclipse.team.internal.ccvs.core.client.Command.LocalOption;
 import org.eclipse.team.internal.ccvs.ui.operations.DiffOperation;
 import org.eclipse.ui.IWorkbenchPart;
@@ -38,11 +39,18 @@ public class StringDiffOperation extends DiffOperation {
 	   private boolean diffDone = false;
 	   
 	public StringDiffOperation(IWorkbenchPart part, ResourceMapping[] mappings, LocalOption[] options, boolean isMultiPatch, boolean includeFullPathInformation, IPath patchRoot) {
-		super(part, mappings, options, isMultiPatch, includeFullPathInformation,
-				patchRoot,null);
+		super(part, mappings, options, isMultiPatch, includeFullPathInformation,patchRoot,null);
+		
 		
 	}
 	
+	
+	public StringDiffOperation(IWorkbenchPart part, ResourceMapping[] mappings, boolean isMultiPatch, boolean includeFullPathInformation, IPath patchRoot) {
+		
+		super(part, mappings,  new LocalOption[] { Diff.INCLUDE_NEWFILES }, isMultiPatch,includeFullPathInformation,
+				patchRoot,null);
+		
+	}
 	
 	public void execute(IProgressMonitor monitor) throws CVSException, InterruptedException {
 	    super.execute(monitor);

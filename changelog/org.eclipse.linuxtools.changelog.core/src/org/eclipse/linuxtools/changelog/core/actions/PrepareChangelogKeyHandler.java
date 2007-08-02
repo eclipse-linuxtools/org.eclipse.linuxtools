@@ -15,9 +15,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.core.internal.resources.mapping.SimpleResourceMapping;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.mapping.ResourceMapping;
@@ -28,11 +26,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
-import org.eclipse.linuxtools.changelog.core.editors.ChangeLogEditor;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.dialogs.ResourceSelectionDialog;
 import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
@@ -70,21 +66,25 @@ public class PrepareChangelogKeyHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		Object[] currentProject;
+		IProject[] currentProject;
 
 		
 		// try getting currently selected project
 		try {
 			IEditorPart editor = getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().getActiveEditor();
-			currentProject = (Object[]) (getResourceMapping(editor
+			currentProject = (getResourceMapping(editor
 					.getEditorInput()).getProjects());
 
 		} catch (Exception e) {
 			// if fail, no default selection
-			currentProject = new Object[] {};
+			currentProject = new IProject[] {};
 		}
 		
+
+	
+		
+	
 		ResourceSelectionDialog rsd = new ResourceSelectionDialog(
 				ChangelogPlugin.getDefault().getWorkbench()
 						.getActiveWorkbenchWindow().getShell(), workspaceRoot,
@@ -94,23 +94,21 @@ public class PrepareChangelogKeyHandler implements IHandler {
 
 		rsd.open();
 
-		Object[] result = rsd.getResult();
+		final Object[] result = rsd.getResult();
 		
+	
 		if (result == null)
 			return null; // user didn't select anything or pressed cancel
 		
-		final ResourceMapping[] rm = new ResourceMapping[result.length];
-
-		for (int i = 0; i < rm.length; i++) {
-			rm[i] = new SimpleResourceMapping((IResource) result[i]);
-		}
+		
+		
 
 		try {
 		
 		Action exampleAction;
 		exampleAction = new PrepareChangeLogAction() {
 			public void run() {
-				setSelection(new StructuredSelection(rm));
+				setSelection(new StructuredSelection(result));
 
 				doRun();
 			}

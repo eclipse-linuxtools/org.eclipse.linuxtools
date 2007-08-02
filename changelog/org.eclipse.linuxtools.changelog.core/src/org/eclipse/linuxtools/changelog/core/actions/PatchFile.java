@@ -26,7 +26,17 @@ public class PatchFile {
 	private IPath fpath;
 	private ArrayList pranges = new ArrayList();
 	
+	private boolean newfile = false;
 	
+	
+	public boolean isNewfile() {
+		return newfile;
+	}
+
+	public void setNewfile(boolean newfile) {
+		this.newfile = newfile;
+	}
+
 	public PatchFile(String filePath) {
 		fpath = new Path(filePath);
 	}

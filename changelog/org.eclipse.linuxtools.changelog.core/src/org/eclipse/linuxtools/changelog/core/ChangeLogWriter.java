@@ -21,6 +21,8 @@ import org.eclipse.ui.IEditorPart;
  *
  */
 public class ChangeLogWriter {
+	
+	private String defaultContent = "";
 
 	private String entryFilePath = null;
 
@@ -103,9 +105,17 @@ public class ChangeLogWriter {
 			return;
 		}
 
-		formatter.mergeChangelog(dateLine, guessedFName, changelog,
+		formatter.mergeChangelog(dateLine, guessedFName, defaultContent, changelog,
 				changelogLocation, entryFilePath);
 
+	}
+
+	public String getDefaultContent() {
+		return defaultContent;
+	}
+
+	public void setDefaultContent(String defaultContent) {
+		this.defaultContent = defaultContent;
 	}
 
 }

@@ -18,6 +18,6 @@ import org.eclipse.ui.IEditorPart;
 public interface IFormatterChangeLogContrib {
 	
 	public String formatDateLine(String authorName, String authorEmail);
-	public String mergeChangelog(String dateLine, String functionGuess,
+	public String mergeChangelog(String dateLine, String functionGuess,String defaultContent,
 			IEditorPart changelog, String changeLogLocation, String fileLocation);
 }

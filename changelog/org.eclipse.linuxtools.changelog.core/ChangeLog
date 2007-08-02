@@ -1,3 +1,31 @@
+2007-07-31  Kyu Lee  <klee@redhat.com>
+
+	* META-INF/MANIFEST.MF: Version bump to 2.5.0.
+	* src/org/eclipse/linuxtools/changelog/core/actions/FormatChangeLogAction.java:
+	Removed unused imports.
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/ui/ChangeLogActionProvider.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java:
+	Added support for new files.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
+	Ditto. + Removed internal class reference.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java:
+	Removed internal class reference.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitHandler.java:
+	Removed internal class reference.
+	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java:
+	Added a constructor with default options for DiffOperation.
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogWriter.java:
+	Added support for inserting default content to changelog entry.
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/IFormatterChangeLogContrib.java:
+	Ditto.
+
 2007-06-25  Kyu Lee  <klee@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java

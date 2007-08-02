@@ -20,8 +20,7 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.editors.ChangeLogEditor;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.texteditor.AbstractTextEditor;
+
 
 
 public class FormatChangeLogAction extends Action implements IHandler {

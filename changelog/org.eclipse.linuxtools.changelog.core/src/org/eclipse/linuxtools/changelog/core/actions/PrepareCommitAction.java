@@ -18,7 +18,6 @@ import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -27,9 +26,6 @@ import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.team.internal.ccvs.core.CVSException;
-import org.eclipse.team.internal.ccvs.core.client.Diff;
-import org.eclipse.team.internal.ccvs.core.client.Command.LocalOption;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IContributorResourceAdapter2;
@@ -132,17 +128,14 @@ public class PrepareCommitAction extends ChangeLogAction {
 			StringDiffOperation sdo = new StringDiffOperation(getWorkbench()
 					.getActiveWorkbenchWindow().getPartService()
 					.getActivePart(), new ResourceMapping[] {getResourceMapping(currentEditor.getEditorInput())},
-					new LocalOption[] { Diff.INCLUDE_NEWFILES }, false, true,
+					 false, true,
 					ResourcesPlugin.getWorkspace().getRoot().getFullPath());
 			//NullProgressMonitor np = new NullProgressMonitor();
 			sdo.execute(monitor);
 			
 			diffResult = sdo.getResult();
-		} catch (CVSException e) {
 
-			e.printStackTrace();
-			return;
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 
 			e.printStackTrace();
 			return;
