@@ -1,3 +1,7 @@
+2007-08-07  klee  <klee@redhat.com>
+
+	* feature.xml: Fixed dependencies.
+
 2007-08-02  Kyu Lee  <klee@redhat.com>
 
 	* feature.xml: Version bump to 2.5.0.
