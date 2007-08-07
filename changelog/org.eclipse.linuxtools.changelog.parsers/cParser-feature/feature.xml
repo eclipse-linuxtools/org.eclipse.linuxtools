@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.changelog.cParser-feature"
       label="Changelog C Parser"
-      version="1.0.0">
+      version="2.0.0">
 
    <description url="http://www.redhat.com">
       The Changelog C Parser feature allows changelog to automatically
@@ -219,7 +219,7 @@ litigation.
    </url>
 
    <requires>
-      <import feature="org.eclipse.linuxtools.changelog" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.linuxtools.changelog.core" version="2.5.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
