@@ -1,0 +1,3 @@
+2007-08-07  klee  <klee@redhat.com>
+
+	* META-INF/MANIFEST.MF: Fixed requirements and version bump to 2.0.0.
