@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.team.ui,
  org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.team.cvs.ui,
- org.eclipse.team.cvs.core,
+ org.eclipse.team.cvs.core;bundle-version="3.3.0",
  org.eclipse.team.core,
  org.eclipse.ui.navigator,
  org.eclipse.compare
