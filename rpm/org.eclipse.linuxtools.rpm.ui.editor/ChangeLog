@@ -1,3 +1,9 @@
+2007-05-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #199172
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java: Add method
+	required by ChangeLog HEAD.
+
 2007-07-18  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java: 

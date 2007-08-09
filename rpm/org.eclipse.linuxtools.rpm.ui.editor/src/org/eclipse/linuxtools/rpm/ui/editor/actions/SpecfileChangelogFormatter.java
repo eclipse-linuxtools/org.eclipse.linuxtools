@@ -55,8 +55,37 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
     public String mergeChangelog(String dateLine, String functionGuess,
             IEditorPart changelog, String changeLogLocation, String fileLocation) {
+    	return mergeChangelog(dateLine, functionGuess, "", changelog, changeLogLocation, fileLocation);
+    }
 
+    protected Specfile getParsedSpecfile() {
+        if (changelog == null)
+            changelog = ChangelogPlugin.getDefault().getWorkbench()
+                    .getActiveWorkbenchWindow().getActivePage()
+                    .getActiveEditor();
         if (changelog instanceof SpecfileEditor) {
+            SpecfileEditor specEditor = (SpecfileEditor) changelog;
+            return specEditor.getSpecfile();
+        }
+        return null;
+    }
+
+    private String formatTodaysDate() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(new Date());
+        // Get default locale
+        Locale defaultLocale = Locale.getDefault();
+        Locale.setDefault(new Locale(Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_LOCAL)));
+        String date = (new SimpleDateFormat("EEE MMM d yyyy"))
+                .format(new Date());
+        Locale.setDefault(defaultLocale);
+        return date;
+    }
+
+	public String mergeChangelog(String dateLine, String functionGuess,
+			String defaultContent, IEditorPart changelog,
+			String changeLogLocation, String fileLocation) {
+		if (changelog instanceof SpecfileEditor) {
             SpecfileEditor specEditor = (SpecfileEditor) changelog;
             IDocument doc = specEditor.getDocumentProvider().getDocument(
                     specEditor.getEditorInput());
@@ -156,30 +185,6 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                     + " editor");
         }
         return "";
-    }
-
-    protected Specfile getParsedSpecfile() {
-        if (changelog == null)
-            changelog = ChangelogPlugin.getDefault().getWorkbench()
-                    .getActiveWorkbenchWindow().getActivePage()
-                    .getActiveEditor();
-        if (changelog instanceof SpecfileEditor) {
-            SpecfileEditor specEditor = (SpecfileEditor) changelog;
-            return specEditor.getSpecfile();
-        }
-        return null;
-    }
-
-    private String formatTodaysDate() {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(new Date());
-        // Get default locale
-        Locale defaultLocale = Locale.getDefault();
-        Locale.setDefault(new Locale(Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_LOCAL)));
-        String date = (new SimpleDateFormat("EEE MMM d yyyy"))
-                .format(new Date());
-        Locale.setDefault(defaultLocale);
-        return date;
-    }
+	}
 
 }
