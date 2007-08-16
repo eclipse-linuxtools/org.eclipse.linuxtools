@@ -1,6 +1,5 @@
 /*******************************************************************************
  * Copyright (c) 2006 Phil Muldoon <pkmuldoon@picobot.org>.
- * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +12,7 @@ package org.eclipse.linuxtools.changelog.parsers;
 
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.IWorkingCopy;
+import org.eclipse.cdt.internal.ui.editor.CEditor;
 import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.cdt.ui.IWorkingCopyManager;
 import org.eclipse.core.runtime.CoreException;
@@ -20,6 +20,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 /**
@@ -36,17 +37,17 @@ public class CParser implements IParserChangeLogContrib {
 	 * @see IParserChangeLogContrib#parseCurrentFunction(IEditorPart)
 	 */
 	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
-		
-		if (!(editor instanceof AbstractTextEditor)) {
+
+		if (!(editor instanceof CEditor)) {
 			return "";
 		}
 
-		AbstractTextEditor a_editor = (AbstractTextEditor) editor;
+		CEditor c_editor = (CEditor) editor;
 
-		ITextSelection selection = (ITextSelection) (a_editor)
+		ITextSelection selection = (ITextSelection) ((AbstractTextEditor)c_editor)
 				.getSelectionProvider().getSelection();
 
-		IEditorInput input = a_editor.getEditorInput();
+		IEditorInput input = c_editor.getEditorInput();
 
 		return parseCurrentFunction(input, selection.getOffset());
 	}
