@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Red Hat Inc. and others.
+ * Copyright (c) 2006 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import org.eclipse.ui.IEditorPart;
  */
 public class ChangeLogWriter {
 	
-	private String defaultContent = ""; // $NON-NLS-1$
+	private String defaultContent = "";
 
 	private String entryFilePath = null;
 
@@ -99,8 +99,8 @@ public class ChangeLogWriter {
 				|| changelog == null || dateLine == null
 				|| changelogLocation == null) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
-							Messages.getString("ChangeLogWriter.ErrUninitialized"), null)); // $NON-NLS-1$
+					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR,
+							"Some element not set to write a Changelog", null));
 
 			return;
 		}

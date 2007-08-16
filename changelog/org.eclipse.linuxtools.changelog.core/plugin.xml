@@ -7,7 +7,8 @@
     	schema="schema/parserContribution.exsd"/>
     <extension-point id="formatterContribution" name="Changelog Format Contribution" schema="schema/formatterContribution.exsd"/>
     <extension-point id="editorContribution" name="ChangeLog Editor Contribution" schema="schema/editorContribution.exsd"/>
-  
+    <extension-point id="locationContribution" name="ChangeLog location contribution" schema="schema/locationContribution.exsd"/>   
+ 
     <extension
   		point="org.eclipse.ui.commands">
 		
@@ -51,28 +52,6 @@
 				menubarPath="edit/"
 				id="org.eclipse.linuxtools.changelog.core.actions.KeyAction">
  			</action>
-         <action
-               class="org.eclipse.linuxtools.changelog.core.actions.PrepareChangelogKeyHandler"
-               definitionId="org.eclipse.linuxtools.changelog.core.preparechangelog"
-               id="org.eclipse.linuxtools.changelog.core.action.prepChangeLog"
-               label="%prepCl"
-               menubarPath="project/"
-               tooltip="%prepChangeLog.tooltip">
-            <enablement>
-               <or>
-                  <objectClass
-                        name="org.eclipse.core.resources.IResource">
-                  </objectClass>
-                  <objectClass
-                        name="org.eclipse.team.ui.synchronize.ISynchronizeModelElement">
-                  </objectClass>
-                  <objectState
-                        name="projectNature"
-                        value="org.eclipse.cdt.core.cnature">
-                  </objectState>
-               </or>
-            </enablement>
-         </action>
 		</actionSet>
 	</extension>
        

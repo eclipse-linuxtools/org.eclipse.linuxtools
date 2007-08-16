@@ -15,7 +15,6 @@ import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.linuxtools.changelog.core.Messages;
 import org.eclipse.linuxtools.changelog.core.actions.PrepareChangeLogAction;
 import org.eclipse.team.core.mapping.ISynchronizationContext;
 import org.eclipse.team.ui.mapping.ISynchronizationCompareAdapter;
@@ -96,7 +95,7 @@ public class ChangeLogActionProvider extends CommonActionProvider {
 		 * selected elements: " + buffer.toString()); } };
 		 */
 
-		exampleAction = new PrepareChangeLogAction(Messages.getString("ChangeLog.PrepareChangeLog")) { // $NON-NLS-1$
+		exampleAction = new PrepareChangeLogAction("Prepare Changelog") {
 			public void run() {
 				setSelection((IStructuredSelection) getContext().getSelection());
 				doRun();
@@ -106,7 +105,7 @@ public class ChangeLogActionProvider extends CommonActionProvider {
 
 	}
 
-	protected ISynchronizationCompareAdapter getCompareAdapter(
+	protected ISynchronizationCompareAdapter getCompareAdpater(
 			ResourceMapping mapping) {
 		if (mapping != null) {
 			ModelProvider provider = mapping.getModelProvider();
