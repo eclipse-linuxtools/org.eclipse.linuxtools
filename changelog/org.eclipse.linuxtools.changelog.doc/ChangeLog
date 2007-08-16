@@ -1,10 +1,3 @@
-2008-01-11  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* raw/rhlegal2008.htm: New file.
-	* plugin.xml: Update to 2.6.1.
-	* raw/ChangeLogDocs/ChangeLog.html: Updated to new functionality.
-	* raw/prepareChangeLog4-sm-result.png: Updated. 
-
 2007-05-15  Kyu Lee  <klee@redhat.com>
 
 	* build.xml: version bump to 2.4.0.

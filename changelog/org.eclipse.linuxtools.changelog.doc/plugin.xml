@@ -2,7 +2,7 @@
 <plugin
    id="org.eclipse.linuxtools.changelog.doc"
    name="ChangeLog Documentation (Incubation)"
-   version="2.6.1"
+   version="2.4.0"
    provider-name="Eclipse.org">
 
    <runtime>
