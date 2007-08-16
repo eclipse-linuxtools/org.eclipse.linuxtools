@@ -1,3 +1,9 @@
+2007-08-16  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Change to be jarred plugin and not contain changelog.jar.
+	* META-INF/MANIFEST.MF: Change from changelog.jar to .. Set required EE. Bump
+	to 2.5.1.
+
 2007-08-07  klee  <klee@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fixed requirements.

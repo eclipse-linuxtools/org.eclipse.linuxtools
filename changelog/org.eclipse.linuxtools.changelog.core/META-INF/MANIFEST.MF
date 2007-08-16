@@ -2,12 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ChangeLog Core Functionality (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.core;singleton:=true
-Bundle-Version: 2.5.0
+Bundle-Version: 2.5.1
 Bundle-Activator: org.eclipse.linuxtools.changelog.core.ChangelogPlugin
 Bundle-Localization: plugin
 Bundle-Vendor: Eclipse.org
 Eclipse-LazyStart: true
-Bundle-Classpath: changelog.jar
 Require-Bundle: org.eclipse.team.ui,
  org.eclipse.ui.ide,
  org.eclipse.jface.text,
@@ -66,3 +65,4 @@ Export-Package: org.eclipse.linuxtools.changelog.core;
    org.eclipse.ui.navigator,
    org.eclipse.ui,
    org.eclipse.core.resources.mapping"
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
