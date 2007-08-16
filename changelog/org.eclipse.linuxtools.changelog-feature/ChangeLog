@@ -1,3 +1,9 @@
+2007-08-16  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Remove unnecessary stuff from binary build.
+	* feature.xml: Fill in provider and feature name. Don't include C and Java
+	parsers as they are their own features now. Bump to 2.5.1.
+
 2007-08-07  klee  <klee@redhat.com>
 
 	* feature.xml: Fixed dependencies.
@@ -9,7 +15,6 @@
 2007-05-15  Kyu Lee  <klee@redhat.com>
 
 	* feature.xml: Added new parser features.
-	
 
 2007-05-14  Kyu Lee  <klee@redhat.com>
 
