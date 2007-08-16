@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.changelog"
       label="ChangeLog management tools (Incubation)"
-      version="2.6.1"
+      version="2.5.1"
       provider-name="Eclipse.org">
 
    <description url="http://www.redhat.com">
@@ -117,6 +117,8 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.team.cvs.ui"/>
+      <import plugin="org.eclipse.team.cvs.core" version="3.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.team.core"/>
       <import plugin="org.eclipse.ui.navigator"/>
       <import plugin="org.eclipse.compare"/>
@@ -136,21 +138,5 @@ This Agreement is governed by the laws of the State of New York and the intellec
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.changelog.cparser"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.changelog.parsers.java"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
 
 </feature>
