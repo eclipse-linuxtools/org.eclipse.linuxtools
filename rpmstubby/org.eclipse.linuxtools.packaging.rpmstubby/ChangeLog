@@ -1,0 +1,60 @@
+2007-09-07  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
+	(generateSpecfile): Fix inversion of URL and License tag and add Source0 tag
+	when the specfile is generate with the fetch script.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
+	(getURL): Return FIXME instead of null if the feature URL field is empty.
+	* .classpath: Add J2SE-1.4 preferred EE.
+	* META-INF/MANIFEST.MF: Add J2SE-1.4 preferred EE.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Restore
+	accidentally removed file file.
+
+2007-09-07  Alphonse Van Assche   <alcapcom@gmail.com>
+
+    - Add models that represent the package.
+    - Generate specfile based on the model.
+    - Generate fetch script based on the model.
+    - Add Preference pages to configure the generator. 
+    * plugin.xml: Add properties pages extensions
+	* META-INF/MANIFEST.MF: Add require bundle 'org.eclipse.ui.ide'
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/StubbyPreferencePage.java: New Class.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceInitializer.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceConstants.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/SubPackage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/PackageItem.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/IPackagePreamble.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/IPackage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/FeatureVisitor.java: Likewise.
+
+2007-05-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #185598
+	* META-INF/MANIFEST.MF: Add "Incubation" to Bundle-Name.
+
+2007-04-02  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Change Bundle-Vendor to Eclipse.org (#180822).
+	* .settings: Add (#180822).
+	* .classpath: Add (#180822).
+
+2007-04-02  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Remove erroneous dependency on CDT.
+
+2007-01-30  Andrew Overholt  <overholt@redhat.com>
+
+	* bin: Add to svnignore.
+
+2007-01-18  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPlugin.java: Initial checkin.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Likewise.
+	* plugin.xml: Likewise.
+	* build.properties: Likewise.
+	* META-INF/MANIFEST.MF: Likewise.

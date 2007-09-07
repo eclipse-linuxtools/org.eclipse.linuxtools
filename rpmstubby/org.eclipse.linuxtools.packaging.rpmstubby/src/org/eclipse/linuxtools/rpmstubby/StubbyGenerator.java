@@ -43,8 +43,7 @@ public class StubbyGenerator {
 	private boolean withGCJSupport;
 	private boolean withFetchScript;
 	private IPreferenceStore store;
-	
-	
+		
 	public StubbyGenerator(MainPackage mainPackage, List subPackages) {
 		this.mainPackage = mainPackage;
 		this.subPackages = subPackages;
@@ -52,23 +51,28 @@ public class StubbyGenerator {
 		this.withGCJSupport = store.getBoolean(PreferenceConstants.P_STUBBY_WITH_GCJ);
 		this.withFetchScript = store.getBoolean(PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT);
 	}
-
 	
 	public String generateSpecfile() {
 		StringBuffer buffer = new StringBuffer();
 		String packageName = "eclipse-" + getPackageName(mainPackage.getName());
 		if (withGCJSupport)
-			buffer.append("%define gcj_support    1\n\n"); 
+			buffer.append("%define gcj_support    1\n"); 
+		if (withFetchScript)
+			buffer.append("%define src_repo_tag   FIXME\n");
+		buffer.append("\n");
 		buffer.append("Name:           " + packageName + "\n");
 		buffer.append("Version:        " + mainPackage.getVersion().replaceAll("\\.qualifier","") + "\n");
 		buffer.append("Release:        1%{?dist}" + "\n");
 		buffer.append("Summary:        " + mainPackage.getSummary() + "\n\n");
 		buffer.append("Group:          Development/Tools\n");
-		buffer.append("License:        " + mainPackage.getURL() + "\n");
-		buffer.append("URL:            " + mainPackage.getLicense() + "\n");
-		buffer.append("Source0:        FIXME\n");
-		if (withFetchScript) 
+		buffer.append("License:        " + mainPackage.getLicense()+ "\n");
+		buffer.append("URL:            " + mainPackage.getURL() + "\n");
+		if (withFetchScript) {
+			buffer.append("Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2\n");
 			buffer.append("Source1:        "+ packageName +"-fetch-src.sh\n");
+		} else {
+			buffer.append("Source0:        FIXME\n");			
+		}
 		buffer.append("BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)\n\n");
 		if (withGCJSupport) {
 			buffer.append("%if %{gcj_support}\n");

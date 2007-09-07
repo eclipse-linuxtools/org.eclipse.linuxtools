@@ -160,11 +160,11 @@ public class StubbyPackageModel {
 		String license = valueNoFoundMessage;
 		URLEntryModel licenseModel = featureModel.getLicenseModel();
 		if (licenseModel != null) {
-			String urlString = licenseModel.getURLString();
+			String urlString = resolveFeatureProperties(licenseModel.getURLString());
 			if (urlString.contains("epl")) {
 				String newLicense = "EPL";
 				if (!license.equals(newLicense)) {
-					license += " " + newLicense;
+					license = newLicense;
 				}
 			}
 		}
@@ -174,7 +174,7 @@ public class StubbyPackageModel {
 	private String getURL() {
 		String url = valueNoFoundMessage;
 		URLEntryModel descriptionModel = featureModel.getDescriptionModel();
-		if (descriptionModel != null)
+		if (descriptionModel != null && descriptionModel.getURLString() != null)
 			url = descriptionModel.getURLString();
 		return url;
 	}
