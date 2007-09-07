@@ -1,0 +1,43 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Alphonse Van Assche.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Alphonse Van Assche - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.linuxtools.rpmstubby.model;
+
+public interface IPackagePreamble {
+	
+	public String getRelease();
+
+	public void setRelease(String release);
+
+	public String getLicense();
+
+	public void setLicense(String license);
+
+	public String getURL();
+
+	public void setURL(String url);
+
+	public String[] getSources();
+
+	public void setSources(String[] sources);
+
+	public String[] getPaches();
+
+	public void setPaches(String[] paches);
+
+	public String getBuildroot();
+
+	public void setBuildroot(String buildroot);
+	
+	public PackageItem[] getBuildRequires();
+
+	public void setBuildRequires(PackageItem[] buildRequires);
+	
+}
