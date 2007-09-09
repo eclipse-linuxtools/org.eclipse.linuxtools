@@ -105,7 +105,7 @@ public class StubbyGenerator {
 			buffer.append("%description " + subPackageName + "\n");
 			buffer.append(subPackage.getDescription() + "\n");
 		}
-		buffer.append("%prep\n%setup -q -n FIXME\n\n");
+		buffer.append("\n%prep\n%setup -q -n FIXME\n\n");
 		buffer.append("/bin/sh -x %{eclipse_base}/buildscripts/copy-platform SDK %{eclipse_base}\n");
 		buffer.append("mkdir home\n\n");
 		buffer.append("%build\n");

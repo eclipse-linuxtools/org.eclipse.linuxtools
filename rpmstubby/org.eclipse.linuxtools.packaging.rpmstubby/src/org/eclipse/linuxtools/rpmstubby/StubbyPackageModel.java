@@ -161,11 +161,9 @@ public class StubbyPackageModel {
 		URLEntryModel licenseModel = featureModel.getLicenseModel();
 		if (licenseModel != null) {
 			String urlString = resolveFeatureProperties(licenseModel.getURLString());
-			if (urlString.contains("epl")) {
-				String newLicense = "EPL";
-				if (!license.equals(newLicense)) {
-					license = newLicense;
-				}
+			String urlAnotation = resolveFeatureProperties(licenseModel.getAnnotation());
+			if (urlString.contains("epl") || urlAnotation.contains("epl")) {
+					license = "EPL";
 			}
 		}
 		return license;
@@ -181,9 +179,23 @@ public class StubbyPackageModel {
 	
 	private String getDescription() {
 		URLEntryModel descriptionModel = featureModel.getDescriptionModel();
-		if (descriptionModel.getAnnotation() != null) 
-			return resolveFeatureProperties(descriptionModel.getAnnotation());
-		else
+		if (descriptionModel.getAnnotation() != null) { 
+			// Each description line contain maximum 80 characters.
+			String[] descriptionToken = resolveFeatureProperties(descriptionModel.getAnnotation()).split(" ");
+			String description = descriptionToken[0] + " ";
+			int lineLenght = descriptionToken[0].length() + 2;
+			for (int i = 2; i < descriptionToken.length; i++) {
+				lineLenght += descriptionToken[i].length() + 2;
+				if (lineLenght > 80) {
+					description += descriptionToken[i -1] + "\n";
+					lineLenght = 0;
+				} else {
+					description += descriptionToken[i - 1] + " ";
+				}
+				
+			}
+			return description.substring(0, description.length() - 1);
+		} else
 			return valueNoFoundMessage;
 	}
 
