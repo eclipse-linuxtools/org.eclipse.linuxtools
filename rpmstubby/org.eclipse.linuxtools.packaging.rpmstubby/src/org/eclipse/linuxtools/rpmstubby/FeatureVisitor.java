@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.CoreException;
 
 public class FeatureVisitor implements IResourceVisitor {
 
-	private List /**<IFile>**/ featuresFile = new ArrayList();
+	private List /**<IFile>**/ featureFiles = new ArrayList();
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
@@ -28,12 +28,12 @@ public class FeatureVisitor implements IResourceVisitor {
 	public boolean visit(IResource resource) throws CoreException {
 		if (resource instanceof IFile
 				&& resource.getName().equals("feature.xml")) {
-			featuresFile.add((IFile) resource);
+			featureFiles.add((IFile) resource);
 		}
 		return true;
 	}
 	
 	public List /**<IFile>**/ getFeatures() {
-		return featuresFile;
+		return featureFiles;
 	}
 }

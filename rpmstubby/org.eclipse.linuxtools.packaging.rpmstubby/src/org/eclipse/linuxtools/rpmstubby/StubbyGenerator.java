@@ -59,7 +59,8 @@ public class StubbyGenerator {
 			buffer.append("%define gcj_support    1\n"); 
 		if (withFetchScript)
 			buffer.append("%define src_repo_tag   FIXME\n");
-		buffer.append("\n");
+		if (withGCJSupport || withFetchScript)
+			buffer.append("\n");
 		buffer.append("Name:           " + packageName + "\n");
 		buffer.append("Version:        " + mainPackage.getVersion().replaceAll("\\.qualifier","") + "\n");
 		buffer.append("Release:        1%{?dist}" + "\n");

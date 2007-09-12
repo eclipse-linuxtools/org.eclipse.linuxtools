@@ -183,18 +183,20 @@ public class StubbyPackageModel {
 			// Each description line contain maximum 80 characters.
 			String[] descriptionToken = resolveFeatureProperties(descriptionModel.getAnnotation()).split(" ");
 			String description = descriptionToken[0] + " ";
+			// +2 because array start at index 0 and we remove the space for each token. 
 			int lineLenght = descriptionToken[0].length() + 2;
-			for (int i = 2; i < descriptionToken.length; i++) {
+			int i;
+			for (i = 2; i < descriptionToken.length; i++) {
 				lineLenght += descriptionToken[i].length() + 2;
 				if (lineLenght > 80) {
-					description += descriptionToken[i -1] + "\n";
+					description += descriptionToken[i-1] + "\n";
 					lineLenght = 0;
 				} else {
-					description += descriptionToken[i - 1] + " ";
+					description += descriptionToken[i-1] + " ";
 				}
-				
 			}
-			return description.substring(0, description.length() - 1);
+			description += descriptionToken[i-1];
+			return description;
 		} else
 			return valueNoFoundMessage;
 	}
