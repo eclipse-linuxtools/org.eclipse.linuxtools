@@ -23,7 +23,7 @@ public class FeatureVisitor implements IResourceVisitor {
 	private List /**<IFile>**/ featureFiles = new ArrayList();
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
+	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) throws CoreException {
 		if (resource instanceof IFile

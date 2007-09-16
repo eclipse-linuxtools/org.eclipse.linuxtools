@@ -92,9 +92,9 @@ public class StubbyPackageModel {
 		        for (Iterator iterator = featureVisitor.getFeatures().iterator(); iterator.hasNext();) {
 		        	IFile featureFile = (IFile) iterator.next();
 		        	FeatureModel includedFeatureModel = featureModelFactory.parseFeature(featureFile.getContents());
-		        	if (checkFeatureIncluded(includedFeatureModel.getFeatureIdentifier())) {
-		        		// Each feature that include other feature is considered as a
-		        		// top-level RPM package
+		        	if (isFeatureIncluded(includedFeatureModel.getFeatureIdentifier())) {
+		        		// Each feature that include other features is considered as a
+		        		// top-level RPM package.
 		        		if (includedFeatureModel.getFeatureIncluded().length > 0) {
 		        			SpecfileWriter specfileWriter = new SpecfileWriter();
 		        			specfileWriter.write(featureFile);
@@ -128,11 +128,11 @@ public class StubbyPackageModel {
 		return toRet.substring(0, toRet.length() - 2 );
 	}
 	
-	private boolean checkFeatureIncluded(String featureIdetifier) {
+	private boolean isFeatureIncluded(String featureIdetifier) {
 		for (int i = 0; i < includedFeatureIdentifiers.length; i++) {
 			// Check if the feature found by the visitor is a included feature 
 			if (includedFeatureIdentifiers[i].equals(featureIdetifier)) {
-				// Check if the given feature is not already added the the included feature list.
+				// Check if the given feature is not already added in the included feature list.
 				for(Iterator iterator = includedFeatureIdentifiersAdded.iterator(); iterator.hasNext();) {
 					if (iterator.next().equals(featureIdetifier)) {
 						return false;
@@ -183,7 +183,7 @@ public class StubbyPackageModel {
 			// Each description line contain maximum 80 characters.
 			String[] descriptionToken = resolveFeatureProperties(descriptionModel.getAnnotation()).split(" ");
 			String description = descriptionToken[0] + " ";
-			// +2 because array start at index 0 and we remove the space for each token. 
+			// We add +2 because an array start at index 0 and one space is removed for each token. 
 			int lineLenght = descriptionToken[0].length() + 2;
 			int i;
 			for (i = 2; i < descriptionToken.length; i++) {
