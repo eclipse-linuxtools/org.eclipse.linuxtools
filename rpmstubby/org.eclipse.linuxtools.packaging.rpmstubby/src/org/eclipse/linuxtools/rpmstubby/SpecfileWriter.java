@@ -70,7 +70,7 @@ public class SpecfileWriter {
 				MessageDialog.openError(StubbyPlugin.getActiveWorkbenchShell(),
 						null, message);
 			} else {
-				System.out.println(message);
+				System.err.println(message);
 			}
 		} else {
 			// Write generated files to the main feature project
@@ -84,7 +84,7 @@ public class SpecfileWriter {
 				}
 				generator.writeContent(featureFile.getProject().getName(), packageName + ".spec", generator.generateSpecfile());
 			} catch (CoreException e) {
-				e.printStackTrace();
+				StubbyLog.logError(e);
 			}
 		}
 

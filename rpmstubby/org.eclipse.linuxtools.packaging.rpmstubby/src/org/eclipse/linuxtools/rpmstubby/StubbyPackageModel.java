@@ -53,10 +53,10 @@ public class StubbyPackageModel {
 			.parseFeature(featureFile.getContents());
 		} catch (CoreException e) {
 			// Can be throw if the file does not exist. 
-			e.printStackTrace();
+			StubbyLog.logError(e);
 		} catch (SAXException e) {
 			// Probably malformed feature.xml?
-			e.printStackTrace();
+			StubbyLog.logError(e);
 		}
 	}
 	
@@ -105,9 +105,9 @@ public class StubbyPackageModel {
 		        }
 	        }
 		} catch (CoreException e) {
-			e.printStackTrace();
+			StubbyLog.logError(e);
 		} catch (SAXException e) {
-			e.printStackTrace();
+			StubbyLog.logError(e);
 		} 
 		return includedFeatureFiles;
 	}
@@ -274,7 +274,7 @@ public class StubbyPackageModel {
 			} catch (FileNotFoundException e) {
 				// Do nothing if the feature.properties is not found
 			} catch (IOException e) {
-				e.printStackTrace();
+				StubbyLog.logError(e);
 			}        	
         	return properties.getProperty(key.replaceAll("%", ""));
         } else {

@@ -143,7 +143,8 @@ public class StubbyGenerator {
 			buffer.append("%preun\n");
 			buffer.append("if [ -x %{_bindir}/rebuild-gcj-db ]; then\n");
 			buffer.append("  %{_bindir}/rebuild-gcj-db\n");
-			buffer.append("fi\n\n");
+			buffer.append("fi\n");
+			buffer.append("%endif\n\n");
 		}
 		buffer.append("%files\n");
 		buffer.append("%defattr(-,root,root,-)\n");
@@ -221,7 +222,7 @@ public class StubbyGenerator {
 			}
 			stream.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			StubbyLog.logError(e);
 		}
 		StubbyPlugin.getActiveWorkbenchShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
@@ -230,7 +231,7 @@ public class StubbyGenerator {
 				try {
 					IDE.openEditor(page, file, true);
 				} catch (PartInitException e) {
-					e.printStackTrace();
+					StubbyLog.logError(e);
 				}
 			}
 		});

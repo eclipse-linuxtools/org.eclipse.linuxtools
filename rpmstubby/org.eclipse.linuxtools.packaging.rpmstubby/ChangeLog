@@ -1,3 +1,17 @@
+2007-09-24  Alphonse Van Assche   <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java: New File.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	(StubbyPackageModel): Using StubbyLog.
+	(getIncudedFeatures): Likewise.
+	(resolveFeatureProperties): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(generateSpecfile): Add missing %endif macro.
+	(writeContent): Using StubbyLog.
+	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java
+	(write): Using StubbyLog and print error mesage to stdout.
+	
+
 2007-09-19  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* .settings/org.eclipse.jdt.ui.prefs: J2SE-1.4 preferred EE.
