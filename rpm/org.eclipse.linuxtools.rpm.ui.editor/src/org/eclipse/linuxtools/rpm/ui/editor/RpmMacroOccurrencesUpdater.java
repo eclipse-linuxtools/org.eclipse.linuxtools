@@ -94,7 +94,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
                 createNewAnnotations(currentSelectedWord, word, document, model);
 			}
 		} catch (BadLocationException e) {
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 	}
 

@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 
 public class SpecfileParser {
 	
@@ -141,7 +142,7 @@ public class SpecfileParser {
 			}
 		} catch (IOException e) {
 			// FIXME
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 		return specfile;
 	}

@@ -98,7 +98,7 @@ public class Activator extends AbstractUIPlugin {
 			try {
 				fTemplateStore.load();
 			} catch (IOException e) {
-				e.printStackTrace();
+				SpecfileLog.logError(e);
 			}
 		}
 

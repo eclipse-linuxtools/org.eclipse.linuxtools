@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+
 public class SpecfilePackageContainer extends SpecfileElement {
 	List packages;
 	
@@ -32,7 +34,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 			}
 			return packs;
 		}catch (Exception e){
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 		return new SpecfilePackage[0] ;
 	}

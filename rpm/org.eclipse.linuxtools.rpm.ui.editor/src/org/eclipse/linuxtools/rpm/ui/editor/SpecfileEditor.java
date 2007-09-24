@@ -97,7 +97,7 @@ public class SpecfileEditor extends TextEditor {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 	}
 

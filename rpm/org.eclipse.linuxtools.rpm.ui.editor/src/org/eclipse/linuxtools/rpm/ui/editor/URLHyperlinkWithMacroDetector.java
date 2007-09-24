@@ -80,7 +80,6 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 				urlString= urlString.replaceAll("\\%\\{|\\}", "");
 			return urlString;
 		} catch (Exception e) {
-			// e.printStackTrace();
 			return originalUrlString;
 		}
 	}

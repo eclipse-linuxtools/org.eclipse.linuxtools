@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 
 public class SpecfileSource extends SpecfileElement {
 	int number;
@@ -89,8 +90,7 @@ public class SpecfileSource extends SpecfileElement {
 				}
 				specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "%patch" + number));
 			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				SpecfileLog.logError(e);
 			}
 		}
 	}
@@ -111,8 +111,7 @@ public class SpecfileSource extends SpecfileElement {
 				System.out.println("error: can't match " + patchPattern.pattern());
 			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number));
 		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 	}
 	public int getLineNumber() {

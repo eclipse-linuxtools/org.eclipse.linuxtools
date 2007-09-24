@@ -23,7 +23,10 @@ import java.io.LineNumberReader;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -130,7 +133,11 @@ public class SpecfileNewWizardPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		label.setText("Select a Template:");
 		templateCombo = new Combo(container, SWT.NULL);
-		populateTemplateCombo(templateCombo);
+		try {
+			populateTemplateCombo(templateCombo);
+		} catch (CoreException e2) {
+			SpecfileLog.logError(e2);
+		}
 		// empty label for the last row.
 		label = new Label(container, SWT.NULL);
 		templateCombo.addModifyListener(new ModifyListener() {
@@ -189,7 +196,11 @@ public class SpecfileNewWizardPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		label.setText("&Group:");
 		groupCombo = new Combo(container, SWT.NULL);
-		populateGroupCombo(groupCombo);
+		try {
+			populateGroupCombo(groupCombo);
+		} catch (CoreException e1) {
+			SpecfileLog.logError(e1);
+		}
 		// empty label for the last row.
 		label = new Label(container, SWT.NULL);
 
@@ -381,46 +392,55 @@ public class SpecfileNewWizardPage extends WizardPage {
 		source0Text.setText(SOURCE0);
 	}
 
-	private void populateTemplateCombo(Combo templateCombo) {
+	private void populateTemplateCombo(Combo templateCombo) throws CoreException {
 		// get a list of all files in a directory
 		File dir = new File("/etc/rpmdevtools");
 		String[] files = dir.list();
-		String templateCSV = "";
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].startsWith("spectemplate-"))
-				templateCSV += files[i].split("-", 2)[1].replaceAll("\\.spec",
-						"")
-						+ ",";
+		if (dir.exists()) {
+			String templateCSV = "";
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].startsWith("spectemplate-"))
+					templateCSV += files[i].split("-", 2)[1].replaceAll("\\.spec",
+							"")
+							+ ",";
+			}
+			String[] templates = templateCSV.split(",");
+			for (int i = 0; i < templates.length; i++) {
+				templateCombo.add(templates[i]);
+			}
+			templateCombo.setText(selectedTemplate);			
+		} else {
+			throwCoreException("/etc/rpmdevtools directory was not found");
 		}
-		String[] templates = templateCSV.split(",");
-		for (int i = 0; i < templates.length; i++) {
-			templateCombo.add(templates[i]);
-		}
-		templateCombo.setText(selectedTemplate);
 	}
 
-	private void populateGroupCombo(Combo groupsCombo) {
+	private void populateGroupCombo(Combo groupsCombo) throws CoreException {
 		// FIXME: Can we assume that all distros place 
-		// documentations files in the below path
+		// documentations files in the below path?
 		String docDir = "/usr/share/doc/";
 		File dir = new File(docDir);
-		String files[] = dir.list(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.startsWith("rpm-");
-			}
-		});
-		try {
-			// Normally only one version of RPM is installed on a system,
-			// so we take the first one here.
-			LineNumberReader reader = new LineNumberReader(new FileReader(
-					docDir + files[0] + "/GROUPS"));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				groupsCombo.add(line);
-			}
-		} catch (IOException e) {
-			SpecfileLog.logError(e);
+		if (dir.exists()) {
+			String files[] = dir.list(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					return name.startsWith("rpm-");
+				}
+			});
+			try {
+				// Normally only one version of RPM is installed on a system,
+				// so we take the first one here.
+				LineNumberReader reader = new LineNumberReader(new FileReader(
+						docDir + files[0] + "/GROUPS"));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					groupsCombo.add(line);
+				}
+			} catch (IOException e) {
+				SpecfileLog.logError(e);
+			}			
+		} else {
+			throwCoreException("/usr/share/doc directory was not found" );
 		}
+
 	}
 
 	private BufferedInputStream runRpmdevNewSpec(String template) {
@@ -435,6 +455,13 @@ public class SpecfileNewWizardPage extends WizardPage {
 			SpecfileLog.logError(e);
 		}
 		return in;
+	}
+	
+	private void throwCoreException(String message) throws CoreException {
+		IStatus status = new Status(IStatus.ERROR,
+				"org.eclipse.linuxtools.rpm.ui.editor", IStatus.OK, message,
+				null);
+		throw new CoreException(status);
 	}
 
 }

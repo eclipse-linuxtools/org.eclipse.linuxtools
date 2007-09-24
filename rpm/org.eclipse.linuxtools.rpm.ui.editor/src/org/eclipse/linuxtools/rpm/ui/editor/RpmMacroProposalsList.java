@@ -111,7 +111,7 @@ public class RpmMacroProposalsList {
 				line = reader.readLine();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 	}
 
@@ -194,7 +194,7 @@ public class RpmMacroProposalsList {
 	 *  
 	 * @param macroName
 	 *            the macro name to eval.
-	 * @return the resoved macro content.
+	 * @return the resolved macro content.
 	 */
 	public static String getMacroEval(String macroName) {
 		String 	eval = "";
@@ -208,7 +208,7 @@ public class RpmMacroProposalsList {
 			}
 			in.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 		return eval.trim();
 	}

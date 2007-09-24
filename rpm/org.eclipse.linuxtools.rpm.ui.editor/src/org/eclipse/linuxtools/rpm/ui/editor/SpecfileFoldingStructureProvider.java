@@ -55,7 +55,7 @@ public class SpecfileFoldingStructureProvider {
 			if (model != null)
 				updateFoldingRegions(model);
 		} catch (BadLocationException e) {
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 		}
 	}
 

@@ -46,8 +46,7 @@ public class SpecfilePartitioner extends FastPartitioner {
 						partitions[i].getLength()));
 				buffer.append("\n---------------------------------------\n\n\n");
 			} catch (org.eclipse.jface.text.BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				SpecfileLog.logError(e);
 			}
 		}
 		System.out.println(buffer);

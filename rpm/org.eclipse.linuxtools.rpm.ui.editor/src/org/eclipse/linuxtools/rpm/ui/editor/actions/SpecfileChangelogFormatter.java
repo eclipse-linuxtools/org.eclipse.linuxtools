@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfilePartitionScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
@@ -169,11 +170,9 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                     specEditor.selectAndReveal(newCursorOffset, 0);
                     specEditor.setFocus();
                 } catch (BadPositionCategoryException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+        			SpecfileLog.logError(e);
                 } catch (BadLocationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+        			SpecfileLog.logError(e);
                 }
             } else {
                 // log error, we didn't find content type category positions,

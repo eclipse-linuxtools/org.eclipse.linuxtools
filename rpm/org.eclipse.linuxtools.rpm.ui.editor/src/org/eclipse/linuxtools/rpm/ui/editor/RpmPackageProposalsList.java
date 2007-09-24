@@ -120,7 +120,7 @@ public class RpmPackageProposalsList {
 			}
 			in.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 			return "Cannot retrieve RPM information.\n\n"
 					+ "Please adjust your preferences:\n\nSpecfile Editor-> Macro proposals-> Package Info";
 		}

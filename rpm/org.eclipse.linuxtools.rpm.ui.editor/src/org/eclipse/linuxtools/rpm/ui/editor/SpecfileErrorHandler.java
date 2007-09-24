@@ -62,7 +62,7 @@ public class SpecfileErrorHandler {
 		try {
 			MarkerUtilities.createMarker(file, map, SPECFILE_ERROR_MARKER_ID);
 		} catch (CoreException ee) {
-			ee.printStackTrace();
+			SpecfileLog.logError(ee);
 		}
 		return;
 	}
@@ -75,7 +75,7 @@ public class SpecfileErrorHandler {
 		}
 		catch (CoreException e1)
 		{
-			e1.printStackTrace();
+			SpecfileLog.logError(e1);
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class SpecfileErrorHandler {
 		}
 		catch (BadLocationException e)
 		{
-			e.printStackTrace();
+			SpecfileLog.logError(e);
 			return null;
 		}
 	}

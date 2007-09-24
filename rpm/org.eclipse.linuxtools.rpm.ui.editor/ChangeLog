@@ -1,3 +1,31 @@
+2007-09-24  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
+	Throw CoreException if /usr/share/doc or /etc/rpmdevtools dir are not found.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Using SpecfileLog.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSource.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackageContainer.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitioner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java:
+	Likewise.
+
 2007-05-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #199172
