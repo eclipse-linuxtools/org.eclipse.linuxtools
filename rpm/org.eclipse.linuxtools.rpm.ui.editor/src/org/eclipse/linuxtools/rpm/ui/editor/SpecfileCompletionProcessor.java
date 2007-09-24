@@ -41,9 +41,7 @@ import org.eclipse.jface.text.templates.TemplateProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePatchMacro;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
-
 
 /**
  * Content assist processor
@@ -67,6 +65,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private static final String TEMPLATE_ICON = "icons/template_obj.gif";
 
 	private static final String MACRO_ICON = "icons/macro_obj.gif";
+	
+	private static final String PATCH_ICON = "icons/macro_obj.gif";
 	
 	private static final String PACKAGE_ICON = "icons/rpm.gif";
 
@@ -111,6 +111,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		// RPM macro's are useful in the whole specfile.
 		ICompletionProposal[] rpmMacroProposals = computeRpmMacroProposals(
 				viewer, region, specfile, prefix);
+		// TODO show patches only in the %prep section
+		ICompletionProposal[] patchesProposals = computePatchesProposals(
+				viewer, region, specfile, prefix);
+		result.addAll(Arrays.asList(patchesProposals));
 		// Get the current content type
 		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());		
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PACKAGES)) {
@@ -197,7 +201,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Map rpmMacroProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
 		
 		// grab defines and put them into the proposals map
-		rpmMacroProposalsMap.putAll(getDefinesName(specfile, prefix));
+		rpmMacroProposalsMap.putAll(getDefines(specfile, prefix));
 		
 		if (rpmMacroProposalsMap == null)
 			return new ICompletionProposal[0];
@@ -210,6 +214,41 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 							region.getOffset(), region.getLength(),
 							key.length() + 2, Activator.getDefault().getImage(MACRO_ICON),
 							key, null, (String) rpmMacroProposalsMap.get(key)));
+		}
+		return (ICompletionProposal[]) proposals
+				.toArray(new ICompletionProposal[proposals.size()]);
+	}
+	
+	/**
+	 * Compute patches proposals, these proposals are usable in the whole document.
+	 * Return an array of patches proposals for the given viewer, region, prefix.
+	 * 
+	 * @param viewer
+	 *            the viewer for which the context is created
+	 * @param region
+	 *            the region into <code>document</code> for which the context
+	 *            is created
+	 * @param prefix
+	 * 			  the prefix string to find
+	 * @return 
+	 *            a ICompletionProposal[]
+	 */
+	private ICompletionProposal[] computePatchesProposals(ITextViewer viewer,
+			IRegion region, Specfile specfile, String prefix) {
+		Map patchesProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
+		// grab patches and put them into the proposals map
+		patchesProposalsMap.putAll(getPatches(specfile, prefix));
+		if (patchesProposalsMap == null)
+			return new ICompletionProposal[0];
+		ArrayList proposals = new ArrayList();
+		String key;
+		Iterator iterator = patchesProposalsMap.keySet().iterator();
+		while (iterator.hasNext()) {
+			key = (String) iterator.next();
+			proposals.add(new CompletionProposal(key, 
+							region.getOffset(), region.getLength(),
+							key.length(), Activator.getDefault().getImage(PATCH_ICON),
+							key, null, (String) patchesProposalsMap.get(key)));
 		}
 		return (ICompletionProposal[]) proposals
 				.toArray(new ICompletionProposal[proposals.size()]);
@@ -346,7 +385,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	/**
-	 * Get defines and patches as a String key->value pair for a given specfile
+	 * Get defines as a String key->value pair for a given specfile
 	 * and prefix.
 	 * 
 	 * @param specfile
@@ -356,8 +395,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return a <code>HashMap</code> of defines.
 	 * 
 	 */
-	private Map getDefinesName(Specfile specfile, String prefix) {
-		// Get proposals for defines.
+	private Map getDefines(Specfile specfile, String prefix) {
 		Collection defines = specfile.getDefinesAsList();
 		Map ret = new HashMap();
 		String defineName;
@@ -367,13 +405,27 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			if (defineName.startsWith(prefix.replaceFirst("\\{", "")))
 				ret.put(defineName, define.getStringValue());
 		}
-		// get proposals for patches
+		return ret;
+	}
+	
+	/**
+	 * Get patches as a String key->value pair for a given specfile
+	 * and prefix.
+	 * 
+	 * @param specfile
+	 *            to get defines from.
+	 * @param prefix
+	 *            used to find defines.
+	 * @return a <code>HashMap</code> of defines.
+	 * 
+	 */
+	private Map getPatches(Specfile specfile, String prefix) {
 		Collection patches = specfile.getPatchesAsList();
+		Map ret = new HashMap();
 		String patchName;
 		for (Iterator iterator = patches.iterator(); iterator.hasNext();) {
 			SpecfileSource patch = (SpecfileSource) iterator.next();
 			patchName = "%patch" + patch.getNumber();
-			System.out.println(patchName);
 			if (patchName.startsWith(prefix))
 				ret.put(patchName.toLowerCase(), SpecfileHover
 						.getSourceOrPatchValue(specfile, "patch"
