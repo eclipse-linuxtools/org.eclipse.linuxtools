@@ -1,10 +1,17 @@
-2007-09-24  Alphonse Van Assche   <alcapcom@gmail.com>
+2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
 
+	Bug #204146
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentOutlinePage.java
+	(selectionChanged): Set the length parameter of editor#setHighlightRange method
+	to 1.
+	
+2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
+	 
 	Bug #204150 (Clean fix) 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
-	(computePatchesProposals): New Method.
+	(computePatchesProposals): New method.
 	(getDefines): Rename method.
-	(getPatches): New Method.
+	(getPatches): New method.
 	(computeCompletionProposals): Add patches proposals.
 
 2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>

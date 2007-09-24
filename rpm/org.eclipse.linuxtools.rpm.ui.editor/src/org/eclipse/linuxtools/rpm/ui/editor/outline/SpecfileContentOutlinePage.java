@@ -93,12 +93,11 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 					.getFirstElement();		
 			
 			int start = element.getLineStartPosition();
-			int length = element.getLineEndPosition();
 			try
 			{
-				editor.setHighlightRange(start, length, true);
+				editor.setHighlightRange(start, 1, true);
 			}
-			catch (IllegalArgumentException x)
+			catch (IllegalArgumentException e)
 			{
 				editor.resetHighlightRange();
 			}
