@@ -1,4 +1,10 @@
-2007-09-24  Alphonse Van Assche  <alcapcom@gmail.com>
+2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
+	
+	Bug #204150
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
+	(getDefinesName): Add completion for patches. 
+
+2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
 	Throw CoreException if /usr/share/doc or /etc/rpmdevtools dir are not found.

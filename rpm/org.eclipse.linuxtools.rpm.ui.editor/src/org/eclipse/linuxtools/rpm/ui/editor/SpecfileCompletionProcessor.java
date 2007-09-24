@@ -41,6 +41,8 @@ import org.eclipse.jface.text.templates.TemplateProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePatchMacro;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 
 
 /**
@@ -344,7 +346,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	/**
-	 * Get defines as a String key->value pair for a given specfile and prefix.
+	 * Get defines and patches as a String key->value pair for a given specfile
+	 * and prefix.
 	 * 
 	 * @param specfile
 	 *            to get defines from.
@@ -354,13 +357,27 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private Map getDefinesName(Specfile specfile, String prefix) {
-		Collection tmpDefines = specfile.getDefinesAsList();
+		// Get proposals for defines.
+		Collection defines = specfile.getDefinesAsList();
 		Map ret = new HashMap();
-		for (Iterator iterator = tmpDefines.iterator(); iterator.hasNext();) {
+		String defineName;
+		for (Iterator iterator = defines.iterator(); iterator.hasNext();) {
 			SpecfileDefine define = (SpecfileDefine) iterator.next();
-			String defineName = "%" + define.getName();
+			defineName = "%" + define.getName();
 			if (defineName.startsWith(prefix.replaceFirst("\\{", "")))
 				ret.put(defineName, define.getStringValue());
+		}
+		// get proposals for patches
+		Collection patches = specfile.getPatchesAsList();
+		String patchName;
+		for (Iterator iterator = patches.iterator(); iterator.hasNext();) {
+			SpecfileSource patch = (SpecfileSource) iterator.next();
+			patchName = "%patch" + patch.getNumber();
+			System.out.println(patchName);
+			if (patchName.startsWith(prefix))
+				ret.put(patchName.toLowerCase(), SpecfileHover
+						.getSourceOrPatchValue(specfile, "patch"
+								+ patch.getNumber()));
 		}
 		return ret;
 	}
