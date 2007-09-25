@@ -46,33 +46,7 @@
          <filePattern pattern=".*\.spec"/>
       </formatter>
    </extension>
-   
-   <!-- Editor actions and key binding -->
-   <extension
-         id="org.eclipse.linuxtools.rpm.ui.editor.popupMenu"
-         point="org.eclipse.ui.popupMenus">
-      <viewerContribution
-            id="org.eclipse.linuxtools.rpm.ui.editor.viewerContribution"
-            targetID="#TextEditorContext">
-         <action
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
-               id="org.eclipse.linuxtools.rpm.ui.editor.organizePatchesAction"
-               label="Organize patches"
-               menubarPath="additions"
-               tooltip="Organize patches numerically">
-         </action>
-         <action
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
-               id="org.eclipse.linuxtools.rpm.ui.editor.toggleCommentAction"
-               label="Toggle Comments"
-               menubarPath="additions"
-               tooltip="Add or Remove Comments"
-               definitionId="org.eclipse.linuxtools.specfile.command.comment">
-         </action>
-      </viewerContribution>
-   </extension>   
-   <!-- End of Editor actions and key binding -->
-   
+  
    <extension
          point="org.eclipse.ui.editors.templates">
       <contextType
@@ -166,4 +140,81 @@
             name="New specfile based on a template">
       </wizard>
    </extension>
+   <!-- Commands -->
+   <extension
+         point="org.eclipse.ui.commands">
+         <category
+            name="Editor Commands"
+            description="Specfile Editor Commands"
+            id="rpmEditor.category"/>
+         <command
+            categoryId="rpmEditor.category"
+            name="Toggle Comment"
+            id="rpmEditor.toggleComment.command"/>
+         <command
+            categoryId="rpmEditor.category"
+            name="Organize patches"
+            id="rpmEditor.organizePatches.command"/>
+   </extension>
+   <!-- Key bindings -->
+   <extension
+     point="org.eclipse.ui.bindings">
+      <key
+           sequence="Ctrl+Shift+C"
+           commandId="rpmEditor.toggleComment.command"
+           contextId="org.eclipse.ui.textEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+           sequence="Ctrl+Shift+O"
+           commandId="rpmEditor.organizePatches.command"
+           contextId="org.eclipse.ui.textEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+   <!-- Action set for command bindings -->
+   <extension
+         point="org.eclipse.ui.actionSets">
+
+      <actionSet
+            label="Editor Commands"
+            description="Specfile Editor Commands"
+            visible="true"
+            id="rpmEditor.actionSet">
+
+         <action
+               label="Toggle Comments"
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+               definitionId="rpmEditor.toggleComment.command"
+               id="rpmEditor.toggleComment.command"/>
+         <action
+               label="Organize patches"
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+               definitionId="rpmEditor.organizePatches.command"
+               id="rpmEditor.organizePatches.command"/>
+      </actionSet>
+   </extension>      
+   <!-- Editor menu actions -->
+   <extension
+         id="org.eclipse.linuxtools.rpm.ui.editor.popupMenu"
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="org.eclipse.linuxtools.rpm.ui.editor.viewerContribution"
+            targetID="#TextEditorContext">
+         <action
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.organizePatchesAction"
+               label="Organize patches"
+               menubarPath="additions"
+               tooltip="Organize patches numerically"
+               definitionId="rpmEditor.organizePatches.command">
+         </action>
+         <action
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.toggleCommentAction"
+               label="Toggle Comments"
+               menubarPath="additions"
+               tooltip="Add or Remove Comments"
+               definitionId="rpmEditor.toggleComment.command">
+         </action>
+      </viewerContribution>
+   </extension>   
 </plugin>

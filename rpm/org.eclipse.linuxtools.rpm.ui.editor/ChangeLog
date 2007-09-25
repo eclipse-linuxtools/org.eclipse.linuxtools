@@ -1,3 +1,16 @@
+2007-09-25  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Add key bindings for Toggle Comment and Organize Patches actions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java:
+	Implement IWorkbenchWindowActionDelegate interface.
+	(selectionChanged): Set/update the editor member when the selection change.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorOrganizePatchesActionDelegate.java
+	Implement IWorkbenchWindowActionDelegate interface.
+	(selectionChanged): Set/Update the editor member when the selection change.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java
+	(getActiveEditor): New method.
+	* plugin.xml: Add extension points for these key bindings.
+
 2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
 
 	Bug #204146
