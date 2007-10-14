@@ -1,3 +1,19 @@
+2007-10-14  Alphonse Van Assche <alcapcom@gmail.com>
+
+	Bug #206160
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java
+	(start): Add sanity checks, at this time we only check if ~/.rpmmacros file
+	exist and in the case at this file don't exist we run rpmdev-setuptree to create
+	it.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java: New File.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java
+	(RPMMACRO_FILE): New Constant. 
+	
+	Bug	https://bugzilla.redhat.com/show_bug.cgi?id=327101
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java
+	(computePatchesProposals): Remove accidentally added code.
+	
+	
 2007-09-25  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Add key bindings for Toggle Comment and Organize Patches actions.

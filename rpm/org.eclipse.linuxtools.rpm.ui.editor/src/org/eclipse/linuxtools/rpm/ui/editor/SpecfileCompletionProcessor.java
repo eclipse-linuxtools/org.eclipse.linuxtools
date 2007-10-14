@@ -235,9 +235,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private ICompletionProposal[] computePatchesProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
-		Map patchesProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
 		// grab patches and put them into the proposals map
-		patchesProposalsMap.putAll(getPatches(specfile, prefix));
+		Map patchesProposalsMap = getPatches(specfile, prefix);
 		if (patchesProposalsMap == null)
 			return new ICompletionProposal[0];
 		ArrayList proposals = new ArrayList();

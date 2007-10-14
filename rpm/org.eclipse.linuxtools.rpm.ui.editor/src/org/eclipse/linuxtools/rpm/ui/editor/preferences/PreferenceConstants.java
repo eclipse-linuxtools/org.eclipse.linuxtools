@@ -15,10 +15,18 @@ package org.eclipse.linuxtools.rpm.ui.editor.preferences;
  * Constant definitions for plug-in preferences
  */
 public class PreferenceConstants {
+	
+	/*
+	 * Other Constant
+	 * 
+	 */ 
+	public static final String RPMMACRO_FILE = System.getProperty("user.home") + "/.rpmmacros";
+	
+	
 	/*
 	 * Prefences keys
 	 */
-	
+		
 	// rpm list builder
 	public static final String P_RPM_LIST_FILEPATH = "rpmListFilePath";	
 	public static final String P_RPM_LIST_MAX_PROPOSALS = "rpmListMaxProposalsInfo";
@@ -52,6 +60,7 @@ public class PreferenceConstants {
 	/*
 	 * Preferences default values
 	 */
+	
 	public static final String DP_RPM_LIST_FILEPATH = System.getProperty("user.dir") +  "/.pkglist";	
 	public static final String DP_RPM_LIST_MAX_PROPOSALS = "10";
 	public static final String DP_RPMTOOLS_RPM = "rpm -qa --qf '%{NAME}\\n'";
@@ -63,7 +72,7 @@ public class PreferenceConstants {
 	
 	
 	// macro
-	public static final String DP_MACRO_PROPOSALS_FILESPATH = System.getProperty("user.home") + "/.rpmmacros;/usr/lib/rpm/macros";
+	public static final String DP_MACRO_PROPOSALS_FILESPATH = RPMMACRO_FILE + ";/usr/lib/rpm/macros";
 	// changelog
 	public static final String DP_CHANGELOG_LOCAL = "US";
 	// RPM informations

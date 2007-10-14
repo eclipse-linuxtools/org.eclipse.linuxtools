@@ -62,7 +62,8 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		RpmPackageBuildProposalsJob.setPropertyChangeListener(true);
 		RpmPackageBuildProposalsJob.update();
-
+		// Do some sanity checks.
+		Utils.pluginSanityCheck();
 	}
 
 	/*
