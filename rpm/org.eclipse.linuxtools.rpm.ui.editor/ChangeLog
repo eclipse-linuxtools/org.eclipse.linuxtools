@@ -1,3 +1,9 @@
+2007-11-21  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #207207
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
+	(parseSimpleDefinition): Allow macros in simple definitions (Alexander Kurtakov).
+
 2007-10-14  Alphonse Van Assche <alcapcom@gmail.com>
 
 	Bug #206160

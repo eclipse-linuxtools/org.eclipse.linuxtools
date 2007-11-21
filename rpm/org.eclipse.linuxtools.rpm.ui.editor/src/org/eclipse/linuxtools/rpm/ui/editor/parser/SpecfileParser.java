@@ -456,8 +456,12 @@ public class SpecfileParser {
 			}
 			
 			if (iter.hasNext()) {
+				String possValue = (String) iter.next();
+				if (possValue.startsWith("%") && iter.hasNext()){
+					possValue += ' '+(String)iter.next();
+				}
 				toReturn = new SpecfileTag(token.substring(0, token.length() - 1).toLowerCase(),
-						(String) iter.next(), specfile);
+						possValue, specfile);
 				if (iter.hasNext() && !warnMultipleValues) {
 					errorHandler.handleError(new SpecfileParseException(
 							token.substring(0, token.length() - 1) + " cannot have multiple values.",
