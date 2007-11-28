@@ -7,13 +7,13 @@
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java 
 	(DP_RPMTOOLS_URPM): New const.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java: 
-	Using HashSet list to advoid duplicates package.
+	Using HashSet list to advoid duplicate package.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java 
 	(update): Cancel support.
 	(retrievePackageList): Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java 
-	(copyFile): New mthod
-	(fileExist): New method
+	(copyFile): New method.
+	(fileExist): New method.
 	(pluginSanityCheck): Add package list preferences sanity checks.
 	
 
