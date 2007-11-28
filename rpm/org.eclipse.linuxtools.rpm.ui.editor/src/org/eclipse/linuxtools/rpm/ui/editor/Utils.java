@@ -12,8 +12,11 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
 
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
@@ -33,6 +36,20 @@ public class Utils {
 	    	String[] command = {"rpmdev-setuptree"};
 	    	runCommandToInputStream(command);
 	    }
+		
+		// Check RPM tool preference.
+		String currentRpmTool = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
+		if (!fileExist("/usr/bin/yum")) {
+			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_YUM))
+				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
+		} else if (!fileExist("/usr/bin/urpmq")) {
+			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_URPM))
+				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
+		}
+	}
+	
+	public static boolean fileExist(String cmdPath) {
+		return new File(cmdPath).exists();
 	}
 	
 	public static BufferedInputStream runCommandToInputStream(String[] command) throws IOException {
@@ -56,5 +73,19 @@ public class Utils {
 		stream.close();
 		return retStr;		
 	}
-
+	
+	public static void copyFile(File in, File out) throws IOException {
+		FileChannel inChannel = new FileInputStream(in).getChannel();
+		FileChannel outChannel = new FileOutputStream(out).getChannel();
+		try {
+			inChannel.transferTo(0, inChannel.size(), outChannel);
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			if (inChannel != null)
+				inChannel.close();
+			if (outChannel != null)
+				outChannel.close();
+		}
+	}
 }

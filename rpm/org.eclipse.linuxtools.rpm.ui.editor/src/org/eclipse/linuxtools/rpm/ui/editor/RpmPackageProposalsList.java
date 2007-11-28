@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +35,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
  * 
  */
 public class RpmPackageProposalsList {
-	private ArrayList list = new ArrayList();
+	private HashSet list = new HashSet();
 
 	public RpmPackageProposalsList() {
 		setPackagesList();
@@ -52,7 +53,7 @@ public class RpmPackageProposalsList {
 				line = reader.readLine();
 			}
 		} catch (IOException e) {
-			RpmPackageBuildProposalsJob.initializeList();
+			RpmPackageBuildProposalsJob.update();
 			SpecfileLog.logError(e);
 		}
 	}
@@ -69,7 +70,7 @@ public class RpmPackageProposalsList {
 			String message = "RPM information is only available\nif the proposal list is less than "
 					+ rpmpkgsMaxProposals
 					+ " item(s).\n\nYou can change the item limit in the \nRPM proposals preferences page.";
-			item[1] = message;
+			item[1] = message;				
 			if (item[0].startsWith(prefix)) {
 				proposalsList.add(item);
 			}

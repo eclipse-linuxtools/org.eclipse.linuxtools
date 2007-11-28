@@ -11,12 +11,17 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,7 +60,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 				"Path to packages list file:", getFieldEditorParent());
 		addField(rpmListFieldEditor);
 		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,"Automatically build the RPM packages proposals list", getFieldEditorParent()));
-		addField(buildListTimeRate());
+		addField(buildTimeListRateFieldEditor());
 	}
 	
 	/*
@@ -77,18 +82,38 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	}
 	
 	private FieldEditor rpmtoolsRadioGroupFieldEditor() {
+		ArrayList list = new ArrayList();
+		list.add(new String[] { "RPM (Red Hat Package Manager)",
+								PreferenceConstants.DP_RPMTOOLS_RPM });
+		/*
+		 * Show only installed tools.
+		 * Don't forgot to add sanity check in Utils.pluginSanityCheck().
+		 */ 
+		if (Utils.fileExist("/usr/bin/yum")) 
+			list.add(new String[] { "YUM (Yellowdog Updater, Modified)",
+					PreferenceConstants.DP_RPMTOOLS_YUM });
+		if (Utils.fileExist("/usr/bin/urpmq")) 
+			list.add(new String[] { "URPM (User RPM)",
+					PreferenceConstants.DP_RPMTOOLS_URPM });
+
+		String[][] radioItems = new String[list.size()][2];
+		int pos = 0;
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			String[] item = (String[]) iterator.next();
+			radioItems[pos][0] = item[0];
+			radioItems[pos][1] = item[1];
+			pos++;
+			
+		}
+	
 		RadioGroupFieldEditor rpmToolsRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_CURRENT_RPMTOOLS,
-				"RPM tools used to build the package list", 1, new String[][] {
-						{ "RPM (Red Hat Package Manager)",
-								PreferenceConstants.DP_RPMTOOLS_RPM },
-						{ "YUM (Yellowdog Updater, Modified)",
-								PreferenceConstants.DP_RPMTOOLS_YUM } },
+				"RPM tools used to build the package list", 1, radioItems ,
 				getFieldEditorParent(), true);
 		return rpmToolsRadioGroupEditor;
 	}
 	
-	private FieldEditor buildListTimeRate() { 
+	private FieldEditor buildTimeListRateFieldEditor() { 
 		RadioGroupFieldEditor buildListTimeRateRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD,
 				"Proposals RPM list build rate", 1, new String[][] {

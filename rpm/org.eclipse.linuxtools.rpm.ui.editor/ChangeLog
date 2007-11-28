@@ -1,3 +1,22 @@
+2007-11-28  Alphonse Van Assche  <alcapcom@gmail.com>
+	
+	Add support for URPM tool and cancel support to RpmPackageBuildProposalsJob. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java 
+	(rpmtoolsRadioGroupFieldEditor): Add urpm support.
+	(buildTimeListRateFieldEditor): Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java 
+	(DP_RPMTOOLS_URPM): New const.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java: 
+	Using HashSet list to advoid duplicates package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java 
+	(update): Cancel support.
+	(retrievePackageList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java 
+	(copyFile): New mthod
+	(fileExist): New method
+	(pluginSanityCheck): Add package list preferences sanity checks.
+	
+
 2007-11-21  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #207207

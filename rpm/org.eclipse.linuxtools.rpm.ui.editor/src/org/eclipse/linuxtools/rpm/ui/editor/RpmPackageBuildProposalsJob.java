@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,23 +30,26 @@ import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 /**
  * Job to initialize and update the RPM packages proposal list.
  * 
- * FIXME: The job seems to be run twice on 3.3 (in the job progress view) but when break point are strategically placed,
- * the job seems to run only once, these symptoms appear only when the job is trigged from Activator#start method.
+ * FIXME: The job seems to be run twice on 3.3 (in the job progress view) but
+ * when break point are strategically placed, the job seems to run only once,
+ * these symptoms appear only when the job is trigged from Activator#start
+ * method.
  * 
  * @author Alphonse Van Assche
- *
+ * 
  */
 public class RpmPackageBuildProposalsJob extends Job {
-	
+
 	private RpmPackageBuildProposalsJob(String name) {
 		super(name);
 	}
-	
-	private static final String JOB_NAME =  "Update RPM packages proposal list"; 
-	
-	private static RpmPackageBuildProposalsJob job = null; 
 
-	private static final Preferences preferences =  Activator.getDefault().getPluginPreferences(); 
+	private static final String JOB_NAME = "Update RPM packages proposal list";
+
+	private static RpmPackageBuildProposalsJob job = null;
+
+	private static final Preferences preferences = Activator.getDefault()
+			.getPluginPreferences();
 
 	protected static final Preferences.IPropertyChangeListener propertyListener = new Preferences.IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
@@ -53,39 +57,48 @@ public class RpmPackageBuildProposalsJob extends Job {
 				update();
 		}
 	};
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	protected IStatus run(IProgressMonitor monitor) {
 		return retrievePackageList(monitor);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.core.runtime.jobs.Job#shouldSchedule()
 	 */
-	public boolean shouldSchedule() { 
-		   return equals(job); 
-	} 
-	
+	public boolean shouldSchedule() {
+		return equals(job);
+	}
+
 	/**
-	 * Run the Job if it's needed according with the configuration set in the preference page.
+	 * Run the Job if it's needed according with the configuration set in the
+	 * preference page.
 	 */
-	protected static void update() {   
+	protected static void update() {
 		boolean runJob = false;
-	    // Today's date
-	    Date today = new Date();
-		if (preferences.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD)) {
-			int period = preferences.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD); 
+		// Today's date
+		Date today = new Date();
+		if (preferences
+				.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD)) {
+			int period = preferences
+					.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD);
 			// each time that the plugin is loaded.
 			if (period == 1) {
 				runJob = true;
 			} else {
-				long lastBuildTime = preferences.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD);
+				long lastBuildTime = preferences
+						.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD);
 				if (lastBuildTime == 0) {
 					runJob = true;
 				} else {
-					long interval = (today.getTime() - lastBuildTime) / (1000 * 60 * 60 * 24);
+					long interval = (today.getTime() - lastBuildTime)
+							/ (1000 * 60 * 60 * 24);
 					// run the job once a week
 					if (period == 2 && interval >= 7)
 						runJob = true;
@@ -94,11 +107,20 @@ public class RpmPackageBuildProposalsJob extends Job {
 						runJob = true;
 				}
 			}
-			if (job == null && runJob) {
-				job = new RpmPackageBuildProposalsJob(JOB_NAME);
-				job.schedule();
-				// update last build preference with the current date.
-				preferences.setValue(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today.getTime());
+			if (runJob) {
+				if (job == null) {
+					job = new RpmPackageBuildProposalsJob(JOB_NAME);
+					job.schedule();
+					preferences.setValue(
+							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
+									.getTime());
+				} else {
+					job.cancel();
+					job.schedule();
+					preferences.setValue(
+							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
+									.getTime());
+				}
 			}
 		} else {
 			if (job != null) {
@@ -106,47 +128,53 @@ public class RpmPackageBuildProposalsJob extends Job {
 				job = null;
 			}
 		}
-	} 
-	
-	/**
-	 * Initialize the list, used if .pkgList is not found. 
-	 */
-	protected static void initializeList() {  
-	    // Today's date
-	    Date today = new Date();
-		if (job == null) {
-			job = new RpmPackageBuildProposalsJob(JOB_NAME);
-			job.schedule();
-			// update last build preference with the current date.
-			preferences.setValue(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today.getTime());
-		}
 	}
 
 	/**
 	 * Retrieve the package list
 	 * 
-	 * @param monitor to update
+	 * @param monitor
+	 *            to update
 	 * @return a <code>IStatus</code>
 	 */
 	private IStatus retrievePackageList(IProgressMonitor monitor) {
-		String rpmListCmd = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
-		String rpmListFilepath = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
+		String rpmListCmd = Activator.getDefault().getPreferenceStore()
+				.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
+		String rpmListFilepath = Activator.getDefault().getPreferenceStore()
+				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
+		String rpmListBkup = rpmListFilepath + ".bkup";
+		File bkupFile = new File(rpmListBkup);
 		try {
-			String[] cmd = new String[] {"/bin/sh", "-c", rpmListCmd};
-			monitor.beginTask("Get the list of RPM packages...", IProgressMonitor.UNKNOWN);
+			String[] cmd = new String[] { "/bin/sh", "-c", rpmListCmd };
+			monitor.beginTask("Retrive packages list...",
+					IProgressMonitor.UNKNOWN);
 			Process child = Runtime.getRuntime().exec(cmd);
 			InputStream in = child.getInputStream();
-			BufferedWriter out = new BufferedWriter(new FileWriter(rpmListFilepath, false));
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			monitor.subTask("Write the list of RPM packages into "
-			+ rpmListFilepath + " file ...");
+			// backup list
+			Utils.copyFile(new File(rpmListFilepath), bkupFile);
+			BufferedWriter out = new BufferedWriter(new FileWriter(
+					rpmListFilepath, false));
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(in));
+			monitor.subTask("Write packages list into " + rpmListFilepath
+					+ " ...");
 			String line;
 			while ((line = reader.readLine()) != null) {
 				monitor.subTask("Add package: " + line);
 				out.write(line + "\n");
-	        }
+				if (monitor.isCanceled()) {
+					in.close();
+					out.close();
+					// restore backup
+					Utils.copyFile(new File(rpmListBkup), new File(rpmListFilepath));
+					bkupFile.delete();
+					Activator.packagesList = new RpmPackageProposalsList();
+					return Status.CANCEL_STATUS;
+				}
+			}
 			in.close();
 			out.close();
+			bkupFile.delete();
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 			return null;
@@ -155,9 +183,8 @@ public class RpmPackageBuildProposalsJob extends Job {
 		}
 		// Update package list
 		Activator.packagesList = new RpmPackageProposalsList();
-		return Status.OK_STATUS; 
+		return Status.OK_STATUS;
 	}
-	
 
 	/**
 	 * Enable and disable the property change listener.
@@ -170,7 +197,6 @@ public class RpmPackageBuildProposalsJob extends Job {
 		} else {
 			preferences.removePropertyChangeListener(propertyListener);
 		}
-		
 	}
-	   
+
 }
