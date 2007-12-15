@@ -58,8 +58,9 @@ public class SpecfileParser {
 
 	public Specfile parse(IDocument specfileDocument) {
 
-		// remove all existing markers.
-		errorHandler.removeExistingMarkers();
+		// remove all existing markers, if a SpecfileErrorHandler is instantiated.
+		if (errorHandler != null)
+			errorHandler.removeExistingMarkers();
 		LineNumberReader reader = new LineNumberReader(new StringReader(
 				specfileDocument.get()));
 		String line = "";

@@ -41,6 +41,12 @@ public class PreferenceConstants {
 	public static final String P_MACRO_HOVER_CONTENT = P_MACRO_HOVER_CONTENT_VIEWCONTENT;
 	// changelog
 	public static final String P_CHANGELOG_LOCAL = "changelogLocal";
+	
+	public static final String P_CHANGELOG_ENTRY_FORMAT = "changelogEntryFormat";
+	public static final String P_CHANGELOG_ENTRY_FORMAT_VERSIONED = "1";
+	public static final String P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR = "2";
+	public static final String P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED = "3";
+	
 	// RPM informations
 	public static final String P_RPMINFO_NAME = "RpmInfoName";
 	public static final String P_RPMINFO_VERSION = "RpmInfoVersion";
@@ -76,6 +82,9 @@ public class PreferenceConstants {
 	public static final String DP_MACRO_PROPOSALS_FILESPATH = RPMMACRO_FILE + ";/usr/lib/rpm/macros";
 	// changelog
 	public static final String DP_CHANGELOG_LOCAL = "US";
+	public static final String DP_CHANGELOG_ENTRY_FORMAT = P_CHANGELOG_ENTRY_FORMAT_VERSIONED;
+	
+	
 	// RPM informations
 	public static final boolean DP_RPMINFO_NAME = true;
 	public static final boolean DP_RPMINFO_VERSION = true;

@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 

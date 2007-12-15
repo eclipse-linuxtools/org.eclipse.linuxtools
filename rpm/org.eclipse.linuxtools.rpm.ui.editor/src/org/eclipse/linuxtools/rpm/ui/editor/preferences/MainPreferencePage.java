@@ -13,7 +13,9 @@ package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
 import java.util.Locale;
 
+import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -40,6 +42,8 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	private Combo combo;
 	
 	private int defaultItem;
+	
+	private Composite fieldEditorParent;
 
 	/**
 	 * default constructor
@@ -47,30 +51,46 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	public MainPreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Main preference page for Specfile Plug-in editor");
+		//setDescription("Main preference page for Specfile Plug-in editor");
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
 	protected Control createContents(Composite parent) {
-		final Composite fieldEditorParent = new Composite(parent, SWT.LEFT);
+		fieldEditorParent = new Composite(parent, SWT.LEFT);
 		fieldEditorParent.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		fieldEditorParent.setLayout(new GridLayout());
-		Label label = new Label(fieldEditorParent, SWT.NONE);
-		createLocalesCombo(fieldEditorParent);
-		label.setText("Localize Changelog Formatter:");
-		Link link= new Link(fieldEditorParent, SWT.NONE);
-		// TODO: don't forgot to update Page1 to fit the new org.eclipse.linuxtools package name
-		link.setText("Use the <a href=\"org.eclipse.linuxtools.changelog.core.Page1\">ChangeLog</a> preference to configure your name and e-mail address");
+        
+        Link link= new Link(fieldEditorParent, SWT.NONE);
+		link.setText("Use the <a href=\"org.eclipse.linuxtools.changelog.core.Page1\">ChangeLog</a> preferences to configure your name and e-mail address.");
 		link.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				PreferencesUtil.createPreferenceDialogOn(fieldEditorParent.getShell() , e.text, null, null); 
 			}
 		});
+		
+		createFieldEditors();
+        
+		Label labelLocal = new Label(fieldEditorParent, SWT.NONE);
+		labelLocal.setText("Changelog entries Locale:");
+		createLocalesCombo(fieldEditorParent);
+
+        initialize();
+        checkState();
+		
 		return fieldEditorParent;
 	}
 	
+	private FieldEditor changelogEntryFormatFieldEditor(Composite parent) { 
+		RadioGroupFieldEditor changelogEntryFormatRadioGroupEditor = new RadioGroupFieldEditor(
+				PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT,
+				"Changelog entries format:", 1, new String[][] {
+						{ "Versioned entry (e.g. * Date Name <Mail> 1.1-1)", PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED },
+						{ "Versioned entry with separator (e.g. * Date Name <Mail> - 1.1-1)", PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR},
+						{ "Unversioned entry (e.g. * Date Name <Mail>)", PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED }}, parent, true);
+		return changelogEntryFormatRadioGroupEditor;
+	}		
 	
 	private void createLocalesCombo(Composite parent) {
 		combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
@@ -104,6 +124,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
 	public void createFieldEditors() {
+		addField(changelogEntryFormatFieldEditor(fieldEditorParent));
 
 	}
 
@@ -121,6 +142,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		super.performDefaults();
 		combo.select(defaultItem);
 		getPreferenceStore().setValue(PreferenceConstants.P_CHANGELOG_LOCAL, PreferenceConstants.DP_CHANGELOG_LOCAL);
+		getPreferenceStore().setValue(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT, PreferenceConstants.DP_CHANGELOG_ENTRY_FORMAT);
 	}
 	
 }

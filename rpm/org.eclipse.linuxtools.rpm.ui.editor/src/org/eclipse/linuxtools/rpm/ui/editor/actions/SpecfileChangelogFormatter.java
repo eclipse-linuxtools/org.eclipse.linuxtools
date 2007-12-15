@@ -38,6 +38,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
     private IEditorPart changelog;
 
     public String formatDateLine(String authorName, String authorEmail) {
+    	String dateLine;
         Specfile specfile = getParsedSpecfile();
         SpecfileElement resolveElement = new SpecfileElement();
         resolveElement.setSpecfile(specfile);
@@ -48,10 +49,27 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                 .resolve(specfile.getVersion());
         String release = specfile.getRelease() == null ? "" : resolveElement
                 .resolve(specfile.getRelease());
+        
         // remove the dist macro if it exist in the release string.
         release = release.replaceAll("\\%\\{\\?dist\\}", "");
-        return "* " + formatTodaysDate() + " " + authorName + " " + "<" + authorEmail
-                + ">" + " " + epoch + version + "-" + release;
+     
+        // default format
+        dateLine = "* " + formatTodaysDate() + " " + authorName + " " + "<" + authorEmail
+        + ">" + " " + epoch + version + "-" + release;
+
+        String format = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT);
+        if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED))
+        	return dateLine;
+            
+        else if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR))
+        	dateLine =  "* " + formatTodaysDate() + " " + authorName + " " + "<" + authorEmail
+            + ">" + " - " + epoch + version + "-" + release;
+        
+        else if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED))
+        	dateLine =  "* " + formatTodaysDate() + " " + authorName + " " + "<" + authorEmail + ">";
+        
+        return dateLine;
+
     }
 
     public String mergeChangelog(String dateLine, String functionGuess,

@@ -35,6 +35,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, PreferenceConstants.DP_RPM_LIST_BUILD_PERIOD);
 		store.setDefault(PreferenceConstants.P_MACRO_PROPOSALS_FILESPATH, PreferenceConstants.DP_MACRO_PROPOSALS_FILESPATH);
 		store.setDefault(PreferenceConstants.P_CHANGELOG_LOCAL, PreferenceConstants.DP_CHANGELOG_LOCAL);
+		store.setDefault(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT, PreferenceConstants.DP_CHANGELOG_ENTRY_FORMAT);
 		store.setDefault(PreferenceConstants.P_MACRO_HOVER_CONTENT, PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION);
 		store.setDefault(PreferenceConstants.P_RPMINFO_NAME, PreferenceConstants.DP_RPMINFO_NAME);
 		store.setDefault(PreferenceConstants.P_RPMINFO_VERSION, PreferenceConstants.DP_RPMINFO_VERSION);

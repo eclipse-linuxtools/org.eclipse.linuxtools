@@ -1,3 +1,25 @@
+2007-12-15  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Bug #212781 + some cleanups
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MainPreferencePage.java:
+	Add Changelog format preferences.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
+	(parse): Remove existing markers only when SpecfileErrorHandler is instantiated.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java
+	(formatDateLine): Changelog entry format based on prefs.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java
+	(resolveDefines): Copy from URLHyperlinkWithMacroDetector.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java:
+	Move resolveDefines() to Utils.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java
+	(propertyListener): Run the job only when P_CURRENT_RPMTOOLS preference change.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java:
+	Remove unused import.
+
 2007-11-28  Alphonse Van Assche  <alcapcom@gmail.com>
 	
 	Add support for URPM tool and cancel support to RpmPackageBuildProposalsJob. 

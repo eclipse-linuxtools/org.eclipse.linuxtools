@@ -35,8 +35,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
  * these symptoms appear only when the job is trigged from Activator#start
  * method.
  * 
- * @author Alphonse Van Assche
- * 
  */
 public class RpmPackageBuildProposalsJob extends Job {
 
@@ -53,7 +51,7 @@ public class RpmPackageBuildProposalsJob extends Job {
 
 	protected static final Preferences.IPropertyChangeListener propertyListener = new Preferences.IPropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent event) {
-			if (event.getProperty() != PreferenceConstants.P_RPM_LIST_LAST_BUILD)
+			if (event.getProperty() == PreferenceConstants.P_CURRENT_RPMTOOLS)
 				update();
 		}
 	};

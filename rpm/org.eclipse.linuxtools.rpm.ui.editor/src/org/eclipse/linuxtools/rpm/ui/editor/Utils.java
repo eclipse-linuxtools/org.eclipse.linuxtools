@@ -17,7 +17,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 /*
@@ -88,4 +92,32 @@ public class Utils {
 				outChannel.close();
 		}
 	}
+	
+	
+	/**
+	 * Resolve defines for a give URL string, if a define is not found or if
+	 * there is some other error, the original string is returned.
+	 * 
+	 * @param string
+	 *            to resolve
+	 * @return resolved URL String
+	 */
+	public static String resolveDefines(Specfile specfile, String string) {
+		String originalUrlString= string;
+		SpecfileDefine define;
+		try {
+			Pattern variablePattern= Pattern.compile("%\\{(\\S+?)\\}");
+			Matcher variableMatcher= variablePattern.matcher(string);
+			while (variableMatcher.find()) {
+				define= specfile.getDefine(variableMatcher.group(1));
+				string= string.replaceAll(variableMatcher.group(1), define.getStringValue());
+			}
+			if (!string.equals(originalUrlString))
+				string= string.replaceAll("\\%\\{|\\}", "");
+			return string;
+		} catch (Exception e) {
+			return originalUrlString;
+		}
+	}
+	
 }
