@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2007 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.mapping.ResourceMapping;
@@ -24,12 +26,23 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
+import org.eclipse.linuxtools.changelog.core.Messages;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
 import org.eclipse.ui.IContributorResourceAdapter;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.dialogs.ResourceSelectionDialog;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
 /**
@@ -37,7 +50,14 @@ import org.eclipse.ui.ide.IContributorResourceAdapter2;
  * @author klee
  *
  */
-public class PrepareChangelogKeyHandler implements IHandler {
+public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHandler, IWorkbenchWindowActionDelegate {
+	
+	private IWorkbenchWindow window;
+	
+	public PrepareChangelogKeyHandler() {
+		super();
+	}
+	
 	private ResourceMapping getResourceMapping(Object o) {
 		if (o instanceof ResourceMapping) {
 			return (ResourceMapping) o;
@@ -63,66 +83,88 @@ public class PrepareChangelogKeyHandler implements IHandler {
 		return null;
 	}
 
+	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		IProject[] currentProject;
+		IProject[] currentProject = null;
+		IStructuredSelection tempResult = null;
 
 		
 		// try getting currently selected project
 		try {
-			IEditorPart editor = getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().getActiveEditor();
-			currentProject = (getResourceMapping(editor
-					.getEditorInput()).getProjects());
-
-		} catch (Exception e) {
-			// if fail, no default selection
-			currentProject = new IProject[] {};
-		}
-		
-
-	
-		
-	
-		ResourceSelectionDialog rsd = new ResourceSelectionDialog(
-				ChangelogPlugin.getDefault().getWorkbench()
-						.getActiveWorkbenchWindow().getShell(), workspaceRoot,
-				"Choose resources to be included in preparing changelog.");
-
-		rsd.setInitialSelections(currentProject);
-
-		rsd.open();
-
-		final Object[] result = rsd.getResult();
-		
-	
-		if (result == null)
-			return null; // user didn't select anything or pressed cancel
-		
-		
-		
-
-		try {
-		
-		Action exampleAction;
-		exampleAction = new PrepareChangeLogAction() {
-			public void run() {
-				setSelection(new StructuredSelection(result));
-
-				doRun();
+			IWorkbenchPage ref = getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			IWorkbenchPart part = ref.getActivePart();
+			ISelection selected = ref.getSelection();
+			if (selected instanceof IStructuredSelection) {
+				IResource r = null;
+				IStructuredSelection iss = (IStructuredSelection)selected;
+				Object o = ((IStructuredSelection)selected).getFirstElement();
+				if (o instanceof ISynchronizeModelElement) {
+					r = ((ISynchronizeModelElement)o).getResource();
+				} else if (o instanceof IAdaptable) {
+					r = (IResource)((IAdaptable)o).getAdapter(IResource.class);
+				}
+				if (r != null)
+					tempResult = iss;
 			}
-		};
+			if (tempResult == null) {
+			    // We don't have an obvious project match in the current active view.  
+				// Let's search all open views for the Synchronize View which is our first
+				// choice to fall back on.
+				IViewReference[] views = ref.getViewReferences();
+				for (int j = 0; j < views.length; ++j) {
+					if (views[j].getId().equals("org.eclipse.team.sync.views.SynchronizeView")) { // $NON-NLS-1$
+						IViewPart v = views[j].getView(false);
+						ISelection s = null;
+						ISelectionProvider sp = v.getViewSite().getSelectionProvider();
+						if (sp != null) {
+							s = sp.getSelection();
+						}
+						if (s != null && s instanceof IStructuredSelection) {
+							IStructuredSelection ss = (IStructuredSelection)s;
+							Object element = ss.getFirstElement();
+							IResource r = null;
+							if (element instanceof ISynchronizeModelElement) {
+								r = ((ISynchronizeModelElement)element).getResource();
+							} else if (element instanceof IAdaptable) {
+								r = (IResource)((IAdaptable)element).getAdapter(IResource.class);
+							}
 
-		exampleAction.run();
-		
+							if (r != null) {
+								tempResult = ss;
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			tempResult = null;
+		}
+
+		// If we can't find the project directly, let the user know.
+		if (tempResult == null) {
+			MessageDialog.openInformation(getActiveWorkbenchShell(), Messages.getString("ChangeLog.PrepareChangeLog"), // $NON-NLS-1$, 
+					Messages.getString("PrepareChangeLog.InfoNoProjectFound")); // $NON-NLS-1$
+		} 
+
+		final IStructuredSelection result = tempResult;
+		try {
+			Action exampleAction;
+			exampleAction = new PrepareChangeLogAction() {
+				public void run() {
+					setSelection(result);
+					doRun();
+				}
+			};
+
+			exampleAction.run();
+
 		} catch (Exception e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR,
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
 							e.getMessage(), e));
 		}
-
-
 
 		return null;
 	}
@@ -136,6 +178,38 @@ public class PrepareChangelogKeyHandler implements IHandler {
 	}
 
 	public void dispose() {
+	}
+	
+	public void init(IWorkbenchWindow window) {
+		this.window = window;
+	}
+
+	protected IWorkbenchWindow getWorkbenchWindow() {
+		return window;
+	}
+	
+	/**
+	 * Returns active shell.
+	 */
+	protected Shell getActiveWorkbenchShell() {
+		IWorkbenchWindow window = getWorkbench().getActiveWorkbenchWindow();
+		if (window != null) {
+			return window.getShell();
+		}
+		return null;
+	}
+
+	public void run(IAction action) {
+
+		try {
+			execute(null);
+		} catch (ExecutionException e) {
+
+			reportErr(Messages.getString("PrepareChangeLog.ErrExecuteFailed"), e); // $NON-NLS-1$
+		}
+	}
+
+	public void selectionChanged(IAction action, ISelection selection) {
 
 	}
 
@@ -152,5 +226,5 @@ public class PrepareChangelogKeyHandler implements IHandler {
 	public void removeHandlerListener(IHandlerListener handlerListener) {
 
 	}
-
+	
 }

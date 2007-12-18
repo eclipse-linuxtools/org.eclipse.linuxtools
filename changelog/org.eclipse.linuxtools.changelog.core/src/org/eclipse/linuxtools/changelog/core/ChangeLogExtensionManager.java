@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2007 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -81,18 +81,18 @@ public class ChangeLogExtensionManager {
 			IConfigurationElement[] elements = parserExtensions
 					.getConfigurationElements();
 			for (int i = 0; i < elements.length; i++) {
-				if (elements[i].getName().equals("parser")
-						&& (elements[i].getAttribute("editor")
+				if (elements[i].getName().equals("parser") // $NON-NLS-1$
+						&& (elements[i].getAttribute("editor") // $NON-NLS-1$
 								.equals(editorName))) {
 					//$NON-NLS-1$
 					try {
 						IConfigurationElement bob = elements[i];
 						parserContributor = (IParserChangeLogContrib) bob
-								.createExecutableExtension("class");
+								.createExecutableExtension("class"); // $NON-NLS-1$
 						return parserContributor;
 					} catch (CoreException e) {
 						ChangelogPlugin.getDefault().getLog().log(
-								new Status(IStatus.ERROR, "Changelog",
+								new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
 										IStatus.ERROR, e.getMessage(), e));
 					}
 
@@ -140,9 +140,9 @@ public class ChangeLogExtensionManager {
 				List inFileFormatters = new LinkedList();
 				for (int i = 0; i < elements.length; i++) {
 					IConfigurationElement formatterConfigElement = elements[i];
-					if (formatterConfigElement.getName().equals("formatter")
-							&& formatterConfigElement.getAttribute("inFile")
-									.toLowerCase().equals("true")) {
+					if (formatterConfigElement.getName().equals("formatter") // $NON-NLS-1$
+							&& formatterConfigElement.getAttribute("inFile") // $NON-NLS-1$
+									.toLowerCase().equals("true")) { // $NON-NLS-1$
 						inFileFormatters.add(elements[i]);
 					}
 				}
@@ -164,20 +164,19 @@ public class ChangeLogExtensionManager {
 					continue;
 				IConfigurationElement patternElement = patternElementTmp[0];
 
-				if (patternElement.getAttribute("pattern") == null) {
+				if (patternElement.getAttribute("pattern") == null) { // $NON-NLS-1$
 					ChangelogPlugin
 							.getDefault()
 							.getLog()
 							.log(
 									new Status(
 											IStatus.ERROR,
-											"Changelog",
+											ChangelogPlugin.PLUGIN_ID,
 											IStatus.ERROR,
-											"Got non-pattern child with inFile set to True",
-											new Exception(
-													"Got non-pattern child with inFile set to True")));
+											Messages.getString("ChangeLog.ErrNonPattern"), // $NON-NLS-1$
+											new Exception(Messages.getString("ChangeLog.ErrNonPattern")))); // $NON-NLS-1$
 				} else {
-					String filePattern = patternElement.getAttribute("pattern");
+					String filePattern = patternElement.getAttribute("pattern"); // $NON-NLS-1$
 
 					try {
 						Pattern pattern = Pattern.compile(filePattern);
@@ -192,7 +191,7 @@ public class ChangeLogExtensionManager {
 						}
 					} catch (PatternSyntaxException e) {
 						ChangelogPlugin.getDefault().getLog().log(
-								new Status(IStatus.ERROR, "Changelog",
+								new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID,
 										IStatus.ERROR, e.getMessage(), e));
 					}
 				}
@@ -206,14 +205,14 @@ public class ChangeLogExtensionManager {
 				// we cache the user's preferred formatter on the first run, and
 				// whenever it changes
 				if (cachedPrefFormatter == null
-						|| !cachedPrefFormatter.getAttribute("name").equals(
+						|| !cachedPrefFormatter.getAttribute("name").equals( // $NON-NLS-1$
 								formatterName)) {
 
 					for (int i = 0; i < elements.length; i++) {
 						IConfigurationElement formatterConfigElement = elements[i];
 						if (formatterConfigElement.getName()
-								.equals("formatter") && formatterConfigElement.getAttribute("inFile").toLowerCase().equals("false")) { //$NON-NLS-1$
-							if (formatterConfigElement.getAttribute("name")
+								.equals("formatter") && formatterConfigElement.getAttribute("inFile").toLowerCase().equals("false")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							if (formatterConfigElement.getAttribute("name") // $NON-NLS-1$
 									.equals(formatterName))
 								cachedPrefFormatter = formatterConfigElement;
 							break;
@@ -231,11 +230,10 @@ public class ChangeLogExtensionManager {
 							.log(
 									new Status(
 											IStatus.ERROR,
-											"Changelog",
+											ChangelogPlugin.PLUGIN_ID,
 											IStatus.ERROR,
-											"Could not retrieve user's preferred formatter, aborting action.",
-											new Exception(
-													"Could not retrieve user's preferred formatter, aborting action.")));
+											Messages.getString("ChangeLog.ErrRetrieveFormatter"), // $NON-NLS-1$
+											new Exception(Messages.getString("ChangeLog.ErrRetrieveFormatter")))); // $NON-NLS-1$
 
 					return null;
 				}
@@ -247,11 +245,11 @@ public class ChangeLogExtensionManager {
 		
 		try {
 			return (IFormatterChangeLogContrib) formatterConfigElementToUse
-					.createExecutableExtension("class");
+					.createExecutableExtension("class"); // $NON-NLS-1$
 
 		} catch (CoreException e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 							.getMessage(), e));
 			e.printStackTrace();
 		}

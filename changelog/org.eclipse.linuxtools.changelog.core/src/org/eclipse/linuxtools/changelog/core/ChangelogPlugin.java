@@ -28,6 +28,9 @@ import org.osgi.framework.BundleContext;
  * The main plugin class to be used in the desktop.
  */
 public class ChangelogPlugin extends AbstractUIPlugin {
+	
+	public final static String PLUGIN_ID = "org.eclipse.linuxtools.changelog.core"; // $NON-NLS-1$
+	
 	// The shared instance.
 	private static ChangelogPlugin plugin;
 

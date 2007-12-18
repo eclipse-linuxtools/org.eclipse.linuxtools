@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2004, 2007 Phil Muldoon <pkmuldoon@picobot.org>.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 	
 	final String line_sep = System.getProperty("line.separator"); //$NON-NLS-1$
 	
-	final String TAB = "\t";
+	final String TAB = "\t"; // $NON-NLS-1$
 	
 	
 	public String formatDateLine(String authorName, String authorEmail) {
@@ -56,9 +56,9 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		IDocument changelog_doc = getDocument(changelog);
 		String function = formatFunction(functionGuess);
 		boolean multipleEntrySuccess = false;
-		String functionSpacer=" ";
-		if (function.equals(": "))
-			functionSpacer="";
+		String functionSpacer = " "; // $NON-NLS-1$
+		if (function.equals(": ")) // $NON-NLS-1$
+			functionSpacer = ""; // $NON-NLS-1$ 
 		if (changelog_doc.getLength() > 0) {
 			
 			int offset_start = findChangeLogEntry(changelog_doc, dateLine);
@@ -72,7 +72,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				
 				while (functLogEntry < nextChangeEntry) {
 					int line_length = 0;
-					String entry = "";
+					String entry = ""; // $NON-NLS-1$
 					try {
 						line_length = changelog_doc
 						.getLineOfOffset(functLogEntry);
@@ -82,11 +82,19 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					if (entry.lastIndexOf(fileDetail) > 0) {
+					// Look to see if entry already exists for file (will be preceded by "*")
+					if (entry.lastIndexOf("* " + fileDetail) > 0) {
 						foundFunction = true;
+						// Check for the case where the default content (e.g. new or removed file)
+						// is being caught again because user has prepared the ChangeLog more than once.
+						// In such a case, just return.  We don't need to repeat ourselves.
+						if (defaultContent.length() > 0) {
+							if (entry.lastIndexOf(defaultContent) > 0)
+								return ""; // $NON-NLS-1$
+						}
 						int nextFunctLoc = functLogEntry + fileDetail.length()
 						+ 2;
-						String nextFunc = "";
+						String nextFunc = ""; // $NON-NLS-1$
 						try {
 							nextFunc = changelog_doc.get(nextFunctLoc,
 									nextChangeEntry - nextFunctLoc);
@@ -94,16 +102,16 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						int foundFunc = nextFunc.indexOf("* ");
+						int foundFunc = nextFunc.indexOf("* "); // $NON-NLS-1$
 						if (foundFunc > 0) {
 							foundFunc--;
 							try {
 								while (changelog_doc.get(
 										nextFunctLoc + foundFunc, 1).equals(
-										"\t")
+										"\t") // $NON-NLS-1$
 										|| changelog_doc.get(
 												nextFunctLoc + foundFunc, 1)
-												.equals("\n"))
+												.equals("\n")) // $NON-NLS-1$
 									foundFunc--;
 							} catch (BadLocationException e2) {
 								// TODO Auto-generated catch block
@@ -125,7 +133,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				if (functLogEntry >= nextChangeEntry) {
 					functLogEntry = nextChangeEntry - 1;
 					try {
-						while (changelog_doc.get(functLogEntry, 1).equals("\n"))
+						while (changelog_doc.get(functLogEntry, 1).equals("\n")) // $NON-NLS-1$
 							functLogEntry--;
 					} catch (BadLocationException e) {
 						// TODO Auto-generated catch block
@@ -137,18 +145,18 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				if (offset_start != -1) {
 					if (foundFunction) {
 						try {
-							if (!function.equals(": "))
-								changelog_doc.replace(functLogEntry, 0, "\n" + TAB
-										+ function+" ");
+							if (!function.equals(": ")) // $NON-NLS-1$
+								changelog_doc.replace(functLogEntry, 0, "\n" + TAB // $NON-NLS-1$
+										+ function + " "); // $NON-NLS-1$
 							else
-								changelog_doc.replace(functLogEntry, 0, "\n" + TAB
+								changelog_doc.replace(functLogEntry, 0, "\n" + TAB // $NON-NLS-1$
 										);
 						} catch (BadLocationException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						ITextEditor edit = (ITextEditor) changelog;
-						if (!function.equals(": "))
+						if (!function.equals(": ")) // $NON-NLS-1$
 							edit.selectAndReveal(functLogEntry + function.length()
 									+ 3, 0);
 						else
@@ -158,7 +166,8 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 					} else {
 						try {
 							changelog_doc.replace(offset_end, 0, TAB
-									+ "* " + fileDetail + functionSpacer+function+functionSpacer + defaultContent + "\n"); //$NON-NLS-1$
+									+ "* " + fileDetail + functionSpacer // $NON-NLS-1$
+									+ function + functionSpacer + defaultContent + "\n"); //$NON-NLS-1$
 						} catch (BadLocationException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -178,7 +187,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 			try {
 				if (changelog_doc.getLength() > 0)
 					changelog_doc.replace(0, 0, "\n\n"); //$NON-NLS-1$
-				changelog_doc.replace(0, 0, dateLine + TAB + "* " + fileDetail
+				changelog_doc.replace(0, 0, dateLine + TAB + "* " + fileDetail // $NON-NLS-1$
 						+ functionSpacer+function+functionSpacer);
 				
 				ITextEditor edit = (ITextEditor) changelog;
@@ -191,7 +200,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 			
 		}
 		
-		return "";
+		return ""; // $NON-NLS-1$
 		
 	}
 	
@@ -204,8 +213,8 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		// Format Path. Is a full path specified, or just file name?
 		IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
 		String WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
-		String changeLogLocNoRoot = "";
-		String editorFileLocNoRoot = "";
+		String changeLogLocNoRoot = ""; // $NON-NLS-1$
+		String editorFileLocNoRoot = ""; // $NON-NLS-1$
 		if (changeLogLocation.lastIndexOf(WorkspaceRoot) >= 0) {
 			changeLogLocNoRoot = changeLogLocation.substring(changeLogLocation
 					.lastIndexOf(WorkspaceRoot)
@@ -224,7 +233,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		File changelogLocation = new File(changeLogLocNoRoot);
 		File fileLocation = new File(editorFileLocNoRoot);
 		File reversePath = fileLocation.getParentFile();
-		String reversePathb = "";
+		String reversePathb = ""; // $NON-NLS-1$
 		
 		while (reversePath.getParentFile() != null) {
 			if (reversePath.compareTo(changelogLocation.getParentFile()) == 0)
@@ -243,7 +252,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		// but one that "looks" like an entry
 		int nextEntry = startOffset;
 		int line_length = 0;
-		String entry = "";
+		String entry = ""; // $NON-NLS-1$
 		while (nextEntry < changelog_doc.getLength()) {
 			try {
 				// Get the line of interest in the changelog document
@@ -259,7 +268,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				nextEntry += changelog_doc.getLineLength(line_length);
 			} catch (BadLocationException e) {
 				ChangelogPlugin.getDefault().getLog().log(
-						new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
+						new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 								.getMessage(), e
 								
 						));
@@ -272,7 +281,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 	private boolean matchDatePattern(String text) {
 		
 		// Set up patterns for looking for the next date in the changelog
-		SimpleDateFormat isoDate = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat isoDate = new SimpleDateFormat("yyyy-MM-dd"); // $NON-NLS-1$
 		
 		// Try to find next Date bounded changelog entry by parsing date patterns
 		// First start with an ISO date
@@ -295,7 +304,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 			region = findDocumentAptd.find(0, entry, true, false,/*whole world */ false, true);
 		} catch (BadLocationException e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 							.getMessage(), e
 							
 					));
@@ -314,7 +323,7 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		
 		// If Function Guess is true, and Function Guess has found something
 		if (function.length() > 0)
-			return "(" + function + "):";
+			return "(" + function + "):"; // $NON-NLS-1$ // $NON-NLS-2$
 		else
 			return ": "; //$NON-NLS-1$
 		

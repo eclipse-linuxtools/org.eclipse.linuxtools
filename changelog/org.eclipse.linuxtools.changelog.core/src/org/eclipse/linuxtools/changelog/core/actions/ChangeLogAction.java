@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2007 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Kyu Lee <klee@redhat.com> - initial API and implementation
+ *    Jeff Johnston <jjohnstn@redhat.com> - add removed files support
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.actions;
 
@@ -52,7 +53,7 @@ public abstract class ChangeLogAction extends Action {
 
 	protected String pref_AuthorEmail;
 
-	protected String pref_ChangeLogName = "ChangeLog";
+	protected String pref_ChangeLogName = "ChangeLog"; // $NON-NLS-1$
 
 	protected String pref_Formatter;
 
@@ -72,7 +73,7 @@ public abstract class ChangeLogAction extends Action {
 
 	protected void reportErr(String msg, Exception e) {
 		ChangelogPlugin.getDefault().getLog().log(
-				new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, msg, e));
+				new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, msg, e));
 	}
 
 	protected IWorkbench getWorkbench() {
@@ -114,7 +115,7 @@ public abstract class ChangeLogAction extends Action {
 		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
 			public void execute(IProgressMonitor monitor) throws CoreException {
 				try {
-					monitor.beginTask("Adding ChangeLog", 2000); //$NON-NLS-1$
+					monitor.beginTask(Messages.getString("ChangeLog.AddingChangeLog"), 2000); //$NON-NLS-1$
 					changelog_File.create(initialContents, false, monitor);
 
 					if (monitor.isCanceled()) {
@@ -131,17 +132,17 @@ public abstract class ChangeLogAction extends Action {
 			new ProgressMonitorDialog(ws.getActiveWorkbenchWindow().getShell())
 					.run(true, true, operation);
 		} catch (InterruptedException e) {
-			reportErr("Interruped while creating changelog", e);
+			reportErr(Messages.getString("ChangeLog.ErrInterrupted"), e); // $NON-NLS-1$
 			return null;
 		} catch (InvocationTargetException e) {
-			reportErr("Couldn't create changelog process", e);
+			reportErr(Messages.getString("ChangeLog.ErrInvocation"), e); // $NON-NLS-1$
 			return null;
 		}
 
 		try {
 			myWorkspaceRoot.refreshLocal(2, null);
 		} catch (CoreException e) {
-			reportErr("Couldn't refresh local resources", e);
+			reportErr(Messages.getString("ChangeLog.ErrRefresh"), e); // $NON-NLS-1$
 			return null;
 		}
 
@@ -211,6 +212,57 @@ public abstract class ChangeLogAction extends Action {
 		return null;
 	}
 
+	/**
+	 * Find the ChangeLog for a file that is being removed.  It can't be found and
+	 * it is possible that the directory it is in has also been removed.
+	 * 
+	 * @param path Path of removed file
+	 * @return ChangeLog editor part that must be used to report removed file
+	 */
+	protected IEditorPart getChangelogForRemovePath(IPath path) {
+		IResource parent_resource = null;
+		IPath loc_path = path;
+		// Look from current loc up to find first folder that is still existing
+		IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
+		while (loc_path.segmentCount() > 0) {
+			parent_resource = myWorkspaceRoot.findMember(loc_path);
+			if (parent_resource != null)
+				break;
+			loc_path = loc_path.removeLastSegments(1);
+		}
+
+		if (parent_resource != null) {
+			IResource parent_dec = parent_resource;
+
+			while (parent_dec != null) {
+				String parent_node = parent_dec.getFullPath().toOSString();
+				parent_node = parent_node
+						+ System.getProperty("file.separator") + pref_ChangeLogName; //$NON-NLS-1$
+
+				IResource change_log_res = myWorkspaceRoot
+						.findMember(parent_node);
+
+				if (change_log_res != null) {
+					IProject proj_loc = parent_resource.getProject();
+					IPath modified_changelog_path = change_log_res
+							.getFullPath().removeFirstSegments(1);
+					IFile change_log_file = proj_loc
+							.getFile(modified_changelog_path);
+
+					return openEditor(change_log_file);
+				}
+
+				parent_dec = (IResource) parent_dec.getParent();
+
+				if (parent_dec == null) {
+					break;
+				}
+			}
+		}
+
+		return null;
+	}
+	
 	protected IFile getDocumentIFile(IEditorPart currentEditor) {
 		IEditorInput cc = currentEditor.getEditorInput();
 
@@ -264,7 +316,7 @@ public abstract class ChangeLogAction extends Action {
 		pref_AuthorEmail = store.getString("IChangeLogConstants.AUTHOR_EMAIL"); //$NON-NLS-1$
 
 		pref_Formatter = store
-				.getString("IChangeLogConstants.DEFAULT_FORMATTER");
+				.getString("IChangeLogConstants.DEFAULT_FORMATTER"); // $NON-NLS-1$
 	}
 
 }

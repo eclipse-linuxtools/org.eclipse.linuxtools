@@ -1,3 +1,69 @@
+2007-12-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* MANIFEST.MF: Remove CVS dependencies.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java:
+	Add new static PLUGIN_ID.
+	* src/org/eclipse/linuxtools/changelog/core/LineComparator.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogExtensionManager.java: Add
+	NLS comments.
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogWriter.java: Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/strings.properties: Add new
+	messages for NLS support.
+	
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java:
+	NLS string support.
+	
+	* src/org/eclipse/linuxtools/changelog/core/ui/ChangeLogActionProvider.java:
+	Add NLS message support.
+	(getCompareAdapter): Renamed from getCompareAdpater.
+	
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java: Add NLS
+	support.
+	(mergeChangelog): Fix test for existing entry to include the "*" qualifier
+	so that we don't get a false positive when dealing with short filenames that
+	might match the end of another entry.
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java:
+	(createChangeLog): Use Messages to get string.
+	(getChangelogForRemovePath): New method to get ChangeLog for a
+	removed file.
+	(loadPreferences): Add NLS comment.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java:
+	Add removedFile boolean.  Add constructor that takes an IPath.
+	(isRemovedFile, setRemovedFile): New methods.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFileComparator.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
+	(doRun): Use Messages to get monitor message.
+	(getResourceMappings): Removed.
+	(guessFunctionNames): String cleanups.
+	(outputMultipleEntryChangeLog): Add removed file support.  Add support for no guessed
+	function names.  Remove variation of this method that takes all String arguments.
+	(parseStandardPatch): Removed.
+	(parseCurrentFunctionAtOffset): Clean up strings.
+	(preapreChangeLog): Renamed to...
+	(prepareChangeLog): this..  As well, use RepositoryProvider to get set of SyncInfos
+	for changes instead of using resource list.  As well, create patch file manually using
+	line comparators instead of calling StringDiffOperation which is CVS-specific and uses
+	internal classes.  Sort the types of changes into new, removed, and changed and within
+	each category perform alphabetic sort.
+	(extractSynchronizeModelInfo): New method to extract all elements of the Synchronize
+	tree via an ISynchronizeModelInfo object.
+	(getChangedLines): New method to figure out what lines have changed in local resource.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java: Change
+	to superclass ChangeLogAction and also make it IWorkbenchWindowDelegate.
+	(execute): Change to get current selection in current window.  See if selection can
+	be used to either get an IResource directly, via IAdapter interface, or through an
+	ISynchronizeModelElement.  If not, look to see if the SynchronizeView is open and see if
+	a resource is selected.  Do not use current editor, nor bring up choose project dialog.
+	(init, getWorkbenchWindow, getActiveWorkbenchShell): New methods.
+	(run): Ditto.
+	(PrepareChangeLog): New constructor.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java
+	(doRun): String clean-up.
+	(extractNewlines): Removed.
+	(loadClipboard): Use line comparators to generate patch for ChangeLog instead of using
+	StringDiffOperation class.
+	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java: Remove.
+	
 2007-08-16  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Change to be jarred plugin and not contain changelog.jar.

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ChangeLog Core Functionality (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.core;singleton:=true
-Bundle-Version: 2.5.1
+Bundle-Version: 2.6.0
 Bundle-Activator: org.eclipse.linuxtools.changelog.core.ChangelogPlugin
 Bundle-Localization: plugin
 Bundle-Vendor: Eclipse.org
@@ -15,8 +15,6 @@ Require-Bundle: org.eclipse.team.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.editors,
- org.eclipse.team.cvs.ui,
- org.eclipse.team.cvs.core;bundle-version="3.3.0",
  org.eclipse.team.core,
  org.eclipse.ui.navigator,
  org.eclipse.compare

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2007 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,29 +7,36 @@
  *
  * Contributors:
  *    Kyu Lee <klee@redhat.com> - initial API and implementation
+ *    Jeff Johnston <jjohnstn@redhat.com> - remove CVS bindings, support removal
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.actions;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Vector;
 
+import org.eclipse.compare.rangedifferencer.RangeDifference;
+import org.eclipse.compare.rangedifferencer.RangeDifferencer;
+import org.eclipse.compare.structuremergeviewer.Differencer;
+import org.eclipse.compare.structuremergeviewer.IDiffContainer;
+import org.eclipse.compare.structuremergeviewer.IDiffElement;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.text.BadLocationException;
@@ -38,6 +45,17 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.changelog.core.ChangeLogWriter;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
+import org.eclipse.linuxtools.changelog.core.LineComparator;
+import org.eclipse.linuxtools.changelog.core.Messages;
+import org.eclipse.team.core.RepositoryProvider;
+import org.eclipse.team.core.diff.IDiff;
+import org.eclipse.team.core.diff.IThreeWayDiff;
+import org.eclipse.team.core.history.IFileRevision;
+import org.eclipse.team.core.mapping.IResourceDiff;
+import org.eclipse.team.core.subscribers.Subscriber;
+import org.eclipse.team.core.synchronize.SyncInfo;
+import org.eclipse.team.core.synchronize.SyncInfoSet;
+import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorDescriptor;
@@ -63,6 +81,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	 * @author klee
 	 * 
 	 */
+	
 	private class MyDocumentProvider extends FileDocumentProvider {
 
 		public IDocument createDocument(Object element) throws CoreException {
@@ -102,7 +121,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			return parser.parseCurrentFunction(input, offset);
 		} catch (CoreException e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 							.getMessage(), e));
 		}
 		return "";
@@ -136,13 +155,12 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	protected void doRun() {
-
 		IRunnableWithProgress code = new IRunnableWithProgress() {
 
 			public void run(IProgressMonitor monitor)
 					throws InvocationTargetException, InterruptedException {
-				monitor.beginTask("Preparing ChangeLog", 1000);
-				preapreChangeLog(monitor);
+				monitor.beginTask(Messages.getString("ChangeLog.PrepareChangeLog"), 1000); // $NON-NLS-1$
+				prepareChangeLog(monitor);
 				monitor.done();
 			}
 		};
@@ -154,12 +172,12 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			pd.run(false /* fork */, false /* cancelable */, code);
 		} catch (InvocationTargetException e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 							.getMessage(), e));
 			return;
 		} catch (InterruptedException e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, e
 							.getMessage(), e));
 		}
 	}
@@ -188,106 +206,224 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 		return null;
 	}
-
-	private ResourceMapping[] getResourceMappings(Object[] objects) {
-		List result = new ArrayList();
-		for (int i = 0; i < objects.length; i++) {
-			Object object = objects[i];
-			ResourceMapping mapping = getResourceMapping(object);
-			if (mapping != null)
-				result.add(mapping);
+	
+	private void extractSynchronizeModelInfo (ISynchronizeModelElement d, IPath path, Vector newList, Vector removeList, Vector changeList) {
+		// Recursively traverse the tree for children and sort leaf elements into their respective change kind sets.
+		// Don't add entries for ChangeLog files though.
+		if (d.hasChildren()) {
+			IPath newPath = path.append(d.getName());
+			IDiffElement[] elements = d.getChildren();
+			for (int i = 0; i < elements.length; ++i) {
+				if (elements[i] instanceof ISynchronizeModelElement)
+					extractSynchronizeModelInfo((ISynchronizeModelElement)elements[i], newPath, newList, removeList, changeList);
+				else if (!(d.getName().equals("ChangeLog"))) { // $NON-NLS-1$
+					IPath finalPath = path.append(d.getName());
+					PatchFile p = new PatchFile(finalPath);
+					int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
+					if (kind == Differencer.CHANGE) {
+						changeList.add(p);
+						// Save the resource so we can later figure out what lines changed
+						p.setResource(d.getResource());
+					}
+					else if (kind == Differencer.ADDITION) {
+						p.setNewfile(true);
+						newList.add(p);
+					}
+					else if (kind == Differencer.DELETION) {
+						p.setRemovedFile(true);
+						removeList.add(p);
+					}
+				}
+			}
+		} else if (!(d.getName().equals("ChangeLog"))) { // $NON-NLS-1$
+			IPath finalPath = path.append(d.getName());
+			PatchFile p = new PatchFile(finalPath);
+			int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
+			if (kind == Differencer.CHANGE) {
+				changeList.add(p);
+				// Save the resource so we can later figure out what lines changed
+				p.setResource(d.getResource());
+			}
+			else if (kind == Differencer.ADDITION) {
+				p.setNewfile(true);
+				newList.add(p);
+			}
+			else if (kind == Differencer.DELETION) {
+				p.setRemovedFile(true);
+				removeList.add(p);
+			}
 		}
-		return (ResourceMapping[]) result.toArray(new ResourceMapping[result
-				.size()]);
 	}
 
-	private void preapreChangeLog(IProgressMonitor monitor) {
+	private void getChangedLines(Subscriber s, PatchFile p, IProgressMonitor monitor) {
+		try {
+			// For an outgoing changed resource, find out which lines
+			// differ from the local file and its previous local version
+			// (i.e. we don't want to force a diff with the repository).
+			IDiff d = s.getDiff(p.getResource());
+			if (d instanceof IThreeWayDiff
+					&& ((IThreeWayDiff)d).getDirection() == IThreeWayDiff.OUTGOING) {
+				IThreeWayDiff diff = (IThreeWayDiff)d;
+				monitor.beginTask(null, 100);
+				IResourceDiff localDiff = (IResourceDiff)diff.getLocalChange();
+				IFile file = (IFile)localDiff.getResource();
+				monitor.subTask(Messages.getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
+				String osEncoding = file.getCharset();
+				IFileRevision ancestorState = localDiff.getBeforeState();
+				IStorage ancestorStorage;
+				if (ancestorState != null)
+					ancestorStorage = ancestorState.getStorage(monitor);
+				else 
+					ancestorStorage = null;
 
-		// getParserContributions();
-		String diffResult = null;
-		String projectPath = null;
+				RangeDifference[] rd = null;
+				try {
+					// We compare using a standard differencer to get ranges
+					// of changes.  We modify them to be document-based (i.e.
+					// first line is line 1) and store them for later parsing.
+					LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
+					LineComparator right = new LineComparator(file.getContents(), osEncoding);
+					rd = RangeDifferencer.findDifferences(left, right);
+					for (int j = 0; j < rd.length; ++j) {
+						RangeDifference tmp = rd[j];
+						if (tmp.kind() == RangeDifference.CHANGE) {
+							int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
+							p.addLineRange(tmp.rightStart() + 1, tmp.rightStart() + rightLength);
+						}
+					}
+				} catch (UnsupportedEncodingException e) {
+					// do nothing for now
+				}
+				monitor.done();
+
+			}
+		} catch (CoreException e) {
+			// Do nothing if error occurs
+		}
+	}
+	
+	private void prepareChangeLog(IProgressMonitor monitor) {
 
 		Object element = selected.getFirstElement();
-
-		ResourceMapping[] mappings = getResourceMappings(selected.toArray());
-
-		IResource resource = (IResource) element;
-
-		projectPath = resource.getProject().getFullPath().toOSString();
-
-		try {
-
-			StringDiffOperation sdo = new StringDiffOperation(getWorkbench()
-					.getActiveWorkbenchWindow().getPartService()
-					.getActivePart(), mappings,
-					false, true,
-					ResourcesPlugin.getWorkspace().getRoot().getFullPath());
-
-			sdo.execute(monitor);
-
-			diffResult = sdo.getResult();
-		}catch (Exception e) {
-
-			e.printStackTrace();
-			return;
-		}
-
-		if (diffResult == null) {
-			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR,
-							"Could not get diff", new Exception(
-									"No diff result from CVS")));
-			return;
-		}
-		if (projectPath == null) {
-			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR,
-							"Could not get project path", new Exception(
-									"Couldn't get project path")));
-			return;
-		}
-
-		if (diffResult.equals(StringDiffOperation.EMPTY_DIFF)) {
-			MessageDialog.openInformation(getWorkbench()
-					.getActiveWorkbenchWindow().getShell(),
-					"Prepare ChangeLog - ChangeLog", "No changes found.");
-			return;
-		}
-		// parse the patch and get only info we need
-		// filename, which line has changed.(range)
-
 		
-		monitor.subTask("Parsing diff result");
-		PatchFile[] patchFileInfoList = parseStandardPatch(diffResult,
-				projectPath, monitor);
-		monitor.worked(250);
+		IResource resource = null;
+		Vector newList = new Vector();
+		Vector removeList = new Vector();
+		Vector changeList = new Vector();
+		int totalChanges = 0;
+		
+		if (element instanceof IResource) {
+			resource = (IResource)element;
+		} else if (element instanceof ISynchronizeModelElement) {
+			ISynchronizeModelElement sme = (ISynchronizeModelElement)element;
+			resource = sme.getResource();
+		} else if (element instanceof IAdaptable) {
+			resource = (IResource)((IAdaptable)element).getAdapter(IResource.class);
+		}
+
+		if (resource == null)
+			return;
+
+		IProject project = resource.getProject();
+
+		// Get the repository provider so we can support multiple types of
+		// code repositories without knowing exactly which (e.g. CVS, SVN, etc..).
+		RepositoryProvider r = RepositoryProvider.getProvider(project);
+		if (r == null)
+			return;
+		SyncInfoSet set = new SyncInfoSet();
+		Subscriber s = r.getSubscriber();
+		if (s == null)
+			return;
+		if (element instanceof ISynchronizeModelElement) {
+			// We can extract the ChangeLog list from the synchronize view which
+			// allows us to skip items removed from the view
+			ISynchronizeModelElement d = (ISynchronizeModelElement)element;
+			while (d.getParent() != null)
+				d = (ISynchronizeModelElement)d.getParent();
+			extractSynchronizeModelInfo(d, new Path(""), newList, removeList, changeList);
+			totalChanges = newList.size() + removeList.size() + changeList.size();
+		}
+		else {
+			// We can then get a list of all out-of-sync resources.
+			s.collectOutOfSync(new IResource[] {project}, IResource.DEPTH_INFINITE, set, monitor);
+			SyncInfo[] infos = set.getSyncInfos();
+			totalChanges = infos.length;
+			// Iterate through the list of changed resources and categorize them into
+			// New, Removed, and Changed lists.
+			for (int i = 0; i < infos.length; ++i) {
+				int kind = SyncInfo.getChange(infos[i].getKind());
+				PatchFile p = new PatchFile(infos[i].getLocal().getFullPath());
+
+				// Check the type of entry and sort into lists.  Do not add an entry
+				// for ChangeLog files.
+				if (!(p.getPath().lastSegment().equals("ChangeLog"))) { // $NON-NLS-1$
+					if (kind == SyncInfo.ADDITION) {
+						p.setNewfile(true);
+						newList.add(p);
+					} else if (kind == SyncInfo.DELETION) {
+						p.setRemovedFile(true);
+						removeList.add(p);
+					} else if (kind == SyncInfo.CHANGE) {
+						changeList.add(p);
+						// Save the resource so we can later figure out which lines were changed
+						p.setResource(infos[i].getLocal());
+					}
+				}
+			}
+		}
+		
+		if (totalChanges == 0)
+			return; // nothing to parse
+		
+		PatchFile[] patchFileInfoList = new PatchFile[totalChanges];
+	
+		// Group like changes together and sort them by path name.
+		// We want removed files, then new files, then changed files.
+		// To get this, we put them in the array in reverse order.
+		int index = 0;
+		if (changeList.size() > 0) {
+			// Get the repository provider so we can support multiple types of
+			// code repositories without knowing exactly which (e.g. CVS, SVN, etc..).
+			Collections.sort(changeList, new PatchFileComparator());
+			int size = changeList.size();
+			for (int i = 0; i < size; ++i) {
+				PatchFile p = (PatchFile)changeList.get(i);
+				getChangedLines(s, p, monitor);
+				patchFileInfoList[index+(size-i-1)] = p;
+			}
+			index += size;
+		}
+		
+		if (newList.size() > 0) {
+			Collections.sort(newList, new PatchFileComparator());
+			int size = newList.size();
+			for (int i = 0; i < size; ++i)
+				patchFileInfoList[index+(size-i-1)] = (PatchFile)newList.get(i);
+			index += size;
+		}
+		
+		if (removeList.size() > 0) {
+			Collections.sort(removeList, new PatchFileComparator());
+			int size = removeList.size();
+			for (int i = 0; i < size; ++i)
+				patchFileInfoList[index+(size-i-1)] = (PatchFile)removeList.get(i);
+		}
+	
 		// now, find out modified functions/classes.
 		// try to use the the extension point. so it can be extended easily
-
-		if (patchFileInfoList == null) {
-			// nothing to parse
-			return;
-		}
-
 		// for all files in patch file info list, get function guesses of each
 		// file.
-		monitor.subTask("Writing ChangeLog");
+		monitor.subTask(Messages.getString("ChangeLog.WritingMessage")); // $NON-NLS-1$
 		int unitwork = 250 / patchFileInfoList.length;
 		for (int pfIndex = 0; pfIndex < patchFileInfoList.length; pfIndex++) {
 			// for each file
 
 			PatchFile pf = patchFileInfoList[pfIndex];
 
-			// System.out.println(pf.getPath().toOSString());
 			String[] funcGuessList = guessFunctionNames(pf);
 			
-			String defaultContent = null;
-			
-			if (pf.isNewfile())
-				defaultContent = "New File.";
-			
-			outputMultipleEntryChangeLog(pf.getPath().toOSString(), defaultContent,
-					funcGuessList);
+			outputMultipleEntryChangeLog(pf, funcGuessList);
 
 			/*
 			 * // print info for debug
@@ -302,16 +438,25 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 	protected IEditorPart changelog;
 
-	public void outputMultipleEntryChangeLog(String entryFileName, String defaultContent,
-			String[] functionGuess) {
+	public void outputMultipleEntryChangeLog(PatchFile pf, String[] functionGuess) {
 
+		String defaultContent = null;
+		
+		if (pf.isNewfile())
+			defaultContent = Messages.getString("ChangeLog.NewFile"); // $NON-NLS-1$
+		else if (pf.isRemovedFile())
+			defaultContent = Messages.getString("ChangeLog.RemovedFile"); // $NON-NLS-1$
+
+		IPath entryPath = pf.getPath();
+		String entryFileName = entryPath.toOSString();
+		
 		ChangeLogWriter clw = new ChangeLogWriter();
 
 		// load settings from extensions + user pref.
 		loadPreferences();
 
 		// get file path from target file
-		clw.setEntryFilePath(entryFileName);
+		clw.setEntryFilePath(entryPath.toOSString());
 		
 		if (defaultContent != null)
 			clw.setDefaultContent(defaultContent);
@@ -327,13 +472,19 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 		IEditorPart changelog = null;
 
-		changelog = getChangelog(entryFileName);
+		if (pf.isRemovedFile())
+			changelog = getChangelogForRemovePath(entryPath);
+		else
+			changelog = getChangelog(entryFileName);
 
+		// FIXME: this doesn't seem very useful or probable
 		if (changelog == null)
 			changelog = askChangeLogLocation(entryFileName);
 
 		if (changelog == null) {
-			System.out.println("oops, coudln't get changelog");
+			ChangelogPlugin.getDefault().getLog().log(
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR, // $NON-NLS-1$
+							Messages.getString("ChangeLog.ErrNoChangeLog"), null)); // $NON-NLS-1$
 			return;
 		}
 
@@ -348,134 +499,27 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		clw.setChangelogLocation(getDocumentLocation(clw.getChangelog(), true));
 
 		// print multiple changelog entries with different
-		// function guess names.
-		for (int i = 0; i < functionGuess.length; i++) {
-
-			clw.setGuessedFName(functionGuess[i]);
+		// function guess names.  We default to an empty guessed name
+		// if we have zero function guess names.
+		int numFuncs = 0;
+		clw.setGuessedFName(""); // $NON-NLS-1$
+		if (functionGuess.length > 0) {
+			for (int i = 0; i < functionGuess.length; i++) {
+				if (!functionGuess[i].trim().equals("")) { // $NON-NLS-1$
+					++numFuncs;
+					clw.setGuessedFName(functionGuess[i]);
+					clw.writeChangeLog();
+				}
+			}
+		}
+		// Default an empty entry if we did not have any none-empty
+		// function guesses.
+		if (numFuncs == 0) {
 			clw.writeChangeLog();
 		}
 
 	}
 
-	/**
-	 * Parses patch generated by CVS diff into <code>PatchFile</code> array.
-	 * 
-	 * @param diffResult
-	 *            patch file
-	 * @param projectPathh
-	 *            local parent path for the patch
-	 * @return array of PatchFile info
-	 */
-	protected PatchFile[] parseStandardPatch(String diffResult,
-			String projectPath, IProgressMonitor monitor) {
-		StringTokenizer st = new StringTokenizer(diffResult, "\n");
-		ArrayList fileList = new ArrayList();
-
-		// regex pattern for matching line info in standard patch.
-		Pattern lineInfoPattern = Pattern
-				.compile("(\\d+|\\d+,\\d+)[adc](\\d+|\\d+,\\d+)");
-
-		boolean inRange = false;
-		if (st.countTokens() == 0) 
-			return null;
-		int unitwork = 250 / st.countTokens();
-		boolean newFileFlag = false;
-		while (st.hasMoreTokens()) {
-			String ln = st.nextToken();
-			// this line contains file path relative to resource
-			// and starts new file entry
-			if (ln.indexOf("Index: ") == 0) {
-				String fullPath = projectPath + "/" + ln.substring(7);
-
-				// ignore all ChangeLogs
-				if (fullPath.substring(
-						fullPath.length() - "ChangeLog".length(),
-						fullPath.length()).equals("ChangeLog")) {
-					continue;
-				}
-
-				// System.out.println(fullPath + "- full path");
-				fileList.add(new PatchFile(fullPath));
-				inRange = false;
-				continue;
-			}
-			
-			// if this file is a new file, flag it
-			if (ln.indexOf("diff -N") == 0) {
-				newFileFlag = true;
-				continue;
-			}
-			if (fileList.size() > 0) {
-
-				PatchFile tpe = (PatchFile) fileList.get(fileList.size() - 1);
-				if (tpe != null) {
-
-					Matcher linem = lineInfoPattern.matcher(ln);
-
-					// if newfileflag is set, add this info to PatchFile object
-					if (newFileFlag) {
-						tpe.setNewfile(true);
-						newFileFlag=false;
-					}
-					
-					if (linem.matches()) {
-						inRange = true;
-						int from = 1;
-						int length = 0;
-
-						int modifierIndex;
-
-						if ((modifierIndex = ln.indexOf("a")) < 0)
-							if ((modifierIndex = ln.indexOf("d")) < 0)
-								modifierIndex = ln.indexOf("c");
-
-						// String firstHalf = ln.substring(0, modifierIndex);
-						String secondHalf = ln.substring(modifierIndex + 1);
-
-						int commaIndex;
-						switch (ln.charAt(modifierIndex)) {
-
-						case 'a':
-						case 'c':
-
-							if ((commaIndex = secondHalf.indexOf(",")) >= 0) {
-								from = Integer.parseInt(secondHalf.substring(0,
-										commaIndex));
-								length = Integer.parseInt(secondHalf
-										.substring(commaIndex + 1))
-										- Integer.parseInt(secondHalf
-												.substring(0, commaIndex));
-							} else {
-								from = Integer.parseInt(secondHalf);
-							}
-
-							break;
-
-						case 'd':
-							from = Integer.parseInt(secondHalf);
-							from++;
-							break;
-						}
-
-						tpe.addLineRange(from, from + length);
-						continue;
-					}
-
-					// add actual patch just in case if we need it later.
-					if (inRange)
-						tpe.appendTxtToLastRange(ln);
-
-				}
-			}
-			monitor.worked(unitwork);
-		}
-
-		PatchFile[] parseResult = new PatchFile[fileList.size()];
-		for (int i = 0; i < fileList.size(); i++)
-			parseResult[i] = (PatchFile) fileList.get(i);
-
-		return (parseResult.length == 0) ? null : parseResult;
-	}
 
 	/**
 	 * Guesses the function effected/modified by the patch from local file(newer
@@ -488,24 +532,24 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	private String[] guessFunctionNames(PatchFile patchFileInfo) {
 
 		
-		// if this file is new file, do not guess function files
+		// if this file is new file or removed file, do not guess function files
 		// TODO: create an option to include function names on 
 		// new files or not
-		if (patchFileInfo.isNewfile()) {
+		if (patchFileInfo.isNewfile() || patchFileInfo.isRemovedFile()) {
 			return new String[]{""};
 		}
 
 		String[] fnames = new String[0];
-		String editorName = "";
+		String editorName = ""; // $NON-NLS-1$
 
 		try {
 			IEditorDescriptor ed = org.eclipse.ui.ide.IDE
 					.getEditorDescriptor(patchFileInfo.getPath().toOSString());
-			editorName = ed.getId().substring(ed.getId().lastIndexOf(".") + 1);
+			editorName = ed.getId().substring(ed.getId().lastIndexOf(".") + 1); // $NON-NLS-1$
 		} catch (PartInitException e1) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e1
-							.getMessage(), e1));
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
+							e1.getMessage(), e1));
 			return new String[0];
 		}
 
@@ -562,18 +606,18 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		
 		} catch (CoreException e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
-							.getMessage(), e));
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
+							e.getMessage(), e));
 		} catch (BadLocationException e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
-							.getMessage(), e));
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
+							e.getMessage(), e));
 		} catch (Exception e) {
 			ChangelogPlugin.getDefault().getLog().log(
-					new Status(IStatus.ERROR, "Changelog", IStatus.ERROR, e
-							.getMessage(), e));
+					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
+							e.getMessage(), e));
 		}
 		return fnames;
 	}
-
+	
 }
