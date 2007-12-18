@@ -1,3 +1,7 @@
+2007-12-18  jjohnstn  <jjohnstn@vermillion>
+
+	* feature.xml: Update version to 2.6.0.
+
 2007-08-16  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Remove unnecessary stuff from binary build.
