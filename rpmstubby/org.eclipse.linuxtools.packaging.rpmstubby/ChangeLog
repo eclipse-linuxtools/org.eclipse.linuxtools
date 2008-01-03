@@ -1,3 +1,9 @@
+2008-01-03  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #206964
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java:
+	Remove 1.5 API calls. 
+
 2007-09-24  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java: New File.
