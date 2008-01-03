@@ -369,7 +369,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			return;
 		}
 
-		if (versionText.getText().contains("-")) {
+		if (versionText.getText().indexOf("-") > -1) {
 			updateStatus("Please, no dashes in the version!");
 			return;
 		}

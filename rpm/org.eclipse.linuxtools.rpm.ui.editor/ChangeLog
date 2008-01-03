@@ -1,4 +1,10 @@
-2007-12-15  Alphonse Van Assche   <alcapcom@gmail.com>
+2008-01-03  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #206964
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
+	Remove 1.5 API call.
+
+2007-12-15  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* META-INF/MANIFEST.MF: Bump to 0.2.1
 
@@ -25,46 +31,38 @@
 	Remove unused import.
 
 2007-11-28  Alphonse Van Assche  <alcapcom@gmail.com>
-	
-	Add support for URPM tool and cancel support to RpmPackageBuildProposalsJob. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java 
+
+	Add support for URPM tool and cancel support to RpmPackageBuildProposalsJob.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java
 	(rpmtoolsRadioGroupFieldEditor): Add urpm support.
-	(buildTimeListRateFieldEditor): Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java 
+	(buildTimeListRateFieldEditor): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java
 	(DP_RPMTOOLS_URPM): New const.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java: 
-	Using HashSet list to advoid duplicate package.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java: Using
+	HashSet list to advoid duplicate package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java
 	(update): Cancel support.
 	(retrievePackageList): Likewise.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java
 	(copyFile): New method.
 	(fileExist): New method.
 	(pluginSanityCheck): Add package list preferences sanity checks.
-	
 
 2007-11-21  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #207207
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
-	(parseSimpleDefinition): Allow macros in simple definitions (Alexander Kurtakov).
-
-2007-10-14  Alphonse Van Assche <alcapcom@gmail.com>
-
-	Bug #206160
-	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java
-	(start): Add sanity checks, at this time we only check if ~/.rpmmacros file
-	exist and in the case at this file don't exist we run rpmdev-setuptree to create
-	it.
+	(parseSimpleDefinition): Allow macros in simple definitions
+	(Alexander Kurtakov).2007-10-14 Alphonse Van Assche <alcapcom@gmail.com>Bug #206160* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java(start):
+	Add sanity checks, at this time we only check if ~/.rpmmacros file exist and in
+	the case at this file don't exist we run rpmdev-setuptree to create it.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java: New File.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java
-	(RPMMACRO_FILE): New Constant. 
-	
-	Bug	https://bugzilla.redhat.com/show_bug.cgi?id=327101
+	(RPMMACRO_FILE): New Constant. Bug
+	https://bugzilla.redhat.com/show_bug.cgi?id=327101
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java
 	(computePatchesProposals): Remove accidentally added code.
-	
-	
+
 2007-09-25  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Add key bindings for Toggle Comment and Organize Patches actions.
@@ -78,29 +76,29 @@
 	(getActiveEditor): New method.
 	* plugin.xml: Add extension points for these key bindings.
 
-2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
+2007-09-24  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Bug #204146
 	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentOutlinePage.java
 	(selectionChanged): Set the length parameter of editor#setHighlightRange method
 	to 1.
-	
-2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
-	 
-	Bug #204150 (Clean fix) 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
-	(computePatchesProposals): New method.
+
+2007-09-24  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Bug #204150
+	(Clean fix) * src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (computePatchesProposals):
+	New method.
 	(getDefines): Rename method.
 	(getPatches): New method.
 	(computeCompletionProposals): Add patches proposals.
 
-2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
-	
-	Bug #204150
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
-	(getDefinesName): Add completion for patches. 
+2007-09-24  Alphonse Van Assche  <alcapcom@gmail.com>
 
-2007-09-24  Alphonse Van Assche <alcapcom@gmail.com>
+	Bug #204150
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java
+	(getDefinesName): Add completion for patches.
+
+2007-09-24  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
 	Throw CoreException if /usr/share/doc or /etc/rpmdevtools dir are not found.
@@ -131,103 +129,100 @@
 2007-05-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #199172
-	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java: Add method
-	required by ChangeLog HEAD.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java:
+	Add method required by ChangeLog HEAD.
 
-2007-07-18  Alphonse Van Assche   <alcapcom@gmail.com>
+2007-07-18  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java: 
-	(dialogChanged): Fix a little mistake with String#indexOf 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
+	(dialogChanged): Fix a little mistake with String#indexOf
 
 2007-07-17  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Build RPM proposal list in a background task job, the list can be update when
 	the plugin is loader, once a week or once a month.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java:
-	New Class that initialize and update the packages proposal list.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java:
-	Add property change listener and call RpmPackageBuildProposalsJob#update in the start method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java: New
+	Class that initialize and update the packages proposal list.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Add property change
+	listener and call RpmPackageBuildProposalsJob#update in the start method.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java:
 	Updating to use the new job to update package proposal list strategy.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java:
-	Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java: 
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java:
 	Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java:
-	Likewise. 
+	Likewise.
 
-2007-07-17  Alphonse Van Assche   <alcapcom@gmail.com>
+2007-07-17  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: 
-	Add defines in proposals.
-	Don't show templates in package context and retrieve proposals only when it's needed.
-	Cleanup javadoc and remove some unneeded methods args.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: Add
+	defines in proposals. Don't show templates in package context and retrieve
+	proposals only when it's needed. Cleanup javadoc and remove some unneeded methods
+	args.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java:
 	(getDefinesName): New method.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java: 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java:
 	Cleanup.
 
-2007-07-16  Alphonse Van Assche   <alcapcom@gmail.com>
+2007-07-16  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Implement toggle comment like in JDT.
-	* plugin.xml: 
-	Add comment toggle action.
-	Add our document provider.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java: 
+	* plugin.xml: Add comment toggle action. Add our document provider.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java:
 	New action.
 
-2007-07-14  Alphonse Van Assche   <alcapcom@gmail.com>
+2007-07-14  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java: 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
 	Replace String#contains by String#indexOf for JRE 1.4 compatibility.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: 
-	Moving Annotation Hover to derived package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Moving
+	Annotation Hover to derived package.
 	* Too many files to list: Add contributor line.
-	
+
 2007-07-13  Andrew Overholt  <overholt@redhat.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java:
-	Fix copyright.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java:
-	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java: Fix
+	copyright.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java: Likewise.
 
 2007-07-05  Andrew Overholt  <overholt@redhat.com>
 
 	* Too many files to list: Add standard copyright and license header.
 
-2007-06-25  Alphonse Van Assche   <alcapcom@gmail.com>
+2007-06-25  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
-	(dialogChanged): Forgot to add '>' char as un-acceptable character for the Name tag. 
+	(dialogChanged): Forgot to add '>' char as un-acceptable character for the Name
+	tag.
 
 2007-06-25  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	Add a wizard for new specfile based on a template provided by the
-	rpmdevtools package.
+	Add a wizard for new specfile based on a template provided by the rpmdevtools
+	package.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java: New
 	File.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java:
 	Likewise.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileLog.java:
-	Likewise, The logger of convenience for the Specfile Plug-In.
-	* plugin.xml: Add extensions points for the wizard. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileLog.java: Likewise, The
+	logger of convenience for the Specfile Plug-In.
+	* plugin.xml: Add extensions points for the wizard.
 
 2007-06-22  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* META-INF/MANIFEST.MF: Add new dependencie "com.ibm.icu" for LineBreakingReader
 	derived class.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java:
-	(setDocument): New method. It is used by the rpmlint Plug-In.	
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java: 
+	(setDocument): New method. It is used by the rpmlint Plug-In.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java:
 	(setFile): Likewise.
-	(parse): Likewise.	
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java: 
-	Using the derived HTMLTextPresenter class. That make the plugin compatible 
-	with both 3.2 and 3.3 Eclipse versions.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
-	Likewise.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/HTML2TextReader.java: New
-	New derived class.
+	(parse): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java: Using the derived
+	HTMLTextPresenter class. That make the plugin compatible with both 3.2 and 3.3
+	Eclipse versions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/HTML2TextReader.java: New New
+	derived class.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/SubstitutionTextReader.java:
 	Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/SingleCharReader.java:
@@ -239,17 +234,17 @@
 
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java
 	(dispose): Set specfile field to null, useful for test cases.
 	(getSpecfileSourceViewer): New method used by HyperlinkWithMacroTests.
-	
+
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java
 	(isDefineChar): Add '?' char as define limiter.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java 
-	(isWordPart): Add '+' char. 
-	* icons/occurence_obj.gif New file. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java
+	(isWordPart): Add '+' char.
+	* icons/occurence_obj.gif New file.
 
 2007-06-05  Alphonse Van Assche  <alcapcom@gmail.com>
 
@@ -269,7 +264,7 @@
 	(computeRpmPackageProposals): Likewise.
 
 2007-06-05  Alphonse Van Assche  <alcapcom@gmail.com>
-	
+
 	Bug: #184955
 	* plugin.xml: add org.eclipse.ui.editors.markerAnnotationSpecification extension
 	point.
@@ -305,7 +300,7 @@
 
 2007-06-04  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java
 	Fix ChangeLog entry action.
 	(formatDateLine): Add escape char in pattern %{?dist} tag.
 
@@ -313,7 +308,7 @@
 
 	Bug #185598
 	* META-INF/MANIFEST.MF: Add "Incubation" to Bundle-Name.
-	
+
 2007-04-14  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Bug #182302
