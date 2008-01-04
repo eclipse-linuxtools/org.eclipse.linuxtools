@@ -1,3 +1,7 @@
+2008-01-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Remove CVS dependencies from feature.
+
 2007-12-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Update version to 2.6.0.
