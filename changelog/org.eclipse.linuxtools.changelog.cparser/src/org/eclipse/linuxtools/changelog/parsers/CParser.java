@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.changelog.parsers;
 
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.IWorkingCopy;
-import org.eclipse.cdt.internal.ui.editor.CEditor;
 import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.cdt.ui.IWorkingCopyManager;
 import org.eclipse.core.runtime.CoreException;
@@ -20,7 +19,6 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 /**
@@ -37,17 +35,17 @@ public class CParser implements IParserChangeLogContrib {
 	 * @see IParserChangeLogContrib#parseCurrentFunction(IEditorPart)
 	 */
 	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
-
-		if (!(editor instanceof CEditor)) {
+		
+		if (!(editor instanceof AbstractTextEditor)) {
 			return "";
 		}
 
-		CEditor c_editor = (CEditor) editor;
+		AbstractTextEditor a_editor = (AbstractTextEditor) editor;
 
-		ITextSelection selection = (ITextSelection) ((AbstractTextEditor)c_editor)
+		ITextSelection selection = (ITextSelection) (a_editor)
 				.getSelectionProvider().getSelection();
 
-		IEditorInput input = c_editor.getEditorInput();
+		IEditorInput input = a_editor.getEditorInput();
 
 		return parseCurrentFunction(input, selection.getOffset());
 	}

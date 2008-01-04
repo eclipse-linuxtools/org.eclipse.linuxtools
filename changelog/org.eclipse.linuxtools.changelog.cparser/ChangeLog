@@ -1,3 +1,9 @@
+2008-01-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves Bugzilla #179389
+	* src/org/eclipse/linuxtools/changelog/parsers/CParser.java: Remove internal
+	class references.  Use AbstractTextEditor instead of CEditor.
+
 2007-08-16  Andrew Overholt  <overholt@redhat.com>
 
 	Move to new location.
