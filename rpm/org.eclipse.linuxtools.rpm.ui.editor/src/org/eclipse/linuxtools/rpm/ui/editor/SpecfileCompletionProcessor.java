@@ -115,6 +115,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		ICompletionProposal[] patchesProposals = computePatchesProposals(
 				viewer, region, specfile, prefix);
 		result.addAll(Arrays.asList(patchesProposals));
+		// Sources completion
+		ICompletionProposal[] sourcesProposals = computeSourcesProposals(
+				viewer, region, specfile, prefix);
+		result.addAll(Arrays.asList(sourcesProposals));
 		// Get the current content type
 		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());		
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PACKAGES)) {
@@ -248,6 +252,40 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 							region.getOffset(), region.getLength(),
 							key.length(), Activator.getDefault().getImage(PATCH_ICON),
 							key, null, (String) patchesProposalsMap.get(key)));
+		}
+		return (ICompletionProposal[]) proposals
+				.toArray(new ICompletionProposal[proposals.size()]);
+	}
+	
+	/**
+	 * Compute sources proposals, these proposals are usable in the whole document.
+	 * Return an array of sources proposals for the given viewer, region, prefix.
+	 * 
+	 * @param viewer
+	 *            the viewer for which the context is created
+	 * @param region
+	 *            the region into <code>document</code> for which the context
+	 *            is created
+	 * @param prefix
+	 * 			  the prefix string to find
+	 * @return 
+	 *            a ICompletionProposal[]
+	 */
+	private ICompletionProposal[] computeSourcesProposals(ITextViewer viewer,
+			IRegion region, Specfile specfile, String prefix) {
+		// grab patches and put them into the proposals map
+		Map sourcesProposalsMap = getSources(specfile, prefix);
+		if (sourcesProposalsMap == null)
+			return new ICompletionProposal[0];
+		ArrayList proposals = new ArrayList();
+		String key;
+		Iterator iterator = sourcesProposalsMap.keySet().iterator();
+		while (iterator.hasNext()) {
+			key = (String) iterator.next();
+			proposals.add(new CompletionProposal(key, 
+							region.getOffset(), region.getLength(),
+							key.length(), Activator.getDefault().getImage(PATCH_ICON),
+							key, null, (String) sourcesProposalsMap.get(key)));
 		}
 		return (ICompletionProposal[]) proposals
 				.toArray(new ICompletionProposal[proposals.size()]);
@@ -428,6 +466,32 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			if (patchName.startsWith(prefix))
 				ret.put(patchName.toLowerCase(), SpecfileHover
 						.getSourceOrPatchValue(specfile, "patch"
+								+ patch.getNumber()));
+		}
+		return ret;
+	}
+	
+	/**
+	 * Get sources as a String key->value pair for a given specfile
+	 * and prefix.
+	 * 
+	 * @param specfile
+	 *            to get defines from.
+	 * @param prefix
+	 *            used to find defines.
+	 * @return a <code>HashMap</code> of defines.
+	 * 
+	 */
+	private Map getSources(Specfile specfile, String prefix) {
+		Collection sources = specfile.getSourcesAsList();
+		Map ret = new HashMap();
+		String sourceName;
+		for (Iterator iterator = sources.iterator(); iterator.hasNext();) {
+			SpecfileSource patch = (SpecfileSource) iterator.next();
+			sourceName = "%{SOURCE" + patch.getNumber()+"}";
+			if (sourceName.startsWith(prefix))
+				ret.put(sourceName, SpecfileHover
+						.getSourceOrPatchValue(specfile, "SOURCE"
 								+ patch.getNumber()));
 		}
 		return ret;

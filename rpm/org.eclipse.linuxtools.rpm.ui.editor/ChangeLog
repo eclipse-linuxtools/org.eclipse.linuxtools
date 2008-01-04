@@ -1,3 +1,9 @@
+2008-01-04  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	Bug #214217
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileCompletionProcessor.java:
+	Enable auto-complete for the defined sources in the spec.
+
 2008-01-03  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #206964
