@@ -1,6 +1,6 @@
 2008-01-09  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* feature.xml: C Parser and Java Parser are now fragments.
+	* feature.xml: C Parser and Java Parser are now fragments.  Update version to 2.6.1.
 
 2008-01-04  Jeff Johnston  <jjohnstn@redhat.com>
 
