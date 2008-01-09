@@ -15,7 +15,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -31,11 +30,14 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.Messages;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
 import org.eclipse.ui.IContributorResourceAdapter;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
@@ -95,18 +97,33 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		try {
 			IWorkbenchPage ref = getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			IWorkbenchPart part = ref.getActivePart();
-			ISelection selected = ref.getSelection();
-			if (selected instanceof IStructuredSelection) {
-				IResource r = null;
-				IStructuredSelection iss = (IStructuredSelection)selected;
-				Object o = ((IStructuredSelection)selected).getFirstElement();
-				if (o instanceof ISynchronizeModelElement) {
-					r = ((ISynchronizeModelElement)o).getResource();
-				} else if (o instanceof IAdaptable) {
-					r = (IResource)((IAdaptable)o).getAdapter(IResource.class);
+			if (part instanceof IEditorPart) {
+				// If we are in an editor, check if the file being edited is an IResource
+				// that belongs to a project in the workspace
+				IEditorPart editorPart = (IEditorPart)part;
+				IEditorInput input = editorPart.getEditorInput();
+				IResource r = (IResource)input.getAdapter(IResource.class);
+				if (r != null) {
+					// We have an IResource to work with, so create a selection we can use
+					// in PrepareChangeLogAction
+					tempResult = new StructuredSelection(r);
 				}
-				if (r != null)
-					tempResult = iss;
+			} else {
+				// Otherwise, our view is not an editor, see if we have an IResource or something
+				// that will lead us to an IResource
+				ISelection selected = ref.getSelection();
+				if (selected instanceof IStructuredSelection) {
+					IResource r = null;
+					IStructuredSelection iss = (IStructuredSelection)selected;
+					Object o = ((IStructuredSelection)selected).getFirstElement();
+					if (o instanceof ISynchronizeModelElement) {
+						r = ((ISynchronizeModelElement)o).getResource();
+					} else if (o instanceof IAdaptable) {
+						r = (IResource)((IAdaptable)o).getAdapter(IResource.class);
+					}
+					if (r != null)
+						tempResult = iss;
+				}
 			}
 			if (tempResult == null) {
 			    // We don't have an obvious project match in the current active view.  

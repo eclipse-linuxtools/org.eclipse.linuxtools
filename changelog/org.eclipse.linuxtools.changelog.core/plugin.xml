@@ -7,8 +7,7 @@
     	schema="schema/parserContribution.exsd"/>
     <extension-point id="formatterContribution" name="Changelog Format Contribution" schema="schema/formatterContribution.exsd"/>
     <extension-point id="editorContribution" name="ChangeLog Editor Contribution" schema="schema/editorContribution.exsd"/>
-    <extension-point id="locationContribution" name="ChangeLog location contribution" schema="schema/locationContribution.exsd"/>   
- 
+  
     <extension
   		point="org.eclipse.ui.commands">
 		
