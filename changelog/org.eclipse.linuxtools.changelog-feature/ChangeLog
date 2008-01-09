@@ -1,3 +1,7 @@
+2008-01-09  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: C Parser and Java Parser are now fragments.
+
 2008-01-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Remove CVS dependencies from feature.
