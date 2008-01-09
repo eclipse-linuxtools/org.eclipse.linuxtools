@@ -1,3 +1,11 @@
+2008-01-09 Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Removed.
+	* fragment.xml: New file.
+	* build.properties: Using fragment.xml instead of plugin.xml now.
+	* META-INF/MANIFEST.MF: Changed to fragment.  Reference host plugin
+	org.eclipse.linuxtools.changelog.core and bump up version to 2.6.1.
+
 2007-08-16  Andrew Overholt  <overholt@redhat.com>
 
 	Move to new location.
