@@ -51,6 +51,14 @@
 				menubarPath="edit/"
 				id="org.eclipse.linuxtools.changelog.core.actions.KeyAction">
  			</action>
+         <action
+               class="org.eclipse.linuxtools.changelog.core.actions.PrepareChangelogKeyHandler"
+               definitionId="org.eclipse.linuxtools.changelog.core.preparechangelog"
+               id="org.eclipse.linuxtools.changelog.core.action.prepChangeLog"
+               label="%prepCl"
+               menubarPath="project/"
+               tooltip="%prepChangeLog.tooltip">
+         </action>
 		</actionSet>
 	</extension>
        

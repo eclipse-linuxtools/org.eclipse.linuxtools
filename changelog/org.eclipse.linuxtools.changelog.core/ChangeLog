@@ -1,3 +1,8 @@
+2008-01-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.properties: Add new message for Prepare ChangeLog menu item. 
+	* plugin.xml: Add "Prepare ChangeLog" action to project menu.
+
 2008-01-09  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #214684
