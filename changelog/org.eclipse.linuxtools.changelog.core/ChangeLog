@@ -1,20 +1,33 @@
+2008-01-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
+	Update copyright.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java
+	(execute): Return if no selected project exists.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java
+	(initializeDefaultPreferences): Use new getUserEmail method.
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java
+	(getUserRealName): Try and use environment variable if available.
+	(getUserEmail): New method.
+	(initializeDefaultPreferences): Use new getUserEmail method.
+
 2008-01-10  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* plugin.properties: Add new message for Prepare ChangeLog menu item. 
+	* plugin.properties: Add new message for Prepare ChangeLog menu item.
 	* plugin.xml: Add "Prepare ChangeLog" action to project menu.
 
 2008-01-09  Jeff Johnston  <jjohnstn@redhat.com>
 
-	Resolves Bugzilla #214684
-	* META-INF/MANIFEST.MF: Add specific minimum versions for plugins that are required by
-	the Java parser.  This allows the Java parser to omit these plugin dependencies and
-	use the ones in this, the host plugin.
+	Bugzilla #214684
+	* META-INF/MANIFEST.MF: Add specific minimum versions for plugins that are
+	required by the Java parser. This allows the Java parser to omit these plugin
+	dependencies and use the ones in this, the host plugin.
 	* plugin.xml: Remove locationContribution extension which does not exist.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java: Remove unused
-	imports. 
-	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java (execute):
-	Add support for editors that are editing IResources. 
-
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
+	Remove unused imports.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java
+	(execute): Add support for editors that are editing IResources.
+	
 2008-01-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update version to 2.6.1.

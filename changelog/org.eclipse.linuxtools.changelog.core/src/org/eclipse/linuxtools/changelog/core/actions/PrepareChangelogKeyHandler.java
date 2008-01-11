@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Red Hat Inc. and others.
+ * Copyright (c) 2006-2008 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Kyu Lee <klee@redhat.com> - initial API and implementation
+ *    Red Hat, Inc. - initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.linuxtools.changelog.core.actions;
@@ -163,6 +163,7 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		if (tempResult == null) {
 			MessageDialog.openInformation(getActiveWorkbenchShell(), Messages.getString("ChangeLog.PrepareChangeLog"), // $NON-NLS-1$, 
 					Messages.getString("PrepareChangeLog.InfoNoProjectFound")); // $NON-NLS-1$
+			return null;
 		} 
 
 		final IStructuredSelection result = tempResult;

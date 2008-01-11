@@ -99,16 +99,17 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 	}
 
 	protected void initializeDefaultPreferences(IPreferenceStore store) {
-		store.setDefault("IChangeLogConstants.DATE_FORMAT", "true");
-		store.setDefault("IChangeLogConstants.APPEND_RESOURCE_PATH", "false");
+		store.setDefault("IChangeLogConstants.DATE_FORMAT", "true"); // $NON-NLS-1$ // $NON-NLS-2$
+		store.setDefault("IChangeLogConstants.APPEND_RESOURCE_PATH", "false"); // $NON-NLS-1$ // $NON-NLS-2$
 
-		store.setDefault("IChangeLogConstants.AUTHOR_NAME",
+		store.setDefault("IChangeLogConstants.AUTHOR_NAME", // $NON-NLS-1$
 				ChangeLogPreferencesPage.getUserRealName());
-		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL",
-				ChangeLogPreferencesPage.getUserName() + "@"
-						+ ChangeLogPreferencesPage.getHostName());
-		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", "GNU Style");
-		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", "GNU Editor");
+		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL", // $NON-NLS-2$
+				ChangeLogPreferencesPage.getUserEmail());
+		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", // $NON-NLS-1$ 
+				getResourceString("gnuFormatter")); // $NON-NLS-1$
+		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", // $NON-NLS-1$ 
+				getResourceString("gnuEditorConfig")); // $NON-NLS-1$
 
 	}
 }

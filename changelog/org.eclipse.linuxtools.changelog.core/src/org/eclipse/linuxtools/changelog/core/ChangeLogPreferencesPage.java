@@ -112,8 +112,18 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 	}
 
 	protected static String getUserRealName() {
+		String realUserName = System.getenv("ECLIPSE_CHANGELOG_REALNAME"); // $NON-NLS-1$
+		if (realUserName != null)
+			return realUserName;
 		return System.getProperty("gnu.gcj.user.realname", //$NON-NLS-1$
 				getUserName());
+	}
+	
+	protected static String getUserEmail() {
+		String emailID = System.getenv("ECLIPSE_CHANGELOG_EMAIL"); // $NON-NLS-1$
+		if (emailID != null)
+			return emailID;
+		return getUserName() + "@" + getHostName(); // $NON-NLS-1$
 	}
 
 	protected static String getUserName() {
@@ -138,10 +148,8 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 		// "IChangeLogConstants.AUTHOR_EMAIL", getUserName() + "@" +
 		// getHostName()); //$NON-NLS-1$ //$NON-NLS-2$
 		//						
-		store.setDefault("IChangeLogConstants.AUTHOR_NAME", getUserRealName()); //$NON-NLS-1$ //$NON-NLS-2$	
-		store
-				.setDefault(
-						"IChangeLogConstants.AUTHOR_EMAIL", getUserName() + "@" + getHostName()); //$NON-NLS-1$ //$NON-NLS-2$
+		store.setDefault("IChangeLogConstants.AUTHOR_NAME", getUserRealName()); //$NON-NLS-1$	
+		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL", getUserEmail()); //$NON-NLS-1$
 
 		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", "GNU Style"); //$NON-NLS-1$ //$NON-NLS-2$
 		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", "GNU Editor"); //$NON-NLS-1$ //$NON-NLS-2$
