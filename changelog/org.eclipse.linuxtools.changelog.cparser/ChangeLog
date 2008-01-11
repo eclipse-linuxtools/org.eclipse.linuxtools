@@ -1,3 +1,7 @@
+2008-01-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/CParser.java: Update copyright. 
+
 2008-01-09  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Removed.
