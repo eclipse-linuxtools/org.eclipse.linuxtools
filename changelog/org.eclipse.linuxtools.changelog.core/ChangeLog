@@ -27,7 +27,7 @@
 	Remove unused imports.
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java
 	(execute): Add support for editors that are editing IResources.
-	
+
 2008-01-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update version to 2.6.1.
@@ -35,74 +35,75 @@
 2007-12-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* MANIFEST.MF: Remove CVS dependencies.
-	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java:
-	Add new static PLUGIN_ID.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java: Add new static
+	PLUGIN_ID.
 	* src/org/eclipse/linuxtools/changelog/core/LineComparator.java: New file.
 	* src/org/eclipse/linuxtools/changelog/core/ChangeLogExtensionManager.java: Add
 	NLS comments.
 	* src/org/eclipse/linuxtools/changelog/core/ChangeLogWriter.java: Ditto.
-	* src/org/eclipse/linuxtools/changelog/core/strings.properties: Add new
-	messages for NLS support.
-	
-	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java:
-	NLS string support.
-	
-	* src/org/eclipse/linuxtools/changelog/core/ui/ChangeLogActionProvider.java:
-	Add NLS message support.
+	* src/org/eclipse/linuxtools/changelog/core/strings.properties: Add new messages
+	for NLS support.
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java: NLS
+	string support.
+	* src/org/eclipse/linuxtools/changelog/core/ui/ChangeLogActionProvider.java: Add
+	NLS message support.
 	(getCompareAdapter): Renamed from getCompareAdpater.
-	
 	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java: Add NLS
 	support.
-	(mergeChangelog): Fix test for existing entry to include the "*" qualifier
-	so that we don't get a false positive when dealing with short filenames that
-	might match the end of another entry.
+	(mergeChangelog): Fix test for existing entry to include the "*" qualifier so
+	that we don't get a false positive when dealing with short filenames that might
+	match the end of another entry.
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java:
 	(createChangeLog): Use Messages to get string.
-	(getChangelogForRemovePath): New method to get ChangeLog for a
-	removed file.
+	(getChangelogForRemovePath): New method to get ChangeLog for a removed file.
 	(loadPreferences): Add NLS comment.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java:
-	Add removedFile boolean.  Add constructor that takes an IPath.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java: Add
+	removedFile boolean. Add constructor that takes an IPath.
 	(isRemovedFile, setRemovedFile): New methods.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFileComparator.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFileComparator.java:
+	New file.
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
 	(doRun): Use Messages to get monitor message.
 	(getResourceMappings): Removed.
 	(guessFunctionNames): String cleanups.
-	(outputMultipleEntryChangeLog): Add removed file support.  Add support for no guessed
-	function names.  Remove variation of this method that takes all String arguments.
+	(outputMultipleEntryChangeLog): Add removed file support. Add support for no
+	guessed function names. Remove variation of this method that takes all String
+	arguments.
 	(parseStandardPatch): Removed.
 	(parseCurrentFunctionAtOffset): Clean up strings.
 	(preapreChangeLog): Renamed to...
-	(prepareChangeLog): this..  As well, use RepositoryProvider to get set of SyncInfos
-	for changes instead of using resource list.  As well, create patch file manually using
-	line comparators instead of calling StringDiffOperation which is CVS-specific and uses
-	internal classes.  Sort the types of changes into new, removed, and changed and within
-	each category perform alphabetic sort.
-	(extractSynchronizeModelInfo): New method to extract all elements of the Synchronize
-	tree via an ISynchronizeModelInfo object.
-	(getChangedLines): New method to figure out what lines have changed in local resource.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java: Change
-	to superclass ChangeLogAction and also make it IWorkbenchWindowDelegate.
-	(execute): Change to get current selection in current window.  See if selection can
-	be used to either get an IResource directly, via IAdapter interface, or through an
-	ISynchronizeModelElement.  If not, look to see if the SynchronizeView is open and see if
-	a resource is selected.  Do not use current editor, nor bring up choose project dialog.
+	(prepareChangeLog): this.. As well, use RepositoryProvider to get set of
+	SyncInfos for changes instead of using resource list. As well, create patch file
+	manually using line comparators instead of calling StringDiffOperation which is
+	CVS-specific and uses internal classes. Sort the types of changes into new,
+	removed, and changed and within each category perform alphabetic sort.
+	(extractSynchronizeModelInfo): New method to extract all elements of the
+	Synchronize tree via an ISynchronizeModelInfo object.
+	(getChangedLines): New method to figure out what lines have changed in local
+	resource.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java:
+	Change to superclass ChangeLogAction and also make it IWorkbenchWindowDelegate.
+	(execute): Change to get current selection in current window. See if selection
+	can be used to either get an IResource directly, via IAdapter interface, or
+	through an ISynchronizeModelElement. If not, look to see if the SynchronizeView
+	is open and see if a resource is selected. Do not use current editor, nor bring
+	up choose project dialog.
 	(init, getWorkbenchWindow, getActiveWorkbenchShell): New methods.
 	(run): Ditto.
 	(PrepareChangeLog): New constructor.
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java
 	(doRun): String clean-up.
 	(extractNewlines): Removed.
-	(loadClipboard): Use line comparators to generate patch for ChangeLog instead of using
-	StringDiffOperation class.
-	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java: Remove.
-	
+	(loadClipboard): Use line comparators to generate patch for ChangeLog instead of
+	using StringDiffOperation class.
+	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java:
+	Remove.
+
 2007-08-16  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Change to be jarred plugin and not contain changelog.jar.
-	* META-INF/MANIFEST.MF: Change from changelog.jar to .. Set required EE. Bump
-	to 2.5.1.
+	* META-INF/MANIFEST.MF: Change from changelog.jar to .. Set required EE. Bump to
+	2.5.1.
 
 2007-08-07  klee  <klee@redhat.com>
 
@@ -113,12 +114,11 @@
 	* META-INF/MANIFEST.MF: Version bump to 2.5.0.
 	* src/org/eclipse/linuxtools/changelog/core/actions/FormatChangeLogAction.java:
 	Removed unused imports.
-	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java:
-	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java: Ditto.
 	* src/org/eclipse/linuxtools/changelog/core/ui/ChangeLogActionProvider.java:
 	Ditto.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java:
-	Added support for new files.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java: Added
+	support for new files.
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
 	Ditto. + Removed internal class reference.
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java:
@@ -129,10 +129,9 @@
 	Removed internal class reference.
 	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java:
 	Added a constructor with default options for DiffOperation.
-	* src/org/eclipse/linuxtools/changelog/core/ChangeLogWriter.java:
-	Added support for inserting default content to changelog entry.
-	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java:
-	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogWriter.java: Added support
+	for inserting default content to changelog entry.
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java: Ditto.
 	* src/org/eclipse/linuxtools/changelog/core/IFormatterChangeLogContrib.java:
 	Ditto.
 
@@ -140,22 +139,20 @@
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/StringDiffOperation.java
 	(StringDiffOperation): Added support for Eclipse 3.3
-	* META-INF/MANIFEST.MF: Version bump to 2.4.1 and add dependency for Eclipse 3.3.
+	* META-INF/MANIFEST.MF: Version bump to 2.4.1 and add dependency for Eclipse
+	3.3.
 
-2007-05-09 	Kyu Lee  <klee@redhat.com>
+2007-05-09  Kyu Lee  <klee@redhat.com>
 
-	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java:
-	Removed. Now separate javaparser plugin will provide parsing.
-	* src/org/eclipse/linuxtools/changelog/core/parsers/CParser.java:
-	Ditto.
-	* src/org/eclipse/linuxtools/changelog/core/parsers/PythonParser.java:
-	Ditto.
-	* src/org/eclipse/linuxtools/changelog/core/parsers/CompareParser.java:
-	Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java: Removed.
+	Now separate javaparser plugin will provide parsing.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/CParser.java: Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/PythonParser.java: Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/CompareParser.java: Ditto.
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
 	Removed JDT import for JavaModelException which we don't really need.
-	* META-INF/MANIFEST.MF: Removed JDT and CDT dependency because
-	now Java/C parsers are in separate plug-ins.
+	* META-INF/MANIFEST.MF: Removed JDT and CDT dependency because now Java/C
+	parsers are in separate plug-ins.
 	* plugin.xml: Version bump to 2.4.0 and remove parser extensions.
 
 2007-05-04  Andrew Overholt  <overholt@redhat.com>
@@ -163,52 +160,43 @@
 	Bug #185598
 	* META-INF/MANIFEST.MF: Add "Incubation" to Bundle-Name.
 
-2007-04-10 	Kyu Lee  <klee@redhat.com>
+2007-04-10  Kyu Lee  <klee@redhat.com>
 
-	* plugin.xml: Igor's patch to renamespace old com.redhat strings
-	bug #181497.
-	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java:
-	Removed use of internal classes.
+	* plugin.xml: Igor's patch to renamespace old com.redhat strings bug #181497.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java: Removed use
+	of internal classes.
 
 2007-03-28  Remy Chi Jian Suen  <remy.suen@gmail.com>
 
-	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java:
-	Add support for identifying static initializing blocks per bug #179549.
+	* src/org/eclipse/linuxtools/changelog/core/parsers/JavaParser.java: Add support
+	for identifying static initializing blocks per bug #179549.
 
 2007-03-27  Ben Konrath  <bkonrath@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java:
-	Don't use internal classes. 
+	Don't use internal classes.
 	* .svnignore: Rename from .cvsignore.
 
 2007-03-26  Kyu Lee  <klee@redhat.com>
 
 	* META-INF/MANIFEST.MF: Added.
-	* plugin.xml: Migrated require and other declarations to MANIFEST.MF.
-	Fixed extension declarations to work with new namespace.
+	* plugin.xml: Migrated require and other declarations to MANIFEST.MF. Fixed
+	extension declarations to work with new namespace.
 
 2007-01-24  Kyu Lee  <klee@redhat.com>
 
-	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java: 
-	Changed copyright to Phil Muldoon.
-	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java: 
+	* src/com/redhat/eclipse/changelog/core/parsers/PythonParser.java: Changed
+	copyright to Phil Muldoon.
+	* src/com/redhat/eclipse/changelog/core/parsers/JavaParser.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java:
 	Ditto.
-	* src/com/redhat/eclipse/changelog/core/parsers/CParser.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/parsers/CompareParser.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/formatters/GNUFormat.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/IParserChangeLogContrib.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/IFormatterChangeLogContrib.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/ChangelogPlugin.java: 
-	Ditto.
+	* src/com/redhat/eclipse/changelog/core/IParserChangeLogContrib.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/IFormatterChangeLogContrib.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogPreferencesPage.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/ChangelogPlugin.java: Ditto.
 
 2007-01-23  Kyu Lee  <klee@redhat.com>
 
@@ -216,13 +204,12 @@
 
 2007-01-22  Kyu Lee  <klee@redhat.com>
 
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java: 
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java:
 	Error checking.
-	* src/com/redhat/eclipse/changelog/core/actions/PatchRangeElement.java: 
-	Minor design changes.
-	* src/com/redhat/eclipse/changelog/core/actions/PatchFile.java: 
-	Ditto.
-	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java: 
+	* src/com/redhat/eclipse/changelog/core/actions/PatchRangeElement.java: Minor
+	design changes.
+	* src/com/redhat/eclipse/changelog/core/actions/PatchFile.java: Ditto.
+	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java:
 	Files without proper parsers to guess function names generates changelog entry.
 	* plubin.xml: Bumped version to 2.3.4.
 
@@ -232,29 +219,26 @@
 
 2006-11-16  Kyu Lee  <klee@redhat.com>
 
-	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java 
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java
 	(getDocumentLocation): Improved error handling. Returns empty string when
 	current editor/workspace is not set properly.
 
 2006-11-15  Kyu Lee  <klee@redhat.com>
 
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java 
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java
 	(execute): Prepare ChangeLog defaults to currently-selected project. BZ#214430.
 
 2006-11-13  Kyu Lee  <klee@redhat.com>
 
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareCommitAction.java
-	New class for implementation of filling clipboard with changes in ChangeLog.
-	
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareCommitHandler.java
-	New class that handles keybinding.
-	
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareCommitAction.java New
+	class for implementation of filling clipboard with changes in ChangeLog.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareCommitHandler.java New
+	class that handles keybinding.
 	* src/com/redhat/eclipse/changelog/core/editors/ChangeLogEditor.java
 	(editorContextMenuAboutToShow): Addes Fomratter action to context menu.
 	(ChangeLogEditor): Ditto.
-	
 	* plugin.xml: Keybindings for changelog formatter and prepare commit added.
-	
+
 2006-10-13  Kyu Lee  <klee@redhat.com>
 
 	* plugin.xml: Bump to version 2.3.3.
@@ -262,71 +246,67 @@
 2006-10-06  Kyu Lee  <klee@redhat.com>
 
 	* plugin.xml: Rename of KeyAction class to InsertChangeLogKeyHandler.
-	* src/com/redhat/eclipse/changelog/core/ChangeLogWriter.java :
-	Debug output.
-	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java :
-	Clean up.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogWriter.java : Debug output.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java : Clean up.
 	* src/com/redhat/eclipse/changelog/core/actions/InsertChangeLogKeyHandler.java :
 	Replaces KeyAction.java.
-	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java :
-	Removed. Replaced by InsertChangeLogKeyHandler.java.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java : Removed.
+	Replaced by InsertChangeLogKeyHandler.java.
 	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java :
 	Clean up.
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java :
-	Clean up.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java
+	: Clean up.
 	(execute): Opens resource selection window to let users choose files that will
 	be used in prepare changelog feature.
-	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider :
-	Clean up.
+	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider : Clean up.
 
 2006-10-03  Kyu Lee  <klee@redhat.com>
 
-	* src/com/redhat/eclipse/changelog/core/ChangeLogWriter.java :
-	Added.
+	* src/com/redhat/eclipse/changelog/core/ChangeLogWriter.java : Added.
 	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java:
 	(insertChangelog): Removed. Refactored to a new class ChangeLogWriter.
-	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java: 
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java:
 	(run): Uses new ChangeLogWriter class.
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java: 
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java:
 	(outputMultipleEntryChangeLog): Uses new ChangeLogWriter class.
 
 2006-09-29  Kyu Lee  <klee@redhat.com>
 
-	* plugin.xml: Added prepare changelog key binding(not implemented yet).
-	Bumped version to 2.3.2.
-	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider.java: 
-	Some cleanup.
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java: 
+	* plugin.xml: Added prepare changelog key binding(not implemented yet). Bumped
+	version to 2.3.2.
+	* src/com/redhat/eclipse/changelog/core/ui/ChangeLogActionProvider.java: Some
+	cleanup.
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangeLogAction.java:
 	(parseCurrentFunctionAtOffset): Modified to use new extension manager.
-	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java :
-	Implemented new abstract methods.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java : Implemented new
+	abstract methods.
 	(run): Runs super's run instead.
-	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java (run): 
-	Uses prepareChangelog instead.
+	* src/com/redhat/eclipse/changelog/core/actions/ChangeLogAction.java
+	(run): Uses prepareChangelog instead.
 	(reportErr): New method for reporting errors.
-	(insertChangelog): More generalized, clean, intuitive way of inserting changelog.
+	(insertChangelog): More generalized, clean, intuitive way of inserting
+	changelog.
 	(getEntryFilePath): Returns file path of changelog entry.
 	(getEditorName): Returns name of responsible editor for file specified in entry.
 	(parseFunctionName): Guesses current function name with given parser from
 	extension point.
 	(getChangelog): Finds/creates Changelog file.
-	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java: 
+	* src/com/redhat/eclipse/changelog/core/actions/PrepareChangelogKeyHandler.java:
 	New Class reponsible for binding key to prepare changelog action.
-	* src/com/redhat/eclipse/changelog/core/ChangeLogExtensionManager.java :
-	New Class that manages extensions of changelog.
-	
+	* src/com/redhat/eclipse/changelog/core/ChangeLogExtensionManager.java : New
+	Class that manages extensions of changelog.
 
 2006-09-18  Kyu Lee  <klee@redhat.com>
 
 	* plugin.xml: Bump version to 2.3.1.
-	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java (run): 
-	Handles exception when no editor is open.
+	* src/com/redhat/eclipse/changelog/core/actions/KeyAction.java
+	(run): Handles exception when no editor is open.
 
 2006-09-14  Kyu Lee  <klee@redhat.com>
 
-	* plugin.xml: Bump version to 2.3.0 to differentiate with 2.2.X.
-	Fixed key binding.
-	
+	* plugin.xml: Bump version to 2.3.0 to differentiate with 2.2.X. Fixed key
+	binding.
+
 2006-09-07  Igor Foox  <ifoox@redhat.com>
 
 	* plugin.xml: Change definition of
@@ -729,8 +709,8 @@
 
 2004-09-24  Phil Muldoon  <pmuldoon@redhat.com>
 
-	* plugin.xml : Added org.eclipse.linuxtools.changelog.core.parsers.JavaParser. Added
-	org.eclipse.linuxtools.changelog.core.parsers.CParser. Added
+	* plugin.xml : Added org.eclipse.linuxtools.changelog.core.parsers.JavaParser.
+	Added org.eclipse.linuxtools.changelog.core.parsers.CParser. Added
 	org.eclipse.linuxtools.changelog.core.parsers.CompareParser. Added
 	org.eclipse.linuxtools.changelog.core.formatters.GNUFormat Added
 	com.redhat.eclipse.changelog.core.actions.KeyAction Removed
