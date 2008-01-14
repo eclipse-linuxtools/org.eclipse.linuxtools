@@ -58,6 +58,20 @@
                label="%prepCl"
                menubarPath="project/"
                tooltip="%prepChangeLog.tooltip">
+            <enablement>
+               <or>
+                  <objectClass
+                        name="org.eclipse.core.resources.IResource">
+                  </objectClass>
+                  <objectClass
+                        name="org.eclipse.team.ui.synchronize.ISynchronizeModelElement">
+                  </objectClass>
+                  <objectState
+                        name="projectNature"
+                        value="org.eclipse.cdt.core.cnature">
+                  </objectState>
+               </or>
+            </enablement>
          </action>
 		</actionSet>
 	</extension>
