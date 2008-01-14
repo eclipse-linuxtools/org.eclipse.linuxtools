@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
+<!-- ============================================================================= -->
+<!-- Define the topic for the Red Hat ChangeLog Plug-in online help                -->
+<!-- ============================================================================= -->
 
-<toc label="ChangeLog Plug-in User Guide">
- <link toc="userguide/ChangeLog Reference-toc.xml"/>
- <topic href="doc/notices.html" label="Legal" />
+<toc label="Red Hat ChangeLog Plug-in">
+  <topic label="Using the ChangeLog Plug-in" href="ChangeLogDocs/ChangeLog.html"/>
+
 </toc>

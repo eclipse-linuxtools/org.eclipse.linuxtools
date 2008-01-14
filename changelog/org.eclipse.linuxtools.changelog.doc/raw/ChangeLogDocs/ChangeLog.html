@@ -1,0 +1,133 @@
+<!doctype html public "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<style type="text/css">
+@import url(../notnetscape4.css);
+</style>
+<link rel="stylesheet" href="../book.css" type="text/css">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Using the ChangeLog Plug-in</title>
+</head>
+<body>
+<h1>Using the ChangeLog Plug-in</h1>
+
+<p>The ChangeLog plug-in for Eclipse is a basic set of extensions to
+enable ChangeLog functionality for projects in Eclipse.
+</p>
+
+<p>Before using the plug-in, you will want to set the ChangeLog preferences.
+These include your desired name and e-mail address to use in a ChangeLog entry.
+The default entries will be your username and your username@hostname.  If you
+set the environment variables: <tt>ECLIPSE_CHANGELOG_REALNAME</tt> and/or
+<tt>ECLIPSE_CHANGELOG_EMAIL</tt> these will be used instead as your defaults.
+
+</p>
+
+<h2>ChangeLog Preferences</h2>
+
+<p>To access the <span class="guilabel">ChangeLog Preferences</span>,
+click <span class="guilabel">Window > Preferences > ChangeLog </span>.</p>
+
+<p><img src="changelog_preferences2.2.2.png" border="0">
+</p>
+
+<p>The screenshot above illustrates the
+preferences associated with the ChangeLog plug-in. 
+The effect of each preference is described below.
+</p>
+
+<dl>
+
+<dt>Author Name</dt>
+
+<dd>The name of the Author to be included in the ChangeLog entry.
+</dd>
+
+<dt>Author Email</dt>
+
+<dd>The email address of the Author to be included in the ChangeLog entry.
+</dd>
+
+<dt>Formatter</dt>
+
+<dd>The name of the formatter module to use for ChangeLog entries. 
+</dd>
+
+<dt>Editor</dt>
+
+<dd>The name of the editor module to use for opening ChangeLog file. 
+</dd>
+</dl>
+
+<h2>Using the ChangeLog Plug-in</h2>
+
+<p>The plug-in has two functions.  
+<ul>
+<li><b>Insert ChangeLog</b> is used to create a single ChangeLog
+entry for the current location in an editor.</li>
+<li><b>Prepare ChangeLog</b> is used to create the
+entire ChangeLog entry for all changes to the selected project.
+This requires access to a source control repository.</li>
+</ul>
+</p>
+
+<h3>Insert ChangeLog</h3>
+
+<p>One invokes the Insert ChangeLog function by selecting 
+<span class="guilabel">Edit -> ChangeLog Entry </span> from the menubar.
+It can also be invoked via the keyboard shortcut <b>Ctrl+Alt+C</b>.
+</p>
+
+<p><img src="sm-changelog_invoke.png"></p>
+
+<p>When clicked, the ChangeLog plug-in compiles an entry, the form of which 
+depends on which formatter is set.  The plug-in provides a GNU style formatter.
+There is an extension point by which other plug-ins may contribute alternate
+formatters.</p>
+
+<p><b>Insert ChangeLog Entry</b> will calculate the current function location in
+the active editor and generate the entry.
+</p>
+
+
+<h3>Prepare ChangeLog</h3>
+
+<p>
+Prepare ChangeLog will generate a full ChangeLog entry based upon local changes made in
+your workspace compared with the source control repository.  This includes new files, removed
+files, and modifications.  One invokes this feature by selecting <span class="guilabel">Project -> Prepare ChangeLog </span> from the menubar.
+It can also be invoked via the keyboard shortcut <b>Ctrl+Alt+P</b>.  It will use the selected project or
+find the project for the file in the active editor or synchronization view.
+
+</p>
+
+<p>
+Prepare ChangeLog will open up ChangeLog editor and insert entries.  If there is no existing ChangeLog in the
+top-level project directory, you will be prompted for the location of one.
+</p>
+
+<p><img src="prepareChangeLog4-sm-result.png"></p>
+
+
+
+<h3> ChangeLog Editor </h3>
+
+<p>The ChangeLog plug-in also provides a special editor for ChangeLog files.
+This editor has syntax highlighting and provides a file-hyperlink feature.
+Inside the ChangeLog editor, if you hold the Ctrl key and
+click on a hyperlink the corresponding file will be opened.
+</p>
+<p><img src="prepareChangeLog5-sm-hyplink.png"></p>
+<p>If you invoke the key combination <b>Ctrl+Alt+V</b>, the latest entries
+will be copied to the clipboard.  This is useful when you later perform a commit
+and wish to use the ChangeLog entry as the comment.
+</p>
+
+
+<p class="copyright">&#169; Copyright Red Hat, Inc. 2008
+<br>&#169; Copyright Phil Muldoon <pkmuldoon@picobot.org> 2006.
+<br>This documentation is licensed under the Eclipse Public License v. 1.0.
+</p>
+</body>
+</html>

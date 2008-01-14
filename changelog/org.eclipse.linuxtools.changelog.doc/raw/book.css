@@ -1,0 +1,190 @@
+.selectblue {
+	color: #ffffff;
+	font-family: helvetica, arial, sans-serif;
+	background-color: #4c59a6;
+	padding: 1px 3px;
+	font-size: 10pt;
+	text-decoration: none;
+        line-height:175%;
+	}
+
+.guitab {
+	color: #000000;
+	font-family: helvetica, arial, sans-serif;
+	background-color: #DCDCDC;
+	padding: 1px 3px;
+	font-size: 10pt;
+	border-top: outset 2px;
+   	border-right: outset 2px;
+	border-left: outset 2px;
+	text-decoration: none;
+        line-height:175%;
+	}
+
+CAPTION {
+	font-weight: bold;
+}
+BODY, TD {
+	font-family: sans-serif;
+	font-size: 10pt;
+	background-color: white;	
+}
+
+h1 {
+  font-size: 18pt;
+}
+
+h2 {
+  font-size: 14pt;
+}
+
+h3 {
+  font-size: 11pt;
+}
+
+h4 {
+  font-size: 10pt;
+  font-style: italic;
+}
+
+table {
+  font-size: 10pt;
+}
+
+th {
+  font-weight: bold;
+}
+
+kbd {
+  font-family: monospace;
+  font-weight: bold;
+}
+
+var {
+  font-style: italic;
+}
+
+ol {
+  margin-bottom: 1em;
+}
+
+span.control {
+  font-weight: bold;
+}
+
+span.name {
+  font-style: italics;
+}
+
+span.code {
+  font-family: monospace;
+}
+
+UL { 
+	border-width:0; 
+	margin-left:20px;
+}
+
+#root {
+	margin-top:5px;
+	margin-left:5px;
+}
+  
+UL.expanded {
+	display:block; 
+}
+
+UL.collapsed { 
+	display: none;
+}
+
+p.copyright {
+	font-family: sans-serif, Helvetica, Verdana;
+	font-size: 7pt;
+	color: #3450ac;
+}
+
+a.copyright {
+	color: #3450ac; 
+	text-decoration: none; 	
+}
+
+.prevnext {
+	background: #C9D3E9;
+	text-decoration: none;
+	color: Black;
+	font-weight: bold;
+}
+.arrow {
+	color: White;
+	background-color: #6587C2;
+	font-weight: bold;
+	text-decoration: none;
+}
+.notetitle {
+	font-weight: bold;
+	margin-top: 4px;
+}
+.note {
+	margin-left: 40px;
+	margin-right: 60px;
+	border-bottom: thin solid; 
+	border-top: thin solid;
+	border-color: #889988;
+	padding:2px;
+}
+
+p.listnote {
+	margin-right: 60px;
+	border-bottom: thin solid; 
+	border-top: thin solid;
+	border-color: #889988;
+	padding:2px;
+}
+
+.command, .filename, .envar {
+	font-family: "Courier New", Courier, monospace;
+}
+.guilabel, .guibutton, .control {
+	font-weight: bold;
+}
+.warning {
+	color: #ff0000;
+	text-decoration: none;
+	font-weight: bold;
+	padding:1;
+}
+p.title { 
+	font-style: italic ; 
+	margin-top: 0px ; 
+	margin-left: 20px; 
+	margin-bottom: 20px 
+}
+pre {
+	font-family: "Courier New", Courier, monospace;
+}
+.important {
+	font-weight: bold;
+	color:#ff0000; 
+	text-decoration:underline;
+}
+.guibutton {
+	color: #000000;
+	font-family: helvetica, arial, sans-serif;
+	background-color: #DCDCDC;
+	padding: 1px 3px;
+	font-size: 10pt;
+	border: outset 2px;
+	text-decoration: none;
+        line-height:175%;
+}
+.whkeycap {
+	color: #333333;
+	font-family: helvetica, arial, sans-serif;
+	font-size: 10pt;
+	background-color: #e4e0d0;
+	padding: 0px 6px 2px 1px;
+	border: outset 2px;
+	text-decoration: none;
+        line-height:175%;
+} 
