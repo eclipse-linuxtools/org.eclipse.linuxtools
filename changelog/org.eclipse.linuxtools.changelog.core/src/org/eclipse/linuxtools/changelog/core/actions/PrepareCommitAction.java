@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2009 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2007 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,6 @@ import org.eclipse.team.core.synchronize.SyncInfoSet;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
 
@@ -144,27 +143,13 @@ public class PrepareCommitAction extends ChangeLogAction {
 		String diffResult = "";
 		IEditorInput input = currentEditor.getEditorInput();
 		ResourceMapping mapping = getResourceMapping(input);
-		IProject project = null;
-		IResource[] resources = new IResource[1];
-
-		if (mapping != null) {
-			project = mapping.getProjects()[0];
-			resources[0] = (IResource)mapping.getModelObject();
-		} else if (input instanceof IFileEditorInput) {
-			IFileEditorInput f = (IFileEditorInput)input;
-			project = f.getFile().getProject();
-			resources[0] = f.getFile();
-		} else {
-			return; // can't get what we need
-		}
+		// Experiment Jeff
+		IProject project = mapping.getProjects()[0];
 		
 		RepositoryProvider r = RepositoryProvider.getProvider(project);
-		if (r == null) {
-			return; //There is no repository provider for this project, i.e it's not shared.
-		}
 		SyncInfoSet set = new SyncInfoSet();
 		Subscriber s = r.getSubscriber();
-		s.collectOutOfSync(resources, IResource.DEPTH_ZERO, set, monitor);
+		s.collectOutOfSync(new IResource[] { (IResource)mapping.getModelObject() }, IResource.DEPTH_ZERO, set, monitor);
 		SyncInfo[] infos = set.getSyncInfos();
 
 		if (infos.length == 1) {
@@ -187,45 +172,27 @@ public class PrepareCommitAction extends ChangeLogAction {
 						else 
 							ancestorStorage = null;
 
+						RangeDifference[] rd = null;
+
 						try {
 							LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
 							LineComparator right = new LineComparator(file.getContents(), osEncoding);
-							for (RangeDifference tmp: RangeDifferencer.findDifferences(left, right)) {
+							rd = RangeDifferencer.findDifferences(left, right);
+							for (int j = 0; j < rd.length; ++j) {
+								RangeDifference tmp = rd[j];
 								if (tmp.kind() == RangeDifference.CHANGE) {
 									LineNumberReader l = new LineNumberReader(new InputStreamReader(file.getContents()));
 									int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
-									String line0 = null;
-									String preDiffResult = "";
 									for (int i = 0; i < tmp.rightStart(); ++i) {
-										// We have equivalence at the start.  This could be due to a new entry with the
-										// same date stamp as the subsequent entry.  In this case, we want the diff to
-										// have the date stamp at the top so it forms a complete entry.  So, we cache
-										// those equivalent lines for later usage if needed.
 										try {
-											String line = l.readLine();
-											if (line0 == null)
-												line0 = line;
-											preDiffResult += line + "\n"; 
+											l.readLine(); 
 										} catch (IOException e) {
 											break;
 										}
 									}
 									for (int i = 0; i < rightLength; ++i) {
 										try {
-											String line = l.readLine();
-											// If the last line of the diff matches the first line of the old file and
-											// there was equivalence at the start of the ChangeLog, then we want to put
-											// the equivalent section at top so as to give the best chance of forming
-											// a ChangeLog entry that can be used as a commit comment.
-											if (i == rightLength - tmp.rightStart()) {
-												if (tmp.rightStart() != 0 && line.equals(line0)) {
-													diffResult = preDiffResult += diffResult;
-													i = rightLength; // stop loop
-												}
-												else
-													diffResult += line + "\n";
-											} else 
-												diffResult += line + "\n"; // $NON-NLS-1$
+											diffResult += l.readLine() + "\n"; // $NON-NLS-1$
 										} catch (IOException e) {
 											// do nothing
 										}

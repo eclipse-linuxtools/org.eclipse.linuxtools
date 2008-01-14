@@ -45,7 +45,7 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 		plugin = this;
 		try {
 			resourceBundle = ResourceBundle
-					.getBundle("org.eclipse.linuxtools.changelog.core.strings"); // $NON-NLS-1$
+					.getBundle("org.eclipse.linuxtools.changelog.core.ChangelogPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -59,7 +59,6 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
@@ -67,7 +66,6 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
-	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
@@ -100,7 +98,6 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 		return resourceBundle;
 	}
 
-	@Override
 	protected void initializeDefaultPreferences(IPreferenceStore store) {
 		store.setDefault("IChangeLogConstants.DATE_FORMAT", "true"); // $NON-NLS-1$ // $NON-NLS-2$
 		store.setDefault("IChangeLogConstants.APPEND_RESOURCE_PATH", "false"); // $NON-NLS-1$ // $NON-NLS-2$
@@ -110,9 +107,9 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL", // $NON-NLS-2$
 				ChangeLogPreferencesPage.getUserEmail());
 		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", // $NON-NLS-1$ 
-				getResourceString("ChangeLogPreferencesPage.gnuFormatter")); // $NON-NLS-1$
+				getResourceString("gnuFormatter")); // $NON-NLS-1$
 		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", // $NON-NLS-1$ 
-				getResourceString("ChangeLogPreferencesPage.gnuEditorConfig")); // $NON-NLS-1$
+				getResourceString("gnuEditorConfig")); // $NON-NLS-1$
 
 	}
 }

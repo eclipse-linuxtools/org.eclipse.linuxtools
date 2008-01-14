@@ -21,17 +21,23 @@ import org.eclipse.jface.text.rules.*;
  */
 public class GNUElementScanner extends RuleBasedScanner {
 
-	public static final String FILE_NAME = "_file_name"; // $NON-NLS-1$
-    public static final String TEXT = "_text_content"; // $NON-NLS-1$
-	public static final String EMAIL = "_author_email"; // $NON-NLS-1$
-	public static final String DATE = "_entry_date"; // $NON-NLS-1$
-	public static final String AUTHOR = "_author_name"; // $NON-NLS-1$
-	public static final String FUNC_NAME = "_function_name"; // $NON-NLS-1$
-	public static final String OTHER = "_other"; // $NON-NLS-1$
+	public static final String FILE_NAME = "_file_name";
+
+	public static final String TEXT = "_text_content";
+
+	public static final String EMAIL = "_author_email";
+
+	public static final String DATE = "_entry_date";
+
+	public static final String AUTHOR = "_author_name";
+
+	public static final String FUNC_NAME = "_function_name";
+
 	/**
 	 * Build a scanner for syntax highlighting.
 	 * 
-	 * @param manager Color scheme to use.
+	 * @param manager
+	 *            color scheme to use
 	 */
 	public GNUElementScanner(ColorManager manager) {
 		IToken file = new Token(new TextAttribute(manager
@@ -43,21 +49,16 @@ public class GNUElementScanner extends RuleBasedScanner {
 		IToken email = new Token(new TextAttribute(manager
 				.getColor(IChangeLogColorConstants.EMAIL)));
 
-		IToken other = new Token(new TextAttribute(manager
-				.getColor(IChangeLogColorConstants.TEXT)));
-
-		IRule[] rules = new IRule[3];
+		IRule[] rules = new IRule[4];
 
 		// Add rule for file path
-		rules[0] = new GNUFileEntryRule(file);
+		rules[0] = new SingleLineRule("* ", " ", file, '\0', true);
+		rules[1] = new SingleLineRule("* ", ":", file);
 
 		// function
-		rules[1] = new SingleLineRule("(", "):", func); // $NON-NLS-1$ // $NON-NLS-2$
+		rules[2] = new SingleLineRule("(", "):", func);
 		// email
-		rules[2] = new SingleLineRule("<", ">\n", email); // $NON-NLS-1$ // $NON-NLS-2$
-		
-		setDefaultReturnToken(other);
-		
+		rules[3] = new SingleLineRule("<", ">\n", email);
 		setRules(rules);
 	}
 
@@ -71,39 +72,19 @@ public class GNUElementScanner extends RuleBasedScanner {
 		IToken func = new Token(new String(FUNC_NAME));
 
 		IToken email = new Token(new String(EMAIL));
-		
-		IToken other = new Token(new String(OTHER));
 
-		IRule[] rules = new IRule[3];
+		IRule[] rules = new IRule[4];
 
 		// Add rule for file path
-		rules[0] = new GNUFileEntryRule(file);
+		rules[0] = new SingleLineRule("* ", " ", file, '\0', true);
+		rules[1] = new SingleLineRule("* ", ":", file);
 
 		// function
-		rules[1] = new SingleLineRule("(", "):", func); // $NON-NLS-1$ // $NON-NLS-2$
-		// email 
-		rules[2]= new SingleLineRule("<", ">", email); // $NON-NLS-1$ // $NON-NLS-2$
+		rules[2] = new SingleLineRule("(", "):", func);
+		// email
+		rules[3] = new SingleLineRule("<", ">", email);
 
-		setDefaultReturnToken(other);
-		
 		setRules(rules);
 	}
 
-	/**
-	 * Get the file offset.
-	 * 
-	 * @return the file offset.
-	 */
-	public int getOffset() {
-		return fOffset;
-	}
-	
-	/**
-	 * Get the default token.
-	 * 
-	 * @return the default token.
-	 */
-	public IToken getDefaultToken() {
-		return fDefaultReturnToken;
-	}
 }

@@ -15,9 +15,14 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -30,14 +35,17 @@ import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.Messages;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
+import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
 /**
  * 
@@ -52,9 +60,38 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		super();
 	}
 	
+	private ResourceMapping getResourceMapping(Object o) {
+		if (o instanceof ResourceMapping) {
+			return (ResourceMapping) o;
+		}
+		if (o instanceof IAdaptable) {
+			IAdaptable adaptable = (IAdaptable) o;
+			Object adapted = adaptable.getAdapter(ResourceMapping.class);
+			if (adapted instanceof ResourceMapping) {
+				return (ResourceMapping) adapted;
+			}
+			adapted = adaptable.getAdapter(IContributorResourceAdapter.class);
+			if (adapted instanceof IContributorResourceAdapter2) {
+				IContributorResourceAdapter2 cra = (IContributorResourceAdapter2) adapted;
+				return cra.getAdaptedResourceMapping(adaptable);
+			}
+		} else {
+			Object adapted = Platform.getAdapterManager().getAdapter(o,
+					ResourceMapping.class);
+			if (adapted instanceof ResourceMapping) {
+				return (ResourceMapping) adapted;
+			}
+		}
+		return null;
+	}
+
+	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+		IProject[] currentProject = null;
 		IStructuredSelection tempResult = null;
+
 		
 		// try getting currently selected project
 		try {
@@ -92,9 +129,10 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 			    // We don't have an obvious project match in the current active view.  
 				// Let's search all open views for the Synchronize View which is our first
 				// choice to fall back on.
-				for (IViewReference view: ref.getViewReferences()) {
-					if (view.getId().equals("org.eclipse.team.sync.views.SynchronizeView")) { // $NON-NLS-1$
-						IViewPart v = view.getView(false);
+				IViewReference[] views = ref.getViewReferences();
+				for (int j = 0; j < views.length; ++j) {
+					if (views[j].getId().equals("org.eclipse.team.sync.views.SynchronizeView")) { // $NON-NLS-1$
+						IViewPart v = views[j].getView(false);
 						ISelection s = null;
 						ISelectionProvider sp = v.getViewSite().getSelectionProvider();
 						if (sp != null) {
@@ -132,7 +170,6 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		try {
 			Action exampleAction;
 			exampleAction = new PrepareChangeLogAction() {
-				@Override
 				public void run() {
 					setSelection(result);
 					doRun();
@@ -148,6 +185,10 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		}
 
 		return null;
+	}
+
+	protected IWorkbench getWorkbench() {
+		return ChangelogPlugin.getDefault().getWorkbench();
 	}
 
 	public void addHandlerListener(IHandlerListener handlerListener) {
@@ -181,6 +222,7 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		try {
 			execute(null);
 		} catch (ExecutionException e) {
+
 			reportErr(Messages.getString("PrepareChangeLog.ErrExecuteFailed"), e); // $NON-NLS-1$
 		}
 	}
@@ -189,13 +231,13 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 
 	}
 
-	@Override
 	public boolean isEnabled() {
+
 		return true;
 	}
 
-	@Override
 	public boolean isHandled() {
+
 		return true;
 	}
 

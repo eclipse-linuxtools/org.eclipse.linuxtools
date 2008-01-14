@@ -24,7 +24,7 @@ public interface IEditorChangeLogContrib {
 	/**
 	 * Set TextEditor that this configuration is going to be used.
 	 * 
-	 * @param editor The text editor for this configuration.
+	 * @param editor
 	 */
 	public void setTextEditor(TextEditor editor);
 

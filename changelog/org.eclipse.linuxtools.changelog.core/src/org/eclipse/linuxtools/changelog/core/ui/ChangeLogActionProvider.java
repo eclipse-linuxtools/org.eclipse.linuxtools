@@ -36,6 +36,11 @@ import org.eclipse.ui.navigator.IExtensionStateModel;
 public class ChangeLogActionProvider extends CommonActionProvider {
 	private Action exampleAction;
 
+	public ChangeLogActionProvider() {
+		// TODO Auto-generated constructor stub
+		// super();
+	}
+
 	/**
 	 * Return the configuration from the synchronize page that contains the
 	 * common viewer.
@@ -72,7 +77,6 @@ public class ChangeLogActionProvider extends CommonActionProvider {
 				ITeamContentProviderManager.P_SYNCHRONIZATION_CONTEXT);
 	}
 
-	@Override
 	public void init(ICommonActionExtensionSite aSite) {
 		super.init(aSite);
 		/*
@@ -93,7 +97,6 @@ public class ChangeLogActionProvider extends CommonActionProvider {
 		 */
 
 		exampleAction = new PrepareChangeLogAction(Messages.getString("ChangeLog.PrepareChangeLog")) { // $NON-NLS-1$
-			@Override
 			public void run() {
 				setSelection((IStructuredSelection) getContext().getSelection());
 				doRun();
@@ -118,13 +121,11 @@ public class ChangeLogActionProvider extends CommonActionProvider {
 		return null;
 	}
 
-	@Override
 	public void fillContextMenu(IMenuManager menu) {
 		super.fillContextMenu(menu);
 		menu.add(exampleAction);
 	}
 
-	@Override
 	public void fillActionBars(IActionBars actionBars) {
 
 		actionBars.setGlobalActionHandler(ICommonActionConstants.OPEN,

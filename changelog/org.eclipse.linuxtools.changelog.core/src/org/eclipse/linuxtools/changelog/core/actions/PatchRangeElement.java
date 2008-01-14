@@ -27,18 +27,19 @@ public class PatchRangeElement {
 		ftoLine= to;
 		fpatch = txt;
 	}
+	
 
 	public void appendTxt(String txt) {
 		fpatch += txt + "\n";
 	}
 	
-	@Override
+	
 	public boolean equals(Object o) {
 		if (o instanceof PatchRangeElement) {
 			PatchRangeElement b = (PatchRangeElement)o;
 			return b.ffromLine == ffromLine && b.ftoLine == ftoLine && b.fpatch.equals(fpatch);
 		}
 		else
-			return this == o;
+			return (Object) this == o;
 	}
 }

@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.compare.rangedifferencer.RangeDifference;
@@ -25,12 +26,14 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -53,11 +56,13 @@ import org.eclipse.team.core.synchronize.SyncInfo;
 import org.eclipse.team.core.synchronize.SyncInfoSet;
 import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
 import org.eclipse.ui.IActionDelegate;
+import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
+import org.eclipse.ui.ide.IContributorResourceAdapter2;
 import org.eclipse.ui.part.FileEditorInput;
 
 
@@ -78,9 +83,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	
 	private class MyDocumentProvider extends FileDocumentProvider {
 
-		@Override
 		public IDocument createDocument(Object element) throws CoreException {
+
 			return super.createDocument(element);
+
 		}
 	}
 
@@ -91,7 +97,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	private IStructuredSelection selected;
 
 	public PrepareChangeLogAction() {
+
 		super();
+
 	}
 
 	protected void setSelection(IStructuredSelection selection) {
@@ -117,6 +125,30 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 		return "";
 	}
+
+	// if (parserExtensions != null) {
+	// IConfigurationElement[] elements = parserExtensions
+	// .getConfigurationElements();
+	// for (int i = 0; i < elements.length; i++) {
+	// if (elements[i].getName().equals("parser") &&
+	// (elements[i].getAttribute("editor").equals(editorName))) { //$NON-NLS-1$
+	// try {
+	// IConfigurationElement bob = elements[i];
+	// parserContributor = (IParserChangeLogContrib) bob
+	// .createExecutableExtension("class");
+	// return parserContributor.parseCurrentFunction(input,
+	// offset);
+	// } catch (CoreException e) {
+	// ChangelogPlugin.getDefault().getLog().log(
+	// new Status(IStatus.ERROR, "Changelog",
+	// IStatus.ERROR, e.getMessage(), e));
+	// }
+	//
+	// }
+	// }
+	// }
+	// return "";
+	// }
 
 	/**
 	 * @see IActionDelegate#run(IAction)
@@ -149,14 +181,40 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 	}
 
-	private void extractSynchronizeModelInfo (ISynchronizeModelElement d, IPath path, Vector<PatchFile> newList, Vector<PatchFile> removeList, Vector<PatchFile> changeList) {
+	private ResourceMapping getResourceMapping(Object o) {
+		if (o instanceof ResourceMapping) {
+			return (ResourceMapping) o;
+		}
+		if (o instanceof IAdaptable) {
+			IAdaptable adaptable = (IAdaptable) o;
+			Object adapted = adaptable.getAdapter(ResourceMapping.class);
+			if (adapted instanceof ResourceMapping) {
+				return (ResourceMapping) adapted;
+			}
+			adapted = adaptable.getAdapter(IContributorResourceAdapter.class);
+			if (adapted instanceof IContributorResourceAdapter2) {
+				IContributorResourceAdapter2 cra = (IContributorResourceAdapter2) adapted;
+				return cra.getAdaptedResourceMapping(adaptable);
+			}
+		} else {
+			Object adapted = Platform.getAdapterManager().getAdapter(o,
+					ResourceMapping.class);
+			if (adapted instanceof ResourceMapping) {
+				return (ResourceMapping) adapted;
+			}
+		}
+		return null;
+	}
+	
+	private void extractSynchronizeModelInfo (ISynchronizeModelElement d, IPath path, Vector newList, Vector removeList, Vector changeList) {
 		// Recursively traverse the tree for children and sort leaf elements into their respective change kind sets.
 		// Don't add entries for ChangeLog files though.
 		if (d.hasChildren()) {
 			IPath newPath = path.append(d.getName());
-			for (IDiffElement element: d.getChildren()) {
-				if (element instanceof ISynchronizeModelElement)
-					extractSynchronizeModelInfo((ISynchronizeModelElement)element, newPath, newList, removeList, changeList);
+			IDiffElement[] elements = d.getChildren();
+			for (int i = 0; i < elements.length; ++i) {
+				if (elements[i] instanceof ISynchronizeModelElement)
+					extractSynchronizeModelInfo((ISynchronizeModelElement)elements[i], newPath, newList, removeList, changeList);
 				else if (!(d.getName().equals("ChangeLog"))) { // $NON-NLS-1$
 					IPath finalPath = path.append(d.getName());
 					PatchFile p = new PatchFile(finalPath);
@@ -207,35 +265,36 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				IThreeWayDiff diff = (IThreeWayDiff)d;
 				monitor.beginTask(null, 100);
 				IResourceDiff localDiff = (IResourceDiff)diff.getLocalChange();
-				IResource resource = localDiff.getResource();
-				if (resource instanceof IFile) {
-					IFile file = (IFile)resource;
-					monitor.subTask(Messages.getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
-					String osEncoding = file.getCharset();
-					IFileRevision ancestorState = localDiff.getBeforeState();
-					IStorage ancestorStorage;
-					if (ancestorState != null)
-						ancestorStorage = ancestorState.getStorage(monitor);
-					else 
-						ancestorStorage = null;
+				IFile file = (IFile)localDiff.getResource();
+				monitor.subTask(Messages.getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
+				String osEncoding = file.getCharset();
+				IFileRevision ancestorState = localDiff.getBeforeState();
+				IStorage ancestorStorage;
+				if (ancestorState != null)
+					ancestorStorage = ancestorState.getStorage(monitor);
+				else 
+					ancestorStorage = null;
 
-					try {
-						// We compare using a standard differencer to get ranges
-						// of changes.  We modify them to be document-based (i.e.
-						// first line is line 1) and store them for later parsing.
-						LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
-						LineComparator right = new LineComparator(file.getContents(), osEncoding);
-						for (RangeDifference tmp: RangeDifferencer.findDifferences(left, right)) {
-							if (tmp.kind() == RangeDifference.CHANGE) {
-								int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
-								p.addLineRange(tmp.rightStart() + 1, tmp.rightStart() + rightLength);
-							}
+				RangeDifference[] rd = null;
+				try {
+					// We compare using a standard differencer to get ranges
+					// of changes.  We modify them to be document-based (i.e.
+					// first line is line 1) and store them for later parsing.
+					LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
+					LineComparator right = new LineComparator(file.getContents(), osEncoding);
+					rd = RangeDifferencer.findDifferences(left, right);
+					for (int j = 0; j < rd.length; ++j) {
+						RangeDifference tmp = rd[j];
+						if (tmp.kind() == RangeDifference.CHANGE) {
+							int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
+							p.addLineRange(tmp.rightStart() + 1, tmp.rightStart() + rightLength);
 						}
-					} catch (UnsupportedEncodingException e) {
-						// do nothing for now
 					}
+				} catch (UnsupportedEncodingException e) {
+					// do nothing for now
 				}
 				monitor.done();
+
 			}
 		} catch (CoreException e) {
 			// Do nothing if error occurs
@@ -247,9 +306,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		Object element = selected.getFirstElement();
 		
 		IResource resource = null;
-		Vector<PatchFile> newList = new Vector<PatchFile>();
-		Vector<PatchFile> removeList = new Vector<PatchFile>();
-		Vector<PatchFile> changeList = new Vector<PatchFile>();
+		Vector newList = new Vector();
+		Vector removeList = new Vector();
+		Vector changeList = new Vector();
 		int totalChanges = 0;
 		
 		if (element instanceof IResource) {
@@ -291,9 +350,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			totalChanges = infos.length;
 			// Iterate through the list of changed resources and categorize them into
 			// New, Removed, and Changed lists.
-			for (SyncInfo info : infos) {
-				int kind = SyncInfo.getChange(info.getKind());
-				PatchFile p = new PatchFile(info.getLocal().getFullPath());
+			for (int i = 0; i < infos.length; ++i) {
+				int kind = SyncInfo.getChange(infos[i].getKind());
+				PatchFile p = new PatchFile(infos[i].getLocal().getFullPath());
 
 				// Check the type of entry and sort into lists.  Do not add an entry
 				// for ChangeLog files.
@@ -305,11 +364,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 						p.setRemovedFile(true);
 						removeList.add(p);
 					} else if (kind == SyncInfo.CHANGE) {
-						if (info.getLocal().getType() == IResource.FILE) {
-							changeList.add(p);
-							// Save the resource so we can later figure out which lines were changed
-							p.setResource(info.getLocal());
-						}
+						changeList.add(p);
+						// Save the resource so we can later figure out which lines were changed
+						p.setResource(infos[i].getLocal());
 					}
 				}
 			}
@@ -330,7 +387,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			Collections.sort(changeList, new PatchFileComparator());
 			int size = changeList.size();
 			for (int i = 0; i < size; ++i) {
-				PatchFile p = changeList.get(i);
+				PatchFile p = (PatchFile)changeList.get(i);
 				getChangedLines(s, p, monitor);
 				patchFileInfoList[index+(size-i-1)] = p;
 			}
@@ -341,7 +398,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			Collections.sort(newList, new PatchFileComparator());
 			int size = newList.size();
 			for (int i = 0; i < size; ++i)
-				patchFileInfoList[index+(size-i-1)] = newList.get(i);
+				patchFileInfoList[index+(size-i-1)] = (PatchFile)newList.get(i);
 			index += size;
 		}
 		
@@ -349,7 +406,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			Collections.sort(removeList, new PatchFileComparator());
 			int size = removeList.size();
 			for (int i = 0; i < size; ++i)
-				patchFileInfoList[index+(size-i-1)] = removeList.get(i);
+				patchFileInfoList[index+(size-i-1)] = (PatchFile)removeList.get(i);
 		}
 	
 		// now, find out modified functions/classes.
@@ -358,12 +415,22 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// file.
 		monitor.subTask(Messages.getString("ChangeLog.WritingMessage")); // $NON-NLS-1$
 		int unitwork = 250 / patchFileInfoList.length;
-		for (PatchFile pf: patchFileInfoList) {
+		for (int pfIndex = 0; pfIndex < patchFileInfoList.length; pfIndex++) {
 			// for each file
-			if (pf != null) { // any ChangeLog changes will have null entries for them
-				String[] funcGuessList = guessFunctionNames(pf);
-				outputMultipleEntryChangeLog(pf, funcGuessList);
-			}
+
+			PatchFile pf = patchFileInfoList[pfIndex];
+
+			String[] funcGuessList = guessFunctionNames(pf);
+			
+			outputMultipleEntryChangeLog(pf, funcGuessList);
+
+			/*
+			 * // print info for debug
+			 * System.out.println(pf.getPath().toOSString()); for (int i = 0; i <
+			 * funcGuessList.length; i++) {
+			 * System.out.println(funcGuessList[i]); }
+			 * System.out.println("---------------------");
+			 */
 			monitor.worked(unitwork);
 		}
 	}
@@ -436,10 +503,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		int numFuncs = 0;
 		clw.setGuessedFName(""); // $NON-NLS-1$
 		if (functionGuess.length > 0) {
-			for (String guess : functionGuess) {
-				if (!guess.trim().equals("")) { // $NON-NLS-1$
+			for (int i = 0; i < functionGuess.length; i++) {
+				if (!functionGuess[i].trim().equals("")) { // $NON-NLS-1$
 					++numFuncs;
-					clw.setGuessedFName(guess);
+					clw.setGuessedFName(functionGuess[i]);
 					clw.writeChangeLog();
 				}
 			}
@@ -499,13 +566,16 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			// get document for target file
 			IDocument doc = mdp.createDocument(fei);
 
-			HashMap<String, String> functionNamesMap = new HashMap<String, String>();
+			PatchRangeElement[] tpre = patchFileInfo.getRanges();
+			HashMap functionNamesMap = new HashMap();
 
 			// for all the ranges
-			for (PatchRangeElement tpre: patchFileInfo.getRanges()) {
+
+			for (int i = 0; i < patchFileInfo.countRanges(); i++) {
 
 				// for all the lines in a range
-				for (int j = tpre.ffromLine; j <= tpre.ftoLine; j++) {
+
+				for (int j = tpre[i].ffromLine; j <= tpre[i].ftoLine; j++) {
 
 					if ((j <= 0) || (j >= doc.getNumberOfLines()))
 						continue; // ignore out of bound lines
@@ -520,15 +590,17 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 					functionNamesMap.put(functionGuess, functionGuess);
 
 				}
+
 			}
 
 			// dump all unique func. guesses
+			Iterator fnmIterator = functionNamesMap.values().iterator();
+
 			fnames = new String[functionNamesMap.size()];
 
 			int i = 0;
-			for (String fnm: functionNamesMap.values()){
-				fnames[i++] = fnm;
-			}
+			while (fnmIterator.hasNext())
+				fnames[i++] = (String) fnmIterator.next();
 
 		
 		} catch (CoreException e) {
@@ -546,4 +618,5 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 		return fnames;
 	}
+	
 }

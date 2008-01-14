@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.Path;
 public class PatchFile {
 
 	private IPath fpath;
-	private ArrayList<PatchRangeElement> pranges = new ArrayList<PatchRangeElement>();
+	private ArrayList pranges = new ArrayList();
 	
 	private boolean newfile = false;
 	private boolean removedfile = false;
@@ -60,22 +60,29 @@ public class PatchFile {
 	public void addLineRange(int from, int to) {
 	
 		pranges.add(new PatchRangeElement(from, to, ""));
+		
+		
 	}
 	
 	public PatchRangeElement[] getRanges() {
+		
+		
 		Object[] tmpEle = pranges.toArray();
 		PatchRangeElement[] ret = new PatchRangeElement[tmpEle.length];
 		
 		for (int i = 0; i < tmpEle.length; i++) {
 			ret[i] = (PatchRangeElement) tmpEle[i];
 		}
+		
+	
 		return ret;
 	}
 
 
 	public void appendTxtToLastRange(String txt) {
 		
-		(pranges.get(pranges.size()-1)).appendTxt(txt);
+		
+		((PatchRangeElement)pranges.get(pranges.size()-1)).appendTxt(txt);
 	}
 	
 	public IPath getPath() {
@@ -94,7 +101,6 @@ public class PatchFile {
 		return pranges.size();
 	}
 	
-	@Override
 	public boolean equals(Object o) {
 		
 		if (!(o instanceof PatchFile))
@@ -114,4 +120,5 @@ public class PatchFile {
 				return false;
 		return true;
 	}
+
 }

@@ -128,8 +128,6 @@ public class ChangeLogExtensionManager {
 		else
 			fileName = entryFilePath;
 		
-		// We don't yet know which formatter to use
-		formatterConfigElementToUse = null;
 
 		// IFile file = null;
 
@@ -139,7 +137,7 @@ public class ChangeLogExtensionManager {
 
 			// cache the in-file formatters on the first run
 			if (cachedInFileFormateters == null) {
-				List<IConfigurationElement> inFileFormatters = new LinkedList<IConfigurationElement>();
+				List inFileFormatters = new LinkedList();
 				for (int i = 0; i < elements.length; i++) {
 					IConfigurationElement formatterConfigElement = elements[i];
 					if (formatterConfigElement.getName().equals("formatter") // $NON-NLS-1$
@@ -148,7 +146,7 @@ public class ChangeLogExtensionManager {
 						inFileFormatters.add(elements[i]);
 					}
 				}
-				cachedInFileFormateters = inFileFormatters
+				cachedInFileFormateters = (IConfigurationElement[]) inFileFormatters
 						.toArray(new IConfigurationElement[] {});
 			}
 

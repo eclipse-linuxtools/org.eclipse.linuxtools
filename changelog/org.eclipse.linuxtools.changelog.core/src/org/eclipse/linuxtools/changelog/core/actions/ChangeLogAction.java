@@ -16,10 +16,6 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.compare.CompareEditorInput;
-import org.eclipse.compare.IResourceProvider;
-import org.eclipse.compare.ITypedElement;
-import org.eclipse.compare.structuremergeviewer.ICompareInput;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -102,7 +98,7 @@ public abstract class ChangeLogAction extends Action {
 		}
 	}
 
-	protected String returnQualifedEditor(Class<?> ClassName) {
+	protected String returnQualifedEditor(Class ClassName) {
 		return ClassName.toString().substring(
 				ClassName.getPackage().toString().length() - 1,
 				ClassName.toString().length());
@@ -117,7 +113,6 @@ public abstract class ChangeLogAction extends Action {
 				new byte[0]);
 
 		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
-			@Override
 			public void execute(IProgressMonitor monitor) throws CoreException {
 				try {
 					monitor.beginTask(Messages.getString("ChangeLog.AddingChangeLog"), 2000); //$NON-NLS-1$
@@ -144,11 +139,8 @@ public abstract class ChangeLogAction extends Action {
 			return null;
 		}
 
-		// FIXME:  we should put this refreshLocal call into a thread (filed as bug #256180)
 		try {
-			IContainer changelogContainer = myWorkspaceRoot.getContainerForLocation(changelog);
-			if (changelogContainer != null)
-				changelogContainer.refreshLocal(2, null);
+			myWorkspaceRoot.refreshLocal(2, null);
 		} catch (CoreException e) {
 			reportErr(Messages.getString("ChangeLog.ErrRefresh"), e); // $NON-NLS-1$
 			return null;
@@ -209,7 +201,7 @@ public abstract class ChangeLogAction extends Action {
 					return openEditor(change_log_file);
 				}
 
-				parent_dec = parent_dec.getParent();
+				parent_dec = (IResource) parent_dec.getParent();
 
 				if (parent_dec == null) {
 					break;
@@ -223,7 +215,7 @@ public abstract class ChangeLogAction extends Action {
 	/**
 	 * Find the ChangeLog for a file that is being removed.  It can't be found and
 	 * it is possible that the directory it is in has also been removed.
-	 *
+	 * 
 	 * @param path Path of removed file
 	 * @return ChangeLog editor part that must be used to report removed file
 	 */
@@ -260,7 +252,7 @@ public abstract class ChangeLogAction extends Action {
 					return openEditor(change_log_file);
 				}
 
-				parent_dec = parent_dec.getParent();
+				parent_dec = (IResource) parent_dec.getParent();
 
 				if (parent_dec == null) {
 					break;
@@ -270,7 +262,7 @@ public abstract class ChangeLogAction extends Action {
 
 		return null;
 	}
-
+	
 	protected IFile getDocumentIFile(IEditorPart currentEditor) {
 		IEditorInput cc = currentEditor.getEditorInput();
 
@@ -281,7 +273,7 @@ public abstract class ChangeLogAction extends Action {
 
 	protected String getDocumentLocation(IEditorPart currentEditor,
 			boolean appendRoot) {
-
+		
 		IEditorInput cc;
 		String WorkspaceRoot;
 		try {
@@ -291,31 +283,21 @@ public abstract class ChangeLogAction extends Action {
 		} catch(Exception e) {
 			return "";
 		}
-
+		
 		if (cc == null)
 			return "";
-
+		
 		if ((cc instanceof SyncInfoCompareInput)
 				|| (cc instanceof CompareEditorInput)) {
 
 			CompareEditorInput test = (CompareEditorInput) cc;
-			if (test.getCompareResult() == null) {
+			if (test.getCompareResult() == null)
 				return "";
-			} else if (test.getCompareResult() instanceof ICompareInput) {
-				ITypedElement leftCompare = ((ICompareInput) test.getCompareResult())
-						.getLeft();
-				if (leftCompare instanceof IResourceProvider){
-					String localPath = ((IResourceProvider)leftCompare).getResource().getFullPath().toString();
-					if (appendRoot) {
-						return WorkspaceRoot + localPath;
-					}
-					return localPath;
-				}
-			} else {
-				if (appendRoot)
-					return WorkspaceRoot + test.getCompareResult().toString();
+			if (appendRoot)
+				return WorkspaceRoot + test.getCompareResult().toString();
+			else
 				return test.getCompareResult().toString();
-			}
+
 		}
 
 		IFile loc = getDocumentIFile(currentEditor);

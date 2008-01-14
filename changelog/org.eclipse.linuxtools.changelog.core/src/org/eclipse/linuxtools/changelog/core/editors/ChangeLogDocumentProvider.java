@@ -10,16 +10,18 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.editors;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.ui.editors.text.FileDocumentProvider;
 
 /**
  * @author klee (Kyu Lee)
  */
-public class ChangeLogDocumentProvider extends TextFileDocumentProvider {
+public class ChangeLogDocumentProvider extends FileDocumentProvider {
 
-	@Override
-	public IDocument getDocument(Object element) {
-		return super.getDocument(element);
+	protected IDocument createDocument(Object element) throws CoreException {
+
+		return super.createDocument(element);
+
 	}
 }
