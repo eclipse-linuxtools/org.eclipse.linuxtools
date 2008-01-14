@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ChangeLog C parser (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.cparser;singleton:=true
-Bundle-Version: 2.6.3.qualifier
-Bundle-Vendor: Eclipse
-Require-Bundle: org.eclipse.cdt.core;resolution:=optional,
- org.eclipse.cdt.ui;resolution:=optional
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Fragment-Host: org.eclipse.linuxtools.changelog.core;bundle-version="2.6.3"
+Bundle-Version: 2.6.1
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.cdt.core,
+ org.eclipse.cdt.ui
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Fragment-Host: org.eclipse.linuxtools.changelog.core;bundle-version="2.6.1"
