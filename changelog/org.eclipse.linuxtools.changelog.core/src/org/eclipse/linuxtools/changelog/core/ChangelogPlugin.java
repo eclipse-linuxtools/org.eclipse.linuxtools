@@ -107,9 +107,9 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL", // $NON-NLS-2$
 				ChangeLogPreferencesPage.getUserEmail());
 		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", // $NON-NLS-1$ 
-				getResourceString("gnuFormatter")); // $NON-NLS-1$
+				"gnuFormatter"); // $NON-NLS-1$
 		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", // $NON-NLS-1$ 
-				getResourceString("gnuEditorConfig")); // $NON-NLS-1$
+				"gnuEditorConfig"); // $NON-NLS-1$
 
 	}
 }

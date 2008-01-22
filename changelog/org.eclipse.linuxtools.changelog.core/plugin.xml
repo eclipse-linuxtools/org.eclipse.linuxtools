@@ -38,6 +38,12 @@
         description="Formats ChangeLog"
         id="org.eclipse.linuxtools.changelog.core.formatChangeLog"
         name="Format ChangeLog"/>
+  <command
+        categoryId="org.eclipse.linuxtools.changelog"
+        description="Prepares ChangeLog in an editor"
+        id="org.eclipse.linuxtools.changelog.core.preparechangelog2"
+        name="Prepare Changelog In Editor">
+  </command>
 	</extension>
 	
 	 <!-- Actions -->	
@@ -73,6 +79,12 @@
                </or>
             </enablement>
          </action>
+         <action
+               class="org.eclipse.linuxtools.changelog.core.actions.PrepareChangelogKeyHandler"
+               definitionId="org.eclipse.linuxtools.changelog.core.preparechangelog2"
+               id="org.eclipse.linuxtools.changelog.core.action.prepChangeLogInEditor"
+               label="Prepare ChangeLog In Editor">
+         </action>
 		</actionSet>
 	</extension>
        
@@ -91,7 +103,7 @@
               inFile="false"
               class="org.eclipse.linuxtools.changelog.core.formatters.GNUFormat"
               id="org.eclipse.linuxtools.changelog.GNUFormat"
-              name="%gnuFormatter">
+              name="gnuFormatter">
               <fileName name="ChangeLog" />  
         </formatter>        
   </extension>
@@ -110,7 +122,7 @@
        <editor
              class="org.eclipse.linuxtools.changelog.core.editors.GNUEditorConfiguration"
              id="org.eclipse.linuxtools.changelog.core.gnueditor"
-             name="GNU Editor"/>
+             name="gnuEditorConfig"/>
     </extension>
     <extension
           point="org.eclipse.ui.navigator.viewer">
@@ -140,6 +152,12 @@
        <scheme
              id="org.eclipse.linuxtools.changelog.keyscheme.default"
              name="default"/>
+       <key
+             commandId="org.eclipse.linuxtools.changelog.core.preparechangelog2"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="Ctrl+Alt+P">
+       </key>
        <key
              commandId="org.eclipse.linuxtools.changelog.core.preparechangelog"
              contextId="org.eclipse.ui.contexts.window"

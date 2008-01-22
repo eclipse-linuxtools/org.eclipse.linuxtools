@@ -1,3 +1,12 @@
+2008-01-22  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* .classpath: Fix JSRE requirement.
+	* plugin.xml: Add "Prepare ChangeLog in Editor" action and key bindings to allow
+	Ctrl+Alt+P to work in a text editor.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java (initializeDefaultPreferences):
+	Don't try and translate gnuFormatter or gnuEditorConfig as these are actual names used in
+	the extensions in plugin.xml. 
+
 2008-01-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java:
