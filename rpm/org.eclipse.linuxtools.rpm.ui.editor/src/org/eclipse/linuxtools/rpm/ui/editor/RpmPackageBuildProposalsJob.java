@@ -140,32 +140,36 @@ public class RpmPackageBuildProposalsJob extends Job {
 				.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
 		String rpmListFilepath = Activator.getDefault().getPreferenceStore()
 				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
-		String rpmListBkup = rpmListFilepath + ".bkup";
-		File bkupFile = new File(rpmListBkup);
+		File bkupFile = new File(rpmListFilepath + ".bkup");
 		try {
 			String[] cmd = new String[] { "/bin/sh", "-c", rpmListCmd };
-			monitor.beginTask("Retrive packages list...",
+			monitor.beginTask("Retrieving packages",
 					IProgressMonitor.UNKNOWN);
 			Process child = Runtime.getRuntime().exec(cmd);
 			InputStream in = child.getInputStream();
-			// backup list
-			Utils.copyFile(new File(rpmListFilepath), bkupFile);
+			// backup pkg list file
+			File rpmListFile = new File(rpmListFilepath);
+			if (rpmListFile.exists())
+				Utils.copyFile(new File(rpmListFilepath), bkupFile);
+						
 			BufferedWriter out = new BufferedWriter(new FileWriter(
-					rpmListFilepath, false));
+					rpmListFile, false));
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
-			monitor.subTask("Write packages list into " + rpmListFilepath
-					+ " ...");
+			monitor.subTask("Run command '" + rpmListCmd
+					+ "' ...");
 			String line;
 			while ((line = reader.readLine()) != null) {
-				monitor.subTask("Add package: " + line);
+				monitor.subTask(line);
 				out.write(line + "\n");
 				if (monitor.isCanceled()) {
 					in.close();
 					out.close();
 					// restore backup
-					Utils.copyFile(new File(rpmListBkup), new File(rpmListFilepath));
-					bkupFile.delete();
+					if (rpmListFile.exists() && bkupFile.exists()) {
+						Utils.copyFile(bkupFile, rpmListFile);
+						bkupFile.delete();
+					}
 					Activator.packagesList = new RpmPackageProposalsList();
 					return Status.CANCEL_STATUS;
 				}

@@ -43,8 +43,12 @@ public class SpecfileParser {
 	private static String[] complexSections = { "%pre", "%preun", "%post",
 			"%postun", "%files", "%package", "%description" };
 
+	
+	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771
+	//	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
+	//		"Release", "License", "URL" };
 	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
-		"Release", "License", "URL" };
+		"Release", "URL" };
 	
 	// Note that the ordering here should match that in SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" };

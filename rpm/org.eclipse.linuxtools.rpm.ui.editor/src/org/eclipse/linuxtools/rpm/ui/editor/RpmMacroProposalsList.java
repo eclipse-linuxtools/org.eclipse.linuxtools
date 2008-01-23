@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +55,17 @@ public class RpmMacroProposalsList {
 		paths = reverseStringArray(paths);
 		for (int i = 0; i < paths.length; i++) {
 			if (!paths[i].equals("")) {
-				addMacroToMap(paths[i]);
+				File pathFile = new File(paths[i]);
+				if (pathFile.exists()){
+					if (pathFile.isDirectory()){
+						File[] macrosFiles =pathFile.listFiles();
+						for (int j = 0; j < macrosFiles.length; j++) {
+							addMacroToMap(macrosFiles[j].getAbsolutePath());
+						}
+					} else {
+						addMacroToMap(paths[i]);
+					}
+				}
 			}
 		}
 	}
