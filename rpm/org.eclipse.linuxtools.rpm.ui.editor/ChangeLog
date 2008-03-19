@@ -1,3 +1,9 @@
+2008-03-17  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	Bug #217316
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java
+	Add interface for adding directories to Macro completion list
+
 2008-01-23  Alphonse Van Assche  <alcapcom@gmail.com>
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java
 	Backup package list only if the file existing + strings cleanups.
