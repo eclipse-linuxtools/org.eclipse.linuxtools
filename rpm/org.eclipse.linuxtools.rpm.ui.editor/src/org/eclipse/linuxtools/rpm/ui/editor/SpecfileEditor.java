@@ -52,6 +52,7 @@ public class SpecfileEditor extends TextEditor {
 		parser = getParser();
 		setSourceViewerConfiguration(new SpecfileConfiguration(colorManager, this));
 		setDocumentProvider(new SpecfileDocumentProvider());
+		setKeyBindingScopes(new String[]{"org.eclipse.linuxtools.rpm.ui.specEditorScope"});
 	}
 	public void dispose() {
 		colorManager.dispose();

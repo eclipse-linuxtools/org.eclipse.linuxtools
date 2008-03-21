@@ -1,7 +1,15 @@
+2008-03-21  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* plugin.xml: Define org.eclipse.linuxtools.rpm.ui.specEditorScope context
+	and register key sequence="Ctrl+Shift+O" in it (fix conflict with Java editor
+	which disables "Organize imports" key binding.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java:
+	Set own key binding scope "org.eclipse.linuxtools.rpm.ui.specEditorScope" .
+	
 2008-03-17  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Bug #217316
-	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java:
 	Add interface for adding directories to Macro completion list
 
 2008-01-23  Alphonse Van Assche  <alcapcom@gmail.com>

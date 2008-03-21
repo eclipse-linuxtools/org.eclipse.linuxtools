@@ -2,6 +2,14 @@
 <?eclipse version="3.2"?>
 <plugin>
 
+   <extension point="org.eclipse.ui.contexts">
+      <context
+            name="Specfile Editor Context"
+            id="org.eclipse.linuxtools.rpm.ui.specEditorScope"
+            parentId="org.eclipse.ui.textEditorScope">
+      </context>
+   </extension>
+   
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -167,7 +175,7 @@
       <key
            sequence="Ctrl+Shift+O"
            commandId="rpmEditor.organizePatches.command"
-           contextId="org.eclipse.ui.textEditorScope"
+           contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
    <!-- Action set for command bindings -->
