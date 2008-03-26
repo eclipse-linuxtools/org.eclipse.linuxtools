@@ -36,47 +36,58 @@ public class JavaParser implements IParserChangeLogContrib {
 	 */
 	public String parseCurrentFunction(IEditorInput input, int offset)
 			throws CoreException {
+	    
+		String currentElementName;
+		int elementType;
+		
+		// Get the working copy and connect to input.
 		IWorkingCopyManager manager = JavaUI.getWorkingCopyManager();
 		manager.connect(input);
 
+		// Retrieve the Java Element in question.
 		ICompilationUnit workingCopy = manager.getWorkingCopy(input);
 		IJavaElement method = workingCopy.getElementAt(offset);
+		
 		manager.disconnect(input);
 
 		// no element selected
 		if (method == null)
 			return "";
 
-		String currentElementName = "";
+		// Get the current element name, to test it.
+		currentElementName = method.getElementName();
 
-		if ((currentElementName = method.getElementName()) == null) {
-			// element doesn't have a name
+		// Element doesn't have a name. Can go no further.
+		if (currentElementName == null)
 			return "";
-		}
 
-		int elementType = method.getElementType();
+		// Get the Element Type to test.
+		elementType = method.getElementType();
 
 		switch (elementType) {
 		case IJavaElement.METHOD:
 		case IJavaElement.FIELD:
-			break;
+		    break;
 		case IJavaElement.COMPILATION_UNIT:
-			return "";
+		    return "";
 		case IJavaElement.INITIALIZER:
-			return "static initializer";
+		    return "static initializer";
+
+		// So it's not a method, field, type, or static initializer. Where are we?
 		default:
-			IJavaElement tmpMethodType;
-			if (((tmpMethodType = method.getAncestor(IJavaElement.METHOD)) == null)
-					&& ((tmpMethodType = method.getAncestor(IJavaElement.TYPE)) == null)) {
-				return "";
-			} else {
-				// cursor is inside a class, but not method
-				method = tmpMethodType;
-				currentElementName = method.getElementName();
-			}
+		    IJavaElement tmpMethodType;
+		    if (((tmpMethodType = method.getAncestor(IJavaElement.METHOD)) == null)
+			&& ((tmpMethodType = method.getAncestor(IJavaElement.TYPE)) == null)) {
+			return "";
+		    } else {
+			// In a class, but not in a method. Return class name instead.
+			method = tmpMethodType;
+			currentElementName = method.getElementName();
+		    }
 		}
 
-		// now append all ancestor class names to string
+		// Build all ancestor classes.
+		// Append all ancestor class names to string
 
 		IJavaElement tmpParent = method.getParent();
 		boolean firstLoop = true;
@@ -114,16 +125,16 @@ public class JavaParser implements IParserChangeLogContrib {
 	 */
 	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 
-		// Check for type casting
+		// Check for correct editor type
 		if (!(editor instanceof AbstractDecoratedTextEditor))
-			return "";
+		    return "";
 
-		AbstractDecoratedTextEditor java_editor = (AbstractDecoratedTextEditor) editor;
-		
+		// Get the editor, test selection and input.
+		AbstractDecoratedTextEditor java_editor = (AbstractDecoratedTextEditor) editor;		
 		ITextSelection selection = (ITextSelection)(java_editor.getSelectionProvider().getSelection());
-
 		IEditorInput input = java_editor.getEditorInput();
 
+		// Parse it and return the function.
 		return parseCurrentFunction(input, selection.getOffset());
 	}
 
