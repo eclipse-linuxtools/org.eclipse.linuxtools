@@ -1,3 +1,8 @@
+2008-03-27  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/CParser.java (parseCurrentFunction): 
+	Cleaned up. Commented.
+
 2008-01-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/parsers/CParser.java: Update copyright. 
