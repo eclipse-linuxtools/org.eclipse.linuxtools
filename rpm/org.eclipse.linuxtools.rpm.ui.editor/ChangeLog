@@ -1,3 +1,10 @@
+2008-04-01  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* .classpath:
+	The minimum java version is 5 now (J2SE-1.5).
+	* .settings/org.eclipse.jdt.core.prefs:
+	Bump the compiler lever to 5 now and auto changes from eclipse.
+
 2008-03-21  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* plugin.xml: Define org.eclipse.linuxtools.rpm.ui.specEditorScope context
