@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor;
 
+import java.util.Map;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
@@ -31,13 +33,14 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.AnnotationHover;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
+import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
-public class SpecfileConfiguration extends SourceViewerConfiguration {
+public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private SpecfileDoubleClickStrategy doubleClickStrategy;
 	private SpecfileScanner scanner;
 	private SpecfileChangelogScanner changelogScanner;
@@ -183,7 +186,8 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		if (sourceViewer == null)
 			return null;
-		return new IHyperlinkDetector[] { new URLHyperlinkWithMacroDetector(editor.getSpecfile())};
+		return new IHyperlinkDetector[] { new URLHyperlinkWithMacroDetector(editor.getSpecfile()),
+				new SpecfileElementHyperlinkDetector(editor.getSpecfile())};
 	}
 	
 	/* (non-Javadoc)
@@ -194,5 +198,14 @@ public class SpecfileConfiguration extends SourceViewerConfiguration {
 			annotationHover = new AnnotationHover();
 		return annotationHover;
 	}
+	
+	/**
+	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
+	 */
+	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+        Map<String, Object> targets= super.getHyperlinkDetectorTargets(sourceViewer);
+        targets.put("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", editor); //$NON-NLS-1$
+        return targets;
+    }
 		
 }

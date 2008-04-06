@@ -1,14 +1,23 @@
+2008-04-06  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	Make %{SOURCE} and %patch hyperlinks to ease navigation.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
+	Extend TextSourceViewerConfiguration, register SpecfileElementHyperlinkDetector.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlink.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java:
+	New file.
+
 2008-04-01  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* .classpath:
-	The minimum java version is 5 now (J2SE-1.5).
+	The minimum java version is 5 now.
 	* .settings/org.eclipse.jdt.core.prefs:
 	Bump the compiler lever to 5 now and auto changes from eclipse.
 
 2008-03-21  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* plugin.xml: Define org.eclipse.linuxtools.rpm.ui.specEditorScope context
-	and register key sequence="Ctrl+Shift+O" in it (fix conflict with Java editor
+	and register key sequence="Ctrl+Shift+O" in it ,fix conflict with Java editor
 	which disables "Organize imports" key binding.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java:
 	Set own key binding scope "org.eclipse.linuxtools.rpm.ui.specEditorScope" .

@@ -17,7 +17,6 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
@@ -61,7 +60,7 @@ public class SpecfileElementHyperlink implements IHyperlink {
 		// TODO don't increment the line number once the SpecfileSource reports
 		// correct line
 		map.put(IMarker.LINE_NUMBER, Integer
-				.valueOf(getSource().getLineNumber() + 1));
+				.valueOf(source.getLineNumber() + 1));
 		map.put(IDE.EDITOR_ID_ATTR, desc.getId());
 		try {
 			IMarker marker = file.createMarker(IMarker.TEXT);
@@ -69,15 +68,8 @@ public class SpecfileElementHyperlink implements IHyperlink {
 			IDE.openEditor(page, marker);
 			marker.delete();
 		} catch (CoreException e) {
-			SpecfileLog.logError(e);
+			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * @return the source
-	 */
-	public SpecfileElement getSource() {
-		return source;
 	}
 
 }
