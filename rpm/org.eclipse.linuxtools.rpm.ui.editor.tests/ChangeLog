@@ -1,3 +1,7 @@
+2008-04-08 Alexander Kurtakov <akurtakov@gmail.com>
+
+	* .classpat: Bump requirement to java 5.
+
 2007-07-05  Andrew Overholt  <overholt@redhat.com>
 
 	* Too many files to list: Add standard copyright and license header.
