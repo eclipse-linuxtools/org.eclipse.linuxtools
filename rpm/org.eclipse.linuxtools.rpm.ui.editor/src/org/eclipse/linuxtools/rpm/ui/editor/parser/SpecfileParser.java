@@ -50,6 +50,7 @@ public class SpecfileParser {
 	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
 		"Release", "URL" };
 	
+	private static String[] directValuesDefinitions = { "License" };
 	// Note that the ordering here should match that in SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" };
 
@@ -168,6 +169,11 @@ public class SpecfileParser {
 					return parseSimpleDefinition(lineText, specfile, lineNumber, true);
 				} else
 					return parseSimpleDefinition(lineText, specfile, lineNumber, false);
+			}
+		}
+		for (String directValuesDefinition: directValuesDefinitions){
+			if (lineText.startsWith(directValuesDefinition + ":")) {
+				return parseDirectDefinition(lineText, specfile, lineNumber);
 			}
 		}
 		
@@ -510,6 +516,14 @@ public class SpecfileParser {
 			}
 		}
 		return toReturn;
+	}
+	
+	private SpecfileElement parseDirectDefinition(String lineText,
+			Specfile specfile, int lineNumber) {
+		String[] parts = lineText.split(":");
+		SpecfileTag licenseElement = new SpecfileTag(parts[0].toLowerCase(),parts[1].trim(), specfile);
+		licenseElement.setLineNumber(lineNumber);
+		return licenseElement;
 	}
 
 	public void setErrorHandler(SpecfileErrorHandler specfileErrorHandler) {

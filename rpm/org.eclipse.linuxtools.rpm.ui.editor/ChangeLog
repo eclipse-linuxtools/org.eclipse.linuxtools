@@ -1,3 +1,8 @@
+2008-04-10  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java:
+	Add directValuesDefinitions used for License, fixes LicenseTagTest.
+
 2008-04-06  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Make %{SOURCE} and %patch hyperlinks to ease navigation.
