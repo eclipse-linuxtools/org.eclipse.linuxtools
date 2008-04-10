@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +26,7 @@ public class SpecfileSource extends SpecfileElement {
 	static final int SOURCE = 0;
 	static final int PATCH = 1;
 	int sourceType;
-	List linesUsed;
+	List<Integer> linesUsed;
 	
 	public int getSourceType() {
 		return sourceType;
@@ -39,7 +38,7 @@ public class SpecfileSource extends SpecfileElement {
 		super("source");
 		this.number = number;
 		this.fileName = fileName;
-		this.linesUsed = new ArrayList();
+		this.linesUsed = new ArrayList<Integer>();
 	}
 	public String getFileName() {
 		return resolve(fileName);
@@ -59,7 +58,7 @@ public class SpecfileSource extends SpecfileElement {
 	public void removeLineUsed(int lineNumber) {
 		linesUsed.remove(new Integer(lineNumber));
 	}
-	public List getLinesUsed() {
+	public List<Integer> getLinesUsed() {
 		return linesUsed;
 	}
 	public String toString() {
@@ -78,8 +77,7 @@ public class SpecfileSource extends SpecfileElement {
 		} else {
 			patchPattern = Pattern.compile("%patch" + oldPatchNumber);
 		}
-		for (Iterator lineIter = getLinesUsed().iterator(); lineIter.hasNext();) {
-			int lineNumber = ((Integer) lineIter.next()).intValue();
+		for (int lineNumber: getLinesUsed()){
 			String line;
 			try {
 				line = specfile.getLine(lineNumber);

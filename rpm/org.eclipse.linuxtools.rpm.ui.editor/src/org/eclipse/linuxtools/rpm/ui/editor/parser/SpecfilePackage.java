@@ -12,12 +12,11 @@
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class SpecfilePackage extends SpecfileSection {
 	private String description;
-	private List sections;
+	private List<SpecfileSection> sections;
 	private String packageName;
 
 	public SpecfilePackage(String packageName, Specfile specfile) {
@@ -25,7 +24,7 @@ public class SpecfilePackage extends SpecfileSection {
 		super.setSpecfile(specfile);
 		setPackageName(packageName);
                 setPackage(this);
-                sections = new ArrayList();
+                sections = new ArrayList<SpecfileSection>();
 	}
 
 	public String getDescription() {
@@ -48,8 +47,7 @@ public class SpecfilePackage extends SpecfileSection {
 	public SpecfileSection[] getSections() {
 		SpecfileSection[] toReturn = new SpecfileSection[sections.size()];
 		int i = 0;
-		for (Iterator sectionIter = sections.iterator(); sectionIter.hasNext();) {
-			SpecfileSection section = (SpecfileSection) sectionIter.next();
+		for (SpecfileSection section: sections){
 			toReturn[i] = section;
 			i++;
 		}

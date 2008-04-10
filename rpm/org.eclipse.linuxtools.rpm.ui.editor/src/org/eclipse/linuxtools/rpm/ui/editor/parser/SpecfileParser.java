@@ -187,11 +187,11 @@ public class SpecfileParser {
 	}
 	
 	private SpecfileElement parseSection(String lineText, Specfile specfile, int lineNumber) {
-		List tokens = Arrays.asList(lineText.split("\\s+"));
+		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
 		SpecfileSection toReturn = null;
 		
-		for (Iterator iter = tokens.iterator(); iter.hasNext();) {
-			String token = (String) iter.next();
+		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
+			String token = iter.next();
 
 			// Sections
 			// Simple Section Headers
@@ -210,7 +210,7 @@ public class SpecfileParser {
                                         if (!name.equals("package"))
                                             toReturn = new SpecfileSection(name, specfile);
 					while (iter.hasNext()) {
-						String nextToken = (String) iter.next();
+						String nextToken = iter.next();
 						if (nextToken.equals("-n")) {
 							if (!iter.hasNext()) {
 								errorHandler
@@ -224,7 +224,7 @@ public class SpecfileParser {
 								continue;
 							}
 
-							nextToken = (String) iter.next();
+							nextToken = iter.next();
 							if (nextToken.startsWith("-")) {
 								errorHandler
 								.handleError(new SpecfileParseException(
@@ -303,11 +303,9 @@ public class SpecfileParser {
 		
 		SpecfilePatchMacro toReturn = null;
 		
-		List tokens = Arrays.asList(lineText.split("\\s+"));
+		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
 		
-		for (Iterator iter = tokens.iterator(); iter.hasNext();) {
-			String token = (String) iter.next();
-			
+		for (String token: tokens) {
 			// %patchN+
 			try {
 				if (token.startsWith("%patch")) {
@@ -327,17 +325,17 @@ public class SpecfileParser {
 			}
 		}
 		
-		return (SpecfileElement) toReturn;
+		return toReturn;
 	}
 
 	private SpecfileDefine parseDefine(String lineText, Specfile specfile, int lineNumber) {
-		List tokens = Arrays.asList(lineText.split("\\s+"));
+		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
 		SpecfileDefine toReturn = null;
-		for (Iterator iter = tokens.iterator(); iter.hasNext();) {
+		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
 			// Eat the actual "%define" token
 			iter.next();
 			while (iter.hasNext()) {
-				String defineName = (String) iter.next();
+				String defineName = iter.next();
 				// FIXME: is this true?  investigate in rpmbuild source
 				// Definitions must being with a letter
 				if (!Character.isLetter(defineName.charAt(0)) && (defineName.charAt(0) != '_')) {
@@ -357,7 +355,7 @@ public class SpecfileParser {
 								.length(),
 								IMarker.SEVERITY_WARNING));
 					} else {
-						String defineStringValue = (String) iter.next();
+						String defineStringValue = iter.next();
 						// Defines that are more than one token
 						if (iter.hasNext()) {
 							defineStringValue = lineText.substring(lineText
@@ -386,12 +384,12 @@ public class SpecfileParser {
 
 	private SpecfileElement parseComplexDefinition(String lineText, Specfile specfile, int lineNumber, int sourceType) {
 		SpecfileSource toReturn = null;
-		List tokens = Arrays.asList(lineText.split("\\s+"));
+		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
 		int number = -1;
 		boolean firstToken = true;
 
-		for (Iterator iter = tokens.iterator(); iter.hasNext();) {
-			String token = (String) iter.next();
+		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
+			String token = iter.next();
 			if (token != null && token.length() > 0) {
 				if (firstToken) {
 					if (token.endsWith(":")) {
@@ -452,24 +450,24 @@ public class SpecfileParser {
 			}
 		}
 		
-		return (SpecfileElement) toReturn;
+		return toReturn;
 	}
 
 	private SpecfileElement parseSimpleDefinition(String lineText, Specfile specfile, int lineNumber, boolean warnMultipleValues) {
-		List tokens = Arrays.asList(lineText.split("\\s+"));
+		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
 		SpecfileTag toReturn = null;
 		
-		for (Iterator iter = tokens.iterator(); iter.hasNext();) {
-			String token = (String) iter.next();
+		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
+			String token = iter.next();
 
 			if (token.length() <= 0) {
 				break;
 			}
 			
 			if (iter.hasNext()) {
-				String possValue = (String) iter.next();
+				String possValue = iter.next();
 				if (possValue.startsWith("%") && iter.hasNext()){
-					possValue += ' '+(String)iter.next();
+					possValue += ' '+iter.next();
 				}
 				toReturn = new SpecfileTag(token.substring(0, token.length() - 1).toLowerCase(),
 						possValue, specfile);

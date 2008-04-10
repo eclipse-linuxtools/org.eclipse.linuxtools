@@ -1,5 +1,15 @@
 2008-04-10  Alexander Kurtakov  <akurtakov@gmail.com>
 
+	Bug #226546
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileComparator.java: Generify.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackageContainer.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSource.java: Likewise.
+
+2008-04-10  Alexander Kurtakov  <akurtakov@gmail.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java:
 	Add directValuesDefinitions used for License, fixes LicenseTagTest.
 

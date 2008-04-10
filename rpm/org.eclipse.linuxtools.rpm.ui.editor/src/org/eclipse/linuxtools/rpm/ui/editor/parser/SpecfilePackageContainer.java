@@ -12,16 +12,15 @@
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 
 public class SpecfilePackageContainer extends SpecfileElement {
-	List packages;
+	List<SpecfilePackage> packages;
 	
 	public SpecfilePackageContainer() {
-		packages = new ArrayList();
+		packages = new ArrayList<SpecfilePackage>();
 	}
 	
 	public SpecfilePackage[] getPackages() {
@@ -49,8 +48,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 		
 		int lowestStartLine = Integer.MAX_VALUE;
 		
-		for (Iterator iter = packages.iterator(); iter.hasNext();) {
-			SpecfilePackage subPackage = (SpecfilePackage) iter.next();
+		for (SpecfilePackage subPackage: packages){
 			if (subPackage.getLineStartPosition() < lowestStartLine)
 				lowestStartLine = subPackage.getLineStartPosition();
 		}
@@ -65,9 +63,8 @@ public class SpecfilePackageContainer extends SpecfileElement {
 			return 0;
 
 		int highestEndLine = 0;
-
-		for (Iterator iter = packages.iterator(); iter.hasNext();) {
-			SpecfilePackage subPackage = (SpecfilePackage) iter.next();
+		
+		for (SpecfilePackage subPackage: packages){
 			if (subPackage.getLineStartPosition() > highestEndLine)
 				highestEndLine = subPackage.getLineEndPosition();
 		}
@@ -78,8 +75,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 	}
 
 	public SpecfilePackage getPackage(String packageName) {
-		for (Iterator iter = packages.iterator(); iter.hasNext();) {
-			SpecfilePackage thisPackage = (SpecfilePackage) iter.next();
+		for (SpecfilePackage thisPackage: packages) {
 			if (thisPackage.getPackageName().equals(thisPackage.resolve(packageName))) {
 				return thisPackage;
 			}

@@ -37,23 +37,23 @@ public class Specfile {
 	
 	SpecfilePackageContainer packages;
 
-	List sections;
+	List<SpecfileSection> sections;
 
-	Map defines;
+	Map<String, SpecfileDefine> defines;
 
-	Map sources;
+	Map<Integer, SpecfileSource> sources;
 
-	Map patches;
+	Map<Integer, SpecfileSource> patches;
 
 	private IDocument document;
 
 	public Specfile() {
 		packages = new SpecfilePackageContainer();
 		preamble = new SpecfilePreamble();
-		sections = new ArrayList();
-		defines = new HashMap();
-		sources = new HashMap();
-		patches = new HashMap();
+		sections = new ArrayList<SpecfileSection>();
+		defines = new HashMap<String, SpecfileDefine>();
+		sources = new HashMap<Integer, SpecfileSource>();
+		patches = new HashMap<Integer, SpecfileSource>();
 	}
 
 	public Specfile(String name) {
@@ -68,18 +68,18 @@ public class Specfile {
 	public SpecfileElement[] getSectionsElements() {
 		SpecfileElement[] elements = new SpecfileElement[sections.size()]; 
 		for (int i = 0 ; i < sections.size(); i++) {
-			elements[i] = (SpecfileElement) sections.get(i);
+			elements[i] = sections.get(i);
 		}
 		return elements;
 	}
 	
 
 	public SpecfileSource getPatch(int number) {
-		return (SpecfileSource) patches.get(new Integer(number));
+		return patches.get(new Integer(number));
 	}
 
 	public SpecfileSource getSource(int number) {
-		return (SpecfileSource) sources.get(new Integer(number));
+		return sources.get(new Integer(number));
 	}
 
 	public String getName() {
@@ -110,7 +110,7 @@ public class Specfile {
 	}
 
 	public SpecfileDefine getDefine(String defineName) {
-		return (SpecfileDefine) defines.get(defineName);
+		return defines.get(defineName);
 	}
 
 	public int getEpoch() {
@@ -137,44 +137,41 @@ public class Specfile {
 		this.version = version;
 	}
 
-	public Map getPatches() {
+	public Map<Integer, SpecfileSource> getPatches() {
 		return patches;
 	}
 
-	public Map getSources() {
+	public Map<Integer, SpecfileSource> getSources() {
 		return sources;
 	}
 
-	public Collection getPatchesAsList() {
-		List patchesList = new ArrayList(patches.values());
+	public Collection<SpecfileSource> getPatchesAsList() {
+		List<SpecfileSource> patchesList = new ArrayList<SpecfileSource>(patches.values());
 		Collections.sort(patchesList, new SourceComparator());
 		return patchesList;
 	}
 
-	public Collection getSourcesAsList() {
-		List sourcesList = new ArrayList(sources.values());
+	public Collection<SpecfileSource> getSourcesAsList() {
+		List<SpecfileSource> sourcesList = new ArrayList<SpecfileSource>(sources.values());
 		Collections.sort(sourcesList, new SourceComparator());
 		return sourcesList;
 	}
 
 	public SpecfileSource[] getPatchesAsArray() {
-		return (SpecfileSource[]) getPatchesAsList().toArray(
-				new SpecfileSource[patches.size()]);
+		return getPatchesAsList().toArray(new SpecfileSource[patches.size()]);
 	}
 	
-	public Collection getDefinesAsList() {
-		List definesList = new ArrayList(defines.values());
+	public Collection<SpecfileDefine> getDefinesAsList() {
+		List<SpecfileDefine> definesList = new ArrayList<SpecfileDefine>(defines.values());
 		return definesList;
 	}
 	
 	public SpecfileDefine[] getDefinesAsArray() {
-		return (SpecfileDefine[]) getDefinesAsList().toArray(
-				new SpecfileDefine[defines.size()]);
+		return getDefinesAsList().toArray(new SpecfileDefine[defines.size()]);
 	}
 
 	public SpecfileSource[] getSourcesAsArray() {
-		return (SpecfileSource[]) getSourcesAsList().toArray(
-				new SpecfileSource[sources.size()]);
+		return getSourcesAsList().toArray(new SpecfileSource[sources.size()]);
 	}
 
 	private void printArray(Object[] array) {
@@ -189,9 +186,8 @@ public class Specfile {
 //		printArray(patches);
 		int newPatchNumber = 0;
 		int oldPatchNumber = -1;
-		Map newPatches = new HashMap();
-		for (int i = 0; i < patches.length; i++) {
-			SpecfileSource thisPatch = patches[i];
+		Map<Integer, SpecfileSource> newPatches = new HashMap<Integer, SpecfileSource>();
+		for (SpecfileSource thisPatch: patches) {
 			if (thisPatch.getSpecfile() == null)
 				thisPatch.setSpecfile(this);
 			// System.out.println("thisPatch.specfile -> " +
@@ -241,11 +237,11 @@ public class Specfile {
 				getLineLength(lineNumber), string);
 	}
 
-	public void setPatches(Map patches) {
+	public void setPatches(Map<Integer, SpecfileSource> patches) {
 		this.patches = patches;
 	}
 
-	public void setSources(Map sources) {
+	public void setSources(Map<Integer, SpecfileSource> sources) {
 		this.sources = sources;
 	}
 	

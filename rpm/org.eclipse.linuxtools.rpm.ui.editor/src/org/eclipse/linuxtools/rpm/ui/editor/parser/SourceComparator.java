@@ -13,10 +13,8 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.util.Comparator;
 
-public class SourceComparator implements Comparator {
-	public int compare(Object arg0, Object arg1) {
-		SpecfileSource source0 = (SpecfileSource) arg0;
-		SpecfileSource source1 = (SpecfileSource) arg1;
+public class SourceComparator implements Comparator<SpecfileSource> {
+	public int compare(SpecfileSource source0, SpecfileSource source1) {
 		if (source0 == null)
 			return -1;
 		if (source1 == null)
