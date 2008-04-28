@@ -78,19 +78,22 @@ public class SpecfileElement {
 			return toResolve;
 		}
 		String resolved = toResolve;
-		
 		Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}");
-		Matcher variableMatcher = variablePattern.matcher(toResolve);
-		while (variableMatcher.find()) {
-			SpecfileDefine define = specfile
-					.getDefine(variableMatcher.group(1));
-			if (define != null) {
-				resolved = resolved.replaceAll("%\\{"
-						+ variableMatcher.group(1) + "\\}", define
-						.getStringValue());
+		try {
+			Matcher variableMatcher = variablePattern.matcher(toResolve);
+			while (variableMatcher.find()) {
+				SpecfileDefine define = specfile
+				.getDefine(variableMatcher.group(1));
+				if (define != null) {
+					resolved = resolved.replaceAll("%\\{"
+							+ variableMatcher.group(1) + "\\}", define
+							.getStringValue());
+				}
 			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		
+
 		return resolved;
 	}
 

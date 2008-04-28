@@ -11,21 +11,23 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.ui.editors.text.FileDocumentProvider;
+import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
-public class SpecfileDocumentProvider extends FileDocumentProvider {
+public class SpecfileDocumentProvider extends TextFileDocumentProvider {
 
-	protected IDocument createDocument(Object element) throws CoreException {
-		IDocument document = super.createDocument(element);
+	private IDocument document;
+
+	@Override
+	public IDocument getDocument(Object element) {
+		document = super.getDocument(element);
 		if (document != null) {
-			SpecfilePartitioner partitioner =
-				new SpecfilePartitioner(
+			SpecfilePartitioner partitioner = new SpecfilePartitioner(
 					new SpecfilePartitionScanner(),
 					SpecfilePartitionScanner.SPEC_PARTITION_TYPES);
 			partitioner.connect(document, false);
-			document.setDocumentPartitioner(partitioner);
+			if (document.getDocumentPartitioner() == null)
+				document.setDocumentPartitioner(partitioner);
 		}
 		return document;
 	}

@@ -55,10 +55,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * <code>Comparator</code> implementation used to sort template proposals
 	 * @author Van Assche Alphonse
 	 */
-	private static final class ProposalComparator implements Comparator {
-		public int compare(Object o1, Object o2) {
-			return ((TemplateProposal) o2).getRelevance()
-					- ((TemplateProposal) o1).getRelevance();
+	private static final class ProposalComparator implements Comparator<TemplateProposal> {
+		public int compare(TemplateProposal t1, TemplateProposal t2) {
+			return (t2.getRelevance() - t1.getRelevance());
 		}
 	}
 
@@ -82,7 +81,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
 	private final SpecfileEditor editor;
 	
-	private static final Comparator proposalComparator = new ProposalComparator();
+	private static final Comparator<TemplateProposal> proposalComparator = new ProposalComparator();
 
 	/**
 	 * Default constructor
@@ -96,7 +95,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {
-		List result = new ArrayList();
+		List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 		Specfile specfile = editor.getSpecfile();
 		if (specfile == null)
 			return null;
@@ -120,7 +119,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				viewer, region, specfile, prefix);
 		result.addAll(Arrays.asList(sourcesProposals));
 		// Get the current content type
-		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());		
+		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PACKAGES)) {
 			// don't show template in the RPM packages content type.
 			// (when the line begin with Requires, BuildRequires etc...)
@@ -135,7 +134,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			result.addAll(Arrays.asList(templateProposals));
 			result.addAll(Arrays.asList(rpmMacroProposals));
 		}
-		return (ICompletionProposal[]) result
+		return result
 				.toArray(new ICompletionProposal[result.size()]);
 	}
 	
@@ -167,7 +166,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		String id = context.getContextType().getId();
 		Template[] templates = Activator.getDefault().getTemplateStore()
 				.getTemplates(id);
-		List matches = new ArrayList();
+		List<TemplateProposal> matches = new ArrayList<TemplateProposal>();
 		for (int i = 0; i < templates.length; i++) {
 			Template template = templates[i];
 			try {
@@ -182,7 +181,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		Collections.sort(matches, proposalComparator);
-		return (ICompletionProposal[]) matches
+		return matches
 				.toArray(new ICompletionProposal[matches.size()]);
 	}
 
@@ -202,24 +201,24 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private ICompletionProposal[] computeRpmMacroProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
-		Map rpmMacroProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
+		Map<String, String> rpmMacroProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
 		
 		// grab defines and put them into the proposals map
 		rpmMacroProposalsMap.putAll(getDefines(specfile, prefix));
 		
 		if (rpmMacroProposalsMap == null)
 			return new ICompletionProposal[0];
-		ArrayList proposals = new ArrayList();
+		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
 		String key;
-		Iterator iterator = rpmMacroProposalsMap.keySet().iterator();
+		Iterator<String> iterator = rpmMacroProposalsMap.keySet().iterator();
 		while (iterator.hasNext()) {
-			key = (String) iterator.next();
+			key = iterator.next();
 			proposals.add(new CompletionProposal("%{" + key.substring(1) + "}", 
 							region.getOffset(), region.getLength(),
 							key.length() + 2, Activator.getDefault().getImage(MACRO_ICON),
-							key, null, (String) rpmMacroProposalsMap.get(key)));
+							key, null, rpmMacroProposalsMap.get(key)));
 		}
-		return (ICompletionProposal[]) proposals
+		return proposals
 				.toArray(new ICompletionProposal[proposals.size()]);
 	}
 	
@@ -240,20 +239,20 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private ICompletionProposal[] computePatchesProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
-		Map patchesProposalsMap = getPatches(specfile, prefix);
+		Map<String, String> patchesProposalsMap = getPatches(specfile, prefix);
 		if (patchesProposalsMap == null)
 			return new ICompletionProposal[0];
-		ArrayList proposals = new ArrayList();
+		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
 		String key;
-		Iterator iterator = patchesProposalsMap.keySet().iterator();
+		Iterator<String> iterator = patchesProposalsMap.keySet().iterator();
 		while (iterator.hasNext()) {
-			key = (String) iterator.next();
+			key = iterator.next();
 			proposals.add(new CompletionProposal(key, 
 							region.getOffset(), region.getLength(),
 							key.length(), Activator.getDefault().getImage(PATCH_ICON),
-							key, null, (String) patchesProposalsMap.get(key)));
+							key, null, patchesProposalsMap.get(key)));
 		}
-		return (ICompletionProposal[]) proposals
+		return proposals
 				.toArray(new ICompletionProposal[proposals.size()]);
 	}
 	
@@ -274,20 +273,20 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	private ICompletionProposal[] computeSourcesProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
-		Map sourcesProposalsMap = getSources(specfile, prefix);
+		Map<String, String> sourcesProposalsMap = getSources(specfile, prefix);
 		if (sourcesProposalsMap == null)
 			return new ICompletionProposal[0];
-		ArrayList proposals = new ArrayList();
+		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
 		String key;
-		Iterator iterator = sourcesProposalsMap.keySet().iterator();
+		Iterator<String> iterator = sourcesProposalsMap.keySet().iterator();
 		while (iterator.hasNext()) {
-			key = (String) iterator.next();
+			key = iterator.next();
 			proposals.add(new CompletionProposal(key, 
 							region.getOffset(), region.getLength(),
 							key.length(), Activator.getDefault().getImage(PATCH_ICON),
-							key, null, (String) sourcesProposalsMap.get(key)));
+							key, null, sourcesProposalsMap.get(key)));
 		}
-		return (ICompletionProposal[]) proposals
+		return proposals
 				.toArray(new ICompletionProposal[proposals.size()]);
 	}
 
@@ -310,7 +309,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		List rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
 		if (rpmPkgProposalsList == null)
 			return new ICompletionProposal[0];
-		ArrayList proposals = new ArrayList();
+		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
 		String[] item;
 		Iterator iterator = rpmPkgProposalsList.iterator();
 		while (iterator.hasNext()) {
@@ -320,7 +319,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 					item[0].length(), Activator.getDefault().getImage(PACKAGE_ICON),
 					item[0], null, item[1]));
 		}
-		return (ICompletionProposal[]) proposals.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
 
 	/**
@@ -432,9 +431,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return a <code>HashMap</code> of defines.
 	 * 
 	 */
-	private Map getDefines(Specfile specfile, String prefix) {
+	private Map<String, String> getDefines(Specfile specfile, String prefix) {
 		Collection defines = specfile.getDefinesAsList();
-		Map ret = new HashMap();
+		Map<String, String> ret = new HashMap<String, String>();
 		String defineName;
 		for (Iterator iterator = defines.iterator(); iterator.hasNext();) {
 			SpecfileDefine define = (SpecfileDefine) iterator.next();
@@ -456,9 +455,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return a <code>HashMap</code> of defines.
 	 * 
 	 */
-	private Map getPatches(Specfile specfile, String prefix) {
+	private Map<String, String> getPatches(Specfile specfile, String prefix) {
 		Collection patches = specfile.getPatchesAsList();
-		Map ret = new HashMap();
+		Map<String, String> ret = new HashMap<String, String>();
 		String patchName;
 		for (Iterator iterator = patches.iterator(); iterator.hasNext();) {
 			SpecfileSource patch = (SpecfileSource) iterator.next();
@@ -482,9 +481,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return a <code>HashMap</code> of defines.
 	 * 
 	 */
-	private Map getSources(Specfile specfile, String prefix) {
+	private Map<String, String> getSources(Specfile specfile, String prefix) {
 		Collection sources = specfile.getSourcesAsList();
-		Map ret = new HashMap();
+		Map<String, String> ret = new HashMap<String, String>();
 		String sourceName;
 		for (Iterator iterator = sources.iterator(); iterator.hasNext();) {
 			SpecfileSource patch = (SpecfileSource) iterator.next();

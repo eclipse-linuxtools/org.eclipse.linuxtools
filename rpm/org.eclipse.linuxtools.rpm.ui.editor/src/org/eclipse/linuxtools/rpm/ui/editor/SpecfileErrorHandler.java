@@ -41,7 +41,9 @@ public class SpecfileErrorHandler {
 	public void handleError(SpecfileParseException e) {
 		int lineNumber = e.getLineNumber();
 		
-		Map map = new HashMap();
+		if (file == null) {	return;	}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
 		MarkerUtilities.setLineNumber(map, lineNumber);
 		MarkerUtilities.setMessage(map, e.getMessage());
 		map.put(IMarker.MESSAGE, e.getMessage());
@@ -69,6 +71,8 @@ public class SpecfileErrorHandler {
 	
 	public void removeExistingMarkers()
 	{
+		if (file == null) {	return;	}
+		
 		try
 		{
 			file.deleteMarkers(SPECFILE_ERROR_MARKER_ID, true, IResource.DEPTH_ZERO);

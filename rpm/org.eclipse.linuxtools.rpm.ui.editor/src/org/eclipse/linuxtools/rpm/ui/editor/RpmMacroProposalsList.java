@@ -31,7 +31,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
  */
 public class RpmMacroProposalsList {
 
-	private Map macroMap = new HashMap();
+	private Map<String, String> macroMap = new HashMap<String, String>();
 
 	private String toStringStr;
 
@@ -153,22 +153,22 @@ public class RpmMacroProposalsList {
 	 *            to search
 	 * @return a <code>Map</code> of proposals.
 	 */
-	public Map getProposals(String prefix) {
-		Iterator iterator = macroMap.keySet().iterator();
-		Map proposalsMap = new HashMap(macroMap.size());
+	public Map<String, String> getProposals(String prefix) {
+		Iterator<String> iterator = macroMap.keySet().iterator();
+		Map<String, String> proposalsMap = new HashMap<String, String>(macroMap.size());
 		String key, value;
 		int i = 0;
 		while (iterator.hasNext()) {
-			key = (String) iterator.next();
+			key = iterator.next();
 			// Get proposals for macro begin with { char too.
 			if (key.startsWith(prefix.replaceFirst("\\{", ""))) {
-				value = (String) macroMap.get(key);
+				value = macroMap.get(key);
 				proposalsMap.put(key, value);
 			}
 			i++;
 		}
 		// Sort proposals
-		Map sortedMap = new TreeMap(proposalsMap);
+		Map<String, String> sortedMap = new TreeMap<String, String>(proposalsMap);
 		return sortedMap;
 	}
 
@@ -180,10 +180,10 @@ public class RpmMacroProposalsList {
 	 * @return a string representation of the value
 	 */
 	public String getValue(String key) {
-		String value = (String) macroMap.get("%" + key);
+		String value = macroMap.get("%" + key);
 		// get proposals for macro contain ? too.
 		if (value == null) {
-			value = (String) macroMap.get(("%" + key).replaceFirst("\\?", ""));
+			value = macroMap.get(("%" + key).replaceFirst("\\?", ""));
 		}
 		return value;
 	}

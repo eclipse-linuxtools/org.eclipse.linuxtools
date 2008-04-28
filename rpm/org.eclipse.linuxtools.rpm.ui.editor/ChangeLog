@@ -1,3 +1,38 @@
+2008-04-27  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	IFileStore don't give possibility to mark resources or to get a IFile, so some
+	functionality cannot be provided on file outside a workspace - The Java editor
+	seem to do the same thing.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java
+	(prepareHyperlink): Prepare links only for specfile inside the workspace.
+	(detectHyperlinks): Only provides this functionality for existing patches and
+	sources.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java
+	(resolve): Don't throw unexpected exceptions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java
+	(getValue): Generify.
+	(getProposals): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java
+	(computeSourcesProposals): Likewise.
+	(getSources): Likewise.
+	(ProposalComparator): Likewise.
+	(computeTemplateProposals): Likewise.
+	(ProposalComparator.compare): Likewise.
+	(getDefines): Likewise.
+	(computePatchesProposals): Likewise.
+	(getPatches): Likewise.
+	(computeCompletionProposals):Likewise. (computeRpmPackageProposals): Likewise.
+	(computeRpmMacroProposals): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDocumentProvider.java
+	(getDocument): Now we extends TextFileDocumentProvider - Fix File->Open File
+	bug.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java
+	(getInputFile): Return null if the IEditorInput instance is not of type IFileEditorInput.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java
+	(handleError): Handle errors only on specfile inside a workspace.
+	(removeExistingMarkers): Likewise.
+	* META-INF/MANIFEST.MF: Bump to 0.3.0
+
 2008-04-10  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Bug #226546

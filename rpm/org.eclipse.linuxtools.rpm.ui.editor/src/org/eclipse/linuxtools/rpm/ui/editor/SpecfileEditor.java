@@ -102,11 +102,21 @@ public class SpecfileEditor extends TextEditor {
 		}
 	}
 
+	
+	/**
+	 * Get a {@link IFile}, this implementation return <code>null</code>
+	 * if the <code>IEditorInput</code> instance is not of type {@link IFileEditorInput}.
+	 * 
+	 * @return a <code>IFile</code> or <code>null</code>.
+	 */
 	protected IFile getInputFile()
 	{
-		IFileEditorInput ife = (IFileEditorInput) input;
-		IFile file = ife.getFile();
-		return file;
+		if (input instanceof IFileEditorInput) {
+			IFileEditorInput ife = (IFileEditorInput) input;
+			IFile file = ife.getFile();
+			return file;
+		}
+		return null;
 	}
 
 	protected IDocument getInputDocument()

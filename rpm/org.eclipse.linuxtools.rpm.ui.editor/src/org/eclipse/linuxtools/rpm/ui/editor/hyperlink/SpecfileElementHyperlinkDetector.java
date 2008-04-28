@@ -87,14 +87,16 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 					word.substring(SOURCE_IDENTIFIER.length(),
 							word.length() - 1)).intValue();
 			SpecfileSource source = specfile.getSource(sourceNumber);
-			return prepareHyperlink(lineInfo, line, word, document, source);
+			if (source != null)
+				return prepareHyperlink(lineInfo, line, word, document, source);
 		} else if (word.startsWith(PATCH_IDENTIFIER)) {
 
 			int sourceNumber = Integer.valueOf(
 					word.substring(PATCH_IDENTIFIER.length(), word.length()))
 					.intValue();
 			SpecfileSource source = specfile.getPatch(sourceNumber);
-			return prepareHyperlink(lineInfo, line, word, document, source);
+			if (source != null)
+				return prepareHyperlink(lineInfo, line, word, document, source);
 		} else {
 			String defineName = getDefineName(word);
 			SpecfileDefine define = specfile.getDefine(defineName);
@@ -122,8 +124,16 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 		IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 		IWorkbenchPage page = win.getActivePage();
 		IEditorPart editor = page.getActiveEditor();
-		IFile original = ((FileEditorInput) editor.getEditorInput()).getFile();
-		return new IHyperlink[] { new SpecfileElementHyperlink(urlRegion,
-				source, original) };
+		// A IFile cannot be retrieve from a IFileStoreEditorInput, so at this time
+		// we can only provide this functionality for resources inside the workbench.
+		if (editor.getEditorInput() instanceof FileEditorInput) {
+			IFile original = ((FileEditorInput) editor.getEditorInput()).getFile();
+			return new IHyperlink[] { new SpecfileElementHyperlink(urlRegion,
+					source, original) };			
+		} else {
+			return null;
+		}
+		
+
 	}
 }
