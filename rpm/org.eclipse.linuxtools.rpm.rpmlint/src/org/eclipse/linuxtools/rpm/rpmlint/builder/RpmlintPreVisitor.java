@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 
 public class RpmlintPreVisitor implements IResourceVisitor {
 	
-	private ArrayList paths = new ArrayList();
+	private ArrayList<String> paths = new ArrayList<String>();
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
@@ -32,7 +32,7 @@ public class RpmlintPreVisitor implements IResourceVisitor {
 		return true;	
 	}
 
-	public ArrayList getVisitedPaths() {
+	public ArrayList<String> getVisitedPaths() {
 		return paths;
 	}
 }

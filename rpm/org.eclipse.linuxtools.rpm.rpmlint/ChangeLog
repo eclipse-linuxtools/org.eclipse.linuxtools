@@ -1,3 +1,26 @@
+2008-04-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Generify.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java
+	(run): Generify.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java
+	(fullBuild): Likewise.
+	(incrementalBuild): Likewise.
+	(visitAndMarkRpmlintItems): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/RpmlintDeltaVisitor.java
+	(getVisitedPaths): Likewise.
+	(visit): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/RpmlintMarkerVisitor.java
+	(RpmlintMarketVisitor): Likewise.
+	(visit): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/RpmlintPreVisitor.java
+	(getVisitedPaths): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java
+	(getNumberOfIterations): Likewise.
+	(parseRpmlintOurput): Likewise.
+	(parseVisited): Likewise.
+	(runRpmlintCommand): Likewise.
+	(splitArrayList): Likewise.
+
 2008-04-08  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* .classpath:

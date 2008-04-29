@@ -16,17 +16,16 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
 
 public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 
-	private ArrayList paths = new ArrayList();
+	private ArrayList<String> paths = new ArrayList<String>();
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
 	 */
-	public boolean visit(IResourceDelta delta) throws CoreException {
+	public boolean visit(IResourceDelta delta) {
 		if (delta.getResource() instanceof IFile
 				&& delta.getResource().getName().endsWith(".spec")) {
 			IResource resource = delta.getResource();
@@ -45,7 +44,7 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 		return true;
 	}
 	
-	public ArrayList getVisitedPaths() {
+	public ArrayList<String> getVisitedPaths() {
 		return paths;
 	}
 

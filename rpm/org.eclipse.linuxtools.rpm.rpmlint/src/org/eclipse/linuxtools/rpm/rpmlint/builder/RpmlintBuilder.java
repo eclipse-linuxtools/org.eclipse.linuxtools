@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.linuxtools.rpm.rpmlint.Activator;
+import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintItem;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
@@ -68,7 +69,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		checkCancel(monitor);
 		monitor.worked(50);
 		monitor.setTaskName("Retrive Rpmlint problems...");
-		ArrayList rpmlintItems = RpmlintParser.getInstance().parseVisisted(
+		ArrayList<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				resourceVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
 	}
@@ -79,13 +80,13 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		delta.accept(deltaVisitor);
 		monitor.worked(50);
 		monitor.setTaskName("Retrive Rpmlint problems...");
-		ArrayList rpmlintItems = RpmlintParser.getInstance().parseVisisted(
+		ArrayList<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				deltaVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
 	}
 
 	private void visitAndMarkRpmlintItems(IProgressMonitor monitor,
-			ArrayList rpmlintItems) throws CoreException {
+			ArrayList<RpmlintItem> rpmlintItems) throws CoreException {
 		if (rpmlintItems.size() > 0) {
 			checkCancel(monitor);
 			monitor.worked(70);

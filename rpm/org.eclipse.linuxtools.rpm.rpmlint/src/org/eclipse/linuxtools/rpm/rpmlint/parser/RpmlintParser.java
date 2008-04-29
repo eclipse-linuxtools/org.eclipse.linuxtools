@@ -53,14 +53,14 @@ public class RpmlintParser {
 	 * @return
 	 * 		a <code>RpmlintItem</code> ArrayList.
 	 */
-	public ArrayList parseVisisted(ArrayList visitedResources) {
-		ArrayList retList = new ArrayList();
+	public ArrayList<RpmlintItem> parseVisisted(ArrayList<String> visitedResources) {
+		ArrayList<RpmlintItem> retList = new ArrayList<RpmlintItem>();
 		// workaround "Argument list too long" xargs limitation. 
-		ArrayList commandsList = splitArrayList(visitedResources, 500);
-		Iterator iterator = commandsList.iterator();
+		ArrayList<List<String>> commandsList = splitArrayList(visitedResources, 500);
+		Iterator<List<String>> iterator = commandsList.iterator();
 		while (iterator.hasNext()) {
 			if (commandsList.size() > 1)
-				retList.addAll(parseRpmlintOurput(runRpmlintCommand((List) iterator.next())));
+				retList.addAll(parseRpmlintOurput(runRpmlintCommand(iterator.next())));
 			else
 				return parseRpmlintOurput(runRpmlintCommand(visitedResources));
 		}
@@ -103,9 +103,9 @@ public class RpmlintParser {
 	 * @return
 	 * 		a <code>RpmlintItem</code> ArrayList.
 	 */
-	private ArrayList parseRpmlintOurput(BufferedInputStream in) {
+	private ArrayList<RpmlintItem> parseRpmlintOurput(BufferedInputStream in) {
 		RpmlintItem item =  new RpmlintItem();
-		ArrayList rpmlintItems = new ArrayList();
+		ArrayList<RpmlintItem> rpmlintItems = new ArrayList<RpmlintItem>();
 		LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
 		String line;
 		boolean firtItemLine = true;
@@ -173,16 +173,16 @@ public class RpmlintParser {
 	 * @return the rpmlint command <code>InputStream</code>
 	 * @throws IOException
 	 */
-	private BufferedInputStream runRpmlintCommand(List visitedResources) {
+	private BufferedInputStream runRpmlintCommand(List<String> visitedResources) {
 		String rpmlintPath = getRpmlintPath();
 		BufferedInputStream in = null;
 		int i = 2;
 		String[] cmd = new String[visitedResources.size() + i];
 		cmd[0] = rpmlintPath;
 		cmd[1] = "-i";
-		Iterator iterator = visitedResources.iterator();
+		Iterator<String> iterator = visitedResources.iterator();
 		while(iterator.hasNext()) {
-			cmd[i] = ((String) iterator.next());
+			cmd[i] = iterator.next();
 			i++;
 		}
 		try {
@@ -251,8 +251,8 @@ public class RpmlintParser {
 	}
 	
 
-	private ArrayList splitArrayList(ArrayList list, int listSize) {
-		ArrayList resultList = new ArrayList();
+	private ArrayList<List<String>> splitArrayList(ArrayList<String> list, int listSize) {
+		ArrayList<List<String>> resultList = new ArrayList<List<String>>();
 		if (list.size() <= listSize) {
 			resultList.add(list);
 			return resultList;
@@ -260,14 +260,14 @@ public class RpmlintParser {
 		for (int i = 0; i < getNumberOfIterations(list, listSize); i++) {
 			int maxLength = ((i + 1) * listSize > list.size()) ? list
 					.size() : (i + 1) * listSize;
-			List sublist = new ArrayList();
+			List<List<String>> sublist = new ArrayList<List<String>>();
 			sublist.add(list.subList(i * listSize, maxLength));
 			resultList.addAll(sublist);
 		}
 		return resultList;		
 	}
  
-	private int getNumberOfIterations(List list, int subCollectionSize) {
+	private int getNumberOfIterations(List<String> list, int subCollectionSize) {
 		return list.size() % subCollectionSize == 0 ? list.size()
 				/ subCollectionSize : (list.size() / subCollectionSize) + 1;
 	}

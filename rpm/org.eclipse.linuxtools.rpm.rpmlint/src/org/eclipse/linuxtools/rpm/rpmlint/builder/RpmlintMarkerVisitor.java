@@ -29,7 +29,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 
 public class RpmlintMarkerVisitor implements IResourceVisitor {
 
-	private ArrayList rpmlintItems;
+	private ArrayList<RpmlintItem> rpmlintItems;
 	
 	private int lineNumber;
 	
@@ -48,10 +48,10 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	private int charEnd;
 		
 	
-	public RpmlintMarkerVisitor(RpmlintBuilder builder, ArrayList rpmlintItems) {
+	public RpmlintMarkerVisitor(RpmlintBuilder builder, ArrayList<RpmlintItem> rpmlintItems) {
 		this.rpmlintItems = rpmlintItems;
 		this.builder = builder;
-		rpmlintItems = new ArrayList();
+		rpmlintItems = new ArrayList<RpmlintItem>();
 	}
 
 	/* (non-Javadoc)
@@ -60,9 +60,9 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	public boolean visit(IResource resource) throws CoreException {
 		if (resource instanceof IFile && resource.getName().endsWith(".spec")) {
 			firstWarningInResource = true;
-			Iterator iterator = rpmlintItems.iterator();
+			Iterator<RpmlintItem> iterator = rpmlintItems.iterator();
 			while(iterator.hasNext()) {
-				RpmlintItem item = (RpmlintItem) iterator.next();
+				RpmlintItem item = iterator.next();
 				if (item.getFileName().equals(resource.getLocation().toOSString())) {
 					currentFile = ((IFile)resource);
 					if (firstWarningInResource) {
