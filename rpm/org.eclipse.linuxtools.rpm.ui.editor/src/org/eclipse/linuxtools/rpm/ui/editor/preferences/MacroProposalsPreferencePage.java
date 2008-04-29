@@ -147,11 +147,11 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 
 		protected String[] parseString(String stringList) {
 			StringTokenizer st = new StringTokenizer(stringList, ";\n\r");
-			ArrayList v = new ArrayList();
-			while (st.hasMoreElements()) {
-				v.add(st.nextElement());
+			ArrayList<String> v = new ArrayList<String>();
+			while (st.hasMoreTokens()) {
+				v.add(st.nextToken());
 			}
-			return (String[]) v.toArray(new String[v.size()]);
+			return v.toArray(new String[v.size()]);
 		}
 
 		/**

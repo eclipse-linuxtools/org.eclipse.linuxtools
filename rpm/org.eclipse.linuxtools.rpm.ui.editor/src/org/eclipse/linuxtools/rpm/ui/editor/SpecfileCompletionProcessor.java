@@ -306,14 +306,14 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private ICompletionProposal[] computeRpmPackageProposals(ITextViewer viewer,
 			IRegion region, String prefix) {
-		List rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
+		List<String[]> rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
 		if (rpmPkgProposalsList == null)
 			return new ICompletionProposal[0];
 		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
 		String[] item;
-		Iterator iterator = rpmPkgProposalsList.iterator();
+		Iterator<String[]> iterator = rpmPkgProposalsList.iterator();
 		while (iterator.hasNext()) {
-			item = (String[]) iterator.next();
+			item = iterator.next();
 			proposals.add(new CompletionProposal(item[0], 
 					region.getOffset(), region.getLength(),
 					item[0].length(), Activator.getDefault().getImage(PACKAGE_ICON),
@@ -432,11 +432,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private Map<String, String> getDefines(Specfile specfile, String prefix) {
-		Collection defines = specfile.getDefinesAsList();
+		Collection<SpecfileDefine> defines = specfile.getDefinesAsList();
 		Map<String, String> ret = new HashMap<String, String>();
 		String defineName;
-		for (Iterator iterator = defines.iterator(); iterator.hasNext();) {
-			SpecfileDefine define = (SpecfileDefine) iterator.next();
+		for (Iterator<SpecfileDefine> iterator = defines.iterator(); iterator.hasNext();) {
+			SpecfileDefine define = iterator.next();
 			defineName = "%" + define.getName();
 			if (defineName.startsWith(prefix.replaceFirst("\\{", "")))
 				ret.put(defineName, define.getStringValue());
@@ -456,11 +456,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private Map<String, String> getPatches(Specfile specfile, String prefix) {
-		Collection patches = specfile.getPatchesAsList();
+		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
 		Map<String, String> ret = new HashMap<String, String>();
 		String patchName;
-		for (Iterator iterator = patches.iterator(); iterator.hasNext();) {
-			SpecfileSource patch = (SpecfileSource) iterator.next();
+		for (Iterator<SpecfileSource> iterator = patches.iterator(); iterator.hasNext();) {
+			SpecfileSource patch = iterator.next();
 			patchName = "%patch" + patch.getNumber();
 			if (patchName.startsWith(prefix))
 				ret.put(patchName.toLowerCase(), SpecfileHover
@@ -482,11 +482,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private Map<String, String> getSources(Specfile specfile, String prefix) {
-		Collection sources = specfile.getSourcesAsList();
+		Collection<SpecfileSource> sources = specfile.getSourcesAsList();
 		Map<String, String> ret = new HashMap<String, String>();
 		String sourceName;
-		for (Iterator iterator = sources.iterator(); iterator.hasNext();) {
-			SpecfileSource patch = (SpecfileSource) iterator.next();
+		for (Iterator<SpecfileSource> iterator = sources.iterator(); iterator.hasNext();) {
+			SpecfileSource patch = iterator.next();
 			sourceName = "%{SOURCE" + patch.getNumber()+"}";
 			if (sourceName.startsWith(prefix))
 				ret.put(sourceName, SpecfileHover

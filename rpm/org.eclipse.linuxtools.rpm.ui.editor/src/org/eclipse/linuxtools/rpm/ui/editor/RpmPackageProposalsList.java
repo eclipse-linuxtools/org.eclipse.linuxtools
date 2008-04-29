@@ -35,7 +35,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
  * 
  */
 public class RpmPackageProposalsList {
-	private HashSet list = new HashSet();
+	private HashSet<String> list = new HashSet<String>();
 
 	public RpmPackageProposalsList() {
 		setPackagesList();
@@ -58,15 +58,15 @@ public class RpmPackageProposalsList {
 		}
 	}
 
-	public List getProposals(String prefix) {
+	public List<String[]> getProposals(String prefix) {
 		int rpmpkgsMaxProposals = Activator.getDefault().getPreferenceStore()
 				.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
-		Iterator iterator = list.iterator();
-		List proposalsList = new ArrayList(list.size());
+		Iterator<String> iterator = list.iterator();
+		List<String[]> proposalsList = new ArrayList<String[]>(list.size());
 		int i = 0;
 		while (iterator.hasNext()) {
 			String item[] = new String[2];
-			item[0] = (String) iterator.next();
+			item[0] = iterator.next();
 			String message = "RPM information is only available\nif the proposal list is less than "
 					+ rpmpkgsMaxProposals
 					+ " item(s).\n\nYou can change the item limit in the \nRPM proposals preferences page.";
@@ -80,12 +80,13 @@ public class RpmPackageProposalsList {
 		 * Show RPM informations only if the proposal list is less than the
 		 * limit set in the RPM proposals preference page.
 		 */
+		;
 		if (proposalsList.size() < rpmpkgsMaxProposals) {
-			iterator = proposalsList.iterator();
-			List proposalsListWithInfo = new ArrayList(proposalsList.size());
-			while (iterator.hasNext()) {
+			Iterator<String[]> proposalsIterator = proposalsList.iterator();
+			List<String[]> proposalsListWithInfo = new ArrayList<String[]>(proposalsList.size());
+			while (proposalsIterator.hasNext()) {
 				String item[] = new String[2];
-				item = (String[]) iterator.next();
+				item = proposalsIterator.next();
 				item[1] = getRpmInfo(item[0]);
 				proposalsListWithInfo.add(item);
 			}
@@ -96,10 +97,7 @@ public class RpmPackageProposalsList {
 	}
 	
 	public String getValue(String key) {
-		Iterator iterator = list.iterator();
-		String item;
-		while (iterator.hasNext()) {
-			item = (String) iterator.next();
+		for (String item :list){
 			if (item.equals(key.trim())) {
 				return getRpmInfo(item);
 			}

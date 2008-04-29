@@ -34,7 +34,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 
 	private final SpecfileEditor fEditor;
 
-	private final List fOldAnnotations = new LinkedList();
+	private final List<Annotation> fOldAnnotations = new LinkedList<Annotation>();
 
 	/**
 	 * Creates a new instance on editor <code>specfileEditor</code>.
@@ -105,8 +105,8 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 *            the annotation model
 	 */
 	private void removeOldAnnotations(IAnnotationModel model) {
-		for (Iterator it = fOldAnnotations.iterator(); it.hasNext();) {
-			Annotation annotation = (Annotation) it.next();
+		for (Iterator<Annotation> it = fOldAnnotations.iterator(); it.hasNext();) {
+			Annotation annotation = it.next();
 			model.removeAnnotation(annotation);
 		}
 		fOldAnnotations.clear();

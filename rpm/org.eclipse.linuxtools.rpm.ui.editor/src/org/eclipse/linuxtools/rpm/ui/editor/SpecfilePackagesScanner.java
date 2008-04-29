@@ -47,7 +47,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 		IToken macroToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.MACROS)));
 
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// %{ .... }
 		rules.add(new SingleLineRule("%{", "}", macroToken));
@@ -60,13 +60,13 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 
 		// RPM packages
 		wordRule = new WordRule(new PackageWordDetector(), Token.UNDEFINED);
-		List rpmPackages = Activator.getDefault().getRpmPackageList()
+		List<String[]> rpmPackages = Activator.getDefault().getRpmPackageList()
 				.getProposals("");
-		Iterator iterator = rpmPackages.iterator();
+		Iterator<String[]> iterator = rpmPackages.iterator();
 		String[] item;
 		char[] startWith = {' ', '\t', ',', ':'};
 		while (iterator.hasNext()) {
-			item = (String[]) iterator.next();
+			item = iterator.next();
 			// FIXME Perhaps, that can slow down the scanning?
 			for (int i = 0; i < startWith.length; i++) {
 				wordRule.addWord(startWith[i] + item[0], packageToken);

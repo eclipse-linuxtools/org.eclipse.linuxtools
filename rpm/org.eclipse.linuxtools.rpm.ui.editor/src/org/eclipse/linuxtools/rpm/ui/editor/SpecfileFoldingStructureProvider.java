@@ -61,46 +61,45 @@ public class SpecfileFoldingStructureProvider {
 
 	void updateFoldingRegions(ProjectionAnnotationModel model)
 			throws BadLocationException {
-		Set/* <Position> */structure = createFoldingStructure(sEditor.getSpecfile());
+		Set<Position> structure = createFoldingStructure(sEditor.getSpecfile());
 		Annotation[] deletions = computeDifferences(model, structure);
-		Map/* <Annotation,Position> */additions = computeAdditions(structure);
+		Map<Annotation,Position> additions = computeAdditions(structure);
 		if ((deletions.length != 0 || additions.size() != 0)
 				&& (sProgressMonitor == null || !sProgressMonitor.isCanceled()))
 			model.modifyAnnotations(deletions, additions, EMPTY);
 	}
 
-	private Map computeAdditions(Set currentRegions) {
-		Map additionsMap = new HashMap();
-		for (Iterator iter = currentRegions.iterator(); iter.hasNext();)
+	private Map<Annotation,Position> computeAdditions(Set<Position> currentRegions) {
+		Map<Annotation,Position> additionsMap = new HashMap<Annotation,Position>();
+		for (Iterator<Position> iter = currentRegions.iterator(); iter.hasNext();)
 			additionsMap.put(new ProjectionAnnotation(), iter.next());
 		return additionsMap;
 	}
 
 	private Annotation[] computeDifferences(ProjectionAnnotationModel model,
-			Set current) {
-		List deletions = new ArrayList();
-		for (Iterator iter = model.getAnnotationIterator(); iter.hasNext();) {
-			Object annotation = iter.next();
+			Set<Position> current) {
+		List<Annotation> deletions = new ArrayList<Annotation>();
+		for (Iterator<Annotation> iter = model.getAnnotationIterator(); iter.hasNext();) {
+			Annotation annotation = iter.next();
 			if (annotation instanceof ProjectionAnnotation) {
-				Position position = model.getPosition((Annotation) annotation);
+				Position position = model.getPosition(annotation);
 				if (current.contains(position))
 					current.remove(position);
 				else
 					deletions.add(annotation);
 			}
 		}
-		return (Annotation[]) deletions
-				.toArray(new Annotation[deletions.size()]);
+		return deletions.toArray(new Annotation[deletions.size()]);
 	}
 
-	private Set createFoldingStructure(Specfile specfile)
+	private Set<Position> createFoldingStructure(Specfile specfile)
 			throws BadLocationException {
-		Set set = new HashSet();
-		addFoldingRegions(set, ((Object[]) specfile.getSections()));
+		Set<Position> set = new HashSet<Position>();
+		addFoldingRegions(set, specfile.getSections());
 		return set;
 	}
 
-	private void addFoldingRegions(Set regions, Object[] elements)
+	private void addFoldingRegions(Set<Position> regions, Object[] elements)
 			throws BadLocationException {
 		Position position;
 		// add folding on the preamble section

@@ -61,7 +61,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 		IToken commentToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.COMMENT)));
 
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// Comments
 		rules.add(new EndOfLineRule("#", commentToken));

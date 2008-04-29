@@ -81,7 +81,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	}
 	
 	private FieldEditor rpmtoolsRadioGroupFieldEditor() {
-		ArrayList list = new ArrayList();
+		ArrayList<String[]> list = new ArrayList<String[]>();
 		list.add(new String[] { "RPM (Red Hat Package Manager)",
 								PreferenceConstants.DP_RPMTOOLS_RPM });
 		/*
@@ -97,8 +97,8 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 
 		String[][] radioItems = new String[list.size()][2];
 		int pos = 0;
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			String[] item = (String[]) iterator.next();
+		for (Iterator<String[]> iterator = list.iterator(); iterator.hasNext();) {
+			String[] item = iterator.next();
 			radioItems[pos][0] = item[0];
 			radioItems[pos][1] = item[1];
 			pos++;

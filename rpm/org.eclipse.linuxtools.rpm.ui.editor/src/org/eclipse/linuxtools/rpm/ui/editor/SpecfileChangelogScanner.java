@@ -42,7 +42,7 @@ public class SpecfileChangelogScanner extends RuleBasedScanner {
 		IToken versionRelease = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.VER_REL), null, SWT.NONE));
 		
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// %prep, %build, ...
 		WordRule wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);

@@ -1,3 +1,32 @@
+2008-04-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Generify.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/ColorManager.java
+	(dispose): Generify.
+	(getColor): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurencesUpdater.java
+	(removeOldAnnotations): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java
+	(getProposals): Likewise.
+	(getValue): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileChangelogScanner.java
+	(SpecfileChangelogScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java
+	(addFoldingRegions): Likewise.
+	(computeAdditions): Likewise.
+	(computeDifferences): Likewise.
+	(createFoldingStructure): Likewise.
+	(updateFoldingRegions): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java
+	(SpecfilePackagesScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java
+	(SpecfilePartitionScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java
+	(SpecfileScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java
+	(MacroListEditor.parseList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java
+	(rpmtoolsRadioGroupFieldEditor): Likewise.
+
 2008-04-27  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	IFileStore don't give possibility to mark resources or to get a IFile, so some

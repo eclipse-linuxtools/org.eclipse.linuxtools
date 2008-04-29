@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
+import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
@@ -51,7 +52,7 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		IToken specChangelog = new Token(SPEC_CHANGELOG);
 		IToken specPackages = new Token(SPEC_PACKAGES);
 		
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 		
 		// RPM packages
 		for (int i = 0; i < SpecfilePackagesScanner.PACKAGES_TAGS.length; i++) 
