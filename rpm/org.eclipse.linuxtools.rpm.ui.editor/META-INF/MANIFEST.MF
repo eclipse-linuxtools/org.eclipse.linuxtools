@@ -21,4 +21,4 @@ Export-Package: org.eclipse.linuxtools.rpm.ui.editor,
  org.eclipse.linuxtools.rpm.ui.editor.outline,
  org.eclipse.linuxtools.rpm.ui.editor.parser,
  org.eclipse.linuxtools.rpm.ui.editor.preferences
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
