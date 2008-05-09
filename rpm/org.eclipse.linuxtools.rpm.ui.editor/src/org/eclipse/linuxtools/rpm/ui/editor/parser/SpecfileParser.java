@@ -40,8 +40,8 @@ public class SpecfileParser {
 	 * -f or -n appended to them, hence they are called complex. This should
 	 * probably be renamed to reflect that they are in fact per-RPM sections.
 	 */
-	private static String[] complexSections = { "%pre", "%preun", "%post",
-			"%postun", "%files", "%package", "%description" };
+	private static String[] complexSections = { "%pretrans", "%pre", "%preun", "%post",
+			"%postun", "%posttrans", "%files", "%package", "%description" };
 
 	
 	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771
@@ -267,7 +267,7 @@ public class SpecfileParser {
 		}
 
                 // if this package is part of the top level package, add it to it
-                if (toReturn.getPackage() == null){
+                if (toReturn != null && toReturn.getPackage() == null){
                     SpecfilePackage topPackage = specfile.getPackage(specfile.getName());
                     if (topPackage == null){
                         topPackage = new SpecfilePackage(specfile.getName(), specfile);

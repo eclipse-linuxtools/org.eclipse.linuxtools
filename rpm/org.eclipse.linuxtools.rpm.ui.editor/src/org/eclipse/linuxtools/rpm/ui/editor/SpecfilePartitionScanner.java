@@ -36,12 +36,12 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES};
 	
 	/** All possible headers for sections of the type SPEC_SCRIPT */
-	private static String[] sectionHeaders = { "%prep", "%build", "%install", "%pre",
-		"%preun", "%post", "%postun", "%clean"};
+	private static String[] sectionHeaders = { "%prep", "%build", "%install", "%pretrans", "%pre",
+		"%preun", "%post", "%postun", "%posttrans", "%clean"};
 
 	/** All possible headers for section that can come after sections of the type SPEC_SCRIPT */
-	private static String[] sectionEndingHeaders = { "%prep", "%build", "%install", "%pre",
-		"%preun", "%post", "%postun", "%clean", "%files"};
+	private static String[] sectionEndingHeaders = { "%prep", "%build", "%install", "%pretrans" , "%pre",
+		"%preun", "%post", "%postun", "%posttrans", "%clean", "%files"};
 	
 	public SpecfilePartitionScanner() {
 		// FIXME:  do we need this?

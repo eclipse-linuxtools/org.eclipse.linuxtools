@@ -1,3 +1,13 @@
+2008-05-10  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	Add support for %pretrans and %posttrans sections
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java: 
+	Add definitions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/editor/SpecfileParser.java:
+	(parseSection): Prevent NPE when the section is not defined and add definitions 
+	for %pretrans and %posttrans.
+
 2008-05-02  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #230024

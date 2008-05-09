@@ -26,9 +26,9 @@ import org.eclipse.swt.SWT;
 
 public class SpecfileScanner extends RuleBasedScanner {
 
-	private static String[] sections = { "%prep", "%build", "%install", "%pre",
+	private static String[] sections = { "%prep", "%build", "%install", "%pretrans", "%pre",
 			"%preun", "%post", "%files", "%changelog", "%package",
-			"%description", "%postun", "%clean", "%check" };
+			"%description", "%postun", "%posttrans", "%clean", "%check" };
 
 	private static String[] definedMacros = { "%define", "%make", "%setup",
 			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir",
