@@ -23,7 +23,7 @@ import org.eclipse.jface.text.hyperlink.URLHyperlink;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.URLHyperlinkWithMacroDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.ui.IEditorPart;

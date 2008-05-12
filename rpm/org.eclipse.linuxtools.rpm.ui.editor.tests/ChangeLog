@@ -1,4 +1,9 @@
-2008-04-08 Alexander Kurtakov <akurtakov@gmail.com>
+2008-05-12  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix compile.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java:
+	Fix compile.
+
+2008-04-08  Alexander Kurtakov <akurtakov@gmail.com>
 
 	* .classpat: Bump requirement to java 5.
 
