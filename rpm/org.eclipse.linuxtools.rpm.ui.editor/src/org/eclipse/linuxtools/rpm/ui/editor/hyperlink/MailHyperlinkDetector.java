@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.rpm.ui.editor.hyperlink;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.StringTokenizer;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -75,7 +74,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
 		if (startSeparator != -1) {
 			
-			int endSeparator= line.indexOf(">"); //$NON-NLS-1$
+			int endSeparator= line.indexOf(">");
 			
 			if (endSeparator < 5)
 				return null;
@@ -84,17 +83,17 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 			mailLength= mail.length();
 			
 			// Some cleanups, maybe we can add more.
-			mail= mail.replaceAll("(?i) at ", "@"); //$NON-NLS-1$ //$NON-NLS-2$
-			mail= mail.replaceAll("(?i) dot ", "."); //$NON-NLS-1$ //$NON-NLS-2$
-			mail= mail.replaceAll("(?i)_at_", "@"); //$NON-NLS-1$ //$NON-NLS-2$
-			mail= mail.replaceAll("(?i)_dot_", "."); //$NON-NLS-1$ //$NON-NLS-2$
+			mail= mail.replaceAll("(?i) at ", "@");
+			mail= mail.replaceAll("(?i) dot ", ".");
+			mail= mail.replaceAll("(?i)_at_", "@");
+			mail= mail.replaceAll("(?i)_dot_", ".");
 			
-			mail= mail.replaceAll(" +", " "); //$NON-NLS-1$ //$NON-NLS-2$
-			if (mail.split(" ").length == 3) { //$NON-NLS-1$
-				if (mail.indexOf("@") == -1) //$NON-NLS-1$
-					mail = mail.replaceFirst(" ", "@").replaceFirst(" ", "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			mail= mail.replaceAll(" +", " ");
+			if (mail.split(" ").length == 3) {
+				if (mail.indexOf("@") == -1)
+					mail = mail.replaceFirst(" ", "@").replaceFirst(" ", ".");
 			}
-			mail= mail.replaceAll(" ", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			mail= mail.replaceAll(" ", "");
 			
 		} else {
 
@@ -158,22 +157,22 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
 		try {
 			// mail address contain at less one '@' and one '.' character.
-			if (!mail.contains("@") || !mail.contains(".")) //$NON-NLS-1$ //$NON-NLS-2$
+			if (!mail.contains("@") || !mail.contains("."))
 				return null;			
 			
-			urlString= "mailto:" + mail; //$NON-NLS-1$
+			urlString= "mailto:" + mail;
 			char separator= '?';
 			String subject= getSubject();
 			if (subject != null) {
-				urlString+= separator + "subject=" + subject; //$NON-NLS-1$
+				urlString+= separator + "subject=" + subject;
 				separator= '&';
 			}
 			String body= getBody();
 			if (body != null)
-				urlString+= separator + "body=" + body; //$NON-NLS-1$
+				urlString+= separator + "body=" + body;
 
 			// url don't like %
-			urlString= urlString.replaceAll("\\%", "\\%25"); //$NON-NLS-1$ //$NON-NLS-2$
+			urlString= urlString.replaceAll("\\%", "\\%25");
 			new URL(urlString);
 		} catch (MalformedURLException ex) {
 			ex.printStackTrace();
@@ -187,8 +186,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
 	private String getSubject() {
 		Specfile specfile= editor.getSpecfile();
-		return MessageFormat.format("[{0}.spec - {1}-{2}]", specfile.getName(), specfile.getVersion(), //$NON-NLS-1$
-				specfile.getRelease());		 
+		return "[" + specfile.getName() + ".spec - " + specfile.getVersion() + "-" + specfile.getRelease() + "]";		
 	}
 
 	private String getBody() {
@@ -205,7 +203,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 					body= document.get().substring(begin,
 							selection.getOffset() + selection.getLength());
 					// replace left spaces or tabs and add a space at the begin of each line.
-					body= body.replaceAll("(?m)^[ \\t]+|[ \\t]+$|^", " "); //$NON-NLS-1$ //$NON-NLS-2$
+					body= body.replaceAll("(?m)^[ \\t]+|[ \\t]+$|^", " ");
 				}
 			} catch (BadLocationException e) {
 			}

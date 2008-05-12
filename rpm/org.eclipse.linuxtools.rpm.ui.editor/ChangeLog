@@ -1,3 +1,25 @@
+2008-05-12  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Add support to detect mail hyperlink. To make a try, just select a
+	part of text in the specfile and <ctrl> + click on a mail address.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/MailHyperlink.java: New
+	file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/MailHyperlinkDetector.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/URLHyperlinkWithMacroDetector.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/URLHyperlinkWithMacroDetector.java:
+	Moved.
+	* .classpath: add StandardVMType/J2SE-1.5.
+	* META-INF/MANIFEST.MF: export hyperlink package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java
+	(getPresentationReconciler):
+	(getHyperlinkDetectors): Add mail detector.
+	(getHyperlinkDetectorTargets): Add java doc.
+	(getTextHover): likewise.
+	(getDoubleClickStrategy): likewise.
+	(getConfiguredContentTypes): likewise.
+
 2008-05-10  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Add support for %pretrans and %posttrans sections

@@ -35,7 +35,9 @@ import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.AnnotationHover;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
+import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
@@ -54,9 +56,17 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		this.colorManager = colorManager;
 		this.editor = editor;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getConfiguredContentTypes(org.eclipse.jface.text.source.ISourceViewer)
+	 */
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return SpecfilePartitionScanner.SPEC_PARTITION_TYPES;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getDoubleClickStrategy(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 */
 	public ITextDoubleClickStrategy getDoubleClickStrategy(
 		ISourceViewer sourceViewer,
 		String contentType) {
@@ -99,12 +109,18 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getTextHover(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 */
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		if (specfileHover == null)
 			specfileHover = new SpecfileHover(this.editor);
 		return specfileHover;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getPresentationReconciler(org.eclipse.jface.text.source.ISourceViewer)
+	 */
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();
 
@@ -187,7 +203,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		if (sourceViewer == null)
 			return null;
 		return new IHyperlinkDetector[] { new URLHyperlinkWithMacroDetector(editor.getSpecfile()),
-				new SpecfileElementHyperlinkDetector(editor.getSpecfile())};
+				new SpecfileElementHyperlinkDetector(editor.getSpecfile()), new MailHyperlinkDetector(editor)};
 	}
 	
 	/* (non-Javadoc)
@@ -199,7 +215,8 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		return annotationHover;
 	}
 	
-	/**
+
+	/* (non-Javadoc)
 	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
 	 */
 	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
