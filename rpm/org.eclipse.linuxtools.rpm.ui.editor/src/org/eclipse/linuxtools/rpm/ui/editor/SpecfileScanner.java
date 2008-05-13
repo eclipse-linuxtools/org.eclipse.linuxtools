@@ -23,12 +23,14 @@ import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.swt.SWT;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileScanner extends RuleBasedScanner {
 
-	private static String[] sections = { "%prep", "%build", "%install", "%pretrans", "%pre",
-			"%preun", "%post", "%files", "%changelog", "%package",
-			"%description", "%postun", "%posttrans", "%clean", "%check" };
+	private static String[] sections = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
+		PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, FILES_SECTION, CHANGELOG_SECTION,
+		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, 
+		CHECK_SECTION };
 
 	private static String[] definedMacros = { "%define", "%make", "%setup",
 			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir",

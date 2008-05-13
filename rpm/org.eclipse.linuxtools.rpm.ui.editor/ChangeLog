@@ -1,3 +1,12 @@
+2008-05-13  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	Exctract rpm sections to a separate class.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmSections.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java:
+	Use sections from RpmSections.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java: Likewise.
+
 2008-05-12  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Add support to detect mail hyperlink. To make a try, just select a

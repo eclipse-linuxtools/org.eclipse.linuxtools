@@ -24,6 +24,7 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileParser {
 	
@@ -31,8 +32,8 @@ public class SpecfileParser {
 	 * -n or -f. Hence they are called simple. This is probably a misleading
 	 * name and it should be renamed to reflect that they are SRPM-wide sections.
 	 */
-	public static String[] simpleSections = { "%prep", "%build", "%install",
-			"%changelog" };
+	public static String[] simpleSections = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
+			CHANGELOG_SECTION};
 
 	/**
 	 * These are sections that apply to a particular sub-package (i.e. binary
@@ -40,8 +41,8 @@ public class SpecfileParser {
 	 * -f or -n appended to them, hence they are called complex. This should
 	 * probably be renamed to reflect that they are in fact per-RPM sections.
 	 */
-	private static String[] complexSections = { "%pretrans", "%pre", "%preun", "%post",
-			"%postun", "%posttrans", "%files", "%package", "%description" };
+	private static String[] complexSections = { PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION,
+			POSTUN_SECTION, POSTTRANS_SECTION, FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
 
 	
 	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771

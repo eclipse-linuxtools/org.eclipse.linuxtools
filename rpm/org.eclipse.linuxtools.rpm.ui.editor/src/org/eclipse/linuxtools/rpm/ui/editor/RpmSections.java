@@ -13,22 +13,22 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 /**
  * Definitions of all the rpm sections.
  */
-public interface RpmSections {
+public class RpmSections {
 	
-	String PREP_SECTION = "%prep"; //$NON-NLS-1$
-	String BUILD_SECTION = "%build"; //$NON-NLS-1$
-	String INSTALL_SECTION = "%install"; //$NON-NLS-1$
-	String PRETRANS_SECTION = "%pretrans"; //$NON-NLS-1$
-	String PRE_SECTION = "%pre"; //$NON-NLS-1$
-	String PREUN_SECTION = "%preun"; //$NON-NLS-1$
-	String POST_SECTION = "%post"; //$NON-NLS-1$
-	String POSTUN_SECTION = "%postun"; //$NON-NLS-1$
-	String POSTTRANS_SECTION = "%posttrans"; //$NON-NLS-1$
-	String CLEAN_SECTION = "%clean"; //$NON-NLS-1$
-	String FILES_SECTION = "%files"; //$NON-NLS-1$
-	String CHECK_SECTION = "%check"; //$NON-NLS-1$
-	String CHANGELOG_SECTION = "%changelog"; //$NON-NLS-1$
-	String PACKAGE_SECTION = "%package"; //$NON-NLS-1$
-	String DESCRIPTION_SECTION = "%description"; //$NON-NLS-1$
+	public static final String PREP_SECTION = "%prep";
+	public static final String BUILD_SECTION = "%build";
+	public static final String INSTALL_SECTION = "%install";
+	public static final String PRETRANS_SECTION = "%pretrans";
+	public static final String PRE_SECTION = "%pre";
+	public static final String PREUN_SECTION = "%preun";
+	public static final String POST_SECTION = "%post";
+	public static final String POSTUN_SECTION = "%postun";
+	public static final String POSTTRANS_SECTION = "%posttrans";
+	public static final String CLEAN_SECTION = "%clean";
+	public static final String FILES_SECTION = "%files";
+	public static final String CHECK_SECTION = "%check";
+	public static final String CHANGELOG_SECTION = "%changelog";
+	public static final String PACKAGE_SECTION = "%package";
+	public static final String DESCRIPTION_SECTION = "%description";
 
 }

@@ -24,6 +24,7 @@ import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 
@@ -36,12 +37,14 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES};
 	
 	/** All possible headers for sections of the type SPEC_SCRIPT */
-	private static String[] sectionHeaders = { "%prep", "%build", "%install", "%pretrans", "%pre",
-		"%preun", "%post", "%postun", "%posttrans", "%clean"};
+	private static String[] sectionHeaders = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION, 
+		PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, POSTUN_SECTION,
+		POSTTRANS_SECTION, CLEAN_SECTION};
 
 	/** All possible headers for section that can come after sections of the type SPEC_SCRIPT */
-	private static String[] sectionEndingHeaders = { "%prep", "%build", "%install", "%pretrans" , "%pre",
-		"%preun", "%post", "%postun", "%posttrans", "%clean", "%files"};
+	private static String[] sectionEndingHeaders = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION, 
+		PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, 
+		CLEAN_SECTION, FILES_SECTION};
 	
 	public SpecfilePartitionScanner() {
 		// FIXME:  do we need this?
