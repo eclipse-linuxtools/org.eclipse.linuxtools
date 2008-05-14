@@ -12,6 +12,9 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,6 +34,15 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 
 public class SpecfileFoldingStructureProvider {
 
+	
+	private class ElementByLineNbrComparator implements Comparator<SpecfileElement> {
+		public int compare(SpecfileElement element1, SpecfileElement element2) {
+			Integer lineNbr1 = element1.getLineNumber();
+			Integer lineNbr2 = element2.getLineNumber();
+			return lineNbr1.compareTo(lineNbr2);
+		}
+	}
+	
 	private static final Annotation[] EMPTY = new Annotation[] {};
 	private SpecfileEditor sEditor;
 	private IDocument sDocument;
@@ -95,7 +107,12 @@ public class SpecfileFoldingStructureProvider {
 	private Set<Position> createFoldingStructure(Specfile specfile)
 			throws BadLocationException {
 		Set<Position> set = new HashSet<Position>();
-		addFoldingRegions(set, specfile.getSections());
+		
+		List<SpecfileElement> elements = new ArrayList<SpecfileElement>();
+		elements.addAll(specfile.getSectionsAsList());
+		elements.addAll(specfile.getComplexSectionsAsList());
+		Collections.sort(elements, new ElementByLineNbrComparator());
+		addFoldingRegions(set, elements.toArray());
 		return set;
 	}
 
@@ -110,7 +127,7 @@ public class SpecfileFoldingStructureProvider {
 		} catch (Exception exception){
 			//pass
 		}
-		// add folding on all "simple" sections
+
 		for (int i = 0; i < elements.length; i++) {
 			SpecfileElement startElement = (SpecfileElement) elements[i];
 			int offsetPos = startElement.getLineStartPosition();

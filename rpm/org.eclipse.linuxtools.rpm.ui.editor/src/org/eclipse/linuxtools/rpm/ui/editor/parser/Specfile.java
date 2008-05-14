@@ -38,6 +38,7 @@ public class Specfile {
 	SpecfilePackageContainer packages;
 
 	List<SpecfileSection> sections;
+	List<SpecfileSection> complexSections;
 
 	Map<String, SpecfileDefine> defines;
 
@@ -51,6 +52,7 @@ public class Specfile {
 		packages = new SpecfilePackageContainer();
 		preamble = new SpecfilePreamble();
 		sections = new ArrayList<SpecfileSection>();
+		complexSections = new ArrayList<SpecfileSection>();
 		defines = new HashMap<String, SpecfileDefine>();
 		sources = new HashMap<Integer, SpecfileSource>();
 		patches = new HashMap<Integer, SpecfileSource>();
@@ -64,6 +66,10 @@ public class Specfile {
 	public Object[] getSections() {
 		return sections.toArray();
 	}
+
+	public List<SpecfileSection> getSectionsAsList() {
+		return sections;
+	}
 	
 	public SpecfileElement[] getSectionsElements() {
 		SpecfileElement[] elements = new SpecfileElement[sections.size()]; 
@@ -73,6 +79,21 @@ public class Specfile {
 		return elements;
 	}
 	
+	public Object[] getComplexSections() {
+		return complexSections.toArray();
+	}
+	
+	public List<SpecfileSection> getComplexSectionsAsList() {
+		return complexSections;
+	}
+	
+	public SpecfileElement[] getComplexSectionsElements() {
+		SpecfileElement[] elements = new SpecfileElement[complexSections.size()]; 
+		for (int i = 0 ; i < complexSections.size(); i++) {
+			elements[i] = complexSections.get(i);
+		}
+		return elements;
+	}	
 
 	public SpecfileSource getPatch(int number) {
 		return patches.get(new Integer(number));
@@ -94,6 +115,10 @@ public class Specfile {
 		sections.add(section);
 	}
 
+	public void addComplexSection(SpecfileSection section) {
+		complexSections.add(section);
+	}
+	
 	public void addSource(SpecfileSource source) {
 		sources.put(new Integer(source.getNumber()), source);
 	}

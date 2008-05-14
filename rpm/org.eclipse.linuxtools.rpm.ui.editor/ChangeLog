@@ -1,3 +1,19 @@
+2008-05-14  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	Add folding on all complex sections.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java
+	(getComplexSectionsAsList): New method.
+	(addComplexSection): Likewise.
+	(getComplexSections):Likewise. 
+	(getComplexSectionsElements): Likewise.
+	(getSectionsAsList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
+	(parseSection): Add complex sections.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java
+	(addFoldingRegions): Likewise.
+	(createFoldingStructure): Likewise.
+	(ElementByLineNbrComparator): New inner class.
+
 2008-05-13  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Exctract rpm sections to a separate class.

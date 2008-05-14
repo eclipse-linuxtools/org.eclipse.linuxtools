@@ -42,8 +42,7 @@ public class SpecfileParser {
 	 * probably be renamed to reflect that they are in fact per-RPM sections.
 	 */
 	private static String[] complexSections = { PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION,
-			POSTUN_SECTION, POSTTRANS_SECTION, FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
-
+			CLEAN_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
 	
 	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771
 	//	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
@@ -208,8 +207,10 @@ public class SpecfileParser {
 			for (int i = 0; i < complexSections.length; i++) {
 				if (token.equals(complexSections[i])) {
 					String name = token.substring(1);
-                                        if (!name.equals("package"))
-                                            toReturn = new SpecfileSection(name, specfile);
+					if (!name.equals("package")) {
+						toReturn = new SpecfileSection(name, specfile);
+						specfile.addComplexSection(toReturn);
+					}	
 					while (iter.hasNext()) {
 						String nextToken = iter.next();
 						if (nextToken.equals("-n")) {
