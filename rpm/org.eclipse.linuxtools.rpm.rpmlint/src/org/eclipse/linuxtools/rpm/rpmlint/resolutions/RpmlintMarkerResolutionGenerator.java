@@ -51,6 +51,8 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 			resolutions.add(new PatchNotApplied());
 		} else if (rpmlintErrorId.equals(NoBuildrootTag.ID)) {
 			resolutions.add(new NoBuildrootTag());
+		} else if (rpmlintErrorId.equals(NoCleaningOfBuildroot.ID)){
+			resolutions.add(new NoCleaningOfBuildroot());
 		}
 
 		return resolutions.toArray(new IMarkerResolution[resolutions.size()]);

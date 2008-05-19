@@ -1,4 +1,10 @@
 2008-05-19  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add no-cleaning-of-buildroot quick fix.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
+	(getResolutions): Enable no-cleaning-of-buildroot quick fix.
+
+2008-05-19  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add no-buildroot-tag quick fix.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/AInsertLineResolution.java: New file.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java: Likewise.

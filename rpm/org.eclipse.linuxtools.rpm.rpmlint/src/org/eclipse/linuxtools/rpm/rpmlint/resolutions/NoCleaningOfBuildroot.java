@@ -10,17 +10,20 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import java.util.List;
-
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.swt.graphics.Image;
 
 public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
-	public static final String ID = "no-cleaning-of-buildroot"; //$NON-NLS-1$
+	public static String ID = "no-cleaning-of-buildroot";
 
 	public String getDescription() {
-		return Messages.NoCleaningOfBuildroot_0;
+		return "You should clean $RPM_BUILD_ROOT in the %clean section and just after the beginning of %install section. Use \"rm -Rf $RPM_BUILD_ROOT\"";
+	}
+
+	public Image getImage() {
+		return null;
 	}
 
 	public String getLabel() {
@@ -29,18 +32,15 @@ public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "rm -Rf $RPM_BUILD_ROOT\n"; //$NON-NLS-1$
+		return "rm -Rf $RPM_BUILD_ROOT\n";
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
-		List<SpecfileSection> sections = editor.getSpecfile().getSections();
-		for (SpecfileSection section : sections) {
-			if (section.getName().equals("install") //$NON-NLS-1$
-					|| section.getName().equals("clean")) { //$NON-NLS-1$
-				if (markerLine == section.getLineNumber()) {
-					return section.getLineNumber() + 1;
-				}
+		SpecfileElement[] sections = editor.getSpecfile().getSectionsElements();
+		for (SpecfileElement section : sections) {
+			if (section.getName().equals("install")) {
+				return section.getLineNumber() + 1;
 			}
 		}
 		return 0;
