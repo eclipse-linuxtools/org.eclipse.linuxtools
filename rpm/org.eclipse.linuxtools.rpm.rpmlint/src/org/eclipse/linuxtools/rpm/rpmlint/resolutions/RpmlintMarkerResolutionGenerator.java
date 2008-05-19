@@ -43,15 +43,17 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	 * @see org.eclipse.ui.IMarkerResolutionGenerator#getResolutions(org.eclipse.core.resources.IMarker)
 	 */
 	public IMarkerResolution[] getResolutions(IMarker marker) {
-		List resolutions = new ArrayList();
+		List<IMarkerResolution> resolutions = new ArrayList<IMarkerResolution>();
 		String rpmlintErrorId = getRpmlintErrorId(marker);
 		if (rpmlintErrorId.equals(SetupNotQuiet.ID)) {
 			resolutions.add(new SetupNotQuiet());
-		} else if (rpmlintErrorId.equals(PatchNotApplied.ID))
+		} else if (rpmlintErrorId.equals(PatchNotApplied.ID)) {
 			resolutions.add(new PatchNotApplied());
-		
-		return (IMarkerResolution[]) resolutions.toArray(
-		         new IMarkerResolution[resolutions.size()]);
+		} else if (rpmlintErrorId.equals(NoBuildrootTag.ID)) {
+			resolutions.add(new NoBuildrootTag());
+		}
+
+		return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
 	}
 	
 	/**

@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Quick fix for the "no-buildroot-tag" error.
@@ -21,10 +22,14 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
  *
  */
 public class NoBuildrootTag extends AInsertLineResolution {
-	public static final String ID = "no-buildroot-tag"; //$NON-NLS-1$
+	public static String ID = "no-buildroot-tag";
 
 	public String getDescription() {
-		return Messages.NoBuildrootTag_0;
+		return "The BuildRoot tag isn't used in your spec. It must be used in order to allow building the package as non root on some systems.";
+	}
+
+	public Image getImage() {
+		return null;
 	}
 
 	public String getLabel() {
@@ -33,15 +38,15 @@ public class NoBuildrootTag extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root\n\n"; //$NON-NLS-1$
+		return "BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root\n\n";
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		List<SpecfileSection> sections = editor.getSpecfile()
-				.getComplexSections();
+				.getComplexSectionsAsList();
 		for (SpecfileSection section : sections) {
-			if (section.getName().equals("description") //$NON-NLS-1$
+			if (section.getName().equals("description")
 					&& section.getPackage() == null) {
 				return section.getLineNumber();
 			}

@@ -1,3 +1,11 @@
+2008-05-19  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add no-buildroot-tag quick fix.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/AInsertLineResolution.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
+	(getResolutions): Enable no-buildroot-tag.
+	* META-INF/MANIFEST.MF: Import org.eclipse.ui.editors package.
+	
 2008-04-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Generify.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java
