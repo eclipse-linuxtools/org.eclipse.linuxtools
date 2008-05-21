@@ -1,3 +1,9 @@
+2008-05-21  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add no-%build-section quick fix.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
+	(getResolutions): Enable no-%build-section fix.
+
 2008-05-19  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add no-cleaning-of-buildroot quick fix.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java: New file.

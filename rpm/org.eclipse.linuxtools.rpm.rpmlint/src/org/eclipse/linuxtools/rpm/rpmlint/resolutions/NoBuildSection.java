@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import java.util.List;
-
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.swt.graphics.Image;
+
 
 /**
  * Resolution for the no-%build-section rpmlint warning.
@@ -21,10 +21,14 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
  *
  */
 public class NoBuildSection extends AInsertLineResolution {
-	public static final String ID = "no-%build-section"; //$NON-NLS-1$
+	public static String ID = "no-%build-section";
 
 	public String getDescription() {
-		return Messages.NoBuildSection_0;
+		return "Insert empty %build section";
+	}
+
+	public Image getImage() {
+		return null;
 	}
 
 	public String getLabel() {
@@ -33,14 +37,14 @@ public class NoBuildSection extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "%build\n\n"; //$NON-NLS-1$
+		return "%build\n\n";
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
-		List<SpecfileSection> sections = editor.getSpecfile().getSections();
-		for (SpecfileSection section : sections) {
-			if (section.getName().equals("install")) { //$NON-NLS-1$
+		SpecfileElement[] sections = editor.getSpecfile().getSectionsElements();
+		for (SpecfileElement section : sections) {
+			if (section.getName().equals("install")) {
 				return section.getLineNumber();
 			}
 		}
