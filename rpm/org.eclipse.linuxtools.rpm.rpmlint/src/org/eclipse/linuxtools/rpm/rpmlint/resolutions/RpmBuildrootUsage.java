@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
+import org.eclipse.swt.graphics.Image;
+
 public class RpmBuildrootUsage extends ARemoveLineResolution{
-	public static final String ID = "rpm-buildroot-usage"; //$NON-NLS-1$
+	public static String ID = "rpm-buildroot-usage";
 
 	/*
 	 * (non-Javadoc)
@@ -19,7 +21,16 @@ public class RpmBuildrootUsage extends ARemoveLineResolution{
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.RpmBuildrootUsage_0;
+		return "$RPM_BUILD_ROOT should not be touched during %build or %prep stage, as it will break short circuiting.";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
+	 */
+	public Image getImage() {
+		return null;
 	}
 
 	/*
