@@ -19,6 +19,7 @@ public class SetupNotQuiet extends AReplaceTextResolution {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.rpmlint.quickfixes.AReplaceTextResolution#getOriginalString()
 	 */
+	@Override
 	public String getOriginalString() {
 		return "%setup";
 	}
@@ -26,6 +27,7 @@ public class SetupNotQuiet extends AReplaceTextResolution {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.rpmlint.quickfixes.AReplaceTextResolution#getReplaceString()
 	 */
+	@Override
 	public String getReplaceString() {
 		return "%setup -q";
 	}
