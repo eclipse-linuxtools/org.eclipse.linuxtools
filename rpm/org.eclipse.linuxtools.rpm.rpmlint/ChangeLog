@@ -1,4 +1,4 @@
-2008-05-21  Alexander Kurtakov  <akurtakov@gmail.com>
+2008-05-22  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add rpm-buildroot-usage quick fix.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmBuildrootUsage.java: New file.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
