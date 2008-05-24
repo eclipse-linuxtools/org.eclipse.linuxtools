@@ -33,6 +33,7 @@ public class RpmlintPreferencePage extends FieldEditorPreferencePage implements
 	 * 
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
+	@Override
 	public void createFieldEditors() {
 		FileFieldEditor rpmlintFileFieldEditor = new FileFieldEditor(
 				PreferenceConstants.P_RPMLINT_PATH, "rpmlint path",

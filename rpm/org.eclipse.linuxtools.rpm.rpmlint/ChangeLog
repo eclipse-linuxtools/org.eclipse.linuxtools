@@ -1,3 +1,17 @@
+2008-05-24  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add missing @Override annotations.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java:
+	(start): Likewise.
+	(stop): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java:
+	(build): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintItem.java:
+	(toString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/preferences/PreferenceInitializer.java:
+	(initializeDefaultPreferences): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/preferences/RpmlintPreferencePage.java:
+	(createFieldEditors): Likewise.
+
 2008-05-22  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add rpm-buildroot-usage quick fix.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmBuildrootUsage.java: New file.

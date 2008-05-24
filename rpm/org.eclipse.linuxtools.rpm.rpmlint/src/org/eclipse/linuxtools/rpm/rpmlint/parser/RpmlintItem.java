@@ -107,6 +107,7 @@ public class RpmlintItem {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "line number: " + this.lineNbr 
 			+ "\nfile name: " + this.fileName
