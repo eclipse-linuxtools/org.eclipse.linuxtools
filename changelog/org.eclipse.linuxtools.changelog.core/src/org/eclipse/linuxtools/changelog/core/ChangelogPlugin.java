@@ -45,7 +45,7 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 		plugin = this;
 		try {
 			resourceBundle = ResourceBundle
-					.getBundle("org.eclipse.linuxtools.changelog.core.ChangelogPluginResources");
+					.getBundle("org.eclipse.linuxtools.changelog.core.strings"); // $NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -107,9 +107,9 @@ public class ChangelogPlugin extends AbstractUIPlugin {
 		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL", // $NON-NLS-2$
 				ChangeLogPreferencesPage.getUserEmail());
 		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", // $NON-NLS-1$ 
-				"gnuFormatter"); // $NON-NLS-1$
+				getResourceString("ChangeLogPreferencesPage.gnuFormatter")); // $NON-NLS-1$
 		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", // $NON-NLS-1$ 
-				"gnuEditorConfig"); // $NON-NLS-1$
+				getResourceString("ChangeLogPreferencesPage.gnuEditorConfig")); // $NON-NLS-1$
 
 	}
 }

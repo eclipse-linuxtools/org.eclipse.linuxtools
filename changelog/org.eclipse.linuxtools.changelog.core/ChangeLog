@@ -1,3 +1,15 @@
+2008-06-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.properties: Add strings for gnuFormatter and gnuEditorConfig names. 
+	* plugin.xml: Specify names from properties file for gnuFormatter and gnuEditorConfig.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java (initializeDefaultPreferences): 
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java (storeValues): Verify
+	there is a valid selection before attempting to access it. 
+	(initializeDefaultPreferences): Use property strings when looking for default gnuFormatter
+	and default gnuEditorConfig names.
+	* src/org/eclipse/linuxtools/changelog/core/strings.properties: Add corresponding strings for
+	gnuFormatter and gnuEditorConfig for code to use as comparison. 
+
 2008-01-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* .classpath: Fix JSRE requirement.

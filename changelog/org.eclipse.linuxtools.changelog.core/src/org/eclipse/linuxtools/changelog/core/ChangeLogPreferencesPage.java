@@ -151,8 +151,10 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 		store.setDefault("IChangeLogConstants.AUTHOR_NAME", getUserRealName()); //$NON-NLS-1$	
 		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL", getUserEmail()); //$NON-NLS-1$
 
-		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", "GNU Style"); //$NON-NLS-1$ //$NON-NLS-2$
-		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", "GNU Editor"); //$NON-NLS-1$ //$NON-NLS-2$
+		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", // $NON-NLS-1$ 
+				Messages.getString("ChangeLogPreferencesPage.gnuFormatter")); //$NON-NLS-1$
+		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", // $NON-NLS-1$
+				Messages.getString("ChangeLogPreferencesPage.gnuEditorConfig")); //$NON-NLS-1$
 
 	}
 
@@ -259,9 +261,11 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 				.setValue(
 						"IChangeLogConstants.AUTHOR_EMAIL", emailField.getText()); //$NON-NLS-1$
 		String[] selection = formatterList.getSelection();
-		store.setValue("IChangeLogConstants.DEFAULT_FORMATTER", selection[0]); //$NON-NLS-1$
+		if (selection != null && selection.length > 0)
+			store.setValue("IChangeLogConstants.DEFAULT_FORMATTER", selection[0]); //$NON-NLS-1$
 		String[] selection2 = editorList.getSelection();
-		store.setValue("IChangeLogConstants.DEFAULT_EDITOR", selection2[0]); //$NON-NLS-1$
+		if (selection2 != null && selection2.length > 0)
+			store.setValue("IChangeLogConstants.DEFAULT_EDITOR", selection2[0]); //$NON-NLS-1$
 
 	}
 

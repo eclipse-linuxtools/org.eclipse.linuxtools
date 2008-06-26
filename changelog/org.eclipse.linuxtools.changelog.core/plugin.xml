@@ -103,7 +103,7 @@
               inFile="false"
               class="org.eclipse.linuxtools.changelog.core.formatters.GNUFormat"
               id="org.eclipse.linuxtools.changelog.GNUFormat"
-              name="gnuFormatter">
+              name="%gnuFormatter">
               <fileName name="ChangeLog" />  
         </formatter>        
   </extension>
@@ -122,7 +122,7 @@
        <editor
              class="org.eclipse.linuxtools.changelog.core.editors.GNUEditorConfiguration"
              id="org.eclipse.linuxtools.changelog.core.gnueditor"
-             name="gnuEditorConfig"/>
+             name="%gnuEditorConfig"/>
     </extension>
     <extension
           point="org.eclipse.ui.navigator.viewer">
