@@ -1,3 +1,13 @@
+2008-06-27  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add quick outline.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorShowOutlineActionDelegate.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outlin/ContainsFilter.java: 
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outlin/SpecfileQuickOutlineDialog.java:
+	Likewise.
+	* plugin.xml: Add the quick outline action.
+
 2008-05-14  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	Add folding on all complex sections.

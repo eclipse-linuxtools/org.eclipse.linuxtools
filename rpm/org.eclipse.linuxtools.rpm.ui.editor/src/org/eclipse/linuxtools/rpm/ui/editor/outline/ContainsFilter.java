@@ -51,8 +51,8 @@ public class ContainsFilter extends ViewerFilter {
 	private boolean hasUnfilteredChild(TreeViewer viewer, Object element) {
 		Object[] children = ((ITreeContentProvider) viewer.getContentProvider())
 				.getChildren(element);
-		for (Object child :children) {
-			if (select(viewer, element, child)) {
+		for (int i = 0; i < children.length; i++) {
+			if (select(viewer, element, children[i])) {
 				return true;
 			}
 		}

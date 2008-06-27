@@ -163,6 +163,10 @@
             categoryId="rpmEditor.category"
             name="Organize patches"
             id="rpmEditor.organizePatches.command"/>
+         <command
+         	categoryId="rpmEditor.category"
+            id="rpmEditor.showOutline.command"
+            name="Show outline"/>
    </extension>
    <!-- Key bindings -->
    <extension
@@ -175,6 +179,11 @@
       <key
            sequence="Ctrl+Shift+O"
            commandId="rpmEditor.organizePatches.command"
+           contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+      	   sequence="Ctrl+O"
+           commandId="rpmEditor.showOutline.command"
            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
@@ -198,6 +207,11 @@
                class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
                definitionId="rpmEditor.organizePatches.command"
                id="rpmEditor.organizePatches.command"/>
+         <action
+               label="Show outline"
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+               definitionId="rpmEditor.showOutline.command"
+               id="rpmEditor.showOutline.command"/>
       </actionSet>
    </extension>      
    <!-- Editor menu actions -->
@@ -222,6 +236,14 @@
                menubarPath="additions"
                tooltip="Add or Remove Comments"
                definitionId="rpmEditor.toggleComment.command">
+         </action>
+         <action
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.showOutlineAction"
+               label="Show Outline"
+               menubarPath="additions"
+               tooltip="Show Outline"
+               definitionId="rpmEditor.showOutline.command">
          </action>
       </viewerContribution>
    </extension>   
