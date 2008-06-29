@@ -1,3 +1,7 @@
+2008-06-29  Alphonse Van Assche  <alcapcom@gmail.com>
+
+	* META-INF/MANIFEST.MF: bump to 0.4.0
+
 2008-06-27  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add quick outline.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorShowOutlineActionDelegate.java:
