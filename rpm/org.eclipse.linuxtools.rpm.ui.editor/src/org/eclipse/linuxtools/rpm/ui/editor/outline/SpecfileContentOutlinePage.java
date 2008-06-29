@@ -63,6 +63,7 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 		}
 	}
 	
+	@Override
 	public void createControl(Composite parent) {
 
 		super.createControl(parent);
@@ -79,6 +80,7 @@ public class SpecfileContentOutlinePage extends ContentOutlinePage {
 	/*
 	 * Change in selection
 	 */
+	@Override
 	public void selectionChanged(SelectionChangedEvent event)
 	{
 		super.selectionChanged(event);

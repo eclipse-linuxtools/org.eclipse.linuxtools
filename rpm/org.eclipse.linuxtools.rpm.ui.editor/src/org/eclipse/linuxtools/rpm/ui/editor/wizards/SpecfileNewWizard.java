@@ -42,6 +42,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	/**
 	 * Adding the page to the wizard.
 	 */
+	@Override
 	public void addPages() {
 		page = new SpecfileNewWizardPage(selection);
 		addPage(page);
@@ -51,6 +52,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	 * This method is called when 'Finish' button is pressed in the wizard. We
 	 * will create an operation and run it using wizard as execution context.
 	 */
+	@Override
 	public boolean performFinish() {
 		final String containerName = page.getProjectName();
 		final String fileName = page.getFileName();

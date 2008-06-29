@@ -124,6 +124,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		Button button = new Button(container, SWT.PUSH);
 		button.setText("Select a project...");
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleBrowse();
 			}

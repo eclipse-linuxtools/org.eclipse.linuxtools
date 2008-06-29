@@ -34,6 +34,7 @@ IWorkbenchPreferencePage{
 		/* (non-Javadoc)
 		 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 		 */
+		@Override
 		public void createFieldEditors() {
 			addField(maxProposalsIntegerFieldEditor());
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_NAME, "Name", getFieldEditorParent()));

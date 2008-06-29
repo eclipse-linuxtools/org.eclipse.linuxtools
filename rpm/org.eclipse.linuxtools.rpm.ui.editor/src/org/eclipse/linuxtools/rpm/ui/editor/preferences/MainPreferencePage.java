@@ -57,6 +57,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		fieldEditorParent = new Composite(parent, SWT.LEFT);
 		fieldEditorParent.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -65,6 +66,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
         Link link= new Link(fieldEditorParent, SWT.NONE);
 		link.setText("Use the <a href=\"org.eclipse.linuxtools.changelog.core.Page1\">ChangeLog</a> preferences to configure your name and e-mail address.");
 		link.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				PreferencesUtil.createPreferenceDialogOn(fieldEditorParent.getShell() , e.text, null, null); 
 			}
@@ -111,6 +113,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		combo.select(selectedItem);
 		// update preferences
 		combo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Combo combo = (Combo) e.getSource();
 				getPreferenceStore().setValue(
@@ -123,6 +126,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
+	@Override
 	public void createFieldEditors() {
 		addField(changelogEntryFormatFieldEditor(fieldEditorParent));
 
@@ -138,6 +142,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#performDefaults()
 	 */
+	@Override
 	protected void performDefaults() {
 		super.performDefaults();
 		combo.select(defaultItem);

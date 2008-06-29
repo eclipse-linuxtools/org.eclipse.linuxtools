@@ -1,3 +1,31 @@
+2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add missing @Override.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/MailHyperlink.java:
+	(open): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/URLHyperlinkWithMacroDetector.java:
+	(detectHyperlinks): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentOutlinePage.java:
+	(createControl): Likewise.
+	(selectionChanged): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalPreferencePage.java:
+	(MacroListEditor): Likewise.
+	(createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MainPreferencePage.java:
+	(createContents): Likewise.
+	(createFieldEditors): Likewise.
+	(createLocalesCombo): Likewise.
+	(performDefaults): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java:
+	(initializeDefaultPreferences): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmInformationsPreferencePage.java:
+	(createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java:
+	(createContents): Likewise.
+	(createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java:
+	(isShowFormatterSetting): Likewise.
+	(performOK): Likewise.
+
 2008-06-29  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* META-INF/MANIFEST.MF: bump to 0.4.0

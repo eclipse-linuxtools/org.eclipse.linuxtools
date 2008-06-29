@@ -33,6 +33,7 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage implement
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#isShowFormatterSetting()
 	 */
+	@Override
 	protected boolean isShowFormatterSetting() {
 		return true;
 	}
@@ -41,6 +42,7 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage implement
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#performOk()
 	 */
+	@Override
 	public boolean performOk() {
 		boolean ok= super.performOk();
 		Activator.getDefault().savePluginPreferences();

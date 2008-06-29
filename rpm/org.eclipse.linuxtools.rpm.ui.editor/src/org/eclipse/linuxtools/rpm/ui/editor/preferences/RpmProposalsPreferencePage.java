@@ -51,6 +51,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	 * 
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
+	@Override
 	public void createFieldEditors() {
 		addField(rpmtoolsRadioGroupFieldEditor());	
 		// FIXME: there is validations problem when a FileFieldEditor is used, so 
@@ -67,10 +68,12 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	 * 
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createContents(final Composite parent) {
 		Link link= new Link(parent, SWT.NONE);
 		link.setText("<a href=\"org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage\">Package Information</a> page helps to configure proposal descriptions");
 		link.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				PreferencesUtil.createPreferenceDialogOn(parent.getShell() , e.text, null, null); 
 			}

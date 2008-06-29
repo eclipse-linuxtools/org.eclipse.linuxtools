@@ -56,6 +56,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 	public void init(IWorkbench workbench) {
 	}
 
+	@Override
 	protected void createFieldEditors() {
 		ListEditor macroListEditor = new MacroListEditor(
 				PreferenceConstants.P_MACRO_PROPOSALS_FILESPATH,
@@ -126,6 +127,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 			list = getListControl(parent);
 		}
 
+		@Override
 		protected String createList(String[] items) {
 			StringBuffer path = new StringBuffer("");
 			for (int i = 0; i < items.length; i++) {
@@ -135,6 +137,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 			return path.toString();
 		}
 
+		@Override
 		protected String getNewInputObject() {
 			FileDialog dialog = new FileDialog(getShell());
 			return dialog.open();
@@ -145,6 +148,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 			return dialog.open();
 		}
 
+		@Override
 		protected String[] parseString(String stringList) {
 			StringTokenizer st = new StringTokenizer(stringList, ";\n\r");
 			ArrayList<String> v = new ArrayList<String>();
@@ -230,8 +234,10 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		/**
 		 * Creates a selection listener.
 		 */
+		@Override
 		public void createSelectionListener() {
 			selectionListener = new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent event) {
 					Widget widget = event.widget;
 					if (widget == addFileButton) {
@@ -266,6 +272,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		 *            the parent control
 		 * @return the button box
 		 */
+		@Override
 		public Composite getButtonBoxControl(Composite parent) {
 			if (buttonBox == null) {
 				buttonBox = new Composite(parent, SWT.NULL);
@@ -299,6 +306,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		 *            the parent control
 		 * @return the list control
 		 */
+		@Override
 		public List getListControl(Composite parent) {
 			if (list == null) {
 				list = new List(parent, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL
@@ -338,6 +346,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		 * 
 		 * @return the shell
 		 */
+		@Override
 		protected Shell getShell() {
 			if (addFileButton == null) {
 				return null;
@@ -402,6 +411,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		/*
 		 * @see FieldEditor.setEnabled(boolean,Composite).
 		 */
+		@Override
 		public void setEnabled(boolean enabled, Composite parent) {
 			super.setEnabled(enabled, parent);
 			getListControl(parent).setEnabled(enabled);
