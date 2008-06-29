@@ -33,7 +33,7 @@ public class SpecfileParser {
 	 * name and it should be renamed to reflect that they are SRPM-wide sections.
 	 */
 	public static String[] simpleSections = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
-			CHANGELOG_SECTION};
+		CLEAN_SECTION, CHANGELOG_SECTION};
 
 	/**
 	 * These are sections that apply to a particular sub-package (i.e. binary
@@ -42,7 +42,7 @@ public class SpecfileParser {
 	 * probably be renamed to reflect that they are in fact per-RPM sections.
 	 */
 	private static String[] complexSections = { PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION,
-			CLEAN_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
+		POSTUN_SECTION, POSTTRANS_SECTION, FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
 	
 	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771
 	//	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
@@ -189,7 +189,7 @@ public class SpecfileParser {
 	private SpecfileElement parseSection(String lineText, Specfile specfile, int lineNumber) {
 		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
 		SpecfileSection toReturn = null;
-		
+		boolean isSimpleSection = false;
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
 			String token = iter.next();
 
@@ -199,6 +199,7 @@ public class SpecfileParser {
 				if (token.equals(simpleSections[i])) {
 					toReturn = new SpecfileSection(token.substring(1), specfile);
 					specfile.addSection(toReturn);
+					isSimpleSection = true;
 				}
 
 			}
@@ -275,7 +276,9 @@ public class SpecfileParser {
                         topPackage = new SpecfilePackage(specfile.getName(), specfile);
                         specfile.addPackage(topPackage);
                     }
+                    if (!isSimpleSection){
                     topPackage.addSection(toReturn);
+                    }
                 }
                 
 		return toReturn;

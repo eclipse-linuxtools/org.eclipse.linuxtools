@@ -1,4 +1,16 @@
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Do not show simple sections in the subpackages + cleanup.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java:
+	(toString): Add @Override.
+	(getSections): Removed unneeded foreach.
+	(getPackage): Add @Override.
+	(getPackageName): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java:
+	(simpleSections): Add %clean.
+	(complexSections): Remove %clean.
+	(parseSections): Do not add simple sections to the subpackages.
+	
+2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add missing @Override.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/MailHyperlink.java:
 	(open): Likewise.

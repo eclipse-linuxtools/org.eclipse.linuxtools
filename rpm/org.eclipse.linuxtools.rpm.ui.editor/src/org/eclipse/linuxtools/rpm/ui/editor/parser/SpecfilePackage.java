@@ -23,8 +23,8 @@ public class SpecfilePackage extends SpecfileSection {
 		super("package", specfile);
 		super.setSpecfile(specfile);
 		setPackageName(packageName);
-                setPackage(this);
-                sections = new ArrayList<SpecfileSection>();
+        setPackage(this);
+        sections = new ArrayList<SpecfileSection>();
 	}
 
 	public String getDescription() {
@@ -35,6 +35,7 @@ public class SpecfilePackage extends SpecfileSection {
 		this.description = description;
 	}
 	
+	@Override
 	public String toString() {
 		return getPackageName();
 	}
@@ -46,12 +47,7 @@ public class SpecfilePackage extends SpecfileSection {
 	
 	public SpecfileSection[] getSections() {
 		SpecfileSection[] toReturn = new SpecfileSection[sections.size()];
-		int i = 0;
-		for (SpecfileSection section: sections){
-			toReturn[i] = section;
-			i++;
-		}
-		return toReturn;
+		return sections.toArray(toReturn);
 	}
 
 	public boolean hasChildren() {
@@ -60,15 +56,17 @@ public class SpecfilePackage extends SpecfileSection {
 		return false;
 	}
 
-        public SpecfilePackage getPackage() {
-                return this;
-        }
-            
-            
-        public String getPackageName(){
-                return resolve(this.packageName);
-        }
-        public void setPackageName(String packageName) {
-                this.packageName = packageName; 
-        }
+    @Override
+	public SpecfilePackage getPackage() {
+		return this;
+	}
+
+	@Override
+	public String getPackageName() {
+		return resolve(this.packageName);
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
 }
