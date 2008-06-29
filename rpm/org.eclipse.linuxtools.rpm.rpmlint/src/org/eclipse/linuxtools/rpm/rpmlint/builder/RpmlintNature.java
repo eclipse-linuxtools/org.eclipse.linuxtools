@@ -23,8 +23,8 @@ public class RpmlintNature implements IProjectNature {
 	public void configure() throws CoreException {
 		IProjectDescription desc = project.getDescription();
 		ICommand[] commands = desc.getBuildSpec();
-		for (int i = 0; i < commands.length; ++i) {
-			if (commands[i].getBuilderName().equals(RpmlintBuilder.BUILDER_ID)) {
+		for (ICommand command : commands) {
+			if (command.getBuilderName().equals(RpmlintBuilder.BUILDER_ID)) {
 				return;
 			}
 		}

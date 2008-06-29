@@ -119,6 +119,18 @@ public class RpmlintParser {
 					item.setFileName(lineItems[0]);
 					int lineNbr;
 					
+					
+					// FIXME: last rpmlint version (0.83) contain a summary 
+					// line at the bottom of it output, so if we 
+					// detected this line we can safely return rpmlintItems, 
+					// maybe we can find a better way to detect this line. 
+					try {
+						Integer.parseInt(line.split(" ")[0]);
+						return rpmlintItems;
+					} catch (NumberFormatException e) {
+						// this line is not the summary
+					}					
+					
 					// TODO: ask rpmlint upstream to display always the same output.
 					// at the moment the line number is not always displayed.
 					// If the same output is always used, all the workarounds for the line number can be
@@ -223,7 +235,6 @@ public class RpmlintParser {
 			}
 		} catch (IOException e) {
 			// return -1 if an I/O Exception occure.
-			RpmlintLog.logError(e);
 		}
 		return ret;
 	}

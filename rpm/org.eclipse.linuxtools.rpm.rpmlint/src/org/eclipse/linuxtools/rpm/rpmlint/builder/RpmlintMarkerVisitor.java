@@ -60,9 +60,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	public boolean visit(IResource resource) throws CoreException {
 		if (resource instanceof IFile && resource.getName().endsWith(".spec")) {
 			firstWarningInResource = true;
-			Iterator<RpmlintItem> iterator = rpmlintItems.iterator();
-			while(iterator.hasNext()) {
-				RpmlintItem item = iterator.next();
+			for (RpmlintItem item : rpmlintItems) {
 				if (item.getFileName().equals(resource.getLocation().toOSString())) {
 					currentFile = ((IFile)resource);
 					if (firstWarningInResource) {
