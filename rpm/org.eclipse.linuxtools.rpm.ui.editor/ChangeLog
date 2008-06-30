@@ -1,4 +1,9 @@
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Make missing @Override and @Deprecate warnings.
+	* .settings/org.eclipse.jdt.core.prefs: Missing @Override and @Deprecate should 
+	be warnings.
+	
+2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Do not show simple sections in the subpackages + cleanup.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java:
 	(toString): Add @Override.
