@@ -30,6 +30,7 @@ public class SpecfileSection extends SpecfileElement {
 		this.parentPackage = thePackage;
 	}
 
+	@Override
 	public String toString() {
 		if (parentPackage == null) {
 			return getName();

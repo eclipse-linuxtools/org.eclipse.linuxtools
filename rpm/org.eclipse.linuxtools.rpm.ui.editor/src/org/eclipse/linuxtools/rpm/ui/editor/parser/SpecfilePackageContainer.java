@@ -42,6 +42,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 		packages.add(subPackage);
 	}
 	
+	@Override
 	public int getLineStartPosition() {
 		if ((packages == null) || (packages.size() == 0))
 			return 0;
@@ -58,6 +59,7 @@ public class SpecfilePackageContainer extends SpecfileElement {
 		return lowestStartLine;
 	}
 	
+	@Override
 	public int getLineEndPosition() {
 		if ((packages == null) || (packages.size() == 0))
 			return 0;

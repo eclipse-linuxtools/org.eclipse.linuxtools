@@ -53,6 +53,7 @@ public class SpecfileTag extends SpecfileElement {
 		this.intValue = value;
 	}
 	
+	@Override
 	public String toString() {
 		if (tagType == INT) {
 			return getName() + ": " + getIntValue();

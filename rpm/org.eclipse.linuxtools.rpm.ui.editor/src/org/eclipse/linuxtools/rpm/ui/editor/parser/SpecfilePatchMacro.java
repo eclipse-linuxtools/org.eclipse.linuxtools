@@ -32,6 +32,7 @@ public class SpecfilePatchMacro extends SpecfileMacro {
 	public void setPatchNumber(int patchNumber) {
 		this.patchNumber = patchNumber;
 	}
+	@Override
 	public String toString() {
 		return "patch #" + patchNumber + " at level " + patchLevel;
 	}

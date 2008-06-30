@@ -61,6 +61,7 @@ public class SpecfileSource extends SpecfileElement {
 	public List<Integer> getLinesUsed() {
 		return linesUsed;
 	}
+	@Override
 	public String toString() {
 		if (sourceType == SOURCE)
 			return "Source #" + number + " (line #" + lineNumber + ", used on lines " + getLinesUsed() + ") -> " + fileName;
@@ -112,9 +113,11 @@ public class SpecfileSource extends SpecfileElement {
 			SpecfileLog.logError(e);
 		}
 	}
+	@Override
 	public int getLineNumber() {
 		return lineNumber;
 	}
+	@Override
 	public void setLineNumber(int lineNumber) {
 		this.lineNumber = lineNumber;
 	}

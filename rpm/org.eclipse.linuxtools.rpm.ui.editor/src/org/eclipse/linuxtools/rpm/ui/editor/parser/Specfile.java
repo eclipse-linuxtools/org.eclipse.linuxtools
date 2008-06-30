@@ -270,6 +270,7 @@ public class Specfile {
 		this.sources = sources;
 	}
 	
+	@Override
 	public String toString() {
 		return getName();
 	}
