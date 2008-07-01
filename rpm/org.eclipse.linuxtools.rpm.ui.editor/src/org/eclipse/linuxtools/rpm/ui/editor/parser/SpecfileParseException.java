@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 public class SpecfileParseException extends Exception {
 	
+	private static final long serialVersionUID = 1L;
 	String message;
 	int severity;
 	int lineNumber;

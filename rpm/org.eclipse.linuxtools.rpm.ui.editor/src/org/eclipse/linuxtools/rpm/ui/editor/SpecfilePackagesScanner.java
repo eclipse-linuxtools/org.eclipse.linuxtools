@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.text.TextAttribute;
@@ -62,11 +61,8 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 		wordRule = new WordRule(new PackageWordDetector(), Token.UNDEFINED);
 		List<String[]> rpmPackages = Activator.getDefault().getRpmPackageList()
 				.getProposals("");
-		Iterator<String[]> iterator = rpmPackages.iterator();
-		String[] item;
 		char[] startWith = {' ', '\t', ',', ':'};
-		while (iterator.hasNext()) {
-			item = iterator.next();
+		for (String[] item: rpmPackages){
 			// FIXME Perhaps, that can slow down the scanning?
 			for (int i = 0; i < startWith.length; i++) {
 				wordRule.addWord(startWith[i] + item[0], packageToken);
@@ -83,6 +79,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 		return fLastToken;
 	}
 
+	@Override
 	public IToken nextToken() {
 		fLastToken = super.nextToken();
 		return fLastToken;

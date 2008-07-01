@@ -22,11 +22,13 @@ public class SpecfilePartitioner extends FastPartitioner {
 		super(scanner, legalContentTypes);
 	}
 
+	@Override
 	public void connect(IDocument document, boolean delayInitialization) {
 		super.connect(document, delayInitialization);
 //		printPartitions(document);
 	}
 	
+	@Override
 	public ITypedRegion[] computePartitioning(int offset, int length, boolean includeZeroLengthPartitions) {
 		return super.computePartitioning(offset, length, includeZeroLengthPartitions);
 	};

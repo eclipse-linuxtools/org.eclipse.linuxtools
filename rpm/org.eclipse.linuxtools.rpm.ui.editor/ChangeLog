@@ -1,4 +1,20 @@
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Various cleanups.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java:
+	(start): Add missing @Override.
+	(stop): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java:
+	Remove unneeded import.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java:
+	(SpecfilePackagesScanner): Use foreach instead of iterator.
+	(nextToken): Add missing @Override.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitioner.java:
+	(computePartitioning): Likewise.
+	(connect): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParseException:
+	Add serialVersionUID.
+
+2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Make missing @Override and @Deprecate warnings.
 	* .settings/org.eclipse.jdt.core.prefs: Missing @Override and @Deprecate should 
 	be warnings.
