@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.rpm.rpmlint.builder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;

@@ -1,3 +1,18 @@
+2008-07-02 Alexander Kurtakov  <akurtakov@gmail.com>
+	Cleanup.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java:
+	Remove unused import.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java:
+	Make ID final.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/PatchNotApplied.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmBuildrootUsage.java:
+	Likewise.
+
 2007-07-18  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* META-INF/MANIFEST.MF: bump to 0.0.2	

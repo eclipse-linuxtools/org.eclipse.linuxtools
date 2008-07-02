@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
  *
  */
 public class NoBuildrootTag extends AInsertLineResolution {
-	public static String ID = "no-buildroot-tag";
+	public static final String ID = "no-buildroot-tag";
 
 	public String getDescription() {
 		return "The BuildRoot tag isn't used in your spec. It must be used in order to allow building the package as non root on some systems.";

@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 import org.eclipse.swt.graphics.Image;
 
 public class RpmBuildrootUsage extends ARemoveLineResolution{
-	public static String ID = "rpm-buildroot-usage";
+	public static final String ID = "rpm-buildroot-usage";
 
 	/*
 	 * (non-Javadoc)

@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
  *
  */
 public class NoBuildSection extends AInsertLineResolution {
-	public static String ID = "no-%build-section";
+	public static final String ID = "no-%build-section";
 
 	public String getDescription() {
 		return "Insert empty %build section";

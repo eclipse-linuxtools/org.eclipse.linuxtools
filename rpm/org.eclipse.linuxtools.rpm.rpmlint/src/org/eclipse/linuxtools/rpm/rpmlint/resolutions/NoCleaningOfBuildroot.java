@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Image;
 
 public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
-	public static String ID = "no-cleaning-of-buildroot";
+	public static final String ID = "no-cleaning-of-buildroot";
 
 	public String getDescription() {
 		return "You should clean $RPM_BUILD_ROOT in the %clean section and just after the beginning of %install section. Use \"rm -Rf $RPM_BUILD_ROOT\"";
