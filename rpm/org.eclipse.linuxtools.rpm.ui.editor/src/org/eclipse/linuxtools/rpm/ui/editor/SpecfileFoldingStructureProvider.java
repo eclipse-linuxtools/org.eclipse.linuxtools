@@ -82,8 +82,8 @@ public class SpecfileFoldingStructureProvider {
 
 	private Map<Annotation,Position> computeAdditions(Set<Position> currentRegions) {
 		Map<Annotation,Position> additionsMap = new HashMap<Annotation,Position>();
-		for (Iterator<Position> iter = currentRegions.iterator(); iter.hasNext();)
-			additionsMap.put(new ProjectionAnnotation(), iter.next());
+		for (Position position: currentRegions)
+			additionsMap.put(new ProjectionAnnotation(), position);
 		return additionsMap;
 	}
 

@@ -96,11 +96,11 @@ public class Specfile {
 	}	
 
 	public SpecfileSource getPatch(int number) {
-		return patches.get(new Integer(number));
+		return patches.get(Integer.valueOf(number));
 	}
 
 	public SpecfileSource getSource(int number) {
-		return sources.get(new Integer(number));
+		return sources.get(Integer.valueOf(number));
 	}
 
 	public String getName() {
@@ -120,11 +120,11 @@ public class Specfile {
 	}
 	
 	public void addSource(SpecfileSource source) {
-		sources.put(new Integer(source.getNumber()), source);
+		sources.put(Integer.valueOf(source.getNumber()), source);
 	}
 
 	public void addPatch(SpecfileSource patch) {
-		patches.put(new Integer(patch.getNumber()), patch);
+		patches.put(Integer.valueOf(patch.getNumber()), patch);
 	}
 
         // FIXME: This should instantiate a SpecFileDefine from 2 arguments
@@ -221,7 +221,7 @@ public class Specfile {
 			thisPatch.setNumber(newPatchNumber);
 			thisPatch.changeDeclaration(oldPatchNumber);
 			thisPatch.changeReferences(oldPatchNumber);
-			newPatches.put(new Integer(newPatchNumber), thisPatch);
+			newPatches.put(Integer.valueOf(newPatchNumber), thisPatch);
 			newPatchNumber++;
 		}
 		setPatches(newPatches);

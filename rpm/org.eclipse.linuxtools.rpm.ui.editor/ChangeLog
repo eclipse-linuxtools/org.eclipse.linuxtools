@@ -1,3 +1,52 @@
+2008-07-02  Alexander Kurtakov  <akurtakov@gmail.com>
+	More cleanups.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/ColorManager.java:
+	Use foreach instead of iterator.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/NonRuleBasedDamagerRepairer.java:
+	Remove usage of deprecated Assert.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurencesUpdater.java:
+	Use foreach instead of iterator.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java:
+	(getProposals): Likewise.
+	(toString): Add @Override.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java:
+	(run): Likewise.
+	(shouldSchedule): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java:
+	(getProposals): Use foreach instead of iterator.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileChangelogScanner.java:
+	(nextToken): Add @Override.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java:
+	(computePatchesProposals): Use foreach instead of iterator.
+	(computeRpmMacroProposals): Likewise.
+	(computeRpmPackageProposals): Likewise.
+	(computeSourceProposals): Likewise.
+	(getDefines): Likewise.
+	(getPatches): Likewise.
+	(getSources): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
+	Add @Override where needed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java:
+	Use Integer.valueOf instead of new Integer.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java:
+	(computeAdditions): Use foreach instead of iterator.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitioner.java:
+	(computePartitioning): Removed, it simply calls super method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/TagRule.java:
+	(sequenceDetected): Add @Override.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java:
+	(createChangelogEntry): No need for new String(String).
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java:
+	(formatDateLine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java:
+	Use Integer.valueOf instead of new Integer.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSource.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java:
+	(rpmtoolsRadioGroupFieldEditor): Use foreach instead of iterator.
+	
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Various cleanups.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java:

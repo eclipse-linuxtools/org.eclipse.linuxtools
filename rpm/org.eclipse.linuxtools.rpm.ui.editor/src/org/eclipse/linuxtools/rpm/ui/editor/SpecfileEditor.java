@@ -54,6 +54,7 @@ public class SpecfileEditor extends TextEditor {
 		setDocumentProvider(new SpecfileDocumentProvider());
 		setKeyBindingScopes(new String[]{"org.eclipse.linuxtools.rpm.ui.specEditorScope"});
 	}
+	@Override
 	public void dispose() {
 		colorManager.dispose();
 		// Set specfile field to null here is useful for test cases because whether 
@@ -63,6 +64,7 @@ public class SpecfileEditor extends TextEditor {
 		super.dispose();
 	}
 
+	@Override
 	protected void doSetInput(IEditorInput newInput) throws CoreException
 	{
 		super.doSetInput(newInput);
@@ -74,6 +76,7 @@ public class SpecfileEditor extends TextEditor {
 		validateAndMark();
 	}
 
+	@Override
 	protected void editorSaved()
 	{
 		super.editorSaved();
@@ -125,6 +128,7 @@ public class SpecfileEditor extends TextEditor {
 		return document;
 	}
 
+	@Override
 	public Object getAdapter(Class required) {
 		if (IContentOutlinePage.class.equals(required)) {
 			return getOutlinePage();
@@ -154,6 +158,7 @@ public class SpecfileEditor extends TextEditor {
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer(org.eclipse.swt.widgets.Composite, org.eclipse.jface.text.source.IVerticalRuler, int)
 	 */
+	@Override
 	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
 		fAnnotationAccess = createAnnotationAccess();
 		fOverviewRuler = createOverviewRuler(getSharedColors());
@@ -165,6 +170,7 @@ public class SpecfileEditor extends TextEditor {
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		ProjectionViewer projectionViewer = (ProjectionViewer) getSourceViewer();
@@ -177,6 +183,7 @@ public class SpecfileEditor extends TextEditor {
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#createActions()
 	 */
+	@Override
 	protected void createActions() {
 		super.createActions();
 

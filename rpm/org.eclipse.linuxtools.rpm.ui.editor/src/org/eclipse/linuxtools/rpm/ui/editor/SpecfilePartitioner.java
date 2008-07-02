@@ -28,11 +28,6 @@ public class SpecfilePartitioner extends FastPartitioner {
 //		printPartitions(document);
 	}
 	
-	@Override
-	public ITypedRegion[] computePartitioning(int offset, int length, boolean includeZeroLengthPartitions) {
-		return super.computePartitioning(offset, length, includeZeroLengthPartitions);
-	};
-
 	public void printPartitions(IDocument document) {
 		StringBuffer buffer = new StringBuffer();
 		ITypedRegion[] partitions = computePartitioning(0, document.getLength());

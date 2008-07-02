@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -154,16 +153,12 @@ public class RpmMacroProposalsList {
 	 * @return a <code>Map</code> of proposals.
 	 */
 	public Map<String, String> getProposals(String prefix) {
-		Iterator<String> iterator = macroMap.keySet().iterator();
 		Map<String, String> proposalsMap = new HashMap<String, String>(macroMap.size());
-		String key, value;
 		int i = 0;
-		while (iterator.hasNext()) {
-			key = iterator.next();
+		for (Map.Entry<String, String> entry: macroMap.entrySet()) {
 			// Get proposals for macro begin with { char too.
-			if (key.startsWith(prefix.replaceFirst("\\{", ""))) {
-				value = macroMap.get(key);
-				proposalsMap.put(key, value);
+			if (entry.getKey().startsWith(prefix.replaceFirst("\\{", ""))) {
+				proposalsMap.put(entry.getKey(), entry.getValue());
 			}
 			i++;
 		}
@@ -229,6 +224,7 @@ public class RpmMacroProposalsList {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return toStringStr;
 	}

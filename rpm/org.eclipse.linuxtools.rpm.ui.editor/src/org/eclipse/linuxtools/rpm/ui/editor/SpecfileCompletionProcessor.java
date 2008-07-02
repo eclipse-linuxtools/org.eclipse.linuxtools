@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -209,17 +208,14 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		if (rpmMacroProposalsMap == null)
 			return new ICompletionProposal[0];
 		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		String key;
-		Iterator<String> iterator = rpmMacroProposalsMap.keySet().iterator();
-		while (iterator.hasNext()) {
-			key = iterator.next();
-			proposals.add(new CompletionProposal("%{" + key.substring(1) + "}", 
-							region.getOffset(), region.getLength(),
-							key.length() + 2, Activator.getDefault().getImage(MACRO_ICON),
-							key, null, rpmMacroProposalsMap.get(key)));
+		for (Map.Entry<String, String> entry : rpmMacroProposalsMap.entrySet()) {
+			proposals.add(new CompletionProposal("%{"
+					+ entry.getKey().substring(1) + "}", region.getOffset(),
+					region.getLength(), entry.getKey().length() + 2, Activator
+							.getDefault().getImage(MACRO_ICON), entry.getKey(),
+					null, entry.getValue()));
 		}
-		return proposals
-				.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
 	
 	/**
@@ -243,17 +239,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		if (patchesProposalsMap == null)
 			return new ICompletionProposal[0];
 		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		String key;
-		Iterator<String> iterator = patchesProposalsMap.keySet().iterator();
-		while (iterator.hasNext()) {
-			key = iterator.next();
-			proposals.add(new CompletionProposal(key, 
-							region.getOffset(), region.getLength(),
-							key.length(), Activator.getDefault().getImage(PATCH_ICON),
-							key, null, patchesProposalsMap.get(key)));
+		for (Map.Entry<String, String> entry : patchesProposalsMap.entrySet()) {
+			proposals.add(new CompletionProposal(entry.getKey(), region
+					.getOffset(), region.getLength(), entry.getKey().length(),
+					Activator.getDefault().getImage(PATCH_ICON),
+					entry.getKey(), null, entry.getValue()));
 		}
-		return proposals
-				.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
 	
 	/**
@@ -277,17 +269,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		if (sourcesProposalsMap == null)
 			return new ICompletionProposal[0];
 		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		String key;
-		Iterator<String> iterator = sourcesProposalsMap.keySet().iterator();
-		while (iterator.hasNext()) {
-			key = iterator.next();
-			proposals.add(new CompletionProposal(key, 
-							region.getOffset(), region.getLength(),
-							key.length(), Activator.getDefault().getImage(PATCH_ICON),
-							key, null, sourcesProposalsMap.get(key)));
+		for (Map.Entry<String, String> entry : sourcesProposalsMap.entrySet()) {
+			proposals.add(new CompletionProposal(entry.getKey(), region
+					.getOffset(), region.getLength(), entry.getKey().length(),
+					Activator.getDefault().getImage(PATCH_ICON),
+					entry.getKey(), null, entry.getValue()));
 		}
-		return proposals
-				.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
 
 	/**
@@ -310,14 +298,11 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		if (rpmPkgProposalsList == null)
 			return new ICompletionProposal[0];
 		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		String[] item;
-		Iterator<String[]> iterator = rpmPkgProposalsList.iterator();
-		while (iterator.hasNext()) {
-			item = iterator.next();
-			proposals.add(new CompletionProposal(item[0], 
-					region.getOffset(), region.getLength(),
-					item[0].length(), Activator.getDefault().getImage(PACKAGE_ICON),
-					item[0], null, item[1]));
+		for (String[] item : rpmPkgProposalsList) {
+			proposals.add(new CompletionProposal(item[0], region.getOffset(),
+					region.getLength(), item[0].length(), Activator
+							.getDefault().getImage(PACKAGE_ICON), item[0],
+					null, item[1]));
 		}
 		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
@@ -435,8 +420,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Collection<SpecfileDefine> defines = specfile.getDefinesAsList();
 		Map<String, String> ret = new HashMap<String, String>();
 		String defineName;
-		for (Iterator<SpecfileDefine> iterator = defines.iterator(); iterator.hasNext();) {
-			SpecfileDefine define = iterator.next();
+		for (SpecfileDefine define: defines) {
 			defineName = "%" + define.getName();
 			if (defineName.startsWith(prefix.replaceFirst("\\{", "")))
 				ret.put(defineName, define.getStringValue());
@@ -459,8 +443,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
 		Map<String, String> ret = new HashMap<String, String>();
 		String patchName;
-		for (Iterator<SpecfileSource> iterator = patches.iterator(); iterator.hasNext();) {
-			SpecfileSource patch = iterator.next();
+		for (SpecfileSource patch: patches) {
 			patchName = "%patch" + patch.getNumber();
 			if (patchName.startsWith(prefix))
 				ret.put(patchName.toLowerCase(), SpecfileHover
@@ -485,8 +468,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Collection<SpecfileSource> sources = specfile.getSourcesAsList();
 		Map<String, String> ret = new HashMap<String, String>();
 		String sourceName;
-		for (Iterator<SpecfileSource> iterator = sources.iterator(); iterator.hasNext();) {
-			SpecfileSource patch = iterator.next();
+		for (SpecfileSource patch: sources) {
 			sourceName = "%{SOURCE" + patch.getNumber()+"}";
 			if (sourceName.startsWith(prefix))
 				ret.put(sourceName, SpecfileHover

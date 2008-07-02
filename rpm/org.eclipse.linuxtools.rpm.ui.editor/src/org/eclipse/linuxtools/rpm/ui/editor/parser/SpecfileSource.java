@@ -53,10 +53,10 @@ public class SpecfileSource extends SpecfileElement {
 		this.number = number;
 	}
 	public void addLineUsed(int lineNumber) {
-		linesUsed.add(new Integer(lineNumber));
+		linesUsed.add(Integer.valueOf(lineNumber));
 	}
 	public void removeLineUsed(int lineNumber) {
-		linesUsed.remove(new Integer(lineNumber));
+		linesUsed.remove(Integer.valueOf(lineNumber));
 	}
 	public List<Integer> getLinesUsed() {
 		return linesUsed;

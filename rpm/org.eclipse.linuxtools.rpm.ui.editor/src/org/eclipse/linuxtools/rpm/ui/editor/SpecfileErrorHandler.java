@@ -59,7 +59,7 @@ public class SpecfileErrorHandler {
 		}
 		
 		// FIXME:  add severity level
-		map.put(IMarker.SEVERITY, new Integer(e.getSeverity()));
+		map.put(IMarker.SEVERITY, Integer.valueOf(e.getSeverity()));
 		
 		try {
 			MarkerUtilities.createMarker(file, map, SPECFILE_ERROR_MARKER_ID);
@@ -87,7 +87,7 @@ public class SpecfileErrorHandler {
 	{
 		try
 		{
-			return new Integer(document.getLineOffset(lineNumber) + columnNumber);
+			return Integer.valueOf(document.getLineOffset(lineNumber) + columnNumber);
 		}
 		catch (BadLocationException e)
 		{

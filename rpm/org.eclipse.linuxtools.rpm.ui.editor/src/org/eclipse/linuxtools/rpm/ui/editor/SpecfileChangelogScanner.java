@@ -66,6 +66,7 @@ public class SpecfileChangelogScanner extends RuleBasedScanner {
 		return fLastToken;
 	}
 
+	@Override
 	public IToken nextToken() {
 		fLastToken = super.nextToken();
 		return fLastToken;

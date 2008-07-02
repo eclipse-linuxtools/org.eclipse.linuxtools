@@ -182,7 +182,7 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 		
 		SpecfileElement resolveElement = new SpecfileElement();
 		resolveElement.setSpecfile(specfile);
-		String epoch = specfile.getEpoch() == -1 ? "": new String(specfile.getEpoch() + ":");
+		String epoch = specfile.getEpoch() == -1 ? "": (specfile.getEpoch() + ":");
 		String version = specfile.getVersion() == null ? "": resolveElement.resolve(specfile.getVersion());
 		String release = specfile.getRelease() == null ? "": resolveElement.resolve(specfile.getRelease());
 		

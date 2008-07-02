@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -105,8 +104,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 *            the annotation model
 	 */
 	private void removeOldAnnotations(IAnnotationModel model) {
-		for (Iterator<Annotation> it = fOldAnnotations.iterator(); it.hasNext();) {
-			Annotation annotation = it.next();
+		for (Annotation annotation: fOldAnnotations) {
 			model.removeAnnotation(annotation);
 		}
 		fOldAnnotations.clear();

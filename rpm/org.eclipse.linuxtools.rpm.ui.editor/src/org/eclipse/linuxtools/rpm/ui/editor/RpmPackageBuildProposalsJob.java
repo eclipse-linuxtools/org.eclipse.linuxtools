@@ -61,6 +61,7 @@ public class RpmPackageBuildProposalsJob extends Job {
 	 * 
 	 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		return retrievePackageList(monitor);
 	}
@@ -70,6 +71,7 @@ public class RpmPackageBuildProposalsJob extends Job {
 	 * 
 	 * @see org.eclipse.core.runtime.jobs.Job#shouldSchedule()
 	 */
+	@Override
 	public boolean shouldSchedule() {
 		return equals(job);
 	}

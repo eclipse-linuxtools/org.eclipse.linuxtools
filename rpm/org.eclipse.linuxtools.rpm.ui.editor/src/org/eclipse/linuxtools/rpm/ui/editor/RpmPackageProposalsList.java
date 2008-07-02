@@ -24,7 +24,6 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -61,12 +60,11 @@ public class RpmPackageProposalsList {
 	public List<String[]> getProposals(String prefix) {
 		int rpmpkgsMaxProposals = Activator.getDefault().getPreferenceStore()
 				.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
-		Iterator<String> iterator = list.iterator();
 		List<String[]> proposalsList = new ArrayList<String[]>(list.size());
 		int i = 0;
-		while (iterator.hasNext()) {
+		for (String listValue:list){
 			String item[] = new String[2];
-			item[0] = iterator.next();
+			item[0] = listValue;
 			String message = "RPM information is only available\nif the proposal list is less than "
 					+ rpmpkgsMaxProposals
 					+ " item(s).\n\nYou can change the item limit in the \nRPM proposals preferences page.";
@@ -82,13 +80,10 @@ public class RpmPackageProposalsList {
 		 */
 		;
 		if (proposalsList.size() < rpmpkgsMaxProposals) {
-			Iterator<String[]> proposalsIterator = proposalsList.iterator();
 			List<String[]> proposalsListWithInfo = new ArrayList<String[]>(proposalsList.size());
-			while (proposalsIterator.hasNext()) {
-				String item[] = new String[2];
-				item = proposalsIterator.next();
-				item[1] = getRpmInfo(item[0]);
-				proposalsListWithInfo.add(item);
+			for (String[]  proposals: proposalsList){
+				proposals[1] = getRpmInfo(proposals[0]);
+				proposalsListWithInfo.add(proposals);
 			}
 			return proposalsListWithInfo;
 		} else {

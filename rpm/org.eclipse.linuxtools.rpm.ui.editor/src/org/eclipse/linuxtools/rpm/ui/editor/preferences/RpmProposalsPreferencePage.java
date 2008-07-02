@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
@@ -100,8 +99,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 
 		String[][] radioItems = new String[list.size()][2];
 		int pos = 0;
-		for (Iterator<String[]> iterator = list.iterator(); iterator.hasNext();) {
-			String[] item = iterator.next();
+		for (String[] item: list) {
 			radioItems[pos][0] = item[0];
 			radioItems[pos][1] = item[1];
 			pos++;
