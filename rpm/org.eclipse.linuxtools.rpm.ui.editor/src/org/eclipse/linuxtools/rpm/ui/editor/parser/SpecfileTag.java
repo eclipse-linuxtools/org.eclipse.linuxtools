@@ -14,9 +14,8 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 public class SpecfileTag extends SpecfileElement {
 	
-	static final int INT = 0;
-	static final int STRING = 1;
-	int tagType;
+	public enum TagType { INT, STRING}
+	TagType tagType;
 	
 	String stringValue;
 	int intValue;
@@ -24,12 +23,12 @@ public class SpecfileTag extends SpecfileElement {
 	public SpecfileTag(String name, String value, Specfile specfile) {
 		setName(name);
 		this.stringValue = value;
-		this.tagType = STRING;
+		this.tagType = TagType.STRING;
 		super.setSpecfile(specfile);
 	}
 	
 	public String getStringValue() {
-		if (tagType == INT) {
+		if (tagType == TagType.INT) {
 			return Integer.toString(intValue);
 		}
 		return resolve(stringValue);
@@ -41,7 +40,7 @@ public class SpecfileTag extends SpecfileElement {
 	public SpecfileTag(String name, int value, Specfile specfile) {
 		setName(name);
 		this.intValue = value;
-		this.tagType = INT;
+		this.tagType = TagType.INT;
 		super.setSpecfile(specfile);
 	}
 	
@@ -55,7 +54,7 @@ public class SpecfileTag extends SpecfileElement {
 	
 	@Override
 	public String toString() {
-		if (tagType == INT) {
+		if (tagType == TagType.INT) {
 			return getName() + ": " + getIntValue();
 		}
 		String tagValue = getStringValue();
@@ -65,11 +64,11 @@ public class SpecfileTag extends SpecfileElement {
 		return getName() + ": " + getStringValue();
 	}
 
-	public int getTagType() {
+	public TagType getTagType() {
 		return tagType;
 	}
 
-	public void setTagType(int tagType) {
+	public void setTagType(TagType tagType) {
 		this.tagType = tagType;
 	}
 	

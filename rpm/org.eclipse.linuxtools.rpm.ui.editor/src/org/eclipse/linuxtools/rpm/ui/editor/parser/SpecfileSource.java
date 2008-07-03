@@ -23,15 +23,14 @@ public class SpecfileSource extends SpecfileElement {
 	int number;
 	int lineNumber = -1;
 	String fileName;
-	static final int SOURCE = 0;
-	static final int PATCH = 1;
-	int sourceType;
+	public enum SourceType { SOURCE, PATCH}
+	SourceType sourceType;
 	List<Integer> linesUsed;
 	
-	public int getSourceType() {
+	public SourceType getSourceType() {
 		return sourceType;
 	}
-	public void setSourceType(int sourceType) {
+	public void setSourceType(SourceType sourceType) {
 		this.sourceType = sourceType;
 	}
 	public SpecfileSource(int number, String fileName) {
@@ -63,7 +62,7 @@ public class SpecfileSource extends SpecfileElement {
 	}
 	@Override
 	public String toString() {
-		if (sourceType == SOURCE)
+		if (sourceType == SourceType.SOURCE)
 			return "Source #" + number + " (line #" + lineNumber + ", used on lines " + getLinesUsed() + ") -> " + fileName;
 		return "Patch #" + number + " (line #" + lineNumber + ", used on lines " + getLinesUsed() + ") -> " + fileName;
 	}

@@ -24,6 +24,8 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource.SourceType;
+
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileParser {
@@ -119,7 +121,7 @@ public class SpecfileParser {
 						SpecfileSource source = (SpecfileSource) element;
 
 						source.setLineNumber(reader.getLineNumber() - 1);
-						if (source.getSourceType() == SpecfileSource.SOURCE) {
+						if (source.getSourceType() == SpecfileSource.SourceType.SOURCE) {
 							specfile.addSource(source);
 						} else {
 							specfile.addPatch(source);
@@ -161,10 +163,13 @@ public class SpecfileParser {
 			}
 		}
 		
-		// FIXME:  Handle package-level definitions
-		for (int i = 0; i < complexDefinitions.length; i++) {
-			if (lineText.startsWith(complexDefinitions[i]))
-				return parseComplexDefinition(lineText, specfile, lineNumber, i);
+		// FIXME: Handle package-level definitions
+		if (lineText.startsWith(complexDefinitions[0])) {
+			return parseComplexDefinition(lineText, specfile, lineNumber,
+					SourceType.SOURCE);
+		} else if (lineText.startsWith(complexDefinitions[1])) {
+			return parseComplexDefinition(lineText, specfile, lineNumber,
+					SourceType.PATCH);
 		}
 
 		return null;
@@ -374,7 +379,7 @@ public class SpecfileParser {
 		return toReturn;
 	}
 
-	private SpecfileElement parseComplexDefinition(String lineText, Specfile specfile, int lineNumber, int sourceType) {
+	private SpecfileElement parseComplexDefinition(String lineText, Specfile specfile, int lineNumber, SourceType sourceType) {
 		SpecfileSource toReturn = null;
 		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
 		int number = -1;
@@ -396,7 +401,7 @@ public class SpecfileParser {
 								IMarker.SEVERITY_WARNING));
 						return null;
 					}
-					if (sourceType == SpecfileSource.PATCH) {
+					if (sourceType == SourceType.PATCH) {
 						if (token.length() > 5) {
 							number = Integer.parseInt(token.substring(5));
 							if (!("patch" + number).equalsIgnoreCase(token)) {
@@ -495,7 +500,7 @@ public class SpecfileParser {
 				int intValue = Integer.parseInt(toReturn.getStringValue());
 				toReturn.setIntValue(intValue);
 				toReturn.setStringValue(null);
-				toReturn.setTagType(SpecfileTag.INT);
+				toReturn.setTagType(SpecfileTag.TagType.INT);
 			} catch (NumberFormatException e) {
 				if (toReturn.getName().equals("epoch")) {
 					errorHandler.handleError(new SpecfileParseException(

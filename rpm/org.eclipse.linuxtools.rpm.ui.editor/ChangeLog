@@ -1,4 +1,24 @@
-2008-07-02  Alexander Kurtakov  <akurtakov@gmail.com>
+2008-07-03  Alexander Kurtakov  <akurtakov@gmail.com>
+	Enums for SpecfileSource.sourceType and SpecfileTag.tagType.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/SpecfileParser.java:
+	(parse): Use SourceType instead of int.
+	(parseComplexDefinition): Likewise.
+	(parseLine): Likewise.
+	(parseSimpleDefinition): Use TagType instead of int.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/SpecfileSource.java:
+	(SourceType): New enum for the sourceType.
+	(getSourceType): Use SourceType instead of int.
+	(setSourceType): Likewise.
+	(toString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/SpecfileTag.java:
+	(TagType): New enum for the tagType.
+	(SpecfileTag): Use TagType instead of int.
+	(getStringValue): Likewise.
+	(getTagType): Likewise.
+	(setTagType): Likewise.
+	(toString): Likewise.
+	
+2008-07-03  Alexander Kurtakov  <akurtakov@gmail.com>
 	Simplify parsing.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/Specfile.java:
 	(addDefine(String, int)): New method.
