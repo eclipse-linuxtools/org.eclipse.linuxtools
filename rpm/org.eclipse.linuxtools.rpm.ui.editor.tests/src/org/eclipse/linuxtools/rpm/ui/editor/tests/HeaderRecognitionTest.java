@@ -53,6 +53,7 @@ public class HeaderRecognitionTest extends TestCase {
 		parser.setErrorHandler(errorHandler);
 	}
 	
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
@@ -60,6 +61,7 @@ public class HeaderRecognitionTest extends TestCase {
 		specfile = new Specfile();
 	}
 	
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}

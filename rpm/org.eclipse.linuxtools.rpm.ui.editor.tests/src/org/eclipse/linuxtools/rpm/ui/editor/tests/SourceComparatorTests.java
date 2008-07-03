@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -40,12 +39,14 @@ public class SourceComparatorTests extends TestCase {
 		specfile = parser.parse(testDocument);
 	}
 	
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}
@@ -59,11 +60,10 @@ public class SourceComparatorTests extends TestCase {
 		
 		try {
 			newFile(specText);
-			Collection patches = specfile.getPatchesAsList();
+			Collection<SpecfileSource> patches = specfile.getPatchesAsList();
 			int i = 1;
-			for (Iterator iter = patches.iterator(); iter.hasNext();) {
+			for (SpecfileSource patch: patches) {
 				i++;
-				SpecfileSource patch = (SpecfileSource) iter.next();
 				if (i == 2)
 					assertEquals(2, patch.getNumber());
 				else if (i == 3)

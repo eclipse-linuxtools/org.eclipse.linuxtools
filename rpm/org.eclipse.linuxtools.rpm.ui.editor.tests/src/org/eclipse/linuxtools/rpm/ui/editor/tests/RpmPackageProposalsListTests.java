@@ -26,6 +26,7 @@ public class RpmPackageProposalsListTests extends TestCase {
 
 	private RpmPackageProposalsList packageProposalsList;
 
+	@Override
 	protected void setUp() throws Exception {
 		Activator.getDefault().getPluginPreferences().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
@@ -40,7 +41,7 @@ public class RpmPackageProposalsListTests extends TestCase {
 	}
 
 	public final void testGetProposals() {
-		List proposals = packageProposalsList.getProposals("setup");
+		List<String[]> proposals = packageProposalsList.getProposals("setup");
 		if (!(proposals.size() == 1)) {
 			fail("getProposals failed, setup package was retrieve as proposals!");
 		}

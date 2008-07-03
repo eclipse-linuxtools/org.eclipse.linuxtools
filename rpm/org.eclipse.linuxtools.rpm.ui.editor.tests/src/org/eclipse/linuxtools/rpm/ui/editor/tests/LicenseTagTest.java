@@ -16,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.Document;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
@@ -34,12 +33,14 @@ public class LicenseTagTest extends TestCase {
 		super(name);
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}

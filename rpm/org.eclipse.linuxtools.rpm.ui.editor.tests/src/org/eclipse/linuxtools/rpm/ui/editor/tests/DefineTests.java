@@ -17,7 +17,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
@@ -57,6 +56,7 @@ public class DefineTests extends TestCase {
 		super(name);
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
@@ -69,6 +69,7 @@ public class DefineTests extends TestCase {
 		markers = testProject.getFailureMarkers();
 	}
 	
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}
@@ -80,48 +81,31 @@ public class DefineTests extends TestCase {
 	}
 	
 	public void testDefine() {
-		try {
 			SpecfileDefine blahDefine = specfile.getDefine("blah");
 			assertEquals(SpecfileDefine.class, blahDefine.getClass());
 			assertEquals("blah", blahDefine.getName());
 			assertEquals("bleh", blahDefine.getStringValue());
-		} catch (Exception e) {
-			fail();
-		}
-		
 	}
 	
 	public void testDefine2() {
-		try {
 			SpecfileDefine blahDefine = specfile.getDefine("blah2");
 			assertEquals(SpecfileDefine.class, blahDefine.getClass());
 			assertEquals("blah2", blahDefine.getName());
 			assertEquals("bleh", blahDefine.getStringValue());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 	
 	public void testDefine3() {
-		try {
 			SpecfileDefine blahDefine = specfile.getDefine("blah3");
 			assertEquals(SpecfileDefine.class, blahDefine.getClass());
 			assertEquals("blah3", blahDefine.getName());
 			assertEquals(1, blahDefine.getIntValue());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 	
 	public void testDefine4() {
-		try {
 			SpecfileDefine blahDefine = specfile.getDefine("blah4");
 			assertEquals(SpecfileDefine.class, blahDefine.getClass());
 			assertEquals("blah4", blahDefine.getName());
 			assertEquals(1, blahDefine.getIntValue());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 	
 	public void testNullDefinition() {
@@ -192,14 +176,10 @@ public class DefineTests extends TestCase {
 	}
 	
 	public void testUnderscoreDefine() {
-		try {
 			SpecfileDefine blahDefine = specfile.getDefine("__find_requires");
 			assertEquals(SpecfileDefine.class, blahDefine.getClass());
 			assertEquals("__find_requires", blahDefine.getName());
 			assertEquals("%{SOURCE3}", blahDefine.getStringValue());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 }

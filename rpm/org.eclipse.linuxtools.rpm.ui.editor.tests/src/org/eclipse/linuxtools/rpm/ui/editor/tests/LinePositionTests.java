@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -41,12 +40,14 @@ public class LinePositionTests extends TestCase {
 		specfile = parser.parse(testDocument);
 	}
 	
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}
@@ -60,9 +61,8 @@ public class LinePositionTests extends TestCase {
 		
 		try {
 			newFile(specText);
-			Collection patches = specfile.getPatchesAsList();
-			for (Iterator iter = patches.iterator(); iter.hasNext();) {
-				SpecfileSource patch = (SpecfileSource) iter.next();
+			Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+			for (SpecfileSource patch: patches) {
 				if (patch.getNumber() == 2)
 					assertEquals(1, patch.getLineNumber());
 				else if (patch.getNumber() == 3)
@@ -81,12 +81,11 @@ public class LinePositionTests extends TestCase {
 		
 		try {
 			newFile(specText);
-			Collection patches = specfile.getPatchesAsList();
-			for (Iterator iter = patches.iterator(); iter.hasNext();) {
-				SpecfileSource patch = (SpecfileSource) iter.next();
+			Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+			for (SpecfileSource patch: patches) {
 				if (patch.getNumber() == 3) {
 					assertEquals(0, patch.getLineNumber());
-					assertEquals(1, ((Integer) patch.getLinesUsed().get(0)).intValue()); 
+					assertEquals(1, patch.getLinesUsed().get(0).intValue()); 
 				} else
 					fail();
 			}

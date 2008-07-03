@@ -35,12 +35,14 @@ public class EpochTagTest extends TestCase {
 		super(name);
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}

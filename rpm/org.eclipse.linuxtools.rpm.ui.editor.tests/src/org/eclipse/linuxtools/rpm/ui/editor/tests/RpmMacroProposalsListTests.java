@@ -25,6 +25,7 @@ public class RpmMacroProposalsListTests extends TestCase {
 		super(name);
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		macroProposalsList = new RpmMacroProposalsList();
 	}
@@ -36,14 +37,14 @@ public class RpmMacroProposalsListTests extends TestCase {
 	}
 
 	public final void testGetProposals() {
-		Map proposals = macroProposalsList.getProposals("%_libdir");
+		Map<String, String> proposals = macroProposalsList.getProposals("%_libdir");
 		if (proposals.size() != 1) {
 			fail("getProposals faild, %_libdir macro was retrive as proposals");
 		}
 	}
 	
 	public final void testGetProposals2() {
-		Map proposals = macroProposalsList.getProposals("%_unexistingmacro");
+		Map<String, String> proposals = macroProposalsList.getProposals("%_unexistingmacro");
 		if (proposals.size() != 0) {
 			fail("getProposals faild, %_unexistingmacro don't can exist");
 		}

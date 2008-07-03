@@ -40,12 +40,14 @@ public class RefactoringTests extends TestCase {
 		specfile = parser.parse(testDocument);
 	}
 	
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}
@@ -117,9 +119,9 @@ public class RefactoringTests extends TestCase {
 			assertEquals("%patch3", specfile.getLine(1));
 			assertEquals(0, specfile.getPatch(3).getLineNumber());
 			SpecfileSource patch = specfile.getPatch(3);
-			List linesUsed = patch.getLinesUsed();
+			List<Integer> linesUsed = patch.getLinesUsed();
 			assertEquals(1, linesUsed.size());
-			Integer lineUsedNumber = (Integer) linesUsed.get(0);
+			Integer lineUsedNumber = linesUsed.get(0);
 			assertEquals(1, lineUsedNumber.intValue());
 			specfile.organizePatches();
 			assertEquals("Patch0: somefilesomewhere.patch", specfile.getLine(0));
@@ -131,7 +133,7 @@ public class RefactoringTests extends TestCase {
 			assertEquals(0, patch.getNumber());
 			linesUsed = patch.getLinesUsed();
 			assertEquals(1, linesUsed.size());
-			lineUsedNumber = (Integer) linesUsed.get(0);
+			lineUsedNumber = linesUsed.get(0);
 			assertEquals(1, lineUsedNumber.intValue());
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -23,11 +23,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
-import org.eclipse.swt.graphics.Color;
 
 public class SpecfilePackagesScannerTests extends AScannerTest {
-
-	private IToken token0;
 
 	private IToken token;
 
@@ -43,6 +40,7 @@ public class SpecfilePackagesScannerTests extends AScannerTest {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		Activator.getDefault().getPluginPreferences().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
@@ -61,6 +59,7 @@ public class SpecfilePackagesScannerTests extends AScannerTest {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
 	 */
+	@Override
 	protected String getContents() {
 		return "Requires: test_underscore" + "\n" + "%{name}" + "\n"
 				+ "# Requires:" + "\n";
@@ -69,23 +68,19 @@ public class SpecfilePackagesScannerTests extends AScannerTest {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
 	 */
+	@Override
 	protected RuleBasedScanner getScanner() {
 		return scanner;
 	}
 
 	public void testPackageTag() {
-		try {
-			token0 = getNextToken();
-			assertTrue(token0 instanceof Token);
+			token = getNextToken();
+			assertTrue(token instanceof Token);
 			assertEquals(9, rulesBasedScanner.getTokenLength());
 			assertEquals(0, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.TAGS);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	/**
@@ -133,16 +128,11 @@ public class SpecfilePackagesScannerTests extends AScannerTest {
 	 * printscreen: https://bugs.eclipse.org/bugs/attachment.cgi?id=63721
 	 */
 	public void testComment() {
-		try {
-			token0 = getToken(6);
-			assertTrue(token0 instanceof Token);
+			token = getToken(6);
+			assertTrue(token instanceof Token);
 			assertEquals(1, rulesBasedScanner.getTokenLength());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
 			assertNull(ta);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 }

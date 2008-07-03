@@ -17,11 +17,8 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileScanner;
-import org.eclipse.swt.graphics.Color;
 
 public class SpecfileScannerTests extends AScannerTest {
-
-	private IToken token0;
 
 	private IToken token;
 
@@ -37,6 +34,7 @@ public class SpecfileScannerTests extends AScannerTest {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
 	 */
+	@Override
 	protected String getContents() {
 		return "# This is a comment" + "\n" + "Name: test" + "\n" + "%prep"
 				+ "\n" + "%{name}" + "\n" + "%define" + "\n" + "%if" + "\n"
@@ -46,98 +44,69 @@ public class SpecfileScannerTests extends AScannerTest {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
 	 */
+	@Override
 	protected RuleBasedScanner getScanner() {
 		return scanner;
 	}
 
 	public void testComment() {
-		try {
-			token0 = getNextToken();
-			assertTrue(token0 instanceof Token);
+			token = getNextToken();
+			assertTrue(token instanceof Token);
 			assertEquals(20, rulesBasedScanner.getTokenLength());
 			assertEquals(0, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.COMMENT);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testTag() {
-		try {
-			token0 = getToken(2);
-			assertTrue(token0 instanceof Token);
+			token = getToken(2);
+			assertTrue(token instanceof Token);
 			assertEquals(5, rulesBasedScanner.getTokenLength());
 			assertEquals(20, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.TAGS);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testSection() {
-		try {
-			token0 = getToken(9);
-			assertTrue(token0 instanceof Token);
+			token = getToken(9);
+			assertTrue(token instanceof Token);
 			assertEquals(5, rulesBasedScanner.getTokenLength());
 			assertEquals(31, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.SECTIONS);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testMacro() {
-		try {
-			token0 = getToken(11);
-			assertTrue(token0 instanceof Token);
+			token = getToken(11);
+			assertTrue(token instanceof Token);
 			assertEquals(7, rulesBasedScanner.getTokenLength());
 			assertEquals(37, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.MACROS);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testDefinedMacro() {
-		try {
-			token0 = getToken(13);
-			assertTrue(token0 instanceof Token);
+			token = getToken(13);
+			assertTrue(token instanceof Token);
 			assertEquals(7, rulesBasedScanner.getTokenLength());
 			assertEquals(45, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.MACROS);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testKeyword() {
-		try {
-			token0 = getToken(15);
-			assertTrue(token0 instanceof Token);
+			token = getToken(15);
+			assertTrue(token instanceof Token);
 			assertEquals(3, rulesBasedScanner.getTokenLength());
 			assertEquals(53, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.KEYWORDS);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	/**
@@ -146,13 +115,9 @@ public class SpecfileScannerTests extends AScannerTest {
 	 * printscreen: https://bugs.eclipse.org/bugs/attachment.cgi?id=63722
 	 */
 	public void testDefineCorreclyScanned() {
-		try {
-			token0 = getToken(17);
-			assertTrue(token0 instanceof Token);
+			token = getToken(17);
+			assertTrue(token instanceof Token);
 			assertEquals(1, rulesBasedScanner.getTokenLength());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 }

@@ -17,11 +17,8 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileChangelogScanner;
-import org.eclipse.swt.graphics.Color;
 
 public class SpecfileChangelogScannerTests extends AScannerTest {
-
-	private IToken token0;
 
 	private IToken token;
 
@@ -37,6 +34,7 @@ public class SpecfileChangelogScannerTests extends AScannerTest {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
 	 */
+	@Override
 	protected String getContents() {
 		return "%changelog <toto@test.com> - 1.1-4";
 	}
@@ -44,52 +42,38 @@ public class SpecfileChangelogScannerTests extends AScannerTest {
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
 	 */
+	@Override
 	protected RuleBasedScanner getScanner() {
 		return scanner;
 	}
 
 	public void testSection() {
-		try {
-			token0 = getNextToken();
-			assertTrue(token0 instanceof Token);
+			token = getNextToken();
+			assertTrue(token instanceof Token);
 			assertEquals(10, rulesBasedScanner.getTokenLength());
 			assertEquals(0, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.SECTIONS);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testMail() {
-		try {
-			token0 = getToken(3);
-			assertTrue(token0 instanceof Token);
+			token = getToken(3);
+			assertTrue(token instanceof Token);
 			assertEquals(15, rulesBasedScanner.getTokenLength());
 			assertEquals(11, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.AUTHOR_MAIL);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testVerRel() {
-		try {
-			token0 = getToken(4);
-			assertTrue(token0 instanceof Token);
+			token = getToken(4);
+			assertTrue(token instanceof Token);
 			assertEquals(8, rulesBasedScanner.getTokenLength());
 			assertEquals(26, rulesBasedScanner.getTokenOffset());
-			token = (Token) token0;
 			ta = (TextAttribute) token.getData();
-			assertEquals(((Color) ta.getForeground()).getRGB(),
+			assertEquals(ta.getForeground().getRGB(),
 					ISpecfileColorConstants.VER_REL);
-		} catch (Exception e) {
-			fail();
-		}
 	}
 }

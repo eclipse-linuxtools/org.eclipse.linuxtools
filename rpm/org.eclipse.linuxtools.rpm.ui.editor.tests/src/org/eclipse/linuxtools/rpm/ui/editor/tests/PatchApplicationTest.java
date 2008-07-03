@@ -43,12 +43,14 @@ public class PatchApplicationTest extends TestCase {
 		specfile = parser.parse(testDocument);
 	}
 	
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}
@@ -77,8 +79,8 @@ public class PatchApplicationTest extends TestCase {
 		try {
 			newFile(specText);
 			SpecfileSource thisPatch = specfile.getPatch(3);
-			List usedList = new ArrayList(1);
-			usedList.add(new Integer(1));
+			List<Integer> usedList = new ArrayList<Integer>(1);
+			usedList.add(Integer.valueOf(1));
 			assertEquals(thisPatch.getLinesUsed(), usedList);
 		} catch (Exception e) {
 			fail();
@@ -94,9 +96,9 @@ public class PatchApplicationTest extends TestCase {
 		try {
 			newFile(specText);
 			SpecfileSource thisPatch = specfile.getPatch(3);
-			List usedList = new ArrayList(2);
-			usedList.add(new Integer(1));
-			usedList.add(new Integer(3));
+			List<Integer> usedList = new ArrayList<Integer>(2);
+			usedList.add(Integer.valueOf(1));
+			usedList.add(Integer.valueOf(3));
 			assertEquals(thisPatch.getLinesUsed(), usedList);
 		} catch (Exception e) {
 			fail();
