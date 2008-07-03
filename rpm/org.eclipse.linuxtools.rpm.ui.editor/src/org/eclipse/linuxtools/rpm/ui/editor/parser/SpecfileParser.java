@@ -83,48 +83,32 @@ public class SpecfileParser {
 					element.setLineStartPosition(lineStartPosition);
 					element.setLineEndPosition(lineStartPosition
 							+ line.length());
-					if ((element.getClass() == SpecfileTag.class)
-							&& ((SpecfileTag) element).getName()
-									.equals("epoch")) {
-						// Epoch
-						specfile.setEpoch(((SpecfileTag) element).getIntValue());
-                                                specfile.addDefine(new SpecfileDefine("epoch", specfile
-                                                        .getEpoch(), specfile));
-					} else if ((element.getClass() == SpecfileTag.class)
-							&& ((SpecfileTag) element).getName().equals("name")) {
-						// Name
-						specfile.setName(((SpecfileTag) element)
-								.getStringValue());
-						specfile.addDefine(new SpecfileDefine("name", specfile
-								.getName(), specfile));
-					} else if ((element.getClass() == SpecfileTag.class)
-							&& ((SpecfileTag) element).getName().equals(
-									"version")) {
-						// Version
-						specfile.setVersion(((SpecfileTag) element)
-								.getStringValue());
-						specfile.addDefine(new SpecfileDefine("version", specfile
-								.getVersion(), specfile));
-					} else if ((element.getClass() == SpecfileTag.class)
-							&& ((SpecfileTag) element).getName().equals(
-									"release")) {
-						// Release
-						specfile.setRelease(((SpecfileTag) element)
-								.getStringValue());
-						specfile.addDefine(new SpecfileDefine("release", specfile
-								.getRelease(), specfile));
-					} else if ((element.getClass() == SpecfileTag.class)
-							&& ((SpecfileTag) element).getName().equals(
-									"license")) {
-						// License
-						specfile.setLicense(((SpecfileTag) element)
-								.getStringValue());
+					if (element.getClass() == SpecfileTag.class) {
+						SpecfileTag tag = (SpecfileTag) element;
+						String name = tag.getName();
+						if (name.equals("epoch")) {
+							// Epoch
+							specfile.setEpoch(tag.getIntValue());
+						} else if (name.equals("name")) {
+							// Name
+							specfile.setName(tag.getStringValue());
+						} else if (name.equals("version")) {
+							// Version
+							specfile.setVersion(tag.getStringValue());
+						} else if (name.equals("release")) {
+							// Release
+							specfile.setRelease(tag.getStringValue());
+						} else if (name.equals("license")) {
+							// License
+							specfile.setLicense(tag.getStringValue());
+						}
 					} else if ((element.getClass() == SpecfilePatchMacro.class)) {
 						SpecfilePatchMacro thisPatchMacro = (SpecfilePatchMacro) element;
 						if (thisPatchMacro != null) {
 							thisPatchMacro.setSpecfile(specfile);
 						}
-						SpecfileSource thisPatch = specfile.getPatch(thisPatchMacro.getPatchNumber());
+						SpecfileSource thisPatch = specfile
+								.getPatch(thisPatchMacro.getPatchNumber());
 						if (thisPatch != null) {
 							thisPatch.addLineUsed(reader.getLineNumber() - 1);
 							thisPatch.setSpecfile(specfile);
@@ -132,14 +116,14 @@ public class SpecfileParser {
 					} else if ((element.getClass() == SpecfileDefine.class)) {
 						specfile.addDefine((SpecfileDefine) element);
 					} else if ((element.getClass() == SpecfileSource.class)) {
-                                                SpecfileSource source = (SpecfileSource)element;
-                                                
+						SpecfileSource source = (SpecfileSource) element;
+
 						source.setLineNumber(reader.getLineNumber() - 1);
-						if (source.getSourceType() == SpecfileSource.SOURCE){
+						if (source.getSourceType() == SpecfileSource.SOURCE) {
 							specfile.addSource(source);
-                                                }else{
+						} else {
 							specfile.addPatch(source);
-                                                }
+						}
 					}
 				}
 				// The +1 is for the line delimiter. FIXME: will we end up off
@@ -211,55 +195,57 @@ public class SpecfileParser {
 					if (!name.equals("package")) {
 						toReturn = new SpecfileSection(name, specfile);
 						specfile.addComplexSection(toReturn);
-					}	
+					}
 					while (iter.hasNext()) {
 						String nextToken = iter.next();
 						if (nextToken.equals("-n")) {
 							if (!iter.hasNext()) {
 								errorHandler
-								.handleError(new SpecfileParseException(
-										"No package name after -n in "
-										+ name
-										+ " section.",
-										lineNumber, 0, lineText
-										.length(),
-										IMarker.SEVERITY_ERROR));
+										.handleError(new SpecfileParseException(
+												"No package name after -n in "
+														+ name + " section.",
+												lineNumber, 0, lineText
+														.length(),
+												IMarker.SEVERITY_ERROR));
 								continue;
 							}
 
 							nextToken = iter.next();
 							if (nextToken.startsWith("-")) {
 								errorHandler
-								.handleError(new SpecfileParseException(
-										"Package name must not start with '-': "
-										+ nextToken + ".",
-										lineNumber, 0, lineText
-										.length(),
-										IMarker.SEVERITY_ERROR));
+										.handleError(new SpecfileParseException(
+												"Package name must not start with '-': "
+														+ nextToken + ".",
+												lineNumber, 0, lineText
+														.length(),
+												IMarker.SEVERITY_ERROR));
 							}
-							
+
 						} else if (nextToken.equals("-p")) {
 							// FIXME: rest of line is the actual section
 							break;
 						} else if (nextToken.equals("-f")) {
 							break;
 						}
-                                                
-                                                // this is a package
-                                                if (toReturn == null ){
-                                                    toReturn = specfile.getPackage(nextToken);
-                                                    
-                                                    if (toReturn == null){
-                                                        toReturn = new SpecfilePackage(nextToken, specfile);
-                                                        specfile.addPackage((SpecfilePackage)toReturn);
-                                                    }
-                                                    return toReturn;
-                                                }
-                                                
-                                                // this is another section
-						SpecfilePackage enclosingPackage = specfile.getPackage(nextToken);
-						if (enclosingPackage == null){
-							enclosingPackage = new SpecfilePackage(nextToken, specfile);
+
+						// this is a package
+						if (toReturn == null) {
+							toReturn = specfile.getPackage(nextToken);
+
+							if (toReturn == null) {
+								toReturn = new SpecfilePackage(nextToken,
+										specfile);
+								specfile.addPackage((SpecfilePackage) toReturn);
+							}
+							return toReturn;
+						}
+
+						// this is another section
+						SpecfilePackage enclosingPackage = specfile
+								.getPackage(nextToken);
+						if (enclosingPackage == null) {
+							enclosingPackage = new SpecfilePackage(nextToken,
+									specfile);
 							specfile.addPackage(enclosingPackage);
 						}
 						toReturn.setPackage(enclosingPackage);
@@ -269,7 +255,8 @@ public class SpecfileParser {
 			}
 		}
 
-                // if this package is part of the top level package, add it to it
+                // if this package is part of the top level package, add it to
+				// it
                 if (toReturn != null && toReturn.getPackage() == null){
                     SpecfilePackage topPackage = specfile.getPackage(specfile.getName());
                     if (topPackage == null){

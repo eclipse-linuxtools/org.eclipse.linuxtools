@@ -1,4 +1,22 @@
 2008-07-02  Alexander Kurtakov  <akurtakov@gmail.com>
+	Simplify parsing.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/Specfile.java:
+	(addDefine(String, int)): New method.
+	(addDefine(String, String)): Likewise.
+	(getComplexSectionElements): Use Collection.toArray instead of cycling elements.
+	(getPatch): No need to convert int to Integer it is autoboxed.
+	(getSectionElements): Use Collection.toArray instead of cycling elements.
+	(getSource): No need to convert int to Integer it is autoboxed.
+	(printArray): Removed unused method.
+	(setEpoch): Add/update define on setting epoch.
+	(setName): Likewise.
+	(setRelease): Likewise.
+	(setVersion): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/SpecfileParser.java:
+	(parse): No need to set defines by hand due to the autosetting in Specfile.
+	(parseSection): Format.
+
+2008-07-02  Alexander Kurtakov  <akurtakov@gmail.com>
 	More cleanups.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/ColorManager.java:
 	Use foreach instead of iterator.

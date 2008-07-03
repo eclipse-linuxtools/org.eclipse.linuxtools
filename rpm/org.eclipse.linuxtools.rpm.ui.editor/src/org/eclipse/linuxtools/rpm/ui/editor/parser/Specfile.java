@@ -73,10 +73,7 @@ public class Specfile {
 	
 	public SpecfileElement[] getSectionsElements() {
 		SpecfileElement[] elements = new SpecfileElement[sections.size()]; 
-		for (int i = 0 ; i < sections.size(); i++) {
-			elements[i] = sections.get(i);
-		}
-		return elements;
+		return sections.toArray(elements);
 	}
 	
 	public Object[] getComplexSections() {
@@ -89,26 +86,30 @@ public class Specfile {
 	
 	public SpecfileElement[] getComplexSectionsElements() {
 		SpecfileElement[] elements = new SpecfileElement[complexSections.size()]; 
-		for (int i = 0 ; i < complexSections.size(); i++) {
-			elements[i] = complexSections.get(i);
-		}
-		return elements;
+		return complexSections.toArray(elements);
 	}	
 
 	public SpecfileSource getPatch(int number) {
-		return patches.get(Integer.valueOf(number));
+		return patches.get(number);
 	}
 
 	public SpecfileSource getSource(int number) {
-		return sources.get(Integer.valueOf(number));
+		return sources.get(number);
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name of this specfile. This method also
+	 * adds/updates the SpecfileDefine name.
+	 * 
+	 * @param epoch
+	 */
 	public void setName(String name) {
 		this.name = name;
+		addDefine("name", name);
 	}
 
 	public void addSection(SpecfileSection section) {
@@ -127,11 +128,35 @@ public class Specfile {
 		patches.put(Integer.valueOf(patch.getNumber()), patch);
 	}
 
-        // FIXME: This should instantiate a SpecFileDefine from 2 arguments
-        // so that you don't have to do 
-        // specfile.addDefine( new SpecfileDefine("blah", "bleh", specfile))
-	public void addDefine(SpecfileDefine define) {
+    /**
+     * Adds the given define to the map of defines for this specfile.
+     * 
+     * @param define The define to add.
+     */
+    public void addDefine(SpecfileDefine define) {
 		defines.put(define.getName(), define);
+	}
+	
+	/**
+	 * Creates a SpecfileDefine with the given name and value for this specfile and 
+	 * adds it to the map of defines.
+	 * 
+	 * @param name The name of the define.
+	 * @param value the value of the define.
+	 */
+	public void addDefine(String name, String value) {
+		defines.put(name, new SpecfileDefine(name, value, this));
+	}
+	
+	/**
+	 * Creates a SpecfileDefine with the given name and value for this specfile and 
+	 * adds it to the map of defines.
+	 * 
+	 * @param name The name of the define.
+	 * @param value the value of the define.
+	 */
+	public void addDefine(String name, int value) {
+		defines.put(name, new SpecfileDefine(name, value, this));
 	}
 
 	public SpecfileDefine getDefine(String defineName) {
@@ -142,24 +167,45 @@ public class Specfile {
 		return epoch;
 	}
 
+	/**
+	 * Sets the epoch of this specfile. This method also
+	 * adds/updates the SpecfileDefine epoch.
+	 * 
+	 * @param epoch
+	 */
 	public void setEpoch(int epoch) {
 		this.epoch = epoch;
+		addDefine("epoch", epoch);
 	}
 
 	public String getRelease() {
 		return release;
 	}
 
+	/**
+	 * Sets the release of this specfile. This method also
+	 * adds/updates the SpecfileDefine release.
+	 * 
+	 * @param epoch
+	 */
 	public void setRelease(String release) {
 		this.release = release;
+		addDefine("release", release);
 	}
 
 	public String getVersion() {
 		return version;
 	}
 
+	/**
+	 * Sets the version of this specfile. This method also
+	 * adds/updates the SpecfileDefine version.
+	 * 
+	 * @param epoch
+	 */
 	public void setVersion(String version) {
 		this.version = version;
+		addDefine("version", version);
 	}
 
 	public Map<Integer, SpecfileSource> getPatches() {
@@ -197,12 +243,6 @@ public class Specfile {
 
 	public SpecfileSource[] getSourcesAsArray() {
 		return getSourcesAsList().toArray(new SpecfileSource[sources.size()]);
-	}
-
-	private void printArray(Object[] array) {
-		for (int i = 0; i < array.length; i++) {
-			System.out.println(array[i]);
-		}
 	}
 
 	public void organizePatches() {
