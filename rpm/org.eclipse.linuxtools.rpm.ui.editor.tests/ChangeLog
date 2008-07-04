@@ -1,3 +1,7 @@
+2008-07-04  Andrew Overholt  <overholt@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Set to 1.5.
+
 2008-07-03  Alexander Kurtakov  <akurtakov@gmail.com>
 	Adapt to Java 5 and cleanup.
 	* META_INF/MANIFEST.MF: Bump Bundle-RequiredExecutionEnvironment to J2SE-1.5.
