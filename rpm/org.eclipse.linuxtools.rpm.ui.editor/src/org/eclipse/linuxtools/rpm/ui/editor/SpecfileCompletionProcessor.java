@@ -109,16 +109,18 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		// RPM macro's are useful in the whole specfile.
 		ICompletionProposal[] rpmMacroProposals = computeRpmMacroProposals(
 				viewer, region, specfile, prefix);
-		// TODO show patches only in the %prep section
-		ICompletionProposal[] patchesProposals = computePatchesProposals(
-				viewer, region, specfile, prefix);
-		result.addAll(Arrays.asList(patchesProposals));
 		// Sources completion
 		ICompletionProposal[] sourcesProposals = computeSourcesProposals(
 				viewer, region, specfile, prefix);
 		result.addAll(Arrays.asList(sourcesProposals));
 		// Get the current content type
 		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());
+		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PREP)){
+			ICompletionProposal[] patchesProposals = computePatchesProposals(
+					viewer, region, specfile, prefix);
+			result.addAll(Arrays.asList(patchesProposals));
+		}
+		
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PACKAGES)) {
 			// don't show template in the RPM packages content type.
 			// (when the line begin with Requires, BuildRequires etc...)

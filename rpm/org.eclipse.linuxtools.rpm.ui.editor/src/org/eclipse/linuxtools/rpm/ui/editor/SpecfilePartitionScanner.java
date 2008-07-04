@@ -28,21 +28,22 @@ import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 
+	public final static String SPEC_PREP = "__spec_prep";
 	public final static String SPEC_SCRIPT = "__spec_script";
 	public final static String SPEC_FILES = "__spec_files";
 	public final static String SPEC_CHANGELOG = "__spec_changelog";
 	public final static String SPEC_PACKAGES = "__spec_packages";
 	
-	public static String[] SPEC_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE, SPEC_SCRIPT,
+	public static String[] SPEC_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE, SPEC_PREP, SPEC_SCRIPT,
 			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES};
 	
 	/** All possible headers for sections of the type SPEC_SCRIPT */
-	private static String[] sectionHeaders = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION, 
+	private static String[] sectionHeaders = { BUILD_SECTION, INSTALL_SECTION, 
 		PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, POSTUN_SECTION,
 		POSTTRANS_SECTION, CLEAN_SECTION};
 
 	/** All possible headers for section that can come after sections of the type SPEC_SCRIPT */
-	private static String[] sectionEndingHeaders = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION, 
+	private static String[] sectionEndingHeaders = { BUILD_SECTION, INSTALL_SECTION, 
 		PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, 
 		CLEAN_SECTION, FILES_SECTION};
 	
@@ -50,6 +51,7 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		// FIXME:  do we need this?
 		super();
 		
+		IToken specPrep = new Token(SPEC_PREP);
 		IToken specScript = new Token(SPEC_SCRIPT);
 		IToken specFiles = new Token(SPEC_FILES);
 		IToken specChangelog = new Token(SPEC_CHANGELOG);
@@ -61,15 +63,20 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		for (int i = 0; i < SpecfilePackagesScanner.PACKAGES_TAGS.length; i++) 
 			rules.add(new SingleLineRule(SpecfilePackagesScanner.PACKAGES_TAGS[i], "", specPackages, (char)0 , true));			
 		
+		// %prep
+		rules.add(new SectionRule("%prep", new String[] { "%build" }, specPrep));
+		
 		// %changelog
 		rules.add(new MultiLineRule("%changelog", "", specChangelog, (char)0 , true));
 		
-		// "%prep", "%build", "%install", "%pre", "%preun", "%post", "%postun"
+		// "%build", "%install", "%pre", "%preun", "%post", "%postun"
 		for (int i = 0; i < sectionHeaders.length; i++)
 			rules.add(new SectionRule(sectionHeaders[i], sectionEndingHeaders, specScript));
 
 		// comments
 		rules.add(new EndOfLineRule("#", specScript));
+		
+		
 		
 		// %files
 		rules.add(new SectionRule("%files", new String[] { "%files",

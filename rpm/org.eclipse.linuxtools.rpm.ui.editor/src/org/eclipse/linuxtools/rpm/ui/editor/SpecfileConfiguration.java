@@ -141,6 +141,10 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_PACKAGES);
 		
 		dr = new DefaultDamagerRepairer(getSpecfileScanner());
+		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_PREP);
+		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_PREP);
+		
+		dr = new DefaultDamagerRepairer(getSpecfileScanner());
 		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_SCRIPT);
 		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_SCRIPT);
 		
@@ -179,6 +183,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		IContentAssistProcessor processor= new SpecfileCompletionProcessor(editor);
 		// add content assistance to all the supported contentType
 		assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(processor, SpecfilePartitionScanner.SPEC_PREP);
 		assistant.setContentAssistProcessor(processor, SpecfilePartitionScanner.SPEC_SCRIPT);
 		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_FILES);
 		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_CHANGELOG);		

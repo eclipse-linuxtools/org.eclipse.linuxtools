@@ -1,4 +1,14 @@
 2008-07-03  Alexander Kurtakov  <akurtakov@gmail.com>
+	Show %patch autocomplete only in %prep section.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java:
+	(computeCompletionProposals): Activate patchesProposals only in SPEC_PREP section.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
+	(getContentAssistant): Add content assist processor for SPEC_PREP.
+	(getPresentationReconciler): Register SPEC_PREP.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java:
+	(SpecfilePartitionScanner): Add SPEC_PREP section.
+
+2008-07-03  Alexander Kurtakov  <akurtakov@gmail.com>
 	Enums for SpecfileSource.sourceType and SpecfileTag.tagType.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/SpecfileParser.java:
 	(parse): Use SourceType instead of int.
