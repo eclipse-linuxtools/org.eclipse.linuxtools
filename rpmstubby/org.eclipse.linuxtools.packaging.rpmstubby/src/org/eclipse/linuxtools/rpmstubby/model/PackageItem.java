@@ -40,6 +40,7 @@ public class PackageItem {
 		this.version = version;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(name);

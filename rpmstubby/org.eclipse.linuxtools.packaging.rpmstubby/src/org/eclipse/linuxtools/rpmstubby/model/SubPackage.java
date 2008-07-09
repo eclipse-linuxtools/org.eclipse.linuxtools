@@ -78,6 +78,7 @@ public class SubPackage implements IPackage {
 		this.version = version;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("%package ").append(name);

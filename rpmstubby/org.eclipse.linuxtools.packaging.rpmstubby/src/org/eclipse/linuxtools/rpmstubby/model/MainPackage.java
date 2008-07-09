@@ -80,6 +80,7 @@ public class MainPackage extends SubPackage implements IPackagePreamble {
 	}
 
 
+	@Override
 	public String toString() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(super.toString());

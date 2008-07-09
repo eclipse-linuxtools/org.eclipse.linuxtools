@@ -26,6 +26,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 * 
 	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
 	 */
+	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = StubbyPlugin.getDefault().getPreferenceStore();
 		store.setDefault(PreferenceConstants.P_STUBBY_WITH_GCJ, PreferenceConstants.DP_STUBBY_WITH_GCJ);

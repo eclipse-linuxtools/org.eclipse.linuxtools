@@ -32,6 +32,7 @@ public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 	 * 
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
+	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 				PreferenceConstants.P_STUBBY_INTERACTIVE,

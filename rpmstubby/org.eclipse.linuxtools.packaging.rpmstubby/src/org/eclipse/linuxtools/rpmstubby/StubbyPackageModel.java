@@ -14,7 +14,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -41,9 +40,9 @@ public class StubbyPackageModel {
 	private static final String valueNoFoundMessage = "FIXME";
 	private String featurePropertiesFile;
 	private FeatureModel featureModel;
-	private List includedFeatureFiles = new ArrayList();
+	private List<IFile> includedFeatureFiles = new ArrayList<IFile>();
 	private String[] includedFeatureIdentifiers;
-	private List includedFeatureIdentifiersAdded;
+	private List<String> includedFeatureIdentifiersAdded;
 	
 	public StubbyPackageModel(IFile featureFile) {
 		this.featurePropertiesFile = featureFile.getLocation().removeLastSegments(1).toOSString() + "/feature.properties";
@@ -74,11 +73,11 @@ public class StubbyPackageModel {
 		packagePreambleModel.setLicense(getLicense());
 	}
 	
-	public List getIncudedFeatures() {
+	public List<IFile> getIncudedFeatures() {
 		FeatureModelFactory featureModelFactory = new FeatureModelFactory();
 		IIncludedFeatureReference[] includedFeatureReferences = featureModel.getFeatureIncluded();
 		includedFeatureIdentifiers = new String[includedFeatureReferences.length];
-		includedFeatureIdentifiersAdded = new ArrayList();
+		includedFeatureIdentifiersAdded = new ArrayList<String>();
 		try {
 			for (int i = 0; i < includedFeatureReferences.length; i++) {
 				VersionedIdentifier versionedIdentifier = includedFeatureReferences[i].getVersionedIdentifier();
@@ -89,8 +88,7 @@ public class StubbyPackageModel {
 	        for (int i = 0; i < projects.length; i++) {
 				FeatureVisitor featureVisitor = new FeatureVisitor();
 				projects[i].accept(featureVisitor);
-		        for (Iterator iterator = featureVisitor.getFeatures().iterator(); iterator.hasNext();) {
-		        	IFile featureFile = (IFile) iterator.next();
+		        for (IFile featureFile: featureVisitor.getFeatures()) {
 		        	FeatureModel includedFeatureModel = featureModelFactory.parseFeature(featureFile.getContents());
 		        	if (isFeatureIncluded(includedFeatureModel.getFeatureIdentifier())) {
 		        		// Each feature that include other features is considered as a
@@ -133,8 +131,8 @@ public class StubbyPackageModel {
 			// Check if the feature found by the visitor is a included feature 
 			if (includedFeatureIdentifiers[i].equals(featureIdetifier)) {
 				// Check if the given feature is not already added in the included feature list.
-				for(Iterator iterator = includedFeatureIdentifiersAdded.iterator(); iterator.hasNext();) {
-					if (iterator.next().equals(featureIdetifier)) {
+				for(String includedFeatureID: includedFeatureIdentifiersAdded) {
+					if (includedFeatureID.equals(featureIdetifier)) {
 						return false;
 					}
 				}

@@ -14,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
@@ -39,12 +38,12 @@ import org.eclipse.ui.ide.IDE;
 public class StubbyGenerator {
 	
 	private MainPackage mainPackage;
-	private List subPackages;
+	private List<SubPackage> subPackages;
 	private boolean withGCJSupport;
 	private boolean withFetchScript;
 	private IPreferenceStore store;
 		
-	public StubbyGenerator(MainPackage mainPackage, List subPackages) {
+	public StubbyGenerator(MainPackage mainPackage, List<SubPackage> subPackages) {
 		this.mainPackage = mainPackage;
 		this.subPackages = subPackages;
 		store = StubbyPlugin.getDefault().getPreferenceStore();
@@ -93,8 +92,7 @@ public class StubbyGenerator {
 		buffer.append(getDepsOrReqs("Requires: ", mainPackage.getRequires()));
 		buffer.append(getDepsOrReqs("Provides: ", mainPackage.getProvides()));
 		buffer.append("\n%description\n" + mainPackage.getDescription() + "\n");
-		for (Iterator iterator = subPackages.iterator(); iterator.hasNext();) {
-			SubPackage subPackage = (SubPackage) iterator.next();
+		for (SubPackage subPackage: subPackages) {
 			String subPackageName = getPackageName(subPackage.getName());
 			buffer.append("\n%package  " + subPackageName + "\n");
 			buffer.append("Summary:  "+ subPackage.getSummary() +"\n");
@@ -152,8 +150,7 @@ public class StubbyGenerator {
 		buffer.append("%doc %{eclipse_base}/features/" + mainPackage.getName() + "_*/*.html\n");
 		buffer.append("%{eclipse_base}/features/" + mainPackage.getName() + "_*/feature.*\n");
 		buffer.append(getPackageFiles(mainPackage.getProvides(), withGCJSupport) + "\n");
-		for (Iterator iterator = subPackages.iterator(); iterator.hasNext();) {
-			SubPackage subPackage = (SubPackage) iterator.next();
+		for (SubPackage subPackage: subPackages) {
 			buffer.append("%files " + getPackageName(subPackage.getName()) + "\n");
 			buffer.append("%dir %{eclipse_base}/features/" + subPackage.getName() + "_*/\n");
 			buffer.append("%doc %{eclipse_base}/features/" + subPackage.getName() + "_*/*.html\n");
@@ -183,9 +180,8 @@ public class StubbyGenerator {
 		buffer.append("# Fetch plugins\n");
 		buffer.append("for f in \\\n");
 		buffer.append(getProvidesBundlesString(mainPackage.getProvides()));
-		HashSet uniqueProvides = new HashSet();
-		for (Iterator iterator = subPackages.iterator(); iterator.hasNext();) {
-			SubPackage subPackage = (SubPackage) iterator.next();
+		HashSet<String> uniqueProvides = new HashSet<String>();
+		for (SubPackage subPackage: subPackages) {
 			uniqueProvides = getProvidesBundles(subPackage.getProvides(), uniqueProvides);
 		}
 		buffer.append(getProvidesBundlesString(uniqueProvides));
@@ -262,16 +258,15 @@ public class StubbyGenerator {
 		return toRet;
 	}
 
-	private String getProvidesBundlesString(HashSet uniqueProvides) {
+	private String getProvidesBundlesString(HashSet<String> uniqueProvides) {
 		String toRet = "";
-		for (Iterator iterator = uniqueProvides.iterator(); iterator.hasNext();) {
-			String provideName = (String) iterator.next();
+		for (String provideName: uniqueProvides) {
 			toRet += provideName + "\n";
 		}
 		return toRet;
 	}
 	
-	private HashSet getProvidesBundles(PackageItem[] packageItems, HashSet uniqueProvides) {
+	private HashSet<String> getProvidesBundles(PackageItem[] packageItems, HashSet<String> uniqueProvides) {
 		for (int i = 0; i < packageItems.length; i++) {
 			 uniqueProvides.add(packageItems[i].getName());
 		}

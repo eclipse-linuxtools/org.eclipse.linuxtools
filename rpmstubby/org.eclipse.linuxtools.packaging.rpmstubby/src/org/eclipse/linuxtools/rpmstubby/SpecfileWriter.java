@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.rpmstubby;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -37,12 +36,10 @@ public class SpecfileWriter {
 		MainPackage mainPackage = new MainPackage();
 		stubbyPackageModel.populatePackageData(mainPackage);
 		stubbyPackageModel.populatePackagePreambleData(mainPackage);
-		List includedFeatureFiles = stubbyPackageModel.getIncudedFeatures();
+		List<IFile> includedFeatureFiles = stubbyPackageModel.getIncudedFeatures();
 		// Populate Sub package model
-		List subPackages = new ArrayList();
-		for (Iterator iterator = includedFeatureFiles.iterator(); iterator
-				.hasNext();) {
-			IFile includedFeatureFile = (IFile) iterator.next();
+		List<SubPackage> subPackages = new ArrayList<SubPackage>();
+		for (IFile includedFeatureFile: includedFeatureFiles) {
 			StubbyPackageModel strubbySubPackageModel = new StubbyPackageModel(
 					includedFeatureFile);
 			SubPackage subPackage = new SubPackage();

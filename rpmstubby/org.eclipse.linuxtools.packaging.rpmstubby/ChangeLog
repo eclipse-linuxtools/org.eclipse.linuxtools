@@ -1,3 +1,39 @@
+2008-07-09  Alexander Kurtakov  <akurtakov@gmail.com>
+	
+	Adapt to Java 5.
+	* .classpath: Change J2SE-1.4 to J2SE-1.5.
+	* .settings/org.eclipse.jdt.core.prefs: Bump compiler level to 1.5.
+	* META-INF/MANIFEST.MF: Require J2SE-1.5.
+	* src/org/eclipse/linuxtools/rpmstubby/FeatureVisitor.java:
+	(getFeatures): Generify.
+	(visit): Don't throw unneeded exception.
+	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java:
+	(write): Use foreach instead of iterator.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java:
+	(StubbyGenerator): Generify.
+	(generateFetchScript): Use foreach instead of iterator.
+	(generateSpecfile): Likewise.
+	(getProvidesBundles): Likewise.
+	(getProvidesBundlesString): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java:
+	(getIncludedFeatures): Likewise.
+	(isFeatureIncluded): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPlugin.java:
+	(start): Add missing @Override.
+	(stop): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java:
+	(toString): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/PackageItem.java:
+	(toString): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/SubPackage.java:
+	(toString): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java:
+	(run): Remove unneeded cast.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceInitializer.java:
+	(initializeDefaultPreferences): Add missing @Override.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/StubbyPreferencePage.java:
+	(createFieldEditors): Likewise.
+
 2008-01-03  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #206964

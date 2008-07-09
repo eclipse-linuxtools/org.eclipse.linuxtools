@@ -16,24 +16,23 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
-import org.eclipse.core.runtime.CoreException;
 
 public class FeatureVisitor implements IResourceVisitor {
 
-	private List /**<IFile>**/ featureFiles = new ArrayList();
+	private List<IFile> featureFiles = new ArrayList<IFile>();
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
-	public boolean visit(IResource resource) throws CoreException {
+	public boolean visit(IResource resource) {
 		if (resource instanceof IFile
 				&& resource.getName().equals("feature.xml")) {
-			featureFiles.add((IFile) resource);
+			featureFiles.add((IFile)resource);
 		}
 		return true;
 	}
 	
-	public List /**<IFile>**/ getFeatures() {
+	public List<IFile> getFeatures() {
 		return featureFiles;
 	}
 }
