@@ -160,7 +160,7 @@ public class StubbyPackageModel {
 		if (licenseModel != null) {
 			String urlString = resolveFeatureProperties(licenseModel.getURLString());
 			String urlAnotation = resolveFeatureProperties(licenseModel.getAnnotation());
-			if (urlString.indexOf("epl") > -1 || urlAnotation.indexOf("epl") > -1) {
+			if ((urlString != null && urlAnotation != null)&&(urlString.indexOf("epl") > -1 || urlAnotation.indexOf("epl") > -1)) {
 					license = "EPL";
 			}
 		}

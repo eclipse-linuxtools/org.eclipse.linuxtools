@@ -1,4 +1,10 @@
 2008-07-09  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix NPE when feature.properties is referenced but not present.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java:
+	(getLicense): Check urlString and usrAnotation to not be null when trying to
+	search in them.
+
+2008-07-09  Alexander Kurtakov  <akurtakov@gmail.com>
 	
 	Adapt to Java 5.
 	* .classpath: Change J2SE-1.4 to J2SE-1.5.
