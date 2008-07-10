@@ -1,3 +1,18 @@
+2008-07-10  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add pdebuild script support.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java:
+	(StubbyGenerator): Init usePdebuildScript variable.
+	(generateBuildSection): New method.
+	(generatePrepSection): New method.
+	(generateSpecfile): Use the new methods for build and prep sections which are aware of the
+	pdebuild script.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceConstants.java: New constants for using
+	pdebuild script.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceInitializer.java:
+	(initializeDefaultPreferences): Init the usePdebuildScript setting.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/StubbyPreferencePage.java:
+	(createFieldEditors): Add UI for the usePdebuildScript setting.
+
 2008-07-09  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix NPE when feature.properties is referenced but not present.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java:

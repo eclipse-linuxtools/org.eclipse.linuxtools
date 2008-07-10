@@ -41,6 +41,7 @@ public class StubbyGenerator {
 	private List<SubPackage> subPackages;
 	private boolean withGCJSupport;
 	private boolean withFetchScript;
+	private boolean usePdebuildScript;
 	private IPreferenceStore store;
 		
 	public StubbyGenerator(MainPackage mainPackage, List<SubPackage> subPackages) {
@@ -49,6 +50,7 @@ public class StubbyGenerator {
 		store = StubbyPlugin.getDefault().getPreferenceStore();
 		this.withGCJSupport = store.getBoolean(PreferenceConstants.P_STUBBY_WITH_GCJ);
 		this.withFetchScript = store.getBoolean(PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT);
+		this.usePdebuildScript = store.getBoolean(PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT);
 	}
 	
 	public String generateSpecfile() {
@@ -103,24 +105,9 @@ public class StubbyGenerator {
 			buffer.append("%description " + subPackageName + "\n");
 			buffer.append(subPackage.getDescription() + "\n");
 		}
-		buffer.append("\n%prep\n%setup -q -n FIXME\n\n");
-		buffer.append("/bin/sh -x %{eclipse_base}/buildscripts/copy-platform SDK %{eclipse_base}\n");
-		buffer.append("mkdir home\n\n");
-		buffer.append("%build\n");
-		buffer.append("SDK=$(cd SDK > /dev/null && pwd)\n");
-		buffer.append("homedir=$(cd home > /dev/null && pwd)\n");
-		buffer.append("java -cp $SDK/startup.jar \\\n");
-		buffer.append("     -Dosgi.sharedConfiguration.area=%{_libdir}/eclipse/configuration \\\n");
-		buffer.append("      org.eclipse.core.launcher.Main \\\n");
-		buffer.append("     -application org.eclipse.ant.core.antRunner \\\n");
-		buffer.append("     -Dtype=feature \\\n");
-		buffer.append("     -Did=" + mainPackage.getName() + "\\\n");
-		buffer.append("     -DbaseLocation=$SDK \\\n");
-		buffer.append("     -DsourceDirectory=$(pwd) \\\n");
-		buffer.append("     -DbuildDirectory=$(pwd)/build \\\n");
-		buffer.append("     -Dbuilder=%{eclipse_base}/plugins/org.eclipse.pde.build/templates/package-build \\\n");
-		buffer.append("     -f %{eclipse_base}/plugins/org.eclipse.pde.build/scripts/build.xml \\\n");
-		buffer.append("     -vmargs -Duser.home=$homedir\\\n\n");
+		generatePrepSection(buffer);
+		
+		generateBuildSection(buffer);
 		buffer.append("%install\n");
 		buffer.append("%{__rm} -rf %{buildroot}\n");
 		buffer.append("%{__unzip} -q -d %{buildroot}%{eclipse_base}/.. \\\n");
@@ -158,6 +145,42 @@ public class StubbyGenerator {
 			buffer.append(getPackageFiles(subPackage.getProvides(), withGCJSupport) + "\n");
 		}
 		return buffer.toString();
+	}
+
+	private void generatePrepSection(StringBuffer buffer) {
+		buffer.append("\n%prep\n%setup -q -n FIXME\n\n");
+		if (!usePdebuildScript) {
+			buffer
+					.append("/bin/sh -x %{eclipse_base}/buildscripts/copy-platform SDK %{eclipse_base}\n");
+			buffer.append("mkdir home\n\n");
+		}
+	}
+
+	private void generateBuildSection(StringBuffer buffer) {
+		buffer.append("%build\n");
+		if (!usePdebuildScript) {
+			buffer.append("SDK=$(cd SDK > /dev/null && pwd)\n");
+			buffer.append("homedir=$(cd home > /dev/null && pwd)\n");
+			buffer.append("java -cp $SDK/startup.jar \\\n");
+			buffer
+					.append("     -Dosgi.sharedConfiguration.area=%{_libdir}/eclipse/configuration \\\n");
+			buffer.append("      org.eclipse.core.launcher.Main \\\n");
+			buffer
+					.append("     -application org.eclipse.ant.core.antRunner \\\n");
+			buffer.append("     -Dtype=feature \\\n");
+			buffer.append("     -Did=" + mainPackage.getName() + "\\\n");
+			buffer.append("     -DbaseLocation=$SDK \\\n");
+			buffer.append("     -DsourceDirectory=$(pwd) \\\n");
+			buffer.append("     -DbuildDirectory=$(pwd)/build \\\n");
+			buffer
+					.append("     -Dbuilder=%{eclipse_base}/plugins/org.eclipse.pde.build/templates/package-build \\\n");
+			buffer
+					.append("     -f %{eclipse_base}/plugins/org.eclipse.pde.build/scripts/build.xml \\\n");
+			buffer.append("     -vmargs -Duser.home=$homedir");
+		} else {
+			buffer.append("%{eclipse_base}/buildscripts/pdebuild -f ").append(mainPackage.getName());
+		}
+		buffer.append("\n\n");
 	}
 	
 	public String generateFetchScript() {

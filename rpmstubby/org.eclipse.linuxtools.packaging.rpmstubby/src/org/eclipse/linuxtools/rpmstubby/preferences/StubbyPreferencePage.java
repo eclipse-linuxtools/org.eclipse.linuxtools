@@ -42,6 +42,9 @@ public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 		addField(new BooleanFieldEditor(
 				PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT,
 				"Include a fetch script", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(
+				PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT,
+				"Use the pdebuild script for building", getFieldEditorParent()));
 	}
 
 	/*
