@@ -10,7 +10,10 @@
             icon="icons/sample.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             class="org.eclipse.linuxtools.systemtap.ui.editor.SystemtapEditor"
-            id="org.eclipse.linuxtools.systemtap.ui.editor.SystemtapEditor">
+            id="com.redhat.systemtap.editors.SystemtapEditor">
       </editor>
    </extension>
+   <metadata>
+    	location="metadata/stp_metadata.properties"> 
+    </metadata>
 </plugin>

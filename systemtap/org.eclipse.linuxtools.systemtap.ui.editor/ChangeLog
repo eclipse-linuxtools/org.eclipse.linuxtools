@@ -1,39 +1,3 @@
-2009-01-14  Andrew Overholt  <overholt@redhat.com>
-
-	* META-INF/MANIFEST.MF: Replace qualifier for 0.1 release.
-
-2009-01-09  Phil Muldoon  <pmuldoon@redhat.com>
-
-	* build.properties: Add completion/ folder to binary
-	build.
-
-2008-12-09  Andrew Overholt  <overholt@redhat.com>
-
-	* plugin.xml: Remove erroneous metadata element under <plugin>.
-
-2008-11-03  Andrew Overholt  <overholt@redhat.com>
-
-	* META-INF/MANIFEST.MF: Add Bundle-ActivationPolicy.
-
-2008-10-31  Andrew Overholt  <overholt@redhat.com>
-
-	* META-INF/MANIFEST.MF: Use plugin.properties.
-	* plugin.properties: Initial checkin.
-
-2008-10-28  Andrew Overholt  <overholt@redhat.com>
-
-	Bug #252489
-	* META-INF/MANIFEST.MF: Set BREE to 1.6 (STPMetadataSingleton.parse uses
-	ResourceBundle.containsKey).
-
-2009-09-13  Phil Muldoon  <pmuldoon@redhat.com>
-
-	* META-INF/MANIFEST.MF: Update to reflect
-	import specifications.
-	* plugin.xml: Likewise.
-
 2008-09-11  Phil Muldoon  <pmuldoon@redhat.com>
-
-	* .classpath: Add.
 
 	* Initial import.
