@@ -1,12 +1,25 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Systemtap Editor Plug-in
+Bundle-Name: Systemtap Editor Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.editor;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.1.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.editor.activator.Activator
-Bundle-Vendor: Phil Muldoon
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui.editors
 Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.eclipse.linuxtools.systemtap.ui.editor;
+  uses:="org.eclipse.jface.text,
+   org.eclipse.jface.text.reconciler,
+   org.eclipse.jface.text.source,
+   org.eclipse.core.runtime,
+   org.eclipse.jface.text.rules,
+   org.eclipse.jface.text.contentassist,
+   org.eclipse.jface.action,
+   org.eclipse.jface.text.presentation,
+   org.eclipse.swt.graphics,
+   org.eclipse.swt.widgets,
+   org.eclipse.ui.editors.text"
+Bundle-Vendor: Eclipse.org
