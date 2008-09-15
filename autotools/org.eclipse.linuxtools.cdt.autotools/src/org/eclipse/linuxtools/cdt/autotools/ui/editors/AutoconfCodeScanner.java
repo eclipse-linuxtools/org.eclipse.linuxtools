@@ -116,7 +116,7 @@ public class AutoconfCodeScanner extends RuleBasedScanner {
 		rules.add(new InlineDataRule(code));
 		
 		// Add word rule for keywords.
-		WordRule wordRule= new WordRule(new AutoconfWordDetector(), Token.UNDEFINED);
+		WordRule wordRule= new WordRule(new AutoconfWordDetector(), other);
 		for (int i= 0; i < keywords.length; i++)
 			wordRule.addWord(keywords[i], keyword);
 		rules.add(wordRule);
@@ -129,8 +129,6 @@ public class AutoconfCodeScanner extends RuleBasedScanner {
 		
 		rules.add(new WhitespaceRule(new AutoconfWhitespaceDetector()));
 		
-		setDefaultReturnToken(other);
-
 		IRule[] result= new IRule[rules.size()];
 		rules.toArray(result);
 		setRules(result);

@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsProjectNature;
-import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 
@@ -120,8 +119,6 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 			monitor.subTask(AutotoolsPlugin.getResourceString(MSG_ADD_BUILDER));
 //			ManagedCProjectNature.addManagedBuilder(project, new SubProgressMonitor(monitor, 1));
 			AutotoolsProjectNature.addAutotoolsBuilder(project, new SubProgressMonitor(monitor,1));
-			// FIXME: Default scanner property: make -w - eventually we want to use Make core's build scanner
-			project.setPersistentProperty(AutotoolsPropertyConstants.SCANNER_USE_MAKE_W, AutotoolsPropertyConstants.TRUE);
 			CCorePlugin.getDefault().mapCProjectOwner(project, projectID, true);
 			// Add the ManagedProject to the project
 			IManagedProject newManagedProject = null;
@@ -166,9 +163,9 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 			// We are in the middle of setting the project indexer which may end up 
 			// being the null indexer.  In that case, we don't want the default indexer 
 			// (Fast Indexer) to be invoked.
-			//IIndexManager manager = CCorePlugin.getIndexManager();
-			//ICProject cproject = CoreModel.getDefault().create(project);
-			//manager.setIndexerId(cproject, ConvertToAutotoolsProjectWizard.NULL_INDEXER_ID);
+			IIndexManager manager = CCorePlugin.getIndexManager();
+			ICProject cproject = CoreModel.getDefault().create(project);
+			manager.setIndexerId(cproject, ConvertToAutotoolsProjectWizard.NULL_INDEXER_ID);
 		
 			// Modify the project settings
 			if (project != null) {

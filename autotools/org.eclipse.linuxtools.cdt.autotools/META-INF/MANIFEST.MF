@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.cdt.autotools;singleton:=true
-Bundle-Version: 1.0.2.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
@@ -23,15 +23,15 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.help;bundle-version="[3.3.100,4.0.0)",
  org.eclipse.core.variables;bundle-version="[3.2.100,4.0.0)",
  org.eclipse.ui.views;bundle-version="[3.3.0,4.0.0)",
- org.eclipse.core.filesystem;bundle-version="[1.2.0,2.0.0)",
- org.eclipse.core.net;bundle-version="1.1.0"
-Bundle-ActivationPolicy: lazy
-Bundle-Vendor: %provider
+ org.eclipse.core.filesystem;bundle-version="[1.2.0,2.0.0)"
+Eclipse-AutoStart: true
+Bundle-Vendor: %RedHatVendor.name
 Export-Package: org.eclipse.linuxtools.cdt.autotools;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.actions;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.editors.automake;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.popup.actions;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.cdt.autotools.ui;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.ui.editors;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.ui.editors.parser,
  org.eclipse.linuxtools.cdt.autotools.wizards;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

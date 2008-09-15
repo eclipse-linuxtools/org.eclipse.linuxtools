@@ -47,12 +47,6 @@ public class AutotoolsScannerInfoProvider extends AbstractCExtension implements 
 		// may change the include path / defined symbols.
 		IProject project = resource.getProject();
 		
-		// We punt for non-Autotools projects.  This ScannerInfoProvider is used for
-		// all C Projects and we might get called for a non-Autotools project (e.g.
-		// unsubscribe operation when converting to C project).
-		if (!AutotoolsMakefileBuilder.hasTargetBuilder(project))
-			return null;
-		
 		// Check if the scanner info has been marked dirty, in which case we need
 		// to mark all entries dirty.
 		Boolean isDirty = Boolean.FALSE;
@@ -106,7 +100,6 @@ public class AutotoolsScannerInfoProvider extends AbstractCExtension implements 
 	public void unsubscribe(IResource resource,
 			IScannerInfoChangeListener listener) {
 		AutotoolsScannerInfo info = (AutotoolsScannerInfo)getScannerInformation(resource);
-		if (info != null)
-			info.removeListener(listener);
+		info.removeListener(listener);
 	}
 }

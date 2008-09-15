@@ -141,17 +141,6 @@ public abstract class InvokeAction extends AbstractTargetAction {
 		return execDir;
 	}
 	
-	protected IPath getCWD(IContainer container) {
-		int type = container.getType();
-		IPath cwd = null;
-		if (type == IContainer.FILE) {
-			cwd = container.getFullPath().removeLastSegments(1);
-		} else {
-			cwd = container.getFullPath();
-		}
-		return cwd;
-	}
-	
 	protected HashMap executeCommand(IPath command,
 			String[] argumentList, String[] envList, IPath execDir) {
 

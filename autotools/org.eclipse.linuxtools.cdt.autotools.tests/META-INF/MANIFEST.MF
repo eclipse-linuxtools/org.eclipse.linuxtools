@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %bundleName
+Bundle-Name: Autotools Tests Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.cdt.autotools.tests
-Bundle-Version: 1.0.3.qualifier
+Bundle-Version: 1.0.2
 Bundle-Activator: org.eclipse.linuxtools.cdt.autotools.tests.AutotoolsTestsPlugin
-Bundle-Vendor: %provider
+Bundle-Vendor: REDHAT
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -20,5 +20,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.cdt.make.ui,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.cdt.core
-Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

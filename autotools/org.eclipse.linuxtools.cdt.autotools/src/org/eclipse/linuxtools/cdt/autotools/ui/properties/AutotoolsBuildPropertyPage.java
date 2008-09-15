@@ -191,7 +191,7 @@ public class AutotoolsBuildPropertyPage extends AbstractCBuildPropertyTab {
 		fCleanMake.setSelection(true);
 		fCleanMakeTarget.setText(AutotoolsPropertyConstants.CLEAN_MAKE_TARGET_DEFAULT);
 		fCleanMakeTarget.setEnabled(true);
-		fScannerMakeW.setSelection(true);
+		fScannerMakeW.setSelection(false);
 	}
 	
 	public void updateData(ICResourceDescription cfgd) {

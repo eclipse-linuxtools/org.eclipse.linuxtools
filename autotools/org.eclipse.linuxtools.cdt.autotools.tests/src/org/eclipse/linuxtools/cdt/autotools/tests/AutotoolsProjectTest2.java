@@ -44,7 +44,13 @@ public class AutotoolsProjectTest2 extends TestCase {
 		assertTrue(testProject.exists(x));
 		x = new org.eclipse.core.runtime.Path("src/configure");
 		ProjectTools.setConfigDir(testProject, "src");
+		ProjectTools.markExecutable(testProject, "src/config.guess");
+		ProjectTools.markExecutable(testProject, "src/config.sub");
+		ProjectTools.markExecutable(testProject, "src/missing");
+		ProjectTools.markExecutable(testProject, "src/mkinstalldirs");
+		ProjectTools.markExecutable(testProject, "src/install-sh");
 		ProjectTools.markExecutable(testProject, "src/autogen.sh");
+		ProjectTools.markExecutable(testProject, "src/depcomp");
 		x = new org.eclipse.core.runtime.Path("src/configure");
 		assertFalse(testProject.exists(x));
 		x = new org.eclipse.core.runtime.Path("src/Makefile.in");

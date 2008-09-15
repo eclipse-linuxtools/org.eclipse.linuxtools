@@ -56,7 +56,7 @@ public class AutomakeColourizationTests extends TestCase {
         if (!ProjectTools.setup())
         	fail("could not perform basic project workspace setup");
         
-        project = ProjectTools.createProject("testProjectACT");
+        project = ProjectTools.createProject("testProject");
         
         if(project == null) {
         	fail("Unable to create test project");

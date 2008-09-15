@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.text.rules.EndOfLineRule;
-import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.IWhitespaceDetector;
 import org.eclipse.jface.text.rules.MultiLineRule;
@@ -56,7 +55,7 @@ public class MakefileCodeScanner extends AbstractMakefileCodeScanner {
 		initialize();
 	}
 	
-	protected List<IRule> createRules() {
+	protected List createRules() {
 		IToken keyword = getToken(ColorManager.MAKE_KEYWORD_COLOR);
 		IToken function = getToken(ColorManager.MAKE_FUNCTION_COLOR);
 		IToken comment = getToken(ColorManager.MAKE_COMMENT_COLOR);
@@ -64,7 +63,7 @@ public class MakefileCodeScanner extends AbstractMakefileCodeScanner {
 		IToken macroDef = getToken(ColorManager.MAKE_MACRO_DEF_COLOR);
 		IToken other = getToken(ColorManager.MAKE_DEFAULT_COLOR);
 
-		List<IRule> rules = new ArrayList<IRule>();
+		List rules = new ArrayList();
 
 		// Add rule for single line comments.
 		rules.add(new EndOfLineRule("#", comment, '\\', true)); //$NON-NLS-1$

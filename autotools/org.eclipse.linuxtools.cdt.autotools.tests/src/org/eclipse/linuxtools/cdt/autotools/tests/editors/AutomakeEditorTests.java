@@ -35,7 +35,7 @@ public class AutomakeEditorTests extends TestCase {
     }
 	  
 	public void testAutomakeEditorAssociation() throws Exception {
-		project = ProjectTools.createProject("testProjectAET");
+		project = ProjectTools.createProject("testProject");
 		
 		if(project == null) {
             fail("Unable to create test project");

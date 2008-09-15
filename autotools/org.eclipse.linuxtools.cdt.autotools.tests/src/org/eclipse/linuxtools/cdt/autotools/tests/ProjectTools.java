@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.zip.ZipFile;
 
 import org.eclipse.cdt.core.CommandLauncher;
+import org.eclipse.cdt.internal.ui.util.CoreUtility;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
@@ -213,45 +214,6 @@ public class ProjectTools {
 			// should not happen
 		}
 	}
-
-	private static boolean generateFiles(IPath destPath) {
-		// Get a launcher for the config command
-		CommandLauncher launcher = new CommandLauncher();
-		OutputStream stdout = new ByteArrayOutputStream();
-		OutputStream stderr = new ByteArrayOutputStream();
-		
-		IPath runPath = root.getLocation().append(destPath);
-
-		// Run the genfiles.sh shell script which will simulate
-		// running aclocal, autoconf, and automake
-		launcher.showCommand(true);
-		IPath commandPath = new Path("sh");
-		String[] cmdargs = new String[]{"genfiles.sh"};
-		Process proc = launcher.execute(commandPath, cmdargs, new String[0],
-				runPath);
-		if (proc != null) {
-			try {
-				// Close the input of the process since we will never write to
-				// it
-				proc.getOutputStream().close();
-			} catch (IOException e) {
-			}
-
-			if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
-					monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
-				return false;
-			}
-		} else
-			return false;
-		
-		return true;
-	}
-
-	private static void importFilesFromZipAndGenerate(ZipFile srcZipFile, IPath destPath, IProgressMonitor monitor) throws InvocationTargetException {
-		importFilesFromZip(srcZipFile, destPath, monitor);
-		if (!generateFiles(destPath))
-			throw new InvocationTargetException(new Exception("Unsuccessful test file generation"));
-	}
 	
 	private static class ImportOverwriteQuery implements IOverwriteQuery {
 		public String queryOverwrite(String file) {
@@ -314,23 +276,35 @@ public class ProjectTools {
 	 * @param containerName Name of the source container
 	 * @param zipFile Archive to import
 	 * @param containerEncoding encoding for the generated source container
-	 * @param generate true if configuration files need to be pre-generated
+	 * @return The handle to the new source container
+	 * @throws InvocationTargetException Creation failed
+	 * @throws CoreException Creation failed
+	 * @throws IOException Creation failed
+	 */		
+	public static IContainer addSourceContainerWithImport(IProject project, String containerName, File zipFile, String containerEncoding) throws InvocationTargetException, CoreException, IOException {
+		return addSourceContainerWithImport(project, containerName, zipFile, containerEncoding, new Path[0]);
+	}	
+
+	/**
+	 * Adds a source container to a IProject and imports all files contained
+	 * in the given ZIP file.
+	 * @param project The parent project
+	 * @param containerName Name of the source container
+	 * @param zipFile Archive to import
+	 * @param containerEncoding encoding for the generated source container
 	 * @param exclusionFilters Exclusion filters to set
 	 * @return The handle to the new source container
 	 * @throws InvocationTargetException Creation failed
 	 * @throws CoreException Creation failed
 	 * @throws IOException Creation failed
 	 */		
-	public static IContainer addSourceContainerWithImport(IProject project, String containerName, File zipFile, String containerEncoding, boolean generate, IPath[] exclusionFilters) throws InvocationTargetException, CoreException, IOException {
+	public static IContainer addSourceContainerWithImport(IProject project, String containerName, File zipFile, String containerEncoding, IPath[] exclusionFilters) throws InvocationTargetException, CoreException, IOException {
 		ZipFile file= new ZipFile(zipFile);
 		try {
 //			IPackageFragmentRoot root= addSourceContainer(jproject, containerName, exclusionFilters);
 //			((IContainer) root.getCorrespondingResource()).setDefaultCharset(containerEncoding, null);
 			IContainer root= addSourceContainer(project, containerName, exclusionFilters);
-			if (generate)
-				importFilesFromZipAndGenerate(file, root.getFullPath(), null);
-			else
-				importFilesFromZip(file, root.getFullPath(), null);
+			importFilesFromZip(file, root.getFullPath(), null);
 			return root;
 		} finally {
 			if (file != null) {
@@ -339,24 +313,6 @@ public class ProjectTools {
 		}
 	}
 
-	/**
-	 * Adds a source container to a IProject and imports all files contained
-	 * in the given ZIP file and generates configuration files if needed.
-	 * @param project The parent project
-	 * @param containerName Name of the source container
-	 * @param path path of zipFile Archive to import
-	 * @param containerEncoding encoding for the generated source container
-	 * @param generate true if configuration files need to be pre-generated
-	 * @return The handle to the new source container
-	 * @throws InvocationTargetException Creation failed
-	 * @throws CoreException Creation failed
-	 * @throws IOException Creation failed
-	 */		
-	public static IContainer addSourceContainerWithImport(IProject project, String containerName, Path zipFilePath, String containerEncoding, boolean generate) throws InvocationTargetException, CoreException, IOException {
-		File zipFile = new File(FileLocator.toFileURL(FileLocator.find(AutotoolsTestsPlugin.getDefault().getBundle(), zipFilePath, null)).getFile());
-		return addSourceContainerWithImport(project, containerName, zipFile, containerEncoding, generate, null);
-	}
-	
 	/**
 	 * Adds a source container to a IProject and imports all files contained
 	 * in the given ZIP file.
@@ -370,7 +326,8 @@ public class ProjectTools {
 	 * @throws IOException Creation failed
 	 */		
 	public static IContainer addSourceContainerWithImport(IProject project, String containerName, Path zipFilePath, String containerEncoding) throws InvocationTargetException, CoreException, IOException {
-		return addSourceContainerWithImport(project, containerName, zipFilePath, containerEncoding, false);
+		File zipFile = new File(FileLocator.toFileURL(FileLocator.find(AutotoolsTestsPlugin.getDefault().getBundle(), zipFilePath, null)).getFile());
+		return addSourceContainerWithImport(project, containerName, zipFile, containerEncoding, null);
 	}
 
 	/**

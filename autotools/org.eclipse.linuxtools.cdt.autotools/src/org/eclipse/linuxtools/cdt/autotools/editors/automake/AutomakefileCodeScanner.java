@@ -1,5 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006, 2007 QNX Software Systems and others.
+ * Copyright (c) 2006, 2007 Red Hat, Inc.
+ * 
+ * Largely copied from MakefileCodeScanner which has the following
+ * copyright notice:
+ * 
+ * Copyright (c) 2000, 2006 QNX Software Systems and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +12,6 @@
  *
  * Contributors:
  *     QNX Software Systems - Initial API and implementation
- *     Red Hat Inc. - Modified from MakefileCodeScanner to support Automake files
  *******************************************************************************/
 
 package org.eclipse.linuxtools.cdt.autotools.editors.automake;
@@ -17,7 +21,6 @@ import java.util.List;
 
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
-import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.IWhitespaceDetector;
 import org.eclipse.jface.text.rules.MultiLineRule;
@@ -69,7 +72,7 @@ public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {
 		initialize();
 	}
 	
-	protected List<IRule> createRules() {
+	protected List createRules() {
 		IToken keyword = getToken(ColorManager.MAKE_KEYWORD_COLOR);
 		IToken function = getToken(ColorManager.MAKE_FUNCTION_COLOR);
 		IToken comment = getToken(ColorManager.MAKE_COMMENT_COLOR);
@@ -77,7 +80,7 @@ public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {
 		IToken macroDef = getToken(ColorManager.MAKE_MACRO_DEF_COLOR);
 		IToken other = getToken(ColorManager.MAKE_DEFAULT_COLOR);
 
-		List<IRule> rules = new ArrayList<IRule>();
+		List rules = new ArrayList();
 
 		// Add rule for single line comments.
 		rules.add(new EndOfLineRule("#", comment, '\\', true)); //$NON-NLS-1$
@@ -102,7 +105,7 @@ public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {
 
 		// Add word rule for keywords, types, and constants.
 		// We restring the detection of the keywords to be the first column to be valid.
-		WordRule keyWordRule = new WordRule(new MakefileWordDetector(), Token.UNDEFINED);
+		WordRule keyWordRule = new WordRule(new MakefileWordDetector(), other);
 		for (int i = 0; i < keywords.length; i++) {
 			keyWordRule.addWord(keywords[i], keyword);
 		}
@@ -110,12 +113,12 @@ public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {
 		rules.add(keyWordRule);
 
 
-		WordRule functionRule = new WordRule(new MakefileWordDetector(), Token.UNDEFINED);
+		WordRule functionRule = new WordRule(new MakefileWordDetector(), other);
 		for (int i = 0; i < functions.length; i++)
 			functionRule.addWord(functions[i], function);
 		rules.add(functionRule);
 		
-		WordRule automaticVarRule = new WordRule(new AutomakeWordDetector(), Token.UNDEFINED);
+		WordRule automaticVarRule = new WordRule(new AutomakeWordDetector(), other);
 		for (int i = 0; i < automaticVariables.length; i++)
 			automaticVarRule.addWord(automaticVariables[i], keyword);
 		rules.add(automaticVarRule);

@@ -11,14 +11,10 @@
 package org.eclipse.linuxtools.cdt.autotools.internal.text.hover;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,12 +27,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.ui.CUIPlugin;
-import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultInformationControl;
@@ -57,6 +52,7 @@ import org.eclipse.linuxtools.cdt.autotools.ui.editors.AutoconfEditor;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.AutoconfMacro;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.IAutotoolEditorActionDefinitionIds;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
@@ -75,8 +71,8 @@ import org.xml.sax.SAXParseException;
 
 public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 
-	public static String AUTOCONF_MACROS_DOC_NAME = "http://www.sourceware.org/eclipse/autotools/acmacros"; //$NON-NLS-1$
-	public static String AUTOMAKE_MACROS_DOC_NAME = "http://www.sourceware.org/eclipse/autotools/ammacros"; //$NON-NLS-1$
+	public static String AUTOCONF_MACROS_DOC_NAME = "libhoverdocs/acmacros"; //$NON-NLS-1$
+	public static String AUTOMAKE_MACROS_DOC_NAME = "libhoverdocs/ammacros"; //$NON-NLS-1$
 
 	private static class AutotoolsHoverDoc {
 		public Document[] documents = new Document[2];
@@ -144,17 +140,10 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 			try {
 				// see comment in initialize()
 				try {
-					// Either open the html file or file system file depending
-					// on what has been specified.
-					URI acDoc = new URI(acDocName);
-					IPath p = URIUtil.toPath(acDoc);
-					InputStream docStream = null;
-					if (p == null) {
-						URL url = acDoc.toURL();
-						docStream = url.openStream();
-					} else {
-						docStream = new FileInputStream(p.toFile());
-					}
+					// Use the FileLocator class to open the magic hover doc file
+					// in the plugin's jar.
+					Path p = new Path(acDocName);
+					InputStream docStream = FileLocator.openStream(AutotoolsPlugin.getDefault().getBundle(), p, false);
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 					factory.setValidating(false);
 					try {
@@ -175,12 +164,8 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 					catch (IOException ioe) {
 						doc = null;
 					}
-				} catch (FileNotFoundException e) {
-					CUIPlugin.log(e);
 				} catch (MalformedURLException e) {
-					CUIPlugin.log(e);
-				} catch (URISyntaxException e) {
-					CUIPlugin.log(e);
+					CUIPlugin.getDefault().log(e);
 				}
 				ac_document = doc;
 			}
@@ -202,17 +187,10 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 			try {
 				// see comment in initialize()
 				try {
-					// Either open the html file or file system file depending
-					// on what has been specified.
-					URI amDoc = new URI(amDocName);
-					IPath p = URIUtil.toPath(amDoc);
-					InputStream docStream = null;
-					if (p == null) {
-						URL url = amDoc.toURL();
-						docStream = url.openStream();
-					} else {
-						docStream = new FileInputStream(p.toFile());
-					}
+					// Use the FileLocator class to open the magic hover doc file
+					// in the plugin's jar.
+					Path p = new Path(amDocName);
+					InputStream docStream = FileLocator.openStream(AutotoolsPlugin.getDefault().getBundle(), p, false);
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 					factory.setValidating(false);
 					try {
@@ -233,12 +211,8 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 					catch (IOException ioe) {
 						doc = null;
 					}
-				} catch (FileNotFoundException e) {
-					CUIPlugin.log(e);
 				} catch (MalformedURLException e) {
-					CUIPlugin.log(e);
-				} catch (URISyntaxException e) {
-					CUIPlugin.log(e);
+					CUIPlugin.getDefault().log(e);
 				}
 				am_document = doc;
 			}
@@ -254,7 +228,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 		String amDocName = getDefaultAutomakeMacrosDocName();
 		if (input instanceof IFileEditorInput) {
 			IFileEditorInput fe = (IFileEditorInput)input;
-			IFile f = fe.getFile();
+			IFile f = ((IFileEditorInput)input).getFile();
 			IProject p = f.getProject();
 			try {
 				String acVer = p.getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION);
@@ -356,7 +330,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 		for (int ix = 0; ix < doc.length; ++ix) {
 			Document macroDoc = doc[ix];
 			ArrayList list = (ArrayList)acHoverMacros.get(macroDoc);
-			if (list == null && macroDoc != null) {
+			if (list == null) {
 				list = new ArrayList();
 				NodeList nl = macroDoc.getElementsByTagName("macro"); //$NON-NLS-1$
 				for (int i = 0; i < nl.getLength(); ++i) {
@@ -507,8 +481,9 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 	public IInformationControlCreator getHoverControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, getTooltipAffordanceString(),
-						new HTMLTextPresenter(false));
+				return new DefaultInformationControl(parent, SWT.NONE,
+						new HTMLTextPresenter(false),
+						getTooltipAffordanceString());
 			}
 		};
 	}
@@ -519,8 +494,9 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 	public static IInformationControlCreator getInformationControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, getTooltipAffordanceString(),
-						new HTMLTextPresenter(false));
+				return new DefaultInformationControl(parent, SWT.NONE,
+						new HTMLTextPresenter(false),
+						getTooltipAffordanceString());
 			}
 		};
 	}

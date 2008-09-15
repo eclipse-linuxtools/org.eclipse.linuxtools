@@ -40,7 +40,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsProjectNature;
-import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
@@ -198,8 +197,6 @@ public class NewAutotoolsCProjectWizard extends NewCProjectWizard {
 		} catch (CoreException e) {
 			AutotoolsPlugin.log(e);
 		}
-		// FIXME: Default scanner property: make -w - eventually we want to use Make core's build scanner
-		newProject.setPersistentProperty(AutotoolsPropertyConstants.SCANNER_USE_MAKE_W, AutotoolsPropertyConstants.TRUE);
 		
 		CCorePlugin.getDefault().mapCProjectOwner(newProject, getProjectID(), true);
 		
@@ -260,9 +257,9 @@ public class NewAutotoolsCProjectWizard extends NewCProjectWizard {
 		// We are in the middle of setting the project indexer which may end up 
 		// being the null indexer.  In that case, we don't want the default indexer 
 		// (Fast Indexer) to be invoked.
-		//IPDOMManager manager = CCorePlugin.getPDOMManager();
-		//ICProject cproject = CoreModel.getDefault().create(newProject);
-		//manager.setIndexerId(cproject, ConvertToAutotoolsProjectWizard.NULL_INDEXER_ID);
+		IPDOMManager manager = CCorePlugin.getPDOMManager();
+		ICProject cproject = CoreModel.getDefault().create(newProject);
+		manager.setIndexerId(cproject, ConvertToAutotoolsProjectWizard.NULL_INDEXER_ID);
 
 		// Modify the project settings
 		if (newProject != null) {

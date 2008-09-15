@@ -48,7 +48,7 @@ public class MakefileMessages {
 	 * @return the resource bundle message
 	 */
 	public static String getFormattedString(String key, String[] args) {
-		return MessageFormat.format(getString(key), (Object[])args);
+		return MessageFormat.format(getString(key), args);
 	}
 
 }

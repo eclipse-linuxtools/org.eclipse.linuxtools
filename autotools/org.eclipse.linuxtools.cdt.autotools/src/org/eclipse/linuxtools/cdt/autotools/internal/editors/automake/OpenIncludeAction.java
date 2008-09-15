@@ -84,7 +84,7 @@ public class OpenIncludeAction extends Action {
 		
 		try {
 			IResource res = include.getUnderlyingResource();
-			ArrayList<IPath> filesFound = new ArrayList<IPath>(4);
+			ArrayList/*<IPath>*/ filesFound = new ArrayList(4);
 			String fullFileName= include.getFullFileName();
 			if (fullFileName != null) {
 				IPath fullPath= new Path(fullFileName);
@@ -150,9 +150,9 @@ public class OpenIncludeAction extends Action {
 				EditorUtility.openInEditor(fileToOpen, include);
 			} 
 		} catch (CModelException e) {
-			CUIPlugin.log(e.getStatus());
+			CUIPlugin.getDefault().log(e.getStatus());
 		} catch (CoreException e) {
-			CUIPlugin.log(e.getStatus());
+			CUIPlugin.getDefault().log(e.getStatus());
 		}
 	}
 
@@ -195,7 +195,7 @@ public class OpenIncludeAction extends Action {
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
 	
-	private void findFile(String[] includePaths, String name, ArrayList<IPath> list)
+	private void findFile(String[] includePaths, String name, ArrayList list)
 			throws CoreException {
 		// in case it is an absolute path
 		IPath includeFile= new Path(name);		
@@ -206,7 +206,7 @@ public class OpenIncludeAction extends Action {
 				return;
 			}
 		}
-		HashSet<IPath> foundSet = new HashSet<IPath>();
+		HashSet foundSet = new HashSet();
 		for (int i = 0; i < includePaths.length; i++) {
 			IPath path = PathUtil.getCanonicalPath(new Path(includePaths[i]).append(includeFile));
 			File file = path.toFile();
@@ -229,7 +229,7 @@ public class OpenIncludeAction extends Action {
 	 * @param list
 	 * @throws CoreException
 	 */
-	private void findFile(IContainer parent, final IPath name, final ArrayList<IPath> list) throws CoreException {
+	private void findFile(IContainer parent, final IPath name, final ArrayList list) throws CoreException {
 		parent.accept(new IResourceProxyVisitor() {
 
 			public boolean visit(IResourceProxy proxy) throws CoreException {
@@ -251,7 +251,6 @@ public class OpenIncludeAction extends Action {
 	}
 
 
-	@SuppressWarnings("unchecked")
 	private IPath chooseFile(ArrayList filesFound) {
 		ILabelProvider renderer= new LabelProvider() {
 			public String getText(Object element) {
@@ -275,7 +274,6 @@ public class OpenIncludeAction extends Action {
 	}
 
 
-	@SuppressWarnings("unchecked")
 	private static IInclude getIncludeStatement(ISelection sel) {
 		if (!sel.isEmpty() && sel instanceof IStructuredSelection) {
 			List list= ((IStructuredSelection)sel).toList();

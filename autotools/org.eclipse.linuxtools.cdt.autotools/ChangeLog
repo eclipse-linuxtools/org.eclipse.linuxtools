@@ -1,337 +1,3 @@
-2009-04-30  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #249199
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/AbstractAutotoolsHandler.java: New file.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoconfHandler.java: New file.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutomakeHandler.java: New file.
-	* plugin.properties: Add messages for invoking autotools.
-	* plugin.xml: Change invoke autotools actions from Actions in an ActionSet to instead
-	use org.eclipse.ui.menus, org.eclipse.ui.commands, and org.eclipse.ui.handlers and
-	do not add these actions to project menu if not an Autotools project.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/AclocalHandler.java (execute): Implemented. 
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAclocalAction.java (run): Add check
-	for null container.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoconfAction.java (run): Ditto. 
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutomakeAction.java (run): Ditto.
-
-2009-04-27  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #270518.
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (getPostBuildErrMsg):
-	New method. 
-	(getPreBuildErrMsg): Ditto. 
-	(getTargets): Fix warnings.
-	(makeArrayList): Ditto.
-	(build): Ditto.
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (addMakeTargetsToManager): Add
-	check for non-existent Makefile.
-	(regenerateMakefiles): Check for Makefile at end and if not present, always return error.
-	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Change message for
-	non-generation of Makefile.
-
-2009-04-20  Andrew Overholt  <overholt@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/HTMLTextPresenter.java
-	(updatePresentation): Fix compiler warnings.
-
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #272924
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/OpenIncludeAction.java (run): 
-	Fix compiler warnings.
-	(getIncludeStatement): Ditto.
-	(chooseFile): Ditto.
-	(.visit): Ditto.
-	(findFile): Ditto.
-
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #272923
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileMessages.java (getFormattedString): Fix
-	compiler warnings.
-
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-	
-	Resolves #272922
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Fix compiler
-	warnings. 
-	(addMakeTargetsToManager): Ditto. 
-	(runScript): Ditto.
-	(getConfigArgs): Ditto.
-	(MakeTargetComparator): Ditto.
-	(makeArray): Ditto.
-	(runCommand): Ditto.
-	
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #272921
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeMessages.java (getFormattedString): 
-	Cast 2nd argument for message fomatting to avoid compile warnings. 
-
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #272920
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/wizards/AutotoolsWizardMessages.java (getFormattedString):
-	Cast 2nd argument for message formatting to avoid compiler warnings. 
-	(getFormattedString): Ditto.
-
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #272919
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/AutotoolsPluginImages.java (makeIconFileURL):
-	Fix static member reference to avoid compiler warning. 
-	(static initializer): Ditto.
-	
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #272918
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsPlugin.java (getFormattedString): Cast
-	2nd argument to avoid compiler warning.
-	
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #272917
-	* .settings: Updated.
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/preferences/AbstractEditorPreferencePage.java (validatePositiveNumber):
-	Properly template containers. 
-	(getTextFields): Ditto.
-	(initializeFields): Ditto.
-	(updateStatus): Ditto.
-	(getCheckBoxes): Ditto.
-	(getNumberFields): Ditto.
-	
-2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
-	
-	Resolves #272916.	
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java (createRules): Use templated
-	List.
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileCodeScanner.java (createRules): Ditto.
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/AbstractMakefileCodeScanner.java (createTextAttribute):
-	Correctly access static member function. 
-	(initializeRules): Use templated List.
-
-2009-04-03  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #270680
-	
-	* plugin.xml: Fix Autotools properties page to only show up for Autotools nature.
-	Add gcc and g++ to Toolchain so indexing will work.
-
-2009-03-27  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add
-	logic to also respect the makefile command being changed in the Makefile target.
-
-2009-03-26  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #269974
-	
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add
-	logic to handle a makefile target being for a subdirectory Makefile as opposed to
-	the main Makefile.
-
-2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Use
-	System.arraycopy rather than Arrays.copyOfRange because the latter is a 1.6 API.
-
-2009-03-03  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #265996
-	
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (regenerateMakefiles): If we are
-	doing full reconfigure, use same cleaning method on build directory as "clean" build.
-	(makeArray): New method to convert String into array of Strings.
-	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Add message when cleaning
-	build directory prior to reconfigure. 
-
-2009-03-02  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #266451
-	
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Use
-	property "line.separator" instead of "lineSeparator".
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (initializeBuildConfigDirs):
-	Store a workspace-neutral builddir that can be moved to another workspace.
-	Use IBuilder.setBuildPath method instead of IBuilder.setBuildAttribute to set the new build
-	dir.  Also, check to see if the builddir has changed first. 
-	
-2009-03-02  Jeff Johnston  <jjohnstn@redhat.com>
- 
-	Resolves #264935
-	
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/CBuildStepsConsole.java: New file.
-	* plugin.xml: Add CBuildSteps console.
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Perform
-	prebuild and postbuild steps if present.
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/ConsoleMessages.properties: Add name
-	for Build Steps console. 
-
-2009-02-24  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #265873
-	
-	* META-INF/MANIFEST.MF: Add dependency on org.eclipse.core.net.
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsPlugin.java (stop): Add call to
-	ServiceTracker close() method.
-	(start): Add ServiceTracker open() call for IProxyService.
-	(getProxyService): New method to get IProxyService. 
-
-2009-01-20  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #261717
-	
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfTextHover.java (getMacroList): 
-	Don't bother processing macros if the macro document turns out to be null.
-
-2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #261257
-	
-	* META-INF/MANIFEST.MF: Update plug-in to add .qualifier to id and update
-	to 1.0.2.qualifier.
-	* plugin.xml: Update invoke autotools action set to set visible to true.
-
-2009-01-06  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getConfigArgs): If there
-	are no -- args in the user arguments, still pass them on to configure.
-
-2008-11-26  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #472731
-	
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (hasTargetBuilder): 
-	Add check for ManagedProject being null which is apparently possible.
-
-2008-11-25  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeDocumentProvider.java: Change
-	Copyright to make Red Hat a contributor to the copyright of the original file modified to make
-	this new class.
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeEditor.java: Ditto. 
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/Automakefile.java: Ditto.
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java: Ditto. 
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileContentOutlinePage.java: Ditto. 
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileReconcilingStrategy.java: Ditto.
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileSourceConfiguration.java: Ditto.
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeMacroDefinitionRule.java: Ditto.
-
-2008-11-03  Andrew Overholt  <overholt@redhat.com>
-
-	* build.properties: Remove libhoverdocs/.
-
-2008-10-31  Andrew Overholt  <overholt@redhat.com>
-
-	* META-INF/MANIFEST.MF: Use plugin.properties for provider.
-	* plugin.properties: Add "(Incubation)" to Bundle-Name.
-
-2008-10-28  Andrew Overholt  <overholt@redhat.com>
-
-	* META-INF/MANIFEST.MF: Update BREE to J2SE-1.5.
-
-2008-10-14  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* META-INF/MANIFEST.MF: Bump up release to 1.0.1.
-
-2008-10-10  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add check for default
-	configuration coming back null from buildinfo.
-	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsBuildPropertyPage.java (performDefaults):
-	Set make -w default to be true.
-	* src/org/eclipse/linuxtools/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject):
-	Set make -w project property to true and don't turn off indexer.
-	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCCProjectWizard.java (doRun): Ditto.
-	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCProjectWizard.java (doRun): Ditto.
-
-2008-10-10  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Fix for #249416
-
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java: Fix addition of MakeTargets to run faster.
-	(addMakeTargetsToManager): Rewritten to not use MakeTargetManager addTarget or removeTarget methods which
-	cause a rewrite of the .cproject file each time.
-	(isValidTarget): Remove checking MakeTargetManager existing target.
-	(translateDocumentToCDTProject): New method which outputs the MakeTargets to the .cproject file.
-	(MakeTargetComparator): New Comparator for sorting MakeTargets.
-	(createTargetElement): New method.
-	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Add subtask message for refreshing Make Targets
-	which might take some time.
-
-2008-10-07  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Fix for #249231
-
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Add
-	support to resolve build macros.
-	(getConfigArgs): Ditto.
-	(initializeBuildConfigDirs): Ditto.
-
-2008-10-03  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Fix for #249644.
-
-	* plugin.xml: Change visible to true for invoke autotools action set.  Also add
-	new popupmenus for running autoconf directly on configure.ac or configure.in.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAclocalAction.java (run): Use
-	getCWD to get the relative current working directory and pass a string to the new
-	TwoInputDialog constructor.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutomakeAction.java (run): Ditto.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java (getCWD): New method
-	to get the relative CWD for an autotools action.
-	* src/org/eclipse/linuxtools/cdt/autotools/actions/TwoInputDialog.java (createDialogArea):
-	Use CLabel instead of Label for first label (the CWD).
-	(TwoInputDialog): Change to accept a String for the first message instead of an IPath.
-	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (addMakeTargetsToManager):
-	Temporarily disable.
-
-2008-10-01  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (getIncludePaths): Fix bug that
-	was properly resolving relative paths.  Also add support for parsing -isystem specifiers and putting
-	the paths on the include path list.
-
-2008-09-19  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* META-INF/MANIFEST.MF: Change Eclipse-AutoStart over to Bundle-ActivationPolicy.
-	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHover.java: Removed.
-	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHoverMessages.java: Removed.
-	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHoverMessages.properties: Removed.
-	* plugin.xml: Remove CHelpProvider library hover extension as this functionality
-	has been moved into its own plugin.
-
-2008-09-18  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java (createRules):
-	Specify Token.UNDEFINED for WordRules default token.  Otherwise, just getting the first possible
-	character of a word detector will result in default token being returned and no further parsing.
-	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfCodeScanner.java (AutoconfCodeScanner):
-	Ditto.
-
-2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfoProvider.java (getScannerInformation):
-	Return null if project is not an Autotools project.
-	(unsubscribe): Check scanner info for null before accessing.
-
-2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Refactored from com.redhat.eclipse.cdt.autotools to org.eclipse.linuxtools.cdt.autotools
-
-	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfTextHover.java:
-	(AUTOCONF_MACROS_DOC_NAME): Change to use default URL pointing to sourceware.org.
-	(AUTOMAKE_MACROS_DOC_NAME): Ditto.
-	(getHoverDoc): Remove unused variable.
-	(getAMDoc): Modify to handle either a file or URL.
-	(getACDoc): Ditto.
-	(.createInformationControl): Switch to use non-deprecated constructor.
-	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHover.java (getLibHoverDocs): Modify to handle
-	either an external file name or URL.
-	(getLibHoverDocName): New method that returns default URL pointing to sourceware.org.
-	(HelpResource.getHref): Change to return URL.
-	(getFunctionInfo): Remove unread variable.
-
 2008-09-09  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder(hasTargetBuilder): Change logic
@@ -347,38 +13,38 @@
 2008-07-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* icons/ac16/acmacro_arg_obj.gif: New File.
-	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsEditorPropertyPage.java:
-	(getproject): Remove.
+	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsEditorPropertyPage.java: 
+	(getproject): Remove. 
 	* META-INF/MANIFEST.MF: Add org.eclipse.core.filesystem as dependency.
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java: Update imports.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/outline/AutoconfLabelProvider.java (getImage):
-	Use special image for acmacro argument.
+	Use special image for acmacro argument. 
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutoconfEditorPreferencePage.java:
-	Update imports.
+	Update imports. 
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/AutotoolsPluginImages.java: Add image for
-	acmacro argument.
+	acmacro argument. 
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java: Update imports.
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeEditor.java: Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakefileReconcilingStrategy.java (reconcile):
+	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakefileReconcilingStrategy.java (reconcile): 
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeDocumentProvider.java: Update imports.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/MakefileReconcilingStrategy.java (reconcile):
-	Call new form of parse method.
-	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/Directive.java:
+	Call new form of parse method. 
+	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/Directive.java: 
 	(getMakefile): New required method.
-	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/GNUAutomakefile.java:
+	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/GNUAutomakefile.java: 
 	(parse): New required method.
-	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/AbstractMakefile.java:
+	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/AbstractMakefile.java: 
 	(getFileURI): New required method.
 	(getMakefile): Ditto.
 	(setFileURI): Ditto.
-	(getMakefileReaderProvider): Ditto.
+	(getMakefileReaderProvider): Ditto. 
 	(parse): Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/OpenDeclarationAction.java:
+	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/OpenDeclarationAction.java: 
 	(openInEditor): Use URI instead of File.
-	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/NullMakefile.java:
+	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/NullMakefile.java: 
 	(parse): New required method to implement.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/MakefileDocumentProvider.java (createMakefile):
-	Add throws modifier.
+	Add throws modifier. 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroCodeScanner.java: Update imports.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroContentAssistProcessor.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java: Ditto.
@@ -499,19 +165,19 @@
 	method for future menu support.
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (hasTargetBuilder): Use
 	AutotoolsProjectNature static addAutotoolsBuilder method.
-	(addAutotoolsBuilder): Moved to AutotoolsProjectNature.
+	(addAutotoolsBuilder): Moved to AutotoolsProjectNature. 
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (runScript): New method to
 	run scripts.
 	(regenerateMakefiles): Use runScript method to run configuration scripts. Use
 	runCommand for executables like "make".
 	(runCommand): Added comments.
 	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject):
-	Add new autotools project nature.
+	Add new autotools project nature. 
 	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsCCProjectWizard.java (addNature):
-	Ditto plus set up autotools builder.
+	Ditto plus set up autotools builder. 
 	(doRun): Don't set up autotools builder since it is done in addNature.
 	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsCProjectWizard.java (addNature):
-	Add new autotools project nature and set up autotools builder.
+	Add new autotools project nature and set up autotools builder. 
 	(doRun): Don't set up autotools builder since it is done in addNature.
 
 2007-12-05  Jeff Johnston  <jjohnstn@redhat.com>
@@ -544,7 +210,7 @@
 	(getLibHoverDocs): Ditto.
 	* libhoverdocs/glibc-2.7-2.xml: New C library docs based on glibc-2.7-2 manual.
 	* libhoverdocs/glibc.xml: Old glibc docs removed.
-
+	
 2007-11-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Update release to 0.9.5.2.  Also clear all OS lists for build definitions to
@@ -553,15 +219,15 @@
 2007-11-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #385991
-	* src/com/redhat/eclipse/cdt/autotools/ui/LibHover.java (getMatchingFunctions): New method.
+	* src/com/redhat/eclipse/cdt/autotools/ui/LibHover.java (getMatchingFunctions): New method. 
 	(FunctionSummary.compareTo): New method to support Comparable interface.
 	(FunctionSummary.getIncludes): Fix to avoid type cast exception/
-	(getFunctionInfo): Revised to call getFunctionSummaryFromNode method.
-	(FunctionSummary): Add Comparable interface.
+	(getFunctionInfo): Revised to call getFunctionSummaryFromNode method. 
+	(FunctionSummary): Add Comparable interface. 
 	(getFunctionSummaryFromNode): New method.
 	(FunctionSummary.FunctionPrototypeSummary.getPrototypeString): Add NLS
 	comments.
-
+	
 
 2007-11-01  Jeff Johnston  <jjohnstn@redhat.com>
 
@@ -571,12 +237,12 @@
 	project properties setting to determine what tools to use.
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutoconfAction.java (run): Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutomakeAction.java (run): Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsPropertyMessages.properties: New
-	messages.
+	messages. 
 	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsPropertyConstants.java: Add new
 	constants for setting the tool paths for aclocal, automake, and autoconf.
-	* plugin.xml: Add tools settings property page for Autotools.
+	* plugin.xml: Add tools settings property page for Autotools. 
 	* plugin.properties: New message for added property page.
 
 2007-10-30  Jeff Johnston  <jjohnstn@redhat.com>
@@ -587,70 +253,70 @@
 	* src/com/redhat/eclipse/cdt/autotools/ui/properties/IProjectPropertyListener.java: New File.
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsProjectPropertyTester.java: New File.
 	* src/com/redhat/eclipse/cdt/autotools/ui/properties/IPropertyChangeManager.java: New File.
-	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java:
+	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java: 
 	(getAMDoc): New method.
-	(fBindingService):
+	(fBindingService): 
 	(getAutomakeMacrosDocName): Modified to take a version parameter.
 	(getAutoconfMacrosDocName): Ditto.
 	(getPrototype): Changed to take an editor input.
 	(getAutoconfMacrosDocName): Ditto.
-	(AutotoolsHoverDoc): New internal class.
-	(getMacroList): New method to merge AC and AM macros together based on version
+	(AutotoolsHoverDoc): New internal class. 
+	(getMacroList): New method to merge AC and AM macros together based on version 
 	properties.
 	(getACDoc): New method.
 	(getIndexedInfo): Changed to take editor input.
-	(getHoverDoc): New metohd.
-	(getIndexedInfoFromDocument): New method that will parse the given document.
+	(getHoverDoc): New metohd.  
+	(getIndexedInfoFromDocument): New method that will parse the given document. 
 	(getDefaultAutoconfMacrosDocName): New method to get the default preference
 	Autoconf macros doc name.
 	(getHoverRegion): Modified to get editor from elsewhere.
 	(getDefaultAutomakeMacrosDocName): New method to get the default preference
 	Autoconf AM macros doc name.
 	(getHoverInfo): Changed to take an editor input.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroParser.java: Removed.
-
-	* src/com/redhat/eclipse/cdt/autotools/internal/ui/editors/autoconf/ProjectionFileUpdater.java (initialize):
+	
+	* src/com/redhat/eclipse/cdt/autotools/internal/ui/editors/autoconf/ProjectionFileUpdater.java (initialize): 
 	(processReconcile): Use stored editor.
 	(install): Change input parameter to AutoconfEditor.
-
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfParser.java (parseMacro):
+	
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfParser.java (parseMacro): 
 	(parse): Modified to take IEditorInput argument and pass that on to AutoconfErrorHandler.
 	(AutoconfParser): Modified to take an editor parameter.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsDefaultBuildDirHandler.java: Updated
 	copyright to just Red Hat Inc.
 	* plugin.properties: New messages.
 	* plugin.xml: Add ICPropertyTab extension for editor properties.  Add properties
 	page for Autotools properties.
 	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsEditorPropertyPage.java: New file.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsPropertyPage.java: Rewritten.
-	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsBuildPropertyPage.java:
-	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsPropertyConstants.java:
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfErrorHandler.java (AutoconfErrorHandler):
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfSourceViewerConfiguration.java
+	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsBuildPropertyPage.java: 
+	* src/com/redhat/eclipse/cdt/autotools/ui/properties/AutotoolsPropertyConstants.java: 
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfErrorHandler.java (AutoconfErrorHandler): 
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfSourceViewerConfiguration.java 
 	(AutoconfSourceViewerConfiguration): Take editor as parameter.
 	(getPresentationReconciler): Pass along or use editor passed in.
 	(getContentAssistant): Ditto.
 	(getReconciler): Ditto.
 	(getTextHover): Ditto.
-
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (connect):
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java:
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroContentAssistProcessor.java (computeCompletionProposals):
+	
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (connect): 
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java: 
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroContentAssistProcessor.java (computeCompletionProposals): 
 	(AutoconfMacroContentAssistProcessor): Take editor input.
 	(computeMacroStart): Use editor.
-
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfReconcilingStrategy.java (reconcile):
+	
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfReconcilingStrategy.java (reconcile): 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java: Make this implement
 	IProjectPropertyListener
 	(handlePreferenceStoreChanged): Modified to call handleVersionChange method if a
-	autoconf or automake macro version preference change has occurred.
+	autoconf or automake macro version preference change has occurred. 
 	(doSetInput): Deregister editor as property listener if editor was for a project
 	file previously and register editor as property listener if editor is now for a
 	project.
-	(getAutoconfDocumentProvider): Make static.
+	(getAutoconfDocumentProvider): Make static. 
 	(getAutoconfCodeScanner): Pass this to constructor.
 	(handleVersionChange): New method.
 	(handleProjectPropertyChanged): New IProjectPropertyListener method.
@@ -658,21 +324,21 @@
 	(getAutoconfParser): Pass this to constructor.
 	(dispose): Deregister editor as property listener for a project if applicable.
 	(getAutoconfMacroCodeScanner): Pass this to constructor.
-
+	
 2007-10-23  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroCodeScanner.java: New File.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/RestrictedEndOfLineRule.java: New File.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitionScanner.java (AutoconfPartitionScanner):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitionScanner.java (AutoconfPartitionScanner): 
 	Move macro partitioning ahead of comments.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfSourceViewerConfiguration.java (getPresentationReconciler):
-	Use AutoconfMacroCodeScanner for macro damager repairer.
+	Use AutoconfMacroCodeScanner for macro damager repairer. 
 	(getContentAssistant): Use AutoconfMacroCodeScanner for macro content assist.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfCodeScanner.java (nextToken):
-	New method that simply defaults to super.nextToken to be used for debugging purposes.
-
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java (getAutoconfMacroCodeScanner):
-
+	New method that simply defaults to super.nextToken to be used for debugging purposes. 
+	
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java (getAutoconfMacroCodeScanner): 
+	
 	* plugin.xml: Update to release 0.9.5.1.
 
 2007-10-23  Jeff Johnston  <jjohnstn@redhat.com>
@@ -687,55 +353,55 @@
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfParser.java (parseLines):
 	Process macros ahead of stripping out comments as this prevents removing quotes inside the
 	macro which have precedence over # (e.g. used to specify #include and not meaning a
-	comment to end of line).
+	comment to end of line). 
 	(parseWhile): Change comment typo.
-	(parseFor): Ditto.
-	* plugin.properties: Add new messages regarding property pages.
+	(parseFor): Ditto. 
+	* plugin.properties: Add new messages regarding property pages. 
 	* plugin.xml: Add Autotools build IcPropertyTab (AutotoolsBuildPropertyPage).  Also
 	specify that AutotoolsDefaultBuildDirHandler is also an option applicability tester.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutotoolsPreferencesMessages.properties:
-	Change the message for autoconf and automake versions to include the word "Default".
-
+	Change the message for autoconf and automake versions to include the word "Default". 
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitioner.java (computePartitioning):
 	Add override method as way to print out partitions.  Cannot compute and print out partitions at
-	connect time as in 4.0.1 we initially are given an empty document that is later filled.
+	connect time as in 4.0.1 we initially are given an empty document that is later filled. 
 	(printPartitions): Change argument to be an array of partition regions.
-
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (build):
+	
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (build): 
 	(clean): New method.  Pay attention to user clean method preference.
 	(getTargets): Pay attention to user clean target preference.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfo.java (getCompilationString):
-	Pay attention to user preference on scanner info retrieval and disable if need be.
+	Pay attention to user preference on scanner info retrieval and disable if need be. 
 	(createIncludeChain): Use AutotoolsPropertyConstants to get property names to use.
 	(followIncludeChain): Ditto.
 	(getMakefile): Add nls comments.
-	(AutotoolsScannerInfo): Ditto.
-	(getDefinedSymbols): Ditto.
+	(AutotoolsScannerInfo): Ditto. 
+	(getDefinedSymbols): Ditto. 
 	(buildFile): Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (regenerateMakefiles): Don't
 	call AutotoolsScannerInfoProvider.setDirty method anymore.  Instead, set a project property
 	to indicate the scanner info is dirty.
 	(addMakeTargetsToManager): Add a try/catch statement to prevent duplicate entries from
 	stopping loop that adds make targets.
 	(initializeBuildConfigDirs): Formatting change.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfoProvider.java (getScannerInformation):
 	Add a check for project property indicating the scanner info is dirty in which case call
-	setDirty method.
+	setDirty method. 
 	(setDirty): Make private.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsDefaultBuildDirHandler.java: Now implements
 	IOptionApplicability.
-	(isOptionEnabled): New interface method to implement.
+	(isOptionEnabled): New interface method to implement. 
 	(isOptionVisible): Ditto.
-	(isOptionUsedInCommandLine): Ditto (set to false).
-
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsBuilder.java (getProject): New method.
+	(isOptionUsedInCommandLine): Ditto (set to false). 
+	
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsBuilder.java (getProject): New method. 
 	(AutotoolsBuilder): Add project argument.
 	(getCleanBuildTarget): Implemented using new Autotools CLEAN_MAKE_TARGET property.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/Resources.properties: Add new message.
 
 2007-10-09  Jeff Johnston  <jjohnstn@redhat.com>
@@ -747,11 +413,11 @@
 
 2007-10-05  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* plugin.xml: Ensure the ids for InvokeAutoconf and InvokeAutomake actions are unique.
+	* plugin.xml: Ensure the ids for InvokeAutoconf and InvokeAutomake actions are unique. 
 
 2007-10-04  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsDefaultBuildDirHandler.java (handleValue):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsDefaultBuildDirHandler.java (handleValue): 
 	Add some place holders for supporting the user manually setting the build directory.
 	* src/com/redhat/eclipse/cdt/autotools/Resources.properties: Add some dialog messages for
 	future usage.
@@ -771,7 +437,7 @@
 
 2007-09-21  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutoconfAction.java (run):
+	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutoconfAction.java (run): 
 	Fix array indexing.
 
 2007-09-18  Jeff Johnston  <jjohnstn@redhat.com>
@@ -782,9 +448,9 @@
 
 	Resolves Bugzilla #274551
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfo.java (getCompilationString): Support
-	the case where the file isn't part of the build and there is no scanner info to gather.
+	the case where the file isn't part of the build and there is no scanner info to gather. 
 	(buildFile): Minor cosmetic changes.
-
+	
 	* META-INF/MANIFEST.MF: Update release.
 
 2007-09-04  Jeff Johnston  <jjohnstn@redhat.com>
@@ -800,7 +466,7 @@
 	Resolves Bugzilla #254248
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/outline/AutoconfContentOutlinePage.java (selectionChanged):
 	Make call to editor.selectAndReveal method to focus editor page on selected outline item.
-
+	 
 2007-08-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #254246
@@ -814,7 +480,7 @@
 	autobuilding.
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (regenerateMakefiles):  If
 	the configuration options change, clean the previous build directory so a full rebuild
-	will occur.
+	will occur. 
 
 2007-08-15  Jeff Johnston  <jjohnstn@redhat.com>
 
@@ -824,12 +490,12 @@
 2007-08-15 Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #251412
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (addAutotoolsBuilder):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (addAutotoolsBuilder): 
 	When calling IProject.setDescription(), pass a NullProgressMonitor instead of
 	null, despite what the function API says because an isCancelled() call may occur
 	and will result in an exception thrown.  Also, use a try/catch block to handle any
 	of the legitimate exceptions that might occur in this operation.
-
+	
 2007-08-15 Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/Resources.properties: Add new messages
@@ -840,12 +506,12 @@
 	(getProjectType): New method.
 	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsCCProjectWizard.java:  New file
 	copied from NewAutotoolsCProjectWizard but inherits from NewCCProjectWizard.
-
+	
 	* icons/dlcl16/newc_app.gif: New gif.
 	* icons/dlcl16/newcc_app.gif: Ditto.
 	* icons/elcl16/newc_app.gif: Ditto.
 	* icons/elcl16/newcc_app.gif: Ditto.
-
+	
 	* plugin.properties: Add new strings for new C and C++ project wizards.
 	* plugin.xml: Add new C and C++ project wizards.
 
@@ -861,7 +527,7 @@
 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java
 	(handlePreferenceStoreChanged): Add support for changing automake macros version.
-	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java
+	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java 
 	(getAutomakeMacrosDocument):
 	New method.
 	(getIndexInfo, getPrototype): Create private versions of these that take a document
@@ -870,7 +536,7 @@
 	the macro isn't found yet.
 	(init): Set up the autoconf macro document and automake macro document.
 	(reinit): Reset both the autoconf and automake macro documents.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutoconfEditorPreferencePage.java
 	(LATEST_VERSION): Replace with LATEST_AC_VERSION and LATEST_AM_VERSION.
 	(createOverlayStore): Add automake version setting.
@@ -881,7 +547,7 @@
 	Add automake version support.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutotoolsPreferencesMessages.properties:
 	Add messages used in automake version preference.
-
+	
 	* libhoverdocs/ammacros-1.4-p6.xml: New automake macro docs for 1.4-p6.
 	* libhoverdocs/ammacros-1.9.5.xml: New automake macro docs for 1.9.5.
 	* libhoverdocs/ammacros-1.9.6.xml: New automake macro docs for 1.9.6.
@@ -902,7 +568,7 @@
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/Else.java: Add ICommand
 	interface and implement required methods including new ones add to IAutomakeConditional.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/If.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeErrorHandler.java
 	(update): Change to call checkChildren for makefile.
 	(checkChildren): New recursive method to check for bad directives.
@@ -922,7 +588,7 @@
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/GNUMakefileUtil.java
 	(isIf): Add @if support.
 	(isEndif): Add @endif support.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakefileCodeScanner.java:
 	Add support for @if and @endif keywords.
 	(createRules): Add support for whitespace and simple identifiers.
@@ -959,11 +625,11 @@
 	AutomakeErrorHandler interface.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/MakefileEditor.java
 	(initializeEditor): Remove fixme comment.
-
+	
 2007-07-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #246783
-	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeEditor.java:
+	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeEditor.java: 
 	(initializeEditor): Call AutotoolsEditorPreferenceConstants.initializeDefaultValues
 	to ensure the editor default values are set.
 
@@ -972,7 +638,7 @@
 	Resolves Bugzilla #246154
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsBuilder.java: New proxy
 	class to wrap an existing IBuilder and override build path functionality.
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java:
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java: 
 	(build): Wrap the builder using the new AutotoolsBuilder class so the
 	build path will work properly.
 
@@ -1023,7 +689,7 @@
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/MakefileEditorTogglePresentationAction.java:
 	New file.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/MakefileEditorActionContributor.java: Ditto.
-
+	
 	* icons/etool16/alphab_sort_co.gif: New icon.
 	* icons/etool16/build_menu.gif: Ditto.
 	* icons/etool16/convert_normal.gif: Ditto.
@@ -1041,11 +707,11 @@
 
 	* plugin.xml: Change Automake editor to use new internal MakefileEditorActionContributor
 	class rather than point to the internal one in internal CDT make.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentSetupParticipant.java:
 	(setup): Don't bother registering this as document listener.
 	(documentAboutToBeChanged): Remove body of method as this is no longer needed.
-
+	 
 2007-06-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #245611
@@ -1053,7 +719,7 @@
 	(getMacroList): Change to call AutoconfTextHover to get the name of the macros
 	document since it will depend on current preferences.
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java
-	(getAutoconfMacrosDocName): New static method.
+	(getAutoconfMacrosDocName): New static method. 
 
 2007-06-19  Jeff Johnston  <jjohnstn@redhat.com>
 
@@ -1069,13 +735,13 @@
 	* libhoverdocs/acmacros-2.61.xml: New autoconf hover text and syntax info
 	for autoconf 2.61.
 	* libhoverdocs/acmacros.xml: Replaced with files above.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover (init): Change document
 	to be dependent on autoconf version preference.
 	(reinit): New method to force reinitialization of help document.
 	(getPrototype): Fix to allow for earlier versions which specify multiple
 	prototypes in one using "[,", for example.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutoconfEditorPreferencePage.java:
 	Add version preference support.
 	(createOverlayStore): Add version support.
@@ -1104,7 +770,7 @@
 	GNUAutomakefile class.  Remove all parsing methods.
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeDocumentProvider.java: Fix
 	comments to refer to internal Autotools classes as appropriate.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/Conditional.java: New file.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/DefineVariable.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/DeleteOnErrorRule.java: Ditto.
@@ -1143,7 +809,7 @@
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutoconfEditorPreferencePage.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutomakeEditorPreferencePage.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java: Ditto.
-
+	
 2007-06-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #243184
@@ -1158,7 +824,7 @@
 	(getText): Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakefileUtil.java (isConfigMacro):
 	New method.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/MakeUIImages.java: Add acmacro_obj image.
 	* icons/obj16/acmacro_obj.gif: New icon.
 
@@ -1173,7 +839,7 @@
 	* src/com/redhat/eclipse/cdt/autotools/actions/SharedPartWithButtons.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/actions/StructuredViewerPart.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/actions/TargetListViewerPart.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/editors/autoconf/ProjectionFileUpdater.java: New file.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutotoolsEditorPreferenceConstants.java:
 	Add new constants for Autoconf editor folding.
@@ -1181,7 +847,7 @@
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java: Make class
 	implement IAutotoolsEditor interface.  This allows ProjectionFileUpdater class to
 	work.  Add folding support based on MakefileEditor class.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfElement.java
 	(getStartOffset, setStartOffset, getEndLineNumber, setEndLineNumber): New methods.
 	(getEndOffset, setEndOffset, getLastChild): Ditto.
@@ -1200,10 +866,10 @@
 	(parseLines): When a semicolon is found that denotes a multistatement line, update the end
 	offset of the previous construct and set the start offset for the next construct to be after
 	the semicolon and additional whitespace.
-	(parseMacro, parseIf, parseElif, parseElse, parseCase, parseFor, parseWhile): Construct with
+	(parseMacro, parseIf, parseElif, parseElse, parseCase, parseFor, parseWhile): Construct with 
 	start offset based on previous mark.  After processing, set the end line number for the
 	element.
-
+	
 2007-06-01  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeEditor.java:
@@ -1218,7 +884,7 @@
 	Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/MakefileCodeScanner.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/MakefileSourceConfiguration.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AbstractAutomakeEditorPreferencePaga.java:
 	Refactored to be...
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AbstractEditorPreferencePage.java:
@@ -1238,7 +904,7 @@
 	...this.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/AutomakeEditorPreferencePage.java:
 	Use new refactored classes.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfCodeScanner.java:  Add color preference
 	support.
 	(AutoconfCodeScanner): A color provider is no longer needed as input.
@@ -1258,13 +924,13 @@
 	Inherit from TextSourceViewerConfiguration.  Store the preference store.
 	* plugin.properties: Add new internationalized string for Autoconf editor preferences.
 	* plugin.xml: Add Autoconf editor preference page.
-
+	
 2007-05-30  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #241908
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (addMakeTargetsToManager):
 	Change builder id used to one used in plugin.xml.
-
+	
 2007-05-30  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #241782
@@ -1288,10 +954,10 @@
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/OverlayPreferenceStore.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/StatusInfo.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/preferences/TabFolderLayout.java: Ditto.
-
+	
 	* plugin.properties: Add new internationalized strings from plugin.xml.
 	* plugin.xml: Add Autotools and Automake Editor preference pages.  Also
-	clean up some extensions to use internationalized strings.
+	clean up some extensions to use internationalized strings. 
 
 2007-05-28  Jeff Johnston  <jjohnstn@redhat.com>
 
@@ -1325,7 +991,7 @@
 	Ditto.
 	(evaluate): Remove unused local variable ch.
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeTextHover.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/AbstractElementListSelectionDialog.java:
 	New file transported from CDT internals.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/AbstractMakefile.java: Ditto.
@@ -1399,7 +1065,7 @@
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/VariableDefinition.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/WordPartDetector.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/editors/automake/WorkingCopyManager.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/AutotoolsPluginImages.java: Switch to
 	use new ac16 icon directory instead of etools16.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/ErrorParserBlock.java: Use
@@ -1409,12 +1075,12 @@
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/MakeUIMessages.java: New file.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/MakeUIPlugin.java: Removed.
 	* src/com/redhat/eclipse/cdt/autotools/internal/ui/MessageLine.java: Fix typo.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/wizards/AutotoolsWizardMessages.java:
 	Fix bundle id for messages.
-
+	
 	* plugin.xml: Fix icon references.
-
+	
 	* icons/ac16: New folder containing icons that used to be in etool16.
 	* icons/dlcl16/build_configs.gif: New icon.
 	* icons/dlcl16/open_include.gif: Ditto.
@@ -1447,20 +1113,20 @@
 	* icons/obj16/relation_obj.gif: Ditto.
 	* icons/obj16/target_obj.gif: Ditto.
 	* icons/obj16/trule_obj.gif: Ditto.
-
+	
 2007-05-14  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java:
 	(addMakeTargetsToManager): Use MakeCorePlugin to get an IMakefile
-	rather than use the internal PosixMakefile class directly.
+	rather than use the internal PosixMakefile class directly. 
 
 2007-05-14  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java:
-	(initialize): Store the configuration for later usage.
+	(initialize): Store the configuration for later usage.  
 	(getConfigSettingsPath): Use stored configuration instead of fetching
 	it each time.
-	(runCommand): Ditto.
+	(runCommand): Ditto. 
 	(addMakeTargetsToManager): Use the real MakeTargetManager to store
 	targets.  Mark targets added by parsing the Makefile with special
 	tag.  Delete all MakeTargets with special tag before adding the
@@ -1468,14 +1134,14 @@
 	(initializeBuildConfigDirs): Use stored configuration to get the
 	tool options rather than the ManagedBuildInfo.
 	(getConfigArgs): Ditto.
-	(addMakeTargetsToManager):
-
+	(addMakeTargetsToManager): 
+	
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java:
-	Inherit from CommonBuilder.
-	(build): Change to fetch make target name from args map and store for
-	later use.
+	Inherit from CommonBuilder. 
+	(build): Change to fetch make target name from args map and store for 
+	later use. 
 	(getTargets): Change to get make target from stored make target name.
-
+	
 	* plugin.xml: Remove Build Special Targets menu item as it is no longer
 	needed.  Add MakeTargetBuilder extension so we can use MakeTargets.
 
@@ -1484,52 +1150,52 @@
 	Resolves Bugzilla #239886
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAclocalAction.java (run):
 	Pass the CWD to TwoInputDialog and use it when executing the command.  On
-	success, show a success dialog.
+	success, show a success dialog. 
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutoconfAction.java (run):
-	Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/actions/TwoInputDialog.java (TwoInputDialog):
+	Ditto. 
+	* src/com/redhat/eclipse/cdt/autotools/actions/TwoInputDialog.java (TwoInputDialog): 
 	Take the CWD as a parameter.
-	(createDialogArea): Add label with CWD.
-
-	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutomakeAction.java (run):
+	(createDialogArea): Add label with CWD. 
+	
+	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutomakeAction.java (run): 
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeMessages.java (getString):
-	Add comments.
+	Add comments. 
 	(getFormattedString): New method.
-
-	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAction.java (getExecDir):
+	
+	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAction.java (getExecDir): 
 	New method to return the CWD.
 	(showSuccess): New method to display a success dialog.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeMessages.properties: Add new
 	messages.
 
 2007-05-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #238173
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfIdentifierRule.java (evaluate):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfIdentifierRule.java (evaluate): 
 	Cast read character to char before invoking Character methods to avoid gcj bug.
 
 2007-04-30  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #238493
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/RecursiveSingleLineRule.java (evaluate):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/RecursiveSingleLineRule.java (evaluate): 
 	Add check for scanner column < 0 which means we are already at EOF.
 
 2007-04-25  jjohnstn  <jjohnstn@toocool.toronto.redhat.com>
 
-	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectOptionPage.java (ManagedWizardOptionBlock.setupHelpContextIds):
+	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectOptionPage.java (ManagedWizardOptionBlock.setupHelpContextIds): 
 	Switch to use CDTHelpContextIds for static help context id.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/CProjectPlatformPage.java (createControl):
+	* src/com/redhat/eclipse/cdt/autotools/wizards/CProjectPlatformPage.java (createControl): 
 	Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/internal/wizards/ManagedProjectOptionBlock.java (createContents):
+	* src/com/redhat/eclipse/cdt/autotools/internal/wizards/ManagedProjectOptionBlock.java (createContents): 
 	Ditto.
 
 2007-04-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bugzilla #182821
-
+	
 	2007-04-25  Mikhail Sennikovsky
-	* plugin.xml: Add plugin extensions which let the CDT know that includes and
+	* plugin.xml: Add plugin extensions which let the CDT know that includes and 
 	defined symbols are supported for the Autotools tool-chain.
 
 2007-04-12  Jeff Johnston  <jjohnstn@redhat.com>
@@ -1546,18 +1212,18 @@
 2007-04-11  jjohnstn  <jjohnstn@toocool.toronto.redhat.com>
 
 	Bugzilla #236077
-	* src/com/redhat/eclipse/cdt/autotools/internal/ui/CWordFinder.java: New file.
+	* src/com/redhat/eclipse/cdt/autotools/internal/ui/CWordFinder.java: New file. 
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java: Replace
-	CDT internal classes with Autotools internal classes.
+	CDT internal classes with Autotools internal classes. 
 	* src/com/redhat/eclipse/cdt/autotools/internal/wizards/ManagedProjectOptionBlock.java (createContents):
-	Replace WorkbenchHelp reference with non-deprecated alternative.
+	Replace WorkbenchHelp reference with non-deprecated alternative. 
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakeTargetManager.java: Fix
 	imports.
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (runCommand): Replace
-	deprecated environmental variable method being used.
+	deprecated environmental variable method being used. 
 	(createFile): Make protected instead of private.
 	(getInvalidDirList): Remove.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject):
+	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject): 
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsPlugin.java (getWorkingCopyManager):
 	Moved into AutomakeEditorFactory.
 	(getAutomakefileDocumentProvider): Ditto.
@@ -1569,37 +1235,37 @@
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakefileContentOutlinePage.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakefileReconcilingStrategy.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeCompletionProcessor.java: Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditorMessages.java (getResourceBundle):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditorMessages.java (getResourceBundle): 
 	New method.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditorMessages.properties: Add
 	new messages that were formerly fetched internally from CDT.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java: Comment out unused
 	projectSupport.
 	(createActions): Use AutoconfEditorMessages.
-	(InformationDispatchAction.makeAnnotationHoverFocusable): Ditto.
+	(InformationDispatchAction.makeAnnotationHoverFocusable): Ditto. 
 	(fProjectionModelUpdater): Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfAnnotationHover.java (formatMultipleMessages):
-	Use AutoconfEditorMessages instead of CUIMessages.
+	Use AutoconfEditorMessages instead of CUIMessages. 
 	* src/com/redhat/eclipse/cdt/autotools/interenal/ui/ErrorParserBlock.java: New file.
 	* src/com/redhat/eclipse/cdt/autotools/wizards/CProjectPlatformPage.java (createControl): Remove
-	usage of WorkbenchHelp class which is deprecated.
+	usage of WorkbenchHelp class which is deprecated. 
 	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectOptionPage.java (ManagedWizardOptionBlock.setupHelpContextIds):
 	Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject):
 	Remove unused code.  Switch to use non-deprecated interface for getting
-	indexer.
-
+	indexer. 
+	
 2007-04-10  jjohnstn  <jjohnstn@toocool.toronto.redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectWizard.java:
 	Removed.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectOptionPage.java:
+	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectOptionPage.java: 
 	Use new internal ManagedProjectOptionBlock class.
 	* src/com/redhat/eclipse/cdt/autotools/wizards/CProjectPlatformPage.java:
-	Switch to use new AutotoolsWizardMessages internal class.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java:
+	Switch to use new AutotoolsWizardMessages internal class. 
+	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java: 
 	Fix imports.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizard.java (doRunEpilogue):
+	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizard.java (doRunEpilogue): 
 	Switch to new IRunnableWithProgress interface.
 	* src/com/redhat/eclipse/cdt/autotools/internal/wizards/AutotoolsWizardMessages.java:
 	New file to support old wizard code.
@@ -1611,11 +1277,11 @@
 	Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/internal/wizards/ManagedProjectOptionBlock:
 	Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/internal/ui/AutotoolsPluginImages.java:
+	* src/com/redhat/eclipse/cdt/autotools/internal/ui/AutotoolsPluginImages.java: 
 	Add build_configs.gif for Wizard support.
-	* src/com/redhat/eclipse/cdt/autotools/internal/MarkerGenerator.java (addMarker):
+	* src/com/redhat/eclipse/cdt/autotools/internal/MarkerGenerator.java (addMarker): 
 	New method required by IMarkerGenerator interface.
-	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (getProject):
+	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (getProject): 
 	New method.
 	(initializeBuildConfigDirs): Change the default build directory
 	for the configuration's builder.
@@ -1626,36 +1292,36 @@
 	* plugin.properties: Add new strings used in plugin.xml.
 	* plugin.xml: Add buildType and buildArtefactType extensions.  Add
 	toolchain to Autotools project buildDefinitions extension.
-
+	
 2007-04-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #235076
-	* src/com/redhat/eclipse/cdt/autotools/wizards/CProjectPlatformPage.java (CProjectPlatformPage):
+	* src/com/redhat/eclipse/cdt/autotools/wizards/CProjectPlatformPage.java (CProjectPlatformPage): 
 	Add missing NLS comment.
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (makefileCvsExists): Use
-	getMakefileCVSPath method.
+	getMakefileCVSPath method. 
 	(configureExists): Use getConfigurePath method.
 	(getConfigurePath): New method.
 	(getMakefileCVSPath): New method.
 	(regenerateMakefiles): Use getConfigurePath and getMakefileCVSPath to get the
-	command to use when either of these is found to exist.
+	command to use when either of these is found to exist. 
 	(autogenExists): Change to protected method.
-
+	
 2007-03-30  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java (createPresentation):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java (createPresentation): 
 	Comment out macro parsing as this is now done by the reconciler and overall parsing.
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java (getPrototype):
-	Fix so it is properly setting minimum and maximum parm counts for a macro.
+	Fix so it is properly setting minimum and maximum parm counts for a macro. 
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfPrototype.java (setMaxParms):
-	Fix typo.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfParser.java (matchParentheses):
+	Fix typo. 
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfParser.java (matchParentheses): 
 	Update logic.
 	(parseMacro):  Add error checking for minimum and maximum parameters as well as unmatched
-	parentheses or square-brackets.
+	parentheses or square-brackets. 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfMacroElement.java (setParmCount):
-	New method.
-	(setQuoteDepth): Ditto.
+	New method. 
+	(setQuoteDepth): Ditto. 
 	(getParmCount): Ditto.
 	(getQuoteDepth): Ditto.
 	(setDepth): Ditto.
@@ -1687,7 +1353,7 @@
 	Resolves Bugzilla #232965
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (runCommand):
 	Change prototype to accept a console and a boolean which when true
-	means to restart the console which may possibly clear the console.
+	means to restart the console which may possibly clear the console. 
 	(regenerateMakefiles): Change calls to runCommand.  For multiple
 	actions (e.g. autogen.sh then configure), opt for the 2nd, 3rd, etc...
 	calls to not clear the console.  Don't run config.status unless
@@ -1697,56 +1363,56 @@
 
 2007-03-16  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (regenerateMakefiles):
+	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (regenerateMakefiles): 
 	If configuration parameters have changed, mark all Scanner Info as dirty.
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfoProvider.java (getCollectionName):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfoProvider.java (getCollectionName): 
 	Make synchronized to avoid concurrent access of the infoCollection.
-	(getScannerInformation): Ditto.
+	(getScannerInformation): Ditto. 
 	(setDirty): New method.
 
 2007-03-14  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzilla #230493
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfo.java (getDefinedSymbols):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfo.java (getDefinedSymbols): 
 	Recalculate each time if compilation string is null.
 	(getIncludePaths): Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfoProvider.java (getScannerInformation):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsScannerInfoProvider.java (getScannerInformation): 
 	Use a map of configurations to keep ScannerInfo seperate per configuration.  Use
 	current configuration to fetch scanner info.
 
 2007-02-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Bump up release to 0.0.8.1.
-
+	
 2007-02-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves Bugzillas #230253, #205310.
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakeTargetManager.java (addTargets):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakeTargetManager.java (addTargets): 
 	New method to do mass add of MakeTargets for performance improvement.
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java:
 	(addMakeTargetsToManager): Use new AutotoolsMakeTargetManager addTargets method.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectWizard.java (doRun):
+	* src/com/redhat/eclipse/cdt/autotools/wizards/NewAutotoolsProjectWizard.java (doRun): 
 	Set indexer to NullIndexer before applying options.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject):
-	Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizard.java:
-	Add new NULL_INDEXER_ID.
+	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject): 
+	Ditto.	
+	* src/com/redhat/eclipse/cdt/autotools/wizards/ConvertToAutotoolsProjectWizard.java: 
+	Add new NULL_INDEXER_ID. 
 	* src/com/redhat/eclipse/cdt/autotools/internal/MakeTargetManager.java: Expose
 	projectTargetMap to inheriting classes.
 
 2007-02-23  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Fix for Bugzilla 229891.
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (getMakeTargets):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (getMakeTargets): 
 	Use Make Target info to find the real build target which may have been set by the
 	Build Special Targets action.
 	(build): Set up the IMakeBuildInfo needed to fetch Make Target from.
-
+	
 2007-02-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeMessages.properties: Fix a few
 	typos.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentSetupParticipant.java (setup):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentSetupParticipant.java (setup): 
 	Use IDocumentExtension3 version of setDocumentParitioner if document is an instance of
 	IDocumentExtension3.
 
@@ -1772,9 +1438,9 @@
 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfParser.java (findDelimeter): Ignore
 	escaped character.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitionScanner.java (AutoconfPartitionScanner):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitionScanner.java (AutoconfPartitionScanner): 
 	Add escape character for # format comment and eat "\#" as character.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfCodeScanner.java (AutoconfCodeScanner):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfCodeScanner.java (AutoconfCodeScanner): 
 	Ditto.
 	* plugin.xml: Update release to 0.0.8.
 
@@ -1802,28 +1468,28 @@
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfCaseElement.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfForElement.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfCaseConditionElement.java: Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfCodeScanner.java (AutoconfCodeScanner):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfCodeScanner.java (AutoconfCodeScanner): 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/parser/AutoconfParser.java: New class to
 	do Autoconf file parsing and error marking.
 	Add AutoconfIdentifierRule and InlineDataRule.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (createDocument):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (createDocument): 
 	Changed to use new AutoconfErrorHandler interface.
 	(documentAboutToBeChanged): Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfErrorHandler.java (removeExistingMarkers):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfErrorHandler.java (removeExistingMarkers): 
 	Add verification that file exists.
 	(removeAllExistingMarkers): Ditto.
 	(handleError): Ditto.
 	(getCharOffset): Reformatted.
 	(AutoconfErrorHandler): Change constructor to take an IStorageEditorInput rather than
-	an IFile.  This allows external files to be edited without error handling.
+	an IFile.  This allows external files to be edited without error handling. 
 	* src/com/redhat/eclipse/cdt/autotools/editors/AutoconfEditorMessages.properties: New messages
 	added for outline parsing.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitionScanner.java (AutoconfPartitionScanner):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitionScanner.java (AutoconfPartitionScanner): 
 	Use new AutoconfIdentifierRule.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfSourceViewerConfiguration.java (getPresentationReconciler):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfSourceViewerConfiguration.java (getPresentationReconciler): 
 	Change default partition to use MultilineRuleDamagerRepairer.
 	(getReconciler): New method.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java (createPresentation):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java (createPresentation): 
 	Change to use new AutoconfErrorHandler constructor.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroParser.java (AutoconfMacroParser): Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java (doSetInput): New.
@@ -1877,9 +1543,9 @@
 	build console support to CDT 4.0.
 	* cdtpatches/cdt.ui.patch: Altered to remove any build console patches.
 	* cdtpatches/README: Updated to include the new patch.
-	* src/com/redhat/eclipse/cdt/autotools/internal/ui/CConfigureConsole.java (CConfigureConsole):
+	* src/com/redhat/eclipse/cdt/autotools/internal/ui/CConfigureConsole.java (CConfigureConsole): 
 	Modified to use new CUIPlugin build console manager interface.
-
+	
 2007-01-31  Andrew Overholt  <overholt@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeErrorHandler.java: New class.
@@ -1895,7 +1561,7 @@
 2007-01-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Fix for Bugzilla 224644.
-	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (getMakeTargets):
+	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder.java (getMakeTargets): 
 	Don't add "clean" for fullbuild anymore.  It causes unnecessary extra building to occur.
 	(build): Set a flag that build was called.
 	(clean): Only clean if this method is called directly and via a call to build method.
@@ -1903,11 +1569,11 @@
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (runCommand): When an
 	error occurs in configure, we want to set the status of the project to "needs rebuild".
 	(getConfigSettingsPath): New method to generate name of config settings file.
-	(saveConfigArgs): Use new getConfigSettingsPath method.
+	(saveConfigArgs): Use new getConfigSettingsPath method. 
 	(regenerateMakefiles): Ditto, when checking if config options have changed.
 	(autogenExists): Clean up unused variables.
 	(getMakefileName): Return "Makefile" instead of "makefile".
-
+	
 2007-01-22  Andrew Overholt  <overholt@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakefileCodeScanner.java:
@@ -1934,9 +1600,9 @@
 2007-01-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Fix for Bugzilla 214624.
-	* src/com/redhat/eclipse/cdt/autotools/internal/MarkerGenerator.java: New file.
+	* src/com/redhat/eclipse/cdt/autotools/internal/MarkerGenerator.java: New file. 
 	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (runCommand): Add check
-	for return code being 0 or 1 to reveal whether command ran correctly.
+	for return code being 0 or 1 to reveal whether command ran correctly. 
 	(regenerateMakefiles): Add boolean checking for runCmd calls and also quit
 	if runCmd fails.  For autogen.sh cases, check if configure is run by autogen.sh
 	and don't bother calling configure afterwards if true.  Add error checking to
@@ -1948,15 +1614,15 @@
 	* cdtpatches/managedbuilder.core.patch: New patch to cause ManagedMake build
 	to stop if an error occurs generating Makefile.
 	* cdtpatches/README: Add details on how to install new patch.
-
+	
 2007-01-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroParser.java: New code
 	to parse an Autoconf macro.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java (createPresentation):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java (createPresentation): 
 	Use new AutoconfMacroParser.parse method instead of embedding the code.  Remove
 	all corresponding parse methods.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (documentAboutToBeChanged):
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (documentAboutToBeChanged): 
 	Add checks for whether we should remove the error markers in an autoconf_macro
 	partition.
 
@@ -1966,58 +1632,58 @@
 
 2007-01-12  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/ParseException.java: New file.
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/ParseException.java: New file. 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditorMessages.java: Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfErrorHandler.java: Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfPrototype.java: Ditto.
+	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfErrorHandler.java: Ditto. 
+	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfPrototype.java: Ditto. 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfAnnotationHover.java: Ditto.
 
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfCodeScanner.java: Add
 	copyright info.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfColorProvider.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfDocumentProvider.java: Ditto.
-	(createDocument): New method.
+	(createDocument): New method. 
 	(documentChanged): Ditto.
-	(documentAboutToBeChanged): Ditto.
-
+	(documentAboutToBeChanged): Ditto. 
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfEditor.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfKeywordDetector.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfM4WordDetector.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroContentAssistProcessor.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroPartitionRule.java : Ditto.
 	(matchParentheses): Fix up logic.
-	(evaluate):
-
+	(evaluate): 
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroRule.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfMacroWordDetector.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitioner.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfPartitionScanner.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfSourceViewerConfiguration.java: Ditto.
 	(getPresentationReconciler): Use AutoconfMacroDamagerRepairer for macro partition.
 	(getAnnotationHover): New method.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfWhitespaceDetector.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/AutoconfWordDetector.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/IAutotoolEditorActionDefinitionIds.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/IAutotoolHelpContextIds.java: Ditto.
-
+		
 	* src/com/redhat/eclipse/cdt/autotools/ui/editors/RecursiveSingleLineRule.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/ui/LibHover.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/popup/actions/GetDefinedSymbolsAction.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/popup/actions/GetIncludePathAction.java: Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/AutoconfTextHover.java: Ditto.
 	(getIndexedInfo): New method.
 	(getPrototype): Ditto.
-
+	
 	* src/com/redhat/eclipse/cdt/autotools/internal/text/hover/HoverMessages.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/editors/automake/AutomakeWordDetector.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/actions/BuildSpecial.java: Ditto.
-	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAclocalAction.java: Ditto.
+	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAclocalAction.java: Ditto. 
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAction.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutoconfAction.java: Ditto.
 	* src/com/redhat/eclipse/cdt/autotools/actions/InvokeAutomakeAction.java: Ditto.
@@ -2056,7 +1722,7 @@
 
 2007-01-05  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (regenerateMakefiles):
+	* src/com/redhat/eclipse/cdt/autotools/MakeGenerator.java (regenerateMakefiles): 
 	Add check for Makefile.cvs ahead of configure check.  Use resource strings
 	for runCommand descriptions.
 	(makefileCvsExists): New internal method.

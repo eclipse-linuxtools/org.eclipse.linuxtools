@@ -33,11 +33,11 @@ public class AutotoolsWizardMessages {
 	}
 
 	public static String getFormattedString(String key, String arg) {
-		return MessageFormat.format(getResourceString(key), new Object[] { arg });
+		return MessageFormat.format(getResourceString(key), new String[] { arg });
 	}
 
 	public static String getFormattedString(String key, String[] args) {
-		return MessageFormat.format(getResourceString(key), (Object[])args);
+		return MessageFormat.format(getResourceString(key), args);
 	}
 
 	public static String getResourceString(String key) {
