@@ -1,4 +1,11 @@
 2008-07-02 Alexander Kurtakov  <akurtakov@gmail.com>
+	Two more quick fixes.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
+	(getResolutions): Enable new fixes.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPrefixTag.java: Likewise.
+
+2008-07-02 Alexander Kurtakov  <akurtakov@gmail.com>
 	Cleanup.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java:
 	Remove unused import.

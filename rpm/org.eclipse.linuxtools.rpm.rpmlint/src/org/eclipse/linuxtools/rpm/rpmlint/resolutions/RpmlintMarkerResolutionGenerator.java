@@ -59,6 +59,10 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 			resolutions.add(new MacroInChangelog());
 		} else if (rpmlintErrorId.equals(RpmBuildrootUsage.ID)){
 			resolutions.add(new RpmBuildrootUsage());
+		} else if (rpmlintErrorId.equals(HardcodedPrefixTag.ID)){
+			resolutions.add(new HardcodedPrefixTag());
+		} else if (rpmlintErrorId.equals(HardcodedPackagerTag.ID)){
+			resolutions.add(new HardcodedPackagerTag());
 		}
 
 		return resolutions.toArray(new IMarkerResolution[resolutions.size()]);

@@ -10,25 +10,30 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Quick fix for the hardcoded-prefix-tag warning.
  *
  */
 public class HardcodedPrefixTag extends ARemoveLineResolution{
-	/**
-	 * Rpmlint warning id.
-	 */
-	public static final String ID = "hardcoded-prefix-tag"; //$NON-NLS-1$
+	public static final String ID = "hardcoded-prefix-tag";
 
-	/**
+	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.HardcodedPrefixTag_0;
+		return "The Prefix tag is hardcoded in your spec file. It should be removed, so as to allow package relocation.";
 	}
 
-	/**
+	/* (non-Javadoc)
+	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
+	 */
+	public Image getImage() {
+		return null;
+	}
+
+	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
 	 */
 	public String getLabel() {
