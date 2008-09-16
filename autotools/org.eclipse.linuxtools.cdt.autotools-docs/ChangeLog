@@ -1,3 +1,7 @@
+2008-09-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* toc.xml: Add http references for all of the GNU tools documentation.
+
 2007-10-04  jjohnstn  <jjohnstn@vermillion>
 
 	* META-INF/MANIFEST.MF: Update release to 0.0.5.
