@@ -19,9 +19,14 @@
 
 package org.eclipse.linuxtools.cdt.autotools.ui;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,8 +41,8 @@ import org.eclipse.cdt.ui.ICHelpResourceDescriptor;
 import org.eclipse.cdt.ui.IFunctionSummary;
 import org.eclipse.cdt.ui.IRequiredInclude;
 import org.eclipse.cdt.ui.text.ICHelpInvocationContext;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.help.IHelpResource;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
@@ -52,6 +57,7 @@ import org.xml.sax.SAXParseException;
 
 public class LibHover implements ICHelpProvider {
 	
+	public static String CLIBHOVER_DOC_NAME = "http://www.sourceware.org/eclipse/autotools/glibc-2.7-2"; //$NON-NLS-1$
     private static Plugin plugin;
 
     // see comment in initialize()
@@ -74,6 +80,10 @@ public class LibHover implements ICHelpProvider {
 	    static final int unionIndex         = 5;
 
      
+	private String getLibHoverDocName() {
+		return CLIBHOVER_DOC_NAME + ".xml"; //$NON-NLS-1$
+	}
+	
 	public void getLibHoverDocs() {
 		if (null != plugin) {
 			Document doc = null;
@@ -82,8 +92,17 @@ public class LibHover implements ICHelpProvider {
 				try {
 					// Use the FileLocator class to open the magic hover doc file
 					// in the plugin's jar.
-					Path p = new Path("libhoverdocs/glibc-2.7-2.xml"); //$NON-NLS-1$
-					InputStream docStream = FileLocator.openStream(AutotoolsPlugin.getDefault().getBundle(), p, false);
+					// Either open the html file or file system file depending
+					// on what has been specified.
+					URI acDoc = new URI(getLibHoverDocName());
+					IPath p = URIUtil.toPath(acDoc);
+					InputStream docStream = null;
+					if (p == null) {
+						URL url = acDoc.toURL();
+						docStream = url.openStream();
+					} else {
+						docStream = new FileInputStream(p.toFile());
+					}
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 					factory.setValidating(false);
 					try {
@@ -103,8 +122,13 @@ public class LibHover implements ICHelpProvider {
 						doc = null;
 					}
 				} catch (MalformedURLException e) {
-					CUIPlugin.getDefault().log(e);
+					CUIPlugin.log(e);
+				} catch (FileNotFoundException e) {
+					CUIPlugin.log(e);
+				} catch (URISyntaxException e) {
+					CUIPlugin.log(e);
 				}
+
 				document = doc;
 			}
 			catch (IOException ioe) {
@@ -268,10 +292,8 @@ public class LibHover implements ICHelpProvider {
 	}
             
 	public IFunctionSummary getFunctionInfo(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String name) {
-		boolean found;
         FunctionSummary f;
 
-        found = false;
         f = null;
         
         if ((null != document) && (null != name)) {
@@ -289,7 +311,6 @@ public class LibHover implements ICHelpProvider {
                 	case functionIndex:
                 		NodeList functionNode = elem.getElementsByTagName("function"); // $NON-NLS-1$
                         if (null != functionNode) {
-                        	found = true;
                         	for (int fni = 0; fni < functionNode.getLength(); fni++) {
                         		Node function_node = functionNode.item(fni);
                                 String function_node_name = function_node.getNodeName();
@@ -347,7 +368,7 @@ public class LibHover implements ICHelpProvider {
 	
 	private class HelpResource implements IHelpResource {
 		public String getHref() {
-			return "/org.eclipse.linuxtools.cdt.autotools/libhoverdocs/glibc-2.7-2.xml"; // $NON-NLS-1$
+			return getLibHoverDocName() + ".xml"; // $NON-NLS-1$
 		}
 		public String getLabel() {
 			return LibHoverMessages.getString("LibcHelpResource.label"); // $NON-NLS-1$

@@ -1,3 +1,18 @@
+2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfTextHover.java:
+	(AUTOCONF_MACROS_DOC_NAME): Change to use default URL pointing to sourceware.org.
+	(AUTOMAKE_MACROS_DOC_NAME): Ditto.
+	(getHoverDoc): Remove unused variable. 
+	(getAMDoc): Modify to handle either a file or URL.
+	(getACDoc): Ditto.
+	(.createInformationControl): Switch to use non-deprecated constructor.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHover.java (getLibHoverDocs): Modify to handle
+	either an external file name or URL. 
+	(getLibHoverDocName): New method that returns default URL pointing to sourceware.org.
+	(HelpResource.getHref): Change to return URL.  
+	(getFunctionInfo): Remove unread variable.
+
 2008-09-09  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/com/redhat/eclipse/cdt/autotools/AutotoolsMakefileBuilder(hasTargetBuilder): Change logic
