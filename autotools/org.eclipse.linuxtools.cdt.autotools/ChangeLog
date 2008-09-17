@@ -1,5 +1,11 @@
 2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfoProvider.java (getScannerInformation):
+	Return null if project is not an Autotools project. 
+	(unsubscribe): Check scanner info for null before accessing.
+	
+2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
+	
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfTextHover.java:
 	(AUTOCONF_MACROS_DOC_NAME): Change to use default URL pointing to sourceware.org.
 	(AUTOMAKE_MACROS_DOC_NAME): Ditto.
