@@ -1,3 +1,21 @@
+2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/AllTests.java: Removed since must run as Junit
+	plugin and default is to run all tests in plugin which causes duplicate test runs.
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/autoconf/AllTests.java: Removed. Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/AutotoolsProjectTest0.java (testAutotoolsProject0):
+	Add new generate configuration files parameter and set to true. 
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/AutotoolsProjectTest1.java (testAutotoolsProject1):
+	Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/AutotoolsProjectTest2.java (testAutotoolsProject2):
+	Add new generate configuration files parameter and set to false. 
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java (addSourceContainerWithImport):
+	Add new parameter which states whether configuration files require generation after
+	import. 
+	(importFilesFromZipAndGenerate): New method which imports project files and performs
+	generation of configuration files.
+	(generateFiles): New method.
+
 2008-07-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump to 1.0.2.
