@@ -1,3 +1,11 @@
+2008-09-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeColourizationTests.java (setUp): Make sure
+	test project has unique name since JUNIT tests are run multithread.
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeEditorTests.java (testAutomakeEditorAssociation):
+	Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeTextHoverTest.java (setUp): Ditto. 
+
 2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/AllTests.java: Removed since must run as Junit

@@ -72,7 +72,7 @@ public class AutomakeTextHoverTest extends TestCase {
         if (!ProjectTools.setup())
         	fail("could not perform basic project workspace setup");
         
-        project = ProjectTools.createProject("testProject");
+        project = ProjectTools.createProject("testProjectATHT");
         
         if(project == null) {
         	fail("Unable to create test project");
