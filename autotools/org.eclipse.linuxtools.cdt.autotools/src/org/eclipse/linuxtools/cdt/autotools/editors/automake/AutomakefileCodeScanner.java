@@ -105,7 +105,7 @@ public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {
 
 		// Add word rule for keywords, types, and constants.
 		// We restring the detection of the keywords to be the first column to be valid.
-		WordRule keyWordRule = new WordRule(new MakefileWordDetector(), other);
+		WordRule keyWordRule = new WordRule(new MakefileWordDetector(), Token.UNDEFINED);
 		for (int i = 0; i < keywords.length; i++) {
 			keyWordRule.addWord(keywords[i], keyword);
 		}
@@ -113,12 +113,12 @@ public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {
 		rules.add(keyWordRule);
 
 
-		WordRule functionRule = new WordRule(new MakefileWordDetector(), other);
+		WordRule functionRule = new WordRule(new MakefileWordDetector(), Token.UNDEFINED);
 		for (int i = 0; i < functions.length; i++)
 			functionRule.addWord(functions[i], function);
 		rules.add(functionRule);
 		
-		WordRule automaticVarRule = new WordRule(new AutomakeWordDetector(), other);
+		WordRule automaticVarRule = new WordRule(new AutomakeWordDetector(), Token.UNDEFINED);
 		for (int i = 0; i < automaticVariables.length; i++)
 			automaticVarRule.addWord(automaticVariables[i], keyword);
 		rules.add(automaticVarRule);

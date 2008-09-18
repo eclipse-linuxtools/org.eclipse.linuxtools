@@ -1,3 +1,11 @@
+2008-09-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java (createRules):
+	Specify Token.UNDEFINED for WordRules default token.  Otherwise, just getting the first possible
+	character of a word detector will result in default token being returned and no further parsing.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfCodeScanner.java (AutoconfCodeScanner):
+	Ditto. 
+
 2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfoProvider.java (getScannerInformation):
