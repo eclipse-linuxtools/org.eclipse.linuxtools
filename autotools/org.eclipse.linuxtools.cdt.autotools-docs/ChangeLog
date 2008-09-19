@@ -1,3 +1,7 @@
+2008-09-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Update version number to 1.0.0.
+
 2008-09-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* toc.xml: Add http references for all of the GNU tools documentation.
