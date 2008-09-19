@@ -567,12 +567,6 @@
             id="org.eclipse.linuxtools.cdt.autotools.configureConsole"/>
    </extension>
    <extension
-         point="org.eclipse.cdt.ui.CHelpProvider">
-      <provider
-            class="org.eclipse.linuxtools.cdt.autotools.ui.LibHover"
-            id="org.eclipse.linuxtools.cdt.autotools.provider2"/>
-   </extension>
-   <extension
    	     id="AutotoolsScannerInfoProvider"
          point="org.eclipse.cdt.core.ScannerInfoProvider">
       <cextension>   

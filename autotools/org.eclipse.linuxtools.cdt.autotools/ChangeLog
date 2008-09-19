@@ -1,3 +1,12 @@
+2008-09-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Change Eclipse-AutoStart over to Bundle-ActivationPolicy.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHover.java: Removed.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHoverMessages.java: Removed.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/LibHoverMessages.properties: Removed.
+	* plugin.xml: Remove CHelpProvider library hover extension as this functionality 
+	has been moved into its own plugin.
+
 2008-09-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java (createRules):
