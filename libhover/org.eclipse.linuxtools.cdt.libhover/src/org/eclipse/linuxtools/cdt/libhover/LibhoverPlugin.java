@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     Red Hat Incorporated - initial API and implementation
- *******************************************************************************/
 package org.eclipse.linuxtools.cdt.libhover;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -56,13 +46,6 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 	 */
 	public static LibhoverPlugin getDefault() {
 		return plugin;
-	}
-	
-	/*
-	 * Returns the id of the plugin
-	 */
-	public static String getID() {
-		return PLUGIN_ID;
 	}
 
 	/**
