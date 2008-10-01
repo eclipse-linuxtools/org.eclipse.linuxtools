@@ -7,4 +7,5 @@
 	<topic label="autoconf" href="http://www.gnu.org/software/autoconf/manual/html_node/index.html"/>
 	<topic label="automake" href="http://www.gnu.org/software/automake/manual/html_node/index.html"/>
 	<topic label="pkg-config" href="http://hpux.ewi.tudelft.nl/ftp/hpux/Development/Tools/pkgconfig-0.23/pkgconfig-0.23.man.html"/>
+ <anchor id="moregnutools"/>
 </toc>

@@ -1,3 +1,7 @@
+2008-10-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* toc.xml: Add anchor id so other gnu tools can be added to Gnu Tools list.
+
 2008-09-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update version number to 1.0.0.
