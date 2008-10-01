@@ -1,3 +1,9 @@
+2008-10-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (getIncludePaths): Fix bug that
+	was properly resolving relative paths.  Also add support for parsing -isystem specifiers and putting
+	the paths on the include path list.
+
 2008-09-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Change Eclipse-AutoStart over to Bundle-ActivationPolicy.

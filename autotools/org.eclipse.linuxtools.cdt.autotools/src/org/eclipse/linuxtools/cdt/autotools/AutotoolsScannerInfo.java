@@ -243,6 +243,7 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		ArrayList pathList = new ArrayList();
 		String cs = getCompilationString();
 		if (cs != null) {
+			// Grab include paths specified via -I
 			Pattern p4 = Pattern.compile(" -I");
 			String[] tokens = p4.split(cs);
 			for (int j = 1; j < tokens.length; ++j) {
@@ -255,7 +256,24 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 					pathList.add(x);
 				} else {
 					IPath relPath = new Path(dirName);
-					relPath.append(x);
+					relPath = relPath.append(x);
+					pathList.add(relPath.toOSString());
+				}
+			}
+			// Grab include paths that are specified via -isystem
+			Pattern p5 = Pattern.compile(" -isystem");
+			tokens = p5.split(cs);
+			for (int j = 1; j < tokens.length; ++j) {
+				String x = tokens[j].trim();
+				int firstSpace = x.indexOf(' ');
+				if (firstSpace != -1) {
+					x = x.substring(0, firstSpace);
+				}
+				if (x.charAt(0) == '/') {
+					pathList.add(x);
+				} else {
+					IPath relPath = new Path(dirName);
+					relPath = relPath.append(x);
 					pathList.add(relPath.toOSString());
 				}
 			}
