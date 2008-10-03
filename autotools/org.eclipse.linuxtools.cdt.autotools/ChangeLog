@@ -1,3 +1,21 @@
+2008-10-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Fix for #249644.
+	
+	* plugin.xml: Change visible to true for invoke autotools action set.  Also add
+	new popupmenus for running autoconf directly on configure.ac or configure.in.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAclocalAction.java (run): Use
+	getCWD to get the relative current working directory and pass a string to the new
+	TwoInputDialog constructor. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutomakeAction.java (run): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java (getCWD): New method
+	to get the relative CWD for an autotools action.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/TwoInputDialog.java (createDialogArea):
+	Use CLabel instead of Label for first label (the CWD). 
+	(TwoInputDialog): Change to accept a String for the first message instead of an IPath.
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (addMakeTargetsToManager):
+	Temporarily disable. 
+
 2008-10-01  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (getIncludePaths): Fix bug that

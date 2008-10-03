@@ -36,8 +36,9 @@ public class InvokeAutomakeAction extends InvokeAction {
 
 		IContainer container = getSelectedContainer();
 		IPath execDir = getExecDir(container);
+		String cwd = "CWD:" + getCWD(container);
 ;
-		TwoInputDialog optionDialog = new TwoInputDialog(new Shell(), execDir,
+		TwoInputDialog optionDialog = new TwoInputDialog(new Shell(), cwd,
 		InvokeMessages
 		.getString("InvokeAutomakeAction.windowTitle.options"), //$NON-NLS-1$
 InvokeMessages

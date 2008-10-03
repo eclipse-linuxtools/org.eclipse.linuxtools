@@ -15,6 +15,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -32,14 +33,14 @@ public class TwoInputDialog extends InputDialog {
 
 	private String secondMessage;
 	
-	private IPath execDir;
+	private String firstMessage;
 
-	public TwoInputDialog(Shell parentShell, IPath execDir, String dialogTitle,
+	public TwoInputDialog(Shell parentShell, String firstMessage, String dialogTitle,
 			String dialogMessage, String secondMessage, String initialValue,
 			IInputValidator validator) {
 		super(parentShell, dialogTitle, dialogMessage, initialValue, validator);
 
-		this.execDir = execDir;
+		this.firstMessage = firstMessage;
 		this.secondMessage = secondMessage;
 	}
 
@@ -60,8 +61,8 @@ public class TwoInputDialog extends InputDialog {
 		// create composite
 		Composite composite = (Composite) super.createDialogArea(parent);
 
-		Label label0 = new Label(composite, SWT.WRAP);
-		label0.setText("CWD: " + execDir.toOSString());
+		CLabel label0 = new CLabel(composite, SWT.WRAP);
+		label0.setText(firstMessage);
 		Label label = new Label(composite, SWT.WRAP);
 		label.setText(secondMessage);
 		GridData data = new GridData(GridData.GRAB_HORIZONTAL

@@ -48,7 +48,7 @@
       </wizard>
    </extension>
      <extension point="org.eclipse.ui.actionSets">
-                <actionSet label="%InvokeAutotools.label" visible="false" id="org.eclipse.linuxtools.cdt.autotools.actionSets">
+                <actionSet label="%InvokeAutotools.label" id="org.eclipse.linuxtools.cdt.autotools.actionSets">
                 <action
                       class="org.eclipse.linuxtools.cdt.autotools.actions.InvokeAutoconfAction"
                       enablesFor="1"
@@ -61,7 +61,7 @@
                             value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
                       </objectState>
                    </enablement>
-                        </action>
+		        </action>
                 <action
                       class="org.eclipse.linuxtools.cdt.autotools.actions.InvokeAutomakeAction"
                       enablesFor="1"
@@ -109,29 +109,30 @@
          id="org.eclipse.linuxtools.cdt.autotools.popup1"
          point="org.eclipse.ui.popupMenus">
       <objectContribution
-            nameFilter="*"
-            objectClass="org.eclipse.core.resources.IFile"
-            id="org.eclipse.linuxtools.cdt.autotools.contribution1">
-         <menu
-               label="%DynamicBuild.label"
-               path="additions"
-               id="org.eclipse.linuxtools.cdt.autotools.menu1">
-            <separator
-                  name="group1">
-            </separator>
-         </menu>
+            adaptable="true"
+            id="org.eclipse.linuxtools.cdt.autotools.objectContribution.autoconf"
+            nameFilter="configure.ac"
+            objectClass="org.eclipse.core.resources.IResource">
          <action
-               label="%GetIncludePath.label"
-               class="org.eclipse.linuxtools.cdt.autotools.popup.actions.GetIncludePathAction"
+               class="org.eclipse.linuxtools.cdt.autotools.actions.InvokeAutoconfAction"
                enablesFor="1"
-               id="org.eclipse.linuxtools.cdt.autotools.newAction"
-               menubarPath="org.eclipse.linuxtools.cdt.autotools.menu1/group1">
+               id="org.eclipse.linuxtools.cdt.autotools.action.autoconf1"
+               label="%InvokeAutoconf.label"
+               menubarPath="additions">
          </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="org.eclipse.linuxtools.cdt.autotools.objectContribution.autoconf2"
+            nameFilter="configure.in"
+            objectClass="org.eclipse.core.resources.IResource">
          <action
-               class="org.eclipse.linuxtools.cdt.autotools.popup.actions.GetDefinedSymbolsAction"
-               id="org.eclipse.linuxtools.cdt.autotools.newAction2"
-               label="%GetDefinedSymbols.label"
-               menubarPath="org.eclipse.linuxtools.cdt.autotools.menu1/group1"/>
+               class="org.eclipse.linuxtools.cdt.autotools.actions.InvokeAutoconfAction"
+               enablesFor="1"
+               id="org.eclipse.linuxtools.cdt.autotools.action2"
+               label="%InvokeAutoconf.label"
+               menubarPath="additions">
+         </action>
       </objectContribution>
    </extension>
    <extension

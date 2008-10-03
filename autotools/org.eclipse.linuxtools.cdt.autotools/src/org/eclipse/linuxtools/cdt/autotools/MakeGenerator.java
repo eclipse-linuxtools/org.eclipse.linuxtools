@@ -1032,68 +1032,68 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	}
 
 	private void addMakeTargetsToManager(File makefileFile) {
-		IMakeTargetManager makeTargetManager = 
-			MakeCorePlugin.getDefault().getTargetManager();
-		
-		// Remove all MakeTargets generated from here in a previous
-		// invocation.  This will account for any configuration or
-		// Makefile.in changes which remove previous targets that used
-		// to be in the top-level Makefile.
-		try {
-			IMakeTarget[] oldMakeTarget = makeTargetManager.getTargets(project);
-			for (int i = 0; i < oldMakeTarget.length; ++i) {
-				if (oldMakeTarget[i].getBuildAttribute(GENERATED_TARGET, "false").equals("true"))
-					makeTargetManager.removeTarget(oldMakeTarget[i]);
-			}
-		} catch (CoreException e) {
-			// do nothing for now
-		}
-
-		IMakefile makefile = MakeCorePlugin.createMakefile(makefileFile, false, null);
-		ITargetRule[] targets = makefile.getTargetRules();
-		ITarget target = null;
-		ArrayList makeTargets = new ArrayList();
-		for (int i = 0; i < targets.length; i++) {
-			target = targets[i].getTarget();
-			String targetName = target.toString();
-			if (!isValidTarget(targetName, makeTargetManager))
-				continue;
-			try {
-				IMakeTarget makeTarget = makeTargetManager.createTarget(
-						project, targetName, "org.eclipse.linuxtools.cdt.autotools.builder1"); //$NON-NLS-1$
-				makeTarget.setContainer(project);
-				makeTarget.setStopOnError(true);
-				makeTarget.setRunAllBuilders(false);
-				makeTarget.setUseDefaultBuildCmd(true);
-
-				makeTarget.setBuildAttribute(GENERATED_TARGET, "true");
-				makeTarget.setBuildAttribute(IMakeTarget.BUILD_TARGET,
-						targetName);
-
-				makeTarget.setBuildAttribute(IMakeTarget.BUILD_LOCATION,
-						buildDir);
-				// When adding a target, we check to see if it already
-				// exists.  This means that a user-added target will
-				// preempt any default target that is in the top-level
-				// Makefile.  In most cases, it should match anyway.
-				if (makeTarget != null
-						&& !makeTargetManager.targetExists(makeTarget)) {
-					makeTargets.add(makeTarget);
-				}
-			} catch (CoreException e) {
-				// Duplicate target.  Ignore.
-			}
-		}
-		// FIXME: Add make targets one at a time.  An improvement to the API
-		// would be to have an alternate API to add all make targets at once.
-		IMakeTarget[] makeTargetArray = (IMakeTarget[])(makeTargets.toArray(new IMakeTarget[makeTargets.size()]));
-		for (int i = 0; i < makeTargets.size(); ++i) {
-			try {
-				makeTargetManager.addTarget(project, makeTargetArray[i]);
-			} catch (CoreException e) {
-				// don't worry about duplicate targets...just continue
-			}
-		}
+//		IMakeTargetManager makeTargetManager = 
+//			MakeCorePlugin.getDefault().getTargetManager();
+//		
+//		// Remove all MakeTargets generated from here in a previous
+//		// invocation.  This will account for any configuration or
+//		// Makefile.in changes which remove previous targets that used
+//		// to be in the top-level Makefile.
+//		try {
+//			IMakeTarget[] oldMakeTarget = makeTargetManager.getTargets(project);
+//			for (int i = 0; i < oldMakeTarget.length; ++i) {
+//				if (oldMakeTarget[i].getBuildAttribute(GENERATED_TARGET, "false").equals("true"))
+//					makeTargetManager.removeTarget(oldMakeTarget[i]);
+//			}
+//		} catch (CoreException e) {
+//			// do nothing for now
+//		}
+//
+//		IMakefile makefile = MakeCorePlugin.createMakefile(makefileFile, false, null);
+//		ITargetRule[] targets = makefile.getTargetRules();
+//		ITarget target = null;
+//		ArrayList makeTargets = new ArrayList();
+//		for (int i = 0; i < targets.length; i++) {
+//			target = targets[i].getTarget();
+//			String targetName = target.toString();
+//			if (!isValidTarget(targetName, makeTargetManager))
+//				continue;
+//			try {
+//				IMakeTarget makeTarget = makeTargetManager.createTarget(
+//						project, targetName, "org.eclipse.linuxtools.cdt.autotools.builder1"); //$NON-NLS-1$
+//				makeTarget.setContainer(project);
+//				makeTarget.setStopOnError(true);
+//				makeTarget.setRunAllBuilders(false);
+//				makeTarget.setUseDefaultBuildCmd(true);
+//
+//				makeTarget.setBuildAttribute(GENERATED_TARGET, "true");
+//				makeTarget.setBuildAttribute(IMakeTarget.BUILD_TARGET,
+//						targetName);
+//
+//				makeTarget.setBuildAttribute(IMakeTarget.BUILD_LOCATION,
+//						buildDir);
+//				// When adding a target, we check to see if it already
+//				// exists.  This means that a user-added target will
+//				// preempt any default target that is in the top-level
+//				// Makefile.  In most cases, it should match anyway.
+//				if (makeTarget != null
+//						&& !makeTargetManager.targetExists(makeTarget)) {
+//					makeTargets.add(makeTarget);
+//				}
+//			} catch (CoreException e) {
+//				// Duplicate target.  Ignore.
+//			}
+//		}
+//		// FIXME: Add make targets one at a time.  An improvement to the API
+//		// would be to have an alternate API to add all make targets at once.
+//		IMakeTarget[] makeTargetArray = (IMakeTarget[])(makeTargets.toArray(new IMakeTarget[makeTargets.size()]));
+//		for (int i = 0; i < makeTargets.size(); ++i) {
+//			try {
+//				makeTargetManager.addTarget(project, makeTargetArray[i]);
+//			} catch (CoreException e) {
+//				// don't worry about duplicate targets...just continue
+//			}
+//		}
 //			// Add all the targets at once.
 //			makeTargetManager.addTargets(project, 
 //			(IMakeTarget[])(makeTargets.toArray(new IMakeTarget[makeTargets.size()])));
