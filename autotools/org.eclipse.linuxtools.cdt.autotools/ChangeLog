@@ -1,5 +1,7 @@
 2008-10-07  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Fix for #249231
+
 	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Add
 	support to resolve build macros. 
 	(getConfigArgs): Ditto.
