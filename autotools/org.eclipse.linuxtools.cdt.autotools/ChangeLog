@@ -1,3 +1,10 @@
+2008-10-07  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Add
+	support to resolve build macros. 
+	(getConfigArgs): Ditto.
+	(initializeBuildConfigDirs): Ditto. 
+
 2008-10-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Fix for #249644.

@@ -28,12 +28,7 @@ import org.eclipse.cdt.core.CommandLauncher;
 import org.eclipse.cdt.core.ConsoleOutputStream;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.resources.IConsole;
-import org.eclipse.cdt.make.core.IMakeTarget;
 import org.eclipse.cdt.make.core.IMakeTargetManager;
-import org.eclipse.cdt.make.core.MakeCorePlugin;
-import org.eclipse.cdt.make.core.makefile.IMakefile;
-import org.eclipse.cdt.make.core.makefile.ITarget;
-import org.eclipse.cdt.make.core.makefile.ITargetRule;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -42,6 +37,8 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.ITool;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
+import org.eclipse.cdt.managedbuilder.macros.BuildMacroException;
+import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator2;
 import org.eclipse.cdt.newmake.core.IMakeCommonBuildInfo;
@@ -105,7 +102,15 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		for (int i = 0; i < options.length; ++i) {
 			String id = options[i].getId();
 			if (id.indexOf("builddir") > 0) { //$NON-NLS-1$
-				this.buildDir = (String) options[i].getValue();
+				buildDir = (String) options[i].getValue();
+				try {
+					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(buildDir, "", null, 
+							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
+					if (resolved != null && (resolved = resolved.trim()).length() > 0)
+						buildDir = resolved;
+				} catch (BuildMacroException e) {
+					// do nothing
+				}
 				try {
 					builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION, 
 							project.getLocation().append(buildDir).toOSString());
@@ -113,7 +118,15 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					e.printStackTrace();
 				}
 			} else if (id.indexOf("configdir") > 0) {  //$NON-NLS-1$
-				this.srcDir = (String) options[i].getValue();
+				srcDir = (String) options[i].getValue();
+				try {
+					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(srcDir, "", null, 
+							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
+					if (resolved != null && (resolved = resolved.trim()).length() > 0)
+						srcDir = resolved;
+				} catch (BuildMacroException e) {
+					// do nothing
+				}
 			}
 		}
 	}
@@ -597,6 +610,14 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		for (int i = 0; i < options.length; ++i) {
 			if (options[i].getValueType() == IOption.STRING) {
 				String value = (String) options[i].getValue();
+				try {
+					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(value, "", null, 
+							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
+					if(resolved != null && (resolved = resolved.trim()).length() > 0)
+						value = resolved;
+				} catch (BuildMacroException e) {
+					// do nothing
+				}
 				String id = options[i].getId();
 				if (id.indexOf("user") > 0) { //$NON-NLS-1$
 					// May be multiple user-specified options in which case we
@@ -631,6 +652,14 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		for (int i = 0; i < options.length; ++i) {
 			if (options[i].getValueType() == IOption.STRING) {
 				String value = (String) options[i].getValue();
+				try {
+					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(value, "", null, 
+							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
+					if(resolved != null && (resolved = resolved.trim()).length() > 0)
+						value = resolved;
+				} catch (BuildMacroException e) {
+					// do nothing
+				}
 				String id = options[i].getId();
 				if (id.indexOf("configdir") > 0 || id.indexOf("builddir") > 0) //$NON-NLS-1$ $NON-NLS-2$
 					continue;
