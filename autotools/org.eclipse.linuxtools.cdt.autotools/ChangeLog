@@ -1,5 +1,16 @@
 2008-10-10  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add check for default
+	configuration coming back null from buildinfo. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsBuildPropertyPage.java (performDefaults): 
+	Set make -w default to be true.
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject):
+	Set make -w project property to true and don't turn off indexer. 
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCCProjectWizard.java (doRun): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCProjectWizard.java (doRun): Ditto.
+	
+2008-10-10  Jeff Johnston  <jjohnstn@redhat.com>
+ 
 	Fix for #249416
 	
 	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java: Fix addition of MakeTargets to run faster. 

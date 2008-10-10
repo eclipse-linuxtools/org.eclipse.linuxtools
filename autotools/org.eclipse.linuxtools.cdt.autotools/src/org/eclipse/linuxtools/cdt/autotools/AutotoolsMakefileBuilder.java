@@ -106,6 +106,8 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			if (workspace != null) {
 				IWorkspaceRoot root = workspace.getRoot();
 				if (root != null) {
+					if (info.getDefaultConfiguration() == null)
+						return null;
 					generator = ManagedBuildManager.getBuildfileGenerator(info.getDefaultConfiguration());
 					generator.initialize(getProject(), info, monitor);
 					IPath buildDir = project.getLocation().append(generator.getBuildWorkingDir());
