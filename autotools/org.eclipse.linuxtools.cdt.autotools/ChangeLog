@@ -1,3 +1,17 @@
+2008-10-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Fix for #249416
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java: Fix addition of MakeTargets to run faster. 
+	(addMakeTargetsToManager): Rewritten to not use MakeTargetManager addTarget or removeTarget methods which
+	cause a rewrite of the .cproject file each time. 
+	(isValidTarget): Remove checking MakeTargetManager existing target.
+	(translateDocumentToCDTProject): New method which outputs the MakeTargets to the .cproject file.
+	(MakeTargetComparator): New Comparator for sorting MakeTargets.
+	(createTargetElement): New method.
+	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Add subtask message for refreshing Make Targets
+	which might take some time. 
+
 2008-10-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Fix for #249231
