@@ -10,16 +10,19 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import java.util.List;
-
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.swt.graphics.Image;
 
 public class NoCleanSection extends AInsertLineResolution {
-	public static final String ID = "no-%clean-section"; //$NON-NLS-1$
+	public static final String ID = "no-%clean-section";
 
 	public String getDescription() {
-		return Messages.NoCleanSection_0;
+		return "Insert empty %clean section";
+	}
+
+	public Image getImage() {
+		return null;
 	}
 
 	public String getLabel() {
@@ -28,14 +31,14 @@ public class NoCleanSection extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "%clean\n\n"; //$NON-NLS-1$
+		return "%clean\n\n";
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
-		List<SpecfileSection> sections = editor.getSpecfile().getSections();
-		for (SpecfileSection section : sections) {
-			if (section.getName().equals("changelog")) { //$NON-NLS-1$
+		SpecfileElement[] sections = editor.getSpecfile().getSectionsElements();
+		for (SpecfileElement section : sections) {
+			if (section.getName().equals("changelog")) {
 				return section.getLineNumber();
 			}
 		}

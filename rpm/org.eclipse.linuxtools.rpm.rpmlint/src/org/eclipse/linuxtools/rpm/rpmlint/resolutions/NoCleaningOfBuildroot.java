@@ -39,8 +39,11 @@ public class NoCleaningOfBuildroot extends AInsertLineResolution {
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		SpecfileElement[] sections = editor.getSpecfile().getSectionsElements();
 		for (SpecfileElement section : sections) {
-			if (section.getName().equals("install")) {
-				return section.getLineNumber() + 1;
+			if (section.getName().equals("install")
+					|| section.getName().equals("clean")) {
+				if (markerLine == section.getLineNumber()) {
+					return section.getLineNumber() + 1;
+				}
 			}
 		}
 		return 0;

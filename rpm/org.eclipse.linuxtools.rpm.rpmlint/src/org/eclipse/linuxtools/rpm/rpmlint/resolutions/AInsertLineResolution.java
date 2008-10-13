@@ -28,6 +28,8 @@ import org.eclipse.ui.ide.IDE;
  */
 abstract public class AInsertLineResolution implements IMarkerResolution2 {
 
+	protected int markerLine;
+	
 	/**
 	 * Returns the line to be inserted for the fix.
 	 * Note: If there are some whitespace requirements for this line(e.g. an empty line after it) 
@@ -51,6 +53,7 @@ abstract public class AInsertLineResolution implements IMarkerResolution2 {
 	 * @see org.eclipse.ui.IMarkerResolution#run(org.eclipse.core.resources.IMarker)
 	 */
 	public void run(IMarker marker) {
+		markerLine = marker.getAttribute(IMarker.LINE_NUMBER, 0);
 		// Open or activate the editor.
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();

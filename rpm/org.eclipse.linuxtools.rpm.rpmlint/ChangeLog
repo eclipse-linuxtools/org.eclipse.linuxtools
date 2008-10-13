@@ -1,11 +1,31 @@
-2008-07-02 Alexander Kurtakov  <akurtakov@gmail.com>
+2008-10-13 Alexander Kurtakov  <akurtakov@gmail.com>
+	3 more quick fixes with some cleanup.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/AInsertLineResolution.java:
+	(run): Store the marker line for use in the resolution.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java:
+	Add license.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/MacroInChangelog.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java:
+	(getLineNumberForInsert): Handle warning from clean section too.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleanSection.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoInstallSection.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoPrepSection.java:
+	Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
+	(getResolutions): Register the new quickfixes.
+	(hasResolutions): Register all the resolutions.
+	
+2008-08-02 Alexander Kurtakov  <akurtakov@gmail.com>
 	Two more quick fixes.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
 	(getResolutions): Enable new fixes.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java: New file.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPrefixTag.java: Likewise.
 
-2008-07-02 Alexander Kurtakov  <akurtakov@gmail.com>
+2008-08-02 Alexander Kurtakov  <akurtakov@gmail.com>
 	Cleanup.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java:
 	Remove unused import.

@@ -31,10 +31,31 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	 */
 	public boolean hasResolutions(IMarker marker) {
 		String rpmlintErrorId = getRpmlintErrorId(marker);
-		if (rpmlintErrorId.equals(SetupNotQuiet.ID))
+		if (rpmlintErrorId.equals(SetupNotQuiet.ID)) {
             return true;
-		else if (rpmlintErrorId.equals(PatchNotApplied.ID))
+		} else if (rpmlintErrorId.equals(PatchNotApplied.ID)) {
 			return true;
+		}  else if (rpmlintErrorId.equals(NoBuildrootTag.ID)) {
+			return true;
+		} else if (rpmlintErrorId.equals(NoCleaningOfBuildroot.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(NoBuildSection.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(MacroInChangelog.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(RpmBuildrootUsage.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(HardcodedPrefixTag.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(HardcodedPackagerTag.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(NoPrepSection.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(NoInstallSection.ID)){
+			return true;
+		} else if (rpmlintErrorId.equals(NoCleanSection.ID)){
+			return true;
+		}
 
 		return false;
 	}
@@ -63,6 +84,12 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 			resolutions.add(new HardcodedPrefixTag());
 		} else if (rpmlintErrorId.equals(HardcodedPackagerTag.ID)){
 			resolutions.add(new HardcodedPackagerTag());
+		} else if (rpmlintErrorId.equals(NoPrepSection.ID)){
+			resolutions.add(new NoPrepSection());
+		} else if (rpmlintErrorId.equals(NoInstallSection.ID)){
+			resolutions.add(new NoInstallSection());
+		} else if (rpmlintErrorId.equals(NoCleanSection.ID)){
+			resolutions.add(new NoCleanSection());
 		}
 
 		return resolutions.toArray(new IMarkerResolution[resolutions.size()]);
