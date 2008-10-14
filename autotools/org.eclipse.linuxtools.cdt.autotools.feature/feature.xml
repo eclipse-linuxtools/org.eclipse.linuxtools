@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.cdt.autotools.feature"
       label="Autotools Feature"
-      version="1.0.0"
+      version="1.0.1"
       provider-name="Red Hat">
 
    <description>
@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="http://www.example.com/copyright">
-      Copyright 2006, 2007 Red Hat, Inc.
+      Copyright 2006, 2007, 2008 Red Hat, Inc.
    </copyright>
 
    <license url="http://www.eclipse.org/org/documents/epl-v10.php">
