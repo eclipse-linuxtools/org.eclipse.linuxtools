@@ -1,3 +1,7 @@
+2008-10-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up release to 1.0.1. 
+
 2008-10-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add check for default
@@ -80,6 +84,8 @@
 	(unsubscribe): Check scanner info for null before accessing.
 	
 2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
+	
+	Refactored from com.redhat.eclipse.cdt.autotools to org.eclipse.linuxtools.cdt.autotools
 	
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfTextHover.java:
 	(AUTOCONF_MACROS_DOC_NAME): Change to use default URL pointing to sourceware.org.
