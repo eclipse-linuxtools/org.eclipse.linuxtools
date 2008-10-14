@@ -1,3 +1,7 @@
+2008-10-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump release to 1.0.3.
+
 2008-09-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Change Eclipse-AutoStart to Bundle-ActivationPolicy.
@@ -12,6 +16,8 @@
 
 2008-09-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+    Refactored com.redhat.eclipse.cdt.autotools.tests to org.eclipse.linuxtools.cdt.autotools.tests.
+    
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/AllTests.java: Removed since must run as Junit
 	plugin and default is to run all tests in plugin which causes duplicate test runs.
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/autoconf/AllTests.java: Removed. Ditto.
