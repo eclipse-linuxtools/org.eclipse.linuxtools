@@ -1,3 +1,7 @@
+2008-10-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Specify javacSource and javacTarget to be 1.5.
+
 2008-09-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java: Initial implementation moved
