@@ -1,27 +1,10 @@
-2008-11-03  Andrew Overholt  <overholt@redhat.com>
-
-	* build.properties: Add plugin.properties.
-
-2008-10-31  Andrew Overholt  <overholt@redhat.com>
-
-	* plugin.properties: Initial checkin.
-	* META-INF/MANIFEST.MF: Use plugin.properties.  Add "(Incubation)".
-
-2008-10-22  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* plugin.xml: Modify library name which shows up in the Project properties C/C++ General
-	Documentation page.
-
-2008-10-16  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* build.properties: Add toc.xml to binary build files.
-
 2008-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* fragment.xml: Removed.
 	* plugin.xml: New file.
 	* build.properties: Specify about.html in src build.
 	* META-INF/MANIFEST.MF: Require org.eclipse.linuxtools.cdt.libhover.library-docs
-	instead of org.eclipse.linuxtools.cdt.autotools-docs.
+	instead of org.eclipse.linuxtools.cdt.autotools-docs. 
 	* toc.xml: Change to use moreclibdocs anchor instead of moregnutools
-	anchor which is in autotools-docs.
+	anchor which is in autotools-docs. 
+	
