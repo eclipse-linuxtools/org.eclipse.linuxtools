@@ -1,3 +1,7 @@
+2008-10-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add toc.xml to binary build files.
+
 2008-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* fragment.xml: Removed.
