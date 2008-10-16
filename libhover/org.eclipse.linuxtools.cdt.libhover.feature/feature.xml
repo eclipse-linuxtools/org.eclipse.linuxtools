@@ -131,14 +131,13 @@ Copyright © 2006 The Eclipse Foundation. All Rights Reserved
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.cdt.libhover.glibc"
+         id="org.eclipse.linuxtools.cdt.libhover.library_docs"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         fragment="true"/>
+         version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.linuxtools.cdt.libhover.library_docs"
+         id="org.eclipse.linuxtools.cdt.libhover.glibc"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

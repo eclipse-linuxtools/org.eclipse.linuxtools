@@ -1,6 +1,8 @@
 2008-10-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Add org.eclipse.linuxtools.cdt.libhover.library_docs plugin.
+	Also change org.eclipse.linuxtools.cdt.libhover.glibc reference to be plugin
+	instead of fragment.
 
 2008-10-14  Jeff Johnston  <jjohnstn@redhat.com>
 
