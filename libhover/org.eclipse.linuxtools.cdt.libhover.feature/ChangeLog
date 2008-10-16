@@ -1,3 +1,7 @@
+2008-10-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Add org.eclipse.linuxtools.cdt.libhover.library_docs plugin.
+
 2008-10-14  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Initial check-in.
