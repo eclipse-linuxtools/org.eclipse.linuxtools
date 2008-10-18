@@ -1,3 +1,12 @@
+2008-10-18  Alexander Kurtakov  <akurtakov@gmail.com>
+	Add hyperlink for Source and Patch definitions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
+	(getHyperlinkDetectors): Register new detector.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlink.java:
+	New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java:
+	Likewise.
+
 2008-07-03  Alexander Kurtakov  <akurtakov@gmail.com>
 	Show %patch autocomplete only in %prep section.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java:

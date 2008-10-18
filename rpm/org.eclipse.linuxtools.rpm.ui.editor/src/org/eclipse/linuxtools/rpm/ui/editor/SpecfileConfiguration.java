@@ -36,6 +36,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.AnnotationHover;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
 import org.eclipse.swt.SWT;
@@ -214,8 +215,9 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		if (sourceViewer == null)
 			return null;
-		return new IHyperlinkDetector[] { new URLHyperlinkWithMacroDetector(editor.getSpecfile()),
-				new SpecfileElementHyperlinkDetector(editor.getSpecfile()), new MailHyperlinkDetector(editor)};
+		return new IHyperlinkDetector[] {
+				new URLHyperlinkWithMacroDetector(editor.getSpecfile()),
+				new SpecfileElementHyperlinkDetector(editor.getSpecfile()), new MailHyperlinkDetector(editor), new SourcesFileHyperlinkDetector(editor)};
 	}
 	
 	/* (non-Javadoc)

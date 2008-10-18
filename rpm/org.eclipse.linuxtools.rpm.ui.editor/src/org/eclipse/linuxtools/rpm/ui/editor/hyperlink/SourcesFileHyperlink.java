@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -39,9 +38,12 @@ public class SourcesFileHyperlink implements IHyperlink {
 	 * Creates hyperlink for the following file name, region and file whether
 	 * the file name is found.
 	 * 
-	 * @param original The file where the reference to this file name is.
-	 * @param fileName The name of the file to open.
-	 * @param region The hyperlink region.
+	 * @param original
+	 *            The file where the reference to this file name is.
+	 * @param fileName
+	 *            The name of the file to open.
+	 * @param region
+	 *            The hyperlink region.
 	 */
 	public SourcesFileHyperlink(IFile original, String fileName, IRegion region) {
 		this.fileName = fileName;
@@ -60,7 +62,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlink#getHyperlinkText()
 	 */
 	public String getHyperlinkText() {
-		return Messages.SourcesFileHyperlink_0 + fileName;
+		return "Open " + fileName;
 	}
 
 	/**
@@ -81,7 +83,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 		IResource resourceToOpen = container.findMember(fileName);
 		if (resourceToOpen == null || !resourceToOpen.exists()) {
 			IResource sourcesFolder = container.getParent().findMember(
-					"SOURCES"); //$NON-NLS-1$
+					"SOURCES");
 			resourceToOpen = ((IFolder) sourcesFolder).getFile(fileName);
 		}
 		IWorkbenchPage page = PlatformUI.getWorkbench()
@@ -91,7 +93,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 				IDE.openEditor(page, (IFile) resourceToOpen);
 			}
 		} catch (PartInitException e) {
-			SpecfileLog.logError(e);
+			// Put your exception handler here if you wish to
 		}
 	}
 
