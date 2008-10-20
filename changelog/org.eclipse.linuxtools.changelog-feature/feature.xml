@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.changelog"
       label="ChangeLog management tools (Incubation)"
-      version="2.6.1"
+      version="2.6.3"
       provider-name="Eclipse.org">
 
    <description url="http://www.redhat.com">
