@@ -1,3 +1,7 @@
+2008-10-20  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Update version to 2.6.3.
+
 2008-06-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.properties: Add strings for gnuFormatter and gnuEditorConfig names. 
