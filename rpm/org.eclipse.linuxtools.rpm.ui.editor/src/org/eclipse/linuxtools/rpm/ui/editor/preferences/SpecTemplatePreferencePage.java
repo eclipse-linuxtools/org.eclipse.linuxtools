@@ -12,14 +12,13 @@
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.texteditor.templates.TemplatePreferencePage;
 
 /**
  * Templates preference page
  *
  */
-public class SpecTemplatePreferencePage extends TemplatePreferencePage implements IWorkbenchPreferencePage {
+public class SpecTemplatePreferencePage extends TemplatePreferencePage {
 	
 	/**
 	 * Default constructor

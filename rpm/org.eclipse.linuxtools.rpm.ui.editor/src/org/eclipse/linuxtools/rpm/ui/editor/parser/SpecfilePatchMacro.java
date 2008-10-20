@@ -18,7 +18,7 @@ public class SpecfilePatchMacro extends SpecfileMacro {
 	public SpecfilePatchMacro(int patchNumber) {
 		super();
 		this.patchNumber = patchNumber;
-		this.patchLevel = patchLevel;
+//		this.patchLevel = patchLevel;
 	}
 	public int getPatchLevel() {
 		return patchLevel;

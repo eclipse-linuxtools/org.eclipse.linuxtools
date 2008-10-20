@@ -43,7 +43,7 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 
 	public SpecfileQuickOutlineDialog(Shell parent, int shellStyle,
 			SpecfileEditor editor) {
-		super(parent, shellStyle, true, true, true, true, null, null);
+		super(parent, shellStyle, true, true, true, true, true, null, null);
 		this.editor = editor;
 		create();
 	}

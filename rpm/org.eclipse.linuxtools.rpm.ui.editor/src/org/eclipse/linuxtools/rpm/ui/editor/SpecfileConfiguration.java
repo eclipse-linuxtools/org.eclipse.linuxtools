@@ -39,7 +39,6 @@ import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
@@ -202,8 +201,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private IInformationControlCreator getInformationControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, SWT.H_SCROLL
-						| SWT.V_SCROLL, new HTMLTextPresenter(false));
+				return new DefaultInformationControl(parent, new HTMLTextPresenter(false));
 			}
 		};
 	}
