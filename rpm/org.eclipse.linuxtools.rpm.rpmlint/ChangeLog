@@ -1,3 +1,8 @@
+2008-10-20  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix deprecations.
+	* META-INF/MANIFEST.MF:
+	Use Bunde-ActivationPolicy instead of the deprecated Eclipse-LazyStart.
+
 2008-10-13 Alexander Kurtakov  <akurtakov@gmail.com>
 	3 more quick fixes with some cleanup.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/AInsertLineResolution.java:
