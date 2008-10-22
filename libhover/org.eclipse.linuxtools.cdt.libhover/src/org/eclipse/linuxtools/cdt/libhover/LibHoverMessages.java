@@ -26,7 +26,7 @@ public class LibHoverMessages {
 	private LibHoverMessages() {
 	}
 
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.cdt.autotools.ui.LibHoverMessages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.cdt.libhover.LibHoverMessages"; //$NON-NLS-1$
 
 	public static String getString(String key) {
 		try {

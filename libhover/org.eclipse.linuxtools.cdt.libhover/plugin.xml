@@ -6,9 +6,10 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            name="C/C++ Library Hover Preferences"
+            category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
             class="org.eclipse.linuxtools.cdt.libhover.preferences.LibHoverPreferencePage"
-            id="org.eclipse.linuxtools.cdt.libhover.preferences.LibhoverPreferencePage">
+            id="org.eclipse.linuxtools.cdt.libhover.preferences.LibhoverPreferencePage"
+            name="%LibhoverPreference.name">
       </page>
    </extension>
    <extension
@@ -20,11 +21,12 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            objectClass="org.eclipse.core.resources.IProject"
-            name="C/C++ Library Hover"
-            nameFilter="*.*"
+            adaptable="true"
+            category="org.eclipse.cdt.ui.newui.Page_head_general"
             class="org.eclipse.linuxtools.cdt.libhover.properties.LibHoverPropertyPage"
-            id="org.eclipse.linuxtools.cdt.libhover.properties.samplePropertyPage">
+            id="org.eclipse.linuxtools.cdt.libhover.properties.samplePropertyPage"
+            name="%LibhoverProperty.name"
+            objectClass="org.eclipse.core.resources.IProject">
       </page>
    </extension>
    <extension

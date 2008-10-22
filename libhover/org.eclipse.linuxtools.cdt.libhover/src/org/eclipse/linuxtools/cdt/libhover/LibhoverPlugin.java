@@ -47,6 +47,13 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 	public static LibhoverPlugin getDefault() {
 		return plugin;
 	}
+	
+	/*
+	 * Returns the id of the plugin
+	 */
+	public static String getID() {
+		return PLUGIN_ID;
+	}
 
 	/**
 	 * Returns an image descriptor for the image file at the given
