@@ -27,17 +27,17 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="id" type="string">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Unique simple id for this extension (e.g. library).
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="name" type="string">
+         <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Name of this library to hover.  This name will be shown in the preference and property dialogs.
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>

@@ -1,3 +1,23 @@
+2008-10-22  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.properties: New file.
+	* src/org/eclipse/linuxtools/cdt/libhover/preferences/CheckboxFieldEditor.java: New file.
+	* build.properties: Add plugin.properties to list of binary files.
+	* META-INF/MANIFEST.MF: Add Bundle-Localization statement.
+	* plugin.xml: Use translatable names for preference and property pages.
+	* schema/org.eclipse.linuxtools.cdt.libhover.library.exsd: Make id and name required.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java: 
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHoverMessages.java: Fix bundle name.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHoverMessages.properties: New messages.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibhoverPlugin.java (getID): New method.
+	* src/org/eclipse/linuxtools/cdt/libhover/preferences/LibHoverPreferencePage.java (createFieldEditors):
+	Rewrite to use new CheckboxFieldEditor. 
+	* src/org/eclipse/linuxtools/cdt/libhover/preferences/PreferenceConstants.java: Add P_LIBHOVER. 
+	* src/org/eclipse/linuxtools/cdt/libhover/preferences/PreferenceInitializer.java (initializeDefaultPreferences):
+	Set up an unused default string. 
+	* src/org/eclipse/linuxtools/cdt/libhover/properties/LibHoverPropertyPage.java: Rewritten to use the
+	CheckboxFieldEditor widgets on a property page. 
+
 2008-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Specify javacSource and javacTarget to be 1.5.
