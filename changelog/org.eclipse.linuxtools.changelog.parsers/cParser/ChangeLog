@@ -1,9 +1,0 @@
-2008-01-04  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves Bugzilla #179389
-	* cParser/src/org/eclipse/linuxtools/changelog/parsers/CParser.java: Remove
-	internal class reference to CEditor.  Use AbstractTextEditor test instead.
-
-2007-08-07  klee  <klee@redhat.com>
-
-	* META-INF/MANIFEST.MF: Fixed requirements and version bump to 2.0.0.
