@@ -71,6 +71,7 @@ public class LibHover implements ICHelpProvider {
     	"dtype", // $NON-NLS-1$
     	"enum",  // $NON-NLS-1$
     	"function", // $NON-NLS-1$
+    	"groupsynopsis", // $NON-NLS-1$
     	"struct", // $NON-NLS-1$
     	"type",  // $NON-NLS-1$
     	"union"  // $NON-NLS-1$
@@ -79,9 +80,10 @@ public class LibHover implements ICHelpProvider {
     static final int dtypeIndex         = 0;
     static final int enumIndex          = 1;
     static final int functionIndex      = 2;
-    static final int structIndex        = 3;
-    static final int typeIndex          = 4;
-    static final int unionIndex         = 5;
+    static final int groupsynopsisIndex = 3;
+    static final int structIndex        = 4;
+    static final int typeIndex          = 5;
+    static final int unionIndex         = 6;
     
     private class LibHoverLibrary {
     	private String name;
@@ -214,6 +216,7 @@ public class LibHover implements ICHelpProvider {
         private String ReturnType;
         private String Prototype;
         private String Summary;
+        
 //        private String Synopsis;
         private class RequiredInclude implements IRequiredInclude {
         	private String include;
@@ -273,7 +276,7 @@ public class LibHover implements ICHelpProvider {
         
     }
 	
-	protected FunctionSummary getFunctionSummaryFromNode(String name, Node function_node) {
+	protected FunctionSummary getFunctionSummaryFromNode(String name, Node function_node, Document document) {
         FunctionSummary f = new FunctionSummary();
         f.Name = name;
         NamedNodeMap function_node_map = function_node.getAttributes();
@@ -331,6 +334,26 @@ public class LibHover implements ICHelpProvider {
             }	// headers
             
 
+            else if (function_node_kid_name.equals("groupsynopsis")) { // $NON-NLS-1$
+            	
+            	// group synopsis
+            	
+            	NamedNodeMap attr = function_node_kid.getAttributes();
+            	Node idnode = attr.getNamedItem("id"); // $NON-NLS-1$
+            	String id = idnode.getNodeValue();
+				if (id != null) {
+        			Element elem2 = document.getElementById(id);
+        			if (null != elem2) {
+        				NodeList synopsisNode = elem2.getElementsByTagName("synopsis"); // $NON-NLS-1$
+        				if (null != synopsisNode && synopsisNode.getLength() > 0) {
+        					Node synopsis = synopsisNode.item(0);
+        					Node textNode = synopsis.getLastChild();
+        					f.Summary = textNode.getNodeValue();
+        				}
+        			}
+				}
+            }
+            
             else if (function_node_kid_name.equals("synopsis")) { // $NON-NLS-1$
 
                 // synopsis
@@ -341,7 +364,8 @@ public class LibHover implements ICHelpProvider {
         }
         return f;
 	}
-            
+	
+	
 	public IFunctionSummary getFunctionInfo(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String name) {
         FunctionSummary f;
 
@@ -370,7 +394,7 @@ public class LibHover implements ICHelpProvider {
         							Node function_node = functionNode.item(fni);
         							String function_node_name = function_node.getNodeName();
         							if (function_node_name.equals("function")) { // $NON-NLS-1$
-        								f = getFunctionSummaryFromNode(name, function_node);
+        								f = getFunctionSummaryFromNode(name, function_node, document);
         								return f;
         							}			// function node
         						}				// fni loop
@@ -410,7 +434,7 @@ public class LibHover implements ICHelpProvider {
 							NodeList functionNodes = elem.getElementsByTagName("function"); // $NON-NLS-1$
 							for (int j = 0; j < functionNodes.getLength(); ++j) {
 								Node function_node = functionNodes.item(j);
-								FunctionSummary f = getFunctionSummaryFromNode(funcName, function_node);
+								FunctionSummary f = getFunctionSummaryFromNode(funcName, function_node, document);
 								fList.add(f);
 							}
 						}

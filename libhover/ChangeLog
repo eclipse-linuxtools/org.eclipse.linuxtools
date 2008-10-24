@@ -1,3 +1,13 @@
+2008-10-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Remove libhover property and preferences pages which are not needed since
+	C/C++ Documentation properties page does the job.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java: 
+	(getMatchingFunctions): Pass document to getFunctionSummaryFromNode.
+	(constructTypes): Add groupsynopsis.
+	(getFunctionInfo): Pass document to getFunctionSummaryFromNode.
+	(getFunctionSummaryFromNode): Add groupsynopsis support.
+
 2008-10-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.properties: New file.
