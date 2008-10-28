@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.linuxtools.all"
-      label="%featureName"
-      version="0.1.0.200901140910"
-      provider-name="%provider">
+      label="All Linux Tools Features"
+      version="0.7">
 
-   <description>
-      %description
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
    </description>
 
-   <copyright>
-      %copyright
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
    </copyright>
 
-   <license url="%licenseURL">
-      %license
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
    </license>
 
-   <url>
-      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
-   </url>
+   <includes
+         id="org.eclipse.linuxtools.cdt.autotools.feature"
+         version="0.0.0"/>
 
    <includes
          id="org.eclipse.linuxtools.cdt.libhover.feature"
@@ -37,24 +36,11 @@
          id="org.eclipse.linuxtools.rpm.ui.editor"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.linuxtools.rpmstubby"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.systemtap.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.profiling.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.oprofile.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.valgrind.feature"
-         version="0.0.0"/>
+   <plugin
+         id="org.eclipse.linuxtools.systemtap.ui.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
