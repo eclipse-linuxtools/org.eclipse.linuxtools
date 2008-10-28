@@ -33,4 +33,4 @@ Export-Package: org.eclipse.linuxtools.cdt.autotools;x-friends:="org.eclipse.lin
  org.eclipse.linuxtools.cdt.autotools.ui.editors;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.ui.editors.parser,
  org.eclipse.linuxtools.cdt.autotools.wizards;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests"
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
