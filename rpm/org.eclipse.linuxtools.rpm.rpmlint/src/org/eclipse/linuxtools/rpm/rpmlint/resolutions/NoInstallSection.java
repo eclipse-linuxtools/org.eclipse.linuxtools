@@ -14,7 +14,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.graphics.Image;
 
-public class NoInstallSection extends AInsertLineResolution{
+public class NoInstallSection extends AInsertLineResolution {
 	public static final String ID = "no-%install-section";
 
 	public String getDescription() {
