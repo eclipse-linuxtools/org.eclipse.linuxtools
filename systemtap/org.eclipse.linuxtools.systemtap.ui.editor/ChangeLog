@@ -1,3 +1,9 @@
+2008-10-28  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #252489
+	* META-INF/MANIFEST.MF: Set BREE to 1.6 (STPMetadataSingleton.parse uses
+	ResourceBundle.containsKey).
+
 2009-09-13  Phil Muldoon  <pmuldoon@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update to reflect
