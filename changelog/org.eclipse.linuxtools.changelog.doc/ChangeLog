@@ -1,3 +1,8 @@
+2008-10-29  Andrew Overholt  <overholt@redhat.com>
+
+	* toc.xml: Remove "Red Hat ChangeLog" from documentation table of contents
+	entry.
+
 2008-10-20  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update version to 2.6.3.
@@ -7,14 +12,14 @@
 	* raw/rhlegal2008.htm: New file.
 	* plugin.xml: Update to 2.6.1.
 	* raw/ChangeLogDocs/ChangeLog.html: Updated to new functionality.
-	* raw/prepareChangeLog4-sm-result.png: Updated. 
+	* raw/prepareChangeLog4-sm-result.png: Updated.
 
 2007-05-15  Kyu Lee  <klee@redhat.com>
 
 	* build.xml: version bump to 2.4.0.
 
 2007-05-14  Kyu Lee  <klee@redhat.com>
-	
+
 	* plugin.xml: version bump to 2.4.0.
 
 2007-05-04  Andrew Overholt  <overholt@redhat.com>
@@ -33,13 +38,13 @@
 	* raw/rhlegal2006.htm: Updated copyright notice.
 
 2007-01-22  Kyu Lee  <klee@redhat.com>
-	* plugin.xml: 
+	* plugin.xml:
 	* build.xml: Bump version to 2.3.4.
 
 2006-10-13  Kyu Lee  <klee@redhat.com>
 
 	* plugin.xml: Bump version to 2.3.3.
-	
+
 2006-09-29  Kyu Lee  <klee@redhat.com>
 
 	* plugin.xml: Bump version to 2.3.2.
@@ -92,7 +97,7 @@
 	* plugin.xml: Bump version to 2.0.2.
 
 2004-02-25  Phil Muldoon  <pmuldoon@redhat.com>
-	
+
 	* plugin.xml: Bumped version
 
 2004-11-10  Phil Muldoon  <pmuldoon@redhat.com>
@@ -100,7 +105,7 @@
 	* raw/ChangeLogDocs/ChangeLog.html: Edited for 2.0
 	* raw/ChangeLogDocs/changelog_preferences.png: Changed
 	* raw/ChangeLogDocs/sm-changelog_invoke.png: Changed
-	
+
 2004-07-16  Phil Muldoon  <pmuldoon@redhat.com>
 
 	* plugin.xml: Upgraded version
