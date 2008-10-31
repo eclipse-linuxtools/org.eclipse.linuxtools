@@ -1,3 +1,9 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Use translated BundleName and provider. Add
+	"(Incubation)".
+	* plugin.properties: Initial import.
+
 2008-10-01  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* toc.xml: Add anchor id so other gnu tools can be added to Gnu Tools list.
@@ -65,7 +71,7 @@
 2006-04-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* getdocs.sh: New file to generate doc.zip.
-	
+
 2006-04-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* toc.xml: New file.

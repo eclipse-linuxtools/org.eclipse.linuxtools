@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Autotools_docs Plug-in
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.cdt.autotools_docs;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Vendor: Red Hat
+Bundle-Vendor: %provider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.help,
  org.eclipse.ui.cheatsheets
