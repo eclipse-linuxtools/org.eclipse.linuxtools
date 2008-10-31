@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RPM Rpmlint Plug-in (Incubation)
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.rpmlint;singleton:=true
 Bundle-Version: 0.0.2
 Bundle-Activator: org.eclipse.linuxtools.rpm.rpmlint.Activator
@@ -21,3 +21,4 @@ Export-Package: org.eclipse.linuxtools.rpm.rpmlint,
  org.eclipse.linuxtools.rpm.rpmlint.parser,
  org.eclipse.linuxtools.rpm.rpmlint.preferences,
  org.eclipse.linuxtools.rpm.rpmlint.resolutions
+Bundle-Vendor: %provider

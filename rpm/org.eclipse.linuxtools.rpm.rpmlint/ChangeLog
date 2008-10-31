@@ -1,3 +1,8 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Initial import.
+	* META-INF/MANIFEST.MF: Use plugin.properties.  Add "(Incubation)".
+
 2008-10-20  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix deprecations.
 	* META-INF/MANIFEST.MF:
@@ -22,7 +27,7 @@
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
 	(getResolutions): Register the new quickfixes.
 	(hasResolutions): Register all the resolutions.
-	
+
 2008-08-02 Alexander Kurtakov  <akurtakov@gmail.com>
 	Two more quick fixes.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
@@ -47,12 +52,12 @@
 
 2007-07-18  Alphonse Van Assche   <alcapcom@gmail.com>
 
-	* META-INF/MANIFEST.MF: bump to 0.0.2	
-	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java (run): Generify. 
-	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java (visit): Likewise. 
-	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintNature.java (configure): Likewise. 
-	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (getRealLineNbr): Likewise. 
-	(parseRpmlintOurput): Ignore rpmlint 0.83 summary line.  
+	* META-INF/MANIFEST.MF: bump to 0.0.2
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java (run): Generify.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java (visit): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintNature.java (configure): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (getRealLineNbr): Likewise.
+	(parseRpmlintOurput): Ignore rpmlint 0.83 summary line.
 
 2008-05-24  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add missing @Override annotations.
@@ -105,7 +110,7 @@
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java:
 	(getResolutions): Enable no-buildroot-tag.
 	* META-INF/MANIFEST.MF: Import org.eclipse.ui.editors package.
-	
+
 2008-04-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Generify.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java
@@ -138,7 +143,7 @@
 
 2007-07-18  Alphonse Van Assche   <alcapcom@gmail.com>
 
-	* META-INF/MANIFEST.MF: Remove unneeded deps. 
+	* META-INF/MANIFEST.MF: Remove unneeded deps.
 
 2007-06-26  Alphonse Van Assche   <alcapcom@gmail.com>
 
@@ -151,9 +156,9 @@
 	Cleanup some messages.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java:
 	Add license.
-	* src/org/eclipse/linuxtools/rpm/rpmlint/RpmlintLog.java: 
-	Add license + cleanup the javadoc. 
-	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java: 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/RpmlintLog.java:
+	Add license + cleanup the javadoc.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java:
 	Remove unneeded stack traces printing.
 
 2007-06-22  Alphonse Van Assche   <alcapcom@gmail.com>
