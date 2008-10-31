@@ -1,3 +1,9 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Use feature.properties.  Add "(Incubation)".
+	* feature.properties: Initial checkin.
+	* epl-v10.html: Likewise.
+
 2008-10-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Add org.eclipse.linuxtools.cdt.libhover.library_docs plugin.
