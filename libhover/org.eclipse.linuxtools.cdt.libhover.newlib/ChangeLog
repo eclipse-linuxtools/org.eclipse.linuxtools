@@ -1,8 +1,13 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Initial checkin.
+	* META-INF/MANIFEST.MF: Use plugin.properties. Add "(Incubation)".
+
 2008-10-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* .project: New plugin for newlib libhover.
 	* META-INF/MANIFEST.MF: New file.
-	* plugin.xml: Ditto. 
+	* plugin.xml: Ditto.
 	* toc.xml: Ditto.
 	* about.html: Ditto.
 	* build.properties: Ditto.
