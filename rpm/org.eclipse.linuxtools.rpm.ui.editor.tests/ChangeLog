@@ -1,3 +1,8 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Initial import.
+	* META-INF/MANIFEST.MF: Use plugin.properties.  Add "(Incubation)".
+
 2008-07-04  Andrew Overholt  <overholt@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Set to 1.5.
@@ -108,27 +113,27 @@
 
 	* META-INF/MANIFEST.MF: Add "org.eclipse.ui.editors" dependencie requiere by
 	Ecliple 3.3
-	
+
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java: 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java:
 	Abstract test case class for scanners.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java
 	(suite): Add new test cases classes.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java: 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java:
 	New tests.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfilePackagesScannerTests.java: 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfilePackagesScannerTests.java:
 	New tests.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileChangelogScannerTests.java:
 	New tests.
 
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTests.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTests.java
 	(tearDown): Remove method.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java
 	(dispose): Remove /tmp/pkglist file at the end of the test suite.
-	
+
 2007-06-20  Alphonse Van Assche  <alcapcom@gmail.com>
 
 	* META-INF/MANIFEST.MF: Add  org.eclipse.ui.ide package.
