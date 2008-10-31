@@ -1,3 +1,8 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Initial import.
+	* META-INF/MANIFEST.MF: Use plugin.properties.  Add "(Incubation)".
+
 2008-10-20  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix deprecations.
 	* META-INF/MANIFEST.MF:
@@ -12,7 +17,7 @@
 	(SpecfilePatchMacro): Comment unused member.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java:
 	Drop redundant interface implements.
-	
+
 2008-10-18  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add hyperlink for Source and Patch definitions.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java:
@@ -51,7 +56,7 @@
 	(getTagType): Likewise.
 	(setTagType): Likewise.
 	(toString): Likewise.
-	
+
 2008-07-03  Alexander Kurtakov  <akurtakov@gmail.com>
 	Simplify parsing.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parsing/Specfile.java:
@@ -118,7 +123,7 @@
 	Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java:
 	(rpmtoolsRadioGroupFieldEditor): Use foreach instead of iterator.
-	
+
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Various cleanups.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java:
@@ -137,9 +142,9 @@
 
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Make missing @Override and @Deprecate warnings.
-	* .settings/org.eclipse.jdt.core.prefs: Missing @Override and @Deprecate should 
+	* .settings/org.eclipse.jdt.core.prefs: Missing @Override and @Deprecate should
 	be warnings.
-	
+
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Do not show simple sections in the subpackages + cleanup.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java:
@@ -151,7 +156,7 @@
 	(simpleSections): Add %clean.
 	(complexSections): Remove %clean.
 	(parseSections): Do not add simple sections to the subpackages.
-	
+
 2008-06-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add missing @Override.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/MailHyperlink.java:
@@ -188,7 +193,7 @@
 	Add quick outline.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorShowOutlineActionDelegate.java:
 	New file.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/outlin/ContainsFilter.java: 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outlin/ContainsFilter.java:
 	Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/outlin/SpecfileQuickOutlineDialog.java:
 	Likewise.
@@ -200,7 +205,7 @@
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java
 	(getComplexSectionsAsList): New method.
 	(addComplexSection): Likewise.
-	(getComplexSections):Likewise. 
+	(getComplexSections):Likewise.
 	(getComplexSectionsElements): Likewise.
 	(getSectionsAsList): Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java
@@ -244,11 +249,11 @@
 2008-05-10  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Add support for %pretrans and %posttrans sections
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java: 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java:
 	Add definitions.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/editor/SpecfileParser.java:
-	(parseSection): Prevent NPE when the section is not defined and add definitions 
+	(parseSection): Prevent NPE when the section is not defined and add definitions
 	for %pretrans and %posttrans.
 
 2008-05-02  Andrew Overholt  <overholt@redhat.com>
@@ -358,7 +363,7 @@
 	which disables "Organize imports" key binding.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java:
 	Set own key binding scope "org.eclipse.linuxtools.rpm.ui.specEditorScope" .
-	
+
 2008-03-17  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Bug #217316
@@ -376,8 +381,8 @@
 	Handle directories with macros files.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java:
 	Remove License from simple tags.
-		
-		
+
+
 2008-01-04  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	Bug #214217
