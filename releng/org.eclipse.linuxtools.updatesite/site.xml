@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://download.eclipse.org/technology/linuxtools/update">
+      Update site for Linux Tools project
+   </description>
+   <feature url="features/org.eclipse.linuxtools.cdt.autotools.feature_1.0.1.jar" id="org.eclipse.linuxtools.cdt.autotools.feature" version="1.0.1"/>
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_1.0.0.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="1.0.0"/>
+   <feature url="features/org.eclipse.linuxtools.changelog_2.6.3.jar" id="org.eclipse.linuxtools.changelog" version="2.6.3"/>
+   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_0.1.0.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="0.1.0"/>
+   <feature url="features/org.eclipse.linuxtools.systemtap.feature_1.0.0.jar" id="org.eclipse.linuxtools.systemtap.feature" version="1.0.0"/>
+</site>
