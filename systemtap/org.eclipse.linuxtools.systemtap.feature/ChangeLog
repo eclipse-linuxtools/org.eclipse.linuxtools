@@ -1,16 +1,3 @@
-2009-01-14  Andrew Overholt  <overholt@redhat.com>
-
-	* META-INF/MANIFEST.MF: Replace qualifier for 0.1 release.
-
-2009-01-09  Phil Muldoon  <pmuldoon@redhat.com>
-	
-	* feature.xml: Add .qualifier to feature version. 
-
-2009-01-06  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.xml: Add update site information.  1.0.0 -> 0.1.0.
-	* build.properties: Add feature.properties and epl-v10.html.
-
 2008-10-31  Andrew Overholt  <overholt@redhat.com>
 
 	* epl-v10.html: New file.
