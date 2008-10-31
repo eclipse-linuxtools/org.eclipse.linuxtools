@@ -1,16 +1,3 @@
-2009-01-14  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.xml: Hard-code qualifier for 0.1.
-
-2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
-
-	* feature.xml: Add rpmstubby feature.
-
-2009-01-06  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.xml: Add valgrind, profiling framework, and oprofile features.
-	0.7 -> 0.1.0 (as it should be).
-
 2008-10-31  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Use .properties file and include new systemtap feature.
