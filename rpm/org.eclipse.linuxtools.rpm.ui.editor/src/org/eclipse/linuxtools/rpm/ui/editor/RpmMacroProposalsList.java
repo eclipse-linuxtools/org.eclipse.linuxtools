@@ -45,6 +45,9 @@ public class RpmMacroProposalsList {
 	 * Build the macro list.
 	 */
 	public void buildMacroList() {
+		for (String definedMacro: SpecfileScanner.DEFINED_MACROS){
+			macroMap.put(definedMacro, "Buildin rpm macro");
+		}
 		String macroProposalsPaths = Activator.getDefault()
 				.getPreferenceStore().getString(
 						PreferenceConstants.P_MACRO_PROPOSALS_FILESPATH);

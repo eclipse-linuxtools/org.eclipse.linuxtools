@@ -160,8 +160,10 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 				if (beginsWithBrace && (c == '}')) {
 					break;
 				}
-				else if (c == '\n' || c == '%'){
-					return new Region(offset, 0);
+				else if (c == '\n' || c == '%' || c == '('){ // '(' is needed for the %deffatt( case
+					break;
+//					Do not return empty region here. We have a work.
+//					return new Region(offset, 0);
 				} else if (!beginsWithBrace && c == ' ') {
 					break;
 				}

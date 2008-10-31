@@ -32,7 +32,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, 
 		CHECK_SECTION };
 
-	private static String[] definedMacros = { "%define", "%make", "%setup",
+	public static String[] DEFINED_MACROS = { "%define", "%make", "%setup",
 			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir",
 			"%doc", "%lang", "%verify", "%ghost" };
 
@@ -74,8 +74,8 @@ public class SpecfileScanner extends RuleBasedScanner {
 		// %define, %make, ...
 		WordRule wordRule = new WordRule(new MacroWordDetector(),
 				Token.UNDEFINED);
-		for (int i = 0; i < definedMacros.length; i++)
-			wordRule.addWord(definedMacros[i], macroToken);
+		for (int i = 0; i < DEFINED_MACROS.length; i++)
+			wordRule.addWord(DEFINED_MACROS[i], macroToken);
 		rules.add(wordRule);
 
 		// %patch[0-9]+[\ \t]
