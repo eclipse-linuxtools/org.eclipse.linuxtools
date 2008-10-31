@@ -1,3 +1,8 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Initial import.
+	* META-INF/MANIFEST.MF: Use plugin.propeties.  Add "(Incubation)".
+
 2008-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* toc.xml: Initial release.
