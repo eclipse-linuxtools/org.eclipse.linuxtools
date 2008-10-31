@@ -1,3 +1,10 @@
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Use %featureName, %provider, %copyright, and %description from
+	feature.properties.  Add "(Incubation)".
+	* feature.properties: Initial import.
+	* epl-v10.html: Likewise.
+
 2008-10-14  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Update release to 1.0.1.
