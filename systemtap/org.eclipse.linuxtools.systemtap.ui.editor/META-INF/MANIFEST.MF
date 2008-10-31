@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Systemtap Editor Plug-in (Incubation)
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.editor;singleton:=true
 Bundle-Version: 0.1.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.editor.activator.Activator
@@ -22,4 +22,4 @@ Export-Package: org.eclipse.linuxtools.systemtap.ui.editor;
    org.eclipse.swt.graphics,
    org.eclipse.swt.widgets,
    org.eclipse.ui.editors.text"
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %provider
