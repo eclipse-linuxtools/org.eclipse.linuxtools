@@ -1,3 +1,8 @@
+2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* META-INF/MANIFEST.MF: Replace deprecated Eclipse-LazyStart usage.
+	* build.properties: Add plugin.properties to bin.includes.
+	
 2008-10-31  Andrew Overholt  <overholt@redhat.com>
 
 	* plugin.properties: Initial import.
