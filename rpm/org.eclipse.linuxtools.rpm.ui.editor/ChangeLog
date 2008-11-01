@@ -1,4 +1,8 @@
-2008-10-31  akurtakov  <akurtakov@dhcp-lab-180.englab.brq.redhat.com>
+2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* build.properties: Add plugin.properties to bin.includes.
+
+2008-10-31  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix for #230022.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java 
 	(DEFINED_MACROS): Make it public.
