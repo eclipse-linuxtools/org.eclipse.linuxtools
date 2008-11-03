@@ -1,18 +1,22 @@
+2008-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Bundle-ActivationPolicy.
+
 2008-10-20  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update version to 2.6.3.
 
 2008-06-26  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* plugin.properties: Add strings for gnuFormatter and gnuEditorConfig names. 
+	* plugin.properties: Add strings for gnuFormatter and gnuEditorConfig names.
 	* plugin.xml: Specify names from properties file for gnuFormatter and gnuEditorConfig.
-	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java (initializeDefaultPreferences): 
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java (initializeDefaultPreferences):
 	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java (storeValues): Verify
-	there is a valid selection before attempting to access it. 
+	there is a valid selection before attempting to access it.
 	(initializeDefaultPreferences): Use property strings when looking for default gnuFormatter
 	and default gnuEditorConfig names.
 	* src/org/eclipse/linuxtools/changelog/core/strings.properties: Add corresponding strings for
-	gnuFormatter and gnuEditorConfig for code to use as comparison. 
+	gnuFormatter and gnuEditorConfig for code to use as comparison.
 
 2008-01-22  Jeff Johnston  <jjohnstn@redhat.com>
 
@@ -21,7 +25,7 @@
 	Ctrl+Alt+P to work in a text editor.
 	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java (initializeDefaultPreferences):
 	Don't try and translate gnuFormatter or gnuEditorConfig as these are actual names used in
-	the extensions in plugin.xml. 
+	the extensions in plugin.xml.
 
 2008-01-11  Jeff Johnston  <jjohnstn@redhat.com>
 
