@@ -1,3 +1,8 @@
+2008-11-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add cheatsheets directory to binary list and remove
+	doc.zip which no longer exists in project.
+
 2008-10-31  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Use translated BundleName and provider. Add
