@@ -1,3 +1,9 @@
+2008-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: New file.
+	* build.properties: Include plugin.properties.
+	* META-INF/MANIFEST.MF: Add Bundle-ActivationPolicy.
+
 2008-07-10  Alexander Kurtakov  <akurtakov@gmail.com>
 	Add pdebuild script support.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java:
@@ -20,7 +26,7 @@
 	search in them.
 
 2008-07-09  Alexander Kurtakov  <akurtakov@gmail.com>
-	
+
 	Adapt to Java 5.
 	* .classpath: Change J2SE-1.4 to J2SE-1.5.
 	* .settings/org.eclipse.jdt.core.prefs: Bump compiler level to 1.5.
@@ -59,21 +65,21 @@
 
 	Bug #206964
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java:
-	Remove 1.5 API calls. 
+	Remove 1.5 API calls.
 
 2007-09-24  Alphonse Van Assche   <alcapcom@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java: New File.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(StubbyPackageModel): Using StubbyLog.
 	(getIncudedFeatures): Likewise.
 	(resolveFeatureProperties): Likewise.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateSpecfile): Add missing %endif macro.
 	(writeContent): Using StubbyLog.
 	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java
 	(write): Using StubbyLog and print error mesage to stdout.
-	
+
 
 2007-09-19  Alphonse Van Assche   <alcapcom@gmail.com>
 
@@ -93,16 +99,16 @@
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateSpecfile): Fix a specfile formating bug.
 	* src/org/eclipse/linuxtools/rpmstubby/FeatureVisitor.java: Fix List naming.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(getDescription): Add the last description token.
 
 2007-09-09  Alphonse Van Assche  <alcapcom@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(getLicense): Try to find the license in LicenseModel().getAnnotation() too.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(getDescription): Each description line contain maximum 80 characters.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateSpecfile): Fix Specfile formating.
 
 2007-09-07  Alphonse Van Assche  <alcapcom@gmail.com>
@@ -121,7 +127,7 @@
     - Add models that represent the package.
     - Generate specfile based on the model.
     - Generate fetch script based on the model.
-    - Add Preference page to configure the generator. 
+    - Add Preference page to configure the generator.
     * plugin.xml: Add properties pages extensions
 	* META-INF/MANIFEST.MF: Add require bundle 'org.eclipse.ui.ide'
 	* src/org/eclipse/linuxtools/rpmstubby/preferences/StubbyPreferencePage.java: New Class.
