@@ -23,3 +23,4 @@ Export-Package: org.eclipse.linuxtools.systemtap.ui.editor;
    org.eclipse.swt.widgets,
    org.eclipse.ui.editors.text"
 Bundle-Vendor: %provider
+Bundle-ActivationPolicy: lazy
