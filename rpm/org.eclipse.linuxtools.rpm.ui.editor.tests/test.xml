@@ -5,11 +5,11 @@
 
 	<!-- The property ${eclipse-home} should be passed into this script -->
 	<!-- Set a meaningful default value for when it is not. -->
-	<property name="eclipse-home" value="${basedir}/../.." />
+	<property name="eclipse-home" value="${basedir}\..\.." />
 
 	<!-- sets the properties eclipse-home, and library-file -->
 	<property name="plugin-name" value="org.eclipse.linuxtools.rpm.ui.editor.tests" />
-	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
+	<property name="library-file" value="${eclipse-home}/dropins/eclipse/plugins/org.eclipse.test/library.xml" />
 
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
@@ -25,9 +25,8 @@
 	<target name="suite">
 		<property name="specfile-folder" value="${eclipse-home}/specfile_folder" />
 		<delete dir="${specfile-folder}" quiet="true" />
-		<echo message="About to run ${classname} with library-file=${library-file}"/>
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-			<property name="data-dir" value="${specfile-folder}" />
+			<property name="data-dir" value="${gef-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="${classname}" />
 		</ant>
@@ -49,11 +48,5 @@
 			<property name="output-file" value="${plugin-name}.xml" />
 		</ant>
 	</target>
-	
-    <target name="all" depends="junits" description="Dummy target to run all JUnit tests">
-    </target>
-	
-    <target name="run" depends="junits" description="Dummy target to run all JUnit tests">
-    </target>
 
 </project>
