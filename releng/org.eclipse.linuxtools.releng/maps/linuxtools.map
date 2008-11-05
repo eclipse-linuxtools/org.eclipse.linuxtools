@@ -29,3 +29,7 @@ feature@org.eclipse.linuxtools.cdt.autotools.feature=SVN,,http://dev.eclipse.org
 feature@org.eclipse.linuxtools.cdt.libhover.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.feature
 feature@org.eclipse.linuxtools.systemtap.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.feature
 feature@org.eclipse.linuxtools.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.tests
+
+!*** used for tests
+plugin@org.eclipse.test=v20080313,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
+fragment@org.eclipse.ant.optional.junit=v20070202,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
