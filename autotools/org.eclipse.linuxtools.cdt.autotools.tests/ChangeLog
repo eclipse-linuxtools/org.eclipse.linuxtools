@@ -1,5 +1,9 @@
 2008-11-05  Andrew Overholt  <overholt@redhat.com>
 
+	* META-INF/MANIFEST.MF: Update BREE to 1.5.
+
+2008-11-05  Andrew Overholt  <overholt@redhat.com>
+
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/AllAutotoolsTests.java: New test suite.
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/autoconf/AutoconfTests.java: New test suite.
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/EditorTests.java: New test suite.
