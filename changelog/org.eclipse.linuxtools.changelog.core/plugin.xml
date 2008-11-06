@@ -149,6 +149,11 @@
              contextId="org.eclipse.ui.textEditorScope"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="Ctrl+Alt+C"/>
+             <key
+             commandId="org.eclipse.linuxtools.changelog.core.actions.KeyActionCommand"
+             contextId="org.eclipse.compare.compareEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="Ctrl+Alt+C"/>
        <scheme
              id="org.eclipse.linuxtools.changelog.keyscheme.default"
              name="default"/>

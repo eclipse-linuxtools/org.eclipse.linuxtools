@@ -16,6 +16,10 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.compare.CompareEditorInput;
+import org.eclipse.compare.IResourceProvider;
+import org.eclipse.compare.ITypedElement;
+import org.eclipse.compare.structuremergeviewer.DiffNode;
+import org.eclipse.compare.structuremergeviewer.ICompareInput;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -291,13 +295,23 @@ public abstract class ChangeLogAction extends Action {
 				|| (cc instanceof CompareEditorInput)) {
 
 			CompareEditorInput test = (CompareEditorInput) cc;
-			if (test.getCompareResult() == null)
+			if (test.getCompareResult() == null) {
 				return "";
-			if (appendRoot)
-				return WorkspaceRoot + test.getCompareResult().toString();
-			else
+			} else if (test.getCompareResult() instanceof ICompareInput) {
+				ITypedElement leftCompare = ((ICompareInput) test.getCompareResult())
+						.getLeft();
+				if (leftCompare instanceof IResourceProvider){
+					String localPath = ((IResourceProvider)leftCompare).getResource().getFullPath().toString();
+					if (appendRoot) {
+						return WorkspaceRoot + localPath;
+					}
+					return localPath;
+				}
+			} else {
+				if (appendRoot)
+					return WorkspaceRoot + test.getCompareResult().toString();
 				return test.getCompareResult().toString();
-
+			}
 		}
 
 		IFile loc = getDocumentIFile(currentEditor);

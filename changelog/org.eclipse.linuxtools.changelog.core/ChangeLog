@@ -1,3 +1,9 @@
+2008-11-06  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* plugin.xml: Add key binding for compareEditorScope.
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java 
+	(getDocumentLocation): Add support for getting location from ICompareInput.
+
 2008-11-03  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add Bundle-ActivationPolicy.
