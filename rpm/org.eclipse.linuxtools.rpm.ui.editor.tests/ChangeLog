@@ -1,3 +1,7 @@
+2008-11-06  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: gef-folder -> specfile-folder.
+
 2008-11-05  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: New file to drive tests on build.eclipse.org.
