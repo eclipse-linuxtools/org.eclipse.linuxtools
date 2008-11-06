@@ -2,9 +2,9 @@
 
 <project name="testsuite" default="run" basedir=".">
 	<property name="rpmTestsSuiteClassname" value="org.eclipse.linuxtools.rpm.ui.editor.tests.AllTests" />
-	<property name="autotoolsTestsSuiteClassname" value="org.eclipse.linuxtools.cdt.autotools.tests.AllAutotoolsTests" />
-	<property name="autoconf_classname" value="org.eclipse.linuxtools.cdt.autotools.tests.autoconf.AutoconfTests" />
-	<property name="editors_classname" value="org.eclipse.linuxtools.cdt.autotools.tests.editors.EditorTests" />
+	<property name="autotoolsTestsSuiteClassname" value="org.eclipse.linuxtools.rpm.cdt.autotools.tests.AllAutotoolsTests" />
+	<property name="autoconf_classname" value="org.eclipse.linuxtools.rpm.cdt.autotools.tests.autoconf.AutoconfTests" />
+	<property name="editors_classname" value="org.eclipse.linuxtools.rpm.cdt.autotools.tests.editors.EditorTests" />
 
 	<property name="autotools-plugin-name" value="org.eclipse.linuxtools.cdt.autotools.tests" />
 	<property name="rpm-plugin-name" value="org.eclipse.linuxtools.rpm.ui.editor.tests" />
@@ -28,7 +28,7 @@
 		<property name="specfile-folder" value="${eclipse-home}/specfile_folder" />
 		<delete dir="${specfile-folder}" quiet="true" />
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-			<property name="data-dir" value="${specfile-folder}" />
+			<property name="data-dir" value="${gef-folder}" />
 			<property name="plugin-name" value="${rpm-plugin-name}" />
 			<property name="classname" value="${classname}" />
 		</ant>
