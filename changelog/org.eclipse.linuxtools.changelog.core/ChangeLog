@@ -1,3 +1,8 @@
+2008-11-07  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fixes #179541.
+	* plugin.xml: Use BasicTextEditorActionContributor contributor for the editor extension
+	point.
+
 2008-11-06  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* plugin.xml: Add key binding for compareEditorScope.

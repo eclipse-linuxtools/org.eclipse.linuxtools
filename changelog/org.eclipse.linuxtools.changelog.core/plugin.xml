@@ -111,6 +111,7 @@
           point="org.eclipse.ui.editors">
        <editor
              class="org.eclipse.linuxtools.changelog.core.editors.ChangeLogEditor"
+             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
              default="true"
              filenames="ChangeLog"
              icon="icons/file_obj.gif"
