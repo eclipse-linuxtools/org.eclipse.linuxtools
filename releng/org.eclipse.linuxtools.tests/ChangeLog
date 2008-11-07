@@ -1,3 +1,7 @@
+2008-11-07  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Don't require org.eclipse.test.
+
 2008-11-06  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: Initial import.
