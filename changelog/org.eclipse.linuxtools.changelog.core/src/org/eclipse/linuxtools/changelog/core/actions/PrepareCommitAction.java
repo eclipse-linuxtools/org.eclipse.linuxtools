@@ -48,6 +48,7 @@ import org.eclipse.team.core.synchronize.SyncInfoSet;
 import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.ide.IContributorResourceAdapter2;
 
 
@@ -143,13 +144,24 @@ public class PrepareCommitAction extends ChangeLogAction {
 		String diffResult = "";
 		IEditorInput input = currentEditor.getEditorInput();
 		ResourceMapping mapping = getResourceMapping(input);
-		// Experiment Jeff
-		IProject project = mapping.getProjects()[0];
+		IProject project = null;
+		IResource[] resources = new IResource[1];
+
+		if (mapping != null) {
+			project = mapping.getProjects()[0];
+			resources[0] = (IResource)mapping.getModelObject();
+		} else if (input instanceof IFileEditorInput) {
+			IFileEditorInput f = (IFileEditorInput)input;
+			project = f.getFile().getProject();
+			resources[0] = f.getFile();
+		} else {
+			return; // can't get what we need
+		}
 		
 		RepositoryProvider r = RepositoryProvider.getProvider(project);
 		SyncInfoSet set = new SyncInfoSet();
 		Subscriber s = r.getSubscriber();
-		s.collectOutOfSync(new IResource[] { (IResource)mapping.getModelObject() }, IResource.DEPTH_ZERO, set, monitor);
+		s.collectOutOfSync(resources, IResource.DEPTH_ZERO, set, monitor);
 		SyncInfo[] infos = set.getSyncInfos();
 
 		if (infos.length == 1) {

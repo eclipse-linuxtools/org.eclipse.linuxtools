@@ -1,3 +1,10 @@
+2008-11-07  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Fixes #254665
+	
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java (loadClipboard): Fix in the
+	case where editor input is IFileEditorInput and ResourceMapping cannot be located.
+
 2008-11-07  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fixes #179541.
 	* plugin.xml: Use BasicTextEditorActionContributor contributor for the editor extension
