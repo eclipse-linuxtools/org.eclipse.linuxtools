@@ -1,3 +1,9 @@
+2008-11-11  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* META-INF/MANIFEST.MF: New file.
+	* .project: Make it a plugin project.
+	* plugin.xml: Remove all the data now in the manifest.mf.
+
 2008-10-29  Andrew Overholt  <overholt@redhat.com>
 
 	* toc.xml: Remove "Red Hat ChangeLog" from documentation table of contents
