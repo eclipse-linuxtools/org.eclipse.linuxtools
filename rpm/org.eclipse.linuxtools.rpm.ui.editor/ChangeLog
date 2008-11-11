@@ -1,3 +1,9 @@
+2008-11-11  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix #254925.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java: 
+	(detectHyperlinks): Fix detection.
+	(prepareHyperlink): New method with the index in the line where the hyperlink starts.
+
 2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* build.properties: Add plugin.properties to bin.includes.

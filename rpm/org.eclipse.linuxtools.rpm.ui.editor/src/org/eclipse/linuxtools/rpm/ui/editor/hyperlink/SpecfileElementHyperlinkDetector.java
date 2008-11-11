@@ -11,6 +11,9 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.hyperlink;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -74,8 +77,19 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 		StringTokenizer tokens = new StringTokenizer(line);
 		String word = "";
 		int tempLineOffset = 0;
+		int wordOffsetInLine = 0;
 		while (tokens.hasMoreTokens()) {
 			String tempWord = tokens.nextToken();
+			Pattern defineRegexp = Pattern.compile("%\\{(.*?)\\}");
+			Matcher fit = defineRegexp.matcher(tempWord);
+			while (fit.find()){
+				if ((fit.start() <= offsetInLine) && (offsetInLine <= fit.end())){
+					tempWord = fit.group();
+					wordOffsetInLine = fit.start();
+					tempLineOffset += fit.start();
+					break;
+				}
+			}
 			tempLineOffset += tempWord.length();
 			word = tempWord;
 			if (tempLineOffset > offsetInLine) {
@@ -102,7 +116,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 			SpecfileDefine define = specfile.getDefine(defineName);
 			if (define != null) {
 				return prepareHyperlink(lineInfo, line, defineName, document,
-						define);
+						define, wordOffsetInLine);
 			}
 		}
 		return null;
@@ -116,9 +130,9 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	}
 
 	private IHyperlink[] prepareHyperlink(IRegion lineInfo, String line,
-			String word, IDocument document, SpecfileElement source) {
+			String word, IDocument document, SpecfileElement source, int lineIndex) {
 		IRegion urlRegion = new Region(lineInfo.getOffset()
-				+ line.indexOf(word), word.length());
+				+ line.indexOf(word, lineIndex), word.length());
 
 		IWorkbench wb = PlatformUI.getWorkbench();
 		IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
@@ -135,5 +149,10 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 		}
 		
 
+	}
+	
+	private IHyperlink[] prepareHyperlink(IRegion lineInfo, String line,
+			String word, IDocument document, SpecfileElement source) {
+		return prepareHyperlink(lineInfo, line, word, document, source, 0);
 	}
 }
