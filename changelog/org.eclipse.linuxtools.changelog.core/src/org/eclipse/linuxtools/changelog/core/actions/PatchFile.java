@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.Path;
 public class PatchFile {
 
 	private IPath fpath;
-	private ArrayList pranges = new ArrayList();
+	private ArrayList<PatchRangeElement> pranges = new ArrayList<PatchRangeElement>();
 	
 	private boolean newfile = false;
 	private boolean removedfile = false;
@@ -82,7 +82,7 @@ public class PatchFile {
 	public void appendTxtToLastRange(String txt) {
 		
 		
-		((PatchRangeElement)pranges.get(pranges.size()-1)).appendTxt(txt);
+		(pranges.get(pranges.size()-1)).appendTxt(txt);
 	}
 	
 	public IPath getPath() {

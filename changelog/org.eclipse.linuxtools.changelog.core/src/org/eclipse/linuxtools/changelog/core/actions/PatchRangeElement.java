@@ -40,6 +40,6 @@ public class PatchRangeElement {
 			return b.ffromLine == ffromLine && b.ftoLine == ftoLine && b.fpatch.equals(fpatch);
 		}
 		else
-			return (Object) this == o;
+			return this == o;
 	}
 }

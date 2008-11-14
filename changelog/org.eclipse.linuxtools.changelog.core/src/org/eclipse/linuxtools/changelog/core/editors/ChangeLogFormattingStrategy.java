@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.eclipse.jface.text.formatter.IFormattingStrategy;
@@ -30,7 +29,7 @@ public class ChangeLogFormattingStrategy implements IFormattingStrategy {
 	public String format(String content, boolean isLineStart,
 			String indentation, int[] positions) {
 
-		ArrayList formattedWords = new ArrayList();
+		ArrayList<String> formattedWords = new ArrayList<String>();
 		int currentLineLength = indentation.length();
 		boolean newLineBegin = true;
 
@@ -196,10 +195,8 @@ public class ChangeLogFormattingStrategy implements IFormattingStrategy {
 
 		String finalContent = "";
 
-		Iterator formattedWordIterator = formattedWords.iterator();
-
-		while (formattedWordIterator.hasNext()) {
-			finalContent += (String) formattedWordIterator.next();
+		for (String formattedWord: formattedWords) {
+			finalContent +=formattedWord;
 		}
 
 		return firstLine + finalContent;

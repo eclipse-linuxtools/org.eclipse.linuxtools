@@ -15,7 +15,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.compare.rangedifferencer.RangeDifference;
@@ -26,14 +25,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.resources.mapping.ResourceMapping;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -56,13 +53,11 @@ import org.eclipse.team.core.synchronize.SyncInfo;
 import org.eclipse.team.core.synchronize.SyncInfoSet;
 import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
 import org.eclipse.ui.IActionDelegate;
-import org.eclipse.ui.IContributorResourceAdapter;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
-import org.eclipse.ui.ide.IContributorResourceAdapter2;
 import org.eclipse.ui.part.FileEditorInput;
 
 
@@ -181,32 +176,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 	}
 
-	private ResourceMapping getResourceMapping(Object o) {
-		if (o instanceof ResourceMapping) {
-			return (ResourceMapping) o;
-		}
-		if (o instanceof IAdaptable) {
-			IAdaptable adaptable = (IAdaptable) o;
-			Object adapted = adaptable.getAdapter(ResourceMapping.class);
-			if (adapted instanceof ResourceMapping) {
-				return (ResourceMapping) adapted;
-			}
-			adapted = adaptable.getAdapter(IContributorResourceAdapter.class);
-			if (adapted instanceof IContributorResourceAdapter2) {
-				IContributorResourceAdapter2 cra = (IContributorResourceAdapter2) adapted;
-				return cra.getAdaptedResourceMapping(adaptable);
-			}
-		} else {
-			Object adapted = Platform.getAdapterManager().getAdapter(o,
-					ResourceMapping.class);
-			if (adapted instanceof ResourceMapping) {
-				return (ResourceMapping) adapted;
-			}
-		}
-		return null;
-	}
-	
-	private void extractSynchronizeModelInfo (ISynchronizeModelElement d, IPath path, Vector newList, Vector removeList, Vector changeList) {
+	private void extractSynchronizeModelInfo (ISynchronizeModelElement d, IPath path, Vector<PatchFile> newList, Vector<PatchFile> removeList, Vector<PatchFile> changeList) {
 		// Recursively traverse the tree for children and sort leaf elements into their respective change kind sets.
 		// Don't add entries for ChangeLog files though.
 		if (d.hasChildren()) {
@@ -306,9 +276,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		Object element = selected.getFirstElement();
 		
 		IResource resource = null;
-		Vector newList = new Vector();
-		Vector removeList = new Vector();
-		Vector changeList = new Vector();
+		Vector<PatchFile> newList = new Vector<PatchFile>();
+		Vector<PatchFile> removeList = new Vector<PatchFile>();
+		Vector<PatchFile> changeList = new Vector<PatchFile>();
 		int totalChanges = 0;
 		
 		if (element instanceof IResource) {
@@ -387,7 +357,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			Collections.sort(changeList, new PatchFileComparator());
 			int size = changeList.size();
 			for (int i = 0; i < size; ++i) {
-				PatchFile p = (PatchFile)changeList.get(i);
+				PatchFile p = changeList.get(i);
 				getChangedLines(s, p, monitor);
 				patchFileInfoList[index+(size-i-1)] = p;
 			}
@@ -398,7 +368,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			Collections.sort(newList, new PatchFileComparator());
 			int size = newList.size();
 			for (int i = 0; i < size; ++i)
-				patchFileInfoList[index+(size-i-1)] = (PatchFile)newList.get(i);
+				patchFileInfoList[index+(size-i-1)] = newList.get(i);
 			index += size;
 		}
 		
@@ -406,7 +376,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			Collections.sort(removeList, new PatchFileComparator());
 			int size = removeList.size();
 			for (int i = 0; i < size; ++i)
-				patchFileInfoList[index+(size-i-1)] = (PatchFile)removeList.get(i);
+				patchFileInfoList[index+(size-i-1)] = removeList.get(i);
 		}
 	
 		// now, find out modified functions/classes.
@@ -567,7 +537,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			IDocument doc = mdp.createDocument(fei);
 
 			PatchRangeElement[] tpre = patchFileInfo.getRanges();
-			HashMap functionNamesMap = new HashMap();
+			HashMap<String, String> functionNamesMap = new HashMap<String, String>();
 
 			// for all the ranges
 
@@ -594,13 +564,12 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			}
 
 			// dump all unique func. guesses
-			Iterator fnmIterator = functionNamesMap.values().iterator();
-
 			fnames = new String[functionNamesMap.size()];
 
 			int i = 0;
-			while (fnmIterator.hasNext())
-				fnames[i++] = (String) fnmIterator.next();
+			for (String fnm: functionNamesMap.values()){
+				fnames[i++] = fnm;
+			}
 
 		
 		} catch (CoreException e) {

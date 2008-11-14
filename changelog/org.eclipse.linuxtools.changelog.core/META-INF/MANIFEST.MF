@@ -63,5 +63,5 @@ Export-Package: org.eclipse.linuxtools.changelog.core;
    org.eclipse.ui.navigator,
    org.eclipse.ui,
    org.eclipse.core.resources.mapping"
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

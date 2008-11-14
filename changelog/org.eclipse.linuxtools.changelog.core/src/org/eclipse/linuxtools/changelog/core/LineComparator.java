@@ -105,7 +105,7 @@ public class LineComparator implements IRangeComparator {
         TrailingLineFeedDetector trailingLineFeedDetector = new TrailingLineFeedDetector(is);
 		BufferedReader br = new BufferedReader(new InputStreamReader(trailingLineFeedDetector, encoding));
         String line;
-        ArrayList ar = new ArrayList();
+        ArrayList<String> ar = new ArrayList<String>();
         try {
             while ((line = br.readLine()) != null)
                 ar.add(line);
@@ -122,7 +122,7 @@ public class LineComparator implements IRangeComparator {
         if (trailingLineFeedDetector.hadTrailingLineFeed()) {
         	ar.add(""); //$NON-NLS-1$
         }
-        fLines = (String[]) ar.toArray(new String[ar.size()]);
+        fLines = ar.toArray(new String[ar.size()]);
     }
 
 	String getLine(int ix) {

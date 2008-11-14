@@ -1,3 +1,7 @@
+2008-11-14  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* META-INF/MANIFEST.MF: Bump BREE to 1.5.
+
 2008-10-20  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update version to 2.6.3.

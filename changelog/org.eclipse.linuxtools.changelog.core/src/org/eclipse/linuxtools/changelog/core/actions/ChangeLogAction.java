@@ -18,7 +18,6 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.compare.CompareEditorInput;
 import org.eclipse.compare.IResourceProvider;
 import org.eclipse.compare.ITypedElement;
-import org.eclipse.compare.structuremergeviewer.DiffNode;
 import org.eclipse.compare.structuremergeviewer.ICompareInput;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -102,7 +101,7 @@ public abstract class ChangeLogAction extends Action {
 		}
 	}
 
-	protected String returnQualifedEditor(Class ClassName) {
+	protected String returnQualifedEditor(Class<?> ClassName) {
 		return ClassName.toString().substring(
 				ClassName.getPackage().toString().length() - 1,
 				ClassName.toString().length());
@@ -205,7 +204,7 @@ public abstract class ChangeLogAction extends Action {
 					return openEditor(change_log_file);
 				}
 
-				parent_dec = (IResource) parent_dec.getParent();
+				parent_dec = parent_dec.getParent();
 
 				if (parent_dec == null) {
 					break;
@@ -256,7 +255,7 @@ public abstract class ChangeLogAction extends Action {
 					return openEditor(change_log_file);
 				}
 
-				parent_dec = (IResource) parent_dec.getParent();
+				parent_dec = parent_dec.getParent();
 
 				if (parent_dec == null) {
 					break;

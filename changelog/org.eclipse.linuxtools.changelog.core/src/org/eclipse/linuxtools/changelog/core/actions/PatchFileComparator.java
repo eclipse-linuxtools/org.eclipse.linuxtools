@@ -12,12 +12,9 @@ package org.eclipse.linuxtools.changelog.core.actions;
 
 import java.util.Comparator;
 
-public class PatchFileComparator implements Comparator {
+public class PatchFileComparator implements Comparator<PatchFile> {
 
-	public int compare(Object o1, Object o2) {
-		PatchFile p1 = (PatchFile)o1;
-		PatchFile p2 = (PatchFile)o2;
-		
+	public int compare(PatchFile p1, PatchFile p2) {
 		return p1.getPath().toOSString().compareToIgnoreCase(p2.getPath().toOSString());
 	}
 
