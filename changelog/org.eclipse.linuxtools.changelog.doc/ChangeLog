@@ -1,3 +1,7 @@
+2008-11-14  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* build.properties: Add META-INF to bin.includes.
+
 2008-11-11  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: New file.
