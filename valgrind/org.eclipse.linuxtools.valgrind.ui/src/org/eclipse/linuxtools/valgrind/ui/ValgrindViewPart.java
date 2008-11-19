@@ -11,8 +11,6 @@
 package org.eclipse.linuxtools.valgrind.ui;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -25,52 +23,23 @@ public class ValgrindViewPart extends ViewPart {
 
 	protected Composite dynamicViewHolder;
 	protected IValgrindToolView dynamicView;
-	protected ActionContributionItem[] dynamicActions;
 
 	@Override
 	public void createPartControl(Composite parent) {
-
-		setContentDescription(Messages.getString("ValgrindViewPart.No_Valgrind_output")); //$NON-NLS-1$
-
 		dynamicViewHolder = new Composite(parent, SWT.NONE);
 		dynamicViewHolder.setLayout(new GridLayout());
 		dynamicViewHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 		ValgrindUIPlugin.getDefault().setView(this);
 	}
 
-	public IValgrindToolView createDynamicContent(String description, String toolID) throws CoreException {
-		setContentDescription(description);
-
-		// remove tool specific toolbar controls
-		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-		if (dynamicActions != null) {
-			for (ActionContributionItem item : dynamicActions) {
-				toolbar.remove(item);
-			}
-		}
-
-		// remove old view controls
+	public void createDynamicView(String toolID) throws CoreException {
 		for (Control child : dynamicViewHolder.getChildren()) {
 			child.dispose();
 		}
 		dynamicView = ValgrindUIPlugin.getDefault().getToolView(toolID);
 		dynamicView.createPartControl(dynamicViewHolder);
-
-		// create toolbar items
-		IAction[] actions = dynamicView.getToolbarActions();
-		if (actions != null) {
-			dynamicActions = new ActionContributionItem[actions.length];
-			for (int i = 0; i < actions.length; i++) {
-				dynamicActions[i] = new ActionContributionItem(actions[i]);
-				toolbar.appendToGroup(ValgrindUIPlugin.TOOLBAR_LOC_GROUP_ID, dynamicActions[i]);
-//				toolbar.add(dynamicActions[i]);
-			}
-		}
-		toolbar.update(true);
 		
 		dynamicViewHolder.layout(true);
-
-		return dynamicView;
 	}
 
 	@Override
@@ -81,6 +50,11 @@ public class ValgrindViewPart extends ViewPart {
 	}
 
 	public void refreshView() {
+		// remove tool specific toolbar controls
+		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+		toolbar.removeAll();
+		toolbar.update(true);
+		
 		if (dynamicView != null) {
 			dynamicView.refreshView();
 		}

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
+<?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage"
-            id="org.eclipse.linuxtools.valgrind.internal.core.ValgrindPreferencePage"
-            name="%page.name">
-      </page>
+         id="org.eclipse.linuxtools.valgrind.core.marker"
+         name="%marker.name"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.cdt.core.problem">
+      </super>
    </extension>
 
 </plugin>

@@ -14,9 +14,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 
-public class ValgrindLaunchShortcut extends ProfileLaunchShortcut {
+public class ValgrindLaunchShortcut extends ProfileLaunchShortcut implements ILaunchShortcut {
 
 
 	protected void setDefaultProfileAttributes(

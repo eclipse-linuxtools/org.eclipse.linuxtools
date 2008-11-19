@@ -10,9 +10,11 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.memcheck;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -20,22 +22,26 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.memcheck.model.RootTreeElement;
 import org.eclipse.linuxtools.valgrind.memcheck.model.StackFrameTreeElement;
 import org.eclipse.linuxtools.valgrind.memcheck.model.ValgrindTreeElement;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 	protected TreeViewer viewer;
 	protected ValgrindError[] errors;
-	protected IDoubleClickListener doubleClickListener;
-
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent);
@@ -78,7 +84,7 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 
 		});
 
-		doubleClickListener = new IDoubleClickListener() {
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
 
 			public void doubleClick(DoubleClickEvent event) {
 				Object element = ((TreeSelection) event.getSelection()).getFirstElement();
@@ -86,14 +92,30 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 					ValgrindStackFrame frame = ((StackFrameTreeElement) element).getFrame();
 					if (frame.getFile() != null) {
 						String strpath = frame.getDir() + Path.SEPARATOR + frame.getFile();
-						int line = frame.getLine();
-						try {
-							ProfileUIUtils.openEditorAndSelect(strpath, line);
-						} catch (PartInitException e) {
-							e.printStackTrace();
-						} catch (BadLocationException e) {
-							e.printStackTrace();
-						}						
+						Path path = new Path(strpath);
+
+						if (path.toFile().exists()) {
+							IWorkbenchPage activePage = ValgrindUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+							IFileStore file = EFS.getLocalFileSystem().getStore(path);
+							try {
+								IEditorPart editor = IDE.openEditorOnFileStore(activePage, file);
+								if (editor instanceof ITextEditor) {
+									ITextEditor textEditor = (ITextEditor) editor;
+									int line = frame.getLine();
+									if (line > 0) {
+										IDocumentProvider provider = textEditor.getDocumentProvider();
+										IDocument document = provider.getDocument(textEditor.getEditorInput());
+
+										int start = document.getLineOffset(line - 1); //zero-indexed
+										textEditor.selectAndReveal(start, 0);
+									}
+								}
+							} catch (PartInitException e) {
+								e.printStackTrace();
+							} catch (BadLocationException e) {
+								e.printStackTrace();
+							}
+						}
 					}
 				}
 				else {
@@ -105,15 +127,15 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 					}
 				}
 			}
-		};
-		viewer.addDoubleClickListener(doubleClickListener);
+
+		});
 
 	}
 
 	public void setErrors(ValgrindError[] errors) {
 		this.errors = errors;
 	}
-
+	
 	@Override
 	public void setFocus() {
 		viewer.getTree().setFocus();
@@ -125,21 +147,13 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 			viewer.setInput(root);
 		}
 	}
-
+	
 	public TreeViewer getViewer() {
 		return viewer;
 	}
-
+	
 	public ValgrindError[] getErrors() {
 		return errors;
-	}
-
-	public IAction[] getToolbarActions() {
-		return null;
-	}
-	
-	public IDoubleClickListener getDoubleClickListener() {
-		return doubleClickListener;
 	}
 
 }
