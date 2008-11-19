@@ -47,11 +47,13 @@ public class OpModelSession {
 		return _image.getCount();
 	}
 	
-	public boolean isDefaultSession() {
+	public boolean isDefaultSession()
+	{
 		return _name.equals(DEFAULT_SESSION_STRING); 
 	}
 	
-	public void refreshModel() {
+	public void refreshModel()
+	{
 		//populate this session with samples
 		_image = Oprofile.getModelData(_parentEvent.getName(), _name);
 	}
@@ -66,7 +68,8 @@ public class OpModelSession {
 	@Override
 	public String toString() {
 		String s = _name + "\n";
-		if (_image != null) {
+		if (_image != null)
+		{
 			s += _printTabs + "Image: ";
 			s += _image.toString(_printTabs + "\t");
 		}

@@ -12,36 +12,38 @@
 
 package org.eclipse.linuxtools.oprofile.core;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.core.runtime.*;
+import org.eclipse.core.resources.*;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 import org.osgi.framework.BundleContext;
+
+import java.util.*;
 
 /**
  * The main plugin class to be used in the desktop.
  */
 public class OprofileCorePlugin extends Plugin {
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core";
-	private static final String OPXMLPROVIDER_XPT_NAME = "OpxmlProvider";
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
-	private IOpxmlProvider _opxmlProvider;
+	//Resource bundle.
+	private ResourceBundle resourceBundle;
+	
+	private IOpxmlProvider _opxml = null;
+	private IOpcontrolProvider _opcontrol = null;
 	
 	/**
 	 * The constructor.
 	 */
 	public OprofileCorePlugin() {
 		plugin = this;
+		try {
+			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.oprofile.core.OprofileCorePluginResources"); //$NON-NLS-1$
+		} catch (MissingResourceException x) {
+			resourceBundle = null;
+		}
 	}
 	
 	/**
@@ -67,6 +69,36 @@ public class OprofileCorePlugin extends Plugin {
 	}
 
 	/**
+	 * Returns the workspace instance.
+	 */
+	public static IWorkspace getWorkspace() {
+		return ResourcesPlugin.getWorkspace();
+	}
+
+	/**
+	 * Returns the string from the plugin's resource bundle,
+	 * or 'key' if not found.
+	 */
+	public static String getResourceString(String key) {
+		ResourceBundle bundle= OprofileCorePlugin.getDefault().getResourceBundle();
+		if (bundle != null) {
+			try {
+				return bundle.getString(key);
+			} catch (MissingResourceException e) {
+			}
+		}
+		
+		return key;
+	}
+
+	/**
+	 * Returns the plugin's resource bundle,
+	 */
+	public ResourceBundle getResourceBundle() {
+		return resourceBundle;
+	}
+	
+	/**
 	 * Returns the unique id of this plugin. Should match plugin.xml!
 	 */
 	public static String getId() {
@@ -79,34 +111,34 @@ public class OprofileCorePlugin extends Plugin {
 	 * @throws OpxmlException
 	 */
 	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
-		Exception except = null;
-		
-		if (_opxmlProvider == null) {
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IExtensionPoint extension = registry.getExtensionPoint(PLUGIN_ID, OPXMLPROVIDER_XPT_NAME);
-			if (extension != null) {
-				IExtension[] extensions = extension.getExtensions();
-				for (IExtension e : extensions) {
-					IConfigurationElement[] configElements = e.getConfigurationElements();
-					if (configElements.length != 0) {
-						try {
-							_opxmlProvider = (IOpxmlProvider) configElements[0].createExecutableExtension("class"); //$NON-NLS-1$
-							if (_opxmlProvider != null)
-								break;
-						} catch (CoreException ce) {
-							except = ce;
-						}
-					}
-				}
-			}
-		}
-		
-		// If there was a problem finding opxml, throw an exception
-		if (_opxmlProvider == null) {
-			throw new OpxmlException(createErrorStatus("opxmlProvider", except));
-		} else {
-			return _opxmlProvider;
-		}
+//		Exception except = null;
+//		
+//		if (_opxml == null) {
+//			IExtensionRegistry registry = Platform.getExtensionRegistry();
+//			IExtensionPoint extension = registry.getExtensionPoint(PLUGIN_ID, "OpxmlProvider"); //$NON-NLS-1$
+//			if (extension != null) {
+//				IExtension[] extensions = extension.getExtensions();
+//				IConfigurationElement[] configElements = extensions[0].getConfigurationElements();
+//				if (configElements.length != 0) {
+//					try {
+//						_opxml = (IOpxmlProvider) configElements[0].createExecutableExtension("class"); //$NON-NLS-1$
+//					} catch (CoreException ce) {
+//						except = ce;
+//					}
+//				}
+//			}
+//		}
+//		
+//		// If no provider found, throw a new exception
+//		if (_opxml == null) {
+//			String msg = getResourceString("opxmlProvider.error.missing"); //$NON-NLS-1$
+//			Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, except);
+//			throw new OpxmlException(status);
+//		}
+//		
+//		return _opxml;
+//		
+		return new LinuxOpxmlProvider();
 	}
 	
 	/**
@@ -143,35 +175,5 @@ public class OprofileCorePlugin extends Plugin {
 //		return _opcontrol;
 		
 		return new LinuxOpcontrolProvider();
-	}
-	
-	public static IStatus createErrorStatus(String errorClassString, Exception e) {
-		String statusMessage = OprofileProperties.getString(errorClassString + ".error.statusMessage");
-
-		if (e == null) {
-			return new Status(IStatus.ERROR, getId(), IStatus.OK, statusMessage, null);
-		} else {
-			return new Status(IStatus.ERROR, getId(), IStatus.OK, statusMessage, e);
-		}
-	}
-	
-	public static void showErrorDialog(String errorClassString, CoreException ex) {
-		final IStatus status;
-		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title");
-		final String errorMessage = OprofileProperties.getString(errorClassString + ".error.dialog.message");
-		
-		if (ex == null) {
-			status = createErrorStatus(errorClassString, null);
-		} else {
-			status = ex.getStatus();
-		}
-
-		//needs to be run in the ui thread otherwise swt throws invalid thread access 
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				ErrorDialog.openError(null, dialogTitle, errorMessage, status);
-			}
-		});
-
 	}
 }

@@ -62,10 +62,6 @@ public class OpModelImage {
 		return _dependents;
 	}
 
-	public boolean hasDependents() {
-		return (_dependents == null || _dependents.length == 0 ? false : true);
-	}
-	
 	/**
 	 * This method is not meant to be called publicly, used only 
 	 * from the XML processors	
@@ -121,18 +117,23 @@ public class OpModelImage {
 	@Override
 	public String toString() {
 		String s = _name + ", Count: " + _count + (_depcount !=0 ? ", Dependent Count: " + _depcount + "\n" : "\n");
-		if (_symbols != null) {
-			for (int i = 0; i < _symbols.length; i++) {
+		if (_symbols != null)
+		{
+			for (int i = 0; i < _symbols.length; i++)
+			{
 				s += _printTabs + "Symbols: ";
 				s += _symbols[i].toString(_printTabs + "\t");
 			}
 		}
-		if (_dependents != null) {
-			for (int i = 0; i < _dependents.length; i++) {
+		if (_dependents != null)
+		{
+			for (int i = 0; i < _dependents.length; i++)
+			{
 				s += _printTabs + "Dependent Image: ";
 				s += _dependents[i].toString(_printTabs + "\t");
 			}			
 		}
 		return s;
 	}
+
 }

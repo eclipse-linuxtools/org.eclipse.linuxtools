@@ -10,9 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.core;
 
-import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
-import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
-
 /**
  * Interface for oprofile core to utilize opcontrol program. Platform plugins should define/register
  * an OpcontrolProvider for the core to use.

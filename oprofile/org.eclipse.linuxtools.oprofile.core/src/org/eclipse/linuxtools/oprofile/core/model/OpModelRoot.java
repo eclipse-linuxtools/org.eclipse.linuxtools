@@ -31,8 +31,7 @@ public class OpModelRoot {
 //	private String _printTabs = "\t";		//for nice output
 
 	private OpModelRoot() {
-//		refreshModel();
-		_events = null;
+		refreshModel();
 		_modelRoot = this;
 	}
 
@@ -46,7 +45,8 @@ public class OpModelRoot {
 		
 		//launch `opxml sessions`, gather up events & the sessions under them
 		_events = Oprofile.getEvents();
-		if (_events != null) {
+		if (_events != null)
+		{
 			for (int i = 0; i < _events.length; i++) {
 				_events[i].refreshModel();
 			}
@@ -60,11 +60,9 @@ public class OpModelRoot {
 	@Override
 	public String toString() {
 		String s = "";
-		if (_events != null) {
-			for (int i = 0; i < _events.length; i++) {
-				s += "Event: ";
-				s += _events[i].toString("\t");
-			}
+		for (int i = 0; i < _events.length; i++) {
+			s += "Event: ";
+			s += _events[i].toString("\t");
 		}
 		return s;
 	}

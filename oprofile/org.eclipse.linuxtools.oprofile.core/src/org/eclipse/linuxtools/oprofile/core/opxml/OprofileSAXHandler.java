@@ -13,10 +13,6 @@ package org.eclipse.linuxtools.oprofile.core.opxml;
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.info.OpInfoProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionsProcessor;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 

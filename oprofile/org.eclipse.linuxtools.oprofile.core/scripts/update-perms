@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# This script sets the executable bits for Eclipse-OProfile executables.
+
+opxml=$(find .. -type f -name opxml)
+chmod u+x $opxml
+chmod u+x opcontrol
+chmod u+x uninstall

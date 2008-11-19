@@ -19,11 +19,6 @@ import org.eclipse.core.runtime.IStatus;
 public class OpxmlException extends CoreException {
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2788304536155025911L;
-
-	/**
 	 * Constructor
 	 * @param status <code>IStatus</code> for the exception
 	 */

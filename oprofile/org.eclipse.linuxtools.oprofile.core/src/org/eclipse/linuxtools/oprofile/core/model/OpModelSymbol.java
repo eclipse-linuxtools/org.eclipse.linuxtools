@@ -73,8 +73,10 @@ public class OpModelSymbol {
 	@Override
 	public String toString() {
 		String s = _name + ", File: " + _file + ", Count: " + _count + "\n";
-		if (_samples != null) {
-			for (int i = 0; i < _samples.length; i++) {
+		if (_samples != null)
+		{
+			for (int i = 0; i < _samples.length; i++)
+			{
 				s += _printTabs + "Sample: ";
 				s += _samples[i].toString();
 			}

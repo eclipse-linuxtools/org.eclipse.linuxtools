@@ -18,12 +18,14 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcessor;
+import org.eclipse.linuxtools.oprofile.core.opxml.CheckEventsProcessor;
 
 
 /**
@@ -32,7 +34,8 @@ import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcesso
 public class Oprofile
 {
 	// Ugh. Need to know whether the module is loaded without running oprofile commands...
-	private static final String[] _OPROFILE_CPU_TYPE_FILES = {
+	private static final String[] _OPROFILE_CPU_TYPE_FILES = 
+	{
 		"/dev/oprofile/cpu_type", //$NON-NLS-1$
 		"/proc/sys/dev/oprofile/cpu_type"  //$NON-NLS-1$
 	};
@@ -60,7 +63,13 @@ public class Oprofile
 		
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
-			OprofileCorePlugin.showErrorDialog("oprofileInit", null);
+		
+			String smsg = OprofileProperties.getString("oprofile.init.error.status.message"); //$NON-NLS-1$
+			Status status = new Status(IStatus.ERROR, OprofileCorePlugin.getId(), IStatus.OK, smsg, null);
+			String title = OprofileProperties.getString("oprofile.init.error.dialog.title"); //$NON-NLS-1$
+			String msg = OprofileProperties.getString("oprofile.init.error.dialog.message"); //$NON-NLS-1$
+			ErrorDialog.openError(null, title, msg, status);
+			
 		} else {
 			_initializeOprofileCore();
 		}
@@ -85,7 +94,7 @@ public class Oprofile
 		try {
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
 		} catch (OpcontrolException e) {
-			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e);
+			e.getStatus().getException();
 		} 
 	}
 
@@ -138,7 +147,7 @@ public class Oprofile
 	 */
 	public static String getKernelImageFile()
 	{
-		return "/usr/lib/debug/lib/modules/" + _uname() + "/vmlinux";
+		return "/boot/vmlinux-" + _uname(); //$NON-NLS-1$
 	}
 	
 	 // Returns the release string from the system call uname
@@ -180,7 +189,7 @@ public class Oprofile
 	 * @param um	the unit mask
 	 * @return whether the requested event is valid
 	 */
-	public static Boolean checkEvent(int ctr, int event, int um) {
+	public static boolean checkEvent(int ctr, int event, int um) {
 		int[] validResult = new int[1];
 		try {
 			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().checkEvents(ctr, event, um, validResult);
@@ -188,8 +197,7 @@ public class Oprofile
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e);
-			return null;
+			_showErrorDialog("opxmlProvider", e);
 		}
 		
 		return (validResult[0] == CheckEventsProcessor.EVENT_OK);
@@ -200,8 +208,9 @@ public class Oprofile
 	 * the sessions under each of them.
 	 * @returns a list of all collected events
 	 */
-	public static OpModelEvent[] getEvents() {
-		OpModelEvent[] events = null;
+	public static OpModelEvent[] getEvents()
+	{
+		OpModelEvent[] events = new OpModelEvent[0];
 		
 		ArrayList<OpModelEvent> sessionList = new ArrayList<OpModelEvent>();
 		try {
@@ -212,9 +221,16 @@ public class Oprofile
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
+			_showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
 		}
 		return events;
+	}
+
+	//Helper function
+	private static void _showErrorDialog(String key, CoreException except) {
+		String title = OprofileProperties.getString(key + ".error.dialog.title"); //$NON-NLS-1$
+		String msg = OprofileProperties.getString(key + ".error.dialog.message"); //$NON-NLS-1$
+		ErrorDialog.openError(null, title, msg, except.getStatus());
 	}
 
 	/**
@@ -232,10 +248,138 @@ public class Oprofile
 		} catch (InvocationTargetException e) { 
 		} catch (InterruptedException e) { 
 		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
+			_showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
 			return null;
 		}
 
 		return image;
+
+//		if (shell != null) {
+//			IRunnableWithProgress runnable = new IRunnableWithProgress() {
+//				
+//				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+//					Object[] fmtArgs = null;
+//					String key = null;
+//					if (session.isDefaultSession()) {
+//						key = "getSamples.caption.default-session"; //$NON-NLS-1$
+//						fmtArgs = new Object[0];
+//					} else {
+//						key = "getSamples.caption"; //$NON-NLS-1$
+//						fmtArgs = new Object[] {session.getExecutableName()};
+//					}
+//					
+//					String caption = MessageFormat.format(OprofileProperties.getString(key), fmtArgs);
+//					monitor.beginTask(caption, 1);				
+//					opxml.run(monitor);
+//					monitor.done();
+//				}
+//			};
+//
+//			ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+//			try {
+//				dialog.run(true, false, runnable);
+//			} catch (InterruptedException ie) {
+//			} catch (InvocationTargetException e) {
+//			}
+//		} else {
+//			// No shell -- just run opxml without a ProgressMonitor
+//			try {
+//				opxml.run(null);
+//			} catch (InvocationTargetException e) {
+//			} catch (InterruptedException e) {
+//			}
+//		}
 	}
+	
+	
+
+//	private static ArrayList<String> getProjectBinaries() {
+//		ArrayList<String> binaries = new ArrayList<String>();
+//		
+//		try {
+//			ICProject [] projs = CoreModel.getDefault().getCModel().getCProjects();
+//			IBinary [] bins = null;
+//			String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString(); 
+//			String binPath = null;
+//			
+//			for (ICProject p : projs) {
+//				bins = p.getBinaryContainer().getBinaries();
+//				
+//				for (IBinary b : bins) {
+//					binPath = workspacePath + b.getResource().getFullPath().toString();
+//					binaries.add(binPath);
+//				}
+//			}
+//		} catch (CModelException e) { }
+//		
+//		return binaries;
+//	}
+//
+	
+	
+	
+//	NO LONGER NEEDED, debug info is part of samples opxml output
+//	/**
+//	 * Collects the debug information for the given sample file.
+//	 * There's a lot of searching going on, and it probably isn't even really needed,
+//	 * since all the samples and debug-info from opxml are ordered. Nonetheless,
+//	 * speed seems very good even with a binary search, so what the heck.
+//	 * 
+//	 * This function will set the debuginfo objects for every OpModelSample in the OpModelImage.
+//	 * @param image the sample file
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public static void getDebugInfo(OpModelImage image) {
+//		OpModelSample[] samples = image.getSamples(null);
+//		
+//		// Sort samples
+//		Arrays.sort(samples, new Comparator() {
+//			public int compare(Object o1, Object o2) {
+//				OpModelSample a = (OpModelSample) o1;
+//				OpModelSample b = (OpModelSample) o2;
+//				return a.getAddress().compareTo(b.getAddress());
+//			}			
+//		});
+//		
+//		// Run opxml and get the list of all the debug info
+//		ArrayList infoList = new ArrayList();
+//		try {
+//			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().debugInfo(image, infoList);
+//			opxml.run(null);
+//		} catch (InvocationTargetException e) {
+//		} catch (InterruptedException e) {
+//		} catch (OpxmlException e) {
+//			_showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
+//		}
+//				
+//		// Loop through all the debug infos, setting the debug info for each
+//		// corresponding OpModelSample.
+//		for (Iterator i = infoList.listIterator(); i.hasNext();) {
+//			DebugInfo info = (DebugInfo) i.next();
+//			int index =
+//				Arrays.binarySearch(samples, info.address, new Comparator() {
+//				public int compare(Object o1, Object o2) {
+//					String addr1 = null;
+//					String addr2 = null;
+//					if (o1 instanceof OpModelSample) {
+//						addr1 = ((OpModelSample) o1).getAddress();
+//						addr2 = (String) o2;
+//					} else {
+//						addr1 = (String) o1;
+//						addr2 = ((OpModelSample) o2).getAddress();
+//					}
+//					return addr1.compareTo(addr2);
+//				}
+//			});
+//
+//			if (index >= 0) {
+//				samples[index].setDebugInfo(info);
+//			}
+//		}
+//		
+//		//this doesnt do anything
+////		image.consolidateSamples();
+//	
+//	}
+//	
 }
