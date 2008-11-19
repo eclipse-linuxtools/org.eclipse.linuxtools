@@ -20,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
@@ -46,7 +47,7 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 	public static final String OPT_PARTIAL = "--partial-loads-ok"; //$NON-NLS-1$
 	public static final String OPT_UNDEF = "--undef-value-errors"; //$NON-NLS-1$
 
-	public void launch(ValgrindCommand command, IProgressMonitor monitor) throws CoreException {
+	public void launch(ValgrindCommand command, ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
 		// wait for Valgrind to exit
 		try {
