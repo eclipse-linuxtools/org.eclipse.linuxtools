@@ -1,7 +1,0 @@
-This plugin requires 3 packages to be compiled:
-
-* oprofile
-* oprofile-devel
-* binutils-devel
-
-A `make` will compile opxml, although the resulting binary must be placed in this directory, and not the src directory.
