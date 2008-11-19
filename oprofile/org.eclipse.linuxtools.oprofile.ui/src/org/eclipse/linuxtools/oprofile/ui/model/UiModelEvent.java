@@ -10,9 +10,8 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import java.util.ArrayList;
-
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
+import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelEvent implements IUiModelElement {
@@ -28,12 +27,12 @@ public class UiModelEvent implements IUiModelElement {
 	 * Create the ui sessions from the data model.
 	 */
 	private void refreshModel() {
-		ArrayList<UiModelSession> sessionList = new ArrayList<UiModelSession>();
-
-		//TODO the stuff here that parses them
+		OpModelSession dataModelSessions[] = _event.getSessions();
+		_sessions = new UiModelSession[dataModelSessions.length];
 		
-		_sessions = new UiModelSession[sessionList.size()];
-		sessionList.toArray(_sessions);
+		for (int i = 0; i < dataModelSessions.length; i++) {
+			_sessions[i] = new UiModelSession(this, dataModelSessions[i]);
+		}
 	}
 	
 	@Override

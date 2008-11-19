@@ -10,14 +10,32 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelSession implements IUiModelElement {
+	private UiModelEvent _parent;
+	private OpModelSession _session;
+	private UiModelImage _image;
+	private UiModelDependent _dependent;
+	
+	public UiModelSession(UiModelEvent parent, OpModelSession session) {
+		_parent = parent;
+		_session = session;
+		_image = null;
+		_dependent = null;
+		refreshModel();
+	}
+	
+	private void refreshModel() {
+		
+//		_image = new UiModelImage();
+		
+	}
 
 	@Override
 	public IUiModelElement[] getChildren() {
-		// TODO Auto-generated method stub
-		return null;
+		return new IUiModelElement[] {_image, _dependent};
 	}
 
 	@Override
@@ -28,14 +46,12 @@ public class UiModelSession implements IUiModelElement {
 
 	@Override
 	public IUiModelElement getParent() {
-		// TODO Auto-generated method stub
-		return null;
+		return _parent;
 	}
 
 	@Override
 	public boolean hasChildren() {
-		// TODO Auto-generated method stub
-		return false;
+		return (_image != null);
 	}
 
 	@Override
@@ -45,8 +61,6 @@ public class UiModelSession implements IUiModelElement {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "";
+		return _session.getName();
 	}
-
 }
