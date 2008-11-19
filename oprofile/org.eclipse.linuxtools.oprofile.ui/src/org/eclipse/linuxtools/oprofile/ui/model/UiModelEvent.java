@@ -10,60 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
-import org.eclipse.swt.graphics.Image;
+public class UiModelEvent {
 
-/**
- * Top level elements displayed in the view -- events that oprofile 
- *  has profiled. Must have children sessions.
- */
-public class UiModelEvent implements IUiModelElement {
-	private IUiModelElement _parent = null;		//parent node -- necessary?
-	private OpModelEvent _event;				//the node in the data model
-	private UiModelSession _sessions[];			//this node's children
-	
-	public UiModelEvent(OpModelEvent event) {
-		_event = event;
-		refreshModel();
-	}
-
-	/**
-	 * Create the ui sessions from the data model.
-	 */
-	private void refreshModel() {
-		OpModelSession dataModelSessions[] = _event.getSessions();
-		_sessions = new UiModelSession[dataModelSessions.length];
-		
-		for (int i = 0; i < dataModelSessions.length; i++) {
-			_sessions[i] = new UiModelSession(this, dataModelSessions[i]);
-		}
-	}
-
-	@Override
-	public String toString() {
-		return _event.getName();
-	}
-
-	/** IUiModelElement functions **/
-	public String getLabelText() {
-		return toString();
-	}
-	
-	public IUiModelElement[] getChildren() {
-		return _sessions;
-	}
-
-	public boolean hasChildren() {
-		return (_sessions.length == 0 ? false : true);
-	}
-
-	public IUiModelElement getParent() {
-		return _parent;
-	}
-
-	public Image getLabelImage() {
-		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.EVENT_ICON).createImage();
-	}
 }

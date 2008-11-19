@@ -6,7 +6,7 @@
       <view
             category="org.eclipse.linuxtools.oprofile.ui.viewgroup"
             class="org.eclipse.linuxtools.oprofile.ui.view.OprofileView"
-            icon="icons/oprofile_view.png"
+            icon="icons/view_icon.gif"
             id="org.eclipse.linuxtools.oprofile.ui.OProfileView"
             name="%view.name"
             restorable="true">
@@ -16,4 +16,116 @@
             name="%view.groupname">
       </category>
    </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.linuxtools.oprofile.ui.contribution.set"
+            label="%actionSet.label"
+            visible="false">
+            
+			<!-- Toolbar extensions
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.save"
+				label="%actionSet.save.label"
+				icon="icons/savesession.gif"
+				tooltip="%actionSet.save.toolTip"
+				toolbarPath="Normal/additions/oprofile1"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.SaveSessionActionDelegate"/>
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.dump"
+				label="%actionSet.dump.label"
+				icon="icons/dump.gif"
+				tooltip="%actionSet.dump.toolTip"
+				toolbarPath="Normal/additions/oprofile1"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.DumpActionDelegate"/>
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.stop"
+				label="%actionSet.stopCollection.label"
+				icon="icons/stop.gif"
+				tooltip="%actionSet.stopCollection.toolTip"
+				toolbarPath="Normal/additions/oprofile2"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.StopCollectionActionDelegate"/>
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.start"
+				label="%actionSet.startCollection.label"
+				icon="icons/start.gif"
+				tooltip="%actionSet.startCollection.toolTip"
+				toolbarPath="Normal/additions/oprofile2"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.StartCollectionActionDelegate"/>
+			-->
+			
+			
+			<!-- Menu contributions -->
+			<menu id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu"
+				label="%actionSet.menu.label"
+				path="additions">
+				<separator name="group1"/>
+				<separator name="group2"/>
+				<separator name="group3"/>
+			</menu>
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.refresh"
+				label="%actionSet.refresh.label"
+				tooltip="%actionSet.refresh.toolTip"
+				menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group3"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.RefreshActionDelegate"/>
+				
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.shutdown"
+				label="%actionSet.shutdown.label"
+				tooltip="%actionSet.shutdown.toolTip"
+				menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group3"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.ShutdownActionDelegate"/>
+				
+			<action
+         class="org.eclipse.linuxtools.oprofile.ui.actions.OprofiledLogActionDelegate"
+         icon="icons/daemon_v.gif"
+         id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.oprofiledlog"
+         label="%actionSet.oprofiledlog.label"
+         menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group3"
+         tooltip="%actionSet.oprofiledlog.toolTip"/>
+				
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.stopCollection"
+				label="%actionSet.stopCollection.label"
+				icon="icons/stop.gif"
+				tooltip="%actionSet.stopCollection.toolTip"
+				menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group1"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.StopCollectionActionDelegate"/>
+				
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.startCollection"
+				label="%actionSet.startCollection.label"
+				icon="icons/start.gif"
+				tooltip="%actionSet.startCollection.toolTip"
+				menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group1"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.StartCollectionActionDelegate"/>
+				
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.dump"
+				label="%actionSet.dump.label"
+				icon="icons/dump.gif"
+				tooltip="%actionSet.dump.toolTip"
+				menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group2"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.DumpActionDelegate"/>
+				
+			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.save"
+				label="%actionSet.save.label"
+				icon="icons/savesession.gif"
+				tooltip="%actionSet.save.toolTip"
+				menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group2"
+				class="org.eclipse.linuxtools.oprofile.ui.actions.SaveSessionActionDelegate"/>
+
+            
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.eclipse.linuxtools.oprofile.ui.popupmenu.contribution"
+            objectClass="java.lang.Object">
+         <action
+               class="org.eclipse.linuxtools.oprofile.ui.popupmenu.ProfileAsLaunchAction"
+               enablesFor="1"
+               id="org.eclipse.linuxtools.oprofile.ui.popupmenu.profileas"
+               label="%popupMenus.profileAs.menu.label"
+               menubarPath="additions">
+         </action>
+		 <enablement>
+            <test property="org.eclipse.debug.ui.launchable" value="oprofile"/>
+         </enablement>
+      </objectContribution>
+   </extension>
+
 </plugin>

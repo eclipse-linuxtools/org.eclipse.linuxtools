@@ -12,9 +12,14 @@
 
 package org.eclipse.linuxtools.oprofile.ui;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.oprofile.ui.sample.SampleView;
+import org.eclipse.linuxtools.oprofile.ui.system.SystemProfileView;
 import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -28,21 +33,26 @@ import org.osgi.framework.BundleContext;
 public class OprofileUiPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static OprofileUiPlugin plugin;
+	//Resource bundle.
+	private ResourceBundle resourceBundle;
 
+	private SampleView _sampleView = null;
+	private SystemProfileView _sysProfileView = null;
 	private OprofileView _oprofileview = null;
 	
 	public static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
-	public static final String ID_OPROFILE_VIEW = ID_PLUGIN + ".OProfileView";
 
-	private static final String ICON_PATH = "icons/";
-	public static final String SESSION_ICON = ICON_PATH + "session.gif";
-	public static final String EVENT_ICON = ICON_PATH + "event.gif";
-	public static final String IMAGE_ICON = ICON_PATH + "image.gif";
-	public static final String DEPENDENT_ICON = ICON_PATH + "dependent.gif";
-	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif";
-	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif";
-	
-	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
+	// System Profiling View
+	public static final String ID_VIEW_SYSTEM = ID_PLUGIN + ".system"; //$NON-NLS-1$
+	public static final String ID_VIEW_SYSTEM_PROFILE = ID_VIEW_SYSTEM + ".SystemProfileView"; //$NON-NLS-1$
+
+	// OpModelSample View
+	public static final String ID_VIEW_SAMPLE = ID_PLUGIN + ".sample.SampleView"; //$NON-NLS-1$
+
+	// Icon paths (relative to root of plugin)
+	public static final String EXEC_ICON = "icons/tree_exec.gif";
+	public static final String SHLIB_ICON = "icons/tree_shlib.gif";
+	public static final String OBJECT_ICON = "icons/tree_object.gif";
 	
 	
 	/**
@@ -50,6 +60,19 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	 */
 	public OprofileUiPlugin() {
 		plugin = this;
+		try {
+			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.oprofile.ui.OprofilePluginResources"); //$NON-NLS-1$
+		} catch (MissingResourceException x) {
+			resourceBundle = null;
+		}
+		
+//really not needed here
+//		/* Make sure the kernel module is loaded (just in case
+//		   the user has not authenticated or the module couldn't
+//		   be loaded). */
+//		if (!Oprofile.isKernelModuleLoaded()) {
+//			Oprofile.initializeOprofileModule();
+//		}
 	}
 
 	/**
@@ -82,6 +105,26 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 		return ResourcesPlugin.getWorkspace();
 	}
 
+	/**
+	 * Returns the string from the plugin's resource bundle,
+	 * or 'key' if not found.
+	 */
+	public static String getResourceString(String key) {
+		ResourceBundle bundle= OprofileUiPlugin.getDefault().getResourceBundle();
+		try {
+			return bundle.getString(key);
+		} catch (MissingResourceException e) {
+			return key;
+		}
+	}
+
+	/**
+	 * Returns the plugin's resource bundle,
+	 */
+	public ResourceBundle getResourceBundle() {
+		return resourceBundle;
+	}
+	
 	/**	
 	 * Returns an image descriptor for the image file at the given
 	 * plug-in relative path
@@ -93,6 +136,31 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 		return imageDescriptorFromPlugin(ID_PLUGIN, path);
 	}
 	
+	/**
+	 * Returns the SampleView open on the desktop or null if none
+	 * @return the SampleView
+	 */
+	public SampleView getSampleView()
+	{
+		return _sampleView;
+	}
+	
+	/**
+	 * Registers the SampleView to use for viewing all IProfileElements
+	 * @param view	the view to use (or null for none)
+	 */
+	public void setSampleView(SampleView view)
+	{
+		_sampleView = view;
+	}
+	
+	public SystemProfileView getSystemProfileView() {
+		return _sysProfileView;
+	}
+	
+	public void setSystemProfileView(SystemProfileView view) {
+		_sysProfileView = view;
+	}
 	
 	public OprofileView getOprofileView() {
 		return _oprofileview;
