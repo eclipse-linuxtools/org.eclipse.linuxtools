@@ -18,28 +18,19 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
-import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.TimeUnit;
 import org.eclipse.osgi.util.NLS;
 
 public class MassifParser {
-	private static final String CMD = "cmd"; //$NON-NLS-1$
-	private static final String TIME_UNIT = "time_unit"; //$NON-NLS-1$
 	private static final String SNAPSHOT = "snapshot"; //$NON-NLS-1$
 	private static final String TIME = "time"; //$NON-NLS-1$
 	private static final String MEM_HEAP_B = "mem_heap_B"; //$NON-NLS-1$
 	private static final String MEM_HEAP_EXTRA_B = "mem_heap_extra_B"; //$NON-NLS-1$
 	private static final String MEM_STACKS_B = "mem_stacks_B"; //$NON-NLS-1$
 	private static final String HEAP_TREE = "heap_tree"; //$NON-NLS-1$
-	
-	private static final String INSTRUCTIONS = "i"; //$NON-NLS-1$
-	private static final String MILLISECONDS = "ms"; //$NON-NLS-1$
-	private static final String BYTES = "B"; //$NON-NLS-1$
 	private static final String PEAK = "peak"; //$NON-NLS-1$
 	private static final String DETAILED = "detailed"; //$NON-NLS-1$
 	private static final String EMPTY = "empty"; //$NON-NLS-1$
 
-	private static final String COLON = ":"; //$NON-NLS-1$
-	private static final String SPACE = " "; //$NON-NLS-1$
 	private static final String EQUALS = "="; //$NON-NLS-1$
 
 	protected MassifSnapshot[] snapshots;
@@ -50,37 +41,27 @@ public class MassifParser {
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		String line;
 		MassifSnapshot snapshot = null;
-		String cmd = null;
-		TimeUnit unit = null;  
 		int n = 0;
 		while ((line = br.readLine()) != null) {
-			if (line.startsWith(CMD + COLON)){
-				cmd = parseStrValue(line, COLON + SPACE);
-			}
-			else if (line.startsWith(TIME_UNIT + COLON)) {
-				unit = parseTimeUnit(line);
-			}			
-			else if (line.startsWith(SNAPSHOT)) {
+			if (line.startsWith(SNAPSHOT)) {
 				if (snapshot != null) {
 					// this snapshot finished parsing
 					list.add(snapshot);
 					n++;
 				}
 				snapshot = new MassifSnapshot(n);
-				snapshot.setCmd(cmd);
-				snapshot.setUnit(unit);
 			}
 			else if (line.startsWith(TIME + EQUALS)) {
-				snapshot.setTime(parseLongValue(line, EQUALS));
+				snapshot.setTime(parseIntValue(line));
 			}
 			else if (line.startsWith(MEM_HEAP_B + EQUALS)) {
-				snapshot.setHeapBytes(parseLongValue(line, EQUALS));
+				snapshot.setHeapBytes(parseIntValue(line));
 			}
 			else if (line.startsWith(MEM_HEAP_EXTRA_B + EQUALS)) {
-				snapshot.setHeapExtra(parseLongValue(line, EQUALS));
+				snapshot.setHeapExtra(parseIntValue(line));
 			}
 			else if (line.startsWith(MEM_STACKS_B + EQUALS)) {
-				snapshot.setStacks(parseLongValue(line, EQUALS));
+				snapshot.setStacks(parseIntValue(line));
 			}
 			else if (line.startsWith(HEAP_TREE + EQUALS)) {
 				SnapshotType type = parseSnapshotType(line);
@@ -114,7 +95,7 @@ public class MassifParser {
 		}
 
 		StringBuffer nodeText = new StringBuffer();
-		Long numBytes = parseNumBytes(parts[1]);
+		Integer numBytes = parseNumBytes(parts[1]);
 		if (numBytes == null) {
 			fail(line);
 		}
@@ -126,9 +107,9 @@ public class MassifParser {
 		else {
 			percentage = numBytes.doubleValue() / snapshot.getTotal() * 100;
 		}
-		nodeText.append(Double.valueOf(new DecimalFormat("0.##").format(percentage)) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
+		nodeText.append(Double.valueOf(new DecimalFormat("#.##").format(percentage)) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
 		nodeText.append(" ("); //$NON-NLS-1$
-		nodeText.append(new DecimalFormat("#,##0").format(numBytes.longValue()) + "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		nodeText.append(numBytes.intValue() + "B"); //$NON-NLS-1$
 		nodeText.append(")"); //$NON-NLS-1$
 		
 		// append the rest
@@ -167,10 +148,10 @@ public class MassifParser {
 		}
 	}
 	
-	private Long parseNumBytes(String string) {
-		Long result = null;
+	private Integer parseNumBytes(String string) {
+		Integer result = null;
 		if (isNumber(string)) {
-			result = Long.parseLong(string);
+			result = Integer.parseInt(string);
 		}
 		return result;
 	}
@@ -207,51 +188,21 @@ public class MassifParser {
 			else if (type.equals(PEAK)) {
 				result = SnapshotType.PEAK;
 			}
-		}
-		if (result == null) {
-			fail(line);
-		}
-		return result;
-	}
-	
-	protected TimeUnit parseTimeUnit(String line) throws IOException {
-		TimeUnit result = null;
-		String[] parts = line.split(COLON + SPACE);
-		if (parts.length > 1) {
-			String type = parts[1];
-			if (type.equals(INSTRUCTIONS)) {
-				result = TimeUnit.INSTRUCTIONS;
+			else {
+				fail(line);
 			}
-			else if (type.equals(MILLISECONDS)) {
-				result = TimeUnit.MILLISECONDS;
-			}
-			else if (type.equals(BYTES)) {
-				result = TimeUnit.BYTES;
-			}
-		}
-		if (result == null) {
-			fail(line);
-		}
-		return result;
-	}
-
-	protected Long parseLongValue(String line, String delim) throws IOException {
-		Long result = null;
-		String[] parts = line.split(delim);
-		if (parts.length > 1 && isNumber(parts[1])) {
-			result = Long.parseLong(parts[1]);
 		}
 		else {
 			fail(line);
 		}
 		return result;
 	}
-	
-	protected String parseStrValue(String line, String delim) throws IOException {
-		String result = null;
-		String[] parts = line.split(delim);
-		if (parts.length > 1) {
-			result = parts[1];
+
+	protected Integer parseIntValue(String line) throws IOException {
+		Integer result = null;
+		String[] parts = line.split(EQUALS);
+		if (parts.length > 1 && isNumber(parts[1])) {
+			result = Integer.parseInt(parts[1]);
 		}
 		else {
 			fail(line);

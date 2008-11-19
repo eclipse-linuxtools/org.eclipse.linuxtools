@@ -10,9 +10,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.massif;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.ISourceLocator;
-import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Control;
@@ -23,18 +21,11 @@ public class MassifPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.massif"; //$NON-NLS-1$
-	public static final String EDITOR_ID = PLUGIN_ID + ".chartEditor"; //$NON-NLS-1$
 
 	// The shared instance
 	private static MassifPlugin plugin;
 	
-	protected ILaunchConfiguration config;
-	
-	// Needed for source lookup on massif output, since massif only supplies filenames
-	// and not full paths
-	protected ISourceLocator locator;
-
-	public static final String TOOL_ID = ValgrindLaunchPlugin.PLUGIN_ID + ".massif"; //$NON-NLS-1$
+	protected ILaunch launch;
 	
 	/**
 	 * The constructor
@@ -68,20 +59,12 @@ public class MassifPlugin extends AbstractUIPlugin {
 		 return fontMetrics;
 	}
 	
-	public ISourceLocator getSourceLocator() {
-		return locator;
+	public ILaunch getLaunch() {
+		return launch;
 	}
 	
-	protected void setSourceLocator(ISourceLocator locator) {
-		this.locator = locator;
-	}
-	
-	public ILaunchConfiguration getConfig() {
-		return config;
-	}
-	
-	public void setConfig(ILaunchConfiguration config) {
-		this.config = config;
+	protected void setLaunch(ILaunch launch) {
+		this.launch = launch;
 	}
 
 	/**

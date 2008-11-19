@@ -11,17 +11,13 @@
 package org.eclipse.linuxtools.valgrind.massif;
 
 public class MassifSnapshot {
-	public static enum TimeUnit { INSTRUCTIONS, MILLISECONDS, BYTES };
 	public static enum SnapshotType { EMPTY, DETAILED, PEAK };
 	
-	protected long number;
-	protected long time;
-	protected long heapBytes;
-	protected long heapExtra;
-	protected long stacks;
-	
-	protected String cmd;
-	protected TimeUnit unit;
+	protected int number;
+	protected int time;
+	protected int heapBytes;
+	protected int heapExtra;
+	protected int stacks;
 	protected SnapshotType type;
 	protected MassifHeapTreeNode root;
 		
@@ -29,27 +25,27 @@ public class MassifSnapshot {
 		this.number = number;
 	}
 	
-	public long getNumber() {
+	public int getNumber() {
 		return number;
 	}
 
-	public long getHeapBytes() {
+	public int getHeapBytes() {
 		return heapBytes;
 	}
 	
-	public long getHeapExtra() {
+	public int getHeapExtra() {
 		return heapExtra;
 	}
 	
-	public long getStacks() {
+	public int getStacks() {
 		return stacks;
 	}
 	
-	public long getTime() {
+	public int getTime() {
 		return time;
 	}
 	
-	public long getTotal() {
+	public int getTotal() {
 		return heapBytes + heapExtra + stacks;
 	}
 	
@@ -57,31 +53,23 @@ public class MassifSnapshot {
 		return type;
 	}
 	
-	public String getCmd() {
-		return cmd;
-	}
-	
-	public TimeUnit getUnit() {
-		return unit;
-	}
-	
 	public MassifHeapTreeNode getRoot() {
 		return root;
 	}
 	
-	protected void setTime(long time) {
+	protected void setTime(int time) {
 		this.time = time;
 	}
 
-	protected void setHeapBytes(long heapBytes) {
+	protected void setHeapBytes(int heapBytes) {
 		this.heapBytes = heapBytes;
 	}
 
-	protected void setHeapExtra(long heapExtra) {
+	protected void setHeapExtra(int heapExtra) {
 		this.heapExtra = heapExtra;
 	}
 
-	protected void setStacks(long stacks) {
+	protected void setStacks(int stacks) {
 		this.stacks = stacks;
 	}
 	
@@ -89,15 +77,7 @@ public class MassifSnapshot {
 		this.type = type;
 	}
 	
-	protected void setCmd(String cmd) {
-		this.cmd = cmd;
-	}
-	
-	protected void setUnit(TimeUnit unit) {
-		this.unit = unit;
-	}
-	
-	protected void setRoot(MassifHeapTreeNode root) {
+	public void setRoot(MassifHeapTreeNode root) {
 		this.root = root;
 	}
 }
