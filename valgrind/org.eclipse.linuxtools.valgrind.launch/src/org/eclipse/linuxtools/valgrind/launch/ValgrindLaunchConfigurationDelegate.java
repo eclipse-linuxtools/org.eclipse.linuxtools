@@ -93,7 +93,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			monitor.worked(3);
 			DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
 		
-			dynamicDelegate.launch(command, monitor.newChild(3));
+			dynamicDelegate.launch(command, config, launch, monitor.newChild(3));
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 		} finally {
