@@ -33,6 +33,12 @@ public class ValgrindViewPart extends ViewPart {
 	}
 
 	public void createDynamicView(String toolID) throws CoreException {
+		// remove tool specific toolbar controls
+		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+		toolbar.removeAll();
+		toolbar.update(true);
+		
+		// remove old view controls
 		for (Control child : dynamicViewHolder.getChildren()) {
 			child.dispose();
 		}
@@ -50,11 +56,6 @@ public class ValgrindViewPart extends ViewPart {
 	}
 
 	public void refreshView() {
-		// remove tool specific toolbar controls
-		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-		toolbar.removeAll();
-		toolbar.update(true);
-		
 		if (dynamicView != null) {
 			dynamicView.refreshView();
 		}
