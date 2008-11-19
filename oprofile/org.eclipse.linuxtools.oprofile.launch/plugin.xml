@@ -4,12 +4,10 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="org.eclipse.linuxtools.oprofile.launch.launching.OprofileLaunchConfigurationDelegate"
+            delegate="org.eclipse.linuxtools.oprofile.launch.ProfileLaunchConfigurationDelegate"
             id="org.eclipse.linuxtools.oprofile.launch.oprofile"
             modes="profile"
-            name="%launchconfigurationtype.label"
-            sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
-            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+            name="%launchconfigurationtype.label">
       </launchConfigurationType>
    </extension>
    <extension
@@ -23,7 +21,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="org.eclipse.linuxtools.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
+            class="org.eclipse.linuxtools.oprofile.launch.LaunchConfigurationTabGroup"
             id="org.eclipse.linuxtools.oprofile.launch.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.oprofile.launch.oprofile">
       </launchConfigurationTabGroup>
@@ -31,7 +29,7 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="org.eclipse.linuxtools.oprofile.launch.launching.OprofileLaunchShortcut"
+            class="org.eclipse.linuxtools.oprofile.launch.ProfileLaunchShortcut"
             icon="icons/profile_run.png"
             id="org.eclipse.linuxtools.oprofile.launch.profileshortcut"
             label="%launchshortcuts.label"

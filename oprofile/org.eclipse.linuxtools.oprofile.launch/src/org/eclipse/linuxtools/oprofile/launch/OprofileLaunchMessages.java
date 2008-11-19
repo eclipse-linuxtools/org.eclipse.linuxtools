@@ -7,23 +7,33 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *******************************************************************************/
+ *******************************************************************************/ 
+
+
 package org.eclipse.linuxtools.oprofile.launch;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class OprofileLaunchMessages {
+public class OprofileLaunchMessages
+{
+
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.oprofile.launch.oprofilelaunch"; //$NON-NLS-1$
+
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	private OprofileLaunchMessages() {
+	private OprofileLaunchMessages()
+	{
 	}
 
-	public static String getString(String key) {
-		try {
+	public static String getString(String key)
+	{
+		try
+		{
 			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
+		}
+		catch (MissingResourceException e)
+		{
 			return '!' + key + '!';
 		}
 	}
