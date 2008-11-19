@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# This script installs the files necessary for root authentication when using
+# Eclipse-OProfile.
+
+test -x /usr/bin/consolehelper || (echo Error: /usr/bin/consolehelper does not exist! && exit)
+
+ln -s /usr/bin/consolehelper `pwd`/opcontrol || (echo Error: cannot create opcontrol wrapper in `pwd` && exit)
+
+install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
+install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol
+
+echo Eclipse-OProfile plugin install successful!
+echo Make sure that you have installed oprofile and that the oprofile module is loaded.
+echo 'To check, try `opcontrol --start-daemon`'
+echo 'If it does not run properly, you\'ll need to run `opcontrol --init` and perhaps `opcontrol --no-vmlinux`'
+

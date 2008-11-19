@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# This little wrapper script is currently necessary because a gcj-build will
+# not return the path to a link in the filesystem -- it always returns the
+# actual link target. This is a workaround until that is fixed. keiths-20040322
+exec -a opcontrol /usr/bin/consolehelper ${1+"$@"}

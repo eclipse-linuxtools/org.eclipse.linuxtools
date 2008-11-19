@@ -1,0 +1,22 @@
+Steps to take before using the plugin:
+
+-OPTIONAL: to compile opxml (if needed), read the README file in org.eclipse.linuxtools.oprofile.core/opxml
+
+-must have oprofile installed, and configured, by doing:
+
+	yum install oprofile
+	opcontrol --init
+
+  if no vmlinux image in /boot (not vmlinuz) then must also do
+	
+	opcontrol --no-vmlinux
+
+-must install the pam security wrappers by running
+
+	./install
+
+ in the scripts directory
+
+-must ensure that the scripts are user-level executable by running
+
+	./update-perms
