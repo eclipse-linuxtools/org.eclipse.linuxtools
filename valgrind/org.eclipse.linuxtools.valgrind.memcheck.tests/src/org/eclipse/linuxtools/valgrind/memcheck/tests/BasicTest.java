@@ -23,6 +23,7 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -85,6 +86,7 @@ public class BasicTest extends TestCase {
 		});
 		op.setCreateContainerStructure(false);
 		op.run(null);
+		proj.getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
 		proj.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 		return proj;
 	}
