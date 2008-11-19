@@ -10,74 +10,38 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelDependent implements IUiModelElement {
-	private IUiModelElement _parent;
-	private OpModelImage _dataModelDependents[];
-	private UiModelImage _dependents[];
-	private int _totalCount;
-	private int _depCount;
-	
-	public UiModelDependent(IUiModelElement parent, OpModelImage dependents[], int totalCount, int depCount) {
-		_parent = parent;
-		_dataModelDependents = dependents;
-		_dependents = null;
-		_totalCount = totalCount;
-		_depCount = depCount;
-		refreshModel();
-	}
 
-	private void refreshModel() {
-		_dependents = new UiModelImage[_dataModelDependents.length];
-		
-		for (int i = 0; i < _dataModelDependents.length; i++) {
-			_dependents[i] = new UiModelImage(this, _dataModelDependents[i], _totalCount, 0);
-		}
-	}
-	
 	@Override
-	public String toString() {
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		if (nf instanceof DecimalFormat) {
-			nf.setMinimumFractionDigits(2);
-			nf.setMaximumFractionDigits(2);
-		}
-		double countPercentage = (double)_depCount / (double)_totalCount;
-
-		String percentage;
-		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
-		} else {
-			percentage = nf.format(countPercentage);
-		}
-
-		return percentage + " in dependent images";
-	}
-
-	/** IUiModelElement functions **/
-	public String getLabelText() {
-		return toString();
-	}
-
 	public IUiModelElement[] getChildren() {
-		return _dependents;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public boolean hasChildren() {
-		return true;	//must have children, or this object wouldn't be created
-	}
-
-	public IUiModelElement getParent() {
-		return _parent;
-	}
-
+	@Override
 	public Image getLabelImage() {
-		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.DEPENDENT_ICON).createImage();
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public String getLabelText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IUiModelElement getParent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasChildren() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

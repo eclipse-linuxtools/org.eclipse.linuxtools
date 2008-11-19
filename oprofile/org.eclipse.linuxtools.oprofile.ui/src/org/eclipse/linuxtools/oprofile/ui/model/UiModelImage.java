@@ -10,93 +10,38 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
-/**
- * Children of sessions in the view -- the binary which was profiled. 
- * May or may not have child symbols. Note that although the dependent
- * images are children of OpModelImages in the data model, for usability's
- * sake they are children of the parent session in the tree.
- */
 public class UiModelImage implements IUiModelElement {
-	private IUiModelElement _parent;		//parent element, may be UiModelSession or UiModelDependent
-	private OpModelImage _image;			//the node in the data model
-	private UiModelSymbol _symbols[];		//this node's child (symbols)
-	private int _totalCount;				//total number of samples 
-	private int _depCount;					//number of samples from dependent images
 
-	public UiModelImage(IUiModelElement parent, OpModelImage image, int totalCount, int depCount) {
-		_parent = parent;
-		_image = image;
-		_symbols = null;
-		_totalCount = totalCount;
-		_depCount = depCount;
-		refreshModel();
-	}
-
-	private void refreshModel() {
-		OpModelSymbol[] dataModelSymbols = _image.getSymbols();
-		
-		//dependent images may not have symbols
-		if (dataModelSymbols != null) {
-			_symbols = new UiModelSymbol[dataModelSymbols.length];
-	
-			for (int i = 0; i < dataModelSymbols.length; i++) {
-				_symbols[i] = new UiModelSymbol(this, dataModelSymbols[i], _totalCount);
-			}
-		}
-	}
-	
 	@Override
-	public String toString() {
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		if (nf instanceof DecimalFormat) {
-			nf.setMinimumFractionDigits(2);
-			nf.setMaximumFractionDigits(2);
-		}
-		double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
-		
-		String percentage;
-		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
-		} else {
-			percentage = nf.format(countPercentage);
-		}
-		
-		return percentage + " in " + _image.getName();
-	}
-	
-	/** IUiModelElement functions **/
-	public String getLabelText() {
-		return toString();
-	}
-
 	public IUiModelElement[] getChildren() {
-		IUiModelElement children[] = null;
-		children = new IUiModelElement[_symbols.length];
-		
-		for (int i = 0; i < _symbols.length; i++) {
-			children[i] = _symbols[i];
-		}
-
-		return children;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public boolean hasChildren() {
-		return (_symbols == null || _symbols.length == 0 ? false : true);
-	}
-
-	public IUiModelElement getParent() {
-		return _parent;
-	}
-
+	@Override
 	public Image getLabelImage() {
-		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.IMAGE_ICON).createImage();
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public String getLabelText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IUiModelElement getParent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasChildren() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
