@@ -8,14 +8,5 @@
             name="%category.name.0">
       </category>
    </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.cdt.ui.CPerspective">
-         <actionSet
-               id="org.eclipse.debug.ui.profileActionSet">
-         </actionSet>
-      </perspectiveExtension>
-   </extension>
 
 </plugin>
