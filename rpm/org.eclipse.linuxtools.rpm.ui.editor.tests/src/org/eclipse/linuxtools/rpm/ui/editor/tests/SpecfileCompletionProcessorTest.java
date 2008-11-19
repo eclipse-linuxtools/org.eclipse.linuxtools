@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import java.io.ByteArrayInputStream;
+
+import junit.framework.TestCase;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileCompletionProcessor;
@@ -17,8 +22,10 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IDE;
 
-public class SpecfileCompletionProcessorTest extends FileTestCase {
+public class SpecfileCompletionProcessorTest extends TestCase {
 
+	private IFile testFile;
+	private SpecfileTestProject testProject;
 	public static final String ONE_SOURCE = "Source0: text.zip\n";
 	public static final String NO_SOURCE = "Patch3: somefilesomewhere.patch"
 			+ "\n" + "Patch2: someotherfile.patch\n";
@@ -27,19 +34,29 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 			+ "Source3: main.tar.gz";
 
 	private SpecfileEditor initEditor(String contents) throws Exception {
-		newFile(contents);
-		IEditorPart openEditor = IDE.openEditor(Activator.getDefault()
-				.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
-				testFile);
+		testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
+				true, false, null);
+		IEditorPart openEditor = IDE
+				.openEditor(Activator.getDefault().getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage(), testFile,
+						"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", true);
 		return (SpecfileEditor) openEditor;
+	}
+
+	protected void setUp() throws Exception {
+		testProject = new SpecfileTestProject();
+		testFile = testProject.createFile("testspecfile.spec");
+	}
+
+	protected void tearDown() throws Exception {
+		testProject.dispose();
 	}
 
 	private synchronized void computeCompletionProposals(String specContent,
 			int occurances) throws Exception {
 		SpecfileEditor editor = initEditor(specContent);
 		testProject.refresh();
-		// This is needed so the changes in the testFile are loaded in the
-		// editor
+		//This is needed so the changes in the testFile are loaded in the editor
 		editor.doRevertToSaved();
 		SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
 				editor);

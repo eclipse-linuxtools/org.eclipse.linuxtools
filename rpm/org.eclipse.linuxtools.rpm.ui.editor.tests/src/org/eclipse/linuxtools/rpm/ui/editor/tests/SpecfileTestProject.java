@@ -42,12 +42,16 @@ public class SpecfileTestProject {
 	}
 	
 	public IFile createFile(String filename) throws CoreException {
-		IFile testSpecfile = project.getFile("testspecfile.spec");
-		testSpecfile.create(null, false, null);
+		IFile testSpecfile = project.getFile(filename);
+		testSpecfile.create(null, true, null);
 		return testSpecfile;
 	}
 	
 	protected IMarker[] getFailureMarkers() throws CoreException {
 		return project.findMarkers("org.eclipse.linuxtools.rpm.ui.editor.specfileerror", false, IResource.DEPTH_INFINITE);
+	}
+
+	public void refresh() throws CoreException {
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 }

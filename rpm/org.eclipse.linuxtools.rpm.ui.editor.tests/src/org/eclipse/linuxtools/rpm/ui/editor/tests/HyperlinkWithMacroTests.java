@@ -56,7 +56,7 @@ public class HyperlinkWithMacroTests extends TestCase {
 	}
 
 	protected void newFile(String contents) throws Exception {
-		testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
+		testFile.setContents(new ByteArrayInputStream(contents.getBytes()), true, false, null);
 		testDocument = new Document(contents);
 		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
 		parser.setErrorHandler(errorHandler);
@@ -76,13 +76,13 @@ public class HyperlinkWithMacroTests extends TestCase {
 					"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 
 			editor = (SpecfileEditor) openEditor;
+			editor.doRevertToSaved();
 			IHyperlink[] returned = macroDetector.detectHyperlinks(editor
 					.getSpecfileSourceViewer(), region, false);
 			URLHyperlink url = (URLHyperlink) returned[0];
 			assertEquals("http://www.eclipse.org/", url.getURLString());
-			editor.dispose();
 		} catch (Exception e) {
-			fail();
+			fail(e.getMessage());
 		}
 	}
 

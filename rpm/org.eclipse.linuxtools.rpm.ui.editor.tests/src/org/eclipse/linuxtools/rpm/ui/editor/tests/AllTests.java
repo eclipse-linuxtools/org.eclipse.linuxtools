@@ -38,6 +38,7 @@ public class AllTests {
 //		suite.addTestSuite(SpecfilePackagesScannerTests.class);
 		suite.addTestSuite(SpecfileScannerTests.class);
 		suite.addTestSuite(SpecfileChangelogScannerTests.class);
+		suite.addTestSuite(SpecfileCompletionProcessorTest.class);
 		//$JUnit-END$
 		return suite;
 	}

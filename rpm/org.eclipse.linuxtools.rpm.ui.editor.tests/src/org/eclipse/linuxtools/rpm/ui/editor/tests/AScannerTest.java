@@ -50,11 +50,13 @@ abstract class AScannerTest extends TestCase {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("testspecfile.spec");
 		newFile(getContents());
+		testProject.refresh();
 		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(Activator
 				.getDefault().getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage(), testFile,
 		"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 		editor = (SpecfileEditor) openEditor;
+		editor.doRevertToSaved();
 		rulesBasedScanner = getScanner();
 		rulesBasedScanner.setRange(testDocument, 0, getContents().length());
 	}
@@ -64,7 +66,6 @@ abstract class AScannerTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		editor.dispose();
 		testProject.dispose();
 	}
 

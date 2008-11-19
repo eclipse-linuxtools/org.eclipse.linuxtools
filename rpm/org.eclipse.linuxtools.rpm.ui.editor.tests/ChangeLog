@@ -1,3 +1,18 @@
+2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix #214247 + cleanups.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 
+	(suite): Run SpecfileCompletionProcessorTest.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java 
+	(setUp): Ensure using the modified test file.
+	(tearDown): Do not dispose editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java 
+	(testMacroResolutionInUrl): Ensure using the modified test file.
+	(newFile): Force changing file content.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java 
+	(createFile): Use the parameter as a file name instead of the hardcoded value.
+	(refresh): New method to synchronize the project content with local fs.
+
 2008-11-06  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: gef-folder -> specfile-folder.
