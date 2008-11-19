@@ -18,8 +18,8 @@ OPROFILE_LIB_OBJS =	stable.o oprofiledb.o symbol.o sample.o \
 			session.o samplefile.o imageheader.o opinfo.o \
 			xmlfmt.o xmlbuf.o xmltag.o \
 			sevent.o profileimage.o
-OPXML_EXEC =		..
-
+OPXML_EXEC_DIR =	..
+OPXML_EXEC =		$(OPXML_EXEC_DIR)/$(OPXML)
 
 all: $(OPXML)
 
