@@ -1,5 +1,7 @@
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	(getBundleValue): Remove org.eclipse.core.internal classes usage.
 	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java 
 	(run): Fix generics warning.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
