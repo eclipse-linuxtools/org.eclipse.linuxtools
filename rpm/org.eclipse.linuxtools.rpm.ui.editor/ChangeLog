@@ -1,3 +1,10 @@
+2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java: Commented unneeded var. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java 
+	(handleBrowse): Use constant from the defining class.
+
 2008-11-11  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix #254925.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java: 

@@ -57,9 +57,9 @@ public class SpecfileParser {
 	private static String[] complexDefinitions = { "Source", "Patch" };
 
 	// FIXME:  Handle package-level definitions	
-	private static String[] packageLevelDefinitions = { "Summary", "Group",
-			"Obsoletes", "Provides", "BuildRequires", "Requires",
-			"Requires(pre)", "Requires(post)", "Requires(postun)" };
+//	private static String[] packageLevelDefinitions = { "Summary", "Group",
+//			"Obsoletes", "Provides", "BuildRequires", "Requires",
+//			"Requires(pre)", "Requires(post)", "Requires(postun)" };
 
 	private SpecfileErrorHandler errorHandler;
 
