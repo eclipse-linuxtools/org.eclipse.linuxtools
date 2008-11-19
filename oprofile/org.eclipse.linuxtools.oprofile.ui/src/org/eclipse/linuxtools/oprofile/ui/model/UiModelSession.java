@@ -10,74 +10,43 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
-/**
- * Children of events in the view -- sessions containing images/symbols
- *  for its parent event. Must have a child image. May also have dependent
- *  images, which are children of the Image in the data model, but are 
- *  displayed as children of the session in the view.
- */
 public class UiModelSession implements IUiModelElement {
-	private IUiModelElement _parent;		//parent element
-	private OpModelSession _session;		//the node in the data model
-	private UiModelImage _image;			//this node's child
-	private UiModelDependent _dependent;	//dependent images of the OpModelImage
 
-	//OProfile's default session name
-	private static final String DEFAULT_SESSION_NAME = "current";
-	
-	public UiModelSession(IUiModelElement parent, OpModelSession session) {
-		_parent = parent;
-		_session = session;
-		_image = null;
-		_dependent = null;
-		refreshModel();
-	}
-	
-	private void refreshModel() {
-		OpModelImage dataModelImage = _session.getImage();
-		_image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
-		
-		if (dataModelImage.hasDependents()) {
-			_dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
-		}
+	@Override
+	public IUiModelElement[] getChildren() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public String toString() {
-		return _session.getName();
-	}
-	
-	public boolean isDefaultSession() {
-		return _session.getName().equalsIgnoreCase(DEFAULT_SESSION_NAME);
+	public Image getLabelImage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	/** IUiModelElement functions **/
+	@Override
+	public IUiModelElement getParent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasChildren() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public String getLabelText() {
 		return toString();
 	}
 
-	public IUiModelElement[] getChildren() {
-		if (_dependent != null) {
-			return new IUiModelElement[] {_image, _dependent};
-		} else {
-			return new IUiModelElement[] {_image};
-		}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "";
 	}
 
-	public boolean hasChildren() {
-		return (_image != null);
-	}
-
-	public IUiModelElement getParent() {
-		return _parent;
-	}
-
-	public Image getLabelImage() {
-		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.SESSION_ICON).createImage();
-	}
 }

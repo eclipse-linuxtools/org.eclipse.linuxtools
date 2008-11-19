@@ -15,15 +15,18 @@ import org.eclipse.linuxtools.oprofile.core.model.OpModelRoot;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Convenience class for creating the UI model from the oprofile data model,
- *  via a single point of access.
+ * Convenience class for parsing the UI data model from the oprofile data model.
  */
 public class UiModelRoot implements IUiModelElement {
-	private static UiModelRoot _uiModelRoot = new UiModelRoot();	//singleton
-	private UiModelEvent[] _events;									//this node's children
+	//singleton
+	private static UiModelRoot _uiModelRoot = new UiModelRoot();
 
+	//event children
+	private UiModelEvent[] _events;
 
-	/** constructor, private for singleton use **/
+	/**
+	 * constructor, private for singleton
+	 */
 	private UiModelRoot() {
 		refreshModel();
 		_uiModelRoot = this;
@@ -36,42 +39,45 @@ public class UiModelRoot implements IUiModelElement {
 	public static UiModelRoot getDefault() {
 		return _uiModelRoot;
 	}
-
-	/**
-	 * Kick off creating the UI model from the data model. Meant to 
-	 * 	be called from UI code. The refreshModel() method is called for 
-	 *  the child elements from their constructor.
-	 */
+	
 	public void refreshModel() {
 		OpModelRoot modelRoot = OpModelRoot.getDefault();
 		OpModelEvent dataModelEvents[] = modelRoot.getEvents();
 
-		if (dataModelEvents != null) {
-			_events = new UiModelEvent[dataModelEvents.length];
-			for (int i = 0; i < dataModelEvents.length; i++) {
-				_events[i] = new UiModelEvent(dataModelEvents[i]);
-			}
+		_events = new UiModelEvent[dataModelEvents.length];
+		for (int i = 0; i < dataModelEvents.length; i++) {
+			_events[i] = new UiModelEvent(dataModelEvents[i]);
 		}
 	}
+	
+	public UiModelEvent[] getEvents() {
+		return _events;
+	}
 
-	/** IUiModelElement functions **/
+	@Override
+	public IUiModelElement[] getChildren() {
+		return getEvents();
+	}
+
+	@Override
+	public Image getLabelImage() {
+		return null;
+	}
+
+	@Override
 	public String getLabelText() {
 		return null;
 	}
 
-	public IUiModelElement[] getChildren() {
-		return _events;
-	}
-
-	public boolean hasChildren() {
-		return (_events.length == 0 ? false : true);
-	}
-
+	@Override
 	public IUiModelElement getParent() {
 		return null;
 	}
 
-	public Image getLabelImage() {
-		return null;
+	@Override
+	public boolean hasChildren() {
+		return (_events.length == 0 ? false : true);
 	}
+
+	
 }
