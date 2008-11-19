@@ -1,5 +1,7 @@
 package org.eclipse.linuxtools.profiling.ui;
 
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -45,6 +47,14 @@ public class ProfileUIPlugin extends AbstractUIPlugin {
 	 */
 	public static ProfileUIPlugin getDefault() {
 		return plugin;
+	}
+	
+	public static Shell getActiveWorkbenchShell() {
+		IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
+		if (window != null) {
+			return window.getShell();
+		}
+		return null;
 	}
 
 }
