@@ -57,7 +57,7 @@ public class StubifyAction implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 		StructuredSelection structuredSelection = (StructuredSelection) selection;
-		for (Iterator selectionIter = structuredSelection.iterator(); selectionIter.hasNext();) {
+		for (Iterator<?> selectionIter = structuredSelection.iterator(); selectionIter.hasNext();) {
 			Object selected = selectionIter.next();
 			if (selected instanceof IProject) {
 				featureFile = ((IProject) selected).getFile(new Path("/feature.xml"));

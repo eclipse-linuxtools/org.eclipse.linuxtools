@@ -92,7 +92,6 @@ public class StubbyGenerator {
 		buffer.append("BuildRequires: eclipse-pde >= 1:3.3.0\n");
 		buffer.append("Requires: eclipse-platform >= 3.3.1\n");
 		buffer.append(getDepsOrReqs("Requires: ", mainPackage.getRequires()));
-		buffer.append(getDepsOrReqs("Provides: ", mainPackage.getProvides()));
 		buffer.append("\n%description\n" + mainPackage.getDescription() + "\n");
 		for (SubPackage subPackage: subPackages) {
 			String subPackageName = getPackageName(subPackage.getName());
