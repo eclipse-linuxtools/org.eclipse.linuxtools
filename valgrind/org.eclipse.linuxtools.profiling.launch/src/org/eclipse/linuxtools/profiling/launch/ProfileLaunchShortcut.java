@@ -10,12 +10,6 @@
  * Ken Ryall (Nokia) - bug 178731
  * Elliott Baron <ebaron@redhat.com> - Modified implementation
  *******************************************************************************/
-/*
- * (c) 2008 Red Hat, Inc.
- *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
 package org.eclipse.linuxtools.profiling.launch;
 
 import java.lang.reflect.InvocationTargetException;
