@@ -1,4 +1,13 @@
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Add project specific compiler warnings.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 
+	(suite): Enable SpecfilePackagesScannerTests. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java 
+	(setUp): Add missing @Override.
+	(tearDown): Likewise.
+
+2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix #214247 + cleanups.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java: New file.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 

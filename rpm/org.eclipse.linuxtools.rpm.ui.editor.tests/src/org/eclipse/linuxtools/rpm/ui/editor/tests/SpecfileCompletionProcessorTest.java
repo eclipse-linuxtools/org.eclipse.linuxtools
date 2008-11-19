@@ -43,11 +43,13 @@ public class SpecfileCompletionProcessorTest extends TestCase {
 		return (SpecfileEditor) openEditor;
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		testProject = new SpecfileTestProject();
 		testFile = testProject.createFile("testspecfile.spec");
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		testProject.dispose();
 	}

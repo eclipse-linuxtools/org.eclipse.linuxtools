@@ -35,7 +35,7 @@ public class AllTests {
 		suite.addTestSuite(RpmMacroProposalsListTests.class);
 		suite.addTestSuite(RpmPackageProposalsListTests.class);
 		suite.addTestSuite(HyperlinkWithMacroTests.class);
-//		suite.addTestSuite(SpecfilePackagesScannerTests.class);
+		suite.addTestSuite(SpecfilePackagesScannerTests.class);
 		suite.addTestSuite(SpecfileScannerTests.class);
 		suite.addTestSuite(SpecfileChangelogScannerTests.class);
 		suite.addTestSuite(SpecfileCompletionProcessorTest.class);
