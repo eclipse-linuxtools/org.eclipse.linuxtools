@@ -1,3 +1,7 @@
+2008-11-20  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Unpack test plugin JARs.
+
 2008-11-07  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Don't require org.eclipse.test.
