@@ -12,7 +12,9 @@ package org.eclipse.linuxtools.oprofile.ui.model;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
+import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
 import org.eclipse.swt.graphics.Image;
 
@@ -25,7 +27,6 @@ public class UiModelSymbol implements IUiModelElement {
 	private OpModelSymbol _symbol;		//the node in the data model
 	private UiModelSample _samples[];	//this node's children
 	private int _totalCount;			//total count of samples for the parent session
-	private double _countPercentage;	//percentage of samples under this symbol
 	
 	public UiModelSymbol(IUiModelElement parent, OpModelSymbol symbol, int totalCount) {
 		_parent = parent;
@@ -36,8 +37,19 @@ public class UiModelSymbol implements IUiModelElement {
 	}	
 	
 	private void refreshModel() {
-		_countPercentage = (double)_symbol.getCount() / (double)_totalCount;
-		//TODO
+		ArrayList<UiModelSample> sampleList = new ArrayList<UiModelSample>();
+		OpModelSample dataModelSamples []= _symbol.getSamples();
+		
+		for (int i = 0; i < dataModelSamples.length; i++) {
+			//dont display samples with line number of 0, meaning no line number
+			// was correlated, more likely that no source file exists
+			if (dataModelSamples[i].getLine() != 0) {
+				sampleList.add(new UiModelSample(this, dataModelSamples[i], _totalCount));
+			}
+		}
+		
+		_samples = new UiModelSample[sampleList.size()];
+		sampleList.toArray(_samples);
 	}
 	
 	@Override
@@ -47,12 +59,14 @@ public class UiModelSymbol implements IUiModelElement {
 			nf.setMinimumFractionDigits(2);
 			nf.setMaximumFractionDigits(2);
 		}
+
+		double countPercentage = (double)_symbol.getCount() / (double)_totalCount;
 		
 		String percentage;
-		if (_countPercentage < 0.0001) {
+		if (countPercentage < 0.0001) {
 			percentage = "<" + nf.format(0.0001);
 		} else {
-			percentage = nf.format(_countPercentage);
+			percentage = nf.format(countPercentage);
 		}
 
 		return percentage + " in " + _symbol.getName() + ", from file " + _symbol.getFile();

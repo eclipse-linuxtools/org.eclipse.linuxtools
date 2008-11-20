@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.Image;
  * sake they are children of the parent session in the tree.
  */
 public class UiModelImage implements IUiModelElement {
-	private IUiModelElement _parent;		//parent element
+	private IUiModelElement _parent;		//parent element, may be UiModelSession or UiModelDependent
 	private OpModelImage _image;			//the node in the data model
 	private UiModelSymbol _symbols[];		//this node's child (symbols)
 	private int _totalCount;				//total number of samples 
