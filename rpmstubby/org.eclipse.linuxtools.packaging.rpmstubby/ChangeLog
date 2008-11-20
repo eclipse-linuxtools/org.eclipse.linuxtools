@@ -1,5 +1,10 @@
 2008-11-20  Alexander Kurtakov  <akurtakov@gmail.com>
 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(generateSpecfile): Make it install in %{_datadir}/eclipse/dropins/feature_name.
+		
+2008-11-20  Alexander Kurtakov  <akurtakov@gmail.com>
+
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
 	* src/org/eclipse/linuxtools/rpmstubby/model/IPackage.java: Switch to Lists from arrays.
 	* src/org/eclipse/linuxtools/rpmstubby/model/IPackagePreamble.java: Likewise.

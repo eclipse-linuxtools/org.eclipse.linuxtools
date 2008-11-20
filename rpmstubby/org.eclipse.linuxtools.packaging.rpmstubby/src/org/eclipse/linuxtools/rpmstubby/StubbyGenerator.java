@@ -55,12 +55,14 @@ public class StubbyGenerator {
 	
 	public String generateSpecfile() {
 		StringBuffer buffer = new StringBuffer();
-		String packageName = "eclipse-" + getPackageName(mainPackage.getName());
+		String simplePackageName = getPackageName(mainPackage.getName());
+		String packageName = "eclipse-" + simplePackageName;
 		if (withGCJSupport)
 			buffer.append("%define gcj_support    1\n"); 
 		if (withFetchScript)
 			buffer.append("%define src_repo_tag   FIXME\n");
-		buffer.append("%define eclipse_base   %{_libdir}/eclipse\n\n");
+		buffer.append("%define eclipse_base   %{_libdir}/eclipse\n");
+		buffer.append("%define install_loc    %{_datadir}/eclipse/dropins/"+simplePackageName+"\n\n");
 		buffer.append("Name:           " + packageName + "\n");
 		buffer.append("Version:        " + mainPackage.getVersion().replaceAll("\\.qualifier","") + "\n");
 		buffer.append("Release:        1%{?dist}" + "\n");
@@ -109,7 +111,8 @@ public class StubbyGenerator {
 		generateBuildSection(buffer);
 		buffer.append("%install\n");
 		buffer.append("%{__rm} -rf %{buildroot}\n");
-		buffer.append("%{__unzip} -q -d %{buildroot}%{eclipse_base}/.. \\\n");
+		buffer.append("install -d -m 755 $RPM_BUILD_ROOT%{install_loc}\n\n");
+		buffer.append("%{__unzip} -q -d $RPM_BUILD_ROOT%{install_loc} \\\n");
 		buffer.append("     build/rpmBuild/" + mainPackage.getName() + ".zip \n\n");
 		if (withGCJSupport) {
 			buffer.append("%if %{gcj_support}\n");
@@ -132,10 +135,7 @@ public class StubbyGenerator {
 		}
 		buffer.append("%files\n");
 		buffer.append("%defattr(-,root,root,-)\n");
-		buffer.append("%dir %{eclipse_base}/features/" + mainPackage.getName() + "_*/\n");
-		buffer.append("%doc %{eclipse_base}/features/" + mainPackage.getName() + "_*/*.html\n");
-		buffer.append("%{eclipse_base}/features/" + mainPackage.getName() + "_*/feature.*\n");
-		buffer.append(getPackageFiles(mainPackage.getProvides(), withGCJSupport) + "\n");
+		buffer.append("%{install_loc}\n\n");
 		for (SubPackage subPackage: subPackages) {
 			buffer.append("%files " + getPackageName(subPackage.getName()) + "\n");
 			buffer.append("%dir %{eclipse_base}/features/" + subPackage.getName() + "_*/\n");
@@ -143,6 +143,8 @@ public class StubbyGenerator {
 			buffer.append("%{eclipse_base}/features/" + subPackage.getName() + "_*/feature.*\n");		
 			buffer.append(getPackageFiles(subPackage.getProvides(), withGCJSupport) + "\n");
 		}
+		buffer.append("%changelog\n\n");
+		buffer.append("FIXME\n");
 		return buffer.toString();
 	}
 
