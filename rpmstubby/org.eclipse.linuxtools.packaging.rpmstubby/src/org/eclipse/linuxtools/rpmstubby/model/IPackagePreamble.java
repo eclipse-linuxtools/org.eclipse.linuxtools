@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.model;
 
+import java.util.List;
+
 public interface IPackagePreamble {
 	
 	public String getRelease();
@@ -24,20 +26,20 @@ public interface IPackagePreamble {
 
 	public void setURL(String url);
 
-	public String[] getSources();
+	public List<String> getSources();
 
-	public void setSources(String[] sources);
+	public void setSources(List<String> sources);
 
-	public String[] getPaches();
+	public List<String> getPaches();
 
-	public void setPaches(String[] paches);
+	public void setPaches(List<String> paches);
 
 	public String getBuildroot();
 
 	public void setBuildroot(String buildroot);
 	
-	public PackageItem[] getBuildRequires();
+	public List<PackageItem> getBuildRequires();
 
-	public void setBuildRequires(PackageItem[] buildRequires);
+	public void setBuildRequires(List<PackageItem> buildRequires);
 	
 }

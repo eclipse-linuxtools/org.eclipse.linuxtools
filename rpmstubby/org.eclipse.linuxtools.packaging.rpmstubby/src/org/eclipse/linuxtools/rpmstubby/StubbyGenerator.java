@@ -60,7 +60,7 @@ public class StubbyGenerator {
 			buffer.append("%define gcj_support    1\n"); 
 		if (withFetchScript)
 			buffer.append("%define src_repo_tag   FIXME\n");
-		buffer.append("%define eclipse_base   %{_datadir}/eclipse\n\n");
+		buffer.append("%define eclipse_base   %{_libdir}/eclipse\n\n");
 		buffer.append("Name:           " + packageName + "\n");
 		buffer.append("Version:        " + mainPackage.getVersion().replaceAll("\\.qualifier","") + "\n");
 		buffer.append("Release:        1%{?dist}" + "\n");
@@ -218,7 +218,11 @@ public class StubbyGenerator {
 
 	public String getPackageName(String packageName) {
 		String[] packageItems = packageName.split("\\.");
-		return packageItems[packageItems.length - 1];
+		String name = packageItems[packageItems.length - 1];
+		if (name.equalsIgnoreCase("feature")){
+			name = packageItems[packageItems.length - 2];
+		}
+		return name;
 	}
 	
 	public void writeContent(String projectName, String fileName, String contents) throws CoreException  {
@@ -262,20 +266,20 @@ public class StubbyGenerator {
 		throw new CoreException(status);
 	}
 
-	private String getDepsOrReqs(String preString, PackageItem[] packageItems) {
+	private String getDepsOrReqs(String preString, List<PackageItem> packageItems) {
 		String toRet = "";
-		for (int i = 0; i < packageItems.length; i++) {
-			toRet += preString + packageItems[i].getName() + " "
-			+ packageItems[i].getOperator() + " "
-			+ packageItems[i].getVersion() + "\n";
+		for (PackageItem packageItem: packageItems) {
+			toRet += preString + packageItem.getName() + " "
+			+ packageItem.getOperator() + " "
+			+ packageItem.getVersion() + "\n";
 		}
 		return toRet;
 	}
 
-	private String getProvidesBundlesString(PackageItem[] packageItems) {
+	private String getProvidesBundlesString(List<PackageItem> packageItems) {
 		String toRet = "";
-		for (int i = 0; i < packageItems.length; i++) {
-			toRet += packageItems[i].getName() + "\n";
+		for (PackageItem packageItem: packageItems) {
+			toRet += packageItem.getName() + "\n";
 		}
 		return toRet;
 	}
@@ -288,22 +292,22 @@ public class StubbyGenerator {
 		return toRet;
 	}
 	
-	private HashSet<String> getProvidesBundles(PackageItem[] packageItems, HashSet<String> uniqueProvides) {
-		for (int i = 0; i < packageItems.length; i++) {
-			 uniqueProvides.add(packageItems[i].getName());
+	private HashSet<String> getProvidesBundles(List<PackageItem> packageItems, HashSet<String> uniqueProvides) {
+		for (PackageItem packageItem : packageItems) {
+			uniqueProvides.add(packageItem.getName());
 		}
 		return uniqueProvides;
 	}
 	
-	private String getPackageFiles(PackageItem[] packageItems, boolean withGCJSupport) {
+	private String getPackageFiles(List<PackageItem> packageItems, boolean withGCJSupport) {
 		String toRet = "";
-		for (int i = 0; i < packageItems.length; i++) {
-			toRet += "%{eclipse_base}/plugins/" + packageItems[i].getName() + "_*.jar\n"; 
+		for (PackageItem packageItem: packageItems) {
+			toRet += "%{eclipse_base}/plugins/" + packageItem.getName() + "_*.jar\n"; 
 		}
 		if (withGCJSupport) {
 			toRet += "%if %{gcj_support}\n";
-			for (int i = 0; i < packageItems.length; i++) {
-				toRet += "%{_libdir}/gcj/%{name}/" + packageItems[i].getName() + "_*\n"; 
+			for (PackageItem packageItem: packageItems) {
+				toRet += "%{_libdir}/gcj/%{name}/" + packageItem.getName() + "_*\n"; 
 			}
 			toRet += "%endif\n";
 		}

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.model;
 
+import java.util.List;
+
 public interface IPackage {
 
 	public String getName();
@@ -28,13 +30,13 @@ public interface IPackage {
 
 	public void setDescription(String description);
 
-	public PackageItem[] getRequires();
+	public List<PackageItem> getRequires();
 
-	public void setRequires(PackageItem[] requires);
+	public void setRequires(List<PackageItem> requires);
 
-	public PackageItem[] getProvides();
+	public List<PackageItem> getProvides();
 
-	public void setProvides(PackageItem[] provides);
+	public void setProvides(List<PackageItem> provides);
 	
 	public String getVersion();
 

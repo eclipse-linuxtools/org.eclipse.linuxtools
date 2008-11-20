@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.model;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class SubPackage implements IPackage {
 
@@ -19,8 +19,8 @@ public class SubPackage implements IPackage {
 	private String group;
 	private String summary;
 	private String description;
-	private PackageItem[] requires;
-	private PackageItem[] provides;
+	private List<PackageItem> requires;
+	private List<PackageItem> provides;
 
 	public String getName() {
 		return name;
@@ -54,19 +54,19 @@ public class SubPackage implements IPackage {
 		this.description = description;
 	}
 
-	public PackageItem[] getRequires() {
+	public List<PackageItem> getRequires() {
 		return requires;
 	}
 
-	public void setRequires(PackageItem[] requires) {
+	public void setRequires(List<PackageItem> requires) {
 		this.requires = requires;
 	}
 
-	public PackageItem[] getProvides() {
+	public List<PackageItem> getProvides() {
 		return provides;
 	}
 
-	public void setProvides(PackageItem[] provides) {
+	public void setProvides(List<PackageItem> provides) {
 		this.provides = provides;
 	}
 
@@ -89,13 +89,13 @@ public class SubPackage implements IPackage {
 			buffer.append("\nProvides: ").append("null");
 		} else {
 			buffer.append("\nProvides: ").append(
-					Arrays.asList(provides).toString());
+					provides.toString());
 		}
 		if (requires == null) {
 			buffer.append("\nRequires: ").append("null");
 		} else {
 			buffer.append("\nRequires: ").append(
-					Arrays.asList(requires).toString());
+					requires.toString());
 		}
 		buffer.append("\n\n%description ").append(name + "\n");
 		buffer.append(description);

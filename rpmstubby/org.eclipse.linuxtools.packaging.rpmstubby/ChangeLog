@@ -1,3 +1,43 @@
+2008-11-20  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/rpmstubby/model/IPackage.java: Switch to Lists from arrays.
+	* src/org/eclipse/linuxtools/rpmstubby/model/IPackagePreamble.java: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java 
+	(getSources): Likewise.
+	(setPaches): Likewise.
+	(toString): Likewise
+	(setSources): Likewise.
+	(getBuildRequires): Likewise
+	(setBuildRequires): Likewise
+	(getPaches): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/model/SubPackage.java 
+	(setProvides): Likewise.
+	(toString): Likewise.
+	(getProvides): Likewise.
+	(setRequires): Likewise.
+	(getRequires): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(getPackageName): Do not use feature as the name of the feature.
+	(getDepsOrReqs): Switch to Lists from arrays.
+	(getPackageFiles): Likewise.
+	(getProvidesBundles): Likewise.
+	(generateSpecfile): Fix %eclipse_base value.
+	(getProvidesBundlesString): Switch to Lists from arrays.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	(getDescription): Switch to Lists from arrays.
+	(getLicense): Likewise.
+	(StubbyPackageModel): Likewise.
+	(resolveFeatureProperties): Likewise.
+	(getMissingFeaturesAsString): Likewise.
+	(isFeatureIncluded): Likewise.
+	(getIncudedFeatures): Likewise.
+	(getBundleValue): Likewise.
+	(isAllIncludedFeatureFound): Likewise.
+	(getProvides): Likewise.
+	(getRequires): Likewise.
+	(populatePackagePreambleData): Likewise.
+
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 

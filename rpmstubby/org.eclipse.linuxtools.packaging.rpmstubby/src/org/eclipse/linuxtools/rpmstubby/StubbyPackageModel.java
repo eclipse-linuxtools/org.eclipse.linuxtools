@@ -36,29 +36,31 @@ import org.eclipse.update.core.model.URLEntryModel;
 import org.xml.sax.SAXException;
 
 public class StubbyPackageModel {
-	
+
 	private static final String valueNoFoundMessage = "FIXME";
 	private String featurePropertiesFile;
 	private FeatureModel featureModel;
 	private List<IFile> includedFeatureFiles = new ArrayList<IFile>();
-	private String[] includedFeatureIdentifiers;
+	private List<String> includedFeatureIdentifiers;
 	private List<String> includedFeatureIdentifiersAdded;
-	
+
 	public StubbyPackageModel(IFile featureFile) {
-		this.featurePropertiesFile = featureFile.getLocation().removeLastSegments(1).toOSString() + "/feature.properties";
+		this.featurePropertiesFile = featureFile.getLocation()
+				.removeLastSegments(1).toOSString()
+				+ "/feature.properties";
 		FeatureModelFactory featureModelFactory = new FeatureModelFactory();
 		try {
-			this.featureModel = featureModelFactory
-			.parseFeature(featureFile.getContents());
+			this.featureModel = featureModelFactory.parseFeature(featureFile
+					.getContents());
 		} catch (CoreException e) {
-			// Can be throw if the file does not exist. 
+			// Can be throw if the file does not exist.
 			StubbyLog.logError(e);
 		} catch (SAXException e) {
 			// Probably malformed feature.xml?
 			StubbyLog.logError(e);
 		}
 	}
-	
+
 	public void populatePackageData(IPackage packageModel) {
 		packageModel.setName(getFeatureName());
 		packageModel.setVersion(getVersion());
@@ -67,71 +69,82 @@ public class StubbyPackageModel {
 		packageModel.setProvides(getProvides());
 		packageModel.setRequires(getRequires());
 	}
-	
-	public void populatePackagePreambleData(IPackagePreamble packagePreambleModel) {
+
+	public void populatePackagePreambleData(
+			IPackagePreamble packagePreambleModel) {
 		packagePreambleModel.setURL(getURL());
 		packagePreambleModel.setLicense(getLicense());
 	}
-	
+
 	public List<IFile> getIncudedFeatures() {
 		FeatureModelFactory featureModelFactory = new FeatureModelFactory();
-		IIncludedFeatureReference[] includedFeatureReferences = featureModel.getFeatureIncluded();
-		includedFeatureIdentifiers = new String[includedFeatureReferences.length];
+		IIncludedFeatureReference[] includedFeatureReferences = featureModel
+				.getFeatureIncluded();
+		includedFeatureIdentifiers = new ArrayList<String>();
 		includedFeatureIdentifiersAdded = new ArrayList<String>();
 		try {
-			for (int i = 0; i < includedFeatureReferences.length; i++) {
-				VersionedIdentifier versionedIdentifier = includedFeatureReferences[i].getVersionedIdentifier();
-				includedFeatureIdentifiers[i] = versionedIdentifier.getIdentifier();
+			for (IIncludedFeatureReference includedFeatureReference: includedFeatureReferences) {
+				VersionedIdentifier versionedIdentifier = includedFeatureReference.getVersionedIdentifier();
+				includedFeatureIdentifiers.add(versionedIdentifier
+						.getIdentifier());
 			}
-	        IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
-	        IProject[] projects = workspace.getProjects();
-	        for (int i = 0; i < projects.length; i++) {
+			IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
+			IProject[] projects = workspace.getProjects();
+			for (IProject project: projects) {
 				FeatureVisitor featureVisitor = new FeatureVisitor();
-				projects[i].accept(featureVisitor);
-		        for (IFile featureFile: featureVisitor.getFeatures()) {
-		        	FeatureModel includedFeatureModel = featureModelFactory.parseFeature(featureFile.getContents());
-		        	if (isFeatureIncluded(includedFeatureModel.getFeatureIdentifier())) {
-		        		// Each feature that include other features is considered as a
-		        		// top-level RPM package.
-		        		if (includedFeatureModel.getFeatureIncluded().length > 0) {
-		        			SpecfileWriter specfileWriter = new SpecfileWriter();
-		        			specfileWriter.write(featureFile);
-		        		} else 
-		        			includedFeatureIdentifiersAdded.add(includedFeatureModel.getFeatureIdentifier());
-		        			includedFeatureFiles.add(featureFile);
-		        	}
-		        }
-	        }
+				project.accept(featureVisitor);
+				for (IFile featureFile : featureVisitor.getFeatures()) {
+					FeatureModel includedFeatureModel = featureModelFactory
+							.parseFeature(featureFile.getContents());
+					if (isFeatureIncluded(includedFeatureModel
+							.getFeatureIdentifier())) {
+						// Each feature that include other features is
+						// considered as a
+						// top-level RPM package.
+						if (includedFeatureModel.getFeatureIncluded().length > 0) {
+							SpecfileWriter specfileWriter = new SpecfileWriter();
+							specfileWriter.write(featureFile);
+						} else
+							includedFeatureIdentifiersAdded
+									.add(includedFeatureModel
+											.getFeatureIdentifier());
+						includedFeatureFiles.add(featureFile);
+					}
+				}
+			}
 		} catch (CoreException e) {
 			StubbyLog.logError(e);
 		} catch (SAXException e) {
 			StubbyLog.logError(e);
-		} 
+		}
 		return includedFeatureFiles;
 	}
-	
+
 	public boolean isAllIncludedFeatureFound() {
-		if (includedFeatureFiles.size() == includedFeatureIdentifiers.length)
+		if (includedFeatureFiles.size() == includedFeatureIdentifiers.size())
 			return true;
 		else
 			return false;
 	}
-	
+
 	public String getMissingFeaturesAsString() {
 		String toRet = "";
-		for (int i = 0; i < includedFeatureIdentifiers.length; i++) {
-			if (!includedFeatureIdentifiersAdded.contains(includedFeatureIdentifiers[i]));
-			toRet += includedFeatureIdentifiers[i] + ", ";
+		for (String includedFeatureIdentifier: includedFeatureIdentifiers) {
+			if (!includedFeatureIdentifiersAdded
+					.contains(includedFeatureIdentifier))
+				;
+			toRet += includedFeatureIdentifier + ", ";
 		}
-		return toRet.substring(0, toRet.length() - 2 );
+		return toRet.substring(0, toRet.length() - 2);
 	}
-	
+
 	private boolean isFeatureIncluded(String featureIdetifier) {
-		for (int i = 0; i < includedFeatureIdentifiers.length; i++) {
-			// Check if the feature found by the visitor is a included feature 
-			if (includedFeatureIdentifiers[i].equals(featureIdetifier)) {
-				// Check if the given feature is not already added in the included feature list.
-				for(String includedFeatureID: includedFeatureIdentifiersAdded) {
+		for (String includedFeatureIdentifier: includedFeatureIdentifiers) {
+			// Check if the feature found by the visitor is a included feature
+			if (includedFeatureIdentifier.equals(featureIdetifier)) {
+				// Check if the given feature is not already added in the
+				// included feature list.
+				for (String includedFeatureID : includedFeatureIdentifiersAdded) {
 					if (includedFeatureID.equals(featureIdetifier)) {
 						return false;
 					}
@@ -139,34 +152,38 @@ public class StubbyPackageModel {
 				return true;
 			}
 		}
-		return false;		
+		return false;
 	}
-	
+
 	private String getFeatureName() {
 		return featureModel.getFeatureIdentifier();
 	}
-	
+
 	private String getVersion() {
 		return featureModel.getFeatureVersion();
 	}
-	
+
 	private String getSummary() {
 		return resolveFeatureProperties(featureModel.getLabel());
 	}
-	
+
 	private String getLicense() {
 		String license = valueNoFoundMessage;
 		URLEntryModel licenseModel = featureModel.getLicenseModel();
 		if (licenseModel != null) {
-			String urlString = resolveFeatureProperties(licenseModel.getURLString());
-			String urlAnotation = resolveFeatureProperties(licenseModel.getAnnotation());
-			if ((urlString != null && urlAnotation != null)&&(urlString.indexOf("epl") > -1 || urlAnotation.indexOf("epl") > -1)) {
-					license = "EPL";
+			String urlString = resolveFeatureProperties(licenseModel
+					.getURLString());
+			String urlAnotation = resolveFeatureProperties(licenseModel
+					.getAnnotation());
+			if ((urlString != null && urlAnotation != null)
+					&& (urlString.indexOf("epl") > -1 || urlAnotation
+							.indexOf("epl") > -1)) {
+				license = "EPL";
 			}
 		}
 		return license;
 	}
-	
+
 	private String getURL() {
 		String url = valueNoFoundMessage;
 		URLEntryModel descriptionModel = featureModel.getDescriptionModel();
@@ -174,76 +191,86 @@ public class StubbyPackageModel {
 			url = descriptionModel.getURLString();
 		return url;
 	}
-	
+
 	private String getDescription() {
 		URLEntryModel descriptionModel = featureModel.getDescriptionModel();
-		if (descriptionModel.getAnnotation() != null) { 
+		if (descriptionModel.getAnnotation() != null) {
 			// Each description line contain maximum 80 characters.
-			String[] descriptionToken = resolveFeatureProperties(descriptionModel.getAnnotation()).split(" ");
+			String[] descriptionToken = resolveFeatureProperties(
+					descriptionModel.getAnnotation()).split(" ");
 			String description = descriptionToken[0] + " ";
-			// We add +2 because an array start at index 0 and one space is removed for each token. 
+			// We add +2 because an array start at index 0 and one space is
+			// removed for each token.
 			int lineLenght = descriptionToken[0].length() + 2;
 			int i;
 			for (i = 2; i < descriptionToken.length; i++) {
 				lineLenght += descriptionToken[i].length() + 2;
 				if (lineLenght > 80) {
-					description += descriptionToken[i-1] + "\n";
+					description += descriptionToken[i - 1] + "\n";
 					lineLenght = 0;
 				} else {
-					description += descriptionToken[i-1] + " ";
+					description += descriptionToken[i - 1] + " ";
 				}
 			}
-			description += descriptionToken[i-1];
+			description += descriptionToken[i - 1];
 			return description;
 		} else
 			return valueNoFoundMessage;
 	}
 
-	private PackageItem[] getProvides() {
+	private List<PackageItem> getProvides() {
 		// Plugins that are part of this feature
-		PluginEntryModel[] includedPlugins = featureModel.getPluginEntryModels();
-		PackageItem[] provides = new PackageItem[includedPlugins.length];
+		PluginEntryModel[] includedPlugins = featureModel
+				.getPluginEntryModels();
+		List<PackageItem> providesList = new ArrayList<PackageItem>();
 		String pluginVersion;
-		for (int i = 0; i < includedPlugins.length; i++) {
-			PackageItem provide = new PackageItem();
-			provide.setName(includedPlugins[i].getPluginIdentifier());
-			provide.setOperator("=");
-			pluginVersion = includedPlugins[i].getPluginVersion();
-			// If the bundle version retrieve in the feature is 0.0.0, we try to get it using OSGIUtils.
-			if (pluginVersion.equals("0.0.0")) {
-				pluginVersion = getBundleValue(provide.getName(), "Bundle-Version");
-				if (pluginVersion == null)
-					pluginVersion = "0.0.0";
-			}
-			provide.setVersion(pluginVersion);
-			provides[i] = provide;
+		for (PluginEntryModel includedPlugin : includedPlugins) {
+				PackageItem provide = new PackageItem();
+				provide.setName(includedPlugin.getPluginIdentifier());
+				provide.setOperator("=");
+				pluginVersion = includedPlugin.getPluginVersion();
+				// If the bundle version retrieve in the feature is 0.0.0, we
+				// try to get it using OSGIUtils.
+				if (pluginVersion.equals("0.0.0")) {
+					pluginVersion = getBundleValue(provide.getName(),
+							"Bundle-Version");
+					if (pluginVersion == null)
+						pluginVersion = "0.0.0";
+				}
+				provide.setVersion(pluginVersion);
+				providesList.add(provide);
 		}
-		return provides;
+		return providesList;
 	}
-	
-	private PackageItem[] getRequires() {
+
+	private List<PackageItem> getRequires() {
 		ImportModel[] importModels = featureModel.getImportModels();
-		PackageItem[] requires = new PackageItem[importModels.length];
-		for (int i = 0; i < importModels.length; i++) {
+		List<PackageItem> requiresList = new ArrayList<PackageItem>();
+		for (ImportModel importModel: importModels) {
 			PackageItem require = new PackageItem();
-			require.setName(importModels[i].getIdentifier());
-			String pluginVersion = importModels[i].getVersion();
+			require.setName(importModel.getIdentifier());
+			String pluginVersion = importModel.getVersion();
 			String operator = "";
-			// If the bundle version retrieve in the feature is 0.0.0, we try to get it using OSGIUtils.			
+			// If the bundle version retrieve in the feature is 0.0.0, we try to
+			// get it using OSGIUtils.
 			if (pluginVersion.equals("0.0.0")) {
-				pluginVersion = getBundleValue(require.getName(), "Bundle-Version");
+				pluginVersion = getBundleValue(require.getName(),
+						"Bundle-Version");
 				if (pluginVersion == null)
 					pluginVersion = "0.0.0";
 			}
 			if (!pluginVersion.equals("0.0.0")) {
 				require.setVersion(pluginVersion);
-				if (importModels[i].getMatchingRuleName().equals("greaterOrEqual"))
+				if (importModel.getMatchingRuleName().equals(
+						"greaterOrEqual"))
 					operator = ">=";
-				else if (importModels[i].getMatchingRuleName().equals("greater"))
+				else if (importModel.getMatchingRuleName()
+						.equals("greater"))
 					operator = ">";
-				else if (importModels[i].getMatchingRuleName().equals("lessOrEqual"))
+				else if (importModel.getMatchingRuleName().equals(
+						"lessOrEqual"))
 					operator = "<=";
-				else if (importModels[i].getMatchingRuleName().equals("less"))
+				else if (importModel.getMatchingRuleName().equals("less"))
 					operator = "<";
 				else
 					operator = "=";
@@ -251,11 +278,11 @@ public class StubbyPackageModel {
 				require.setVersion("");
 			}
 			require.setOperator(operator);
-			requires[i] = require;
+			requiresList.add(require);
 		}
-		return requires;
+		return requiresList;
 	}
-	
+
 	/**
 	 * Get value for a given key from the feature.properties file, if the key
 	 * don't start with '%' we just return the given key.
@@ -273,13 +300,13 @@ public class StubbyPackageModel {
 				// Do nothing if the feature.properties is not found
 			} catch (IOException e) {
 				StubbyLog.logError(e);
-			}        	
-        	return properties.getProperty(key.replaceAll("%", ""));
-        } else {
-        	return key;
-        }
+			}
+			return properties.getProperty(key.replaceAll("%", ""));
+		} else {
+			return key;
+		}
 	}
-	
+
 	/**
 	 * Get bundle value for a given bundleID, bundleKey
 	 * 
@@ -292,8 +319,8 @@ public class StubbyPackageModel {
 	 */
 	private String getBundleValue(String bundleID, String bundleKey) {
 		try {
-			return (String) Platform.getBundle(bundleID)
-					.getHeaders().get(bundleKey);
+			return (String) Platform.getBundle(bundleID).getHeaders().get(
+					bundleKey);
 		} catch (NullPointerException exception) {
 			return null;
 		}

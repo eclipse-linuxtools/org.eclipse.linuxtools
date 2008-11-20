@@ -10,17 +10,17 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.model;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class MainPackage extends SubPackage implements IPackagePreamble {
 
 	private String release;
 	private String license;
 	private String URL;
-	private String[] sources;
-	private String[] paches;
+	private List<String> sources;
+	private List<String> paches;
 	private String buildroot;
-	private PackageItem[] buildRequires;
+	private List<PackageItem> buildRequires;
 
 
 	public String getRelease() {
@@ -47,19 +47,19 @@ public class MainPackage extends SubPackage implements IPackagePreamble {
 		URL = url;
 	}
 
-	public String[] getSources() {
+	public List<String> getSources() {
 		return sources;
 	}
 
-	public void setSources(String[] sources) {
+	public void setSources(List<String> sources) {
 		this.sources = sources;
 	}
 
-	public String[] getPaches() {
+	public List<String> getPaches() {
 		return paches;
 	}
 
-	public void setPaches(String[] paches) {
+	public void setPaches(List<String> paches) {
 		this.paches = paches;
 	}
 
@@ -71,11 +71,11 @@ public class MainPackage extends SubPackage implements IPackagePreamble {
 		this.buildroot = buildroot;
 	}
 
-	public PackageItem[] getBuildRequires() {
+	public List<PackageItem> getBuildRequires() {
 		return buildRequires;
 	}
 
-	public void setBuildRequires(PackageItem[] buildRequires) {
+	public void setBuildRequires(List<PackageItem> buildRequires) {
 		this.buildRequires = buildRequires;
 	}
 
@@ -91,19 +91,19 @@ public class MainPackage extends SubPackage implements IPackagePreamble {
 			buffer.append("\nSources: ").append("null");
 		} else {
 			buffer.append("\nSources: ").append(
-					Arrays.asList(sources).toString());
+					sources.toString());
 		}
 		if (paches == null) {
 			buffer.append("\nPaches: ").append("null");
 		} else {
 			buffer.append("\nPaches: ")
-					.append(Arrays.asList(paches).toString());
+					.append(paches.toString());
 		}
 		if (buildRequires == null) {
 			buffer.append("\nBuildRequires: ").append("null");
 		} else {
 			buffer.append("\nBuildRequires: ").append(
-					Arrays.asList(buildRequires).toString());
+					buildRequires.toString());
 		}
 		buffer.append("\nBuildRoot: ").append(buildroot);
 		return buffer.toString();
