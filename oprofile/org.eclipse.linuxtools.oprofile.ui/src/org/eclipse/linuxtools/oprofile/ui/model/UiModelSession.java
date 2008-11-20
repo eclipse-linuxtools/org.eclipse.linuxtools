@@ -10,16 +10,23 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * Children of events in the view -- sessions containing images/symbols
+ *  for its parent event. Must have a child image. May also have dependent
+ *  images, which are children of the Image in the data model, but are 
+ *  displayed as children of the session in the view.
+ */
 public class UiModelSession implements IUiModelElement {
-	private UiModelEvent _parent;
-	private OpModelSession _session;
-	private UiModelImage _image;
-	private UiModelDependent _dependent;
+	private IUiModelElement _parent;		//parent element
+	private OpModelSession _session;		//the node in the data model
+	private UiModelImage _image;			//this node's child
+	private UiModelDependent _dependent;	//dependent images of the OpModelImage
 	
-	public UiModelSession(UiModelEvent parent, OpModelSession session) {
+	public UiModelSession(IUiModelElement parent, OpModelSession session) {
 		_parent = parent;
 		_session = session;
 		_image = null;
@@ -28,25 +35,32 @@ public class UiModelSession implements IUiModelElement {
 	}
 	
 	private void refreshModel() {
+		OpModelImage dataModelImage = _session.getImage();
+		_image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
 		
-//		_image = new UiModelImage();
-		
+		if (dataModelImage.hasDependents()) {
+			_dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
+		}
+	}
+
+	@Override
+	public String toString() {
+		return _session.getName();
+	}
+
+	/** IUiModelElement functions **/
+	@Override
+	public String getLabelText() {
+		return toString();
 	}
 
 	@Override
 	public IUiModelElement[] getChildren() {
-		return new IUiModelElement[] {_image, _dependent};
-	}
-
-	@Override
-	public Image getLabelImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IUiModelElement getParent() {
-		return _parent;
+		if (_dependent != null) {
+			return new IUiModelElement[] {_image, _dependent};
+		} else {
+			return new IUiModelElement[] {_image};
+		}
 	}
 
 	@Override
@@ -55,12 +69,13 @@ public class UiModelSession implements IUiModelElement {
 	}
 
 	@Override
-	public String getLabelText() {
-		return toString();
+	public IUiModelElement getParent() {
+		return _parent;
 	}
 
 	@Override
-	public String toString() {
-		return _session.getName();
+	public Image getLabelImage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

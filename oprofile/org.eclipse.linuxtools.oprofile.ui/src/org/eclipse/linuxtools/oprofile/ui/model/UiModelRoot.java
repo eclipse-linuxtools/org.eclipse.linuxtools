@@ -15,18 +15,15 @@ import org.eclipse.linuxtools.oprofile.core.model.OpModelRoot;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Convenience class for parsing the UI data model from the oprofile data model.
+ * Convenience class for creating the UI model from the oprofile data model,
+ *  via a single point of access.
  */
 public class UiModelRoot implements IUiModelElement {
-	//singleton
-	private static UiModelRoot _uiModelRoot = new UiModelRoot();
+	private static UiModelRoot _uiModelRoot = new UiModelRoot();	//singleton
+	private UiModelEvent[] _events;									//this node's children
 
-	//event children
-	private UiModelEvent[] _events;
 
-	/**
-	 * constructor, private for singleton
-	 */
+	/** constructor, private for singleton use **/
 	private UiModelRoot() {
 		refreshModel();
 		_uiModelRoot = this;
@@ -39,7 +36,12 @@ public class UiModelRoot implements IUiModelElement {
 	public static UiModelRoot getDefault() {
 		return _uiModelRoot;
 	}
-	
+
+	/**
+	 * Kick off creating the UI model from the data model. Meant to 
+	 * 	be called from UI code. The refreshModel() method is called for 
+	 *  the child elements from their constructor.
+	 */
 	public void refreshModel() {
 		OpModelRoot modelRoot = OpModelRoot.getDefault();
 		OpModelEvent dataModelEvents[] = modelRoot.getEvents();
@@ -49,24 +51,21 @@ public class UiModelRoot implements IUiModelElement {
 			_events[i] = new UiModelEvent(dataModelEvents[i]);
 		}
 	}
-	
-	public UiModelEvent[] getEvents() {
-		return _events;
+
+	/** IUiModelElement functions **/
+	@Override
+	public String getLabelText() {
+		return null;
 	}
 
 	@Override
 	public IUiModelElement[] getChildren() {
-		return getEvents();
+		return _events;
 	}
 
 	@Override
-	public Image getLabelImage() {
-		return null;
-	}
-
-	@Override
-	public String getLabelText() {
-		return null;
+	public boolean hasChildren() {
+		return (_events.length == 0 ? false : true);
 	}
 
 	@Override
@@ -75,9 +74,7 @@ public class UiModelRoot implements IUiModelElement {
 	}
 
 	@Override
-	public boolean hasChildren() {
-		return (_events.length == 0 ? false : true);
+	public Image getLabelImage() {
+		return null;
 	}
-
-	
 }

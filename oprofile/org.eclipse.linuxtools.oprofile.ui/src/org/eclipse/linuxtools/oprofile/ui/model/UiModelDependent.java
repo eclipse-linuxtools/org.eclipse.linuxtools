@@ -10,14 +10,67 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
+import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelDependent implements IUiModelElement {
+	private IUiModelElement _parent;
+	private OpModelImage _dataModelDependents[];
+	private UiModelImage _dependents[];
+	private int _totalCount;
+	private int _depCount;
+	
+	public UiModelDependent(IUiModelElement parent, OpModelImage dependents[], int totalCount, int depCount) {
+		_parent = parent;
+		_dataModelDependents = dependents;
+		_dependents = null;
+		_totalCount = totalCount;
+		_depCount = depCount;
+		refreshModel();
+	}
+
+	private void refreshModel() {
+		_dependents = new UiModelImage[_dataModelDependents.length];
+		
+		for (int i = 0; i < _dataModelDependents.length; i++) {
+			_dependents[i] = new UiModelImage(this, _dataModelDependents[i], _totalCount, 0);
+		}
+	}
+	
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getPercentInstance();
+		if (nf instanceof DecimalFormat) {
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
+		}
+		double countPercentage = (double)_depCount / (double)_totalCount;
+		
+		return nf.format(countPercentage) + " in dependent images";
+	}
+
+	/** IUiModelElement functions **/
+	@Override
+	public String getLabelText() {
+		return toString();
+	}
 
 	@Override
 	public IUiModelElement[] getChildren() {
-		// TODO Auto-generated method stub
-		return null;
+		return _dependents;
+	}
+
+	@Override
+	public boolean hasChildren() {
+		return true;	//must have children, or this object wouldn't be created
+	}
+
+	@Override
+	public IUiModelElement getParent() {
+		return _parent;
 	}
 
 	@Override
@@ -25,23 +78,4 @@ public class UiModelDependent implements IUiModelElement {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getLabelText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IUiModelElement getParent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean hasChildren() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

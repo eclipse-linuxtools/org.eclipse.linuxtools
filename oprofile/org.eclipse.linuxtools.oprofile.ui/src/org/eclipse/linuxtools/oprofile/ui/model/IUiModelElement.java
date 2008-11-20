@@ -17,6 +17,12 @@ import org.eclipse.swt.graphics.Image;
  */
 public interface IUiModelElement {
 	/**
+	 * Returns the text to display in the tree viewer as required by the label provider.
+	 * @return text describing this element
+	 */
+	String getLabelText();
+
+	/**
 	 * Returns the children of this element.
 	 * @return an array of IUiModelElements
 	 */
@@ -40,10 +46,4 @@ public interface IUiModelElement {
 	 * @return an Image object of the icon
 	 */
 	Image getLabelImage();
-
-	/**
-	 * Returns the text to display in the tree viewer as required by the label provider.
-	 * @return text describing this element
-	 */
-	String getLabelText();
 }

@@ -10,14 +10,93 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
+import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * Children of sessions in the view -- the binary which was profiled. 
+ * May or may not have child symbols. Note that although the dependent
+ * images are children of OpModelImages in the data model, for usability's
+ * sake they are children of the parent session in the tree.
+ */
 public class UiModelImage implements IUiModelElement {
+	private IUiModelElement _parent;		//parent element
+	private OpModelImage _image;			//the node in the data model
+	private UiModelSymbol _symbols[];		//this node's child (symbols)
+	private int _totalCount;				//total number of samples 
+	private int _depCount;					//number of samples from dependent images
+
+	public UiModelImage(IUiModelElement parent, OpModelImage image, int totalCount, int depCount) {
+		_parent = parent;
+		_image = image;
+		_symbols = null;
+		_totalCount = totalCount;
+		_depCount = depCount;
+		refreshModel();
+	}
+
+	private void refreshModel() {
+		OpModelSymbol[] dataModelSymbols = _image.getSymbols();
+		
+		//dependent images may not have symbols
+		if (dataModelSymbols != null) {
+			_symbols = new UiModelSymbol[dataModelSymbols.length];
+	
+			for (int i = 0; i < dataModelSymbols.length; i++) {
+				_symbols[i] = new UiModelSymbol(this, dataModelSymbols[i], _totalCount);
+			}
+		}
+	}
+	
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getPercentInstance();
+		if (nf instanceof DecimalFormat) {
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
+		}
+		double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
+		
+		String percentage;
+		if (countPercentage < 0.0001) {
+			percentage = "<" + nf.format(0.0001);
+		} else {
+			percentage = nf.format(countPercentage);
+		}
+		
+		return percentage + " in " + _image.getName();
+	}
+	
+	/** IUiModelElement functions **/
+	@Override
+	public String getLabelText() {
+		return toString();
+	}
 
 	@Override
 	public IUiModelElement[] getChildren() {
-		// TODO Auto-generated method stub
-		return null;
+		IUiModelElement children[] = null;
+		children = new IUiModelElement[_symbols.length];
+		
+		for (int i = 0; i < _symbols.length; i++) {
+			children[i] = _symbols[i];
+		}
+
+		return children;
+	}
+
+	@Override
+	public boolean hasChildren() {
+		return (_symbols == null || _symbols.length == 0 ? false : true);
+	}
+
+	@Override
+	public IUiModelElement getParent() {
+		return _parent;
 	}
 
 	@Override
@@ -25,23 +104,4 @@ public class UiModelImage implements IUiModelElement {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getLabelText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IUiModelElement getParent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean hasChildren() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }
