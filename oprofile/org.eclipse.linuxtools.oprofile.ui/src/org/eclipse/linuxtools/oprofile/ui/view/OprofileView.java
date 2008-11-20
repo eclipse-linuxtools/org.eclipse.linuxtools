@@ -48,6 +48,7 @@ public class OprofileView extends ViewPart {
 						System.out.println(r);
 	
 						UiModelRoot r2 = UiModelRoot.getDefault();
+						r2.refreshModel();
 						_viewer.setInput(r2);
 					}					
 				});
