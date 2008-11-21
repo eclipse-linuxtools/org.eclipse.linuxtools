@@ -62,6 +62,10 @@ public class OpModelImage {
 		return _dependents;
 	}
 
+	public boolean hasDependents() {
+		return (_dependents == null || _dependents.length == 0 ? false : true);
+	}
+	
 	/**
 	 * This method is not meant to be called publicly, used only 
 	 * from the XML processors	
