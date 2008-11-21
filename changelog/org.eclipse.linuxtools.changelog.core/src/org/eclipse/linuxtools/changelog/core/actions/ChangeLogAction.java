@@ -19,6 +19,7 @@ import org.eclipse.compare.CompareEditorInput;
 import org.eclipse.compare.IResourceProvider;
 import org.eclipse.compare.ITypedElement;
 import org.eclipse.compare.structuremergeviewer.ICompareInput;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -142,8 +143,11 @@ public abstract class ChangeLogAction extends Action {
 			return null;
 		}
 
+		// FIXME:  we should put this refreshLocal call into a thread (filed as bug #256180)
 		try {
-			myWorkspaceRoot.refreshLocal(2, null);
+			IContainer changelogContainer = myWorkspaceRoot.getContainerForLocation(changelog);
+			if (changelogContainer != null)
+				changelogContainer.refreshLocal(2, null);
 		} catch (CoreException e) {
 			reportErr(Messages.getString("ChangeLog.ErrRefresh"), e); // $NON-NLS-1$
 			return null;
@@ -218,7 +222,7 @@ public abstract class ChangeLogAction extends Action {
 	/**
 	 * Find the ChangeLog for a file that is being removed.  It can't be found and
 	 * it is possible that the directory it is in has also been removed.
-	 * 
+	 *
 	 * @param path Path of removed file
 	 * @return ChangeLog editor part that must be used to report removed file
 	 */
@@ -265,7 +269,7 @@ public abstract class ChangeLogAction extends Action {
 
 		return null;
 	}
-	
+
 	protected IFile getDocumentIFile(IEditorPart currentEditor) {
 		IEditorInput cc = currentEditor.getEditorInput();
 
@@ -276,7 +280,7 @@ public abstract class ChangeLogAction extends Action {
 
 	protected String getDocumentLocation(IEditorPart currentEditor,
 			boolean appendRoot) {
-		
+
 		IEditorInput cc;
 		String WorkspaceRoot;
 		try {
@@ -286,10 +290,10 @@ public abstract class ChangeLogAction extends Action {
 		} catch(Exception e) {
 			return "";
 		}
-		
+
 		if (cc == null)
 			return "";
-		
+
 		if ((cc instanceof SyncInfoCompareInput)
 				|| (cc instanceof CompareEditorInput)) {
 
