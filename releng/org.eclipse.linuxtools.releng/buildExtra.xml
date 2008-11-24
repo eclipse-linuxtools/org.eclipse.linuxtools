@@ -10,13 +10,7 @@
 
 	<target name="getDependencies">
 		<!-- TODO: if your project requires more dependencies, add them here; if it does not require all of these, remove those not required -->
-		<echo message="Download, then unpack: Eclipse and CDT" />
-		<ant target="getDependency"
-		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
-			<property name="url" value="${eclipseURL}" />
-			<property name="file" value="${eclipseFile}" />
-		</ant>
-
+		<echo message="Download, then unpack CDT" />
 		<ant target="getUpdateSiteDependency"
 		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
 			<property name="url" value="${cdtURL}" />
