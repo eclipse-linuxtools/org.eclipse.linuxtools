@@ -1,17 +1,48 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script installs the files necessary for root authentication when using
 # Eclipse-OProfile.
+#
 
-test -x /usr/bin/consolehelper || (echo Error: /usr/bin/consolehelper does not exist! && exit)
+#need to be in org.eclipse.linuxtools.oprofile.core/scripts dir
+if [ $(basename $(pwd))) != scripts ]; then
+  echo Error: script must be run with pwd in script dir
+fi
+cd ..
+if [ $(basename $(pwd))) != org.eclipse.linuxtools.oprofile.core ]; then
+  echo Error: script must be run with pwd in script dir
+fi
 
-ln -s /usr/bin/consolehelper `pwd`/opcontrol || (echo Error: cannot create opcontrol wrapper in `pwd` && exit)
+#need oprofile package to use plugin at all
+rpm -q oprofile >/dev/null 
+if [ $? -ne 0 ]; then
+ echo Error: OProfile is not installed, run '`yum install oprofile`'
+ exit 1
+fi
 
-install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
-install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol
+#need these packages to compile opxml (currently shipped as source only)
+rpm -q oprofile-devel binutils binutils-devel gcc-c++ >/dev/null 
+if [ $? -ne 0 ]; then
+ echo Error: packages needed to build opxml not installed, run '`yum install oprofile-devel binutils-devel gcc-c++`' 
+ exit 1
+fi
 
-echo Eclipse-OProfile plugin install successful!
-echo Make sure that you have installed oprofile and that the oprofile module is loaded.
-echo 'To check, try `opcontrol --start-daemon`'
-echo 'If it does not run properly, you\'ll need to run `opcontrol --init` and perhaps `opcontrol --no-vmlinux`'
+#need consolehelper to run opcontrol as root from within eclipse
+test -x /usr/bin/consolehelper 
+if [ $? -ne 0 ]; then
+  echo Error: /usr/bin/consolehelper does not exist, run '`yum install usermode`'
+  exit 1
+fi
 
+#create the sym link to consolehelper
+ln -s /usr/bin/consolehelper `pwd`/opcontrol
+if [ $? -ne 0 ]; then
+  echo Error: cannot create opcontrol wrapper in `pwd`
+  exit 1
+fi
+
+test -f /etc/security/console.apps/opcontrol || install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
+test -f /etc/pam.d/opcontrol || install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol
+
+echo Eclipse-OProfile plugin install successful. Make sure that the oprofile module is loaded.
+echo 'To check, try `opcontrol --start-daemon`, if it does not run successfully, you\'ll need to run `opcontrol --init` and perhaps `opcontrol --no-vmlinux`'
