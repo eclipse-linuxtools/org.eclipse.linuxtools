@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.tests"
+      id="org.eclipse.linuxtools.test"
       label="%featureName"
       version="0.0.1"
       provider-name="%provider">
