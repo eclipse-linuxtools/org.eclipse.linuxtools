@@ -11,6 +11,9 @@
 package org.eclipse.linuxtools.valgrind.ui;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -23,9 +26,15 @@ public class ValgrindViewPart extends ViewPart {
 
 	protected Composite dynamicViewHolder;
 	protected IValgrindToolView dynamicView;
+	protected HistoryDropDownAction historyAction;
 
 	@Override
 	public void createPartControl(Composite parent) {
+		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
+		historyAction = new HistoryDropDownAction(Messages.getString("ValgrindViewPart.Select_a_recent_launch"), IAction.AS_DROP_DOWN_MENU); //$NON-NLS-1$
+		toolbar.add(historyAction);
+		toolbar.update(true);
+		
 		dynamicViewHolder = new Composite(parent, SWT.NONE);
 		dynamicViewHolder.setLayout(new GridLayout());
 		dynamicViewHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -35,7 +44,11 @@ public class ValgrindViewPart extends ViewPart {
 	public void createDynamicView(String toolID) throws CoreException {
 		// remove tool specific toolbar controls
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-		toolbar.removeAll();
+		for (IContributionItem item : toolbar.getItems()) {
+			if (!(item instanceof ActionContributionItem) || ((ActionContributionItem) item).getAction() != historyAction) {
+				toolbar.remove(item);
+			}
+		}
 		toolbar.update(true);
 		
 		// remove old view controls
