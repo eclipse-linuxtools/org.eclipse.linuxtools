@@ -37,20 +37,21 @@ public class ValgrindCommand {
 	public static final String OPT_MAXFRAME = "--max-stackframe"; //$NON-NLS-1$
 	public static final String OPT_SUPPFILE = "--suppressions"; //$NON-NLS-1$
 
-	public static final String LOG_PATH = "/tmp/" + ValgrindPlugin.PLUGIN_ID; //$NON-NLS-1$
+	public static final String DATA_PATH = ValgrindPlugin.getDefault().getStateLocation().toOSString();
+	protected static final String OUTDIR_PREFIX = ".launch"; //$NON-NLS-1$
 	
-	protected File tempDir;
+	protected File dataDir;
 	protected Process process;
 	protected String[] args;
 
-	public ValgrindCommand() {		
-		tempDir = new File(LOG_PATH);
+	public ValgrindCommand() throws IOException {
+		dataDir = new File(DATA_PATH + File.separator + OUTDIR_PREFIX + HistoryFile.getInstance().getNextIndex());
 	}
 
 	public void execute(String[] commandArray, String[] env, File wd, boolean usePty) throws IOException {
 		args = commandArray;
 		try {
-			createLogDir();
+			createDataDir();
 			if (wd == null) {
 				process = ProcessFactory.getFactory().exec(commandArray, env);
 			}
@@ -71,34 +72,28 @@ public class ValgrindCommand {
 		}
 	}
 	
-	public File getTempDir() {
-		return tempDir;
+	public File getDataDir() {
+		return dataDir;
 	}
 
-	protected void createLogDir() throws IOException {
-		if (tempDir.exists()) {
-			deleteLogDir();
+	protected void createDataDir() throws IOException {
+		if (dataDir.exists()) {
+			// delete any preexisting files
+			deleteFiles();
 		}
-		if (!tempDir.mkdir()) {
-			tempDir = null;
-			throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_create"), LOG_PATH)); //$NON-NLS-1$
+		else if (!dataDir.mkdir()) {
+			dataDir = null;
+			throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_create"), DATA_PATH)); //$NON-NLS-1$
 		}
 	}
 
 
-	protected void deleteLogDir() throws IOException {
-		for (File log : tempDir.listFiles()) {
-			if (!log.delete()) {
-				throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_delete"), log.getCanonicalPath())); //$NON-NLS-1$
+	protected void deleteFiles() throws IOException {
+		for (File output : dataDir.listFiles()) {
+			if (!output.delete()) {
+				throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_delete"), output.getCanonicalPath())); //$NON-NLS-1$
 			}
 		}
-		if (!tempDir.delete()) {
-			throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_delete"), LOG_PATH)); //$NON-NLS-1$
-		}
-	}
-
-	public String getLogPath() {
-		return LOG_PATH;
 	}
 	
 	public Process getProcess() {
