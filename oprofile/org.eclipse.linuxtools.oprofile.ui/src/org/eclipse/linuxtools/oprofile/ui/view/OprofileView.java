@@ -23,6 +23,7 @@ import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class OprofileView extends ViewPart {
@@ -58,6 +59,8 @@ public class OprofileView extends ViewPart {
 	 *   machines this will probably only be a blip.
 	 */
 	public void refreshView() {
+		final OprofileView thisView = this;
+		
 		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -77,6 +80,8 @@ public class OprofileView extends ViewPart {
 					@Override
 					public void run() {
 						_viewer.setInput(UiRoot);
+						//focus on the oprofile view
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(thisView);
 					}
 				});
 				monitor.worked(1);
