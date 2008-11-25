@@ -21,7 +21,6 @@ import java.util.List;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
@@ -41,13 +40,13 @@ implements IValgrindLaunchDelegate {
 	public static final String TOOL_ID = ValgrindLaunchPlugin.PLUGIN_ID + ".massif"; //$NON-NLS-1$
 
 	protected static final String OUT_PREFIX = "massif_";	 //$NON-NLS-1$
-	protected static final String OUT_FILE = ValgrindCommand.LOG_PATH + Path.SEPARATOR + OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
+	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter MASSIF_FILTER = new FileFilter() {
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(OUT_PREFIX);
 		}
 	};
-	
+
 	// Valgrind program arguments
 	public static final String OPT_MASSIF_OUTFILE = "--massif-out-file"; //$NON-NLS-1$
 	public static final String OPT_HEAP = "--heap"; //$NON-NLS-1$
@@ -61,44 +60,19 @@ implements IValgrindLaunchDelegate {
 	public static final String OPT_DETAILEDFREQ = "--detailed-freq"; //$NON-NLS-1$
 	public static final String OPT_MAXSNAPSHOTS = "--max-snapshots"; //$NON-NLS-1$
 	public static final String OPT_ALIGNMENT = "--alignment"; //$NON-NLS-1$
-	
+
 	protected MassifSnapshot[] snapshots;
-	
+
 	public void launch(ValgrindCommand command, ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor)
 	throws CoreException {
+		MassifPlugin.getDefault().setConfig(config);
 		MassifPlugin.getDefault().setLaunch(launch);
-		ArrayList<MassifSnapshot> list = new ArrayList<MassifSnapshot>();
 		try {
 			command.getProcess().waitFor();
 
-			File[] massifOutputs = command.getTempDir().listFiles(MASSIF_FILTER);
-			for (File output : massifOutputs) {
-				MassifParser parser = new MassifParser(output);
-				list.addAll(Arrays.asList(parser.getSnapshots()));
-			}
-			
-			snapshots = list.toArray(new MassifSnapshot[list.size()]);
-			
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					try {
-						IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-						activePage.showView(ValgrindUIPlugin.VIEW_ID);
+			File[] massifOutputs = command.getDataDir().listFiles(MASSIF_FILTER);
 
-						ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-						view.createDynamicView(TOOL_ID);
-						IValgrindToolView massifPart = view.getDynamicView();
-						if (massifPart instanceof MassifViewPart) {
-							((MassifViewPart) massifPart).setSnapshots(snapshots);
-						}						
-						view.refreshView();
-					} catch (PartInitException e) {
-						e.printStackTrace();
-					} catch (CoreException e) {
-						e.printStackTrace();
-					}
-				}					
-			});
+			parseOutput(massifOutputs);
 		} catch (InterruptedException e) {
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -107,27 +81,72 @@ implements IValgrindLaunchDelegate {
 
 	}
 
+	public void reparseOutput(File datadir) throws CoreException {
+		try {
+			File[] massifOutputs = datadir.listFiles(MASSIF_FILTER);
+			parseOutput(massifOutputs);
+		} catch (IOException e) {
+			e.printStackTrace();
+			abort(Messages.getString("MassifLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+		}
+	}
+
+	protected void parseOutput(File[] massifOutputs) throws IOException {
+		ArrayList<MassifSnapshot> list = new ArrayList<MassifSnapshot>();
+		for (File output : massifOutputs) {
+			MassifParser parser = new MassifParser(output);
+			list.addAll(Arrays.asList(parser.getSnapshots()));
+		}
+
+		snapshots = list.toArray(new MassifSnapshot[list.size()]);
+
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					activePage.showView(ValgrindUIPlugin.VIEW_ID);
+
+					ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+					view.createDynamicView(TOOL_ID);
+					IValgrindToolView massifPart = view.getDynamicView();
+					if (massifPart instanceof MassifViewPart) {
+						((MassifViewPart) massifPart).setSnapshots(snapshots);
+					}						
+					view.refreshView();
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			}					
+		});
+	}
+
 	@SuppressWarnings("unchecked")
-	public String[] getCommandArray(ILaunchConfiguration config)
+	public String[] getCommandArray(ValgrindCommand command, ILaunchConfiguration config)
 	throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 
-		opts.add(OPT_MASSIF_OUTFILE + EQUALS + OUT_FILE);
-		
-		opts.add(OPT_HEAP + EQUALS + (config.getAttribute(MassifToolPage.ATTR_MASSIF_HEAP, true) ? YES : NO));
-		opts.add(OPT_HEAPADMIN + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_HEAPADMIN, 8));
-		opts.add(OPT_STACKS + EQUALS + (config.getAttribute(MassifToolPage.ATTR_MASSIF_STACKS, false) ? YES : NO));
-		opts.add(OPT_DEPTH + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_DEPTH, 30));
-		List<String> allocFns = config.getAttribute(MassifToolPage.ATTR_MASSIF_ALLOCFN, Collections.EMPTY_LIST);
-		for (String func : allocFns) {
-			opts.add(OPT_ALLOCFN + EQUALS + func);
+		try {
+			opts.add(OPT_MASSIF_OUTFILE + EQUALS + command.getDataDir().getCanonicalPath() + File.separator + OUT_FILE);
+
+			opts.add(OPT_HEAP + EQUALS + (config.getAttribute(MassifToolPage.ATTR_MASSIF_HEAP, true) ? YES : NO));
+			opts.add(OPT_HEAPADMIN + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_HEAPADMIN, 8));
+			opts.add(OPT_STACKS + EQUALS + (config.getAttribute(MassifToolPage.ATTR_MASSIF_STACKS, false) ? YES : NO));
+			opts.add(OPT_DEPTH + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_DEPTH, 30));
+			List<String> allocFns = config.getAttribute(MassifToolPage.ATTR_MASSIF_ALLOCFN, Collections.EMPTY_LIST);
+			for (String func : allocFns) {
+				opts.add(OPT_ALLOCFN + EQUALS + func);
+			}
+			opts.add(OPT_THRESHOLD + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_THRESHOLD, 10) / 10.0);
+			opts.add(OPT_PEAKINACCURACY + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_PEAKINACCURACY, 10) / 10.0);
+			opts.add(OPT_TIMEUNIT + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_TIMEUNIT, MassifToolPage.TIME_I));
+			opts.add(OPT_DETAILEDFREQ + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_DETAILEDFREQ, 10));
+			opts.add(OPT_MAXSNAPSHOTS + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_MAXSNAPSHOTS, 100));
+			opts.add(OPT_ALIGNMENT + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_ALIGNMENT, 8));
+		} catch (IOException e) {
+			abort(Messages.getString("MassifLaunchDelegate.Retrieving_massif_data_dir"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 		}
-		opts.add(OPT_THRESHOLD + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_THRESHOLD, 10) / 10.0);
-		opts.add(OPT_PEAKINACCURACY + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_PEAKINACCURACY, 10) / 10.0);
-		opts.add(OPT_TIMEUNIT + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_TIMEUNIT, MassifToolPage.TIME_I));
-		opts.add(OPT_DETAILEDFREQ + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_DETAILEDFREQ, 10));
-		opts.add(OPT_MAXSNAPSHOTS + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_MAXSNAPSHOTS, 100));
-		opts.add(OPT_ALIGNMENT + EQUALS + config.getAttribute(MassifToolPage.ATTR_MASSIF_ALIGNMENT, 8));
 
 		return opts.toArray(new String[opts.size()]);
 	}

@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
+import org.eclipse.linuxtools.valgrind.massif.graph.HeapChartShell;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
@@ -38,6 +39,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.part.ViewPart;
 
@@ -54,6 +56,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	protected static final int COLUMN_SIZE = 125;
 
 	protected Action treeAction;
+	protected Action chartAction;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -106,6 +109,17 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	protected void createToolbar() {
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();
+		
+		chartAction = new Action(Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
+			@Override
+			public void run() {
+				displayChart();
+			}
+		};
+		chartAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/barcharticon.gif")); //$NON-NLS-1$
+		chartAction.setToolTipText(Messages.getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
+		manager.add(chartAction);
+		
 		treeAction = new Action(Messages.getString("MassifViewPart.Show_Heap_Tree"), IAction.AS_CHECK_BOX) { //$NON-NLS-1$
 			@Override
 			public void run() {
@@ -114,7 +128,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				}
 				else {
 					setTopControl(viewer.getControl());
-				}				
+				}
 			}
 		};
 		treeAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif")); //$NON-NLS-1$
@@ -123,6 +137,24 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		view.getViewSite().getActionBars().updateActionBars();
 	}
 	
+	protected void displayChart() {
+//		Shell chartShell = new Shell(Display.getCurrent());
+//		chartShell.setLayout(new GridLayout());
+//		chartShell.setText("Heap Allocation Chart");
+//		chartShell.setImage(MassifPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, "icons/valgrind-icon.png").createImage()); //$NON-NLS-1$
+//		chartShell.setSize(500, 400);
+//		
+//		Chart chart = HeapChartFactory.getFactory().createChart(snapshots);
+//		HeapChartCanvas canvas = new HeapChartCanvas(chartShell, SWT.NONE);
+//		canvas.setChart(chart);
+//		
+//		chartShell.open();
+		
+		HeapChartShell chartShell = new HeapChartShell(Display.getCurrent(), snapshots);
+		chartShell.open();
+	}
+	
+
 	@Override
 	public void setFocus() {
 		viewer.getTable().setFocus();
@@ -207,5 +239,4 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		}
 		return list.toArray(new MassifSnapshot[list.size()]);
 	}
-	
 }

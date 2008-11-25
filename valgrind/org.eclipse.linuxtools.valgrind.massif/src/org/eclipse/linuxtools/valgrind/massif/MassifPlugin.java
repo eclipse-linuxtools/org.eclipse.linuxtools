@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.valgrind.massif;
 
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Control;
@@ -25,6 +26,7 @@ public class MassifPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static MassifPlugin plugin;
 	
+	protected ILaunchConfiguration config;
 	protected ILaunch launch;
 	
 	/**
@@ -65,6 +67,14 @@ public class MassifPlugin extends AbstractUIPlugin {
 	
 	protected void setLaunch(ILaunch launch) {
 		this.launch = launch;
+	}
+	
+	public ILaunchConfiguration getConfig() {
+		return config;
+	}
+	
+	public void setConfig(ILaunchConfiguration config) {
+		this.config = config;
 	}
 
 	/**
