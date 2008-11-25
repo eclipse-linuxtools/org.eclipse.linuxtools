@@ -1,3 +1,16 @@
+2008-11-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeDocumentProvider.java: Change
+	Copyright to make Red Hat a contributor to the copyright of the original file modified to make
+	this new class.
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeEditor.java: Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/Automakefile.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java: Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileContentOutlinePage.java: Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileReconcilingStrategy.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileSourceConfiguration.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeMacroDefinitionRule.java: Ditto.
+
 2008-11-03  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Remove libhoverdocs/.
