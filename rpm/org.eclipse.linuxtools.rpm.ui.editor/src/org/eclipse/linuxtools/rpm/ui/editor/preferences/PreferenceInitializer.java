@@ -52,6 +52,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.P_RPMINFO_VENDOR, PreferenceConstants.DP_RPMINFO_VENDOR);
 		store.setDefault(PreferenceConstants.P_RPMINFO_BUILDTIME, PreferenceConstants.DP_RPMINFO_BUILDTIME);
 		store.setDefault(PreferenceConstants.P_RPMINFO_SOURCERPM, PreferenceConstants.DP_RPMINFO_SOURCERPM);
+		store.setDefault(PreferenceConstants.P_TASK_TAGS, PreferenceConstants.DP_TASK_TAGS);
 		
 		
 		

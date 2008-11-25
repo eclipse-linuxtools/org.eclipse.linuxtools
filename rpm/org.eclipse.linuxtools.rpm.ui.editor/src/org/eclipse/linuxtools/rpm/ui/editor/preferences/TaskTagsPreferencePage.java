@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -27,13 +28,18 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
+	@Override
+	protected Control createContents(Composite parent) {
+		return super.createContents(parent);
+	}
+
 	public void init(IWorkbench workbench) {
 	}
 
 	@Override
 	protected void createFieldEditors() {
 		addField(new TasksListEditor(PreferenceConstants.P_TASK_TAGS,
-				Messages.TaskTagsPreferencePage_0,
+				"Strings indicating tasks in RPM specfile.",
 				getFieldEditorParent()));
 	}
 
@@ -57,7 +63,7 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 			String result = null;
 			// open an input dialog so that the user can enter a new task tag
 			InputDialog inputDialog = new InputDialog(getShell(),
-					Messages.TaskTagsPreferencePage_1, Messages.TaskTagsPreferencePage_2, "", null); //$NON-NLS-1$
+					"New Task Tag...", "Enter new Task Tag:", "", null);
 			int returnCode = inputDialog.open();
 
 			if (returnCode == Window.OK) {
@@ -70,7 +76,7 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 
 		@Override
 		protected String[] parseString(String stringList) {
-			String[] items = stringList.split(";"); //$NON-NLS-1$
+			String[] items = stringList.split(";");
 			return items;
 		}
 

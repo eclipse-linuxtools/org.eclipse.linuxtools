@@ -1,3 +1,21 @@
+2008-11-25  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix #255412.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/TaskTagsPreferencePage.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTaskHandler.java: New file.
+	* plugin.xml: Add preference page and marker for tasks.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java 
+	(SpecfileParser): Store a IPreferenceStore in a member.
+	(setTaskHandler): Set the SpecfileTaskHandler.
+	(generateTaskMarker): Generate task marker when needed.
+	(parse): Invoke generateTaskMarker to check for task markers.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java 
+	(DP_TASK_TAGS): Initial value.
+	(P_TASK_TAGS): Task tags key.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java 
+	(initializeDefaultPreferences): Initialize task tags.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java 
+	(validateAndMark): Set the task tags handler.
+
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.

@@ -95,8 +95,10 @@ public class SpecfileEditor extends TextEditor {
 			IDocument document = getInputDocument();
 			SpecfileErrorHandler specfileErrorHandler = new SpecfileErrorHandler(getInputFile(), document);
 			specfileErrorHandler.removeExistingMarkers();
-
+			SpecfileTaskHandler specfileTaskHandler = new SpecfileTaskHandler(getInputFile(), document);
+			specfileTaskHandler.removeExistingMarkers();
 			this.parser.setErrorHandler(specfileErrorHandler);
+			this.parser.setTaskHandler(specfileTaskHandler);
 			specfile = parser.parse(document);
 		}
 		catch (Exception e)

@@ -62,6 +62,7 @@ public class PreferenceConstants {
 	public static final String P_RPMINFO_VENDOR = "RpmInfoVendor";
 	public static final String P_RPMINFO_BUILDTIME = "RpmInfoBuildDate";
 	public static final String P_RPMINFO_SOURCERPM = "RpmInfoSourceRpm";
+	public static final String P_TASK_TAGS = "RpmSpecTaskTags";
 	
 	/*
 	 * Preferences default values
@@ -83,7 +84,8 @@ public class PreferenceConstants {
 	// changelog
 	public static final String DP_CHANGELOG_LOCAL = "US";
 	public static final String DP_CHANGELOG_ENTRY_FORMAT = P_CHANGELOG_ENTRY_FORMAT_VERSIONED;
-	
+	// task tags
+	public static final String DP_TASK_TAGS = "TODO;FIXME";
 	
 	// RPM informations
 	public static final boolean DP_RPMINFO_NAME = true;

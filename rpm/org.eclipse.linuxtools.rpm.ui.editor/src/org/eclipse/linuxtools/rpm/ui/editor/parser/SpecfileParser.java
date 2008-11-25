@@ -20,11 +20,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileTaskHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource.SourceType;
+import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
@@ -62,6 +66,12 @@ public class SpecfileParser {
 //			"Requires(pre)", "Requires(post)", "Requires(postun)" };
 
 	private SpecfileErrorHandler errorHandler;
+	private SpecfileTaskHandler taskHandler;
+	private IPreferenceStore store;
+	
+	public SpecfileParser() {
+		store = Activator.getDefault().getPreferenceStore();
+	}
 
 	public Specfile parse(IDocument specfileDocument) {
 
@@ -76,6 +86,7 @@ public class SpecfileParser {
 		specfile.setDocument(specfileDocument);
 		try {
 			while ((line = reader.readLine()) != null) {
+				generateTaskMarker(reader.getLineNumber() - 1, line);
 				// IDocument.getLine(#) is 0-indexed whereas
 				// reader.getLineNumber appears to be 1-indexed
 				SpecfileElement element = parseLine(line, specfile, reader
@@ -137,6 +148,19 @@ public class SpecfileParser {
 			SpecfileLog.logError(e);
 		}
 		return specfile;
+	}
+	
+	private void generateTaskMarker(int lineNumber, String line) {
+		String[] taskTags = store.getString(PreferenceConstants.P_TASK_TAGS).split(";");
+		int commentCharIndex = line.indexOf("#");
+		if (commentCharIndex > -1) {
+			for (String item : taskTags) {
+				int taskIndex = line.indexOf(item);
+				if (taskIndex > commentCharIndex) {
+					taskHandler.handleTask(lineNumber, line, item);
+				}
+			}
+		}
 	}
 	
 	public Specfile parse(String specfileContent) {
@@ -523,5 +547,9 @@ public class SpecfileParser {
 
 	public void setErrorHandler(SpecfileErrorHandler specfileErrorHandler) {
 		errorHandler = specfileErrorHandler;
+	}
+	
+	public void setTaskHandler(SpecfileTaskHandler specfileTaskHandler) {
+		taskHandler = specfileTaskHandler;
 	}
 }
