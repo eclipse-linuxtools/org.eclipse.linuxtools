@@ -22,11 +22,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.linuxtools.valgrind.core.HistoryFile;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 
 public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
@@ -37,7 +37,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected static final String EQUALS = "="; //$NON-NLS-1$
 
 	protected static final String LOG_PREFIX = "valgrind_"; //$NON-NLS-1$
-	protected static final String LOG_FILE = ValgrindCommand.LOG_PATH + Path.SEPARATOR + LOG_PREFIX + "%p.xml"; //$NON-NLS-1$
+	protected static final String LOG_FILE = LOG_PREFIX + "%p.xml"; //$NON-NLS-1$
 	protected static final FileFilter LOG_FILTER = new FileFilter() {
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(LOG_PREFIX);
@@ -60,6 +60,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		}
 
 		try {
+			command = new ValgrindCommand();
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
 
@@ -88,12 +89,14 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			monitor.worked(3);
 
-			command = new ValgrindCommand();
 			command.execute(commandArray, getEnvironment(config), wd, usePty);
 			monitor.worked(3);
 			DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
 		
 			dynamicDelegate.launch(command, config, launch, monitor.newChild(3));
+			
+			// write launch history to history file
+			HistoryFile.getInstance().write(getProgramName(config), toolID, command.getDataDir().getName());
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 		} finally {
@@ -105,7 +108,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		ArrayList<String> opts = new ArrayList<String>();
 		opts.add(ValgrindCommand.OPT_TOOL + EQUALS + ValgrindLaunchPlugin.getDefault().getToolName(toolID));
 
-		opts.add(ValgrindCommand.OPT_LOGFILE + EQUALS + LOG_FILE);
+		opts.add(ValgrindCommand.OPT_LOGFILE + EQUALS + command.getDataDir().getCanonicalPath() + File.separator + LOG_FILE);
 
 		opts.add(ValgrindCommand.OPT_TRACECHILD + EQUALS + (config.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACECHILD, false) ? YES : NO));
 		opts.add(ValgrindCommand.OPT_CHILDSILENT + EQUALS + YES);//(config.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_CHILDSILENT, false) ? YES : NO));
@@ -128,7 +131,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			}
 		}
 
-		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config)));		
+		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(command, config)));		
 
 		String[] ret = new String[opts.size()];
 		return opts.toArray(ret);

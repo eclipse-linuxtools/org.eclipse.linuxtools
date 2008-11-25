@@ -10,6 +10,8 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.launch;
 
+import java.io.File;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
@@ -38,10 +40,20 @@ public interface IValgrindLaunchDelegate {
 	/**
 	 * Parses attributes of an <code>ILaunchConfiguration</code> into an array
 	 * of arguments to be passed to Valgrind
+	 * @param command - The Valgrind instance about to run
 	 * @param config - the <code>ILaunchConfiguration</code>
 	 * @return an array of arguments that can appended to a <code>valgrind</code> command
 	 * @throws CoreException - retrieving attributes from config failed
 	 */
-	public String[] getCommandArray(ILaunchConfiguration config) throws CoreException;
+	public String[] getCommandArray(ValgrindCommand command, ILaunchConfiguration config) throws CoreException;
 	
+	/**
+	 * This method is to be called to reparse the output of recent launches where the
+	 * output still remains in the local filesystem. This method should perform the
+	 * same output parsing as if a Valgrind instance just ran and display the appropriate
+	 * UI.
+	 * @param datadir - the directory containing the Valgrind output files to be parsed
+	 * @throws CoreException - if parsing the files fails
+	 */
+	public void reparseOutput(File datadir) throws CoreException;
 }
