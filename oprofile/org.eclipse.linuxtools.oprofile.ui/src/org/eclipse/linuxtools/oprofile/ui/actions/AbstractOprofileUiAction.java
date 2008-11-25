@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
+ *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.actions;
 
@@ -14,9 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUIMessages;
-import org.eclipse.linuxtools.oprofile.ui.system.SystemProfileView;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -54,10 +53,10 @@ public abstract class AbstractOprofileUiAction implements IWorkbenchWindowAction
 	 * Updates the oprofile perspective views
 	 */
 	protected void _updateViews() {
-		SystemProfileView view = OprofileUiPlugin.getDefault().getSystemProfileView();
-		if (view != null) {
-			view.refreshView();
-		}
+//		SystemProfileView view = OprofileUiPlugin.getDefault().getSystemProfileView();
+//		if (view != null) {
+//			view.refreshView();
+//		}
 	}
 	
 	/**

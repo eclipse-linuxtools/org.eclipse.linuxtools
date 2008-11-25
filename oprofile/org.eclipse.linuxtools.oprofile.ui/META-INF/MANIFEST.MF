@@ -27,4 +27,4 @@ Export-Package: org.eclipse.linuxtools.oprofile.ui;
    org.eclipse.swt.graphics,
    org.osgi.framework,
    org.eclipse.swt.widgets",
- org.eclipse.linuxtools.oprofile.ui.system
+ org.eclipse.linuxtools.oprofile.ui.view

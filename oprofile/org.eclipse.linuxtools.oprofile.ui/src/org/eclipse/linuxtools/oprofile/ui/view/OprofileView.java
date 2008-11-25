@@ -10,8 +10,13 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.view;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
@@ -39,25 +44,54 @@ public class OprofileView extends ViewPart {
 
 	private void _createActionMenu() {
 		IMenuManager manager = getViewSite().getActionBars().getMenuManager();
+		final OprofileView view = this;
 		manager.add(new Action("Refresh Model"){
 			public void run() {
-				Display.getCurrent().asyncExec(new Runnable() {
-					public void run() {
-						OpModelRoot r = OpModelRoot.getDefault();
-						r.refreshModel();
-						System.out.println(r);
-	
-						UiModelRoot r2 = UiModelRoot.getDefault();
-						r2.refreshModel();
-						_viewer.setInput(r2);
-					}					
-				});
+				view.refreshView();
 			}
 		});
 	}
 	
-	public void refreshTree() {
+	/**
+	 * Extremely convoluted way of getting the running and parsing to happen in 
+	 *   a separate thread, with a progress monitor. In most cases and on fast 
+	 *   machines this will probably only be a blip.
+	 */
+	public void refreshView() {
+		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
+			@Override
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				//TODO: externalize
+				monitor.beginTask("Parsing OProfile data", 2);
+
+				OpModelRoot dataModelRoot = OpModelRoot.getDefault();
+				dataModelRoot.refreshModel();
+				System.out.println(dataModelRoot);	//debugging
+				monitor.worked(1);
+
+				final UiModelRoot UiRoot = UiModelRoot.getDefault();
+				UiRoot.refreshModel();
+				
+				//must be done this way otherwise SWT invalid thread access exception
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						_viewer.setInput(UiRoot);
+					}
+				});
+				monitor.worked(1);
+				monitor.done();
+			}
+		};
 		
+		ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+		try {
+			dialog.run(true, false, refreshRunner);
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

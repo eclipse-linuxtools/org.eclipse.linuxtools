@@ -18,8 +18,6 @@ import java.util.ResourceBundle;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.oprofile.ui.sample.SampleView;
-import org.eclipse.linuxtools.oprofile.ui.system.SystemProfileView;
 import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -36,18 +34,9 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 
-	private SampleView _sampleView = null;
-	private SystemProfileView _sysProfileView = null;
 	private OprofileView _oprofileview = null;
 	
 	public static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
-
-	// System Profiling View
-	public static final String ID_VIEW_SYSTEM = ID_PLUGIN + ".system"; //$NON-NLS-1$
-	public static final String ID_VIEW_SYSTEM_PROFILE = ID_VIEW_SYSTEM + ".SystemProfileView"; //$NON-NLS-1$
-
-	// OpModelSample View
-	public static final String ID_VIEW_SAMPLE = ID_PLUGIN + ".sample.SampleView"; //$NON-NLS-1$
 
 	// Icon paths (relative to root of plugin)
 	public static final String EXEC_ICON = "icons/tree_exec.gif";
@@ -136,31 +125,6 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 		return imageDescriptorFromPlugin(ID_PLUGIN, path);
 	}
 	
-	/**
-	 * Returns the SampleView open on the desktop or null if none
-	 * @return the SampleView
-	 */
-	public SampleView getSampleView()
-	{
-		return _sampleView;
-	}
-	
-	/**
-	 * Registers the SampleView to use for viewing all IProfileElements
-	 * @param view	the view to use (or null for none)
-	 */
-	public void setSampleView(SampleView view)
-	{
-		_sampleView = view;
-	}
-	
-	public SystemProfileView getSystemProfileView() {
-		return _sysProfileView;
-	}
-	
-	public void setSystemProfileView(SystemProfileView view) {
-		_sysProfileView = view;
-	}
 	
 	public OprofileView getOprofileView() {
 		return _oprofileview;
