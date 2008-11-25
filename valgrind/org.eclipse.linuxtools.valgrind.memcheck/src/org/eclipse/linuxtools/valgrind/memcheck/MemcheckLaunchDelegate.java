@@ -48,40 +48,12 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 	public static final String OPT_UNDEF = "--undef-value-errors"; //$NON-NLS-1$
 
 	public void launch(ValgrindCommand command, ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-
 		// wait for Valgrind to exit
 		try {
 			command.getProcess().waitFor();
 
-			File[] logs = command.getTempDir().listFiles(LOG_FILTER);
-			final ArrayList<ValgrindError> errors = new ArrayList<ValgrindError>(logs.length);
-			for (File log : logs) {
-				ValgrindXMLParser parser;
-				parser = new ValgrindXMLParser(new FileInputStream(log));
-
-				errors.addAll(parser.getErrors());
-			}		
-
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					try {
-						IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-						activePage.showView(ValgrindUIPlugin.VIEW_ID);
-
-						ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-						view.createDynamicView(TOOL_ID);
-						IValgrindToolView memcheckPart = view.getDynamicView();
-						if (memcheckPart instanceof MemcheckViewPart) {
-							((MemcheckViewPart) memcheckPart).setErrors(errors.toArray(new ValgrindError[errors.size()]));
-						}						
-						view.refreshView();
-					} catch (PartInitException e) {
-						e.printStackTrace();
-					} catch (CoreException e) {
-						e.printStackTrace();
-					}
-				}					
-			});
+			File[] logs = command.getDataDir().listFiles(LOG_FILTER);
+			parseOutput(logs);
 
 		} catch (ParserConfigurationException e) {
 			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
@@ -92,12 +64,45 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 		} catch (SAXException e) {
 			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 			e.printStackTrace();
-		} catch (InterruptedException e1) {
+		} catch (InterruptedException e) {
 		}
 
 	}
+
+	protected void parseOutput(File[] logs)
+			throws ParserConfigurationException, IOException, CoreException,
+			SAXException {
+		final ArrayList<ValgrindError> errors = new ArrayList<ValgrindError>(logs.length);
+		for (File log : logs) {
+			ValgrindXMLParser parser;
+			parser = new ValgrindXMLParser(new FileInputStream(log));
+
+			errors.addAll(parser.getErrors());
+		}		
+
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					activePage.showView(ValgrindUIPlugin.VIEW_ID);
+
+					ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+					view.createDynamicView(TOOL_ID);
+					IValgrindToolView memcheckPart = view.getDynamicView();
+					if (memcheckPart instanceof MemcheckViewPart) {
+						((MemcheckViewPart) memcheckPart).setErrors(errors.toArray(new ValgrindError[errors.size()]));
+					}						
+					view.refreshView();
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			}					
+		});
+	}
 	
-	public String[] getCommandArray(ILaunchConfiguration config) throws CoreException {
+	public String[] getCommandArray(ValgrindCommand command, ILaunchConfiguration config) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		opts.add(ValgrindCommand.OPT_XML + EQUALS + YES);
 		
@@ -110,6 +115,22 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 		opts.add(OPT_UNDEF + EQUALS + (config.getAttribute(MemcheckToolPage.ATTR_MEMCHECK_UNDEF, true) ? YES : NO));
 
 		return opts.toArray(new String[opts.size()]);
+	}
+
+	public void reparseOutput(File datadir) throws CoreException {
+		File[] outputFiles = datadir.listFiles(LOG_FILTER);
+		try {
+			parseOutput(outputFiles);
+		} catch (ParserConfigurationException e) {
+			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+			e.printStackTrace();
+		} catch (IOException e) {
+			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+			e.printStackTrace();
+		} catch (SAXException e) {
+			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+			e.printStackTrace();
+		}		
 	}
 
 }
