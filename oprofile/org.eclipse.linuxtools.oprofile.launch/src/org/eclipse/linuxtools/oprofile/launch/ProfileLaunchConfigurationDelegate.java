@@ -23,7 +23,7 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
-import org.eclipse.linuxtools.oprofile.ui.system.SystemProfileView;
+import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -70,7 +70,7 @@ public class ProfileLaunchConfigurationDelegate extends LaunchConfigurationDeleg
 						Display.getDefault().syncExec(new Runnable() {
 							public void run() {
 								//stolen from AbstractOprofileUiAction::_updateViews() 
-								SystemProfileView view = OprofileUiPlugin.getDefault().getSystemProfileView();
+								OprofileView view = OprofileUiPlugin.getDefault().getOprofileView();
 								if (view != null) {
 									view.refreshView();
 								}
