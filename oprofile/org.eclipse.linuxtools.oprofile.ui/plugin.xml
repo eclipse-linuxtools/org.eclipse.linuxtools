@@ -16,6 +16,7 @@
             name="%view.groupname">
       </category>
    </extension>
+   <!--
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
@@ -23,7 +24,7 @@
             label="%actionSet.label"
             visible="false">
             
-			<!-- Toolbar extensions
+			Toolbar extensions
 			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.save"
 				label="%actionSet.save.label"
 				icon="icons/savesession.gif"
@@ -48,10 +49,9 @@
 				tooltip="%actionSet.startCollection.toolTip"
 				toolbarPath="Normal/additions/oprofile2"
 				class="org.eclipse.linuxtools.oprofile.ui.actions.StartCollectionActionDelegate"/>
-			-->
 			
 			
-			<!-- Menu contributions -->
+			Menu contributions
 			<menu id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu"
 				label="%actionSet.menu.label"
 				path="additions">
@@ -59,11 +59,6 @@
 				<separator name="group2"/>
 				<separator name="group3"/>
 			</menu>
-			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.refresh"
-				label="%actionSet.refresh.label"
-				tooltip="%actionSet.refresh.toolTip"
-				menubarPath="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu/group3"
-				class="org.eclipse.linuxtools.oprofile.ui.actions.RefreshActionDelegate"/>
 				
 			<action id="org.eclipse.linuxtools.oprofile.ui.contribution.set.menu.shutdown"
 				label="%actionSet.shutdown.label"
@@ -110,6 +105,7 @@
             
       </actionSet>
    </extension>
+   -->
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
