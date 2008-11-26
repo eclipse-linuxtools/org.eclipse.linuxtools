@@ -105,7 +105,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
    <url>
       <update label="ChangeLog Update Site" url="http://sourceware.org/eclipse/update"/>
-      <discovery label="ChangeLog Plugin Site" url="http://sourceware.org/eclipse/changelog" type="web"/>
+      <discovery label="ChangeLog Plugin Site" url="http://sourceware.org/eclipse/changelog"/>
    </url>
 
    <requires>
