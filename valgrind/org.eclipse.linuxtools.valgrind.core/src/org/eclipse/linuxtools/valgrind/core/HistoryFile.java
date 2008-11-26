@@ -28,16 +28,13 @@ public class HistoryFile {
 	public static final int LIMIT = 5;
 	protected static final HistoryFile INSTANCE = new HistoryFile();
 	protected static final String HISTORY_FILE = ".history"; //$NON-NLS-1$
-	protected static final String SEPARATOR = ":"; //$NON-NLS-1$
+	protected static final String SEPARATOR = "\t"; //$NON-NLS-1$
+	protected static final int NUM_FIELDS = 4;
 	protected File histFile;
-	protected List<String> executables;
-	protected List<String> tools;
-	protected List<String> datadirs;
+	protected List<HistoryEntry> entries;
 
 	protected HistoryFile() {
-		executables = new ArrayList<String>();
-		tools = new ArrayList<String>();
-		datadirs = new ArrayList<String>();
+		entries = new ArrayList<HistoryEntry>();
 		
 		BufferedReader br = null;
 		try {
@@ -50,9 +47,10 @@ public class HistoryFile {
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] parts = line.split(SEPARATOR);
-				executables.add(parts[0]);
-				tools.add(parts[1]);
-				datadirs.add(parts[2]);
+				if (parts.length != NUM_FIELDS) {
+					throw new IOException(Messages.getString("HistoryFile.History_file_is_corrupt")); //$NON-NLS-1$
+				}
+				entries.add(new HistoryEntry(parts[0], parts[1], parts[2], parts[3]));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -67,21 +65,30 @@ public class HistoryFile {
 		}
 	}
 
-	public void write(String executable, String toolID, String datadir) throws IOException {
-		if (executables.size() >= LIMIT) {
-			executables.remove(0);
-			tools.remove(0);
-			datadirs.remove(0);
+	public void write(String configName, String toolID, String datadir, String processLabel) throws IOException {
+		if (entries.size() >= LIMIT) {
+			entries.remove(0);
 		}
-		executables.add(executable);
-		tools.add(toolID);
-		datadirs.add(datadir);
+		entries.add(new HistoryEntry(configName, toolID, datadir, processLabel));
 
+		flush();
+	}
+	
+	public void moveToEnd(HistoryEntry entry) throws IOException {
+		if (entries.remove(entry)) {
+			entries.add(entry);
+		}
+		
+		flush();
+	}
+
+	protected void flush() throws IOException {
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(histFile);
-			for (int i = 0; i < executables.size(); i++) {
-				pw.println(executables.get(i) + SEPARATOR + tools.get(i) + SEPARATOR + datadirs.get(i));
+			for (int i = 0; i < entries.size(); i++) {
+				HistoryEntry entry = entries.get(i);
+				pw.println(entry.getConfigName() + SEPARATOR + entry.getTool() + SEPARATOR + entry.getDatadir() + SEPARATOR + entry.getProcessLabel());
 			}
 		} finally {
 			if (pw != null) {
@@ -89,21 +96,17 @@ public class HistoryFile {
 			}
 		}
 	}
-
-	public String[] getExecutables() {
-		return executables.toArray(new String[executables.size()]);
+	
+	public HistoryEntry[] getEntries() {
+		return entries.toArray(new HistoryEntry[entries.size()]);
 	}
 	
-	public String[] getTools() {
-		return tools.toArray(new String[tools.size()]);
-	}
-	
-	public String[] getDatadirs() {
-		return datadirs.toArray(new String[datadirs.size()]);
+	public HistoryEntry getRecentEntry() {
+		return entries.size() > 0 ? entries.get(entries.size() - 1) : null;
 	}
 	
 	public int getNextIndex() {
-		return executables.size() % LIMIT;
+		return entries.size() % LIMIT;
 	}
 
 	public synchronized static HistoryFile getInstance() {
