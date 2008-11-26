@@ -13,7 +13,7 @@
 package org.eclipse.linuxtools.oprofile.core.model;
 
 /**
- * A sample from Oprofile.
+ * Represents an OProfile sample.
  */
 public class OpModelSample {
 	private int _count;
