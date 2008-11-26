@@ -25,6 +25,8 @@ import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This is the delegation class for the profile launcher. It handles the request to
@@ -73,6 +75,13 @@ public class ProfileLaunchConfigurationDelegate extends LaunchConfigurationDeleg
 								OprofileView view = OprofileUiPlugin.getDefault().getOprofileView();
 								if (view != null) {
 									view.refreshView();
+								} else {
+									try {
+										PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OPROFILE_VIEW);
+									} catch (PartInitException e) {
+										e.printStackTrace();
+									}
+									OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 								}
 							}
 						});
