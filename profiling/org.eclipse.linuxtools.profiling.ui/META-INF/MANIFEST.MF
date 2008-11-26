@@ -12,6 +12,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.profiling.ui
 Import-Package: org.eclipse.core.filesystem,
+ org.eclipse.debug.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
