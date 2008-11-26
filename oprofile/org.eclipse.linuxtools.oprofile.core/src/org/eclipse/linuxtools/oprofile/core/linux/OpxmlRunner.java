@@ -33,10 +33,7 @@ import org.xml.sax.XMLReader;
  * This class will run opxml.
  * 
  * opxml is a small program which acts as a textual interface between Oprofile and
- * BFD  and the oprofile plugins. This is necessary because both Oprofile and BFD are
- * under the GPL, while Eclipse is licensed under the CPL. Since these two
- * licenses are not compatible, we must jump through a hoop or two to use BFD and
- * Oprofile in Eclipse.
+ * BFD and the oprofile plugins. 
  */
 public class OpxmlRunner {
 	private OprofileSAXHandler _handler;
