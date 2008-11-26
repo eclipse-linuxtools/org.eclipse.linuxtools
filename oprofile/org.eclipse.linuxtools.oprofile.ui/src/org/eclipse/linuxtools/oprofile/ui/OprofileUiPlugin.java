@@ -37,6 +37,7 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	private OprofileView _oprofileview = null;
 	
 	public static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
+	public static final String ID_OPROFILE_VIEW = ID_PLUGIN + ".OProfileView";
 
 	// Icon paths (relative to root of plugin)
 	public static final String EXEC_ICON = "icons/tree_exec.gif";
