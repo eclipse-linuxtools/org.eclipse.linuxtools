@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
@@ -38,33 +38,45 @@ public class MassifHeapChart extends Figure {
 			values[i] = snapshots[i].getTotal();
 		}
 		int maxValue = findMax(values);
-		
+
 		TextLayout maxX = new TextLayout(Display.getCurrent());
 		maxX.setAlignment(SWT.CENTER);
 		maxX.setText(String.valueOf(snapshots[snapshots.length - 1].getTime()));
-		
+
 		TextLayout maxY = new TextLayout(Display.getCurrent());
 		maxY.setAlignment(SWT.CENTER);
 		maxY.setText(String.valueOf(maxValue));
 		Rectangle clientArea = getClientArea();
 		Rectangle plotArea = clientArea.getCopy();
-		
+
 		// shrink by a uniform amount equal to the max value label's width plus some padding
 		int padding = maxY.getBounds().width + 5;
 		plotArea.shrink(padding, padding);
-		for (int i = 0; i < values.length; i++) {
-			Rectangle bar = plotArea.getCopy();
-			bar.width /= values.length;
-			bar.x += i * bar.width;
-			bar.shrink(1, 1);
-			int chop = bar.height * (maxValue - values[i]) / maxValue;
-			bar.crop(new Insets(chop, 0, 0, 0));
-			graphics.setBackgroundColor(ColorConstants.red);
-			graphics.fillRectangle(bar);
+
+		if (values.length > 0) {
+			// plot data
+			PointList points = new PointList(values.length);
+			for (int i = 0; i < values.length; i++) {
+				points.addPoint(new Point(i * plotArea.width / values.length, plotArea.height * (maxValue - values[i]) / maxValue));
+			}
+			
+			points.performTranslate(plotArea.x, plotArea.y);
+			graphics.setForegroundColor(ColorConstants.blue);
+			graphics.drawPolyline(points);
 		}
-		
+		//		for (int i = 0; i < values.length; i++) {
+		//			Rectangle bar = plotArea.getCopy();
+		//			bar.width /= values.length;
+		//			bar.x += i * bar.width;
+		//			bar.shrink(1, 1);
+		//			int chop = bar.height * (maxValue - values[i]) / maxValue;
+		//			bar.crop(new Insets(chop, 0, 0, 0));
+		//			graphics.setBackgroundColor(ColorConstants.red);
+		//			graphics.fillRectangle(bar);
+		//		}
+
 		Point origin = new Point(plotArea.x, plotArea.y + plotArea.height);
-		Point xEnd = new Point(plotArea.width + 5, plotArea.y + plotArea.height);
+		Point xEnd = new Point(plotArea.x + plotArea.width + 5, plotArea.y + plotArea.height);
 		Point yEnd = new Point(plotArea.x, plotArea.y - 10);
 		graphics.drawLine(origin, xEnd); // x axis
 		graphics.drawLine(origin, yEnd); // y axis
@@ -72,7 +84,7 @@ public class MassifHeapChart extends Figure {
 		graphics.drawLine(xEnd, xEnd.getTranslated(-4, 4)); // x axis arrow
 		graphics.drawLine(yEnd, yEnd.getTranslated(-4, 4)); // y axis arrow
 		graphics.drawLine(yEnd, yEnd.getTranslated(4, 4)); // y axis arrow
-		
+
 		graphics.drawTextLayout(maxX, xEnd.x - maxX.getBounds().width - 5, xEnd.y + 5);
 		graphics.drawTextLayout(maxY, 5, yEnd.y + 5);
 		// x units
@@ -84,12 +96,12 @@ public class MassifHeapChart extends Figure {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		
+
 		// y units
 		TextLayout yUnits = new TextLayout(Display.getCurrent());
 		yUnits.setAlignment(SWT.CENTER);
 		yUnits.setText("B"); //$NON-NLS-1$
-		
+
 		graphics.drawTextLayout(yUnits, yEnd.x, yEnd.y - yUnits.getBounds().height);
 	}
 
