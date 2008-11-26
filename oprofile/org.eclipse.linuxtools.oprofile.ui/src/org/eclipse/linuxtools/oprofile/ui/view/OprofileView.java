@@ -23,9 +23,13 @@ import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+/**
+ * 
+ */
 public class OprofileView extends ViewPart {
 	private TreeViewer _viewer;
 
@@ -53,14 +57,22 @@ public class OprofileView extends ViewPart {
 		});
 	}
 	
+	private TreeViewer getTreeViewer() {
+		return _viewer;
+	}
+	
 	/**
 	 * Extremely convoluted way of getting the running and parsing to happen in 
 	 *   a separate thread, with a progress monitor. In most cases and on fast 
 	 *   machines this will probably only be a blip.
 	 */
 	public void refreshView() {
-		final OprofileView thisView = this;
-		
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OPROFILE_VIEW);
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+
 		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -75,16 +87,14 @@ public class OprofileView extends ViewPart {
 				final UiModelRoot UiRoot = UiModelRoot.getDefault();
 				UiRoot.refreshModel();
 				
-				//must be done this way otherwise SWT invalid thread access exception
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						_viewer.setInput(UiRoot);
-						//focus on the oprofile view
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(thisView);
+						OprofileUiPlugin.getDefault().getOprofileView().getTreeViewer().setInput(UiRoot);
 					}
 				});
 				monitor.worked(1);
+
 				monitor.done();
 			}
 		};
