@@ -24,9 +24,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileTaskHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource.SourceType;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
@@ -78,6 +78,9 @@ public class SpecfileParser {
 		// remove all existing markers, if a SpecfileErrorHandler is instantiated.
 		if (errorHandler != null)
 			errorHandler.removeExistingMarkers();
+		if (taskHandler != null) {
+			taskHandler.removeExistingMarkers();
+		}
 		LineNumberReader reader = new LineNumberReader(new StringReader(
 				specfileDocument.get()));
 		String line = "";

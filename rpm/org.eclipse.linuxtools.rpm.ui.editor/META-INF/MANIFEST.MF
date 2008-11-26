@@ -18,9 +18,10 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.rpm.ui.editor,
  org.eclipse.linuxtools.rpm.ui.editor.actions,
+ org.eclipse.linuxtools.rpm.ui.editor.hyperlink,
+ org.eclipse.linuxtools.rpm.ui.editor.markers,
  org.eclipse.linuxtools.rpm.ui.editor.outline,
  org.eclipse.linuxtools.rpm.ui.editor.parser,
- org.eclipse.linuxtools.rpm.ui.editor.preferences,
- org.eclipse.linuxtools.rpm.ui.editor.hyperlink
+ org.eclipse.linuxtools.rpm.ui.editor.preferences
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %provider

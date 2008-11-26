@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 	public static final String SPECFILE_TASK_MARKER_ID = Activator.PLUGIN_ID
-			+ ".specfiletask"; //$NON-NLS-1$
+			+ ".specfiletask";
 
 	public SpecfileTaskHandler(IFile file, IDocument document) {
 		super(file, document);
@@ -55,6 +55,7 @@ public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 		} catch (CoreException ee) {
 			SpecfileLog.logError(ee);
 		}
+		return;
 	}
 
 	@Override

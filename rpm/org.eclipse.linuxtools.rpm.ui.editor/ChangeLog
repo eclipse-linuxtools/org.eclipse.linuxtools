@@ -1,3 +1,17 @@
+2008-11-26  Alexander Kurtakov  <akurtakov@gmail.com>
+	Move marker handlers to a separate package and extract base class.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTaskHandler.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileErrorHandler.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileMarkerHandler.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileTaskHandler.java: New file.
+	* META-INF/MANIFEST.MF: Export org.eclipse.linuxtools.rpm.ui.editor.markers package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java 
+	(parse): Clean task markers when parsing.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/TaskTagsPreferencePage.java 
+	(createContents): Removed method that just calls super. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java: Fix imports.
+
 2008-11-25  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix #255412.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/TaskTagsPreferencePage.java: New file.

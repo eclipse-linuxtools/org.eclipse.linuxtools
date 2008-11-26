@@ -16,7 +16,6 @@ import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -26,11 +25,6 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 	public TaskTagsPreferencePage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-	}
-
-	@Override
-	protected Control createContents(Composite parent) {
-		return super.createContents(parent);
 	}
 
 	public void init(IWorkbench workbench) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 public class SpecfileErrorHandler extends SpecfileMarkerHandler{
 	
 	public static final String SPECFILE_ERROR_MARKER_ID = Activator.PLUGIN_ID
-	+ ".specfileerror"; //$NON-NLS-1$
+	+ ".specfileerror";
 	
 	public SpecfileErrorHandler(IFile file, IDocument document)
 	{
@@ -62,6 +62,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler{
 		} catch (CoreException ee) {
 			SpecfileLog.logError(ee);
 		}
+		return;
 	}
 	
 	@Override
