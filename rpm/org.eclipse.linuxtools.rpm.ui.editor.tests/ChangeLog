@@ -1,3 +1,18 @@
+2008-11-26  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix imports caused by the marker handlers moving.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/DefineTests.java: Fix imports.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/EpochTagTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LicenseTagTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LinePositionTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/NameTagTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/PatchApplicationTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RefactoringTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/ReleaseTagTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/VersionTagTests.java: Likewise.
+
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Add project specific compiler warnings.
