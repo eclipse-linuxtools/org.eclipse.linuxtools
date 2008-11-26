@@ -24,7 +24,7 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintItem;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 
 public class RpmlintBuilder extends IncrementalProjectBuilder {

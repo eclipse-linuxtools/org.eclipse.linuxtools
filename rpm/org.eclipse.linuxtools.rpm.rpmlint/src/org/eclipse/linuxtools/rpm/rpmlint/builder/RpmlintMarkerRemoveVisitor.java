@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 
 public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 

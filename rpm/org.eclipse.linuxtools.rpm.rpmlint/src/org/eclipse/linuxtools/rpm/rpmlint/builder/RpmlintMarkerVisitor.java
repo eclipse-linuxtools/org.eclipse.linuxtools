@@ -24,7 +24,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintItem;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 
 public class RpmlintMarkerVisitor implements IResourceVisitor {
 
