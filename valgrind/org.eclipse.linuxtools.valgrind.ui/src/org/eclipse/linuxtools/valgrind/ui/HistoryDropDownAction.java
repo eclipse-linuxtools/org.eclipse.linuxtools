@@ -10,20 +10,26 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.linuxtools.valgrind.core.HistoryEntry;
 import org.eclipse.linuxtools.valgrind.core.HistoryFile;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 
 public class HistoryDropDownAction extends Action implements IMenuCreator {
 	protected Menu menu;
+	protected List<ActionContributionItem> items;
 	
 	public HistoryDropDownAction(String text, int style) {
-		super(text, style);		
+		super(text, style);	
 		setImageDescriptor(ValgrindUIPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, "icons/history_list.gif")); //$NON-NLS-1$
 		setMenuCreator(this);
+		items = new ArrayList<ActionContributionItem>();
 	}
 	public void dispose() {
 		if (menu != null) {
@@ -34,28 +40,34 @@ public class HistoryDropDownAction extends Action implements IMenuCreator {
 	public Menu getMenu(Control parent) {
 		if (menu != null) {
 			menu.dispose();
+			items.clear();
 		}				
 		menu = new Menu(parent);
 		
-		String[] executables = HistoryFile.getInstance().getExecutables();
-		String[] tools = HistoryFile.getInstance().getTools();
-		String[] datadirs = HistoryFile.getInstance().getDatadirs();
+		HistoryEntry[] entries = HistoryFile.getInstance().getEntries();
 	
 		// fill starting from most recent
-		for (int i = executables.length - 1; i >= 0; i--) {
-			ActionContributionItem item = new ActionContributionItem(new HistoryAction(executables[i], tools[i], datadirs[i]));
+		for (int i = entries.length - 1; i >= 0; i--) {
+			ActionContributionItem item = new ActionContributionItem(new HistoryAction(entries[i]));
 			item.fill(menu, -1);
+			items.add(item);
+		}
+		
+		// select most recent if the view has content
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		if (view.getDynamicView() != null) {
+			items.get(0).getAction().setChecked(true);
 		}
 		
 		return menu;
 	}
-	
-	protected void createMenu(Control parent) {
-		
-	}
 
 	public Menu getMenu(Menu parent) {
 		return null;
+	}
+	
+	public ActionContributionItem[] getItems() {
+		return items.toArray(new ActionContributionItem[items.size()]);
 	}
 	
 	public Menu getControl() {

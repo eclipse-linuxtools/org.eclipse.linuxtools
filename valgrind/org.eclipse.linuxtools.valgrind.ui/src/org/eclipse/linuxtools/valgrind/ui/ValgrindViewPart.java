@@ -15,6 +15,9 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.linuxtools.valgrind.core.HistoryEntry;
+import org.eclipse.linuxtools.valgrind.core.HistoryFile;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,6 +37,8 @@ public class ValgrindViewPart extends ViewPart {
 		historyAction = new HistoryDropDownAction(Messages.getString("ValgrindViewPart.Select_a_recent_launch"), IAction.AS_DROP_DOWN_MENU); //$NON-NLS-1$
 		toolbar.add(historyAction);
 		toolbar.update(true);
+		
+		setContentDescription(Messages.getString("ValgrindViewPart.No_Valgrind_output")); //$NON-NLS-1$
 		
 		dynamicViewHolder = new Composite(parent, SWT.NONE);
 		dynamicViewHolder.setLayout(new GridLayout());
@@ -59,6 +64,10 @@ public class ValgrindViewPart extends ViewPart {
 		dynamicView.createPartControl(dynamicViewHolder);
 		
 		dynamicViewHolder.layout(true);
+		
+		HistoryEntry entry = HistoryFile.getInstance().getRecentEntry();
+		String toolName = ValgrindLaunchPlugin.getDefault().getToolName(entry.getTool());
+		setContentDescription(entry.getConfigName() + " [" + toolName + "] " + entry.getProcessLabel()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override
