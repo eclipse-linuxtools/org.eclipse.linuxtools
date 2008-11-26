@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.linuxtools.valgrind.core.HistoryFile;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 
@@ -91,12 +92,11 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 			command.execute(commandArray, getEnvironment(config), wd, usePty);
 			monitor.worked(3);
-			DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
-		
-			dynamicDelegate.launch(command, config, launch, monitor.newChild(3));
+			IProcess p = DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
 			
 			// write launch history to history file
-			HistoryFile.getInstance().write(getProgramName(config), toolID, command.getDataDir().getName());
+			HistoryFile.getInstance().write(config.getName(), toolID, command.getDataDir().getName(), p.getLabel());
+			dynamicDelegate.launch(command, config, launch, monitor.newChild(3));
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 		} finally {
