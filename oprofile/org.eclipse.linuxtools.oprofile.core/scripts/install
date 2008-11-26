@@ -4,6 +4,8 @@
 # Eclipse-OProfile.
 #
 
+### check install requirements ###
+
 #need to be in org.eclipse.linuxtools.oprofile.core/scripts dir
 if [ $(basename $(pwd))) != scripts ]; then
   echo Error: script must be run with pwd in script dir
@@ -34,11 +36,23 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+
+### install ###
+
 #create the sym link to consolehelper
 ln -s /usr/bin/consolehelper `pwd`/opcontrol
 if [ $? -ne 0 ]; then
   echo Error: cannot create opcontrol wrapper in `pwd`
   exit 1
+fi
+
+#test if opxml is built
+test -x ../opxml/opxml
+if [ $? -ne 0]; then
+  echo Compiling opxml...
+  cd ../opxml/src
+  make || { echo Error: cannot compile opxml && exit 1 }
+  cd ../../scripts
 fi
 
 test -f /etc/security/console.apps/opcontrol || install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
