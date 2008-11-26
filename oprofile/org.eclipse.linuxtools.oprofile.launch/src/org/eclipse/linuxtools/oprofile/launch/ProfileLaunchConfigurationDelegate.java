@@ -71,7 +71,6 @@ public class ProfileLaunchConfigurationDelegate extends LaunchConfigurationDeleg
 						// based on concurrency issues
 						Display.getDefault().syncExec(new Runnable() {
 							public void run() {
-								//stolen from AbstractOprofileUiAction::_updateViews() 
 								OprofileView view = OprofileUiPlugin.getDefault().getOprofileView();
 								if (view != null) {
 									view.refreshView();
