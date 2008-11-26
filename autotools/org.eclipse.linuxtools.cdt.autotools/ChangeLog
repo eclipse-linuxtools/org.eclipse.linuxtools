@@ -1,3 +1,10 @@
+2008-11-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #472731
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (hasTargetBuilder): 
+	Add check for ManagedProject being null which is apparently possible.
+
 2008-11-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeDocumentProvider.java: Change

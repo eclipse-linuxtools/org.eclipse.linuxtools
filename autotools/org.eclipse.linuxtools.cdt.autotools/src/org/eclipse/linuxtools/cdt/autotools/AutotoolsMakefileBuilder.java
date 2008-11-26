@@ -21,6 +21,7 @@ import org.eclipse.cdt.core.resources.IConsole;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
+import org.eclipse.cdt.managedbuilder.core.IManagedProject;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
 import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
@@ -77,7 +78,8 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			// then return true.
 			if (project.getNature(ManagedCProjectNature.MNG_NATURE_ID) != null) {
 				IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
-				if (info.getManagedProject().getProjectType().getId().equals(AUTOTOOLS_PROJECT_TYPE_ID)) {
+				IManagedProject m = info.getManagedProject();
+				if (m != null && m.getProjectType().getId().equals(AUTOTOOLS_PROJECT_TYPE_ID)) {
 					AutotoolsProjectNature.addAutotoolsBuilder(project, new NullProgressMonitor());
 					AutotoolsPlugin.verifyScannerInfoProvider(project);
 					return true;
@@ -85,7 +87,9 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			}
 		} catch (CoreException e) {
 			// Don't care...fall through to not found.
-		} 
+		} catch (Exception f) {
+			// Don't care...fall through to not found.
+		}
 		// Otherwise not found.
 		return false;
 	}
