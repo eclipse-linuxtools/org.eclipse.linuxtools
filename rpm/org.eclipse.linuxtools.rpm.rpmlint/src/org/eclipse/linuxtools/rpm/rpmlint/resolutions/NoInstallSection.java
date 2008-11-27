@@ -36,7 +36,7 @@ public class NoInstallSection extends AInsertLineResolution {
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
-		SpecfileElement[] sections = editor.getSpecfile().getSectionsElements();
+		SpecfileElement[] sections = editor.getSpecfile().getSections();
 		for (SpecfileElement section : sections) {
 			if (section.getName().equals("clean")) {
 				return section.getLineNumber();

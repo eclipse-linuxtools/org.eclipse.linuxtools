@@ -1,3 +1,16 @@
+2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java 
+	(getLineNumberForInsert): Update to latest Specfile changes.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java 
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleanSection.java 
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoInstallSection.java 
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoPrepSection.java 
+	(getLineNumberForInsert): Likewise.
+
 2008-11-26  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix imports caused by marker handlers movement.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java: Fix imports.
