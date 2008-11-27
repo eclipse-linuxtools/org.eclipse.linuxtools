@@ -12,9 +12,6 @@
 
 package org.eclipse.linuxtools.oprofile.ui;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
