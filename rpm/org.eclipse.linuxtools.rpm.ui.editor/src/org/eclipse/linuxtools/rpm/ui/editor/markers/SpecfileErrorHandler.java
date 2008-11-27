@@ -62,7 +62,6 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler{
 		} catch (CoreException ee) {
 			SpecfileLog.logError(ee);
 		}
-		return;
 	}
 	
 	@Override

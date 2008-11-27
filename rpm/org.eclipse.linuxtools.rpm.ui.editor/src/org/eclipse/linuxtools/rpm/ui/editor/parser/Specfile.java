@@ -76,10 +76,6 @@ public class Specfile {
 		return sections.toArray(elements);
 	}
 	
-	public Object[] getComplexSections() {
-		return complexSections.toArray();
-	}
-	
 	public List<SpecfileSection> getComplexSectionsAsList() {
 		return complexSections;
 	}
@@ -216,7 +212,7 @@ public class Specfile {
 		return sources;
 	}
 
-	public Collection<SpecfileSource> getPatchesAsList() {
+	public List<SpecfileSource> getPatchesAsList() {
 		List<SpecfileSource> patchesList = new ArrayList<SpecfileSource>(patches.values());
 		Collections.sort(patchesList, new SourceComparator());
 		return patchesList;
@@ -228,35 +224,19 @@ public class Specfile {
 		return sourcesList;
 	}
 
-	public SpecfileSource[] getPatchesAsArray() {
-		return getPatchesAsList().toArray(new SpecfileSource[patches.size()]);
-	}
-	
-	public Collection<SpecfileDefine> getDefinesAsList() {
+	public List<SpecfileDefine> getDefinesAsList() {
 		List<SpecfileDefine> definesList = new ArrayList<SpecfileDefine>(defines.values());
 		return definesList;
 	}
 	
-	public SpecfileDefine[] getDefinesAsArray() {
-		return getDefinesAsList().toArray(new SpecfileDefine[defines.size()]);
-	}
-
-	public SpecfileSource[] getSourcesAsArray() {
-		return getSourcesAsList().toArray(new SpecfileSource[sources.size()]);
-	}
-
 	public void organizePatches() {
-		SpecfileSource[] patches = getPatchesAsArray();
-//		System.out.println("*** Then:");
-//		printArray(patches);
+		List<SpecfileSource> patches = getPatchesAsList();
 		int newPatchNumber = 0;
 		int oldPatchNumber = -1;
 		Map<Integer, SpecfileSource> newPatches = new HashMap<Integer, SpecfileSource>();
 		for (SpecfileSource thisPatch: patches) {
 			if (thisPatch.getSpecfile() == null)
 				thisPatch.setSpecfile(this);
-			// System.out.println("thisPatch.specfile -> " +
-			// thisPatch.getSpecfile() + " ?=? " + this);
 			oldPatchNumber = thisPatch.getNumber();
 			thisPatch.setNumber(newPatchNumber);
 			thisPatch.changeDeclaration(oldPatchNumber);
@@ -265,12 +245,6 @@ public class Specfile {
 			newPatchNumber++;
 		}
 		setPatches(newPatches);
-//		System.out.println("*** Now:");
-//		List newPatchesList = new ArrayList(newPatches.values());
-//		Collections.sort(newPatchesList, new SourceComparator());
-//		SpecfileSource[] newPatchesArray = (SpecfileSource[]) newPatchesList
-//				.toArray(new SpecfileSource[newPatchesList.size()]);
-//		printArray(newPatchesArray);
 	}
 
 	public void setDocument(IDocument specfileDocument) {

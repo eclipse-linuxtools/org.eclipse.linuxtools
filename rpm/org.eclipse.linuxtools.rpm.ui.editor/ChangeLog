@@ -1,3 +1,30 @@
+2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
+	Simplify API and cleanup.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileErrorHandler.java 
+	(handleError): Remove unneeded return.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileMarkerHandler.java 
+	(getCharOffset): Remove unneeded Integer.valueOf.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileTaskHandler.java
+	(handleTask): Remove unneeded return. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java 
+	(getComplexSections): Removed.
+	(getDefinesAsArray): Likewise.
+	(getPatchesAsArray): Likewise.
+	(getSourcesAsArray): Likewise.
+	(getDefinesAsList): Really return List.
+	(getPatchesAsList): Likewise.
+	(organizePatches): Remove commented debug code.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java 
+	(getMacros): Generify.
+	(isMacro): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
+	(computeSourcesProposals): Use List insteda of array.
+	(computeTemplateProposals): Likewise.
+	(computePatchesProposals): Likewise.
+	(computeCompletionProposals): Likewise.
+	(computeRpmPackageProposals): Likewise.
+	(computeRpmMacroProposals): Likewise.
+
 2008-11-26  Alexander Kurtakov  <akurtakov@gmail.com>
 	Move marker handlers to a separate package and extract base class.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileErrorHandler.java: Removed.

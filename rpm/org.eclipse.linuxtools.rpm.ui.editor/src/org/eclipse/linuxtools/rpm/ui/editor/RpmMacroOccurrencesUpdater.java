@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -120,10 +121,10 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 *         <code>false</code> otherwise
 	 */
 	private boolean isMacro(String word) {
-		SpecfileDefine[] defines = getMacros();
+		List<SpecfileDefine> defines = getMacros();
 		if (word.length() > 0) {
-			for (int i = 0; i < defines.length; i++) {
-				if (containsWord(defines[i], word)) {
+			for (SpecfileDefine define: defines) {
+				if (containsWord(define, word)) {
 					return true;
 				}
 			}
@@ -139,14 +140,14 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	 * 
 	 * @return the macros from the editor's specfile
 	 */
-	private SpecfileDefine[] getMacros() {
+	private List<SpecfileDefine> getMacros() {
 		Specfile specfile = fEditor.getSpecfile();
 		if (specfile != null) {
-			SpecfileDefine[] macros = specfile.getDefinesAsArray();
+			List<SpecfileDefine> macros = specfile.getDefinesAsList();
 			if (macros != null)
 				return macros;
 		}
-		return new SpecfileDefine[0];
+		return new ArrayList<SpecfileDefine>();
 	}
 
 	/**

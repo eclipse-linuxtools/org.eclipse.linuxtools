@@ -31,8 +31,8 @@ public abstract class SpecfileMarkerHandler {
 
 	protected Integer getCharOffset(int lineNumber, int columnNumber) {
 		try {
-			return Integer.valueOf(document.getLineOffset(lineNumber)
-					+ columnNumber);
+			return document.getLineOffset(lineNumber)
+					+ columnNumber;
 		} catch (BadLocationException e) {
 			SpecfileLog.logError(e);
 			return null;

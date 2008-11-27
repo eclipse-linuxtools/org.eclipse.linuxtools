@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -107,33 +106,33 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Region region = new Region(offset - prefix.length(), prefix.length()
 				+ selection.getLength());
 		// RPM macro's are useful in the whole specfile.
-		ICompletionProposal[] rpmMacroProposals = computeRpmMacroProposals(
+		List<ICompletionProposal> rpmMacroProposals = computeRpmMacroProposals(
 				viewer, region, specfile, prefix);
 		// Sources completion
-		ICompletionProposal[] sourcesProposals = computeSourcesProposals(
+		List<ICompletionProposal> sourcesProposals = computeSourcesProposals(
 				viewer, region, specfile, prefix);
-		result.addAll(Arrays.asList(sourcesProposals));
+		result.addAll(sourcesProposals);
 		// Get the current content type
 		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PREP)){
-			ICompletionProposal[] patchesProposals = computePatchesProposals(
+			List<ICompletionProposal> patchesProposals = computePatchesProposals(
 					viewer, region, specfile, prefix);
-			result.addAll(Arrays.asList(patchesProposals));
+			result.addAll(patchesProposals);
 		}
 		
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PACKAGES)) {
 			// don't show template in the RPM packages content type.
 			// (when the line begin with Requires, BuildRequires etc...)
-			ICompletionProposal[] rpmPackageProposals = computeRpmPackageProposals(
+			List<ICompletionProposal> rpmPackageProposals = computeRpmPackageProposals(
 					viewer, region, prefix);
-			result.addAll(Arrays.asList(rpmPackageProposals));
-			result.addAll(Arrays.asList(rpmMacroProposals));
+			result.addAll(rpmPackageProposals);
+			result.addAll(rpmMacroProposals);
 		} else {
 			// don't show RPM packages proposals in all others content type. 
-			ICompletionProposal[] templateProposals = computeTemplateProposals(
+			List<? extends ICompletionProposal> templateProposals = computeTemplateProposals(
 					viewer, region, specfile, prefix);
-			result.addAll(Arrays.asList(templateProposals));
-			result.addAll(Arrays.asList(rpmMacroProposals));
+			result.addAll(templateProposals);
+			result.addAll(rpmMacroProposals);
 		}
 		return result
 				.toArray(new ICompletionProposal[result.size()]);
@@ -155,11 +154,12 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private ICompletionProposal[] computeTemplateProposals(ITextViewer viewer,
+	private List<? extends ICompletionProposal> computeTemplateProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		TemplateContext context = createContext(viewer, region, specfile);
+		List<TemplateProposal> matches = new ArrayList<TemplateProposal>();
 		if (context == null) {
-			return new ICompletionProposal[0];
+			return matches;
 		}
 		ITextSelection selection = (ITextSelection) viewer
 				.getSelectionProvider().getSelection();
@@ -167,7 +167,6 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		String id = context.getContextType().getId();
 		Template[] templates = Activator.getDefault().getTemplateStore()
 				.getTemplates(id);
-		List<TemplateProposal> matches = new ArrayList<TemplateProposal>();
 		for (int i = 0; i < templates.length; i++) {
 			Template template = templates[i];
 			try {
@@ -182,8 +181,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 		Collections.sort(matches, proposalComparator);
-		return matches
-				.toArray(new ICompletionProposal[matches.size()]);
+		return matches;
 	}
 
 	/**
@@ -200,24 +198,26 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private ICompletionProposal[] computeRpmMacroProposals(ITextViewer viewer,
+	private List<ICompletionProposal> computeRpmMacroProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		Map<String, String> rpmMacroProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
 		
 		// grab defines and put them into the proposals map
 		rpmMacroProposalsMap.putAll(getDefines(specfile, prefix));
 		
-		if (rpmMacroProposalsMap == null)
-			return new ICompletionProposal[0];
-		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		for (Map.Entry<String, String> entry : rpmMacroProposalsMap.entrySet()) {
-			proposals.add(new CompletionProposal("%{"
-					+ entry.getKey().substring(1) + "}", region.getOffset(),
-					region.getLength(), entry.getKey().length() + 2, Activator
-							.getDefault().getImage(MACRO_ICON), entry.getKey(),
-					null, entry.getValue()));
+		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		if (rpmMacroProposalsMap != null) {
+			for (Map.Entry<String, String> entry : rpmMacroProposalsMap
+					.entrySet()) {
+				proposals.add(new CompletionProposal("%{"
+						+ entry.getKey().substring(1) + "}",
+						region.getOffset(), region.getLength(), entry.getKey()
+								.length() + 2, Activator.getDefault().getImage(
+								MACRO_ICON), entry.getKey(), null, entry
+								.getValue()));
+			}
 		}
-		return proposals.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals;
 	}
 	
 	/**
@@ -234,20 +234,21 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private ICompletionProposal[] computePatchesProposals(ITextViewer viewer,
+	private List<ICompletionProposal> computePatchesProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> patchesProposalsMap = getPatches(specfile, prefix);
-		if (patchesProposalsMap == null)
-			return new ICompletionProposal[0];
-		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		for (Map.Entry<String, String> entry : patchesProposalsMap.entrySet()) {
-			proposals.add(new CompletionProposal(entry.getKey(), region
-					.getOffset(), region.getLength(), entry.getKey().length(),
-					Activator.getDefault().getImage(PATCH_ICON),
-					entry.getKey(), null, entry.getValue()));
+		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		if (patchesProposalsMap != null) {
+			for (Map.Entry<String, String> entry : patchesProposalsMap
+					.entrySet()) {
+				proposals.add(new CompletionProposal(entry.getKey(), region
+						.getOffset(), region.getLength(), entry.getKey()
+						.length(), Activator.getDefault().getImage(PATCH_ICON),
+						entry.getKey(), null, entry.getValue()));
+			}
 		}
-		return proposals.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals;
 	}
 	
 	/**
@@ -264,20 +265,21 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private ICompletionProposal[] computeSourcesProposals(ITextViewer viewer,
+	private List<ICompletionProposal> computeSourcesProposals(ITextViewer viewer,
 			IRegion region, Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> sourcesProposalsMap = getSources(specfile, prefix);
-		if (sourcesProposalsMap == null)
-			return new ICompletionProposal[0];
-		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		for (Map.Entry<String, String> entry : sourcesProposalsMap.entrySet()) {
-			proposals.add(new CompletionProposal(entry.getKey(), region
-					.getOffset(), region.getLength(), entry.getKey().length(),
-					Activator.getDefault().getImage(PATCH_ICON),
-					entry.getKey(), null, entry.getValue()));
+		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		if (sourcesProposalsMap != null) {
+			for (Map.Entry<String, String> entry : sourcesProposalsMap
+					.entrySet()) {
+				proposals.add(new CompletionProposal(entry.getKey(), region
+						.getOffset(), region.getLength(), entry.getKey()
+						.length(), Activator.getDefault().getImage(PATCH_ICON),
+						entry.getKey(), null, entry.getValue()));
+			}
 		}
-		return proposals.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals;
 	}
 
 	/**
@@ -294,19 +296,19 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private ICompletionProposal[] computeRpmPackageProposals(ITextViewer viewer,
+	private List<ICompletionProposal> computeRpmPackageProposals(ITextViewer viewer,
 			IRegion region, String prefix) {
 		List<String[]> rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
-		if (rpmPkgProposalsList == null)
-			return new ICompletionProposal[0];
-		ArrayList<CompletionProposal> proposals = new ArrayList<CompletionProposal>();
-		for (String[] item : rpmPkgProposalsList) {
-			proposals.add(new CompletionProposal(item[0], region.getOffset(),
-					region.getLength(), item[0].length(), Activator
-							.getDefault().getImage(PACKAGE_ICON), item[0],
-					null, item[1]));
+		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		if (rpmPkgProposalsList != null) {
+			for (String[] item : rpmPkgProposalsList) {
+				proposals.add(new CompletionProposal(item[0], region
+						.getOffset(), region.getLength(), item[0].length(),
+						Activator.getDefault().getImage(PACKAGE_ICON), item[0],
+						null, item[1]));
+			}
 		}
-		return proposals.toArray(new ICompletionProposal[proposals.size()]);
+		return proposals;
 	}
 
 	/**
