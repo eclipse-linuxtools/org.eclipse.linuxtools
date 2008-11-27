@@ -31,8 +31,6 @@ import org.osgi.framework.BundleContext;
 public class OprofileUiPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static OprofileUiPlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
 
 	private OprofileView _oprofileview = null;
 	
@@ -50,19 +48,6 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	 */
 	public OprofileUiPlugin() {
 		plugin = this;
-		try {
-			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.oprofile.ui.OprofilePluginResources"); //$NON-NLS-1$
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
-		
-//really not needed here
-//		/* Make sure the kernel module is loaded (just in case
-//		   the user has not authenticated or the module couldn't
-//		   be loaded). */
-//		if (!Oprofile.isKernelModuleLoaded()) {
-//			Oprofile.initializeOprofileModule();
-//		}
 	}
 
 	/**
@@ -95,26 +80,6 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 		return ResourcesPlugin.getWorkspace();
 	}
 
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle= OprofileUiPlugin.getDefault().getResourceBundle();
-		try {
-			return bundle.getString(key);
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
-
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
-	
 	/**	
 	 * Returns an image descriptor for the image file at the given
 	 * plug-in relative path
