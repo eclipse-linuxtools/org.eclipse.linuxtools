@@ -14,6 +14,8 @@ package org.eclipse.linuxtools.oprofile.ui;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Shell;
@@ -107,5 +109,11 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 			return window.getShell();
 		}
 		return null;
+	}
+
+	public static void showErrorDialog(Shell shell, String key, CoreException except) {
+		String title = OprofileUIMessages.getString(key + ".error.dialog.title"); //$NON-NLS-1$
+		String msg = OprofileUIMessages.getString(key + ".error.dialog.message"); //$NON-NLS-1$
+		ErrorDialog.openError(shell, title, msg, except.getStatus());
 	}
 }

@@ -25,6 +25,9 @@ public class UiModelSession implements IUiModelElement {
 	private OpModelSession _session;		//the node in the data model
 	private UiModelImage _image;			//this node's child
 	private UiModelDependent _dependent;	//dependent images of the OpModelImage
+
+	//OProfile's default session name
+	private static final String DEFAULT_SESSION_NAME = "current";
 	
 	public UiModelSession(IUiModelElement parent, OpModelSession session) {
 		_parent = parent;
@@ -46,6 +49,10 @@ public class UiModelSession implements IUiModelElement {
 	@Override
 	public String toString() {
 		return _session.getName();
+	}
+	
+	public boolean isDefaultSession() {
+		return _session.getName().equalsIgnoreCase(DEFAULT_SESSION_NAME);
 	}
 
 	/** IUiModelElement functions **/
