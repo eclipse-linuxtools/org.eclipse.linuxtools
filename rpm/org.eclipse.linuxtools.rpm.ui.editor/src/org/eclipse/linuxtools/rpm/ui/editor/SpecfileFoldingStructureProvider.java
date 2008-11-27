@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -60,18 +59,13 @@ public class SpecfileFoldingStructureProvider {
 	}
 
 	public void updateFoldingRegions() {
-		try {
-			ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
-					.getAdapter(ProjectionAnnotationModel.class);
-			if (model != null)
-				updateFoldingRegions(model);
-		} catch (BadLocationException e) {
-			SpecfileLog.logError(e);
-		}
+		ProjectionAnnotationModel model = (ProjectionAnnotationModel) sEditor
+				.getAdapter(ProjectionAnnotationModel.class);
+		if (model != null)
+			updateFoldingRegions(model);
 	}
 
-	void updateFoldingRegions(ProjectionAnnotationModel model)
-			throws BadLocationException {
+	void updateFoldingRegions(ProjectionAnnotationModel model) {
 		Set<Position> structure = createFoldingStructure(sEditor.getSpecfile());
 		Annotation[] deletions = computeDifferences(model, structure);
 		Map<Annotation,Position> additions = computeAdditions(structure);
@@ -103,8 +97,7 @@ public class SpecfileFoldingStructureProvider {
 		return deletions.toArray(new Annotation[deletions.size()]);
 	}
 
-	private Set<Position> createFoldingStructure(Specfile specfile)
-			throws BadLocationException {
+	private Set<Position> createFoldingStructure(Specfile specfile) {
 		Set<Position> set = new HashSet<Position>();
 		
 		List<SpecfileElement> elements = new ArrayList<SpecfileElement>();
@@ -115,8 +108,7 @@ public class SpecfileFoldingStructureProvider {
 		return set;
 	}
 
-	private void addFoldingRegions(Set<Position> regions, Object[] elements)
-			throws BadLocationException {
+	private void addFoldingRegions(Set<Position> regions, Object[] elements) {
 		Position position;
 		// add folding on the preamble section
 		try {

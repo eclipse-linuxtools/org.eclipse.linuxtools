@@ -210,7 +210,7 @@ public class RpmMacroProposalsList {
 		String 	eval = "";
 		String[] cmd = {"rpm", "--eval", macroName};
 		try {
-			Process child = Runtime.getRuntime().exec(cmd);
+			Process child = new ProcessBuilder(cmd).start();
 			InputStream in = child.getInputStream();
 			int c;
 			while ((c = in.read()) != -1) {

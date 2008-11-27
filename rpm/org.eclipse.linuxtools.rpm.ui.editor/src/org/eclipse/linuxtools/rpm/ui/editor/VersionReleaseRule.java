@@ -19,10 +19,10 @@ import org.eclipse.jface.text.rules.Token;
 public class VersionReleaseRule implements IPredicateRule {
 
 	/** Buffer used for pattern detection */
-	private StringBuffer fBuffer = new StringBuffer();
+	private StringBuilder fBuffer = new StringBuilder();
 
 	/** Buffer to keep track of trailing whitespace */
-	private StringBuffer fWhiteSpaceBuffer = new StringBuffer();
+	private StringBuilder fWhiteSpaceBuffer = new StringBuilder();
 
 	/** The success token */
 	IToken fToken;
@@ -44,9 +44,6 @@ public class VersionReleaseRule implements IPredicateRule {
 	int STATE_TRAIL = 3;
 
 	int STATE_DONE = 4;
-
-	/** A list of possible ending section headers */
-	String[] endingHeaders;
 
 	public VersionReleaseRule(IToken token) {
 		this.fToken = token;
@@ -155,7 +152,7 @@ public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 	 * @param scanner
 	 *            the scanner to be used
 	 */
-	protected void unreadBuffer(ICharacterScanner scanner, StringBuffer buffer) {
+	protected void unreadBuffer(ICharacterScanner scanner, StringBuilder buffer) {
 		for (int i = buffer.length() - 1; i >= 0; i--)
 			scanner.unread();
 	}

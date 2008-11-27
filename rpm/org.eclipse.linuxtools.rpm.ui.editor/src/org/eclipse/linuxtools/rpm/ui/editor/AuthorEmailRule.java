@@ -19,7 +19,7 @@ import org.eclipse.jface.text.rules.Token;
 public class AuthorEmailRule implements IPredicateRule {
 
 	/** Buffer used for pattern detection */
-	private StringBuffer fBuffer = new StringBuffer();
+	private StringBuilder fBuffer = new StringBuilder();
 
 	/** The success token */
 	IToken token;
@@ -39,9 +39,6 @@ public class AuthorEmailRule implements IPredicateRule {
 	int STATE_PERIOD = 3;
 
 	int STATE_DONE = 4;
-
-	/** A list of possible ending section headers */
-	String[] endingHeaders;
 
 	public AuthorEmailRule(IToken token) {
 		this.token = token;
@@ -129,7 +126,7 @@ public class AuthorEmailRule implements IPredicateRule {
 	 * @param scanner
 	 *            the scanner to be used
 	 */
-	protected void unreadBuffer(ICharacterScanner scanner, StringBuffer buffer) {
+	protected void unreadBuffer(ICharacterScanner scanner, StringBuilder buffer) {
 		for (int i = buffer.length() - 1; i >= 0; i--)
 			scanner.unread();
 	}

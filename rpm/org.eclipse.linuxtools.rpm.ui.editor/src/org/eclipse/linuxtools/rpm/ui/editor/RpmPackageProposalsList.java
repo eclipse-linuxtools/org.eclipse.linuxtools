@@ -106,7 +106,7 @@ public class RpmPackageProposalsList {
 		String[] cmd = { "rpm", "-q", pkgName, "--qf",
 				getformattedRpmInformations() };
 		try {
-			Process child = Runtime.getRuntime().exec(cmd);
+			Process child = new ProcessBuilder(cmd).start();
 			InputStream in = child.getInputStream();
 			int c;
 			while ((c = in.read()) != -1) {

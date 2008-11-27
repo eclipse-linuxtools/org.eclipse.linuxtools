@@ -58,7 +58,7 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 			String selectedContent = "";
 			try {
 				int begin = document.getLineOffset(selection.getStartLine());
-				StringBuffer sb = new StringBuffer(document.get().substring(0,
+				StringBuilder sb = new StringBuilder(document.get().substring(0,
 						begin));
 				String content = document.get().substring(begin,
 						selection.getOffset() + selection.getLength());

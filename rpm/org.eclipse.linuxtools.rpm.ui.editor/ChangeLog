@@ -1,4 +1,43 @@
 2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
+	Use Java 5 apis.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java 
+	(run): Use StringBuilder.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java 
+	(mergeChangelog): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java 
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/AuthorEmailRule.java 
+	(unreadBuffer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java 
+	(getComplexSectionsElements): Removed - not needed.
+	(getSectionsElements): Likewise.
+	(getSections): Returns SpecfileElement[].
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java 
+	(MacroListEditor.createList): Use StringBuilder.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java 
+	(getMacroEval): Use ProcessBuilder instead of Runtime.exec.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java 
+	(retrievePackageList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java 
+	(getRpmInfo): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SectionRule.java 
+	(unreadBuffer): Use StringBuilder.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
+	(getContextType): Fix for Specfile method renaming.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java 
+	(addFoldingRegions): Remove not thrown Exception.
+	(updateFoldingRegions): Likewise.
+	(createFoldingStructure): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitioner.java 
+	(printPartitions): Use StringBuilder.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/StringWithEndingRule.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/VersionReleaseRule.java 
+	(VersionReleaseRule): Likewise.
+	(unreadBuffer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java 
+	(runRpmdevNewSpec): Use ProcessBuilder.
+
+2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
 	Simplify API and cleanup.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileErrorHandler.java 
 	(handleError): Remove unneeded return.

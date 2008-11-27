@@ -147,7 +147,7 @@ public class RpmPackageBuildProposalsJob extends Job {
 			String[] cmd = new String[] { "/bin/sh", "-c", rpmListCmd };
 			monitor.beginTask("Retrieving packages",
 					IProgressMonitor.UNKNOWN);
-			Process child = Runtime.getRuntime().exec(cmd);
+			Process child = new ProcessBuilder(cmd).start();
 			InputStream in = child.getInputStream();
 			// backup pkg list file
 			File rpmListFile = new File(rpmListFilepath);

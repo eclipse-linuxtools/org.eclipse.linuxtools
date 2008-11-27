@@ -129,9 +129,9 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 
 		@Override
 		protected String createList(String[] items) {
-			StringBuffer path = new StringBuffer("");
-			for (int i = 0; i < items.length; i++) {
-				path.append(items[i]);
+			StringBuilder path = new StringBuilder("");
+			for (String item:items) {
+				path.append(item);
 				path.append(";");
 			}
 			return path.toString();

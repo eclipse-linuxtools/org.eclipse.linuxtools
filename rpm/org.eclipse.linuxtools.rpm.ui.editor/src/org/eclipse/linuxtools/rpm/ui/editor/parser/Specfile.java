@@ -63,15 +63,11 @@ public class Specfile {
 		this.name = name;
 	}
 
-	public Object[] getSections() {
-		return sections.toArray();
-	}
-
 	public List<SpecfileSection> getSectionsAsList() {
 		return sections;
 	}
 	
-	public SpecfileElement[] getSectionsElements() {
+	public SpecfileElement[] getSections() {
 		SpecfileElement[] elements = new SpecfileElement[sections.size()]; 
 		return sections.toArray(elements);
 	}
@@ -80,11 +76,6 @@ public class Specfile {
 		return complexSections;
 	}
 	
-	public SpecfileElement[] getComplexSectionsElements() {
-		SpecfileElement[] elements = new SpecfileElement[complexSections.size()]; 
-		return complexSections.toArray(elements);
-	}	
-
 	public SpecfileSource getPatch(int number) {
 		return patches.get(number);
 	}

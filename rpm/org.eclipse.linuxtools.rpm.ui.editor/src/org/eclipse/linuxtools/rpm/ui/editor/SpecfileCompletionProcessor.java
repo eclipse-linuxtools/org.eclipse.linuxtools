@@ -321,7 +321,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return a TemplateContextType
 	 */
 	private TemplateContextType getContextType(Specfile specfile, int offset) {
-		SpecfileElement[] elements = specfile.getSectionsElements();
+		SpecfileElement[] elements = specfile.getSections();
 			if (elements.length == 0 || offset < elements[0].getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(PREAMBLE_SECTION_TEMPLATE);

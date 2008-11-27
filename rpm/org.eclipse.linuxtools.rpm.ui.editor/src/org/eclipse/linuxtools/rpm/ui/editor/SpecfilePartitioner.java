@@ -29,14 +29,16 @@ public class SpecfilePartitioner extends FastPartitioner {
 	}
 	
 	public void printPartitions(IDocument document) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		ITypedRegion[] partitions = computePartitioning(0, document.getLength());
 		for (int i = 0; i < partitions.length; i++) {
 			try {
-				buffer.append("Partition type: "
-						+ partitions[i].getType()
-						+ ", offset: " + partitions[i].getOffset()
-						+ ", length: " + partitions[i].getLength());
+				buffer.append("Partition type: ");
+				buffer.append(partitions[i].getType());
+				buffer.append(", offset: ");
+				buffer.append(partitions[i].getOffset());
+				buffer.append(", length: ");
+				buffer.append(partitions[i].getLength());
 				buffer.append("\n");
 				buffer.append("Text:\n");
 				buffer.append(document.get(partitions[i].getOffset(),

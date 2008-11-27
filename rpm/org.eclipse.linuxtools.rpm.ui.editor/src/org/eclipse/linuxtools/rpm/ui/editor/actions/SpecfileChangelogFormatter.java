@@ -134,7 +134,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
                     }
                     // Temporary buffer for changelog text
-                    StringBuffer buf = new StringBuffer();
+                    StringBuilder buf = new StringBuilder();
                     String changelogText = "";
                     String[] changelogLines = new String[] {};
                     int offset = doc.getLength();
@@ -162,7 +162,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                         // get old changelog text
                         changelogLines = changelogText.split("\n");
                         // add the %changelog header
-                        buf.append(changelogLines[0] + "\n");
+                        buf.append(changelogLines[0]).append("\n");
                     }
 
                     // now add the entry stub
@@ -175,7 +175,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                     int newCursorOffset = offset + buf.length() - 1;
 
                     for (int i = 1; i < changelogLines.length; i++) {
-                        buf.append("\n" + changelogLines[i]);
+                        buf.append("\n").append(changelogLines[i]);
                     }
                     
                     // always terminate the file with a new line

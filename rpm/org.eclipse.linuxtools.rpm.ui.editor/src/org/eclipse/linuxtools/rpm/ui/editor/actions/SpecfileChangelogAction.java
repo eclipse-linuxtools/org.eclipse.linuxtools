@@ -104,14 +104,14 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 					String changelogText = doc.get(changelogPartition
 							.getOffset(), changelogPartition.getLength());
 					String[] changelogLines = changelogText.split("\n");
-					StringBuffer buf = new StringBuffer();
-					buf.append(changelogLines[0] + "\n");
-					buf.append(createChangelogEntry(specEditor.getSpecfile(), doc) + "\n");
+					StringBuilder buf = new StringBuilder();
+					buf.append(changelogLines[0]).append("\n");
+					buf.append(createChangelogEntry(specEditor.getSpecfile(), doc)).append("\n");
 					buf.append(" - \n");
 					int newCursorOffset = changelogPartition.getOffset() + buf.length() -1;
 					
 					for (int i = 1; i < changelogLines.length; i++) {
-						buf.append(changelogLines[i] + "\n");
+						buf.append(changelogLines[i]).append("\n");
 					}
 
 					doc.replace(changelogPartition.getOffset(),

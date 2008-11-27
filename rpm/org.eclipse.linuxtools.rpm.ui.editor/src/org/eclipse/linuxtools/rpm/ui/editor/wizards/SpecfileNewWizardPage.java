@@ -450,7 +450,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		// Here we assuming that the rpmdevtools package is installed.
 		String[] cmd = { "rpmdev-newspec", "-o", "-", "-t", template };
 		try {
-			Process child = Runtime.getRuntime().exec(cmd);
+			Process child = new ProcessBuilder(cmd).start();
 			in = new BufferedInputStream(child.getInputStream());
 		} catch (IOException e) {
 			// FIXME: rpmdev-newspec is not in the system $PATH, what should we do here?.
