@@ -71,6 +71,10 @@ public class UiModelSymbol implements IUiModelElement {
 
 		return percentage + " in " + _symbol.getName() + ", from file " + _symbol.getFile();
 	}
+	
+	public String getFileName() {
+		return _symbol.getFile();
+	}
 
 	/** IUiModelElement functions **/
 	@Override

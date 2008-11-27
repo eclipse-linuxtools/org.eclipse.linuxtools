@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelRoot;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
@@ -28,7 +29,31 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 /**
+ * The view for the OProfile plugin. Shows the elements gathered by the data model
+ *   in a tree viewer, parsed by the ui model (in the model package). The hierarchy
+ *   (as it is displayed) looks like:
+ *   
+ *   UiModelRoot (not shown in the view)
+ *   \_ UiModelEvent
+ *   \_ ...
+ *   \_ UiModelEvent
+ *      \_ UiModelSession
+ *      \_ ...
+ *      \_ UiModelSession
+ *         \_ UiModelImage
+ *         |  \_ UiModelSymbol
+ *         |  \_ ...
+ *         |  \_ UiModelSymbol
+ *         |     \_ UiModelSample
+ *         |     \_ ...
+ *         |     \_ UiModelSample
+ *         \_ UiModelDependent
+ *            \_ UiModelImage
+ *            |  \_ ... (see above)
+ *            \_ ...
  * 
+ * The refreshView() function takes care of launching the data model parsing and
+ *   ui model parsing in a separate thread.
  */
 public class OprofileView extends ViewPart {
 	private TreeViewer _viewer;
@@ -42,9 +67,10 @@ public class OprofileView extends ViewPart {
 	}
 	
 	private void _createTreeViewer(Composite parent) {
-		_viewer = new TreeViewer(parent);
+		_viewer = new TreeViewer(parent, SWT.SINGLE);
 		_viewer.setContentProvider(new OprofileViewContentProvider());
 		_viewer.setLabelProvider(new OprofileViewLabelProvider());
+		_viewer.addDoubleClickListener(new OprofileViewDoubleClickListener());
 	}
 
 	private void _createActionMenu() {

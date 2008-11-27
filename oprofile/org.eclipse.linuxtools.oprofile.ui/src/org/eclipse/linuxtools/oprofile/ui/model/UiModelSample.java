@@ -46,6 +46,10 @@ public class UiModelSample implements IUiModelElement {
 		return percentage + " on line " + Integer.toString(_sample.getLine());
 	}
 	
+	public int getLine() {
+		return _sample.getLine();
+	}
+	
 	/** IUiModelElement functions **/
 	@Override
 	public String getLabelText() {
