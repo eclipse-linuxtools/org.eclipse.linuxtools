@@ -1,3 +1,8 @@
+2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java 
+	(testPatchComparator2): Use the generic method.
+
 2008-11-26  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix imports caused by the marker handlers moving.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/DefineTests.java: Fix imports.

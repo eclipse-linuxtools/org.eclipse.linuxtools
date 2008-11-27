@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -82,9 +83,9 @@ public class SourceComparatorTests extends TestCase {
 		
 		try {
 			newFile(specText);
-			SpecfileSource[] patches = specfile.getPatchesAsArray();
-			assertEquals(2, patches[0].getNumber());
-			assertEquals(3, patches[1].getNumber());
+			List<SpecfileSource> patches = specfile.getPatchesAsList();
+			assertEquals(2, patches.get(0).getNumber());
+			assertEquals(3, patches.get(1).getNumber());
 		} catch (Exception e) {
 			fail();
 		}
