@@ -1,3 +1,10 @@
+2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix problem with enabling rpmlint warnings after task handler addition.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java 
+	(getSpecfileTaskHandler): Match the error handler api.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java 
+	(visit): Set the task handler too.
+
 2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java 

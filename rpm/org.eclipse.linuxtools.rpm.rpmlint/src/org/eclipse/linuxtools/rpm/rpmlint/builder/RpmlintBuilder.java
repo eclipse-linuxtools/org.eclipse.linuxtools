@@ -25,6 +25,7 @@ import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintItem;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 
 public class RpmlintBuilder extends IncrementalProjectBuilder {
@@ -38,6 +39,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 	private SpecfileParser specfileParser;
 
 	private SpecfileErrorHandler errorHandler;
+	private SpecfileTaskHandler taskHandler;
 
 	/*
 	 * (non-Javadoc)
@@ -116,13 +118,21 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		return errorHandler;
 	}
 
+	public SpecfileTaskHandler getSpecfileTaskHandler(IFile file,
+			String specContent) {
+		if (taskHandler == null) {
+			taskHandler = new SpecfileTaskHandler(file, new Document(
+					specContent));
+		} else {
+			taskHandler.setFile(file);
+			taskHandler.setDocument(new Document(specContent));
+		}
+		return taskHandler;
+	}
 
 	protected void checkCancel(IProgressMonitor monitor) {
 		if (monitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
 	}
-	
-	
-
 }

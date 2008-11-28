@@ -91,6 +91,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					
 					// BTW we mark specfile with the internal marker.
 					builder.getSpecfileParser().setErrorHandler(builder.getSpecfileErrorHandler(currentFile, specContent));
+					builder.getSpecfileParser().setTaskHandler(builder.getSpecfileTaskHandler(currentFile, specContent));
 					builder.getSpecfileParser().parse(specContent);
 
 					document = new Document(specContent);
