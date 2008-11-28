@@ -91,8 +91,8 @@ public class StubbyGenerator {
 			buffer.append("%endif\n\n");
 		} else
 			buffer.append("BuildArch: noarch\n\n");			
-		buffer.append("BuildRequires: eclipse-pde >= 1:3.3.0\n");
-		buffer.append("Requires: eclipse-platform >= 3.3.1\n");
+		buffer.append("BuildRequires: eclipse-pde >= 1:3.4.0\n");
+		buffer.append("Requires: eclipse-platform >= 3.4.0\n");
 		buffer.append(getDepsOrReqs("Requires: ", mainPackage.getRequires()));
 		buffer.append("\n%description\n" + mainPackage.getDescription() + "\n");
 		for (SubPackage subPackage: subPackages) {
