@@ -80,7 +80,7 @@ public class SubPackage implements IPackage {
 
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("%package ").append(name);
 		buffer.append("\nVersion: ").append(version);
 		buffer.append("\nSummary: ").append(summary);

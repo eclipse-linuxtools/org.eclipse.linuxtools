@@ -54,7 +54,7 @@ public class StubbyGenerator {
 	}
 	
 	public String generateSpecfile() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		String simplePackageName = getPackageName(mainPackage.getName());
 		String packageName = "eclipse-" + simplePackageName;
 		if (withGCJSupport)
@@ -148,7 +148,7 @@ public class StubbyGenerator {
 		return buffer.toString();
 	}
 
-	private void generatePrepSection(StringBuffer buffer) {
+	private void generatePrepSection(StringBuilder buffer) {
 		buffer.append("\n%prep\n%setup -q -n FIXME\n\n");
 		if (!usePdebuildScript) {
 			buffer
@@ -157,7 +157,7 @@ public class StubbyGenerator {
 		}
 	}
 
-	private void generateBuildSection(StringBuffer buffer) {
+	private void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
 		if (!usePdebuildScript) {
 			buffer.append("SDK=$(cd SDK > /dev/null && pwd)\n");
@@ -185,7 +185,7 @@ public class StubbyGenerator {
 	}
 	
 	public String generateFetchScript() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("#!/bin/sh\n");
 		buffer.append("usage='usage: $0 <tag>'\n");
 		buffer.append("name=eclipse-" + getPackageName(mainPackage.getName()) + "\n");

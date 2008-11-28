@@ -82,7 +82,7 @@ public class MainPackage extends SubPackage implements IPackagePreamble {
 
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append(super.toString());
 		buffer.append("\nRelease: ").append(release);
 		buffer.append("\nLicense; ").append(license);
