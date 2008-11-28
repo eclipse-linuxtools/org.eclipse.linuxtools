@@ -17,8 +17,8 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileCompletionProcessor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileCompletionProcessor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IDE;
 

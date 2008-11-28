@@ -21,8 +21,8 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 
 public class SpecfilePackagesScannerTests extends AScannerTest {
 

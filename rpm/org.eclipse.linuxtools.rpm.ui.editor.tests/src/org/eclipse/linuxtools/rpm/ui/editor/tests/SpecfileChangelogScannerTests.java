@@ -16,7 +16,7 @@ import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileChangelogScanner;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 
 public class SpecfileChangelogScannerTests extends AScannerTest {
 
