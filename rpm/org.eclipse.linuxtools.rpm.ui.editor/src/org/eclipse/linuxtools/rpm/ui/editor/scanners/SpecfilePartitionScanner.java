@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,24 +24,20 @@ import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
-import org.eclipse.linuxtools.rpm.ui.editor.rules.CommentRule;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.SectionRule;
 
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 
-	public final static String SPEC_PREP = "__spec_prep"; //$NON-NLS-1$
-	public final static String SPEC_SCRIPT = "__spec_script"; //$NON-NLS-1$
-	public final static String SPEC_FILES = "__spec_files"; //$NON-NLS-1$
-	public final static String SPEC_CHANGELOG = "__spec_changelog"; //$NON-NLS-1$
-	public final static String SPEC_PACKAGES = "__spec_packages"; //$NON-NLS-1$
-	public final static String SPEC_GROUP = "__spec_group"; //$NON-NLS-1$
-	public final static String SPEC_FILE_PARTITIONING = "___spec_partitioning"; //$NON-NLS-1$
+	public final static String SPEC_PREP = "__spec_prep";
+	public final static String SPEC_SCRIPT = "__spec_script";
+	public final static String SPEC_FILES = "__spec_files";
+	public final static String SPEC_CHANGELOG = "__spec_changelog";
+	public final static String SPEC_PACKAGES = "__spec_packages";
 	
 	public static String[] SPEC_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE, SPEC_PREP, SPEC_SCRIPT,
-			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES, SPEC_GROUP};
+			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES};
 	
 	/** All possible headers for sections of the type SPEC_SCRIPT */
 	private static String[] sectionHeaders = { BUILD_SECTION, INSTALL_SECTION, 
@@ -54,6 +50,7 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		CLEAN_SECTION, FILES_SECTION};
 	
 	public SpecfilePartitionScanner() {
+		// FIXME:  do we need this?
 		super();
 		
 		IToken specPrep = new Token(SPEC_PREP);
@@ -61,35 +58,31 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		IToken specFiles = new Token(SPEC_FILES);
 		IToken specChangelog = new Token(SPEC_CHANGELOG);
 		IToken specPackages = new Token(SPEC_PACKAGES);
-		IToken specGroup = new Token(SPEC_GROUP);
 		
 		List<IRule> rules = new ArrayList<IRule>();
 		
 		// RPM packages
-		for (String packageTag :SpecfilePackagesScanner.PACKAGES_TAGS) {
-			rules.add(new SingleLineRule(packageTag, "", specPackages, (char)0 , true));		 //$NON-NLS-1$
-		}
+		for (int i = 0; i < SpecfilePackagesScanner.PACKAGES_TAGS.length; i++) 
+			rules.add(new SingleLineRule(SpecfilePackagesScanner.PACKAGES_TAGS[i], "", specPackages, (char)0 , true));			
 		
 		// %prep
-		rules.add(new SectionRule(PREP_SECTION, new String[] { BUILD_SECTION }, specPrep));
+		rules.add(new SectionRule("%prep", new String[] { "%build" }, specPrep));
 		
 		// %changelog
-		rules.add(new MultiLineRule(RpmSections.CHANGELOG_SECTION, "", specChangelog, (char)0 , true)); //$NON-NLS-1$
+		rules.add(new MultiLineRule("%changelog", "", specChangelog, (char)0 , true));
 		
 		// "%build", "%install", "%pre", "%preun", "%post", "%postun"
-		for (String sectionHeader : sectionHeaders)
-			rules.add(new SectionRule(sectionHeader, sectionEndingHeaders, specScript));
+		for (int i = 0; i < sectionHeaders.length; i++)
+			rules.add(new SectionRule(sectionHeaders[i], sectionEndingHeaders, specScript));
 
 		// comments
-		rules.add(new CommentRule(specScript));
+		rules.add(new EndOfLineRule("#", specScript));
 		
-		// group tag
-		rules.add(new EndOfLineRule("Group:", specGroup)); //$NON-NLS-1$
 		
 		
 		// %files
-		rules.add(new SectionRule(FILES_SECTION, new String[] { FILES_SECTION,
-				CHANGELOG_SECTION }, specFiles));
+		rules.add(new SectionRule("%files", new String[] { "%files",
+				"%changelog" }, specFiles));
 		
 		IPredicateRule[] result= new IPredicateRule[rules.size()];
 		rules.toArray(result);

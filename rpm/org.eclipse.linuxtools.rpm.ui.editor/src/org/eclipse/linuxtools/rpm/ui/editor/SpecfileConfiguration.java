@@ -39,6 +39,10 @@ import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileCompletionProcessor;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 

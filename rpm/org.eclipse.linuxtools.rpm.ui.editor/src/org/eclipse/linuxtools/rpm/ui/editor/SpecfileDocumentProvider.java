@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
 public class SpecfileDocumentProvider extends TextFileDocumentProvider {

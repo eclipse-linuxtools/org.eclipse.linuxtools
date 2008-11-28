@@ -9,18 +9,13 @@
  *    Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor;
+package org.eclipse.linuxtools.rpm.ui.editor.detectors;
 
-import org.eclipse.jface.text.rules.IWordDetector;
+import org.eclipse.jface.text.rules.IWhitespaceDetector;
 
-public class MacroWordDetector implements IWordDetector {
+public class SpecfileWhitespaceDetector implements IWhitespaceDetector {
 
-	public boolean isWordPart(char c) {
-		return (Character.isLetterOrDigit(c) || c == '%' || c == '{' || c == '}' || c == '_') ;
+	public boolean isWhitespace(char c) {
+		return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
 	}
-
-	public boolean isWordStart(char c) {
-		return (c == '%');
-	}
-
 }

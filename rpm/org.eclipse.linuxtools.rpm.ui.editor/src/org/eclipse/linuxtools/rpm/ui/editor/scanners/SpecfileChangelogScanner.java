@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.KeywordWordDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.AuthorEmailRule;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.VersionReleaseRule;
@@ -35,7 +34,7 @@ import org.eclipse.swt.SWT;
  */
 public class SpecfileChangelogScanner extends RuleBasedScanner {
 
-	private static String[] sections = { RpmSections.CHANGELOG_SECTION };
+	private static String[] sections = { "%changelog" };
 	private IToken fLastToken;
 	
 	public SpecfileChangelogScanner(ColorManager manager) {
@@ -52,9 +51,8 @@ public class SpecfileChangelogScanner extends RuleBasedScanner {
 
 		// %prep, %build, ...
 		WordRule wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (String section : sections) {
-			wordRule.addWord(section, sectionToken);
-		}
+		for (int i = 0; i < sections.length; i++)
+			wordRule.addWord(sections[i], sectionToken);
 		rules.add(wordRule);
 
 	

@@ -22,6 +22,12 @@ import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
+import org.eclipse.linuxtools.rpm.ui.editor.detectors.KeywordWordDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.detectors.MacroWordDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.detectors.PatchNumberDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.detectors.SuffixNumberDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.detectors.TagWordDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.rules.StringWithEndingRule;
 import org.eclipse.swt.SWT;
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 

@@ -1,3 +1,47 @@
+2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
+	Extract detectors, rules and scanners packages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/AuthorEmailRule.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/IStrictWordDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/KeywordWordDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/MacroWordDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/PackageWordDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/PatchNumberDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SectionRule.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileChangelogScanner.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePackagesScanner.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitionScanner.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileWhitespaceDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/StringWithEndingRule.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SuffixNumberDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/TagRule.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/TagWordDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/VersionReleaseRule.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/IStrictWordDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/KeywordWordDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/MacroWordDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/PackageWordDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/PatchNumberDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/SpecfileWhitespaceDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/SuffixNumberDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/TagWordDetector.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/AuthorEmailRule.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/SectionRule.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/StringWithEndingRule.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/TagRule.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/VersionReleaseRule.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileChangelogScanner.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileCompletionProcessor.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePackagesScanner.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java: New file.
+	* META-INF/MANIFEST.MF: Export scanners package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java: Adapt imports to the moved classes.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java: Likewise
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDocumentProvider.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (getInputDocument): Make it public to allow tests compilation.
+
 2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
 	Use Java 5 apis.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java 

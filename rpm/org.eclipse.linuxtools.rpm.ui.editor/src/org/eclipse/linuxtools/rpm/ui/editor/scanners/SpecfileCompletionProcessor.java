@@ -9,7 +9,7 @@
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor;
+package org.eclipse.linuxtools.rpm.ui.editor.scanners;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +36,9 @@ import org.eclipse.jface.text.templates.TemplateContext;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateProposal;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileHover;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;

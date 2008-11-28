@@ -126,7 +126,7 @@ public class SpecfileEditor extends TextEditor {
 		return null;
 	}
 
-	protected IDocument getInputDocument()
+	public IDocument getInputDocument()
 	{
 		IDocument document = getDocumentProvider().getDocument(input);
 		return document;

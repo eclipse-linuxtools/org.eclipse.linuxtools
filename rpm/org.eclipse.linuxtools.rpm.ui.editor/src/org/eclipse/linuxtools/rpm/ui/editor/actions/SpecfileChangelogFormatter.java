@@ -27,10 +27,10 @@ import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfilePartitionScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 import org.eclipse.ui.IEditorPart;
 
 public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
