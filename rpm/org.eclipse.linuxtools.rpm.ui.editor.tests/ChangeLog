@@ -1,3 +1,8 @@
+2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Adopt imports to the editor package movements.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java: Adopt imports.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java: Likewise.
+
 2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileChangelogScannerTests.java: Adapt to package movements.
