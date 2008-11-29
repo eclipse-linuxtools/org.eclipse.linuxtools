@@ -1,4 +1,15 @@
 2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Move SpecfileTagScanner to scanners package and remove wrong todos.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTagScanner.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileTagScanner.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/KeywordWordDetector.java 
+	(isWordStart): Removed wrong auto generated todo.
+	(isWordPart): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/TagWordDetector.java 
+	(isWordStart): Likewise.
+	(isWordPart): Likewise.
+
+2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Move SpecfileScanner and SpecfileCompletionProcessor to correct packages.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileCompletionProcessor.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Removed.

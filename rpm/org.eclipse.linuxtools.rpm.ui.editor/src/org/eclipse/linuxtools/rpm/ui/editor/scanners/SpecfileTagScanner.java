@@ -9,7 +9,7 @@
  *    Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpm.ui.editor;
+package org.eclipse.linuxtools.rpm.ui.editor.scanners;
 //package org.eclipse.linuxtools.rpm.ui.editor;
 //
 //import org.eclipse.jface.text.*;
