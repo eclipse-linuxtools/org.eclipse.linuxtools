@@ -1,3 +1,12 @@
+2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Move SpecfileScanner and SpecfileCompletionProcessor to correct packages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileCompletionProcessor.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileScanner.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java: Adopt imports.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Adopt imports.
+
 2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
 	Extract detectors, rules and scanners packages.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/AuthorEmailRule.java: Removed.

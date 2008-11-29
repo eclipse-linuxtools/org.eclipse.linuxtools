@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,53 +11,15 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.scanners;
 
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.BUILD_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CHANGELOG_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CHECK_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CLEAN_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.DESCRIPTION_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.FILES_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.INSTALL_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PACKAGE_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POSTTRANS_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POSTUN_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POST_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PREP_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PRETRANS_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PREUN_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PRE_SECTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_PROV;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_REQ;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_REQUIRES;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_REQ_PROV;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.BUILD_ARCH;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.BUILD_ARCHITECTURES;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.BUILD_ROOT;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.DISTRIBUTION;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EPOCH;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EXCLUDE_ARCH;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EXCLUDE_OS;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EXCLUSIVE_ARCH;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.GROUP;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.ICON;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.LICENSE;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.NAME;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.PACKAGER;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.PREFIX;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.PROVIDES;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.RELEASE;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.SUMMARY;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.URL;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.VENDOR;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.VERSION;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
+import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
@@ -67,10 +29,9 @@ import org.eclipse.linuxtools.rpm.ui.editor.detectors.MacroWordDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.PatchNumberDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.SuffixNumberDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.TagWordDetector;
-import org.eclipse.linuxtools.rpm.ui.editor.rules.CommentRule;
-import org.eclipse.linuxtools.rpm.ui.editor.rules.MacroRule;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.StringWithEndingRule;
 import org.eclipse.swt.SWT;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileScanner extends RuleBasedScanner {
 
@@ -79,19 +40,20 @@ public class SpecfileScanner extends RuleBasedScanner {
 		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, 
 		CHECK_SECTION };
 
-	public static String[] DEFINED_MACROS = {
-			"%define", "%global", "%make", "%setup", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"%doc", "%lang", "%verify", "%ghost" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	public static String[] DEFINED_MACROS = { "%define", "%make", "%setup",
+			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir",
+			"%doc", "%lang", "%verify", "%ghost" };
 
-	private static String[] keywords = { "%if", "%ifarch", "%ifnarch", "%else", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"%endif" }; //$NON-NLS-1$
+	private static String[] keywords = { "%if", "%ifarch", "%ifnarch", "%else",
+			"%endif" };
 
-	private static String[] TAGS = { SUMMARY, NAME, VERSION, PACKAGER, ICON,
-			URL, PREFIX, GROUP, LICENSE, RELEASE, BUILD_ROOT, DISTRIBUTION,
-			VENDOR, PROVIDES, EXCLUSIVE_ARCH, EXCLUDE_ARCH, EXCLUDE_OS,
-			BUILD_ARCH, BUILD_ARCHITECTURES, AUTO_REQUIRES, AUTO_REQ,
-			AUTO_REQ_PROV, AUTO_PROV, EPOCH };
+	private static String[] tags = { "Summary", "Name", "Version",
+			"Packager", "Icon", "URL", "Prefix", "Packager",
+			"Group", "License", "Release", "BuildRoot", "Distribution",
+			"Vendor", "Provides", "ExclusiveArch", "ExcludeArch",
+			"ExclusiveOS", "BuildArch", "BuildArchitectures",
+			"AutoRequires", "AutoReq", "AutoReqProv", "AutoProv", "Epoch",
+			"ExcludeOS" };
 
 	public SpecfileScanner(ColorManager manager) {
 		IToken sectionToken = new Token(new TextAttribute(manager
@@ -111,46 +73,45 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 		List<IRule> rules = new ArrayList<IRule>();
 
-		rules.add(new CommentRule(commentToken)); 
-		rules.add(new MacroRule( macroToken));
+		// Comments
+		rules.add(new EndOfLineRule("#", commentToken));
+
+		// %{ .... }
+		rules.add(new SingleLineRule("%{", "}", macroToken));
 
 		// %define, %make, ...
 		WordRule wordRule = new WordRule(new MacroWordDetector(),
 				Token.UNDEFINED);
-		for (String definedMacro : DEFINED_MACROS) {
-			wordRule.addWord(definedMacro, macroToken);
-		}
+		for (int i = 0; i < DEFINED_MACROS.length; i++)
+			wordRule.addWord(DEFINED_MACROS[i], macroToken);
 		rules.add(wordRule);
 
 		// %patch[0-9]+[\ \t]
-		rules.add(new StringWithEndingRule("%patch", new PatchNumberDetector(), //$NON-NLS-1$
+		rules.add(new StringWithEndingRule("%patch", new PatchNumberDetector(),
 				macroToken, false ));
 
 		// %if, %else ...
 		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (String keyword : keywords) {
-			wordRule.addWord(keyword, keywordToken);
-		}
+		for (int i = 0; i < keywords.length; i++)
+			wordRule.addWord(keywords[i], keywordToken);
 		rules.add(wordRule);
 
 		// %prep, %build, ...
 		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (String section : sections) {
-			wordRule.addWord(section, sectionToken);
-		}
+		for (int i = 0; i < sections.length; i++)
+			wordRule.addWord(sections[i], sectionToken);
 		rules.add(wordRule);
 
 		// Name:, Summary:, ...
 		wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
-		for (String tag : TAGS) {
-			wordRule.addWord(tag + ":", tagToken); //$NON-NLS-1$
-		}
+		for (int i = 0; i < tags.length; i++)
+			wordRule.addWord(tags[i] + ":", tagToken);
 		rules.add(wordRule);
 
 		// Source[0-9]*:, Patch[0-9]*:
-		rules.add(new StringWithEndingRule("Source", //$NON-NLS-1$
+		rules.add(new StringWithEndingRule("Source",
 				new SuffixNumberDetector(), tagToken, false));
-		rules.add(new StringWithEndingRule("Patch", new SuffixNumberDetector(), //$NON-NLS-1$
+		rules.add(new StringWithEndingRule("Patch", new SuffixNumberDetector(),
 				tagToken, false));
 
 		IRule[] result = new IRule[rules.size()];
