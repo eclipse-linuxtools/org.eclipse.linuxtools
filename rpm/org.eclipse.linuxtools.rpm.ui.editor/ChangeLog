@@ -1,4 +1,9 @@
 2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
+	Removed unused classes.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/SpecfileWhitespaceDetector.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileTagScanner.java: Removed.
+
+2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Move SpecfileTagScanner to scanners package and remove wrong todos.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTagScanner.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileTagScanner.java: New file.
