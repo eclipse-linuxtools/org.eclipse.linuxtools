@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import org.eclipse.jface.text.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -82,15 +82,15 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 	 * @return the list of tuples whose annotations intersect with
 	 *         <code>region</code>
 	 */
-	private List getAnnotations(IAnnotationModel model, final IRegion region) {
+	private List<Tuple> getAnnotations(IAnnotationModel model, final IRegion region) {
 		if (model == null || region == NO_REGION)
 			return Collections.EMPTY_LIST;
 
-		List annotations= new ArrayList();
-		Iterator iterator= model.getAnnotationIterator();
+		List<Tuple> annotations= new ArrayList<Tuple>();
+		Iterator<Annotation> iterator= model.getAnnotationIterator();
 		
 		while (iterator.hasNext()) {
-			Annotation annotation= (Annotation) iterator.next();
+			Annotation annotation= iterator.next();
 			Position position= model.getPosition(annotation);
 			
 			if (position == null)
@@ -102,9 +102,9 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 			
 			if (annotation instanceof AnnotationBag) {
 				AnnotationBag bag= (AnnotationBag) annotation;
-				Iterator e= bag.iterator();
+				Iterator<Annotation> e= bag.iterator();
 				while (e.hasNext()) {
-					annotation= (Annotation) e.next();
+					annotation= e.next();
 					position= model.getPosition(annotation);
 					if (position != null)
 						annotations.add(new Tuple(annotation, position));
@@ -248,7 +248,7 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 	 */
 	public final String getHoverInfo(ISourceViewer sourceViewer, int lineNumber) {
 		IRegion region= getLineCoverage(sourceViewer, lineNumber);
-		List tuples= getAnnotations(sourceViewer.getAnnotationModel(), region);
+		List<Tuple> tuples= getAnnotations(sourceViewer.getAnnotationModel(), region);
 		return computeHoverMessage(tuples);
 	}
 
@@ -277,7 +277,7 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 	 * Caches the list of tuples computed in <code>getHoverRegion</code> for
 	 * later use in <code>getHoverInfo</code>.
 	 */
-	private transient List fAnnotationCache;
+	private transient List<Tuple> fAnnotationCache;
 
 	/*
 	 * @see org.eclipse.jface.text.ITextHover#getHoverInfo(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion)
@@ -300,8 +300,8 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 		
 		// hover region should not have length 0 to get meaningful relevances
 		IRegion hoverRegion= new Region(offset, 1);
-		List tuples= getAnnotations(model, hoverRegion);
-		List selected= select(tuples, hoverRegion);
+		List<Tuple> tuples= getAnnotations(model, hoverRegion);
+		List<Tuple> selected= select(tuples, hoverRegion);
 		IRegion coverage= computeCoverage(selected);
 		if (coverage == NO_REGION)
 			return null;
@@ -321,14 +321,13 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 	 * @param hoverRegion the region of interest
 	 * @return the list of <code>Tuple</code>s to display
 	 */
-	protected List select(List tuples, IRegion hoverRegion) {
+	protected List<Tuple> select(List<Tuple> tuples, IRegion hoverRegion) {
 		if (tuples.isEmpty())
 			return tuples;
 		
 		float max_relevance= Float.MIN_VALUE;
-		List selected= new ArrayList();
-		for (Iterator it= tuples.iterator(); it.hasNext();) {
-			Tuple tuple= (Tuple) it.next();
+		List<Tuple> selected= new ArrayList<Tuple>();
+		for (Tuple tuple:tuples) {
 			float relevance= computeRelevance(tuple.position, hoverRegion);
 			if (relevance > max_relevance) {
 				max_relevance= relevance;
@@ -394,10 +393,9 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 	 * @param selected a list of <code>Tuple</code>
 	 * @return the coverage of all positions
 	 */
-	private IRegion computeCoverage(List selected) {
+	private IRegion computeCoverage(List<Tuple> selected) {
 		int offset= Integer.MAX_VALUE, endOffset= Integer.MIN_VALUE;
-		for (Iterator it= selected.iterator(); it.hasNext();) {
-			Tuple tuple= (Tuple) it.next();
+		for (Tuple tuple:selected) {
 			if (!tuple.position.isDeleted()) {
 				offset= Math.min(tuple.position.getOffset(), offset);
 				endOffset= Math.max(endOffset(tuple.position), endOffset);
@@ -436,13 +434,11 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 	 * @return the hover message, may be <code>null</code> if there are no
 	 *         messages
 	 */
-	private String computeHoverMessage(List tuples) {
+	private String computeHoverMessage(List<Tuple> tuples) {
 		if (tuples.isEmpty())
 			return null;
-		List messages= new ArrayList();
-		Iterator e= tuples.iterator();
-		while (e.hasNext()) {
-			Tuple tuple= (Tuple) e.next();
+		List<String> messages= new ArrayList<String>();
+		for (Tuple tuple: tuples) {
 			String message= getMessage(tuple.annotation);
 			if (message != null)
 				messages.add(message.trim());
@@ -451,7 +447,7 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 			case 0:
 				return null;
 			case 1:
-				return (String) messages.get(0);
+				return messages.get(0);
 			default:
 				return formatMultipleMessages(messages);
 		}
@@ -481,10 +477,10 @@ public class AnnotationHover implements IAnnotationHover, ITextHover {
 	 * @return a <code>String</code> with all messages appended on their own
 	 *         line
 	 */
-	private String formatMultipleMessages(List messages) {
-		StringBuffer buf= new StringBuffer();
-		for (Iterator it= messages.iterator(); it.hasNext();) {
-			String msg= (String) it.next();
+	private String formatMultipleMessages(List<String> messages) {
+		StringBuilder buf= new StringBuilder();
+		for (Iterator<String> it= messages.iterator(); it.hasNext();) {
+			String msg= it.next();
 			buf.append(msg);
 			if (it.hasNext())
 				buf.append('\n');

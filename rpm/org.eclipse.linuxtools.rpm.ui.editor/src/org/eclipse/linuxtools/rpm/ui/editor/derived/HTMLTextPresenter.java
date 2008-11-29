@@ -55,10 +55,10 @@ public class HTMLTextPresenter implements DefaultInformationControl.IInformation
 		int yoursEnd=   offset + insertLength -1;
 		yoursEnd= Math.max(yoursStart, yoursEnd);
 
-		Iterator e= presentation.getAllStyleRangeIterator();
+		Iterator<StyleRange> e= presentation.getAllStyleRangeIterator();
 		while (e.hasNext()) {
 
-			StyleRange range= (StyleRange) e.next();
+			StyleRange range= e.next();
 
 			int myStart= range.start;
 			int myEnd=   range.start + range.length -1;
