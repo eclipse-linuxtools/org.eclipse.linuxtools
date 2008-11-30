@@ -1,3 +1,32 @@
+2008-11-30  Alexander Kurtakov  <akurtakov@gmail.com>
+	Use foreach to make code more readable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java 
+	(run): Use foreach to make code more readable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java 
+	(mergeChangelog): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/ContainsFilter.java 
+	(hasUnfilteredChild): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java 
+	(parseMacro): Likewise.
+	(parseLine): Likewise.
+	(parseSection): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java 
+	(buildMacroList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileChangelogScanner.java 
+	(SpecfileChangelogScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePackagesScanner.java 
+	(SpecfilePackagesScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java 
+	(SpecfilePartitionScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java 
+	(SpecfileScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
+	(computeTemplateProposals): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitioner.java 
+	(printPartitions): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java 
+	(populateTemplateCombo): Likewise.
+
 2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Cleanup derived classed to not show so many warnings.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/AnnotationHover.java 

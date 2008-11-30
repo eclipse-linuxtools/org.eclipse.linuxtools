@@ -176,9 +176,9 @@ public class SpecfileParser {
 		if (lineText.startsWith("%"))
 			return parseMacro(lineText, specfile, lineNumber);
 		
-		for (int i = 0; i < simpleDefinitions.length; i++) {
-			if (lineText.startsWith(simpleDefinitions[i] + ":")) {
-				if (simpleDefinitions[i].equals("License")) {
+		for (String simpleDefinition : simpleDefinitions) {
+			if (lineText.startsWith(simpleDefinition + ":")) {
+				if (simpleDefinition.equals("License")) {
 					return parseSimpleDefinition(lineText, specfile, lineNumber, true);
 				} else
 					return parseSimpleDefinition(lineText, specfile, lineNumber, false);
@@ -211,8 +211,8 @@ public class SpecfileParser {
 
 			// Sections
 			// Simple Section Headers
-			for (int i = 0; i < simpleSections.length; i++) {
-				if (token.equals(simpleSections[i])) {
+			for (String simpleSection : simpleSections) {
+				if (token.equals(simpleSection)) {
 					toReturn = new SpecfileSection(token.substring(1), specfile);
 					specfile.addSection(toReturn);
 					isSimpleSection = true;
@@ -221,8 +221,8 @@ public class SpecfileParser {
 			}
 
 			// Complex Section Headers
-			for (int i = 0; i < complexSections.length; i++) {
-				if (token.equals(complexSections[i])) {
+			for (String complexSection : complexSections) {
+				if (token.equals(complexSection)) {
 					String name = token.substring(1);
 					if (!name.equals("package")) {
 						toReturn = new SpecfileSection(name, specfile);
@@ -315,8 +315,8 @@ public class SpecfileParser {
 		String[] sections = new String[simpleSections.length + complexSections.length];
 		System.arraycopy(simpleSections, 0, sections, 0, simpleSections.length);
 		System.arraycopy(complexSections, 0, sections, simpleSections.length, complexSections.length);
-		for (int i = 0; i < sections.length; i++) {
-			if (lineText.startsWith(sections[i]))
+		for (String section : sections) {
+			if (lineText.startsWith(section))
 				return parseSection(lineText, specfile, lineNumber);
 		}
 		// FIXME:  add handling of lines containing %{SOURCENNN}

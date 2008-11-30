@@ -400,15 +400,15 @@ public class SpecfileNewWizardPage extends WizardPage {
 		String[] files = dir.list();
 		if (dir.exists()) {
 			String templateCSV = "";
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].startsWith("spectemplate-"))
-					templateCSV += files[i].split("-", 2)[1].replaceAll("\\.spec",
+			for (String file : files) {
+				if (file.startsWith("spectemplate-"))
+					templateCSV += file.split("-", 2)[1].replaceAll("\\.spec",
 							"")
 							+ ",";
 			}
 			String[] templates = templateCSV.split(",");
-			for (int i = 0; i < templates.length; i++) {
-				templateCombo.add(templates[i]);
+			for (String template: templates) {
+				templateCombo.add(template);
 			}
 			templateCombo.setText(selectedTemplate);			
 		} else {

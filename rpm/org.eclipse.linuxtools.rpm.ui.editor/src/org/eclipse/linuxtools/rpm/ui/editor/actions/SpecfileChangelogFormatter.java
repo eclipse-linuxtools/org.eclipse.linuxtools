@@ -112,10 +112,9 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
             // there is some random number suffix to the category positions,
             // we need to find the one we want
-            for (int i = 0; i < positionCategories.length; i++) {
-                if (positionCategories[i]
-                        .startsWith("__content_types_category"))
-                    contentTypesPositionCategory = positionCategories[i];
+            for (String positionCategory: positionCategories) {
+                if (positionCategory.startsWith("__content_types_category"))
+                    contentTypesPositionCategory = positionCategory;
             }
 
             if (contentTypesPositionCategory != null) {
@@ -123,8 +122,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                     Position[] sectionPositions = doc
                             .getPositions(contentTypesPositionCategory);
                     ITypedRegion changelogPartition = null;
-                    for (int i = 0; i < sectionPositions.length; i++) {
-                        Position position = sectionPositions[i];
+                    for (Position position: sectionPositions) {
                         int offset = position.getOffset();
 
                         ITypedRegion partition = doc.getPartition(offset);
@@ -174,8 +172,8 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
                     // count back 2 '\n's
                     int newCursorOffset = offset + buf.length() - 1;
 
-                    for (int i = 1; i < changelogLines.length; i++) {
-                        buf.append("\n").append(changelogLines[i]);
+                    for (String changelogLine: changelogLines) {
+                        buf.append("\n").append(changelogLine);
                     }
                     
                     // always terminate the file with a new line

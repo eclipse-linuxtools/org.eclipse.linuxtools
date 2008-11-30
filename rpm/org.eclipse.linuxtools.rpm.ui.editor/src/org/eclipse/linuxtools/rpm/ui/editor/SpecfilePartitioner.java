@@ -31,18 +31,18 @@ public class SpecfilePartitioner extends FastPartitioner {
 	public void printPartitions(IDocument document) {
 		StringBuilder buffer = new StringBuilder();
 		ITypedRegion[] partitions = computePartitioning(0, document.getLength());
-		for (int i = 0; i < partitions.length; i++) {
+		for (ITypedRegion partition : partitions) {
 			try {
 				buffer.append("Partition type: ");
-				buffer.append(partitions[i].getType());
+				buffer.append(partition.getType());
 				buffer.append(", offset: ");
-				buffer.append(partitions[i].getOffset());
+				buffer.append(partition.getOffset());
 				buffer.append(", length: ");
-				buffer.append(partitions[i].getLength());
+				buffer.append(partition.getLength());
 				buffer.append("\n");
 				buffer.append("Text:\n");
-				buffer.append(document.get(partitions[i].getOffset(),
-						partitions[i].getLength()));
+				buffer.append(document.get(partition.getOffset(),
+						partition.getLength()));
 				buffer.append("\n---------------------------------------\n\n\n");
 			} catch (org.eclipse.jface.text.BadLocationException e) {
 				SpecfileLog.logError(e);

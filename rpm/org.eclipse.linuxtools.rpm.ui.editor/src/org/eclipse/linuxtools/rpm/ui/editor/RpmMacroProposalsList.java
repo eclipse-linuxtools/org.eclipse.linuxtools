@@ -57,17 +57,17 @@ public class RpmMacroProposalsList {
 		// paths must be reversed because the last value added
 		// into a Map overwrites the first.
 		paths = reverseStringArray(paths);
-		for (int i = 0; i < paths.length; i++) {
-			if (!paths[i].equals("")) {
-				File pathFile = new File(paths[i]);
-				if (pathFile.exists()){
-					if (pathFile.isDirectory()){
-						File[] macrosFiles =pathFile.listFiles();
-						for (int j = 0; j < macrosFiles.length; j++) {
-							addMacroToMap(macrosFiles[j].getAbsolutePath());
+		for (String path : paths) {
+			if (!path.equals("")) {
+				File pathFile = new File(path);
+				if (pathFile.exists()) {
+					if (pathFile.isDirectory()) {
+						File[] macrosFiles = pathFile.listFiles();
+						for (File macrosFile : macrosFiles) {
+							addMacroToMap(macrosFile.getAbsolutePath());
 						}
 					} else {
-						addMacroToMap(paths[i]);
+						addMacroToMap(path);
 					}
 				}
 			}

@@ -82,8 +82,9 @@ public class SpecfileScanner extends RuleBasedScanner {
 		// %define, %make, ...
 		WordRule wordRule = new WordRule(new MacroWordDetector(),
 				Token.UNDEFINED);
-		for (int i = 0; i < DEFINED_MACROS.length; i++)
-			wordRule.addWord(DEFINED_MACROS[i], macroToken);
+		for (String definedMacro : DEFINED_MACROS) {
+			wordRule.addWord(definedMacro, macroToken);
+		}
 		rules.add(wordRule);
 
 		// %patch[0-9]+[\ \t]
@@ -92,20 +93,23 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 		// %if, %else ...
 		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (int i = 0; i < keywords.length; i++)
-			wordRule.addWord(keywords[i], keywordToken);
+		for (String keyword : keywords) {
+			wordRule.addWord(keyword, keywordToken);
+		}
 		rules.add(wordRule);
 
 		// %prep, %build, ...
 		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (int i = 0; i < sections.length; i++)
-			wordRule.addWord(sections[i], sectionToken);
+		for (String section : sections) {
+			wordRule.addWord(section, sectionToken);
+		}
 		rules.add(wordRule);
 
 		// Name:, Summary:, ...
 		wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
-		for (int i = 0; i < tags.length; i++)
-			wordRule.addWord(tags[i] + ":", tagToken);
+		for (String tag : tags) {
+			wordRule.addWord(tag + ":", tagToken);
+		}
 		rules.add(wordRule);
 
 		// Source[0-9]*:, Patch[0-9]*:

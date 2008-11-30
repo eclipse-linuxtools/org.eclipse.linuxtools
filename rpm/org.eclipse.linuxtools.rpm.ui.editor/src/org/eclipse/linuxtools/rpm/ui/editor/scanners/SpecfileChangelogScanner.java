@@ -51,8 +51,9 @@ public class SpecfileChangelogScanner extends RuleBasedScanner {
 
 		// %prep, %build, ...
 		WordRule wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (int i = 0; i < sections.length; i++)
-			wordRule.addWord(sections[i], sectionToken);
+		for (String section : sections) {
+			wordRule.addWord(section, sectionToken);
+		}
 		rules.add(wordRule);
 
 	

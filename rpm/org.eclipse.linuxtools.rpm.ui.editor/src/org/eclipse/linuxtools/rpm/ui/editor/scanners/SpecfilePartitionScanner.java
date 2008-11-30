@@ -62,8 +62,9 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		List<IRule> rules = new ArrayList<IRule>();
 		
 		// RPM packages
-		for (int i = 0; i < SpecfilePackagesScanner.PACKAGES_TAGS.length; i++) 
-			rules.add(new SingleLineRule(SpecfilePackagesScanner.PACKAGES_TAGS[i], "", specPackages, (char)0 , true));			
+		for (String packageTag :SpecfilePackagesScanner.PACKAGES_TAGS) {
+			rules.add(new SingleLineRule(packageTag, "", specPackages, (char)0 , true));		
+		}
 		
 		// %prep
 		rules.add(new SectionRule("%prep", new String[] { "%build" }, specPrep));
@@ -72,8 +73,8 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		rules.add(new MultiLineRule("%changelog", "", specChangelog, (char)0 , true));
 		
 		// "%build", "%install", "%pre", "%preun", "%post", "%postun"
-		for (int i = 0; i < sectionHeaders.length; i++)
-			rules.add(new SectionRule(sectionHeaders[i], sectionEndingHeaders, specScript));
+		for (String sectionHeader : sectionHeaders)
+			rules.add(new SectionRule(sectionHeader, sectionEndingHeaders, specScript));
 
 		// comments
 		rules.add(new EndOfLineRule("#", specScript));

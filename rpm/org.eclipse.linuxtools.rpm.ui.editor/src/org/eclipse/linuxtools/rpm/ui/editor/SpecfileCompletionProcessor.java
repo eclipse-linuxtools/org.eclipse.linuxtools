@@ -168,8 +168,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		String id = context.getContextType().getId();
 		Template[] templates = Activator.getDefault().getTemplateStore()
 				.getTemplates(id);
-		for (int i = 0; i < templates.length; i++) {
-			Template template = templates[i];
+		for (Template template : templates) {
 			try {
 				context.getContextType().validate(template.getPattern());
 			} catch (TemplateException e) {

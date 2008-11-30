@@ -69,10 +69,10 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 
 			// there is some random number suffix to the category positions,
 			// we need to find the one we want
-			for (int i = 0; i < positionCategories.length; i++) {
-				if (positionCategories[i]
-						.startsWith("__content_types_category"))
-					contentTypesPositionCategory = positionCategories[i];
+			for (String positionCategory: positionCategories) {
+				if (positionCategory.startsWith("__content_types_category")) {
+					contentTypesPositionCategory = positionCategory;
+				}
 			}
 
 			if (contentTypesPositionCategory != null) {
@@ -80,8 +80,7 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 					Position[] sectionPositions = doc
 							.getPositions(contentTypesPositionCategory);
 					ITypedRegion changelogPartition = null;
-					for (int i = 0; i < sectionPositions.length; i++) {
-						Position position = sectionPositions[i];
+					for (Position position: sectionPositions) {
 						int offset = position.getOffset();
 
 						ITypedRegion partition = doc.getPartition(offset);
@@ -110,8 +109,8 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 					buf.append(" - \n");
 					int newCursorOffset = changelogPartition.getOffset() + buf.length() -1;
 					
-					for (int i = 1; i < changelogLines.length; i++) {
-						buf.append(changelogLines[i]).append("\n");
+					for (String changelogLine: changelogLines) {
+						buf.append(changelogLine).append("\n");
 					}
 
 					doc.replace(changelogPartition.getOffset(),

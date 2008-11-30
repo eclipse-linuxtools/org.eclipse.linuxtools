@@ -58,8 +58,9 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 
 		// BuildRequires:, ...
 		WordRule wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
-		for (int i = 0; i < PACKAGES_TAGS.length; i++)
-			wordRule.addWord(PACKAGES_TAGS[i] + ":", tagToken);
+		for (String packageTag : PACKAGES_TAGS) {
+			wordRule.addWord(packageTag + ":", tagToken);
+		}
 		rules.add(wordRule);
 
 		// RPM packages
@@ -69,8 +70,8 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 		char[] startWith = {' ', '\t', ',', ':'};
 		for (String[] item: rpmPackages){
 			// FIXME Perhaps, that can slow down the scanning?
-			for (int i = 0; i < startWith.length; i++) {
-				wordRule.addWord(startWith[i] + item[0], packageToken);
+			for (char startChar : startWith) {
+				wordRule.addWord(startChar + item[0], packageToken);
 			}
 		}
 		rules.add(wordRule);
