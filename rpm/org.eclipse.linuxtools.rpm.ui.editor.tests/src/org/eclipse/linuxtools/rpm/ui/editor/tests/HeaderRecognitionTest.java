@@ -11,109 +11,50 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import java.io.ByteArrayInputStream;
-
-import junit.framework.TestCase;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.jface.text.Document;
-import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
 /**
  * @author overholt
  * 
  */
-public class HeaderRecognitionTest extends TestCase {
+public class HeaderRecognitionTest extends FileTestCase {
 
 	String testText;
-	private SpecfileParser parser;
-	private Specfile specfile;
-	private IFile testFile;
-	private Document testDocument;
-	private SpecfileErrorHandler errorHandler;
-	private SpecfileTestProject testProject;
-
-	/**
-	 * @param name
-	 */
-	public HeaderRecognitionTest(String name) {
-		super(name);
-	}
-
-
-	protected void newFile(String contents) throws Exception {
-		testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
-		testDocument = new Document(contents);
-		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
-		parser.setErrorHandler(errorHandler);
-	}
-	
-	@Override
-	protected void setUp() throws Exception {
-		testProject = new SpecfileTestProject();
-		testFile = testProject.createFile("test.spec");
-		parser = new SpecfileParser();
-		specfile = new Specfile();
-	}
-	
-	@Override
-	protected void tearDown() throws Exception {
-		testProject.dispose();
-	}
-
-
 
 	public void testGetSimpleSectionName() {
 		testText = "%prep";
 		SpecfileElement element;
 		
-		try {
 			newFile(testText);
 			element = parser.parseLine(testText, specfile, 0);
 			assertEquals(SpecfileSection.class, element.getClass());
 			assertEquals(testText.substring(1), ((SpecfileSection) element)
 					.getName());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testGetComplexSectionName1() {
 		testText = "%post";
 		SpecfileElement element;
 
-		try {
 			newFile(testText);
 			element = parser.parseLine(testText, specfile, 0);
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(testText.substring(1), section.getName());
 			assertNull(section.getPackage());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testGetComplexSectionName2() {
 		testText = "%post -n";
-
-		try {
 			newFile(testText);
 			specfile = parser.parse(testDocument);
 			
-			IMarker marker = testProject.getFailureMarkers()[0];
+			IMarker marker = getFailureMarkers()[0];
 			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
 			assertEquals("No package name after -n in post section.", marker.getAttribute(IMarker.MESSAGE, ""));
 			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-		} catch (Exception e) {
-			e.printStackTrace(System.err);
-			fail();
-		}
 	}
 
 	public void testGetComplexSectionName3() {
@@ -121,16 +62,12 @@ public class HeaderRecognitionTest extends TestCase {
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-		try {
 			newFile(testText);
 			element = parser.parseLine(testText, specfile, 0);
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(tokens[0].substring(1), section.getName());
 			assertEquals(tokens[2], section.getPackage().getPackageName());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testGetComplexSectionName4() {
@@ -140,16 +77,12 @@ public class HeaderRecognitionTest extends TestCase {
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-		try {
 			newFile(testText);
 			element = parser.parseLine(testText, specfile, 0);
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(tokens[0].substring(1), section.getName());
 			assertEquals(tokens[2], section.getPackage().getPackageName());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testGetComplexSectionName5() {
@@ -159,16 +92,12 @@ public class HeaderRecognitionTest extends TestCase {
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-		try {
 			newFile(testText);
 			element = parser.parseLine(testText, specfile, 0);
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(tokens[0].substring(1), section.getName());
 			assertEquals(tokens[2], section.getPackage().getPackageName());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	public void testGetComplexSectionName6() {
@@ -179,32 +108,24 @@ public class HeaderRecognitionTest extends TestCase {
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-		try {
 			newFile(testText);
 			element = parser.parseLine(testText, specfile, 0);
 			assertEquals(SpecfileSection.class, element.getClass());
 			SpecfileSection section = (SpecfileSection) element;
 			assertEquals(tokens[0].substring(1), section.getName());
 			assertNull(section.getPackage());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 
 	 public void testGetComplexSectionName7() {
 		 testText = "%post -n -p blah";
 
-		try {
 			newFile(testText);
 			specfile = parser.parse(testDocument);
 			
-			IMarker marker = testProject.getFailureMarkers()[0];
+			IMarker marker = getFailureMarkers()[0];
 			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
 			assertEquals("Package name must not start with '-': -p.", marker.getAttribute(IMarker.MESSAGE, ""));
 			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			} catch (Exception e) {
-				fail();
-			}
 	 }
 	 
 //	 public void testGetComplexSectionName8() {

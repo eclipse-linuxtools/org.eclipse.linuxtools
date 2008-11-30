@@ -11,28 +11,13 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import java.io.ByteArrayInputStream;
-
-import junit.framework.TestCase;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.jface.text.Document;
-import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 
-public class DefineTests extends TestCase {
+public class DefineTests extends FileTestCase {
 
-	private SpecfileTestProject testProject;
-	private SpecfileParser parser;
-	private Specfile specfile;
-	private SpecfileErrorHandler errorHandler;
-	private IFile testFile;
-	private Document testDocument;
-	private IMarker[] markers;
 	private String testSpec =
 		// Characters 0 through 17
 		"%define blah bleh" + "\n" +
@@ -52,28 +37,13 @@ public class DefineTests extends TestCase {
 		"%define __find_requires %{SOURCE3}" 
 		;
 
-	public DefineTests(String name) {
-		super(name);
-	}
-
 	@Override
-	protected void setUp() throws Exception {
-		testProject = new SpecfileTestProject();
-		testFile = testProject.createFile("test.spec");
-		testFile.setContents(new ByteArrayInputStream(testSpec.getBytes()), false, false, null);
-		testDocument = new Document(testSpec);
-		parser = new SpecfileParser();
-		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
-		parser.setErrorHandler(errorHandler);
+	protected void setUp() throws CoreException {
+		super.setUp();
+		newFile(testSpec);
 		specfile = parser.parse(testDocument);
-		markers = testProject.getFailureMarkers();
 	}
 	
-	@Override
-	protected void tearDown() throws Exception {
-		testProject.dispose();
-	}
-
 	public void testResolve() {
 		SpecfileDefine define1 = new SpecfileDefine("name", "testspec", specfile);
 		specfile.addDefine(define1);
@@ -109,10 +79,8 @@ public class DefineTests extends TestCase {
 	}
 	
 	public void testNullDefinition() {
-		IMarker marker;
 		boolean fail = true;
-		for (int i = 0; i < markers.length; i++) {
-			marker = markers[i];
+		for (IMarker marker :getFailureMarkers()) {
 			if ((marker.getAttribute(IMarker.CHAR_START, 0) == 70) &&
 				(marker.getAttribute(IMarker.CHAR_END, 0) == 83)) {
 				assertEquals(IMarker.SEVERITY_WARNING, marker.getAttribute(IMarker.SEVERITY, -1));
@@ -125,10 +93,8 @@ public class DefineTests extends TestCase {
 	}
 
 	public void testNonLetterDefinitionName() {
-		IMarker marker;
 		boolean fail = true;
-		for (int i = 0; i < markers.length; i++) {
-			marker = markers[i];
+		for (IMarker marker : getFailureMarkers()) {
 			if ((marker.getAttribute(IMarker.CHAR_START, 0) == 84) &&
 				(marker.getAttribute(IMarker.CHAR_END, 0) == 95)) {
 				assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(IMarker.SEVERITY, -1));
@@ -153,10 +119,8 @@ public class DefineTests extends TestCase {
 	}
 	
 	public void testNonLetterDefinitionName2() {
-		IMarker marker;
 		boolean fail = true;
-		for (int i = 0; i < markers.length; i++) {
-			marker = markers[i];
+		for (IMarker marker : getFailureMarkers()) {
 			if ((marker.getAttribute(IMarker.CHAR_START, 0) == 96) &&
 				(marker.getAttribute(IMarker.CHAR_END, 0) == 109)) {
 				assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(IMarker.SEVERITY, -1));

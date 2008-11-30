@@ -21,10 +21,6 @@ public class RpmMacroProposalsListTests extends TestCase {
 
 	RpmMacroProposalsList macroProposalsList;
 
-	public RpmMacroProposalsListTests(String name) {
-		super(name);
-	}
-
 	@Override
 	protected void setUp() throws Exception {
 		macroProposalsList = new RpmMacroProposalsList();

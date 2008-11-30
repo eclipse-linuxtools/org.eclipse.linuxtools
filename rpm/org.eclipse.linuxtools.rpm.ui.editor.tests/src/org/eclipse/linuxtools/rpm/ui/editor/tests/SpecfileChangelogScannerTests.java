@@ -26,8 +26,7 @@ public class SpecfileChangelogScannerTests extends AScannerTest {
 	
 	private SpecfileChangelogScanner scanner;
 	
-	public SpecfileChangelogScannerTests(String name) {
-		super(name);
+	public SpecfileChangelogScannerTests() {
 		scanner = new SpecfileChangelogScanner(new ColorManager());
 	}
 

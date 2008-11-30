@@ -26,8 +26,7 @@ public class SpecfileScannerTests extends AScannerTest {
 	
 	private SpecfileScanner scanner;
 	
-	public SpecfileScannerTests(String name) {
-		super(name);
+	public SpecfileScannerTests() {
 		scanner = new SpecfileScanner(new ColorManager());
 	}
 

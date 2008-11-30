@@ -1,3 +1,30 @@
+2008-11-30  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/EditorTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/ParserTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/FileTestCase.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite): Don't add empty test case.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java: Extend FileTestCase and skip work done in parent.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/DefineTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/EpochTagTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LicenseTagTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LinePositionTests.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/NameTagTests.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/PatchApplicationTest.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RefactoringTests.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/ReleaseTagTests.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTests.java: Remove unneeded constructor. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileChangelogScannerTests.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java: Extend FileTestCase and skip work done in parent. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfilePackagesScannerTests.java 
+	(setUp): Throw correct exception.
+	(SpecfilePackagesScannerTests): Removed unneeded constructor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java 
+	(SpecfileScannerTests): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/VersionTagTests.java: Extend FileTestCase and skip work done in parent.  
+
 2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Adopt imports to the editor package movements.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java: Adopt imports.

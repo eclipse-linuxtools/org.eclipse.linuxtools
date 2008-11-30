@@ -11,59 +11,21 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.text.Document;
-import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 
-public class RefactoringTests extends TestCase {
+public class RefactoringTests extends FileTestCase {
 
-	private SpecfileParser parser;
-	private Specfile specfile;
-	private IFile testFile;
-	private Document testDocument;
-	private SpecfileErrorHandler errorHandler;
-	private SpecfileTestProject testProject;
-
-	protected void newFile(String contents) throws Exception {
-		testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
-		testDocument = new Document(contents);
-		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
-		parser.setErrorHandler(errorHandler);
-		specfile = parser.parse(testDocument);
-	}
-	
-	@Override
-	protected void setUp() throws Exception {
-		testProject = new SpecfileTestProject();
-		testFile = testProject.createFile("test.spec");
-		parser = new SpecfileParser();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		testProject.dispose();
-	}
-	public RefactoringTests(String name) {
-		super(name);
-	}
-	
 	public void testGetLine() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
 		"%patch3";
-		
 		try {
 			newFile(specText);
 			assertEquals("%patch3", specfile.getLine(1));
-		} catch (Exception e) {
-			fail();
+		} catch (BadLocationException e) {
+			fail(e.getMessage());
 		}
 	}
 	
@@ -76,8 +38,8 @@ public class RefactoringTests extends TestCase {
 			assertEquals("%patch3", specfile.getLine(1));
 			specfile.changeLine(1, "%patch4");
 			assertEquals("%patch4", specfile.getLine(1));
-		} catch (Exception e) {
-			fail();
+		} catch (BadLocationException e) {
+			fail(e.getMessage());
 		}
 	}
 	
@@ -90,8 +52,8 @@ public class RefactoringTests extends TestCase {
 			assertEquals("Patch3: somefilesomewhere.patch", specfile.getLine(0));
 			specfile.changeLine(0, "Patch4: somefilesomewhere.patch");
 			assertEquals("Patch4: somefilesomewhere.patch", specfile.getLine(0));
-		} catch (Exception e) {
-			fail();
+		} catch (BadLocationException e) {
+			fail(e.getMessage());
 		}
 	}
 	
@@ -104,8 +66,8 @@ public class RefactoringTests extends TestCase {
 			assertEquals("Patch3: somefilesomewhere.patch", specfile.getLine(0));
 			specfile.changeLine(0, "andrew");
 			assertEquals("andrew", specfile.getLine(0));
-		} catch (Exception e) {
-			fail();
+		} catch (BadLocationException e) {
+			fail(e.getMessage());
 		}
 	}
 	
@@ -135,9 +97,8 @@ public class RefactoringTests extends TestCase {
 			assertEquals(1, linesUsed.size());
 			lineUsedNumber = linesUsed.get(0);
 			assertEquals(1, lineUsedNumber.intValue());
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail();
+		} catch (BadLocationException e) {
+			fail(e.getMessage());
 		}
 	}
 

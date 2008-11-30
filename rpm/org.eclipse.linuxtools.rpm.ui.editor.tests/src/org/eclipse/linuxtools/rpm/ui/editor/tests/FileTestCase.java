@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,17 +24,18 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 
 /**
  * Test case providing all the objects needed for the rpm editor tests.
- * 
+ *
  */
-public abstract class FileTestCase extends TestCase {
+public abstract class FileTestCase extends TestCase{
 
-	protected SpecfileParser parser;
-	protected Specfile specfile;
-	protected IFile testFile;
-	protected Document testDocument;
+	SpecfileParser parser;
+	Specfile specfile;
+	IFile testFile;
+	Document testDocument;
 	SpecfileErrorHandler errorHandler;
 	SpecfileTestProject testProject;
-
+	
+	
 	@Override
 	protected void setUp() throws CoreException {
 		testProject = new SpecfileTestProject();
@@ -42,12 +43,12 @@ public abstract class FileTestCase extends TestCase {
 		parser = new SpecfileParser();
 		specfile = new Specfile();
 	}
-
+	
 	@Override
 	protected void tearDown() throws CoreException {
 		testProject.dispose();
 	}
-
+	
 	protected IMarker[] getFailureMarkers() {
 		try {
 			return testProject.getFailureMarkers();
@@ -56,11 +57,10 @@ public abstract class FileTestCase extends TestCase {
 		}
 		return null;
 	}
-
+	
 	protected void newFile(String contents) {
 		try {
-			testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
-					false, false, null);
+			testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
 		} catch (CoreException e) {
 			fail(e.getMessage());
 		}

@@ -27,7 +27,6 @@ public class AllTests {
 		suite.addTestSuite(VersionTagTests.class);
 		suite.addTestSuite(HeaderRecognitionTest.class);
 		suite.addTestSuite(LicenseTagTest.class);
-//		suite.addTestSuite(ParserTests.class);
 		suite.addTestSuite(PatchApplicationTest.class);
 		suite.addTestSuite(LinePositionTests.class);
 		suite.addTestSuite(SourceComparatorTests.class);

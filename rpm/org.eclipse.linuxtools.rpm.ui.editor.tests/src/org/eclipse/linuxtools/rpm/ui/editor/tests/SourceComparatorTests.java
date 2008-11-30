@@ -11,55 +11,17 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.text.Document;
-import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 
-public class SourceComparatorTests extends TestCase {
-	private SpecfileParser parser;
-	private Specfile specfile;
-	private IFile testFile;
-	private Document testDocument;
-	private SpecfileErrorHandler errorHandler;
-	private SpecfileTestProject testProject;
-
-	protected void newFile(String contents) throws Exception {
-		testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
-		testDocument = new Document(contents);
-		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
-		parser.setErrorHandler(errorHandler);
-		specfile = parser.parse(testDocument);
-	}
-	
-	@Override
-	protected void setUp() throws Exception {
-		testProject = new SpecfileTestProject();
-		testFile = testProject.createFile("test.spec");
-		parser = new SpecfileParser();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		testProject.dispose();
-	}
-	public SourceComparatorTests(String name) {
-		super(name);
-	}
+public class SourceComparatorTests extends FileTestCase {
 
 	public void testPatchComparator() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
 		"Patch2: someotherfile.patch";
 		
-		try {
 			newFile(specText);
 			Collection<SpecfileSource> patches = specfile.getPatchesAsList();
 			int i = 1;
@@ -72,22 +34,15 @@ public class SourceComparatorTests extends TestCase {
 				else
 					fail();
 			}
-		} catch (Exception e) {
-			fail();
-		}
 	}
 	
 	public void testPatchComparator2() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
 		"Patch2: someotherfile.patch";
 		
-		try {
 			newFile(specText);
 			List<SpecfileSource> patches = specfile.getPatchesAsList();
 			assertEquals(2, patches.get(0).getNumber());
 			assertEquals(3, patches.get(1).getNumber());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 }

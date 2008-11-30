@@ -10,26 +10,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import java.io.ByteArrayInputStream;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.text.Document;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 
-import junit.framework.TestCase;
-
-abstract class AScannerTest extends TestCase {
+abstract class AScannerTest extends FileTestCase {
 	
-	private SpecfileTestProject testProject;
-
-	private IFile testFile;
-
-	private Document testDocument;
-
 	protected RuleBasedScanner rulesBasedScanner;
 
 	protected abstract String getContents();
@@ -38,17 +27,12 @@ abstract class AScannerTest extends TestCase {
 	
 	public SpecfileEditor editor;
 	
-	public AScannerTest(String name) {
-		super(name);
-	}
-
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
 	@Override
-	protected void setUp() throws Exception {
-		testProject = new SpecfileTestProject();
-		testFile = testProject.createFile("testspecfile.spec");
+	protected void setUp() throws CoreException {
+		super.setUp();
 		newFile(getContents());
 		testProject.refresh();
 		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(Activator
@@ -61,20 +45,6 @@ abstract class AScannerTest extends TestCase {
 		rulesBasedScanner.setRange(testDocument, 0, getContents().length());
 	}
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		testProject.dispose();
-	}
-
-	protected void newFile(String contents) throws Exception {
-		testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
-				false, false, null);
-		testDocument = new Document(contents);
-	}
-
 	protected IToken getNextToken() {
 		return rulesBasedScanner.nextToken();
 	}
@@ -85,6 +55,4 @@ abstract class AScannerTest extends TestCase {
 		}
 		return rulesBasedScanner.nextToken();
 	}
-
-	
 }

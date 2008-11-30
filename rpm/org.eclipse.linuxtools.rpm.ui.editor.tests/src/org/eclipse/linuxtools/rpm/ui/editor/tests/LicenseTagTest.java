@@ -11,56 +11,13 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import java.io.ByteArrayInputStream;
 
-import junit.framework.TestCase;
+public class LicenseTagTest extends FileTestCase {
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.text.Document;
-import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
-
-public class LicenseTagTest extends TestCase {
-	private SpecfileTestProject testProject;
-	private SpecfileParser parser;
-	private Specfile specfile;
-	private SpecfileErrorHandler errorHandler;
-	private IFile testFile;
-	private Document testDocument;
-
-	public LicenseTagTest(String name) {
-		super(name);
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-		testProject = new SpecfileTestProject();
-		testFile = testProject.createFile("test.spec");
-		parser = new SpecfileParser();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		testProject.dispose();
-	}
-	
-	protected void newFile(String contents) throws Exception {
-		testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
-		testDocument = new Document(contents);
-		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
-		parser.setErrorHandler(errorHandler);
-		specfile = parser.parse(testDocument);
-	}
-	
 	public void testSingleLicenseTag() {
-		try {
 			String testText = "License: EPL";
 			newFile(testText);
 			assertEquals("EPL", specfile.getLicense());
-		} catch (Exception e) {
-			fail();
-		}
 	}
 // FIXME:  investigate whether we should keep this or not
 // See SpecfileParser at line 450

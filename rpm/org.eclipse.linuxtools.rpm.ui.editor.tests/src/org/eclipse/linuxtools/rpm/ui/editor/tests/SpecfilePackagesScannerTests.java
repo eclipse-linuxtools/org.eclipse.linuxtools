@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
@@ -32,8 +33,7 @@ public class SpecfilePackagesScannerTests extends AScannerTest {
 	
 	private SpecfilePackagesScanner scanner;
 	
-	public SpecfilePackagesScannerTests(String name) {
-		super(name);
+	public SpecfilePackagesScannerTests() {
 		scanner = new SpecfilePackagesScanner(new ColorManager());
 	}
 
@@ -41,7 +41,7 @@ public class SpecfilePackagesScannerTests extends AScannerTest {
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#setUp()
 	 */
 	@Override
-	protected void setUp() throws Exception {
+	protected void setUp() throws CoreException {
 		Activator.getDefault().getPluginPreferences().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
 		try {
@@ -50,7 +50,7 @@ public class SpecfilePackagesScannerTests extends AScannerTest {
 			out.write("setup\ntest_underscore\n");
 			out.close();
 		} catch (IOException e) {
-			fail();
+			fail(e.getMessage());
 		}
 		super.setUp();
 	}
