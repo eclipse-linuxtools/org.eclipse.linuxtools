@@ -22,8 +22,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -178,29 +176,29 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab
 		return b;
 	}
 	
-	// convenience method to create a text box and label with the given text
-	private Text _createLabeledText(Composite parent, String text)
-	{
-		Label l = new Label(parent, SWT.NONE);
-		l.setText(text);
-		final Text t = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		t.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		t.addModifyListener(new ModifyListener()
-		{
-			public void modifyText(ModifyEvent mev)
-			{
-				_handleTextModify(t);
-			}
-		});
-		t.addVerifyListener(new VerifyListener()
-		{
-			public void verifyText(VerifyEvent ve)
-			{
-				_handleTextVerify(t, ve);
-			}
-		});
-		return t;
-	}
+//	// convenience method to create a text box and label with the given text
+//	private Text _createLabeledText(Composite parent, String text)
+//	{
+//		Label l = new Label(parent, SWT.NONE);
+//		l.setText(text);
+//		final Text t = new Text(parent, SWT.SINGLE | SWT.BORDER);
+//		t.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		t.addModifyListener(new ModifyListener()
+//		{
+//			public void modifyText(ModifyEvent mev)
+//			{
+//				_handleTextModify(t);
+//			}
+//		});
+//		t.addVerifyListener(new VerifyListener()
+//		{
+//			public void verifyText(VerifyEvent ve)
+//			{
+//				_handleTextVerify(t, ve);
+//			}
+//		});
+//		return t;
+//	}
 	
 	// dispatches button selection events to appropriate handlers
 	private void _handleButtonSelected(Button b)
@@ -249,25 +247,25 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab
 		}
 	}
 	
-	// handles text verify events for all text boxes	
-	private void _handleTextVerify(Text text, VerifyEvent ve)
-	{
-		if (text != _kernelImageFileText)
-		{
-				// Only allow numbers
-				// SUCK FIXME: i18n?
-				try
-				{
-					int count = Integer.parseInt(ve.text);
-					if (count < 0)
-						ve.doit = false;
-				}
-				catch (NumberFormatException e)
-				{
-					ve.doit = false;
-				}			
-		}
-	}
+//	// handles text verify events for all text boxes	
+//	private void _handleTextVerify(Text text, VerifyEvent ve)
+//	{
+//		if (text != _kernelImageFileText)
+//		{
+//				// Only allow numbers
+//				// SUCK FIXME: i18n?
+//				try
+//				{
+//					int count = Integer.parseInt(ve.text);
+//					if (count < 0)
+//						ve.doit = false;
+//				}
+//				catch (NumberFormatException e)
+//				{
+//					ve.doit = false;
+//				}			
+//		}
+//	}
 	
 	// Displays a file dialog to allow the user to select the kernel image file	
 	private void _showFileDialog(Shell shell)

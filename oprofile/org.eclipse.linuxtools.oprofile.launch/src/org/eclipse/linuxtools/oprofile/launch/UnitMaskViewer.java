@@ -98,7 +98,7 @@ public class UnitMaskViewer
 	// hanldes all button toggles (checkbuttons and radio buttons)
 	private void _handleToggle(int group, int num)
 	{
-		boolean selected = _maskButton[group][num].getSelection();
+//		boolean selected = _maskButton[group][num].getSelection();
 		
 		OpUnitMask mask = (OpUnitMask) _maskButton[group][num].getData();
 		if (mask != null)

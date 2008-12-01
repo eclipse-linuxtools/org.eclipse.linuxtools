@@ -15,30 +15,14 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.linuxtools.oprofile.core.Oprofile;
 
 /**
  * This class defines the launch tab group that is displayed by the
  * launch manager.
  */
-public class LaunchConfigurationTabGroup
-	extends AbstractLaunchConfigurationTabGroup
-{
-	/**
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTabGroup#createTabs(ILaunchConfigurationDialog, String)
-	 */
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode)
-	{
-//really not needed here		
-//		/* Make sure the kernel module is loaded (just in case
-//		   the user has not authenticated or the module couldn't
-//		   be loaded). */
-//		if (!Oprofile.isKernelModuleLoaded()) {
-//			Oprofile.initializeOprofileModule();
-//		}
-
-		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[]
-		{
+public class LaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
+	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
 			new CLaunchConfigurationTab(),
 			new OprofileSetupTab(),
 			new OprofileEventConfigTab(),

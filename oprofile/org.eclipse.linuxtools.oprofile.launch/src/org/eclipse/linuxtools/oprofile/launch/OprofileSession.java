@@ -12,7 +12,6 @@
 
 package org.eclipse.linuxtools.oprofile.launch;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
@@ -75,7 +74,7 @@ public class OprofileSession {
 			//reset any data from the current session (otherwise causes problems with multiple sessions)
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
 			
-			ArrayList events = new ArrayList();
+			ArrayList<OprofileDaemonEvent> events = new ArrayList<OprofileDaemonEvent>();
 			for (int i = 0; i < _counters.length; ++i) {
 				if (_counters[i].getEnabled())
 					events.add(_counters[i].getDaemonEvent());

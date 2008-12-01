@@ -35,7 +35,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -423,7 +422,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab
 	private void _handleMouseMove(MouseEvent me)
 	{
 		int lineHeight = _eventList.getList().getItemHeight();
-		Rectangle area = _eventList.getList().getClientArea();
+//		Rectangle area = _eventList.getList().getClientArea();
 		int index = 0;
 		while (index * lineHeight < me.y)
 			++index;
