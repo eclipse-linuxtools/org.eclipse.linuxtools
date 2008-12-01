@@ -112,8 +112,8 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	}
 
 	public static void showErrorDialog(Shell shell, String key, CoreException except) {
-		String title = OprofileUIMessages.getString(key + ".error.dialog.title"); //$NON-NLS-1$
-		String msg = OprofileUIMessages.getString(key + ".error.dialog.message"); //$NON-NLS-1$
+		String title = OprofileUiMessages.getString(key + ".error.dialog.title"); //$NON-NLS-1$
+		String msg = OprofileUiMessages.getString(key + ".error.dialog.message"); //$NON-NLS-1$
 		ErrorDialog.openError(shell, title, msg, except.getStatus());
 	}
 }

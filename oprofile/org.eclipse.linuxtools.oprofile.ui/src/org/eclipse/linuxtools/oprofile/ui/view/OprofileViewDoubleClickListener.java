@@ -25,7 +25,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUIMessages;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelEvent;
@@ -61,9 +61,9 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 			if (session.isDefaultSession()) {
 				//the following code was originially written by Keith Seitz
 				InputDialog dialog = new InputDialog(OprofileUiPlugin.getActiveWorkbenchShell(),
-						OprofileUIMessages.getString("savedialog.title"),   // $NON-NLS-1$
-						OprofileUIMessages.getString("savedialog.message"),   // $NON-NLS-1$
-						OprofileUIMessages.getString("savedialog.initial"),  // $NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.title"),   // $NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.message"),   // $NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.initial"),  // $NON-NLS-1$
 						new SaveSessionValidator());
 				
 				int result = dialog.open();
@@ -83,9 +83,12 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 //			UiModelSymbol symbol = (UiModelSymbol)element;
 			
 		} else if (element instanceof UiModelSample) {
+			//jump to line number in the appropriate file
 			UiModelSample sample = (UiModelSample)element;
-			String fileName = ((UiModelSymbol)sample.getParent()).getFileName();
 			int line = sample.getLine();
+			
+			//get file name from the parent sample 
+			String fileName = ((UiModelSymbol)sample.getParent()).getFileName();
 			
 			try {
 				ProfileUIUtils.openEditorAndSelect(fileName, line);
@@ -112,14 +115,14 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 			}
 			
 			if (index != -1) {
-				String format = OprofileUIMessages.getString("savedialog.validator.invalidChar"); //$NON-NLS-1$
+				String format = OprofileUiMessages.getString("savedialog.validator.invalidChar"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText.substring(index, index + 1), newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
 				
 			// Cannot contain whitespace
 			if (newText.contains(" ") || newText.contains("\t")) {
-				String format = OprofileUIMessages.getString("savedialog.validator.containsWhitespace"); //$NON-NLS-1$
+				String format = OprofileUiMessages.getString("savedialog.validator.containsWhitespace"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
@@ -127,7 +130,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 			// Must not already exist (opcontrol doesn't allow it)
 			File file = new File(Oprofile.getDefaultSamplesDirectory(), newText);
 			if (file.exists()) {
-				String format = OprofileUIMessages.getString("savedialog.validator.exists"); //$NON-NLS-1$
+				String format = OprofileUiMessages.getString("savedialog.validator.exists"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);
 			}
