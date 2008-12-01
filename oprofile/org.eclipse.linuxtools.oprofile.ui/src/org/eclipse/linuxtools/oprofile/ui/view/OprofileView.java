@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.oprofile.ui.view;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -75,12 +74,9 @@ public class OprofileView extends ViewPart {
 
 	private void _createActionMenu() {
 		IMenuManager manager = getViewSite().getActionBars().getMenuManager();
-		final OprofileView view = this;
-		manager.add(new Action("Refresh Model"){
-			public void run() {
-				view.refreshView();
-			}
-		});
+		
+		manager.add(new OprofileViewRefreshAction());
+		manager.add(new OprofileViewLogReaderAction());
 	}
 	
 	private TreeViewer getTreeViewer() {
