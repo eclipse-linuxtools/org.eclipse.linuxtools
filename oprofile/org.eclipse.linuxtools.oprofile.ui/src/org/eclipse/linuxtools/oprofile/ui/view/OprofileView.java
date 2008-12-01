@@ -18,6 +18,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelRoot;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
 import org.eclipse.swt.SWT;
@@ -97,8 +98,7 @@ public class OprofileView extends ViewPart {
 
 		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				//TODO: externalize
-				monitor.beginTask("Parsing OProfile data", 2);
+				monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2);
 
 				OpModelRoot dataModelRoot = OpModelRoot.getDefault();
 				dataModelRoot.refreshModel();
