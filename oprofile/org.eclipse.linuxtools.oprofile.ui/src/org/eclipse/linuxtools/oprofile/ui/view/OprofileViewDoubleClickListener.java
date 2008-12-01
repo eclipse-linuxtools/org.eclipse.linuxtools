@@ -79,8 +79,19 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 //			UiModelImage image = (UiModelImage)element;
 	
 		} else if (element instanceof UiModelSymbol) {
-//			UiModelSymbol symbol = (UiModelSymbol)element;
+			//jump to 1st line in the file
+			UiModelSymbol symbol = (UiModelSymbol)element;
+			String fileName = symbol.getFileName();
 			
+			if (!fileName.isEmpty()) {
+				try {
+					ProfileUIUtils.openEditorAndSelect(fileName, 1);
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			}
 		} else if (element instanceof UiModelSample) {
 			//jump to line number in the appropriate file
 			UiModelSample sample = (UiModelSample)element;
