@@ -18,8 +18,6 @@ import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 import org.osgi.framework.BundleContext;
 
-import java.util.*;
-
 /**
  * The main plugin class to be used in the desktop.
  */
@@ -28,22 +26,12 @@ public class OprofileCorePlugin extends Plugin {
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
-	
-	private IOpxmlProvider _opxml = null;
-	private IOpcontrolProvider _opcontrol = null;
 	
 	/**
 	 * The constructor.
 	 */
 	public OprofileCorePlugin() {
 		plugin = this;
-		try {
-			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.oprofile.core.OprofileCorePluginResources"); //$NON-NLS-1$
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
 	}
 	
 	/**
@@ -75,29 +63,6 @@ public class OprofileCorePlugin extends Plugin {
 		return ResourcesPlugin.getWorkspace();
 	}
 
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle= OprofileCorePlugin.getDefault().getResourceBundle();
-		if (bundle != null) {
-			try {
-				return bundle.getString(key);
-			} catch (MissingResourceException e) {
-			}
-		}
-		
-		return key;
-	}
-
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
-	
 	/**
 	 * Returns the unique id of this plugin. Should match plugin.xml!
 	 */

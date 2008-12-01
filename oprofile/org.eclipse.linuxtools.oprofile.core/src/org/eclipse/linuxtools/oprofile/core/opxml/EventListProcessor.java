@@ -78,7 +78,7 @@ public class EventListProcessor extends XMLProcessor {
 	// This is a special processor to handle unit mask information
 	private class UnitMaskProcessor extends XMLProcessor {
 		// An ArrayList to hold all the valid masks for a unit mask.
-		private ArrayList _masks;
+		private ArrayList<OpUnitMask.MaskInfo> _masks;
 		
 		// The unit mask being constructed
 		private OpUnitMask _unitMask;
@@ -99,7 +99,7 @@ public class EventListProcessor extends XMLProcessor {
 		public UnitMaskProcessor() {
 			super();
 			_maskProcessor = new MaskProcessor();
-			_masks = new ArrayList();
+			_masks = new ArrayList<OpUnitMask.MaskInfo>();
 		}
 		
 		/**

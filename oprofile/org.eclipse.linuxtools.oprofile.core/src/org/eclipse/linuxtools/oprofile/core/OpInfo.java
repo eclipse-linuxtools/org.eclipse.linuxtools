@@ -34,17 +34,15 @@ public class OpInfo {
 	
 	// A comparator class used when sorting events
 	// (sorting by event name)
-	private static class SortEventComparator implements Comparator {
-		public int compare(Object a, Object b) {
-			OpEvent event1 = (OpEvent) a;
-			OpEvent event2 = (OpEvent) b;
-			return event1.getText().compareTo(event2.getText());
+	private static class SortEventComparator implements Comparator<OpEvent> {
+		public int compare(OpEvent o1, OpEvent o2) {
+			return o1.getText().compareTo(o2.getText());
 		}
 	}
 
 	// A comparator class used when searching events
 	// (searching by event name)
-	private static class SearchEventComparator implements Comparator {
+	private static class SearchEventComparator implements Comparator<Object> {
 		public int compare(Object a, Object b) {
 			String astr, bstr;
 			if (a instanceof String) {
@@ -62,10 +60,10 @@ public class OpInfo {
 	private int _nrCounters;
 	
 	// A HashMap of Oprofile defaults
-	private HashMap _defaults;
+	private HashMap<String,String> _defaults;
 	
 	// A list of all the events for each counter (temporary)
-	private ArrayList[] _eventArrayList = null;
+	private ArrayList<ArrayList<OpEvent>> _eventArrayList = null;	//FIXME: this is madness! fix later
 	
 	// The permanent list of events indexed by counter
 	private OpEvent[][] _eventList;
@@ -106,8 +104,8 @@ public class OpInfo {
 		
 		_eventList = new OpEvent[getNrCounters()][];
 		for (int i = 0; i < getNrCounters(); ++i) {
-			_eventList[i] = new OpEvent[_eventArrayList[i].size()];
-			_eventArrayList[i].toArray(_eventList[i]);
+			_eventList[i] = new OpEvent[_eventArrayList.get(i).size()];
+			_eventArrayList.get(i).toArray(_eventList[i]);
 			Arrays.sort(_eventList[i], new SortEventComparator());
 		}
 		
@@ -148,9 +146,9 @@ public class OpInfo {
 		_nrCounters = ctrs;
 		
 		// Allocate room for event lists for the counters
-		_eventArrayList = new ArrayList[ctrs];
+		_eventArrayList = new ArrayList<ArrayList<OpEvent>>();
 		for (int i = 0; i < ctrs; ++i) {
-			_eventArrayList[i] = new ArrayList();
+			_eventArrayList.add(i, new ArrayList<OpEvent>());
 		}
 	}
 	
@@ -187,8 +185,8 @@ public class OpInfo {
 	 * @param event the event
 	 */
 	public void setEvent (int num, OpEvent event) {
-		if (num < _eventArrayList.length) {
-			_eventArrayList[num].add(event);
+		if (num < _eventArrayList.size()) {
+			_eventArrayList.get(num).add(event);
 		}
 	}
 	
@@ -225,7 +223,7 @@ public class OpInfo {
 	 * Sets the defaults associated with this configuration of Oprofile.
 	 * @param map the <code>HashMap</code> containing the defaults
 	 */
-	public void setDefaults(HashMap map) {
+	public void setDefaults(HashMap<String,String> map) {
 		_defaults = map;
 	}
 }
