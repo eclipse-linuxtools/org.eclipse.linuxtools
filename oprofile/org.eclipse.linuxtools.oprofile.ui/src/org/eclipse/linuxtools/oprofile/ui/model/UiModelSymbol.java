@@ -10,6 +10,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -68,8 +69,12 @@ public class UiModelSymbol implements IUiModelElement {
 		} else {
 			percentage = nf.format(countPercentage);
 		}
+		
+		//a hack to get `basename` type functionality
+		String fileName = (new File(_symbol.getFile())).getName();
+//		String fileName = _symbol.getFile();
 
-		return percentage + " in " + _symbol.getName() + ", from file " + _symbol.getFile();
+		return percentage + " in " + _symbol.getName() + (fileName.isEmpty() ? "" : " [" + fileName + "]");
 	}
 	
 	public String getFileName() {
