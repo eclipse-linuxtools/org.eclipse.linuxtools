@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.oprofile.launch;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -64,6 +65,8 @@ public class ProfileLaunchShortcut implements ILaunchShortcut {
 			project = ((IFile)element).getProject();
 		} else if (element instanceof IProject) {
 			project = (IProject)element;
+		} else if (element instanceof IBinary) {
+			project = ((IBinary)element).getCProject().getProject();
 		} else {
 			project = null;
 			System.out.println(element);
@@ -71,29 +74,30 @@ public class ProfileLaunchShortcut implements ILaunchShortcut {
 		
 		if (project == null) {
 			MessageDialog.openError(LaunchPlugin.getActiveWorkbenchShell(), OprofileLaunchMessages.getString("launchshortcut.errordialog.title"), OprofileLaunchMessages.getString("launchshortcut.no_project_error"));
-		}
+		} else {
 		
-		//find the C launch configuration(s) associated with the project,
-		// then find any profiling configurations that use any of these C 
-		// launch configs
-		ConfigRunner configRunner = new ConfigRunner(project);
-		
-		ProgressMonitorDialog dialog = new ProgressMonitorDialog(LaunchPlugin.getActiveWorkbenchShell());
-		
-		try {
-			dialog.run(true, false, configRunner);
-		} 
-		catch (InvocationTargetException e) { e.printStackTrace(); } 
-		catch (InterruptedException e) { e.printStackTrace(); }
-		
-		ArrayList<ILaunchConfiguration> profilingLaunchConfigs = configRunner.getProfilingConfigs();
-		
-		if (profilingLaunchConfigs == null) {
-			MessageDialog.openError(null, OprofileLaunchMessages.getString("launchshortcut.errordialog.title"), OprofileLaunchMessages.getString("launchshortcut.errordialog.no_launch_error"));
-		} else if (profilingLaunchConfigs.size() == 1) {
-			launchProfilingLaunchConfiguration(profilingLaunchConfigs.get(0), mode);
-		} else if (profilingLaunchConfigs.size() > 1) {
-			openLaunchSelectionDialog(profilingLaunchConfigs, mode);
+			//find the C launch configuration(s) associated with the project,
+			// then find any profiling configurations that use any of these C 
+			// launch configs
+			ConfigRunner configRunner = new ConfigRunner(project);
+			
+			ProgressMonitorDialog dialog = new ProgressMonitorDialog(LaunchPlugin.getActiveWorkbenchShell());
+			
+			try {
+				dialog.run(true, false, configRunner);
+			} 
+			catch (InvocationTargetException e) { e.printStackTrace(); } 
+			catch (InterruptedException e) { e.printStackTrace(); }
+			
+			ArrayList<ILaunchConfiguration> profilingLaunchConfigs = configRunner.getProfilingConfigs();
+			
+			if (profilingLaunchConfigs == null) {
+				MessageDialog.openError(null, OprofileLaunchMessages.getString("launchshortcut.errordialog.title"), OprofileLaunchMessages.getString("launchshortcut.errordialog.no_launch_error"));
+			} else if (profilingLaunchConfigs.size() == 1) {
+				launchProfilingLaunchConfiguration(profilingLaunchConfigs.get(0), mode);
+			} else if (profilingLaunchConfigs.size() > 1) {
+				openLaunchSelectionDialog(profilingLaunchConfigs, mode);
+			}
 		}
 	}
 	
@@ -128,19 +132,21 @@ public class ProfileLaunchShortcut implements ILaunchShortcut {
 	private ArrayList<ILaunchConfiguration> findCDTLaunchConfigFromProject(final IProject project) {
 		ArrayList<ILaunchConfiguration> applicableLaunchConfigs = new ArrayList<ILaunchConfiguration>();
 		
-		try {
-			ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
-			final ILaunchConfiguration [] configs = mgr.getLaunchConfigurations();
-			
-			for (ILaunchConfiguration currentConfig : configs) {
-				String configProjectName = currentConfig.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
+		if (project != null) {
+			try {
+				ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
+				final ILaunchConfiguration [] configs = mgr.getLaunchConfigurations();
 				
-				if (configProjectName.length() > 0 && project.getName().equals(configProjectName)) {
-					applicableLaunchConfigs.add(currentConfig);
+				for (ILaunchConfiguration currentConfig : configs) {
+					String configProjectName = currentConfig.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
+					
+					if (configProjectName.length() > 0 && project.getName().equals(configProjectName)) {
+						applicableLaunchConfigs.add(currentConfig);
+					}
 				}
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
-		} catch (CoreException e) {
-			e.printStackTrace();
 		}
 		
 		return applicableLaunchConfigs;
