@@ -72,12 +72,10 @@ public class UiModelImage implements IUiModelElement {
 	}
 	
 	/** IUiModelElement functions **/
-	@Override
 	public String getLabelText() {
 		return toString();
 	}
 
-	@Override
 	public IUiModelElement[] getChildren() {
 		IUiModelElement children[] = null;
 		children = new IUiModelElement[_symbols.length];
@@ -89,17 +87,14 @@ public class UiModelImage implements IUiModelElement {
 		return children;
 	}
 
-	@Override
 	public boolean hasChildren() {
 		return (_symbols == null || _symbols.length == 0 ? false : true);
 	}
 
-	@Override
 	public IUiModelElement getParent() {
 		return _parent;
 	}
 
-	@Override
 	public Image getLabelImage() {
 		// TODO Auto-generated method stub
 		return null;

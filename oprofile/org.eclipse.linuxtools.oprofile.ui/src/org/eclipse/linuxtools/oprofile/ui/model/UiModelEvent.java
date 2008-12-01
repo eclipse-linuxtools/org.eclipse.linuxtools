@@ -46,27 +46,22 @@ public class UiModelEvent implements IUiModelElement {
 	}
 
 	/** IUiModelElement functions **/
-	@Override
 	public String getLabelText() {
 		return toString();
 	}
 	
-	@Override
 	public IUiModelElement[] getChildren() {
 		return _sessions;
 	}
 
-	@Override
 	public boolean hasChildren() {
 		return (_sessions.length == 0 ? false : true);
 	}
 
-	@Override
 	public IUiModelElement getParent() {
 		return _parent;
 	}
 
-	@Override
 	public Image getLabelImage() {
 		// TODO Auto-generated method stub
 		return null;

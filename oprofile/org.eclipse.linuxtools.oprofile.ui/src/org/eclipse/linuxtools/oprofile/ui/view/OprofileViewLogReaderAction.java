@@ -103,7 +103,6 @@ class LogReader implements Runnable, IRunnableWithProgress {
 	}
 
 
-	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 		this.run();

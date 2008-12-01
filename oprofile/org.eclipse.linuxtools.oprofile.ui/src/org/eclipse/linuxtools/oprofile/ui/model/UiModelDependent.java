@@ -53,27 +53,22 @@ public class UiModelDependent implements IUiModelElement {
 	}
 
 	/** IUiModelElement functions **/
-	@Override
 	public String getLabelText() {
 		return toString();
 	}
 
-	@Override
 	public IUiModelElement[] getChildren() {
 		return _dependents;
 	}
 
-	@Override
 	public boolean hasChildren() {
 		return true;	//must have children, or this object wouldn't be created
 	}
 
-	@Override
 	public IUiModelElement getParent() {
 		return _parent;
 	}
 
-	@Override
 	public Image getLabelImage() {
 		// TODO Auto-generated method stub
 		return null;

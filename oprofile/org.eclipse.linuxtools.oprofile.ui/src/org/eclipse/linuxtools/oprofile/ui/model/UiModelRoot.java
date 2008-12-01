@@ -53,27 +53,22 @@ public class UiModelRoot implements IUiModelElement {
 	}
 
 	/** IUiModelElement functions **/
-	@Override
 	public String getLabelText() {
 		return null;
 	}
 
-	@Override
 	public IUiModelElement[] getChildren() {
 		return _events;
 	}
 
-	@Override
 	public boolean hasChildren() {
 		return (_events.length == 0 ? false : true);
 	}
 
-	@Override
 	public IUiModelElement getParent() {
 		return null;
 	}
 
-	@Override
 	public Image getLabelImage() {
 		return null;
 	}

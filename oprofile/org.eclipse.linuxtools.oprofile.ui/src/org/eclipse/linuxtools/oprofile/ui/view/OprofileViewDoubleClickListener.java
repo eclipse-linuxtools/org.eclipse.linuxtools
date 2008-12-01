@@ -48,7 +48,6 @@ import org.eclipse.ui.PartInitException;
  *   UiModelSample		- go to line number in appropriate file
  */
 public class OprofileViewDoubleClickListener implements IDoubleClickListener {
-	@Override
 	public void doubleClick(DoubleClickEvent event) {
 		IUiModelElement element = (IUiModelElement)((TreeSelection)((TreeViewer)event.getSource()).getSelection()).getFirstElement();;
 		

@@ -51,27 +51,22 @@ public class UiModelSample implements IUiModelElement {
 	}
 	
 	/** IUiModelElement functions **/
-	@Override
 	public String getLabelText() {
 		return toString();
 	}
 
-	@Override
 	public IUiModelElement[] getChildren() {
 		return null;
 	}
 
-	@Override
 	public boolean hasChildren() {
 		return false;		//bottom level element
 	}
 
-	@Override
 	public IUiModelElement getParent() {
 		return _parent;
 	}
 
-	@Override
 	public Image getLabelImage() {
 		// TODO Auto-generated method stub
 		return null;

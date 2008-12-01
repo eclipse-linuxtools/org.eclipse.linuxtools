@@ -56,12 +56,10 @@ public class UiModelSession implements IUiModelElement {
 	}
 
 	/** IUiModelElement functions **/
-	@Override
 	public String getLabelText() {
 		return toString();
 	}
 
-	@Override
 	public IUiModelElement[] getChildren() {
 		if (_dependent != null) {
 			return new IUiModelElement[] {_image, _dependent};
@@ -70,17 +68,14 @@ public class UiModelSession implements IUiModelElement {
 		}
 	}
 
-	@Override
 	public boolean hasChildren() {
 		return (_image != null);
 	}
 
-	@Override
 	public IUiModelElement getParent() {
 		return _parent;
 	}
 
-	@Override
 	public Image getLabelImage() {
 		// TODO Auto-generated method stub
 		return null;

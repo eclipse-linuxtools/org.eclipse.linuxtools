@@ -96,7 +96,6 @@ public class OprofileView extends ViewPart {
 		}
 
 		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
-			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				//TODO: externalize
 				monitor.beginTask("Parsing OProfile data", 2);
@@ -110,7 +109,6 @@ public class OprofileView extends ViewPart {
 				UiRoot.refreshModel();
 				
 				Display.getDefault().asyncExec(new Runnable() {
-					@Override
 					public void run() {
 						OprofileUiPlugin.getDefault().getOprofileView().getTreeViewer().setInput(UiRoot);
 					}

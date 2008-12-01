@@ -77,27 +77,22 @@ public class UiModelSymbol implements IUiModelElement {
 	}
 
 	/** IUiModelElement functions **/
-	@Override
 	public String getLabelText() {
 		return toString();
 	}
 
-	@Override
 	public IUiModelElement[] getChildren() {
 		return _samples;
 	}
 
-	@Override
 	public boolean hasChildren() {
 		return (_samples == null || _samples.length == 0 ? false : true);
 	}
 
-	@Override
 	public IUiModelElement getParent() {
 		return _parent;
 	}
 
-	@Override
 	public Image getLabelImage() {
 		// TODO Auto-generated method stub
 		return null;
