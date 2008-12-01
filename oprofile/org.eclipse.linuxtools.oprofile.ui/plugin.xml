@@ -105,23 +105,5 @@
             
       </actionSet>
    </extension>
-   -->
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            id="org.eclipse.linuxtools.oprofile.ui.popupmenu.contribution"
-            objectClass="java.lang.Object">
-         <action
-               class="org.eclipse.linuxtools.oprofile.ui.popupmenu.ProfileAsLaunchAction"
-               enablesFor="1"
-               id="org.eclipse.linuxtools.oprofile.ui.popupmenu.profileas"
-               label="%popupMenus.profileAs.menu.label"
-               menubarPath="additions">
-         </action>
-		 <enablement>
-            <test property="org.eclipse.debug.ui.launchable" value="oprofile"/>
-         </enablement>
-      </objectContribution>
-   </extension>
-
+-->
 </plugin>
