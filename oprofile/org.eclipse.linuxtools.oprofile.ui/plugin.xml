@@ -6,7 +6,7 @@
       <view
             category="org.eclipse.linuxtools.oprofile.ui.viewgroup"
             class="org.eclipse.linuxtools.oprofile.ui.view.OprofileView"
-            icon="icons/view_icon.gif"
+            icon="icons/oprofile_view.png"
             id="org.eclipse.linuxtools.oprofile.ui.OProfileView"
             name="%view.name"
             restorable="true">
