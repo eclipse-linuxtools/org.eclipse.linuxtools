@@ -23,22 +23,27 @@ public class SpecfileChangelogScannerTests extends AScannerTest {
 	private IToken token;
 
 	private TextAttribute ta;
-	
+
 	private SpecfileChangelogScanner scanner;
-	
+
 	public SpecfileChangelogScannerTests() {
 		scanner = new SpecfileChangelogScanner(new ColorManager());
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getContents()
 	 */
 	@Override
 	protected String getContents() {
 		return "%changelog <toto@test.com> - 1.1-4";
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#getScanner()
 	 */
 	@Override
@@ -47,32 +52,32 @@ public class SpecfileChangelogScannerTests extends AScannerTest {
 	}
 
 	public void testSection() {
-			token = getNextToken();
-			assertTrue(token instanceof Token);
-			assertEquals(10, rulesBasedScanner.getTokenLength());
-			assertEquals(0, rulesBasedScanner.getTokenOffset());
-			ta = (TextAttribute) token.getData();
-			assertEquals(ta.getForeground().getRGB(),
-					ISpecfileColorConstants.SECTIONS);
+		token = getNextToken();
+		assertTrue(token instanceof Token);
+		assertEquals(10, rulesBasedScanner.getTokenLength());
+		assertEquals(0, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals(ta.getForeground().getRGB(),
+				ISpecfileColorConstants.SECTIONS);
 	}
 
 	public void testMail() {
-			token = getToken(3);
-			assertTrue(token instanceof Token);
-			assertEquals(15, rulesBasedScanner.getTokenLength());
-			assertEquals(11, rulesBasedScanner.getTokenOffset());
-			ta = (TextAttribute) token.getData();
-			assertEquals(ta.getForeground().getRGB(),
-					ISpecfileColorConstants.AUTHOR_MAIL);
+		token = getToken(3);
+		assertTrue(token instanceof Token);
+		assertEquals(15, rulesBasedScanner.getTokenLength());
+		assertEquals(11, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals(ta.getForeground().getRGB(),
+				ISpecfileColorConstants.AUTHOR_MAIL);
 	}
 
 	public void testVerRel() {
-			token = getToken(4);
-			assertTrue(token instanceof Token);
-			assertEquals(8, rulesBasedScanner.getTokenLength());
-			assertEquals(26, rulesBasedScanner.getTokenOffset());
-			ta = (TextAttribute) token.getData();
-			assertEquals(ta.getForeground().getRGB(),
-					ISpecfileColorConstants.VER_REL);
+		token = getToken(4);
+		assertTrue(token instanceof Token);
+		assertEquals(8, rulesBasedScanner.getTokenLength());
+		assertEquals(26, rulesBasedScanner.getTokenOffset());
+		ta = (TextAttribute) token.getData();
+		assertEquals(ta.getForeground().getRGB(),
+				ISpecfileColorConstants.VER_REL);
 	}
 }

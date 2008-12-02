@@ -18,34 +18,33 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 public class LinePositionTests extends FileTestCase {
 
 	public void testLineNumber() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"Patch2: someotherfile.patch";
-		
-			newFile(specText);
-			Collection<SpecfileSource> patches = specfile.getPatchesAsList();
-			for (SpecfileSource patch: patches) {
-				if (patch.getNumber() == 2)
-					assertEquals(1, patch.getLineNumber());
-				else if (patch.getNumber() == 3)
-					assertEquals(0, patch.getLineNumber());
-				else
-					fail();
-			}
+		String specText = "Patch3: somefilesomewhere.patch" + "\n"
+				+ "Patch2: someotherfile.patch";
+
+		newFile(specText);
+		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+		for (SpecfileSource patch : patches) {
+			if (patch.getNumber() == 2)
+				assertEquals(1, patch.getLineNumber());
+			else if (patch.getNumber() == 3)
+				assertEquals(0, patch.getLineNumber());
+			else
+				fail();
+		}
 	}
-	
+
 	public void testLineNumber2() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"%patch3";
-		
-			newFile(specText);
-			Collection<SpecfileSource> patches = specfile.getPatchesAsList();
-			for (SpecfileSource patch: patches) {
-				if (patch.getNumber() == 3) {
-					assertEquals(0, patch.getLineNumber());
-					assertEquals(1, patch.getLinesUsed().get(0).intValue()); 
-				} else
-					fail();
-			}
+		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
+
+		newFile(specText);
+		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+		for (SpecfileSource patch : patches) {
+			if (patch.getNumber() == 3) {
+				assertEquals(0, patch.getLineNumber());
+				assertEquals(1, patch.getLinesUsed().get(0).intValue());
+			} else
+				fail();
+		}
 	}
 
 }

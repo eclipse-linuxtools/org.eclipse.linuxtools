@@ -19,8 +19,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 public class RefactoringTests extends FileTestCase {
 
 	public void testGetLine() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"%patch3";
+		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 		try {
 			newFile(specText);
 			assertEquals("%patch3", specfile.getLine(1));
@@ -28,11 +27,10 @@ public class RefactoringTests extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	public void testChangeLine() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"%patch3";
-		
+		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
+
 		try {
 			newFile(specText);
 			assertEquals("%patch3", specfile.getLine(1));
@@ -42,11 +40,10 @@ public class RefactoringTests extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	public void testChangeLine2() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"%patch3";
-		
+		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
+
 		try {
 			newFile(specText);
 			assertEquals("Patch3: somefilesomewhere.patch", specfile.getLine(0));
@@ -56,11 +53,10 @@ public class RefactoringTests extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	public void testChangeLine3() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"%patch3";
-		
+		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
+
 		try {
 			newFile(specText);
 			assertEquals("Patch3: somefilesomewhere.patch", specfile.getLine(0));
@@ -70,11 +66,10 @@ public class RefactoringTests extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	public void testOrganizePatches() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"%patch3";
-		
+		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
+
 		try {
 			newFile(specText);
 			assertEquals("Patch3: somefilesomewhere.patch", specfile.getLine(0));

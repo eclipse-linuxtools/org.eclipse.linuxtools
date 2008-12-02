@@ -31,7 +31,8 @@ public class RpmPackageProposalsListTests extends TestCase {
 		Activator.getDefault().getPluginPreferences().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
 		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter("/tmp/pkglist"));
+			BufferedWriter out = new BufferedWriter(new FileWriter(
+					"/tmp/pkglist"));
 			out.write("setup\ntest\n");
 			out.close();
 		} catch (IOException e) {
@@ -48,7 +49,8 @@ public class RpmPackageProposalsListTests extends TestCase {
 	}
 
 	public final void testGetValue() {
-		if (!packageProposalsList.getValue("setup").startsWith("<b>Name: </b>setup")) {
+		if (!packageProposalsList.getValue("setup").startsWith(
+				"<b>Name: </b>setup")) {
 			fail("getValue failed, setup package info doesn't start with '<b>Name:<b> setup'");
 		}
 	}
@@ -60,7 +62,8 @@ public class RpmPackageProposalsListTests extends TestCase {
 	}
 
 	public final void testGetRpmInfo() {
-		if (!packageProposalsList.getRpmInfo("setup").startsWith("<b>Name: </b>setup")) {
+		if (!packageProposalsList.getRpmInfo("setup").startsWith(
+				"<b>Name: </b>setup")) {
 			fail("getRpmInfo failed, setup package info doesn't start with '<b>Name:<b> setup'");
 		}
 	}

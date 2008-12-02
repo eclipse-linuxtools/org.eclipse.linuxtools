@@ -36,10 +36,10 @@ public class SpecfileCompletionProcessorTest extends TestCase {
 	private SpecfileEditor initEditor(String contents) throws Exception {
 		testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
 				true, false, null);
-		IEditorPart openEditor = IDE
-				.openEditor(Activator.getDefault().getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage(), testFile,
-						"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", true);
+		IEditorPart openEditor = IDE.openEditor(Activator.getDefault()
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
+				testFile,
+				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", true);
 		return (SpecfileEditor) openEditor;
 	}
 
@@ -58,7 +58,8 @@ public class SpecfileCompletionProcessorTest extends TestCase {
 			int occurances) throws Exception {
 		SpecfileEditor editor = initEditor(specContent);
 		testProject.refresh();
-		//This is needed so the changes in the testFile are loaded in the editor
+		// This is needed so the changes in the testFile are loaded in the
+		// editor
 		editor.doRevertToSaved();
 		SpecfileCompletionProcessor complProcessor = new SpecfileCompletionProcessor(
 				editor);

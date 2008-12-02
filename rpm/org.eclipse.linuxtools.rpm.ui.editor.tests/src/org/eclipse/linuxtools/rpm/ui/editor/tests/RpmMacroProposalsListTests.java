@@ -33,14 +33,16 @@ public class RpmMacroProposalsListTests extends TestCase {
 	}
 
 	public final void testGetProposals() {
-		Map<String, String> proposals = macroProposalsList.getProposals("%_libdir");
+		Map<String, String> proposals = macroProposalsList
+				.getProposals("%_libdir");
 		if (proposals.size() != 1) {
 			fail("getProposals faild, %_libdir macro was retrive as proposals");
 		}
 	}
-	
+
 	public final void testGetProposals2() {
-		Map<String, String> proposals = macroProposalsList.getProposals("%_unexistingmacro");
+		Map<String, String> proposals = macroProposalsList
+				.getProposals("%_unexistingmacro");
 		if (proposals.size() != 0) {
 			fail("getProposals faild, %_unexistingmacro don't can exist");
 		}
@@ -51,7 +53,7 @@ public class RpmMacroProposalsListTests extends TestCase {
 			fail("getValue faild, %_libdir value don't end with '%{_lib}'");
 		}
 	}
-	
+
 	public final void testGetValue2() {
 		if (macroProposalsList.getValue("_unexistingmacro") != null) {
 			fail("getValue faild, %_libdir value don't end with '%{_lib}'");
@@ -63,9 +65,10 @@ public class RpmMacroProposalsListTests extends TestCase {
 			fail("getMacroEval faild, eval don't end with 'lib'");
 		}
 	}
-	
+
 	public final void testGetMacroEval2() {
-		if (!RpmMacroProposalsList.getMacroEval("%_unexistingmacro").equals("%_unexistingmacro")) {
+		if (!RpmMacroProposalsList.getMacroEval("%_unexistingmacro").equals(
+				"%_unexistingmacro")) {
 			fail("getMacroEval faild, eval don't contain %_unexistingmacro macro name");
 		}
 	}

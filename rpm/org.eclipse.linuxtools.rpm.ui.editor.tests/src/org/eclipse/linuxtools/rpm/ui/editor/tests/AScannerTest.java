@@ -18,16 +18,18 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 
 abstract class AScannerTest extends FileTestCase {
-	
+
 	protected RuleBasedScanner rulesBasedScanner;
 
 	protected abstract String getContents();
-	
+
 	protected abstract RuleBasedScanner getScanner();
-	
+
 	public SpecfileEditor editor;
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
 	@Override
@@ -38,7 +40,7 @@ abstract class AScannerTest extends FileTestCase {
 		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(Activator
 				.getDefault().getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage(), testFile,
-		"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
+				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor");
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();
 		rulesBasedScanner = getScanner();

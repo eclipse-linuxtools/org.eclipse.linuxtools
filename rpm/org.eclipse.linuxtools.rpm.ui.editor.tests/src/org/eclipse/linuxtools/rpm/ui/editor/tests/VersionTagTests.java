@@ -17,63 +17,70 @@ public class VersionTagTests extends FileTestCase {
 
 	public void testResolvedSetVersion() {
 		String testText = "%define blah notblah\nVersion: %{blah}";
-			newFile(testText);
-			assertEquals("notblah", specfile.getVersion());
+		newFile(testText);
+		assertEquals("notblah", specfile.getVersion());
 	}
-	
+
 	public void testVersionTag() {
 		String testText = "Version: blah";
-			newFile(testText);
-			assertEquals("blah", specfile.getVersion());
+		newFile(testText);
+		assertEquals("blah", specfile.getVersion());
 	}
-	
-	
+
 	public void testVersionTag2() {
 		String testText = "Version:		blah";
-			newFile(testText);
-			assertEquals("blah", specfile.getVersion());
+		newFile(testText);
+		assertEquals("blah", specfile.getVersion());
 	}
-	
+
 	public void testNullVersionTag() {
 		String testText = "Version: ";
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Version declaration without value.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Version declaration without value.", marker.getAttribute(
+				IMarker.MESSAGE, ""));
 	}
-	
+
 	public void testNullVersionTag2() {
 		String testText = "Version:		";
 
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Version declaration without value.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Version declaration without value.", marker.getAttribute(
+				IMarker.MESSAGE, ""));
 	}
-	
+
 	public void testMultipleVersionsTag() {
 		String testText = "Version: blah bleh";
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Version cannot have multiple values.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Version cannot have multiple values.", marker
+				.getAttribute(IMarker.MESSAGE, ""));
 	}
-	
+
 	public void testMultipleVersionsTag2() {
 		String testText = "Version: 	blah bleh";
 
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Version cannot have multiple values.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Version cannot have multiple values.", marker
+				.getAttribute(IMarker.MESSAGE, ""));
 	}
 
 }

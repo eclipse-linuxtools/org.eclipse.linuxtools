@@ -24,9 +24,9 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 
 /**
  * Test case providing all the objects needed for the rpm editor tests.
- *
+ * 
  */
-public abstract class FileTestCase extends TestCase{
+public abstract class FileTestCase extends TestCase {
 
 	SpecfileParser parser;
 	Specfile specfile;
@@ -34,8 +34,7 @@ public abstract class FileTestCase extends TestCase{
 	Document testDocument;
 	SpecfileErrorHandler errorHandler;
 	SpecfileTestProject testProject;
-	
-	
+
 	@Override
 	protected void setUp() throws CoreException {
 		testProject = new SpecfileTestProject();
@@ -43,12 +42,12 @@ public abstract class FileTestCase extends TestCase{
 		parser = new SpecfileParser();
 		specfile = new Specfile();
 	}
-	
+
 	@Override
 	protected void tearDown() throws CoreException {
 		testProject.dispose();
 	}
-	
+
 	protected IMarker[] getFailureMarkers() {
 		try {
 			return testProject.getFailureMarkers();
@@ -57,10 +56,11 @@ public abstract class FileTestCase extends TestCase{
 		}
 		return null;
 	}
-	
+
 	protected void newFile(String contents) {
 		try {
-			testFile.setContents(new ByteArrayInputStream(contents.getBytes()), false, false, null);
+			testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
+					false, false, null);
 		} catch (CoreException e) {
 			fail(e.getMessage());
 		}

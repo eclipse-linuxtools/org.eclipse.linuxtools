@@ -19,30 +19,30 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 public class SourceComparatorTests extends FileTestCase {
 
 	public void testPatchComparator() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"Patch2: someotherfile.patch";
-		
-			newFile(specText);
-			Collection<SpecfileSource> patches = specfile.getPatchesAsList();
-			int i = 1;
-			for (SpecfileSource patch: patches) {
-				i++;
-				if (i == 2)
-					assertEquals(2, patch.getNumber());
-				else if (i == 3)
-					assertEquals(3, patch.getNumber());
-				else
-					fail();
-			}
+		String specText = "Patch3: somefilesomewhere.patch" + "\n"
+				+ "Patch2: someotherfile.patch";
+
+		newFile(specText);
+		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+		int i = 1;
+		for (SpecfileSource patch : patches) {
+			i++;
+			if (i == 2)
+				assertEquals(2, patch.getNumber());
+			else if (i == 3)
+				assertEquals(3, patch.getNumber());
+			else
+				fail();
+		}
 	}
-	
+
 	public void testPatchComparator2() {
-		String specText = "Patch3: somefilesomewhere.patch" + "\n" +
-		"Patch2: someotherfile.patch";
-		
-			newFile(specText);
-			List<SpecfileSource> patches = specfile.getPatchesAsList();
-			assertEquals(2, patches.get(0).getNumber());
-			assertEquals(3, patches.get(1).getNumber());
+		String specText = "Patch3: somefilesomewhere.patch" + "\n"
+				+ "Patch2: someotherfile.patch";
+
+		newFile(specText);
+		List<SpecfileSource> patches = specfile.getPatchesAsList();
+		assertEquals(2, patches.get(0).getNumber());
+		assertEquals(3, patches.get(1).getNumber());
 	}
 }

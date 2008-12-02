@@ -17,61 +17,69 @@ public class ReleaseTagTests extends FileTestCase {
 
 	public void testResolvedSetRelease() {
 		String testText = "%define blah notblah\nRelease: %{blah}";
-		
-			newFile(testText);
-			assertEquals("notblah", specfile.getRelease());
+
+		newFile(testText);
+		assertEquals("notblah", specfile.getRelease());
 	}
-	
+
 	public void testReleaseTag() {
 		String testText = "Release: blah";
-			newFile(testText);
-			assertEquals("blah", specfile.getRelease());
+		newFile(testText);
+		assertEquals("blah", specfile.getRelease());
 	}
-	
+
 	public void testReleaseTag2() {
 		String testText = "Release:		blah";
-			newFile(testText);
-			assertEquals("blah", specfile.getRelease());
+		newFile(testText);
+		assertEquals("blah", specfile.getRelease());
 	}
-	
+
 	public void testNullReleaseTag() {
 		String testText = "Release:	";
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Release declaration without value.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Release declaration without value.", marker.getAttribute(
+				IMarker.MESSAGE, ""));
 	}
-	
+
 	public void testNullReleaseTag2() {
 		String testText = "Release:		";
 
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Release declaration without value.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Release declaration without value.", marker.getAttribute(
+				IMarker.MESSAGE, ""));
 	}
-	
+
 	public void testMultipleReleasesTag() {
 		String testText = "Release: blah bleh";
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Release cannot have multiple values.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Release cannot have multiple values.", marker
+				.getAttribute(IMarker.MESSAGE, ""));
 	}
-	
+
 	public void testMultipleReleasesTag2() {
 		String testText = "Release: 	blah bleh";
-			newFile(testText);
+		newFile(testText);
 
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-			assertEquals("Release cannot have multiple values.", marker.getAttribute(IMarker.MESSAGE, ""));
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+		assertEquals("Release cannot have multiple values.", marker
+				.getAttribute(IMarker.MESSAGE, ""));
 	}
 }

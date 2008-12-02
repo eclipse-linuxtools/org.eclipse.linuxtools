@@ -26,35 +26,37 @@ public class HeaderRecognitionTest extends FileTestCase {
 	public void testGetSimpleSectionName() {
 		testText = "%prep";
 		SpecfileElement element;
-		
-			newFile(testText);
-			element = parser.parseLine(testText, specfile, 0);
-			assertEquals(SpecfileSection.class, element.getClass());
-			assertEquals(testText.substring(1), ((SpecfileSection) element)
-					.getName());
+
+		newFile(testText);
+		element = parser.parseLine(testText, specfile, 0);
+		assertEquals(SpecfileSection.class, element.getClass());
+		assertEquals(testText.substring(1), ((SpecfileSection) element)
+				.getName());
 	}
 
 	public void testGetComplexSectionName1() {
 		testText = "%post";
 		SpecfileElement element;
 
-			newFile(testText);
-			element = parser.parseLine(testText, specfile, 0);
-			assertEquals(SpecfileSection.class, element.getClass());
-			SpecfileSection section = (SpecfileSection) element;
-			assertEquals(testText.substring(1), section.getName());
-			assertNull(section.getPackage());
+		newFile(testText);
+		element = parser.parseLine(testText, specfile, 0);
+		assertEquals(SpecfileSection.class, element.getClass());
+		SpecfileSection section = (SpecfileSection) element;
+		assertEquals(testText.substring(1), section.getName());
+		assertNull(section.getPackage());
 	}
 
 	public void testGetComplexSectionName2() {
 		testText = "%post -n";
-			newFile(testText);
-			specfile = parser.parse(testDocument);
-			
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals("No package name after -n in post section.", marker.getAttribute(IMarker.MESSAGE, ""));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
+		newFile(testText);
+		specfile = parser.parse(testDocument);
+
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals("No package name after -n in post section.", marker
+				.getAttribute(IMarker.MESSAGE, ""));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
 	}
 
 	public void testGetComplexSectionName3() {
@@ -62,12 +64,12 @@ public class HeaderRecognitionTest extends FileTestCase {
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-			newFile(testText);
-			element = parser.parseLine(testText, specfile, 0);
-			assertEquals(SpecfileSection.class, element.getClass());
-			SpecfileSection section = (SpecfileSection) element;
-			assertEquals(tokens[0].substring(1), section.getName());
-			assertEquals(tokens[2], section.getPackage().getPackageName());
+		newFile(testText);
+		element = parser.parseLine(testText, specfile, 0);
+		assertEquals(SpecfileSection.class, element.getClass());
+		SpecfileSection section = (SpecfileSection) element;
+		assertEquals(tokens[0].substring(1), section.getName());
+		assertEquals(tokens[2], section.getPackage().getPackageName());
 	}
 
 	public void testGetComplexSectionName4() {
@@ -77,12 +79,12 @@ public class HeaderRecognitionTest extends FileTestCase {
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-			newFile(testText);
-			element = parser.parseLine(testText, specfile, 0);
-			assertEquals(SpecfileSection.class, element.getClass());
-			SpecfileSection section = (SpecfileSection) element;
-			assertEquals(tokens[0].substring(1), section.getName());
-			assertEquals(tokens[2], section.getPackage().getPackageName());
+		newFile(testText);
+		element = parser.parseLine(testText, specfile, 0);
+		assertEquals(SpecfileSection.class, element.getClass());
+		SpecfileSection section = (SpecfileSection) element;
+		assertEquals(tokens[0].substring(1), section.getName());
+		assertEquals(tokens[2], section.getPackage().getPackageName());
 	}
 
 	public void testGetComplexSectionName5() {
@@ -92,80 +94,82 @@ public class HeaderRecognitionTest extends FileTestCase {
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-			newFile(testText);
-			element = parser.parseLine(testText, specfile, 0);
-			assertEquals(SpecfileSection.class, element.getClass());
-			SpecfileSection section = (SpecfileSection) element;
-			assertEquals(tokens[0].substring(1), section.getName());
-			assertEquals(tokens[2], section.getPackage().getPackageName());
+		newFile(testText);
+		element = parser.parseLine(testText, specfile, 0);
+		assertEquals(SpecfileSection.class, element.getClass());
+		SpecfileSection section = (SpecfileSection) element;
+		assertEquals(tokens[0].substring(1), section.getName());
+		assertEquals(tokens[2], section.getPackage().getPackageName());
 	}
 
 	public void testGetComplexSectionName6() {
 		testText = "%post -p blah bleh";
 		// FIXME: check for rest of line when -p is implemented
 		// "blah bleh" should become the actual text of the section
-		
+
 		String[] tokens = testText.split("\\s+");
 		SpecfileElement element;
 
-			newFile(testText);
-			element = parser.parseLine(testText, specfile, 0);
-			assertEquals(SpecfileSection.class, element.getClass());
-			SpecfileSection section = (SpecfileSection) element;
-			assertEquals(tokens[0].substring(1), section.getName());
-			assertNull(section.getPackage());
+		newFile(testText);
+		element = parser.parseLine(testText, specfile, 0);
+		assertEquals(SpecfileSection.class, element.getClass());
+		SpecfileSection section = (SpecfileSection) element;
+		assertEquals(tokens[0].substring(1), section.getName());
+		assertNull(section.getPackage());
 	}
 
-	 public void testGetComplexSectionName7() {
-		 testText = "%post -n -p blah";
+	public void testGetComplexSectionName7() {
+		testText = "%post -n -p blah";
 
-			newFile(testText);
-			specfile = parser.parse(testDocument);
-			
-			IMarker marker = getFailureMarkers()[0];
-			assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-			assertEquals("Package name must not start with '-': -p.", marker.getAttribute(IMarker.MESSAGE, ""));
-			assertEquals(testText.length(), marker.getAttribute(IMarker.CHAR_END, 0));
-	 }
-	 
-//	 public void testGetComplexSectionName8() {
-//		 testText = "%files blah -f blah.list";
-//
-//		 SpecfileElement element;
-//		 specfile = new Specfile("testspec");
-//		 try {
-//			 element = parser.parseLine(testText, specfile);
-//			 fail();
-//		 } catch (Exception e) {
-//			 assertTrue(e.getMessage().startsWith(""));
-//		 }
-//	 }
-//	 
-//	 public void testGetComplexSectionName9() {
-//		 testText = "%files blah blah -f blah.list";
-//
-//		 SpecfileElement element;
-//		 specfile = new Specfile("testspec");
-//		 try {
-//			 element = parser.parseLine(testText, specfile);
-//			 fail();
-//		 } catch (Exception e) {
-//			 assertTrue(e.getMessage().startsWith(""));
-//		 }
-//	 }
-//	 
-//	 public void testGetComplexSectionName10() {
-//		 // FIXME:  can you have multiple files lists?
-//		 testText = "%files blah -f blah.list blah2.list";
-//
-//		 SpecfileElement element;
-//		 specfile = new Specfile("testspec");
-//		 try {
-//			 element = parser.parseLine(testText, specfile);
-//			 fail();
-//		 } catch (Exception e) {
-//			 assertTrue(e.getMessage().startsWith(""));
-//		 }
-//	 }
+		newFile(testText);
+		specfile = parser.parse(testDocument);
+
+		IMarker marker = getFailureMarkers()[0];
+		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
+		assertEquals("Package name must not start with '-': -p.", marker
+				.getAttribute(IMarker.MESSAGE, ""));
+		assertEquals(testText.length(), marker
+				.getAttribute(IMarker.CHAR_END, 0));
+	}
+
+	// public void testGetComplexSectionName8() {
+	// testText = "%files blah -f blah.list";
+	//
+	// SpecfileElement element;
+	// specfile = new Specfile("testspec");
+	// try {
+	// element = parser.parseLine(testText, specfile);
+	// fail();
+	// } catch (Exception e) {
+	// assertTrue(e.getMessage().startsWith(""));
+	// }
+	// }
+	//	 
+	// public void testGetComplexSectionName9() {
+	// testText = "%files blah blah -f blah.list";
+	//
+	// SpecfileElement element;
+	// specfile = new Specfile("testspec");
+	// try {
+	// element = parser.parseLine(testText, specfile);
+	// fail();
+	// } catch (Exception e) {
+	// assertTrue(e.getMessage().startsWith(""));
+	// }
+	// }
+	//	 
+	// public void testGetComplexSectionName10() {
+	// // FIXME: can you have multiple files lists?
+	// testText = "%files blah -f blah.list blah2.list";
+	//
+	// SpecfileElement element;
+	// specfile = new Specfile("testspec");
+	// try {
+	// element = parser.parseLine(testText, specfile);
+	// fail();
+	// } catch (Exception e) {
+	// assertTrue(e.getMessage().startsWith(""));
+	// }
+	// }
 
 }

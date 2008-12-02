@@ -19,7 +19,7 @@ public class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests");
-		//$JUnit-BEGIN$
+		// $JUnit-BEGIN$
 		suite.addTestSuite(EpochTagTest.class);
 		suite.addTestSuite(DefineTests.class);
 		suite.addTestSuite(ReleaseTagTests.class);
@@ -38,7 +38,7 @@ public class AllTests {
 		suite.addTestSuite(SpecfileScannerTests.class);
 		suite.addTestSuite(SpecfileChangelogScannerTests.class);
 		suite.addTestSuite(SpecfileCompletionProcessorTest.class);
-		//$JUnit-END$
+		// $JUnit-END$
 		return suite;
 	}
 

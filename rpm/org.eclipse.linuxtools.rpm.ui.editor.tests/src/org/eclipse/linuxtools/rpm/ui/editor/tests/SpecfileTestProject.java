@@ -23,14 +23,14 @@ import org.eclipse.core.runtime.CoreException;
 
 public class SpecfileTestProject {
 	private IProject project;
-	
+
 	public SpecfileTestProject() throws CoreException {
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		project = workspaceRoot.getProject("TestSpecfileProject");
 		project.create(null);
 		project.open(null);
 	}
-	
+
 	public void dispose() throws CoreException {
 		project.delete(true, true, null);
 		String[] cmd = { "rm", "-f", "/tmp/pkglist" };
@@ -40,15 +40,17 @@ public class SpecfileTestProject {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public IFile createFile(String filename) throws CoreException {
 		IFile testSpecfile = project.getFile(filename);
 		testSpecfile.create(null, true, null);
 		return testSpecfile;
 	}
-	
+
 	protected IMarker[] getFailureMarkers() throws CoreException {
-		return project.findMarkers("org.eclipse.linuxtools.rpm.ui.editor.specfileerror", false, IResource.DEPTH_INFINITE);
+		return project.findMarkers(
+				"org.eclipse.linuxtools.rpm.ui.editor.specfileerror", false,
+				IResource.DEPTH_INFINITE);
 	}
 
 	public void refresh() throws CoreException {
