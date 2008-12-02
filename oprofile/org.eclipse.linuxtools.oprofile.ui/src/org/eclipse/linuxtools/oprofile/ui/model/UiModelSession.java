@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -77,7 +78,6 @@ public class UiModelSession implements IUiModelElement {
 	}
 
 	public Image getLabelImage() {
-		// TODO Auto-generated method stub
-		return null;
+		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.SESSION_ICON).createImage();
 	}
 }
