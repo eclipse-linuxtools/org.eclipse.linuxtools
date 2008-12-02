@@ -67,7 +67,7 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		}
 		
 		// %prep
-		rules.add(new SectionRule("%prep", new String[] { "%build" }, specPrep));
+		rules.add(new SectionRule(PREP_SECTION, new String[] { BUILD_SECTION }, specPrep));
 		
 		// %changelog
 		rules.add(new MultiLineRule("%changelog", "", specChangelog, (char)0 , true));
@@ -82,8 +82,8 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		
 		
 		// %files
-		rules.add(new SectionRule("%files", new String[] { "%files",
-				"%changelog" }, specFiles));
+		rules.add(new SectionRule(FILES_SECTION, new String[] { FILES_SECTION,
+				CHANGELOG_SECTION }, specFiles));
 		
 		IPredicateRule[] result= new IPredicateRule[rules.size()];
 		rules.toArray(result);

@@ -1,3 +1,9 @@
+2008-12-02  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* plugin.xml: Add extension to the document provider.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java 
+	(SpecfilePartitionScanner): Use section constants.
+
 2008-11-30  Alexander Kurtakov  <akurtakov@gmail.com>
 	Use foreach to make code more readable.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java 
