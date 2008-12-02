@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import java.io.ByteArrayInputStream;
-
-import junit.framework.TestCase;
-
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileCompletionProcessor;
@@ -22,10 +17,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IDE;
 
-public class SpecfileCompletionProcessorTest extends TestCase {
+public class SpecfileCompletionProcessorTest extends FileTestCase {
 
-	private IFile testFile;
-	private SpecfileTestProject testProject;
 	public static final String ONE_SOURCE = "Source0: text.zip\n";
 	public static final String NO_SOURCE = "Patch3: somefilesomewhere.patch"
 			+ "\n" + "Patch2: someotherfile.patch\n";
@@ -34,24 +27,11 @@ public class SpecfileCompletionProcessorTest extends TestCase {
 			+ "Source3: main.tar.gz";
 
 	private SpecfileEditor initEditor(String contents) throws Exception {
-		testFile.setContents(new ByteArrayInputStream(contents.getBytes()),
-				true, false, null);
+		newFile(contents);
 		IEditorPart openEditor = IDE.openEditor(Activator.getDefault()
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage(),
-				testFile,
-				"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", true);
+				testFile);
 		return (SpecfileEditor) openEditor;
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-		testProject = new SpecfileTestProject();
-		testFile = testProject.createFile("testspecfile.spec");
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		testProject.dispose();
 	}
 
 	private synchronized void computeCompletionProposals(String specContent,

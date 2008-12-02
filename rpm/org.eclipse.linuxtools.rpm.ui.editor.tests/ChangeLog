@@ -1,3 +1,10 @@
+2008-12-02  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java 
+	(setUp): Removed - not needed.
+	(tearDown): Likewise.
+	(initEditor): Don't do things done in the parent.
+
 2008-11-30  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/EditorTests.java: Removed.
