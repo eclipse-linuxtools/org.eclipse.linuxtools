@@ -39,6 +39,10 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	private static final String ICON_PATH = "icons/";
 	public static final String SESSION_ICON = ICON_PATH + "session.gif";
 	public static final String EVENT_ICON = ICON_PATH + "event.gif";
+	public static final String IMAGE_ICON = ICON_PATH + "image.gif";
+	public static final String DEPENDENT_ICON = ICON_PATH + "dependent.gif";
+	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif";
+	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif";
 	
 	
 	/**

@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelDependent implements IUiModelElement {
@@ -70,7 +71,6 @@ public class UiModelDependent implements IUiModelElement {
 	}
 
 	public Image getLabelImage() {
-		// TODO Auto-generated method stub
-		return null;
+		return OprofileUiPlugin.getImageDescriptor(OprofileUiPlugin.DEPENDENT_ICON).createImage();
 	}
 }
