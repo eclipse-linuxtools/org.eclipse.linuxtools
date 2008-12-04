@@ -56,7 +56,6 @@ public class LaunchOptions {
 	 */
 	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(LaunchPlugin.ATTR_KERNEL_IMAGE_FILE, _options.getKernelImageFile());
-		config.setAttribute(LaunchPlugin.ATTR_VERBOSE_LOGGING, _options.getVerboseLogging());
 		config.setAttribute(LaunchPlugin.ATTR_SEPARATE_SAMPLES, _options.getSeparateProfilesMask());
 	}
 	
@@ -68,7 +67,6 @@ public class LaunchOptions {
 	public void loadConfiguration(ILaunchConfiguration config) {
 		try {
 			_options.setKernelImageFile(config.getAttribute(LaunchPlugin.ATTR_KERNEL_IMAGE_FILE, Oprofile.getKernelImageFile()));
-			_options.setVerboseLogging(config.getAttribute(LaunchPlugin.ATTR_VERBOSE_LOGGING, false));
 			_options.setSeparateProfilesMask(config.getAttribute(LaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
 		} catch (CoreException e) {
 		}
@@ -80,31 +78,6 @@ public class LaunchOptions {
 	 */
 	public String getKernelImageFile() {
 		return _options.getKernelImageFile();
-	}
-	
-	/**
-	 * Method getProcessIdFilter().
-	 * @return the process id filter in use
-	 *
-	public String getProcessIdFilter() {
-		return _processIdFilter;
-	}*/
-	
-	/**
-	 * Method getProcessGroupFilter.
-	 * @return the process group filter in use
-	 *
-	public String getProcessGroupFilter() {
-		return _processGroupFilter;
-	}*/
-	
-
-	/**
-	 * Method getVerboseLogging.
-	 * @return whether to be verbose in the daemon log
-	 */
-	public boolean getVerboseLogging() {
-		return _options.getVerboseLogging();
 	}
 	
 	/**
@@ -123,14 +96,6 @@ public class LaunchOptions {
 		_options.setKernelImageFile(image);
 	}
 		
-	/**
-	 * Sets whether to enable verbose logging in the daemon log
-	 * @param b	whether to enable verbose logging
-	 */
-	public void setVerboseLogging(boolean b) {
-		_options.setVerboseLogging(b);
-	}
-	
 	/**
 	 * Sets whether/how to collect separate samples for each distinct application
 	 * @param how	one of SEPARATE_NONE, SEPARATE_LIBRARY, SEPARATE_KERNEL, SEPARATE_ALL

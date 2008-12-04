@@ -44,26 +44,8 @@ public class LaunchPlugin extends AbstractUIPlugin {
 	// Hash table size
 	// DEPRECATED public static final String ATTR_HASHTABLE_SIZE = ID_LAUNCH_PROFILE + ".HASHTABLE_SIZE"; //$NON-NLS-1$
 	
-	// Buffer size
-	public static final String ATTR_BUFFER_SIZE = ID_LAUNCH_PROFILE + ".BUFFER_SIZE"; //$NON-NLS-1$
-	
-	// Process ID filter
-	//public static final String ATTR_PROCESS_ID_FILTER = ID_LAUNCH_PROFILE + ".PROCESS_ID_FILTER";
-	
-	// Process group filter
-	//public static final String ATTR_PROCESS_GROUP_FILTER = ID_LAUNCH_PROFILE + ".PROCESS_GRP_FILTER";
-	
-	// Note size
-	// DEPRECATED public static final String ATTR_NOTE_SIZE = ID_LAUNCH_PROFILE + ".NOTE_SIZE"; //$NON-NLS-1$
-	
-	// Kernel only
-	// DEPRECATED public static final String ATTR_KERNEL_ONLY = ID_LAUNCH_PROFILE + ".KERNEL_ONLY"; //$NON-NLS-1$
-	
-	// Verbose daemon logging
-	public static final String ATTR_VERBOSE_LOGGING = ID_LAUNCH_PROFILE + ".VERBOSE_LOGGING"; //$NON-NLS-1$
-
-	// Profile daemon?
-	// DEPRECATED public static final String ATTR_OMIT_DAEMON = ID_LAUNCH_PROFILE + ".OMIT_DAEMON"; //$NON-NLS-1$
+//	// Buffer size
+//	public static final String ATTR_BUFFER_SIZE = ID_LAUNCH_PROFILE + ".BUFFER_SIZE"; //$NON-NLS-1$
 		
 	// Separate samples
 	public static final String ATTR_SEPARATE_SAMPLES = ID_LAUNCH_PROFILE + ".SEPARATE_SAMPLES"; //$NON-NLS-1$

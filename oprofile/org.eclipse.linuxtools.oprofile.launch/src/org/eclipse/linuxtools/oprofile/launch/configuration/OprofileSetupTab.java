@@ -42,7 +42,6 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab
 	private Text _kernelImageFileText;
 	//private Text _proccessIdFilterText;
 	//private Text _processGroupFilterText;
-	private Button _verboseButton;
 	private Button _separateLibrariesButton;
 	private Button _separateKernelButton;
 
@@ -157,7 +156,6 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab
 		data.horizontalSpan = 2;
 		p.setLayoutData(data);
 		
-		_verboseButton = _createCheckButton(p, OprofileLaunchMessages.getString("tab.profileSetup.verbose.check.text")); //$NON-NLS-1$
 		_separateLibrariesButton = _createCheckButton(p, OprofileLaunchMessages.getString("tab.profileSetup.separateLibraries.check.text")); //$NON-NLS-1$
 		_separateKernelButton = _createCheckButton(p, OprofileLaunchMessages.getString("tab.profileSetup.separateKernel.check.text")); //$NON-NLS-1$
 	}
@@ -205,9 +203,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab
 	// dispatches button selection events to appropriate handlers
 	private void _handleButtonSelected(Button b)
 	{
-		if (b == _verboseButton)
-			_options.setVerboseLogging(b.getSelection());
-		else if (b == _separateLibrariesButton || b == _separateKernelButton)
+		if (b == _separateLibrariesButton || b == _separateKernelButton)
 		{
 			if (_separateLibrariesButton.getSelection() && _separateKernelButton.getSelection())
 				_options.setSeparateSamples(OprofileDaemonOptions.SEPARATE_ALL);
@@ -314,9 +310,6 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab
 	private void _updateDisplay()
 	{
 		_kernelImageFileText.setText(_options.getKernelImageFile());
-		//_processIdFilterText.setText(_options.getProcessIdFilter());
-		//_processGroupFilterText.setText(_options.getProcessGroupFilter());
-		_verboseButton.setSelection(_options.getVerboseLogging());
 		int how = _options.getSeparateSamples();
 		boolean lib, kernel;
 		switch (how)
