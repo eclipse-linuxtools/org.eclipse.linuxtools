@@ -36,22 +36,19 @@ public class ValgrindCommand {
 	public static final String OPT_BELOWMAIN = "--show-below-main"; //$NON-NLS-1$
 	public static final String OPT_MAXFRAME = "--max-stackframe"; //$NON-NLS-1$
 	public static final String OPT_SUPPFILE = "--suppressions"; //$NON-NLS-1$
-
-	public static final String DATA_PATH = ValgrindPlugin.getDefault().getStateLocation().toOSString();
-	protected static final String OUTDIR_PREFIX = ".launch"; //$NON-NLS-1$
 	
-	protected File dataDir;
+	protected File datadir;
 	protected Process process;
 	protected String[] args;
 
-	public ValgrindCommand() throws IOException {
-		dataDir = new File(DATA_PATH + File.separator + OUTDIR_PREFIX + HistoryFile.getInstance().getNextIndex());
+	public ValgrindCommand(File outputDir) throws IOException {
+		datadir = outputDir;
 	}
 
 	public void execute(String[] commandArray, String[] env, File wd, boolean usePty) throws IOException {
 		args = commandArray;
 		try {
-			createDataDir();
+			createDatadir();
 			if (wd == null) {
 				process = ProcessFactory.getFactory().exec(commandArray, env);
 			}
@@ -72,24 +69,23 @@ public class ValgrindCommand {
 		}
 	}
 	
-	public File getDataDir() {
-		return dataDir;
+	public File getDatadir() {
+		return datadir;
 	}
 
-	protected void createDataDir() throws IOException {
-		if (dataDir.exists()) {
+	protected void createDatadir() throws IOException {
+		if (datadir.exists()) {
 			// delete any preexisting files
 			deleteFiles();
 		}
-		else if (!dataDir.mkdir()) {
-			dataDir = null;
-			throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_create"), DATA_PATH)); //$NON-NLS-1$
+		else if (!datadir.mkdir()) {
+			throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_create"), datadir.getAbsolutePath())); //$NON-NLS-1$
 		}
 	}
 
 
 	protected void deleteFiles() throws IOException {
-		for (File output : dataDir.listFiles()) {
+		for (File output : datadir.listFiles()) {
 			if (!output.delete()) {
 				throw new IOException(NLS.bind(Messages.getString("ValgrindCommand.Couldnt_delete"), output.getCanonicalPath())); //$NON-NLS-1$
 			}
