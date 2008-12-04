@@ -1,6 +1,10 @@
+2008-12-04  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Add test.xml to bin.includes.
+
 2008-12-02  Alexander Kurtakov  <akurtakov@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java
 	(setUp): Removed - not needed.
 	(tearDown): Likewise.
 	(initEditor): Don't do things done in the parent.
@@ -14,23 +18,23 @@
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java: Extend FileTestCase and skip work done in parent.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/DefineTests.java: Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/EpochTagTest.java: Likewise.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java: Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java: Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LicenseTagTest.java: Likewise.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LinePositionTests.java: Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/NameTagTests.java: Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/PatchApplicationTest.java: Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RefactoringTests.java: Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/ReleaseTagTests.java: Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTests.java: Remove unneeded constructor. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileChangelogScannerTests.java: Likewise. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java: Extend FileTestCase and skip work done in parent. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfilePackagesScannerTests.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LinePositionTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/NameTagTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/PatchApplicationTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RefactoringTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/ReleaseTagTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTests.java: Remove unneeded constructor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileChangelogScannerTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java: Extend FileTestCase and skip work done in parent.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfilePackagesScannerTests.java
 	(setUp): Throw correct exception.
 	(SpecfilePackagesScannerTests): Removed unneeded constructor.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java
 	(SpecfileScannerTests): Likewise.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/VersionTagTests.java: Extend FileTestCase and skip work done in parent.  
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/VersionTagTests.java: Extend FileTestCase and skip work done in parent.
 
 2008-11-29  Alexander Kurtakov  <akurtakov@gmail.com>
 	Adopt imports to the editor package movements.
@@ -45,7 +49,7 @@
 
 2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java
 	(testPatchComparator2): Use the generic method.
 
 2008-11-26  Alexander Kurtakov  <akurtakov@gmail.com>
@@ -66,24 +70,24 @@
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Add project specific compiler warnings.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 
-	(suite): Enable SpecfilePackagesScannerTests. 
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java
+	(suite): Enable SpecfilePackagesScannerTests.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java
 	(setUp): Add missing @Override.
 	(tearDown): Likewise.
 
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix #214247 + cleanups.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileCompletionProcessorTest.java: New file.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java
 	(suite): Run SpecfileCompletionProcessorTest.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java
 	(setUp): Ensure using the modified test file.
 	(tearDown): Do not dispose editor.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java
 	(testMacroResolutionInUrl): Ensure using the modified test file.
 	(newFile): Force changing file content.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java
 	(createFile): Use the parameter as a file name instead of the hardcoded value.
 	(refresh): New method to synchronize the project content with local fs.
 
