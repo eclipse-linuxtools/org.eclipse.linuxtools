@@ -8,7 +8,7 @@
 		-->
 	</target>
 
-	<target name="getTestDependencies">	
+	<target name="getTestDependencies">
 		<!-- Eclipse will be unpacked by default; any other runtime test requirements need to be handled here -->
 		<ant target="getUpdateSiteTestDependency"
 		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
