@@ -9,10 +9,11 @@
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.linuxtools.oprofile.launch;
+package org.eclipse.linuxtools.oprofile.launch.configuration;
 
 import org.eclipse.linuxtools.oprofile.core.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.OpUnitMask;
+import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

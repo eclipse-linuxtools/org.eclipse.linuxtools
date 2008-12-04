@@ -9,7 +9,7 @@
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation 
  *******************************************************************************/ 
 
-package org.eclipse.linuxtools.oprofile.launch;
+package org.eclipse.linuxtools.oprofile.launch.launching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.linuxtools.oprofile.launch.LaunchPlugin;
+import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;

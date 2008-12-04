@@ -9,7 +9,7 @@
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *******************************************************************************/ 
 
-package org.eclipse.linuxtools.oprofile.launch;
+package org.eclipse.linuxtools.oprofile.launch.configuration;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
@@ -21,6 +21,8 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.linuxtools.oprofile.launch.LaunchPlugin;
+import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

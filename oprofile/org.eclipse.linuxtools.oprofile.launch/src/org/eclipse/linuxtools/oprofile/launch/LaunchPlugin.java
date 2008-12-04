@@ -16,7 +16,6 @@ import org.eclipse.ui.plugin.*;
 import org.eclipse.core.resources.*;
 import org.osgi.framework.BundleContext;
 
-import java.util.*;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -24,8 +23,6 @@ import java.util.*;
 public class LaunchPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static LaunchPlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
 
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.launch";
 
@@ -99,11 +96,6 @@ public class LaunchPlugin extends AbstractUIPlugin {
 	 */
 	public LaunchPlugin() {
 		plugin = this;
-		try {
-			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.oprofile.launch.LaunchPluginResources"); //$NON-NLS-1$
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
 	}
 
 	/**
@@ -133,26 +125,6 @@ public class LaunchPlugin extends AbstractUIPlugin {
 	 */
 	public static IWorkspace getWorkspace() {
 		return ResourcesPlugin.getWorkspace();
-	}
-
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle= LaunchPlugin.getDefault().getResourceBundle();
-		try {
-			return bundle.getString(key);
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
-
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
 	}
 	
 	public static String getUniqueIdentifier()

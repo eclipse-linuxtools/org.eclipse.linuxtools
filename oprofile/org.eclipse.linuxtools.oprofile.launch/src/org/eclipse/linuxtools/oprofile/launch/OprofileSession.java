@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
+import org.eclipse.linuxtools.oprofile.launch.configuration.OprofileCounter;
 
 /**
  * This class represents an Oprofile launch. It is responsible for starting and configuring

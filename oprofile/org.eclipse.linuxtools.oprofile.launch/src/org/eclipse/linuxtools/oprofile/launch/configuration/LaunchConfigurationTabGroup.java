@@ -9,7 +9,7 @@
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
  *    Kent Sebastian <ksebasti@redhat.com> - 
  *******************************************************************************/ 
-package org.eclipse.linuxtools.oprofile.launch;
+package org.eclipse.linuxtools.oprofile.launch.configuration;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;

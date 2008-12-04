@@ -10,7 +10,7 @@
  *    Kent Sebastian <ksebasti@redhat.com> - 
  *******************************************************************************/ 
 
-package org.eclipse.linuxtools.oprofile.launch;
+package org.eclipse.linuxtools.oprofile.launch.launching;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -22,6 +22,7 @@ import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.oprofile.launch.OprofileSession;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
 import org.eclipse.swt.widgets.Display;

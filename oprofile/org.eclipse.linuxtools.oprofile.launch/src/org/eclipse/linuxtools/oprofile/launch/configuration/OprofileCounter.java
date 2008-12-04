@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
 
 package org.eclipse.linuxtools.oprofile.launch.configuration;
@@ -17,11 +16,10 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.linuxtools.oprofile.core.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
-import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
-import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
+import org.eclipse.linuxtools.oprofile.core.OprofileDaemonEvent;
+import org.eclipse.linuxtools.oprofile.launch.LaunchPlugin;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 
 /**
@@ -112,21 +110,21 @@ public class OprofileCounter
 	public void setCount(int count) {
 		_daemonEvent.setResetCount(count);
 	}
-	
+		
 	/**
 	 * Saves this counter's configuration into the specified launch
 	 * configuration.
 	 * @param config	the launch configuration
 	 */
 	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(_number), _enabled);
+		config.setAttribute(LaunchPlugin.ATTR_COUNTER_ENABLED(_number), _enabled);
 		if (_daemonEvent.getEvent() != null) {
-			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(_number), _daemonEvent.getEvent().getText());
-			config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(_number), _daemonEvent.getEvent().getUnitMask().getMaskValue());
+			config.setAttribute(LaunchPlugin.ATTR_COUNTER_EVENT(_number), _daemonEvent.getEvent().getText());
+			config.setAttribute(LaunchPlugin.ATTR_COUNTER_UNIT_MASK(_number), _daemonEvent.getEvent().getUnitMask().getMaskValue());
 		}
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(_number), _daemonEvent.getProfileKernel());
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(_number), _daemonEvent.getProfileUser());
-		config.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(_number), _daemonEvent.getResetCount());
+		config.setAttribute(LaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(_number), _daemonEvent.getProfileKernel());
+		config.setAttribute(LaunchPlugin.ATTR_COUNTER_PROFILE_USER(_number), _daemonEvent.getProfileUser());
+		config.setAttribute(LaunchPlugin.ATTR_COUNTER_COUNT(_number), _daemonEvent.getResetCount());
 	}
 	
 	/**
@@ -135,9 +133,9 @@ public class OprofileCounter
 	 */
 	public void loadConfiguration(ILaunchConfiguration config) {
 		try {
-			_enabled = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(_number), false);
+			_enabled = config.getAttribute(LaunchPlugin.ATTR_COUNTER_ENABLED(_number), false);
 
-			String str = config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(_number), ""); //$NON-NLS-1$
+			String str = config.getAttribute(LaunchPlugin.ATTR_COUNTER_EVENT(_number), ""); //$NON-NLS-1$
 			_daemonEvent.setEvent(_eventFromString(str));
 
 			if (_daemonEvent.getEvent() == null) {
@@ -145,28 +143,18 @@ public class OprofileCounter
 			}
 			
 			
-			int maskValue =  config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(_number), -1);
+			int maskValue =  config.getAttribute(LaunchPlugin.ATTR_COUNTER_UNIT_MASK(_number), -1);
 			if (maskValue > -1)
 				_daemonEvent.getEvent().getUnitMask().setMaskValue(maskValue);
 			
-			_daemonEvent.setProfileKernel(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(_number), false));
-			_daemonEvent.setProfileUser(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(_number), false));
+			_daemonEvent.setProfileKernel(config.getAttribute(LaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(_number), false));
+			_daemonEvent.setProfileUser(config.getAttribute(LaunchPlugin.ATTR_COUNTER_PROFILE_USER(_number), false));
 			
 			// NOTE: -1 means "query oprofile library"
-			_daemonEvent.setResetCount(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(_number), -1));
+			_daemonEvent.setResetCount(config.getAttribute(LaunchPlugin.ATTR_COUNTER_COUNT(_number), -1));
 		} catch (CoreException ce) {
 		} catch (Exception e) {
 			
-		}
-	}
-	
-	public OpUnitMask getUnitMask() {
-		OpEvent event = _daemonEvent.getEvent();
-		
-		if (event != null) {
-			return event.getUnitMask();
-		} else {
-			return null;
 		}
 	}
 	
