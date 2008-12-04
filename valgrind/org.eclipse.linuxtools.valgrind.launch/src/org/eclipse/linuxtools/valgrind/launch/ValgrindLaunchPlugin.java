@@ -44,22 +44,6 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	protected static final String EXT_ATTR_PAGE = "page"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_DELEGATE = "delegate"; //$NON-NLS-1$
 	
-	
-	// LaunchConfiguration constants
-	public static final String ATTR_TOOL = PLUGIN_ID + ".TOOL"; //$NON-NLS-1$
-	
-	public static final String ATTR_GENERAL_TRACECHILD = PLUGIN_ID + ".GENERAL_TRACECHILD"; //$NON-NLS-1$
-	public static final String ATTR_GENERAL_CHILDSILENT = PLUGIN_ID + ".GENERAL_CHILDSILENT"; //$NON-NLS-1$
-//	public static final String ATTR_GENERAL_TRACKFDS = PLUGIN_ID + ".GENERAL_TRACKFDS";
-//	public static final String ATTR_GENERAL_TIMESTAMP = PLUGIN_ID + ".GENERAL_TIMESTAMP";
-	public static final String ATTR_GENERAL_FREERES = PLUGIN_ID + ".GENERAL_FREERES"; //$NON-NLS-1$
-	public static final String ATTR_GENERAL_DEMANGLE = PLUGIN_ID + ".GENERAL_DEMANGLE"; //$NON-NLS-1$
-	public static final String ATTR_GENERAL_NUMCALLERS = PLUGIN_ID + ".GENERAL_NUMCALLERS"; //$NON-NLS-1$
-	public static final String ATTR_GENERAL_ERRLIMIT = PLUGIN_ID + ".GENERAL_ERRLIMIT"; //$NON-NLS-1$
-	public static final String ATTR_GENERAL_BELOWMAIN = PLUGIN_ID + ".GENERAL_BELOWMAIN"; //$NON-NLS-1$
-	public static final String ATTR_GENERAL_MAXFRAME = PLUGIN_ID + ".GENERAL_MAXFRAME"; //$NON-NLS-1$
-	public static final String ATTR_GENERAL_SUPPFILE = PLUGIN_ID + ".GENERAL_SUPPFILE"; //$NON-NLS-1$
-	
 	protected HashMap<String, IConfigurationElement> toolMap; 
 	
 	// The shared instance

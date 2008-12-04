@@ -23,6 +23,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.linuxtools.valgrind.core.utils.LaunchConfigurationConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -364,7 +365,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		launchConfigurationWorkingCopy = null;
 
 		try {
-			tool = configuration.getAttribute(ValgrindLaunchPlugin.ATTR_TOOL, ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
+			tool = configuration.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
 			int select = -1;
 			for (int i = 0; i < tools.length && select < 0; i++) {
 				if (tool.equals(tools[i])) {
@@ -385,18 +386,18 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	protected void initializeGeneral(ILaunchConfiguration configuration) throws CoreException {
-		traceChildrenButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACECHILD, false));
+		traceChildrenButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, false));
 		//		childSilentButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_CHILDSILENT, false));
 		//		trackFdsButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACKFDS, false));
 		//		timeStampButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TIMESTAMP, false));
-		runFreeresButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_FREERES, true));
+		runFreeresButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, true));
 
-		demangleButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_DEMANGLE, true));
-		numCallersSpinner.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_NUMCALLERS, 12));
-		errorLimitButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_ERRLIMIT, true));
-		showBelowMainButton.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_BELOWMAIN, false));
-		maxStackFrameSpinner.setSelection(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_MAXFRAME, 2000000));
-		suppFileText.setText(configuration.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_SUPPFILE, EMPTY_STRING));
+		demangleButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DEMANGLE, true));
+		numCallersSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_NUMCALLERS, 12));
+		errorLimitButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, true));
+		showBelowMainButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, false));
+		maxStackFrameSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, 2000000));
+		suppFileText.setText(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, EMPTY_STRING));
 	}
 
 	@Override
@@ -434,7 +435,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_TOOL, tool);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, tool);
 		applyGeneralAttributes(configuration);
 		if (dynamicTab != null) {
 			dynamicTab.performApply(configuration);
@@ -443,24 +444,23 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 	protected void applyGeneralAttributes(
 			ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACECHILD, traceChildrenButton.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, traceChildrenButton.getSelection());
 		//		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_CHILDSILENT, childSilentButton.getSelection());
 		//		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACKFDS, trackFdsButton.getSelection());
 		//		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TIMESTAMP, timeStampButton.getSelection());
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_FREERES, runFreeresButton.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, runFreeresButton.getSelection());
 
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_DEMANGLE, demangleButton.getSelection());
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_NUMCALLERS, numCallersSpinner.getSelection());
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_ERRLIMIT, errorLimitButton.getSelection());
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_BELOWMAIN, showBelowMainButton.getSelection());
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_MAXFRAME, maxStackFrameSpinner.getSelection());
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_SUPPFILE, suppFileText.getText());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DEMANGLE, demangleButton.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_NUMCALLERS, numCallersSpinner.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, errorLimitButton.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, showBelowMainButton.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, maxStackFrameSpinner.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, suppFileText.getText());
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		launchConfigurationWorkingCopy = configuration;
-
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_TOOL, ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
+		
 		setDefaultGeneralAttributes(configuration);
 		if (dynamicTab != null) {
 			dynamicTab.setDefaults(configuration);
@@ -470,18 +470,19 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 	public static void setDefaultGeneralAttributes(
 			ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACECHILD, false);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, false);
 		//		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_CHILDSILENT, false);
 		//		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACKFDS, false);
 		//		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TIMESTAMP, false);
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_FREERES, true);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, true);
 
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_DEMANGLE, true);
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_NUMCALLERS, 12);
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_ERRLIMIT, true);
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_BELOWMAIN, false);
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_MAXFRAME, 2000000);
-		configuration.setAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_SUPPFILE, EMPTY_STRING);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DEMANGLE, true);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_NUMCALLERS, 12);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, true);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, false);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, 2000000);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, EMPTY_STRING);
 	}
 
 	@Override
