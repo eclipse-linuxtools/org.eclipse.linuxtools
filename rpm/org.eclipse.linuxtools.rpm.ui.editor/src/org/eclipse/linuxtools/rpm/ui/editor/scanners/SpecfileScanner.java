@@ -32,6 +32,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.detectors.TagWordDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.StringWithEndingRule;
 import org.eclipse.swt.SWT;
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.*;
 
 public class SpecfileScanner extends RuleBasedScanner {
 
@@ -47,13 +48,11 @@ public class SpecfileScanner extends RuleBasedScanner {
 	private static String[] keywords = { "%if", "%ifarch", "%ifnarch", "%else",
 			"%endif" };
 
-	private static String[] tags = { "Summary", "Name", "Version",
-			"Packager", "Icon", "URL", "Prefix", "Packager",
-			"Group", "License", "Release", "BuildRoot", "Distribution",
-			"Vendor", "Provides", "ExclusiveArch", "ExcludeArch",
-			"ExclusiveOS", "BuildArch", "BuildArchitectures",
-			"AutoRequires", "AutoReq", "AutoReqProv", "AutoProv", "Epoch",
-			"ExcludeOS" };
+	private static String[] TAGS = { SUMMARY, NAME, VERSION, PACKAGER, ICON,
+			URL, PREFIX, GROUP, LICENSE, RELEASE, BUILD_ROOT, DISTRIBUTION,
+			VENDOR, PROVIDES, EXCLUSIVE_ARCH, EXCLUDE_ARCH, EXCLUDE_OS,
+			BUILD_ARCH, BUILD_ARCHITECTURES, AUTO_REQUIRES, AUTO_REQ,
+			AUTO_REQ_PROV, AUTO_PROV, EPOCH };
 
 	public SpecfileScanner(ColorManager manager) {
 		IToken sectionToken = new Token(new TextAttribute(manager
@@ -107,7 +106,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 		// Name:, Summary:, ...
 		wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
-		for (String tag : tags) {
+		for (String tag : TAGS) {
 			wordRule.addWord(tag + ":", tagToken);
 		}
 		rules.add(wordRule);

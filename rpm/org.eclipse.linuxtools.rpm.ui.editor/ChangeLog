@@ -1,3 +1,14 @@
+2008-12-04  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmTags.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java: Use constants from RpmTags.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmInformationsPreferencePage.java 
+	(createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmSections.java: Make it interface.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java 
+	(TAGS): Use constants from RpmTags.
+	(SpecfileScanner): Likewise.
+
 2008-12-02  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* plugin.xml: Add extension to the document provider.

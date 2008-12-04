@@ -24,6 +24,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
@@ -53,10 +54,10 @@ public class SpecfileParser {
 	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771
 	//	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
 	//		"Release", "License", "URL" };
-	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
-		"Release", "URL" };
+	private static String[] simpleDefinitions = { RpmTags.EPOCH, RpmTags.NAME, RpmTags.VERSION,
+		RpmTags.RELEASE, RpmTags.URL };
 	
-	private static String[] directValuesDefinitions = { "License" };
+	private static String[] directValuesDefinitions = { RpmTags.LICENSE };
 	// Note that the ordering here should match that in SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" };
 

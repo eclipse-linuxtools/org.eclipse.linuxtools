@@ -16,6 +16,7 @@ import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -37,17 +38,17 @@ IWorkbenchPreferencePage{
 		@Override
 		public void createFieldEditors() {
 			addField(maxProposalsIntegerFieldEditor());
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_NAME, "Name", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VERSION, "Version", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_RELEASE, "Release", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SUMMARY, "Summary", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_LICENSE, "License", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_GROUP, "Group", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_URL, "URL", getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_NAME, RpmTags.NAME, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VERSION, RpmTags.VERSION, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_RELEASE, RpmTags.RELEASE, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SUMMARY, RpmTags.SUMMARY, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_LICENSE, RpmTags.LICENSE, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_GROUP, RpmTags.GROUP, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_URL, RpmTags.URL, getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_INSTALLTIME, "Installation Date", getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_DESCRIPTION, "Description", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_PACKAGER, "Packager", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VENDOR, "Vendor", getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_PACKAGER, RpmTags.PACKAGER, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VENDOR, RpmTags.VENDOR, getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SIZE, "Size", getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_BUILDTIME, "Build Date", getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SOURCERPM, "Source Rpm", getFieldEditorParent()));
