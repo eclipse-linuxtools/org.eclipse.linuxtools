@@ -301,10 +301,8 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 			args.add(_OPD_KERNEL_FILE + options.getKernelImageFile());
 		}
 		
-		// Note verbosity (only support "all" now)
-		if (options.getVerboseLogging()) {
-			_verbosity = _OPD_VERBOSE_LOGGING + _OPD_VERBOSE_ALL;
-		}
+		//Always have --verbosity=all (only useful for daemon log anyway) 
+		args.add(_OPD_VERBOSE_LOGGING + _OPD_VERBOSE_ALL);
 
 		//image filter -- always non-null
 		args.add(_OPD_SETUP_IMAGE + options.getImage());
