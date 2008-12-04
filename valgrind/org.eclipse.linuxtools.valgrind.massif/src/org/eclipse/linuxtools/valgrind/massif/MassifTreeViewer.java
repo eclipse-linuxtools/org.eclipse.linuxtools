@@ -77,7 +77,7 @@ public class MassifTreeViewer extends TreeViewer {
 				MassifHeapTreeNode element = (MassifHeapTreeNode) ((TreeSelection) event.getSelection()).getFirstElement();
 				if (element.hasSourceFile()) {
 					// do source lookup
-					ISourceLocator sourceLocator = MassifPlugin.getDefault().getLaunch().getSourceLocator();
+					ISourceLocator sourceLocator = MassifPlugin.getDefault().getSourceLocator();
 					if (sourceLocator instanceof ISourceLookupDirector) {
 						Object obj = ((ISourceLookupDirector) sourceLocator).getSourceElement(element.getFilename());
 						if (obj != null && obj instanceof IFile) {

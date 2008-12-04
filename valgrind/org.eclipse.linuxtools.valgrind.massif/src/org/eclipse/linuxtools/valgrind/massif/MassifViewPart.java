@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -30,8 +29,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
 import org.eclipse.linuxtools.valgrind.massif.graph.HeapChartShell;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
-import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
-import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Font;
@@ -100,16 +97,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				}
 			}	
 		});
-		
-		createToolbar();
-		
+			
 		setTopControl(viewer.getControl());
 	}
 
-	protected void createToolbar() {
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();
-		
+	public IAction[] getToolbarActions() {		
 		chartAction = new Action(Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			@Override
 			public void run() {
@@ -118,7 +110,6 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		};
 		chartAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/barcharticon.gif")); //$NON-NLS-1$
 		chartAction.setToolTipText(Messages.getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
-		manager.add(chartAction);
 		
 		treeAction = new Action(Messages.getString("MassifViewPart.Show_Heap_Tree"), IAction.AS_CHECK_BOX) { //$NON-NLS-1$
 			@Override
@@ -133,8 +124,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		};
 		treeAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/call_hierarchy.gif")); //$NON-NLS-1$
 		treeAction.setToolTipText(Messages.getString("MassifViewPart.Show_Heap_Tree")); //$NON-NLS-1$
-		manager.add(treeAction);
-		view.getViewSite().getActionBars().updateActionBars();
+
+		return new IAction[] { chartAction, treeAction };
 	}
 	
 	protected void displayChart() {
