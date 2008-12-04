@@ -1,3 +1,7 @@
+2008-12-04  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Add test.xml to bin.includes.
+
 2008-11-05  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Update BREE to 1.5.
