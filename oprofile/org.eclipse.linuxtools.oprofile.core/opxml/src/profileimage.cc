@@ -246,28 +246,6 @@ operator<< (ostream& os, profileimage* image)
     }
 
   return os;
-
-    //old code -- revisit dependent image stuff later?
-//    os << startt ("image") << attrt ("name", image->get_name ());
-//    samplefile* sfile;
-//  if (image->get_samplefile ()->has_samplefile ())
-//    {
-//      os << image->get_header ()
-//	 << image->get_samplefile ();
-//    }
-//  else
-//    {
-//      // If this image does not have a samplefile (i.e., it is a "fake"
-//      // one generated because it has no samples but has dependencies which do)
-//      // then output the header for a dependency with no samples.
-//      list<profileimage*>* deps = image->get_dependencies ();
-//      os << deps->front ()->get_header ();
-//    }
-//
-//  // Output dependent images
-//  list<profileimage*>* deps = image->get_dependencies ();
-//  copy (deps->begin (), deps->end (), ostream_iterator<profileimage*> (os, ""));
-//  return os << endt;
 }
 
 //Adds the sample new_sample to the container samples.
