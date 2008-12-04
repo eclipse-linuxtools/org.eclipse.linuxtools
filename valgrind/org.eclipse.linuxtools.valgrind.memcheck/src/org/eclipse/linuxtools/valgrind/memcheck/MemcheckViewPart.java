@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.valgrind.memcheck;
 
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -130,6 +131,10 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 
 	public ValgrindError[] getErrors() {
 		return errors;
+	}
+
+	public IAction[] getToolbarActions() {
+		return null;
 	}
 
 }
