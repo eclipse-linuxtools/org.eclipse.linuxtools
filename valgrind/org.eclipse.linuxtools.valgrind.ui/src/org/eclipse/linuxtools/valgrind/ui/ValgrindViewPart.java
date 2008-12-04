@@ -13,11 +13,7 @@ package org.eclipse.linuxtools.valgrind.ui;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.linuxtools.valgrind.core.HistoryEntry;
-import org.eclipse.linuxtools.valgrind.core.HistoryFile;
-import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,45 +25,52 @@ public class ValgrindViewPart extends ViewPart {
 
 	protected Composite dynamicViewHolder;
 	protected IValgrindToolView dynamicView;
-	protected HistoryDropDownAction historyAction;
+	protected ActionContributionItem[] dynamicActions;
 
 	@Override
 	public void createPartControl(Composite parent) {
-		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-		historyAction = new HistoryDropDownAction(Messages.getString("ValgrindViewPart.Select_a_recent_launch"), IAction.AS_DROP_DOWN_MENU); //$NON-NLS-1$
-		toolbar.add(historyAction);
-		toolbar.update(true);
-		
+
 		setContentDescription(Messages.getString("ValgrindViewPart.No_Valgrind_output")); //$NON-NLS-1$
-		
+
 		dynamicViewHolder = new Composite(parent, SWT.NONE);
 		dynamicViewHolder.setLayout(new GridLayout());
 		dynamicViewHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 		ValgrindUIPlugin.getDefault().setView(this);
 	}
 
-	public void createDynamicView(String toolID) throws CoreException {
+	public IValgrindToolView createDynamicContent(String description, String toolID) throws CoreException {
+		setContentDescription(description);
+
 		// remove tool specific toolbar controls
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-		for (IContributionItem item : toolbar.getItems()) {
-			if (!(item instanceof ActionContributionItem) || ((ActionContributionItem) item).getAction() != historyAction) {
+		if (dynamicActions != null) {
+			for (ActionContributionItem item : dynamicActions) {
 				toolbar.remove(item);
 			}
 		}
-		toolbar.update(true);
-		
+
 		// remove old view controls
 		for (Control child : dynamicViewHolder.getChildren()) {
 			child.dispose();
 		}
 		dynamicView = ValgrindUIPlugin.getDefault().getToolView(toolID);
 		dynamicView.createPartControl(dynamicViewHolder);
+
+		// create toolbar items
+		IAction[] actions = dynamicView.getToolbarActions();
+		if (actions != null) {
+			dynamicActions = new ActionContributionItem[actions.length];
+			for (int i = 0; i < actions.length; i++) {
+				dynamicActions[i] = new ActionContributionItem(actions[i]);
+				toolbar.appendToGroup(ValgrindUIPlugin.TOOLBAR_LOC_GROUP_ID, dynamicActions[i]);
+//				toolbar.add(dynamicActions[i]);
+			}
+		}
+		toolbar.update(true);
 		
 		dynamicViewHolder.layout(true);
-		
-		HistoryEntry entry = HistoryFile.getInstance().getRecentEntry();
-		String toolName = ValgrindLaunchPlugin.getDefault().getToolName(entry.getTool());
-		setContentDescription(entry.getConfigName() + " [" + toolName + "] " + entry.getProcessLabel()); //$NON-NLS-1$ //$NON-NLS-2$
+
+		return dynamicView;
 	}
 
 	@Override

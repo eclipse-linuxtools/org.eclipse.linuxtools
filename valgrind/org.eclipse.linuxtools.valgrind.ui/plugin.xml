@@ -14,5 +14,22 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.linuxtools.valgrind.ui.valgrindview">
+         <separator
+               name="toolbarLocal"
+               visible="false">
+         </separator>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.linuxtools.valgrind.ui.valgrindview?after=toolbarLocal">
+         <separator
+               name="toolbarExtensions"
+               visible="false">
+         </separator>
+      </menuContribution>
+   </extension>
 
 </plugin>

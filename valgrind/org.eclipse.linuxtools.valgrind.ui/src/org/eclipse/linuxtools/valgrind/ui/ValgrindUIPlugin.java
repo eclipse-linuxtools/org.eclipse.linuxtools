@@ -18,8 +18,12 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -28,21 +32,23 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.ui"; //$NON-NLS-1$
 	public static final String VIEW_ID = PLUGIN_ID + ".valgrindview"; //$NON-NLS-1$
+	public static final String TOOLBAR_LOC_GROUP_ID = "toolbarLocal"; //$NON-NLS-1$
+	public static final String TOOLBAR_EXT_GROUP_ID = "toolbarExtensions"; //$NON-NLS-1$
 	
 	// Extension point constants
 	public static final String TOOL_EXT_ID = "valgrindToolViews"; //$NON-NLS-1$
-	
+
 	protected static final String EXT_ELEMENT = "view"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_ID = "definitionId"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
 
 	protected HashMap<String, IConfigurationElement> toolMap; 
-	
+
 	// The shared instance
 	private static ValgrindUIPlugin plugin;
-	
+
 	protected ValgrindViewPart view;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -76,14 +82,44 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	public void createView(final String contentDescription, final String toolID) {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					activePage.showView(ValgrindUIPlugin.VIEW_ID);
+
+					// create the view's tool specific controls and populate content description
+					view.createDynamicContent(contentDescription, toolID);
+
+					view.refreshView();
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+			}					
+		});
+	}
+
+	public void refreshView() {
+		if (view != null) {
+			Display.getDefault().syncExec(new Runnable() {
+				public void run() {
+					view.refreshView();
+				}				
+			});
+		}
+	}
+
 	protected void setView(ValgrindViewPart view) {
 		this.view = view;
 	}
-	
+
 	public ValgrindViewPart getView() {
 		return view;
 	}
-	
+
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
@@ -91,7 +127,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		}
 		return null;
 	}
-	
+
 	protected void initializeToolMap() {
 		toolMap = new HashMap<String, IConfigurationElement>();
 		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, TOOL_EXT_ID);
