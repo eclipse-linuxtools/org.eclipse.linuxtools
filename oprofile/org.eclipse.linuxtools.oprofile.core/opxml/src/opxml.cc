@@ -1,6 +1,6 @@
 /* Opxml a simple program to output XML descriptions of oprofile sample
    files (and a little more). This program exists as a bridge between
-   GPL'd software (oprofile and BFD) and CPL'd software (Eclipse).
+   GPL'd software (oprofile and BFD) and EPL'd software (Eclipse).
    Written by Keith Seitz <keiths@redhat.com>
    Edited by Kent Sebastian <ksebasti@redhat.com>
 
@@ -21,6 +21,7 @@
 #include <errno.h>
 #include <iterator>
 #include <vector>
+#include <set>
 
 #include "opinfo.h"
 #include "oxmlstream.h"
@@ -63,9 +64,22 @@ static const struct help args_help[] =
   {"[CPU]\t\t\t", "information for given cpu (defualt: current cpu)" },
   {"CTR EVENT UMASK\t", "check counter/event validity"},
   {"EVENT SESSION\t\t", "get model data (image, symbols, samples..) for given SESSION and EVENT"},
-  {"\t\t\t", "get session information"},
-//  {"SAMPLEFILE\t\t", "return debug information for in SAMPLEFILE"}
+  {"\t\t\t", "get session information"}
 };
+
+//hacky struct to ensure that the default session is
+// always printed out first (and the rest alphabetical)
+struct sevent_comp {
+  bool operator() (const sessionevent* lhs, const sessionevent* rhs) { return (lhs->get_session()->get_name() < rhs->get_session()->get_name()); }
+};
+
+typedef set<sessionevent*, struct sevent_comp > ordered_sessions_t;
+struct session_list_t {
+  sessionevent* default_sevent;
+  ordered_sessions_t* sessions;
+};
+
+const string DEFAULT_SESSION_NAME = "current";
 
 // Local functions
 static void print_usage (const char* const argv0);
@@ -83,21 +97,6 @@ static int sessions (opinfo& info, int argc, char* argv[]);
 //helper function
 static bool object_in_list(const string obj, const vector<string>& objects);
 
-class sevent_sorter : public binary_function<sessionevent*, sessionevent*, bool>
-{
-public:
-  bool operator() (sessionevent* lhs, sessionevent* rhs)
-  {
-    bool result;
-    if (lhs->get_name () == "")
-      result = true;
-    else if (rhs->get_name () == "")
-      result = false;
-    else
-      result = lhs->get_name () < rhs->get_name ();
-    return result;
-  }
-};
 
 static void
 wrong_num_arguments (int argc, char* argv[], const char* opts)
@@ -455,16 +454,20 @@ object_in_list(const string obj, const vector<string>& objects) {
   return false;
 }
 
+//The special case handling for the default event is to enusure it is always
+// the first event ouput. This is for usability of the UI on the java side
+// so that the current session is always the first in the view.
 static int
 sessions (opinfo& info, int argc, char* argv[])
 {
   session::sessionlist_t sessions;
   sessions = session::get_sessions (info);
 
+
   /* This seems goofy, but this is best for the UI.
      Arrange the sessions by the event that they collected. */
 
-  typedef map<string, list<sessionevent*>*, greater<string> > eventlist_t;
+  typedef map<string, struct session_list_t*, greater<string> > eventlist_t;
   eventlist_t eventlist;
 
   session::sessionlist_t::iterator sit = sessions.begin ();
@@ -482,18 +485,30 @@ sessions (opinfo& info, int argc, char* argv[])
 
 	  if (eventlist.find (event) == eventlist.end ())
 	    {
-	      // New event -- add this session to the list and add
-	      // the list and event to the list of known events.
-	      list<sessionevent*>* lst = new list<sessionevent*> ();
-	      lst->push_back (sevent);
-	      eventlist.insert (pair<string, list<sessionevent*>*> (event, lst));
+	      // New event -- new event, and new list of sessions
+	      struct session_list_t* sl = (session_list_t*)malloc(sizeof(session_list_t*));
+	      sl->default_sevent = NULL;
+	      sl->sessions = new ordered_sessions_t;
+
+	      //check if it's the default session
+	      if (s->get_name() == DEFAULT_SESSION_NAME) {
+                sl->default_sevent = sevent;
+	      } else {
+	        sl->sessions->insert(sevent);
+	      }
+
+	      eventlist.insert (pair<string, session_list_t*> (event, sl));
 	    }
 	  else
 	    {
-	      // Known event -- add this session to the list of
-	      // sessions for this event
-	      list<sessionevent*>* lst = eventlist[event];
-	      lst->push_back (sevent);
+	      // Known event -- add this session to the existing list for this event
+
+	      //check if it's the default session
+	      if (s->get_name() == DEFAULT_SESSION_NAME) {
+	        eventlist[event]->default_sevent = sevent;
+	      } else {
+	        eventlist[event]->sessions->insert(sevent);
+	      }
 	    }
 	}
     }
@@ -507,14 +522,22 @@ sessions (opinfo& info, int argc, char* argv[])
       eventlist_t::iterator elit;
       for (elit = eventlist.begin (); elit != eventlist.end (); ++elit)
 	{
-	  string event = (*elit).first;
-	  list<sessionevent*>* lst = (*elit).second;
+	  string event = elit->first;
 
-	  lst->sort (sevent_sorter ());
+	  sessionevent* default_sevent = elit->second->default_sevent;
+	  ordered_sessions_t* sessionlist = elit->second->sessions;
+
 	  oxml << startt ("event") << attrt ("name", event);
-	  copy (lst->begin (), lst->end (), ostream_iterator<sessionevent*> (oxml, ""));
+
+	  if (default_sevent != NULL)
+	    oxml << default_sevent;
+
+	  copy (sessionlist->begin (), sessionlist->end (), ostream_iterator<sessionevent*> (oxml, ""));
 	  oxml << endt;
-	  delete lst;
+
+	  if (default_sevent != NULL)
+	    free(default_sevent);
+	  delete sessionlist;
 	}
     }
 
