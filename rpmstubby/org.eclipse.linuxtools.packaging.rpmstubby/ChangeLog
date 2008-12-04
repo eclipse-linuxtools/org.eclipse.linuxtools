@@ -1,3 +1,8 @@
+2008-12-04  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	(getLicense): Add support for recognizing CPL.
+
 2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java 
