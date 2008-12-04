@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="org.eclipse.linuxtools.valgrind.history.statePersisters" name="%extension-point.name.0" schema="schema/org.eclipse.linuxtools.valgrind.history.statePersisters.exsd"/>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.linuxtools.valgrind.ui.valgrindview?after=toolbarExtensions">
+         <command
+               commandId="org.eclipse.linuxtools.valgrind.history.historycommand"
+               icon="icons/history_list.gif"
+               id="org.eclipse.linuxtools.valgrind.history.pulldown"
+               style="pulldown">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.linuxtools.valgrind.history.pulldown">
+         <dynamic
+               class="org.eclipse.linuxtools.valgrind.history.HistoryContributionItem"
+               id="org.eclipse.linuxtools.valgrind.history.dynamic">
+         </dynamic>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.eclipse.linuxtools.valgrind.history.HistoryHandler"
+            id="org.eclipse.linuxtools.valgrind.history.historycommand"
+            name="%command.name.0">
+      </command>
+   </extension>
+
+</plugin>
