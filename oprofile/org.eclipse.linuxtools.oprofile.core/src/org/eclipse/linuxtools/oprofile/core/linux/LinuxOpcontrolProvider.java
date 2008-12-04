@@ -42,6 +42,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_SETUP = "--setup"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE = "--separate="; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_SEPARATOR = ","; //$NON-NLS-1$
+	private static final String _OPD_SETUP_SEPARATE_NONE = "none"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_LIBRARY = "library"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_KERNEL = "kernel"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_THREAD = "thread"; //$NON-NLS-1$
@@ -58,8 +59,8 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_KERNEL_FILE = "--vmlinux="; //$NON-NLS-1$
 	
 	// Logging verbosity
-	private static final String _OPD_VERBOSE_LOGGING = "--verbose="; //$NON-NSL-1$
-	private static final String _OPD_VERBOSE_ALL = "all"; //$NON-NLS-1$
+//	private static final String _OPD_VERBOSE_LOGGING = "--verbose="; //$NON-NSL-1$
+//	private static final String _OPD_VERBOSE_ALL = "all"; //$NON-NLS-1$
 //	private static final String _OPD_VERBOSE_SFILE = "sfile"; //$NON-NLS-1$
 //	private static final String _OPD_VERBOSE_ARCS = "arcs"; //$NON-NLS-1$
 //	private static final String _OPD_VERBOSE_SAMPLES = "samples"; //$NON-NLS-1$
@@ -91,14 +92,15 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_DEINIT_MODULE = "--deinit";
 	
 	// Logging verbosity. Specified with setupDaemon.
-	private String _verbosity = null;
+	//--verbosity=all generates WAY too much stuff in the log
+	private String _verbosity = "";
 	
 	/**
 	 * Unload the kernel module and oprofilefs
 	 * @throws OpcontrolException
 	 */
 	public void deinitModule() throws OpcontrolException {
-		_runOpcontrol(_OPD_DEINIT_MODULE, true);
+		_runOpcontrol(_OPD_DEINIT_MODULE);
 	}
 	
 	/**
@@ -106,7 +108,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void dumpSamples() throws OpcontrolException {
-		_runOpcontrol(_OPD_DUMP, true);
+		_runOpcontrol(_OPD_DUMP);
 	}
 	
 	/**
@@ -114,7 +116,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void initModule() throws OpcontrolException {
-		_runOpcontrol(_OPD_INIT_MODULE, true);
+		_runOpcontrol(_OPD_INIT_MODULE);
 	}
 	
 	/**
@@ -122,7 +124,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void reset() throws OpcontrolException {
-		_runOpcontrol(_OPD_RESET, true);
+		_runOpcontrol(_OPD_RESET);
 	}
 	
 	/**
@@ -133,7 +135,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	public void saveSession(String name) throws OpcontrolException {
 		ArrayList<String> cmd = new ArrayList<String>();
 		cmd.add(_OPD_SAVE_SESSION + name);
-		_runOpcontrol(cmd, true);
+		_runOpcontrol(cmd);
 	}
 	
 	/**
@@ -149,7 +151,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		for (int i = 0; i < events.length; ++i) {
 			_eventToArguments(args, events[i]);
 		}
-		_runOpcontrol(args, true);
+		_runOpcontrol(args);
 	}
 	
 	/**
@@ -157,7 +159,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void shutdownDaemon() throws OpcontrolException {
-		_runOpcontrol(_OPD_SHUTDOWN, true);
+		_runOpcontrol(_OPD_SHUTDOWN);
 	}
 	
 	/**
@@ -165,7 +167,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void startCollection() throws OpcontrolException {
-		_runOpcontrol(_OPD_START_COLLECTION, true);
+		_runOpcontrol(_OPD_START_COLLECTION);
 	}
 	
 	/**
@@ -173,7 +175,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void startDaemon() throws OpcontrolException {
-		_runOpcontrol(_OPD_START_DAEMON, true);
+		_runOpcontrol(_OPD_START_DAEMON);
 	}
 	
 	/**
@@ -181,25 +183,23 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void stopCollection() throws OpcontrolException {
-		_runOpcontrol(_OPD_STOP_COLLECTION, true);
+		_runOpcontrol(_OPD_STOP_COLLECTION);
 	}
 	
 	// Convenience function
-	private void _runOpcontrol(String cmd, boolean drainOutput) throws OpcontrolException {
+	private void _runOpcontrol(String cmd) throws OpcontrolException {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(cmd);
-		_runOpcontrol(list, drainOutput);
+		_runOpcontrol(list);
 	}
 	
 	// Will add opcontrol program to beginning of args
 	// args: list of opcontrol arguments (not including opcontrol program itself)
-	private void _runOpcontrol(ArrayList<String> args, boolean drainOutput) throws OpcontrolException {
+	private void _runOpcontrol(ArrayList<String> args) throws OpcontrolException {
 		args.add(0, _OPCONTROL_PROGRAM);
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
 		String cmd = (String) args.get(1);
-		if ((cmd.equals (_OPD_START_COLLECTION) || cmd.equals(_OPD_START_DAEMON))
-			&& _verbosity != null)
-		{
+		if (!_verbosity.isEmpty() && (cmd.equals (_OPD_START_COLLECTION) || cmd.equals(_OPD_START_DAEMON))) {
 			args.add(_verbosity);
 		}
 		
@@ -224,17 +224,18 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 			throw new OpcontrolException(status);
 		}
 		
-		// TODO: I REALLY NEED TO CHECK FOR AN ERROR HERE! 
-		// The problem is that userhelper doesn't return any error codes!!
-		if (p != null && drainOutput) {
+		if (p != null) {
 			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			try {
 				while ((stdout.readLine()) != null) {
 					// drain
 				}
-			} catch (IOException ioe) {
-				// We don't care if there were errors draining the output
-			}
+			} catch (IOException ioe) { /* We don't care if there were errors draining the output */ }
+			
+//			if (p.exitValue() != 0) {
+//				Status status = new Status(Status.ERROR, OprofileCorePlugin.getId(), 0 /* code */, "opcontrol return status indicates a failure!", null);
+//				throw new OpcontrolException(status);
+//			}
 		}
 	}
 	
@@ -273,26 +274,28 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private void _optionsToArguments(ArrayList<String> args, OprofileDaemonOptions options) {
 		// Add separate flags
 		int mask = options.getSeparateProfilesMask();
-		if (mask != OprofileDaemonOptions.SEPARATE_NONE) {
-			String separate = new String(_OPD_SETUP_SEPARATE);
-			if (mask == OprofileDaemonOptions.SEPARATE_ALL) {
-				separate += _OPD_SETUP_SEPARATE_ALL;
-			} else {
-				if ((mask & OprofileDaemonOptions.SEPARATE_LIBRARY) != 0)
-					separate += _OPD_SETUP_SEPARATE_LIBRARY
-							+ _OPD_SETUP_SEPARATE_SEPARATOR;
-				if ((mask & OprofileDaemonOptions.SEPARATE_KERNEL) != 0)
-					separate += _OPD_SETUP_SEPARATE_KERNEL
-							+ _OPD_SETUP_SEPARATE_SEPARATOR;
-				if ((mask & OprofileDaemonOptions.SEPARATE_THREAD) != 0)
-					separate += _OPD_SETUP_SEPARATE_THREAD
-							+ _OPD_SETUP_SEPARATE_SEPARATOR;
-				if ((mask & OprofileDaemonOptions.SEPARATE_CPU) != 0)
-					separate += _OPD_SETUP_SEPARATE_CPU
-							+ _OPD_SETUP_SEPARATE_SEPARATOR;
-			}
-			args.add(separate);
+
+		String separate = new String(_OPD_SETUP_SEPARATE);
+		
+		if (mask == OprofileDaemonOptions.SEPARATE_ALL) {
+			separate += _OPD_SETUP_SEPARATE_ALL;
+		} else if (mask == OprofileDaemonOptions.SEPARATE_NONE) {
+			separate += _OPD_SETUP_SEPARATE_NONE;
+		} else {
+			if ((mask & OprofileDaemonOptions.SEPARATE_LIBRARY) != 0)
+				separate += _OPD_SETUP_SEPARATE_LIBRARY
+						+ _OPD_SETUP_SEPARATE_SEPARATOR;
+			if ((mask & OprofileDaemonOptions.SEPARATE_KERNEL) != 0)
+				separate += _OPD_SETUP_SEPARATE_KERNEL
+						+ _OPD_SETUP_SEPARATE_SEPARATOR;
+			if ((mask & OprofileDaemonOptions.SEPARATE_THREAD) != 0)
+				separate += _OPD_SETUP_SEPARATE_THREAD
+						+ _OPD_SETUP_SEPARATE_SEPARATOR;
+			if ((mask & OprofileDaemonOptions.SEPARATE_CPU) != 0)
+				separate += _OPD_SETUP_SEPARATE_CPU
+						+ _OPD_SETUP_SEPARATE_SEPARATOR;
 		}
+		args.add(separate);
 		
 		// Add kernel image
 		if (options.getKernelImageFile() == null || options.getKernelImageFile().equals("")) {
@@ -300,9 +303,6 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		} else {
 			args.add(_OPD_KERNEL_FILE + options.getKernelImageFile());
 		}
-		
-		//Always have --verbosity=all (only useful for daemon log anyway) 
-		args.add(_OPD_VERBOSE_LOGGING + _OPD_VERBOSE_ALL);
 
 		//image filter -- always non-null
 		args.add(_OPD_SETUP_IMAGE + options.getImage());
