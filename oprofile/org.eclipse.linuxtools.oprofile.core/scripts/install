@@ -55,14 +55,12 @@ fi
 #test if opxml is built
 test -x ../opxml/opxml
 if [ $? -ne 0 ]; then
-#  echo Compiling opxml...
   cd ../opxml/src
-  make || { echo Error: cannot compile opxml && exit 1 }
+  make || { echo Error: cannot compile opxml && exit 1; }
   cd ../../scripts
 fi
 
 test -f /etc/security/console.apps/opcontrol || install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
 test -f /etc/pam.d/opcontrol || install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol
 
-echo Eclipse-OProfile plugin install successful. Make sure that the oprofile module is loaded.
-echo 'To check, try `opcontrol --start-daemon`, if it does not run successfully, you\'ll need to run `opcontrol --init` and perhaps `opcontrol --no-vmlinux`'
+echo Eclipse-OProfile plugin install successful.
