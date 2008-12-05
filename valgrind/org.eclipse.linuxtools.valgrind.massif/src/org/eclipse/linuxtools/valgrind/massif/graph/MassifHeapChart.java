@@ -21,6 +21,7 @@ import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.valgrind.massif.MassifToolPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.widgets.Display;
 
@@ -61,8 +62,10 @@ public class MassifHeapChart extends Figure {
 			}
 			
 			points.performTranslate(plotArea.x, plotArea.y);
+			Color old = graphics.getForegroundColor();
 			graphics.setForegroundColor(ColorConstants.blue);
 			graphics.drawPolyline(points);
+			graphics.setForegroundColor(old);
 		}
 		//		for (int i = 0; i < values.length; i++) {
 		//			Rectangle bar = plotArea.getCopy();
