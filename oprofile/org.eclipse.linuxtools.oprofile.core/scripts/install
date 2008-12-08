@@ -23,9 +23,13 @@ if [ $(basename $(pwd)) != scripts ]; then
 fi
 
 #need oprofile package to use plugin at all
-rpm -q oprofile >/dev/null 
-if [ $? -ne 0 ]; then
- echo Error: OProfile is not installed, run '`yum install oprofile`'
+RET=0
+test -x /usr/bin/oprofiled 
+RET=$(($RET + $?))
+test -x /usr/bin/opcontrol
+RET=$(($RET + $?))
+if [ $RET -ne 0 ]; then
+ echo Error: required binaries do not exist, OProfile not installed?
  exit 1
 fi
 
@@ -58,7 +62,7 @@ fi
 test -x ../opxml/opxml
 if [ $? -ne 0 ]; then
   cd ../opxml/src
-  make || { echo Error: cannot compile opxml && exit 1; }
+  make &>/dev/null || { echo Error: cannot compile opxml && exit 1; }
   cd ../../scripts
 fi
 
