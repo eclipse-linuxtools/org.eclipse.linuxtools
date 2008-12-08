@@ -37,6 +37,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
+import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -49,7 +50,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.dialogs.TwoPaneElementSelector;
 
-public abstract class ProfileLaunchShortcut {
+public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 
 	public void launch(IEditorPart editor, String mode) {
 		searchAndLaunch(new Object[] { editor.getEditorInput() }, mode);
