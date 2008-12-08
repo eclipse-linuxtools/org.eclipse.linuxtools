@@ -63,7 +63,8 @@ public class OprofileDaemonOptions {
 	public static final int SEPARATE_ALL = 512;
 	
 	public OprofileDaemonOptions() {
-		_kernelImageFile = Oprofile.getKernelImageFile();
+//		_kernelImageFile = Oprofile.getKernelImageFile();
+		_kernelImageFile = "";
 		_verboseLogging = false;
 		_separateProfiles = SEPARATE_LIBRARY;	
 		_image = "";
