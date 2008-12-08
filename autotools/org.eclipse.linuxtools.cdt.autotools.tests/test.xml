@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
-	<property name="classname" value="org.eclipse.linuxtools.rpm.cdt.autotools.tests.AllAutotoolsTests" />
+	<property name="classname" value="org.eclipse.linuxtools.cdt.autotools.tests.AllAutotoolsTests" />
 	<property name="autoconf_classname" value="org.eclipse.linuxtools.cdt.autotools.tests.autoconf.AutoconfTests" />
 	<property name="editors_classname" value="org.eclipse.linuxtools.cdt.autotools.tests.editors.EditorTests" />
 
