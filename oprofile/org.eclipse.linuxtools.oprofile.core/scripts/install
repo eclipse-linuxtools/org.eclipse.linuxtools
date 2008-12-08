@@ -58,12 +58,18 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-#test if opxml is built
+#build opxml
 test -x ../opxml/opxml
 if [ $? -ne 0 ]; then
   cd ../opxml/src
   make &>/dev/null || { echo Error: cannot compile opxml && exit 1; }
   cd ../../scripts
+fi
+
+#load the oprofile module 
+test /dev/oprofile
+if [ $? -ne 0 ]; then
+  opcontrol --init
 fi
 
 test -f /etc/security/console.apps/opcontrol || install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
