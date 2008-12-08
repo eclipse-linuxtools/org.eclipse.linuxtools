@@ -2,10 +2,10 @@
 <feature
       id="org.eclipse.linuxtools.packaging.rpmstubby.feature"
       label="%featureName"
-      version="0.0.1"
+      version="0.1.0"
       provider-name="%featureProvider">
 
-   <description>
+   <description url="http://www.eclipse.org/linuxtools/">
       %description
    </description>
 
