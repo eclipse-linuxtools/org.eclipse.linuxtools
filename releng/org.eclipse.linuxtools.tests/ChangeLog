@@ -1,3 +1,7 @@
+2008-12-08  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: Clean up some typos.
+
 2008-11-24  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix typo.
