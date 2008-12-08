@@ -101,9 +101,9 @@ public class OprofileDaemonEvent {
 			// This is what Oprofile does in oprof_start.cpp:
 			double speed = Oprofile.getCpuFrequency();
 			if (speed == 0.0) {
-				_count = _event.getMinCount() * 100;
+				_count = _event.getMinCount() * 30;
 			} else {
-				_count = (int) speed * 500;
+				_count = (int) speed * 20;
 			}
 		}
 		
