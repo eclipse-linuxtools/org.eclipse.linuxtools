@@ -21,7 +21,7 @@ import org.osgi.framework.BundleContext;
  */
 public class StubbyPlugin extends AbstractUIPlugin {
 
-	/** The plug-in ID. */
+	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpmstubby";
 
 	// The shared instance
@@ -75,7 +75,6 @@ public class StubbyPlugin extends AbstractUIPlugin {
 	
 	/**
 	 * Returns active shell.
-	 * @return The active workbench shell.
 	 */
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();

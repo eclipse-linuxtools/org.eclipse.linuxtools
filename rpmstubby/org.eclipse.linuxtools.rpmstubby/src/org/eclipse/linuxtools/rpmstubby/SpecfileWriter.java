@@ -21,25 +21,14 @@ import org.eclipse.linuxtools.rpmstubby.model.MainPackage;
 import org.eclipse.linuxtools.rpmstubby.model.SubPackage;
 import org.eclipse.linuxtools.rpmstubby.preferences.PreferenceConstants;
 
-/**
- * Utility class used for writing the generated specfile to a file.
- *
- */
 public class SpecfileWriter {
 	
 	IPreferenceStore store;
 	
-	/**
-	 * Creates the writer.
-	 */
 	public SpecfileWriter() {
 		store = StubbyPlugin.getDefault().getPreferenceStore();
 	}
 
-	/**
-	 * Parse the feature.xml and write the generated specfile.
-	 * @param featureFile The feature.xml file.
-	 */
 	public void write(IFile featureFile) {
 		// Populate Main package model
 		StubbyPackageModel stubbyPackageModel = new StubbyPackageModel(
@@ -47,7 +36,6 @@ public class SpecfileWriter {
 		MainPackage mainPackage = new MainPackage();
 		stubbyPackageModel.populatePackageData(mainPackage);
 		stubbyPackageModel.populatePackagePreambleData(mainPackage);
-		stubbyPackageModel.populateDocFiles(mainPackage);
 		List<IFile> includedFeatureFiles = stubbyPackageModel.getIncudedFeatures();
 		// Populate Sub package model
 		List<SubPackage> subPackages = new ArrayList<SubPackage>();
@@ -89,9 +77,9 @@ public class SpecfileWriter {
 					+ generator.getPackageName(mainPackage.getName());
 			try {
 				if (store.getBoolean(PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT)) {
-					generator.writeContent(featureFile.getProject().getName(), packageName.toLowerCase() + "-fetch-src.sh", generator.generateFetchScript());
+					generator.writeContent(featureFile.getProject().getName(), packageName + "-fetch-src.sh", generator.generateFetchScript());
 				}
-				generator.writeContent(featureFile.getProject().getName(), packageName.toLowerCase() + ".spec", generator.generateSpecfile());
+				generator.writeContent(featureFile.getProject().getName(), packageName + ".spec", generator.generateSpecfile());
 			} catch (CoreException e) {
 				StubbyLog.logError(e);
 			}
