@@ -1,3 +1,7 @@
+2008-12-08  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: Clean up some typos.
+
 2008-12-04  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Add test.xml to bin.includes.

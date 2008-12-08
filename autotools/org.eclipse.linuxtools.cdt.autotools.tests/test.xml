@@ -2,8 +2,8 @@
 
 <project name="testsuite" default="run" basedir=".">
 	<property name="classname" value="org.eclipse.linuxtools.rpm.cdt.autotools.tests.AllAutotoolsTests" />
-	<property name="autoconf_classname" value="org.eclipse.linuxtools.rpm.cdt.autotools.tests.autoconf.AutoconfTests" />
-	<property name="editors_classname" value="org.eclipse.linuxtools.rpm.cdt.autotools.tests.editors.EditorTests" />
+	<property name="autoconf_classname" value="org.eclipse.linuxtools.cdt.autotools.tests.autoconf.AutoconfTests" />
+	<property name="editors_classname" value="org.eclipse.linuxtools.cdt.autotools.tests.editors.EditorTests" />
 
 	<!-- The property ${eclipse-home} should be passed into this script -->
 	<!-- Set a meaningful default value for when it is not. -->
