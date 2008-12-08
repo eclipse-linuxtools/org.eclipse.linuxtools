@@ -147,7 +147,7 @@ public class Oprofile
 	 */
 	public static String getKernelImageFile()
 	{
-		return "/boot/vmlinux-" + _uname(); //$NON-NLS-1$
+		return "/usr/lib/debug/lib/modules/" + _uname() + "/vmlinux";
 	}
 	
 	 // Returns the release string from the system call uname
