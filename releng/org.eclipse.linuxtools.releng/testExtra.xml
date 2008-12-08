@@ -14,7 +14,7 @@
 		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
 			<property name="url" value="${cdtURL}" />
 			<property name="file" value="${cdtFile}" />
-			<property name="unpackDest" value="${dropins-home}/cdt" />
+			<property name="unpackDest" value="${dropins-home}/eclipse" />
 		</ant>
 	</target>
 </project>
