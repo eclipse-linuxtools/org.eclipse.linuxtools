@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.linuxtools.packaging.rpmstubby-feature</name>
+	<name>org.eclipse.linuxtools.rpmstubby-feature</name>
 	<comment></comment>
 	<projects>
 	</projects>

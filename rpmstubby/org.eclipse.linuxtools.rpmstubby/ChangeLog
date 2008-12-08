@@ -1,3 +1,7 @@
+2008-12-08  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* .project: Rename project to match the repo name.
+
 2008-12-04  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
