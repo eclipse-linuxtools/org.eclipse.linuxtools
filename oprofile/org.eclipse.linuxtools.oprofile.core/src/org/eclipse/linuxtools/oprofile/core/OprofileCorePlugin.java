@@ -13,7 +13,6 @@
 package org.eclipse.linuxtools.oprofile.core;
 
 import org.eclipse.core.runtime.*;
-import org.eclipse.core.resources.*;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 import org.osgi.framework.BundleContext;
@@ -54,13 +53,6 @@ public class OprofileCorePlugin extends Plugin {
 	 */
 	public static OprofileCorePlugin getDefault() {
 		return plugin;
-	}
-
-	/**
-	 * Returns the workspace instance.
-	 */
-	public static IWorkspace getWorkspace() {
-		return ResourcesPlugin.getWorkspace();
 	}
 
 	/**
