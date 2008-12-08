@@ -27,6 +27,7 @@
 	<target name="suite">
 		<property name="autotools-folder" value="${eclipse-home}/autotools_folder" />
 		<delete dir="${autotools-folder}" quiet="true" />
+		<echo message="Calling ui-test in ${library-file} with eclipse-home = ${eclipse-home}"/>
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${autotools-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
