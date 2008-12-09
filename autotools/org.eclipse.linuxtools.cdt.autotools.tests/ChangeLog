@@ -1,3 +1,7 @@
+2008-12-09  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: Debugging statement.
+
 2008-12-08  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: Clean up some typos.

@@ -11,7 +11,7 @@
 
 	<!-- sets the properties eclipse-home, and library-file -->
 	<property name="plugin-name" value="org.eclipse.linuxtools.cdt.autotools.tests" />
-	<property name="library-file" value="${eclipse-home}/dropins/eclipse/plugins/org.eclipse.test/library.xml" />
+	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
@@ -27,7 +27,7 @@
 	<target name="suite">
 		<property name="autotools-folder" value="${eclipse-home}/autotools_folder" />
 		<delete dir="${autotools-folder}" quiet="true" />
-		<echo message="Calling ui-test in ${library-file} with eclipse-home = ${eclipse-home}"/>
+		<echo message="Calling ui-test in ${library-file} with eclipse-home = ${eclipse-home} and library-file = ${library-file}"/>
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${autotools-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
