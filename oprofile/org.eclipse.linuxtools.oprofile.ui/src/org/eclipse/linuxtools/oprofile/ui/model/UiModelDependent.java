@@ -49,8 +49,15 @@ public class UiModelDependent implements IUiModelElement {
 			nf.setMaximumFractionDigits(2);
 		}
 		double countPercentage = (double)_depCount / (double)_totalCount;
-		
-		return nf.format(countPercentage) + " in dependent images";
+
+		String percentage;
+		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
+		} else {
+			percentage = nf.format(countPercentage);
+		}
+
+		return percentage + " in dependent images";
 	}
 
 	/** IUiModelElement functions **/

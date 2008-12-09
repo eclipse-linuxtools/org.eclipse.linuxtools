@@ -65,8 +65,8 @@ public class UiModelSymbol implements IUiModelElement {
 		double countPercentage = (double)_symbol.getCount() / (double)_totalCount;
 		
 		String percentage;
-		if (countPercentage < 0.0001) {
-			percentage = "<" + nf.format(0.0001);
+		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
 		} else {
 			percentage = nf.format(countPercentage);
 		}

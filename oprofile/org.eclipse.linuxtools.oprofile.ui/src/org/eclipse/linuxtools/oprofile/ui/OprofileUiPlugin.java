@@ -44,6 +44,8 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif";
 	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif";
 	
+	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
+	
 	
 	/**
 	 * The constructor.
