@@ -17,6 +17,7 @@
             definitionId="org.eclipse.linuxtools.valgrind.launch.massif">
       </view>
    </extension>
+   <!--
    <extension
          point="org.eclipse.linuxtools.valgrind.history.statePersisters">
       <persister
@@ -24,5 +25,5 @@
             tool="org.eclipse.linuxtools.valgrind.launch.massif">
       </persister>
    </extension>
-
+   -->
 </plugin>

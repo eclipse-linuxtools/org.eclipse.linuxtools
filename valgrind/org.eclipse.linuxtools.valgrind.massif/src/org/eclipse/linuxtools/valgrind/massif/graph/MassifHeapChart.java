@@ -34,19 +34,23 @@ public class MassifHeapChart extends Figure {
 
 	@Override
 	protected void paintFigure(Graphics graphics) {
-		int[] values = new int[snapshots.length];
-		for (int i = 0; i < values.length; i++) {
-			values[i] = snapshots[i].getTotal();
+		int[] xValues = new int[snapshots.length];
+		int[] yValues = new int[snapshots.length];
+		for (int i = 0; i < yValues.length; i++) {
+			xValues[i] = snapshots[i].getTime();
+			yValues[i] = snapshots[i].getTotal();
 		}
-		int maxValue = findMax(values);
+		
+		int maxXValue = snapshots[snapshots.length - 1].getTime();
+		int maxYValue = findMax(yValues);
 
 		TextLayout maxX = new TextLayout(Display.getCurrent());
 		maxX.setAlignment(SWT.CENTER);
-		maxX.setText(String.valueOf(snapshots[snapshots.length - 1].getTime()));
+		maxX.setText(String.valueOf(maxXValue));
 
 		TextLayout maxY = new TextLayout(Display.getCurrent());
 		maxY.setAlignment(SWT.CENTER);
-		maxY.setText(String.valueOf(maxValue));
+		maxY.setText(String.valueOf(maxYValue));
 		Rectangle clientArea = getClientArea();
 		Rectangle plotArea = clientArea.getCopy();
 
@@ -54,11 +58,11 @@ public class MassifHeapChart extends Figure {
 		int padding = maxY.getBounds().width + 5;
 		plotArea.shrink(padding, padding);
 
-		if (values.length > 0) {
+		if (yValues.length > 0) {
 			// plot data
-			PointList points = new PointList(values.length);
-			for (int i = 0; i < values.length; i++) {
-				points.addPoint(new Point(i * plotArea.width / values.length, plotArea.height * (maxValue - values[i]) / maxValue));
+			PointList points = new PointList(yValues.length);
+			for (int i = 0; i < yValues.length; i++) {
+				points.addPoint(new Point(xValues[i] * plotArea.width / maxXValue, plotArea.height * (maxYValue - yValues[i]) / maxYValue));
 			}
 			
 			points.performTranslate(plotArea.x, plotArea.y);

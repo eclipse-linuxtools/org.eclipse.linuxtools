@@ -108,7 +108,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				displayChart();
 			}
 		};
-		chartAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/barcharticon.gif")); //$NON-NLS-1$
+		chartAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif")); //$NON-NLS-1$
 		chartAction.setToolTipText(Messages.getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
 		
 		treeAction = new Action(Messages.getString("MassifViewPart.Show_Heap_Tree"), IAction.AS_CHECK_BOX) { //$NON-NLS-1$

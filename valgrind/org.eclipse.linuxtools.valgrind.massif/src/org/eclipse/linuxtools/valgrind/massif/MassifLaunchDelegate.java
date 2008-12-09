@@ -21,24 +21,18 @@ import java.util.List;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.Launch;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
-import org.eclipse.linuxtools.valgrind.history.IValgrindPersistable;
-import org.eclipse.linuxtools.valgrind.history.MementoConstants;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
-import org.eclipse.ui.XMLMemento;
 
 public class MassifLaunchDelegate extends ValgrindLaunchConfigurationDelegate
-implements IValgrindLaunchDelegate, IValgrindPersistable {
+implements IValgrindLaunchDelegate {
 	public static final String TOOL_ID = ValgrindLaunchPlugin.PLUGIN_ID + ".massif"; //$NON-NLS-1$
 
 	protected static final String OUT_PREFIX = "massif_";	 //$NON-NLS-1$
@@ -128,27 +122,25 @@ implements IValgrindLaunchDelegate, IValgrindPersistable {
 		return opts.toArray(new String[opts.size()]);
 	}
 
-	public void restoreState(XMLMemento memento) throws CoreException {
-		try {
-			String configMemento = memento.getString(MementoConstants.ELEMENT_CONFIG);
-			ILaunchConfiguration config = DebugPlugin.getDefault().getLaunchManager().getLaunchConfiguration(configMemento);
-			MassifPlugin.getDefault().setConfig(config);
-			
-			// retrieve or create sourceLocator
-			ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
-			setDefaultSourceLocator(launch, config);			
-			MassifPlugin.getDefault().setSourceLocator(launch.getSourceLocator());
-			
-			File datadir = new File(memento.getString(MementoConstants.ELEMENT_DATADIR));
-			File[] massifOutputs = datadir.listFiles(MASSIF_FILTER);
-			parseOutput(massifOutputs);
-		} catch (IOException e) {
-			e.printStackTrace();
-			abort(Messages.getString("MassifLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
-		}
-	}
-
-	public void saveState(XMLMemento memento) throws CoreException {
-	}
+//	public void restoreState(HistoryEntry entry) throws CoreException {
+//		try {
+//			Map<?, ?> config = entry.getAttributes();
+//			MassifPlugin.getDefault().setConfig(config);
+//			
+//			// retrieve or create sourceLocator
+//			ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+//			setDefaultSourceLocator(launch, config);			
+//			MassifPlugin.getDefault().setSourceLocator(launch.getSourceLocator());
+//			
+//			File[] massifOutputs = entry.getDatadir().listFiles(MASSIF_FILTER);
+//			parseOutput(massifOutputs);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			abort(Messages.getString("MassifLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+//		}
+//	}
+//
+//	public void saveState(HistoryEntry entry) throws CoreException {
+//	}
 
 }
