@@ -53,6 +53,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
+	private static final String _OPD_SETUP_EVENT_DEFAULT = "default";
 	
 	// Kernel image file options
 	private static final String _OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
@@ -148,8 +149,12 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		ArrayList<String> args = new ArrayList<String>();
 		args.add(_OPD_SETUP);
 		_optionsToArguments(args, options);
-		for (int i = 0; i < events.length; ++i) {
-			_eventToArguments(args, events[i]);
+		if (events == null || events.length == 0) {
+			args.add(_OPD_SETUP_EVENT + _OPD_SETUP_EVENT_DEFAULT);
+		} else {
+			for (int i = 0; i < events.length; ++i) {
+				_eventToArguments(args, events[i]);
+			}
 		}
 		_runOpcontrol(args);
 	}
