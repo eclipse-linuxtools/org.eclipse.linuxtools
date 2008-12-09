@@ -27,6 +27,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -53,7 +54,11 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		//FIXME: this assumes that project names are always the directory names in the workspace.
 		//this assumption may be wrong, but a shallow lookup seems ok
 		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-		String imagePath = workspacePath + "/" + config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,"") + "/" + config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,"");
+		String imagePath = workspacePath + 
+							Path.SEPARATOR + 
+							config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,"") + 
+							Path.SEPARATOR + 
+							config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,"");
 		
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
 		options.loadConfiguration(config);
