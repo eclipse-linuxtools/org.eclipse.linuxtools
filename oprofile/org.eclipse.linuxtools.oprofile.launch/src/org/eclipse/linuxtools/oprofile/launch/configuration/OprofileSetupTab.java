@@ -17,7 +17,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.linuxtools.oprofile.core.OprofileDaemonOptions;
-import org.eclipse.linuxtools.oprofile.launch.LaunchOptions;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -40,8 +39,6 @@ import org.eclipse.swt.widgets.Text;
 public class OprofileSetupTab extends AbstractLaunchConfigurationTab
 {
 	private Text _kernelImageFileText;
-	//private Text _proccessIdFilterText;
-	//private Text _processGroupFilterText;
 	private Button _separateLibrariesButton;
 	private Button _separateKernelButton;
 

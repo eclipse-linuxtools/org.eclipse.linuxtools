@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
-import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
+import org.eclipse.linuxtools.oprofile.core.OprofileDaemonOptions;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 
 /**
@@ -74,19 +74,19 @@ public class LaunchOptions {
 	}
 	
 	/**
-	 * Get the daemon launch options
-	 * @return the OprofileDaemonOption
-	 */
-	public OprofileDaemonOptions getOprofileDaemonOptions() {
-		return _options;
-	}
-	
-	/**
 	 * Method getKernelImageFile.
 	 * @return the kernel image file
 	 */
 	public String getKernelImageFile() {
 		return _options.getKernelImageFile();
+	}
+	
+	/**
+	 * Method getSeparateSamples.
+	 * @return whether and how to separate samples for each distinct application
+	 */
+	public int getSeparateSamples() {
+		return _options.getSeparateProfilesMask();
 	}
 	
 	/**
@@ -96,37 +96,30 @@ public class LaunchOptions {
 	public void setKernelImageFile(String image) {
 		_options.setKernelImageFile(image);
 	}
-
-	/**
-	 * Method getSeparateSamples.
-	 * @return whether and how to separate samples for each distinct application
-	 */
-	public int getSeparateSamples() {
-		return _options.getSeparateProfilesMask();
-	}
-
+		
 	/**
 	 * Sets whether/how to collect separate samples for each distinct application
-	 * @param how	one of SEPARATE_{NONE, LIBRARY, KERNEL, THREAD, CPU}
+	 * @param how	one of SEPARATE_NONE, SEPARATE_LIBRARY, SEPARATE_KERNEL, SEPARATE_ALL
 	 */
 	public void setSeparateSamples(int how) {
 		_options.setSeparateProfilesMask(how);
 	}
 	
 	/**
-	 * Returns the path of the binary to profile.
-	 * @return the full path to the binary being profile
+	 * Get the daemon launch options
+	 * @return the OprofileDaemonOption
 	 */
-	public String getBinaryImage() {
-		return _options.getBinaryImage();
+	public OprofileDaemonOptions getOprofileDaemonOptions() {
+		return _options;
+	}
+	
+	
+	public String getImage() {
+		return _options.getImage();
 	}
 
-	/**
-	 * Sets the binary to profile in this launch.
-	 * @param _image string of the full path to the binary
-	 */
-	public void setBinaryImage(String _image) {
-		_options.setBinaryImage(_image);
+	public void setImage(String _image) {
+		_options.setImage(_image);
 	}
 
 }

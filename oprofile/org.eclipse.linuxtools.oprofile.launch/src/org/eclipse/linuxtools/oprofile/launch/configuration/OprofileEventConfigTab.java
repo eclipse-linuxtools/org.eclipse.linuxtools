@@ -26,6 +26,7 @@ import org.eclipse.linuxtools.oprofile.core.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.OpEventLabelProvider;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
+import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -111,7 +112,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab
 			}
 		}
 
-		boolean b = (numEnabledEvents > 0 && valid);
+		boolean b = numEnabledEvents == 0 || (numEnabledEvents > 0 && valid);
 		//System.out.println("EventConfigTab isValid = " + b);
 		return b;
 	}
@@ -124,6 +125,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab
 		// SUCK FIXME: check if event valid?
 		for (int i = 0; i < _counters.length; i++)
 			_counters[i].saveConfiguration(config);
+		
+		config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false);
 	}
 
 	/**
@@ -147,9 +150,17 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy config)
 	{
+		boolean useDefault = true;
+		
 		// When instantiated, the OprofileCounter will set defaults.
-		for (int i = 0; i < _counters.length; i++)
+		for (int i = 0; i < _counters.length; i++) {
 			_counters[i].saveConfiguration(config);
+			if (_counters[i].getEnabled()) {
+				useDefault = false;
+			}
+		}
+		
+		config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, useDefault);
 	}
 
 	/**
