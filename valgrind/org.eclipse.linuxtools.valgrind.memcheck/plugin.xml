@@ -17,6 +17,7 @@
             definitionId="org.eclipse.linuxtools.valgrind.launch.memcheck">
       </view>
    </extension>
+   <!--
    <extension
          point="org.eclipse.linuxtools.valgrind.history.statePersisters">
       <persister
@@ -24,4 +25,5 @@
             tool="org.eclipse.linuxtools.valgrind.launch.memcheck">
       </persister>
    </extension>
+   -->
 </plugin>

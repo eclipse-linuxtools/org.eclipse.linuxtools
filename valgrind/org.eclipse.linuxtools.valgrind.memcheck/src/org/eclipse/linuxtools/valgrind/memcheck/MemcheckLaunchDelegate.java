@@ -23,18 +23,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
-import org.eclipse.linuxtools.valgrind.history.IValgrindPersistable;
-import org.eclipse.linuxtools.valgrind.history.MementoConstants;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
-import org.eclipse.ui.XMLMemento;
 import org.xml.sax.SAXException;
 
-public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate implements IValgrindLaunchDelegate, IValgrindPersistable {
+public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate implements IValgrindLaunchDelegate {
 	public static final String TOOL_ID = ValgrindLaunchPlugin.PLUGIN_ID + ".memcheck"; //$NON-NLS-1$
 	
 	// Valgrind program arguments
@@ -102,25 +99,24 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 		return opts.toArray(new String[opts.size()]);
 	}
 
-	public void restoreState(XMLMemento memento) throws CoreException {		
-		try {
-			File datadir = new File(memento.getString(MementoConstants.ELEMENT_DATADIR));
-			File[] outputFiles = datadir.listFiles(LOG_FILTER);
-			
-			parseOutput(outputFiles);
-		} catch (ParserConfigurationException e) {
-			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
-			e.printStackTrace();
-		} catch (IOException e) {
-			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
-			e.printStackTrace();
-		} catch (SAXException e) {
-			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
-			e.printStackTrace();
-		}
-	}
-
-	public void saveState(XMLMemento memento) throws CoreException {
-	}
+//	public void restoreState(HistoryEntry entry) throws CoreException {		
+//		try {
+//			File[] outputFiles = entry.getDatadir().listFiles(LOG_FILTER);
+//			
+//			parseOutput(outputFiles);
+//		} catch (ParserConfigurationException e) {
+//			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+//			e.printStackTrace();
+//		} catch (SAXException e) {
+//			abort(Messages.getString("MemcheckLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	public void saveState(HistoryEntry entry) throws CoreException {
+//	}
 
 }
