@@ -1,5 +1,9 @@
 2008-12-10  Andrew Overholt  <overholt@redhat.com>
 
+	* feature.xml: Typo in feature ID.
+
+2008-12-10  Andrew Overholt  <overholt@redhat.com>
+
 	* build.properties: Inital checkin.
 	* feature.xml: Likewise.
 	* feature.properties: Likewise.

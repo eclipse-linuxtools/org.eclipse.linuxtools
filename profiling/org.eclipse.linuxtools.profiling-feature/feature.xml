@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
 
-      id="org.eclipse.linuxtools.profiling.featurer"
+      id="org.eclipse.linuxtools.profiling.feature"
       label="%featureName"
       version="0.1.0"
       provider-name="%featureProvider">
