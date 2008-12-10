@@ -37,8 +37,7 @@ enum options
    INFO,
    CHECK_EVENT,
    MODEL_DATA,
-   SESSIONS,
-   DEBUG_INFO
+   SESSIONS
 };
 
 // Strings of options
@@ -48,7 +47,6 @@ static const char* options[] =
   "check-events",
   "model-data",
   "sessions",
-//  "debug-info",
   0
 };
 
@@ -63,7 +61,7 @@ static const struct help args_help[] =
 {
   {"[CPU]\t\t\t", "information for given cpu (defualt: current cpu)" },
   {"CTR EVENT UMASK\t", "check counter/event validity"},
-  {"EVENT SESSION\t\t", "get model data (image, symbols, samples..) for given SESSION and EVENT"},
+  {"EVENT SESSION\t", "get model data (image, symbols, samples..) for given SESSION and EVENT"},
   {"\t\t\t", "get session information"}
 };
 
@@ -90,7 +88,6 @@ static int get_integer (const char* arg);
 // Info handlers
 static int info (opinfo& info, int argc, char* argv[]);
 static int check_events (opinfo& info, int argc, char* argv[]);
-static int debug_info (opinfo& info, int argc, char* argv[]);
 static int model_data (opinfo& info, int argc, char* argv[]);
 static int sessions (opinfo& info, int argc, char* argv[]);
 
@@ -246,10 +243,6 @@ main (int argc, char* argv[])
 	  rc = model_data(oinfo, argc, argv);
 	  break;
 
-	case DEBUG_INFO:
-	  rc = debug_info (oinfo, argc, argv);
-	  break;
-
         case SESSIONS:
           rc = sessions (oinfo, argc, argv);
 	  break;
@@ -333,53 +326,6 @@ check_events (opinfo& info, int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-/* Print out the debug info for the given executable and VMA in argv.
- *
- * Input: executable and vma
- */
-static int
-debug_info (opinfo& info, int argc, char* argv[])
-{
-  if (argc != 2)
-    wrong_num_arguments (1, argv, "samplefile");
-
-  samplefile sfile (argv[1]);
-  samplefile::samples_t samples = sfile.get_samples ();
-
-  oxmlstream oxml (cout);
-  oxml << startt ("debug-info");
-
-  // Loop through all samples (should be sorted by vma?)
-  samplefile::samples_t::iterator i;
-  for (i = samples.begin (); i != samples.end (); ++i)
-    {
-      sample* s = samplefile::SAMPLE (*i);
-
-      unsigned int line = 0;
-      const char* func  = NULL;
-      const char* file  = NULL;
-      sfile.get_debug_info (s->get_vma (), func, file, line);
-
-      char buf[257];
-      sprintf_vma (buf, s->get_vma ());
-      oxml << startt ("address") << buf;
-
-      if (file != NULL)
-	oxml << attrt ("source-filename", file);
-      if (func != NULL)
-	oxml << attrt ("function", func);
-      if (line != 0)
-	{
-	  sprintf (buf, "%d", line);
-	  oxml << attrt ("line", buf);
-	}
-      oxml << endt;
-    }
-
-  oxml << endt << endxml;
-  return EXIT_SUCCESS;
-}
-
 /* Print out the samples associated with the given session
  *
  * Input:
@@ -391,7 +337,7 @@ model_data (opinfo& info, int argc, char* argv[])
 {
   //TODO: should this be xml so the parser can parse such an error?
   if (argc < 3)
-    wrong_num_arguments (1, argv, "event session [binary_path1 binary_path2 ...]");
+    wrong_num_arguments (1, argv, "event session");
 
   string event (argv[1]);
   string session_name (argv[2]);

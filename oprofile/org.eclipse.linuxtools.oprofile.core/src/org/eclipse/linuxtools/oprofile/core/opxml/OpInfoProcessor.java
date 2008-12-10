@@ -10,7 +10,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.core.opxml;
 
-import org.eclipse.linuxtools.oprofile.core.OpInfo;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.xml.sax.Attributes;
 
 

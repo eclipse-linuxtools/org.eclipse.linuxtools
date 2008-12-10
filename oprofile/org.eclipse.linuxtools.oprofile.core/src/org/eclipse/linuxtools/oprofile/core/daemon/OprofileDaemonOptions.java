@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.core.daemon;
 
@@ -29,22 +28,39 @@ public class OprofileDaemonOptions {
 	// the image to profile
 	private String _binaryImage;
 	
+	/*
+	 * Separate profile masks
+	 */
+	
 	/**
-	 * Sample separation options. Determines how oprofiled will group
-	 *   samples for binaries which isn't the main binary being profiled.
-	 *   
-	 * Currently only properly support:
-	 *   -none: ignore all other binaries
-	 *   -library: include shared library samples
-	 *   -kernel: include kernel module samples (which implicitly includes library)
-	 *   
-	 *   the others probably wouldn't show nicely in the view
+	 * No profile separation
 	 */
 	public static final int SEPARATE_NONE = 0;
+	
+	/**
+	 * Separate shared library profiles per-application
+	 */
 	public static final int SEPARATE_LIBRARY = 1;
+	
+	/**
+	 * Separate shared library and kernel profiles per-application
+	 */
 	public static final int SEPARATE_KERNEL = 2;
+	
+	/**
+	 * Per-thread/process profiles
+	 */
 	public static final int SEPARATE_THREAD = 4;
+	
+	/**
+	 * Per-CPU profiles
+	 */
 	public static final int SEPARATE_CPU = 8;
+	
+	/**
+	 * Separate all profiles
+	 */
+	public static final int SEPARATE_ALL = 512;
 	
 	public OprofileDaemonOptions() {
 		//defaults

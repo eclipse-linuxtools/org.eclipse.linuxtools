@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
 
 package org.eclipse.linuxtools.oprofile.core.daemon;
@@ -19,9 +18,6 @@ import org.eclipse.linuxtools.oprofile.core.Oprofile;
  * daemon.
  */
 public class OprofileDaemonEvent {
-	public static final int COUNT_UNINITIALIZED = 0;
-	public static final int COUNT_INVALID = -1;
-	
 	// The event to collect on this counter
 	private OpEvent _event;
 	
@@ -37,7 +33,7 @@ public class OprofileDaemonEvent {
 	public OprofileDaemonEvent() {
 		_profileKernel = true;
 		_profileUser = true;
-		_count = COUNT_UNINITIALIZED;
+		_count = -1;
 		_event = null;
 	}
 
@@ -103,7 +99,7 @@ public class OprofileDaemonEvent {
 	 */
 	public int getResetCount() {
 		// FIXME: This isn't quite in the right place...
-		if (_count == COUNT_UNINITIALIZED) {
+		if (_count == -1) {
 			// This is what Oprofile does in oprof_start.cpp:
 			double speed = Oprofile.getCpuFrequency();
 			if (speed == 0.0) {

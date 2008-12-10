@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OprofileDaemonEvent;
-import org.eclipse.linuxtools.oprofile.core.OprofileDaemonOptions;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 
 /**
  * A class which encapsulates running opcontrol.
@@ -310,7 +310,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 
 		//image filter -- always non-null
-		args.add(_OPD_SETUP_IMAGE + options.getImage());
+		args.add(_OPD_SETUP_IMAGE + options.getBinaryImage());
 	}
 
 }

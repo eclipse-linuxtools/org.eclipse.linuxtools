@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.oprofile.core;
 import java.util.ArrayList;
 
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 

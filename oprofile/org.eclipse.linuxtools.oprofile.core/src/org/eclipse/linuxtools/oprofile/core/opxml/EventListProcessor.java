@@ -12,9 +12,9 @@ package org.eclipse.linuxtools.oprofile.core.opxml;
 
 import java.util.ArrayList;
 
-import org.eclipse.linuxtools.oprofile.core.OpEvent;
-import org.eclipse.linuxtools.oprofile.core.OpInfo;
-import org.eclipse.linuxtools.oprofile.core.OpUnitMask;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
 import org.xml.sax.Attributes;
 
 
