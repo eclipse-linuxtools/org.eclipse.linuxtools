@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.*;
 import org.eclipse.core.resources.*;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.osgi.framework.BundleContext;
 
 
@@ -24,19 +25,18 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static OprofileLaunchPlugin plugin;
 
-	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.launch";
+	private static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.launch";
 
 	// The launch type ID for profiling
-	public static final String ID_LAUNCH_PROFILE = "org.eclipse.linuxtools.oprofile.launch.oprofile"; //$NON-NLS-1$
+	public static final String ID_LAUNCH_PROFILE = ID_PLUGIN + ".oprofile"; //$NON-NLS-1$
 
 
-	//Launch Configuration attributes
+	/* Launch Configuration attributes */
 	
 	// Global options \\
 	public static final String ATTR_KERNEL_IMAGE_FILE = ID_LAUNCH_PROFILE + ".KERNEL_IMAGE"; 			//$NON-NLS-1$
 	public static final String ATTR_SEPARATE_SAMPLES = ID_LAUNCH_PROFILE + ".SEPARATE_SAMPLES"; 		//$NON-NLS-1$
 	public static final String ATTR_USE_DEFAULT_EVENT = ID_LAUNCH_PROFILE + ".USE_DEFAULT_EVENT";		//$NON-NLS-1$
-
 	
 	// Counter Attributes \\
 	private static final String ATTR_COUNTER(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; } 					//$NON-NLS-1$
@@ -47,6 +47,12 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	public static final String ATTR_COUNTER_COUNT(int nr) { return ATTR_COUNTER(nr) + ".COUNT"; } 						//$NON-NLS-1$
 	public static final String ATTR_COUNTER_UNIT_MASK(int nr) { return  ATTR_COUNTER(nr) + ".UNIT_MASK"; } 				//$NON-NLS-1$
 	
+	
+	public static final String ICON_PATH = "icons/";
+	public static final String ICON_EVENT_TAB = ICON_PATH + "event_tab.gif";
+	public static final String ICON_GLOBAL_TAB = ICON_PATH + "global_tab.gif";
+	
+	
 	/**
 	 * The constructor.
 	 */
@@ -54,39 +60,31 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 		plugin = this;
 	}
 
-	/**
-	 * This method is called upon plug-in activation
-	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
-	/**
-	 * This method is called when the plug-in is stopped
-	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		plugin = null;
 	}	
-	
-	/**
-	 * Returns the shared instance.
-	 */
+
 	public static OprofileLaunchPlugin getDefault() {
 		return plugin;
 	}
 
-	/**
-	 * Returns the workspace instance.
-	 */
 	public static IWorkspace getWorkspace() {
 		return ResourcesPlugin.getWorkspace();
 	}
 	
 	public static String getUniqueIdentifier() {
-		return PLUGIN_ID;
+		return ID_PLUGIN;
 	}
 	
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return imageDescriptorFromPlugin(ID_PLUGIN, path);
+	}
+
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
