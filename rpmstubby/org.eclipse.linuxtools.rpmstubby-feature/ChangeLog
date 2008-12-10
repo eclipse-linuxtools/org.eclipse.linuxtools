@@ -1,3 +1,7 @@
+2008-12-10  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* feature.xml: Fix feature id.
+
 2008-12-08  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* feature.xml: It deserves at least version 0.1.0.
