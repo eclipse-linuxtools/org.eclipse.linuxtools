@@ -7,11 +7,9 @@ public class AllTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(
-				"Tests for org.eclipse.linuxtools.valgrind.memcheck"); //$NON-NLS-1$
+				"Tests for org.eclipse.linuxtools.valgrind.memcheck");
 		// $JUnit-BEGIN$
-		suite.addTestSuite(BasicMemcheckTest.class);
-		suite.addTestSuite(DoubleClickTest.class);
-		suite.addTestSuite(MarkerTest.class);
+		suite.addTestSuite(BasicTest.class);
 		// $JUnit-END$
 		return suite;
 	}
