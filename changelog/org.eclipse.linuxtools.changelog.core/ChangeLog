@@ -1,29 +1,37 @@
+2008-11-21  Andrew Overholt  <overholt@redhat.com>
+
+	Bug 253016
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java
+	(createChangeLog): Don't refresh entire workspace when creating initial
+	ChangeLog.
+
 2008-11-14  Alexander Kurtakov  <akurtakov@gmail.com>
+
 	Generify.
 	* META-INF/MANIFEST.MF: Bump BREE to 1.5.
-	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java 
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java
 	(returnQualifedEditor): Remove unused method.
 	(getChangelog): Remove unneeded cast.
 	(getChangelogForRemovePath): Likewise.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java 
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java
 	(appendTxtToLastRange): Remove unneeded cast.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFileComparator.java 
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFileComparator.java
 	(compare): Generify.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PatchRangeElement.java 
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchRangeElement.java
 	(equals): Remove unneeded cast.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java 
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java
 	(prepareChangeLog): Generify.
 	(guessFunctionNames): Likewise.
 	(extractSynchronizeModelInfo): Likewise.
 	(getResourceMapping): Remove unused method.
-	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java 
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java
 	(execute): Remove unneeded variables.
 	(getResourceMapping): Remove unused method.
-	* src/org/eclipse/linuxtools/changelog/core/ChangeLogExtensionManager.java 
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogExtensionManager.java
 	(getFormatterContributor): Generify.
-	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogFormattingStrategy.java 
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogFormattingStrategy.java
 	(format): Likewise.
-	* src/org/eclipse/linuxtools/changelog/core/editors/ColorManager.java 
+	* src/org/eclipse/linuxtools/changelog/core/editors/ColorManager.java
 	(getColor): Likewise.
 	(dispose): Likewise.
 	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java: Remove deprecated usage.
@@ -32,7 +40,7 @@
 2008-11-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Fixes #254665
-	
+
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java (loadClipboard): Fix in the
 	case where editor input is IFileEditorInput and ResourceMapping cannot be located.
 
@@ -44,7 +52,7 @@
 2008-11-06  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* plugin.xml: Add key binding for compareEditorScope.
-	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java 
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java
 	(getDocumentLocation): Add support for getting location from ICompareInput.
 
 2008-11-03  Andrew Overholt  <overholt@redhat.com>
