@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.linuxtools.oprofile.core.OprofileDaemonOptions;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

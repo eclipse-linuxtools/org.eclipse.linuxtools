@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
-import org.eclipse.linuxtools.oprofile.core.OprofileDaemonOptions;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 
 /**
@@ -114,12 +114,12 @@ public class LaunchOptions {
 	}
 	
 	
-	public String getImage() {
-		return _options.getImage();
+	public String getBinaryImage() {
+		return _options.getBinaryImage();
 	}
 
-	public void setImage(String _image) {
-		_options.setImage(_image);
+	public void setBinaryImage(String _image) {
+		_options.setBinaryImage(_image);
 	}
 
 }

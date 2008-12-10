@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.oprofile.launch.configuration;
 
-import org.eclipse.linuxtools.oprofile.core.OpEvent;
-import org.eclipse.linuxtools.oprofile.core.OpUnitMask;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

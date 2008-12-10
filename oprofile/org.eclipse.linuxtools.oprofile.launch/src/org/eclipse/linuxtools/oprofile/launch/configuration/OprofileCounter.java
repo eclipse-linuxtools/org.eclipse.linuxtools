@@ -16,9 +16,9 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.oprofile.core.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
-import org.eclipse.linuxtools.oprofile.core.OprofileDaemonEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 

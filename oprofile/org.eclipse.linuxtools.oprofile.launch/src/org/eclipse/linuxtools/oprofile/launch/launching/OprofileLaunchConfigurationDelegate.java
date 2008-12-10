@@ -36,8 +36,8 @@ import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
 import org.eclipse.linuxtools.oprofile.launch.configuration.OprofileCounter;
@@ -54,15 +54,15 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		//FIXME: this assumes that project names are always the directory names in the workspace.
 		//this assumption may be wrong, but a shallow lookup seems ok
 		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-		String imagePath = workspacePath + 
-							Path.SEPARATOR + 
-							config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,"") + 
-							Path.SEPARATOR + 
-							config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,"");
+		String imagePath = workspacePath
+				+ Path.SEPARATOR
+				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "")
+				+ Path.SEPARATOR
+				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "");
 		
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
 		options.loadConfiguration(config);
-		options.setImage(imagePath);
+		options.setBinaryImage(imagePath);
 
 		//if daemonEvents null or zero size, the default event will be used
 		OprofileDaemonEvent[] daemonEvents = null;
@@ -119,7 +119,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			command.add( exePath.toOSString() );
 			command.addAll( Arrays.asList( arguments ) );
 			String[] commandArray = (String[])command.toArray( new String[command.size()] );
-			boolean usePty = config.getAttribute( ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT );
+			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			Process process;
 			process = exec( commandArray, getEnvironment( config ), wd, usePty );
 			DebugPlugin.newProcess( launch, process, renderProcessLabel( commandArray[0] ) );

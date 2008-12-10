@@ -29,45 +29,23 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	// The launch type ID for profiling
 	public static final String ID_LAUNCH_PROFILE = "org.eclipse.linuxtools.oprofile.launch.oprofile"; //$NON-NLS-1$
 
-	/*
-	 *  LaunchConfiguration attributes
-	 */
-	 
-	// C LaunchConfiguration to profile
-	public static final String ATTR_C_LAUNCH_CONFIG = ID_LAUNCH_PROFILE + ".C_LAUNCH_CONFIG"; //$NON-NLS-1$
+
+	//Launch Configuration attributes
 	
 	// Global options \\
-	
-	// Kernel image file
-	public static final String ATTR_KERNEL_IMAGE_FILE = ID_LAUNCH_PROFILE + ".KERNEL_IMAGE"; //$NON-NLS-1$
-	
-	// Separate samples
-	public static final String ATTR_SEPARATE_SAMPLES = ID_LAUNCH_PROFILE + ".SEPARATE_SAMPLES"; //$NON-NLS-1$
-	
-	public static final String ATTR_USE_DEFAULT_EVENT = ID_LAUNCH_PROFILE + ".USE_DEFAULT_EVENT";
+	public static final String ATTR_KERNEL_IMAGE_FILE = ID_LAUNCH_PROFILE + ".KERNEL_IMAGE"; 			//$NON-NLS-1$
+	public static final String ATTR_SEPARATE_SAMPLES = ID_LAUNCH_PROFILE + ".SEPARATE_SAMPLES"; 		//$NON-NLS-1$
+	public static final String ATTR_USE_DEFAULT_EVENT = ID_LAUNCH_PROFILE + ".USE_DEFAULT_EVENT";		//$NON-NLS-1$
 
+	
 	// Counter Attributes \\
-	
-	// Counters
-	private static final String ATTR_COUNTER(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; } //$NON-NLS-1$
-	
-	// Enabled?
-	public static final String ATTR_COUNTER_ENABLED(int nr)  { return ATTR_COUNTER(nr) + ".ENABLED"; } //$NON-NLS-1$
-
-	// Event to monitor
-	public static final String ATTR_COUNTER_EVENT(int nr) { return ATTR_COUNTER(nr)  + ".EVENT"; } //$NON-NLS-1$
-	
-	// Profile kernel?
-	public static final String ATTR_COUNTER_PROFILE_KERNEL(int nr) { return ATTR_COUNTER(nr) + ".PROFILE_KERNEL"; } //$NON-NLS-1$
-
-	// Profile user binaries?
-	public static final String ATTR_COUNTER_PROFILE_USER(int nr) { return ATTR_COUNTER(nr) + ".PROFILE_USER"; } //$NON-NLS-1$
-	
-	// Count
-	public static final String ATTR_COUNTER_COUNT(int nr) { return ATTR_COUNTER(nr) + ".COUNT"; } //$NON-NLS-1$
-	
-	// Unit mask
-	public static final String ATTR_COUNTER_UNIT_MASK(int nr) { return  ATTR_COUNTER(nr) + ".UNIT_MASK"; } //$NON-NLS-1$
+	private static final String ATTR_COUNTER(int nr) { return ID_LAUNCH_PROFILE + ".COUNTER_" + nr; } 					//$NON-NLS-1$
+	public static final String ATTR_COUNTER_ENABLED(int nr)  { return ATTR_COUNTER(nr) + ".ENABLED"; } 					//$NON-NLS-1$
+	public static final String ATTR_COUNTER_EVENT(int nr) { return ATTR_COUNTER(nr)  + ".EVENT"; } 						//$NON-NLS-1$
+	public static final String ATTR_COUNTER_PROFILE_KERNEL(int nr) { return ATTR_COUNTER(nr) + ".PROFILE_KERNEL"; }		//$NON-NLS-1$
+	public static final String ATTR_COUNTER_PROFILE_USER(int nr) { return ATTR_COUNTER(nr) + ".PROFILE_USER"; } 		//$NON-NLS-1$
+	public static final String ATTR_COUNTER_COUNT(int nr) { return ATTR_COUNTER(nr) + ".COUNT"; } 						//$NON-NLS-1$
+	public static final String ATTR_COUNTER_UNIT_MASK(int nr) { return  ATTR_COUNTER(nr) + ".UNIT_MASK"; } 				//$NON-NLS-1$
 	
 	/**
 	 * The constructor.
