@@ -177,18 +177,25 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		_counterCombo.setEnabled(false);
 
 		// Create container for counter settings
-		Group g = new Group(top, SWT.SHADOW_ETCHED_IN);
-		g.setText(OprofileLaunchMessages
+		Group counterGroup = new Group(top, SWT.SHADOW_ETCHED_IN);
+		counterGroup.setText(OprofileLaunchMessages
 				.getString("tab.event.counterSettings.label.text")); //$NON-NLS-1$
+		layout = new GridLayout();
+		counterGroup.setLayout(layout);
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		counterGroup.setLayoutData(data);
+		
+		Composite groupComp = new Composite(counterGroup, SWT.NONE);
 		layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
-		g.setLayout(layout);
+		groupComp.setLayout(layout);
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		g.setLayoutData(data);
-
-		_enabledButton = new Button(g, SWT.CHECK);
+		groupComp.setLayoutData(data);
+		
+		
+		_enabledButton = new Button(groupComp, SWT.CHECK);
 		_enabledButton.setText(OprofileLaunchMessages
 				.getString("tab.event.counterSettings.enabled.button.text")); //$NON-NLS-1$
 		data = new GridData();
@@ -201,14 +208,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		});
 		_enabledButton.setEnabled(false);
 
-		Label l = new Label(top, SWT.NONE);
-		l.setText(OprofileLaunchMessages
-				.getString("tab.event.eventDescription.label.text")); //$NON-NLS-1$
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
-		l.setLayoutData(data);
-
-		Composite left = new Composite(g, SWT.NONE);
+		Composite left = new Composite(groupComp, SWT.NONE);
 		layout = new GridLayout();
 		left.setLayout(layout);
 		data = new GridData(GridData.FILL_BOTH);
@@ -252,7 +252,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		Composite right = new Composite(g, SWT.NONE);
+		Composite right = new Composite(groupComp, SWT.NONE);
 		layout = new GridLayout();
 		layout.marginWidth = 0;
 		right.setLayout(layout);
@@ -282,7 +282,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		layout.marginWidth = 0;
 		p.setLayout(layout);
 
-		l = new Label(p, SWT.NONE);
+		Label l = new Label(p, SWT.NONE);
 		l.setText(OprofileLaunchMessages
 				.getString("tab.event.counterSettings.count.label.text")); //$NON-NLS-1$
 		_countText = new Text(p, SWT.SINGLE | SWT.BORDER);
@@ -317,7 +317,15 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 
 		_unitMaskViewer = new UnitMaskViewer(right);
 
-		_eventDescText = new Text(top, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
+		
+		l = new Label(groupComp, SWT.NONE);
+		l.setText(OprofileLaunchMessages
+				.getString("tab.event.eventDescription.label.text")); //$NON-NLS-1$
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		l.setLayoutData(data);
+
+		_eventDescText = new Text(groupComp, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		_eventDescText.setLayoutData(data);
