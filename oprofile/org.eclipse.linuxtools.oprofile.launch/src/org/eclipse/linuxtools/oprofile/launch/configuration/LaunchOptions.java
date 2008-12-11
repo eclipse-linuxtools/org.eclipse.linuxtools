@@ -74,6 +74,14 @@ public class LaunchOptions {
 	}
 	
 	/**
+	 * Get the daemon launch options
+	 * @return the OprofileDaemonOption
+	 */
+	public OprofileDaemonOptions getOprofileDaemonOptions() {
+		return _options;
+	}
+	
+	/**
 	 * Method getKernelImageFile.
 	 * @return the kernel image file
 	 */
@@ -88,7 +96,6 @@ public class LaunchOptions {
 	public void setKernelImageFile(String image) {
 		_options.setKernelImageFile(image);
 	}
-		
 
 	/**
 	 * Method getSeparateSamples.
@@ -107,18 +114,17 @@ public class LaunchOptions {
 	}
 	
 	/**
-	 * Get the daemon launch options
-	 * @return the OprofileDaemonOption
+	 * Returns the path of the binary to profile.
+	 * @return the full path to the binary being profile
 	 */
-	public OprofileDaemonOptions getOprofileDaemonOptions() {
-		return _options;
-	}
-	
-	
 	public String getBinaryImage() {
 		return _options.getBinaryImage();
 	}
 
+	/**
+	 * Sets the binary to profile in this launch.
+	 * @param _image string of the full path to the binary
+	 */
 	public void setBinaryImage(String _image) {
 		_options.setBinaryImage(_image);
 	}
