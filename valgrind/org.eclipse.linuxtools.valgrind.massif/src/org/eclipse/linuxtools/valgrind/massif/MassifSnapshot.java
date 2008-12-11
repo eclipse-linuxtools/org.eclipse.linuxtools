@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.valgrind.massif;
 
 public class MassifSnapshot {
+	public static enum TimeUnit { INSTRUCTIONS, MILLISECONDS, BYTES };
 	public static enum SnapshotType { EMPTY, DETAILED, PEAK };
 	
 	protected int number;
@@ -18,6 +19,7 @@ public class MassifSnapshot {
 	protected int heapBytes;
 	protected int heapExtra;
 	protected int stacks;
+	protected TimeUnit unit;
 	protected SnapshotType type;
 	protected MassifHeapTreeNode root;
 		
@@ -53,6 +55,10 @@ public class MassifSnapshot {
 		return type;
 	}
 	
+	public TimeUnit getUnit() {
+		return unit;
+	}
+	
 	public MassifHeapTreeNode getRoot() {
 		return root;
 	}
@@ -77,7 +83,11 @@ public class MassifSnapshot {
 		this.type = type;
 	}
 	
-	public void setRoot(MassifHeapTreeNode root) {
+	protected void setUnit(TimeUnit unit) {
+		this.unit = unit;
+	}
+	
+	protected void setRoot(MassifHeapTreeNode root) {
 		this.root = root;
 	}
 }

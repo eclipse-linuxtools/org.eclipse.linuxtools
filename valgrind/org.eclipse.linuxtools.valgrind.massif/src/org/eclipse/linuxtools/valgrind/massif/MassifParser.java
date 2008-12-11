@@ -18,19 +18,27 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
+import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.TimeUnit;
 import org.eclipse.osgi.util.NLS;
 
 public class MassifParser {
+	private static final String TIME_UNIT = "time_unit"; //$NON-NLS-1$
 	private static final String SNAPSHOT = "snapshot"; //$NON-NLS-1$
 	private static final String TIME = "time"; //$NON-NLS-1$
 	private static final String MEM_HEAP_B = "mem_heap_B"; //$NON-NLS-1$
 	private static final String MEM_HEAP_EXTRA_B = "mem_heap_extra_B"; //$NON-NLS-1$
 	private static final String MEM_STACKS_B = "mem_stacks_B"; //$NON-NLS-1$
 	private static final String HEAP_TREE = "heap_tree"; //$NON-NLS-1$
+	
+	private static final String INSTRUCTIONS = "i"; //$NON-NLS-1$
+	private static final String MILLISECONDS = "ms"; //$NON-NLS-1$
+	private static final String BYTES = "B"; //$NON-NLS-1$
 	private static final String PEAK = "peak"; //$NON-NLS-1$
 	private static final String DETAILED = "detailed"; //$NON-NLS-1$
 	private static final String EMPTY = "empty"; //$NON-NLS-1$
 
+	private static final String COLON = ":"; //$NON-NLS-1$
+	private static final String SPACE = " "; //$NON-NLS-1$
 	private static final String EQUALS = "="; //$NON-NLS-1$
 
 	protected MassifSnapshot[] snapshots;
@@ -41,15 +49,20 @@ public class MassifParser {
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		String line;
 		MassifSnapshot snapshot = null;
+		TimeUnit unit = null;  
 		int n = 0;
 		while ((line = br.readLine()) != null) {
-			if (line.startsWith(SNAPSHOT)) {
+			if (line.startsWith(TIME_UNIT + COLON)) {
+				unit = parseTimeUnit(line);
+			}			
+			else if (line.startsWith(SNAPSHOT)) {
 				if (snapshot != null) {
 					// this snapshot finished parsing
 					list.add(snapshot);
 					n++;
 				}
 				snapshot = new MassifSnapshot(n);
+				snapshot.setUnit(unit);
 			}
 			else if (line.startsWith(TIME + EQUALS)) {
 				snapshot.setTime(parseIntValue(line));
@@ -188,11 +201,29 @@ public class MassifParser {
 			else if (type.equals(PEAK)) {
 				result = SnapshotType.PEAK;
 			}
-			else {
-				fail(line);
+		}
+		if (result == null) {
+			fail(line);
+		}
+		return result;
+	}
+	
+	protected TimeUnit parseTimeUnit(String line) throws IOException {
+		TimeUnit result = null;
+		String[] parts = line.split(COLON + SPACE);
+		if (parts.length > 1) {
+			String type = parts[1];
+			if (type.equals(INSTRUCTIONS)) {
+				result = TimeUnit.INSTRUCTIONS;
+			}
+			else if (type.equals(MILLISECONDS)) {
+				result = TimeUnit.MILLISECONDS;
+			}
+			else if (type.equals(BYTES)) {
+				result = TimeUnit.BYTES;
 			}
 		}
-		else {
+		if (result == null) {
 			fail(line);
 		}
 		return result;

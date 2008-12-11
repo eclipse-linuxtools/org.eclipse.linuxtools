@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
-import org.eclipse.linuxtools.valgrind.massif.graph.HeapChartShell;
+import org.eclipse.linuxtools.valgrind.massif.birt.ChartShell;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -128,21 +128,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return new IAction[] { chartAction, treeAction };
 	}
 	
-	protected void displayChart() {
-//		Shell chartShell = new Shell(Display.getCurrent());
-//		chartShell.setLayout(new GridLayout());
-//		chartShell.setText("Heap Allocation Chart");
-//		chartShell.setImage(MassifPlugin.imageDescriptorFromPlugin(ValgrindUIPlugin.PLUGIN_ID, "icons/valgrind-icon.png").createImage()); //$NON-NLS-1$
-//		chartShell.setSize(500, 400);
-//		
-//		Chart chart = HeapChartFactory.getFactory().createChart(snapshots);
-//		HeapChartCanvas canvas = new HeapChartCanvas(chartShell, SWT.NONE);
-//		canvas.setChart(chart);
-//		
+	protected void displayChart() {		
+//		HeapChartShell chartShell = new HeapChartShell(Display.getCurrent(), snapshots);
 //		chartShell.open();
-		
-		HeapChartShell chartShell = new HeapChartShell(Display.getCurrent(), snapshots);
-		chartShell.open();
+		ChartShell shell = new ChartShell(Display.getCurrent(), snapshots);
+		shell.open();
 	}
 	
 
