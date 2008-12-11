@@ -1,3 +1,7 @@
+2008-12-11  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Unpack memcheck.tests plugin after installation.
+
 2008-12-10  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Inital checkin.
