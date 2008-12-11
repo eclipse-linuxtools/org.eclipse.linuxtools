@@ -82,14 +82,6 @@ public class LaunchOptions {
 	}
 	
 	/**
-	 * Method getSeparateSamples.
-	 * @return whether and how to separate samples for each distinct application
-	 */
-	public int getSeparateSamples() {
-		return _options.getSeparateProfilesMask();
-	}
-	
-	/**
 	 * Sets the kernel image file
 	 * @param image	the kernel image file
 	 */
@@ -97,9 +89,18 @@ public class LaunchOptions {
 		_options.setKernelImageFile(image);
 	}
 		
+
+	/**
+	 * Method getSeparateSamples.
+	 * @return whether and how to separate samples for each distinct application
+	 */
+	public int getSeparateSamples() {
+		return _options.getSeparateProfilesMask();
+	}
+
 	/**
 	 * Sets whether/how to collect separate samples for each distinct application
-	 * @param how	one of SEPARATE_NONE, SEPARATE_LIBRARY, SEPARATE_KERNEL, SEPARATE_ALL
+	 * @param how	one of SEPARATE_{NONE, LIBRARY, KERNEL, THREAD, CPU}
 	 */
 	public void setSeparateSamples(int how) {
 		_options.setSeparateProfilesMask(how);
