@@ -26,7 +26,6 @@ import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
  * Eclipse launcher facility.
  */
 public class LaunchOptions {
-	
 	// The launch options for the daemon
 	private OprofileDaemonOptions _options;
 
@@ -50,70 +49,38 @@ public class LaunchOptions {
 		return true;
 	}
 	
-	/**
-	 * Saves the global options of this object into the specified launch
-	 * configuration
-	 * @param config	the launch configuration
-	 */
 	public void saveConfiguration(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, _options.getKernelImageFile());
 		config.setAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, _options.getSeparateProfilesMask());
 	}
 	
-	/**
-	 * Loads this object with the global options in the given launch
-	 * configuration
-	 * @param config	the launch configuration
-	 */
 	public void loadConfiguration(ILaunchConfiguration config) {
 		try {
 			_options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, Oprofile.getKernelImageFile()));
 			_options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
-		} catch (CoreException e) {
+		} catch (CoreException e) { 
 		}
 	}
 	
-	/**
-	 * Method getKernelImageFile.
-	 * @return the kernel image file
-	 */
+	public OprofileDaemonOptions getOprofileDaemonOptions() {
+		return _options;
+	}
+
 	public String getKernelImageFile() {
 		return _options.getKernelImageFile();
 	}
 	
-	/**
-	 * Sets the kernel image file
-	 * @param image	the kernel image file
-	 */
 	public void setKernelImageFile(String image) {
 		_options.setKernelImageFile(image);
 	}
 		
-
-	/**
-	 * Method getSeparateSamples.
-	 * @return whether and how to separate samples for each distinct application
-	 */
 	public int getSeparateSamples() {
 		return _options.getSeparateProfilesMask();
 	}
 
-	/**
-	 * Sets whether/how to collect separate samples for each distinct application
-	 * @param how	one of SEPARATE_{NONE, LIBRARY, KERNEL, THREAD, CPU}
-	 */
 	public void setSeparateSamples(int how) {
 		_options.setSeparateProfilesMask(how);
 	}
-	
-	/**
-	 * Get the daemon launch options
-	 * @return the OprofileDaemonOption
-	 */
-	public OprofileDaemonOptions getOprofileDaemonOptions() {
-		return _options;
-	}
-	
 	
 	public String getBinaryImage() {
 		return _options.getBinaryImage();
@@ -122,5 +89,4 @@ public class LaunchOptions {
 	public void setBinaryImage(String _image) {
 		_options.setBinaryImage(_image);
 	}
-
 }
