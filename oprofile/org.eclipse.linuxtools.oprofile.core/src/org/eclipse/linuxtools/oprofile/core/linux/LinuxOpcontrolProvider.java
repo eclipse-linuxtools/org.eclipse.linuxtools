@@ -47,14 +47,15 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_SETUP_SEPARATE_KERNEL = "kernel"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_THREAD = "thread"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_CPU = "cpu"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_SEPARATE_ALL = "all"; //$NON-NLS-1$
+
 	private static final String _OPD_SETUP_EVENT = "--event="; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_DEFAULT = "default";
-	
+
+	private static final String _OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
+
 	// Kernel image file options
 	private static final String _OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
 	private static final String _OPD_KERNEL_FILE = "--vmlinux="; //$NON-NLS-1$
@@ -282,23 +283,18 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 
 		String separate = new String(_OPD_SETUP_SEPARATE);
 		
-		if (mask == OprofileDaemonOptions.SEPARATE_ALL) {
-			separate += _OPD_SETUP_SEPARATE_ALL;
-		} else if (mask == OprofileDaemonOptions.SEPARATE_NONE) {
+		if (mask == OprofileDaemonOptions.SEPARATE_NONE) {
 			separate += _OPD_SETUP_SEPARATE_NONE;
 		} else {
+			//note that opcontrol will nicely ignore the trailing comma
 			if ((mask & OprofileDaemonOptions.SEPARATE_LIBRARY) != 0)
-				separate += _OPD_SETUP_SEPARATE_LIBRARY
-						+ _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += _OPD_SETUP_SEPARATE_LIBRARY + _OPD_SETUP_SEPARATE_SEPARATOR;
 			if ((mask & OprofileDaemonOptions.SEPARATE_KERNEL) != 0)
-				separate += _OPD_SETUP_SEPARATE_KERNEL
-						+ _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += _OPD_SETUP_SEPARATE_KERNEL + _OPD_SETUP_SEPARATE_SEPARATOR;
 			if ((mask & OprofileDaemonOptions.SEPARATE_THREAD) != 0)
-				separate += _OPD_SETUP_SEPARATE_THREAD
-						+ _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += _OPD_SETUP_SEPARATE_THREAD + _OPD_SETUP_SEPARATE_SEPARATOR;
 			if ((mask & OprofileDaemonOptions.SEPARATE_CPU) != 0)
-				separate += _OPD_SETUP_SEPARATE_CPU
-						+ _OPD_SETUP_SEPARATE_SEPARATOR;
+				separate += _OPD_SETUP_SEPARATE_CPU + _OPD_SETUP_SEPARATE_SEPARATOR;
 		}
 		args.add(separate);
 		
