@@ -13,12 +13,11 @@ package org.eclipse.linuxtools.rpm.ui.editor.wizards;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -32,6 +31,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -198,11 +198,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		label = new Label(container, SWT.NULL);
 		label.setText("&Group:");
 		groupCombo = new Combo(container, SWT.NULL);
-		try {
-			populateGroupCombo(groupCombo);
-		} catch (CoreException e1) {
-			SpecfileLog.logError(e1);
-		}
+		populateGroupCombo(groupCombo);
 		// empty label for the last row.
 		label = new Label(container, SWT.NULL);
 
@@ -416,33 +412,11 @@ public class SpecfileNewWizardPage extends WizardPage {
 		}
 	}
 
-	private void populateGroupCombo(Combo groupsCombo) throws CoreException {
-		// FIXME: Can we assume that all distros place 
-		// documentations files in the below path?
-		String docDir = "/usr/share/doc/";
-		File dir = new File(docDir);
-		if (dir.exists()) {
-			String files[] = dir.list(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
-					return name.startsWith("rpm-");
-				}
-			});
-			try {
-				// Normally only one version of RPM is installed on a system,
-				// so we take the first one here.
-				LineNumberReader reader = new LineNumberReader(new FileReader(
-						docDir + files[0] + "/GROUPS"));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					groupsCombo.add(line);
-				}
-			} catch (IOException e) {
-				SpecfileLog.logError(e);
-			}			
-		} else {
-			throwCoreException("/usr/share/doc directory was not found" );
+	private void populateGroupCombo(Combo groupsCombo) {
+		List<String> rpmGroups = Activator.getDefault().getRpmGroups();
+		for (String rpmGroup : rpmGroups) {
+			groupsCombo.add(rpmGroup);
 		}
-
 	}
 
 	private BufferedInputStream runRpmdevNewSpec(String template) {

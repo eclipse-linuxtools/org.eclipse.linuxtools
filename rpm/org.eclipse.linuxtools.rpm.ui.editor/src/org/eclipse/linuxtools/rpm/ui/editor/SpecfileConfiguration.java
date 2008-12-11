@@ -156,6 +156,10 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_FILES);
 		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_FILES);
 		
+		dr = new DefaultDamagerRepairer(getSpecfileScanner());
+		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_GROUP);
+		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_GROUP);
+		
 		dr = new DefaultDamagerRepairer(getSpecfileChangelogScanner());
 		reconciler.setDamager(dr, SpecfilePartitionScanner.SPEC_CHANGELOG);
 		reconciler.setRepairer(dr, SpecfilePartitionScanner.SPEC_CHANGELOG);
@@ -191,7 +195,9 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		assistant.setContentAssistProcessor(processor, SpecfilePartitionScanner.SPEC_SCRIPT);
 		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_FILES);
 		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_CHANGELOG);		
-		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_PACKAGES);	
+		assistant.setContentAssistProcessor(processor,SpecfilePartitionScanner.SPEC_PACKAGES);
+		assistant.setContentAssistProcessor(processor,
+				SpecfilePartitionScanner.SPEC_GROUP);
 		// configure content assistance
 		assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
         IInformationControlCreator controlCreator= getInformationControlCreator();

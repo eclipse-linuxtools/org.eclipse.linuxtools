@@ -135,6 +135,19 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			result.addAll(templateProposals);
 			result.addAll(rpmMacroProposals);
 		}
+		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_GROUP)){
+			IDocument document = viewer.getDocument();
+			try {
+				int lineNumber = document.getLineOfOffset(region.getOffset());
+				int lineOffset = document.getLineOffset(lineNumber);
+				if (region.getOffset() - lineOffset > 5){
+					result.clear();
+					result.addAll(computeRpmGroupProposals(viewer, region,specfile, prefix));
+				}
+			} catch (BadLocationException e) {
+				SpecfileLog.logError(e);
+			}
+		}
 		return result
 				.toArray(new ICompletionProposal[result.size()]);
 	}
@@ -307,6 +320,20 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 						Activator.getDefault().getImage(PACKAGE_ICON), item[0],
 						null, item[1]));
 			}
+		}
+		return proposals;
+	}
+	
+	private List<ICompletionProposal> computeRpmGroupProposals(ITextViewer viewer,
+			IRegion region,Specfile specfile, String prefix) {
+		
+		List<String> rpmGroupProposalsList = Activator.getDefault().getRpmGroups();
+		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		for (String item : rpmGroupProposalsList){
+			proposals.add(new CompletionProposal(item, region
+					.getOffset(), region.getLength(), item.length(),
+					Activator.getDefault().getImage(PACKAGE_ICON), item,
+					null, item));
 		}
 		return proposals;
 	}

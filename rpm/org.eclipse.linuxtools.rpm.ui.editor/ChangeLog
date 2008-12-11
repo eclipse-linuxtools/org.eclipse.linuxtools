@@ -1,3 +1,20 @@
+2008-12-11  Alexander Kurtakov  <akurtakov@gmail.com>
+	Fix #255760.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java 
+	(rpmGroups): New member to store rpm groups.
+	(getRpmGroups): Fetch rpm groups from the system file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java 
+	(SpecfilePartitionScanner): Initialize spec_group token.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java 
+	(computeCompletionProposals): Add special handling for rpm groups proposals.
+	(computeRpmGroupProposals): Compute rpm group proposals.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java 
+	(getContentAssistant): Add support for rpm group partition.
+	(getPresentationReconciler): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java 
+	(populateGroupCombo): Use Activator's method for fetching groups. 
+	(createControl): Remove unneeded exception.
+
 2008-12-04  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmTags.java: New file.

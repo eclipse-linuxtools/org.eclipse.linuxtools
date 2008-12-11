@@ -35,9 +35,10 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 	public final static String SPEC_FILES = "__spec_files";
 	public final static String SPEC_CHANGELOG = "__spec_changelog";
 	public final static String SPEC_PACKAGES = "__spec_packages";
+	public final static String SPEC_GROUP = "__spec_group";
 	
 	public static String[] SPEC_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE, SPEC_PREP, SPEC_SCRIPT,
-			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES};
+			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES, SPEC_GROUP};
 	
 	/** All possible headers for sections of the type SPEC_SCRIPT */
 	private static String[] sectionHeaders = { BUILD_SECTION, INSTALL_SECTION, 
@@ -50,7 +51,6 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		CLEAN_SECTION, FILES_SECTION};
 	
 	public SpecfilePartitionScanner() {
-		// FIXME:  do we need this?
 		super();
 		
 		IToken specPrep = new Token(SPEC_PREP);
@@ -58,6 +58,7 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		IToken specFiles = new Token(SPEC_FILES);
 		IToken specChangelog = new Token(SPEC_CHANGELOG);
 		IToken specPackages = new Token(SPEC_PACKAGES);
+		IToken specGroup = new Token(SPEC_GROUP);
 		
 		List<IRule> rules = new ArrayList<IRule>();
 		
@@ -79,6 +80,8 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		// comments
 		rules.add(new EndOfLineRule("#", specScript));
 		
+		// group tag
+		rules.add(new EndOfLineRule("Group:", specGroup));
 		
 		
 		// %files

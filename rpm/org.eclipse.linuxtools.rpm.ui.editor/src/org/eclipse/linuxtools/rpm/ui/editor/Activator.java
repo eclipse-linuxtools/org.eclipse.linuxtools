@@ -12,7 +12,13 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.LineNumberReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -43,6 +49,9 @@ public class Activator extends AbstractUIPlugin {
 	
 	// RPM macros list
 	private RpmMacroProposalsList macrosList ;
+	
+	// RPM Groups
+	private List<String> rpmGroups = new ArrayList<String>() ;;
 	
 	// RPM package list
 	public static RpmPackageProposalsList packagesList ;
@@ -116,6 +125,7 @@ public class Activator extends AbstractUIPlugin {
 		return macrosList;
 	}
 	
+	
 	public RpmPackageProposalsList getRpmPackageList() {
 		if (packagesList == null){
 			packagesList = new RpmPackageProposalsList();
@@ -125,6 +135,42 @@ public class Activator extends AbstractUIPlugin {
 		return packagesList;
 	}
 	
+	public List<String> getRpmGroups() {
+		if (rpmGroups.isEmpty()) {
+			// FIXME: Can we assume that all distros place
+			// documentations files in the below path?
+			String docDir = "/usr/share/doc/";
+			File dir = new File(docDir);
+			if (dir.exists()) {
+				File files[] = dir.listFiles(new FilenameFilter() {
+					public boolean accept(File dir, String name) {
+						return name.startsWith("rpm-");
+					}
+				});
+				try {
+					// We can not be sure that there is only one directory here
+					// starting with rpm-
+					// (e.g. rpm-apidocs is the wrong directory.)
+					for (File file : files) {
+						File groupsFile = new File(file, "GROUPS");
+						if (groupsFile.exists()) {
+
+							LineNumberReader reader = new LineNumberReader(
+									new FileReader(groupsFile));
+							String line;
+							while ((line = reader.readLine()) != null) {
+								rpmGroups.add(line);
+							}
+							break;
+						}
+					}
+				} catch (IOException e) {
+					SpecfileLog.logError(e);
+				}
+			}
+		}
+		return rpmGroups;
+	}
 
 	public ContextTypeRegistry getContextTypeRegistry() {
 		if (fContextTypeRegistry == null) {
