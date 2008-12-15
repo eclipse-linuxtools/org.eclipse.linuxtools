@@ -17,7 +17,6 @@ public class ValgrindPlugin extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.core"; //$NON-NLS-1$
-	public static final String MARKER_TYPE = PLUGIN_ID + ".marker"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ValgrindPlugin plugin;
