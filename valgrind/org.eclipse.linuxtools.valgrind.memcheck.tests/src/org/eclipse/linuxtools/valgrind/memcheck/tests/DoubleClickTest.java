@@ -22,7 +22,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class DoubleClickTest extends AbstractMemcheckTest {
+public class DoubleClickTest extends AbstractTest {
 	private StackFrameTreeElement frame;
 
 	@Override
