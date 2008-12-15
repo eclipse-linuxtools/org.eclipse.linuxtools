@@ -10,6 +10,8 @@ public class AllTests {
 				"Tests for org.eclipse.linuxtools.valgrind.memcheck"); //$NON-NLS-1$
 		// $JUnit-BEGIN$
 		suite.addTestSuite(BasicTest.class);
+		suite.addTestSuite(DoubleClickTest.class);
+		suite.addTestSuite(MarkerTest.class);
 		// $JUnit-END$
 		return suite;
 	}
