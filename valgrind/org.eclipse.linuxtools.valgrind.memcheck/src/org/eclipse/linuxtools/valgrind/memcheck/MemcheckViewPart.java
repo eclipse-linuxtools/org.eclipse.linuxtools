@@ -34,6 +34,7 @@ import org.eclipse.ui.part.ViewPart;
 public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 	protected TreeViewer viewer;
 	protected ValgrindError[] errors;
+	protected IDoubleClickListener doubleClickListener;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -77,7 +78,7 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 
 		});
 
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
+		doubleClickListener = new IDoubleClickListener() {
 
 			public void doubleClick(DoubleClickEvent event) {
 				Object element = ((TreeSelection) event.getSelection()).getFirstElement();
@@ -104,8 +105,8 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 					}
 				}
 			}
-
-		});
+		};
+		viewer.addDoubleClickListener(doubleClickListener);
 
 	}
 
@@ -135,6 +136,10 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 
 	public IAction[] getToolbarActions() {
 		return null;
+	}
+	
+	public IDoubleClickListener getDoubleClickListener() {
+		return doubleClickListener;
 	}
 
 }

@@ -20,7 +20,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.valgrind.core.ValgrindPlugin;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -92,7 +91,7 @@ public class ValgrindError {
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 				IFile resource = root.getFileForLocation(path);
 				if (resource != null && resource.exists()) {
-					marker = resource.createMarker(ValgrindPlugin.MARKER_TYPE);
+					marker = resource.createMarker(MemcheckPlugin.MARKER_TYPE);
 					marker.setAttribute(IMarker.MESSAGE, what);
 					marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 					marker.setAttribute(IMarker.LINE_NUMBER, frame.getLine());

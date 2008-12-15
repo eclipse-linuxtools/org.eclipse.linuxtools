@@ -17,6 +17,14 @@
             definitionId="org.eclipse.linuxtools.valgrind.launch.memcheck">
       </view>
    </extension>
+      <extension
+         id="org.eclipse.linuxtools.valgrind.memcheck.marker"
+         name="%marker.name"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.cdt.core.problem">
+      </super>
+   </extension>
    <!--
    <extension
          point="org.eclipse.linuxtools.valgrind.history.statePersisters">
