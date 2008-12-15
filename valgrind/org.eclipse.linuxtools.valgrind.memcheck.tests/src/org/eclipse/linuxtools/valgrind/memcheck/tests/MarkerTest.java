@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.valgrind.memcheck.ValgrindError;
 import org.eclipse.linuxtools.valgrind.memcheck.ValgrindStackFrame;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 
-public class MarkerTest extends AbstractTest {
+public class MarkerTest extends AbstractMemcheckTest {
 	@Override
 	protected void setUp() throws Exception {
 		proj = createProject("basicTest"); //$NON-NLS-1$
