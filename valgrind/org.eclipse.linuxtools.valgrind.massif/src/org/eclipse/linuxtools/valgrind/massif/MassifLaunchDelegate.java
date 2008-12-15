@@ -26,15 +26,12 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 
 public class MassifLaunchDelegate extends ValgrindLaunchConfigurationDelegate
 implements IValgrindLaunchDelegate {
-	public static final String TOOL_ID = ValgrindLaunchPlugin.PLUGIN_ID + ".massif"; //$NON-NLS-1$
-
 	protected static final String OUT_PREFIX = "massif_";	 //$NON-NLS-1$
 	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter MASSIF_FILTER = new FileFilter() {

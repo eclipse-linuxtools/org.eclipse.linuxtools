@@ -66,8 +66,6 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 		Table table = viewer.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
 
 		String[] columnTitles = { Messages.getString("MassifViewPart.Snapshot"), Messages.getString("MassifViewPart.Time"), Messages.getString("MassifViewPart.Total"), Messages.getString("MassifViewPart.Useful_Heap"), Messages.getString("MassifViewPart.Extra_Heap"), Messages.getString("MassifViewPart.Stacks") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
@@ -162,6 +160,10 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		this.snapshots = snapshots;
 	}
 
+	public MassifSnapshot[] getSnapshots() {
+		return snapshots;
+	}
+	
 	protected class MassifLabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {

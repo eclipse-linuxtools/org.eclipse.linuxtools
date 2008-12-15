@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.valgrind.massif;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Control;
@@ -31,6 +32,8 @@ public class MassifPlugin extends AbstractUIPlugin {
 	// Needed for source lookup on massif output, since massif only supplies filenames
 	// and not full paths
 	protected ISourceLocator locator;
+
+	public static final String TOOL_ID = ValgrindLaunchPlugin.PLUGIN_ID + ".massif"; //$NON-NLS-1$
 	
 	/**
 	 * The constructor
