@@ -1,3 +1,7 @@
+2008-12-16  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Added dependencies and Linux requirement. Added massif tests.
+	
 2008-12-11  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Unpack memcheck.tests plugin after installation.
