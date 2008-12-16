@@ -28,9 +28,11 @@ import org.eclipse.ui.PartInitException;
 
 public class MassifTreeViewer extends TreeViewer {
 
+	protected IDoubleClickListener doubleClickListener;
+
 	public MassifTreeViewer(Composite parent) {
 		super(parent);
-		
+
 		setContentProvider(new ITreeContentProvider() {
 			public Object[] getChildren(Object parentElement) {
 				return ((MassifHeapTreeNode) parentElement).getChildren();
@@ -53,15 +55,15 @@ public class MassifTreeViewer extends TreeViewer {
 
 			public void inputChanged(Viewer viewer, Object oldInput,
 					Object newInput) {}
-			
+
 		});
-		
+
 		setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
 				return ((MassifHeapTreeNode) element).getText();
 			}
-			
+
 			@Override
 			public Image getImage(Object element) {
 				Image img = null;
@@ -71,8 +73,8 @@ public class MassifTreeViewer extends TreeViewer {
 				return img;
 			}
 		});
-		
-		addDoubleClickListener(new IDoubleClickListener() {
+
+		doubleClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				MassifHeapTreeNode element = (MassifHeapTreeNode) ((TreeSelection) event.getSelection()).getFirstElement();
 				if (element.hasSourceFile()) {
@@ -92,9 +94,12 @@ public class MassifTreeViewer extends TreeViewer {
 					}
 				}
 			}			
-		});
+		};
+		addDoubleClickListener(doubleClickListener);
 	}
 
-
+	public IDoubleClickListener getDoubleClickListener() {
+		return doubleClickListener;
+	}
 
 }

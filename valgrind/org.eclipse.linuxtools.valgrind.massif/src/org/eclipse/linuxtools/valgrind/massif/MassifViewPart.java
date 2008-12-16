@@ -164,6 +164,14 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return snapshots;
 	}
 	
+	public TableViewer getTableViewer() {
+		return viewer;
+	}
+	
+	public TreeViewer getTreeViewer() {
+		return treeViewer;
+	}
+	
 	protected class MassifLabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
