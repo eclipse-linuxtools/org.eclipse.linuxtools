@@ -13,7 +13,6 @@ Bundle-Localization: plugin
 Import-Package: junit.framework;version="3.8.2",
  org.eclipse.cdt.core.model,
  org.eclipse.cdt.core.resources,
- org.eclipse.cdt.core.testplugin,
  org.eclipse.cdt.debug.core,
  org.eclipse.cdt.debug.ui,
  org.eclipse.core.resources,
