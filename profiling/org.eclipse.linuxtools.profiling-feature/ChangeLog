@@ -1,3 +1,7 @@
+2008-12-16  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Added dependencies and Linux requirement.
+
 2008-12-10  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Typo in feature ID.
