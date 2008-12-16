@@ -1,5 +1,9 @@
 2008-12-16  Elliott Baron  <ebaron@redhat.com>
 
+	* feature.xml: Fixed feature ID.
+
+2008-12-16  Elliott Baron  <ebaron@redhat.com>
+
 	* build.properties: Inital checkin.
 	* feature.xml: Likewise.
 	* feature.properties: Likewise.
