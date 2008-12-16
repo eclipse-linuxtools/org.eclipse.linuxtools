@@ -12,11 +12,15 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Import-Package: junit.framework;version="3.8.2",
  org.eclipse.cdt.core.model,
+ org.eclipse.core.resources,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
+ org.eclipse.jface.text,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.core.utils,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.massif,
- org.eclipse.linuxtools.valgrind.ui
+ org.eclipse.linuxtools.valgrind.ui,
+ org.eclipse.ui,
+ org.eclipse.ui.texteditor
