@@ -1,18 +1,3 @@
-2009-01-05  Elliott Baron  <ebaron@redhat.com>
-
-	* META-INF/MANIFEST.MF: Changed version to 0.1.0.
-
-2008-12-18  Elliott Baron  <ebaron@redhat.com>
-
-	* META-INF/MANIFEST.MF: Fixed string externalization.
-	* plugin.properties: Likewise.
-	* build.properties: Likewise.
-
-2008-12-18  Andrew Overholt  <overholt@redhat.com>
-
-	* test.xml: Typos.
-	* build.properties: Add test.xml.
-
 2008-12-17  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Inital checkin.

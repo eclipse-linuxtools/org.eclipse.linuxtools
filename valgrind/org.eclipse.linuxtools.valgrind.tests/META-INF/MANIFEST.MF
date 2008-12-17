@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name.0
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.tests
-Bundle-Version: 0.1.0.qualifier
-Bundle-Vendor: %Bundle-Vendor.0
-Bundle-Localization: plugin
+Bundle-Version: 1.0.0
+Bundle-Vendor: %provider
