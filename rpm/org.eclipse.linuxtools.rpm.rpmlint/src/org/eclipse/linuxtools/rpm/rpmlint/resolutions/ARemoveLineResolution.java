@@ -14,37 +14,18 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IMarkerResolution2;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 
-abstract public class ARemoveLineResolution implements IMarkerResolution2 {
+abstract public class ARemoveLineResolution extends ARpmlintResolution {
 	
 	public void run(IMarker marker) {
 	
-		// Open or activate the editor. 
-		IWorkbenchPage page = PlatformUI.getWorkbench() 
-		.getActiveWorkbenchWindow().getActivePage(); 
-		IEditorPart part; 
-		try { 
-			part = IDE.openEditor(page, marker); 
-		} 
-		catch (PartInitException e) { 
-			RpmlintLog.logError(e); 
-			return; 
-		} 
-		// Get the editor's document. 
-		if (!(part instanceof ITextEditor)) { 
-			return; 
-		} 
-		ITextEditor editor = (ITextEditor) part; 
+		SpecfileEditor editor = getEditor(marker); 
+		if (editor == null) {
+			return;
+		}
 		// Get the document
-		IDocument doc = editor.getDocumentProvider() 
-		.getDocument(editor.getEditorInput()); 
+		IDocument doc = editor.getSpecfileSourceViewer().getDocument(); 
 
 		try {
 			int index = doc.getLineOffset(marker.getAttribute(IMarker.LINE_NUMBER, 0));

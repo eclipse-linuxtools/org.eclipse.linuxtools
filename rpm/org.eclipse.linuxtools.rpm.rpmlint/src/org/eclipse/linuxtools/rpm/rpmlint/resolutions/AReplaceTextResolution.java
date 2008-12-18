@@ -15,14 +15,8 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IMarkerResolution2;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 
-abstract public class AReplaceTextResolution implements IMarkerResolution2 {
+abstract public class AReplaceTextResolution extends ARpmlintResolution {
 	
 	/**
 	 * Returns the original string
@@ -41,24 +35,11 @@ abstract public class AReplaceTextResolution implements IMarkerResolution2 {
 	
 	public void run(IMarker marker) {
 	
-		// Open or activate the editor. 
-		IWorkbenchPage page = PlatformUI.getWorkbench() 
-		.getActiveWorkbenchWindow().getActivePage(); 
-		IEditorPart part; 
-		try { 
-			part = IDE.openEditor(page, marker); 
-		} 
-		catch (PartInitException e) { 
-			RpmlintLog.logError(e); 
-			return; 
-		} 
-		// Get the editor's document. 
-		if (!(part instanceof SpecfileEditor)) { 
-			return; 
-		} 
-		SpecfileEditor editor = (SpecfileEditor) part; 
-		IDocument doc = editor.getDocumentProvider() 
-		.getDocument(editor.getEditorInput()); 
+		SpecfileEditor editor = getEditor(marker); 
+		if (editor == null) {
+			return;
+		}
+		IDocument doc = editor.getSpecfileSourceViewer().getDocument(); 
 
 		try {
 			int lineNumber = marker.getAttribute(IMarker.LINE_NUMBER, 0);

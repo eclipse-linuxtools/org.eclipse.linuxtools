@@ -1,3 +1,13 @@
+2008-12-18  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/ARpmlintResolution.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/AInsertLineResolution.java 
+	(run): Remove functionality that is in the base class now.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/ARemoveLineResolution.java 
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/AReplaceTextResolution.java 
+	(run): Likewise.
+
 2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
 	Fix problem with enabling rpmlint warnings after task handler addition.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java 

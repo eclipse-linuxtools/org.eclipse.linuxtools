@@ -15,18 +15,12 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IMarkerResolution2;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 
 /**
  * Defines the common functionality for a resolution which fix is only inserting line.
  *
  */
-abstract public class AInsertLineResolution implements IMarkerResolution2 {
+abstract public class AInsertLineResolution extends ARpmlintResolution {
 
 	protected int markerLine;
 	
@@ -54,21 +48,10 @@ abstract public class AInsertLineResolution implements IMarkerResolution2 {
 	 */
 	public void run(IMarker marker) {
 		markerLine = marker.getAttribute(IMarker.LINE_NUMBER, 0);
-		// Open or activate the editor.
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		IEditorPart part;
-		try {
-			part = IDE.openEditor(page, marker);
-		} catch (PartInitException e) {
-			RpmlintLog.logError(e);
+		SpecfileEditor editor = getEditor(marker);
+		if (editor == null) {
 			return;
 		}
-		// Get the editor's document.
-		if (!(part instanceof SpecfileEditor)) {
-			return;
-		}
-		SpecfileEditor editor = (SpecfileEditor) part;
 		// Get the document
 		IDocument doc = editor.getSpecfileSourceViewer().getDocument();
 		
