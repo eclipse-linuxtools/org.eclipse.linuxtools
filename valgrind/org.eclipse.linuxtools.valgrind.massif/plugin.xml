@@ -17,6 +17,16 @@
             definitionId="org.eclipse.linuxtools.valgrind.launch.massif">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.linuxtools.valgrind.massif.birt.ChartEditor"
+            default="false"
+            icon="icons/linecharticon.gif"
+            id="org.eclipse.linuxtools.valgrind.massif.chartEditor"
+            name="%editor.name.0">
+      </editor>
+   </extension>
    <!--
    <extension
          point="org.eclipse.linuxtools.valgrind.history.statePersisters">

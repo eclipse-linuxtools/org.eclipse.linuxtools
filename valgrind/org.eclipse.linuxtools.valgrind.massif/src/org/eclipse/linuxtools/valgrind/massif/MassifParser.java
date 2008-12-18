@@ -22,6 +22,7 @@ import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.TimeUnit;
 import org.eclipse.osgi.util.NLS;
 
 public class MassifParser {
+	private static final String CMD = "cmd"; //$NON-NLS-1$
 	private static final String TIME_UNIT = "time_unit"; //$NON-NLS-1$
 	private static final String SNAPSHOT = "snapshot"; //$NON-NLS-1$
 	private static final String TIME = "time"; //$NON-NLS-1$
@@ -49,10 +50,14 @@ public class MassifParser {
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		String line;
 		MassifSnapshot snapshot = null;
+		String cmd = null;
 		TimeUnit unit = null;  
 		int n = 0;
 		while ((line = br.readLine()) != null) {
-			if (line.startsWith(TIME_UNIT + COLON)) {
+			if (line.startsWith(CMD + COLON)){
+				cmd = parseStrValue(line, COLON + SPACE);
+			}
+			else if (line.startsWith(TIME_UNIT + COLON)) {
 				unit = parseTimeUnit(line);
 			}			
 			else if (line.startsWith(SNAPSHOT)) {
@@ -62,19 +67,20 @@ public class MassifParser {
 					n++;
 				}
 				snapshot = new MassifSnapshot(n);
+				snapshot.setCmd(cmd);
 				snapshot.setUnit(unit);
 			}
 			else if (line.startsWith(TIME + EQUALS)) {
-				snapshot.setTime(parseIntValue(line));
+				snapshot.setTime(parseIntValue(line, EQUALS));
 			}
 			else if (line.startsWith(MEM_HEAP_B + EQUALS)) {
-				snapshot.setHeapBytes(parseIntValue(line));
+				snapshot.setHeapBytes(parseIntValue(line, EQUALS));
 			}
 			else if (line.startsWith(MEM_HEAP_EXTRA_B + EQUALS)) {
-				snapshot.setHeapExtra(parseIntValue(line));
+				snapshot.setHeapExtra(parseIntValue(line, EQUALS));
 			}
 			else if (line.startsWith(MEM_STACKS_B + EQUALS)) {
-				snapshot.setStacks(parseIntValue(line));
+				snapshot.setStacks(parseIntValue(line, EQUALS));
 			}
 			else if (line.startsWith(HEAP_TREE + EQUALS)) {
 				SnapshotType type = parseSnapshotType(line);
@@ -229,11 +235,23 @@ public class MassifParser {
 		return result;
 	}
 
-	protected Integer parseIntValue(String line) throws IOException {
+	protected Integer parseIntValue(String line, String delim) throws IOException {
 		Integer result = null;
-		String[] parts = line.split(EQUALS);
+		String[] parts = line.split(delim);
 		if (parts.length > 1 && isNumber(parts[1])) {
 			result = Integer.parseInt(parts[1]);
+		}
+		else {
+			fail(line);
+		}
+		return result;
+	}
+	
+	protected String parseStrValue(String line, String delim) throws IOException {
+		String result = null;
+		String[] parts = line.split(delim);
+		if (parts.length > 1) {
+			result = parts[1];
 		}
 		else {
 			fail(line);

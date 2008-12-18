@@ -19,6 +19,8 @@ public class MassifSnapshot {
 	protected int heapBytes;
 	protected int heapExtra;
 	protected int stacks;
+	
+	protected String cmd;
 	protected TimeUnit unit;
 	protected SnapshotType type;
 	protected MassifHeapTreeNode root;
@@ -55,6 +57,10 @@ public class MassifSnapshot {
 		return type;
 	}
 	
+	public String getCmd() {
+		return cmd;
+	}
+	
 	public TimeUnit getUnit() {
 		return unit;
 	}
@@ -81,6 +87,10 @@ public class MassifSnapshot {
 	
 	protected void setType(SnapshotType type) {
 		this.type = type;
+	}
+	
+	protected void setCmd(String cmd) {
+		this.cmd = cmd;
 	}
 	
 	protected void setUnit(TimeUnit unit) {

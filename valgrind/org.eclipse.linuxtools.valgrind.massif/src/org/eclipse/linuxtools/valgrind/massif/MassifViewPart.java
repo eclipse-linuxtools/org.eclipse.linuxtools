@@ -10,10 +10,14 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.massif;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import org.eclipse.birt.chart.model.Chart;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -27,8 +31,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
-import org.eclipse.linuxtools.valgrind.massif.birt.ChartShell;
+import org.eclipse.linuxtools.valgrind.massif.birt.ChartBuilder;
+import org.eclipse.linuxtools.valgrind.massif.birt.ChartEditorInput;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Font;
@@ -38,12 +44,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.IProgressService;
 
 public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 	protected MassifSnapshot[] snapshots;
-	
+
 	protected Composite top;
 	protected StackLayout stackLayout;
 	protected TableViewer viewer;
@@ -61,7 +71,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		stackLayout = new StackLayout();
 		top.setLayout(stackLayout);
 		top.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		viewer = new TableViewer(top, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 
 		Table table = viewer.getTable();
@@ -80,10 +90,10 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 		viewer.setContentProvider(new ArrayContentProvider());	
 		viewer.setLabelProvider(new MassifLabelProvider());
-		
+
 		treeViewer = new MassifTreeViewer(top);
 		treeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				MassifSnapshot snapshot = (MassifSnapshot) ((IStructuredSelection) event.getSelection()).getFirstElement();
@@ -95,7 +105,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				}
 			}	
 		});
-			
+
 		setTopControl(viewer.getControl());
 	}
 
@@ -103,12 +113,30 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		chartAction = new Action(Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			@Override
 			public void run() {
-				displayChart();
+				if (snapshots.length > 0) {
+					IProgressService ps = PlatformUI.getWorkbench().getProgressService();
+					final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					try {
+						ps.busyCursorWhile(new IRunnableWithProgress() {
+							public void run(IProgressMonitor monitor)
+									throws InvocationTargetException,
+									InterruptedException {
+								monitor.beginTask(Messages.getString("MassifViewPart.Rendering_Chart"), 2); //$NON-NLS-1$
+								displayChart(page, monitor); // this can be long running
+								monitor.done();
+							}						
+						});
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		};
 		chartAction.setImageDescriptor(MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/linecharticon.gif")); //$NON-NLS-1$
 		chartAction.setToolTipText(Messages.getString("MassifViewPart.Display_Heap_Allocation")); //$NON-NLS-1$
-		
+
 		treeAction = new Action(Messages.getString("MassifViewPart.Show_Heap_Tree"), IAction.AS_CHECK_BOX) { //$NON-NLS-1$
 			@Override
 			public void run() {
@@ -125,14 +153,30 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 		return new IAction[] { chartAction, treeAction };
 	}
-	
-	protected void displayChart() {		
-//		HeapChartShell chartShell = new HeapChartShell(Display.getCurrent(), snapshots);
-//		chartShell.open();
-		ChartShell shell = new ChartShell(Display.getCurrent(), snapshots);
-		shell.open();
+
+	protected void displayChart(final IWorkbenchPage page, final IProgressMonitor monitor) {		
+//		ChartShell shell = new ChartShell(Display.getCurrent(), snapshots);
+//		shell.open();
+		final Chart chart = ChartBuilder.createLine(snapshots);
+		String title = ValgrindUIPlugin.getDefault().getView().getContentDescription();
+		chart.getTitle().getLabel().getCaption().setValue(title);
+		
+		if (page != null) {
+			Display.getDefault().syncExec(new Runnable() {
+				public void run() {
+					try {
+						final ChartEditorInput input = new ChartEditorInput(chart, snapshots);
+						monitor.worked(1);
+						page.openEditor(input, MassifPlugin.EDITOR_ID);
+					} catch (PartInitException e) {
+						e.printStackTrace();
+					}
+				}					
+			});
+			monitor.worked(1);
+		}
 	}
-	
+
 
 	@Override
 	public void setFocus() {
@@ -155,7 +199,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		stackLayout.topControl = control;
 		top.layout(true);
 	}
-	
+
 	public void setSnapshots(MassifSnapshot[] snapshots) {
 		this.snapshots = snapshots;
 	}
@@ -163,15 +207,15 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public MassifSnapshot[] getSnapshots() {
 		return snapshots;
 	}
-	
+
 	public TableViewer getTableViewer() {
 		return viewer;
 	}
-	
+
 	public TreeViewer getTreeViewer() {
 		return treeViewer;
 	}
-	
+
 	protected class MassifLabelProvider extends LabelProvider implements ITableLabelProvider, IFontProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
@@ -220,7 +264,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			return font;
 		}		
 	}
-	
+
 	private MassifSnapshot[] getDetailed(MassifSnapshot[] snapshots) {
 		ArrayList<MassifSnapshot> list = new ArrayList<MassifSnapshot>();
 		for (MassifSnapshot snapshot : snapshots) {
