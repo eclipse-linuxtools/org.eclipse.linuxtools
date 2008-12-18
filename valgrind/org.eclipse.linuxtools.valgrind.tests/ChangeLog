@@ -1,3 +1,9 @@
+2008-12-18  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Fixed string externalization.
+	* plugin.properties: Likewise.
+	* build.properties: Likewise.
+
 2008-12-18  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: Typos.
