@@ -1,7 +1,3 @@
-2009-01-06  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.xml: Add dependencies.  Add update site information.
-
 2008-12-18  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Inital checkin.

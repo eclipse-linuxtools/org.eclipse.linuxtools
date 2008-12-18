@@ -17,41 +17,4 @@
       %license
    </license>
 
-   <url>
-      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
-   </url>
-
-   <requires>
-      <import plugin="org.eclipse.core.runtime" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.debug.core"/>
-      <import plugin="org.eclipse.debug.ui"/>
-      <import plugin="org.eclipse.linuxtools.profiling.launch"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.linuxtools.profiling.ui"/>
-   </requires>
-
-   <plugin
-         id="org.eclipse.linuxtools.oprofile.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.oprofile.launch"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.oprofile.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
 </feature>
