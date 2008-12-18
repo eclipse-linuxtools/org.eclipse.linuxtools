@@ -1,5 +1,6 @@
 2008-12-18  Andrew Overholt  <overholt@redhat.com>
 
+	* test.xml: Typos.
 	* build.properties: Add test.xml.
 
 2008-12-17  Andrew Overholt  <overholt@redhat.com>

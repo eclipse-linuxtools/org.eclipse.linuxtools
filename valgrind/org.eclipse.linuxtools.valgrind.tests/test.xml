@@ -27,8 +27,8 @@
 		<delete dir="${massif-folder}" quiet="true" />
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${massif-folder}" />
-			<property name="plugin-name" value="${plugin-name}" />
-			<property name="classname" value="${classname}" />
+			<property name="plugin-name" value="${memcheck-plugin-name}" />
+			<property name="classname" value="${memcheckClassname}" />
 		</ant>
 	</target>
 
@@ -37,8 +37,8 @@
 		<delete dir="${massif-folder}" quiet="true" />
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${massif-folder}" />
-			<property name="plugin-name" value="${plugin-name}" />
-			<property name="classname" value="${classname}" />
+			<property name="plugin-name" value="${massif-plugin-name}" />
+			<property name="classname" value="${massifClassname}" />
 		</ant>
 	</target>
 
