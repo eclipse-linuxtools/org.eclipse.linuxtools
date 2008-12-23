@@ -101,6 +101,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		Table table = viewer.getTable();
 		table.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+
 		String[] columnTitles = { TITLE_NUMBER, TITLE_TIME, TITLE_TOTAL,
 				TITLE_USEFUL, TITLE_EXTRA, TITLE_STACKS };
 
@@ -138,6 +139,23 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		setTopControl(viewer.getControl());
 	}
 
+	private String getUnitString(MassifSnapshot[] snapshots2) {
+		String result;
+		MassifSnapshot snapshot = snapshots[0];
+		switch (snapshot.getUnit()) {
+		case BYTES:
+			result = "B"; //$NON-NLS-1$
+			break;
+		case INSTRUCTIONS:
+			result = "i"; //$NON-NLS-1$
+			break;
+		default:
+			result = "ms"; //$NON-NLS-1$
+			break;
+		}
+		return result;
+	}
+
 	private SelectionListener getHeaderListener() {
 		return new SelectionAdapter() {
 			@Override
@@ -159,11 +177,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 						int direction = table.getSortDirection();
 						MassifSnapshot s1 = (MassifSnapshot) o1;
 						MassifSnapshot s2 = (MassifSnapshot) o2;
-						int result;
+						long result;
 						TableColumn column = table.getSortColumn();
 						if (column.getText().equals(TITLE_NUMBER)) {
 							result = s1.getNumber() - s2.getNumber();
-						} else if (column.getText().equals(TITLE_TIME)) {
+						} else if (column.getText().startsWith(TITLE_TIME)) {
 							result = s1.getTime() - s2.getTime();
 						} else if (column.getText().equals(TITLE_TOTAL)) {
 							result = s1.getTotal() - s2.getTotal();
@@ -174,7 +192,14 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 						} else {
 							result = s1.getStacks() - s2.getStacks();
 						}
-						return direction == SWT.DOWN ? result : -result;
+						
+						// overflow check
+						if (result > Integer.MAX_VALUE) {
+							result = Integer.MAX_VALUE;
+						} else if (result < Integer.MIN_VALUE) {
+							result = Integer.MIN_VALUE;
+						}
+						return (int) (direction == SWT.DOWN ? result : -result);
 					}
 				});
 			}
@@ -280,6 +305,14 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public void refreshView() {
 		if (snapshots != null) {
 			viewer.setInput(snapshots);
+			
+			String timeWithUnit = TITLE_TIME + " (" + getUnitString(snapshots) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+			for (TableColumn column : viewer.getTable().getColumns()) {
+				if (column.getText().startsWith(TITLE_TIME)) {
+					column.setText(timeWithUnit);
+					viewer.getTable().layout(true);
+				}
+			}
 			MassifSnapshot[] detailed = getDetailed(snapshots);
 			nodes = new MassifHeapTreeNode[detailed.length];
 			for (int i = 0; i < detailed.length; i++) {

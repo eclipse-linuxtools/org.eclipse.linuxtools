@@ -14,11 +14,11 @@ public class MassifSnapshot {
 	public static enum TimeUnit { INSTRUCTIONS, MILLISECONDS, BYTES };
 	public static enum SnapshotType { EMPTY, DETAILED, PEAK };
 	
-	protected int number;
-	protected int time;
-	protected int heapBytes;
-	protected int heapExtra;
-	protected int stacks;
+	protected long number;
+	protected long time;
+	protected long heapBytes;
+	protected long heapExtra;
+	protected long stacks;
 	
 	protected String cmd;
 	protected TimeUnit unit;
@@ -29,27 +29,27 @@ public class MassifSnapshot {
 		this.number = number;
 	}
 	
-	public int getNumber() {
+	public long getNumber() {
 		return number;
 	}
 
-	public int getHeapBytes() {
+	public long getHeapBytes() {
 		return heapBytes;
 	}
 	
-	public int getHeapExtra() {
+	public long getHeapExtra() {
 		return heapExtra;
 	}
 	
-	public int getStacks() {
+	public long getStacks() {
 		return stacks;
 	}
 	
-	public int getTime() {
+	public long getTime() {
 		return time;
 	}
 	
-	public int getTotal() {
+	public long getTotal() {
 		return heapBytes + heapExtra + stacks;
 	}
 	
@@ -69,19 +69,19 @@ public class MassifSnapshot {
 		return root;
 	}
 	
-	protected void setTime(int time) {
+	protected void setTime(long time) {
 		this.time = time;
 	}
 
-	protected void setHeapBytes(int heapBytes) {
+	protected void setHeapBytes(long heapBytes) {
 		this.heapBytes = heapBytes;
 	}
 
-	protected void setHeapExtra(int heapExtra) {
+	protected void setHeapExtra(long heapExtra) {
 		this.heapExtra = heapExtra;
 	}
 
-	protected void setStacks(int stacks) {
+	protected void setStacks(long stacks) {
 		this.stacks = stacks;
 	}
 	

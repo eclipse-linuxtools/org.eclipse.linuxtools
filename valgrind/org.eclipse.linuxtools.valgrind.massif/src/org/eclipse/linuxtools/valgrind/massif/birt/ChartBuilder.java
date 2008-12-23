@@ -83,8 +83,8 @@ public class ChartBuilder {
 		int xMultiplier =  getMultiplier(timeUnit);
 		int yScaling = getYScaling(snapshots);
 		
-		int xDiv = (int) Math.pow(xMultiplier, xScaling);
-		int yDiv = (int) Math.pow(BYTE_MULT, yScaling);
+		long xDiv = (long) Math.pow(xMultiplier, xScaling);
+		long yDiv = (long) Math.pow(BYTE_MULT, yScaling);
 		
 		double[] time = new double[snapshots.length];
 		double[] dataUseful = new double[snapshots.length];
@@ -291,7 +291,7 @@ public class ChartBuilder {
 	}
 
 	private static int getYScaling(MassifSnapshot[] snapshots) {
-		int max = getMaxValue(snapshots);
+		long max = getMaxValue(snapshots);
 		
 		int count = 0;
 		while (max > BYTE_MULT * SCALING_THRESHOLD && count < BYTE_LIMIT) {
@@ -303,7 +303,7 @@ public class ChartBuilder {
 	}
 
 	private static int getXScaling(MassifSnapshot[] snapshots, TimeUnit unit) {
-		int max = snapshots[snapshots.length - 1].getTime();
+		long max = snapshots[snapshots.length - 1].getTime();
 		int mult, limit;
 		switch (unit) {
 		case BYTES:
@@ -329,8 +329,8 @@ public class ChartBuilder {
 		return count;
 	}
 
-	private static int getMaxValue(MassifSnapshot[] snapshots) {
-		int max = 0;
+	private static long getMaxValue(MassifSnapshot[] snapshots) {
+		long max = 0;
 		for (MassifSnapshot snapshot : snapshots) {
 			if (snapshot.getTotal() > max) {
 				max = snapshot.getTotal();

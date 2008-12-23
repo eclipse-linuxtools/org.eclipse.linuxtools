@@ -71,16 +71,16 @@ public class MassifParser {
 				snapshot.setUnit(unit);
 			}
 			else if (line.startsWith(TIME + EQUALS)) {
-				snapshot.setTime(parseIntValue(line, EQUALS));
+				snapshot.setTime(parseLongValue(line, EQUALS));
 			}
 			else if (line.startsWith(MEM_HEAP_B + EQUALS)) {
-				snapshot.setHeapBytes(parseIntValue(line, EQUALS));
+				snapshot.setHeapBytes(parseLongValue(line, EQUALS));
 			}
 			else if (line.startsWith(MEM_HEAP_EXTRA_B + EQUALS)) {
-				snapshot.setHeapExtra(parseIntValue(line, EQUALS));
+				snapshot.setHeapExtra(parseLongValue(line, EQUALS));
 			}
 			else if (line.startsWith(MEM_STACKS_B + EQUALS)) {
-				snapshot.setStacks(parseIntValue(line, EQUALS));
+				snapshot.setStacks(parseLongValue(line, EQUALS));
 			}
 			else if (line.startsWith(HEAP_TREE + EQUALS)) {
 				SnapshotType type = parseSnapshotType(line);
@@ -235,11 +235,11 @@ public class MassifParser {
 		return result;
 	}
 
-	protected Integer parseIntValue(String line, String delim) throws IOException {
-		Integer result = null;
+	protected Long parseLongValue(String line, String delim) throws IOException {
+		Long result = null;
 		String[] parts = line.split(delim);
 		if (parts.length > 1 && isNumber(parts[1])) {
-			result = Integer.parseInt(parts[1]);
+			result = Long.parseLong(parts[1]);
 		}
 		else {
 			fail(line);

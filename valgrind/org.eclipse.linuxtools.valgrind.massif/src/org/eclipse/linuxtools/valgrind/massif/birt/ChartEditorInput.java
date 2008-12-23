@@ -3,7 +3,6 @@ package org.eclipse.linuxtools.valgrind.massif.birt;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
-import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
