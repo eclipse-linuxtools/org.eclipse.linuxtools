@@ -1,8 +1,6 @@
 package org.eclipse.linuxtools.valgrind.massif.birt;
 
 import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
@@ -13,16 +11,11 @@ import org.eclipse.ui.IPersistableElement;
 public class ChartEditorInput implements IEditorInput {
 	
 	protected Chart chart;
-	protected MassifSnapshot[] snapshots;
 	protected String name;
 
-	public ChartEditorInput(Chart chart, MassifSnapshot[] snapshots) {
+	public ChartEditorInput(Chart chart, String name) {
 		this.chart = chart;
-		this.snapshots = snapshots;
-		// Just show the program name
-		String cmd = snapshots[0].getCmd();
-		IPath path = new Path(cmd);
-		name = path.lastSegment();
+		this.name = name;
 	}
 
 	public boolean exists() {
@@ -52,10 +45,6 @@ public class ChartEditorInput implements IEditorInput {
 	
 	public Chart getChart() {
 		return chart;
-	}
-	
-	public MassifSnapshot[] getSnapshots() {
-		return snapshots;
 	}
 
 }
