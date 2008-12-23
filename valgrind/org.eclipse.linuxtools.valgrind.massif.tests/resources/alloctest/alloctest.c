@@ -7,16 +7,21 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define SIZE sizeof(int) * 10
-
 int main(int argc, char **argv) {
+	int bytes;
+	if (argc > 1) {
+		bytes = atoi(argv[1]);
+	}
+	else {
+		bytes = 40;
+	}
 	int *foo();
 	void bar(int *);
-	int *ptr1 = (int *)malloc(SIZE);
+	int *ptr1 = (int *)malloc(bytes);
 	int *ptr2 = foo();
-	int *ptr3 = (int *)malloc(SIZE);
+	int *ptr3 = (int *)malloc(bytes);
 	int *ptr4 = foo();
-	int *ptr5 = (int *)malloc(SIZE);
+	int *ptr5 = (int *)malloc(bytes);
 	int *ptr6 = foo();
 
 	free(ptr1);
@@ -28,10 +33,10 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
-int *foo() {
-	return (int *)malloc(SIZE);
+int *foo(int bytes) {
+	return (int *)malloc(bytes);
 }
 
 void bar(int *ptr) {
-	//free(ptr);
+	free(ptr);
 }
