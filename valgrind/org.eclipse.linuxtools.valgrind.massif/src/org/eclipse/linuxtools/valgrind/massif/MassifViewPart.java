@@ -11,9 +11,9 @@
 package org.eclipse.linuxtools.valgrind.massif;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -33,8 +33,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
-import org.eclipse.linuxtools.valgrind.massif.birt.ChartBuilder;
 import org.eclipse.linuxtools.valgrind.massif.birt.ChartEditorInput;
+import org.eclipse.linuxtools.valgrind.massif.birt.HeapChart;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
@@ -221,12 +221,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 							public void run(IProgressMonitor monitor)
 									throws InvocationTargetException,
 									InterruptedException {
-								monitor
-										.beginTask(
-												Messages
-														.getString("MassifViewPart.Rendering_Chart"), 2); //$NON-NLS-1$
-								displayChart(page, monitor); // this can be long
-																// running
+								monitor.beginTask(Messages.getString("MassifViewPart.Rendering_Chart"), 2); //$NON-NLS-1$
+								displayChart(page, monitor); // this can be long running
 								monitor.done();
 							}
 						});
@@ -266,9 +262,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 	protected void displayChart(final IWorkbenchPage page,
 			final IProgressMonitor monitor) {
-		// ChartShell shell = new ChartShell(Display.getCurrent(), snapshots);
-		// shell.open();
-		final Chart chart = ChartBuilder.createLine(snapshots);
+		final HeapChart chart = new HeapChart(snapshots);
 		final String title = ValgrindUIPlugin.getDefault().getView()
 				.getContentDescription();
 		chart.getTitle().getLabel().getCaption().setValue(title);
@@ -365,19 +359,20 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 		public String getColumnText(Object element, int columnIndex) {
 			MassifSnapshot snapshot = (MassifSnapshot) element;
+			DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
 			switch (columnIndex) {
 			case 0:
-				return String.valueOf(snapshot.getNumber());
+				return df.format(snapshot.getNumber());
 			case 1:
-				return String.valueOf(snapshot.getTime());
+				return df.format(snapshot.getTime());
 			case 2:
-				return String.valueOf(snapshot.getTotal());
+				return df.format(snapshot.getTotal());
 			case 3:
-				return String.valueOf(snapshot.getHeapBytes());
+				return df.format(snapshot.getHeapBytes());
 			case 4:
-				return String.valueOf(snapshot.getHeapExtra());
+				return df.format(snapshot.getHeapExtra());
 			default:
-				return String.valueOf(snapshot.getStacks());
+				return df.format(snapshot.getStacks());
 			}
 		}
 

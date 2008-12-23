@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.valgrind.massif;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -29,11 +31,12 @@ import org.eclipse.ui.PartInitException;
 public class MassifTreeViewer extends TreeViewer {
 
 	protected IDoubleClickListener doubleClickListener;
+	protected ITreeContentProvider contentProvider;
 
 	public MassifTreeViewer(Composite parent) {
 		super(parent);
-
-		setContentProvider(new ITreeContentProvider() {
+		
+		contentProvider = new ITreeContentProvider() {
 			public Object[] getChildren(Object parentElement) {
 				return ((MassifHeapTreeNode) parentElement).getChildren();
 			}
@@ -56,7 +59,8 @@ public class MassifTreeViewer extends TreeViewer {
 			public void inputChanged(Viewer viewer, Object oldInput,
 					Object newInput) {}
 
-		});
+		};
+		setContentProvider(contentProvider);
 
 		setLabelProvider(new LabelProvider() {
 			@Override
@@ -69,6 +73,8 @@ public class MassifTreeViewer extends TreeViewer {
 				Image img = null;
 				if (((MassifHeapTreeNode) element).getParent() == null) { // only show for root elements
 					img = MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/memory_view.gif").createImage(); //$NON-NLS-1$
+				} else { // stack frame
+					img = DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_STACKFRAME);
 				}
 				return img;
 			}
@@ -92,6 +98,9 @@ public class MassifTreeViewer extends TreeViewer {
 							}
 						}
 					}
+				} 
+				if (contentProvider.hasChildren(element)) {
+					expandToLevel(element, 1);
 				}
 			}			
 		};

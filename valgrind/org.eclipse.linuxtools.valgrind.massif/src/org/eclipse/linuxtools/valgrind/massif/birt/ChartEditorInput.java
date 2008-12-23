@@ -1,6 +1,5 @@
 package org.eclipse.linuxtools.valgrind.massif.birt;
 
-import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.osgi.util.NLS;
@@ -9,10 +8,10 @@ import org.eclipse.ui.IPersistableElement;
 
 public class ChartEditorInput implements IEditorInput {
 	
-	protected Chart chart;
+	protected HeapChart chart;
 	protected String name;
 
-	public ChartEditorInput(Chart chart, String name) {
+	public ChartEditorInput(HeapChart chart, String name) {
 		this.chart = chart;
 		this.name = name;
 	}
@@ -42,7 +41,7 @@ public class ChartEditorInput implements IEditorInput {
 		return null;
 	}
 	
-	public Chart getChart() {
+	public HeapChart getChart() {
 		return chart;
 	}
 

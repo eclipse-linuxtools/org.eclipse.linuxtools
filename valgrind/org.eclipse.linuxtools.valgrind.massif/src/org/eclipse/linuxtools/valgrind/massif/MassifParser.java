@@ -114,7 +114,7 @@ public class MassifParser {
 		}
 
 		StringBuffer nodeText = new StringBuffer();
-		Integer numBytes = parseNumBytes(parts[1]);
+		Long numBytes = parseNumBytes(parts[1]);
 		if (numBytes == null) {
 			fail(line);
 		}
@@ -126,9 +126,9 @@ public class MassifParser {
 		else {
 			percentage = numBytes.doubleValue() / snapshot.getTotal() * 100;
 		}
-		nodeText.append(Double.valueOf(new DecimalFormat("#.##").format(percentage)) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
+		nodeText.append(Double.valueOf(new DecimalFormat("0.##").format(percentage)) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
 		nodeText.append(" ("); //$NON-NLS-1$
-		nodeText.append(numBytes.intValue() + "B"); //$NON-NLS-1$
+		nodeText.append(new DecimalFormat("#,##0").format(numBytes.longValue()) + "B"); //$NON-NLS-1$ //$NON-NLS-2$
 		nodeText.append(")"); //$NON-NLS-1$
 		
 		// append the rest
@@ -167,10 +167,10 @@ public class MassifParser {
 		}
 	}
 	
-	private Integer parseNumBytes(String string) {
-		Integer result = null;
+	private Long parseNumBytes(String string) {
+		Long result = null;
 		if (isNumber(string)) {
-			result = Integer.parseInt(string);
+			result = Long.parseLong(string);
 		}
 		return result;
 	}
