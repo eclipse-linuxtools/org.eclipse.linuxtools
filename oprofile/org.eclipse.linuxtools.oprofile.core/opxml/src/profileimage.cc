@@ -232,13 +232,15 @@ operator<< (ostream& os, profileimage* image)
       list<profileimage*>* deps = image->get_dependencies ();
       if (!deps->empty())
         {
-          char buf[11];
+          char buf[21];
           sprintf(buf,"%ld", get_dependent_count(deps));
 
           os << startt ("dependent")
              << attrt ("count", buf);
 
-          copy (deps->begin (), deps->end (), ostream_iterator<profileimage*> (os, ""));
+          set<profileimage*, depimage_comp>* ordered_deps = sort_depimages(deps);
+
+          copy (ordered_deps->begin (), ordered_deps->end (), ostream_iterator<profileimage*> (os, ""));
           os << endt;
         }
 
@@ -322,4 +324,14 @@ get_name(const profileimage* p)
     }
 
   return name;
+}
+
+set<profileimage*, depimage_comp>*
+sort_depimages(const std::list<profileimage*>* const deps) {
+	set<profileimage*, depimage_comp>* sorted_deps = new set<profileimage*, depimage_comp>();
+	for (list<profileimage*>::const_iterator i = deps->begin(); i != deps->end(); ++i) {
+		sorted_deps->insert((*i));
+	}
+
+	return sorted_deps;
 }

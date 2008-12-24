@@ -67,7 +67,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #load the oprofile module 
-test /dev/oprofile
+test /dev/oprofile/cpu_type
 if [ $? -ne 0 ]; then
   opcontrol --init
 fi

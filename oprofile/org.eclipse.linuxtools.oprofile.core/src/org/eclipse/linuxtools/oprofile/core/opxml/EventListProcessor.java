@@ -89,7 +89,7 @@ public class EventListProcessor extends XMLProcessor {
 		// XML elements recognized by this processor
 		private static final String _MASK_TYPE_TAG = "type"; //$NON-NLS-1$
 		private static final String _MASK_DEFAULT_TAG = "default"; //$NON-NLS-1$
-		private static final String _MASK_TYPE_BITMAP = "bitmap"; //$NON-NLS-1$
+		private static final String _MASK_TYPE_BITMASK = "bitmask"; //$NON-NLS-1$
 		private static final String _MASK_TYPE_MANDATORY = "mandatory"; //$NON-NLS-1$
 		private static final String _MASK_TYPE_EXCLUSIVE = "exclusive"; //$NON-NLS-1$
 		
@@ -158,7 +158,7 @@ public class EventListProcessor extends XMLProcessor {
 		private int _getTypeFromString(String string) {
 			if (string.equals(_MASK_TYPE_MANDATORY)) {
 				return OpUnitMask.MANDATORY;
-			} else if (string.equals(_MASK_TYPE_BITMAP)) {
+			} else if (string.equals(_MASK_TYPE_BITMASK)) {
 				return OpUnitMask.BITMASK;
 			} else if (string.equals(_MASK_TYPE_EXCLUSIVE)) {
 				return OpUnitMask.EXCLUSIVE;

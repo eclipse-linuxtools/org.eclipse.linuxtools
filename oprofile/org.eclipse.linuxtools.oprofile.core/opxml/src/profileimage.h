@@ -18,6 +18,7 @@
 
 #include <list>
 #include <string>
+#include <set>
 
 #include "samplefile.h"
 
@@ -65,8 +66,14 @@ class profileimage
   imageheader* _header;
 };
 
+struct depimage_comp {
+  bool operator() (const profileimage* lhs, const profileimage* rhs) { return (lhs->get_count() == rhs->get_count() ? true : lhs->get_count() > rhs->get_count() ); }
+};
+
+
 std::ostream& operator<< (std::ostream& os, profileimage* image);
 void add_sample(std::list<sample*> &samples, sample* new_sample);
 long get_dependent_count(const std::list<profileimage*>* const deps);
+std::set<profileimage*, depimage_comp>* sort_depimages(const std::list<profileimage*>* const deps);
 std::string get_name(const profileimage* p);
 #endif // !_PROFILEIMAGE_H

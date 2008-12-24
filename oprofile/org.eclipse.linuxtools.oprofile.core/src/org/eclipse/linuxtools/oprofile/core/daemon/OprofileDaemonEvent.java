@@ -18,6 +18,9 @@ import org.eclipse.linuxtools.oprofile.core.Oprofile;
  * daemon.
  */
 public class OprofileDaemonEvent {
+	public static final int COUNT_UNINITIALIZED = 0;
+	public static final int COUNT_INVALID = -1;
+	
 	// The event to collect on this counter
 	private OpEvent _event;
 	
@@ -33,7 +36,7 @@ public class OprofileDaemonEvent {
 	public OprofileDaemonEvent() {
 		_profileKernel = true;
 		_profileUser = true;
-		_count = -1;
+		_count = COUNT_UNINITIALIZED;
 		_event = null;
 	}
 
@@ -99,7 +102,7 @@ public class OprofileDaemonEvent {
 	 */
 	public int getResetCount() {
 		// FIXME: This isn't quite in the right place...
-		if (_count == -1) {
+		if (_count == COUNT_UNINITIALIZED) {
 			// This is what Oprofile does in oprof_start.cpp:
 			double speed = Oprofile.getCpuFrequency();
 			if (speed == 0.0) {
