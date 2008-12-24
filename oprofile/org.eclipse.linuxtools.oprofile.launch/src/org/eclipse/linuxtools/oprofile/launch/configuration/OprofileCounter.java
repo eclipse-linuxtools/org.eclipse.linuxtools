@@ -18,6 +18,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
@@ -110,6 +111,10 @@ public class OprofileCounter
 	public void setCount(int count) {
 		_daemonEvent.setResetCount(count);
 	}
+	
+//	public void setUnitMask(int mask) {
+//		_daemonEvent.getEvent().getUnitMask().setMask(1);
+//	}
 		
 	/**
 	 * Saves this counter's configuration into the specified launch
@@ -155,6 +160,16 @@ public class OprofileCounter
 		} catch (CoreException ce) {
 		} catch (Exception e) {
 			
+		}
+	}
+	
+	public OpUnitMask getUnitMask() {
+		OpEvent event = _daemonEvent.getEvent();
+		
+		if (event != null) {
+			return event.getUnitMask();
+		} else {
+			return null;
 		}
 	}
 	

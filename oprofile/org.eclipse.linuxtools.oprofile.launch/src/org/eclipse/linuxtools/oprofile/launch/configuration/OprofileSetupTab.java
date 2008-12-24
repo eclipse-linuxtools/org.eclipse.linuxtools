@@ -127,7 +127,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		_kernelImageFileText.setLayoutData(data);
 		_kernelImageFileText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent mev) {
-				_handleTextModify(_kernelImageFileText);
+				_handleKernelImageFileTextModify(_kernelImageFileText);
 			};
 		});
 
@@ -208,29 +208,29 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 	}
 
 	// handles text modification events for all text boxes in this tab
-	private void _handleTextModify(Text text) {
-		if (text == _kernelImageFileText) {
-			String errorMessage = null;
-			String filename = text.getText();
+	private void _handleKernelImageFileTextModify(Text text) {
+		String errorMessage = null;
+		String filename = text.getText();
 
-			if (filename.length() > 0) {
-				File file = new File(filename);
-				if (file.exists() && file.isFile()) {
-					_options.setKernelImageFile(filename);
-				} else {
-					String msg = OprofileLaunchMessages.getString("tab.global.kernelImage.kernel.nonexistent"); //$NON-NLS-1$
-					Object[] args = new Object[] { filename };
-					errorMessage = MessageFormat.format(msg, args);
-				}
-			} else {
-				// no kernel image file
-				_options.setKernelImageFile(new String());
+		if (filename.length() > 0) {
+			File file = new File(filename);
+			if (!file.exists() || !file.isFile()) {
+				String msg = OprofileLaunchMessages.getString("tab.global.kernelImage.kernel.nonexistent"); //$NON-NLS-1$
+				Object[] args = new Object[] { filename };
+				errorMessage = MessageFormat.format(msg, args);
 			}
 
-			// Update dialog and error message
-			setErrorMessage(errorMessage);
-			updateLaunchConfigurationDialog();
+			//seems odd, but must set it even if it is invalid so that performApply
+			// and isValid work properly
+			_options.setKernelImageFile(filename);
+		} else {
+			// no kernel image file
+			_options.setKernelImageFile(new String());
 		}
+
+		// Update dialog and error message
+		setErrorMessage(errorMessage);
+		updateLaunchConfigurationDialog();
 	}
 
 	// Displays a file dialog to allow the user to select the kernel image file
