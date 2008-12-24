@@ -14,15 +14,9 @@ package org.eclipse.linuxtools.oprofile.core.linux;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.InputSource;
@@ -37,9 +31,13 @@ import org.xml.sax.XMLReader;
  */
 public class OpxmlRunner {
 	private OprofileSAXHandler _handler;
-	private static final String _OPXML_REL_PATH = "opxml/opxml";
-	private static final String _OPXML_PROGRAM = _findOpxml();
+	private String _pathToOpxml;
 
+	public OpxmlRunner(String pathToOpxml) {
+		//assume that the path given is valid
+		_pathToOpxml = pathToOpxml;
+	}
+	
 	/**
 	 * Returns the current XMLProcessor handling parsing of opxml output.
 	 * @return the processor
@@ -55,12 +53,6 @@ public class OpxmlRunner {
 	 * @return boolean indicating the success/failure of opxml
 	 */
 	public boolean run(String[] args, Object callData) {
-//dont need to check every single time		
-//		// Don't even bother running if the kernel module wasn't loaded successfully
-//		if (!Oprofile.isKernelModuleLoaded()) {
-//			return false;
-//		}
-		
 		XMLReader reader = null;
 		_handler = OprofileSAXHandler.getInstance(callData);
 		
@@ -78,7 +70,7 @@ public class OpxmlRunner {
 		
 		// Setup args
 		String[] cmdArray = new String[args.length + 1];
-		cmdArray[0] = _OPXML_PROGRAM;
+		cmdArray[0] = _pathToOpxml;
 		System.arraycopy(args, 0, cmdArray, 1, args.length);
 		
 		// Run opxml
@@ -104,20 +96,5 @@ public class OpxmlRunner {
 		}
 		
 		return false;
-	}
-	
-	private static String _findOpxml() {
-		URL url = FileLocator.find(Platform.getBundle(OprofileCorePlugin.getId()), new Path(_OPXML_REL_PATH), null); 
-
-		Assert.isNotNull(url, "Cannot find opxml executable");
-		
-		if (url != null) {
-			try {
-				return FileLocator.toFileURL(url).getPath();
-			} catch (IOException e) { 
-			}
-		}
-	
-		return null;
 	}
 }

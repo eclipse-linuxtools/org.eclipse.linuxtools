@@ -12,6 +12,9 @@
 
 package org.eclipse.linuxtools.oprofile.core;
 
+import java.io.IOException;
+import java.net.URL;
+
 import org.eclipse.core.runtime.*;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
@@ -22,6 +25,9 @@ import org.osgi.framework.BundleContext;
  */
 public class OprofileCorePlugin extends Plugin {
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core";
+	private static final String OPXML_FRAGMENT_PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core.linux";
+	private static final String OPXML_PATH_STRING = "$os$/opxml";
+	private String _pathToOpxml = null;
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
@@ -68,34 +74,22 @@ public class OprofileCorePlugin extends Plugin {
 	 * @throws OpxmlException
 	 */
 	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
-//		Exception except = null;
-//		
-//		if (_opxml == null) {
-//			IExtensionRegistry registry = Platform.getExtensionRegistry();
-//			IExtensionPoint extension = registry.getExtensionPoint(PLUGIN_ID, "OpxmlProvider"); //$NON-NLS-1$
-//			if (extension != null) {
-//				IExtension[] extensions = extension.getExtensions();
-//				IConfigurationElement[] configElements = extensions[0].getConfigurationElements();
-//				if (configElements.length != 0) {
-//					try {
-//						_opxml = (IOpxmlProvider) configElements[0].createExecutableExtension("class"); //$NON-NLS-1$
-//					} catch (CoreException ce) {
-//						except = ce;
-//					}
-//				}
-//			}
-//		}
-//		
-//		// If no provider found, throw a new exception
-//		if (_opxml == null) {
-//			String msg = getResourceString("opxmlProvider.error.missing"); //$NON-NLS-1$
-//			Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, except);
-//			throw new OpxmlException(status);
-//		}
-//		
-//		return _opxml;
-//		
-		return new LinuxOpxmlProvider();
+		URL opxmlUrl = FileLocator.find(Platform.getBundle(OPXML_FRAGMENT_PLUGIN_ID), new Path(OPXML_PATH_STRING), null); 
+		
+		if (opxmlUrl == null) {
+			// If no provider found, throw a new exception
+			String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
+			Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, null);
+			throw new OpxmlException(status);
+		} else {
+			try {
+				_pathToOpxml = FileLocator.toFileURL(opxmlUrl).getPath();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return new LinuxOpxmlProvider(_pathToOpxml);
 	}
 	
 	/**

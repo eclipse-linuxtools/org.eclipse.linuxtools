@@ -28,11 +28,16 @@ import org.eclipse.linuxtools.oprofile.core.opxml.SessionsProcessor;
  * A class which implements the IOpxmlProvider interface for running opxml.
  */
 public class LinuxOpxmlProvider implements IOpxmlProvider {
+	private String _pathToOpxml;
+	
+	public LinuxOpxmlProvider(String pathToOpxml) {
+		_pathToOpxml = pathToOpxml;
+	}
 	
 	public IRunnableWithProgress info(final OpInfo info) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				OpxmlRunner runner = new OpxmlRunner();
+				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
 				String[] args = new String[] {
 					OpxmlConstants.OPXML_INFO
 				};
@@ -46,7 +51,7 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 	public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {	
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				OpxmlRunner runner = new OpxmlRunner();
+				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
 
 				String[] args = new String[] {
 						OpxmlConstants.OPXML_MODELDATA,
@@ -65,7 +70,7 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 	public IRunnableWithProgress checkEvents(final int ctr, final int event, final int um, final int[] eventValid) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
-				OpxmlRunner runner = new OpxmlRunner();
+				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
 				String[] args = new String[] {
 					OpxmlConstants.CHECKEVENTS_TAG,
 					Integer.toString(ctr),
@@ -83,7 +88,7 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 		
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
-				OpxmlRunner runner = new OpxmlRunner();
+				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
 				String[] args = new String[] {
 					OpxmlConstants.OPXML_SESSIONS,
 				};
