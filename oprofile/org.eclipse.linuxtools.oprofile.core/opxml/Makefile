@@ -1,7 +1,8 @@
 # Makefile for Eclipse Oprofile wrapper library
 # Written by Keith Seitz  <keiths@redhat.com>
+# Edited by Kent Sebastian <ksebasti@redhat.com>
 #
-# Copyright (c) 2004, Red Hat, Inc.
+# Copyright (c) 2004,2008 Red Hat, Inc.
 
 CFLAGS += -g -Wall
 CXXFLAGS = $(CFLAGS)
@@ -18,18 +19,15 @@ OPROFILE_LIB_OBJS =	stable.o oprofiledb.o symbol.o sample.o \
 			session.o samplefile.o imageheader.o opinfo.o \
 			xmlfmt.o xmlbuf.o xmltag.o \
 			sevent.o profileimage.o
-OPXML_EXEC_DIR =	..
-OPXML_EXEC =		$(OPXML_EXEC_DIR)/$(OPXML)
 
 all: $(OPXML)
 
 $(OPXML): $(OPROFILE_LIB_OBJS) $(OPXML_OBJS)
 		$(CXX) -o $(OPXML) $(OPXML_OBJS) $(OPROFILE_LIB_OBJS) \
 		$(EXTRA_LIBS)
-		mv $(OPXML) $(OPXML_EXEC)
 
 clean:
-	$(RM) $(OPROFILE_LIB_OBJS) $(OPXML) $(OPXML_OBJS) # $(OPXML_EXEC) *~
+	$(RM) $(OPROFILE_LIB_OBJS) $(OPXML) $(OPXML_OBJS) $(OPXML_EXEC) *~
 
 
 
