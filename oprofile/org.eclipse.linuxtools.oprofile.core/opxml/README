@@ -1,5 +1,0 @@
-opxml requires 3 packages to be compiled:
-
-* oprofile
-* oprofile-devel
-* binutils-devel
