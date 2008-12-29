@@ -74,8 +74,8 @@ public class OprofileCorePlugin extends Plugin {
 	 * @throws OpxmlException
 	 */
 	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
-		if (_pathToOpxml != null) {
-			URL opxmlUrl = FileLocator.find(Platform.getBundle(OPXML_FRAGMENT_PLUGIN_ID + Platform.getOSArch()), new Path(OPXML_PATH_STRING), null); 
+		if (_pathToOpxml == null) {
+			URL opxmlUrl = FileLocator.find(Platform.getBundle(OPXML_FRAGMENT_PLUGIN_ID + "." + Platform.getOSArch()), new Path(OPXML_PATH_STRING), null); 
 			
 			if (opxmlUrl == null) {
 				// If no provider found, throw a new exception
