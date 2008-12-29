@@ -60,11 +60,5 @@ public class XMLProcessor {
 	 */
 	public void characters(String chars, Object callData) {
 		_characters = chars;
-//		public void characters(char ch[], int start, int length) {
-//			// Ignore characters which are only whitespace
-//			String str = new String(ch, start, length).trim();
-//			if (str.length() > 0 && _processor != null)
-//				_processor.characters(new String(ch, start, length), _callData);
-//		} 
 	}
 }

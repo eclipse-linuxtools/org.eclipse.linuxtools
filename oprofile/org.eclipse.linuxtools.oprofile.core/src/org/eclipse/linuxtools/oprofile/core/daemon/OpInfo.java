@@ -23,7 +23,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
-import org.eclipse.linuxtools.oprofile.core.opxml.DefaultsProcessor;
+import org.eclipse.linuxtools.oprofile.core.opxml.info.DefaultsProcessor;
 
 
 /**

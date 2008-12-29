@@ -21,8 +21,8 @@ import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.opxml.OpxmlConstants;
-import org.eclipse.linuxtools.oprofile.core.opxml.ModelDataProcessor;
-import org.eclipse.linuxtools.oprofile.core.opxml.SessionsProcessor;
+import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataProcessor;
+import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionsProcessor;
 
 /**
  * A class which implements the IOpxmlProvider interface for running opxml.

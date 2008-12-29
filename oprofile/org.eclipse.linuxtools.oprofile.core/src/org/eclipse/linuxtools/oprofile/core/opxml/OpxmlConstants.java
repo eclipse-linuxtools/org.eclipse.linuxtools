@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
+ *    Kent Sebastian <ksebasti@redhat.com> - change samples to model-data
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.core.opxml;
 
@@ -27,12 +28,6 @@ public class OpxmlConstants {
 	 */
 	public static final String OPXML_MODELDATA = "model-data"; //$NON-NLS-1$
 	public static final String MODELDATA_TAG = OPXML_MODELDATA;
-
-	/**
-	 * Request debug info for ???
-	 */
-	public static final String OPXML_DEBUGINFO = "debug-info"; //$NON-NLS-1$
-	public static final String DEBUGINFO_TAG = OPXML_DEBUGINFO;
 	
 	/**
 	 * Request event validity check

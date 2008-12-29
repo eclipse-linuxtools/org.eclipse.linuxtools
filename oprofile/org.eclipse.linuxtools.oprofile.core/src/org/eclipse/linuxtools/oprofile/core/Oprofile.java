@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
-import org.eclipse.linuxtools.oprofile.core.opxml.CheckEventsProcessor;
+import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcessor;
 
 
 /**
