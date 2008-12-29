@@ -49,15 +49,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-#build opxml
-test -x ../opxml/opxml
-if [ $? -ne 0 ]; then
-  cd ../opxml/src
-  make &>/dev/null || { echo Error: cannot compile opxml && exit 1; }
-  chmod u+x ../opxml
-  cd ../../scripts
-fi
-
 #load the oprofile module 
 test /dev/oprofile/cpu_type
 if [ $? -ne 0 ]; then
