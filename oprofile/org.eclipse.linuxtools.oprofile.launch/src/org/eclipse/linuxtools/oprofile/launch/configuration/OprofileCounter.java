@@ -113,10 +113,6 @@ public class OprofileCounter
 		_daemonEvent.setResetCount(count);
 	}
 	
-//	public void setUnitMask(int mask) {
-//		_daemonEvent.getEvent().getUnitMask().setMask(1);
-//	}
-		
 	/**
 	 * Saves this counter's configuration into the specified launch
 	 * configuration.
