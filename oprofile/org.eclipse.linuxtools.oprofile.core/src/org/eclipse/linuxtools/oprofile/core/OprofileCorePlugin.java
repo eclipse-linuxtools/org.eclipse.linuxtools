@@ -27,7 +27,7 @@ public class OprofileCorePlugin extends Plugin {
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core";
 	private static final String OPXML_FRAGMENT_PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core.linux";
 	private static final String OPXML_PATH_STRING = "$os$/opxml";
-	private String _pathToOpxml = null;
+	private static String _pathToOpxml = null;
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
@@ -74,18 +74,20 @@ public class OprofileCorePlugin extends Plugin {
 	 * @throws OpxmlException
 	 */
 	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
-		URL opxmlUrl = FileLocator.find(Platform.getBundle(OPXML_FRAGMENT_PLUGIN_ID), new Path(OPXML_PATH_STRING), null); 
-		
-		if (opxmlUrl == null) {
-			// If no provider found, throw a new exception
-			String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
-			Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, null);
-			throw new OpxmlException(status);
-		} else {
-			try {
-				_pathToOpxml = FileLocator.toFileURL(opxmlUrl).getPath();
-			} catch (IOException e) {
-				e.printStackTrace();
+		if (_pathToOpxml != null) {
+			URL opxmlUrl = FileLocator.find(Platform.getBundle(OPXML_FRAGMENT_PLUGIN_ID + Platform.getOSArch()), new Path(OPXML_PATH_STRING), null); 
+			
+			if (opxmlUrl == null) {
+				// If no provider found, throw a new exception
+				String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
+				Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, null);
+				throw new OpxmlException(status);
+			} else {
+				try {
+					_pathToOpxml = FileLocator.toFileURL(opxmlUrl).getPath();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
