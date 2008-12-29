@@ -32,7 +32,7 @@ import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
  */
 public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	// Location of opcontrol security wrapper
-	private static final String _OPCONTROL_REL_PATH = "scripts/opcontrol";
+	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/opcontrol";
 	private static final String _OPCONTROL_PROGRAM = _findOpcontrol();
 
 	// Initialize the Oprofile kernel module and oprofilefs
