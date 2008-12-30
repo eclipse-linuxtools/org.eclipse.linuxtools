@@ -15,8 +15,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.IOpxmlProvider;
+import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
+import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
@@ -27,12 +32,20 @@ import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionsProcessor;
 /**
  * A class which implements the IOpxmlProvider interface for running opxml.
  */
-public class LinuxOpxmlProvider implements IOpxmlProvider {
+public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 	private String _pathToOpxml;
 	
-	public LinuxOpxmlProvider(String pathToOpxml) {
-		_pathToOpxml = pathToOpxml;
+	public LinuxOpxmlProvider() throws OpxmlException {
+		_pathToOpxml = _getOpxmlPath();
+		
+		if (_pathToOpxml == null) {
+			String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
+			Status status = new Status(IStatus.ERROR, OprofileCorePlugin.getId(), IStatus.OK, msg, null);
+			throw new OpxmlException(status);
+		}
 	}
+	
+	public abstract String _getOpxmlPath();
 	
 	public IRunnableWithProgress info(final OpInfo info) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {

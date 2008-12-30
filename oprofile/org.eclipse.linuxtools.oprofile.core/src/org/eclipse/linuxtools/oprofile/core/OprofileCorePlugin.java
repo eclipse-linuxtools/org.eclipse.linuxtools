@@ -12,12 +12,16 @@
 
 package org.eclipse.linuxtools.oprofile.core;
 
-import java.io.IOException;
-import java.net.URL;
-
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
-import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -25,12 +29,11 @@ import org.osgi.framework.BundleContext;
  */
 public class OprofileCorePlugin extends Plugin {
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core";
-	private static final String OPXML_FRAGMENT_PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core.linux";
-	private static final String OPXML_PATH_STRING = "$os$/opxml";
-	private static String _pathToOpxml = null;
+	private static final String OPXMLPROVIDER_XPT_NAME = "OpxmlProvider";
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
+	private IOpxmlProvider _opxmlProvider;
 	
 	/**
 	 * The constructor.
@@ -74,24 +77,36 @@ public class OprofileCorePlugin extends Plugin {
 	 * @throws OpxmlException
 	 */
 	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
-		if (_pathToOpxml == null) {
-			URL opxmlUrl = FileLocator.find(Platform.getBundle(OPXML_FRAGMENT_PLUGIN_ID + "." + Platform.getOSArch()), new Path(OPXML_PATH_STRING), null); 
-			
-			if (opxmlUrl == null) {
-				// If no provider found, throw a new exception
-				String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
-				Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, null);
-				throw new OpxmlException(status);
-			} else {
-				try {
-					_pathToOpxml = FileLocator.toFileURL(opxmlUrl).getPath();
-				} catch (IOException e) {
-					e.printStackTrace();
+		Exception except = null;
+		
+		if (_opxmlProvider == null) {
+			IExtensionRegistry registry = Platform.getExtensionRegistry();
+			IExtensionPoint extension = registry.getExtensionPoint(PLUGIN_ID, OPXMLPROVIDER_XPT_NAME);
+			if (extension != null) {
+				IExtension[] extensions = extension.getExtensions();
+				for (IExtension e : extensions) {
+					IConfigurationElement[] configElements = e.getConfigurationElements();
+					if (configElements.length != 0) {
+						try {
+							_opxmlProvider = (IOpxmlProvider) configElements[0].createExecutableExtension("class"); //$NON-NLS-1$
+							if (_opxmlProvider != null)
+								break;
+						} catch (CoreException ce) {
+							except = ce;
+						}
+					}
 				}
 			}
 		}
 		
-		return new LinuxOpxmlProvider(_pathToOpxml);
+		// If there was a problem finding opxml, throw an exception
+		if (_opxmlProvider == null) {
+			String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
+			Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, except);
+			throw new OpxmlException(status);
+		} else {
+			return _opxmlProvider;
+		}
 	}
 	
 	/**
