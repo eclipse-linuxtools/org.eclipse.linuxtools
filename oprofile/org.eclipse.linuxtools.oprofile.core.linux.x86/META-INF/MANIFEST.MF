@@ -6,4 +6,4 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: %bundle.provider
 Fragment-Host: org.eclipse.linuxtools.oprofile.core;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86_64))
+Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86))
