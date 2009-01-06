@@ -1,7 +1,12 @@
+2009-01-06  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Remove Linux requirement to see if it then gets included in all
+	feature. Added update site information.
+
 2008-12-16  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Added dependencies and Linux requirement.
-	
+
 2008-12-10  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Inital checkin.
