@@ -28,6 +28,7 @@ import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcessor;
+import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -191,7 +192,7 @@ public class Oprofile
 	 * @param um	the unit mask
 	 * @return whether the requested event is valid
 	 */
-	public static boolean checkEvent(int ctr, int event, int um) {
+	public static Boolean checkEvent(int ctr, int event, int um) {
 		int[] validResult = new int[1];
 		try {
 			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().checkEvents(ctr, event, um, validResult);
@@ -200,6 +201,7 @@ public class Oprofile
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
 			_showErrorDialog("opxmlProvider", e);
+			return null;
 		}
 		
 		return (validResult[0] == CheckEventsProcessor.EVENT_OK);
@@ -210,9 +212,8 @@ public class Oprofile
 	 * the sessions under each of them.
 	 * @returns a list of all collected events
 	 */
-	public static OpModelEvent[] getEvents()
-	{
-		OpModelEvent[] events = new OpModelEvent[0];
+	public static OpModelEvent[] getEvents() {
+		OpModelEvent[] events = null;
 		
 		ArrayList<OpModelEvent> sessionList = new ArrayList<OpModelEvent>();
 		try {
@@ -230,9 +231,16 @@ public class Oprofile
 
 	//Helper function
 	private static void _showErrorDialog(String key, CoreException except) {
-		String title = OprofileProperties.getString(key + ".error.dialog.title"); //$NON-NLS-1$
-		String msg = OprofileProperties.getString(key + ".error.dialog.message"); //$NON-NLS-1$
-		ErrorDialog.openError(null, title, msg, except.getStatus());
+		final String title = OprofileProperties.getString(key + ".error.dialog.title"); //$NON-NLS-1$
+		final String msg = OprofileProperties.getString(key + ".error.dialog.message"); //$NON-NLS-1$
+		final IStatus status = except.getStatus();
+		
+		//needs to be run in the ui thread otherwise swt throws invalid thread access 
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				ErrorDialog.openError(null, title, msg, status);
+			}
+		});
 	}
 
 	/**
