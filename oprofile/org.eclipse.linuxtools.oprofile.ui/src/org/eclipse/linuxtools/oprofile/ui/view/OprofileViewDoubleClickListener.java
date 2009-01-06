@@ -83,7 +83,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 			UiModelSymbol symbol = (UiModelSymbol)element;
 			String fileName = symbol.getFileName();
 			
-			if (!fileName.isEmpty()) {
+			if (fileName.length() > 0) {
 				try {
 					ProfileUIUtils.openEditorAndSelect(fileName, 1);
 				} catch (PartInitException e) {

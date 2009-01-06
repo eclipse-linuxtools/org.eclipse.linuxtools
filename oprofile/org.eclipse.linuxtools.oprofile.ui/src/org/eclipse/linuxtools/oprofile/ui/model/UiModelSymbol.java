@@ -75,7 +75,7 @@ public class UiModelSymbol implements IUiModelElement {
 		String fileName = (new File(_symbol.getFile())).getName();
 //		String fileName = _symbol.getFile();
 
-		return percentage + " in " + _symbol.getName() + (fileName.isEmpty() ? "" : " [" + fileName + "]");
+		return percentage + " in " + _symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]");
 	}
 	
 	public String getFileName() {
