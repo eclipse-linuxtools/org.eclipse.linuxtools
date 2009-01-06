@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
+ *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.core.linux;
 
@@ -16,15 +17,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 
@@ -34,7 +32,7 @@ import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	// Location of opcontrol security wrapper
 	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/opcontrol";
-	private static final String _OPCONTROL_PROGRAM = _findOpcontrol();
+	private final String OPCONTROL_PROGRAM;
 
 	// Initialize the Oprofile kernel module and oprofilefs
 	private static final String _OPD_INIT_MODULE = "--init"; //$NON-NLS-1$
@@ -97,6 +95,11 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	// Logging verbosity. Specified with setupDaemon.
 	//--verbosity=all generates WAY too much stuff in the log
 	private String _verbosity = "";
+	
+	
+	public LinuxOpcontrolProvider() throws OpcontrolException {
+		OPCONTROL_PROGRAM = _findOpcontrol();
+	}
 	
 	/**
 	 * Unload the kernel module and oprofilefs
@@ -203,7 +206,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	// Will add opcontrol program to beginning of args
 	// args: list of opcontrol arguments (not including opcontrol program itself)
 	private void _runOpcontrol(ArrayList<String> args) throws OpcontrolException {
-		args.add(0, _OPCONTROL_PROGRAM);
+		args.add(0, OPCONTROL_PROGRAM);
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
 		String cmd = (String) args.get(1);
 		if (_verbosity.length() > 0 && (cmd.equals (_OPD_START_COLLECTION) || cmd.equals(_OPD_START_DAEMON))) {
@@ -222,13 +225,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 				p = null;
 			}
 			
-			// Throw an exception
-			Status status = new Status(Status.ERROR,
-									   OprofileCorePlugin.getId(),
-									   0 /* code */,
-									   "error message",
-									   ioe);
-			throw new OpcontrolException(status);
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe));
 		}
 		
 		if (p != null) {
@@ -246,18 +243,17 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 	}
 	
-	private static String _findOpcontrol() {
+	private static String _findOpcontrol() throws OpcontrolException {
 		URL url = FileLocator.find(Platform.getBundle(OprofileCorePlugin.getId()), new Path(_OPCONTROL_REL_PATH), null); 
 
-		Assert.isNotNull(url, OprofileProperties.getString("opcontrolProvider.error.missing.binary"));
-		
 		if (url != null) {
 			try {
 				return FileLocator.toFileURL(url).getPath();
-			} catch (IOException e) { 
-			}
+			} catch (IOException ignore) { }
+		} else {
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null));
 		}
-	
+
 		return null;
 	}	
 
