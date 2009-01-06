@@ -5,13 +5,13 @@
       version="2.6.3"
       provider-name="Eclipse.org">
 
-   <description url="http://www.redhat.com">
-      The Changelog plug-in provides the ability to maintain, 
+   <description url="http://www.eclipse.org/linuxtools">
+      The Changelog plug-in provides the ability to maintain,
       and create changelogs from within the Eclipse Environment
    </description>
 
    <copyright url="www.redhat.com">
-      Copyright 2004 Red Hat, Inc.
+      Copyright 2004-2008 Red Hat, Inc.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
@@ -104,8 +104,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
    </license>
 
    <url>
-      <update label="ChangeLog Update Site" url="http://sourceware.org/eclipse/update"/>
-      <discovery label="ChangeLog Plugin Site" url="http://sourceware.org/eclipse/changelog"/>
+      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
    </url>
 
    <requires>

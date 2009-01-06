@@ -1,3 +1,7 @@
+2009-01-06  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Update copyright years.  Add update site information.  Remove discovery tag.
+
 2008-11-27  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* feature.xml: Remove deprecated attribute usage.
@@ -74,7 +78,7 @@
 2006-09-01  Kyu Lee  <klee@redhat.com>
 
 	* feature.xml: Changed version to 2.2.3.
-	
+
 2006-08-01  Kyu Lee  <klee@redhat.com>
 
 	* feature.xml: Changed version to 2.2.2.
@@ -123,9 +127,9 @@
 	Added dependencies. Changed provider name
 	Bumped plugin versions
 	* feature.properties: Added provider name
-	
+
 2004-07-12  Phil Muldoon  <pmuldoon@redhat.com>
-	
+
 	* feature.xml change id to com.redhat.eclipse.changelog
 	* feature.xml: Change to changelog.core
 
@@ -133,7 +137,7 @@
 
 	* build.xml: Migrate to 3.0. Regenerated
 	build.xml.
-	
+
 2004-02-25  Phil Muldoon  <pmuldoon@redhat.com>
 
 	* feature.xml : Added com.redhat.eclipse.changelog.doc
@@ -144,4 +148,4 @@
 	* Initial Import
 
 
-	
+
