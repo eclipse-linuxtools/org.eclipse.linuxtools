@@ -258,6 +258,9 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		private UnitMaskViewer _unitMaskViewer;
 		private ListViewer _eventList;
 		private OprofileCounter _counter;
+		
+		private ScrolledComposite _scrolledTop;
+		private Composite _tabTopContainer;
 
 		/**
 		 * Constructor for a subtab. Creates the layout and widgets for its content.
@@ -330,8 +333,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			data.heightHint = eventConfigComp.getSize().x;
 			eventListComp.setLayoutData(data);
 			
-			//required so the scroll bars will appear after a default height 
-			scrolledContainer.setMinSize(tabTopContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			_scrolledTop = scrolledContainer;
+			_tabTopContainer = tabTopContainer;
 		}
 		
 		/**
@@ -586,10 +589,17 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			return MessageFormat.format(msg, args);
 		}
 		
-		public OprofileCounter getCounter() {
-			return _counter;
+		/**
+		 * Changes parameters for the top scrolled composite which makes the scroll bars
+		 * appear when content overflows the visible area. Called by the UnitMaskViewer 
+		 * whenever a new set of unit mask buttons are created, since the number of them is
+		 * variable and there is no guarantee as to the default size of the launch configuration
+		 * dialog in general.
+		 */
+		private void resizeScrollContainer() {
+			_scrolledTop.setMinSize(_tabTopContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
-
+		
 		
 		/**
 		 * This class displays event unit masks via check boxes and appropriate labels.
@@ -701,6 +711,8 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				
 				_unitMaskButtons = new Button[maskButtons.size()];
 				maskButtons.toArray(_unitMaskButtons);
+				
+				resizeScrollContainer();
 			}
 
 			/**
