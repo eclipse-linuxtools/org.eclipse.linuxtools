@@ -102,7 +102,7 @@ public class OprofileView extends ViewPart {
 
 				OpModelRoot dataModelRoot = OpModelRoot.getDefault();
 				dataModelRoot.refreshModel();
-				System.out.println(dataModelRoot);	//debugging
+//				System.out.println(dataModelRoot);	//debugging
 				monitor.worked(1);
 
 				final UiModelRoot UiRoot = UiModelRoot.getDefault();

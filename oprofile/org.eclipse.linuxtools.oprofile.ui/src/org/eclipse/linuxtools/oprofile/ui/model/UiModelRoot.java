@@ -46,9 +46,11 @@ public class UiModelRoot implements IUiModelElement {
 		OpModelRoot modelRoot = OpModelRoot.getDefault();
 		OpModelEvent dataModelEvents[] = modelRoot.getEvents();
 
-		_events = new UiModelEvent[dataModelEvents.length];
-		for (int i = 0; i < dataModelEvents.length; i++) {
-			_events[i] = new UiModelEvent(dataModelEvents[i]);
+		if (dataModelEvents != null) {
+			_events = new UiModelEvent[dataModelEvents.length];
+			for (int i = 0; i < dataModelEvents.length; i++) {
+				_events[i] = new UiModelEvent(dataModelEvents[i]);
+			}
 		}
 	}
 
