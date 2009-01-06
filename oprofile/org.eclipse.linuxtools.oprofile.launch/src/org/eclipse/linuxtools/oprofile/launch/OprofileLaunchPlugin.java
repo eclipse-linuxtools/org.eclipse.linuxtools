@@ -16,6 +16,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.*;
 import org.eclipse.core.resources.*;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.oprofile.launch.configuration.EventConfigCache;
 import org.osgi.framework.BundleContext;
 
 
@@ -25,6 +26,8 @@ import org.osgi.framework.BundleContext;
 public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static OprofileLaunchPlugin plugin;
+	//shared cache instance for configuration
+	private static EventConfigCache _eventConfigCache = null;
 
 	private static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.launch";
 
@@ -97,5 +100,12 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 		}
 		return null;
 	}	
-	
+
+	public static EventConfigCache getCache() {
+		if (_eventConfigCache == null) {
+			_eventConfigCache = new EventConfigCache();
+		}
+		
+		return _eventConfigCache;
+	}
 }

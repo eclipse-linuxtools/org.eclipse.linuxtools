@@ -163,12 +163,11 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 					break;
 				}
 
-				// Next ask oprofile if it is valid -- note this launches opxml (FIXME: performance?)
-				if (!Oprofile.checkEvent(
+				// Next ask oprofile if it is valid
+				if (!OprofileLaunchPlugin.getCache().checkEvent(
 							counters[i].getNumber(), 
 							counters[i].getEvent().getNumber(), 
-							counters[i].getEvent().getUnitMask().getMaskValue())) 
-				{
+							counters[i].getEvent().getUnitMask().getMaskValue())) {
 					valid = false;
 					break;
 				}
