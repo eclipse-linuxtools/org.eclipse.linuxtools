@@ -205,7 +205,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		args.add(0, _OPCONTROL_PROGRAM);
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
 		String cmd = (String) args.get(1);
-		if (!_verbosity.isEmpty() && (cmd.equals (_OPD_START_COLLECTION) || cmd.equals(_OPD_START_DAEMON))) {
+		if (_verbosity.length() > 0 && (cmd.equals (_OPD_START_COLLECTION) || cmd.equals(_OPD_START_DAEMON))) {
 			args.add(_verbosity);
 		}
 		
