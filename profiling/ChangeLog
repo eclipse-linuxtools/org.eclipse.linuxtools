@@ -1,0 +1,5 @@
+2009-01-05  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Changed version to 0.1.0.
+	* build.properties: Include about.html and icons.
+	* about.html: Added.
