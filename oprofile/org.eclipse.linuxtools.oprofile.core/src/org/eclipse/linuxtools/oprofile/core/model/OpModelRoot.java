@@ -31,7 +31,7 @@ public class OpModelRoot {
 //	private String _printTabs = "\t";		//for nice output
 
 	private OpModelRoot() {
-		refreshModel();
+//		refreshModel();
 		_modelRoot = this;
 	}
 

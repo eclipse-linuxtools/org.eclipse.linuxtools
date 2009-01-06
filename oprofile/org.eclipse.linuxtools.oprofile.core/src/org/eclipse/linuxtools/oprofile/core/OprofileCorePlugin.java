@@ -21,7 +21,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
+import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -101,9 +103,7 @@ public class OprofileCorePlugin extends Plugin {
 		
 		// If there was a problem finding opxml, throw an exception
 		if (_opxmlProvider == null) {
-			String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
-			Status status = new Status(IStatus.ERROR, getId(), IStatus.OK, msg, except);
-			throw new OpxmlException(status);
+			throw new OpxmlException(createErrorStatus("opxmlProvider", except));
 		} else {
 			return _opxmlProvider;
 		}
@@ -143,5 +143,35 @@ public class OprofileCorePlugin extends Plugin {
 //		return _opcontrol;
 		
 		return new LinuxOpcontrolProvider();
+	}
+	
+	public static IStatus createErrorStatus(String errorClassString, Exception e) {
+		String statusMessage = OprofileProperties.getString(errorClassString + ".error.statusMessage");
+
+		if (e == null) {
+			return new Status(IStatus.ERROR, getId(), IStatus.OK, statusMessage, null);
+		} else {
+			return new Status(IStatus.ERROR, getId(), IStatus.OK, statusMessage, e);
+		}
+	}
+	
+	public static void showErrorDialog(String errorClassString, CoreException ex) {
+		final IStatus status;
+		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title");
+		final String errorMessage = OprofileProperties.getString(errorClassString + ".error.dialog.message");
+		
+		if (ex == null) {
+			status = createErrorStatus(errorClassString, null);
+		} else {
+			status = ex.getStatus();
+		}
+
+		//needs to be run in the ui thread otherwise swt throws invalid thread access 
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				ErrorDialog.openError(null, dialogTitle, errorMessage, status);
+			}
+		});
+
 	}
 }

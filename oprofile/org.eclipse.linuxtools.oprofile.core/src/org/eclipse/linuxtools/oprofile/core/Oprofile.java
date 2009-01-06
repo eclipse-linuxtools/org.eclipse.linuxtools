@@ -18,17 +18,12 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventsProcessor;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -37,8 +32,7 @@ import org.eclipse.swt.widgets.Display;
 public class Oprofile
 {
 	// Ugh. Need to know whether the module is loaded without running oprofile commands...
-	private static final String[] _OPROFILE_CPU_TYPE_FILES = 
-	{
+	private static final String[] _OPROFILE_CPU_TYPE_FILES = {
 		"/dev/oprofile/cpu_type", //$NON-NLS-1$
 		"/proc/sys/dev/oprofile/cpu_type"  //$NON-NLS-1$
 	};
@@ -66,9 +60,7 @@ public class Oprofile
 		
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
-			String smsg = OprofileProperties.getString("oprofile.init.error.status.message"); //$NON-NLS-1$
-			Status status = new Status(IStatus.ERROR, OprofileCorePlugin.getId(), IStatus.OK, smsg, null);
-			_showErrorDialog("oprofile.init", new CoreException(status));
+			OprofileCorePlugin.showErrorDialog("oprofileInit", null);
 		} else {
 			_initializeOprofileCore();
 		}
@@ -196,7 +188,7 @@ public class Oprofile
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
-			_showErrorDialog("opxmlProvider", e);
+			OprofileCorePlugin.showErrorDialog("opxmlProvider", e);
 			return null;
 		}
 		
@@ -220,7 +212,7 @@ public class Oprofile
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
-			_showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
+			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
 		}
 		return events;
 	}
@@ -240,24 +232,10 @@ public class Oprofile
 		} catch (InvocationTargetException e) { 
 		} catch (InterruptedException e) { 
 		} catch (OpxmlException e) {
-			_showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
+			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
 			return null;
 		}
 
 		return image;
-	}
-
-	//Helper function
-	private static void _showErrorDialog(String key, CoreException except) {
-		final String title = OprofileProperties.getString(key + ".error.dialog.title"); //$NON-NLS-1$
-		final String msg = OprofileProperties.getString(key + ".error.dialog.message"); //$NON-NLS-1$
-		final IStatus status = except.getStatus();
-		
-		//needs to be run in the ui thread otherwise swt throws invalid thread access 
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				ErrorDialog.openError(null, title, msg, status);
-			}
-		});
 	}
 }

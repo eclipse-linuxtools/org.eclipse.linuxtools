@@ -15,12 +15,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.IOpxmlProvider;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
@@ -39,9 +36,7 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 		_pathToOpxml = _getOpxmlPath();
 		
 		if (_pathToOpxml == null) {
-			String msg = OprofileProperties.getString("opxmlProvider.error.missing"); //$NON-NLS-1$
-			Status status = new Status(IStatus.ERROR, OprofileCorePlugin.getId(), IStatus.OK, msg, null);
-			throw new OpxmlException(status);
+			throw new OpxmlException(OprofileCorePlugin.createErrorStatus("opxmlProvider", null));
 		}
 	}
 	

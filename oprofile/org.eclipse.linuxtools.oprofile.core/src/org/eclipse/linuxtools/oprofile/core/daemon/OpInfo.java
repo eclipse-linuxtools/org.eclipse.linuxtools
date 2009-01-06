@@ -18,14 +18,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.opxml.info.DefaultsProcessor;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -95,16 +91,7 @@ public class OpInfo {
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
-			final String title = OprofileProperties.getString("opxmlProvider.error.dialog.title"); //$NON-NLS-1$
-			final String msg = OprofileProperties.getString("opxmlProvider.error.dialog.message"); //$NON-NLS-1$
-			final IStatus status = e.getStatus();
-			
-			//needs to be run in the ui thread otherwise swt throws invalid thread access
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					ErrorDialog.openError(null, title, msg, status);
-				}
-			});
+			OprofileCorePlugin.showErrorDialog("opxmlProvider", e);
 		}
 		
 		return info;
