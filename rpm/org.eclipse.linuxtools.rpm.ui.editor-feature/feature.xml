@@ -2,11 +2,11 @@
 <feature
       id="org.eclipse.linuxtools.rpm.ui.editor"
       label="%featureName"
-      version="0.1.0"
+      version="0.4.1"
       provider-name="%featureProvider"
       plugin="org.eclipse.linuxtools.rpm.ui.editor">
 
-   <description>
+   <description url="http://www.eclipse.org/linuxtools/">
       %description
    </description>
 
