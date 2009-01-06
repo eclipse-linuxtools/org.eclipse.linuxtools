@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 
@@ -248,7 +249,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static String _findOpcontrol() {
 		URL url = FileLocator.find(Platform.getBundle(OprofileCorePlugin.getId()), new Path(_OPCONTROL_REL_PATH), null); 
 
-		Assert.isNotNull(url, "Cannot find opxml executable");
+		Assert.isNotNull(url, OprofileProperties.getString("opcontrolProvider.error.missing.binary"));
 		
 		if (url != null) {
 			try {
