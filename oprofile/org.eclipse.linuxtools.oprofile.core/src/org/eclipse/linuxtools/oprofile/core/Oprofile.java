@@ -66,13 +66,9 @@ public class Oprofile
 		
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
-		
 			String smsg = OprofileProperties.getString("oprofile.init.error.status.message"); //$NON-NLS-1$
 			Status status = new Status(IStatus.ERROR, OprofileCorePlugin.getId(), IStatus.OK, smsg, null);
-			String title = OprofileProperties.getString("oprofile.init.error.dialog.title"); //$NON-NLS-1$
-			String msg = OprofileProperties.getString("oprofile.init.error.dialog.message"); //$NON-NLS-1$
-			ErrorDialog.openError(null, title, msg, status);
-			
+			_showErrorDialog("oprofile.init", new CoreException(status));
 		} else {
 			_initializeOprofileCore();
 		}
@@ -229,20 +225,6 @@ public class Oprofile
 		return events;
 	}
 
-	//Helper function
-	private static void _showErrorDialog(String key, CoreException except) {
-		final String title = OprofileProperties.getString(key + ".error.dialog.title"); //$NON-NLS-1$
-		final String msg = OprofileProperties.getString(key + ".error.dialog.message"); //$NON-NLS-1$
-		final IStatus status = except.getStatus();
-		
-		//needs to be run in the ui thread otherwise swt throws invalid thread access 
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				ErrorDialog.openError(null, title, msg, status);
-			}
-		});
-	}
-
 	/**
 	 * Return a list of all the Samples in the given session.
 	 * @param session the session for which to get samples
@@ -263,5 +245,19 @@ public class Oprofile
 		}
 
 		return image;
+	}
+
+	//Helper function
+	private static void _showErrorDialog(String key, CoreException except) {
+		final String title = OprofileProperties.getString(key + ".error.dialog.title"); //$NON-NLS-1$
+		final String msg = OprofileProperties.getString(key + ".error.dialog.message"); //$NON-NLS-1$
+		final IStatus status = except.getStatus();
+		
+		//needs to be run in the ui thread otherwise swt throws invalid thread access 
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				ErrorDialog.openError(null, title, msg, status);
+			}
+		});
 	}
 }
