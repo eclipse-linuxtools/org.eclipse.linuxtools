@@ -1,7 +1,7 @@
 2009-01-06  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add update site information.  1.0.0 -> 0.1.0.
-	* build.propertis: Add feature.properties and epl-v10.html.
+	* build.properties: Add feature.properties and epl-v10.html.
 
 2008-10-31  Andrew Overholt  <overholt@redhat.com>
 
