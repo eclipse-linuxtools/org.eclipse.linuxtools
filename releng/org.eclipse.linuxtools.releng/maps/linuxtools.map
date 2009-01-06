@@ -53,8 +53,8 @@ feature@org.eclipse.linuxtools.systemtap.feature=SVN,,http://dev.eclipse.org/svn
 feature@org.eclipse.linuxtools.oprofile.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile-feature
 feature@org.eclipse.linuxtools.profiling.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling-feature
 feature@org.eclipse.linuxtools.profiling.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.test-feature
-feature@org.eclipse.linuxtools.valgrind.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/20090105165746/org.eclipse.linuxtools.valgrind.feature
-feature@org.eclipse.linuxtools.valgrind.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/20090105165746/org.eclipse.linuxtools.valgrind.test.feature
+feature@org.eclipse.linuxtools.valgrind.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/20090105165746/org.eclipse.linuxtools.valgrind-feature
+feature@org.eclipse.linuxtools.valgrind.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/20090105165746/org.eclipse.linuxtools.valgrind.test-feature
 feature@org.eclipse.linuxtools.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.test-feature
 plugin@org.eclipse.linuxtools.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.tests
 
