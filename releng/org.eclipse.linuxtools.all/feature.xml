@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.all"
       label="%featureName"
-      version="0.7"
+      version="0.1.0"
       provider-name="%provider">
 
    <description>
@@ -16,6 +16,10 @@
    <license url="%licenseURL">
       %license
    </license>
+
+   <url>
+      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
+   </url>
 
    <includes
          id="org.eclipse.linuxtools.cdt.libhover.feature"
