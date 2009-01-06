@@ -38,11 +38,11 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.oprofile.feature"
+         id="org.eclipse.linuxtools.profiling.feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.profiling.feature"
+         id="org.eclipse.linuxtools.oprofile.feature"
          version="0.0.0"/>
 
    <includes
