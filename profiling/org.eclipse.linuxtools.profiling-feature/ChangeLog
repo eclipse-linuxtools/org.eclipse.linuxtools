@@ -1,3 +1,7 @@
+2009-01-06  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add update site information.  Remove Linux requirement.
+
 2008-12-16  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Added dependencies and Linux requirement.
