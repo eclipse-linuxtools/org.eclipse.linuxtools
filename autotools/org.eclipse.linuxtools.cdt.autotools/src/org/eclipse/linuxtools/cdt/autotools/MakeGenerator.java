@@ -715,6 +715,10 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 								finished = true;
 							}
 						}
+					} else {
+						// No --xxx arguments, but there might still be some NAME=VALUE args
+						// and we should pass them on regardless
+						configArgs.add(value);
 					}
 				}
 				else if (value.trim().length() > 0) {
