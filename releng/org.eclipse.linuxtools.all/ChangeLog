@@ -1,3 +1,7 @@
+2009-01-06  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add valgrind, profiling framework, and oprofile features.
+
 2008-10-31  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Use .properties file and include new systemtap feature.
