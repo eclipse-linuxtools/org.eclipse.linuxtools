@@ -11,17 +11,22 @@
  ***********************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.birt;
 
+import org.eclipse.birt.chart.device.ICallBackNotifier;
 import org.eclipse.birt.chart.device.IDeviceRenderer;
+import org.eclipse.birt.chart.exception.ChartException;
 import org.eclipse.birt.chart.factory.GeneratedChartState;
 import org.eclipse.birt.chart.factory.Generator;
 import org.eclipse.birt.chart.factory.RunTimeContext;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Bounds;
+import org.eclipse.birt.chart.model.attribute.CallBackValue;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.chart.util.PluginSettings;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -30,11 +35,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 
-public class ChartRenderer implements PaintListener, ControlListener {
+public class ChartRenderer implements PaintListener, ControlListener, ICallBackNotifier {
 
 	private transient Canvas canvas = null;
-
-	private Chart cm = null;
 
 	private transient boolean bIsPainting = false;
 
@@ -44,21 +47,29 @@ public class ChartRenderer implements PaintListener, ControlListener {
 
 	private static int Y_OFFSET = 3;
 
-	public ChartRenderer() {
-		// Do nothing in the constructor
+	protected Chart cm = null;
+
+	protected GeneratedChartState state = null;
+
+	protected IDeviceRenderer deviceRenderer = null;
+
+	private boolean needsGeneration = true;
+
+	public ChartRenderer(Chart cm, Canvas canvas) throws ChartException {
+		this.cm = cm;
+		this.canvas = canvas;
+
+		deviceRenderer = PluginSettings.instance().getDevice("dv.SWT"); //$NON-NLS-1$
+		deviceRenderer.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, this);
+
+		canvas.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				deviceRenderer.dispose();
+			}				
+		});
 	}
 
-	/**
-	 * @param cm
-	 *            Chart Model
-	 */
-	public void renderModel(Chart cm) {
-		// if ( cm == null )
-		// {
-		// return;
-		// }
-		this.cm = cm;
-
+	public void renderModel() {
 		if (canvas != null && !canvas.isDisposed()) {
 			updateBuffer();
 			canvas.redraw();
@@ -111,35 +122,31 @@ public class ChartRenderer implements PaintListener, ControlListener {
 					SWT.COLOR_WHITE));
 			gc.fillRectangle(buffer.getBounds());
 
-			final Bounds bo = BoundsImpl.create(X_OFFSET, Y_OFFSET,
+			Bounds bo = BoundsImpl.create(X_OFFSET, Y_OFFSET,
 					adjustedRe.width - 2 * X_OFFSET, adjustedRe.height - 2
-							* Y_OFFSET);
+					* Y_OFFSET);
 
-			IDeviceRenderer deviceRenderer = null;
 			try {
-				deviceRenderer = PluginSettings.instance().getDevice("dv.SWT"); //$NON-NLS-1$
-				deviceRenderer
-						.setProperty(IDeviceRenderer.GRAPHICS_CONTEXT, gc);
+				deviceRenderer.setProperty(IDeviceRenderer.GRAPHICS_CONTEXT, gc);
+
 				bo.scale(72d / deviceRenderer.getDisplayServer()
-						.getDpiResolution()); // CONVERT
-				// TO
-				// POINTS
+						.getDpiResolution()); // convert to points
 
-				// GENERATE AND RENDER THE CHART
-				final Generator gr = Generator.instance();
-				RunTimeContext rtc = new RunTimeContext();
+				// generate and render the cart
+				Generator gr = Generator.instance();
+				if (needsGeneration) {
+					needsGeneration = false;
+					RunTimeContext rtc = new RunTimeContext();
 
-				GeneratedChartState state = gr.build(deviceRenderer
-						.getDisplayServer(), cm, bo, null, rtc, null);
+					state = gr.build(deviceRenderer
+							.getDisplayServer(), cm, bo, null, rtc, null);
 
+				}
 				gr.render(deviceRenderer, state);
 			} catch (Exception ex) {
 				paintError = ex;
 			} finally {
 				gc.dispose();
-				if (deviceRenderer != null) {
-					deviceRenderer.dispose();
-				}
 			}
 
 			if (paintError != null) {
@@ -167,15 +174,6 @@ public class ChartRenderer implements PaintListener, ControlListener {
 		}
 	}
 
-	/**
-	 * Set the canvas canvas.
-	 * 
-	 * @param paintCanvas
-	 */
-	public void setCanvas(Canvas paintCanvas) {
-		this.canvas = paintCanvas;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -184,8 +182,6 @@ public class ChartRenderer implements PaintListener, ControlListener {
 	 * .ControlEvent)
 	 */
 	public void controlMoved(ControlEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -200,5 +196,32 @@ public class ChartRenderer implements PaintListener, ControlListener {
 			updateBuffer();
 			canvas.redraw();
 		}
+	}
+
+	public void callback(Object event, Object source, CallBackValue value) {
+		System.out.println("Event: " + event);
+		System.out.println("Source: " + source);
+		System.out.println();
+	}
+
+	public Chart getDesignTimeModel() {
+		return cm;
+	}
+
+	public Chart getRunTimeModel() {
+		return state.getChartModel();
+	}
+
+	public Object peerInstance() {
+		return this;
+	}
+
+	public void regenerateChart() {
+		needsGeneration = true;
+		renderModel();
+	}
+
+	public void repaintChart() {
+		renderModel();
 	}
 }

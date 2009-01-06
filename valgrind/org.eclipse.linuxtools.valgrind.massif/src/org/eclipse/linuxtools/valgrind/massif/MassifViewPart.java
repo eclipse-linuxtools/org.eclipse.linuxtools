@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -54,26 +51,25 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.progress.IProgressService;
 
 public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 	protected static final String TITLE_STACKS = Messages
-			.getString("MassifViewPart.Stacks"); //$NON-NLS-1$
+	.getString("MassifViewPart.Stacks"); //$NON-NLS-1$
 	protected static final String TITLE_EXTRA = Messages
-			.getString("MassifViewPart.Extra_Heap"); //$NON-NLS-1$
+	.getString("MassifViewPart.Extra_Heap"); //$NON-NLS-1$
 	protected static final String TITLE_USEFUL = Messages
-			.getString("MassifViewPart.Useful_Heap"); //$NON-NLS-1$
+	.getString("MassifViewPart.Useful_Heap"); //$NON-NLS-1$
 	protected static final String TITLE_TOTAL = Messages
-			.getString("MassifViewPart.Total"); //$NON-NLS-1$
+	.getString("MassifViewPart.Total"); //$NON-NLS-1$
 	protected static final String TITLE_TIME = Messages
-			.getString("MassifViewPart.Time"); //$NON-NLS-1$
+	.getString("MassifViewPart.Time"); //$NON-NLS-1$
 	protected static final String TITLE_NUMBER = Messages
-			.getString("MassifViewPart.Snapshot"); //$NON-NLS-1$
+	.getString("MassifViewPart.Snapshot"); //$NON-NLS-1$
 	protected static final String TREE_ACTION = MassifPlugin.PLUGIN_ID
-			+ ".treeAction"; //$NON-NLS-1$
+	+ ".treeAction"; //$NON-NLS-1$
 	public static final String CHART_ACTION = MassifPlugin.PLUGIN_ID
-			+ ".chartAction"; //$NON-NLS-1$
+	+ ".chartAction"; //$NON-NLS-1$
 
 	protected MassifSnapshot[] snapshots;
 
@@ -87,6 +83,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 	protected Action treeAction;
 	protected Action chartAction;
+	protected ChartEditorInput chartInput;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -151,7 +148,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			break;
 		default:
 			result = "ms"; //$NON-NLS-1$
-			break;
+		break;
 		}
 		return result;
 	}
@@ -192,7 +189,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 						} else {
 							result = s1.getStacks() - s2.getStacks();
 						}
-						
+
 						// overflow check
 						if (result > Integer.MAX_VALUE) {
 							result = Integer.MAX_VALUE;
@@ -211,26 +208,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			@Override
 			public void run() {
-				if (snapshots.length > 0) {
-					IProgressService ps = PlatformUI.getWorkbench()
-							.getProgressService();
-					final IWorkbenchPage page = PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getActivePage();
-					try {
-						ps.busyCursorWhile(new IRunnableWithProgress() {
-							public void run(IProgressMonitor monitor)
-									throws InvocationTargetException,
-									InterruptedException {
-								monitor.beginTask(Messages.getString("MassifViewPart.Rendering_Chart"), 2); //$NON-NLS-1$
-								displayChart(page, monitor); // this can be long running
-								monitor.done();
-							}
-						});
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+				if (snapshots.length > 0) {					
+					displayChart();
 				}
 			}
 		};
@@ -260,29 +239,30 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return new IAction[] { chartAction, treeAction };
 	}
 
-	protected void displayChart(final IWorkbenchPage page,
-			final IProgressMonitor monitor) {
-		final HeapChart chart = new HeapChart(snapshots);
-		final String title = ValgrindUIPlugin.getDefault().getView()
-				.getContentDescription();
+	protected void createChart() {
+		HeapChart chart = new HeapChart(snapshots);
+		String title = ValgrindUIPlugin.getDefault().getView().getContentDescription();
 		chart.getTitle().getLabel().getCaption().setValue(title);
 
-		if (page != null) {
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					try {
-						String name = getInputName(title);
-						final ChartEditorInput input = new ChartEditorInput(
-								chart, name);
-						monitor.worked(1);
-						page.openEditor(input, MassifPlugin.EDITOR_ID);
-					} catch (PartInitException e) {
-						e.printStackTrace();
-					}
+		String name = getInputName(title);
+		chartInput = new ChartEditorInput(chart, name);
+
+		// open the editor
+		displayChart();
+	}
+
+	protected void displayChart() {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					IWorkbenchPage page = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage();
+					page.openEditor(chartInput, MassifPlugin.EDITOR_ID);
+				} catch (PartInitException e) {
+					e.printStackTrace();
 				}
-			});
-			monitor.worked(1);
-		}
+			}
+		});
 	}
 
 	protected String getInputName(String description) {
@@ -299,7 +279,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public void refreshView() {
 		if (snapshots != null) {
 			viewer.setInput(snapshots);
-			
+
 			String timeWithUnit = TITLE_TIME + " (" + getUnitString(snapshots) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 			for (TableColumn column : viewer.getTable().getColumns()) {
 				if (column.getText().startsWith(TITLE_TIME)) {
@@ -313,6 +293,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				nodes[i] = detailed[i].getRoot();
 			}
 			treeViewer.setInput(nodes);
+			
+			// create and display chart
+			if (snapshots.length > 0) {
+				createChart();
+			}
 		}
 	}
 
@@ -338,7 +323,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	}
 
 	protected class MassifLabelProvider extends LabelProvider implements
-			ITableLabelProvider, IFontProvider {
+	ITableLabelProvider, IFontProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			Image image = null;
@@ -350,8 +335,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				case PEAK:
 				case DETAILED:
 					image = MassifPlugin
-							.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID,
-									"icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
+					.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID,
+					"icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
 				}
 			}
 			return image;

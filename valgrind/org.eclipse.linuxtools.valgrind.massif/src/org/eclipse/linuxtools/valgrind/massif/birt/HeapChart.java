@@ -11,6 +11,7 @@
  ***********************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.birt;
 
+import org.eclipse.birt.chart.model.attribute.ActionType;
 import org.eclipse.birt.chart.model.attribute.AxisType;
 import org.eclipse.birt.chart.model.attribute.ChartDimension;
 import org.eclipse.birt.chart.model.attribute.FontDefinition;
@@ -20,19 +21,25 @@ import org.eclipse.birt.chart.model.attribute.MarkerType;
 import org.eclipse.birt.chart.model.attribute.Orientation;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
+import org.eclipse.birt.chart.model.attribute.TriggerCondition;
+import org.eclipse.birt.chart.model.attribute.impl.CallBackValueImpl;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Axis;
 import org.eclipse.birt.chart.model.component.Series;
 import org.eclipse.birt.chart.model.component.impl.AxisImpl;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
+import org.eclipse.birt.chart.model.data.Action;
 import org.eclipse.birt.chart.model.data.BaseSampleData;
 import org.eclipse.birt.chart.model.data.DataFactory;
 import org.eclipse.birt.chart.model.data.NumberDataSet;
 import org.eclipse.birt.chart.model.data.OrthogonalSampleData;
 import org.eclipse.birt.chart.model.data.SampleData;
 import org.eclipse.birt.chart.model.data.SeriesDefinition;
+import org.eclipse.birt.chart.model.data.Trigger;
+import org.eclipse.birt.chart.model.data.impl.ActionImpl;
 import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
 import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
+import org.eclipse.birt.chart.model.data.impl.TriggerImpl;
 import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
 import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.layout.Plot;
@@ -231,8 +238,12 @@ public class HeapChart extends ChartWithAxesImpl {
 			marker.setType(MarkerType.DIAMOND_LITERAL);
 			marker.setSize(3);
 		}
+		
 		ls1.setPaletteLineColor(true);
 		ls1.setSeriesIdentifier(Messages.getString("HeapChart.Useful_Heap")); //$NON-NLS-1$
+		Action action = ActionImpl.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl.create(String.valueOf(ls1.getSeriesIdentifier())));		
+		Trigger trigger = TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, action);
+		ls1.getTriggers().add(trigger);
 
 		// Y-Series
 		LineSeries ls2 = (LineSeries) LineSeriesImpl.create();
