@@ -16,5 +16,15 @@
 			<property name="url" value="${cdtURL}" />
 			<property name="file" value="${cdtFile}" />
 		</ant>
+		<ant target="getDependency"
+		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
+			<property name="url" value="${birtURL}" />
+			<property name="file" value="${birtFile}" />
+		</ant>
+		<ant target="getDependency"
+		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
+			<property name="url" value="${emfURL}" />
+			<property name="file" value="${emfFile}" />
+		</ant>
 	</target>
 </project>
