@@ -1,43 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site pack200="true"
- associateSitesURL="http://download.eclipse.org/technology/linuxtools/updates-nightly/associateSites.xml"
- mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/technology/linuxtools/updates-nightly/site.xml&amp;format=xml">
-   <description url="http://download.eclipse.org/technology/linuxtools/updates-nightly">
+<site pack200="true" associateSitesURL="http://download.eclipse.org/technology/linuxtools/updates-nightly/associateSites.xml">
+   <description url="http://download.eclipse.org/technology/linuxtools/update">
       Nightly builds of Linux Tools project.
    </description>
-
-   <category-def name="Linux Tools Features (Nightly development build)" label="Linux Tools Features (Nightly development build)">
-      <description>Nightly development build of end-user features</description>
-   </category-def>
-   <category-def name="Linux Tools Enabling Features (Nightly development build)" label="Linux Tools Enabling Features (Nightly development build)">
-         <description>These features are used by the other user-visible Linux Tools features.  They are not meant to be installed on their own.</description>
-   </category-def>
-
-   <feature url="features/org.eclipse.linuxtools.cdt.autotools.feature_1.0.1.jar" id="org.eclipse.linuxtools.cdt.autotools.feature" version="1.0.1">
-        <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_0.1.0.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="0.1.0">
-     <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.changelog_2.6.3.jar" id="org.eclipse.linuxtools.changelog" version="2.6.3">
-     <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.oprofile.feature_0.1.0.jar" id="org.eclipse.linuxtools.oprofile.feature" version="0.1.0">
-     <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.profiling.feature_0.1.0.jar" id="org.eclipse.linuxtools.profiling.feature" version="0.1.0">
-     <category name="Linux Tools Enabling Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_0.4.1.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="0.4.1">
-     <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.rpmstubby_0.1.0.200901130905.jar" id="org.eclipse.linuxtools.rpmstubby" version="0.1.0.200901130905">
-     <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.systemtap.feature_0.1.0.jar" id="org.eclipse.linuxtools.systemtap.feature" version="0.1.0">
-     <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
-   <feature url="features/org.eclipse.linuxtools.valgrind.feature_0.1.0.jar" id="org.eclipse.linuxtools.valgrind.feature" version="0.1.0">
-     <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
+   <feature url="features/org.eclipse.linuxtools.cdt.autotools.feature_1.0.1.jar" id="org.eclipse.linuxtools.cdt.autotools.feature" version="1.0.1"/>
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_0.1.0.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="0.1.0"/>
+   <feature url="features/org.eclipse.linuxtools.changelog_2.6.3.jar" id="org.eclipse.linuxtools.changelog" version="2.6.3"/>
+   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_0.1.0.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="0.1.0"/>
+   <feature url="features/org.eclipse.linuxtools.systemtap.feature_0.1.0.jar" id="org.eclipse.linuxtools.systemtap.feature" version="0.1.0"/>
+   <feature url="features/org.eclipse.linuxtools.profiling.feature_0.1.0.jar" id="org.eclipse.linuxtools.profiling.feature" version="0.1.0"/>
+   <feature url="features/org.eclipse.linuxtools.valgrind.feature_0.1.0.jar" id="org.eclipse.linuxtools.valgrind.feature" version="0.1.0"/>
 </site>
