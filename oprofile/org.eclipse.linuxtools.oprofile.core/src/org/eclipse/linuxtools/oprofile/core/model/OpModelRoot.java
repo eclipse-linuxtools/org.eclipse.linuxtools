@@ -45,8 +45,7 @@ public class OpModelRoot {
 		
 		//launch `opxml sessions`, gather up events & the sessions under them
 		_events = Oprofile.getEvents();
-		if (_events != null)
-		{
+		if (_events != null) {
 			for (int i = 0; i < _events.length; i++) {
 				_events[i].refreshModel();
 			}

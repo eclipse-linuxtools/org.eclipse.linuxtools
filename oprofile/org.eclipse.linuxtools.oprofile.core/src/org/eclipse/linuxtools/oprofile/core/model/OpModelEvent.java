@@ -42,14 +42,11 @@ public class OpModelEvent {
 	
 	//populate all sessions
 	public void refreshModel() {
-		if (_sessions != null)
-		{
-			for (int i = 0; i < _sessions.length; i++)
-			{
+		if (_sessions != null) {
+			for (int i = 0; i < _sessions.length; i++) {
 				_sessions[i].refreshModel();
 			}
 		}
-		
 	}
 	
 	public String toString(String tabs) {

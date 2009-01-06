@@ -47,13 +47,11 @@ public class OpModelSession {
 		return _image.getCount();
 	}
 	
-	public boolean isDefaultSession()
-	{
+	public boolean isDefaultSession() {
 		return _name.equals(DEFAULT_SESSION_STRING); 
 	}
 	
-	public void refreshModel()
-	{
+	public void refreshModel() {
 		//populate this session with samples
 		_image = Oprofile.getModelData(_parentEvent.getName(), _name);
 	}
