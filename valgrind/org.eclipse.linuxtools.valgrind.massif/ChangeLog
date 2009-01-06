@@ -1,4 +1,9 @@
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
+	* MassifViewPart: Chart now opens upon launch; EditorInput is cached once
+	created.
+	* ChartControl: Catches ChartException.
+	* ChartRenderer: First attempt at callbacks
+	* HeapChart: Likewise.
 	* META-INF/MANIFEST.MF: Changed version to 0.1.0.
 	* build.properties: Include about.html and icons.
