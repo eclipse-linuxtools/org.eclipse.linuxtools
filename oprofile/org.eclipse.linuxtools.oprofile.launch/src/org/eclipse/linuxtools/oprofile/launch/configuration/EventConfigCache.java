@@ -79,9 +79,13 @@ public class EventConfigCache {
 		if (result == null) {
 			//not in the map, get its value and add it in
 			result = Oprofile.checkEvent(counter, event, mask);
-			validEventCache.put(e, result);
+			
+			//possible to be null if there is no opxmlProvider
+			if (result != null) {
+				validEventCache.put(e, result);
+			}
 		}
 
-		return result;
+		return (result == null ? false : result);
 	}
 }
