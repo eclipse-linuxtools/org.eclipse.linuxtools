@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.linuxtools.valgrind.launch" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.linuxtools.valgrind.launch" id="valgrindTool" name="Valgrind Tool"/>
+      </appinfo>
+      <documentation>
+         This extension point provides Valgrind tools the ability to contribute options to the Valgrind &lt;code&gt;ILaunchConfigurationTab&lt;/code&gt; and to deploy UI to the Valgrind view.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="tool"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="tool">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identifier for this tool
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of this tool as Valgrind expects it as an argument to &lt;code&gt;--tool&lt;/code&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="page" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class to contribute controls used to add options for this tool in the &lt;code&gt;ILaunchConfigurationTab&lt;/code&gt; for Valgrind.
+Must implement &lt;code&gt;IValgrindToolPage&lt;/code&gt;
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="delegate" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class that will receive control from the &lt;code&gt;ValgrindLaunchConfigurationDelegate&lt;/code&gt; once Valgrind has launched.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>
