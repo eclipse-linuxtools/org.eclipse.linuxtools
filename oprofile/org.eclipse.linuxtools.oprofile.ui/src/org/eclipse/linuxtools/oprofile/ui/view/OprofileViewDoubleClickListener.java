@@ -71,7 +71,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 						OprofileCorePlugin.getDefault().getOpcontrolProvider().saveSession(dialog.getValue());
 						OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 					} catch (OpcontrolException oe) {
-						OprofileUiPlugin.showErrorDialog(null, "opcontrolProvider", oe); //$NON-NLS-1$
+						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe);
 					}
 				}
 			}
