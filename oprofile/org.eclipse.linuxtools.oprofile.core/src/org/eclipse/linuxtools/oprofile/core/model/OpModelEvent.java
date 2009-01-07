@@ -59,8 +59,7 @@ public class OpModelEvent {
 	@Override
 	public String toString() {
 		String s = _eventName + "\n";
-		if (_sessions != null)
-		{
+		if (_sessions != null) {
 			for (int i = 0; i < _sessions.length; i++) {
 				s += _printTabs + "Session: ";
 				s += _sessions[i].toString(_printTabs + "\t");

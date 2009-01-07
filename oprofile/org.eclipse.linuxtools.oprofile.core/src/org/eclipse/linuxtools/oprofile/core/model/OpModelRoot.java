@@ -32,6 +32,7 @@ public class OpModelRoot {
 
 	private OpModelRoot() {
 //		refreshModel();
+		_events = null;
 		_modelRoot = this;
 	}
 
@@ -59,9 +60,11 @@ public class OpModelRoot {
 	@Override
 	public String toString() {
 		String s = "";
-		for (int i = 0; i < _events.length; i++) {
-			s += "Event: ";
-			s += _events[i].toString("\t");
+		if (_events != null) {
+			for (int i = 0; i < _events.length; i++) {
+				s += "Event: ";
+				s += _events[i].toString("\t");
+			}
 		}
 		return s;
 	}

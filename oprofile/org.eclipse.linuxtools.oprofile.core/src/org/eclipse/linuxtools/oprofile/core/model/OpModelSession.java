@@ -66,8 +66,7 @@ public class OpModelSession {
 	@Override
 	public String toString() {
 		String s = _name + "\n";
-		if (_image != null)
-		{
+		if (_image != null) {
 			s += _printTabs + "Image: ";
 			s += _image.toString(_printTabs + "\t");
 		}
