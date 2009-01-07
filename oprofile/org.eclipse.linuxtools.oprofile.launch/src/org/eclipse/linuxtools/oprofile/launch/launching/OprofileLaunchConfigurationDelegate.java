@@ -33,10 +33,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
@@ -98,9 +96,8 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// it to, no matter to start the daemon before the binary itself is run
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
 		} catch (OpcontrolException oe) {
-			String title = OprofileProperties.getString("opcontrolProvider.error.dialog.title"); //$NON-NLS-1$
-			String msg = OprofileProperties.getString("opcontrolProvider.error.dialog.message"); //$NON-NLS-1$
-			ErrorDialog.openError(null, title, msg, oe.getStatus());
+			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe);
+			return;
 		}
 
 		/* 
@@ -216,7 +213,9 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 						});
 					}
 				}
-			} catch (OpcontrolException ignore) {}
+			} catch (OpcontrolException oe) {
+				OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe);
+			}
 		}
 
 		public void launchesAdded(ILaunch[] launches) { /* dont care */}
