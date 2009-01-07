@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004,2008,2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.linuxtools.oprofile.core.daemon;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -64,14 +63,8 @@ public class OpInfo {
 	// A HashMap of Oprofile defaults
 	private HashMap<String,String> _defaults;
 	
-	// A list of all the events for each counter (temporary)
-	private ArrayList<ArrayList<OpEvent>> _eventArrayList = null;	//FIXME: this is madness! fix later
-	
 	// The permanent list of events indexed by counter
 	private OpEvent[][] _eventList;
-	
-	// The sample directory in use
-	private String _dir;
 	
 	// The CPU frequency of this CPU in MHz
 	private double _cpuSpeed;
@@ -87,7 +80,6 @@ public class OpInfo {
 		try {
 			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().info(info);
 			opxml.run(null);
-			info._init();
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
@@ -95,37 +87,6 @@ public class OpInfo {
 		}
 		
 		return info;
-	}
-	
-	// Initializes internal state
-	private void _init() {
-		_dir = getDefault(DEFAULT_SAMPLE_DIR);
-		
-		_eventList = new OpEvent[getNrCounters()][];
-		for (int i = 0; i < getNrCounters(); ++i) {
-			_eventList[i] = new OpEvent[_eventArrayList.get(i).size()];
-			_eventArrayList.get(i).toArray(_eventList[i]);
-			Arrays.sort(_eventList[i], new SortEventComparator());
-		}
-		
-		// Done with arraylists
-		_eventArrayList = null;
-	}
-	
-	/**
-	 * Returns the sample directory in use
-	 * @return the directory
-	 */
-	public String getDir() {
-		return _dir;
-	}
-	
-	/**
-	 * Sets the sample directory to use
-	 * @param dir the sample directory
-	 */
-	public void setDir(String dir) {
-		_dir = dir;
 	}
 	
 	/**
@@ -138,17 +99,15 @@ public class OpInfo {
 	
 	/**
 	 * Sets the number of counters allowed by Oprofile. This method is called
-	 * after this object is contstructed, but after opxml is run.
+	 * after this object is contstructed, while opxml is run (the first tag output
+	 * is num-counters).
 	 * @param ctrs the number of counters
 	 */
 	public void setNrCounters(int ctrs) {
 		_nrCounters = ctrs;
 		
 		// Allocate room for event lists for the counters
-		_eventArrayList = new ArrayList<ArrayList<OpEvent>>();
-		for (int i = 0; i < ctrs; ++i) {
-			_eventArrayList.add(i, new ArrayList<OpEvent>());
-		}
+		_eventList = new OpEvent[_nrCounters][];
 	}
 	
 	/**
@@ -177,18 +136,20 @@ public class OpInfo {
 	public String getDefault(String what) {
 		return (String) _defaults.get(what);
 	}
-	
+
 	/**
-	 * Adds an event into the list of events allowed for the given counter.
-	 * @param num the counter for the event
-	 * @param event the event
+	 * Adds the events of the counter counterNum into the list of all events.
+	 * Note they are sorted here.
+	 * @param counterNum the counter with the events
+	 * @param events an array of OpEvent events belonging to this counter
 	 */
-	public void setEvent (int num, OpEvent event) {
-		if (num < _eventArrayList.size()) {
-			_eventArrayList.get(num).add(event);
+	public void setEvents(int counterNum, OpEvent[] events) {
+		if (counterNum < _eventList.length) {
+			_eventList[counterNum] = events;
+			Arrays.sort(_eventList[counterNum], new SortEventComparator());
 		}
 	}
-	
+
 	/**
 	 * Returns an array of events valid for the given counter number.
 	 * (-1 for all counters) 

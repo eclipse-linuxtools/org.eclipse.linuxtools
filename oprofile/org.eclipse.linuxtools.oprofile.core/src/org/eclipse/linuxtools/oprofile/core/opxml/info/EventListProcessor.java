@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 Red Hat, Inc.
+ * Copyright (c) 2004,2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,13 +7,13 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
+ *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.core.opxml.info;
 
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
-import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
@@ -28,6 +28,7 @@ public class EventListProcessor extends XMLProcessor {
 	// The current event being constructed
 	private OpEvent _currentEvent;
 	private int _counter;
+	private ArrayList<OpEvent> _currentEventList;
 	
 	// An XML processor for reading the unit mask information for an event
 	private UnitMaskProcessor _umProcessor;
@@ -178,6 +179,11 @@ public class EventListProcessor extends XMLProcessor {
 		_umProcessor = new UnitMaskProcessor();
 	}
 	
+	@Override
+	public void reset(Object callData) {
+		_currentEventList = new ArrayList<OpEvent>();
+	}
+	
 	/**
 	 * @see org.eclipse.linuxtools.oprofile.core.XMLProcessor#startElement(String, Attributes)
 	 */
@@ -202,8 +208,7 @@ public class EventListProcessor extends XMLProcessor {
 	public void endElement(String name, Object callData) {
 		if (name.equals(_EVENT_TAG)) {
 			// Finished constructing an event. Add it to the list.
-			OpInfo info = (OpInfo) callData;
-			info.setEvent(_counter, _currentEvent);
+			_currentEventList.add(_currentEvent);
 		} else if (name.equals(_UNIT_MASK_TAG)) {
 			// Set the event's unit mask
 			_currentEvent.setUnitMask(_umProcessor.getResult());
@@ -222,5 +227,15 @@ public class EventListProcessor extends XMLProcessor {
 		} else if (name.equals(OpInfoProcessor.EVENT_LIST_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(name);
 		}
+	}
+	
+	public int getCounterNum() {
+		return _counter;
+	}
+	
+	public OpEvent[] getEvents() {
+		OpEvent[] events = new OpEvent[_currentEventList.size()];
+		_currentEventList.toArray(events);
+		return events;
 	}
 }
