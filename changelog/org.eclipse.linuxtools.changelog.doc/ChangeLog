@@ -1,3 +1,8 @@
+2009-01-07  Andrew Overholt  <overholt@redhat.com>
+
+	* build.xml: Back to version 2.6.3.  Include META-INF in binary build.
+	* plugin.properties: Update provider to be Eclipse.org.
+
 2008-11-14  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* build.properties: Add META-INF to bin.includes.

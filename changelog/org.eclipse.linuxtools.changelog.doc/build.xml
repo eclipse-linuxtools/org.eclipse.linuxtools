@@ -3,7 +3,7 @@
 
 	<target name="init">
 		<property name="plugin" value="org.eclipse.linuxtools.changelog.doc"/>
-		<property name="version.suffix" value="2.4.0"/>
+		<property name="version.suffix" value="2.6.3"/>
 		<property name="full.name" value="${plugin}_${version.suffix}"/>
 		<property name="temp.folder" value="${basedir}/temp.folder"/>
 		<property name="plugin.destination" value="${basedir}"/>
@@ -25,10 +25,10 @@
  	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
 		<mkdir dir="${destination.temp.folder}/${full.name}"/>
         <zip zipfile="${destination.temp.folder}/${full.name}/doc.zip"
-        	 basedir="${basedir}/raw"                                 
+        	 basedir="${basedir}/raw"
 		/>
 		<copy todir="${destination.temp.folder}/${full.name}">
-			<fileset dir="${basedir}" includes="*.properties,*.xml,*.zip" excludes="build.properties,build.xml"/>
+			<fileset dir="${basedir}" includes="*.properties,*.xml,*.zip,META-INF/**" excludes="build.properties,build.xml"/>
 		</copy>
 	</target>
 
