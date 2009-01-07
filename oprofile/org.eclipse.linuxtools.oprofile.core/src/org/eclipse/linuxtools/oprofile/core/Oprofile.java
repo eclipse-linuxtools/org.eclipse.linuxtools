@@ -85,7 +85,7 @@ public class Oprofile
 		try {
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
 		} catch (OpcontrolException e) {
-			e.getStatus().getException();
+			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e);
 		} 
 	}
 
