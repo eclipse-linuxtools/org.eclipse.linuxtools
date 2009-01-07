@@ -93,10 +93,9 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 			    // We don't have an obvious project match in the current active view.  
 				// Let's search all open views for the Synchronize View which is our first
 				// choice to fall back on.
-				IViewReference[] views = ref.getViewReferences();
-				for (int j = 0; j < views.length; ++j) {
-					if (views[j].getId().equals("org.eclipse.team.sync.views.SynchronizeView")) { // $NON-NLS-1$
-						IViewPart v = views[j].getView(false);
+				for (IViewReference view: ref.getViewReferences()) {
+					if (view.getId().equals("org.eclipse.team.sync.views.SynchronizeView")) { // $NON-NLS-1$
+						IViewPart v = view.getView(false);
 						ISelection s = null;
 						ISelectionProvider sp = v.getViewSite().getSelectionProvider();
 						if (sp != null) {

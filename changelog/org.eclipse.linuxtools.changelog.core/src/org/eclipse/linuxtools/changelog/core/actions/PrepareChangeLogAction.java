@@ -121,30 +121,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		return "";
 	}
 
-	// if (parserExtensions != null) {
-	// IConfigurationElement[] elements = parserExtensions
-	// .getConfigurationElements();
-	// for (int i = 0; i < elements.length; i++) {
-	// if (elements[i].getName().equals("parser") &&
-	// (elements[i].getAttribute("editor").equals(editorName))) { //$NON-NLS-1$
-	// try {
-	// IConfigurationElement bob = elements[i];
-	// parserContributor = (IParserChangeLogContrib) bob
-	// .createExecutableExtension("class");
-	// return parserContributor.parseCurrentFunction(input,
-	// offset);
-	// } catch (CoreException e) {
-	// ChangelogPlugin.getDefault().getLog().log(
-	// new Status(IStatus.ERROR, "Changelog",
-	// IStatus.ERROR, e.getMessage(), e));
-	// }
-	//
-	// }
-	// }
-	// }
-	// return "";
-	// }
-
 	/**
 	 * @see IActionDelegate#run(IAction)
 	 */
@@ -181,10 +157,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// Don't add entries for ChangeLog files though.
 		if (d.hasChildren()) {
 			IPath newPath = path.append(d.getName());
-			IDiffElement[] elements = d.getChildren();
-			for (int i = 0; i < elements.length; ++i) {
-				if (elements[i] instanceof ISynchronizeModelElement)
-					extractSynchronizeModelInfo((ISynchronizeModelElement)elements[i], newPath, newList, removeList, changeList);
+			for (IDiffElement element: d.getChildren()) {
+				if (element instanceof ISynchronizeModelElement)
+					extractSynchronizeModelInfo((ISynchronizeModelElement)element, newPath, newList, removeList, changeList);
 				else if (!(d.getName().equals("ChangeLog"))) { // $NON-NLS-1$
 					IPath finalPath = path.append(d.getName());
 					PatchFile p = new PatchFile(finalPath);
@@ -245,16 +220,13 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				else 
 					ancestorStorage = null;
 
-				RangeDifference[] rd = null;
 				try {
 					// We compare using a standard differencer to get ranges
 					// of changes.  We modify them to be document-based (i.e.
 					// first line is line 1) and store them for later parsing.
 					LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
 					LineComparator right = new LineComparator(file.getContents(), osEncoding);
-					rd = RangeDifferencer.findDifferences(left, right);
-					for (int j = 0; j < rd.length; ++j) {
-						RangeDifference tmp = rd[j];
+					for (RangeDifference tmp: RangeDifferencer.findDifferences(left, right)) {
 						if (tmp.kind() == RangeDifference.CHANGE) {
 							int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
 							p.addLineRange(tmp.rightStart() + 1, tmp.rightStart() + rightLength);
@@ -320,9 +292,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			totalChanges = infos.length;
 			// Iterate through the list of changed resources and categorize them into
 			// New, Removed, and Changed lists.
-			for (int i = 0; i < infos.length; ++i) {
-				int kind = SyncInfo.getChange(infos[i].getKind());
-				PatchFile p = new PatchFile(infos[i].getLocal().getFullPath());
+			for (SyncInfo info : infos) {
+				int kind = SyncInfo.getChange(info.getKind());
+				PatchFile p = new PatchFile(info.getLocal().getFullPath());
 
 				// Check the type of entry and sort into lists.  Do not add an entry
 				// for ChangeLog files.
@@ -336,7 +308,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 					} else if (kind == SyncInfo.CHANGE) {
 						changeList.add(p);
 						// Save the resource so we can later figure out which lines were changed
-						p.setResource(infos[i].getLocal());
+						p.setResource(info.getLocal());
 					}
 				}
 			}
@@ -385,22 +357,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// file.
 		monitor.subTask(Messages.getString("ChangeLog.WritingMessage")); // $NON-NLS-1$
 		int unitwork = 250 / patchFileInfoList.length;
-		for (int pfIndex = 0; pfIndex < patchFileInfoList.length; pfIndex++) {
+		for (PatchFile pf: patchFileInfoList) {
 			// for each file
-
-			PatchFile pf = patchFileInfoList[pfIndex];
-
 			String[] funcGuessList = guessFunctionNames(pf);
-			
 			outputMultipleEntryChangeLog(pf, funcGuessList);
-
-			/*
-			 * // print info for debug
-			 * System.out.println(pf.getPath().toOSString()); for (int i = 0; i <
-			 * funcGuessList.length; i++) {
-			 * System.out.println(funcGuessList[i]); }
-			 * System.out.println("---------------------");
-			 */
 			monitor.worked(unitwork);
 		}
 	}
@@ -473,10 +433,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		int numFuncs = 0;
 		clw.setGuessedFName(""); // $NON-NLS-1$
 		if (functionGuess.length > 0) {
-			for (int i = 0; i < functionGuess.length; i++) {
-				if (!functionGuess[i].trim().equals("")) { // $NON-NLS-1$
+			for (String guess : functionGuess) {
+				if (!guess.trim().equals("")) { // $NON-NLS-1$
 					++numFuncs;
-					clw.setGuessedFName(functionGuess[i]);
+					clw.setGuessedFName(guess);
 					clw.writeChangeLog();
 				}
 			}
@@ -536,16 +496,13 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			// get document for target file
 			IDocument doc = mdp.createDocument(fei);
 
-			PatchRangeElement[] tpre = patchFileInfo.getRanges();
 			HashMap<String, String> functionNamesMap = new HashMap<String, String>();
 
 			// for all the ranges
-
-			for (int i = 0; i < patchFileInfo.countRanges(); i++) {
+			for (PatchRangeElement tpre: patchFileInfo.getRanges()) {
 
 				// for all the lines in a range
-
-				for (int j = tpre[i].ffromLine; j <= tpre[i].ftoLine; j++) {
+				for (int j = tpre.ffromLine; j <= tpre.ftoLine; j++) {
 
 					if ((j <= 0) || (j >= doc.getNumberOfLines()))
 						continue; // ignore out of bound lines
@@ -560,7 +517,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 					functionNamesMap.put(functionGuess, functionGuess);
 
 				}
-
 			}
 
 			// dump all unique func. guesses
@@ -587,5 +543,4 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		}
 		return fnames;
 	}
-	
 }

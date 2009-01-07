@@ -184,14 +184,10 @@ public class PrepareCommitAction extends ChangeLogAction {
 						else 
 							ancestorStorage = null;
 
-						RangeDifference[] rd = null;
-
 						try {
 							LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
 							LineComparator right = new LineComparator(file.getContents(), osEncoding);
-							rd = RangeDifferencer.findDifferences(left, right);
-							for (int j = 0; j < rd.length; ++j) {
-								RangeDifference tmp = rd[j];
+							for (RangeDifference tmp: RangeDifferencer.findDifferences(left, right)) {
 								if (tmp.kind() == RangeDifference.CHANGE) {
 									LineNumberReader l = new LineNumberReader(new InputStreamReader(file.getContents()));
 									int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;

@@ -23,12 +23,6 @@ import org.eclipse.jface.action.Action;
  */
 public class PrepareCommitHandler  implements IHandler {
 
-	
-	
-	
-	
-	
-	
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
 
@@ -39,21 +33,17 @@ public class PrepareCommitHandler  implements IHandler {
 
 	}
 
-	
-	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 	
 		Action exampleAction;
 		exampleAction = new PrepareCommitAction() {
 			public void run() {
 				//setSelection(new StructuredSelection(rm));
-
 				doRun();
 			}
 		};
 
 		exampleAction.run();
-			
 		
 		return null;
 	}

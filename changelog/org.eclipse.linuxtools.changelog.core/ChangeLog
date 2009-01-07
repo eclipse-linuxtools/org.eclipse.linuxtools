@@ -1,3 +1,26 @@
+2009-01-07  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/InsertChangeLogKeyHandler.java 
+	(InsertChangeLogKeyHandler): Remove empty lines.
+	(execute): Likewise.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java 
+	(getRanges): Likewise.
+	(appendTxtToLastRange): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java 
+	(prepareChangeLog): Use foreach.
+	(guessFunctionNames): Likewise.
+	(extractSynchronizeModelInfo): Likewise.
+	(outputMultipleEntryChangeLog): Likewise.
+	(getChangedLines): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java 
+	(execute): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java 
+	(loadClipboard): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitHandler.java 
+	(execute): Remove empty lines.
+	(addHandlerListener): Likewise.
+
 2008-12-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 2.6.4.

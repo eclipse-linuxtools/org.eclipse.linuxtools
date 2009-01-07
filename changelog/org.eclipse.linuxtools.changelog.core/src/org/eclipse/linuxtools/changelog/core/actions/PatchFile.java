@@ -60,27 +60,20 @@ public class PatchFile {
 	public void addLineRange(int from, int to) {
 	
 		pranges.add(new PatchRangeElement(from, to, ""));
-		
-		
 	}
 	
 	public PatchRangeElement[] getRanges() {
-		
-		
 		Object[] tmpEle = pranges.toArray();
 		PatchRangeElement[] ret = new PatchRangeElement[tmpEle.length];
 		
 		for (int i = 0; i < tmpEle.length; i++) {
 			ret[i] = (PatchRangeElement) tmpEle[i];
 		}
-		
-	
 		return ret;
 	}
 
 
 	public void appendTxtToLastRange(String txt) {
-		
 		
 		(pranges.get(pranges.size()-1)).appendTxt(txt);
 	}
@@ -120,5 +113,4 @@ public class PatchFile {
 				return false;
 		return true;
 	}
-
 }

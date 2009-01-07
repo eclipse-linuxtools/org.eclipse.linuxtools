@@ -35,9 +35,7 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 	private IEditorPart currentEditor;
 
 	public InsertChangeLogKeyHandler() {
-
 		super();
-
 	}
 
 	String getEditorName() {
@@ -144,7 +142,6 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 		}
 
 		// get formatter
-
 		clw.setFormatter(extensionManager.getFormatterContributor(clw
 				.getEntryFilePath(), pref_Formatter));
 
@@ -152,7 +149,6 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 		clw.setChangelog(getChangelog());
 
 		// write to changelog
-
 		clw.setDateLine(clw.getFormatter().formatDateLine(pref_AuthorName,
 				pref_AuthorEmail));
 
@@ -194,7 +190,6 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 		try {
 			execute(null);
 		} catch (ExecutionException e) {
-
 			reportErr("Executing insert changelog failed", e);
 		}
 	}
@@ -202,5 +197,4 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 	public void selectionChanged(IAction action, ISelection selection) {
 
 	}
-
 }
