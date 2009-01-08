@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2009 Red Hat, Inc.
+ * Copyright (c) 2004 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Keith Seitz <keiths@redhat.com> - initial API and implementation
- *    Kent Sebastian <ksebasti@redhat.com>
  *******************************************************************************/ 
 
 package org.eclipse.linuxtools.oprofile.core.daemon;
@@ -15,7 +14,8 @@ package org.eclipse.linuxtools.oprofile.core.daemon;
 /**
  * A class which represents an Oprofile event
  */
-public class OpEvent {
+public class OpEvent
+{
 	// The Oprofile event name, i.e., "CPU_CLK_UNHALTED"
 	private String _name;
 	
@@ -32,87 +32,87 @@ public class OpEvent {
 	private int _minCount;
 	
 	/**
-	 * Sets the unit mask for this event.
-	 * Only called from XML parsers.
-	 * @param mask the new unit mask
-	 */
-	public void _setUnitMask(OpUnitMask mask) {
-		_unitMask = mask;
-	}
-
-	/**
-	 * Sets the name of this event.
-	 * Only called from XML parsers.
-	 * @param text the name
-	 */
-	public void _setText(String text) {
-		_name = text;
-	}
-
-	/**
-	 * Sets the description of this oprofile event.
-	 * Only called from XML parsers.
-	 * @param text the description
-	 */
-	public void _setTextDescription(String text) {
-		_description = text;
-	}
-
-	/**
-	 * Sets the minimum count for this event.
-	 * Only called from XML parsers.
-	 * @param min the minimum count
-	 */
-	public void _setMinCount(int min) {
-		_minCount = min;
-	}
-
-	/**
-	 * Sets oprofile's event number for this event.
-	 * Only called from XML parsers.
-	 * @param num the number
-	 */
-	public void _setNumber(int num) {
-		_number = num;
-	}
-
-	/**
 	 * Returns the unit mask corresponding to this event.
 	 * @return the unit mask
 	 */
-	public OpUnitMask getUnitMask() {		
+	public OpUnitMask getUnitMask()
+	{		
 		return _unitMask;
 	}
 	
 	/**
+	 * Sets the unit mask for this event.
+	 * @param mask the new unit mask
+	 */
+	public void setUnitMask(OpUnitMask mask) {
+		_unitMask = mask;
+	}
+		
+	/**
 	 * Returns the name of this oprofile event.
 	 * @return the name
 	 */
-	public String getText() {
+	public String getText()
+	{
 		return _name;
+	}
+	
+	/**
+	 * Sets the name of this event.
+	 * @param text the name
+	 */
+	public void setText(String text) {
+		_name = text;
 	}
 	
 	/**
 	 * Returns the description of this oprofile event.
 	 * @return the description
 	 */
-	public String getTextDescription() {
+	public String getTextDescription()
+	{
 		return _description;
+	}
+	
+	/**
+	 * Sets the description of this oprofile event.
+	 * @param text the description
+	 */
+	public void setTextDescription(String text) {
+		_description = text;
 	}
 	
 	/**
 	 * Returns the minimum count allowed for this event.
 	 * @return the minimum count
 	 */
-	public int getMinCount() {
+	public int getMinCount()
+	{
 		return _minCount;
 	}
 	
 	/**
+	 * Sets the minimum count for this event.
+	 * @param min the minimum count
+	 */
+	public void setMinCount(int min) {
+		_minCount = min;
+	}
+		
+	/**
 	 * Returns oprofile's event number for this event.
 	 * @return the event number
 	 */
-	public int getNumber() {
+	public int getNumber()
+	{
 		return _number;
+	}
+	
+	/**
+	 * Sets oprofile's event number for this event.
+	 * @param num the number
+	 */
+	public void setNumber(int num) {
+		_number = num;
 	}
 }

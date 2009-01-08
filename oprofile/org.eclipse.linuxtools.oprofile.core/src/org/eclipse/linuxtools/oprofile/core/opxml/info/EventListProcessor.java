@@ -131,10 +131,10 @@ public class EventListProcessor extends XMLProcessor {
 		public void endElement(String name, Object callData) {
 			if (name.equals(_MASK_TYPE_TAG)) {
 				// Set the mask type
-				_unitMask._setType(_getTypeFromString(_characters));
+				_unitMask.setType(_getTypeFromString(_characters));
 			} else if (name.equals(_MASK_DEFAULT_TAG)) {
 				// Set the default mask
-				_unitMask._setDefault(Integer.parseInt(_characters));
+				_unitMask.setDefault(Integer.parseInt(_characters));
 			} else if (name.equals(_MASK_TAG)) {
 				// Add this mask description to the list of all masks
 				_masks.add(_maskProcessor.getResult());
@@ -142,7 +142,7 @@ public class EventListProcessor extends XMLProcessor {
 				// All done. Add the known masks to the unit mask
 				OpUnitMask.MaskInfo[] descs = new OpUnitMask.MaskInfo[_masks.size()];
 				_masks.toArray(descs);
-				_unitMask._setMaskDescriptions(descs);
+				_unitMask.setMaskDescriptions(descs);
 				
 				// Pop this processor and pass _UNIT_MASK_TAG to previoius processor
 				OprofileSAXHandler.getInstance(callData).pop(_UNIT_MASK_TAG);
@@ -211,19 +211,19 @@ public class EventListProcessor extends XMLProcessor {
 			_currentEventList.add(_currentEvent);
 		} else if (name.equals(_UNIT_MASK_TAG)) {
 			// Set the event's unit mask
-			_currentEvent._setUnitMask(_umProcessor.getResult());
+			_currentEvent.setUnitMask(_umProcessor.getResult());
 		} else if (name.equals(_NAME_TAG)) {
 			// Set event's name
-			_currentEvent._setText(_characters);
+			_currentEvent.setText(_characters);
 		} else if (name.equals(_VALUE_TAG)) {
 			// Set event's value
-			_currentEvent._setNumber(Integer.parseInt(_characters));
+			_currentEvent.setNumber(Integer.parseInt(_characters));
 		} else if (name.equals(_DESCRIPTION_TAG)) {
 			// Set event's description
-			_currentEvent._setTextDescription(_characters);
+			_currentEvent.setTextDescription(_characters);
 		} else if (name.equals(_MINIMUM_COUNT_TAG)) {
 			// Set event's minimum count
-			_currentEvent._setMinCount(Integer.parseInt(_characters));
+			_currentEvent.setMinCount(Integer.parseInt(_characters));
 		} else if (name.equals(OpInfoProcessor.EVENT_LIST_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(name);
 		}

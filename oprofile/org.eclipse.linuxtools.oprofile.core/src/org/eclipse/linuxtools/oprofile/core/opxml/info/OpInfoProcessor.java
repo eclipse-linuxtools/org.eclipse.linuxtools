@@ -31,7 +31,6 @@ public class OpInfoProcessor extends XMLProcessor {
 	public static final String DEFAULTS_TAG = "defaults"; //$NON-NLS-1$
 	public static final String EVENT_LIST_TAG = "event-list"; //$NON-NLS-1$
 	public static final String CPU_FREQUENCY_TAG = "cpu-frequency"; //$NON-NLS-1$
-	public static final String TIMER_MODE = "timer-mode";  //$NON-NLS-1$
 
 	public OpInfoProcessor() {
 		_defaultsProc = new DefaultsProcessor();
@@ -59,22 +58,18 @@ public class OpInfoProcessor extends XMLProcessor {
 		if (name.equals(CPU_FREQUENCY_TAG)) {
 			double speed = Double.parseDouble(_characters);
 			OpInfo info = (OpInfo) callData;
-			info._setCPUSpeed(speed);
-		} else if (name.equals(TIMER_MODE)) {
-			boolean timerMode = Boolean.parseBoolean(_characters);
-			OpInfo info = (OpInfo) callData;
-			info._setTimerMode(timerMode);
-		} else if (name.equals(NUM_COUNTERS_TAG)) {
+			info.setCPUSpeed(speed);
+		} else if (name.endsWith(NUM_COUNTERS_TAG)) {
 			int numCounters = 0;
 			try {
 				numCounters = Integer.parseInt(_characters);
 			} catch (NumberFormatException nfe) {
 			}
 			OpInfo info = (OpInfo) callData;
-			info._setNrCounters(numCounters);
+			info.setNrCounters(numCounters);
 		} else if (name.equals(EVENT_LIST_TAG)) {
 			OpInfo info = (OpInfo) callData;
-			info._setEvents(_eventListProc.getCounterNum(), _eventListProc.getEvents());
+			info.setEvents(_eventListProc.getCounterNum(), _eventListProc.getEvents());
 		}
 	}
 }

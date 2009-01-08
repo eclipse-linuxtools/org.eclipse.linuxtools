@@ -21,7 +21,6 @@
 #include <set>
 
 #include "samplefile.h"
-#include "symbol.h"
 
 #define VDSO_NAME_STRING "[vdso]"
 
@@ -68,32 +67,7 @@ class profileimage
 };
 
 struct depimage_comp {
-  bool operator() (const profileimage* lhs, const profileimage* rhs)
-    {
-      if (lhs->get_count() == rhs->get_count())
-        if (lhs->get_name() == rhs->get_name())
-          return true;
-        else
-          return lhs->get_name() < rhs->get_name();
-      else
-        return lhs->get_count() > rhs->get_count();
-    }
-};
-
-struct symbol_comp {
-  bool operator() (const symbol* lhs, const symbol* rhs)
-    {
-      if (lhs->get_count() == rhs->get_count())
-        {
-          std::string ln(lhs->name()), rn(rhs->name());
-          if (ln == rn)
-            return true;
-          else
-            return ln < rn;
-        }
-      else
-        return lhs->get_count() > rhs->get_count();
-    }
+  bool operator() (const profileimage* lhs, const profileimage* rhs) { return (lhs->get_count() == rhs->get_count() ? true : lhs->get_count() > rhs->get_count() ); }
 };
 
 
@@ -101,6 +75,5 @@ std::ostream& operator<< (std::ostream& os, profileimage* image);
 void add_sample(std::list<sample*> &samples, sample* new_sample);
 long get_dependent_count(const std::list<profileimage*>* const deps);
 std::set<profileimage*, depimage_comp>* sort_depimages(const std::list<profileimage*>* const deps);
-std::set<symbol*, symbol_comp>* sort_symbols(const std::map<const asymbol*, symbol*>* const symbols);
 std::string get_name(const profileimage* p);
 #endif // !_PROFILEIMAGE_H

@@ -100,54 +100,19 @@ operator<< (ostream& os, const opinfo& info)
      << startt ("dump-status") << opinfo::get_default_dump_status () << endt
      << endt;
 
-  if (info.get_cpu_type() == CPU_TIMER_INT)
+  // Output event list
+  for (int ctr = 0; ctr < info.get_nr_counters (); ++ctr)
     {
-      os << startt ("timer-mode") << "true" << endt;
+      opinfo::eventlist_t events;
 
-      //create a fake timer event and output as normal
-      char UM_0_DESC[] = TIMER_EVENT_MASK_UM_0_DESCRIPTION;
-      char TIMER_NAME[] = TIMER_EVENT_NAME;
-      char TIMER_DESC[] = TIMER_EVENT_DESCRIPTION;
-
-      struct op_unit_mask mask;
-      mask.unit_type_mask = utm_mandatory;
-      mask.default_mask = TIMER_EVENT_MASK_DEFAULT_VALUE;
-      mask.um[0].value = TIMER_EVENT_MASK_UM_0_VALUE;
-      mask.um[0].desc = UM_0_DESC;
-      mask.num = TIMER_EVENT_MASK_UM_NUM;
-
-      opinfo::event_t timer_event;
-      timer_event.name = TIMER_NAME;
-      timer_event.desc = TIMER_DESC;
-      timer_event.val = TIMER_EVENT_NUMBER;
-      timer_event.min_count = TIMER_EVENT_MIN_COUNT;
-      timer_event.counter_mask = TIMER_EVENT_COUNTER_MASK;
-      timer_event.unit = &mask;
-
-      os << startt ("event-list") << attrt ("counter", "0");
-
-      os << (&timer_event);
-
+      ostringstream ctr_s;
+      ctr_s << ctr;
+      os << startt ("event-list") << attrt ("counter", ctr_s.str ());
+      info.get_events (events, ctr);
+      opinfo::eventlist_t::iterator i;
+      for (i = events.begin (); i != events.end (); ++i)
+	os << (*i);
       os << endt;
-    }
-  else
-    {
-      os << startt ("timer-mode") << "false" << endt;
-
-      // Output event list
-      for (int ctr = 0; ctr < info.get_nr_counters (); ++ctr)
-        {
-          opinfo::eventlist_t events;
-
-          ostringstream ctr_s;
-          ctr_s << ctr;
-          os << startt ("event-list") << attrt ("counter", ctr_s.str ());
-          info.get_events (events, ctr);
-          opinfo::eventlist_t::iterator i;
-          for (i = events.begin (); i != events.end (); ++i)
-            os << (*i);
-          os << endt;
-        }
     }
 
   return os << endt;
@@ -212,7 +177,7 @@ __output_unit_mask_info (ostream& os, const opinfo::event_t* event)
   os << startt ("unit-mask")
      << startt ("type") << type << endt
      << startt ("default") << umask->default_mask << endt;
-
+  
   for (u32 i = 0; i < umask->num; ++i)
     {
       os << startt ("mask")

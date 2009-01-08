@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ package org.eclipse.linuxtools.oprofile.core.model;
  * libraries, modules) profile by OProfile.
  */
 public class OpModelImage {
-	public static final int IMAGE_PARSE_ERROR = -1;
-	
 	//The count of all samples from this image
 	private int _count;
 	
@@ -34,10 +32,10 @@ public class OpModelImage {
 	//Any dependent images on this image (usually shared libs, kernel modules)
 	private OpModelImage[] _dependents;
 	
-	private String _printTabs = "";		//for nice output //$NON-NLS-1$
+	private String _printTabs = "";		//for nice output
 	
 	public OpModelImage() {
-		_name = ""; //$NON-NLS-1$
+		_name = "";
 		_count = 0;
 		_depcount = 0;
 		_symbols = null;
@@ -116,23 +114,23 @@ public class OpModelImage {
 	public String toString(String tabs) {
 		_printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		_printTabs = "";
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + ", Count: " + _count + (_depcount !=0 ? ", Dependent Count: " + _depcount + "\n" : "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		String s = _name + ", Count: " + _count + (_depcount !=0 ? ", Dependent Count: " + _depcount + "\n" : "\n");
 		if (_symbols != null) {
 			for (int i = 0; i < _symbols.length; i++) {
-				s += _printTabs + "Symbols: "; //$NON-NLS-1$
-				s += _symbols[i].toString(_printTabs + "\t"); //$NON-NLS-1$
+				s += _printTabs + "Symbols: ";
+				s += _symbols[i].toString(_printTabs + "\t");
 			}
 		}
 		if (_dependents != null) {
 			for (int i = 0; i < _dependents.length; i++) {
-				s += _printTabs + "Dependent Image: "; //$NON-NLS-1$
-				s += _dependents[i].toString(_printTabs + "\t"); //$NON-NLS-1$
+				s += _printTabs + "Dependent Image: ";
+				s += _dependents[i].toString(_printTabs + "\t");
 			}			
 		}
 		return s;

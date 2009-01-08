@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@
 
 package org.eclipse.linuxtools.oprofile.core;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -58,8 +60,7 @@ public class Oprofile
 		
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
-			OprofileCorePlugin.showErrorDialog("oprofileInit", null); //$NON-NLS-1$
-			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded")); //$NON-NLS-1$
+			OprofileCorePlugin.showErrorDialog("oprofileInit", null);
 		} else {
 			_initializeOprofileCore();
 		}
@@ -84,7 +85,7 @@ public class Oprofile
 		try {
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
 		} catch (OpcontrolException e) {
-			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
+			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e);
 		} 
 	}
 
@@ -92,10 +93,6 @@ public class Oprofile
 	// Initializes static data for oprofile.	
 	private static void _initializeOprofileCore () {
 		_info = OpInfo.getInfo();
-		
-		if (_info == null) {
-			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.opinfoNotParsed")); //$NON-NLS-1$
-		}
 	}
 	
 	/**
@@ -126,11 +123,38 @@ public class Oprofile
 
 	/**
 	 * Get all the events that may be collected on the given counter.
+	 * (-1 for all counters)
 	 * @param num the counter number
 	 * @return an array of all valid events -- NEVER RETURNS NULL!
 	 */
 	public static OpEvent[] getEvents(int num) {
 		return _info.getEvents(num);
+	}
+
+	/**
+	 * Guess what the kernel image file in use might be. This is used by
+	 * the launcher interface to present some sort of reasonable default.
+	 * @return a possible kernel image filename
+	 */
+	public static String getKernelImageFile()
+	{
+		return "/usr/lib/debug/lib/modules/" + _uname() + "/vmlinux";
+	}
+	
+	 // Returns the release string from the system call uname
+	private static String _uname() {
+		try {
+			Process p = Runtime.getRuntime().exec("uname -r"); //$NON-NLS-1$
+			p.waitFor();
+			if (p.exitValue() != 0) {
+				return OprofileProperties.getString("unkown-kernel"); //$NON-NLS-1$
+			}
+		
+			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			return br.readLine();
+		} catch (Exception e) { }
+		
+		return OprofileProperties.getString("unknown-kernel"); //$NON-NLS-1$
 	}
 	
 	/**
@@ -150,14 +174,6 @@ public class Oprofile
 	}
 	
 	/**
-	 * Returns whether or not oprofile is in timer mode.
-	 * @return true if oprofile is in timer mode, false otherwise
-	 */
-	public static boolean getTimerMode() {
-		return _info.getTimerMode();
-	}
-	
-	/**
 	 * Checks the requested counter, event, and unit mask for vailidity.
 	 * @param ctr	the counter
 	 * @param event	the event number
@@ -172,7 +188,7 @@ public class Oprofile
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
+			OprofileCorePlugin.showErrorDialog("opxmlProvider", e);
 			return null;
 		}
 		

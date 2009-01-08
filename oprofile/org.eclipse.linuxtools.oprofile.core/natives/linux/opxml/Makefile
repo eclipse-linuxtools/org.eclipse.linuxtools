@@ -29,8 +29,7 @@ $(OPXML): $(OPROFILE_LIB_OBJS) $(OPXML_OBJS)
 clean:
 	$(RM) $(OPROFILE_LIB_OBJS) $(OPXML) $(OPXML_OBJS) $(OPXML_EXEC) *~
 
-install:
-	sh move_opxml.sh
+
 
 # Dependencies
 opxml.o: oxmlstream.h opinfo.h session.h sample.h sevent.h opxml.cc

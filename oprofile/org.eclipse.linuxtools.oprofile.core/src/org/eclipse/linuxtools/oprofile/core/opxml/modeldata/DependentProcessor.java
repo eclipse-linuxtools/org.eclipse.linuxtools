@@ -23,13 +23,13 @@ import org.xml.sax.Attributes;
  */
 public class DependentProcessor extends XMLProcessor {
 	//XML tags parsed by this processor
-	private static final String IMAGE_TAG = "image"; //$NON-NLS-1$
-	private static final String SYMBOLS_TAG = "symbols"; //$NON-NLS-1$
-	private static final String DEPENDENT_TAG = "dependent"; //$NON-NLS-1$
+	private static final String IMAGE_TAG = "image";
+	private static final String SYMBOLS_TAG = "symbols";
+	private static final String DEPENDENT_TAG = "dependent";
 	
 	//attribute tags
-	private static final String ATTR_IMAGENAME = "name"; //$NON-NLS-1$
-	private static final String ATTR_COUNT = "count"; //$NON-NLS-1$
+	private static final String ATTR_IMAGENAME = "name";
+	private static final String ATTR_COUNT = "count";
 
 	//the current image being constructed
 	private OpModelImage _image;
@@ -46,10 +46,12 @@ public class DependentProcessor extends XMLProcessor {
 
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			_image._setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
+			_image._setName(attrs.getValue(ATTR_IMAGENAME));
 			_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
+		} else {
+			super.startElement(name, attrs, callData);
 		}
 	}
 	/**
@@ -63,6 +65,8 @@ public class DependentProcessor extends XMLProcessor {
 			_image._setSymbols(_symbolsProcessor.getSymbols());
 		} else if (name.equals(DEPENDENT_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(DEPENDENT_TAG);
+		} else {
+			super.endElement(name, callData);
 		}
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import java.io.InputStreamReader;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.InputSource;
@@ -53,19 +51,17 @@ public class OpxmlRunner {
 	 * @param args the arguments to pass to opxml
 	 * @param callData any callData to pass to the processor
 	 * @return boolean indicating the success/failure of opxml
-	 * @throws OpxmlException 
 	 */
 	public boolean run(String[] args, Object callData) {
 		XMLReader reader = null;
 		_handler = OprofileSAXHandler.getInstance(callData);
 		
-		// Create XMLReader
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        try {
-			reader = factory.newSAXParser().getXMLReader();
+		try {
+			// Create XMLReader
+	        SAXParserFactory factory = SAXParserFactory.newInstance();
+	        reader = factory.newSAXParser().getXMLReader();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+			System.out.println ("Exception creating SAXParser: " + e.getMessage ());
 		}
 		
 		// Set content/error handlers
@@ -81,23 +77,22 @@ public class OpxmlRunner {
 		try {
 			Process p = Runtime.getRuntime().exec(cmdArray);
 			BufferedReader bi = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			reader.parse(new InputSource(bi));	
-			int ret = p.waitFor();
-			if (ret != 0) {
+			reader.parse(new InputSource(bi));			
+			if (p.waitFor() != 0) {
 				//System.out.println("error running opxml");
 				return false;
 			}
 			
 			return true;
 		} catch (SAXException e) {
+			System.out.println("SAXException: " + e.getMessage());
 			e.printStackTrace();
-			OprofileCorePlugin.showErrorDialog("opxmlSAXParseException", null); //$NON-NLS-1$
 		} catch (InterruptedException e) {
+			System.out.println("InterruptedException: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-//			System.out.println("IOException: " + e.getMessage());
+			System.out.println("IOException: " + e.getMessage());
 			e.printStackTrace();
-			OprofileCorePlugin.showErrorDialog("opxmlIOException", null); //$NON-NLS-1$
 		}
 		
 		return false;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,37 +36,24 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 		_pathToOpxml = _getOpxmlPath();
 		
 		if (_pathToOpxml == null) {
-			throw new OpxmlException(OprofileCorePlugin.createErrorStatus("opxmlProvider", null)); //$NON-NLS-1$
+			throw new OpxmlException(OprofileCorePlugin.createErrorStatus("opxmlProvider", null));
 		}
 	}
 	
 	public abstract String _getOpxmlPath();
 	
 	public IRunnableWithProgress info(final OpInfo info) {
-		return new OpInfoRunner(info);
-	}
-
-	//public because it is used in OpInfo.java:getInfo()
-	public class OpInfoRunner implements IRunnableWithProgress {
-		private boolean b;
-		final private OpInfo info;
+		IRunnableWithProgress runnable = new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
+				String[] args = new String[] {
+					OpxmlConstants.OPXML_INFO
+				};
+				runner.run(args, info);
+			}
+		};
 		
-		public OpInfoRunner(OpInfo _info) {
-			info = _info;
-		}
-		
-		public boolean run0(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-			run(monitor);
-			return b;
-		}
-		
-		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-			OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
-			String[] args = new String[] {
-				OpxmlConstants.OPXML_INFO
-			};
-			b = runner.run(args, info);
-		}
+		return runnable;
 	}
 	
 	public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,11 @@ public class OpModelSymbol {
 	private String _file;
 	private int _count;
 	private OpModelSample[] _samples;
-	private String _printTabs = ""; 	//for nice output //$NON-NLS-1$
+	private String _printTabs = ""; 	//for nice output
 	
 	public OpModelSymbol() {
-		_name = ""; //$NON-NLS-1$
-		_file = ""; //$NON-NLS-1$
+		_name = "";
+		_file = "";
 		_count = 0;
 		_samples = null;
 	}
@@ -66,16 +66,16 @@ public class OpModelSymbol {
 	public String toString(String tabs) {
 		_printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		_printTabs = "";
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + ", File: " + _file + ", Count: " + _count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String s = _name + ", File: " + _file + ", Count: " + _count + "\n";
 		if (_samples != null) {
 			for (int i = 0; i < _samples.length; i++) {
-				s += _printTabs + "Sample: "; //$NON-NLS-1$
+				s += _printTabs + "Sample: ";
 				s += _samples[i].toString();
 			}
 		}

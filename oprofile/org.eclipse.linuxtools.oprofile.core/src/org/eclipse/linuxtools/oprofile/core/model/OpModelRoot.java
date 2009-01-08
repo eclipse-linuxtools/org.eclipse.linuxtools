@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,10 +30,10 @@ public class OpModelRoot {
 	private OpModelEvent[] _events;
 //	private String _printTabs = "\t";		//for nice output
 
-	protected OpModelRoot() {
+	private OpModelRoot() {
 //		refreshModel();
 		_events = null;
-//		_modelRoot = this;
+		_modelRoot = this;
 	}
 
 	public static OpModelRoot getDefault() {
@@ -44,18 +44,13 @@ public class OpModelRoot {
 		//TODO-performance/interactivity: some persistence for events/sessions
 		// that dont change from run to run (non default sessions) 
 		
-		_events = getNewEvents();
+		//launch `opxml sessions`, gather up events & the sessions under them
+		_events = Oprofile.getEvents();
 		if (_events != null) {
 			for (int i = 0; i < _events.length; i++) {
-				if (_events[i] != null)
-					_events[i].refreshModel();
+				_events[i].refreshModel();
 			}
 		}
-	}
-	
-	protected OpModelEvent[] getNewEvents() {
-		//launch `opxml sessions`, gather up events & the sessions under them
-		return Oprofile.getEvents(); 
 	}
 	
 	public OpModelEvent[] getEvents() {
@@ -64,13 +59,11 @@ public class OpModelRoot {
 	
 	@Override
 	public String toString() {
-		String s = ""; //$NON-NLS-1$
+		String s = "";
 		if (_events != null) {
 			for (int i = 0; i < _events.length; i++) {
-				if (_events[i] != null) {
-					s += "Event: "; //$NON-NLS-1$
-					s += _events[i].toString("\t"); //$NON-NLS-1$
-				}
+				s += "Event: ";
+				s += _events[i].toString("\t");
 			}
 		}
 		return s;

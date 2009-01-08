@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,8 @@ import org.osgi.framework.BundleContext;
  * The main plugin class to be used in the desktop.
  */
 public class OprofileCorePlugin extends Plugin {
-	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core"; //$NON-NLS-1$
-	private static final String OPXMLPROVIDER_XPT_NAME = "OpxmlProvider"; //$NON-NLS-1$
+	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core";
+	private static final String OPXMLPROVIDER_XPT_NAME = "OpxmlProvider";
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
@@ -103,7 +103,7 @@ public class OprofileCorePlugin extends Plugin {
 		
 		// If there was a problem finding opxml, throw an exception
 		if (_opxmlProvider == null) {
-			throw new OpxmlException(createErrorStatus("opxmlProvider", except)); //$NON-NLS-1$
+			throw new OpxmlException(createErrorStatus("opxmlProvider", except));
 		} else {
 			return _opxmlProvider;
 		}
@@ -146,7 +146,7 @@ public class OprofileCorePlugin extends Plugin {
 	}
 	
 	public static IStatus createErrorStatus(String errorClassString, Exception e) {
-		String statusMessage = OprofileProperties.getString(errorClassString + ".error.statusMessage"); //$NON-NLS-1$
+		String statusMessage = OprofileProperties.getString(errorClassString + ".error.statusMessage");
 
 		if (e == null) {
 			return new Status(IStatus.ERROR, getId(), IStatus.OK, statusMessage, null);
@@ -157,8 +157,8 @@ public class OprofileCorePlugin extends Plugin {
 	
 	public static void showErrorDialog(String errorClassString, CoreException ex) {
 		final IStatus status;
-		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title"); //$NON-NLS-1$
-		final String errorMessage = OprofileProperties.getString(errorClassString + ".error.dialog.message"); //$NON-NLS-1$
+		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title");
+		final String errorMessage = OprofileProperties.getString(errorClassString + ".error.dialog.message");
 		
 		if (ex == null) {
 			status = createErrorStatus(errorClassString, null);

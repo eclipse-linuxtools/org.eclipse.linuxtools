@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ package org.eclipse.linuxtools.oprofile.core.model;
 public class OpModelEvent {
 	private String _eventName;
 	private OpModelSession[] _sessions;
-	private String _printTabs = "";		//for nice output  //$NON-NLS-1$
+	private String _printTabs = "";		//for nice output 
 	
 	public OpModelEvent(String name) {
 		_eventName = name;
@@ -28,7 +28,7 @@ public class OpModelEvent {
 		return _sessions;
 	}
 
-	public void _setSessions(OpModelSession[] sessions) {
+	public void setSessions(OpModelSession[] sessions) {
 		_sessions = sessions;
 	}
 
@@ -36,6 +36,10 @@ public class OpModelEvent {
 		return _eventName;
 	}
 
+	public void setName(String name) {
+		_eventName = name;
+	}
+	
 	//populate all sessions
 	public void refreshModel() {
 		if (_sessions != null) {
@@ -48,17 +52,17 @@ public class OpModelEvent {
 	public String toString(String tabs) {
 		_printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		_printTabs = "";
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _eventName + "\n"; //$NON-NLS-1$
+		String s = _eventName + "\n";
 		if (_sessions != null) {
 			for (int i = 0; i < _sessions.length; i++) {
-				s += _printTabs + "Session: "; //$NON-NLS-1$
-				s += _sessions[i].toString(_printTabs + "\t"); //$NON-NLS-1$
+				s += _printTabs + "Session: ";
+				s += _sessions[i].toString(_printTabs + "\t");
 			}
 		}
 		return s;

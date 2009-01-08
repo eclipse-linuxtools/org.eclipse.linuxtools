@@ -22,14 +22,14 @@ import org.xml.sax.Attributes;
  */
 public class SymbolsProcessor extends XMLProcessor {
 	//XML tags parsed by this processor
-	private static final String SYMBOLS_TAG = "symbols"; //$NON-NLS-1$
-	private static final String SYMBOL_TAG = "symbol";  //$NON-NLS-1$
-	private static final String SAMPLE_TAG = "sample"; //$NON-NLS-1$
+	private static final String SYMBOLS_TAG = "symbols";
+	private static final String SYMBOL_TAG = "symbol"; 
+	private static final String SAMPLE_TAG = "sample";
 
 	//attribute tags
-	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
-	private static final String ATTR_FILE = "file"; //$NON-NLS-1$
-	private static final String ATTR_COUNT = "count";	 //$NON-NLS-1$
+	private static final String ATTR_NAME = "name";
+	private static final String ATTR_FILE = "file";
+	private static final String ATTR_COUNT = "count";	
 	
 	//the current symbol being constructed
 	private OpModelSymbol _symbol;
@@ -50,11 +50,13 @@ public class SymbolsProcessor extends XMLProcessor {
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
-			_symbol._setName(valid_string(attrs.getValue(ATTR_NAME)));
+			_symbol._setName(attrs.getValue(ATTR_NAME));
 			_symbol._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
-			_symbol._setFile(valid_string(attrs.getValue(ATTR_FILE)));
+			_symbol._setFile(attrs.getValue(ATTR_FILE));
 		} else if (name.equals(SAMPLE_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_samplesProcessor);
+		} else {
+			super.startElement(name, attrs, callData);
 		}
 	}
 	
@@ -68,6 +70,8 @@ public class SymbolsProcessor extends XMLProcessor {
 			_symbol = new OpModelSymbol();
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(SYMBOLS_TAG);
+		} else {
+			super.endElement(name, callData);
 		}
 	}
 	

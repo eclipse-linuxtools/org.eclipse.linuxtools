@@ -29,18 +29,17 @@ public class ModelDataProcessor extends XMLProcessor {
 	}
 
 	//XML tags parsed by this processor
-	private static final String IMAGE_TAG = "image"; //$NON-NLS-1$
-	private static final String SYMBOLS_TAG = "symbols"; //$NON-NLS-1$
-	private static final String DEPENDENT_TAG = "dependent"; //$NON-NLS-1$
+	private static final String IMAGE_TAG = "image";
+	private static final String SYMBOLS_TAG = "symbols";
+	private static final String DEPENDENT_TAG = "dependent";
 	
 	//attribute tags
-	private static final String ATTR_IMAGENAME = "name"; //$NON-NLS-1$
-	private static final String ATTR_COUNT = "count"; //$NON-NLS-1$
-	private static final String ATTR_DEPCOUNT = "count"; //$NON-NLS-1$
+	private static final String ATTR_IMAGENAME = "name";
+	private static final String ATTR_COUNT = "count";
+	private static final String ATTR_DEPCOUNT = "count";
 	
 	//the current image being constructed
 	private OpModelImage _image;
-	private int img_seen;	//for ensuring image singleton-ness
 
 	//processors used for symbols and dependent images
 	private SymbolsProcessor _symbolsProcessor = new SymbolsProcessor();
@@ -49,17 +48,12 @@ public class ModelDataProcessor extends XMLProcessor {
 	
 	public void reset(Object callData) {
 		_image = ((CallData) callData).image;
-		img_seen = 0;
 	}
 
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			if (img_seen == 0) {
-				_image._setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
-				_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
-			}
-
-			img_seen++;
+			_image._setName(attrs.getValue(ATTR_IMAGENAME));
+			_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
 		} else if (name.equals(DEPENDENT_TAG)) {
@@ -72,15 +66,7 @@ public class ModelDataProcessor extends XMLProcessor {
 	
 	public void endElement(String name, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			if (img_seen > 1) {
-				//should only ever be one image, otherwise oprofile was run
-				// outside of eclipse and the ui would not handle it properly
-				_image._setCount(OpModelImage.IMAGE_PARSE_ERROR);
-				_image._setDepCount(0);
-				_image._setDependents(null);
-				_image._setSymbols(null);
-				_image._setName(""); //$NON-NLS-1$				
-			}
+			//do nothing (for now?)
 		} else if (name.equals(SYMBOLS_TAG)){
 			_image._setSymbols(_symbolsProcessor.getSymbols());
 		} else if (name.equals(DEPENDENT_TAG)){

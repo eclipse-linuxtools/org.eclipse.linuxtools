@@ -9,7 +9,7 @@
    General Public License as published by the Free Software Foundation;
    either version 2 of the License, or (at your option) any later
    version.  */
-
+   
 #ifndef _OPINFO_H
 #define _OPINFO_H
 #include <vector>
@@ -23,15 +23,7 @@
 #define OP_LOCK_FILE "/var/lib/oprofile/lock"
 #define OP_LOG_FILE "/var/lib/oprofile/samples/oprofiled.log"
 #define OP_DUMP_STATUS "/var/lib/oprofile/complete_dump"
-#define TIMER_EVENT_NAME "TIMER"
-#define TIMER_EVENT_DESCRIPTION "Profiling through timer interrupt"
-#define TIMER_EVENT_NUMBER 0
-#define TIMER_EVENT_MIN_COUNT 0
-#define TIMER_EVENT_COUNTER_MASK 0
-#define TIMER_EVENT_MASK_DEFAULT_VALUE 0
-#define TIMER_EVENT_MASK_UM_NUM 1
-#define TIMER_EVENT_MASK_UM_0_VALUE 0
-#define TIMER_EVENT_MASK_UM_0_DESCRIPTION "No unit mask"
+
 
 struct op_event;
 

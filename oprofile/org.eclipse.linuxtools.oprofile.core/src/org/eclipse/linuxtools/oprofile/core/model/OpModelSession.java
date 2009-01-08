@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,17 +19,16 @@ import org.eclipse.linuxtools.oprofile.core.Oprofile;
  * of the profiled binary.
  */
 public class OpModelSession {
-	private static final String DEFAULT_SESSION_STRING = "current"; //$NON-NLS-1$
+	private static final String DEFAULT_SESSION_STRING = "current";
 
 	private OpModelEvent _parentEvent;
 	private OpModelImage _image;
 	private String _name;
-	private String _printTabs = "";		//for nice output //$NON-NLS-1$
+	private String _printTabs = "";		//for nice output
 
 	public OpModelSession(OpModelEvent event, String name) {
 		_parentEvent = event;
 		_name = name;
-		_image = null;
 	}
 	
 	public OpModelImage getImage() {
@@ -45,11 +44,7 @@ public class OpModelSession {
 	}
 	
 	public int getCount() {
-		if (_image == null) {
-			return 0;
-		} else {
-			return _image.getCount();
-		}
+		return _image.getCount();
 	}
 	
 	public boolean isDefaultSession() {
@@ -58,26 +53,22 @@ public class OpModelSession {
 	
 	public void refreshModel() {
 		//populate this session with samples
-		_image = getNewImage();
-	}
-	
-	protected OpModelImage getNewImage() {
-		return Oprofile.getModelData(_parentEvent.getName(), _name);
+		_image = Oprofile.getModelData(_parentEvent.getName(), _name);
 	}
 
 	public String toString(String tabs) {
 		_printTabs = tabs;
 		String s = toString();
-		_printTabs = ""; //$NON-NLS-1$
+		_printTabs = "";
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + "\n"; //$NON-NLS-1$
+		String s = _name + "\n";
 		if (_image != null) {
-			s += _printTabs + "Image: "; //$NON-NLS-1$
-			s += _image.toString(_printTabs + "\t"); //$NON-NLS-1$
+			s += _printTabs + "Image: ";
+			s += _image.toString(_printTabs + "\t");
 		}
 		return s;
 		

@@ -1,8 +1,7 @@
 /* xmlfmt - defines several operators and classes for formatting
    an XML stream (see oxmlstream.h)
    Written by Keith Seitz <keiths@redhat.com>
-              Kent Sebastian <ksebasti@redhat.com>
-   Copyright 2003,2009 Red Hat, Inc.
+   Copyright 2003, Red Hat, Inc.
 
    This program is open source software licensed under the Eclipse
    Public License ver. 1.
@@ -46,7 +45,4 @@ std::ostream& endt (std::ostream& os);
 
 // End the XML document and output it
 std::ostream& endxml (std::ostream& os);
-
-//function to ensure strings dont have invalid characters
-void valid_string(std::string &s);
 #endif // ! _XMLFMT_H

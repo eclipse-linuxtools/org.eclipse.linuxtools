@@ -4,7 +4,7 @@
    Written by Keith Seitz <keiths@redhat.com>
    Edited by Kent Sebastian <ksebasti@redhat.com>
 
-   Copyright 2004, 2008, 2009 Red Hat, Inc.
+   Copyright 2004,2008 Red Hat, Inc.
 
    This program is open source software licensed under the Eclipse
    Public License ver. 1.
@@ -76,8 +76,6 @@ struct session_list_t {
   sessionevent* default_sevent;
   ordered_sessions_t* sessions;
 };
-
-
 
 const string DEFAULT_SESSION_NAME = "current";
 
@@ -415,7 +413,7 @@ sessions (opinfo& info, int argc, char* argv[])
   /* This seems goofy, but this is best for the UI.
      Arrange the sessions by the event that they collected. */
 
-  typedef map<string, struct session_list_t* > eventlist_t;
+  typedef map<string, struct session_list_t*, greater<string> > eventlist_t;
   eventlist_t eventlist;
 
   session::sessionlist_t::iterator sit = sessions.begin ();

@@ -34,13 +34,10 @@ public class OpUnitMask {
 		 */
 		public String description;
 	};
-	
-	public static final int SET_DEFAULT_MASK = -1;
 
-	/**
-	 * Invalid mask type.
+	/*
+	 * The types of masks
 	 */
-	public static final int INVALID = -1;
 
 	/**
 	 * The mask is mandatory. It must be used.
@@ -56,7 +53,6 @@ public class OpUnitMask {
 	 * The mask is a bitmask. Any combination of its values may be used.
 	 */
 	public static final int BITMASK = 3;
-
 
 	// The current value of this unitmask
 	private int _mask;
@@ -76,10 +72,9 @@ public class OpUnitMask {
 
 	/**
 	 * Set the descriptions and values for this unitmask's mask options.
-	 * Only used from the XML parsers.
 	 * @param masks a list of all the mask options
 	 */
-	public void _setMaskDescriptions(MaskInfo[] masks) {
+	public void setMaskDescriptions(MaskInfo[] masks) {
 		_maskOptionDescriptions = new String[masks.length];
 		_maskOptionValues = new int[masks.length];
 
@@ -92,22 +87,22 @@ public class OpUnitMask {
 	/**
 	 * Sets the default value for this unitmask, and initializes
 	 *   the current unitmask value to this default.
-	 * Only used from the XML parsers.
 	 * @param theDefault the default value
 	 */
-	public void _setDefault(int theDefault) {
+	public void setDefault(int theDefault) {
 		_defaultMask = theDefault;
 		setDefaultMaskValue();	
 	}
 	
 	/**
 	 * Sets the unitmask type.
-	 * Only used from the XML parsers.
 	 * @param type the type
 	 */
-	public void _setType(int type) {
+	public void setType(int type) {
 		_maskType = type;
 	}
+
+	
 	
 	/**
 	 * Returns the integer value of this unitmask, suitable for passing to oprofile.
@@ -127,7 +122,7 @@ public class OpUnitMask {
 	public boolean isMaskSetFromIndex(int index) {
 		boolean result = false;
 
-		if (index >= 0 && index < _maskOptionValues.length) {
+		if (index <= _maskOptionDescriptions.length) {
 			switch (_maskType) {
 			case EXCLUSIVE:
 				result = (_mask == _maskOptionValues[index]);
@@ -146,12 +141,12 @@ public class OpUnitMask {
 	}
 
 	/**
-	 * Sets the absolute unitmask value. 
+	 * Sets the absolute unitmask value.
 	 * 
 	 * @param newValue the new value of this unitmask
 	 */
 	public void setMaskValue(int newValue) {
-		if (newValue == SET_DEFAULT_MASK) {
+		if (newValue == -1) {
 			_mask = _defaultMask;
 		} else {
 			_mask = newValue;
@@ -164,36 +159,13 @@ public class OpUnitMask {
 	 */
 	public void setMaskFromIndex(int index) {
 		//mandatory masks only use the default value
-		if (index >= 0 && index < _maskOptionValues.length) {
+		if (_maskType != MANDATORY) {
 			if (_maskType == BITMASK)
 				_mask |= _maskOptionValues[index];
-			else if (_maskType == EXCLUSIVE) {
+			else {
 				_mask = _maskOptionValues[index];
 			}
 		}
-	}
-
-	/**
-	 * Returns the value of the mask based on the unitmask index.
-	 * @param index the index of the mask option
-	 * @return the mask option's value
-	 */
-	public int getMaskFromIndex(int index) {
-		//mandatory masks only use the default value
-		if (_maskType == BITMASK) {
-			if (index >= 0 && index < _maskOptionValues.length) {
-				return _maskOptionValues[index];
-			}
-		} else if (_maskType == EXCLUSIVE) {
-			if (index >= 0 && index < _maskOptionValues.length) {
-				return _maskOptionValues[index];
-			}
-		} else if (_maskType == MANDATORY) {
-			return _defaultMask;
-		}
-
-		//type invalid or unknown, or out of bounds
-		return -1;
 	}
 	
 	/**
@@ -201,8 +173,10 @@ public class OpUnitMask {
 	 * @param index the index of the mask option to set
 	 */
 	public void unSetMaskFromIndex(int index) {
-		if (index >= 0 && index < _maskOptionValues.length && _maskType == BITMASK) {
-			_mask = _mask & ~_maskOptionValues[index];
+		if (_maskType != MANDATORY) {
+			if (_maskType == BITMASK) {
+				_mask = _mask & ~_maskOptionValues[index];
+			}
 		}
 	}
 
@@ -219,7 +193,7 @@ public class OpUnitMask {
 	 * @return the description
 	 */
 	public String getText(int num) {
-		if (num >= 0 && num < _maskOptionDescriptions.length)
+		if (num <= _maskOptionDescriptions.length)
 			return _maskOptionDescriptions[num];
 
 		return null;
@@ -229,7 +203,7 @@ public class OpUnitMask {
 	 * Returns the number of mask options in this unitmask.
 	 * @return the number of mask options
 	 */
-	public int getNumMasks() {
+	public int numMasks() {
 		return _maskOptionDescriptions.length;
 	}
 

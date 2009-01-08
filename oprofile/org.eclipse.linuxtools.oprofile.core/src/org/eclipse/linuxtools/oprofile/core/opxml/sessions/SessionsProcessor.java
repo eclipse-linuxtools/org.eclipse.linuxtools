@@ -53,7 +53,7 @@ public class SessionsProcessor extends XMLProcessor {
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SESSION_TAG)) {
-			String sessionName = valid_string(attrs.getValue(_SESSION_NAME_ATTR));
+			String sessionName = attrs.getValue(_SESSION_NAME_ATTR);
 			_currentSession = new OpModelSession(_currentEvent, sessionName);
 		} else if (name.equals(EVENT_TAG)) {
 			String eventName = attrs.getValue(_EVENT_NAME_ATTR);
@@ -77,7 +77,7 @@ public class SessionsProcessor extends XMLProcessor {
 			// save current event into call data
 			OpModelSession[] s = new OpModelSession[_sessionList.size()];
 			_sessionList.toArray(s);
-			_currentEvent._setSessions(s);
+			_currentEvent.setSessions(s);
 			SessionInfo info = (SessionInfo) callData;
 			info.list.add(_currentEvent);
 			_currentEvent = null;

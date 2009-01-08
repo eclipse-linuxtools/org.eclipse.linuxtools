@@ -15,13 +15,13 @@
 
 #include "profileimage.h"
 
-#include <stdio.h>
 #include <iostream>
 #include <iterator>
 #include <set>
 #include <list>
 
 #include "sample.h"
+#include "symbol.h"
 #include "imageheader.h"
 #include "xmlfmt.h"
 
@@ -111,6 +111,10 @@ profileimage::get_header (void)
  * and organizes them in a top down manner so that they can
  * be output as below:
  *
+ * FIXME:
+ * This doesn't take into account dependent images (whatever
+ * they actually are) and requires further testing for shlibs.
+ *
  *
  *  IMAGE name=""
  *    SYMBOL1 name="" file=""
@@ -142,6 +146,8 @@ operator<< (ostream& os, profileimage* image)
 
       //get a list of samples from this image
       samplefile::samples_t all_samples = sfile->get_samples();
+
+      bool has_symbols = false;
 
       //loop through samples, collapsing those with the same sample and line #
       for (samplefile::samples_t::iterator i = all_samples.begin (); i != all_samples.end (); ++i)
@@ -184,6 +190,8 @@ operator<< (ostream& os, profileimage* image)
 
               //add to total count of the symbol
               symbols[(*i)->get_symbol()->get_asymbol()]->add_count((*i)->get_count());
+
+              has_symbols = true;
             }
         }
 
@@ -197,18 +205,17 @@ operator<< (ostream& os, profileimage* image)
 
       if (symbols.size() > 0) {
         os << startt("symbols");
+      }
 
-        set<symbol*, symbol_comp>* sorted_symbols = sort_symbols(&symbols);
+      //output the symbols, and free their memory
+      for (map<const asymbol*, symbol*>::iterator i = symbols.begin(); i != symbols.end(); ++i)
+        {
+          os << (*i).second;
+          delete (*i).second;
+        }
 
-        //output the symbols, and free their memory
-        for (set<symbol*, symbol_comp>::iterator i = sorted_symbols->begin(); i != sorted_symbols->end(); ++i)
-          {
-            os << *i;
-            delete *i;
-          }
-
+      if (symbols.size() > 0) {
         os << endt;     // </symbols>
-        sorted_symbols->clear();
         symbols.clear();
       }
 
@@ -327,15 +334,4 @@ sort_depimages(const std::list<profileimage*>* const deps) {
 	}
 
 	return sorted_deps;
-}
-
-set<symbol*, symbol_comp>*
-sort_symbols(const std::map<const asymbol*, symbol*>* const symbols) {
-        set<symbol*, symbol_comp>* sorted_syms = new set<symbol*, symbol_comp>();
-
-        for (map<const asymbol*, symbol*>::const_iterator i = symbols->begin(); i != symbols->end(); ++i) {
-          sorted_syms->insert(i->second);
-        }
-
-        return sorted_syms;
 }

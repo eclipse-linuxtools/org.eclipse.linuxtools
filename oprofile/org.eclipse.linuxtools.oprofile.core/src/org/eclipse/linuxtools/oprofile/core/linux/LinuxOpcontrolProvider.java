@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
-import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
@@ -32,7 +31,7 @@ import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
  */
 public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	// Location of opcontrol security wrapper
-	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/opcontrol"; //$NON-NLS-1$
+	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/opcontrol";
 	private final String OPCONTROL_PROGRAM;
 
 	// Initialize the Oprofile kernel module and oprofilefs
@@ -40,7 +39,6 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	
 	// Setup daemon collection arguments
 	private static final String _OPD_SETUP = "--setup"; //$NON-NLS-1$
-	private static final String _OPD_HELP = "--help"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE = "--separate="; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_SEPARATOR = ","; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_NONE = "none"; //$NON-NLS-1$
@@ -53,11 +51,9 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_EVENT_DEFAULT = "default"; //$NON-NLS-1$
+	private static final String _OPD_SETUP_EVENT_DEFAULT = "default";
 
 	private static final String _OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
-
-	private static final String _OPD_CALLGRAPH_DEPTH = "--callgraph="; //$NON-NLS-1$
 
 	// Kernel image file options
 	private static final String _OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
@@ -85,7 +81,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_STOP_COLLECTION = "--stop"; //$NON-NLS-1$
 	
 	// Stop data collection and stop daemon
-	private static final String _OPD_SHUTDOWN = "--shutdown"; //$NON-NLS-1$
+	private static final String _OPD_SHUTDOWN = "--shutdown"; //$NON-NLS_1$
 	
 	// Clear out data from current session
 	private static final String _OPD_RESET = "--reset"; //$NON-NLS-1$
@@ -94,11 +90,11 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_SAVE_SESSION = "--save="; //$NON-NLS-1$
 	
 	// Unload the oprofile kernel module and oprofilefs
-	private static final String _OPD_DEINIT_MODULE = "--deinit"; //$NON-NLS-1$
+	private static final String _OPD_DEINIT_MODULE = "--deinit";
 	
 	// Logging verbosity. Specified with setupDaemon.
 	//--verbosity=all generates WAY too much stuff in the log
-	private String _verbosity = ""; //$NON-NLS-1$
+	private String _verbosity = "";
 	
 	
 	public LinuxOpcontrolProvider() throws OpcontrolException {
@@ -158,13 +154,11 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		ArrayList<String> args = new ArrayList<String>();
 		args.add(_OPD_SETUP);
 		_optionsToArguments(args, options);
-		if (!Oprofile.getTimerMode()) {
-			if (events == null || events.length == 0) {
-				args.add(_OPD_SETUP_EVENT + _OPD_SETUP_EVENT_DEFAULT);
-			} else {
-				for (int i = 0; i < events.length; ++i) {
-					_eventToArguments(args, events[i]);
-				}
+		if (events == null || events.length == 0) {
+			args.add(_OPD_SETUP_EVENT + _OPD_SETUP_EVENT_DEFAULT);
+		} else {
+			for (int i = 0; i < events.length; ++i) {
+				_eventToArguments(args, events[i]);
 			}
 		}
 		_runOpcontrol(args);
@@ -201,30 +195,17 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	public void stopCollection() throws OpcontrolException {
 		_runOpcontrol(_OPD_STOP_COLLECTION);
 	}
-
-	/**
-	 * Check status. returns true if any status was returned
-	 * @throws OpcontrolException
-	 */
-	public boolean status() throws OpcontrolException {
-		return _runOpcontrol(_OPD_HELP);
-	}
 	
 	// Convenience function
-	private boolean _runOpcontrol(String cmd) throws OpcontrolException {
+	private void _runOpcontrol(String cmd) throws OpcontrolException {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(cmd);
-		return _runOpcontrol(list);
+		_runOpcontrol(list);
 	}
 	
 	// Will add opcontrol program to beginning of args
 	// args: list of opcontrol arguments (not including opcontrol program itself)
-	/**
-	 * @return true if any output was produced on the error stream. Unfortunately
-	 * this appears to currently be the only way we can tell if user correctly
-	 * entered the password
-	 */
-	private boolean _runOpcontrol(ArrayList<String> args) throws OpcontrolException {
+	private void _runOpcontrol(ArrayList<String> args) throws OpcontrolException {
 		args.add(0, OPCONTROL_PROGRAM);
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
 		String cmd = (String) args.get(1);
@@ -244,34 +225,22 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 				p = null;
 			}
 			
-			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe)); //$NON-NLS-1$
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe));
 		}
 		
 		if (p != null) {
-			BufferedReader errout = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			String output = "", s; //$NON-NLS-1$
+			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			try {
-				while ((s = errout.readLine()) != null) {
-					output += s;
+				while ((stdout.readLine()) != null) {
+					// drain
 				}
-				
-				int ret = p.waitFor();
-				if (ret != 0) {
-					System.out.println(output);
-					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
-				}
-				
-				if (output.length() != 0) {
-					return true;
-				}
-				
-			} catch (IOException ioe) { 
-				ioe.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			} catch (IOException ioe) { /* We don't care if there were errors draining the output */ }
+			
+//			if (p.exitValue() != 0) {
+//				Status status = new Status(Status.ERROR, OprofileCorePlugin.getId(), 0 /* code */, "opcontrol return status indicates a failure!", null);
+//				throw new OpcontrolException(status);
+//			}
 		}
-		return false;
 	}
 	
 	private static String _findOpcontrol() throws OpcontrolException {
@@ -282,7 +251,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 				return FileLocator.toFileURL(url).getPath();
 			} catch (IOException ignore) { }
 		} else {
-			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null)); //$NON-NLS-1$
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null));
 		}
 
 		return null;
@@ -327,7 +296,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		args.add(separate);
 		
 		// Add kernel image
-		if (options.getKernelImageFile() == null || options.getKernelImageFile().length() == 0) {
+		if (options.getKernelImageFile() == null || options.getKernelImageFile().equals("")) {
 			args.add(_OPD_KERNEL_NONE);
 		} else {
 			args.add(_OPD_KERNEL_FILE + options.getKernelImageFile());
@@ -335,9 +304,6 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 
 		//image filter -- always non-null
 		args.add(_OPD_SETUP_IMAGE + options.getBinaryImage());
-		
-		//callgraph depth
-		args.add(_OPD_CALLGRAPH_DEPTH + options.getCallgraphDepth());
 	}
 
 }
