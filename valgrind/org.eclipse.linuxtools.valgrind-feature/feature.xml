@@ -33,6 +33,7 @@
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
       <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.birt.chart.device.swt" version="2.3.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.birt.chart.engine"/>
       <import plugin="org.eclipse.birt.core"/>
       <import plugin="org.eclipse.cdt.debug.ui"/>
@@ -43,8 +44,7 @@
       <import plugin="org.mozilla.rhino"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.birt.chart.device.swt" version="2.3.1" match="greaterOrEqual"/>
-      <import feature="org.eclipse.linuxtools.profiling.feature" version="0.1.0.qualifier"/>
+      <import feature="org.eclipse.linuxtools.profiling.feature"/>
    </requires>
 
    <plugin
