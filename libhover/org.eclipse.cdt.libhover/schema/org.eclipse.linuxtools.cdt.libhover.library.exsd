@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="library" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="library" id="org.eclipse.linuxtools.cdt.libhover.library" name="C/C++ Library Hover Specifier"/>
+      </appinfo>
+      <documentation>
+         This extension allows specification of a library hover file to use when editing C or C++ files under the CDT.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="library" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Unique simple id for this extension (e.g. library).
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Name of this library to hover.  This name will be shown in the preference and property dialogs.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="library">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Name of the library that the hover info is providing
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="location" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Location of the xml file containing the hover info: either an absolute file name or a URL
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="docs" type="string">
+            <annotation>
+               <documentation>
+                  URL of help documentation or empty.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="type" use="required">
+            <annotation>
+               <documentation>
+                  Type of library that help is for.  One of C, C++, or ASM
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="C">
+                  </enumeration>
+                  <enumeration value="C++">
+                  </enumeration>
+                  <enumeration value="ASM">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.0.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;extension
+           point=&quot;org.eclipse.linuxtools.cdt.libhover.library&quot;&gt;
+     &lt;library
+           name=&quot;GTK&quot;
+           location=&quot;http://mywebsite/libhover/xml/gtk.xml&quot;
+           docs=&quot;http;//gtk.org/docs/gtk.html&quot;/&gt;
+  &lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         XML files referenced must adhere to the following xml structure:
+&lt;pre&gt;
+
+&lt;!DOCTYPE descriptions [
+
+  &lt;!ELEMENT descriptions (construct)*&gt;
+
+  &lt;!ELEMENT construct (structure|function)*&gt;
+  &lt;!ATTLIST construct
+    id ID #REQUIRED
+    type CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT structure       (synopsis?, elements?)?&gt;
+
+  &lt;!ELEMENT elements     (element*)&gt;
+
+  &lt;!ELEMENT element (synopsis*)&gt;
+  &lt;!ATTLIST element
+    content CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT synopsis     (#PCDATA)*&gt;
+
+  &lt;!ELEMENT function     (prototype,headers?,synopsis)&gt;
+  &lt;!ATTLIST function
+    returntype CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT prototype    (parameter+)?&gt;
+
+  &lt;!ELEMENT parameter (#PCDATA)*&gt;
+  &lt;!ATTLIST parameter
+    content CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT headers      (header+)?&gt;
+
+  &lt;!ELEMENT header (#PCDATA)*&gt;
+  &lt;!ATTLIST header
+    filename CDATA #REQUIRED
+  &gt;
+
+]&gt;
+&lt;/pre&gt;
+Note that function names need to be prefixed by &quot;function-&quot;.  For example:
+&lt;pre&gt;
+&lt;descriptions&gt;
+  &lt;construct id=&quot;function-atexit&quot; type=&quot;function&quot;&gt;
+    &lt;function returntype=&quot;int&quot;&gt;
+      &lt;prototype&gt;
+        &lt;parameter content=&quot;void (*function) (void)&quot;/&gt;
+      &lt;/prototype&gt;
+      &lt;headers&gt;
+        &lt;header filename = &quot;stdlib.h&quot;/&gt;
+      &lt;/headers&gt;
+        &lt;synopsis&gt;
+        The &amp;lt;CODE&amp;gt;atexit&amp;lt;/CODE&amp;gt; function registers the function &amp;lt;VAR&amp;gt;function&amp;lt;/VAR&amp;gt; to be
+         called at normal program termination.  The &amp;lt;VAR&amp;gt;function&amp;lt;/VAR&amp;gt; is called with
+         no arguments.
+         &amp;lt;br&amp;gt;&amp;lt;br&amp;gt; The return value from &amp;lt;CODE&amp;gt;atexit&amp;lt;/CODE&amp;gt; is zero on success and nonzero if
+         the function cannot be registered.
+        &lt;/synopsis&gt;
+    &lt;/function&gt;
+  &lt;/construct&gt;
+&lt;/descriptions&gt;
+&lt;/pre&gt;
+
+Also note that the synopsis is output as html.  To specify html tags, one needs to use &amp;amp;lt; and &amp;amp;gt; as delimeters in place of &quot;&amp;lt&quot; and &quot;&amp;gt&quot;. In the previous example, VAR tags are used for variable references, CODE tags for the function name, and br tags for forcing paragraph breaks.  All of these make the hover look more interesting when displayed.
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         /*******************************************************************************
+ * Copyright (c) 2008 Red Hat Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat Inc. - initial API and implementation
+ *******************************************************************************/
+      </documentation>
+   </annotation>
+
+</schema>
