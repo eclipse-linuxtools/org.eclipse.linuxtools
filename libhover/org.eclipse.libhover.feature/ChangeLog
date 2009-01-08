@@ -1,0 +1,26 @@
+2009-01-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Add .qualifier to version id.
+
+2009-01-06  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: 1.0.0 -> 0.1.0.  Add update site information.
+	* build.properties: Add feature.properties and epl-v10.html.
+
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Use feature.properties.  Add "(Incubation)".
+	* feature.properties: Initial checkin.
+	* epl-v10.html: Likewise.
+
+2008-10-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Add org.eclipse.linuxtools.cdt.libhover.library_docs plugin.
+	Also change org.eclipse.linuxtools.cdt.libhover.glibc reference to be plugin
+	instead of fragment.
+
+2008-10-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Initial check-in.
+	* about.html: Ditto.
+	* build.properties: Ditto.
