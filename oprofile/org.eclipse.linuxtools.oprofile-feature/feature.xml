@@ -41,34 +41,34 @@
          id="org.eclipse.linuxtools.oprofile.core"
          download-size="0"
          install-size="0"
-         version="0.1.0"/>
+         version="0.1.0.qualifier"/>
 
    <plugin
          id="org.eclipse.linuxtools.oprofile.launch"
          download-size="0"
          install-size="0"
-         version="0.1.0"
+         version="0.1.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.linuxtools.oprofile.ui"
          download-size="0"
          install-size="0"
-         version="0.1.0"
+         version="0.1.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.linuxtools.oprofile.core.linux.x86"
          download-size="0"
          install-size="0"
-         version="0.1.0"
+         version="0.1.0.qualifier"
          fragment="true"/>
 
    <plugin
          id="org.eclipse.linuxtools.oprofile.core.linux.x86_64"
          download-size="0"
          install-size="0"
-         version="0.1.0"
+         version="0.1.0.qualifier"
          fragment="true"/>
 
 </feature>
