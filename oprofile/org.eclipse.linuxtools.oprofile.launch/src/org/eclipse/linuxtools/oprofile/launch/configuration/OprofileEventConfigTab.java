@@ -141,41 +141,48 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		int numEnabledEvents = 0;
 		boolean valid = true;
 
-		//This seems like an odd way to validate, but since most of the validation
-		// is done with the OprofileDaemonEvent that the counter wraps, this
-		// is the easiest way.
-		OprofileCounter[] counters = new OprofileCounter[Oprofile.getNumberOfCounters()];
-		for (int i = 0; i < counters.length; i++) {
-			counters[i] = new OprofileCounter(i);
-			counters[i].loadConfiguration(config);
-			if (counters[i].getEnabled()) {
-				++numEnabledEvents;
+		try {
+			if (config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false)) {
+				numEnabledEvents = 1;
+			} else {
+				//This seems like an odd way to validate, but since most of the validation
+				// is done with the OprofileDaemonEvent that the counter wraps, this
+				// is the easiest way.
+				OprofileCounter[] counters = new OprofileCounter[Oprofile.getNumberOfCounters()];
+				for (int i = 0; i < counters.length; i++) {
+					counters[i] = new OprofileCounter(i);
+					counters[i].loadConfiguration(config);
+					if (counters[i].getEnabled()) {
+						++numEnabledEvents;
 
-				if (counters[i].getEvent() == null) {
-					valid = false;
-					break;
-				}
+						if (counters[i].getEvent() == null) {
+							valid = false;
+							break;
+						}
 
-				// First check min count
-				int min = counters[i].getEvent().getMinCount();
-				if (counters[i].getCount() < min) {
-					valid = false;
-					break;
-				}
+						// First check min count
+						int min = counters[i].getEvent().getMinCount();
+						if (counters[i].getCount() < min) {
+							valid = false;
+							break;
+						}
 
-				// Next ask oprofile if it is valid
-				if (!OprofileLaunchPlugin.getCache().checkEvent(
-							counters[i].getNumber(), 
-							counters[i].getEvent().getNumber(), 
-							counters[i].getEvent().getUnitMask().getMaskValue())) {
-					valid = false;
-					break;
+						// Next ask oprofile if it is valid
+						if (!OprofileLaunchPlugin.getCache().checkEvent(
+									counters[i].getNumber(), 
+									counters[i].getEvent().getNumber(), 
+									counters[i].getEvent().getUnitMask().getMaskValue())) {
+							valid = false;
+							break;
+						}
+					}
 				}
 			}
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 
-		boolean b =(numEnabledEvents > 0 && valid);
-		return b;
+		return (numEnabledEvents > 0 && valid);
 	}
 
 	/**
