@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
 
 import javax.xml.parsers.SAXParserFactory;
 
+import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.xml.sax.InputSource;
@@ -51,6 +53,7 @@ public class OpxmlRunner {
 	 * @param args the arguments to pass to opxml
 	 * @param callData any callData to pass to the processor
 	 * @return boolean indicating the success/failure of opxml
+	 * @throws OpxmlException 
 	 */
 	public boolean run(String[] args, Object callData) {
 		XMLReader reader = null;
@@ -93,6 +96,7 @@ public class OpxmlRunner {
 		} catch (IOException e) {
 			System.out.println("IOException: " + e.getMessage());
 			e.printStackTrace();
+			OprofileCorePlugin.showErrorDialog("opxmlIOException", null);
 		}
 		
 		return false;
