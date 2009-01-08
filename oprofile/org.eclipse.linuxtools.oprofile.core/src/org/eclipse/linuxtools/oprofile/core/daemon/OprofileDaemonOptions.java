@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004,2008,2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,9 @@ public class OprofileDaemonOptions {
 	// the image to profile
 	private String _binaryImage;
 	
+	//how many calls down to profile
+	private int _callgraphDepth;
+	
 	/**
 	 * Sample separation options. Determines how oprofiled will group
 	 *   samples for binaries which isn't the main binary being profiled.
@@ -53,6 +56,7 @@ public class OprofileDaemonOptions {
 		_verboseLogging = false;
 		_separateProfiles = SEPARATE_NONE;	
 		_binaryImage = "";
+		_callgraphDepth = 0;
 	}
 	
 	/**
@@ -103,12 +107,35 @@ public class OprofileDaemonOptions {
 		_separateProfiles = mask;
 	}
 
+	/**
+	 * Get the path to the binary image being profiled.
+	 * @return full path to the binary
+	 */
 	public String getBinaryImage() {
 		return _binaryImage;
 	}
 
+	/**
+	 * Sets the path of the binary image to profile.
+	 * @param _image full path to the binary
+	 */
 	public void setBinaryImage(String _image) {
 		this._binaryImage = _image;
 	}
 
+	/**
+	 * Get the call depth value.
+	 * @return integer amount of calls down to profile
+	 */
+	public int getCallgraphDepth() {
+		return _callgraphDepth;
+	}
+
+	/**
+	 * Sets the call depth value.
+	 * @param depth integer amount of calls down to profile
+	 */
+	public void setCallgraphDepth(int depth) {
+		this._callgraphDepth = depth;
+	}
 }

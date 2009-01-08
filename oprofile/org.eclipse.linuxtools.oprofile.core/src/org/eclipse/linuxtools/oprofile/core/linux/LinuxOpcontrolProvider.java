@@ -55,6 +55,8 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 
 	private static final String _OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
 
+	private static final String _OPD_CALLGRAPH_DEPTH = "--callgraph=";
+
 	// Kernel image file options
 	private static final String _OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
 	private static final String _OPD_KERNEL_FILE = "--vmlinux="; //$NON-NLS-1$
@@ -304,6 +306,9 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 
 		//image filter -- always non-null
 		args.add(_OPD_SETUP_IMAGE + options.getBinaryImage());
+		
+		//callgraph depth
+		args.add(_OPD_CALLGRAPH_DEPTH + options.getCallgraphDepth());
 	}
 
 }
