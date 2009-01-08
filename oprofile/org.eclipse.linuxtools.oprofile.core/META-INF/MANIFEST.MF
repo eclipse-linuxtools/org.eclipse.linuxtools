@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.oprofile.core;singleton:=true
-Bundle-Version: 0.1
+Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
