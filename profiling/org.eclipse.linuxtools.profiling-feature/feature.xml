@@ -39,7 +39,6 @@
       <import feature="org.eclipse.cdt.gnu.build" version="5.0.0.qualifier"/>
       <import feature="org.eclipse.cdt.gnu.debug" version="5.0.0.qualifier"/>
       <import feature="org.eclipse.cdt.platform" version="5.0.0.qualifier"/>
-      <import feature="org.eclipse.cdt.sdk" version="5.0.0.qualifier"/>
    </requires>
 
    <plugin
