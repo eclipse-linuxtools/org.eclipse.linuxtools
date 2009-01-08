@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.oprofile.launch.launching.OprofileLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.oprofile.launch.oprofile"
+            modes="profile"
+            name="%launchconfigurationtype.label"
+            sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.oprofile.launch.oprofile"
+            icon="icons/profile_run.png"
+            id="org.eclipse.linuxtools.oprofile.launch.oprofileImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
+            id="org.eclipse.linuxtools.oprofile.launch.launchConfigurationTabGroup"
+            type="org.eclipse.linuxtools.oprofile.launch.oprofile">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.linuxtools.oprofile.launch.launching.OprofileLaunchShortcut"
+            icon="icons/profile_run.png"
+            id="org.eclipse.linuxtools.oprofile.launch.profileshortcut"
+            label="%launchshortcuts.label"
+            modes="profile">
+         <contextualLaunch>
+           <enablement>
+<!-- FIXME: this is not a proper enablement condition -->           
+             <with variable="selection">
+             	<count value="1"></count>
+
+               <iterate>
+                   <or>
+                     <instanceof value="org.eclipse.cdt.core.model.IBinary"/>
+                     <instanceof value="org.eclipse.cdt.core.model.ICProject"/>
+                     <test property="org.eclipse.cdt.launch.isExecutable"/>
+                     <test property="org.eclipse.cdt.launch.isCProject"/>
+                     <and>
+                       <instanceof value="org.eclipse.ui.IFileEditorInput"/>
+                       <adapt type="org.eclipse.core.resources.IResource">
+                         <adapt type="org.eclipse.cdt.core.model.ICElement"/>
+                       </adapt>
+                     </and>
+                   </or>
+               </iterate>
+
+             </with>
+           </enablement>
+  		 </contextualLaunch>
+      </shortcut>
+   </extension>
+</plugin>
