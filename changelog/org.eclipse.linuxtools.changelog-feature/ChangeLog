@@ -1,5 +1,9 @@
 2009-01-08  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* feature.xml: Add .qualifier to feature version.
+
+2009-01-08  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* feature.xml: Update version to 2.6.5.
 	* build.properties: Add feature.properties to build list.
 
