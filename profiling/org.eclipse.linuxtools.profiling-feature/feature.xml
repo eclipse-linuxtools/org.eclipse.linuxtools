@@ -16,7 +16,7 @@
    <license url="%licenseURL">
       %license
    </license>
-   
+
    <url>
       <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
    </url>
@@ -35,6 +35,11 @@
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.debug.core"/>
+      <import feature="org.eclipse.cdt" version="5.0.0.qualifier"/>
+      <import feature="org.eclipse.cdt.gnu.build" version="5.0.0.qualifier"/>
+      <import feature="org.eclipse.cdt.gnu.debug" version="5.0.0.qualifier"/>
+      <import feature="org.eclipse.cdt.platform" version="5.0.0.qualifier"/>
+      <import feature="org.eclipse.cdt.sdk" version="5.0.0.qualifier"/>
    </requires>
 
    <plugin
