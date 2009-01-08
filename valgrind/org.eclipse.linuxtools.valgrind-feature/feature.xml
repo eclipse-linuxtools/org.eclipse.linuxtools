@@ -21,15 +21,6 @@
       <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
    </url>
 
-   <includes
-         id="org.eclipse.birt.chart"
-         version="0.0.0"
-         search-location="self"/>
-
-   <includes
-         id="org.eclipse.linuxtools.profiling.feature"
-         version="0.0.0"/>
-
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
@@ -52,6 +43,8 @@
       <import plugin="org.mozilla.rhino"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.birt.chart.device.swt" version="2.3.1" match="greaterOrEqual"/>
+      <import feature="org.eclipse.linuxtools.profiling.feature" version="0.1.0.qualifier"/>
    </requires>
 
    <plugin
