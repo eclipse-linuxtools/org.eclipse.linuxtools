@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004,2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,6 @@
  *******************************************************************************/ 
 
 package org.eclipse.linuxtools.oprofile.ui;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -35,27 +32,18 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	private OprofileView _oprofileview = null;
 	
 	public static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
-	public static final String ID_OPROFILE_VIEW = ID_PLUGIN + ".OProfileView"; //$NON-NLS-1$
+	public static final String ID_OPROFILE_VIEW = ID_PLUGIN + ".OProfileView";
 
-	private static final String ICON_PATH = "icons/"; //$NON-NLS-1$
-	public static final String SESSION_ICON = ICON_PATH + "session.gif"; //$NON-NLS-1$
-	public static final String EVENT_ICON = ICON_PATH + "event.gif"; //$NON-NLS-1$
-	public static final String IMAGE_ICON = ICON_PATH + "image.gif"; //$NON-NLS-1$
-	public static final String DEPENDENT_ICON = ICON_PATH + "dependent.gif"; //$NON-NLS-1$
-	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif"; //$NON-NLS-1$
-	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif"; //$NON-NLS-1$
-	public static final String ERROR_ICON = ICON_PATH + "error.png"; //$NON-NLS-1$
+	private static final String ICON_PATH = "icons/";
+	public static final String SESSION_ICON = ICON_PATH + "session.gif";
+	public static final String EVENT_ICON = ICON_PATH + "event.gif";
+	public static final String IMAGE_ICON = ICON_PATH + "image.gif";
+	public static final String DEPENDENT_ICON = ICON_PATH + "dependent.gif";
+	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif";
+	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif";
 	
 	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
 	
-	public static final String ANNOTATION_TYPE_LT_MIN_PERCENTAGE = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.min.pct"; //$NON-NLS-1$
-	public static final String ANNOTATION_TYPE_LT_05 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.05.pct"; //$NON-NLS-1$
-	public static final String ANNOTATION_TYPE_LT_10 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.10.pct"; //$NON-NLS-1$
-	public static final String ANNOTATION_TYPE_LT_20 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.20.pct"; //$NON-NLS-1$
-	public static final String ANNOTATION_TYPE_LT_30 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.30.pct"; //$NON-NLS-1$
-	public static final String ANNOTATION_TYPE_LT_40 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.40.pct"; //$NON-NLS-1$
-	public static final String ANNOTATION_TYPE_LT_50 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.50.pct"; //$NON-NLS-1$
-	public static final String ANNOTATION_TYPE_GT_50 = "org.eclipse.linuxtools.oprofile.ui.annotation.gt.50.pct"; //$NON-NLS-1$
 	
 	/**
 	 * The constructor.
@@ -124,19 +112,5 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 			return window.getShell();
 		}
 		return null;
-	}
-	
-	public static String getPercentageString(double percentage) {
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		if (nf instanceof DecimalFormat) {
-			nf.setMinimumFractionDigits(2);
-			nf.setMaximumFractionDigits(2);
-		}
-		
-		if (percentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			return "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
-		} else {
-			return nf.format(percentage);
-		}
 	}
 }

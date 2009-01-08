@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2008 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -76,9 +76,8 @@ public class OprofileView extends ViewPart {
 	private void _createActionMenu() {
 		IMenuManager manager = getViewSite().getActionBars().getMenuManager();
 		
-		manager.add(new OprofileViewLogReaderAction());
 		manager.add(new OprofileViewRefreshAction());
-		manager.add(new OprofileViewSaveDefaultSessionAction());
+		manager.add(new OprofileViewLogReaderAction());
 	}
 	
 	private TreeViewer getTreeViewer() {
@@ -99,7 +98,7 @@ public class OprofileView extends ViewPart {
 
 		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2); //$NON-NLS-1$
+				monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2);
 
 				OpModelRoot dataModelRoot = OpModelRoot.getDefault();
 				dataModelRoot.refreshModel();

@@ -11,11 +11,12 @@
 package org.eclipse.linuxtools.oprofile.ui.model;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -55,22 +56,30 @@ public class UiModelSymbol implements IUiModelElement {
 	
 	@Override
 	public String toString() {
+		NumberFormat nf = NumberFormat.getPercentInstance();
+		if (nf instanceof DecimalFormat) {
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
+		}
+
 		double countPercentage = (double)_symbol.getCount() / (double)_totalCount;
-		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
+		
+		String percentage;
+		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
+		} else {
+			percentage = nf.format(countPercentage);
+		}
 		
 		//a hack to get `basename` type functionality
 		String fileName = (new File(_symbol.getFile())).getName();
 //		String fileName = _symbol.getFile();
 
-		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		return percentage + " in " + _symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]");
 	}
 	
 	public String getFileName() {
 		return _symbol.getFile();
-	}
-	
-	public String getFunctionName(){
-		return _symbol.getName();
 	}
 
 	/** IUiModelElement functions **/

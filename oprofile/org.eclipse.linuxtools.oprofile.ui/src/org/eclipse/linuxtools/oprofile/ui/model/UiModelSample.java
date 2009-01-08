@@ -10,8 +10,10 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -28,18 +30,25 @@ public class UiModelSample implements IUiModelElement {
 	
 	@Override
 	public String toString() {
+		NumberFormat nf = NumberFormat.getPercentInstance();
+		if (nf instanceof DecimalFormat) {
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
+		}
 		double countPercentage = (double)_sample.getCount() / (double)_totalCount;
-		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 		
-		return percentage + " " + OprofileUiMessages.getString("uimodel.sample.on.line") + Integer.toString(_sample.getLine()); //$NON-NLS-1$ //$NON-NLS-2$
+		String percentage;
+		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
+		} else {
+			percentage = nf.format(countPercentage);
+		}
+		
+		return percentage + " on line " + Integer.toString(_sample.getLine());
 	}
 	
 	public int getLine() {
 		return _sample.getLine();
-	}
-	
-	public double getCountPercentage() {
-		return (double)_sample.getCount() / (double)_totalCount;
 	}
 	
 	/** IUiModelElement functions **/

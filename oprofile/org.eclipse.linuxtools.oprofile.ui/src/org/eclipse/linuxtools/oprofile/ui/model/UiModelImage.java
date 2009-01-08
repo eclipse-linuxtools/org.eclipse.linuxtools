@@ -10,9 +10,11 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -53,14 +55,21 @@ public class UiModelImage implements IUiModelElement {
 	
 	@Override
 	public String toString() {
-		if (_image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
-			return OprofileUiMessages.getString("opxmlParse.error.multipleImages"); //$NON-NLS-1$
-		} else {
-			double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
-			String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
-			
-			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+		NumberFormat nf = NumberFormat.getPercentInstance();
+		if (nf instanceof DecimalFormat) {
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
 		}
+		double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
+		
+		String percentage;
+		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
+		} else {
+			percentage = nf.format(countPercentage);
+		}
+		
+		return percentage + " in " + _image.getName();
 	}
 	
 	/** IUiModelElement functions **/
@@ -70,15 +79,12 @@ public class UiModelImage implements IUiModelElement {
 
 	public IUiModelElement[] getChildren() {
 		IUiModelElement children[] = null;
+		children = new IUiModelElement[_symbols.length];
 		
-		if (_symbols != null) {
-			children = new IUiModelElement[_symbols.length];
-			
-			for (int i = 0; i < _symbols.length; i++) {
-				children[i] = _symbols[i];
-			}
+		for (int i = 0; i < _symbols.length; i++) {
+			children[i] = _symbols[i];
 		}
-		
+
 		return children;
 	}
 

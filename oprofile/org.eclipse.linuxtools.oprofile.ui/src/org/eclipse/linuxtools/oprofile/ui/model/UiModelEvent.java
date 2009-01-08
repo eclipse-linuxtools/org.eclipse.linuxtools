@@ -25,10 +25,8 @@ public class UiModelEvent implements IUiModelElement {
 	private UiModelSession _sessions[];			//this node's children
 	
 	public UiModelEvent(OpModelEvent event) {
-		if (event != null) {
-			_event = event;
-			refreshModel();
-		}
+		_event = event;
+		refreshModel();
 	}
 
 	/**
@@ -45,7 +43,7 @@ public class UiModelEvent implements IUiModelElement {
 
 	@Override
 	public String toString() {
-		return (_event == null ? "" : _event.getName()); //$NON-NLS-1$
+		return _event.getName();
 	}
 
 	/** IUiModelElement functions **/
@@ -58,7 +56,7 @@ public class UiModelEvent implements IUiModelElement {
 	}
 
 	public boolean hasChildren() {
-		return (_sessions == null || _sessions.length == 0 ? false : true);
+		return (_sessions.length == 0 ? false : true);
 	}
 
 	public IUiModelElement getParent() {

@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
  */
 public class OprofileViewRefreshAction extends Action {
 	public OprofileViewRefreshAction() {
-		super(OprofileUiMessages.getString("view.actions.refresh.label")); //$NON-NLS-1$
+		super(OprofileUiMessages.getString("view.actions.refresh.label"));
 	}
 	
 	@Override

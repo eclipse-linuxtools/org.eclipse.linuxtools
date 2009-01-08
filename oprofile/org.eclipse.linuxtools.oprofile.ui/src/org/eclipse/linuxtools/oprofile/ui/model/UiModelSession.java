@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
-import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -29,7 +28,7 @@ public class UiModelSession implements IUiModelElement {
 	private UiModelDependent _dependent;	//dependent images of the OpModelImage
 
 	//OProfile's default session name
-	private static final String DEFAULT_SESSION_NAME = "current"; //$NON-NLS-1$
+	private static final String DEFAULT_SESSION_NAME = "current";
 	
 	public UiModelSession(IUiModelElement parent, OpModelSession session) {
 		_parent = parent;
@@ -41,12 +40,10 @@ public class UiModelSession implements IUiModelElement {
 	
 	private void refreshModel() {
 		OpModelImage dataModelImage = _session.getImage();
-		if (dataModelImage != null) {
-			_image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
-			
-			if (dataModelImage.hasDependents()) {
-				_dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
-			}
+		_image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
+		
+		if (dataModelImage.hasDependents()) {
+			_dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
 		}
 	}
 
@@ -61,9 +58,6 @@ public class UiModelSession implements IUiModelElement {
 
 	/** IUiModelElement functions **/
 	public String getLabelText() {
-		if (_session.getName().equals(DEFAULT_SESSION_NAME)){
-			return OprofileUiMessages.getString("UiModelSession_current"); //$NON-NLS-1$
-		}
 		return toString();
 	}
 
