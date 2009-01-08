@@ -1,3 +1,7 @@
+2009-01-08  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Added org.eclipse.birt.device.swt to required bundles.
+
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifViewPart: Chart now opens upon launch; EditorInput is cached once
