@@ -1,3 +1,7 @@
+2009-01-09  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Added all used BIRT plugins as dependencies.
+
 2009-01-08  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Added org.eclipse.linuxtools.profiling-feature to dependencies.
