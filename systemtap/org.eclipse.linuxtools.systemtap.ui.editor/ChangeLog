@@ -1,3 +1,8 @@
+2009-01-09  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* build.properties: Add completion/ folder to binary
+	build.
+
 2008-12-09  Andrew Overholt  <overholt@redhat.com>
 
 	* plugin.xml: Remove erroneous metadata element under <plugin>.
