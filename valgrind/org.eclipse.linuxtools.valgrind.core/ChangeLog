@@ -1,3 +1,7 @@
+2009-01-09  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindCommand: Added static method findValgrind() to call `which valgrind`.
+
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Changed version to 0.1.0.

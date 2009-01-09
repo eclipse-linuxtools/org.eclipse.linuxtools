@@ -12,13 +12,15 @@ package org.eclipse.linuxtools.valgrind.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.osgi.util.NLS;
 
 public class ValgrindCommand {
-	public static final String VALGRIND_CMD = "valgrind"; //$NON-NLS-1$
+	protected static final String WHICH_CMD = "which"; //$NON-NLS-1$
+	protected static final String VALGRIND_CMD = "valgrind"; //$NON-NLS-1$
 
 	public static final String OPT_TOOL = "--tool"; //$NON-NLS-1$
 
@@ -36,13 +38,38 @@ public class ValgrindCommand {
 	public static final String OPT_BELOWMAIN = "--show-below-main"; //$NON-NLS-1$
 	public static final String OPT_MAXFRAME = "--max-stackframe"; //$NON-NLS-1$
 	public static final String OPT_SUPPFILE = "--suppressions"; //$NON-NLS-1$
-	
+
 	protected File datadir;
 	protected Process process;
 	protected String[] args;
 
 	public ValgrindCommand(File outputDir) throws IOException {
 		datadir = outputDir;
+	}
+
+	public static String whichValgrind() throws IOException {
+		StringBuffer out = new StringBuffer();
+		Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
+		boolean success;
+		InputStream in;
+		try {
+			if (success = (p.waitFor() == 0)) {
+				in = p.getInputStream();
+			}
+			else {
+				in = p.getErrorStream();
+			}
+			int ch;
+			while ((ch = in.read()) != -1) {
+				out.append((char) ch);
+			}
+			if (!success) {
+				throw new IOException(out.toString());
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return out.toString().trim();
 	}
 
 	public void execute(String[] commandArray, String[] env, File wd, boolean usePty) throws IOException {
@@ -68,7 +95,7 @@ public class ValgrindCommand {
 			throw e;		
 		}
 	}
-	
+
 	public File getDatadir() {
 		return datadir;
 	}
@@ -91,7 +118,7 @@ public class ValgrindCommand {
 			}
 		}
 	}
-	
+
 	public Process getProcess() {
 		return process;
 	}
