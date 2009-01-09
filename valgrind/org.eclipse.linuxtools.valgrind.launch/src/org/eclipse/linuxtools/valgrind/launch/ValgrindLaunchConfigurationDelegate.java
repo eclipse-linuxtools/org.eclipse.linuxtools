@@ -71,6 +71,14 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		try {
 			datadir = ValgrindLaunchPlugin.getDefault().getStateLocation().toFile();
 			command = new ValgrindCommand(datadir);
+			
+			// find Valgrind
+			String valgrindCmd = null;
+			try {
+				 valgrindCmd = ValgrindCommand.whichValgrind();
+			} catch (IOException e) {
+				abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Please_ensure_Valgrind"), e, ICDTLaunchConfigurationConstants.ERR_PROGRAM_NOT_EXIST); //$NON-NLS-1$
+			}
 
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
@@ -92,7 +100,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			}
 
 			ArrayList<String> cmdLine = new ArrayList<String>(1 + arguments.length);
-			cmdLine.add(ValgrindCommand.VALGRIND_CMD);
+			cmdLine.add(valgrindCmd);
 			cmdLine.addAll(Arrays.asList(opts));
 			cmdLine.add(exePath.toOSString());
 			cmdLine.addAll(Arrays.asList(arguments));
@@ -121,8 +129,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 //			saveState(monitor.newChild(2));
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
-			e.printStackTrace();
-		} catch (CoreException e) {
 			e.printStackTrace();
 		} finally {
 			monitor.done();			

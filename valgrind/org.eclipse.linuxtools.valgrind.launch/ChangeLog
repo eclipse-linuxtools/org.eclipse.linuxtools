@@ -1,4 +1,11 @@
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
+	* ValgrindLaunchConfigurationDelegate: Graceful handling for absence of
+	Valgrind. Also Valgrind view will display the absolute path of valgrind
+	that was launched.
+	* messages.properties: New key.
+
+2009-01-05  Elliott Baron  <ebaron@redhat.com>
+
 	* META-INF/MANIFEST.MF: Changed version to 0.1.0.
 	* build.properties: Include about.html and icons.
