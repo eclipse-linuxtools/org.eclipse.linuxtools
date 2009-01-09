@@ -69,6 +69,10 @@ public class MassifSnapshot {
 		return root;
 	}
 	
+	public boolean isDetailed() {
+		return !type.equals(SnapshotType.EMPTY);
+	}
+	
 	protected void setTime(long time) {
 		this.time = time;
 	}

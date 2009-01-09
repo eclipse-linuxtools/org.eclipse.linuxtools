@@ -26,16 +26,13 @@ import org.eclipse.birt.chart.model.attribute.impl.CallBackValueImpl;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Axis;
 import org.eclipse.birt.chart.model.component.Series;
-import org.eclipse.birt.chart.model.component.impl.AxisImpl;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
-import org.eclipse.birt.chart.model.data.Action;
 import org.eclipse.birt.chart.model.data.BaseSampleData;
 import org.eclipse.birt.chart.model.data.DataFactory;
 import org.eclipse.birt.chart.model.data.NumberDataSet;
 import org.eclipse.birt.chart.model.data.OrthogonalSampleData;
 import org.eclipse.birt.chart.model.data.SampleData;
 import org.eclipse.birt.chart.model.data.SeriesDefinition;
-import org.eclipse.birt.chart.model.data.Trigger;
 import org.eclipse.birt.chart.model.data.impl.ActionImpl;
 import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
 import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
@@ -53,23 +50,20 @@ import org.eclipse.swt.graphics.FontData;
 
 public class HeapChart extends ChartWithAxesImpl {
 
-	private static String[] byteUnits = { 
-		Messages.getString("HeapChart.B"), //$NON-NLS-1$
-		Messages.getString("HeapChart.KiB"), //$NON-NLS-1$
-		Messages.getString("HeapChart.MiB"), //$NON-NLS-1$
-		Messages.getString("HeapChart.GiB"), //$NON-NLS-1$
-		Messages.getString("HeapChart.TiB") //$NON-NLS-1$
-	};	
-	private static String[] instrUnits = {
-		Messages.getString("HeapChart.i"), //$NON-NLS-1$
-		Messages.getString("HeapChart.Ki"), //$NON-NLS-1$
-		Messages.getString("HeapChart.Mi"), //$NON-NLS-1$
-		Messages.getString("HeapChart.Gi"), //$NON-NLS-1$
-		Messages.getString("HeapChart.Ti") //$NON-NLS-1$
+	private static String[] byteUnits = { Messages.getString("HeapChart.B"), //$NON-NLS-1$
+			Messages.getString("HeapChart.KiB"), //$NON-NLS-1$
+			Messages.getString("HeapChart.MiB"), //$NON-NLS-1$
+			Messages.getString("HeapChart.GiB"), //$NON-NLS-1$
+			Messages.getString("HeapChart.TiB") //$NON-NLS-1$
 	};
-	private static String[] secondUnits = {
-		Messages.getString("HeapChart.ms"), //$NON-NLS-1$
-		Messages.getString("HeapChart.s") //$NON-NLS-1$
+	private static String[] instrUnits = { Messages.getString("HeapChart.i"), //$NON-NLS-1$
+			Messages.getString("HeapChart.Ki"), //$NON-NLS-1$
+			Messages.getString("HeapChart.Mi"), //$NON-NLS-1$
+			Messages.getString("HeapChart.Gi"), //$NON-NLS-1$
+			Messages.getString("HeapChart.Ti") //$NON-NLS-1$
+	};
+	private static String[] secondUnits = { Messages.getString("HeapChart.ms"), //$NON-NLS-1$
+			Messages.getString("HeapChart.s") //$NON-NLS-1$
 	};
 
 	protected static final int BYTE_MULT = 1024;
@@ -98,7 +92,7 @@ public class HeapChart extends ChartWithAxesImpl {
 		boolean isStack = isStackProfiled(snapshots);
 		if (isStack) {
 			dataStacks = new double[snapshots.length];
-		}		
+		}
 		double[] dataTotal = new double[snapshots.length];
 		for (int i = 0; i < snapshots.length; i++) {
 			time[i] = snapshots[i].getTime() / xScaling;
@@ -108,7 +102,7 @@ public class HeapChart extends ChartWithAxesImpl {
 			if (isStack) {
 				dataStacks[i] = snapshots[i].getStacks() / yScaling;
 				dataStacks[i] += dataStacks[i];
-			}	
+			}
 		}
 
 		initialize();
@@ -138,7 +132,8 @@ public class HeapChart extends ChartWithAxesImpl {
 		xAxisPrimary.getTitle().getCaption().setValue(xUnits);
 		xAxisPrimary.getTitle().setVisible(true);
 
-		FontDefinition xAxisFont = xAxisPrimary.getTitle().getCaption().getFont();
+		FontDefinition xAxisFont = xAxisPrimary.getTitle().getCaption()
+				.getFont();
 		xAxisFont.setName(fd.getName());
 		xAxisFont.setSize(fd.getHeight());
 
@@ -153,7 +148,8 @@ public class HeapChart extends ChartWithAxesImpl {
 		yAxisPrimary.getTitle().getCaption().setValue(yUnits);
 		yAxisPrimary.getTitle().setVisible(true);
 
-		FontDefinition yAxisFont = yAxisPrimary.getTitle().getCaption().getFont();
+		FontDefinition yAxisFont = yAxisPrimary.getTitle().getCaption()
+				.getFont();
 		yAxisFont.setName(fd.getName());
 		yAxisFont.setSize(fd.getHeight());
 
@@ -161,14 +157,14 @@ public class HeapChart extends ChartWithAxesImpl {
 		yAxisFont.setName(fd.getName());
 		yAxisFont.setSize(fd.getHeight());
 
-		// Z-Axis
-		Axis zAxis = AxisImpl.create(Axis.ANCILLARY_BASE);
-		zAxis.setType(AxisType.LINEAR_LITERAL);
-		zAxis.setLabelPosition(Position.BELOW_LITERAL);
-		zAxis.setTitlePosition(Position.BELOW_LITERAL);
-		zAxis.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
-		zAxis.setOrientation(Orientation.HORIZONTAL_LITERAL);
-		xAxisPrimary.getAncillaryAxes().add(zAxis);
+		// // Z-Axis
+		// Axis zAxis = AxisImpl.create(Axis.ANCILLARY_BASE);
+		// zAxis.setType(AxisType.LINEAR_LITERAL);
+		// zAxis.setLabelPosition(Position.BELOW_LITERAL);
+		// zAxis.setTitlePosition(Position.BELOW_LITERAL);
+		// zAxis.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
+		// zAxis.setOrientation(Orientation.HORIZONTAL_LITERAL);
+		// xAxisPrimary.getAncillaryAxes().add(zAxis);
 
 		// Legend
 		Legend legend = getLegend();
@@ -195,27 +191,27 @@ public class HeapChart extends ChartWithAxesImpl {
 		sd.getBaseSampleData().add(sdBase);
 
 		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE
-		.createOrthogonalSampleData();
+				.createOrthogonalSampleData();
 		sdOrthogonal1.setDataSetRepresentation("");//$NON-NLS-1$
 		sdOrthogonal1.setSeriesDefinitionIndex(0);
 		sd.getOrthogonalSampleData().add(sdOrthogonal1);
 
 		OrthogonalSampleData sdOrthogonal2 = DataFactory.eINSTANCE
-		.createOrthogonalSampleData();
+				.createOrthogonalSampleData();
 		sdOrthogonal2.setDataSetRepresentation("");//$NON-NLS-1$
 		sdOrthogonal2.setSeriesDefinitionIndex(1);
 		sd.getOrthogonalSampleData().add(sdOrthogonal2);
 
 		if (isStack) {
 			OrthogonalSampleData sdOrthogonalS = DataFactory.eINSTANCE
-			.createOrthogonalSampleData();
+					.createOrthogonalSampleData();
 			sdOrthogonalS.setDataSetRepresentation("");//$NON-NLS-1$
 			sdOrthogonalS.setSeriesDefinitionIndex(2);
 			sd.getOrthogonalSampleData().add(sdOrthogonalS);
 		}
 
 		OrthogonalSampleData sdOrthogonal3 = DataFactory.eINSTANCE
-		.createOrthogonalSampleData();
+				.createOrthogonalSampleData();
 		sdOrthogonal3.setDataSetRepresentation("");//$NON-NLS-1$
 		sdOrthogonal3.setSeriesDefinitionIndex(isStack ? 3 : 2);
 		sd.getOrthogonalSampleData().add(sdOrthogonal3);
@@ -236,14 +232,15 @@ public class HeapChart extends ChartWithAxesImpl {
 		for (int i = 0; i < ls1.getMarkers().size(); i++) {
 			Marker marker = (Marker) ls1.getMarkers().get(i);
 			marker.setType(MarkerType.DIAMOND_LITERAL);
-			marker.setSize(3);
 		}
-		
+
 		ls1.setPaletteLineColor(true);
-		ls1.setSeriesIdentifier(Messages.getString("HeapChart.Useful_Heap")); //$NON-NLS-1$
-		Action action = ActionImpl.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl.create(String.valueOf(ls1.getSeriesIdentifier())));		
-		Trigger trigger = TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, action);
-		ls1.getTriggers().add(trigger);
+		ls1.setSeriesIdentifier(Messages.getString("HeapChart.Useful_Heap")); //$NON-NLS-1$	
+		ls1.getTriggers().add(
+				TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
+						.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
+								.create(String.valueOf(ls1
+										.getSeriesIdentifier())))));
 
 		// Y-Series
 		LineSeries ls2 = (LineSeries) LineSeriesImpl.create();
@@ -252,11 +249,15 @@ public class HeapChart extends ChartWithAxesImpl {
 		for (int i = 0; i < ls2.getMarkers().size(); i++) {
 			Marker marker = (Marker) ls2.getMarkers().get(i);
 			marker.setType(MarkerType.DIAMOND_LITERAL);
-			marker.setSize(3);
 		}
 		ls2.setPaletteLineColor(true);
 		ls2.setSeriesIdentifier(Messages.getString("HeapChart.Extra_Heap")); //$NON-NLS-1$
-		
+		ls2.getTriggers().add(
+				TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
+						.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
+								.create(String.valueOf(ls2
+										.getSeriesIdentifier())))));
+
 		// Y-Series
 		LineSeries lsS = null;
 		if (isStack) {
@@ -266,12 +267,16 @@ public class HeapChart extends ChartWithAxesImpl {
 			for (int i = 0; i < lsS.getMarkers().size(); i++) {
 				Marker marker = (Marker) lsS.getMarkers().get(i);
 				marker.setType(MarkerType.DIAMOND_LITERAL);
-				marker.setSize(3);
 			}
 			lsS.setPaletteLineColor(true);
 			lsS.setSeriesIdentifier(Messages.getString("HeapChart.Stacks")); //$NON-NLS-1$
-		}		
-		
+			lsS.getTriggers().add(
+					TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
+							.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
+									.create(String.valueOf(lsS
+											.getSeriesIdentifier())))));
+		}
+
 		// Y-Series
 		LineSeries ls3 = (LineSeries) LineSeriesImpl.create();
 		ls3.setDataSet(orthoValues3);
@@ -279,10 +284,14 @@ public class HeapChart extends ChartWithAxesImpl {
 		for (int i = 0; i < ls3.getMarkers().size(); i++) {
 			Marker marker = (Marker) ls3.getMarkers().get(i);
 			marker.setType(MarkerType.DIAMOND_LITERAL);
-			marker.setSize(3);
 		}
 		ls3.setPaletteLineColor(true);
 		ls3.setSeriesIdentifier(Messages.getString("HeapChart.Total_Heap")); //$NON-NLS-1$
+		ls3.getTriggers().add(
+				TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
+						.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
+								.create(String.valueOf(ls3
+										.getSeriesIdentifier())))));
 
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		sdY.getSeriesPalette().shift(-1);
@@ -294,9 +303,9 @@ public class HeapChart extends ChartWithAxesImpl {
 		}
 		sdY.getSeries().add(ls3);
 
-		// Z-Series
-		SeriesDefinition sdZ = SeriesDefinitionImpl.create();
-		zAxis.getSeriesDefinitions().add(sdZ);
+		// // Z-Series
+		// SeriesDefinition sdZ = SeriesDefinitionImpl.create();
+		// zAxis.getSeriesDefinitions().add(sdZ);
 	}
 
 	private boolean isStackProfiled(MassifSnapshot[] snapshots) {
@@ -334,9 +343,9 @@ public class HeapChart extends ChartWithAxesImpl {
 			break;
 		default:
 			mult = MS_MULT;
-		limit = MS_LIMIT;
-		units = secondUnits;
-		break;
+			limit = MS_LIMIT;
+			units = secondUnits;
+			break;
 		}
 
 		int count = 0;

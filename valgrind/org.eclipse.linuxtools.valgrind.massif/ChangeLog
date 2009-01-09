@@ -1,5 +1,11 @@
 2009-01-09  Elliott Baron  <ebaron@redhat.com>
 
+	* MassifSnapshot: New convenience method isDetailed().
+	* MassifViewPart: Changed visibility of setTopControl to public.
+	* ChartControl: Integrated with ChartRenderer, implementer of ICallBackNotifier must
+	also extend Composite.
+	* ChartRenderer: Deleted.
+	* HeapChart: Added triggers for single click.
 	* META-INF/MANIFEST.MF: Added all needed BIRT plugins to required bundles.
 
 2009-01-08  Elliott Baron  <ebaron@redhat.com>

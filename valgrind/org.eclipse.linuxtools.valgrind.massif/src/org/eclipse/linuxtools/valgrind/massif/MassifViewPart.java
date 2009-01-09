@@ -301,7 +301,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		}
 	}
 
-	protected void setTopControl(Control control) {
+	public void setTopControl(Control control) {
 		stackLayout.topControl = control;
 		top.layout(true);
 	}
