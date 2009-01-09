@@ -13,6 +13,7 @@
 package org.eclipse.linuxtools.systemtap.ui.editor;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -47,15 +48,22 @@ public class SystemtapEditor extends TextEditor {
 
 	public SystemtapEditor() {
 		super();
+		URL completionURL = null;
+		
 		STPMetadataSingleton completionDataStore = STPMetadataSingleton.getInstance();
 		try {
-			completionDataStore.build(FileLocator.toFileURL(Activator.getDefault()
-					.getBundle().getEntry("completion/stp_completion.properties")));
+			completionURL = getCompletionURL("completion/stp_completion.properties");			
 		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
-					IStatus.OK, "Cannot build Systemtap completion metadata. Completions are " +
-					"not available.", e));
+			completionURL = null;
 		}
+		
+		if (completionURL != null)
+			completionDataStore.build(completionURL);
+		else
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
+					IStatus.OK, "Cannot find System Tap completion metadata (completion/stp_completion.properties). " + 
+					"Completions are not available.", null));
+
 		colorManager = new ColorManager();
 		setSourceViewerConfiguration(new STPConfiguration(colorManager,this));
 		setDocumentProvider(new STPDocumentProvider());
@@ -121,5 +129,13 @@ public class SystemtapEditor extends TextEditor {
 		addAction(menu, ITextEditorActionConstants.GROUP_EDIT,
 				ITextEditorActionConstants.SHIFT_LEFT);
 
+	}
+	
+	private URL getCompletionURL(String completionLocation) throws IOException {
+		URL fileURL = null;
+		URL location = Activator.getDefault().getBundle().getEntry(completionLocation);
+		if (location != null)
+			fileURL = FileLocator.toFileURL(location);		
+		return fileURL;
 	}
 }
