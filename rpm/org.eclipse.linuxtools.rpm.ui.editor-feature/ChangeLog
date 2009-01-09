@@ -1,3 +1,8 @@
+2009-01-09  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* feature.properties: Add 2009 to copyright text.
+	* feature.xml: Add qualifier to version.
+
 2009-01-06  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add update site information.
