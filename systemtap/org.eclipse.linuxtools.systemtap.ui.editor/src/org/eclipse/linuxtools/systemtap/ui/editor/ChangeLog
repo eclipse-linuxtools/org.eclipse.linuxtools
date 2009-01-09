@@ -1,5 +1,5 @@
 2009-01-09  Phil Muldoon  <pmuldoon@redhat.com>
 
 	* SystemtapEditor.java (getCompletionURL): New.
-	(SystemtapEditor): Use getCompletionURL. Account for
-	NULL. Tweak log message on fail.
+	(buildCompletionDataLocation): New.
+	(SystemtapEditor): Use buildCompletionDataLocation.

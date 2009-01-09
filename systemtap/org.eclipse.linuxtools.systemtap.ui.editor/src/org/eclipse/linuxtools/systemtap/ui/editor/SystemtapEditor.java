@@ -12,6 +12,7 @@
 
 package org.eclipse.linuxtools.systemtap.ui.editor;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -49,20 +50,12 @@ public class SystemtapEditor extends TextEditor {
 	public SystemtapEditor() {
 		super();
 		URL completionURL = null;
-		
+	
+		completionURL = buildCompletionDataLocation("completion/stp_completion.properties");
 		STPMetadataSingleton completionDataStore = STPMetadataSingleton.getInstance();
-		try {
-			completionURL = getCompletionURL("completion/stp_completion.properties");			
-		} catch (IOException e) {
-			completionURL = null;
-		}
 		
 		if (completionURL != null)
 			completionDataStore.build(completionURL);
-		else
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
-					IStatus.OK, "Cannot find System Tap completion metadata (completion/stp_completion.properties). " + 
-					"Completions are not available.", null));
 
 		colorManager = new ColorManager();
 		setSourceViewerConfiguration(new STPConfiguration(colorManager,this));
@@ -131,9 +124,37 @@ public class SystemtapEditor extends TextEditor {
 
 	}
 	
+	private URL buildCompletionDataLocation(String completionDataLocation) {
+		URL completionURLLocation = null; 
+		try {
+			completionURLLocation = getCompletionURL(completionDataLocation);			
+		} catch (IOException e) {
+			completionURLLocation = null;
+		}
+		
+		if (completionURLLocation == null) {
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
+					IStatus.OK, "Cannot locate plug-in location for System Tap completion metadata " +
+							"(completion/stp_completion.properties). Completions are not available.", null));
+			return null;
+		}
+		
+		File completionFile = new File(completionURLLocation.getFile());
+		if ((completionFile == null) || (!completionFile.exists()) || (!completionFile.canRead())) {
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
+					IStatus.OK, "Cannot find System Tap completion metadata at  " +completionFile.getPath() + 
+					"Completions are not available.", null));
+					
+			return null;
+		}
+
+		return completionURLLocation;
+		
+	}
 	private URL getCompletionURL(String completionLocation) throws IOException {
 		URL fileURL = null;
 		URL location = Activator.getDefault().getBundle().getEntry(completionLocation);
+
 		if (location != null)
 			fileURL = FileLocator.toFileURL(location);		
 		return fileURL;
