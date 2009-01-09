@@ -1,3 +1,7 @@
+2009-01-09  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Added all needed BIRT plugins to required bundles.
+
 2009-01-08  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Added org.eclipse.birt.device.swt to required bundles.
