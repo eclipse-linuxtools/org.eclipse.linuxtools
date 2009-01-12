@@ -9,6 +9,9 @@ plugin@org.eclipse.linuxtools.rpm.rpmlint=SVN,,http://dev.eclipse.org/svnroot/te
 plugin@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor
 plugin@org.eclipse.linuxtools.rpm.ui.editor.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor.tests
 
+!*** rpmstubby
+plugin@org.eclipse.linuxtools.rpmstubby=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpmstubby/trunk/org.eclipse.linuxtools.rpmstubby
+
 !*** autotools
 plugin@org.eclipse.linuxtools.cdt.autotools=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools
 plugin@org.eclipse.linuxtools.cdt.autotools_docs=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools-docs
@@ -47,6 +50,7 @@ plugin@org.eclipse.linuxtools.valgrind.ui=SVN,,http://dev.eclipse.org/svnroot/te
 feature@org.eclipse.linuxtools.all=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.all
 feature@org.eclipse.linuxtools.changelog=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/changelog/trunk/org.eclipse.linuxtools.changelog-feature
 feature@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor-feature
+feature@org.eclipse.linuxtools.rpmstubby=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpmstubby/trunk/org.eclipse.linuxtools.rpmstubby-feature
 feature@org.eclipse.linuxtools.cdt.autotools.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.feature
 feature@org.eclipse.linuxtools.cdt.libhover.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.feature
 feature@org.eclipse.linuxtools.systemtap.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.feature
