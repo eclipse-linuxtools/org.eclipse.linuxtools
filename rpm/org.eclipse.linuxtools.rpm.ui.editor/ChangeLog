@@ -1,3 +1,8 @@
+2009-01-12  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* .settings/org.moreunit.prefs: New file. Set tests projects as the tests provider for moreunit users.
+	* META-INF/MANIFEST.MF: Add qualifier to version.
+
 2009-01-09  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java 

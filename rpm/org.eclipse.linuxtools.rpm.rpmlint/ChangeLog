@@ -1,3 +1,7 @@
+2009-01-12  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* META-INF/MANIFEST.MF: Add qualifier to the version.
+
 2009-01-06  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: Bump release to 0.4.1.
