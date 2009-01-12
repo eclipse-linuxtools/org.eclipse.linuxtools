@@ -1,3 +1,7 @@
+2009-01-12  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* META-INF/MANIFEST.MF: Add qualifier to the version.
+
 2008-12-08  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: It deserves at least 0.1.0 version.
