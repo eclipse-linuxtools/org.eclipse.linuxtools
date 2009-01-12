@@ -61,6 +61,7 @@ public class Oprofile
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
 			OprofileCorePlugin.showErrorDialog("oprofileInit", null);
+			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded"));
 		} else {
 			_initializeOprofileCore();
 		}
