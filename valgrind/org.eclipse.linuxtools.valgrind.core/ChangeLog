@@ -1,3 +1,7 @@
+2009-01-13  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTextParser: New. Helpful starting point for text parsers.
+
 2009-01-09  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindCommand: Added static method findValgrind() to call `which valgrind`.
