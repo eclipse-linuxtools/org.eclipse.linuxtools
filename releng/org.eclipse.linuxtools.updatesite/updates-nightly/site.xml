@@ -31,6 +31,9 @@
    <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_0.4.1.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="0.4.1">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.rpmstubby_0.1.0.200901130905.jar" id="org.eclipse.linuxtools.rpmstubby" version="0.1.0.200901130905">
+     <category name="Linux Tools Features (Nightly development build)"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.systemtap.feature_0.1.0.jar" id="org.eclipse.linuxtools.systemtap.feature" version="0.1.0">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
