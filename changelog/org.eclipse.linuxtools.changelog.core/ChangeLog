@@ -1,3 +1,8 @@
+2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java 
+	(loadClipboard): Fix NPE when project is not shared (#260719).
+
 2009-01-07  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/InsertChangeLogKeyHandler.java 
