@@ -36,6 +36,10 @@
    <includes
          id="org.eclipse.linuxtools.rpm.ui.editor"
          version="0.0.0"/>
+         
+   <includes
+         id="org.eclipse.linuxtools.rpmstubby"
+         version="0.0.0"/>
 
    <includes
          id="org.eclipse.linuxtools.systemtap.feature"

@@ -1,3 +1,7 @@
+2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* feature.xml: Add rpmstubby feature.
+
 2009-01-06  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add valgrind, profiling framework, and oprofile features.
