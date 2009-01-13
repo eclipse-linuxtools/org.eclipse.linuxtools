@@ -12,6 +12,7 @@ public class AllTests {
 		suite.addTestSuite(DoubleClickTest.class);
 		suite.addTestSuite(TreeTest.class);
 		suite.addTestSuite(BasicMassifTest.class);
+		suite.addTestSuite(ChartTests.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -1,3 +1,7 @@
+2009-01-13  Elliott Baron  <ebaron@redhat.com>
+
+	* AllTests: ChartTests added to suite.
+
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Changed version to 0.1.0.
