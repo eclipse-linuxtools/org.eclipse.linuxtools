@@ -17,11 +17,12 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.eclipse.linuxtools.valgrind.core.AbstractValgrindTextParser;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.SnapshotType;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot.TimeUnit;
 import org.eclipse.osgi.util.NLS;
 
-public class MassifParser {
+public class MassifParser extends AbstractValgrindTextParser {
 	private static final String CMD = "cmd"; //$NON-NLS-1$
 	private static final String TIME_UNIT = "time_unit"; //$NON-NLS-1$
 	private static final String SNAPSHOT = "snapshot"; //$NON-NLS-1$
@@ -231,45 +232,6 @@ public class MassifParser {
 		}
 		if (result == null) {
 			fail(line);
-		}
-		return result;
-	}
-
-	protected Long parseLongValue(String line, String delim) throws IOException {
-		Long result = null;
-		String[] parts = line.split(delim);
-		if (parts.length > 1 && isNumber(parts[1])) {
-			result = Long.parseLong(parts[1]);
-		}
-		else {
-			fail(line);
-		}
-		return result;
-	}
-	
-	protected String parseStrValue(String line, String delim) throws IOException {
-		String result = null;
-		String[] parts = line.split(delim);
-		if (parts.length > 1) {
-			result = parts[1];
-		}
-		else {
-			fail(line);
-		}
-		return result;
-	}
-
-	protected void fail(String line) throws IOException {
-		throw new IOException(NLS.bind(Messages.getString("MassifParser.Parsing_massif_output_failed"), line)); //$NON-NLS-1$
-	}
-
-	private boolean isNumber(String string) {
-		boolean result = true;
-		char[] chars = string.toCharArray();
-		for (int i = 0; i < chars.length; i++) {
-			if (!Character.isDigit(chars[i])) {
-				result = false;
-			}
 		}
 		return result;
 	}

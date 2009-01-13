@@ -1,3 +1,7 @@
+2009-01-13  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifParser: Implements new abstract parser.
+
 2009-01-09  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifSnapshot: New convenience method isDetailed().
