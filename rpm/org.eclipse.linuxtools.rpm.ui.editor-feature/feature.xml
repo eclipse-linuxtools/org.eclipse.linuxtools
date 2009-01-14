@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.rpm.ui.editor"
       label="%featureName"
-      version="0.4.1.qualifier"
+      version="0.4.2.qualifier"
       provider-name="%featureProvider"
       plugin="org.eclipse.linuxtools.rpm.ui.editor">
 
