@@ -16,7 +16,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.eclipse.linuxtools.rpm.ui.editor.RpmMacroProposalsList;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 
 public class RpmMacroProposalsListTest extends TestCase {
 
@@ -62,10 +61,8 @@ public class RpmMacroProposalsListTest extends TestCase {
 	}
 
 	public final void testGetMacroEval() {
-		if (Utils.fileExist("/bin/rpm")) {
-			if (RpmMacroProposalsList.getMacroEval("%_libdir").indexOf("lib") == -1) {
-				fail("getMacroEval faild, eval don't end with 'lib'");
-			}
+		if (!RpmMacroProposalsList.getMacroEval("%_libdir").endsWith("lib")) {
+			fail("getMacroEval faild, eval don't end with 'lib'");
 		}
 	}
 

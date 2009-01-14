@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007, 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import org.eclipse.linuxtools.rpm.ui.editor.tests.scanners.ScannersAllTests;
 
 public class AllTests {
 
@@ -31,12 +33,10 @@ public class AllTests {
 		suite.addTestSuite(LinePositionTests.class);
 		suite.addTestSuite(SourceComparatorTests.class);
 		suite.addTestSuite(RefactoringTests.class);
-		suite.addTestSuite(RpmMacroProposalsListTests.class);
-		suite.addTestSuite(RpmPackageProposalsListTests.class);
+		suite.addTestSuite(RpmMacroProposalsListTest.class);
+		suite.addTestSuite(RpmPackageProposalsListTest.class);
 		suite.addTestSuite(HyperlinkWithMacroTests.class);
-		suite.addTestSuite(SpecfilePackagesScannerTests.class);
-		suite.addTestSuite(SpecfileScannerTests.class);
-		suite.addTestSuite(SpecfileChangelogScannerTests.class);
+		suite.addTest(ScannersAllTests.suite());
 		suite.addTestSuite(SpecfileCompletionProcessorTest.class);
 		// $JUnit-END$
 		return suite;

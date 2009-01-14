@@ -17,7 +17,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 
-abstract class AScannerTest extends FileTestCase {
+public abstract class AScannerTest extends FileTestCase {
 
 	protected RuleBasedScanner rulesBasedScanner;
 
