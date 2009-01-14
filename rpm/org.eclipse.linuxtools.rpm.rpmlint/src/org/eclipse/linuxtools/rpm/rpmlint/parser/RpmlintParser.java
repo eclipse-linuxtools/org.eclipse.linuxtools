@@ -35,7 +35,8 @@ public class RpmlintParser {
 	private static RpmlintParser rpmlintParser;
 
 	// default constructor
-	public RpmlintParser() {
+	private RpmlintParser() {
+		// Empty constructor for making it a singleton.
 	}
 	
 	public static RpmlintParser getInstance() {

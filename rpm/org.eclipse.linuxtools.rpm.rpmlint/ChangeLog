@@ -1,3 +1,11 @@
+2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable project wide warnings.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java 
+	(RpmlintParser): Make it private so instances can't be made.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/preferences/RpmlintPreferencePage.java 
+	(init): Add comment.
+
 2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add back qualifier for trunk.

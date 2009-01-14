@@ -57,7 +57,7 @@ public class RpmlintPreferencePage extends FieldEditorPreferencePage implements
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
-
+		// Do nothing
 	}
 
 }
