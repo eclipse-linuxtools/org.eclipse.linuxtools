@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.rpmstubby"
       label="%featureName"
-      version="0.1.1.qualifier"
+      version="0.1.1.200901141717"
       provider-name="%featureProvider">
 
    <description url="http://www.eclipse.org/linuxtools/">
