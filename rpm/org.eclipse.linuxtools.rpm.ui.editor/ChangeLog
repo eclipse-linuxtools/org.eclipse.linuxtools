@@ -1,5 +1,9 @@
 2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* META-INF/MANIFEST.MF: Add back qualifier for trunk.
+	
+2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* META-INF/MANIFEST.MF: Bump release for Linuxtools 0.1 release.
 
 2009-01-14  Alexander Kurtakov  <akurtakov@gmail.com>
