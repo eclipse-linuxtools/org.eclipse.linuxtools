@@ -1,6 +1,6 @@
 2009-01-14  Andrew Overholt  <overholt@redhat.com>
 
-	* feature.xml: Re-added update site information (sorry).
+	* feature.xml: Re-added update site information (sorry).  Re-add "qualifier" for trunk.
 
 2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
 
