@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/trunk/org.eclipse.linuxtools.rpmstubby,org.eclipse.linuxtools.rpmstubby"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/trunk/org.eclipse.linuxtools.rpmstubby-feature,org.eclipse.linuxtools.rpmstubby-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/tags/R0_1_1/org.eclipse.linuxtools.rpmstubby,org.eclipse.linuxtools.rpmstubby"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/tags/R0_1_1/org.eclipse.linuxtools.rpmstubby-feature,org.eclipse.linuxtools.rpmstubby-feature"/>
 </provider>
 </psf>
