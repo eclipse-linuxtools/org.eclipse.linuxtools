@@ -6,7 +6,7 @@
 
 ### check install requirements ###
 
-#nneds to be run as root
+#needs to be run as root
 if [ `id -u` -ne 0 ]; then
   echo Error: script must be run as the root user
   exit 1
@@ -29,13 +29,6 @@ if [ $RET -ne 0 ]; then
  exit 1
 fi
 
-#need these packages to compile opxml 
-rpm -q oprofile-devel binutils binutils-devel gcc-c++ >/dev/null 
-if [ $? -ne 0 ]; then
- echo Error: packages needed to build opxml not installed, run '`yum install oprofile-devel binutils-devel gcc-c++`' 
- exit 1
-fi
-
 #need consolehelper to run opcontrol as root from within eclipse
 test -x /usr/bin/consolehelper 
 if [ $? -ne 0 ]; then
@@ -54,7 +47,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-#make opxml executable
+#check for opxml executable, make sure it is u+x
 ALLOPXML=`find ../../../.. -name opxml -type f | wc -l`
 EXECOPXML=`find ../../../.. -name opxml -type f -perm -u+x | wc -l`
 if [ $ALLOPXML -eq 0 ]; then
@@ -65,12 +58,13 @@ elif [ $EXECOPXML -ne $ALLOPXML ]; then
   find ../../../.. -name opxml -type f -exec chmod u+x '{}' \;
 fi
 
-
+##this will have to be loaded every time the user restarts their
+##computer anyway, should load it now?
 #load the oprofile module 
-test /dev/oprofile/cpu_type
-if [ $? -ne 0 ]; then
-  opcontrol --init
-fi
+#test /dev/oprofile/cpu_type
+#if [ $? -ne 0 ]; then
+#  opcontrol --init
+#fi
 
 test -f /etc/security/console.apps/opcontrol || install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
 test -f /etc/pam.d/opcontrol || install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol
