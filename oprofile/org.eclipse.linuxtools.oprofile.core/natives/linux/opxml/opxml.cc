@@ -4,7 +4,7 @@
    Written by Keith Seitz <keiths@redhat.com>
    Edited by Kent Sebastian <ksebasti@redhat.com>
 
-   Copyright 2004,2008 Red Hat, Inc.
+   Copyright 2004, 2008, 2009 Red Hat, Inc.
 
    This program is open source software licensed under the Eclipse
    Public License ver. 1.
