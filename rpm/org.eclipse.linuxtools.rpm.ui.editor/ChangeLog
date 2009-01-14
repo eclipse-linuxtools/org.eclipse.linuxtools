@@ -1,3 +1,9 @@
+2009-01-14  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDocumentProvider.java 
+	(getDocument): Create new partitioner and connect it only if we are going to set it to the document.
+	Should fix #260868.
+
 2009-01-12  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* .settings/org.moreunit.prefs: New file. Set tests projects as the tests provider for moreunit users.
