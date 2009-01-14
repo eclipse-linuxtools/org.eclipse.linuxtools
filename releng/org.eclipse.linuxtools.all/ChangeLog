@@ -1,7 +1,3 @@
-2009-01-14  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.xml: Add "qualifier" for trunk.
-
 2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* feature.xml: Add rpmstubby feature.
