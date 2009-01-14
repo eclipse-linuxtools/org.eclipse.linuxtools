@@ -1,3 +1,7 @@
+2009-01-14  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Re-add update site information (sorry).
+
 2009-01-14  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Removed update site information.
