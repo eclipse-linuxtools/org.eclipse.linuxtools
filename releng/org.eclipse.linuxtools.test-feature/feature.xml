@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.test"
       label="%featureName"
-      version="0.1.0.qualifier"
+      version="0.0.1"
       provider-name="%provider">
 
    <description>
@@ -52,24 +52,6 @@
 
    <plugin
          id="org.eclipse.linuxtools.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.oprofile.core.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.oprofile.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-         
-   <plugin
-         id="org.eclipse.linuxtools.oprofile.ui.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
