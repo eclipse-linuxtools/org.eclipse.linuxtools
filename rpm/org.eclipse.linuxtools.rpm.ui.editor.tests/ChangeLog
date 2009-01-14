@@ -1,3 +1,20 @@
+2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
+	Mimic plugin packages for easier navigation.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileChangelogScannerTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfilePackagesScannerTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileScannerTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/ScannersAllTests.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfileChangelogScannerTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfilePackagesScannerTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfileScannerTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java 
+	(suite): Add ScannersAllTests.suite not every scaner test separately.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AScannerTest.java: Make it public.
+
 2008-12-04  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Add test.xml to bin.includes.

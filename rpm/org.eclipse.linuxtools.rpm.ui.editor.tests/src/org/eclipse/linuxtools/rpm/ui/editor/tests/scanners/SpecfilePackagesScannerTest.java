@@ -45,7 +45,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	 */
 	@Override
 	protected void setUp() throws CoreException {
-		Activator.getDefault().getPreferenceStore().setValue(
+		Activator.getDefault().getPluginPreferences().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(
@@ -66,7 +66,8 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	 */
 	@Override
 	protected String getContents() {
-		return "Requires: test_underscore\n%{name}\n# Requires:\n";
+		return "Requires: test_underscore" + "\n" + "%{name}" + "\n"
+				+ "# Requires:" + "\n";
 	}
 
 	/*
