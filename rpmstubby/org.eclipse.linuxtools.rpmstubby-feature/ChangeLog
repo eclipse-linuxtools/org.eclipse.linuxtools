@@ -1,3 +1,7 @@
+2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.xml: Bump release for Linuxtools 0.1 release.
+
 2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* feature.xml: Remove feature from the feature id.
