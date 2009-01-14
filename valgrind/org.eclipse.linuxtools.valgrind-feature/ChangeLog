@@ -1,3 +1,7 @@
+2009-01-14  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Removed update site information.
+
 2009-01-09  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Added all used BIRT plugins as dependencies.
