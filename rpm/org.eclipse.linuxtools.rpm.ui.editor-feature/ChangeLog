@@ -1,3 +1,7 @@
+2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.xml: Remove update site.
+
 2009-01-09  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* feature.properties: Add 2009 to copyright text.
