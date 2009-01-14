@@ -1,3 +1,7 @@
+2009-01-14  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Hard-code qualifier for 0.1.
+
 2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* feature.xml: Add rpmstubby feature.

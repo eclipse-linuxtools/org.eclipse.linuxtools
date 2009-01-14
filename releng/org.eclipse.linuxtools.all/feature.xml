@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.all"
       label="%featureName"
-      version="0.1.0"
+      version="0.1.0.200901140910"
       provider-name="%provider">
 
    <description>
@@ -36,7 +36,7 @@
    <includes
          id="org.eclipse.linuxtools.rpm.ui.editor"
          version="0.0.0"/>
-         
+
    <includes
          id="org.eclipse.linuxtools.rpmstubby"
          version="0.0.0"/>
