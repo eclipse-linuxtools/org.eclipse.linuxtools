@@ -1,3 +1,7 @@
+2009-01-14  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add update site information.  Add qualifier back to trunk.
+
 2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* feature.xml: Bump release for Linuxtools 0.1 release.
