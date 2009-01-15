@@ -60,9 +60,9 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 			if (session.isDefaultSession()) {
 				//the following code was originially written by Keith Seitz
 				InputDialog dialog = new InputDialog(OprofileUiPlugin.getActiveWorkbenchShell(),
-						OprofileUiMessages.getString("savedialog.title"),   // $NON-NLS-1$
-						OprofileUiMessages.getString("savedialog.message"),   // $NON-NLS-1$
-						OprofileUiMessages.getString("savedialog.initial"),  // $NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.title"),    //$NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.message"),    //$NON-NLS-1$
+						OprofileUiMessages.getString("savedialog.initial"),   //$NON-NLS-1$
 						new SaveSessionValidator());
 				
 				int result = dialog.open();
@@ -71,7 +71,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 						OprofileCorePlugin.getDefault().getOpcontrolProvider().saveSession(dialog.getValue());
 						OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 					} catch (OpcontrolException oe) {
-						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe);
+						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 					}
 				}
 			}
@@ -131,7 +131,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 			}
 				
 			// Cannot contain whitespace
-			if (newText.contains(" ") || newText.contains("\t")) {
+			if (newText.contains(" ") || newText.contains("\t")) { //$NON-NLS-1$ //$NON-NLS-2$
 				String format = OprofileUiMessages.getString("savedialog.validator.containsWhitespace"); //$NON-NLS-1$
 				Object[] fmtArgs = new Object[] { newText };
 				return MessageFormat.format(format, fmtArgs);

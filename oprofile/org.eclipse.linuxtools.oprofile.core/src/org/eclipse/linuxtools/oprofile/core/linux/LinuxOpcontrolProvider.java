@@ -31,7 +31,7 @@ import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
  */
 public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	// Location of opcontrol security wrapper
-	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/opcontrol";
+	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/opcontrol"; //$NON-NLS-1$
 	private final String OPCONTROL_PROGRAM;
 
 	// Initialize the Oprofile kernel module and oprofilefs
@@ -51,11 +51,11 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_SETUP_EVENT_SEPARATOR = ":"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_TRUE = "1"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_EVENT_FALSE = "0"; //$NON-NLS-1$
-	private static final String _OPD_SETUP_EVENT_DEFAULT = "default";
+	private static final String _OPD_SETUP_EVENT_DEFAULT = "default"; //$NON-NLS-1$
 
 	private static final String _OPD_SETUP_IMAGE = "--image="; //$NON-NLS-1$
 
-	private static final String _OPD_CALLGRAPH_DEPTH = "--callgraph=";
+	private static final String _OPD_CALLGRAPH_DEPTH = "--callgraph="; //$NON-NLS-1$
 
 	// Kernel image file options
 	private static final String _OPD_KERNEL_NONE = "--no-vmlinux"; //$NON-NLS-1$
@@ -83,7 +83,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_STOP_COLLECTION = "--stop"; //$NON-NLS-1$
 	
 	// Stop data collection and stop daemon
-	private static final String _OPD_SHUTDOWN = "--shutdown"; //$NON-NLS_1$
+	private static final String _OPD_SHUTDOWN = "--shutdown"; //$NON-NLS-1$
 	
 	// Clear out data from current session
 	private static final String _OPD_RESET = "--reset"; //$NON-NLS-1$
@@ -92,11 +92,11 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_SAVE_SESSION = "--save="; //$NON-NLS-1$
 	
 	// Unload the oprofile kernel module and oprofilefs
-	private static final String _OPD_DEINIT_MODULE = "--deinit";
+	private static final String _OPD_DEINIT_MODULE = "--deinit"; //$NON-NLS-1$
 	
 	// Logging verbosity. Specified with setupDaemon.
 	//--verbosity=all generates WAY too much stuff in the log
-	private String _verbosity = "";
+	private String _verbosity = ""; //$NON-NLS-1$
 	
 	
 	public LinuxOpcontrolProvider() throws OpcontrolException {
@@ -227,7 +227,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 				p = null;
 			}
 			
-			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe));
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe)); //$NON-NLS-1$
 		}
 		
 		if (p != null) {
@@ -253,7 +253,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 				return FileLocator.toFileURL(url).getPath();
 			} catch (IOException ignore) { }
 		} else {
-			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null));
+			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolProvider", null)); //$NON-NLS-1$
 		}
 
 		return null;
@@ -298,7 +298,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		args.add(separate);
 		
 		// Add kernel image
-		if (options.getKernelImageFile() == null || options.getKernelImageFile().equals("")) {
+		if (options.getKernelImageFile() == null || options.getKernelImageFile().length() == 0) {
 			args.add(_OPD_KERNEL_NONE);
 		} else {
 			args.add(_OPD_KERNEL_FILE + options.getKernelImageFile());

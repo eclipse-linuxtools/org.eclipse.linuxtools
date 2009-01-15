@@ -20,9 +20,9 @@ import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 
 public class LinuxOpxmlProvider64 extends LinuxOpxmlProvider {
-	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core.linux.x86_64";
-	private static final String OPXML_BINARY_NAME = "opxml";
-	private static final String OPXML_BINARY_PATH = "$os$";
+	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core.linux.x86_64"; //$NON-NLS-1$
+	private static final String OPXML_BINARY_NAME = "opxml"; //$NON-NLS-1$
+	private static final String OPXML_BINARY_PATH = "$os$"; //$NON-NLS-1$
 
 	public LinuxOpxmlProvider64() throws OpxmlException {
 		super();

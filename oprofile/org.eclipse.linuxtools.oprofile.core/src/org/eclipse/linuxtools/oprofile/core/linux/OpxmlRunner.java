@@ -59,12 +59,13 @@ public class OpxmlRunner {
 		XMLReader reader = null;
 		_handler = OprofileSAXHandler.getInstance(callData);
 		
-		try {
-			// Create XMLReader
-	        SAXParserFactory factory = SAXParserFactory.newInstance();
-	        reader = factory.newSAXParser().getXMLReader();
+		// Create XMLReader
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        try {
+			reader = factory.newSAXParser().getXMLReader();
 		} catch (Exception e) {
-			System.out.println ("Exception creating SAXParser: " + e.getMessage ());
+			e.printStackTrace();
+			return false;
 		}
 		
 		// Set content/error handlers
@@ -88,15 +89,13 @@ public class OpxmlRunner {
 			
 			return true;
 		} catch (SAXException e) {
-			System.out.println("SAXException: " + e.getMessage());
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			System.out.println("InterruptedException: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("IOException: " + e.getMessage());
+//			System.out.println("IOException: " + e.getMessage());
 			e.printStackTrace();
-			OprofileCorePlugin.showErrorDialog("opxmlIOException", null);
+			OprofileCorePlugin.showErrorDialog("opxmlIOException", null); //$NON-NLS-1$
 		}
 		
 		return false;

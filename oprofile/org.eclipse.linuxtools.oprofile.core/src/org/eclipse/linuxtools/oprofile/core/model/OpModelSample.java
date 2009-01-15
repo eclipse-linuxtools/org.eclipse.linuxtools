@@ -42,7 +42,7 @@ public class OpModelSample {
 
 	@Override
 	public String toString() {
-		String s = "Line #: " + _line + ", Count: " + _count + "\n";
+		String s = "Line #: " + _line + ", Count: " + _count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return s;
 	}
 }

@@ -28,7 +28,7 @@ public class UiModelSession implements IUiModelElement {
 	private UiModelDependent _dependent;	//dependent images of the OpModelImage
 
 	//OProfile's default session name
-	private static final String DEFAULT_SESSION_NAME = "current";
+	private static final String DEFAULT_SESSION_NAME = "current"; //$NON-NLS-1$
 	
 	public UiModelSession(IUiModelElement parent, OpModelSession session) {
 		_parent = parent;

@@ -22,11 +22,11 @@ public class OpModelSymbol {
 	private String _file;
 	private int _count;
 	private OpModelSample[] _samples;
-	private String _printTabs = ""; 	//for nice output
+	private String _printTabs = ""; 	//for nice output //$NON-NLS-1$
 	
 	public OpModelSymbol() {
-		_name = "";
-		_file = "";
+		_name = ""; //$NON-NLS-1$
+		_file = ""; //$NON-NLS-1$
 		_count = 0;
 		_samples = null;
 	}
@@ -66,16 +66,16 @@ public class OpModelSymbol {
 	public String toString(String tabs) {
 		_printTabs = tabs;
 		String s = toString();
-		_printTabs = "";
+		_printTabs = ""; //$NON-NLS-1$
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + ", File: " + _file + ", Count: " + _count + "\n";
+		String s = _name + ", File: " + _file + ", Count: " + _count + "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (_samples != null) {
 			for (int i = 0; i < _samples.length; i++) {
-				s += _printTabs + "Sample: ";
+				s += _printTabs + "Sample: "; //$NON-NLS-1$
 				s += _samples[i].toString();
 			}
 		}

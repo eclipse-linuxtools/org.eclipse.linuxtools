@@ -29,7 +29,7 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	//shared cache instance for configuration
 	private static EventConfigCache _eventConfigCache = null;
 
-	private static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.launch";
+	private static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.launch"; //$NON-NLS-1$
 
 	// The launch type ID for profiling
 	public static final String ID_LAUNCH_PROFILE = ID_PLUGIN + ".oprofile"; //$NON-NLS-1$
@@ -52,9 +52,9 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 	public static final String ATTR_COUNTER_UNIT_MASK(int nr) { return  ATTR_COUNTER(nr) + ".UNIT_MASK"; } 				//$NON-NLS-1$
 	
 	
-	public static final String ICON_PATH = "icons/";
-	public static final String ICON_EVENT_TAB = ICON_PATH + "event_tab.gif";
-	public static final String ICON_GLOBAL_TAB = ICON_PATH + "global_tab.gif";
+	public static final String ICON_PATH = "icons/"; //$NON-NLS-1$
+	public static final String ICON_EVENT_TAB = ICON_PATH + "event_tab.gif"; //$NON-NLS-1$
+	public static final String ICON_GLOBAL_TAB = ICON_PATH + "global_tab.gif"; //$NON-NLS-1$
 	
 	
 	/**

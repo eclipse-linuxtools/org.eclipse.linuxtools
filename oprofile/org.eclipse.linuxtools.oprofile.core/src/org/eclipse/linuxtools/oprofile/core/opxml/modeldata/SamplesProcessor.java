@@ -24,10 +24,10 @@ import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
  */
 public class SamplesProcessor extends XMLProcessor {
 	//XML tags parsed by this processor
-	private static final String SAMPLE_TAG = "sample";
-	private static final String COUNT_TAG = "count";
-	private static final String LINE_TAG = "line"; 
-	private static final String SYMBOL_TAG = "symbol"; 
+	private static final String SAMPLE_TAG = "sample"; //$NON-NLS-1$
+	private static final String COUNT_TAG = "count"; //$NON-NLS-1$
+	private static final String LINE_TAG = "line";  //$NON-NLS-1$
+	private static final String SYMBOL_TAG = "symbol";  //$NON-NLS-1$
 	
 	//the current sample being constructed
 	private OpModelSample _sample;

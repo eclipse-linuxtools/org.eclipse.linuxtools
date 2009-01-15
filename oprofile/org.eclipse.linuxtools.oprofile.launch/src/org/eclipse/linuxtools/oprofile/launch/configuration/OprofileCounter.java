@@ -141,7 +141,7 @@ public class OprofileCounter
 			_daemonEvent.setEvent(_eventFromString(str));
 
 			if (_daemonEvent.getEvent() == null) {
-				throw new Exception("No event named " + str);
+				return;
 			}
 			
 			
@@ -152,10 +152,8 @@ public class OprofileCounter
 			_daemonEvent.setProfileKernel(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(_number), false));
 			_daemonEvent.setProfileUser(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(_number), false));
 			
-			// NOTE: -1 means "query oprofile library"
-			_daemonEvent.setResetCount(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(_number), -1));
+			_daemonEvent.setResetCount(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(_number), OprofileDaemonEvent.COUNT_UNINITIALIZED));
 		} catch (CoreException ce) {
-		} catch (Exception e) {
 			
 		}
 	}

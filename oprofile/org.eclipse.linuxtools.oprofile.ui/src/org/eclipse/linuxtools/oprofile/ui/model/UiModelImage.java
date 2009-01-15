@@ -15,6 +15,7 @@ import java.text.NumberFormat;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -64,12 +65,12 @@ public class UiModelImage implements IUiModelElement {
 		
 		String percentage;
 		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
 		} else {
 			percentage = nf.format(countPercentage);
 		}
 		
-		return percentage + " in " + _image.getName();
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/** IUiModelElement functions **/

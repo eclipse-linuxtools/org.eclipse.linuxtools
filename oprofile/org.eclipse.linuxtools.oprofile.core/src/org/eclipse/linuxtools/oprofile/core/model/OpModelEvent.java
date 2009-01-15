@@ -18,7 +18,7 @@ package org.eclipse.linuxtools.oprofile.core.model;
 public class OpModelEvent {
 	private String _eventName;
 	private OpModelSession[] _sessions;
-	private String _printTabs = "";		//for nice output 
+	private String _printTabs = "";		//for nice output  //$NON-NLS-1$
 	
 	public OpModelEvent(String name) {
 		_eventName = name;
@@ -52,17 +52,17 @@ public class OpModelEvent {
 	public String toString(String tabs) {
 		_printTabs = tabs;
 		String s = toString();
-		_printTabs = "";
+		_printTabs = ""; //$NON-NLS-1$
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _eventName + "\n";
+		String s = _eventName + "\n"; //$NON-NLS-1$
 		if (_sessions != null) {
 			for (int i = 0; i < _sessions.length; i++) {
-				s += _printTabs + "Session: ";
-				s += _sessions[i].toString(_printTabs + "\t");
+				s += _printTabs + "Session: "; //$NON-NLS-1$
+				s += _sessions[i].toString(_printTabs + "\t"); //$NON-NLS-1$
 			}
 		}
 		return s;

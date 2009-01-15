@@ -32,15 +32,15 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	private OprofileView _oprofileview = null;
 	
 	public static final String ID_PLUGIN = "org.eclipse.linuxtools.oprofile.ui"; //$NON-NLS-1$
-	public static final String ID_OPROFILE_VIEW = ID_PLUGIN + ".OProfileView";
+	public static final String ID_OPROFILE_VIEW = ID_PLUGIN + ".OProfileView"; //$NON-NLS-1$
 
-	private static final String ICON_PATH = "icons/";
-	public static final String SESSION_ICON = ICON_PATH + "session.gif";
-	public static final String EVENT_ICON = ICON_PATH + "event.gif";
-	public static final String IMAGE_ICON = ICON_PATH + "image.gif";
-	public static final String DEPENDENT_ICON = ICON_PATH + "dependent.gif";
-	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif";
-	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif";
+	private static final String ICON_PATH = "icons/"; //$NON-NLS-1$
+	public static final String SESSION_ICON = ICON_PATH + "session.gif"; //$NON-NLS-1$
+	public static final String EVENT_ICON = ICON_PATH + "event.gif"; //$NON-NLS-1$
+	public static final String IMAGE_ICON = ICON_PATH + "image.gif"; //$NON-NLS-1$
+	public static final String DEPENDENT_ICON = ICON_PATH + "dependent.gif"; //$NON-NLS-1$
+	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif"; //$NON-NLS-1$
+	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif"; //$NON-NLS-1$
 	
 	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
 	

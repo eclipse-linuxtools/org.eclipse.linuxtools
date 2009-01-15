@@ -54,9 +54,9 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		String imagePath = workspacePath
 				+ Path.SEPARATOR
-				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "")
+				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "") //$NON-NLS-1$
 				+ Path.SEPARATOR
-				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, "");
+				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, ""); //$NON-NLS-1$
 		
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
 		options.loadConfiguration(config);
@@ -96,7 +96,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// it to, no matter to start the daemon before the binary itself is run
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
 		} catch (OpcontrolException oe) {
-			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe);
+			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 			return;
 		}
 
@@ -109,7 +109,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			IPath exePath = verifyProgramPath( config );
 			File wd = getWorkingDirectory( config );
 			if ( wd == null ) {
-				wd = new File( System.getProperty( "user.home", "." ) );
+				wd = new File( System.getProperty( "user.home", "." ) ); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			String arguments[] = getProgramArgumentsArray( config );
 			ArrayList<String> command = new ArrayList<String>( 1 + arguments.length );
@@ -214,7 +214,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 					}
 				}
 			} catch (OpcontrolException oe) {
-				OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe);
+				OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 			}
 		}
 

@@ -107,7 +107,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			
 			counterTabs[i] = new TabItem(tabFolder, SWT.NONE);
 			counterTabs[i].setControl(c);
-			counterTabs[i].setText("Ctr " + String.valueOf(i));		//TODO: externalize this
+			counterTabs[i].setText(OprofileLaunchMessages.getString("tab.event.counterTab.counterText") + String.valueOf(i)); //$NON-NLS-1$
 		}
 	}
 
@@ -364,7 +364,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			
 			//label for textbox
 			_eventDescLabel = new Label(parent, SWT.NONE);
-			_eventDescLabel.setText(OprofileLaunchMessages.getString("tab.event.eventDescription.label.text"));
+			_eventDescLabel.setText(OprofileLaunchMessages.getString("tab.event.eventDescription.label.text")); //$NON-NLS-1$
 			_eventDescLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
 			//textbox

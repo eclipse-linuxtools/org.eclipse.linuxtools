@@ -29,14 +29,14 @@ public class ModelDataProcessor extends XMLProcessor {
 	}
 
 	//XML tags parsed by this processor
-	private static final String IMAGE_TAG = "image";
-	private static final String SYMBOLS_TAG = "symbols";
-	private static final String DEPENDENT_TAG = "dependent";
+	private static final String IMAGE_TAG = "image"; //$NON-NLS-1$
+	private static final String SYMBOLS_TAG = "symbols"; //$NON-NLS-1$
+	private static final String DEPENDENT_TAG = "dependent"; //$NON-NLS-1$
 	
 	//attribute tags
-	private static final String ATTR_IMAGENAME = "name";
-	private static final String ATTR_COUNT = "count";
-	private static final String ATTR_DEPCOUNT = "count";
+	private static final String ATTR_IMAGENAME = "name"; //$NON-NLS-1$
+	private static final String ATTR_COUNT = "count"; //$NON-NLS-1$
+	private static final String ATTR_DEPCOUNT = "count"; //$NON-NLS-1$
 	
 	//the current image being constructed
 	private OpModelImage _image;

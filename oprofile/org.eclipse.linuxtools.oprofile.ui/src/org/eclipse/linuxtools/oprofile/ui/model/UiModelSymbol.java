@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -66,7 +67,7 @@ public class UiModelSymbol implements IUiModelElement {
 		
 		String percentage;
 		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
 		} else {
 			percentage = nf.format(countPercentage);
 		}
@@ -75,7 +76,7 @@ public class UiModelSymbol implements IUiModelElement {
 		String fileName = (new File(_symbol.getFile())).getName();
 //		String fileName = _symbol.getFile();
 
-		return percentage + " in " + _symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]");
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 	
 	public String getFileName() {

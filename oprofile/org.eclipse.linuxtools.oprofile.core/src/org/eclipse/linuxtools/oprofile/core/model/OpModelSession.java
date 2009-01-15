@@ -19,12 +19,12 @@ import org.eclipse.linuxtools.oprofile.core.Oprofile;
  * of the profiled binary.
  */
 public class OpModelSession {
-	private static final String DEFAULT_SESSION_STRING = "current";
+	private static final String DEFAULT_SESSION_STRING = "current"; //$NON-NLS-1$
 
 	private OpModelEvent _parentEvent;
 	private OpModelImage _image;
 	private String _name;
-	private String _printTabs = "";		//for nice output
+	private String _printTabs = "";		//for nice output //$NON-NLS-1$
 
 	public OpModelSession(OpModelEvent event, String name) {
 		_parentEvent = event;
@@ -59,16 +59,16 @@ public class OpModelSession {
 	public String toString(String tabs) {
 		_printTabs = tabs;
 		String s = toString();
-		_printTabs = "";
+		_printTabs = ""; //$NON-NLS-1$
 		return s;
 	}
 
 	@Override
 	public String toString() {
-		String s = _name + "\n";
+		String s = _name + "\n"; //$NON-NLS-1$
 		if (_image != null) {
-			s += _printTabs + "Image: ";
-			s += _image.toString(_printTabs + "\t");
+			s += _printTabs + "Image: "; //$NON-NLS-1$
+			s += _image.toString(_printTabs + "\t"); //$NON-NLS-1$
 		}
 		return s;
 		

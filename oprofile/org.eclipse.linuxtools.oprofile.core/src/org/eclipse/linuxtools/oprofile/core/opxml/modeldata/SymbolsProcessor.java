@@ -22,14 +22,14 @@ import org.xml.sax.Attributes;
  */
 public class SymbolsProcessor extends XMLProcessor {
 	//XML tags parsed by this processor
-	private static final String SYMBOLS_TAG = "symbols";
-	private static final String SYMBOL_TAG = "symbol"; 
-	private static final String SAMPLE_TAG = "sample";
+	private static final String SYMBOLS_TAG = "symbols"; //$NON-NLS-1$
+	private static final String SYMBOL_TAG = "symbol";  //$NON-NLS-1$
+	private static final String SAMPLE_TAG = "sample"; //$NON-NLS-1$
 
 	//attribute tags
-	private static final String ATTR_NAME = "name";
-	private static final String ATTR_FILE = "file";
-	private static final String ATTR_COUNT = "count";	
+	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
+	private static final String ATTR_FILE = "file"; //$NON-NLS-1$
+	private static final String ATTR_COUNT = "count";	 //$NON-NLS-1$
 	
 	//the current symbol being constructed
 	private OpModelSymbol _symbol;

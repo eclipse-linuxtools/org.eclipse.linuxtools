@@ -59,11 +59,11 @@ public class OpModelRoot {
 	
 	@Override
 	public String toString() {
-		String s = "";
+		String s = ""; //$NON-NLS-1$
 		if (_events != null) {
 			for (int i = 0; i < _events.length; i++) {
-				s += "Event: ";
-				s += _events[i].toString("\t");
+				s += "Event: "; //$NON-NLS-1$
+				s += _events[i].toString("\t"); //$NON-NLS-1$
 			}
 		}
 		return s;

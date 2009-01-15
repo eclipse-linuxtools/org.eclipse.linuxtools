@@ -98,7 +98,7 @@ public class OprofileView extends ViewPart {
 
 		IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2);
+				monitor.beginTask(OprofileUiMessages.getString("view.dialog.parsing.text"), 2); //$NON-NLS-1$
 
 				OpModelRoot dataModelRoot = OpModelRoot.getDefault();
 				dataModelRoot.refreshModel();

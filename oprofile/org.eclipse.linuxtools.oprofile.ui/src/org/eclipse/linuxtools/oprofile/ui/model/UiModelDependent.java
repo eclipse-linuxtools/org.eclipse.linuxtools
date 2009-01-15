@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -52,12 +53,12 @@ public class UiModelDependent implements IUiModelElement {
 
 		String percentage;
 		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE);
+			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
 		} else {
 			percentage = nf.format(countPercentage);
 		}
 
-		return percentage + " in dependent images";
+		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + OprofileUiMessages.getString("uimodel.dependent.dependent.images"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 	}
 
 	/** IUiModelElement functions **/

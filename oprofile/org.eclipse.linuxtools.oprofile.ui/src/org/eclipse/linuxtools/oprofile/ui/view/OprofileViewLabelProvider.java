@@ -23,12 +23,12 @@ import org.eclipse.swt.graphics.Image;
 public class OprofileViewLabelProvider implements ILabelProvider {
 
 	public Image getImage(Object element) {
-		Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewLabelProvider");
+		Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewLabelProvider"); //$NON-NLS-1$
 		return ((IUiModelElement) element).getLabelImage();
 	}
 
 	public String getText(Object element) {
-		Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewLabelProvider");
+		Assert.isLegal(element instanceof IUiModelElement, "in OprofileViewLabelProvider"); //$NON-NLS-1$
 		return ((IUiModelElement) element).getLabelText();
 	}
 

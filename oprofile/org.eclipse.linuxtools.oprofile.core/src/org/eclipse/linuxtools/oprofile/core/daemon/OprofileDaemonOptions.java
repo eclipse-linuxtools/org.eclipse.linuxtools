@@ -52,10 +52,10 @@ public class OprofileDaemonOptions {
 	public OprofileDaemonOptions() {
 		//defaults
 //		_kernelImageFile = Oprofile.getKernelImageFile();
-		_kernelImageFile = "";
+		_kernelImageFile = ""; //$NON-NLS-1$
 		_verboseLogging = false;
 		_separateProfiles = SEPARATE_NONE;	
-		_binaryImage = "";
+		_binaryImage = ""; //$NON-NLS-1$
 		_callgraphDepth = 0;
 	}
 	

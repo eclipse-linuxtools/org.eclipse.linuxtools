@@ -13,5 +13,9 @@ Export-Package: org.eclipse.linuxtools.oprofile.core,
  org.eclipse.linuxtools.oprofile.core.daemon,
  org.eclipse.linuxtools.oprofile.core.linux,
  org.eclipse.linuxtools.oprofile.core.model,
- org.eclipse.linuxtools.oprofile.core.opxml
+ org.eclipse.linuxtools.oprofile.core.opxml,
+ org.eclipse.linuxtools.oprofile.core.opxml.checkevent,
+ org.eclipse.linuxtools.oprofile.core.opxml.info,
+ org.eclipse.linuxtools.oprofile.core.opxml.modeldata,
+ org.eclipse.linuxtools.oprofile.core.opxml.sessions
 Bundle-Localization: plugin

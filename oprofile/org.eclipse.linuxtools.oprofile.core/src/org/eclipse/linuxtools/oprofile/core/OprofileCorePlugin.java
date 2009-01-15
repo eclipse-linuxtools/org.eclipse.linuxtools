@@ -30,8 +30,8 @@ import org.osgi.framework.BundleContext;
  * The main plugin class to be used in the desktop.
  */
 public class OprofileCorePlugin extends Plugin {
-	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core";
-	private static final String OPXMLPROVIDER_XPT_NAME = "OpxmlProvider";
+	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core"; //$NON-NLS-1$
+	private static final String OPXMLPROVIDER_XPT_NAME = "OpxmlProvider"; //$NON-NLS-1$
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
@@ -103,7 +103,7 @@ public class OprofileCorePlugin extends Plugin {
 		
 		// If there was a problem finding opxml, throw an exception
 		if (_opxmlProvider == null) {
-			throw new OpxmlException(createErrorStatus("opxmlProvider", except));
+			throw new OpxmlException(createErrorStatus("opxmlProvider", except)); //$NON-NLS-1$
 		} else {
 			return _opxmlProvider;
 		}
@@ -146,7 +146,7 @@ public class OprofileCorePlugin extends Plugin {
 	}
 	
 	public static IStatus createErrorStatus(String errorClassString, Exception e) {
-		String statusMessage = OprofileProperties.getString(errorClassString + ".error.statusMessage");
+		String statusMessage = OprofileProperties.getString(errorClassString + ".error.statusMessage"); //$NON-NLS-1$
 
 		if (e == null) {
 			return new Status(IStatus.ERROR, getId(), IStatus.OK, statusMessage, null);
@@ -157,8 +157,8 @@ public class OprofileCorePlugin extends Plugin {
 	
 	public static void showErrorDialog(String errorClassString, CoreException ex) {
 		final IStatus status;
-		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title");
-		final String errorMessage = OprofileProperties.getString(errorClassString + ".error.dialog.message");
+		final String dialogTitle = OprofileProperties.getString(errorClassString + ".error.dialog.title"); //$NON-NLS-1$
+		final String errorMessage = OprofileProperties.getString(errorClassString + ".error.dialog.message"); //$NON-NLS-1$
 		
 		if (ex == null) {
 			status = createErrorStatus(errorClassString, null);

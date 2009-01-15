@@ -21,9 +21,9 @@ import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 
 
 public class LinuxOpxmlProvider32 extends LinuxOpxmlProvider {
-	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core.linux.x86";
-	private static final String OPXML_BINARY_NAME = "opxml";
-	private static final String OPXML_BINARY_PATH = "$os$";
+	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core.linux.x86"; //$NON-NLS-1$
+	private static final String OPXML_BINARY_NAME = "opxml"; //$NON-NLS-1$
+	private static final String OPXML_BINARY_PATH = "$os$"; //$NON-NLS-1$
 
 	public LinuxOpxmlProvider32() throws OpxmlException {
 		super();

@@ -43,7 +43,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OprofileViewLogReaderAction extends Action {
 	public OprofileViewLogReaderAction() {
-		super(OprofileUiMessages.getString("view.actions.logreader.label"));
+		super(OprofileUiMessages.getString("view.actions.logreader.label")); //$NON-NLS-1$
 	}
 	
 	@Override
@@ -85,15 +85,15 @@ class LogReader implements Runnable, IRunnableWithProgress {
 				BufferedReader reader = new BufferedReader(new FileReader(logFile));
 				String line;
 				while ((line = reader.readLine()) != null) {
-					_contents += line + "\n";
+					_contents += line + "\n"; //$NON-NLS-1$
 				}
 			} catch (FileNotFoundException e) {
 				// The file doesn't exist or was erased. Try again next time.
-				_contents = "Log file empty or does not exist.";
+				_contents = OprofileUiMessages.getString("oprofiled.logreader.error.fileNotFound"); //$NON-NLS-1$
 			} catch (IOException e) {
 				// Error reading log. Try again next time.
 				_lastModified = 0;
-				_contents = "Error reading log file.";
+				_contents = OprofileUiMessages.getString("oprofiled.logreader.error.io"); //$NON-NLS-1$
 			}
 		}
 	}
@@ -120,7 +120,7 @@ class OprofiledLogDialog extends MessageDialog {
 	final int GRID_HEIGHT = 400;
 	
 	public OprofiledLogDialog (Shell parentShell, String dialogMessage) {
-		super(parentShell, "OProfiled Log", null, null, MessageDialog.NONE, new String[] { IDialogConstants.OK_LABEL }, 0);
+		super(parentShell, OprofileUiMessages.getString("oprofiled.logreader.dialog.title"), null, null, MessageDialog.NONE, new String[] { IDialogConstants.OK_LABEL }, 0); //$NON-NLS-1$
 		textContent = dialogMessage;
 	}
 	

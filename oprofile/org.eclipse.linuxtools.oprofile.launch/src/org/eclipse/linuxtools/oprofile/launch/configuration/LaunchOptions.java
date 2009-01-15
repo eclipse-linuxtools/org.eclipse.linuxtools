@@ -17,7 +17,6 @@ import java.io.File;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 
@@ -67,7 +66,7 @@ public class LaunchOptions {
 	 */
 	public void loadConfiguration(ILaunchConfiguration config) {
 		try {
-			_options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, Oprofile.getKernelImageFile()));
+			_options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, "")); //$NON-NLS-1$
 			_options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
 		} catch (CoreException e) {
 		}

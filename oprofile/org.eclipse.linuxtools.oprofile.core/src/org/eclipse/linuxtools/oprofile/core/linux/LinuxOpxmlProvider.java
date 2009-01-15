@@ -36,7 +36,7 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 		_pathToOpxml = _getOpxmlPath();
 		
 		if (_pathToOpxml == null) {
-			throw new OpxmlException(OprofileCorePlugin.createErrorStatus("opxmlProvider", null));
+			throw new OpxmlException(OprofileCorePlugin.createErrorStatus("opxmlProvider", null)); //$NON-NLS-1$
 		}
 	}
 	

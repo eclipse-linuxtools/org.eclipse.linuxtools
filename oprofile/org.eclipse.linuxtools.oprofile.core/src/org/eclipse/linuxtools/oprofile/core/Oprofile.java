@@ -12,9 +12,7 @@
 
 package org.eclipse.linuxtools.oprofile.core;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -60,8 +58,8 @@ public class Oprofile
 		
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
-			OprofileCorePlugin.showErrorDialog("oprofileInit", null);
-			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded"));
+			OprofileCorePlugin.showErrorDialog("oprofileInit", null); //$NON-NLS-1$
+			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded")); //$NON-NLS-1$
 		} else {
 			_initializeOprofileCore();
 		}
@@ -86,7 +84,7 @@ public class Oprofile
 		try {
 			OprofileCorePlugin.getDefault().getOpcontrolProvider().initModule();
 		} catch (OpcontrolException e) {
-			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e);
+			OprofileCorePlugin.showErrorDialog("opcontrolProvider", e); //$NON-NLS-1$
 		} 
 	}
 
@@ -131,32 +129,6 @@ public class Oprofile
 	public static OpEvent[] getEvents(int num) {
 		return _info.getEvents(num);
 	}
-
-	/**
-	 * Guess what the kernel image file in use might be. This is used by
-	 * the launcher interface to present some sort of reasonable default.
-	 * @return a possible kernel image filename
-	 */
-	public static String getKernelImageFile()
-	{
-		return "/usr/lib/debug/lib/modules/" + _uname() + "/vmlinux";
-	}
-	
-	 // Returns the release string from the system call uname
-	private static String _uname() {
-		try {
-			Process p = Runtime.getRuntime().exec("uname -r"); //$NON-NLS-1$
-			p.waitFor();
-			if (p.exitValue() != 0) {
-				return OprofileProperties.getString("unkown-kernel"); //$NON-NLS-1$
-			}
-		
-			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			return br.readLine();
-		} catch (Exception e) { }
-		
-		return OprofileProperties.getString("unknown-kernel"); //$NON-NLS-1$
-	}
 	
 	/**
 	 * Returns the default location of the oprofile samples directory.
@@ -189,7 +161,7 @@ public class Oprofile
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {
-			OprofileCorePlugin.showErrorDialog("opxmlProvider", e);
+			OprofileCorePlugin.showErrorDialog("opxmlProvider", e); //$NON-NLS-1$
 			return null;
 		}
 		
