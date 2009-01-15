@@ -98,8 +98,7 @@ public class Utils {
 	 * Resolve defines for a give URL string, if a define is not found or if
 	 * there is some other error, the original string is returned.
 	 * 
-	 * @param string
-	 *            to resolve
+	 * @param string To resolve
 	 * @return resolved URL String
 	 */
 	public static String resolveDefines(Specfile specfile, String string) {

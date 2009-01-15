@@ -92,7 +92,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	/**
 	 * Constructor for SpecfileNewWizardPage.
 	 * 
-	 * @param pageName
+	 * @param selection 
 	 */
 	public SpecfileNewWizardPage(ISelection selection) {
 		super("wizardPage");

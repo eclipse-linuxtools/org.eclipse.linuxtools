@@ -39,8 +39,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Creates a new instance on editor <code>specfileEditor</code>.
 	 * 
-	 * @param editor
-	 *            the editor to mark occurrences on.
+	 * @param specfileEditor The editor to mark occurrences on.
 	 */
 	public RpmMacroOccurrencesUpdater(SpecfileEditor specfileEditor) {
 		((IPostSelectionProvider) specfileEditor.getSelectionProvider())
@@ -58,8 +57,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	/**
 	 * Updates the drawn annotations.
 	 * 
-	 * @param viewer
-	 *            the viewer to get the document and annotation model from
+	 * @param viewer The viewer to get the document and annotation model from
 	 */
 	public void update(ISourceViewer viewer) {
 		try {

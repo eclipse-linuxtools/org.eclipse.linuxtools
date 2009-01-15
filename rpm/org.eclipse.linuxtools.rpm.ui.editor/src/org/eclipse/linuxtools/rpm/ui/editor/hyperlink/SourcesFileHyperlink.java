@@ -38,12 +38,9 @@ public class SourcesFileHyperlink implements IHyperlink {
 	 * Creates hyperlink for the following file name, region and file whether
 	 * the file name is found.
 	 * 
-	 * @param original
-	 *            The file where the reference to this file name is.
-	 * @param fileName
-	 *            The name of the file to open.
-	 * @param region
-	 *            The hyperlink region.
+	 * @param original The file where the reference to this file name is.
+	 * @param fileName The name of the file to open.
+	 * @param region The hyperlink region.
 	 */
 	public SourcesFileHyperlink(IFile original, String fileName, IRegion region) {
 		this.fileName = fileName;

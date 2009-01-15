@@ -1,3 +1,36 @@
+2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable validity javadoc warnings.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java 
+	(getImage): Fix javadoc.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlink.java 
+	(SourcesFileHyperlink): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java 
+	(setEpoch): Likewise.
+	(setVersion): Likewise.
+	(setName): Likewise.
+	(setRelease): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java 
+	(MacroListEditor.getButtonBoxControl): Likewise.
+	(MacroListEditor.getListControl): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java 
+	(update): Likewise.
+	(RpmMacroOccurrencesUpdater): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java 
+	(getValue): Likewise.
+	(getProposals): Likewise.
+	(findKey): Likewise.
+	(getMacroEval): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileLog.java 
+	(logInfo): Likewise.
+	(logError): Likewise.
+	(log): Likewise.
+	(createStatus): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java 
+	(resolveDefines): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java 
+	(SpecfileNewWizardPage): Likewise.
+
 2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add back qualifier for trunk.

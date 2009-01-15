@@ -92,7 +92,7 @@ public class Specfile {
 	 * Sets the name of this specfile. This method also
 	 * adds/updates the SpecfileDefine name.
 	 * 
-	 * @param epoch
+	 * @param name The name of the spec file.
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -158,7 +158,7 @@ public class Specfile {
 	 * Sets the epoch of this specfile. This method also
 	 * adds/updates the SpecfileDefine epoch.
 	 * 
-	 * @param epoch
+	 * @param epoch The epoch.
 	 */
 	public void setEpoch(int epoch) {
 		this.epoch = epoch;
@@ -173,7 +173,7 @@ public class Specfile {
 	 * Sets the release of this specfile. This method also
 	 * adds/updates the SpecfileDefine release.
 	 * 
-	 * @param epoch
+	 * @param release The release.
 	 */
 	public void setRelease(String release) {
 		this.release = release;
@@ -188,7 +188,7 @@ public class Specfile {
 	 * Sets the version of this specfile. This method also
 	 * adds/updates the SpecfileDefine version.
 	 * 
-	 * @param epoch
+	 * @param version The version.
 	 */
 	public void setVersion(String version) {
 		this.version = version;

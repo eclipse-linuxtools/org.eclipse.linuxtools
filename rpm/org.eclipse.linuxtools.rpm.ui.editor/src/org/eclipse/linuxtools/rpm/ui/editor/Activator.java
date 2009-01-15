@@ -187,8 +187,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * Get a <code>Image</code> object for the given relative path.
 	 * 
-	 * @param imageRelativePath
-	 * 		the relative path to the image.
+	 * @param imageRelativePath	The relative path to the image.
 	 * @return
 	 * 		a <code>Image</code>
 	 */

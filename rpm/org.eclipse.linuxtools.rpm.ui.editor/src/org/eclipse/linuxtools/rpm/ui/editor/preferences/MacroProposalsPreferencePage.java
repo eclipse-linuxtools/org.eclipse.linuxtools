@@ -268,8 +268,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		 * Returns this field editor's button box containing the Add, Remove,
 		 * Up, and Down button.
 		 * 
-		 * @param parent
-		 *            the parent control
+		 * @param parent The parent control
 		 * @return the button box
 		 */
 		@Override
@@ -302,8 +301,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		/**
 		 * Returns this field editor's list control.
 		 * 
-		 * @param parent
-		 *            the parent control
+		 * @param parent The parent control
 		 * @return the list control
 		 */
 		@Override

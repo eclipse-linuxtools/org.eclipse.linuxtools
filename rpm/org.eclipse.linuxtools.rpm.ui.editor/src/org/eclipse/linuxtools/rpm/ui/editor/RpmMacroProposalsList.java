@@ -153,8 +153,7 @@ public class RpmMacroProposalsList {
 	/**
 	 * Get proposals for a given prefix
 	 * 
-	 * @param prefix
-	 *            to search
+	 * @param prefix The prefix to search.
 	 * @return a <code>Map</code> of proposals.
 	 */
 	public Map<String, String> getProposals(String prefix) {
@@ -175,8 +174,7 @@ public class RpmMacroProposalsList {
 	/**
 	 * Get the value for a given macro.
 	 * 
-	 * @param key
-	 *            key to retrieve value.
+	 * @param key Key to retrieve value.
 	 * @return a string representation of the value
 	 */
 	public String getValue(String key) {
@@ -191,8 +189,7 @@ public class RpmMacroProposalsList {
 	/**
 	 * Find a key in the macroMap
 	 * 
-	 * @param keyToFind
-	 *            the key to find.
+	 * @param keyToFind The key to find.
 	 * @return return the value
 	 */
 	public boolean findKey(String keyToFind) {
@@ -203,8 +200,7 @@ public class RpmMacroProposalsList {
 	 * Return the ouput of the <code>rpm --eval</code> command for a given
 	 * macro.
 	 *  
-	 * @param macroName
-	 *            the macro name to eval.
+	 * @param macroName The macro name to eval.
 	 * @return the resolved macro content.
 	 */
 	public static String getMacroEval(String macroName) {
