@@ -58,6 +58,7 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 	 *      org.eclipse.ui.IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		//Do nothing
 	}
 
 	/**

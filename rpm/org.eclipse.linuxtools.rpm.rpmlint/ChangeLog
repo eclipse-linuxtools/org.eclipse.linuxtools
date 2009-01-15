@@ -1,5 +1,22 @@
 2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* .settings/org.eclipse.jdt.core.prefs: Enable javadoc warnings. 
+	ONLY to be correct javadoc, not checking missing javadoc. Yet.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java 
+	(setActivePart): Comment empty block.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java 
+	(getRealLineNbr): Fix javadoc syntax.
+	(parseVisisted): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/AInsertLineResolution.java 
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/RpmlintLog.java 
+	(logInfo): Likewise.
+	(logError): Likewise.
+	(log): Likewise.
+	(createStatus): Likewise.
+	
+2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* .settings/org.eclipse.jdt.core.prefs: Enable project wide warnings.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java 
 	(RpmlintParser): Make it private so instances can't be made.

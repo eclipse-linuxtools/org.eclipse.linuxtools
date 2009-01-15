@@ -48,9 +48,8 @@ public class RpmlintParser {
 		
 	/**
 	 * Parse visited resources.
+	 * @param visitedResources The list of resources to parse.
 	 * 
-	 * @param 
-	 * 		resources to parse.
 	 * @return
 	 * 		a <code>RpmlintItem</code> ArrayList.
 	 */
@@ -213,10 +212,9 @@ public class RpmlintParser {
 	 * Return the line number for given specContent and strToFind, it returns -1
 	 * if the string to find is not found.
 	 * 
-	 * @param specfile
-	 *            the specfile
-	 * @param strToFind
-	 *            the string to find
+	 * @param specContent The content of the spec file.
+	 * 
+	 * @param strToFind The string we are looking for.
 	 * @return the line number
 	 */
 	public int getRealLineNbr(String specContent, String strToFind) {

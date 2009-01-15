@@ -36,8 +36,8 @@ abstract public class AInsertLineResolution extends ARpmlintResolution {
 	/**
 	 * Returns the number of the line, which will succeed the inserted line.
 	 * 
-	 * @param editor The Specfile editor if it's needed for determining the corect place 
-	 * @return 
+	 * @param editor The Specfile editor if it's needed for determining the correct place.
+	 * @return The number of the line following the inserted line.
 	 */
 	public abstract int getLineNumberForInsert(SpecfileEditor editor);
 
