@@ -1,5 +1,10 @@
 2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java 
+	(toggleNature): Comment empty block.
+	
+2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* .settings/org.eclipse.jdt.core.prefs: Enable javadoc warnings. 
 	ONLY to be correct javadoc, not checking missing javadoc. Yet.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java 

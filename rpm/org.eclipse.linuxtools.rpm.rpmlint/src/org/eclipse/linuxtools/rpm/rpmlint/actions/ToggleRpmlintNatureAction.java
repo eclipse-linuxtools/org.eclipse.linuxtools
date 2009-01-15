@@ -92,6 +92,7 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 			description.setNatureIds(newNatures);
 			project.setDescription(description, null);
 		} catch (CoreException e) {
+			//TODO log exception
 		}
 	}
 
