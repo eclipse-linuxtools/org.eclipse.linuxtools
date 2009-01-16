@@ -1,3 +1,11 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #260722
+	
+	* META-INF/MANIFEST.MF: Add .qualifier to version and bump up to 2.6.5.
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogExtensionManager.java (getFormatterContributor): 
+	Reset formatterConfigElementToUse each time to null.
+
 2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitAction.java 

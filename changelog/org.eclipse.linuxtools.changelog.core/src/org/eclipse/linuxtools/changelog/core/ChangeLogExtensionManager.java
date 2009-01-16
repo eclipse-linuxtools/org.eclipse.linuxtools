@@ -128,6 +128,8 @@ public class ChangeLogExtensionManager {
 		else
 			fileName = entryFilePath;
 		
+		// We don't yet know which formatter to use
+		formatterConfigElementToUse = null;
 
 		// IFile file = null;
 
