@@ -1,3 +1,7 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Bump up version to 1.0.2.
+
 2009-01-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Fixes #260436
