@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model-data>
+	<image name="/test/path/for/image" count="205000">
+		<symbols>
+			<symbol name="TestFunction1(int)" file="/test/path/for/src/image.cpp" count="180000">
+				<sample>
+					<count>130000</count>
+					<line>42</line>
+				</sample>
+				<sample>
+					<count>40000</count>
+					<line>36</line>
+				</sample>
+				<sample>
+					<count>9999</count>
+					<line>31</line>
+				</sample>
+				<sample>
+					<count>1</count>
+					<line>39</line>
+				</sample>
+			</symbol>
+			<symbol name="TestFunction2(int, int)" file="/test/path/for/src/image2.cpp" count="20000">
+				<sample>
+					<count>19998</count>
+					<line>94</line>
+				</sample>
+				<sample>
+					<count>1</count>
+					<line>12</line>
+				</sample>
+				<sample>
+					<count>1</count>
+					<line>55</line>
+				</sample>
+			</symbol>
+		</symbols>
+		<dependent count="5000">
+			<image name="/no-vmlinux" count="4400">
+			</image>
+			<image name="/lib64/ld-2.9.so" count="300">
+				<symbols>
+					<symbol name="do_lookup_x" file="dl-lookup.c" count="299">
+						<sample>
+							<count>299</count>
+							<line>0</line>
+						</sample>
+					</symbol>
+					<symbol name="_dl_unload_cache" file="rawmemchr.c" count="1">
+						<sample>
+							<count>1</count>
+							<line>0</line>
+						</sample>
+					</symbol>
+				</symbols>
+			</image>
+			<image name="/usr/lib64/libstdc++.so.6.0.10" count="160">
+			</image>
+			<image name="/lib64/libc-2.9.so" count="140">
+				<symbols>
+					<symbol name="_IO_new_file_seekoff" file="" count="100">
+						<sample>
+							<count>100</count>
+							<line>0</line>
+						</sample>
+					</symbol>
+					<symbol name="bcopy" file="" count="40">
+						<sample>
+							<count>40</count>
+							<line>0</line>
+						</sample>
+					</symbol>
+				</symbols>
+			</image>
+		</dependent>
+	</image>
+</model-data>
