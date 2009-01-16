@@ -29,6 +29,7 @@ public class OpModelSession {
 	public OpModelSession(OpModelEvent event, String name) {
 		_parentEvent = event;
 		_name = name;
+		_image = null;
 	}
 	
 	public OpModelImage getImage() {
@@ -44,7 +45,11 @@ public class OpModelSession {
 	}
 	
 	public int getCount() {
-		return _image.getCount();
+		if (_image == null) {
+			return 0;
+		} else {
+			return _image.getCount();
+		}
 	}
 	
 	public boolean isDefaultSession() {

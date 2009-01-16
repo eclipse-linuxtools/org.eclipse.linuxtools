@@ -28,7 +28,7 @@ public class OpModelEvent {
 		return _sessions;
 	}
 
-	public void setSessions(OpModelSession[] sessions) {
+	public void _setSessions(OpModelSession[] sessions) {
 		_sessions = sessions;
 	}
 
@@ -36,10 +36,6 @@ public class OpModelEvent {
 		return _eventName;
 	}
 
-	public void setName(String name) {
-		_eventName = name;
-	}
-	
 	//populate all sessions
 	public void refreshModel() {
 		if (_sessions != null) {

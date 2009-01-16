@@ -13,4 +13,5 @@ Import-Package: junit.framework;version="3.8.2",
  org.eclipse.linuxtools.oprofile.core,
  org.eclipse.linuxtools.oprofile.core.model,
  org.eclipse.linuxtools.oprofile.core.opxml,
- org.eclipse.linuxtools.oprofile.core.opxml.modeldata
+ org.eclipse.linuxtools.oprofile.core.opxml.modeldata,
+ org.eclipse.linuxtools.oprofile.core.opxml.sessions
