@@ -52,8 +52,6 @@ public class SamplesProcessor extends XMLProcessor {
 			_sample = new OpModelSample();
 		} else if (name.equals(SYMBOL_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(SYMBOL_TAG);
-		} else {
-			super.endElement(name, callData);
 		}
 	}
 	

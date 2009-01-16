@@ -50,8 +50,6 @@ public class DependentProcessor extends XMLProcessor {
 			_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
-		} else {
-			super.startElement(name, attrs, callData);
 		}
 	}
 	/**
@@ -65,8 +63,6 @@ public class DependentProcessor extends XMLProcessor {
 			_image._setSymbols(_symbolsProcessor.getSymbols());
 		} else if (name.equals(DEPENDENT_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(DEPENDENT_TAG);
-		} else {
-			super.endElement(name, callData);
 		}
 	}
 	

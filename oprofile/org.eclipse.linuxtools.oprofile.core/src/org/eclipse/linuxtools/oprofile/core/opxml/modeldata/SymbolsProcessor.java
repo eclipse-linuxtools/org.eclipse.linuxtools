@@ -55,8 +55,6 @@ public class SymbolsProcessor extends XMLProcessor {
 			_symbol._setFile(attrs.getValue(ATTR_FILE));
 		} else if (name.equals(SAMPLE_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_samplesProcessor);
-		} else {
-			super.startElement(name, attrs, callData);
 		}
 	}
 	
@@ -70,8 +68,6 @@ public class SymbolsProcessor extends XMLProcessor {
 			_symbol = new OpModelSymbol();
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).pop(SYMBOLS_TAG);
-		} else {
-			super.endElement(name, callData);
 		}
 	}
 	
