@@ -1,3 +1,7 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier to id.
+
 2008-11-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Add cheatsheets directory to binary list and remove
