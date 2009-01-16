@@ -1,3 +1,7 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier to version.
+
 2008-11-14  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: Bump BREE to 1.5.
