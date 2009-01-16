@@ -48,7 +48,10 @@
       </wizard>
    </extension>
      <extension point="org.eclipse.ui.actionSets">
-                <actionSet label="%InvokeAutotools.label" id="org.eclipse.linuxtools.cdt.autotools.actionSets">
+                <actionSet
+                      id="org.eclipse.linuxtools.cdt.autotools.actionSets"
+                      label="%InvokeAutotools.label"
+                      visible="true">
                 <action
                       class="org.eclipse.linuxtools.cdt.autotools.actions.InvokeAutoconfAction"
                       enablesFor="1"

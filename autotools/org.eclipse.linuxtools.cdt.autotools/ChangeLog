@@ -1,3 +1,11 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #261257
+	
+	* META-INF/MANIFEST.MF: Update plug-in to add .qualifier to id and update
+	to 1.0.2.qualifier.
+	* plugin.xml: Update invoke autotools action set to set visible to true.
+
 2009-01-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getConfigArgs): If there
