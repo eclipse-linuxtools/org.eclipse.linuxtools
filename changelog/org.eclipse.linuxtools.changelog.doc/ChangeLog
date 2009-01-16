@@ -1,3 +1,7 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier to version.
+
 2009-01-07  Andrew Overholt  <overholt@redhat.com>
 
 	* build.xml: Back to version 2.6.3.  Include META-INF in binary build.
