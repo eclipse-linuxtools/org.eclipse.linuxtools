@@ -1,3 +1,7 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier to id.
+
 2008-12-09  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: Debugging statement.
