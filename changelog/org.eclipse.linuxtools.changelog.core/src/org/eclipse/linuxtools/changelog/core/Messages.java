@@ -30,15 +30,14 @@ public class Messages {
 	 * 
 	 */
 	private Messages() {
-
-		// TODO Auto-generated constructor stub
+		// It shouldn't be instantiated.
 	}
 	/**
-	 * @param key
-	 * @return
+	 * Returns the message for the given key.
+	 * @param key The key of the message looking for.
+	 * @return The found message or "!key!" if no such key.
 	 */
 	public static String getString(String key) {
-		// TODO Auto-generated method stub
 		try {
 			return RESOURCE_BUNDLE.getString(key);
 		} catch (MissingResourceException e) {

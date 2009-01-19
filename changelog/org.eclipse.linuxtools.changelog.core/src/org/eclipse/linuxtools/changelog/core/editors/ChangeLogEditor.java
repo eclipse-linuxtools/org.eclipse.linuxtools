@@ -104,12 +104,6 @@ public class ChangeLogEditor extends TextEditor {
 		return null;
 	}
 
-	public void dispose() {
-		super.dispose();
-
-	}
-
-	
 	public ISourceViewer getMySourceViewer() {
 		return this.getSourceViewer();
 	}
@@ -117,6 +111,7 @@ public class ChangeLogEditor extends TextEditor {
 	/**
 	 * Specifies context menu.
 	 */
+	@Override
 	protected void editorContextMenuAboutToShow(IMenuManager menu) {
 
 		super.editorContextMenuAboutToShow(menu);

@@ -163,13 +163,13 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 	}
 
+	@Override
 	public boolean isEnabled() {
-
 		return true;
 	}
 
+	@Override
 	public boolean isHandled() {
-
 		return true;
 	}
 

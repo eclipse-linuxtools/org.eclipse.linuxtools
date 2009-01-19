@@ -78,10 +78,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	
 	private class MyDocumentProvider extends FileDocumentProvider {
 
+		@Override
 		public IDocument createDocument(Object element) throws CoreException {
-
 			return super.createDocument(element);
-
 		}
 	}
 
@@ -92,9 +91,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	private IStructuredSelection selected;
 
 	public PrepareChangeLogAction() {
-
 		super();
-
 	}
 
 	protected void setSelection(IStructuredSelection selection) {

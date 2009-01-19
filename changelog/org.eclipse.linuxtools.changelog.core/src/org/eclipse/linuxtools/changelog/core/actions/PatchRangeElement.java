@@ -27,13 +27,12 @@ public class PatchRangeElement {
 		ftoLine= to;
 		fpatch = txt;
 	}
-	
 
 	public void appendTxt(String txt) {
 		fpatch += txt + "\n";
 	}
 	
-	
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PatchRangeElement) {
 			PatchRangeElement b = (PatchRangeElement)o;

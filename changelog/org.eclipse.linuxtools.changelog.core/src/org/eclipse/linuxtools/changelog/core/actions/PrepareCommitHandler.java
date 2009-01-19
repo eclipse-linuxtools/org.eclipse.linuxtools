@@ -25,18 +25,17 @@ public class PrepareCommitHandler  implements IHandler {
 
 	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void dispose() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 	
 		Action exampleAction;
 		exampleAction = new PrepareCommitAction() {
+			@Override
 			public void run() {
 				//setSelection(new StructuredSelection(rm));
 				doRun();

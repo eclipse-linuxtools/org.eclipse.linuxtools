@@ -40,8 +40,6 @@ import org.eclipse.core.runtime.Path;
  */
 public class GNUHyperlinkDetector implements IHyperlinkDetector {
 
-
-
 	private IPath documentLocation;
 
 	/**
@@ -56,8 +54,7 @@ public class GNUHyperlinkDetector implements IHyperlinkDetector {
 	 * then absolute path of file.java and file2.java are
 	 * /some/project/abc/file.java and /some/project/ghi/file2.java
 	 * 
-	 * @param textViewer
-	 *            the text viewer in which to detect the hyperlink
+	 * @param textViewer The text viewer in which to detect the hyperlink.
 	 */
 	public GNUHyperlinkDetector(ITextViewer textViewer, TextEditor editor) {
 		Assert.isNotNull(textViewer);

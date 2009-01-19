@@ -36,8 +36,7 @@ public class GNUElementScanner extends RuleBasedScanner {
 	/**
 	 * Build a scanner for syntax highlighting.
 	 * 
-	 * @param manager
-	 *            color scheme to use
+	 * @param manager Color scheme to use.
 	 */
 	public GNUElementScanner(ColorManager manager) {
 		IToken file = new Token(new TextAttribute(manager

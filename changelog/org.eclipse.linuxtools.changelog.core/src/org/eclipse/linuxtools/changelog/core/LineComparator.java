@@ -45,6 +45,7 @@ public class LineComparator implements IRangeComparator {
 			super(in);
 		}
 		
+		@Override
 		public int read() throws IOException {
 			int c = super.read();
 			trailingLF = isLineFeed(c);
@@ -55,6 +56,7 @@ public class LineComparator implements IRangeComparator {
 	     * We don't need to override read(byte[] buffer) as the javadoc of 
 	     * FilterInputStream states that it will call read(byte[] buffer, int off, int len)
 	     */
+		@Override
 		public int read(byte[] buffer, int off, int len) throws IOException {
 			int length = super.read(buffer, off, len);
 			if (length != -1) {

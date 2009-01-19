@@ -117,6 +117,7 @@ public abstract class ChangeLogAction extends Action {
 				new byte[0]);
 
 		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
+			@Override
 			public void execute(IProgressMonitor monitor) throws CoreException {
 				try {
 					monitor.beginTask(Messages.getString("ChangeLog.AddingChangeLog"), 2000); //$NON-NLS-1$

@@ -47,6 +47,7 @@ public class FormatChangeLogAction extends Action implements IHandler {
 	protected IWorkbench getWorkbench() {
 		return ChangelogPlugin.getDefault().getWorkbench();
 	}
+	@Override
 	public void run() {
 
 		if (editor == null)

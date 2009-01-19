@@ -1,5 +1,68 @@
 2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java 
+	(.execute): Add missing @Override.
+	* src/org/eclipse/linuxtools/changelog/core/actions/FormatChangeLogAction.java 
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/InsertChangeLogKeyHandler.java 
+	(isHandled): Likewise.
+	(isEnabled): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java 
+	(equals): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchRangeElement.java 
+	(equals): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java 
+	(MyDocumentProvider.createDocument): Likewise.
+	(PrepareChangeLogAction): Likewise.
+	(MyDocumentProvider): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangelogKeyHandler.java 
+	(getWorkbench): Removed not needed. 
+	(isHandled): Add missing @Override.
+	(run): Add missing @Override.
+	(.run): Add missing @Override.
+	(isEnabled): Add missing @Override.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareCommitHandler.java 
+	(.run): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java 
+	(stop): Likewise.
+	(start): Likewise.
+	(initializeDefaultPreferences): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java 
+	(performOk): Likewise.
+	(createContents): Likewise.
+	(doGetPreferenceStore): Likewise.
+	(performDefaults): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java 
+	(dispose): Removed - it simply calls super. 
+	(editorContextMenuAboutToShow): Add missing @Override.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java 
+	(getPresentationReconciler): Likewise.
+	(getHyperlinkDetectors): Likewise.
+	(getConfiguredContentTypes): Likewise.
+	(getContentFormatter): Likewise.
+	(getHyperlinkPresenter): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUElementScanner.java 
+	(GNUElementScanner): Fix javadoc. 
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java 
+	(GNUHyperlinkDetector): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/IEditorChangeLogContrib.java 
+	(setTextEditor): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/IParserChangeLogContrib.java 
+	(parseCurrentFunction): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/LineComparator.java 
+	(TrailingLineFeedDetector.read): Add missing @Override.
+	* src/org/eclipse/linuxtools/changelog/core/Messages.java 
+	(Messages): Fix documentation.
+	(getString): Likewise.
+	* src/org/eclipse/linuxtools/changelog/core/ui/ChangeLogActionProvider.java 
+	(ChangeLogActionProvider): Removed - not needed. 
+	(fillActionBars): Add missing @Override.
+	(init): Likewise.
+	(.run): Likewise.
+	(fillContextMenu): Likewise.
+	 
+2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
 
 2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>

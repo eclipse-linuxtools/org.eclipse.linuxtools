@@ -34,7 +34,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -133,6 +132,7 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		try {
 			Action exampleAction;
 			exampleAction = new PrepareChangeLogAction() {
+				@Override
 				public void run() {
 					setSelection(result);
 					doRun();
@@ -148,10 +148,6 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		}
 
 		return null;
-	}
-
-	protected IWorkbench getWorkbench() {
-		return ChangelogPlugin.getDefault().getWorkbench();
 	}
 
 	public void addHandlerListener(IHandlerListener handlerListener) {
@@ -185,7 +181,6 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 		try {
 			execute(null);
 		} catch (ExecutionException e) {
-
 			reportErr(Messages.getString("PrepareChangeLog.ErrExecuteFailed"), e); // $NON-NLS-1$
 		}
 	}
@@ -194,13 +189,13 @@ public class PrepareChangelogKeyHandler extends ChangeLogAction implements IHand
 
 	}
 
+	@Override
 	public boolean isEnabled() {
-
 		return true;
 	}
 
+	@Override
 	public boolean isHandled() {
-
 		return true;
 	}
 

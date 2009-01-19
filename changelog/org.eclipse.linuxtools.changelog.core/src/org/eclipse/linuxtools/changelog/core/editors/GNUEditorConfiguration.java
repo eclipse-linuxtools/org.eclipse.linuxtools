@@ -66,6 +66,7 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 	 * 
 	 * @return default content type.
 	 */
+	@Override
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return new String[] { IDocument.DEFAULT_CONTENT_TYPE };
 	}
@@ -84,6 +85,7 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 	 * 
 	 * @return link detector for GNU format.
 	 */
+	@Override
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		if (sourceViewer == null)
 			return null;
@@ -101,6 +103,7 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 	 * 
 	 * @return default presenter.
 	 */
+	@Override
 	public IHyperlinkPresenter getHyperlinkPresenter(ISourceViewer sourceViewer) {
 		return new DefaultHyperlinkPresenter(DEFAULT_HYPERLINK_COLOR);
 	}
@@ -109,6 +112,7 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 	/**
 	 * Set content formatter. For ChangeLog, it just wraps lines.
 	 */
+	@Override
 	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
 		
 		ContentFormatter cf = new ContentFormatter();
@@ -130,6 +134,7 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 	 * 
 	 * @return reconciler for GNU format changelog.
 	 */
+	@Override
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new PresentationReconciler();

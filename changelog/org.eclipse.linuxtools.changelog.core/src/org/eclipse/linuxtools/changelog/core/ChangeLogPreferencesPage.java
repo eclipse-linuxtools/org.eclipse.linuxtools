@@ -103,6 +103,7 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 		return list;
 	}
 
+	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
 		return ChangelogPlugin.getDefault().getPreferenceStore();
 	}
@@ -276,6 +277,7 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 	/*
 	 * (non-Javadoc) Method declared on PreferencePage
 	 */
+	@Override
 	protected void performDefaults() {
 		super.performDefaults();
 		initializeDefaults();
@@ -285,12 +287,14 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 	/*
 	 * (non-Javadoc) Method declared on PreferencePage
 	 */
+	@Override
 	public boolean performOk() {
 		storeValues();
 		ChangelogPlugin.getDefault().savePluginPreferences();
 		return true;
 	}
 
+	@Override
 	protected Control createContents(Composite parent) {
 		// composite_textField << parent
 		Composite composite_textField = createComposite(parent, 2);

@@ -94,6 +94,7 @@ public class PatchFile {
 		return pranges.size();
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		
 		if (!(o instanceof PatchFile))
