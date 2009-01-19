@@ -1,3 +1,7 @@
+2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+
 2009-01-09  Phil Muldoon  <pmuldoon@redhat.com>
 
 	* build.properties: Add completion/ folder to binary
