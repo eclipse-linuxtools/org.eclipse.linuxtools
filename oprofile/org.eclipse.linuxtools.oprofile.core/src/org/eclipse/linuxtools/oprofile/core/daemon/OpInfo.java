@@ -152,12 +152,11 @@ public class OpInfo {
 
 	/**
 	 * Returns an array of events valid for the given counter number.
-	 * (-1 for all counters) 
 	 * @param num the counter number
-	 * @return an array of valid events; <bold>never</bold> returns <code>null</code>.
+	 * @return an array of valid events
 	 */ 
 	public OpEvent[] getEvents(int num) {
-		if (num < _eventList.length)
+		if (num >= 0 && num < _eventList.length)
 			return _eventList[num];
 		
 		return new OpEvent[0];

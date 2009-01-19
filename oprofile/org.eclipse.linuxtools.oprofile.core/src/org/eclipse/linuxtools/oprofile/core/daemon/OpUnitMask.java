@@ -173,10 +173,8 @@ public class OpUnitMask {
 	 * @param index the index of the mask option to set
 	 */
 	public void unSetMaskFromIndex(int index) {
-		if (_maskType != MANDATORY) {
-			if (_maskType == BITMASK) {
-				_mask = _mask & ~_maskOptionValues[index];
-			}
+		if (_maskType == BITMASK) {
+			_mask = _mask & ~_maskOptionValues[index];
 		}
 	}
 

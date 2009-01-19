@@ -47,12 +47,4 @@ public class DefaultsProcessor extends XMLProcessor {
 			_map.put(name, _characters);
 		}
 	}
-
-	/**
-	 * Get the map associated with the MapProcessor.
-	 * @return the map
-	 */
-	public HashMap<String,String> getMap() {
-		return _map;
-	}
 }
