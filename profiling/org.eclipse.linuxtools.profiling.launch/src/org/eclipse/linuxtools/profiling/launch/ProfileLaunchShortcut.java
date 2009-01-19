@@ -217,7 +217,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	}
 
 	protected void handleFail(String message) {
-		MessageDialog.openError(getActiveWorkbenchShell(), Messages.getString("ProfileLaunchShortcut.Valgrind_Launcher"), message); //$NON-NLS-1$
+		MessageDialog.openError(getActiveWorkbenchShell(), Messages.getString("ProfileLaunchShortcut.Launcher"), message); //$NON-NLS-1$
 	}
 
 	/**
@@ -254,7 +254,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 	
 		TwoPaneElementSelector dialog = new TwoPaneElementSelector(getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
 		dialog.setElements(binList.toArray());
-		dialog.setTitle(Messages.getString("ProfileLaunchShortcut.Profile_With_Valgrind")); //$NON-NLS-1$
+		dialog.setTitle(Messages.getString("ProfileLaunchShortcut.Profile")); //$NON-NLS-1$
 		dialog.setMessage(Messages.getString("ProfileLaunchShortcut.Choose_a_local_application")); //$NON-NLS-1$
 		dialog.setUpperListLabel(Messages.getString("ProfileLaunchShortcut.Binaries")); //$NON-NLS-1$
 		dialog.setLowerListLabel(Messages.getString("ProfileLaunchShortcut.Qualifier")); //$NON-NLS-1$
