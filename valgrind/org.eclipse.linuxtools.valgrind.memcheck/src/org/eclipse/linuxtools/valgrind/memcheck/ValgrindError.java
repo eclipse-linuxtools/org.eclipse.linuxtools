@@ -86,7 +86,7 @@ public class ValgrindError {
 			if (frame.getDir() != null && frame.getFile() != null && frame.getLine() > 0) {
 				String strpath = frame.getDir() + Path.SEPARATOR + frame.getFile();
 				File file = new File(strpath);
-				Path path = new Path(file.getCanonicalPath());
+				Path path = new Path(file.getAbsolutePath());
 				
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 				IFile resource = root.getFileForLocation(path);
