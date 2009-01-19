@@ -1,4 +1,8 @@
 2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+
+2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #261379.
 	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogDocumentProvider.java 
 	(getDocument): Make it extend TextFileDocumentProvider.
