@@ -1,3 +1,8 @@
+2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix #261379.
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogDocumentProvider.java 
+	(getDocument): Make it extend TextFileDocumentProvider.
+
 2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #260722
