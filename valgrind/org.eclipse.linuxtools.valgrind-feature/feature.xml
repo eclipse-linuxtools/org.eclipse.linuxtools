@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.valgrind.feature"
       label="%featureName"
-      version="0.1.0.200901191515"
+      version="0.1.0.qualifier"
       provider-name="%featureProvider">
 
    <description>
