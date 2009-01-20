@@ -8,3 +8,4 @@ Fragment-Host: org.eclipse.linuxtools.oprofile.core;bundle-version="0.1"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86_64))
 Import-Package: org.eclipse.linuxtools.oprofile.core.linux
+Bundle-Localization: fragment
