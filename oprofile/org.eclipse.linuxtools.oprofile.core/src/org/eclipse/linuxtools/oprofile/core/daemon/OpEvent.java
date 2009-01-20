@@ -35,8 +35,7 @@ public class OpEvent
 	 * Returns the unit mask corresponding to this event.
 	 * @return the unit mask
 	 */
-	public OpUnitMask getUnitMask()
-	{		
+	public OpUnitMask getUnitMask() {		
 		return _unitMask;
 	}
 	
@@ -52,8 +51,7 @@ public class OpEvent
 	 * Returns the name of this oprofile event.
 	 * @return the name
 	 */
-	public String getText()
-	{
+	public String getText() {
 		return _name;
 	}
 	
@@ -69,8 +67,7 @@ public class OpEvent
 	 * Returns the description of this oprofile event.
 	 * @return the description
 	 */
-	public String getTextDescription()
-	{
+	public String getTextDescription() {
 		return _description;
 	}
 	
@@ -86,8 +83,7 @@ public class OpEvent
 	 * Returns the minimum count allowed for this event.
 	 * @return the minimum count
 	 */
-	public int getMinCount()
-	{
+	public int getMinCount() {
 		return _minCount;
 	}
 	
@@ -103,8 +99,7 @@ public class OpEvent
 	 * Returns oprofile's event number for this event.
 	 * @return the event number
 	 */
-	public int getNumber()
-	{
+	public int getNumber() {
 		return _number;
 	}
 	
