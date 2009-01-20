@@ -54,6 +54,8 @@ public class OpUnitMask {
 	 */
 	public static final int BITMASK = 3;
 
+	public static final int INVALID = -1;
+
 	// The current value of this unitmask
 	private int _mask;
 
@@ -159,12 +161,29 @@ public class OpUnitMask {
 	 */
 	public void setMaskFromIndex(int index) {
 		//mandatory masks only use the default value
-		if (_maskType != MANDATORY) {
-			if (_maskType == BITMASK)
-				_mask |= _maskOptionValues[index];
-			else {
-				_mask = _maskOptionValues[index];
-			}
+		if (_maskType == BITMASK)
+			_mask |= _maskOptionValues[index];
+		else if (_maskType == EXCLUSIVE) {
+			_mask = _maskOptionValues[index];
+		}
+	}
+
+	/**
+	 * Returns the value of the mask based on the unitmask index.
+	 * @param index the index of the mask option
+	 * @return the mask option's value
+	 */
+	public int getMaskFromIndex(int index) {
+		//mandatory masks only use the default value
+		if (_maskType == BITMASK)
+			return _maskOptionValues[index];
+		else if (_maskType == EXCLUSIVE) {
+			return _maskOptionValues[index];
+		} else if (_maskType == MANDATORY) {
+			return _defaultMask;
+		} else {
+			//type invalid or unknown
+			return -1;
 		}
 	}
 	
