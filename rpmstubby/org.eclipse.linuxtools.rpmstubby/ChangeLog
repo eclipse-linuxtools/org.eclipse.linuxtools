@@ -1,4 +1,8 @@
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceConstants.java: Switch default for with_gcj to false.
+
+2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260884.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
 	(getProvidesBundlesString): Add \ for multiline.
