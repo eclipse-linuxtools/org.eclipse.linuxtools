@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
+import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpUnitMask;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
@@ -685,8 +686,12 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 				
 				for (int i = 0; i < totalMasks; i++) {
 					Button maskButton;
-					
-					if (mask.getType() == OpUnitMask.MANDATORY) {
+
+					if (mask.getType() == OpUnitMask.INVALID) {
+						//big problem, most likely parsing went awry or opxml output mangled
+						OprofileCorePlugin.showErrorDialog("opxmlParse", null); //$NON-NLS-1$
+						return;
+					} else if (mask.getType() == OpUnitMask.MANDATORY) {
 						maskButton = new Button(newMaskComp, SWT.RADIO);
 						maskButton.setEnabled(false);
 						maskButton.setText(mask.getText(i));
