@@ -127,7 +127,7 @@
 			<value>58</value>
 			<minimum>500</minimum>
 			<unit-mask>
-				<type>mandatory</type>
+				<type>notavalidtype</type>
 				<default>0</default>
 				<mask>
 					<value>0</value>
