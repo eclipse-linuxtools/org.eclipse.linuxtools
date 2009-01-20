@@ -1,4 +1,10 @@
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix #260884.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(getProvidesBundlesString): Add \ for multiline.
+	(generateFetchScript): Fix escaping.
+
+2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260879.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
 	(generatePrepSection): Add comment for FIXME in %setup call.

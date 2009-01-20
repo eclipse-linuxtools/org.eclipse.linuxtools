@@ -241,8 +241,8 @@ public class StubbyGenerator {
 				.append("# fetch_cmd=cvs -d:pserver:anonymous@dev.eclipse.org:/cvsroot/dsdp \\\n");
 		buffer.append("# export -r $tag org.eclipse.tm.rse/features/$f;\n\n");
 		buffer.append("fetch_cmd=FIXME\n\n");
-		buffer.append("if [ 'x$tag'x = 'xx' ]; then\n");
-		buffer.append("   echo >&2 '$usage'\n");
+		buffer.append("if [ \"x$tag\"x = 'xx' ]; then\n");
+		buffer.append("   echo >&2 \"$usage\"\n");
 		buffer.append("   exit 1\n");
 		buffer.append("fi\n\n");
 		buffer.append("rm -fr $tar_name && mkdir $tar_name\n");
@@ -348,10 +348,11 @@ public class StubbyGenerator {
 		Set<String> usedNames = new HashSet<String>();
 		for (PackageItem packageItem : packageItems) {
 			if (usedNames.contains(packageItem.getName())) {
-				toRet += packageItem.getName() + "-feature\n";
+				toRet += packageItem.getName() + "-feature";
 			} else {
-				toRet += packageItem.getName() + "\n";
+				toRet += packageItem.getName();
 			}
+			toRet += " \\\n";
 			usedNames.add(packageItem.getName());
 		}
 		return toRet;
@@ -360,7 +361,7 @@ public class StubbyGenerator {
 	private String getProvidesBundlesString(HashSet<String> uniqueProvides) {
 		String toRet = "";
 		for (String provideName : uniqueProvides) {
-			toRet += provideName + "\n";
+			toRet += provideName + " \\\n";
 		}
 		return toRet;
 	}
