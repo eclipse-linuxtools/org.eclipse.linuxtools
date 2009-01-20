@@ -20,10 +20,12 @@ public class ChartEditorInput implements IEditorInput {
 	
 	protected HeapChart chart;
 	protected String name;
+	protected Integer pid;
 
-	public ChartEditorInput(HeapChart chart, String name) {
+	public ChartEditorInput(HeapChart chart, String name, Integer pid) {
 		this.chart = chart;
 		this.name = name;
+		this.pid = pid;
 	}
 
 	public boolean exists() {
@@ -36,6 +38,10 @@ public class ChartEditorInput implements IEditorInput {
 
 	public String getName() {		
 		return name;
+	}
+	
+	public Integer getPid() {
+		return pid;
 	}
 
 	public IPersistableElement getPersistable() {

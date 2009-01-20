@@ -1,3 +1,13 @@
+2009-01-20  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifLaunchDelegate: Changed to handle multiple pids.
+	* MassifOutput: New, organizes multiple snapshot arrays by pid.
+	* MassifParser: Added parsing for pid.
+	* MassifPidMenuAction: UI to switch between pids.
+	* MassifViewPart: Added handling for multiple pids.
+	* messages.properties: New key.
+	* ChartEditorInput: Store pid for EditorInput caching.
+
 2009-01-13  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifParser: Implements new abstract parser.

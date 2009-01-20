@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.valgrind.massif;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -71,7 +72,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public static final String CHART_ACTION = MassifPlugin.PLUGIN_ID
 	+ ".chartAction"; //$NON-NLS-1$
 
-	protected MassifSnapshot[] snapshots;
+	protected MassifOutput output;
+	protected Integer pid;
 
 	protected Composite top;
 	protected StackLayout stackLayout;
@@ -83,10 +85,14 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 	protected Action treeAction;
 	protected Action chartAction;
-	protected ChartEditorInput chartInput;
+	protected MassifPidMenuAction pidAction;
+	
+	protected List<ChartEditorInput> chartInputs;
 
 	@Override
 	public void createPartControl(Composite parent) {
+		chartInputs = new ArrayList<ChartEditorInput>();
+		
 		top = new Composite(parent, SWT.NONE);
 		stackLayout = new StackLayout();
 		top.setLayout(stackLayout);
@@ -136,7 +142,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		setTopControl(viewer.getControl());
 	}
 
-	private String getUnitString(MassifSnapshot[] snapshots2) {
+	private String getUnitString(MassifSnapshot[] snapshots) {
 		String result;
 		MassifSnapshot snapshot = snapshots[0];
 		switch (snapshot.getUnit()) {
@@ -204,12 +210,15 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	}
 
 	public IAction[] getToolbarActions() {
+		pidAction = new MassifPidMenuAction(this);
+		
 		chartAction = new Action(
 				Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			@Override
 			public void run() {
-				if (snapshots.length > 0) {					
-					displayChart();
+				ChartEditorInput input = getChartInput(pid);
+				if (input != null) {					
+					displayChart(input);
 				}
 			}
 		};
@@ -236,22 +245,23 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		treeAction.setToolTipText(Messages
 				.getString("MassifViewPart.Show_Heap_Tree")); //$NON-NLS-1$
 
-		return new IAction[] { chartAction, treeAction };
+		return new IAction[] { pidAction, chartAction, treeAction };
 	}
 
-	protected void createChart() {
+	protected void createChart(MassifSnapshot[] snapshots) {
 		HeapChart chart = new HeapChart(snapshots);
-		String title = ValgrindUIPlugin.getDefault().getView().getContentDescription();
+		String title = ValgrindUIPlugin.getDefault().getView().getContentDescription() + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
 		chart.getTitle().getLabel().getCaption().setValue(title);
 
 		String name = getInputName(title);
-		chartInput = new ChartEditorInput(chart, name);
+		ChartEditorInput input = new ChartEditorInput(chart, name, pid);
+		chartInputs.add(input);
 
 		// open the editor
-		displayChart();
+		displayChart(input);
 	}
 
-	protected void displayChart() {
+	protected void displayChart(final ChartEditorInput chartInput) {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				try {
@@ -277,26 +287,36 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	}
 
 	public void refreshView() {
-		if (snapshots != null) {
-			viewer.setInput(snapshots);
+		if (output != null && pid != null) {
+			MassifSnapshot[] snapshots = output.getSnapshots(pid);
+			pidAction.setPids(output.getPids());
+			if (snapshots != null) {
+				viewer.setInput(snapshots);
 
-			String timeWithUnit = TITLE_TIME + " (" + getUnitString(snapshots) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-			for (TableColumn column : viewer.getTable().getColumns()) {
-				if (column.getText().startsWith(TITLE_TIME)) {
-					column.setText(timeWithUnit);
+				String timeWithUnit = TITLE_TIME + " (" + getUnitString(snapshots) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+				for (TableColumn column : viewer.getTable().getColumns()) {
+					if (column.getText().startsWith(TITLE_TIME)) {
+						column.setText(timeWithUnit);
+					}
 					viewer.getTable().layout(true);
 				}
-			}
-			MassifSnapshot[] detailed = getDetailed(snapshots);
-			nodes = new MassifHeapTreeNode[detailed.length];
-			for (int i = 0; i < detailed.length; i++) {
-				nodes[i] = detailed[i].getRoot();
-			}
-			treeViewer.setInput(nodes);
-			
-			// create and display chart
-			if (snapshots.length > 0) {
-				createChart();
+				MassifSnapshot[] detailed = getDetailed(snapshots);
+				nodes = new MassifHeapTreeNode[detailed.length];
+				for (int i = 0; i < detailed.length; i++) {
+					nodes[i] = detailed[i].getRoot();
+				}
+				treeViewer.setInput(nodes);
+
+				// create and display chart
+				if (snapshots.length > 0) {
+					ChartEditorInput input = getChartInput(pid);
+					if (input == null) {
+						createChart(snapshots);
+					}
+					else {
+						displayChart(input);
+					}
+				}
 			}
 		}
 	}
@@ -306,12 +326,16 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		top.layout(true);
 	}
 
-	public void setSnapshots(MassifSnapshot[] snapshots) {
-		this.snapshots = snapshots;
+	public void setOutput(MassifOutput output) {
+		this.output = output;
 	}
 
+	public void setPid(Integer pid) {
+		this.pid = pid;
+	}
+	
 	public MassifSnapshot[] getSnapshots() {
-		return snapshots;
+		return output != null && pid != null ? output.getSnapshots(pid) : null;
 	}
 
 	public TableViewer getTableViewer() {
@@ -384,5 +408,16 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			}
 		}
 		return list.toArray(new MassifSnapshot[list.size()]);
+	}
+	
+	private ChartEditorInput getChartInput(Integer pid) {
+		ChartEditorInput result = null;
+		for (int i = 0; i < chartInputs.size(); i++) {
+			ChartEditorInput input = chartInputs.get(i);
+			if (input.getPid().equals(pid)) {
+				result = input;
+			}
+		}
+		return result;
 	}
 }

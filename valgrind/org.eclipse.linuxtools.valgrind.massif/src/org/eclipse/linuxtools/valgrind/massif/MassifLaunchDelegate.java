@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,7 +53,7 @@ implements IValgrindLaunchDelegate {
 	public static final String OPT_MAXSNAPSHOTS = "--max-snapshots"; //$NON-NLS-1$
 	public static final String OPT_ALIGNMENT = "--alignment"; //$NON-NLS-1$
 
-	protected MassifSnapshot[] snapshots;
+	protected MassifOutput output;
 
 	public void launch(ValgrindCommand command, ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor)
 	throws CoreException {
@@ -75,18 +74,18 @@ implements IValgrindLaunchDelegate {
 	}
 
 	protected void parseOutput(File[] massifOutputs) throws IOException {
-		ArrayList<MassifSnapshot> list = new ArrayList<MassifSnapshot>();
-		for (File output : massifOutputs) {
-			MassifParser parser = new MassifParser(output);
-			list.addAll(Arrays.asList(parser.getSnapshots()));
+		output = new MassifOutput();
+		for (File file : massifOutputs) {
+			MassifParser parser = new MassifParser(file);
+			output.putSnapshots(parser.getPid(), parser.getSnapshots());
 		}
-
-		snapshots = list.toArray(new MassifSnapshot[list.size()]);
 		
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		IValgrindToolView massifPart = view.getDynamicView();
 		if (massifPart instanceof MassifViewPart) {
-			((MassifViewPart) massifPart).setSnapshots(snapshots);
+			((MassifViewPart) massifPart).setOutput(output);
+			// initialize to first pid
+			((MassifViewPart) massifPart).setPid(output.getPids()[0]);
 		}
 	}
 

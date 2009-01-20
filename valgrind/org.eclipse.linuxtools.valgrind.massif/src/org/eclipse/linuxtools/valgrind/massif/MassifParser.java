@@ -42,18 +42,31 @@ public class MassifParser extends AbstractValgrindTextParser {
 	private static final String COLON = ":"; //$NON-NLS-1$
 	private static final String SPACE = " "; //$NON-NLS-1$
 	private static final String EQUALS = "="; //$NON-NLS-1$
+	private static final String DOT = "."; //$NON-NLS-1$
 
+	protected Integer pid;
 	protected MassifSnapshot[] snapshots;
 
 	public MassifParser(File inputFile) throws IOException {
 		ArrayList<MassifSnapshot> list = new ArrayList<MassifSnapshot>();
-		
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		String line;
 		MassifSnapshot snapshot = null;
 		String cmd = null;
 		TimeUnit unit = null;  
 		int n = 0;
+		
+		// retrive PID from filename
+		String filename = inputFile.getName();
+		String pidstr = filename.substring(MassifLaunchDelegate.OUT_PREFIX.length(), filename.indexOf(DOT));
+		if (isNumber(pidstr)) {
+			pid = new Integer(pidstr);
+		}
+		else {
+			throw new IOException(Messages.getString("MassifParser.Cannot_parse_PID")); //$NON-NLS-1$
+		}
+		
+		// parse contents of file
 		while ((line = br.readLine()) != null) {
 			if (line.startsWith(CMD + COLON)){
 				cmd = parseStrValue(line, COLON + SPACE);
@@ -190,6 +203,10 @@ public class MassifParser extends AbstractValgrindTextParser {
 		return result;
 	}
 
+	public Integer getPid() {
+		return pid;
+	}
+	
 	public MassifSnapshot[] getSnapshots() {
 		return snapshots;
 	}
