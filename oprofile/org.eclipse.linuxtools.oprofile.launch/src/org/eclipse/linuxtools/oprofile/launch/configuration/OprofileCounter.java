@@ -146,8 +146,7 @@ public class OprofileCounter
 			
 			
 			int maskValue =  config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(_number), -1);
-			if (maskValue > -1)
-				_daemonEvent.getEvent().getUnitMask().setMaskValue(maskValue);
+			_daemonEvent.getEvent().getUnitMask().setMaskValue(maskValue);	//-1 sets default
 			
 			_daemonEvent.setProfileKernel(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(_number), false));
 			_daemonEvent.setProfileUser(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(_number), false));
