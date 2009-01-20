@@ -93,9 +93,10 @@ public class StubbyGenerator {
 		buffer.append("License:        " + mainPackage.getLicense() + "\n");
 		buffer.append("URL:            " + mainPackage.getURL() + "\n");
 		if (withFetchScript) {
-			buffer
-					.append("Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2\n");
-			buffer.append("Source1:        " + packageName + "-fetch-src.sh\n");
+			String fetchScriptName = packageName + "-fetch-src.sh";
+			buffer.append("## sh ").append(fetchScriptName).append("\n");
+			buffer.append("Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2\n");
+			buffer.append("Source1:        " ).append(fetchScriptName).append("\n");
 		} else {
 			buffer.append("Source0:        FIXME\n");
 		}

@@ -1,4 +1,14 @@
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix #260875.
+	* build.properties: Add license header.
+	* plugin.properties: Fix copyright year.
+	* plugin.xml: Add license header.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(generateSpecfile): Add comment for the Source0 generation.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Fix copyright year.
+	
+
+2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260871.
 	* .settings/org.eclipse.jdt.core.prefs: Warn about missing javadoc.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java: Format and javadoc.
