@@ -51,15 +51,16 @@ public class MassifPidMenuAction extends Action implements IMenuCreator {
 					ActionContributionItem item = new ActionContributionItem(new Action("PID " + String.valueOf(pids[i]), IAction.AS_RADIO_BUTTON) { //$NON-NLS-1$
 						@Override
 						public void run() {
-							view.setPid(pid);						
+							MenuItem[] items = menu.getItems();
+							for (int j = 0; j < items.length; j++) {
+								IAction action = ((ActionContributionItem) items[j].getData()).getAction();
+								action.setChecked(false);
+							}
+							setChecked(true);
+							view.setPid(pid);
 							Display.getDefault().syncExec(new Runnable() {
 								public void run() {
 									view.refreshView();
-									MenuItem[] items = menu.getItems();
-									for (int j = 0; j < items.length; j++) {
-										items[j].setSelection(false);
-									}
-									setChecked(true);
 								}							
 							});
 						}
