@@ -1,3 +1,7 @@
+2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Remove unneeded <or>.
+
 2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable javadoc validity warnings.

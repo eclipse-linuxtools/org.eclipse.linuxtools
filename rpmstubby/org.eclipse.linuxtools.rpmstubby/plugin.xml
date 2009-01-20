@@ -44,13 +44,11 @@
                id="org.eclipse.linuxtools.rpmstubby.newAction">
          </action>
          <visibility>
-         <or>
             <objectState 
 	            name="projectNature" 
 	            value="org.eclipse.pde.FeatureNature"/>
-	            </or>
-	            </visibility>
-	            </objectContribution>
+	      </visibility>
+	  </objectContribution>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
