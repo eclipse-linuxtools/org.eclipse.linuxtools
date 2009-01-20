@@ -1,4 +1,9 @@
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix #260879.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(generatePrepSection): Add comment for FIXME in %setup call.
+	 
+2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260875.
 	* build.properties: Add license header.
 	* plugin.properties: Fix copyright year.

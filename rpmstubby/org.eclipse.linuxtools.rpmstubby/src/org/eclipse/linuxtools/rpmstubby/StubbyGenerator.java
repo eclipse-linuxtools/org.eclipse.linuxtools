@@ -185,7 +185,9 @@ public class StubbyGenerator {
 	}
 
 	private void generatePrepSection(StringBuilder buffer) {
-		buffer.append("\n%prep\n%setup -q -n FIXME\n\n");
+		buffer.append("\n%prep\n");
+		buffer.append("# Replace FIXME with the root directory name in Source0\n");
+		buffer.append("%setup -q -n FIXME\n\n");
 		if (!usePdebuildScript) {
 			buffer
 					.append("/bin/sh -x %{eclipse_base}/buildscripts/copy-platform SDK %{eclipse_base}\n");
