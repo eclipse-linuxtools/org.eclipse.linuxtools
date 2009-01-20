@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %bundle.name
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.oprofile.core.linux.x86_64;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Bundle-Vendor: %bundle.provider
+Bundle-Vendor: %bundleVendor
 Fragment-Host: org.eclipse.linuxtools.oprofile.core;bundle-version="0.1"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86_64))
