@@ -1,5 +1,14 @@
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(getDepsOrReqs): Use StringBuilder.
+	(getPackageFiles): Likewise.
+	(generateSpecfile): Likewise.
+	(getProvidesBundlesString): Likewise.
+	(generateFilesSections): Extract %files generation to method.
+
+2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceConstants.java: Switch default for with_gcj to false.
 
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
