@@ -122,7 +122,6 @@ public class Oprofile
 
 	/**
 	 * Get all the events that may be collected on the given counter.
-	 * (-1 for all counters)
 	 * @param num the counter number
 	 * @return an array of all valid events -- NEVER RETURNS NULL!
 	 */
