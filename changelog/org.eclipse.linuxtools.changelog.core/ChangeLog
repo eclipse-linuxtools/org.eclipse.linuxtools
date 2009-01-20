@@ -1,3 +1,11 @@
+2009-01-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #261694
+	
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (prepareChangeLog): When
+	looping through list of changes at end of method, check for null entries which will exist for all
+	changes that were recorded to the ChangeLog itself.
+
 2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java 

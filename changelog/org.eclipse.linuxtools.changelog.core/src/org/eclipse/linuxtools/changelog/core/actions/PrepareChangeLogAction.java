@@ -356,8 +356,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		int unitwork = 250 / patchFileInfoList.length;
 		for (PatchFile pf: patchFileInfoList) {
 			// for each file
-			String[] funcGuessList = guessFunctionNames(pf);
-			outputMultipleEntryChangeLog(pf, funcGuessList);
+			if (pf != null) { // any ChangeLog changes will have null entries for them
+				String[] funcGuessList = guessFunctionNames(pf);
+				outputMultipleEntryChangeLog(pf, funcGuessList);
+			}
 			monitor.worked(unitwork);
 		}
 	}
