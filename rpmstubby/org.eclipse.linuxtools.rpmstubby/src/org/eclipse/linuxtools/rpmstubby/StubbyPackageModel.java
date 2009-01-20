@@ -35,6 +35,10 @@ import org.eclipse.update.core.model.PluginEntryModel;
 import org.eclipse.update.core.model.URLEntryModel;
 import org.xml.sax.SAXException;
 
+/**
+ * Internal representation of the package model.
+ *
+ */
 public class StubbyPackageModel {
 
 	private static final String valueNoFoundMessage = "FIXME";
@@ -44,6 +48,10 @@ public class StubbyPackageModel {
 	private List<String> includedFeatureIdentifiers;
 	private List<String> includedFeatureIdentifiersAdded;
 
+	/**
+	 * Creates the package model from the given feature file.
+	 * @param featureFile The feature.xml file to use.
+	 */
 	public StubbyPackageModel(IFile featureFile) {
 		this.featurePropertiesFile = featureFile.getLocation()
 				.removeLastSegments(1).toOSString()
@@ -61,6 +69,10 @@ public class StubbyPackageModel {
 		}
 	}
 
+	/**
+	 * Fills the package model from the parsed data from the feature.xml file.
+	 * @param packageModel The package model to fill.
+	 */
 	public void populatePackageData(IPackage packageModel) {
 		packageModel.setName(getFeatureName());
 		packageModel.setVersion(getVersion());
@@ -70,12 +82,20 @@ public class StubbyPackageModel {
 		packageModel.setRequires(getRequires());
 	}
 
+	/**
+	 * Fills the package preamble data.
+	 * @param packagePreambleModel The container to fill.
+	 */
 	public void populatePackagePreambleData(
 			IPackagePreamble packagePreambleModel) {
 		packagePreambleModel.setURL(getURL());
 		packagePreambleModel.setLicense(getLicense());
 	}
 
+	/**
+	 * Returns the list of all feature.xml files imported in the root feature.
+	 * @return The list of all feature.xml files.
+	 */
 	public List<IFile> getIncudedFeatures() {
 		FeatureModelFactory featureModelFactory = new FeatureModelFactory();
 		IIncludedFeatureReference[] includedFeatureReferences = featureModel
@@ -120,6 +140,10 @@ public class StubbyPackageModel {
 		return includedFeatureFiles;
 	}
 
+	/**
+	 * Checks whether all the features are included.
+	 * @return True if all are included, false otherwise.
+	 */
 	public boolean isAllIncludedFeatureFound() {
 		if (includedFeatureFiles.size() == includedFeatureIdentifiers.size())
 			return true;
@@ -127,6 +151,10 @@ public class StubbyPackageModel {
 			return false;
 	}
 
+	/**
+	 * Returns string representation of all the missing features.
+	 * @return The missing features separated by ,
+	 */
 	public String getMissingFeaturesAsString() {
 		String toRet = "";
 		for (String includedFeatureIdentifier: includedFeatureIdentifiers) {
@@ -244,6 +272,11 @@ public class StubbyPackageModel {
 				provide.setVersion(pluginVersion);
 				providesList.add(provide);
 		}
+		PackageItem featureItem = new PackageItem();
+		featureItem.setName(featureModel.getFeatureIdentifier());
+		featureItem.setOperator("=");
+		featureItem.setVersion(featureModel.getFeatureVersion());
+		providesList.add(featureItem);
 		return providesList;
 	}
 

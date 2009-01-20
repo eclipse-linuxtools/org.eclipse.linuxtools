@@ -21,7 +21,7 @@ import org.osgi.framework.BundleContext;
  */
 public class StubbyPlugin extends AbstractUIPlugin {
 
-	// The plug-in ID
+	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpmstubby";
 
 	// The shared instance

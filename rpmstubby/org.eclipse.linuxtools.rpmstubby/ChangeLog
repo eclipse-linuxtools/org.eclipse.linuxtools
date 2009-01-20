@@ -1,4 +1,20 @@
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix #260871.
+	* .settings/org.eclipse.jdt.core.prefs: Warn about missing javadoc.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java: Format and javadoc.
+	(getProvidesBundlesString): Handle properly *-feature named features.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	(getMissingFeaturesAsString): Add javadoc.
+	(getIncudedFeatures): Likewise.
+	(isAllIncludedFeatureFound): Likewise.
+	(populatePackageData): Likewise.
+	(getProvides): Add the feature to the provides.
+	(populatePackagePreambleData): Add javadoc.
+	(StubbyPackageModel): Add javadoc.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPlugin.java (PLUGIN_ID): Add javadoc.
+	
+	
+2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable warnings for missing javadoc tags.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java 
