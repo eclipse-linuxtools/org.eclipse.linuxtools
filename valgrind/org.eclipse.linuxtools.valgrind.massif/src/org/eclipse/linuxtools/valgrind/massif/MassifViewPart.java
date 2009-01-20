@@ -71,6 +71,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	+ ".treeAction"; //$NON-NLS-1$
 	public static final String CHART_ACTION = MassifPlugin.PLUGIN_ID
 	+ ".chartAction"; //$NON-NLS-1$
+	public static final String PID_ACTION = MassifPlugin.PLUGIN_ID
+	+ ".pidAction"; //$NON-NLS-1$
 
 	protected MassifOutput output;
 	protected Integer pid;
@@ -211,6 +213,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 	public IAction[] getToolbarActions() {
 		pidAction = new MassifPidMenuAction(this);
+		pidAction.setId(PID_ACTION);
 		
 		chartAction = new Action(
 				Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
