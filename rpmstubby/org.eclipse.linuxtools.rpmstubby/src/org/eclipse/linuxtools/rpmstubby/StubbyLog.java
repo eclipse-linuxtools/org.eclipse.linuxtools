@@ -85,7 +85,7 @@ public class StubbyLog {
     *           current locale.
     * @param exception A low-level exception, or <code>null</code>
     *           if not applicable.
-    * @return, the status object (not <code>null</code>).
+    * @return the status object (not <code>null</code>).
     */
    public static IStatus createStatus(int severity, int code,
          String message, Throwable exception) {

@@ -75,6 +75,7 @@ public class StubbyPlugin extends AbstractUIPlugin {
 	
 	/**
 	 * Returns active shell.
+	 * @return The active workbench shell.
 	 */
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
