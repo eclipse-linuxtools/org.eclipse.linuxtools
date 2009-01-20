@@ -54,11 +54,7 @@ public class TestCheckEventsParse extends TestCase {
 		
 		// Create XMLReader
         SAXParserFactory factory = SAXParserFactory.newInstance();
-        try {
-			reader = factory.newSAXParser().getXMLReader();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		reader = factory.newSAXParser().getXMLReader();
 		
 		// Set content/error handlers
 		reader.setContentHandler(handler);
