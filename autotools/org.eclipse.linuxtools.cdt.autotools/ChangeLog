@@ -1,3 +1,10 @@
+2009-01-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #261717
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfTextHover.java (getMacroList): 
+	Don't bother processing macros if the macro document turns out to be null.
+
 2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #261257

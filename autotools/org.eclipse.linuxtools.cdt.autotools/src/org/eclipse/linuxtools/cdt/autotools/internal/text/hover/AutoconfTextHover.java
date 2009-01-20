@@ -356,7 +356,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 		for (int ix = 0; ix < doc.length; ++ix) {
 			Document macroDoc = doc[ix];
 			ArrayList list = (ArrayList)acHoverMacros.get(macroDoc);
-			if (list == null) {
+			if (list == null && macroDoc != null) {
 				list = new ArrayList();
 				NodeList nl = macroDoc.getElementsByTagName("macro"); //$NON-NLS-1$
 				for (int i = 0; i < nl.getLength(); ++i) {
