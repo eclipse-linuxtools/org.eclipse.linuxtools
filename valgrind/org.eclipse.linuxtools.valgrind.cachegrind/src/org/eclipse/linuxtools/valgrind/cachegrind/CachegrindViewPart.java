@@ -11,17 +11,25 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind;
 
+import org.eclipse.cdt.core.model.CModelException;
+import org.eclipse.cdt.core.model.ISourceRange;
+import org.eclipse.cdt.core.model.ISourceReference;
 import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindLine;
@@ -36,6 +44,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -76,6 +85,46 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		viewer.setContentProvider(new CachegrindTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
 		viewer.setAutoExpandLevel(2);
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				Object selection = ((StructuredSelection) event.getSelection()).getFirstElement();
+				String path = null;
+				int line = 0;
+				if (selection instanceof CachegrindFile) {
+					path = ((CachegrindFile) selection).getPath();
+				}
+				else if (selection instanceof CachegrindLine) {
+					CachegrindLine element = (CachegrindLine) selection;
+					CachegrindFile file = (CachegrindFile) element.getParent().getParent();
+					path = file.getPath();
+					line = element.getLine();
+				}
+				else if (selection instanceof CachegrindFunction) {
+					CachegrindFunction function = (CachegrindFunction) selection;
+					path = ((CachegrindFile) function.getParent()).getPath();
+					if (function.getModel() instanceof ISourceReference) {
+						ISourceReference model = (ISourceReference) function.getModel();
+						try {
+							ISourceRange sr = model.getSourceRange();
+							if (sr != null) {
+								line = sr.getStartLine();
+							}
+						} catch (CModelException e) {
+							e.printStackTrace();
+						}						
+					}
+				}
+				if (path != null) {
+					try {
+						ProfileUIUtils.openEditorAndSelect(path, line);
+					} catch (PartInitException e) {
+						e.printStackTrace();
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
+				}
+			}			
+		});
 	}
 
 	@Override
