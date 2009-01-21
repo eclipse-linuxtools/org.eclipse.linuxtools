@@ -128,9 +128,9 @@
 			<minimum>500</minimum>
 			<unit-mask>
 				<type>notavalidtype</type>
-				<default>0</default>
+				<default>1</default>
 				<mask>
-					<value>0</value>
+					<value>1</value>
 					<description>No unit mask</description>
 				</mask>
 			</unit-mask>

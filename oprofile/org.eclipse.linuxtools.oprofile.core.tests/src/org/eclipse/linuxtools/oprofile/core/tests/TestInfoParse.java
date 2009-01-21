@@ -138,7 +138,7 @@ public class TestInfoParse extends TestCase {
 		assertEquals(0, ctr0_e3_mask.getMaskFromIndex(0));
 		assertEquals("No unit mask", ctr0_e3_mask.getText(0)); //$NON-NLS-1$
 
-		assertEquals(0, ctr1_e1_mask.getMaskValue());
+		assertEquals(1, ctr1_e1_mask.getMaskValue());
 		assertEquals(OpUnitMask.INVALID, ctr1_e1_mask.getType());
 		assertEquals(1, ctr1_e1_mask.getNumMasks());
 		assertEquals(-1, ctr1_e1_mask.getMaskFromIndex(0));		//-1 because of invalid mask type
@@ -171,5 +171,68 @@ public class TestInfoParse extends TestCase {
 	
 	public void testUnitMask() throws Exception {
 		//test types of masks setting/unsetting
+		OpUnitMask mask_bit1 = info.getEvents(0)[1].getUnitMask(),
+					mask_bit2 = info.getEvents(1)[1].getUnitMask(),
+					mask_exl = info.getEvents(0)[0].getUnitMask(),
+					mask_mand = info.getEvents(0)[2].getUnitMask(),
+					mask_invalid = info.getEvents(1)[0].getUnitMask();
+		
+		//bitmask 1 test
+		assertEquals(15, mask_bit1.getMaskValue());
+		mask_bit1.setMaskValue(0);
+		mask_bit1.setMaskFromIndex(0);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(1, mask_bit1.getMaskValue());
+		
+		mask_bit1.setMaskFromIndex(1);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(3, mask_bit1.getMaskValue());
+		
+		mask_bit1.setMaskFromIndex(2);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(7, mask_bit1.getMaskValue());
+		
+		mask_bit1.setMaskFromIndex(3);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(3));
+		assertEquals(15, mask_bit1.getMaskValue());
+		
+		mask_bit1.unSetMaskFromIndex(1);
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		mask_bit1.unSetMaskFromIndex(2);
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(2));
+		mask_bit1.unSetMaskFromIndex(3);
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
+		mask_bit1.setMaskFromIndex(2);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(5, mask_bit1.getMaskValue());
+		
+		mask_bit1.unSetMaskFromIndex(1);
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		mask_bit1.unSetMaskFromIndex(3);
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
+		assertEquals(5, mask_bit1.getMaskValue());
+		
+		mask_bit1.setMaskFromIndex(2);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(5, mask_bit1.getMaskValue());
+		
+		mask_bit1.setMaskValue(OpUnitMask.SET_DEFAULT_MASK);
+		assertEquals(15, mask_bit1.getMaskValue());
+
+		//bitmask 2 test
+			/* bug related to overlapping bitmasks eclipse bz 261917 */
+		
+		//exclusive test
+		
+		
+		//mandatory test
+		
+		
+		//invalid test
+		assertEquals(1, mask_invalid.getMaskValue());
+		assertEquals(-1, mask_invalid.getMaskFromIndex(0));
+		assertEquals(false, mask_invalid.isMaskSetFromIndex(0));
+		mask_invalid.setMaskFromIndex(0);
+		assertEquals(1, mask_invalid.getMaskValue());
 	}
 }
