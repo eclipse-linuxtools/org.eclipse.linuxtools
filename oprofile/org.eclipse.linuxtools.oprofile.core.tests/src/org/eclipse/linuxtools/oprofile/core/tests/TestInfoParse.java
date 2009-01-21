@@ -27,8 +27,10 @@ import org.xml.sax.XMLReader;
 
 public class TestInfoParse extends TestCase {
 	private static final String REL_PATH_TO_TEST_XML = "resources/test_info.xml"; //$NON-NLS-1$
+	private static final String REL_PATH_TO_TEST_XML_0CTR = "resources/test_info_0ctrs.xml"; //$NON-NLS-1$
 	
 	private OpInfo info; 
+	private OpInfo info_0ctr; 
 
 	
 	public TestInfoParse() {
@@ -51,6 +53,16 @@ public class TestInfoParse extends TestCase {
 		reader.setErrorHandler(handler);
 		
 		String filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
+		reader.parse(new InputSource(new FileReader(filePath)));
+		
+		info_0ctr = new OpInfo();
+		handler = OprofileSAXHandler.getInstance(info_0ctr);
+		
+		// Set content/error handlers
+		reader.setContentHandler(handler);
+		reader.setErrorHandler(handler);
+		
+		filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML_0CTR), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 	}
 	
@@ -100,7 +112,7 @@ public class TestInfoParse extends TestCase {
 					ctr1_e2_mask = ctr1_e2.getUnitMask(), ctr1_e3_mask = ctr1_e3.getUnitMask();
 		assertEquals(0, ctr0_e1_mask.getMaskValue());
 		assertEquals(OpUnitMask.EXCLUSIVE, ctr0_e1_mask.getType());
-		assertEquals(3, ctr0_e1_mask.numMasks());
+		assertEquals(3, ctr0_e1_mask.getNumMasks());
 		assertEquals(0, ctr0_e1_mask.getMaskFromIndex(0));
 		assertEquals("Unhalted core cycles", ctr0_e1_mask.getText(0)); //$NON-NLS-1$
 		assertEquals(1, ctr0_e1_mask.getMaskFromIndex(1));
@@ -110,7 +122,7 @@ public class TestInfoParse extends TestCase {
 
 		assertEquals(15, ctr0_e2_mask.getMaskValue());
 		assertEquals(OpUnitMask.BITMASK, ctr0_e2_mask.getType());
-		assertEquals(4, ctr0_e2_mask.numMasks());
+		assertEquals(4, ctr0_e2_mask.getNumMasks());
 		assertEquals(1, ctr0_e2_mask.getMaskFromIndex(0));
 		assertEquals("ANY	Memory accesses that missed the DTLB.", ctr0_e2_mask.getText(0)); //$NON-NLS-1$
 		assertEquals(2, ctr0_e2_mask.getMaskFromIndex(1));
@@ -122,19 +134,19 @@ public class TestInfoParse extends TestCase {
 
 		assertEquals(0, ctr0_e3_mask.getMaskValue());
 		assertEquals(OpUnitMask.MANDATORY, ctr0_e3_mask.getType());
-		assertEquals(1, ctr0_e3_mask.numMasks());
+		assertEquals(1, ctr0_e3_mask.getNumMasks());
 		assertEquals(0, ctr0_e3_mask.getMaskFromIndex(0));
 		assertEquals("No unit mask", ctr0_e3_mask.getText(0)); //$NON-NLS-1$
 
 		assertEquals(0, ctr1_e1_mask.getMaskValue());
 		assertEquals(OpUnitMask.INVALID, ctr1_e1_mask.getType());
-		assertEquals(1, ctr1_e1_mask.numMasks());
+		assertEquals(1, ctr1_e1_mask.getNumMasks());
 		assertEquals(-1, ctr1_e1_mask.getMaskFromIndex(0));		//-1 because of invalid mask type
 		assertEquals("No unit mask", ctr1_e1_mask.getText(0)); //$NON-NLS-1$
 		
 		assertEquals(112, ctr1_e2_mask.getMaskValue());
 		assertEquals(OpUnitMask.BITMASK, ctr1_e2_mask.getType());
-		assertEquals(5, ctr1_e2_mask.numMasks());
+		assertEquals(5, ctr1_e2_mask.getNumMasks());
 		assertEquals(192, ctr1_e2_mask.getMaskFromIndex(0));
 		assertEquals("core: all cores", ctr1_e2_mask.getText(0)); //$NON-NLS-1$
 		assertEquals(64, ctr1_e2_mask.getMaskFromIndex(1));
@@ -148,11 +160,13 @@ public class TestInfoParse extends TestCase {
 		
 		assertEquals(64, ctr1_e3_mask.getMaskValue());
 		assertEquals(OpUnitMask.EXCLUSIVE, ctr1_e3_mask.getType());
-		assertEquals(2, ctr1_e3_mask.numMasks());
+		assertEquals(2, ctr1_e3_mask.getNumMasks());
 		assertEquals(192, ctr1_e3_mask.getMaskFromIndex(0));
 		assertEquals("All cores", ctr1_e3_mask.getText(0)); //$NON-NLS-1$
 		assertEquals(64, ctr1_e3_mask.getMaskFromIndex(1));
 		assertEquals("This core", ctr1_e3_mask.getText(1)); //$NON-NLS-1$
+		
+		assertEquals(0, info_0ctr.getNrCounters());
 	}
 	
 	public void testUnitMask() throws Exception {
