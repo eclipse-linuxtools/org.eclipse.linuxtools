@@ -27,6 +27,7 @@ public class CheckEventsProcessor extends XMLProcessor {
 	private static final String _RESULT_TAG = "result"; //$NON-NLS-1$
 	private static final String _CHECK_EVENTS_TAG ="check-events"; //$NON-NLS-1$
 
+	private static final String _EVENT_OK = "ok"; //$NON-NLS-1$
 	private static final String _INVALID_EVENT = "invalid-event"; //$NON-NLS-1$
 	private static final String _INVALID_UMASK = "invalid-um"; //$NON-NLS-1$
 	private static final String _INVALID_COUNTER = "invalid-counter"; //$NON-NLS-1$
@@ -45,8 +46,10 @@ public class CheckEventsProcessor extends XMLProcessor {
 	 */
 	public void endElement(String name, Object callData) {
 		if (name.equals(_RESULT_TAG)) {
-			if (_characters.equals(_INVALID_EVENT)) {
-				_result = INVALID_EVENT;
+			if (_characters.equals(_EVENT_OK)) {
+				_result = EVENT_OK;
+			} else if (_characters.equals(_INVALID_EVENT)) {
+					_result = INVALID_EVENT;
 			} else if (_characters.equals(_INVALID_UMASK)) {
 				_result = INVALID_UMASK;
 			} else if (_characters.equals(_INVALID_COUNTER)) {
