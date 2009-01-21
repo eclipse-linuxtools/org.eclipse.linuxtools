@@ -74,9 +74,10 @@ public class OpUnitMask {
 
 	/**
 	 * Set the descriptions and values for this unitmask's mask options.
+	 * Only used from the XML parsers.
 	 * @param masks a list of all the mask options
 	 */
-	public void setMaskDescriptions(MaskInfo[] masks) {
+	public void _setMaskDescriptions(MaskInfo[] masks) {
 		_maskOptionDescriptions = new String[masks.length];
 		_maskOptionValues = new int[masks.length];
 
@@ -89,18 +90,20 @@ public class OpUnitMask {
 	/**
 	 * Sets the default value for this unitmask, and initializes
 	 *   the current unitmask value to this default.
+	 * Only used from the XML parsers.
 	 * @param theDefault the default value
 	 */
-	public void setDefault(int theDefault) {
+	public void _setDefault(int theDefault) {
 		_defaultMask = theDefault;
 		setDefaultMaskValue();	
 	}
 	
 	/**
 	 * Sets the unitmask type.
+	 * Only used from the XML parsers.
 	 * @param type the type
 	 */
-	public void setType(int type) {
+	public void _setType(int type) {
 		_maskType = type;
 	}
 
