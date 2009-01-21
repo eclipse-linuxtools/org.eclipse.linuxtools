@@ -668,7 +668,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			 */
 			public void displayEvent(OpEvent oe) {
 				OpUnitMask mask = oe.getUnitMask();
-				int totalMasks = mask.numMasks();
+				int totalMasks = mask.getNumMasks();
 				
 				if (_maskListComp != null) {
 					_maskListComp.dispose();
