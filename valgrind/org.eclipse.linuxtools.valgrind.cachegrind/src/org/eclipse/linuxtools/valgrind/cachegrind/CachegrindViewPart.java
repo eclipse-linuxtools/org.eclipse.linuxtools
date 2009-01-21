@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.valgrind.cachegrind;
 
 import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -39,19 +41,20 @@ import org.eclipse.ui.part.ViewPart;
 
 public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
-	protected CachegrindOutput output;
+	protected CachegrindOutput[] outputs;
 	protected TreeViewer viewer;
 
-	protected static final int COLUMN_SIZE = 50;
+	protected static final int COLUMN_SIZE = 75;
 	protected CellLabelProvider labelProvider;
 	
 	protected static Image FUNC_IMG = CachegrindPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").createImage(); //$NON-NLS-1$
-	protected static Image LINE_IMG = CachegrindPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/line.gif").createImage(); //$NON-NLS-1$
 
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
-		top.setLayout(new GridLayout());
+		GridLayout topLayout = new GridLayout();
+		topLayout.marginHeight = topLayout.marginWidth = 0;
+		top.setLayout(topLayout);
 		top.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		viewer = new TreeViewer(top, SWT.SINGLE | SWT.BORDER
@@ -72,6 +75,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
 		viewer.setContentProvider(new CachegrindTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
+		viewer.setAutoExpandLevel(2);
 	}
 
 	@Override
@@ -84,9 +88,8 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	}
 
 	public void refreshView() {
-		if (output != null) {
-			viewer.setInput(output);
-			String[] events = output.getEvents();
+		if (outputs != null) {
+			String[] events = outputs[0].getEvents();
 			for (int i = 0; i < events.length; i++) {
 				TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.NONE);
 				column.getColumn().setText(events[i]);
@@ -94,22 +97,30 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 				column.getColumn().setResizable(true);
 				column.setLabelProvider(labelProvider);
 			}
+			viewer.setInput(outputs);
 			viewer.getTree().layout(true);
 		}
 	}
 
-	public void setOutput(CachegrindOutput output) {
-		this.output = output;
+	public void setOutputs(CachegrindOutput[] outputs) {
+		this.outputs = outputs;
 	}
 
-	public CachegrindOutput getOutput() {
-		return output;
+	public CachegrindOutput[] getOutputs() {
+		return outputs;
 	}
 
 	protected class CachegrindTreeContentProvider implements ITreeContentProvider {
 
 		public Object[] getChildren(Object parentElement) {
-			return ((ICachegrindElement) parentElement).getChildren();
+			Object[] result = null;
+			if (parentElement instanceof CachegrindOutput[]) {
+				result = (CachegrindOutput[]) parentElement;
+			}
+			else if (parentElement instanceof ICachegrindElement) {
+				result = ((ICachegrindElement) parentElement).getChildren();
+			}
+			return result;
 		}
 
 		public Object getParent(Object element) {
@@ -171,11 +182,21 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 				}
 				else if (element instanceof CachegrindLine) {
 					cell.setText(NLS.bind(Messages.getString("CachegrindViewPart.line"), ((CachegrindLine) element).getLine())); //$NON-NLS-1$
-					cell.setImage(LINE_IMG);
+					cell.setImage(DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_INSTRUCTION_POINTER_TOP));
 				}
+				else if (element instanceof CachegrindOutput) {
+					cell.setText(NLS.bind(Messages.getString("CachegrindViewPart.Total_PID"), ((CachegrindOutput) element).getPid())); //$NON-NLS-1$
+					cell.setImage(DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_REGISTER));
+				}
+			}
+			else if (element instanceof CachegrindFunction) {
+				cell.setText(String.valueOf(((CachegrindFunction) element).getTotals()[index - 1]));
 			}
 			else if (element instanceof CachegrindLine) {
 				cell.setText(String.valueOf(((CachegrindLine) element).getValues()[index - 1]));
+			}
+			else if (element instanceof CachegrindOutput) {
+				cell.setText(String.valueOf(((CachegrindOutput) element).getSummary()[index - 1]));
 			}
 		}
 

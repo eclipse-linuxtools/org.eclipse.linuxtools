@@ -14,14 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.cdt.core.model.CoreModel;
-import org.eclipse.cdt.ui.CElementLabelProvider;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.swt.graphics.Image;
 
 public class CachegrindFile implements ICachegrindElement {
 	private static final String UNKNOWN_FILE = "???"; //$NON-NLS-1$
@@ -62,11 +58,6 @@ public class CachegrindFile implements ICachegrindElement {
 		return getFunctions();
 	}
 
-	public Image getImage(int index) {
-		//		return index == 0 ? cLabelProvider.getImage(model) : null;
-		return null;
-	}
-
 	public IAdaptable getModel() {
 		return model;
 	}
@@ -79,13 +70,4 @@ public class CachegrindFile implements ICachegrindElement {
 		return parent;
 	}
 
-	public String getText(int index) {
-		//		String text = path;
-		//		if (!path.equals(UNKNOWN_FILE)) {
-		//			IPath pathObj = Path.fromOSString(path);
-		//			text = pathObj.lastSegment();
-		//		}
-		//		return index == 0 ? cLabelProvider.getText(model) : null;
-		return null;
-	}
 }

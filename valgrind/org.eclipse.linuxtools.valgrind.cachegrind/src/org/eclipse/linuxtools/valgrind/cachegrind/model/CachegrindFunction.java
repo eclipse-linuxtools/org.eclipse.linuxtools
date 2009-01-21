@@ -18,12 +18,12 @@ import org.eclipse.cdt.core.model.IFunction;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.swt.graphics.Image;
 
 public class CachegrindFunction implements ICachegrindElement {
 	protected CachegrindFile parent;
 	protected String name;
 	protected List<CachegrindLine> lines;
+	protected long[] totals;
 	
 	protected IAdaptable model;
 	
@@ -53,6 +53,13 @@ public class CachegrindFunction implements ICachegrindElement {
 	}
 	
 	public void addLine(CachegrindLine line) {
+		long[] values = line.getValues();
+		if (totals == null) {
+			totals = new long[values.length];
+		}
+		for (int i = 0; i < values.length; i++) {
+			totals[i] += values[i];
+		}
 		lines.add(line);
 	}
 	
@@ -64,23 +71,25 @@ public class CachegrindFunction implements ICachegrindElement {
 		return model;
 	}
 	
+	public long[] getTotals() {
+		return totals;
+	}
+	
 	public CachegrindLine[] getLines() {
 		return lines.toArray(new CachegrindLine[lines.size()]);
 	}
-
+	
 	public ICachegrindElement[] getChildren() {
-		return getLines();
-	}
-
-	public Image getImage(int index) {
-		return null;
+		ICachegrindElement[] children = null;
+		// if there is only a summary don't return any children
+		if (lines.get(0).getLine() > 0) {
+			children = getLines();
+		}
+		return children;
 	}
 
 	public ICachegrindElement getParent() {
 		return parent;
 	}
 
-	public String getText(int index) {
-		return index == 0 ? name : null;
-	}
 }

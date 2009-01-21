@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Image;
 public class CachegrindOutput implements ICachegrindElement {
 	protected List<CachegrindDescription> descriptions;
 	protected List<CachegrindFile> files;
+	protected Integer pid;
 	protected String cmd;
 	protected String[] events;
 	protected long[] summary;
@@ -29,9 +30,7 @@ public class CachegrindOutput implements ICachegrindElement {
 	}
 	
 	public void addDescription(CachegrindDescription desc) {
-		if (!descriptions.contains(desc)) { // in case of another output file 
-			descriptions.add(desc);
-		}
+		descriptions.add(desc);
 	}
 	
 	public void addFile(CachegrindFile file) {
@@ -47,14 +46,11 @@ public class CachegrindOutput implements ICachegrindElement {
 	}
 	
 	public void setSummary(long[] summary) {
-		if (this.summary == null) {
-			this.summary = summary;
-		}
-		else { // another output file
-			for (int i = 0; i < summary.length; i++) {
-				this.summary[i] += summary[i];
-			}
-		}
+		this.summary = summary;
+	}
+	
+	public void setPid(Integer pid) {
+		this.pid = pid;
 	}
 	
 	public String getCmd() {
@@ -91,6 +87,10 @@ public class CachegrindOutput implements ICachegrindElement {
 
 	public String getText(int index) {
 		return null;
+	}
+	
+	public Integer getPid() {
+		return pid;
 	}
 	
 //	/**

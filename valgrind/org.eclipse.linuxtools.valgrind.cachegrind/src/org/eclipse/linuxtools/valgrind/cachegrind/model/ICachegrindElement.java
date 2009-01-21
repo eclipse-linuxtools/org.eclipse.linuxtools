@@ -10,15 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind.model;
 
-import org.eclipse.swt.graphics.Image;
-
 public interface ICachegrindElement {
 	
 	public ICachegrindElement getParent();
 	
 	public ICachegrindElement[] getChildren();
 	
-	public String getText(int index);
-	
-	public Image getImage(int index);
 }

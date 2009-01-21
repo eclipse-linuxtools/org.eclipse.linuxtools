@@ -50,7 +50,8 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 
 	public void parse(CachegrindOutput output, File cgOut) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(cgOut));
-
+		output.setPid(parsePID(cgOut.getName(), CachegrindLaunchDelegate.OUT_PREFIX));
+		
 		String line;
 		CachegrindFile curFl = null;
 		CachegrindFunction curFn = null;

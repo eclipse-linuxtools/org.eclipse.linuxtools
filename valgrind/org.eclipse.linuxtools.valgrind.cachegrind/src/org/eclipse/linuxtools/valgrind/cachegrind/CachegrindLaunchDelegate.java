@@ -30,8 +30,8 @@ import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 
 public class CachegrindLaunchDelegate extends
 		ValgrindLaunchConfigurationDelegate implements IValgrindLaunchDelegate {
-	protected static final String OUT_PREFIX = "cachegrind.out"; //$NON-NLS-1$
-	protected static final String OUT_FILE = OUT_PREFIX + ".%p"; //$NON-NLS-1$
+	protected static final String OUT_PREFIX = "cachegrind_"; //$NON-NLS-1$
+	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter CACHEGRIND_FILTER = new FileFilter() {
 		public boolean accept(File pathname) {
 			return pathname.getName().startsWith(OUT_PREFIX);
@@ -69,16 +69,17 @@ public class CachegrindLaunchDelegate extends
 	}
 
 	protected void parseOutput(File[] cachegrindOutputs) throws IOException {
-		CachegrindOutput output = new CachegrindOutput();
+		CachegrindOutput[] outputs = new CachegrindOutput[cachegrindOutputs.length];
 		
 		for (int i = 0; i < cachegrindOutputs.length; i++) {
-			CachegrindParser.getParser().parse(output, cachegrindOutputs[i]);
+			outputs[i] = new CachegrindOutput();
+			CachegrindParser.getParser().parse(outputs[i], cachegrindOutputs[i]);
 		}
 		
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		IValgrindToolView cachegrindPart = view.getDynamicView();
 		if (cachegrindPart instanceof CachegrindViewPart) {
-			((CachegrindViewPart) cachegrindPart).setOutput(output);
+			((CachegrindViewPart) cachegrindPart).setOutputs(outputs);
 		}
 	}
 
