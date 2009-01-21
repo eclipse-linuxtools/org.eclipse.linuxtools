@@ -220,7 +220,7 @@ public class OpUnitMask {
 	 * Returns the number of mask options in this unitmask.
 	 * @return the number of mask options
 	 */
-	public int numMasks() {
+	public int getNumMasks() {
 		return _maskOptionDescriptions.length;
 	}
 
