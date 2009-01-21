@@ -64,12 +64,12 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 						selection.getOffset() + selection.getLength());
 				if (linesContentCommentChar(content)) {
 					if (selection.getStartLine() == selection.getEndLine()) {
-						selectedContent = "#" + content;
+						selectedContent = "#" + content; //$NON-NLS-1$
 					} else
-						selectedContent = "#" + content.replaceAll("\n", "\n#");
+						selectedContent = "#" + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				} else {
-					selectedContent = content.replaceFirst("#", "").replaceAll(
-							"\n#", "\n");
+					selectedContent = content.replaceFirst("#", "").replaceAll( //$NON-NLS-1$ //$NON-NLS-2$
+							"\n#", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				sb.append(selectedContent);
 				sb.append(document.get().substring(
@@ -98,7 +98,7 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 		boolean ret = false;
 		try {
 			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("#"))
+				if (line.startsWith("#")) //$NON-NLS-1$
 					ret = false;
 				else
 					return true;

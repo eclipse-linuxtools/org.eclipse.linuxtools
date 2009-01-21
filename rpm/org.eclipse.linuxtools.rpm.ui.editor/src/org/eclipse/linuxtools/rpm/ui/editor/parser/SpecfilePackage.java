@@ -20,7 +20,7 @@ public class SpecfilePackage extends SpecfileSection {
 	private String packageName;
 
 	public SpecfilePackage(String packageName, Specfile specfile) {
-		super("package", specfile);
+		super("package", specfile); //$NON-NLS-1$
 		super.setSpecfile(specfile);
 		setPackageName(packageName);
         setPackage(this);

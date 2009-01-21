@@ -41,8 +41,8 @@ import com.ibm.icu.util.StringTokenizer;
  */
 public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector {
 
-	private static final String PATCH_IDENTIFIER = "%patch";
-	private static final String SOURCE_IDENTIFIER = "%{SOURCE";
+	private static final String PATCH_IDENTIFIER = "%patch"; //$NON-NLS-1$
+	private static final String SOURCE_IDENTIFIER = "%{SOURCE"; //$NON-NLS-1$
 	private Specfile specfile;
 
 	public SpecfileElementHyperlinkDetector(Specfile specfile) {
@@ -75,12 +75,12 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 		int offsetInLine = offset - lineInfo.getOffset();
 
 		StringTokenizer tokens = new StringTokenizer(line);
-		String word = "";
+		String word = ""; //$NON-NLS-1$
 		int tempLineOffset = 0;
 		int wordOffsetInLine = 0;
 		while (tokens.hasMoreTokens()) {
 			String tempWord = tokens.nextToken();
-			Pattern defineRegexp = Pattern.compile("%\\{(.*?)\\}");
+			Pattern defineRegexp = Pattern.compile("%\\{(.*?)\\}"); //$NON-NLS-1$
 			Matcher fit = defineRegexp.matcher(tempWord);
 			while (fit.find()){
 				if ((fit.start() <= offsetInLine) && (offsetInLine <= fit.end())){

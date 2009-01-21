@@ -24,18 +24,19 @@ import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
+import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.SectionRule;
 
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 
-	public final static String SPEC_PREP = "__spec_prep";
-	public final static String SPEC_SCRIPT = "__spec_script";
-	public final static String SPEC_FILES = "__spec_files";
-	public final static String SPEC_CHANGELOG = "__spec_changelog";
-	public final static String SPEC_PACKAGES = "__spec_packages";
-	public final static String SPEC_GROUP = "__spec_group";
+	public final static String SPEC_PREP = "__spec_prep"; //$NON-NLS-1$
+	public final static String SPEC_SCRIPT = "__spec_script"; //$NON-NLS-1$
+	public final static String SPEC_FILES = "__spec_files"; //$NON-NLS-1$
+	public final static String SPEC_CHANGELOG = "__spec_changelog"; //$NON-NLS-1$
+	public final static String SPEC_PACKAGES = "__spec_packages"; //$NON-NLS-1$
+	public final static String SPEC_GROUP = "__spec_group"; //$NON-NLS-1$
 	
 	public static String[] SPEC_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE, SPEC_PREP, SPEC_SCRIPT,
 			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES, SPEC_GROUP};
@@ -64,24 +65,24 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 		
 		// RPM packages
 		for (String packageTag :SpecfilePackagesScanner.PACKAGES_TAGS) {
-			rules.add(new SingleLineRule(packageTag, "", specPackages, (char)0 , true));		
+			rules.add(new SingleLineRule(packageTag, "", specPackages, (char)0 , true));		 //$NON-NLS-1$
 		}
 		
 		// %prep
 		rules.add(new SectionRule(PREP_SECTION, new String[] { BUILD_SECTION }, specPrep));
 		
 		// %changelog
-		rules.add(new MultiLineRule("%changelog", "", specChangelog, (char)0 , true));
+		rules.add(new MultiLineRule(RpmSections.CHANGELOG_SECTION, "", specChangelog, (char)0 , true)); //$NON-NLS-1$
 		
 		// "%build", "%install", "%pre", "%preun", "%post", "%postun"
 		for (String sectionHeader : sectionHeaders)
 			rules.add(new SectionRule(sectionHeader, sectionEndingHeaders, specScript));
 
 		// comments
-		rules.add(new EndOfLineRule("#", specScript));
+		rules.add(new EndOfLineRule("#", specScript)); //$NON-NLS-1$
 		
 		// group tag
-		rules.add(new EndOfLineRule("Group:", specGroup));
+		rules.add(new EndOfLineRule("Group:", specGroup)); //$NON-NLS-1$
 		
 		
 		// %files

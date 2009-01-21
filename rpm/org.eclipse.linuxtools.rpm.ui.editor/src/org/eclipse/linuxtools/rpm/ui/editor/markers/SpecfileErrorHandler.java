@@ -27,7 +27,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 public class SpecfileErrorHandler extends SpecfileMarkerHandler{
 	
 	public static final String SPECFILE_ERROR_MARKER_ID = Activator.PLUGIN_ID
-	+ ".specfileerror";
+	+ ".specfileerror"; //$NON-NLS-1$
 	
 	public SpecfileErrorHandler(IFile file, IDocument document)
 	{

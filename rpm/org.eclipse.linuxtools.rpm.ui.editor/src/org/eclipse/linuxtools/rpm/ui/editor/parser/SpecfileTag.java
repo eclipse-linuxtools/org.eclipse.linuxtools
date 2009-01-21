@@ -55,13 +55,13 @@ public class SpecfileTag extends SpecfileElement {
 	@Override
 	public String toString() {
 		if (tagType == TagType.INT) {
-			return getName() + ": " + getIntValue();
+			return getName() + ": " + getIntValue(); //$NON-NLS-1$
 		}
 		String tagValue = getStringValue();
-		if ((tagValue != null) && (tagValue.length() > 0) && (tagValue.indexOf("%") > 0)) {
-			return getName() + ": " + super.resolve(tagValue);
+		if ((tagValue != null) && (tagValue.length() > 0) && (tagValue.indexOf("%") > 0)) { //$NON-NLS-1$
+			return getName() + ": " + super.resolve(tagValue); //$NON-NLS-1$
 		}
-		return getName() + ": " + getStringValue();
+		return getName() + ": " + getStringValue(); //$NON-NLS-1$
 	}
 
 	public TagType getTagType() {

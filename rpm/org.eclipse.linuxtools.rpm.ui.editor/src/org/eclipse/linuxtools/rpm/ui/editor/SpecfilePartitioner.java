@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.rpm.ui.editor;
 
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 
@@ -25,30 +24,6 @@ public class SpecfilePartitioner extends FastPartitioner {
 	@Override
 	public void connect(IDocument document, boolean delayInitialization) {
 		super.connect(document, delayInitialization);
-//		printPartitions(document);
 	}
-	
-	public void printPartitions(IDocument document) {
-		StringBuilder buffer = new StringBuilder();
-		ITypedRegion[] partitions = computePartitioning(0, document.getLength());
-		for (ITypedRegion partition : partitions) {
-			try {
-				buffer.append("Partition type: ");
-				buffer.append(partition.getType());
-				buffer.append(", offset: ");
-				buffer.append(partition.getOffset());
-				buffer.append(", length: ");
-				buffer.append(partition.getLength());
-				buffer.append("\n");
-				buffer.append("Text:\n");
-				buffer.append(document.get(partition.getOffset(),
-						partition.getLength()));
-				buffer.append("\n---------------------------------------\n\n\n");
-			} catch (org.eclipse.jface.text.BadLocationException e) {
-				SpecfileLog.logError(e);
-			}
-		}
-		System.out.println(buffer);
-	};
 	
 }

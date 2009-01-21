@@ -31,6 +31,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileScanner;
  */
 public class RpmMacroProposalsList {
 
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
 	private Map<String, String> macroMap = new HashMap<String, String>();
 
 	private String toStringStr;
@@ -53,12 +55,12 @@ public class RpmMacroProposalsList {
 		String macroProposalsPaths = Activator.getDefault()
 				.getPreferenceStore().getString(
 						PreferenceConstants.P_MACRO_PROPOSALS_FILESPATH);
-		String[] paths = macroProposalsPaths.split(";");
+		String[] paths = macroProposalsPaths.split(";"); //$NON-NLS-1$
 		// paths must be reversed because the last value added
 		// into a Map overwrites the first.
 		paths = reverseStringArray(paths);
 		for (String path : paths) {
-			if (!path.equals("")) {
+			if (!path.equals(EMPTY_STRING)) {
 				File pathFile = new File(path);
 				if (pathFile.exists()) {
 					if (pathFile.isDirectory()) {
@@ -81,30 +83,30 @@ public class RpmMacroProposalsList {
 	 *            macro file definition.
 	 */
 	private void addMacroToMap(String filename) {
-		String line = "";
+		String line = EMPTY_STRING;
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					new FileInputStream(filename)));
 			line = reader.readLine();
-			String key = "", value = "";
+			String key = EMPTY_STRING, value = EMPTY_STRING;
 			while (line != null) {
-				if (line.startsWith("%")) {
-					String[] item = line.split("\t+| ", 2);
+				if (line.startsWith("%")) { //$NON-NLS-1$
+					String[] item = line.split("\t+| ", 2); //$NON-NLS-1$
 					try {
 						// Get values on more than one line
-						if (line.trim().endsWith("\\")) {
-							value = "\n";
+						if (line.trim().endsWith("\\")) { //$NON-NLS-1$
+							value = "\n"; //$NON-NLS-1$
 							boolean isKeyLine = true;
-							while (line.trim().endsWith("\\")) {
+							while (line.trim().endsWith("\\")) { //$NON-NLS-1$
 								if (isKeyLine) {
 									isKeyLine = false;
 									key = item[0];
 									if (item.length > 1)
-										value += item[1].replaceAll("\\", "\n\n");
+										value += item[1].replaceAll("\\", "\n\n");  //$NON-NLS-1$//$NON-NLS-2$
 								} else {
 									value += line.substring(0,
 											line.length() - 1).trim()
-											+ "\n\t";
+											+ "\n\t"; //$NON-NLS-1$
 								}
 								line = reader.readLine();
 							}
@@ -115,13 +117,13 @@ public class RpmMacroProposalsList {
 						key = key.trim();
 						value = value.trim();
 						macroMap.put(key, value);
-						toStringStr += key + ": " + value + "\n";
+						toStringStr += key + ": " + value + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					} catch (Exception e) {
 						line = reader.readLine();
 						continue;
 					}
-					value = "";
-					key = "";
+					value = EMPTY_STRING;
+					key = EMPTY_STRING;
 				}
 				line = reader.readLine();
 			}
@@ -161,7 +163,7 @@ public class RpmMacroProposalsList {
 		int i = 0;
 		for (Map.Entry<String, String> entry: macroMap.entrySet()) {
 			// Get proposals for macro begin with { char too.
-			if (entry.getKey().startsWith(prefix.replaceFirst("\\{", ""))) {
+			if (entry.getKey().startsWith(prefix.replaceFirst("\\{", EMPTY_STRING))) { //$NON-NLS-1$
 				proposalsMap.put(entry.getKey(), entry.getValue());
 			}
 			i++;
@@ -178,10 +180,10 @@ public class RpmMacroProposalsList {
 	 * @return a string representation of the value
 	 */
 	public String getValue(String key) {
-		String value = macroMap.get("%" + key);
+		String value = macroMap.get("%" + key); //$NON-NLS-1$
 		// get proposals for macro contain ? too.
 		if (value == null) {
-			value = macroMap.get(("%" + key).replaceFirst("\\?", ""));
+			value = macroMap.get(("%" + key).replaceFirst("\\?", EMPTY_STRING)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return value;
 	}
@@ -204,8 +206,8 @@ public class RpmMacroProposalsList {
 	 * @return the resolved macro content.
 	 */
 	public static String getMacroEval(String macroName) {
-		String 	eval = "";
-		String[] cmd = {"rpm", "--eval", macroName};
+		String 	eval = EMPTY_STRING;
+		String[] cmd = {"rpm", "--eval", macroName};  //$NON-NLS-1$//$NON-NLS-2$
 		try {
 			Process child = new ProcessBuilder(cmd).start();
 			InputStream in = child.getInputStream();

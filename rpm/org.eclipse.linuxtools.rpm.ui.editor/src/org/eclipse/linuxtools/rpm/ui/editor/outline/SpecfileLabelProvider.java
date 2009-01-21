@@ -24,10 +24,10 @@ import org.eclipse.swt.graphics.Image;
 
 public class SpecfileLabelProvider implements ILabelProvider {
 
-	private static final String PREAMBLE_ICON="icons/preamble_obj.gif";
-	private static final String SECTION_ICON="icons/section_obj.gif";
-	private static final String PACKAGES_ICON="icons/packages_obj.gif";
-	private static final String PACKAGE_ICON="icons/package_obj.gif";
+	private static final String PREAMBLE_ICON="icons/preamble_obj.gif"; //$NON-NLS-1$
+	private static final String SECTION_ICON="icons/section_obj.gif"; //$NON-NLS-1$
+	private static final String PACKAGES_ICON="icons/packages_obj.gif"; //$NON-NLS-1$
+	private static final String PACKAGE_ICON="icons/package_obj.gif"; //$NON-NLS-1$
 	
 	public SpecfileLabelProvider() {
 		super();
@@ -77,7 +77,7 @@ public class SpecfileLabelProvider implements ILabelProvider {
 		} else if (element instanceof SpecfilePackage) {
 			return ((SpecfilePackage) element).getName();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

@@ -142,9 +142,9 @@ public class RpmPackageBuildProposalsJob extends Job {
 				.getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
 		String rpmListFilepath = Activator.getDefault().getPreferenceStore()
 				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
-		File bkupFile = new File(rpmListFilepath + ".bkup");
+		File bkupFile = new File(rpmListFilepath + ".bkup"); //$NON-NLS-1$
 		try {
-			String[] cmd = new String[] { "/bin/sh", "-c", rpmListCmd };
+			String[] cmd = new String[] { "/bin/sh", "-c", rpmListCmd }; //$NON-NLS-1$ //$NON-NLS-2$
 			monitor.beginTask("Retrieving packages",
 					IProgressMonitor.UNKNOWN);
 			Process child = new ProcessBuilder(cmd).start();
@@ -163,7 +163,7 @@ public class RpmPackageBuildProposalsJob extends Job {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				monitor.subTask(line);
-				out.write(line + "\n");
+				out.write(line + "\n"); //$NON-NLS-1$
 				if (monitor.isCanceled()) {
 					in.close();
 					out.close();

@@ -29,8 +29,8 @@ import org.eclipse.ui.part.FileEditorInput;
 public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 
 	SpecfileEditor editor;
-	private static final String PATCH_IDENTIFIER = "Patch";
-	private static final String SOURCE_IDENTIFIER = "Source";
+	private static final String PATCH_IDENTIFIER = "Patch"; //$NON-NLS-1$
+	private static final String SOURCE_IDENTIFIER = "Source"; //$NON-NLS-1$
 
 	/**
 	 * Creates the detector.
@@ -70,7 +70,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 					.getFile();
 			if (line.startsWith(SOURCE_IDENTIFIER)
 					|| line.startsWith(PATCH_IDENTIFIER)) {
-				int delimiterIndex = line.indexOf(":") + 1;
+				int delimiterIndex = line.indexOf(":") + 1; //$NON-NLS-1$
 				String fileName = line.substring(delimiterIndex).trim();
 				if (region.getOffset() > lineInfo.getOffset()
 						+ line.indexOf(fileName)) {

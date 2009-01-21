@@ -30,7 +30,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 
 class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 												   
-	private static final String ANNOTATION_TYPE = Activator.PLUGIN_ID + ".highlightannotation";
+	private static final String ANNOTATION_TYPE = Activator.PLUGIN_ID + ".highlightannotation"; //$NON-NLS-1$
 
 	private final SpecfileEditor fEditor;
 
@@ -72,7 +72,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 			if (isMacro(currentSelectedWord)) {
 				Specfile spec = fEditor.getSpecfile();
 				SpecfileDefine define = spec.getDefine(currentSelectedWord);
-				String word = currentSelectedWord + ": ";
+				String word = currentSelectedWord + ": "; //$NON-NLS-1$
                 if (define != null) {
                 	word += define.getStringValue();
                 } else {
@@ -127,7 +127,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 				}
 			}
 			if (Activator.getDefault().getRpmMacroList().getProposals(
-					"%" + word).size() > 0)
+					"%" + word).size() > 0) //$NON-NLS-1$
 				return true;
 		}
 		return false;
@@ -197,7 +197,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 				word = document.get(offset, end - offset);
 			}
 		} else {
-			word = "";
+			word = ""; //$NON-NLS-1$
 		}
 		return word.toLowerCase();
 	}

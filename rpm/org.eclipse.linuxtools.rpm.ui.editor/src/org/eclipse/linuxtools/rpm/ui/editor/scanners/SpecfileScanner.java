@@ -41,12 +41,12 @@ public class SpecfileScanner extends RuleBasedScanner {
 		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, 
 		CHECK_SECTION };
 
-	public static String[] DEFINED_MACROS = { "%define", "%make", "%setup",
-			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir",
-			"%doc", "%lang", "%verify", "%ghost" };
+	public static String[] DEFINED_MACROS = { "%define", "%make", "%setup", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"%doc", "%lang", "%verify", "%ghost" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-	private static String[] keywords = { "%if", "%ifarch", "%ifnarch", "%else",
-			"%endif" };
+	private static String[] keywords = { "%if", "%ifarch", "%ifnarch", "%else", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"%endif" }; //$NON-NLS-1$
 
 	private static String[] TAGS = { SUMMARY, NAME, VERSION, PACKAGER, ICON,
 			URL, PREFIX, GROUP, LICENSE, RELEASE, BUILD_ROOT, DISTRIBUTION,
@@ -73,10 +73,10 @@ public class SpecfileScanner extends RuleBasedScanner {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		// Comments
-		rules.add(new EndOfLineRule("#", commentToken));
+		rules.add(new EndOfLineRule("#", commentToken)); //$NON-NLS-1$
 
 		// %{ .... }
-		rules.add(new SingleLineRule("%{", "}", macroToken));
+		rules.add(new SingleLineRule("%{", "}", macroToken)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// %define, %make, ...
 		WordRule wordRule = new WordRule(new MacroWordDetector(),
@@ -87,7 +87,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 		rules.add(wordRule);
 
 		// %patch[0-9]+[\ \t]
-		rules.add(new StringWithEndingRule("%patch", new PatchNumberDetector(),
+		rules.add(new StringWithEndingRule("%patch", new PatchNumberDetector(), //$NON-NLS-1$
 				macroToken, false ));
 
 		// %if, %else ...
@@ -107,14 +107,14 @@ public class SpecfileScanner extends RuleBasedScanner {
 		// Name:, Summary:, ...
 		wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
 		for (String tag : TAGS) {
-			wordRule.addWord(tag + ":", tagToken);
+			wordRule.addWord(tag + ":", tagToken); //$NON-NLS-1$
 		}
 		rules.add(wordRule);
 
 		// Source[0-9]*:, Patch[0-9]*:
-		rules.add(new StringWithEndingRule("Source",
+		rules.add(new StringWithEndingRule("Source", //$NON-NLS-1$
 				new SuffixNumberDetector(), tagToken, false));
-		rules.add(new StringWithEndingRule("Patch", new SuffixNumberDetector(),
+		rules.add(new StringWithEndingRule("Patch", new SuffixNumberDetector(), //$NON-NLS-1$
 				tagToken, false));
 
 		IRule[] result = new IRule[rules.size()];

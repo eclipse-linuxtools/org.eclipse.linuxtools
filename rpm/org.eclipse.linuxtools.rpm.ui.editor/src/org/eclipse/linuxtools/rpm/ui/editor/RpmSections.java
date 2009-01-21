@@ -15,20 +15,20 @@ package org.eclipse.linuxtools.rpm.ui.editor;
  */
 public interface RpmSections {
 	
-	String PREP_SECTION = "%prep";
-	String BUILD_SECTION = "%build";
-	String INSTALL_SECTION = "%install";
-	String PRETRANS_SECTION = "%pretrans";
-	String PRE_SECTION = "%pre";
-	String PREUN_SECTION = "%preun";
-	String POST_SECTION = "%post";
-	String POSTUN_SECTION = "%postun";
-	String POSTTRANS_SECTION = "%posttrans";
-	String CLEAN_SECTION = "%clean";
-	String FILES_SECTION = "%files";
-	String CHECK_SECTION = "%check";
-	String CHANGELOG_SECTION = "%changelog";
-	String PACKAGE_SECTION = "%package";
-	String DESCRIPTION_SECTION = "%description";
+	String PREP_SECTION = "%prep"; //$NON-NLS-1$
+	String BUILD_SECTION = "%build"; //$NON-NLS-1$
+	String INSTALL_SECTION = "%install"; //$NON-NLS-1$
+	String PRETRANS_SECTION = "%pretrans"; //$NON-NLS-1$
+	String PRE_SECTION = "%pre"; //$NON-NLS-1$
+	String PREUN_SECTION = "%preun"; //$NON-NLS-1$
+	String POST_SECTION = "%post"; //$NON-NLS-1$
+	String POSTUN_SECTION = "%postun"; //$NON-NLS-1$
+	String POSTTRANS_SECTION = "%posttrans"; //$NON-NLS-1$
+	String CLEAN_SECTION = "%clean"; //$NON-NLS-1$
+	String FILES_SECTION = "%files"; //$NON-NLS-1$
+	String CHECK_SECTION = "%check"; //$NON-NLS-1$
+	String CHANGELOG_SECTION = "%changelog"; //$NON-NLS-1$
+	String PACKAGE_SECTION = "%package"; //$NON-NLS-1$
+	String DESCRIPTION_SECTION = "%description"; //$NON-NLS-1$
 
 }

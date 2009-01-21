@@ -129,10 +129,10 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 
 		@Override
 		protected String createList(String[] items) {
-			StringBuilder path = new StringBuilder("");
+			StringBuilder path = new StringBuilder(""); //$NON-NLS-1$
 			for (String item:items) {
 				path.append(item);
-				path.append(";");
+				path.append(";"); //$NON-NLS-1$
 			}
 			return path.toString();
 		}
@@ -150,7 +150,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 
 		@Override
 		protected String[] parseString(String stringList) {
-			StringTokenizer st = new StringTokenizer(stringList, ";\n\r");
+			StringTokenizer st = new StringTokenizer(stringList, ";\n\r"); //$NON-NLS-1$
 			ArrayList<String> v = new ArrayList<String>();
 			while (st.hasMoreTokens()) {
 				v.add(st.nextToken());

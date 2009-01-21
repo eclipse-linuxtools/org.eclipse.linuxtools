@@ -39,7 +39,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpm.ui.editor";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpm.ui.editor"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -109,7 +109,7 @@ public class Activator extends AbstractUIPlugin {
 	
 	public TemplateStore getTemplateStore() {
 		if (fTemplateStore == null) {
-			fTemplateStore= new ContributionTemplateStore(getContextTypeRegistry(), getPreferenceStore(), "templates");
+			fTemplateStore= new ContributionTemplateStore(getContextTypeRegistry(), getPreferenceStore(), "templates"); //$NON-NLS-1$
 			try {
 				fTemplateStore.load();
 			} catch (IOException e) {
@@ -139,12 +139,12 @@ public class Activator extends AbstractUIPlugin {
 		if (rpmGroups.isEmpty()) {
 			// FIXME: Can we assume that all distros place
 			// documentations files in the below path?
-			String docDir = "/usr/share/doc/";
+			String docDir = "/usr/share/doc/"; //$NON-NLS-1$
 			File dir = new File(docDir);
 			if (dir.exists()) {
 				File files[] = dir.listFiles(new FilenameFilter() {
 					public boolean accept(File dir, String name) {
-						return name.startsWith("rpm-");
+						return name.startsWith("rpm-"); //$NON-NLS-1$
 					}
 				});
 				try {
@@ -152,7 +152,7 @@ public class Activator extends AbstractUIPlugin {
 					// starting with rpm-
 					// (e.g. rpm-apidocs is the wrong directory.)
 					for (File file : files) {
-						File groupsFile = new File(file, "GROUPS");
+						File groupsFile = new File(file, "GROUPS"); //$NON-NLS-1$
 						if (groupsFile.exists()) {
 
 							LineNumberReader reader = new LineNumberReader(
@@ -175,11 +175,11 @@ public class Activator extends AbstractUIPlugin {
 	public ContextTypeRegistry getContextTypeRegistry() {
 		if (fContextTypeRegistry == null) {
 			fContextTypeRegistry = new ContributionContextTypeRegistry();
-			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.preambleSection");
-			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.preSection");
-			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.buildSection");
-			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.installSection");
-			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.changelogSection");			
+			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.preambleSection"); //$NON-NLS-1$
+			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.preSection"); //$NON-NLS-1$
+			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.buildSection"); //$NON-NLS-1$
+			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.installSection"); //$NON-NLS-1$
+			fContextTypeRegistry.addContextType("org.eclipse.linuxtools.rpm.ui.editor.changelogSection");			 //$NON-NLS-1$
 		}
 		return fContextTypeRegistry;
 	}

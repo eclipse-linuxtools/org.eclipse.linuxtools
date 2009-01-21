@@ -150,34 +150,34 @@ public class SpecfileNewWizardPage extends WizardPage {
 						new InputStreamReader(inputStream));
 				String line;
 				try {
-					content = "";
+					content = ""; //$NON-NLS-1$
 					setDefaultValues();
 					while ((line = reader.readLine()) != null) {
-						if (line.startsWith("Name:")) {
+						if (line.startsWith("Name:")) { //$NON-NLS-1$
 							setTemplateTagValue(nameText, line);
 						}
-						if (line.startsWith("Version:")) {
+						if (line.startsWith("Version:")) { //$NON-NLS-1$
 							setTemplateTagValue(versionText, line);
 						}
-						if (line.startsWith("Summary:")) {
+						if (line.startsWith("Summary:")) { //$NON-NLS-1$
 							setTemplateTagValue(summaryText, line);
 						}
-						if (line.startsWith("Group:")) {
-							String[] items = line.split(":", 2);
+						if (line.startsWith("Group:")) { //$NON-NLS-1$
+							String[] items = line.split(":", 2); //$NON-NLS-1$
 							String value = items[1].trim();
-							if (!value.equals(""))
+							if (!value.equals("")) //$NON-NLS-1$
 								groupCombo.setText(value);
 						}
-						if (line.startsWith("License:")) {
+						if (line.startsWith("License:")) { //$NON-NLS-1$
 							setTemplateTagValue(licenseText, line);
 						}
-						if (line.startsWith("URL:")) {
+						if (line.startsWith("URL:")) { //$NON-NLS-1$
 							setTemplateTagValue(URLText, line);
 						}
-						if (line.startsWith("Source0:")) {
+						if (line.startsWith("Source0:")) { //$NON-NLS-1$
 							setTemplateTagValue(source0Text, line);
 						}
-						content += line + "\n";
+						content += line + '\n';
 					}
 				} catch (IOException e1) {
 					SpecfileLog.logError(e1);
@@ -232,9 +232,9 @@ public class SpecfileNewWizardPage extends WizardPage {
 	}
 
 	private void setTemplateTagValue(Text text, String line) {
-		String[] items = line.split(":", 2);
+		String[] items = line.split(":", 2); //$NON-NLS-1$
 		String value = items[1].trim();
-		if (!value.equals("")) {
+		if (!value.equals("")) { //$NON-NLS-1$
 			text.setText(value);
 		}
 	}
@@ -244,7 +244,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	}
 
 	public String getFileName() {
-		return nameText.getText() + ".spec";
+		return nameText.getText() + ".spec"; //$NON-NLS-1$
 	}
 
 	public String getSelectedTemplate() {
@@ -257,30 +257,30 @@ public class SpecfileNewWizardPage extends WizardPage {
 				inputStream));
 		String line;
 		try {
-			content = "";
+			content = ""; //$NON-NLS-1$
 			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("Name:")) {
-					line = "Name:" + "           " + nameText.getText();
+				if (line.startsWith("Name:")) { //$NON-NLS-1$
+					line = "Name:" + "           " + nameText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				if (line.startsWith("Version:")) {
-					line = "Version:" + "        " + versionText.getText();
+				if (line.startsWith("Version:")) { //$NON-NLS-1$
+					line = "Version:" + "        " + versionText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				if (line.startsWith("Summary:")) {
-					line = "Summary:" + "        " + summaryText.getText();
+				if (line.startsWith("Summary:")) { //$NON-NLS-1$
+					line = "Summary:" + "        " + summaryText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				if (line.startsWith("Group:")) {
-					line = "Group:" + "          " + groupCombo.getText();
+				if (line.startsWith("Group:")) { //$NON-NLS-1$
+					line = "Group:" + "          " + groupCombo.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				if (line.startsWith("License:")) {
-					line = "License:" + "        " + licenseText.getText();
+				if (line.startsWith("License:")) { //$NON-NLS-1$
+					line = "License:" + "        " + licenseText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				if (line.startsWith("URL:")) {
-					line = "URL:" + "            " + URLText.getText();
+				if (line.startsWith("URL:")) { //$NON-NLS-1$
+					line = "URL:" + "            " + URLText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				if (line.startsWith("Source0:")) {
-					line = "Source0:" + "        " + source0Text.getText();
+				if (line.startsWith("Source0:")) { //$NON-NLS-1$
+					line = "Source0:" + "        " + source0Text.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-				content += line + "\n";
+				content += line + '\n';
 			}
 		} catch (IOException e1) {
 			SpecfileLog.logError(e1);
@@ -360,14 +360,14 @@ public class SpecfileNewWizardPage extends WizardPage {
 		 * 
 		 */
 		String packageName = nameText.getText();
-		if (packageName.indexOf(" ") != -1 || packageName.indexOf("<") != -1
-				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1){
+		if (packageName.indexOf(" ") != -1 || packageName.indexOf("<") != -1 //$NON-NLS-1$ //$NON-NLS-2$
+				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1){ //$NON-NLS-1$ //$NON-NLS-2$
 			updateStatus("The Name tag must not include whitespace and "
 					+ "should not include any numeric operators ('<', '>','=')");
 			return;
 		}
 
-		if (versionText.getText().indexOf("-") > -1) {
+		if (versionText.getText().indexOf("-") > -1) { //$NON-NLS-1$
 			updateStatus("Please, no dashes in the version!");
 			return;
 		}
@@ -392,17 +392,17 @@ public class SpecfileNewWizardPage extends WizardPage {
 
 	private void populateTemplateCombo(Combo templateCombo) throws CoreException {
 		// get a list of all files in a directory
-		File dir = new File("/etc/rpmdevtools");
+		File dir = new File("/etc/rpmdevtools"); //$NON-NLS-1$
 		String[] files = dir.list();
 		if (dir.exists()) {
-			String templateCSV = "";
+			String templateCSV = ""; //$NON-NLS-1$
 			for (String file : files) {
-				if (file.startsWith("spectemplate-"))
-					templateCSV += file.split("-", 2)[1].replaceAll("\\.spec",
-							"")
-							+ ",";
+				if (file.startsWith("spectemplate-")) //$NON-NLS-1$
+					templateCSV += file.split("-", 2)[1].replaceAll("\\.spec", //$NON-NLS-1$ //$NON-NLS-2$
+							"") //$NON-NLS-1$
+							+ ","; //$NON-NLS-1$
 			}
-			String[] templates = templateCSV.split(",");
+			String[] templates = templateCSV.split(","); //$NON-NLS-1$
 			for (String template: templates) {
 				templateCombo.add(template);
 			}
@@ -422,7 +422,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	private BufferedInputStream runRpmdevNewSpec(String template) {
 		BufferedInputStream in = null;
 		// Here we assuming that the rpmdevtools package is installed.
-		String[] cmd = { "rpmdev-newspec", "-o", "-", "-t", template };
+		String[] cmd = { "rpmdev-newspec", "-o", "-", "-t", template }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		try {
 			Process child = new ProcessBuilder(cmd).start();
 			in = new BufferedInputStream(child.getInputStream());
@@ -435,7 +435,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	
 	private void throwCoreException(String message) throws CoreException {
 		IStatus status = new Status(IStatus.ERROR,
-				"org.eclipse.linuxtools.rpm.ui.editor", IStatus.OK, message,
+				"org.eclipse.linuxtools.rpm.ui.editor", IStatus.OK, message, //$NON-NLS-1$
 				null);
 		throw new CoreException(status);
 	}

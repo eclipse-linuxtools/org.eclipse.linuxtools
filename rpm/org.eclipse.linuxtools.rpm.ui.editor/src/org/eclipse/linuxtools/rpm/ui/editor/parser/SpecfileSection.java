@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
+import java.text.MessageFormat;
+
 public class SpecfileSection extends SpecfileElement {
 
 	private SpecfilePackage parentPackage;
@@ -35,7 +37,7 @@ public class SpecfileSection extends SpecfileElement {
 		if (parentPackage == null) {
 			return getName();
 		} else {
-			return getName() + " " + parentPackage;
+			return MessageFormat.format("{0} {1}", getName(), parentPackage); //$NON-NLS-1$
 		}
 	}
         

@@ -102,7 +102,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		String[] countries = Locale.getISOCountries();
 		for (int i = 0; i < countries.length; i++) {
 				Locale currentLocale = new Locale(countries[i]);
-				combo.add(countries[i] + " - " + currentLocale.getDisplayLanguage());
+				combo.add(countries[i] + " - " + currentLocale.getDisplayLanguage()); //$NON-NLS-1$
 				// get index of the Locale store in the preferences
 				if (countries[i].equals(lastLocale))
 					selectedItem = i;
@@ -118,7 +118,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 				Combo combo = (Combo) e.getSource();
 				getPreferenceStore().setValue(
 						PreferenceConstants.P_CHANGELOG_LOCAL,
-						combo.getText().split("-")[0].trim());
+						combo.getText().split("-")[0].trim()); //$NON-NLS-1$
 			}
 		});
 	}

@@ -37,9 +37,11 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 
 	private IToken fLastToken;
 
-	protected static final String[] PACKAGES_TAGS = { "BuildRequires", "BuildConflicts",
-			"BuildPreReq", "Requires", "Requires(post)", "Requires(postun)",
-			"Requires(pre)", "Requires(preun)", "Requires(hint)", "Conflicts", "Obsoletes", "Prereq" };
+	protected static final String[] PACKAGES_TAGS = {
+			"BuildRequires", "BuildConflicts", //$NON-NLS-1$ //$NON-NLS-2$
+			"BuildPreReq", "Requires", "Requires(post)", "Requires(postun)", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"Requires(pre)", "Requires(preun)", "Requires(hint)", "Conflicts", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"Obsoletes", "Prereq" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	public SpecfilePackagesScanner(ColorManager manager) {
 		IToken packageToken = new Token(new TextAttribute(manager
@@ -54,19 +56,19 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 		List<IRule> rules = new ArrayList<IRule>();
 
 		// %{ .... }
-		rules.add(new SingleLineRule("%{", "}", macroToken));
+		rules.add(new SingleLineRule("%{", "}", macroToken)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// BuildRequires:, ...
 		WordRule wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);
 		for (String packageTag : PACKAGES_TAGS) {
-			wordRule.addWord(packageTag + ":", tagToken);
+			wordRule.addWord(packageTag + ":", tagToken); //$NON-NLS-1$
 		}
 		rules.add(wordRule);
 
 		// RPM packages
 		wordRule = new WordRule(new PackageWordDetector(), Token.UNDEFINED);
 		List<String[]> rpmPackages = Activator.getDefault().getRpmPackageList()
-				.getProposals("");
+				.getProposals(""); //$NON-NLS-1$
 		char[] startWith = {' ', '\t', ',', ':'};
 		for (String[] item: rpmPackages){
 			// FIXME Perhaps, that can slow down the scanning?

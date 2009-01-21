@@ -23,7 +23,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 public class SpecfileTaskHandler extends SpecfileMarkerHandler{
 	public static final String SPECFILE_TASK_MARKER_ID = Activator.PLUGIN_ID
-			+ ".specfiletask";
+			+ ".specfiletask"; //$NON-NLS-1$
 
 	public SpecfileTaskHandler(IFile file, IDocument document) {
 		super(file, document);

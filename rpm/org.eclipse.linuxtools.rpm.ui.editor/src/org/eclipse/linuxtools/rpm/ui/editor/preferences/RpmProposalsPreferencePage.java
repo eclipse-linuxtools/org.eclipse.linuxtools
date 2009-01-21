@@ -90,10 +90,10 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		 * Show only installed tools.
 		 * Don't forgot to add sanity check in Utils.pluginSanityCheck().
 		 */ 
-		if (Utils.fileExist("/usr/bin/yum")) 
+		if (Utils.fileExist("/usr/bin/yum"))  //$NON-NLS-1$
 			list.add(new String[] { "YUM (Yellowdog Updater, Modified)",
 					PreferenceConstants.DP_RPMTOOLS_YUM });
-		if (Utils.fileExist("/usr/bin/urpmq")) 
+		if (Utils.fileExist("/usr/bin/urpmq"))  //$NON-NLS-1$
 			list.add(new String[] { "URPM (User RPM)",
 					PreferenceConstants.DP_RPMTOOLS_URPM });
 

@@ -102,8 +102,8 @@ public class RpmPackageProposalsList {
 	}
 
 	public String getRpmInfo(String pkgName) {
-		String ret = "";
-		String[] cmd = { "rpm", "-q", pkgName, "--qf",
+		String ret = ""; //$NON-NLS-1$
+		String[] cmd = { "rpm", "-q", pkgName, "--qf",  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 				getformattedRpmInformations() };
 		try {
 			Process child = new ProcessBuilder(cmd).start();
@@ -119,12 +119,12 @@ public class RpmPackageProposalsList {
 					+ "Please adjust your preferences:\n\nSpecfile Editor-> Macro proposals-> Package Info";
 		}
 		// Create encoder and decoder
-		CharsetDecoder decoder = Charset.forName(System.getProperty("file.encoding")).newDecoder();
+		CharsetDecoder decoder = Charset.forName(System.getProperty("file.encoding")).newDecoder(); //$NON-NLS-1$
 		/*
 		 * TODO: Jcharset may be used to detect the inputstream encoding if it's required?
 		 * http://jchardet.sourceforge.net
 		 */
-		CharsetEncoder encoder = Charset.forName("ISO-8859-1").newEncoder();
+		CharsetEncoder encoder = Charset.forName("ISO-8859-1").newEncoder(); //$NON-NLS-1$
 		try {
 			ByteBuffer bbuf = encoder.encode(CharBuffer.wrap(ret));
 			CharBuffer cbuf = decoder.decode(bbuf);
@@ -137,36 +137,36 @@ public class RpmPackageProposalsList {
 	}
 
 	private String getformattedRpmInformations() {
-		String formatedInfoString = "";
+		String formatedInfoString = ""; //$NON-NLS-1$
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_NAME))
-			formatedInfoString += "<b>Name: </b>%{NAME}<br>";
+			formatedInfoString += "<b>Name: </b>%{NAME}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_VERSION))
-			formatedInfoString += "<b>Version: </b>%{VERSION}<br>";
+			formatedInfoString += "<b>Version: </b>%{VERSION}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_RELEASE))
-			formatedInfoString += "<b>Release: </b>%{Release}<br>";
+			formatedInfoString += "<b>Release: </b>%{Release}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SUMMARY))
-			formatedInfoString += "<b>Summary: </b>%{SUMMARY}<br>";
+			formatedInfoString += "<b>Summary: </b>%{SUMMARY}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_LICENSE))
-			formatedInfoString += "<b>License: </b>%{LICENSE}<br>";
+			formatedInfoString += "<b>License: </b>%{LICENSE}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_GROUP))
-			formatedInfoString += "<b>Group: </b>%{GROUP}<br>";
+			formatedInfoString += "<b>Group: </b>%{GROUP}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_URL))
-			formatedInfoString += "<b>URL: </b>%{URL}<br>";
+			formatedInfoString += "<b>URL: </b>%{URL}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_INSTALLTIME))
-			formatedInfoString += "<b>Installation Date: </b>%{INSTALLTIME:date}<br>";
+			formatedInfoString += "<b>Installation Date: </b>%{INSTALLTIME:date}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_DESCRIPTION))
-			formatedInfoString += "<b>Description: </b>%{DESCRIPTION}<br>";
+			formatedInfoString += "<b>Description: </b>%{DESCRIPTION}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_PACKAGER))
-			formatedInfoString += "<b>Packager: </b>%{PACKAGER}<br>";
+			formatedInfoString += "<b>Packager: </b>%{PACKAGER}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_VENDOR))
-			formatedInfoString += "<b>Vendor: </b>%{VENDOR}<br>";
+			formatedInfoString += "<b>Vendor: </b>%{VENDOR}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SIZE))
-			formatedInfoString += "<b>Size: </b>%{SIZE} bytes<br>";
+			formatedInfoString += "<b>Size: </b>%{SIZE} bytes<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_BUILDTIME))
-			formatedInfoString += "<b>Build Date: </b>%{BUILDTIME:date}<br>";
+			formatedInfoString += "<b>Build Date: </b>%{BUILDTIME:date}<br>"; //$NON-NLS-1$
 		if (store.getBoolean(PreferenceConstants.P_RPMINFO_SOURCERPM))
-			formatedInfoString += "<b>SRPM: </b>%{SOURCERPM}<br>";
+			formatedInfoString += "<b>SRPM: </b>%{SOURCERPM}<br>"; //$NON-NLS-1$
 		return formatedInfoString;
 
 	}

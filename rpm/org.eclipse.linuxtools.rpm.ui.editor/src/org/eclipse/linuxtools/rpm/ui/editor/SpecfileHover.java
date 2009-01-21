@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class SpecfileHover implements ITextHover, ITextHoverExtension {
 
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private SpecfileEditor editor;
 
 	public SpecfileHover(SpecfileEditor editor) {
@@ -56,10 +57,10 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		}
 		
                 
-                // First we try to get a define based on the given name
+        // First we try to get a define based on the given name
 		SpecfileDefine define = spec.getDefine(currentSelection);
 		
-                String value = currentSelection + ": ";
+        String value = currentSelection + ": "; //$NON-NLS-1$
                 
 		if (define != null) {
                     value += define.getStringValue();
@@ -82,7 +83,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 			else {
 				// If it does not correspond to a macro in the list, try to find it
 				// in the RPM list. 
-				retrivedValue = Activator.getDefault().getRpmPackageList().getValue(currentSelection.replaceFirst(":",""));
+				retrivedValue = Activator.getDefault().getRpmPackageList().getValue(currentSelection.replaceFirst(":",EMPTY_STRING)); //$NON-NLS-1$ 
 				if (retrivedValue != null)
 					return retrivedValue;
 			}
@@ -231,7 +232,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 	
 	public static String getSourceOrPatchValue(Specfile spec, String patchOrSourceName) {
 		String value = null;
-		Pattern p = Pattern.compile("(source|patch)(\\d*)");
+		Pattern p = Pattern.compile("(source|patch)(\\d*)"); //$NON-NLS-1$
 		Matcher m = p.matcher(patchOrSourceName);
 
 		if (m.matches()) {
@@ -240,16 +241,16 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 			SpecfileSource source = null;
 			int number = -1;
 
-			if (digits != null && digits.equals("")) {
+			if (digits != null && digits.equals(EMPTY_STRING)) {
 				number = 0;
-			} else if (digits != null && !digits.equals("")) {
+			} else if (digits != null && !digits.equals(EMPTY_STRING)) {
 				number = Integer.parseInt(digits);
 			}
 
 			if (number != -1) {
-				if (m.group(1).equals("source"))
+				if (m.group(1).equals("source")) //$NON-NLS-1$
 					source = spec.getSource(number);
-				else if (m.group(1).equals("patch"))
+				else if (m.group(1).equals("patch")) //$NON-NLS-1$
 					source = spec.getPatch(number);
 
 				if (source != null) {
@@ -262,14 +263,14 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 
 	public static String getMacroValueFromMacroList(String macroName) {
 		String value = null;
-		if (Activator.getDefault().getRpmMacroList().findKey("%" + macroName)) {
+		if (Activator.getDefault().getRpmMacroList().findKey("%" + macroName)) { //$NON-NLS-1$
 			String currentConfig = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_MACRO_HOVER_CONTENT);
 			// Show content of the macro according with the configuration set
 			// in the macro preference page.
 			if (currentConfig.equals(PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION))
 				value = Activator.getDefault().getRpmMacroList().getValue(macroName);
 			else
-				value = RpmMacroProposalsList.getMacroEval("%" + macroName);
+				value = RpmMacroProposalsList.getMacroEval("%" + macroName); //$NON-NLS-1$
 		}
 		return value;
 	}

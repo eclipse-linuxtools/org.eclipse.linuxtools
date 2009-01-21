@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
+import java.text.MessageFormat;
+
 public class SpecfilePatchMacro extends SpecfileMacro {
 	private int patchNumber;
 	private int patchLevel;
@@ -34,6 +36,6 @@ public class SpecfilePatchMacro extends SpecfileMacro {
 	}
 	@Override
 	public String toString() {
-		return "patch #" + patchNumber + " at level " + patchLevel;
+		return MessageFormat.format("patch #{0} at level {1}", patchNumber, patchLevel); //$NON-NLS-1$
 	}
 }

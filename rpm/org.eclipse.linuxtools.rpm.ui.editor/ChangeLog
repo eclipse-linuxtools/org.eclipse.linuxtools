@@ -1,3 +1,105 @@
+2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable warnings for non externalized strings.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java (createChangelogEntry): Add missing NON-NLS.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java (mergeChangelog): Likewise.
+	(formatDateLine): Likewise.
+	(formatTodaysDate): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogParser.java (parseCurrentFunction): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java (linesContentCommentChar): Likewise.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java (getContextTypeRegistry): Likewise.
+	(getTemplateStore): Likewise.
+	(.accept): Likewise.
+	(getRpmGroups): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/HTML2TextReader.java (html2Text): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/MailHyperlinkDetector.java (detectHyperlinks): Likewise.
+	(getBody): Likewise.
+	(getSubject): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlink.java (open): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (detectHyperlinks): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileErrorHandler.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileTaskHandler.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentProvider.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileLabelProvider.java (getText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (setEpoch): Likewise.
+	(setVersion): Likewise.
+	(setName): Likewise.
+	(setRelease): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (SpecfilePackage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Likewise.
+	(parseMacro): Likewise.
+	(parseDirectDefinition): Likewise.
+	(generateTaskMarker): Likewise.
+	(parseDefine): Likewise.
+	(parseLine): Likewise.
+	(parseComplexDefinition): Likewise.
+	(parsePatch): Likewise.
+	(parse): Likewise.
+	(parseSection): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePatchMacro.java (toString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSection.java (toString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSource.java (changeDeclaration): Likewise.
+	(toString): Likewise.
+	(SpecfileSource): Likewise.
+	(changeReferences): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (toString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java (MacroListEditor.createList): Likewise.
+	(MacroListEditor.parseString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MainPreferencePage.java (.widgetSelected): Likewise.
+	(createLocalesCombo): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (rpmtoolsRadioGroupFieldEditor): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/TaskTagsPreferencePage.java (TasksListEditor.parseString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java (update): Likewise.
+	(isMacro): Likewise.
+	(getWordAtSelection): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java (getValue): Likewise.
+	(getProposals): Likewise.
+	(addMacroToMap): Likewise.
+	(buildMacroList): Likewise.
+	(getMacroEval): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (retrievePackageList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (getRpmInfo): Likewise.
+	(getformattedRpmInformations): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmSections.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmTags.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/TagRule.java (TagRule): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileChangelogScanner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePackagesScanner.java (SpecfilePackagesScanner): Likewise.
+	(PACKAGES_TAGS): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java (SpecfilePartitionScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java (keywords): Likewise.
+	(SpecfileScanner): Likewise.
+	(DEFINED_MACROS): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (getSources): Likewise.
+	(computeTemplateProposals): Likewise.
+	(getDefines): Likewise.
+	(getPatches): Likewise.
+	(getPrefix): Likewise.
+	(computeRpmMacroProposals): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (SpecfileEditor): Likewise.
+	(getResourceBundle): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java (getSourceOrPatchValue): Likewise.
+	(getMacroValueFromMacroList): Likewise.
+	(getHoverInfo): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfilePartitioner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java (inputStreamToString): Likewise.
+	(pluginSanityCheck): Likewise.
+	(resolveDefines): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java (throwCoreException): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java (setTemplateTagValue): Likewise.
+	(dialogChanged): Likewise.
+	(populateTemplateCombo): Likewise.
+	(getContent): Likewise.
+	(throwCoreException): Likewise.
+	(.modifyText): Likewise.
+	(runRpmdevNewSpec): Likewise.
+	(getFileName): Likewise.
+
 2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable validity javadoc warnings.

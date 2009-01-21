@@ -22,11 +22,11 @@ public class SpecfileChangelogParser implements IParserChangeLogContrib {
 	}
 
 	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public String parseCurrentFunction(IEditorInput input, int offset) throws CoreException {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

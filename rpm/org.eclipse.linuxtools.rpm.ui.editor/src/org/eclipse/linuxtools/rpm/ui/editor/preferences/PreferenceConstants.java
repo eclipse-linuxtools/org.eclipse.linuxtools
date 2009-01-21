@@ -20,7 +20,7 @@ public class PreferenceConstants {
 	 * Other Constant
 	 * 
 	 */ 
-	public static final String RPMMACRO_FILE = System.getProperty("user.home") + "/.rpmmacros";
+	public static final String RPMMACRO_FILE = System.getProperty("user.home") + "/.rpmmacros";  //$NON-NLS-1$//$NON-NLS-2$
 	
 	
 	/*
@@ -28,64 +28,64 @@ public class PreferenceConstants {
 	 */
 		
 	// rpm list builder
-	public static final String P_RPM_LIST_FILEPATH = "rpmListFilePath";	
-	public static final String P_RPM_LIST_MAX_PROPOSALS = "rpmListMaxProposalsInfo";
-	public static final String P_CURRENT_RPMTOOLS = "currentRpmtools";
-	public static final String P_RPM_LIST_BACKGROUND_BUILD = "rpmListBackgroundBuild";
-	public static final String P_RPM_LIST_BUILD_PERIOD = "rpmListBuildPeriod";
-	public static final String P_RPM_LIST_LAST_BUILD = "rpmLisMastBuild";
+	public static final String P_RPM_LIST_FILEPATH = "rpmListFilePath";	 //$NON-NLS-1$
+	public static final String P_RPM_LIST_MAX_PROPOSALS = "rpmListMaxProposalsInfo"; //$NON-NLS-1$
+	public static final String P_CURRENT_RPMTOOLS = "currentRpmtools"; //$NON-NLS-1$
+	public static final String P_RPM_LIST_BACKGROUND_BUILD = "rpmListBackgroundBuild"; //$NON-NLS-1$
+	public static final String P_RPM_LIST_BUILD_PERIOD = "rpmListBuildPeriod"; //$NON-NLS-1$
+	public static final String P_RPM_LIST_LAST_BUILD = "rpmLisMastBuild"; //$NON-NLS-1$
 	// macro
-	public static final String P_MACRO_PROPOSALS_FILESPATH = "macroProposalsFilespath";
-	public static final String P_MACRO_HOVER_CONTENT_VIEWCONTENT = "macroHoverViewContent";	
-	public static final String P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION = "macroHoverViewDescription";	
+	public static final String P_MACRO_PROPOSALS_FILESPATH = "macroProposalsFilespath"; //$NON-NLS-1$
+	public static final String P_MACRO_HOVER_CONTENT_VIEWCONTENT = "macroHoverViewContent";	 //$NON-NLS-1$
+	public static final String P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION = "macroHoverViewDescription";	 //$NON-NLS-1$
 	public static final String P_MACRO_HOVER_CONTENT = P_MACRO_HOVER_CONTENT_VIEWCONTENT;
 	// changelog
-	public static final String P_CHANGELOG_LOCAL = "changelogLocal";
+	public static final String P_CHANGELOG_LOCAL = "changelogLocal"; //$NON-NLS-1$
 	
-	public static final String P_CHANGELOG_ENTRY_FORMAT = "changelogEntryFormat";
-	public static final String P_CHANGELOG_ENTRY_FORMAT_VERSIONED = "1";
-	public static final String P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR = "2";
-	public static final String P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED = "3";
+	public static final String P_CHANGELOG_ENTRY_FORMAT = "changelogEntryFormat"; //$NON-NLS-1$
+	public static final String P_CHANGELOG_ENTRY_FORMAT_VERSIONED = "1"; //$NON-NLS-1$
+	public static final String P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR = "2"; //$NON-NLS-1$
+	public static final String P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED = "3"; //$NON-NLS-1$
 	
 	// RPM informations
-	public static final String P_RPMINFO_NAME = "RpmInfoName";
-	public static final String P_RPMINFO_VERSION = "RpmInfoVersion";
-	public static final String P_RPMINFO_RELEASE = "RpmInfoRelease";
-	public static final String P_RPMINFO_SUMMARY = "RpmInfoSummary";
-	public static final String P_RPMINFO_LICENSE = "RpmInfoLicense";
-	public static final String P_RPMINFO_GROUP = "RpmInfoName";
-	public static final String P_RPMINFO_URL = "RpmInfoUrl";
-	public static final String P_RPMINFO_DESCRIPTION = "RpmInfoDescription";	
-	public static final String P_RPMINFO_INSTALLTIME = "RpmInfoInstallDate";	
-	public static final String P_RPMINFO_SIZE = "RpmInfoSize";	
-	public static final String P_RPMINFO_PACKAGER = "RpmInfoPackager";	
-	public static final String P_RPMINFO_VENDOR = "RpmInfoVendor";
-	public static final String P_RPMINFO_BUILDTIME = "RpmInfoBuildDate";
-	public static final String P_RPMINFO_SOURCERPM = "RpmInfoSourceRpm";
-	public static final String P_TASK_TAGS = "RpmSpecTaskTags";
+	public static final String P_RPMINFO_NAME = "RpmInfoName"; //$NON-NLS-1$
+	public static final String P_RPMINFO_VERSION = "RpmInfoVersion"; //$NON-NLS-1$
+	public static final String P_RPMINFO_RELEASE = "RpmInfoRelease"; //$NON-NLS-1$
+	public static final String P_RPMINFO_SUMMARY = "RpmInfoSummary"; //$NON-NLS-1$
+	public static final String P_RPMINFO_LICENSE = "RpmInfoLicense"; //$NON-NLS-1$
+	public static final String P_RPMINFO_GROUP = "RpmInfoName"; //$NON-NLS-1$
+	public static final String P_RPMINFO_URL = "RpmInfoUrl"; //$NON-NLS-1$
+	public static final String P_RPMINFO_DESCRIPTION = "RpmInfoDescription";	 //$NON-NLS-1$
+	public static final String P_RPMINFO_INSTALLTIME = "RpmInfoInstallDate";	 //$NON-NLS-1$
+	public static final String P_RPMINFO_SIZE = "RpmInfoSize";	 //$NON-NLS-1$
+	public static final String P_RPMINFO_PACKAGER = "RpmInfoPackager";	 //$NON-NLS-1$
+	public static final String P_RPMINFO_VENDOR = "RpmInfoVendor"; //$NON-NLS-1$
+	public static final String P_RPMINFO_BUILDTIME = "RpmInfoBuildDate"; //$NON-NLS-1$
+	public static final String P_RPMINFO_SOURCERPM = "RpmInfoSourceRpm"; //$NON-NLS-1$
+	public static final String P_TASK_TAGS = "RpmSpecTaskTags"; //$NON-NLS-1$
 	
 	/*
 	 * Preferences default values
 	 */
 	
-	public static final String DP_RPM_LIST_FILEPATH = System.getProperty("user.dir") +  "/.pkglist";	
-	public static final String DP_RPM_LIST_MAX_PROPOSALS = "10";
-	public static final String DP_RPMTOOLS_RPM = "rpm -qa --qf '%{NAME}\\n'";
-	public static final String DP_RPMTOOLS_YUM = "yum -C list all | grep - | cut -d \".\" -f 1";
-	public static final String DP_RPMTOOLS_URPM = "urpmq --list";
+	public static final String DP_RPM_LIST_FILEPATH = System.getProperty("user.dir") +  "/.pkglist";	 //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String DP_RPM_LIST_MAX_PROPOSALS = "10"; //$NON-NLS-1$
+	public static final String DP_RPMTOOLS_RPM = "rpm -qa --qf '%{NAME}\\n'"; //$NON-NLS-1$
+	public static final String DP_RPMTOOLS_YUM = "yum -C list all | grep - | cut -d \".\" -f 1"; //$NON-NLS-1$
+	public static final String DP_RPMTOOLS_URPM = "urpmq --list"; //$NON-NLS-1$
 	//public static final String DP_RPM_LIST_HIDE_PROPOSALS_WARNING = "false";
 	public static final boolean DP_RPM_LIST_BACKGROUND_BUILD = true;
-	public static final String DP_RPM_LIST_BUILD_PERIOD = "1";
+	public static final String DP_RPM_LIST_BUILD_PERIOD = "1"; //$NON-NLS-1$
 	//public static final String DP_RPM_LIST_LAST_BUILD = "";
 	
 	
 	// macro
-	public static final String DP_MACRO_PROPOSALS_FILESPATH = RPMMACRO_FILE + ";/usr/lib/rpm/macros";
+	public static final String DP_MACRO_PROPOSALS_FILESPATH = RPMMACRO_FILE + ";/usr/lib/rpm/macros"; //$NON-NLS-1$
 	// changelog
-	public static final String DP_CHANGELOG_LOCAL = "US";
+	public static final String DP_CHANGELOG_LOCAL = "US"; //$NON-NLS-1$
 	public static final String DP_CHANGELOG_ENTRY_FORMAT = P_CHANGELOG_ENTRY_FORMAT_VERSIONED;
 	// task tags
-	public static final String DP_TASK_TAGS = "TODO;FIXME";
+	public static final String DP_TASK_TAGS = "TODO;FIXME"; //$NON-NLS-1$
 	
 	// RPM informations
 	public static final boolean DP_RPMINFO_NAME = true;

@@ -23,7 +23,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 
 public class Specfile {
-	String name = "";
+	String name = ""; //$NON-NLS-1$
 
 	int epoch = -1;
 
@@ -96,7 +96,7 @@ public class Specfile {
 	 */
 	public void setName(String name) {
 		this.name = name;
-		addDefine("name", name);
+		addDefine("name", name); //$NON-NLS-1$
 	}
 
 	public void addSection(SpecfileSection section) {
@@ -162,7 +162,7 @@ public class Specfile {
 	 */
 	public void setEpoch(int epoch) {
 		this.epoch = epoch;
-		addDefine("epoch", epoch);
+		addDefine("epoch", epoch); //$NON-NLS-1$
 	}
 
 	public String getRelease() {
@@ -177,7 +177,7 @@ public class Specfile {
 	 */
 	public void setRelease(String release) {
 		this.release = release;
-		addDefine("release", release);
+		addDefine("release", release); //$NON-NLS-1$
 	}
 
 	public String getVersion() {
@@ -192,7 +192,7 @@ public class Specfile {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
-		addDefine("version", version);
+		addDefine("version", version); //$NON-NLS-1$
 	}
 
 	public Map<Integer, SpecfileSource> getPatches() {

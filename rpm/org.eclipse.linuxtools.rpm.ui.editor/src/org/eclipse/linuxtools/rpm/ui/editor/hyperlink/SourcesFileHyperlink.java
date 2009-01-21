@@ -80,7 +80,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 		IResource resourceToOpen = container.findMember(fileName);
 		if (resourceToOpen == null || !resourceToOpen.exists()) {
 			IResource sourcesFolder = container.getParent().findMember(
-					"SOURCES");
+					"SOURCES"); //$NON-NLS-1$
 			resourceToOpen = ((IFolder) sourcesFolder).getFile(fileName);
 		}
 		IWorkbenchPage page = PlatformUI.getWorkbench()

@@ -54,7 +54,7 @@ public class SpecfileEditor extends TextEditor {
 		parser = getParser();
 		setSourceViewerConfiguration(new SpecfileConfiguration(colorManager, this));
 		setDocumentProvider(new SpecfileDocumentProvider());
-		setKeyBindingScopes(new String[]{"org.eclipse.linuxtools.rpm.ui.specEditorScope"});
+		setKeyBindingScopes(new String[]{"org.eclipse.linuxtools.rpm.ui.specEditorScope"}); //$NON-NLS-1$
 	}
 	@Override
 	public void dispose() {
@@ -206,7 +206,7 @@ public class SpecfileEditor extends TextEditor {
 	public ResourceBundle getResourceBundle() {
 		ResourceBundle resourceBundle;
 		try {
-			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorMessages");
+			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorMessages"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle= null;
 		}

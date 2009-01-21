@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -34,7 +35,7 @@ public class SpecfileSource extends SpecfileElement {
 		this.sourceType = sourceType;
 	}
 	public SpecfileSource(int number, String fileName) {
-		super("source");
+		super("source"); //$NON-NLS-1$
 		this.number = number;
 		this.fileName = fileName;
 		this.linesUsed = new ArrayList<Integer>();
@@ -63,8 +64,12 @@ public class SpecfileSource extends SpecfileElement {
 	@Override
 	public String toString() {
 		if (sourceType == SourceType.SOURCE)
-			return "Source #" + number + " (line #" + lineNumber + ", used on lines " + getLinesUsed() + ") -> " + fileName;
-		return "Patch #" + number + " (line #" + lineNumber + ", used on lines " + getLinesUsed() + ") -> " + fileName;
+			return MessageFormat.format(
+					"Source #{0} (line #{1}, used on lines {2}) -> {3}", //$NON-NLS-1$
+					number, lineNumber, getLinesUsed(), fileName);
+		return MessageFormat.format(
+				"Patch #{0} (line #{1}, used on lines {2}) -> {3}", number, //$NON-NLS-1$
+				lineNumber, getLinesUsed(), fileName);
 	}
 	
 	// Note that changeReferences assumes that the number of the source/patch
@@ -73,9 +78,9 @@ public class SpecfileSource extends SpecfileElement {
 		Specfile specfile = this.getSpecfile();
 		Pattern patchPattern;
 		if (oldPatchNumber == 0) {
-			patchPattern = Pattern.compile("%patch" + oldPatchNumber + "|%patch");
+			patchPattern = Pattern.compile("%patch" + oldPatchNumber + "|%patch"); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			patchPattern = Pattern.compile("%patch" + oldPatchNumber);
+			patchPattern = Pattern.compile("%patch" + oldPatchNumber); //$NON-NLS-1$
 		}
 		for (int lineNumber: getLinesUsed()){
 			String line;
@@ -96,9 +101,9 @@ public class SpecfileSource extends SpecfileElement {
 		Specfile specfile = this.getSpecfile();
 		Pattern patchPattern;
 		if (oldPatchNumber == 0) {
-			patchPattern = Pattern.compile("Patch" + oldPatchNumber + "|Patch");
+			patchPattern = Pattern.compile("Patch" + oldPatchNumber + "|Patch"); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			patchPattern = Pattern.compile("Patch" + oldPatchNumber);
+			patchPattern = Pattern.compile("Patch" + oldPatchNumber); //$NON-NLS-1$
 		}
 		String line;
 		try {

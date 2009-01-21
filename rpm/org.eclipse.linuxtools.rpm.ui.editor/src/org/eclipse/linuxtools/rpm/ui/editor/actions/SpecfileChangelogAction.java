@@ -44,6 +44,8 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * @see IWorkbenchWindowActionDelegate
  */
 public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	private IWorkbenchWindow window;
 
 	/**
@@ -70,7 +72,7 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 			// there is some random number suffix to the category positions,
 			// we need to find the one we want
 			for (String positionCategory: positionCategories) {
-				if (positionCategory.startsWith("__content_types_category")) {
+				if (positionCategory.startsWith("__content_types_category")) { //$NON-NLS-1$
 					contentTypesPositionCategory = positionCategory;
 				}
 			}
@@ -102,15 +104,15 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 							+ changelogPartition.getLength());
 					String changelogText = doc.get(changelogPartition
 							.getOffset(), changelogPartition.getLength());
-					String[] changelogLines = changelogText.split("\n");
+					String[] changelogLines = changelogText.split(NEW_LINE);
 					StringBuilder buf = new StringBuilder();
-					buf.append(changelogLines[0]).append("\n");
-					buf.append(createChangelogEntry(specEditor.getSpecfile(), doc)).append("\n");
-					buf.append(" - \n");
+					buf.append(changelogLines[0]).append(NEW_LINE);
+					buf.append(createChangelogEntry(specEditor.getSpecfile(), doc)).append(NEW_LINE);
+					buf.append(" - \n"); //$NON-NLS-1$
 					int newCursorOffset = changelogPartition.getOffset() + buf.length() -1;
 					
 					for (String changelogLine: changelogLines) {
-						buf.append(changelogLine).append("\n");
+						buf.append(changelogLine).append(NEW_LINE);
 					}
 
 					doc.replace(changelogPartition.getOffset(),
@@ -164,11 +166,11 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 
 	protected String createChangelogEntry(Specfile specfile, IDocument doc) {
 		if (specfile == null)
-			return "";
+			return EMPTY_STRING;
 		// FIXME:  this is hack-tastic
 //		ChangelogPlugin changelogPlugin = new ChangelogPlugin();
 		IPreferenceStore store = new ScopedPreferenceStore(new InstanceScope(),
-				"com.redhat.eclipse.changelog.core");
+				"com.redhat.eclipse.changelog.core"); //$NON-NLS-1$
 //		IPreferenceStore store = changelogPlugin.getPreferenceStore();
 
 		String name = store.getString("IChangeLogConstants.AUTHOR_NAME"); //$NON-NLS-1$
@@ -181,11 +183,23 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 		
 		SpecfileElement resolveElement = new SpecfileElement();
 		resolveElement.setSpecfile(specfile);
-		String epoch = specfile.getEpoch() == -1 ? "": (specfile.getEpoch() + ":");
-		String version = specfile.getVersion() == null ? "": resolveElement.resolve(specfile.getVersion());
-		String release = specfile.getRelease() == null ? "": resolveElement.resolve(specfile.getRelease());
+		String epoch = specfile.getEpoch() == -1 ? EMPTY_STRING: (specfile.getEpoch() + ":");
+		String version = specfile.getVersion() == null ? EMPTY_STRING: resolveElement.resolve(specfile.getVersion()); //$NON-NLS-1$
+		String release = specfile.getRelease() == null ? EMPTY_STRING: resolveElement.resolve(specfile.getRelease());
 		
 		
-		return "* " + date + " " + name + "  <" + email + "> " + epoch + version + "-" + release;
+		StringBuilder changelogEntry = new StringBuilder();
+		changelogEntry.append("* "); //$NON-NLS-1$
+		changelogEntry.append(date);
+		changelogEntry.append(" "); //$NON-NLS-1$
+		changelogEntry.append(name);
+		changelogEntry.append("  <"); //$NON-NLS-1$
+		changelogEntry.append(email);
+		changelogEntry.append("> "); //$NON-NLS-1$
+		changelogEntry.append(epoch);
+		changelogEntry.append(version);
+		changelogEntry.append("-"); //$NON-NLS-1$
+		changelogEntry.append(release);
+		return changelogEntry.toString();
 	}
 }

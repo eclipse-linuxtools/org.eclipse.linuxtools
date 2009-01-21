@@ -37,16 +37,16 @@ public class Utils {
 	    // Check if ~/.rpmmacros exist, if the file don't exist we create 
 		// it with the appropriate command.
 		if (!exists) {
-	    	String[] command = {"rpmdev-setuptree"};
+	    	String[] command = {"rpmdev-setuptree"}; //$NON-NLS-1$
 	    	runCommandToInputStream(command);
 	    }
 		
 		// Check RPM tool preference.
 		String currentRpmTool = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CURRENT_RPMTOOLS);
-		if (!fileExist("/usr/bin/yum")) {
+		if (!fileExist("/usr/bin/yum")) { //$NON-NLS-1$
 			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_YUM))
 				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
-		} else if (!fileExist("/usr/bin/urpmq")) {
+		} else if (!fileExist("/usr/bin/urpmq")) { //$NON-NLS-1$
 			if (currentRpmTool.equals(PreferenceConstants.DP_RPMTOOLS_URPM))
 				Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.P_CURRENT_RPMTOOLS, PreferenceConstants.DP_RPMTOOLS_RPM);
 		}
@@ -69,7 +69,7 @@ public class Utils {
 	}
 	
 	public static String inputStreamToString(InputStream stream) throws IOException {
-		String retStr = "";
+		String retStr = ""; //$NON-NLS-1$
 		int c;
 		while ((c = stream.read()) != -1) {
 			retStr += ((char) c);
@@ -105,14 +105,14 @@ public class Utils {
 		String originalUrlString= string;
 		SpecfileDefine define;
 		try {
-			Pattern variablePattern= Pattern.compile("%\\{(\\S+?)\\}");
+			Pattern variablePattern= Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
 			Matcher variableMatcher= variablePattern.matcher(string);
 			while (variableMatcher.find()) {
 				define= specfile.getDefine(variableMatcher.group(1));
 				string= string.replaceAll(variableMatcher.group(1), define.getStringValue());
 			}
 			if (!string.equals(originalUrlString))
-				string= string.replaceAll("\\%\\{|\\}", "");
+				string= string.replaceAll("\\%\\{|\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			return string;
 		} catch (Exception e) {
 			return originalUrlString;

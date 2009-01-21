@@ -50,6 +50,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
  */
 public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
 	/**
 	 * <code>Comparator</code> implementation used to sort template proposals
 	 * @author Van Assche Alphonse
@@ -60,23 +62,23 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		}
 	}
 
-	private static final String TEMPLATE_ICON = "icons/template_obj.gif";
+	private static final String TEMPLATE_ICON = "icons/template_obj.gif"; //$NON-NLS-1$
 
-	private static final String MACRO_ICON = "icons/macro_obj.gif";
+	private static final String MACRO_ICON = "icons/macro_obj.gif"; //$NON-NLS-1$
 	
-	private static final String PATCH_ICON = "icons/macro_obj.gif";
+	private static final String PATCH_ICON = "icons/macro_obj.gif"; //$NON-NLS-1$
 	
-	private static final String PACKAGE_ICON = "icons/rpm.gif";
+	private static final String PACKAGE_ICON = "icons/rpm.gif"; //$NON-NLS-1$
 
-	private static final String PREAMBLE_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.preambleSection";
+	private static final String PREAMBLE_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.preambleSection"; //$NON-NLS-1$
 
-	private static final String PRE_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.preSection";
+	private static final String PRE_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.preSection"; //$NON-NLS-1$
 
-	private static final String BUILD_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.buildSection";
+	private static final String BUILD_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.buildSection"; //$NON-NLS-1$
 
-	private static final String INSTALL_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.installSection";
+	private static final String INSTALL_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.installSection"; //$NON-NLS-1$
 
-	private static final String CHANGELOG_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.changelogSection";
+	private static final String CHANGELOG_SECTION_TEMPLATE = "org.eclipse.linuxtools.rpm.ui.editor.changelogSection"; //$NON-NLS-1$
 
 	private final SpecfileEditor editor;
 	
@@ -177,7 +179,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		}
 		ITextSelection selection = (ITextSelection) viewer
 				.getSelectionProvider().getSelection();
-		context.setVariable("selection", selection.getText());
+		context.setVariable("selection", selection.getText()); //$NON-NLS-1$
 		String id = context.getContextType().getId();
 		Template[] templates = Activator.getDefault().getTemplateStore()
 				.getTemplates(id);
@@ -222,8 +224,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		if (rpmMacroProposalsMap != null) {
 			for (Map.Entry<String, String> entry : rpmMacroProposalsMap
 					.entrySet()) {
-				proposals.add(new CompletionProposal("%{"
-						+ entry.getKey().substring(1) + "}",
+				proposals.add(new CompletionProposal("%{" //$NON-NLS-1$
+						+ entry.getKey().substring(1) + "}", //$NON-NLS-1$
 						region.getOffset(), region.getLength(), entry.getKey()
 								.length() + 2, Activator.getDefault().getImage(
 								MACRO_ICON), entry.getKey(), null, entry
@@ -421,7 +423,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		int i = offset;
 		IDocument document = viewer.getDocument();
 		if (i > document.getLength())
-			return "";
+			return EMPTY_STRING;
 
 		try {
 			while (i > 0) {
@@ -432,7 +434,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			}
 			return document.get(i, offset - i);
 		} catch (BadLocationException e) {
-			return "";
+			return EMPTY_STRING;
 		}
 	}
 
@@ -452,8 +454,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Map<String, String> ret = new HashMap<String, String>();
 		String defineName;
 		for (SpecfileDefine define: defines) {
-			defineName = "%" + define.getName();
-			if (defineName.startsWith(prefix.replaceFirst("\\{", "")))
+			defineName = "%" + define.getName(); //$NON-NLS-1$
+			if (defineName.startsWith(prefix.replaceFirst("\\{", EMPTY_STRING))) //$NON-NLS-1$
 				ret.put(defineName, define.getStringValue());
 		}
 		return ret;
@@ -475,10 +477,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Map<String, String> ret = new HashMap<String, String>();
 		String patchName;
 		for (SpecfileSource patch: patches) {
-			patchName = "%patch" + patch.getNumber();
+			patchName = "%patch" + patch.getNumber(); //$NON-NLS-1$
 			if (patchName.startsWith(prefix))
 				ret.put(patchName.toLowerCase(), SpecfileHover
-						.getSourceOrPatchValue(specfile, "patch"
+						.getSourceOrPatchValue(specfile, "patch" //$NON-NLS-1$
 								+ patch.getNumber()));
 		}
 		return ret;
@@ -500,10 +502,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Map<String, String> ret = new HashMap<String, String>();
 		String sourceName;
 		for (SpecfileSource patch: sources) {
-			sourceName = "%{SOURCE" + patch.getNumber()+"}";
+			sourceName = "%{SOURCE" + patch.getNumber()+"}"; //$NON-NLS-1$ //$NON-NLS-2$
 			if (sourceName.startsWith(prefix))
 				ret.put(sourceName, SpecfileHover
-						.getSourceOrPatchValue(specfile, "SOURCE"
+						.getSourceOrPatchValue(specfile, "SOURCE" //$NON-NLS-1$
 								+ patch.getNumber()));
 		}
 		return ret;

@@ -22,6 +22,7 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
+import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.KeywordWordDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.AuthorEmailRule;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.VersionReleaseRule;
@@ -34,7 +35,7 @@ import org.eclipse.swt.SWT;
  */
 public class SpecfileChangelogScanner extends RuleBasedScanner {
 
-	private static String[] sections = { "%changelog" };
+	private static String[] sections = { RpmSections.CHANGELOG_SECTION };
 	private IToken fLastToken;
 	
 	public SpecfileChangelogScanner(ColorManager manager) {
