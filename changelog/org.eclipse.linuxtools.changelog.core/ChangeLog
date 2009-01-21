@@ -1,3 +1,7 @@
+2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Enable Ctrl+Alt+P to work in compare window.
+
 2009-01-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #261694
