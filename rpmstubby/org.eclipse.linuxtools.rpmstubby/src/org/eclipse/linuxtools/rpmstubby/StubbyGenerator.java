@@ -163,9 +163,6 @@ public class StubbyGenerator {
 			buffer.append("fi\n");
 			buffer.append("%endif\n\n");
 		}
-		buffer.append("%files\n");
-		buffer.append("%defattr(-,root,root,-)\n");
-		buffer.append("%{install_loc}\n\n");
 		generateFilesSections(buffer);
 		buffer.append("%changelog\n\n");
 		buffer.append("FIXME\n");
@@ -173,6 +170,14 @@ public class StubbyGenerator {
 	}
 
 	private void generateFilesSections(StringBuilder buffer) {
+		buffer.append("%files\n");
+		buffer.append("%defattr(-,root,root,-)\n");
+		buffer.append("%{install_loc}\n");
+		for (String fileName : mainPackage.getDocFiles()) {
+			buffer.append("%doc ").append(mainPackage.getDocFilesRoot())
+					.append("/").append(fileName).append("\n");
+		}
+		buffer.append("\n");
 		for (SubPackage subPackage : subPackages) {
 			buffer.append("%files " + getPackageName(subPackage.getName())
 					+ "\n");

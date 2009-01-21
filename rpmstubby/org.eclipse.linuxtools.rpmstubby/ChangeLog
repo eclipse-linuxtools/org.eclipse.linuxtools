@@ -1,3 +1,20 @@
+2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix #260887.
+	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java 
+	(getDocFilesRoot): New method.
+	(setDocFilesRoot): Likewise.
+	(setDocFiles): Likewise.
+	(getDocFiles): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java 
+	(write): Add javadoc and populate docs data.
+	(SpecfileWriter): Add javadoc.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	(generateFilesSections): Generate %doc in the %files section.
+	(generateSpecfile): Move %files related generation to generateFilesSections.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	(populateDocFiles): New method.
+	(StubbyPackageModel): Store featureDir for later usage.
+
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 

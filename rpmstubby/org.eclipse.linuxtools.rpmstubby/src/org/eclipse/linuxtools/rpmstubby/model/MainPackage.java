@@ -10,8 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Bean representation of the main package of the RPM.
+ *
+ */
 public class MainPackage extends SubPackage implements IPackagePreamble {
 
 	private String release;
@@ -21,7 +26,25 @@ public class MainPackage extends SubPackage implements IPackagePreamble {
 	private List<String> paches;
 	private String buildroot;
 	private List<PackageItem> buildRequires;
+	private List<String> docFiles = new ArrayList<String>();
+	private String docFilesRoot;
 
+
+	/**
+	 * Returns the doc files for this package.
+	 * @return The doc files.
+	 */
+	public List<String> getDocFiles() {
+		return docFiles;
+	}
+
+	/**
+	 * Sets the doc files for this package.
+	 * @param docFiles The doc files.
+	 */
+	public void setDocFiles(List<String> docFiles) {
+		this.docFiles = docFiles;
+	}
 
 	public String getRelease() {
 		return release;
@@ -107,6 +130,20 @@ public class MainPackage extends SubPackage implements IPackagePreamble {
 		}
 		buffer.append("\nBuildRoot: ").append(buildroot);
 		return buffer.toString();
+	}
+
+	/**
+	 * @param docFilesRoot The docFilesRoot to set
+	 */
+	public void setDocFilesRoot(String docFilesRoot) {
+		this.docFilesRoot = docFilesRoot;
+	}
+
+	/**
+	 * @return The docFilesRoot
+	 */
+	public String getDocFilesRoot() {
+		return docFilesRoot;
 	}
 
 }

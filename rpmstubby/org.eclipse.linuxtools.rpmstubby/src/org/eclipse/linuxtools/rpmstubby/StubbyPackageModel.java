@@ -22,9 +22,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.rpmstubby.model.IPackage;
 import org.eclipse.linuxtools.rpmstubby.model.IPackagePreamble;
+import org.eclipse.linuxtools.rpmstubby.model.MainPackage;
 import org.eclipse.linuxtools.rpmstubby.model.PackageItem;
 import org.eclipse.update.core.IIncludedFeatureReference;
 import org.eclipse.update.core.VersionedIdentifier;
@@ -43,6 +45,7 @@ public class StubbyPackageModel {
 
 	private static final String valueNoFoundMessage = "FIXME";
 	private String featurePropertiesFile;
+	private IPath featureDir;
 	private FeatureModel featureModel;
 	private List<IFile> includedFeatureFiles = new ArrayList<IFile>();
 	private List<String> includedFeatureIdentifiers;
@@ -53,9 +56,8 @@ public class StubbyPackageModel {
 	 * @param featureFile The feature.xml file to use.
 	 */
 	public StubbyPackageModel(IFile featureFile) {
-		this.featurePropertiesFile = featureFile.getLocation()
-				.removeLastSegments(1).toOSString()
-				+ "/feature.properties";
+		this.featureDir = featureFile.getLocation().removeLastSegments(1);
+		this.featurePropertiesFile = featureDir.toOSString()+ "/feature.properties";
 		FeatureModelFactory featureModelFactory = new FeatureModelFactory();
 		try {
 			this.featureModel = featureModelFactory.parseFeature(featureFile
@@ -69,6 +71,22 @@ public class StubbyPackageModel {
 		}
 	}
 
+	/**
+	 * Fills the doc files in the package model.
+	 * @param packageModel The package model to fill.
+	 */
+	public void populateDocFiles(MainPackage packageModel) {
+		String[] files = featureDir.toFile().list();
+		List<String> docFiles = new ArrayList<String>();
+		for (String file :files){
+			if (file.matches("(epl-.*|license)\\.html")){
+				docFiles.add(file);
+			}
+		}
+		packageModel.setDocFiles(docFiles);
+		packageModel.setDocFilesRoot(featureDir.lastSegment());
+	}
+	
 	/**
 	 * Fills the package model from the parsed data from the feature.xml file.
 	 * @param packageModel The package model to fill.
