@@ -88,6 +88,52 @@ public class OpInfo {
 		
 		return info;
 	}
+
+	/**
+	 * Sets the number of counters allowed by Oprofile. This method is called
+	 * after this object is contstructed, while opxml is run (the first tag output
+	 * is num-counters).
+	 * Only called from XML parsers.
+	 * @param ctrs the number of counters
+	 */
+	public void _setNrCounters(int ctrs) {
+		_nrCounters = ctrs;
+		
+		// Allocate room for event lists for the counters
+		_eventList = new OpEvent[_nrCounters][];
+	}
+
+	/**
+	 * Set the CPU frequency (in MHz).
+	 * Only called from the XML parsers.
+	 * @param freq the frequency
+	 */
+	public void _setCPUSpeed(double freq) {
+		_cpuSpeed = freq;
+	}
+
+	/**
+	 * Sets the defaults associated with this configuration of Oprofile.
+	 * Only called from XML parsers.
+	 * @param map the <code>HashMap</code> containing the defaults
+	 */
+	public void _setDefaults(HashMap<String,String> map) {
+		_defaults = map;
+	}
+
+	/**
+	 * Adds the events of the counter counterNum into the list of all events.
+	 * Note they are sorted here.
+	 * Only called from XML parsers.
+	 * @param counterNum the counter with the events
+	 * @param events an array of OpEvent events belonging to this counter
+	 */
+	public void _setEvents(int counterNum, OpEvent[] events) {
+		if (counterNum < _eventList.length) {
+			_eventList[counterNum] = events;
+			Arrays.sort(_eventList[counterNum], new SortEventComparator());
+		}
+	}
 	
 	/**
 	 * Returns the number of counters allowed by Oprofile
@@ -96,28 +142,7 @@ public class OpInfo {
 	public int getNrCounters() {
 		return _nrCounters;
 	}
-	
-	/**
-	 * Sets the number of counters allowed by Oprofile. This method is called
-	 * after this object is contstructed, while opxml is run (the first tag output
-	 * is num-counters).
-	 * @param ctrs the number of counters
-	 */
-	public void setNrCounters(int ctrs) {
-		_nrCounters = ctrs;
 		
-		// Allocate room for event lists for the counters
-		_eventList = new OpEvent[_nrCounters][];
-	}
-	
-	/**
-	 * Set the CPU frequency (in MHz)
-	 * @param freq the frequency
-	 */
-	public void setCPUSpeed(double freq) {
-		_cpuSpeed = freq;
-	}
-	
 	/**
 	 * Returns the CPU's speed in MHz
 	 * @return the speed
@@ -135,19 +160,6 @@ public class OpInfo {
 	 */
 	public String getDefault(String what) {
 		return (String) _defaults.get(what);
-	}
-
-	/**
-	 * Adds the events of the counter counterNum into the list of all events.
-	 * Note they are sorted here.
-	 * @param counterNum the counter with the events
-	 * @param events an array of OpEvent events belonging to this counter
-	 */
-	public void setEvents(int counterNum, OpEvent[] events) {
-		if (counterNum < _eventList.length) {
-			_eventList[counterNum] = events;
-			Arrays.sort(_eventList[counterNum], new SortEventComparator());
-		}
 	}
 
 	/**
@@ -176,13 +188,5 @@ public class OpInfo {
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Sets the defaults associated with this configuration of Oprofile.
-	 * @param map the <code>HashMap</code> containing the defaults
-	 */
-	public void setDefaults(HashMap<String,String> map) {
-		_defaults = map;
 	}
 }
