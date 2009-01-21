@@ -29,8 +29,7 @@ import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
  * used to construct arguments for launching op_start on the host. It
  * simply wraps OprofileDaemonEvent.
  */
-public class OprofileCounter
-{
+public class OprofileCounter {
 	private static final String COUNTER_STRING = OprofileLaunchMessages.getString("oprofileCounter.counterString"); //$NON-NLS-1$
 	
 	// The counter number
@@ -145,8 +144,8 @@ public class OprofileCounter
 			}
 			
 			
-			int maskValue =  config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(_number), -1);
-			_daemonEvent.getEvent().getUnitMask().setMaskValue(maskValue);	//-1 sets default
+			int maskValue =  config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(_number), OpUnitMask.SET_DEFAULT_MASK);
+			_daemonEvent.getEvent().getUnitMask().setMaskValue(maskValue);
 			
 			_daemonEvent.setProfileKernel(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(_number), false));
 			_daemonEvent.setProfileUser(config.getAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(_number), false));

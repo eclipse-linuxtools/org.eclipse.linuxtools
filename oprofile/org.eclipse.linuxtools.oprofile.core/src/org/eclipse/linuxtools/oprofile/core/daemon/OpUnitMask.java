@@ -34,10 +34,13 @@ public class OpUnitMask {
 		 */
 		public String description;
 	};
+	
+	public static final int SET_DEFAULT_MASK = -1;
 
-	/*
-	 * The types of masks
+	/**
+	 * Invalid mask type.
 	 */
+	public static final int INVALID = -1;
 
 	/**
 	 * The mask is mandatory. It must be used.
@@ -54,7 +57,6 @@ public class OpUnitMask {
 	 */
 	public static final int BITMASK = 3;
 
-	public static final int INVALID = -1;
 
 	// The current value of this unitmask
 	private int _mask;
@@ -106,8 +108,6 @@ public class OpUnitMask {
 	public void _setType(int type) {
 		_maskType = type;
 	}
-
-	
 	
 	/**
 	 * Returns the integer value of this unitmask, suitable for passing to oprofile.
@@ -151,7 +151,7 @@ public class OpUnitMask {
 	 * @param newValue the new value of this unitmask
 	 */
 	public void setMaskValue(int newValue) {
-		if (newValue == -1) {
+		if (newValue == SET_DEFAULT_MASK) {
 			_mask = _defaultMask;
 		} else {
 			_mask = newValue;
