@@ -1,3 +1,7 @@
+2009-01-21  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifParser: Moved parsePID to AbstractValgrindTextParser.
+
 2009-01-20  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifLaunchDelegate: Changed to handle multiple pids.
