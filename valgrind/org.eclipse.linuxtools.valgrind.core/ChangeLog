@@ -1,3 +1,7 @@
+2009-01-21  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTextParser: Moved parsePID from MassifParser.
+
 2009-01-13  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractValgrindTextParser: New. Helpful starting point for text parsers.
