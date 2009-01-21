@@ -70,13 +70,13 @@ public class RpmlintItem {
 		for (int i = 0; i < sections.length; i++) {
 			if (referedContent.startsWith(sections[i])) {
 				this.referedContent = referedContent.trim();
-				if (this.referedContent.equals(""))
+				if (this.referedContent.equals("")) //$NON-NLS-1$
 					this.referedContent = sections[i];
 				this.referedSection = sections[i];
 				i = sections.length;
 			} else {
 				this.referedContent = referedContent;
-				this.referedSection = "";
+				this.referedSection = ""; //$NON-NLS-1$
 			}
 		}
 	}
@@ -90,7 +90,7 @@ public class RpmlintItem {
 	}
 
 	public void setSeverity(String severity) {
-		severity = severity.replaceAll(":", "").trim();
+		severity = severity.replaceAll(":", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
 		switch (severity.charAt(0)) {
 		case 'I':
 			this.severity = 0;
@@ -109,13 +109,21 @@ public class RpmlintItem {
 
 	@Override
 	public String toString() {
-		return "line number: " + this.lineNbr 
-			+ "\nfile name: " + this.fileName
-			+ "\nseverity: " + this.severity
-			+ "\nId: " + this.id 
-			+ "\nrefered content: "	+ this.referedContent 
-			+ "\nmessage: " + this.getMessage()
-			+ "\n";
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("line number: "); //$NON-NLS-1$
+		stringBuilder.append(this.lineNbr);
+		stringBuilder.append("\nfile name: "); //$NON-NLS-1$
+		stringBuilder.append(this.fileName);
+		stringBuilder.append("\nseverity: "); //$NON-NLS-1$
+		stringBuilder.append(this.severity);
+		stringBuilder.append("\nId: "); //$NON-NLS-1$
+		stringBuilder.append(this.id);
+		stringBuilder.append("\nrefered content: "); //$NON-NLS-1$
+		stringBuilder.append(this.referedContent);
+		stringBuilder.append("\nmessage: "); //$NON-NLS-1$
+		stringBuilder.append(this.getMessage());
+		stringBuilder.append("\n"); //$NON-NLS-1$
+		return stringBuilder.toString(); 
 	}
 	
 	

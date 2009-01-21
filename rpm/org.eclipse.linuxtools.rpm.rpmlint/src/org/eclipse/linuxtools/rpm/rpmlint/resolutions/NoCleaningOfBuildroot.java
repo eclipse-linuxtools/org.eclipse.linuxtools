@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Image;
 
 public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
-	public static final String ID = "no-cleaning-of-buildroot";
+	public static final String ID = "no-cleaning-of-buildroot"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return "You should clean $RPM_BUILD_ROOT in the %clean section and just after the beginning of %install section. Use \"rm -Rf $RPM_BUILD_ROOT\"";
@@ -32,15 +32,15 @@ public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "rm -Rf $RPM_BUILD_ROOT\n";
+		return "rm -Rf $RPM_BUILD_ROOT\n"; //$NON-NLS-1$
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		SpecfileElement[] sections = editor.getSpecfile().getSections();
 		for (SpecfileElement section : sections) {
-			if (section.getName().equals("install")
-					|| section.getName().equals("clean")) {
+			if (section.getName().equals("install") //$NON-NLS-1$
+					|| section.getName().equals("clean")) { //$NON-NLS-1$
 				if (markerLine == section.getLineNumber()) {
 					return section.getLineNumber() + 1;
 				}

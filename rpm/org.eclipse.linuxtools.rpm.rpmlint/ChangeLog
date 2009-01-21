@@ -1,3 +1,40 @@
+2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable non externalized strings warnings.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java: Add NON-NLS.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintNature.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintItem.java (setSeverity): Likewise. 
+	(toString): Likewise.
+	(setReferedContent): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (getRealLineNbr): Likewise.
+	(parseRpmlintOurput): Likewise.
+	(runRpmlintCommand): Likewise.
+	(getMixedUseOfTabsAndSpaces): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/preferences/PreferenceConstants.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/ARemoveLineResolution.java (run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPrefixTag.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/MacroInChangelog.java (getReplaceString): Likewise.
+	(getOriginalString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java (getLineToInsert): Likewise.
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java (getLineToInsert): Likewise.
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java (getLineToInsert): Likewise.
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleanSection.java (getLineToInsert): Likewise.
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoInstallSection.java (getLineToInsert): Likewise.
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoPrepSection.java (getLineToInsert): Likewise.
+	(getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/PatchNotApplied.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmBuildrootUsage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java (getRpmlintErrorId): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/SetupNotQuiet.java (getReplaceString): Likewise.
+	(getOriginalString): Likewise.
+
 2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java 

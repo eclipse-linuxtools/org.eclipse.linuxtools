@@ -32,6 +32,9 @@ import org.eclipse.linuxtools.rpm.rpmlint.resolutions.RpmlintMarkerResolutionGen
 public class RpmlintParser {
 	
 	
+	private static final String COLON = ":"; //$NON-NLS-1$
+	private static final String SPACE = " "; //$NON-NLS-1$
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private static RpmlintParser rpmlintParser;
 
 	// default constructor
@@ -110,12 +113,12 @@ public class RpmlintParser {
 		String line;
 		boolean firtItemLine = true;
 		String[] lineItems;
-		String description = "";
+		String description = EMPTY_STRING;
 		try {
 			while ((line = reader.readLine()) != null) {
 				if (firtItemLine) {
 					firtItemLine=false;
-					lineItems = line.split(":", 4);
+					lineItems = line.split(COLON, 4);
 					item.setFileName(lineItems[0]);
 					int lineNbr;
 					
@@ -125,7 +128,7 @@ public class RpmlintParser {
 					// detected this line we can safely return rpmlintItems, 
 					// maybe we can find a better way to detect this line. 
 					try {
-						Integer.parseInt(line.split(" ")[0]);
+						Integer.parseInt(line.split(SPACE)[0]);
 						return rpmlintItems;
 					} catch (NumberFormatException e) {
 						// this line is not the summary
@@ -138,13 +141,13 @@ public class RpmlintParser {
 					try {
 						lineNbr = Integer.parseInt(lineItems[1]);
 						item.setSeverity(lineItems[2]);
-						lineItems = lineItems[3].trim().split(" ", 2);						
+						lineItems = lineItems[3].trim().split(SPACE, 2);						
 					} catch (NumberFormatException e) {
 						// No line number showed for this rpmlint warning.
-						lineItems = line.split(":", 3);
+						lineItems = line.split(COLON, 3);
 						lineNbr = -1;
 						item.setSeverity(lineItems[1]);
-						lineItems = lineItems[2].trim().split(" ", 2);
+						lineItems = lineItems[2].trim().split(SPACE, 2);
 					} 
 					item.setLineNbr(lineNbr);					
 					item.setId(lineItems[0]);
@@ -152,12 +155,12 @@ public class RpmlintParser {
 					if (lineItems.length > 1)
 						item.setReferedContent(lineItems[1]);
 					else
-						item.setReferedContent("");
+						item.setReferedContent(EMPTY_STRING);
 				} else {
 					description += line + '\n';
 				}
 				
-				if (line.equals("")) {
+				if (line.equals(EMPTY_STRING)) {
 					item.setMessage(description.substring(0, description.length() - 2));
 					int useOfTabsAndSpaces = getMixedUseOfTabsAndSpaces(item.getReferedContent());
 					if (useOfTabsAndSpaces != -1) 
@@ -165,7 +168,7 @@ public class RpmlintParser {
 					rpmlintItems.add(item);
 					item = new RpmlintItem();
 					firtItemLine=true;
-					description = "";
+					description = EMPTY_STRING;
 				}
 
 			}
@@ -191,7 +194,7 @@ public class RpmlintParser {
 		int i = 2;
 		String[] cmd = new String[visitedResources.size() + i];
 		cmd[0] = rpmlintPath;
-		cmd[1] = "-i";
+		cmd[1] = "-i"; //$NON-NLS-1$
 		Iterator<String> iterator = visitedResources.iterator();
 		while(iterator.hasNext()) {
 			cmd[i] = iterator.next();
@@ -219,7 +222,7 @@ public class RpmlintParser {
 	 */
 	public int getRealLineNbr(String specContent, String strToFind) {
 		int ret = -1;
-		if (strToFind.equals("")) {
+		if (strToFind.equals(EMPTY_STRING)) {
 			return ret;
 		}
 		String line;
@@ -227,8 +230,8 @@ public class RpmlintParser {
 				specContent));
 		try {
 			while ((line = reader.readLine()) != null) {
-				if (line.replaceAll("\t| ", "").indexOf(
-						strToFind.replaceAll("\t| ", "")) > -1) {
+				if (line.replaceAll("\t| ", EMPTY_STRING).indexOf( //$NON-NLS-1$
+						strToFind.replaceAll("\t| ", EMPTY_STRING)) > -1) { //$NON-NLS-1$
 					ret = reader.getLineNumber();
 				}
 			}
@@ -240,18 +243,18 @@ public class RpmlintParser {
 	
 	private int getMixedUseOfTabsAndSpaces(String referedContent){
 		int lineNbr = -1;
-		if (referedContent.indexOf("(spaces: line") > -1) {
+		if (referedContent.indexOf("(spaces: line") > -1) { //$NON-NLS-1$
 			String tabsAndSpacesPref = Activator
 			.getDefault()
 			.getPreferenceStore()
 			.getString(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES);
-			String[] spacesAndTabs = referedContent.split("line");
+			String[] spacesAndTabs = referedContent.split("line"); //$NON-NLS-1$
 			if (tabsAndSpacesPref == PreferenceConstants.P_RPMLINT_SPACES)
 				lineNbr = Integer.parseInt(spacesAndTabs[1]
-				                                         .split(",")[0].trim());
+				                                         .split(",")[0].trim()); //$NON-NLS-1$
 			else
 				lineNbr = Integer.parseInt(spacesAndTabs[2]
-				                                         .replaceFirst("\\)", "").trim());
+				                                         .replaceFirst("\\)", EMPTY_STRING).trim()); //$NON-NLS-1$
 		}
 		return lineNbr;
 	}

@@ -15,7 +15,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.graphics.Image;
 
 public class NoCleanSection extends AInsertLineResolution {
-	public static final String ID = "no-%clean-section";
+	public static final String ID = "no-%clean-section"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return "Insert empty %clean section";
@@ -31,14 +31,14 @@ public class NoCleanSection extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "%clean\n\n";
+		return "%clean\n\n"; //$NON-NLS-1$
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		SpecfileElement[] sections = editor.getSpecfile().getSections();
 		for (SpecfileElement section : sections) {
-			if (section.getName().equals("changelog")) {
+			if (section.getName().equals("changelog")) { //$NON-NLS-1$
 				return section.getLineNumber();
 			}
 		}

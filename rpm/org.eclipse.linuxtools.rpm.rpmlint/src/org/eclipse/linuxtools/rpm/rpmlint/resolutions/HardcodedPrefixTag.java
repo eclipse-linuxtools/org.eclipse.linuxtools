@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.Image;
  *
  */
 public class HardcodedPrefixTag extends ARemoveLineResolution{
-	public static final String ID = "hardcoded-prefix-tag";
+	public static final String ID = "hardcoded-prefix-tag"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()

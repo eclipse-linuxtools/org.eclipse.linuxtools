@@ -14,7 +14,7 @@ import org.eclipse.swt.graphics.Image;
 
 public class PatchNotApplied extends ARemoveLineResolution {
 
-	public static final String ID = "patch-not-applied";
+	public static final String ID = "patch-not-applied"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()

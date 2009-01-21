@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
  *
  */
 public class NoBuildSection extends AInsertLineResolution {
-	public static final String ID = "no-%build-section";
+	public static final String ID = "no-%build-section"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return "Insert empty %build section";
@@ -37,14 +37,14 @@ public class NoBuildSection extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "%build\n\n";
+		return "%build\n\n"; //$NON-NLS-1$
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		SpecfileElement[] sections = editor.getSpecfile().getSections();
 		for (SpecfileElement section : sections) {
-			if (section.getName().equals("install")) {
+			if (section.getName().equals("install")) { //$NON-NLS-1$
 				return section.getLineNumber();
 			}
 		}

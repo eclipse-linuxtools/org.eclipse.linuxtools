@@ -32,9 +32,9 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 
 	public static final int MAX_WORKS = 100;
 
-	public static final String BUILDER_ID = Activator.PLUGIN_ID + ".rpmlintBuilder";
+	public static final String BUILDER_ID = Activator.PLUGIN_ID + ".rpmlintBuilder"; //$NON-NLS-1$
 
-	public static final String MARKER_ID = Activator.PLUGIN_ID +  ".rpmlintProblem";
+	public static final String MARKER_ID = Activator.PLUGIN_ID +  ".rpmlintProblem"; //$NON-NLS-1$
 
 	private SpecfileParser specfileParser;
 

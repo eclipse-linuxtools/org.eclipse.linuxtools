@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
  *
  */
 public class NoBuildrootTag extends AInsertLineResolution {
-	public static final String ID = "no-buildroot-tag";
+	public static final String ID = "no-buildroot-tag"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return "The BuildRoot tag isn't used in your spec. It must be used in order to allow building the package as non root on some systems.";
@@ -38,7 +38,7 @@ public class NoBuildrootTag extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root\n\n";
+		return "BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root\n\n"; //$NON-NLS-1$
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class NoBuildrootTag extends AInsertLineResolution {
 		List<SpecfileSection> sections = editor.getSpecfile()
 				.getComplexSectionsAsList();
 		for (SpecfileSection section : sections) {
-			if (section.getName().equals("description")
+			if (section.getName().equals("description") //$NON-NLS-1$
 					&& section.getPackage() == null) {
 				return section.getLineNumber();
 			}

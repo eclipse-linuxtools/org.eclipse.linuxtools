@@ -14,7 +14,7 @@ import org.eclipse.swt.graphics.Image;
 
 public class MacroInChangelog extends AReplaceTextResolution {
 
-	public static final String ID = "macro-in-%changelog";
+	public static final String ID = "macro-in-%changelog"; //$NON-NLS-1$
 
 	/*
 	 * (non-Javadoc)
@@ -23,7 +23,7 @@ public class MacroInChangelog extends AReplaceTextResolution {
 	 */
 	@Override
 	public String getOriginalString() {
-		return "%";
+		return "%"; //$NON-NLS-1$
 	}
 
 	/*
@@ -33,7 +33,7 @@ public class MacroInChangelog extends AReplaceTextResolution {
 	 */
 	@Override
 	public String getReplaceString() {
-		return "%%";
+		return "%%"; //$NON-NLS-1$
 	}
 
 	/*

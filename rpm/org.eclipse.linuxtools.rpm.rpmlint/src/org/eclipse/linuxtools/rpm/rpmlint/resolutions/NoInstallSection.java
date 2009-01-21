@@ -15,7 +15,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.graphics.Image;
 
 public class NoInstallSection extends AInsertLineResolution {
-	public static final String ID = "no-%install-section";
+	public static final String ID = "no-%install-section"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return "Insert empty %install section";
@@ -31,14 +31,14 @@ public class NoInstallSection extends AInsertLineResolution {
 
 	@Override
 	public String getLineToInsert() {
-		return "%install\n\n";
+		return "%install\n\n"; //$NON-NLS-1$
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		SpecfileElement[] sections = editor.getSpecfile().getSections();
 		for (SpecfileElement section : sections) {
-			if (section.getName().equals("clean")) {
+			if (section.getName().equals("clean")) { //$NON-NLS-1$
 				return section.getLineNumber();
 			}
 		}

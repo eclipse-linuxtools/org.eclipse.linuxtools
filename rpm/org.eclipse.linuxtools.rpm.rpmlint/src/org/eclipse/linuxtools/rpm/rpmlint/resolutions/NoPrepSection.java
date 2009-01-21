@@ -15,7 +15,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.swt.graphics.Image;
 
 public class NoPrepSection extends AInsertLineResolution{
-	public static final String ID = "no-%prep-section";
+	public static final String ID = "no-%prep-section"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return "Insert empty %prep section";
@@ -31,14 +31,14 @@ public class NoPrepSection extends AInsertLineResolution{
 
 	@Override
 	public String getLineToInsert() {
-		return "%prep\n\n";
+		return "%prep\n\n"; //$NON-NLS-1$
 	}
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		SpecfileElement[] sections = editor.getSpecfile().getSections();
 		for (SpecfileElement section : sections) {
-			if (section.getName().equals("build")) {
+			if (section.getName().equals("build")) { //$NON-NLS-1$
 				return section.getLineNumber();
 			}
 		}

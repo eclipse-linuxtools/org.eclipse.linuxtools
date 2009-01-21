@@ -14,14 +14,14 @@ import org.eclipse.swt.graphics.Image;
 
 public class SetupNotQuiet extends AReplaceTextResolution {
 
-	public static final String ID = "setup-not-quiet";
+	public static final String ID = "setup-not-quiet"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.linuxtools.rpm.rpmlint.quickfixes.AReplaceTextResolution#getOriginalString()
 	 */
 	@Override
 	public String getOriginalString() {
-		return "%setup";
+		return "%setup"; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -29,7 +29,7 @@ public class SetupNotQuiet extends AReplaceTextResolution {
 	 */
 	@Override
 	public String getReplaceString() {
-		return "%setup -q";
+		return "%setup -q"; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

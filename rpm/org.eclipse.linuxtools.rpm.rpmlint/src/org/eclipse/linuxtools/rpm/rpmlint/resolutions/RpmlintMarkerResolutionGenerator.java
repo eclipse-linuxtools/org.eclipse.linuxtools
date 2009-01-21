@@ -20,10 +20,10 @@ import org.eclipse.ui.IMarkerResolutionGenerator2;
 public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 
 	// rpmlint error id atribut name
-	public static final String RPMLINT_ERROR_ID = "rpmlintErrorId";
+	public static final String RPMLINT_ERROR_ID = "rpmlintErrorId"; //$NON-NLS-1$
 	
 	// rpmlint refered  text
-	public static final String RPMLINT_REFERED_CONTENT = "rpmlintReferedContent";
+	public static final String RPMLINT_REFERED_CONTENT = "rpmlintReferedContent"; //$NON-NLS-1$
 	
 	
 	/* (non-Javadoc)
@@ -102,7 +102,7 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	 * @return the rpmlint error id or <code>""</code> if none
 	 */
 	private String getRpmlintErrorId(IMarker marker) {
-		return marker.getAttribute(RPMLINT_ERROR_ID, "");
+		return marker.getAttribute(RPMLINT_ERROR_ID, ""); //$NON-NLS-1$
 	}
 
 }

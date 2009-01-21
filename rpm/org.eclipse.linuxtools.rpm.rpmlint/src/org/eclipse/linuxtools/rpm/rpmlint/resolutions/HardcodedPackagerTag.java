@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 import org.eclipse.swt.graphics.Image;
 
 public class HardcodedPackagerTag extends ARemoveLineResolution {
-	public static final String ID = "hardcoded-packager-tag";
+	public static final String ID = "hardcoded-packager-tag"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()

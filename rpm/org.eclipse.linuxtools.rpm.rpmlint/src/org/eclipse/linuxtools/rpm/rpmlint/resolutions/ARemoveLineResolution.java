@@ -30,7 +30,7 @@ abstract public class ARemoveLineResolution extends ARpmlintResolution {
 		try {
 			int index = doc.getLineOffset(marker.getAttribute(IMarker.LINE_NUMBER, 0));
 			int lineLength = doc.getLineLength(marker.getAttribute(IMarker.LINE_NUMBER, 0));
-			doc.replace(index, lineLength, ""); 
+			doc.replace(index, lineLength, "");  //$NON-NLS-1$
 		} catch (BadLocationException e) {
 			RpmlintLog.logError(e);
 		}
