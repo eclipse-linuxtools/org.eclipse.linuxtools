@@ -12,9 +12,9 @@ package org.eclipse.linuxtools.rpm.rpmlint.builder;
 
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
+import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 
 public class RpmlintPreVisitor implements IResourceVisitor {
 	
@@ -24,7 +24,7 @@ public class RpmlintPreVisitor implements IResourceVisitor {
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) {
-		if (resource instanceof IFile && resource.getName().endsWith(".spec")) { //$NON-NLS-1$
+		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())) {
 			// we previsiting resource to be able to run rpmlint command
 			// only once. That improve drasticaly the perfs.
 			paths.add(resource.getLocation().toOSString());

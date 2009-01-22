@@ -12,10 +12,10 @@ package org.eclipse.linuxtools.rpm.rpmlint.builder;
 
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
 
 public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
@@ -26,9 +26,8 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
 	 */
 	public boolean visit(IResourceDelta delta) {
-		if (delta.getResource() instanceof IFile
-				&& delta.getResource().getName().endsWith(".spec")) { //$NON-NLS-1$
-			IResource resource = delta.getResource();
+		IResource resource = delta.getResource();
+		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())) {
 			switch (delta.getKind()) {
 			// we first visiting resources to be able to run the rpmlint command
 			// only once. That improve drastically the performance.

@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintItem;
 import org.eclipse.linuxtools.rpm.rpmlint.parser.RpmlintParser;
@@ -57,7 +58,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) throws CoreException {
-		if (resource instanceof IFile && resource.getName().endsWith(".spec")) { //$NON-NLS-1$
+		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())) {
 			firstWarningInResource = true;
 			for (RpmlintItem item : rpmlintItems) {
 				if (item.getFileName().equals(resource.getLocation().toOSString())) {

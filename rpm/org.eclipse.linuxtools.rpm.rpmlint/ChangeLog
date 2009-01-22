@@ -1,4 +1,12 @@
 2009-01-22  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java: Add constant for specfile extension.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintDeltaVisitor.java (visit): Simplify if and use file extension constant.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerRemoveVisitor.java (visit): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java (visit): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintPreVisitor.java (visit): Likewise.
+
+2009-01-22  Alexander Kurtakov  <akurtako@redhat.com>
 	Externalize strings.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/Messages.java: New file.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/messages.properties: New file.
