@@ -17,6 +17,8 @@ package org.eclipse.linuxtools.oprofile.core.model;
  * libraries, modules) profile by OProfile.
  */
 public class OpModelImage {
+	public static final int IMAGE_PARSE_ERROR = -1;
+	
 	//The count of all samples from this image
 	private int _count;
 	

@@ -40,6 +40,7 @@ public class ModelDataProcessor extends XMLProcessor {
 	
 	//the current image being constructed
 	private OpModelImage _image;
+	private boolean parsing_image;	//for ensuring image singleton-ness
 
 	//processors used for symbols and dependent images
 	private SymbolsProcessor _symbolsProcessor = new SymbolsProcessor();
@@ -48,12 +49,24 @@ public class ModelDataProcessor extends XMLProcessor {
 	
 	public void reset(Object callData) {
 		_image = ((CallData) callData).image;
+		parsing_image = false;
 	}
 
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			_image._setName(attrs.getValue(ATTR_IMAGENAME));
-			_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
+			if (!parsing_image) {
+				_image._setName(attrs.getValue(ATTR_IMAGENAME));
+				_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
+				parsing_image = true;
+			} else {
+				//should only ever be one image, otherwise oprofile was run
+				// outside of eclipse and the ui would not handle it properly
+				_image._setCount(OpModelImage.IMAGE_PARSE_ERROR);
+				_image._setDepCount(0);
+				_image._setDependents(null);
+				_image._setSymbols(null);
+				_image._setName(""); //$NON-NLS-1$
+			}
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
 		} else if (name.equals(DEPENDENT_TAG)) {

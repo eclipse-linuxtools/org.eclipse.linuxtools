@@ -56,21 +56,25 @@ public class UiModelImage implements IUiModelElement {
 	
 	@Override
 	public String toString() {
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		if (nf instanceof DecimalFormat) {
-			nf.setMinimumFractionDigits(2);
-			nf.setMaximumFractionDigits(2);
-		}
-		double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
-		
-		String percentage;
-		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
+		if (_image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
+			return OprofileUiMessages.getString("opxmlParse.error.multipleImages"); //$NON-NLS-1$
 		} else {
-			percentage = nf.format(countPercentage);
+			NumberFormat nf = NumberFormat.getPercentInstance();
+			if (nf instanceof DecimalFormat) {
+				nf.setMinimumFractionDigits(2);
+				nf.setMaximumFractionDigits(2);
+			}
+			double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
+			
+			String percentage;
+			if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
+				percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
+			} else {
+				percentage = nf.format(countPercentage);
+			}
+			
+			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		
-		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/** IUiModelElement functions **/

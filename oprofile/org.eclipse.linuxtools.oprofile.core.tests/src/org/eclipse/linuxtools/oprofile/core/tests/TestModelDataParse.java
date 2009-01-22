@@ -28,10 +28,12 @@ import org.xml.sax.XMLReader;
 
 public class TestModelDataParse extends TestCase {
 	private static final String REL_PATH_TO_TEST_XML = "resources/test_model-data.xml"; //$NON-NLS-1$
+	private static final String REL_PATH_TO_TEST_XML_MULTI_IMAGE = "resources/test_model-data_multiple_image.xml"; //$NON-NLS-1$
 	private static final String IMAGE_OUTPUT = "/test/path/for/image, Count: 205000, Dependent Count: 5000\nSymbols: TestFunction1(int), File: /test/path/for/src/image.cpp, Count: 180000\n\tSample: Line #: 42, Count: 130000\n\tSample: Line #: 36, Count: 40000\n\tSample: Line #: 31, Count: 9999\n\tSample: Line #: 39, Count: 1\nSymbols: TestFunction2(int, int), File: /test/path/for/src/image2.cpp, Count: 20000\n\tSample: Line #: 94, Count: 19998\n\tSample: Line #: 12, Count: 1\n\tSample: Line #: 55, Count: 1\nDependent Image: /no-vmlinux, Count: 4400\nDependent Image: /lib64/ld-2.9.so, Count: 300\n\tSymbols: do_lookup_x, File: dl-lookup.c, Count: 299\n\t\tSample: Line #: 0, Count: 299\n\tSymbols: _dl_unload_cache, File: rawmemchr.c, Count: 1\n\t\tSample: Line #: 0, Count: 1\nDependent Image: /usr/lib64/libstdc++.so.6.0.10, Count: 160\nDependent Image: /lib64/libc-2.9.so, Count: 140\n\tSymbols: _IO_new_file_seekoff, File: , Count: 100\n\t\tSample: Line #: 0, Count: 100\n\tSymbols: bcopy, File: , Count: 40\n\t\tSample: Line #: 0, Count: 40\n"; //$NON-NLS-1$
-	private static final String iMAGE_OUTPUT_WITHTAB = "/test/path/for/image, Count: 205000, Dependent Count: 5000\n\tSymbols: TestFunction1(int), File: /test/path/for/src/image.cpp, Count: 180000\n\t\tSample: Line #: 42, Count: 130000\n\t\tSample: Line #: 36, Count: 40000\n\t\tSample: Line #: 31, Count: 9999\n\t\tSample: Line #: 39, Count: 1\n\tSymbols: TestFunction2(int, int), File: /test/path/for/src/image2.cpp, Count: 20000\n\t\tSample: Line #: 94, Count: 19998\n\t\tSample: Line #: 12, Count: 1\n\t\tSample: Line #: 55, Count: 1\n\tDependent Image: /no-vmlinux, Count: 4400\n\tDependent Image: /lib64/ld-2.9.so, Count: 300\n\t\tSymbols: do_lookup_x, File: dl-lookup.c, Count: 299\n\t\t\tSample: Line #: 0, Count: 299\n\t\tSymbols: _dl_unload_cache, File: rawmemchr.c, Count: 1\n\t\t\tSample: Line #: 0, Count: 1\n\tDependent Image: /usr/lib64/libstdc++.so.6.0.10, Count: 160\n\tDependent Image: /lib64/libc-2.9.so, Count: 140\n\t\tSymbols: _IO_new_file_seekoff, File: , Count: 100\n\t\t\tSample: Line #: 0, Count: 100\n\t\tSymbols: bcopy, File: , Count: 40\n\t\t\tSample: Line #: 0, Count: 40\n"; //$NON-NLS-1$
+	private static final String IMAGE_OUTPUT_WITHTAB = "/test/path/for/image, Count: 205000, Dependent Count: 5000\n\tSymbols: TestFunction1(int), File: /test/path/for/src/image.cpp, Count: 180000\n\t\tSample: Line #: 42, Count: 130000\n\t\tSample: Line #: 36, Count: 40000\n\t\tSample: Line #: 31, Count: 9999\n\t\tSample: Line #: 39, Count: 1\n\tSymbols: TestFunction2(int, int), File: /test/path/for/src/image2.cpp, Count: 20000\n\t\tSample: Line #: 94, Count: 19998\n\t\tSample: Line #: 12, Count: 1\n\t\tSample: Line #: 55, Count: 1\n\tDependent Image: /no-vmlinux, Count: 4400\n\tDependent Image: /lib64/ld-2.9.so, Count: 300\n\t\tSymbols: do_lookup_x, File: dl-lookup.c, Count: 299\n\t\t\tSample: Line #: 0, Count: 299\n\t\tSymbols: _dl_unload_cache, File: rawmemchr.c, Count: 1\n\t\t\tSample: Line #: 0, Count: 1\n\tDependent Image: /usr/lib64/libstdc++.so.6.0.10, Count: 160\n\tDependent Image: /lib64/libc-2.9.so, Count: 140\n\t\tSymbols: _IO_new_file_seekoff, File: , Count: 100\n\t\t\tSample: Line #: 0, Count: 100\n\t\tSymbols: bcopy, File: , Count: 40\n\t\t\tSample: Line #: 0, Count: 40\n"; //$NON-NLS-1$
 
 	private OpModelImage parsedImage;
+	private OpModelImage parsedErrorImage;
 
 	public TestModelDataParse() {
 		super("test model-data parsers"); //$NON-NLS-1$
@@ -54,6 +56,18 @@ public class TestModelDataParse extends TestCase {
 		reader.setErrorHandler(handler);
 		
 		String filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML), null)).getFile();
+		reader.parse(new InputSource(new FileReader(filePath)));
+
+		//2nd test image
+		parsedErrorImage = new OpModelImage();
+		ModelDataProcessor.CallData errorImage = new ModelDataProcessor.CallData(parsedErrorImage);
+		handler = OprofileSAXHandler.getInstance(errorImage);
+		
+		// Set content/error handlers
+		reader.setContentHandler(handler);
+		reader.setErrorHandler(handler);
+		
+		filePath = FileLocator.toFileURL(FileLocator.find(CoreTestsPlugin.getDefault().getBundle(), new Path(REL_PATH_TO_TEST_XML_MULTI_IMAGE), null)).getFile();
 		reader.parse(new InputSource(new FileReader(filePath)));
 	}
 	
@@ -150,10 +164,17 @@ public class TestModelDataParse extends TestCase {
 		assertEquals(40, dep4_sym2.getCount());
 		assertEquals(40, dep4_sym2_spl1.getCount());
 		assertEquals(0, dep4_sym2_spl1.getLine());
+		
+		
+		assertEquals(OpModelImage.IMAGE_PARSE_ERROR, parsedErrorImage.getCount());
+		assertEquals(0, parsedErrorImage.getDepCount());
+		assertNull(parsedErrorImage.getDependents());
+		assertNull(parsedErrorImage.getSymbols());
+		assertEquals("", parsedErrorImage.getName()); //$NON-NLS-1$
 	}
 	
 	public void testStringOutput() throws Exception {
 		assertEquals(IMAGE_OUTPUT, parsedImage.toString());
-		assertEquals(iMAGE_OUTPUT_WITHTAB, parsedImage.toString("\t")); //$NON-NLS-1$
+		assertEquals(IMAGE_OUTPUT_WITHTAB, parsedImage.toString("\t")); //$NON-NLS-1$
 	}
 }
