@@ -20,6 +20,7 @@ import org.eclipse.jface.operation.*;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
@@ -136,7 +137,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 
 	private void throwCoreException(String message) throws CoreException {
 		IStatus status = new Status(IStatus.ERROR,
-				"org.eclipse.linuxtools.rpm.ui.editor", IStatus.OK, message, //$NON-NLS-1$
+				Activator.PLUGIN_ID, IStatus.OK, message,
 				null);
 		throw new CoreException(status);
 	}

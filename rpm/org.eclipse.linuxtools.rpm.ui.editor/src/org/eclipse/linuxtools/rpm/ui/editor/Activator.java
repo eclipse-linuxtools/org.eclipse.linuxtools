@@ -129,7 +129,7 @@ public class Activator extends AbstractUIPlugin {
 	public RpmPackageProposalsList getRpmPackageList() {
 		if (packagesList == null){
 			packagesList = new RpmPackageProposalsList();
-		} else if (packagesList.getProposals("").size() == 0) {
+		} else if (packagesList.getProposals("").size() == 0) { //$NON-NLS-1$
 			packagesList = new RpmPackageProposalsList();
 		}
 		return packagesList;

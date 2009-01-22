@@ -435,7 +435,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	
 	private void throwCoreException(String message) throws CoreException {
 		IStatus status = new Status(IStatus.ERROR,
-				"org.eclipse.linuxtools.rpm.ui.editor", IStatus.OK, message, //$NON-NLS-1$
+				Activator.PLUGIN_ID, IStatus.OK, message,
 				null);
 		throw new CoreException(status);
 	}
