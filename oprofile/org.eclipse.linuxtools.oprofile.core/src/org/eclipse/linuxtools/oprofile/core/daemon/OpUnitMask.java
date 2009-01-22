@@ -127,7 +127,7 @@ public class OpUnitMask {
 	public boolean isMaskSetFromIndex(int index) {
 		boolean result = false;
 
-		if (index <= _maskOptionDescriptions.length) {
+		if (index >= 0 && index < _maskOptionValues.length) {
 			switch (_maskType) {
 			case EXCLUSIVE:
 				result = (_mask == _maskOptionValues[index]);
@@ -146,7 +146,7 @@ public class OpUnitMask {
 	}
 
 	/**
-	 * Sets the absolute unitmask value.
+	 * Sets the absolute unitmask value. 
 	 * 
 	 * @param newValue the new value of this unitmask
 	 */
@@ -164,10 +164,12 @@ public class OpUnitMask {
 	 */
 	public void setMaskFromIndex(int index) {
 		//mandatory masks only use the default value
-		if (_maskType == BITMASK)
-			_mask |= _maskOptionValues[index];
-		else if (_maskType == EXCLUSIVE) {
-			_mask = _maskOptionValues[index];
+		if (index >= 0 && index < _maskOptionValues.length) {
+			if (_maskType == BITMASK)
+				_mask |= _maskOptionValues[index];
+			else if (_maskType == EXCLUSIVE) {
+				_mask = _maskOptionValues[index];
+			}
 		}
 	}
 
@@ -178,16 +180,20 @@ public class OpUnitMask {
 	 */
 	public int getMaskFromIndex(int index) {
 		//mandatory masks only use the default value
-		if (_maskType == BITMASK)
-			return _maskOptionValues[index];
-		else if (_maskType == EXCLUSIVE) {
-			return _maskOptionValues[index];
+		if (_maskType == BITMASK) {
+			if (index >= 0 && index < _maskOptionValues.length) {
+				return _maskOptionValues[index];
+			}
+		} else if (_maskType == EXCLUSIVE) {
+			if (index >= 0 && index < _maskOptionValues.length) {
+				return _maskOptionValues[index];
+			}
 		} else if (_maskType == MANDATORY) {
 			return _defaultMask;
-		} else {
-			//type invalid or unknown
-			return -1;
 		}
+
+		//type invalid or unknown, or out of bounds
+		return -1;
 	}
 	
 	/**
@@ -195,7 +201,7 @@ public class OpUnitMask {
 	 * @param index the index of the mask option to set
 	 */
 	public void unSetMaskFromIndex(int index) {
-		if (_maskType == BITMASK) {
+		if (index >= 0 && index < _maskOptionValues.length && _maskType == BITMASK) {
 			_mask = _mask & ~_maskOptionValues[index];
 		}
 	}
