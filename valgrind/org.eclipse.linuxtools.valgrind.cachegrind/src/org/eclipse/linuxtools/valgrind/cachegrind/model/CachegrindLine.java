@@ -38,4 +38,12 @@ public class CachegrindLine implements ICachegrindElement {
 		return parent;
 	}
 	
+	public int compareTo(ICachegrindElement o) {
+		int result = 0;
+		if (o instanceof CachegrindLine) {
+			result = line - ((CachegrindLine) o).getLine();
+		}
+		return result;
+	}
+	
 }

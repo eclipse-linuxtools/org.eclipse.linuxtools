@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind.model;
 
-public interface ICachegrindElement {
+public interface ICachegrindElement extends Comparable<ICachegrindElement> {
 	
 	public ICachegrindElement getParent();
 	
 	public ICachegrindElement[] getChildren();
-	
+		
 }

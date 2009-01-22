@@ -66,8 +66,24 @@ public class CachegrindFile implements ICachegrindElement {
 		return path;
 	}
 	
+	public String getName() {
+		String name = path;
+		if (Path.ROOT.isValidPath(path)) {
+			name = Path.fromOSString(path).lastSegment();
+		}
+		return name;
+	}
+	
 	public ICachegrindElement getParent() {
 		return parent;
+	}
+	
+	public int compareTo(ICachegrindElement o) {
+		int result = 0;
+		if (o instanceof CachegrindFile) {
+			result = getName().compareTo(((CachegrindFile) o).getName()); 
+		}
+		return result;
 	}
 
 }

@@ -12,6 +12,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Import-Package: org.eclipse.cdt.core.dom.ast,
  org.eclipse.cdt.core.model,
+ org.eclipse.cdt.core.model.util,
  org.eclipse.cdt.debug.core,
  org.eclipse.cdt.launch,
  org.eclipse.cdt.ui,

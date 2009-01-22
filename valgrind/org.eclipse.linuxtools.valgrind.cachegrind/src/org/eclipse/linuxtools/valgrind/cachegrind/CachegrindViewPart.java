@@ -11,9 +11,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind;
 
+import java.util.Arrays;
+
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.ISourceRange;
 import org.eclipse.cdt.core.model.ISourceReference;
+import org.eclipse.cdt.core.model.util.CElementBaseLabels;
 import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.ui.DebugUITools;
@@ -29,6 +32,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
@@ -38,11 +42,15 @@ import org.eclipse.linuxtools.valgrind.cachegrind.model.ICachegrindElement;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -56,7 +64,24 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	protected static final int COLUMN_SIZE = 75;
 	protected CellLabelProvider labelProvider;
 	
-	protected static Image FUNC_IMG = CachegrindPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").createImage(); //$NON-NLS-1$
+	// Events - Cache
+	protected static final String IR = "Ir"; //$NON-NLS-1$
+	protected static final String I1MR = "I1mr"; //$NON-NLS-1$
+	protected static final String I2MR = "I2mr"; //$NON-NLS-1$
+	protected static final String DR = "Dr"; //$NON-NLS-1$
+	protected static final String D1MR = "D1mr"; //$NON-NLS-1$
+	protected static final String D2MR = "D2mr"; //$NON-NLS-1$
+	protected static final String DW = "Dw"; //$NON-NLS-1$
+	protected static final String D1MW = "D1mw"; //$NON-NLS-1$
+	protected static final String D2MW = "D2mw"; //$NON-NLS-1$
+	
+	// Events - Branch
+	protected static final String BC = "Bc"; //$NON-NLS-1$
+	protected static final String BCM = "Bcm"; //$NON-NLS-1$
+	protected static final String BI = "Bi"; //$NON-NLS-1$
+	protected static final String BIM = "Bim"; //$NON-NLS-1$
+	
+	protected static final Image FUNC_IMG = CachegrindPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").createImage(); //$NON-NLS-1$
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -80,6 +105,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		column.getColumn().setText(Messages.getString("CachegrindViewPart.Location")); //$NON-NLS-1$
 		column.getColumn().setWidth(COLUMN_SIZE * 4);
 		column.getColumn().setResizable(true);
+		column.getColumn().addSelectionListener(getHeaderListener());
 		column.setLabelProvider(labelProvider);
 
 		viewer.setContentProvider(new CachegrindTreeContentProvider());
@@ -143,13 +169,153 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 				TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.NONE);
 				column.getColumn().setText(events[i]);
 				column.getColumn().setWidth(COLUMN_SIZE);
+				column.getColumn().setToolTipText(getFullEventName(events[i]));
 				column.getColumn().setResizable(true);
+				column.getColumn().addSelectionListener(getHeaderListener());
 				column.setLabelProvider(labelProvider);
 			}
 			viewer.setInput(outputs);
 			viewer.getTree().layout(true);
 		}
 	}
+
+	private SelectionListener getHeaderListener() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TreeColumn column = (TreeColumn) e.widget;
+				Tree tree = viewer.getTree();
+				if (column.equals(tree.getSortColumn())) {
+					int direction = tree.getSortDirection() == SWT.UP ? SWT.DOWN
+							: SWT.UP;
+					tree.setSortDirection(direction);
+				} else {
+					tree.setSortDirection(SWT.DOWN);
+				}
+				tree.setSortColumn(column);
+				viewer.setComparator(new ViewerComparator() {
+					@Override
+					public int compare(Viewer viewer, Object e1, Object e2) {
+						Tree tree = ((TreeViewer) viewer).getTree();
+						int direction = tree.getSortDirection();
+						ICachegrindElement o1 = (ICachegrindElement) e1;
+						ICachegrindElement o2 = (ICachegrindElement) e2;
+						long result = 0;
+						
+						int sortIndex = Arrays.asList(tree.getColumns()).indexOf(tree.getSortColumn());
+						if (sortIndex == 0) { // use compareTo
+							result = o1.compareTo(o2);
+						}
+						else {
+							long[] v1 = null;
+							long[] v2 = null;
+							if (o1 instanceof CachegrindFunction && o2 instanceof CachegrindFunction) {
+								v1 = ((CachegrindFunction) o1).getTotals();
+								v2 = ((CachegrindFunction) o2).getTotals();
+							}
+							else if (o1 instanceof CachegrindLine && o2 instanceof CachegrindLine) {
+								v1 = ((CachegrindLine) o1).getValues();
+								v2 = ((CachegrindLine) o2).getValues();
+							}
+							else if (o1 instanceof CachegrindOutput && o2 instanceof CachegrindOutput) {
+								v1 = ((CachegrindOutput) o1).getSummary();
+								v2 = ((CachegrindOutput) o2).getSummary(); 
+							}
+							
+							if (v1 != null && v2 != null) {
+								result = v1[sortIndex - 1] - v2[sortIndex - 1];
+							}
+						}
+						
+						// overflow check
+						if (result > Integer.MAX_VALUE) {
+							result = Integer.MAX_VALUE;
+						} else if (result < Integer.MIN_VALUE) {
+							result = Integer.MIN_VALUE;
+						}
+						
+						return (int) (direction == SWT.DOWN ? result : -result);
+					}
+				});
+			}
+		};
+	}
+
+	private String getFullEventName(String event) {
+		String result = event;
+		if (event.equals(IR)) {
+			result = Messages.getString("CachegrindViewPart.Ir_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(I1MR)) {
+			result = Messages.getString("CachegrindViewPart.I1mr_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(I2MR)) {
+			result = Messages.getString("CachegrindViewPart.I2mr_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(DR)) {
+			result = Messages.getString("CachegrindViewPart.Dr_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(D1MR)) {
+			result = Messages.getString("CachegrindViewPart.D1mr_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(D2MR)) {
+			result = Messages.getString("CachegrindViewPart.D2mr_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(DW)) {
+			result = Messages.getString("CachegrindViewPart.Dw_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(D1MW)) {
+			result = Messages.getString("CachegrindViewPart.D1mw_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(D2MW)) {
+			result = Messages.getString("CachegrindViewPart.D2mw_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(BC)) {
+			result = Messages.getString("CachegrindViewPart.Bc_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(BCM)) {
+			result = Messages.getString("CachegrindViewPart.Bcm_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(BI)) {
+			result = Messages.getString("CachegrindViewPart.Bi_long"); //$NON-NLS-1$
+		}
+		else if (event.equals(BIM)) {
+			result = Messages.getString("CachegrindViewPart.Bim_long"); //$NON-NLS-1$
+		}
+		return result;
+	}
+
+//	private String getShortEventName(String event) {
+//		String result = event;
+//		if (event.equals(IR)) {
+//			result = Messages.getString("CachegrindViewPart.Ir_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(I1MR)) {
+//			result = Messages.getString("CachegrindViewPart.I1mr_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(I2MR)) {
+//			result = Messages.getString("CachegrindViewPart.I2mr_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(DR)) {
+//			result = Messages.getString("CachegrindViewPart.Dr_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(D1MR)) {
+//			result = Messages.getString("CachegrindViewPart.D1mr_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(D2MR)) {
+//			result = Messages.getString("CachegrindViewPart.D2mr_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(DW)) {
+//			result = Messages.getString("CachegrindViewPart.Dw_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(D1MW)) {
+//			result = Messages.getString("CachegrindViewPart.D1mw_short"); //$NON-NLS-1$
+//		}
+//		else if (event.equals(D2MW)) {
+//			result = Messages.getString("CachegrindViewPart.D2mw_short"); //$NON-NLS-1$
+//		}
+//		return result;
+//	}
 
 	public void setOutputs(CachegrindOutput[] outputs) {
 		this.outputs = outputs;
@@ -195,7 +361,13 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
 	protected class CachegrindLabelProvider extends CellLabelProvider {
 
-		protected CElementLabelProvider cLabelProvider = new CElementLabelProvider(CElementLabelProvider.SHOW_SMALL_ICONS | CElementLabelProvider.SHOW_POST_QUALIFIED | CElementLabelProvider.SHOW_PARAMETERS | CElementLabelProvider.SHOW_RETURN_TYPE);
+		protected CElementLabelProvider cLabelProvider = new CElementLabelProvider(CElementLabelProvider.SHOW_SMALL_ICONS | CElementLabelProvider.SHOW_PARAMETERS | CElementLabelProvider.SHOW_RETURN_TYPE) {
+			@Override
+			public int getTextFlags() {
+				int flags = super.getTextFlags();
+				return flags |= CElementBaseLabels.M_FULLY_QUALIFIED;
+			}
+		};
 
 		@Override
 		public void update(ViewerCell cell) {
@@ -211,8 +383,8 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 						cell.setImage(cLabelProvider.getImage(model));
 					}
 					else { // Fall back
-						String path = ((CachegrindFile) element).getPath();
-						cell.setText(path);
+						String name = ((CachegrindFile) element).getName();
+						cell.setText(name);
 						cell.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE));
 					}
 				}

@@ -93,16 +93,12 @@ public class CachegrindOutput implements ICachegrindElement {
 		return pid;
 	}
 	
-//	/**
-//	 * Joins two Cachegrind outputs for when a program forks.
-//	 * Command, cache descriptions, events should be the same
-//	 * Profiled file results must be concatenated.
-//	 * Summary should be sum of the two.
-//	 * @param other - the other CachegrindOutput to add to this
-//	 */
-//	public void join(CachegrindOutput other) {
-//		files.addAll(Arrays.asList(other.getFiles()));
-//		
-//	}
+	public int compareTo(ICachegrindElement o) {
+		int result = 0;
+		if (o instanceof CachegrindOutput) {
+			result = pid - ((CachegrindOutput) o).getPid();
+		}
+		return result;
+	}
 	
 }
