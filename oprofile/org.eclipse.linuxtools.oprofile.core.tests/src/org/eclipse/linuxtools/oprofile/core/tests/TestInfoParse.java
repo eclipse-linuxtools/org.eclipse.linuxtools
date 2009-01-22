@@ -404,4 +404,14 @@ public class TestInfoParse extends TestCase {
 		mask_invalid.setDefaultMaskValue();
 		assertEquals(1, mask_invalid.getMaskValue());
 	}
+	
+	public void testInfo() throws Exception {
+		OpEvent[] result = info.getEvents(-1);
+		assertEquals(0, result.length);
+
+		assertNull(info.findEvent("doesnt exist")); //$NON-NLS-1$
+		
+		OpEvent event = info.findEvent("CPU_CLK_UNHALTED"); //$NON-NLS-1$
+		assertEquals("CPU_CLK_UNHALTED", event.getText()); //$NON-NLS-1$
+	}
 }
