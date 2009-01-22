@@ -57,7 +57,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) throws CoreException {
-		if (resource instanceof IFile && resource.getName().endsWith(".spec")) {
+		if (resource instanceof IFile && resource.getName().endsWith(".spec")) { //$NON-NLS-1$
 			firstWarningInResource = true;
 			for (RpmlintItem item : rpmlintItems) {
 				if (item.getFileName().equals(resource.getLocation().toOSString())) {
@@ -71,11 +71,11 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 
 					specContent = fileToString(currentFile);
 					// FIXME: workaround the wrong line number with configure-without-libdir-spec
-					if (item.getId().equals("configure-without-libdir-spec")) {
+					if (item.getId().equals("configure-without-libdir-spec")) { //$NON-NLS-1$
 						item.setLineNbr(-1);
-						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "./configure");
+						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "./configure"); //$NON-NLS-1$
 						if (lineNumber == -1)
-							lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "%configure");
+							lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, "%configure"); //$NON-NLS-1$
 						item.setLineNbr(lineNumber);
 					}
 					
@@ -97,7 +97,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					document = new Document(specContent);
 					charStart = getLineOffset(lineNumber);
 					charEnd = charStart + getLineLenght(lineNumber);
-					RpmlintParser.getInstance().addMarker((IFile) resource, item.getId() + ": "
+					RpmlintParser.getInstance().addMarker((IFile) resource, item.getId() + ": " //$NON-NLS-1$
 							+ item.getMessage(), lineNumber, charStart, charEnd,
 							item.getSeverity(), item.getId(),
 							item.getReferedContent());
@@ -126,7 +126,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	}
 	
 	private String fileToString(IFile file) {
-		String ret = "";
+		String ret = ""; //$NON-NLS-1$
 		try {
 			InputStream in = file.getContents();
 			int nbrOfByte = in.available();

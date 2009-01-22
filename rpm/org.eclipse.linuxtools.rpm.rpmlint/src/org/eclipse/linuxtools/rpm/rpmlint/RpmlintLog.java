@@ -34,7 +34,7 @@ public class RpmlintLog {
     * @param exception A low-level exception.
     */
    public static void logError(Throwable exception) {
-      logError("Unexpected Exception", exception);
+      logError(Messages.RpmlintLog_0, exception);
    }
 
    /**

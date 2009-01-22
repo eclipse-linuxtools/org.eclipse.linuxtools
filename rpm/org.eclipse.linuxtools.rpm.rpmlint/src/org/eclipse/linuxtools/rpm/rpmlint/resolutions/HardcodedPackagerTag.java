@@ -19,7 +19,7 @@ public class HardcodedPackagerTag extends ARemoveLineResolution {
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return "The Packager tag is hardcoded in your spec file. It should be removed, so as to use rebuilder's own defaults.";
+		return Messages.HardcodedPackagerTag_0;
 	}
 
 	/* (non-Javadoc)

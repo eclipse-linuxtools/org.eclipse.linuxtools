@@ -1,3 +1,40 @@
+2009-01-22  Alexander Kurtakov  <akurtako@redhat.com>
+	Externalize strings.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/messages.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/messages.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/preferences/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/preferences/messages.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/messages.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java: Add Copyright header. 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java (visitAndMarkRpmlintItems): Externalize strings.
+	(fullBuild): Likewise.
+	(incrementalBuild): Likewise.
+	(build): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintDeltaVisitor.java (visit):Likewise. 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerRemoveVisitor.java (visit): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java (fileToString): Likewise.
+	(visit): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintNature.java: Add Copyright header.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintPreVisitor.java (visit): Externalize strings.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/preferences/RpmlintPreferencePage.java (createFieldEditors): Externalize strings.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/ARpmlintResolution.java: Add 2009 to Copyright year.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java (getDescription): Externalize strings.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPrefixTag.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/MacroInChangelog.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleanSection.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoInstallSection.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoPrepSection.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/PatchNotApplied.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmBuildrootUsage.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/SetupNotQuiet.java (getDescription): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/RpmlintLog.java (logError): Likewise.
+
 2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable non externalized strings warnings.

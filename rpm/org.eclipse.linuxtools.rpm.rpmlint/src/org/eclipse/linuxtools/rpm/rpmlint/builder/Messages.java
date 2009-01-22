@@ -17,6 +17,7 @@ public class Messages extends NLS {
 	public static String RpmlintBuilder_0;
 	public static String RpmlintBuilder_1;
 	public static String RpmlintBuilder_2;
+	public static String RpmlintBuilder_3;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

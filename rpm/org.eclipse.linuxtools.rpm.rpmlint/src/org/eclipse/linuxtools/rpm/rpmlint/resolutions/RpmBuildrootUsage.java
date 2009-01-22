@@ -21,7 +21,7 @@ public class RpmBuildrootUsage extends ARemoveLineResolution{
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return "$RPM_BUILD_ROOT should not be touched during %build or %prep stage, as it will break short circuiting.";
+		return Messages.RpmBuildrootUsage_0;
 	}
 
 	/*

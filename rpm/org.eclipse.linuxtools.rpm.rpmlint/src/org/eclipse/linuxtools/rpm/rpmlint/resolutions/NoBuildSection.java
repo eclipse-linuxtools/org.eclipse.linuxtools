@@ -24,7 +24,7 @@ public class NoBuildSection extends AInsertLineResolution {
 	public static final String ID = "no-%build-section"; //$NON-NLS-1$
 
 	public String getDescription() {
-		return "Insert empty %build section";
+		return Messages.NoBuildSection_0;
 	}
 
 	public Image getImage() {

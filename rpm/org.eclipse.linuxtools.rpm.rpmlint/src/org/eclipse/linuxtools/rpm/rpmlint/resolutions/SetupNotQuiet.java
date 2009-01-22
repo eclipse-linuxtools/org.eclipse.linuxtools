@@ -36,7 +36,7 @@ public class SetupNotQuiet extends AReplaceTextResolution {
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return "Use the -q option to the %setup macro to avoid useless build output from unpacking the sources";
+		return Messages.SetupNotQuiet_0;
 	}
 
 	/* (non-Javadoc)

@@ -23,7 +23,7 @@ public class HardcodedPrefixTag extends ARemoveLineResolution{
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return "The Prefix tag is hardcoded in your spec file. It should be removed, so as to allow package relocation.";
+		return Messages.HardcodedPrefixTag_0;
 	}
 
 	/* (non-Javadoc)

@@ -42,8 +42,8 @@ public class MacroInChangelog extends AReplaceTextResolution {
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return "Macros are expanded in %changelog too, which can in unfortunate cases lead "
-				+ "to the package not building at all, or other subtle unexpected conditions that	affect the build.";
+		return Messages.MacroInChangelog_0
+				+ Messages.MacroInChangelog_1;
 	}
 
 	/*

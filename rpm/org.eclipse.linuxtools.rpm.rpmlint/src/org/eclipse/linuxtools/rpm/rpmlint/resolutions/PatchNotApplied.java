@@ -20,7 +20,7 @@ public class PatchNotApplied extends ARemoveLineResolution {
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
-		return "A patch is included in your package but was not applied. Refer to the patches documentation to see what's wrong.";
+		return Messages.PatchNotApplied_0;
 	}
 
 	/* (non-Javadoc)

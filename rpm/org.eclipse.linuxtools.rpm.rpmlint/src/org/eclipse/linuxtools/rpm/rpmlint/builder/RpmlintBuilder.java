@@ -51,7 +51,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 			throws CoreException {
 		// TODO: handle the monitor in a more clean way.
-		monitor.beginTask("Check rpmlint problems", MAX_WORKS);
+		monitor.beginTask(Messages.RpmlintBuilder_0, MAX_WORKS);
 		monitor.worked(20);
 		if (kind == FULL_BUILD) {
 			fullBuild(monitor);
@@ -71,7 +71,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		getProject().accept(resourceVisitor);
 		checkCancel(monitor);
 		monitor.worked(50);
-		monitor.setTaskName("Retrive Rpmlint problems...");
+		monitor.setTaskName(Messages.RpmlintBuilder_1);
 		ArrayList<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				resourceVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
@@ -82,7 +82,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		RpmlintDeltaVisitor deltaVisitor = new RpmlintDeltaVisitor();
 		delta.accept(deltaVisitor);
 		monitor.worked(50);
-		monitor.setTaskName("Retrive Rpmlint problems...");
+		monitor.setTaskName(Messages.RpmlintBuilder_2);
 		ArrayList<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				deltaVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
@@ -93,7 +93,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		if (rpmlintItems.size() > 0) {
 			checkCancel(monitor);
 			monitor.worked(70);
-			monitor.setTaskName("Add Rpmlint problems...");
+			monitor.setTaskName(Messages.RpmlintBuilder_3);
 			getProject().accept(new RpmlintMarkerVisitor(this, rpmlintItems));
 			monitor.worked(MAX_WORKS);
 		}

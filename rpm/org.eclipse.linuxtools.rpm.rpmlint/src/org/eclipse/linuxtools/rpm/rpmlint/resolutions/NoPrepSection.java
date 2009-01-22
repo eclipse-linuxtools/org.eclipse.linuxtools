@@ -18,7 +18,7 @@ public class NoPrepSection extends AInsertLineResolution{
 	public static final String ID = "no-%prep-section"; //$NON-NLS-1$
 
 	public String getDescription() {
-		return "Insert empty %prep section";
+		return Messages.NoPrepSection_0;
 	}
 
 	public Image getImage() {

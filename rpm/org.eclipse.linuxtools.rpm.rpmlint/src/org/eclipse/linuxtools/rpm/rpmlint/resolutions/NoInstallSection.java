@@ -18,7 +18,7 @@ public class NoInstallSection extends AInsertLineResolution {
 	public static final String ID = "no-%install-section"; //$NON-NLS-1$
 
 	public String getDescription() {
-		return "Insert empty %install section";
+		return Messages.NoInstallSection_0;
 	}
 
 	public Image getImage() {

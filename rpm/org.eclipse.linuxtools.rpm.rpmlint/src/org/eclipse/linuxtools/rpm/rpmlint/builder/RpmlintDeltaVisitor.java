@@ -27,7 +27,7 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 	 */
 	public boolean visit(IResourceDelta delta) {
 		if (delta.getResource() instanceof IFile
-				&& delta.getResource().getName().endsWith(".spec")) {
+				&& delta.getResource().getName().endsWith(".spec")) { //$NON-NLS-1$
 			IResource resource = delta.getResource();
 			switch (delta.getKind()) {
 			// we first visiting resources to be able to run the rpmlint command

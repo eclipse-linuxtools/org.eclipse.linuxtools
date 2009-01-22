@@ -20,7 +20,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 public class RpmlintMarkerRemoveVisitor implements IResourceVisitor {
 
 	public boolean visit(IResource resource) throws CoreException {
-		if (resource instanceof IFile && resource.getName().endsWith(".spec")) {
+		if (resource instanceof IFile && resource.getName().endsWith(".spec")) { //$NON-NLS-1$
 			RpmlintParser.getInstance().deleteMarkers(resource);
 			// remove internal marks
 			resource.deleteMarkers(SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID, false, IResource.DEPTH_ZERO);

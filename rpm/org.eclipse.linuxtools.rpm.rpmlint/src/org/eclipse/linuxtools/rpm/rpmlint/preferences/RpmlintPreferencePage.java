@@ -36,15 +36,15 @@ public class RpmlintPreferencePage extends FieldEditorPreferencePage implements
 	@Override
 	public void createFieldEditors() {
 		FileFieldEditor rpmlintFileFieldEditor = new FileFieldEditor(
-				PreferenceConstants.P_RPMLINT_PATH, "rpmlint path",
+				PreferenceConstants.P_RPMLINT_PATH, Messages.RpmlintPreferencePage_0,
 				getFieldEditorParent());
 		addField(rpmlintFileFieldEditor);
 		RadioGroupFieldEditor spacesAndTabsRadioGroup = new RadioGroupFieldEditor(
 				PreferenceConstants.P_RPMLINT_TABS_AND_SPACES,
-				"Mixed use of tabs and spaces", 1, new String[][] {
-						{ "Show warnings about spaces",
+				Messages.RpmlintPreferencePage_1, 1, new String[][] {
+						{ Messages.RpmlintPreferencePage_2,
 								PreferenceConstants.P_RPMLINT_SPACES },
-						{ "Show warnings about tabulations",
+						{ Messages.RpmlintPreferencePage_3,
 								PreferenceConstants.P_RPMLINT_TABS } },
 				getFieldEditorParent(), true);
 		addField(spacesAndTabsRadioGroup);
