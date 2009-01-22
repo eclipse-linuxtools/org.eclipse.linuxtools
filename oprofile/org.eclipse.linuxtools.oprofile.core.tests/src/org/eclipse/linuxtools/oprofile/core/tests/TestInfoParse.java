@@ -110,6 +110,7 @@ public class TestInfoParse extends TestCase {
 		OpUnitMask ctr0_e1_mask = ctr0_e1.getUnitMask(), ctr0_e2_mask = ctr0_e2.getUnitMask(), 
 					ctr0_e3_mask = ctr0_e3.getUnitMask(), ctr1_e1_mask = ctr1_e1.getUnitMask(), 
 					ctr1_e2_mask = ctr1_e2.getUnitMask(), ctr1_e3_mask = ctr1_e3.getUnitMask();
+		
 		assertEquals(0, ctr0_e1_mask.getMaskValue());
 		assertEquals(OpUnitMask.EXCLUSIVE, ctr0_e1_mask.getType());
 		assertEquals(3, ctr0_e1_mask.getNumMasks());
@@ -166,6 +167,8 @@ public class TestInfoParse extends TestCase {
 		assertEquals(64, ctr1_e3_mask.getMaskFromIndex(1));
 		assertEquals("This core", ctr1_e3_mask.getText(1)); //$NON-NLS-1$
 		
+		assertNull(ctr0_e1_mask.getText(-1));
+				
 		assertEquals(0, info_0ctr.getNrCounters());
 	}
 	
@@ -177,62 +180,228 @@ public class TestInfoParse extends TestCase {
 					mask_mand = info.getEvents(0)[2].getUnitMask(),
 					mask_invalid = info.getEvents(1)[0].getUnitMask();
 		
-		//bitmask 1 test
+		//bitmask 1 test -- bitmasks all mutually exclusive
 		assertEquals(15, mask_bit1.getMaskValue());
 		mask_bit1.setMaskValue(0);
 		mask_bit1.setMaskFromIndex(0);
 		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
 		assertEquals(1, mask_bit1.getMaskValue());
 		
 		mask_bit1.setMaskFromIndex(1);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
 		assertEquals(true, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
 		assertEquals(3, mask_bit1.getMaskValue());
 		
 		mask_bit1.setMaskFromIndex(2);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(1));
 		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
 		assertEquals(7, mask_bit1.getMaskValue());
 		
 		mask_bit1.setMaskFromIndex(3);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
 		assertEquals(true, mask_bit1.isMaskSetFromIndex(3));
 		assertEquals(15, mask_bit1.getMaskValue());
 		
 		mask_bit1.unSetMaskFromIndex(1);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
 		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
-		mask_bit1.unSetMaskFromIndex(2);
-		assertEquals(false, mask_bit1.isMaskSetFromIndex(2));
-		mask_bit1.unSetMaskFromIndex(3);
-		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
-		mask_bit1.setMaskFromIndex(2);
 		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(3));
+
+		mask_bit1.unSetMaskFromIndex(2);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(3));
+
+		mask_bit1.unSetMaskFromIndex(3);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
+
+		mask_bit1.setMaskFromIndex(2);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
 		assertEquals(5, mask_bit1.getMaskValue());
 		
 		mask_bit1.unSetMaskFromIndex(1);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
 		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
+		
 		mask_bit1.unSetMaskFromIndex(3);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
 		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
 		assertEquals(5, mask_bit1.getMaskValue());
 		
 		mask_bit1.setMaskFromIndex(2);
+		assertEquals(true, mask_bit1.isMaskSetFromIndex(0));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(1));
 		assertEquals(true, mask_bit1.isMaskSetFromIndex(2));
+		assertEquals(false, mask_bit1.isMaskSetFromIndex(3));
 		assertEquals(5, mask_bit1.getMaskValue());
 		
 		mask_bit1.setMaskValue(OpUnitMask.SET_DEFAULT_MASK);
 		assertEquals(15, mask_bit1.getMaskValue());
 
-		//bitmask 2 test
+		//bitmask 2 test -- bitmasks overlap
 			/* bug related to overlapping bitmasks eclipse bz 261917 */
+//		assertEquals(112, mask_bit2.getMaskValue());
+//		mask_bit2.setMaskValue(0);
+//		mask_bit2.setMaskFromIndex(0); 
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(192, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.setMaskFromIndex(1);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(3, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.setMaskFromIndex(2);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(7, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.setMaskFromIndex(3);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(15, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.setMaskFromIndex(4);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(15, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.unSetMaskFromIndex(1);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(4));
+//
+//		mask_bit2.unSetMaskFromIndex(2);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(4));
+//
+//		mask_bit2.unSetMaskFromIndex(3);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(4));
+//
+//		mask_bit2.unSetMaskFromIndex(4);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+//		
+//		mask_bit2.setMaskFromIndex(2);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(5, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.unSetMaskFromIndex(1);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+//		
+//		mask_bit2.unSetMaskFromIndex(3);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(5, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.setMaskFromIndex(2);
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(0));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(1));
+//		assertEquals(true, mask_bit2.isMaskSetFromIndex(2));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(3));
+//		assertEquals(false, mask_bit2.isMaskSetFromIndex(4));
+////		assertEquals(5, mask_bit2.getMaskValue());
+//		
+//		mask_bit2.setMaskValue(OpUnitMask.SET_DEFAULT_MASK);
+//		assertEquals(112, mask_bit2.getMaskValue());
+		
 		
 		//exclusive test
+		assertEquals(0, mask_exl.getMaskValue());
+		assertEquals(true, mask_exl.isMaskSetFromIndex(0));
+		assertEquals(false, mask_exl.isMaskSetFromIndex(1));
+		assertEquals(false, mask_exl.isMaskSetFromIndex(2));
+		mask_exl.setMaskFromIndex(1);
+		assertEquals(false, mask_exl.isMaskSetFromIndex(0));
+		assertEquals(1, mask_exl.getMaskValue());
+		mask_exl.unSetMaskFromIndex(1);
+		assertEquals(1, mask_exl.getMaskValue());
+		mask_exl.setMaskFromIndex(2);
+		assertEquals(2, mask_exl.getMaskValue());
+		mask_exl.setDefaultMaskValue();
+		assertEquals(0, mask_exl.getMaskValue());
 		
 		
 		//mandatory test
-		
+		assertEquals(0, mask_mand.getMaskValue());
+		assertEquals(false, mask_mand.isMaskSetFromIndex(0));
+		mask_mand.setMaskFromIndex(0);
+		assertEquals(0, mask_mand.getMaskValue());
+		mask_mand.unSetMaskFromIndex(0);
+		assertEquals(0, mask_mand.getMaskValue());
+		mask_mand.setMaskValue(10);
+		mask_mand.setDefaultMaskValue();
+		assertEquals(0, mask_mand.getMaskValue());
 		
 		//invalid test
 		assertEquals(1, mask_invalid.getMaskValue());
-		assertEquals(-1, mask_invalid.getMaskFromIndex(0));
 		assertEquals(false, mask_invalid.isMaskSetFromIndex(0));
 		mask_invalid.setMaskFromIndex(0);
+		assertEquals(1, mask_invalid.getMaskValue());
+		mask_invalid.unSetMaskFromIndex(0);
+		assertEquals(1, mask_invalid.getMaskValue());
+		mask_invalid.setMaskValue(0);
+		mask_invalid.setDefaultMaskValue();
 		assertEquals(1, mask_invalid.getMaskValue());
 	}
 }
