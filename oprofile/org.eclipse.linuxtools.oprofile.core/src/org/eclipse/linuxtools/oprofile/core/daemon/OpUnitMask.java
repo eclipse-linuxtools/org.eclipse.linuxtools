@@ -219,7 +219,7 @@ public class OpUnitMask {
 	 * @return the description
 	 */
 	public String getText(int num) {
-		if (num <= _maskOptionDescriptions.length)
+		if (num >= 0 && num < _maskOptionDescriptions.length)
 			return _maskOptionDescriptions[num];
 
 		return null;
