@@ -1,3 +1,7 @@
+2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* html/toc.html: TOC with basic intro created.
+
 2009-01-16  Alexander Kurtakov  <akurtako@redhat.com>
 	Stubs for the documentation.
 	* .project: New file.
