@@ -1,5 +1,7 @@
 2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpmstubby/FeatureVisitor.java (getFeatures): Add javadoc.
+	(visit): Extract constant.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java (resolveFeatureProperties): Fix NPE when model returns null.
 
 2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
