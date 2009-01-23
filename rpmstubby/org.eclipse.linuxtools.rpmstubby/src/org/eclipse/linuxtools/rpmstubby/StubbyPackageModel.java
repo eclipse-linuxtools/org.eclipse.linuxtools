@@ -348,7 +348,7 @@ public class StubbyPackageModel {
 	 */
 	private String resolveFeatureProperties(String key) {
 		Properties properties = new Properties();
-		if (key.startsWith("%")) {
+		if (key != null && key.startsWith("%")) {
 			try {
 				properties.load(new FileInputStream(featurePropertiesFile));
 			} catch (FileNotFoundException e) {

@@ -1,3 +1,7 @@
+2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java (resolveFeatureProperties): Fix NPE when model returns null.
+
 2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260887.
 	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java 
