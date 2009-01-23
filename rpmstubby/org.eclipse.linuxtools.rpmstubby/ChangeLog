@@ -1,5 +1,6 @@
 2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): When generating our fetch script run %setup -c to match the tarball created. 
 	* src/org/eclipse/linuxtools/rpmstubby/FeatureVisitor.java (getFeatures): Add javadoc.
 	(visit): Extract constant.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java (resolveFeatureProperties): Fix NPE when model returns null.
