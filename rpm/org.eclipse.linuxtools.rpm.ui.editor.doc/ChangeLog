@@ -1,3 +1,11 @@
+2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* html/images/new_from_template.png: New file.
+	* html/images/generic.png: New file.
+	* html/images/wizard.png: New file.
+	* html/generic.html: Starting editing and creating a new specfile described.
+	
+
 2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* html/toc.html: TOC with basic intro created.
