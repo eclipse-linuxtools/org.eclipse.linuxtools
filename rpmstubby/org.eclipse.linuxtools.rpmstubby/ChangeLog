@@ -1,3 +1,7 @@
+2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generateSpecfile): Use %{buildroot} constantly.
+
 2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): When generating our fetch script run %setup -c to match the tarball created. 

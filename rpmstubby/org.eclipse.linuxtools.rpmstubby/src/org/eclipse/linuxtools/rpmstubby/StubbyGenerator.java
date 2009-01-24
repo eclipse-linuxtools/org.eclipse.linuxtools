@@ -140,8 +140,8 @@ public class StubbyGenerator {
 		generateBuildSection(buffer);
 		buffer.append("%install\n");
 		buffer.append("%{__rm} -rf %{buildroot}\n");
-		buffer.append("install -d -m 755 $RPM_BUILD_ROOT%{install_loc}\n\n");
-		buffer.append("%{__unzip} -q -d $RPM_BUILD_ROOT%{install_loc} \\\n");
+		buffer.append("install -d -m 755 %{buildroot}%{install_loc}\n\n");
+		buffer.append("%{__unzip} -q -d %{buildroot}%{install_loc} \\\n");
 		buffer.append("     build/rpmBuild/" + mainPackage.getName()
 				+ ".zip \n\n");
 		if (withGCJSupport) {
