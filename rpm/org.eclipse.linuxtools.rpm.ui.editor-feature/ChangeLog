@@ -1,3 +1,7 @@
+2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.xml: Include doc plugin.
+
 2009-01-14  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Re-added update site information (sorry).  Re-add "qualifier" for trunk.
