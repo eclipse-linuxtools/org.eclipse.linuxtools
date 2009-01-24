@@ -7,6 +7,7 @@ fragment@org.eclipse.linuxtools.changelog.parsers.java=SVN,,http://dev.eclipse.o
 !*** rpm
 plugin@org.eclipse.linuxtools.rpm.rpmlint=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.rpmlint
 plugin@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor
+plugin@org.eclipse.linuxtools.rpm.ui.editor.doc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor.doc
 plugin@org.eclipse.linuxtools.rpm.ui.editor.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor.tests
 
 !*** rpmstubby
