@@ -1,5 +1,7 @@
 2009-01-26  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* html/images/rpmlint_fix_after.png: New file.
+	* html/images/rpmlint_fix_before.png: New file.
 	* html/images/enable_rpmlint.png: New file.
 	* html/images/problems_rpmlint.png: New file.
 	* html/images/rpmlint_quickfix.png: New file.
