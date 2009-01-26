@@ -3,10 +3,41 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Table of Contents</title>
+<title>Enabling and using rpmlint integration</title>
 </head>
 
 <body>
-
+<h1>Enable rpmlint warnings</h1>
+<p>Enabling rpmlint warnings is as easy as right clicking on the
+project containing the spec file to be checked by rpmlint and select
+"Add/Remove rpmlint warnings" from the context menu.</p>
+<center><img src="images/enable_rpmlint.png" /></center>
+<p>To disable rpmlint warnings just execute the same steps again.</p>
+<h1>Benefits from rpmlint integrations</h1>
+<h2>Warnings for common mistakes</h2>
+<p>After rpmlint warnings are enabled new Rpmlint project builder is
+added to the project builders and the reported warnings/errors are
+showed as markers in the editor view.</p>
+<center><img src="images/warnings_rpmlint.png" /></center>
+<p>For better integration with the Eclipse platform these warnings
+are also added to the Problems view.</p>
+<center><img src="images/problems_rpmlint.png" /></center>
+<h2>Fix the warnings</h2>
+<p>Part of the rpmlint integration is the ability to provide quick
+fixes for some of the reported warnings. While not providing quick fixes
+for all the fixes available in rpmlint, the number of fixes is
+constantly improving. If you want to see a quick fix for the most
+disturbing for you warning please report it <a
+	href="https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Linux%20Distros">here</a>
+against the RPM component.</p>
+<p>To execute some quick fix right click on the warning/error in the
+Problems view and select "Quick fix" or just use the shortcut Ctrl+1
+with a selected warning. In the dialog that appears</p>
+<center><img src="images/rpmlint_quickfix.png" /></center>
+<p>select the provided fix and click Finish. The changes will auto
+appear in the specfile editor. For comparison look at the following
+screenshots - Before and After.</p>
+<center><img src="images/rpmlint_fix_before.png" /><img
+	src="images/rpmlint_fix_after.png" /></center>
 </body>
 </html>

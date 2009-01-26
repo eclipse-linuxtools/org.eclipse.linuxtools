@@ -1,3 +1,11 @@
+2009-01-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* html/images/enable_rpmlint.png: New file.
+	* html/images/problems_rpmlint.png: New file.
+	* html/images/rpmlint_quickfix.png: New file.
+	* html/images/warnings_rpmlint.png: New file.
+	* html/rpmlint.html: Fill the documentation for rpmlint integration.
+
 2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* html/images/new_from_template.png: New file.
