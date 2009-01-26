@@ -2,11 +2,53 @@
 
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<title>Table of Contents</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Generic settings</title>
 </head>
 
 <body>
-<h1>test</h1>
+<h1>Spec file editor settings</h1>
+<p>Spec file editor should be completely working without any
+tweaking of the settings but doing it you should be able to save even
+more time.</p>
+<h2>Changelog settings</h2>
+<center><img src="images/settings_changelog.png" /></center>
+<p>Simple properties allowing customizing the generated ChangeLog
+entries (Ctrl+Alt+C).<br>
+<br>
+<b>Note:</b> Be sure to set the Author name and Author email in
+ChangeLog plugin preferences so they get properly generated.</p>
+<h2>Rpmlint settings</h2>
+<center><img src="images/settings_rpmlint.png" /></center>
+<p>This page is really useful when you have rpmlint installed in
+place different from the default (/usr/bin). The ability to set custom
+rpmlint is especially useful during development of quick-fixes or
+rpmlint itself.<br>
+Another option on this page is whether warnings should be shown for
+space usage or for tabs usage, when they are used in a mixed mode in the
+spec file.</p>
+<h2>Tasks settings</h2>
+<center><img src="images/settings_tasks.png" /></center>
+<p>This page provides the ability to select the task tags to be used
+when searching for tasks. Task tags are looked only in comments. When a
+task tag is found it is added to the Tasks view and a marker in the
+editor is created. Task tags used by default are TODO and FIXME. Users
+have the power to define their own Task tags by just pressing the New
+button and entering the new tag (e.g. REMOVE).</p>
+<h2>Templates settings</h2>
+<center><img src="images/settings_templates.png" /></center>
+<p>A list of predefined/generic templates to speed up creation
+various fragments of the specfile in the editor.<br>
+Provided features match the templates functionality provided by Java
+editor. The user can manipulate the list by:
+<ul>
+	<li>Adding new template</li>
+	<li>Editing existing template</li>
+	<li>Deleting existing template</li>
+	<li>Import a list of templates</li>
+	<li>Export the list of templates for future usage on another
+	machine or for providing default templates for your team</li>
+</ul>
+</p>
 </body>
 </html>

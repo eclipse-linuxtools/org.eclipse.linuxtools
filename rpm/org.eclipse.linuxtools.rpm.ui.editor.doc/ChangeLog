@@ -1,5 +1,10 @@
 2009-01-26  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* html/images/settings_changelog.png: New file.
+	* html/images/settings_rpmlint.png: New file.
+	* html/images/settings_tasks.png: New file.
+	* html/images/settings_templates.png: New file.
+	* html/settings.html: Fill the settings documentation page.
 	* html/support.html: Fill the support documentation page.
 	* html/images/rpmlint_fix_after.png: New file.
 	* html/images/rpmlint_fix_before.png: New file.
