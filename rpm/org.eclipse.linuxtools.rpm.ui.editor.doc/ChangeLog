@@ -1,5 +1,9 @@
 2009-01-26  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* html/images/settings_rpms_details.png: New file.
+	* html/images/settings_rpms_generic.png: New file.
+	* html/images/Unti.xcf: New file.
+	* html/package_settings.html: Fill packages setting page.
 	* html/images/macros_long.png: New file.
 	* html/images/macros_short.png: New file.
 	* html/images/settings_macros.png: New file.
