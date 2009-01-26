@@ -1,5 +1,9 @@
 2009-01-26  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* html/images/macros_long.png: New file.
+	* html/images/macros_short.png: New file.
+	* html/images/settings_macros.png: New file.
+	* html/macro_settings.html: Fill macro settings page.
 	* html/images/settings_changelog.png: New file.
 	* html/images/settings_rpmlint.png: New file.
 	* html/images/settings_tasks.png: New file.
