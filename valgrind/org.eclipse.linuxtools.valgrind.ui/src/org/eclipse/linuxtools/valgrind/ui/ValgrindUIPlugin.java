@@ -49,6 +49,8 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 
 	protected ValgrindViewPart view;
 
+	// The page containing the created Valgrind view
+	protected IWorkbenchPage activePage;
 	/**
 	 * The constructor
 	 */
@@ -86,8 +88,8 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				try {
-					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					activePage.showView(ValgrindUIPlugin.VIEW_ID);
+					activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					activePage.showView(ValgrindUIPlugin.VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
 
 					// create the view's tool specific controls and populate content description
 					view.createDynamicContent(contentDescription, toolID);
@@ -102,6 +104,18 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		});
 	}
 
+	public void showView() {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					activePage.showView(ValgrindUIPlugin.VIEW_ID);
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
+			}			
+		});
+	}
+	
 	public void refreshView() {
 		if (view != null) {
 			Display.getDefault().syncExec(new Runnable() {
