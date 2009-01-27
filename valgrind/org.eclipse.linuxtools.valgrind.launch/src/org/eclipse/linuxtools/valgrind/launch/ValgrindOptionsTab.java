@@ -407,6 +407,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		boolean result = false;
 		if (result = isGeneralValid() && dynamicTab != null) {
 			result = dynamicTab.isValid(launchConfig);
+			setErrorMessage(dynamicTab.getErrorMessage());
 		}
 		return result;
 	}
