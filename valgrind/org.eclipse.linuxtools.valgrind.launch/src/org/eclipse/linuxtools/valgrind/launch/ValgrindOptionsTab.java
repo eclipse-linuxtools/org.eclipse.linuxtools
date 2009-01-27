@@ -70,6 +70,8 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected String tool;
 	protected String[] tools;
 	protected Combo toolsCombo;
+	protected TabFolder optionsFolder;
+	protected TabItem toolTab;
 
 	protected ILaunchConfigurationWorkingCopy launchConfigurationWorkingCopy;
 	protected ILaunchConfiguration launchConfiguration;
@@ -103,7 +105,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 		createVerticalSpacer(top, 1);
 
-		TabFolder optionsFolder = new TabFolder(top, SWT.BORDER);
+		optionsFolder = new TabFolder(top, SWT.BORDER);
 		optionsFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// "general" tab
@@ -122,8 +124,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 		generalTab.setControl(generalTop);
 
-		// "tool" tab
-		TabItem toolTab = new TabItem(optionsFolder, SWT.NONE);
+		toolTab = new TabItem(optionsFolder, SWT.NONE);
 		toolTab.setText(Messages.getString("ValgrindOptionsTab.Tool")); //$NON-NLS-1$
 
 		dynamicTabHolder = new Composite(optionsFolder, SWT.NONE);
@@ -329,6 +330,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			}						
 			initDefaults = false;
 			dynamicTab.initializeFrom(launchConfigurationWorkingCopy);
+			
+			// change name of tool TabItem
+			toolTab.setText(dynamicTab.getName());
+			optionsFolder.layout(true);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -346,7 +351,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		dynamicTab.setLaunchConfigurationDialog(getLaunchConfigurationDialog());
 		dynamicTab.createControl(dynamicTabHolder);
 
-		dynamicTabHolder.layout(true);
+		dynamicTabHolder.layout(true);		
 	}
 
 	public String getName() {

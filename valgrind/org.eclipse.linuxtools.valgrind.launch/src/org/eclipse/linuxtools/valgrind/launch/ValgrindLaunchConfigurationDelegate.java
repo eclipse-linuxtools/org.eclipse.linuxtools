@@ -23,24 +23,25 @@ import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.debug.ui.console.ConsoleColorProvider;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.core.utils.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IOConsole;
+import org.eclipse.ui.console.IOConsoleOutputStream;
 
-public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate implements ILaunchesListener2 {
+public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
 	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	protected static final String NO = "no"; //$NON-NLS-1$
@@ -63,14 +64,14 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected ILaunch launch;
 	protected IProcess process;
 	protected String launchStr;
-	protected SubMonitor monitor;
 
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor m) throws CoreException {
 		if (m == null) {
 			m = new NullProgressMonitor();
 		}
-		monitor = SubMonitor.convert(m, Messages.getString("ValgrindLaunchConfigurationDelegate.Profiling_Local_CCPP_Application"), 10); //$NON-NLS-1$
+		
+		SubMonitor monitor = SubMonitor.convert(m, Messages.getString("ValgrindLaunchConfigurationDelegate.Profiling_Local_CCPP_Application"), 10); //$NON-NLS-1$
 		// check for cancellation
 		if (monitor.isCanceled()) {
 			return;
@@ -118,19 +119,85 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			monitor.worked(1);
 
-			// attach this delegate as a launch listener
-			DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
-			
+			// check for cancellation
+			if (monitor.isCanceled()) {
+				return;
+			}
 			// call Valgrind
 			command.execute(commandArray, getEnvironment(config), wd, usePty);
 			monitor.worked(3);
 			process = DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
 
-			throw new CoreException(null);
+			while (!process.isTerminated()) {
+				Thread.sleep(100);
+			}
+
+			// remove any output from previous run
+			ValgrindUIPlugin.getDefault().resetView();
+
+			if (process.getExitValue() == 0) {
+				// create launch summary string to distinguish this launch
+				launchStr = createLaunchStr();
+
+				// create view
+				ValgrindUIPlugin.getDefault().createView(launchStr, toolID);
+				monitor.worked(1);
+
+				// pass off control to extender
+				dynamicDelegate.launch(command, config, launch, monitor.newChild(3));
+
+
+				// refresh view
+				ValgrindUIPlugin.getDefault().refreshView();
+
+				// show view
+				ValgrindUIPlugin.getDefault().showView();
+				monitor.worked(1);
+
+				// save results of launch to persistent storage
+				//			saveState(monitor.newChild(2));
+			}
+			else {
+				final String errorLog = readLogs();
+
+				// find this process' console and write any error messages stored in the log to it
+				IConsole[] consoles = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+				IOConsole console = null;
+				String procLabel = process.getLabel();
+				for (int i = 0; i < consoles.length; i++) {
+					String name = consoles[i].getName();
+					if (consoles[i] instanceof IOConsole && name != null && name.contains(procLabel)) {
+						console = (IOConsole) consoles[i];
+					}
+				}
+
+				if (console != null) {
+					writeErrorsToConsole(errorLog, console);
+				}
+			}
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 			e.printStackTrace();
-			monitor.done();	
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			m.done();
+		}
+	}
+
+	protected void writeErrorsToConsole(String errors, IOConsole console)
+	throws IOException {
+		IOConsoleOutputStream os = null;
+		try {
+			os = console.newOutputStream();
+			changeConsoleOutputStreamColor(os, new ConsoleColorProvider().getColor(IDebugUIConstants.ID_STANDARD_ERROR_STREAM));
+			os.setActivateOnWrite(true);
+			os.write(errors.getBytes());
+			os.flush();
+		} finally {
+			if (os != null) {
+				os.close();
+			}
 		}
 	}
 
@@ -189,56 +256,9 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return config.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
 	}
 
-
 	@Override
 	protected String getPluginID() {
 		return ValgrindLaunchPlugin.PLUGIN_ID;
-	}
-
-	public void launchesTerminated(ILaunch[] launches) {
-		if (launch != null && Arrays.asList(launches).contains(launch) && process != null) {
-			try {
-				if (process.getExitValue() == 0) {
-					// create launch summary string to distinguish this launch
-					launchStr = createLaunchStr();
-
-					// create view
-					ValgrindUIPlugin.getDefault().createView(launchStr, toolID);
-
-					// pass off control to extender
-					dynamicDelegate.launch(command, config, launch, monitor.newChild(3));
-
-					// refresh view
-					ValgrindUIPlugin.getDefault().refreshView();
-
-					// show view
-					ValgrindUIPlugin.getDefault().showView();
-					
-					// save results of launch to persistent storage
-					//			saveState(monitor.newChild(2));
-				}
-				else {
-					final String errorMsg = readLogs();
-					
-					Display.getDefault().syncExec(new Runnable() {
-						public void run() {
-							IStatus subStatus = new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, errorMsg);
-							String msg = Messages.getString("ValgrindLaunchConfigurationDelegate.Valgrind_error_msg"); //$NON-NLS-1$
-							IStatus status = new MultiStatus(ValgrindLaunchPlugin.PLUGIN_ID, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR, new IStatus[] { subStatus }, msg, null);
-							
-							ErrorDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.getString("ValgrindLaunchConfigurationDelegate.Valgrind_error_title"), null, status); //$NON-NLS-1$
-						}						
-					});				
-				}
-			} catch (CoreException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				DebugPlugin.getDefault().getLaunchManager().removeLaunchListener(this);
-				monitor.done();
-			}
-		}
 	}
 
 	protected String readLogs() throws IOException {
@@ -255,13 +275,12 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return buf.toString();
 	}
 
-	public void launchesAdded(ILaunch[] launches) {
-	}
-
-	public void launchesChanged(ILaunch[] launches) {
-	}
-
-	public void launchesRemoved(ILaunch[] launches) {
+	private void changeConsoleOutputStreamColor(final IOConsoleOutputStream os, final Color color) {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				os.setColor(color);
+			}							
+		});
 	}
 
 }
