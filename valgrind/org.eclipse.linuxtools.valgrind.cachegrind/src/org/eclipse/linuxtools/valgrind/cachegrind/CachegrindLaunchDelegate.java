@@ -40,12 +40,36 @@ public class CachegrindLaunchDelegate extends
 	
 	// Valgrind program arguments
 	public static final String OPT_CACHEGRIND_OUTFILE = "--cachegrind-out-file"; //$NON-NLS-1$
+	public static final String OPT_I1 = "--I1"; //$NON-NLS-1$
+	public static final String OPT_D1 = "--D1"; //$NON-NLS-1$
+	public static final String OPT_L2 = "--L2"; //$NON-NLS-1$
+	public static final String OPT_CACHE_SIM = "--cache-sim"; //$NON-NLS-1$
+	public static final String OPT_BRANCH_SIM = "--branch-sim"; //$NON-NLS-1$
+	
+	private static final String COMMA = ","; //$NON-NLS-1$
 	
 	public String[] getCommandArray(ValgrindCommand command,
 			ILaunchConfiguration config) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		try {
 			opts.add(OPT_CACHEGRIND_OUTFILE + EQUALS + command.getDatadir().getCanonicalPath() + File.separator + OUT_FILE);
+			opts.add(OPT_CACHE_SIM + EQUALS + (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_CACHE_SIM, true) ? YES : NO));
+			opts.add(OPT_BRANCH_SIM + EQUALS + (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_BRANCH_SIM, false) ? YES : NO));
+			if (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1, false)) {
+				opts.add(OPT_I1 + EQUALS + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1_SIZE, 0)
+						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1_ASSOC, 0)
+						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1_LSIZE, 0));
+			}
+			if (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1, false)) {
+				opts.add(OPT_D1 + EQUALS + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1_SIZE, 0)
+						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1_ASSOC, 0)
+						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1_LSIZE, 0));
+			}
+			if (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2, false)) {
+				opts.add(OPT_L2 + EQUALS + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2_SIZE, 0)
+						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2_ASSOC, 0)
+						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2_LSIZE, 0));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			abort(Messages.getString("CachegrindLaunchDelegate.Retrieving_cachegrind_data_dir_failed"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$

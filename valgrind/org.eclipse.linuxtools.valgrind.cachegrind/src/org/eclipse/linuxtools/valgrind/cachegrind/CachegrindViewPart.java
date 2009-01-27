@@ -163,7 +163,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	}
 
 	public void refreshView() {
-		if (outputs != null) {
+		if (outputs != null && outputs.length > 0) {
 			String[] events = outputs[0].getEvents();
 			for (int i = 0; i < events.length; i++) {
 				TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.NONE);
