@@ -26,6 +26,7 @@ public class ValgrindCommand {
 
 	public static final String OPT_XML = "--xml"; //$NON-NLS-1$
 	public static final String OPT_LOGFILE = "--log-file"; //$NON-NLS-1$
+	public static final String OPT_QUIET = "-q"; //$NON-NLS-1$
 
 	public static final String OPT_TRACECHILD = "--trace-children"; //$NON-NLS-1$
 	public static final String OPT_CHILDSILENT = "--child-silent-after-fork"; //$NON-NLS-1$
