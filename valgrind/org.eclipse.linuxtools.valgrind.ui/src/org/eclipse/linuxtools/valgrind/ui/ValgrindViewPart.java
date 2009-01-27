@@ -29,7 +29,6 @@ public class ValgrindViewPart extends ViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-
 		setContentDescription(Messages.getString("ValgrindViewPart.No_Valgrind_output")); //$NON-NLS-1$
 
 		dynamicViewHolder = new Composite(parent, SWT.NONE);
@@ -53,21 +52,27 @@ public class ValgrindViewPart extends ViewPart {
 		for (Control child : dynamicViewHolder.getChildren()) {
 			child.dispose();
 		}
-		dynamicView = ValgrindUIPlugin.getDefault().getToolView(toolID);
-		dynamicView.createPartControl(dynamicViewHolder);
 
-		// create toolbar items
-		IAction[] actions = dynamicView.getToolbarActions();
-		if (actions != null) {
-			dynamicActions = new ActionContributionItem[actions.length];
-			for (int i = 0; i < actions.length; i++) {
-				dynamicActions[i] = new ActionContributionItem(actions[i]);
-				toolbar.appendToGroup(ValgrindUIPlugin.TOOLBAR_LOC_GROUP_ID, dynamicActions[i]);
-//				toolbar.add(dynamicActions[i]);
+		if (toolID != null) {
+			dynamicView = ValgrindUIPlugin.getDefault().getToolView(toolID);
+			dynamicView.createPartControl(dynamicViewHolder);
+
+			// create toolbar items
+			IAction[] actions = dynamicView.getToolbarActions();
+			if (actions != null) {
+				dynamicActions = new ActionContributionItem[actions.length];
+				for (int i = 0; i < actions.length; i++) {
+					dynamicActions[i] = new ActionContributionItem(actions[i]);
+					toolbar.appendToGroup(ValgrindUIPlugin.TOOLBAR_LOC_GROUP_ID, dynamicActions[i]);
+				}
 			}
 		}
+		else {
+			dynamicView = null;
+		}
+
 		toolbar.update(true);
-		
+
 		dynamicViewHolder.layout(true);
 
 		return dynamicView;

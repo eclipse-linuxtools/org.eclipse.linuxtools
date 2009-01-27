@@ -125,6 +125,20 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 			});
 		}
 	}
+	
+	public void resetView() {
+		if (view != null) {
+			Display.getDefault().syncExec(new Runnable() {
+				public void run() {
+					try {
+						view.createDynamicContent(Messages.getString("ValgrindViewPart.No_Valgrind_output"), null); //$NON-NLS-1$
+					} catch (CoreException e) {
+						e.printStackTrace();
+					}
+				}				
+			});
+		}
+	}
 
 	protected void setView(ValgrindViewPart view) {
 		this.view = view;
