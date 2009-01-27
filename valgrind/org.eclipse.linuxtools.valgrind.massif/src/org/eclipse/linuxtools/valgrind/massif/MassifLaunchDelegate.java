@@ -60,25 +60,26 @@ implements IValgrindLaunchDelegate {
 		MassifPlugin.getDefault().setConfig(config);
 		MassifPlugin.getDefault().setSourceLocator(launch.getSourceLocator());
 		try {
-			command.getProcess().waitFor();
+			monitor.beginTask(Messages.getString("MassifLaunchDelegate.Parsing_Massif_Output"), 3); //$NON-NLS-1$
 
 			File[] massifOutputs = command.getDatadir().listFiles(MASSIF_FILTER);
 
-			parseOutput(massifOutputs);
-		} catch (InterruptedException e) {
+			parseOutput(massifOutputs, monitor);
 		} catch (IOException e) {
 			e.printStackTrace();
 			abort(Messages.getString("MassifLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+		} finally {
+			monitor.done();
 		}
-
 	}
 
-	protected void parseOutput(File[] massifOutputs) throws IOException {
+	protected void parseOutput(File[] massifOutputs, IProgressMonitor monitor) throws IOException {
 		output = new MassifOutput();
 		for (File file : massifOutputs) {
 			MassifParser parser = new MassifParser(file);
 			output.putSnapshots(parser.getPid(), parser.getSnapshots());
 		}
+		monitor.worked(2);
 		
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		IValgrindToolView massifPart = view.getDynamicView();
@@ -87,6 +88,7 @@ implements IValgrindLaunchDelegate {
 			// initialize to first pid
 			((MassifViewPart) massifPart).setPid(output.getPids()[0]);
 		}
+		monitor.worked(1);
 	}
 
 	@SuppressWarnings("unchecked")
