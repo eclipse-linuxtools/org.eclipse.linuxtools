@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.valgrind.memcheck;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,12 +21,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.valgrind.core.ValgrindPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class ValgrindXMLParser {
@@ -37,25 +32,30 @@ public class ValgrindXMLParser {
 	protected ArrayList<ValgrindError> errors;
 
 	public ValgrindXMLParser(InputStream in) throws ParserConfigurationException, IOException, CoreException, SAXException {
-		builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		errors = new ArrayList<ValgrindError>();
+		try {
+			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			errors = new ArrayList<ValgrindError>();
 
-		StringBuffer xmlBuf = new StringBuffer();
-		StringBuffer plainBuf = new StringBuffer();
-		separateOutput(in, xmlBuf, plainBuf);
+			//		StringBuffer xmlBuf = new StringBuffer();
+			//		StringBuffer plainBuf = new StringBuffer();
+			//		separateOutput(in, xmlBuf, plainBuf);
 
-		// any plaintext in memcheck output is an error
-		String err = plainBuf.toString().trim();
-		if (err.length() > 0) {
-			throw new CoreException(new Status(IStatus.ERROR, ValgrindPlugin.PLUGIN_ID, err));
-		}
+			// any plaintext in memcheck output is an error
+			//		String err = plainBuf.toString().trim();
+			//		if (err.length() > 0) {
+			//			throw new CoreException(new Status(IStatus.ERROR, ValgrindPlugin.PLUGIN_ID, err));
+			//		}
 
-		InputSource is = new InputSource(new ByteArrayInputStream(xmlBuf.toString().getBytes()));
-		Document doc = builder.parse(is);
+			//		InputSource is = new InputSource(new ByteArrayInputStream(xmlBuf.toString().getBytes()));
+			//		Document doc = builder.parse(is);
+			Document doc = builder.parse(in);
 
-		NodeList nodes = doc.getElementsByTagName("error"); //$NON-NLS-1$
-		for (int i = 0; i < nodes.getLength(); i++) {
-			errors.add(new ValgrindError(nodes.item(i)));
+			NodeList nodes = doc.getElementsByTagName("error"); //$NON-NLS-1$
+			for (int i = 0; i < nodes.getLength(); i++) {
+				errors.add(new ValgrindError(nodes.item(i)));
+			}
+		} finally {
+			in.close();
 		}
 	}
 

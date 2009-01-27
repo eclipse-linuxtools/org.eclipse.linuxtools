@@ -39,6 +39,7 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 	public static final String OPT_GCCWORK = "--workaround-gcc296-bugs"; //$NON-NLS-1$
 	public static final String OPT_PARTIAL = "--partial-loads-ok"; //$NON-NLS-1$
 	public static final String OPT_UNDEF = "--undef-value-errors"; //$NON-NLS-1$
+	public static final String OPT_ALIGNMENT = "--alignment"; //$NON-NLS-1$
 
 	protected ArrayList<ValgrindError> errors;
 
@@ -92,6 +93,7 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 		opts.add(OPT_GCCWORK + EQUALS + (config.getAttribute(MemcheckToolPage.ATTR_MEMCHECK_GCCWORK, false) ? YES : NO));
 		opts.add(OPT_PARTIAL + EQUALS + (config.getAttribute(MemcheckToolPage.ATTR_MEMCHECK_PARTIAL, false) ? YES : NO));
 		opts.add(OPT_UNDEF + EQUALS + (config.getAttribute(MemcheckToolPage.ATTR_MEMCHECK_UNDEF, true) ? YES : NO));
+		opts.add(OPT_ALIGNMENT + EQUALS + config.getAttribute(MemcheckToolPage.ATTR_MEMCHECK_ALIGNMENT, 8));
 
 		return opts.toArray(new String[opts.size()]);
 	}
