@@ -58,7 +58,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	protected Combo timeUnitCombo;
 	protected Spinner detailedFreqSpinner;
 	protected Spinner maxSnapshotsSpinner;
-	protected PowerOfTwoSpinner alignmentSpinner;
+	protected Spinner alignmentSpinner;
 	
 	// LaunchConfiguration attributes
 	public static final String ATTR_MASSIF_OUTFILE = PLUGIN_ID + ".MASSIF_OUTFILE"; //$NON-NLS-1$
@@ -201,7 +201,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		Label alignmentLabel = new Label(alignmentTop, SWT.NONE);
 		alignmentLabel.setText(Messages.getString("MassifToolPage.minimum_heap_block")); //$NON-NLS-1$
 		
-		alignmentSpinner = new PowerOfTwoSpinner(alignmentTop, SWT.BORDER);
+		alignmentSpinner = new Spinner(alignmentTop, SWT.BORDER);
 		alignmentSpinner.setMinimum(8);
 		alignmentSpinner.setMaximum(4096);
 		alignmentSpinner.addModifyListener(modifyListener);
