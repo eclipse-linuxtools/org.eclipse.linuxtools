@@ -48,6 +48,38 @@ public class CachegrindLaunchDelegate extends
 	
 	private static final String COMMA = ","; //$NON-NLS-1$
 	
+	public void launch(ValgrindCommand command, ILaunchConfiguration config,
+			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+		try {
+			monitor.beginTask(Messages.getString("CachegrindLaunchDelegate.Parsing_Cachegrind_Output"), 3); //$NON-NLS-1$
+			
+			File[] cachegrindOutputs = command.getDatadir().listFiles(CACHEGRIND_FILTER);
+			parseOutput(cachegrindOutputs, monitor);
+		} catch (IOException e) {
+			e.printStackTrace();
+			abort(Messages.getString("CachegrindLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+		} finally {
+			monitor.done();
+		}
+	}
+
+	protected void parseOutput(File[] cachegrindOutputs, IProgressMonitor monitor) throws IOException {
+		CachegrindOutput[] outputs = new CachegrindOutput[cachegrindOutputs.length];
+		
+		for (int i = 0; i < cachegrindOutputs.length; i++) {
+			outputs[i] = new CachegrindOutput();
+			CachegrindParser.getParser().parse(outputs[i], cachegrindOutputs[i]);
+		}
+		monitor.worked(2);
+		
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		IValgrindToolView cachegrindPart = view.getDynamicView();
+		if (cachegrindPart instanceof CachegrindViewPart) {
+			((CachegrindViewPart) cachegrindPart).setOutputs(outputs);
+		}
+		monitor.worked(1);
+	}
+	
 	public String[] getCommandArray(ValgrindCommand command,
 			ILaunchConfiguration config) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
@@ -75,36 +107,6 @@ public class CachegrindLaunchDelegate extends
 			abort(Messages.getString("CachegrindLaunchDelegate.Retrieving_cachegrind_data_dir_failed"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 		}
 		return opts.toArray(new String[opts.size()]);
-	}
-
-	public void launch(ValgrindCommand command, ILaunchConfiguration config,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		try {
-			command.getProcess().waitFor();
-			
-			File[] cachegrindOutputs = command.getDatadir().listFiles(CACHEGRIND_FILTER);
-			parseOutput(cachegrindOutputs);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-			abort(Messages.getString("CachegrindLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
-		}	
-	}
-
-	protected void parseOutput(File[] cachegrindOutputs) throws IOException {
-		CachegrindOutput[] outputs = new CachegrindOutput[cachegrindOutputs.length];
-		
-		for (int i = 0; i < cachegrindOutputs.length; i++) {
-			outputs[i] = new CachegrindOutput();
-			CachegrindParser.getParser().parse(outputs[i], cachegrindOutputs[i]);
-		}
-		
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IValgrindToolView cachegrindPart = view.getDynamicView();
-		if (cachegrindPart instanceof CachegrindViewPart) {
-			((CachegrindViewPart) cachegrindPart).setOutputs(outputs);
-		}
 	}
 
 }
