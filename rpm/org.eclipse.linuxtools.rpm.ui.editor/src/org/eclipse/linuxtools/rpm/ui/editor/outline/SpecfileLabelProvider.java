@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007, 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,9 +66,9 @@ public class SpecfileLabelProvider implements ILabelProvider {
 		} else if (element instanceof Specfile) {
 			return ((Specfile) element).getName();
 		} else if (element instanceof SpecfilePackageContainer) {
-			return "Packages";
+			return Messages.SpecfileLabelProvider_0;
 		} else if (element instanceof SpecfilePreamble){
-			return "Preamble";
+			return Messages.SpecfileLabelProvider_1;
 		} else if (element instanceof SpecfileElement) {
 			SpecfileElement specfileElement = (SpecfileElement) element;
 			return specfileElement.getName();

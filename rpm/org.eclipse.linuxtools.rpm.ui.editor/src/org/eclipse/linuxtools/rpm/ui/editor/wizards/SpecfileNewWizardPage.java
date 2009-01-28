@@ -49,19 +49,19 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 public class SpecfileNewWizardPage extends WizardPage {
 
-	private static final String NAME = "package_name";
+	private static final String NAME = "package_name"; //$NON-NLS-1$
 
-	private static final String VERSION = "1.0";
+	private static final String VERSION = "1.0"; //$NON-NLS-1$
 
-	private static final String SUMMARY = "Summary of the package";
+	private static final String SUMMARY = "Summary of the package"; //$NON-NLS-1$
 
-	private static final String GROUP = "Amusements/Games";
+	private static final String GROUP = "Amusements/Games"; //$NON-NLS-1$
 
-	private static final String LICENSE = "GPL";
+	private static final String LICENSE = "GPL"; //$NON-NLS-1$
 
-	private static final String URL = "http://";
+	private static final String URL = "http://"; //$NON-NLS-1$
 
-	private static final String SOURCE0 = "archive_name-%{version}";
+	private static final String SOURCE0 = "archive_name-%{version}"; //$NON-NLS-1$
 
 	private Text projectText;
 
@@ -85,7 +85,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 
 	private ISelection selection;
 
-	private String selectedTemplate = "minimal";
+	private String selectedTemplate = "minimal"; //$NON-NLS-1$
 
 	private String content;
 
@@ -95,9 +95,9 @@ public class SpecfileNewWizardPage extends WizardPage {
 	 * @param selection 
 	 */
 	public SpecfileNewWizardPage(ISelection selection) {
-		super("wizardPage");
-		setTitle("New specfile based on a template");
-		setDescription("This wizard creates a new specfile based on a selected template.");
+		super("wizardPage"); //$NON-NLS-1$
+		setTitle(Messages.SpecfileNewWizardPage_9);
+		setDescription(Messages.SpecfileNewWizardPage_10);
 		this.selection = selection;
 	}
 
@@ -113,7 +113,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 
 		// Project
 		Label label = new Label(container, SWT.NULL);
-		label.setText("&Project:");
+		label.setText(Messages.SpecfileNewWizardPage_11);
 		projectText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectText.setLayoutData(gd);
@@ -123,7 +123,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			}
 		});
 		Button button = new Button(container, SWT.PUSH);
-		button.setText("Select a project...");
+		button.setText(Messages.SpecfileNewWizardPage_12);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -133,7 +133,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 
 		// Template to use
 		label = new Label(container, SWT.NULL);
-		label.setText("Select a Template:");
+		label.setText(Messages.SpecfileNewWizardPage_13);
 		templateCombo = new Combo(container, SWT.NULL);
 		try {
 			populateTemplateCombo(templateCombo);
@@ -186,30 +186,30 @@ public class SpecfileNewWizardPage extends WizardPage {
 		});
 
 		// Package Name
-		nameText = setTextItem(container, "&Name:");
+		nameText = setTextItem(container, Messages.SpecfileNewWizardPage_14);
 
 		// Package Version
-		versionText = setTextItem(container, "&Version:");
+		versionText = setTextItem(container, Messages.SpecfileNewWizardPage_15);
 
 		// Package Summary
-		summaryText = setTextItem(container, "&Summary:");
+		summaryText = setTextItem(container, Messages.SpecfileNewWizardPage_16);
 
 		// Package Group
 		label = new Label(container, SWT.NULL);
-		label.setText("&Group:");
+		label.setText(Messages.SpecfileNewWizardPage_17);
 		groupCombo = new Combo(container, SWT.NULL);
 		populateGroupCombo(groupCombo);
 		// empty label for the last row.
 		label = new Label(container, SWT.NULL);
 
 		// Package License
-		licenseText = setTextItem(container, "&License:");
+		licenseText = setTextItem(container, Messages.SpecfileNewWizardPage_18);
 
 		// Package URL
-		URLText = setTextItem(container, "&URL:");
+		URLText = setTextItem(container, Messages.SpecfileNewWizardPage_19);
 
 		// Package Source0
-		source0Text = setTextItem(container, "Source&0:");
+		source0Text = setTextItem(container, Messages.SpecfileNewWizardPage_20);
 
 		initialize();
 		dialogChanged();
@@ -317,7 +317,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	private void handleBrowse() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
 				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false,
-				"Select new file container");
+				Messages.SpecfileNewWizardPage_21);
 		if (dialog.open() == Window.OK) {
 			Object[] result = dialog.getResult();
 			if (result.length == 1) {
@@ -334,20 +334,20 @@ public class SpecfileNewWizardPage extends WizardPage {
 				.findMember(new Path(getProjectName()));
 		String fileName = getFileName();
 		if (getProjectName().length() == 0) {
-			updateStatus("File container must be specified");
+			updateStatus(Messages.SpecfileNewWizardPage_22);
 			return;
 		}
 		if (container == null
 				|| (container.getType() & (IResource.PROJECT | IResource.FOLDER)) == 0) {
-			updateStatus("The Project must exist");
+			updateStatus(Messages.SpecfileNewWizardPage_23);
 			return;
 		}
 		if (!container.isAccessible()) {
-			updateStatus("Project must be writable");
+			updateStatus(Messages.SpecfileNewWizardPage_24);
 			return;
 		}
 		if (fileName.length() == 0) {
-			updateStatus("Spec file name must be specified");
+			updateStatus(Messages.SpecfileNewWizardPage_25);
 			return;
 		}
 
@@ -362,13 +362,13 @@ public class SpecfileNewWizardPage extends WizardPage {
 		String packageName = nameText.getText();
 		if (packageName.indexOf(" ") != -1 || packageName.indexOf("<") != -1 //$NON-NLS-1$ //$NON-NLS-2$
 				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1){ //$NON-NLS-1$ //$NON-NLS-2$
-			updateStatus("The Name tag must not include whitespace and "
-					+ "should not include any numeric operators ('<', '>','=')");
+			updateStatus(Messages.SpecfileNewWizardPage_26
+					+ Messages.SpecfileNewWizardPage_27);
 			return;
 		}
 
 		if (versionText.getText().indexOf("-") > -1) { //$NON-NLS-1$
-			updateStatus("Please, no dashes in the version!");
+			updateStatus(Messages.SpecfileNewWizardPage_28);
 			return;
 		}
 
@@ -408,7 +408,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			}
 			templateCombo.setText(selectedTemplate);			
 		} else {
-			throwCoreException("/etc/rpmdevtools directory was not found");
+			throwCoreException(Messages.SpecfileNewWizardPage_29);
 		}
 	}
 

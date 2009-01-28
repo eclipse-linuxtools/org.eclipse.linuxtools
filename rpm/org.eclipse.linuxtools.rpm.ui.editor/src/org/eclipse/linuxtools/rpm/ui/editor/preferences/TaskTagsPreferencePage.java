@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 	@Override
 	protected void createFieldEditors() {
 		addField(new TasksListEditor(PreferenceConstants.P_TASK_TAGS,
-				"Strings indicating tasks in RPM specfile.",
+				Messages.TaskTagsPreferencePage_0,
 				getFieldEditorParent()));
 	}
 
@@ -57,7 +57,7 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 			String result = null;
 			// open an input dialog so that the user can enter a new task tag
 			InputDialog inputDialog = new InputDialog(getShell(),
-					"New Task Tag...", "Enter new Task Tag:", "", null);
+					Messages.TaskTagsPreferencePage_1, Messages.TaskTagsPreferencePage_2, "", null); //$NON-NLS-3$
 			int returnCode = inputDialog.open();
 
 			if (returnCode == Window.OK) {

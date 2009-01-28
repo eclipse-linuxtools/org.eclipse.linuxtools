@@ -35,7 +35,7 @@ public class SpecfileLog {
     * @param exception A low-level exception.
     */
    public static void logError(Throwable exception) {
-      logError("Unexpected Exception", exception);
+      logError(Messages.SpecfileLog_0, exception);
    }
 
    /**

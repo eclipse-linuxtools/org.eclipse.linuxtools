@@ -78,7 +78,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 		} catch (InvocationTargetException e) {
 			SpecfileLog.logError(e);
 			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), "Error", realException
+			MessageDialog.openError(getShell(), Messages.SpecfileNewWizard_0, realException
 					.getMessage());
 			return false;
 		}
@@ -93,12 +93,12 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	private void doFinish(String projectName, String fileName,
 			InputStream contentInputStream, IProgressMonitor monitor)
 	throws CoreException {
-		monitor.beginTask("Creating " + fileName, 2);
+		monitor.beginTask(Messages.SpecfileNewWizard_1 + fileName, 2);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource resource = root.findMember(new Path(projectName));
 		if (!resource.exists() || !(resource instanceof IContainer)) {
-			throwCoreException("Project \"" + projectName
-					+ "\" does not exist.");
+			throwCoreException(Messages.SpecfileNewWizard_2 + projectName
+					+ Messages.SpecfileNewWizard_3);
 		}
 		IContainer container = (IContainer) resource;
 		final IFile file = container.getFile(new Path(fileName));
@@ -113,7 +113,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 		} catch (IOException e) {
 		}
 		monitor.worked(1);
-		monitor.setTaskName("Opening file for editing...");
+		monitor.setTaskName(Messages.SpecfileNewWizard_4);
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page = PlatformUI.getWorkbench()

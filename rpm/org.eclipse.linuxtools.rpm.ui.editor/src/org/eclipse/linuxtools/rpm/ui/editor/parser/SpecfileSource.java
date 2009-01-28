@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007, 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -88,10 +88,10 @@ public class SpecfileSource extends SpecfileElement {
 				line = specfile.getLine(lineNumber);
 				Matcher patchMatcher = patchPattern.matcher(line);
 				if (!patchMatcher.find()) {
-					System.out.println("error:  can't match " + patchPattern.pattern());
+					System.out.println(Messages.getString("SpecfileSource.0") + patchPattern.pattern()); //$NON-NLS-1$
 //					throw new BadLocationException("can't match " + patchPattern);
 				}
-				specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "%patch" + number));
+				specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), Messages.getString("SpecfileSource.1") + number)); //$NON-NLS-1$
 			} catch (BadLocationException e) {
 				SpecfileLog.logError(e);
 			}
@@ -111,8 +111,8 @@ public class SpecfileSource extends SpecfileElement {
 			Matcher patchMatcher = patchPattern.matcher(line);
 			if (!patchMatcher.find())
 				// TODO: Maybe we can throw a exception here.
-				System.out.println("error: can't match " + patchPattern.pattern());
-			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number));
+				System.out.println(Messages.getString("SpecfileSource.2") + patchPattern.pattern()); //$NON-NLS-1$
+			specfile.changeLine(lineNumber, line.replaceAll(patchPattern.pattern(), "Patch" + number)); //$NON-NLS-1$
 		} catch (BadLocationException e) {
 			SpecfileLog.logError(e);
 		}

@@ -197,8 +197,8 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
             }
         } else {
             // TODO: LOg error.
-            System.err.println("Got " + changelog.getClass().toString()
-                    + " editor");
+            System.err.println(Messages.SpecfileChangelogFormatter_0 + changelog.getClass().toString()
+                    + Messages.SpecfileChangelogFormatter_1);
         }
         return EMPTY_STRING;
 	}

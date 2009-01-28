@@ -42,7 +42,7 @@ public class RpmPackageBuildProposalsJob extends Job {
 		super(name);
 	}
 
-	private static final String JOB_NAME = "Update RPM packages proposal list";
+	private static final String JOB_NAME = Messages.RpmPackageBuildProposalsJob_0;
 
 	private static RpmPackageBuildProposalsJob job = null;
 
@@ -145,7 +145,7 @@ public class RpmPackageBuildProposalsJob extends Job {
 		File bkupFile = new File(rpmListFilepath + ".bkup"); //$NON-NLS-1$
 		try {
 			String[] cmd = new String[] { "/bin/sh", "-c", rpmListCmd }; //$NON-NLS-1$ //$NON-NLS-2$
-			monitor.beginTask("Retrieving packages",
+			monitor.beginTask(Messages.RpmPackageBuildProposalsJob_1,
 					IProgressMonitor.UNKNOWN);
 			Process child = new ProcessBuilder(cmd).start();
 			InputStream in = child.getInputStream();
@@ -158,8 +158,8 @@ public class RpmPackageBuildProposalsJob extends Job {
 					rpmListFile, false));
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
-			monitor.subTask("Run command '" + rpmListCmd
-					+ "' ...");
+			monitor.subTask(Messages.RpmPackageBuildProposalsJob_2 + rpmListCmd
+					+ Messages.RpmPackageBuildProposalsJob_3);
 			String line;
 			while ((line = reader.readLine()) != null) {
 				monitor.subTask(line);

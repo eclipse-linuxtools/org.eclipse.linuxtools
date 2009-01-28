@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007, 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -95,12 +95,12 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 					// there was no changelog partition - add it.
 					if (changelogPartition == null) {
 						System.err
-								.println("Did not get changelog partition. Please make me one!");
+								.println(Messages.SpecfileChangelogAction_0);
 					}
 
 					// now add the entry stub
-					System.err.println("Got specfile partition: "
-							+ changelogPartition.getOffset() + ","
+					System.err.println(Messages.SpecfileChangelogAction_1
+							+ changelogPartition.getOffset() + Messages.SpecfileChangelogAction_2
 							+ changelogPartition.getLength());
 					String changelogText = doc.get(changelogPartition
 							.getOffset(), changelogPartition.getLength());
@@ -130,8 +130,8 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 			}
 		} else {
 			// TODO: Log error.
-			System.err.println("Got " + editor.getClass().toString()
-					+ " editor");
+			System.err.println(Messages.SpecfileChangelogAction_3 + editor.getClass().toString()
+					+ Messages.SpecfileChangelogAction_4);
 		}
 	}
 
@@ -179,11 +179,11 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(new Date());
 		System.err.println(cal.get(Calendar.DAY_OF_WEEK));
-		String date = (new SimpleDateFormat("EEE MMM d yyyy")).format(new Date());
+		String date = (new SimpleDateFormat(Messages.SpecfileChangelogAction_5)).format(new Date());
 		
 		SpecfileElement resolveElement = new SpecfileElement();
 		resolveElement.setSpecfile(specfile);
-		String epoch = specfile.getEpoch() == -1 ? EMPTY_STRING: (specfile.getEpoch() + ":");
+		String epoch = specfile.getEpoch() == -1 ? EMPTY_STRING: (specfile.getEpoch() + ":"); //$NON-NLS-1$
 		String version = specfile.getVersion() == null ? EMPTY_STRING: resolveElement.resolve(specfile.getVersion()); //$NON-NLS-1$
 		String release = specfile.getRelease() == null ? EMPTY_STRING: resolveElement.resolve(specfile.getRelease());
 		

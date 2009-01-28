@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007, 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -204,7 +204,7 @@ public class SpecfileParser {
 	}
 	
 	private SpecfileElement parseSection(String lineText, Specfile specfile, int lineNumber) {
-		List<String> tokens = Arrays.asList(lineText.split("\\s+"));
+		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
 		SpecfileSection toReturn = null;
 		boolean isSimpleSection = false;
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
@@ -235,8 +235,8 @@ public class SpecfileParser {
 							if (!iter.hasNext()) {
 								errorHandler
 										.handleError(new SpecfileParseException(
-												"No package name after -n in "
-														+ name + " section.",
+												Messages.getString("SpecfileParser.1") //$NON-NLS-1$
+														+ name + Messages.getString("SpecfileParser.2"), //$NON-NLS-1$
 												lineNumber, 0, lineText
 														.length(),
 												IMarker.SEVERITY_ERROR));
@@ -247,8 +247,8 @@ public class SpecfileParser {
 							if (nextToken.startsWith("-")) { //$NON-NLS-1$
 								errorHandler
 										.handleError(new SpecfileParseException(
-												"Package name must not start with '-': "
-														+ nextToken + ".",
+												Messages.getString("SpecfileParser.3") //$NON-NLS-1$
+														+ nextToken + Messages.getString("SpecfileParser.4"), //$NON-NLS-1$
 												lineNumber, 0, lineText
 														.length(),
 												IMarker.SEVERITY_ERROR));
@@ -343,7 +343,7 @@ public class SpecfileParser {
 			} catch (NumberFormatException e) {
 				errorHandler
 				.handleError(new SpecfileParseException(
-						"Patch number be an integer.",
+						Messages.getString("SpecfileParser.5"), //$NON-NLS-1$
 						lineNumber, 0, lineText.length(),
 						IMarker.SEVERITY_ERROR));
 				return null;
@@ -366,7 +366,7 @@ public class SpecfileParser {
 				if (!Character.isLetter(defineName.charAt(0)) && (defineName.charAt(0) != '_')) {
 					errorHandler
 					.handleError(new SpecfileParseException(
-							"Definition lvalue must begin with a letter or an underscore.",
+							Messages.getString("SpecfileParser.6"), //$NON-NLS-1$
 							lineNumber, 0, lineText.length(),
 							IMarker.SEVERITY_ERROR));
 					return null;
@@ -375,7 +375,7 @@ public class SpecfileParser {
 						// FIXME: Should this be an error?
 						errorHandler
 						.handleError(new SpecfileParseException(
-								"No value name after define.",
+								Messages.getString("SpecfileParser.7"), //$NON-NLS-1$
 								lineNumber, 0, lineText
 								.length(),
 								IMarker.SEVERITY_WARNING));
@@ -424,7 +424,7 @@ public class SpecfileParser {
 						// FIXME:  what about descriptions that begin a line with the word "Source" or "Patch"?
 						errorHandler
 						.handleError(new SpecfileParseException(
-								"If this is a Source or Patch directive, it must end with a colon.",
+								Messages.getString("SpecfileParser.8"), //$NON-NLS-1$
 								lineNumber, 0, lineText.length(),
 								IMarker.SEVERITY_WARNING));
 						return null;
@@ -432,10 +432,10 @@ public class SpecfileParser {
 					if (sourceType == SourceType.PATCH) {
 						if (token.length() > 5) {
 							number = Integer.parseInt(token.substring(5));
-							if (!("patch" + number).equalsIgnoreCase(token)) {
+							if (!("patch" + number).equalsIgnoreCase(token)) { //$NON-NLS-1$
 								errorHandler
 								.handleError(new SpecfileParseException(
-										"Invalid patch directive.",
+										Messages.getString("SpecfileParser.10"), //$NON-NLS-1$
 										lineNumber, 0, lineText.length(),
 										IMarker.SEVERITY_ERROR));
 								return null;
@@ -449,7 +449,7 @@ public class SpecfileParser {
 							if (!("source" + number).equalsIgnoreCase(token)) { //$NON-NLS-1$
 								errorHandler
 								.handleError(new SpecfileParseException(
-										"Invalid source directive.",
+										Messages.getString("SpecfileParser.11"), //$NON-NLS-1$
 										lineNumber, 0, lineText.length(),
 										IMarker.SEVERITY_ERROR));
 								return null;
@@ -467,7 +467,7 @@ public class SpecfileParser {
 						toReturn.setFileName(token);
 					if (iter.hasNext()) {
 						errorHandler.handleError(new SpecfileParseException(
-								"Filename cannot be multiple words.",
+								Messages.getString("SpecfileParser.12"), //$NON-NLS-1$
 								lineNumber, 0, lineText.length(),
 								IMarker.SEVERITY_ERROR));
 					}
@@ -498,7 +498,7 @@ public class SpecfileParser {
 						possValue, specfile);
 				if (iter.hasNext() && !warnMultipleValues) {
 					errorHandler.handleError(new SpecfileParseException(
-							token.substring(0, token.length() - 1) + " cannot have multiple values.",
+							token.substring(0, token.length() - 1) + Messages.getString("SpecfileParser.13"), //$NON-NLS-1$
 							lineNumber, 0, lineText.length(),
 							IMarker.SEVERITY_ERROR));
 					return null;
@@ -512,7 +512,7 @@ public class SpecfileParser {
 //				}
 			} else {
 				errorHandler.handleError(new SpecfileParseException(
-						token.substring(0, token.length() - 1) + " declaration without value.", lineNumber,
+						token.substring(0, token.length() - 1) + Messages.getString("SpecfileParser.14"), lineNumber, //$NON-NLS-1$
 						0, lineText.length(), IMarker.SEVERITY_ERROR));
 				toReturn = null;
 			}
@@ -521,7 +521,7 @@ public class SpecfileParser {
 			if (toReturn.getStringValue().indexOf("_") > 0) { //$NON-NLS-1$
 				if (toReturn.getName().equalsIgnoreCase("release")) //$NON-NLS-1$
 					errorHandler.handleError(new SpecfileParseException(
-							"Release should not contain an underscore.", lineNumber,
+							Messages.getString("SpecfileParser.15"), lineNumber, //$NON-NLS-1$
 							0, lineText.length(), IMarker.SEVERITY_WARNING));
 			}
 			try {
@@ -532,7 +532,7 @@ public class SpecfileParser {
 			} catch (NumberFormatException e) {
 				if (toReturn.getName().equals("epoch")) { //$NON-NLS-1$
 					errorHandler.handleError(new SpecfileParseException(
-							"Epoch cannot have non-integer value.", lineNumber,
+							Messages.getString("SpecfileParser.16"), lineNumber, //$NON-NLS-1$
 							0, lineText.length(), IMarker.SEVERITY_ERROR));
 					toReturn = null;
 				}

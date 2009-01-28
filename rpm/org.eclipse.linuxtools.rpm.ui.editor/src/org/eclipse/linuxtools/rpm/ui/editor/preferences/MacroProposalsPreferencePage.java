@@ -60,18 +60,18 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 	protected void createFieldEditors() {
 		ListEditor macroListEditor = new MacroListEditor(
 				PreferenceConstants.P_MACRO_PROPOSALS_FILESPATH,
-				"Macro Definitions", getFieldEditorParent());
+				Messages.MacroProposalsPreferencePage_0, getFieldEditorParent());
 		addField(macroListEditor);
 		RadioGroupFieldEditor macroHoverListEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_MACRO_HOVER_CONTENT,
-				"Mouse hover content",
+				Messages.MacroProposalsPreferencePage_1,
 				1,
 				new String[][] {
 						{
-								"Show macro descriptions (e.g '%{prefix}/share')",
+								Messages.MacroProposalsPreferencePage_2,
 								PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWDESCRIPTION },
 						{
-								"Show macro contents (e.g '/usr/share')",
+								Messages.MacroProposalsPreferencePage_3,
 								PreferenceConstants.P_MACRO_HOVER_CONTENT_VIEWCONTENT } },
 				getFieldEditorParent(), true);
 		addField(macroHoverListEditor);
@@ -201,8 +201,8 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		 *            the box for the buttons
 		 */
 		private void createButtons(Composite box) {
-			addFileButton = createPushButton(box, "Add file");
-			addDirButton = createPushButton(box, "Add directory");
+			addFileButton = createPushButton(box, Messages.MacroProposalsPreferencePage_4);
+			addDirButton = createPushButton(box, Messages.MacroProposalsPreferencePage_5);
 			removeButton = createPushButton(box, "ListEditor.remove");//$NON-NLS-1$
 			upButton = createPushButton(box, "ListEditor.up");//$NON-NLS-1$
 			downButton = createPushButton(box, "ListEditor.down");//$NON-NLS-1$

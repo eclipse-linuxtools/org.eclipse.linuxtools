@@ -65,9 +65,9 @@ public class RpmPackageProposalsList {
 		for (String listValue:list){
 			String item[] = new String[2];
 			item[0] = listValue;
-			String message = "RPM information is only available\nif the proposal list is less than "
+			String message = Messages.RpmPackageProposalsList_0
 					+ rpmpkgsMaxProposals
-					+ " item(s).\n\nYou can change the item limit in the \nRPM proposals preferences page.";
+					+ Messages.RpmPackageProposalsList_1;
 			item[1] = message;				
 			if (item[0].startsWith(prefix)) {
 				proposalsList.add(item);
@@ -115,8 +115,8 @@ public class RpmPackageProposalsList {
 			in.close();
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
-			return "Cannot retrieve RPM information.\n\n"
-					+ "Please adjust your preferences:\n\nSpecfile Editor-> Macro proposals-> Package Info";
+			return Messages.RpmPackageProposalsList_2
+					+ Messages.RpmPackageProposalsList_3;
 		}
 		// Create encoder and decoder
 		CharsetDecoder decoder = Charset.forName(System.getProperty("file.encoding")).newDecoder(); //$NON-NLS-1$

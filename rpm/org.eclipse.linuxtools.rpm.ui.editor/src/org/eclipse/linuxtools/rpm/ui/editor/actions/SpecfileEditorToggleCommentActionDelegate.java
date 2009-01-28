@@ -55,7 +55,7 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 				.getSelection();
 		if (currentSelection instanceof ITextSelection) {
 			ITextSelection selection = (ITextSelection) currentSelection;
-			String selectedContent = "";
+			String selectedContent = ""; //$NON-NLS-1$
 			try {
 				int begin = document.getLineOffset(selection.getStartLine());
 				StringBuilder sb = new StringBuilder(document.get().substring(0,

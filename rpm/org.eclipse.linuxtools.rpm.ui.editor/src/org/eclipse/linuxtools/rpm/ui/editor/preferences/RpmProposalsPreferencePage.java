@@ -56,9 +56,9 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		// FIXME: there is validations problem when a FileFieldEditor is used, so 
 		// as a quick fix, StringFieldEditor is used.
 		StringFieldEditor rpmListFieldEditor = new StringFieldEditor(PreferenceConstants.P_RPM_LIST_FILEPATH,
-				"Path to packages list file:", getFieldEditorParent());
+				Messages.RpmProposalsPreferencePage_0, getFieldEditorParent());
 		addField(rpmListFieldEditor);
-		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,"Automatically build the RPM packages proposals list", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD,Messages.RpmProposalsPreferencePage_1, getFieldEditorParent()));
 		addField(buildTimeListRateFieldEditor());
 	}
 	
@@ -70,7 +70,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	@Override
 	protected Control createContents(final Composite parent) {
 		Link link= new Link(parent, SWT.NONE);
-		link.setText("<a href=\"org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage\">Package Information</a> page helps to configure proposal descriptions");
+		link.setText(Messages.RpmProposalsPreferencePage_2);
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -84,17 +84,17 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	
 	private FieldEditor rpmtoolsRadioGroupFieldEditor() {
 		ArrayList<String[]> list = new ArrayList<String[]>();
-		list.add(new String[] { "RPM (Red Hat Package Manager)",
+		list.add(new String[] { Messages.RpmProposalsPreferencePage_3,
 								PreferenceConstants.DP_RPMTOOLS_RPM });
 		/*
 		 * Show only installed tools.
 		 * Don't forgot to add sanity check in Utils.pluginSanityCheck().
 		 */ 
 		if (Utils.fileExist("/usr/bin/yum"))  //$NON-NLS-1$
-			list.add(new String[] { "YUM (Yellowdog Updater, Modified)",
+			list.add(new String[] { Messages.RpmProposalsPreferencePage_4,
 					PreferenceConstants.DP_RPMTOOLS_YUM });
 		if (Utils.fileExist("/usr/bin/urpmq"))  //$NON-NLS-1$
-			list.add(new String[] { "URPM (User RPM)",
+			list.add(new String[] { Messages.RpmProposalsPreferencePage_5,
 					PreferenceConstants.DP_RPMTOOLS_URPM });
 
 		String[][] radioItems = new String[list.size()][2];
@@ -108,7 +108,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	
 		RadioGroupFieldEditor rpmToolsRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_CURRENT_RPMTOOLS,
-				"RPM tools used to build the package list", 1, radioItems ,
+				Messages.RpmProposalsPreferencePage_6, 1, radioItems ,
 				getFieldEditorParent(), true);
 		return rpmToolsRadioGroupEditor;
 	}
@@ -116,10 +116,10 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	private FieldEditor buildTimeListRateFieldEditor() { 
 		RadioGroupFieldEditor buildListTimeRateRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD,
-				"Proposals RPM list build rate", 1, new String[][] {
-						{ "Each time that the workbench is open", "1" },
-						{ "Once a week", "2" },
-						{ "Once a month", "3" }}, getFieldEditorParent(), true);
+				Messages.RpmProposalsPreferencePage_7, 1, new String[][] {
+						{ Messages.RpmProposalsPreferencePage_8, "1" }, //$NON-NLS-2$
+						{ Messages.RpmProposalsPreferencePage_10, "2" }, //$NON-NLS-2$
+						{ Messages.RpmProposalsPreferencePage_12, "3" }}, getFieldEditorParent(), true); //$NON-NLS-2$
 		return buildListTimeRateRadioGroupEditor;
 	}
 

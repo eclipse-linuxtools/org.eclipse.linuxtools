@@ -123,7 +123,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	}
 
 	private String getDefineName(String word) {
-		if (word.startsWith("%{")) {
+		if (word.startsWith("%{")) { //$NON-NLS-1$
 			return word.substring(2, word.length() - 1);
 		}
 		return null;

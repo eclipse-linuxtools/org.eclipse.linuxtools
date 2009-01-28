@@ -64,7 +64,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		fieldEditorParent.setLayout(new GridLayout());
         
         Link link= new Link(fieldEditorParent, SWT.NONE);
-		link.setText("Use the <a href=\"org.eclipse.linuxtools.changelog.core.Page1\">ChangeLog</a> preferences to configure your name and e-mail address.");
+		link.setText(Messages.MainPreferencePage_0);
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -75,7 +75,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		createFieldEditors();
         
 		Label labelLocal = new Label(fieldEditorParent, SWT.NONE);
-		labelLocal.setText("Changelog entries Locale:");
+		labelLocal.setText(Messages.MainPreferencePage_1);
 		createLocalesCombo(fieldEditorParent);
 
         initialize();
@@ -87,10 +87,10 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	private FieldEditor changelogEntryFormatFieldEditor(Composite parent) { 
 		RadioGroupFieldEditor changelogEntryFormatRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT,
-				"Changelog entries format:", 1, new String[][] {
-						{ "Versioned entry (e.g. * Date Name <Mail> 1.1-1)", PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED },
-						{ "Versioned entry with separator (e.g. * Date Name <Mail> - 1.1-1)", PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR},
-						{ "Unversioned entry (e.g. * Date Name <Mail>)", PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED }}, parent, true);
+				Messages.MainPreferencePage_2, 1, new String[][] {
+						{ Messages.MainPreferencePage_3, PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED },
+						{ Messages.MainPreferencePage_4, PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR},
+						{ Messages.MainPreferencePage_5, PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_UNVERSIONED }}, parent, true);
 		return changelogEntryFormatRadioGroupEditor;
 	}		
 	

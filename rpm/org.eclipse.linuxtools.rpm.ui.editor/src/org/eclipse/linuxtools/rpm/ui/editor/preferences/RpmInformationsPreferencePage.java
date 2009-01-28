@@ -28,7 +28,7 @@ IWorkbenchPreferencePage{
 		 */
 		public RpmInformationsPreferencePage() {
 			super(GRID);
-			setDescription("RPM tags used as proposal descriptions");
+			setDescription(Messages.RpmInformationsPreferencePage_0);
 			setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		}
 
@@ -45,21 +45,21 @@ IWorkbenchPreferencePage{
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_LICENSE, RpmTags.LICENSE, getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_GROUP, RpmTags.GROUP, getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_URL, RpmTags.URL, getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_INSTALLTIME, "Installation Date", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_DESCRIPTION, "Description", getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_INSTALLTIME, Messages.RpmInformationsPreferencePage_1, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_DESCRIPTION, Messages.RpmInformationsPreferencePage_2, getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_PACKAGER, RpmTags.PACKAGER, getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_VENDOR, RpmTags.VENDOR, getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SIZE, "Size", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_BUILDTIME, "Build Date", getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SOURCERPM, "Source Rpm", getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SIZE, Messages.RpmInformationsPreferencePage_3, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_BUILDTIME, Messages.RpmInformationsPreferencePage_4, getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PreferenceConstants.P_RPMINFO_SOURCERPM, Messages.RpmInformationsPreferencePage_5, getFieldEditorParent()));
 		}
 		
 		private FieldEditor maxProposalsIntegerFieldEditor() {
 			IntegerFieldEditor maxProposalsFieldEditor = new IntegerFieldEditor(
 					PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS,
-					"This information is only shown when the number of proposals is less than", getFieldEditorParent());
+					Messages.RpmInformationsPreferencePage_6, getFieldEditorParent());
 			maxProposalsFieldEditor.setValidRange(1, 40);
-			maxProposalsFieldEditor.setErrorMessage("Proposal limit for RPM information must be an integer between 1 and 40");
+			maxProposalsFieldEditor.setErrorMessage(Messages.RpmInformationsPreferencePage_7);
 			return maxProposalsFieldEditor;
 		}
 
