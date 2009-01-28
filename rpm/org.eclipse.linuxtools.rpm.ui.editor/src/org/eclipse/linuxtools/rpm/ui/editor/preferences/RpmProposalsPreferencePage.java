@@ -117,9 +117,9 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		RadioGroupFieldEditor buildListTimeRateRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_RPM_LIST_BUILD_PERIOD,
 				Messages.RpmProposalsPreferencePage_7, 1, new String[][] {
-						{ Messages.RpmProposalsPreferencePage_8, "1" }, //$NON-NLS-2$
-						{ Messages.RpmProposalsPreferencePage_10, "2" }, //$NON-NLS-2$
-						{ Messages.RpmProposalsPreferencePage_12, "3" }}, getFieldEditorParent(), true); //$NON-NLS-2$
+						{ Messages.RpmProposalsPreferencePage_8, "1" }, //$NON-NLS-1$
+						{ Messages.RpmProposalsPreferencePage_10, "2" }, //$NON-NLS-1$
+						{ Messages.RpmProposalsPreferencePage_12, "3" }}, getFieldEditorParent(), true); //$NON-NLS-1$
 		return buildListTimeRateRadioGroupEditor;
 	}
 

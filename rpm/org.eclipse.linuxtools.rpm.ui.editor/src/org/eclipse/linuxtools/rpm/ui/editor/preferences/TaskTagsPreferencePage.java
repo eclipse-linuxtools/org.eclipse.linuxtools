@@ -57,7 +57,7 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 			String result = null;
 			// open an input dialog so that the user can enter a new task tag
 			InputDialog inputDialog = new InputDialog(getShell(),
-					Messages.TaskTagsPreferencePage_1, Messages.TaskTagsPreferencePage_2, "", null); //$NON-NLS-3$
+					Messages.TaskTagsPreferencePage_1, Messages.TaskTagsPreferencePage_2, "", null); //$NON-NLS-1$
 			int returnCode = inputDialog.open();
 
 			if (returnCode == Window.OK) {

@@ -1,5 +1,11 @@
 2009-01-28  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java (createChangelogEntry): Fix NON-NLS after externalizing.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (buildTimeListRateFieldEditor): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/TaskTagsPreferencePage.java (TasksListEditor.getNewInputObject): LIkewise.
+	
+2009-01-28  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/Messages.java: New file.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/messages.properties: New file.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/Messages.java: New file.
