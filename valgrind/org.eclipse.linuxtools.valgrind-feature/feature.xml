@@ -34,6 +34,10 @@
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.birt.chart.device.swt" version="2.3.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.birt.chart.device.extension" version="2.3.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.birt.chart.engine" version="2.3.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.birt.chart.engine.extension" version="2.3.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.birt.chart" version="2.3.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.birt.core" version="2.3.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.cdt.debug.ui"/>
       <import plugin="org.eclipse.emf.common"/>
@@ -43,11 +47,7 @@
       <import plugin="org.mozilla.rhino"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.ui.editors"/>
-      <import feature="org.eclipse.linuxtools.profiling.feature" version="0.1.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.device.extension" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.engine" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart.engine.extension" version="2.3.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.birt.chart" version="2.3.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console"/>
    </requires>
 
    <plugin

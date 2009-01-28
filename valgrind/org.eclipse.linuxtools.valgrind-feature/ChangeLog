@@ -1,3 +1,7 @@
+2009-01-28  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Removed feature dependency, added console deps for launch.
+
 2009-01-14  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Re-add update site information (sorry).
