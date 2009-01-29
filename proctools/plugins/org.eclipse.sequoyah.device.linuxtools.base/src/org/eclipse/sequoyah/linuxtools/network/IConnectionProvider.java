@@ -5,7 +5,7 @@
  * available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Initial Contributor:
- * Otávio Ferranti (Motorola)
+ * Otavio Ferranti (Motorola)
  *
  * Contributors:
  * {Name} (company) - description of contribution.
@@ -19,7 +19,7 @@ import org.eclipse.tml.linuxtools.tools.INotifier;
 import org.eclipse.tml.linuxtools.network.IConstants.CommandCode;;
 
 /**
- * @author Otávio Ferranti
+ * @author Otavio Ferranti
  */
 public interface IConnectionProvider extends INotifier{
 
