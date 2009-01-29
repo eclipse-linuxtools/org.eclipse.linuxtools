@@ -6,6 +6,7 @@ Bundle-Version: 0.1.0
 Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Export-Package: org.eclipse.tml.linuxtools.network,
  org.eclipse.tml.linuxtools.tools,
  org.eclipse.tml.linuxtools.ui,
