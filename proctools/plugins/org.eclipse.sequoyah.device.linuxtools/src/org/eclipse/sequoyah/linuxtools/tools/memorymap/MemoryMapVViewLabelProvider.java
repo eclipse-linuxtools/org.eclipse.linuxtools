@@ -5,7 +5,7 @@
  * available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Initial Contributor:
- * Otávio Ferranti (Motorola)
+ * Otavio Ferranti (Motorola)
  *
  * Contributors:
  * {Name} (company) - description of contribution.
@@ -20,7 +20,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * @author Otávio Ferranti
+ * @author Otavio Ferranti
  */
 public class MemoryMapVViewLabelProvider extends LabelProvider implements
 	ITableLabelProvider {

@@ -5,10 +5,10 @@
  * available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Initial Contributor:
- * Otávio Ferranti (Motorola)
+ * Otavio Ferranti (Motorola)
  *
  * Contributors:
- * Otávio Ferranti - Eldorado Research Institute - Bug 255255 [tml][proctools] Add extension points 
+ * Otavio Ferranti - Eldorado Research Institute - Bug 255255 [tml][proctools] Add extension points 
  ********************************************************************************/
 
 package org.eclipse.tml.linuxtools.tools.memorymap;
@@ -27,7 +27,7 @@ import org.eclipse.tml.linuxtools.utilities.Extensions;
 import org.eclipse.tml.linuxtools.utilities.ProtocolDescriptor;
 
 /**
- * @author Otávio Ferranti
+ * @author Otavio Ferranti
  */
 public class MemoryMapTool extends AbstractNotifier implements IListener, ITool {
 

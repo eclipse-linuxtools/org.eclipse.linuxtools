@@ -5,7 +5,7 @@
  * available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Initial Contributor:
- * Otávio Ferranti (Motorola)
+ * Otavio Ferranti (Motorola)
  *
  * Contributors:
  * {Name} (company) - description of contribution.
@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.Viewer;
  */
 
 /**
- * @author Otávio Ferranti
+ * @author Otavio Ferranti
  */
 public class MemoryMapViewContentProvider implements IStructuredContentProvider {
 

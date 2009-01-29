@@ -5,10 +5,10 @@
  * available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Initial Contributor:
- * Otávio Ferranti (Motorola)
+ * Otavio Ferranti (Motorola)
  *
  * Contributors:
- * Otávio Ferranti - Eldorado Research Institute - Bug 255255 [tml][proctools] Add extension points 
+ * Otavio Ferranti - Eldorado Research Institute - Bug 255255 [tml][proctools] Add extension points 
  ********************************************************************************/
 
 package org.eclipse.tml.linuxtools.network.telnet;
@@ -28,7 +28,7 @@ import org.apache.commons.net.telnet.TerminalTypeOptionHandler;
 import org.eclipse.tml.linuxtools.network.IConstants.OperationCode;
 
 /**
- * @author Otávio Ferranti
+ * @author Otï¿½vio Ferranti
  */
 public class TelnetWrapper {
 

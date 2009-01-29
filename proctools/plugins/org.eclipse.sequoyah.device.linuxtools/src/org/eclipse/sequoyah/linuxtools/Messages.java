@@ -5,7 +5,7 @@
  * available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Initial Contributor:
- * Otávio Ferranti (Motorola)
+ * Otavio Ferranti (Motorola)
  *
  * Contributors:
  * {Name} (company) - description of contribution.
@@ -16,7 +16,7 @@ package org.eclipse.tml.linuxtools;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * @author Otávio Ferranti
+ * @author Otavio Ferranti
  *
  */
 public class Messages extends NLS {
