@@ -89,9 +89,9 @@ public class SpecfileWriter {
 					+ generator.getPackageName(mainPackage.getName());
 			try {
 				if (store.getBoolean(PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT)) {
-					generator.writeContent(featureFile.getProject().getName(), packageName + "-fetch-src.sh", generator.generateFetchScript());
+					generator.writeContent(featureFile.getProject().getName(), packageName.toLowerCase() + "-fetch-src.sh", generator.generateFetchScript());
 				}
-				generator.writeContent(featureFile.getProject().getName(), packageName + ".spec", generator.generateSpecfile());
+				generator.writeContent(featureFile.getProject().getName(), packageName.toLowerCase() + ".spec", generator.generateSpecfile());
 			} catch (CoreException e) {
 				StubbyLog.logError(e);
 			}

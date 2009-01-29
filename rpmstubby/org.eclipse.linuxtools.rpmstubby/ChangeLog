@@ -1,6 +1,8 @@
 2009-01-29  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java (write): Lowercase fetch file and spec file names.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generateSpecfile): Lowercase simple project name in %install_loc.
+	(generateFetchScript): Lowercase name.
 
 2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
 

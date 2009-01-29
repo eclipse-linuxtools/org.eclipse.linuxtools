@@ -83,7 +83,7 @@ public class StubbyGenerator {
 		buffer.append("%define eclipse_base   %{_libdir}/eclipse\n");
 		buffer.append("%define install_loc    %{_datadir}/eclipse/dropins/"
 				+ simplePackageName.toLowerCase() + "\n\n");
-		buffer.append("Name:           " + packageName + "\n");
+		buffer.append("Name:           " + packageName.toLowerCase() + "\n");
 		buffer.append("Version:        "
 				+ mainPackage.getVersion().replaceAll("\\.qualifier", "")
 				+ "\n");
@@ -93,7 +93,7 @@ public class StubbyGenerator {
 		buffer.append("License:        " + mainPackage.getLicense() + "\n");
 		buffer.append("URL:            " + mainPackage.getURL() + "\n");
 		if (withFetchScript) {
-			String fetchScriptName = packageName + "-fetch-src.sh";
+			String fetchScriptName = "%{name}-fetch-src.sh";
 			buffer.append("## sh ").append(fetchScriptName).append("\n");
 			buffer.append("Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2\n");
 			buffer.append("Source1:        " ).append(fetchScriptName).append("\n");
@@ -246,7 +246,7 @@ public class StubbyGenerator {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append("#!/bin/sh\n");
 		buffer.append("usage='usage: $0 <tag>'\n");
-		buffer.append("name=eclipse-" + getPackageName(mainPackage.getName())
+		buffer.append("name=eclipse-" + getPackageName(mainPackage.getName()).toLowerCase()
 				+ "\n");
 		buffer.append("tag=$1\n");
 		buffer.append("tar_name=$name-fetched-src-$tag\n\n");
