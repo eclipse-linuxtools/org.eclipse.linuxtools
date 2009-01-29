@@ -82,7 +82,7 @@ public class StubbyGenerator {
 			buffer.append("%define src_repo_tag   FIXME\n");
 		buffer.append("%define eclipse_base   %{_libdir}/eclipse\n");
 		buffer.append("%define install_loc    %{_datadir}/eclipse/dropins/"
-				+ simplePackageName + "\n\n");
+				+ simplePackageName.toLowerCase() + "\n\n");
 		buffer.append("Name:           " + packageName + "\n");
 		buffer.append("Version:        "
 				+ mainPackage.getVersion().replaceAll("\\.qualifier", "")

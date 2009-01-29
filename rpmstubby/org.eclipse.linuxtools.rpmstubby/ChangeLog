@@ -1,3 +1,7 @@
+2009-01-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generateSpecfile): Lowercase simple project name in %install_loc.
+
 2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generateSpecfile): Use %{buildroot} constantly.
