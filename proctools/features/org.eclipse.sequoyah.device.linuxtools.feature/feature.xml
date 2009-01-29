@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.sequoyah.device.linuxtools.feature"
+      id="org.eclipse.tml.linuxtools.feature"
       label="%featureName"
-      version="0.1.0.qualifier"
+      version="0.1.0"
       provider-name="%providerName"
-      plugin="org.eclipse.sequoyah.device.linuxtools">
+      plugin="org.eclipse.tml.linuxtools">
 
    <description>
       %description
@@ -19,19 +19,19 @@
    </license>
 
    <url>
-      <update label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3/"/>
-      <discovery label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3/"/>
+      <update label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3M5/"/>
+      <discovery label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3M5/"/>
    </url>
 
    <plugin
-         id="org.eclipse.sequoyah.device.linuxtools"
+         id="org.eclipse.tml.linuxtools"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.sequoyah.device.linuxtools.base"
+         id="org.eclipse.tml.linuxtools.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
