@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import org.eclipse.cdt.core.model.CModelException;
@@ -227,6 +228,9 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 							}
 						}
 						
+						// ascending or descending
+						result = direction == SWT.UP ? result : -result;
+						
 						// overflow check
 						if (result > Integer.MAX_VALUE) {
 							result = Integer.MAX_VALUE;
@@ -234,7 +238,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 							result = Integer.MIN_VALUE;
 						}
 						
-						return (int) (direction == SWT.DOWN ? result : -result);
+						return (int) result;
 					}
 				});
 			}
@@ -368,6 +372,8 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 				return flags |= CElementBaseLabels.M_FULLY_QUALIFIED;
 			}
 		};
+		
+		protected DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
 
 		@Override
 		public void update(ViewerCell cell) {
@@ -411,13 +417,13 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 				}
 			}
 			else if (element instanceof CachegrindFunction) {
-				cell.setText(String.valueOf(((CachegrindFunction) element).getTotals()[index - 1]));
+				cell.setText(df.format(((CachegrindFunction) element).getTotals()[index - 1]));
 			}
 			else if (element instanceof CachegrindLine) {
-				cell.setText(String.valueOf(((CachegrindLine) element).getValues()[index - 1]));
+				cell.setText(df.format(((CachegrindLine) element).getValues()[index - 1]));
 			}
 			else if (element instanceof CachegrindOutput) {
-				cell.setText(String.valueOf(((CachegrindOutput) element).getSummary()[index - 1]));
+				cell.setText(df.format(((CachegrindOutput) element).getSummary()[index - 1]));
 			}
 		}
 
