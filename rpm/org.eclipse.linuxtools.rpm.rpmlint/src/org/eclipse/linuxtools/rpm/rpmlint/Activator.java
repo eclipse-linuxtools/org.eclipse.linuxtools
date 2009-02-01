@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.rpm.rpmlint;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.rpm.rpmlint.preferences.PreferenceConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -71,5 +72,14 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+	
+	/**
+	 * Returns the rpmlint path stored in the preferences.
+	 * @return The path to the rpmlint executable.
+	 */
+	public static String getRpmlintPath() {
+		return plugin.getPreferenceStore().getString(
+				PreferenceConstants.P_RPMLINT_PATH);
 	}
 }

@@ -189,11 +189,10 @@ public class RpmlintParser {
 	 * @throws IOException
 	 */
 	private BufferedInputStream runRpmlintCommand(List<String> visitedResources) {
-		String rpmlintPath = getRpmlintPath();
 		BufferedInputStream in = null;
 		int i = 2;
 		String[] cmd = new String[visitedResources.size() + i];
-		cmd[0] = rpmlintPath;
+		cmd[0] = Activator.getRpmlintPath();
 		cmd[1] = "-i"; //$NON-NLS-1$
 		Iterator<String> iterator = visitedResources.iterator();
 		while(iterator.hasNext()) {
@@ -201,7 +200,7 @@ public class RpmlintParser {
 			i++;
 		}
 		try {
-			Process child = Runtime.getRuntime().exec(cmd);
+			Process child = new ProcessBuilder(cmd).start();
 			in = new BufferedInputStream(child.getInputStream());
 		} catch (IOException e) {
 			// FIXME: rpmlint is not installed in the default place -> ask user to open the prefs page.
@@ -259,11 +258,6 @@ public class RpmlintParser {
 		return lineNbr;
 	}
 	
-	private String getRpmlintPath() {
-		return Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_RPMLINT_PATH);
-	}
-	
-
 	private ArrayList<List<String>> splitArrayList(ArrayList<String> list, int listSize) {
 		ArrayList<List<String>> resultList = new ArrayList<List<String>>();
 		if (list.size() <= listSize) {

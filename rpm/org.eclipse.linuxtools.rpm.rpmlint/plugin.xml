@@ -39,6 +39,19 @@
                id="org.eclipse.linuxtools.rpm.rpmlint.addRemoveNatureAction">
          </action>
       </objectContribution>
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.rpm"
+            id="org.eclipse.linuxtools.rpm.rpmlint.contribution2">
+         <action
+               label="Run Rpmlint "
+               class="org.eclipse.linuxtools.rpm.rpmlint.actions.RunRpmlintAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="org.eclipse.linuxtools.rpm.rpmlint.runRpmlintAction">
+         </action>
+      </objectContribution>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">

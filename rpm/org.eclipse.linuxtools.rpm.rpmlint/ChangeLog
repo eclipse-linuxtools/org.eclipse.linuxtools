@@ -1,3 +1,16 @@
+2009-02-01  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix #262926.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/messages.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java: New file.
+	* META-INF/MANIFEST.MF: Add o.e.ui.console require.
+	* plugin.xml: Add action for viewing rpmlint output for rpm.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java (run): Simplify and fix warning.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java (getRpmlintPath): New method.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java 
+	(runRpmlintCommand): Simplify.
+	(getRpmlintPath): Moved in activator. 
+
 2009-01-22  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java: Add constant for specfile extension.
