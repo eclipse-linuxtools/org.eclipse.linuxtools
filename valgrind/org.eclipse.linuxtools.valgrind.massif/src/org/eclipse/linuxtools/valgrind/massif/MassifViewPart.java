@@ -198,13 +198,16 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 							result = s1.getStacks() - s2.getStacks();
 						}
 
+						// ascending / descending
+						result = direction == SWT.UP ? result : -result;
+						
 						// overflow check
 						if (result > Integer.MAX_VALUE) {
 							result = Integer.MAX_VALUE;
 						} else if (result < Integer.MIN_VALUE) {
 							result = Integer.MIN_VALUE;
 						}
-						return (int) (direction == SWT.DOWN ? result : -result);
+						return (int) result;
 					}
 				});
 			}
