@@ -50,6 +50,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
  */
 public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	
+	private static final String SOURCE = "SOURCE"; //$NON-NLS-1$
+
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	/**
@@ -224,8 +226,10 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		if (rpmMacroProposalsMap != null) {
 			for (Map.Entry<String, String> entry : rpmMacroProposalsMap
 					.entrySet()) {
-				proposals.add(new CompletionProposal("%{" //$NON-NLS-1$
-						+ entry.getKey().substring(1) + "}", //$NON-NLS-1$
+				proposals.add(new CompletionProposal(
+						ISpecfileSpecialSymbols.MACRO_START_LONG
+								+ entry.getKey().substring(1)
+								+ ISpecfileSpecialSymbols.MACRO_END_LONG,
 						region.getOffset(), region.getLength(), entry.getKey()
 								.length() + 2, Activator.getDefault().getImage(
 								MACRO_ICON), entry.getKey(), null, entry
@@ -501,12 +505,13 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		Collection<SpecfileSource> sources = specfile.getSourcesAsList();
 		Map<String, String> ret = new HashMap<String, String>();
 		String sourceName;
-		for (SpecfileSource patch: sources) {
-			sourceName = "%{SOURCE" + patch.getNumber()+"}"; //$NON-NLS-1$ //$NON-NLS-2$
+		for (SpecfileSource source : sources) {
+			sourceName = ISpecfileSpecialSymbols.MACRO_START_LONG + SOURCE
+					+ source.getNumber()
+					+ ISpecfileSpecialSymbols.MACRO_END_LONG;
 			if (sourceName.startsWith(prefix))
-				ret.put(sourceName, SpecfileHover
-						.getSourceOrPatchValue(specfile, "SOURCE" //$NON-NLS-1$
-								+ patch.getNumber()));
+				ret.put(sourceName, SpecfileHover.getSourceOrPatchValue(
+						specfile, SOURCE + source.getNumber()));
 		}
 		return ret;
 	}

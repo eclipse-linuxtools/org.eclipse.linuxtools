@@ -25,6 +25,7 @@ import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
+import org.eclipse.linuxtools.rpm.ui.editor.rules.CommentRule;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.SectionRule;
 
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
@@ -79,7 +80,7 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 			rules.add(new SectionRule(sectionHeader, sectionEndingHeaders, specScript));
 
 		// comments
-		rules.add(new EndOfLineRule("#", specScript)); //$NON-NLS-1$
+		rules.add(new CommentRule(specScript));
 		
 		// group tag
 		rules.add(new EndOfLineRule("Group:", specGroup)); //$NON-NLS-1$

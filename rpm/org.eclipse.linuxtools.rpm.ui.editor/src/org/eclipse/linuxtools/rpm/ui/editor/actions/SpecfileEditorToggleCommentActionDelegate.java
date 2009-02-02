@@ -21,6 +21,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.ui.IEditorActionDelegate;
@@ -64,11 +65,11 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 						selection.getOffset() + selection.getLength());
 				if (linesContentCommentChar(content)) {
 					if (selection.getStartLine() == selection.getEndLine()) {
-						selectedContent = "#" + content; //$NON-NLS-1$
+						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content; 
 					} else
-						selectedContent = "#" + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						selectedContent = ISpecfileSpecialSymbols.COMMENT_START + content.replaceAll("\n", "\n#"); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
-					selectedContent = content.replaceFirst("#", "").replaceAll( //$NON-NLS-1$ //$NON-NLS-2$
+					selectedContent = content.replaceFirst(ISpecfileSpecialSymbols.COMMENT_START, "").replaceAll( //$NON-NLS-1$
 							"\n#", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				sb.append(selectedContent);
@@ -98,7 +99,7 @@ public class SpecfileEditorToggleCommentActionDelegate implements
 		boolean ret = false;
 		try {
 			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("#")) //$NON-NLS-1$
+				if (line.startsWith(ISpecfileSpecialSymbols.COMMENT_START)) 
 					ret = false;
 				else
 					return true;

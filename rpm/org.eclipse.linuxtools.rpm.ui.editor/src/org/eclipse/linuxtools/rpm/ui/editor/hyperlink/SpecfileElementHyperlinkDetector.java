@@ -22,6 +22,7 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
+import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
@@ -123,7 +124,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	}
 
 	private String getDefineName(String word) {
-		if (word.startsWith("%{")) { //$NON-NLS-1$
+		if (word.startsWith(ISpecfileSpecialSymbols.MACRO_START_LONG)) {
 			return word.substring(2, word.length() - 1);
 		}
 		return null;

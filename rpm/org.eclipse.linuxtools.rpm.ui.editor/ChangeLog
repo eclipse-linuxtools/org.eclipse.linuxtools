@@ -1,5 +1,20 @@
 2009-02-02  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/ISpecfileSpecialSymbols.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/CommentRule.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/MacroRule.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java (linesContentCommentChar): Use constant.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (getDefineName): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (generateTaskMarker): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePackagesScanner.java (SpecfilePackagesScanner): Use specialized rules.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java (SpecfilePartitionScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java (SpecfileScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (getSources): Use constants.
+	(computeRpmMacroProposals): Use constants.
+	
+2009-02-02  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java (SpecfileNewWizardPage): Fix javadoc.
 	* .classpath: Make classpath entry refer to J2SE-1.5.
 

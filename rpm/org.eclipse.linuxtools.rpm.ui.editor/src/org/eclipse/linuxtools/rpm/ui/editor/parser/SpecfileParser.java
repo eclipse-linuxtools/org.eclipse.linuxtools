@@ -24,6 +24,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
+import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
@@ -156,7 +157,7 @@ public class SpecfileParser {
 	
 	private void generateTaskMarker(int lineNumber, String line) {
 		String[] taskTags = store.getString(PreferenceConstants.P_TASK_TAGS).split(";"); //$NON-NLS-1$
-		int commentCharIndex = line.indexOf("#"); //$NON-NLS-1$
+		int commentCharIndex = line.indexOf(ISpecfileSpecialSymbols.COMMENT_START);
 		if (commentCharIndex > -1) {
 			for (String item : taskTags) {
 				int taskIndex = line.indexOf(item);

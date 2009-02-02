@@ -18,7 +18,6 @@ import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
-import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
@@ -26,6 +25,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.PackageWordDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.TagWordDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.rules.MacroRule;
 import org.eclipse.swt.SWT;
 
 /**
@@ -55,8 +55,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 
 		List<IRule> rules = new ArrayList<IRule>();
 
-		// %{ .... }
-		rules.add(new SingleLineRule("%{", "}", macroToken)); //$NON-NLS-1$ //$NON-NLS-2$
+		rules.add(new MacroRule(macroToken));
 
 		// BuildRequires:, ...
 		WordRule wordRule = new WordRule(new TagWordDetector(), Token.UNDEFINED);

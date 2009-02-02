@@ -11,15 +11,53 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.scanners;
 
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.BUILD_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CHANGELOG_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CHECK_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.CLEAN_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.DESCRIPTION_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.FILES_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.INSTALL_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PACKAGE_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POSTTRANS_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POSTUN_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.POST_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PREP_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PRETRANS_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PREUN_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.PRE_SECTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_PROV;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_REQ;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_REQUIRES;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.AUTO_REQ_PROV;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.BUILD_ARCH;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.BUILD_ARCHITECTURES;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.BUILD_ROOT;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.DISTRIBUTION;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EPOCH;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EXCLUDE_ARCH;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EXCLUDE_OS;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.EXCLUSIVE_ARCH;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.GROUP;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.ICON;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.LICENSE;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.NAME;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.PACKAGER;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.PREFIX;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.PROVIDES;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.RELEASE;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.SUMMARY;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.URL;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.VENDOR;
+import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.VERSION;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
-import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
@@ -29,10 +67,10 @@ import org.eclipse.linuxtools.rpm.ui.editor.detectors.MacroWordDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.PatchNumberDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.SuffixNumberDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.detectors.TagWordDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.rules.CommentRule;
+import org.eclipse.linuxtools.rpm.ui.editor.rules.MacroRule;
 import org.eclipse.linuxtools.rpm.ui.editor.rules.StringWithEndingRule;
 import org.eclipse.swt.SWT;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
-import static org.eclipse.linuxtools.rpm.ui.editor.RpmTags.*;
 
 public class SpecfileScanner extends RuleBasedScanner {
 
@@ -72,11 +110,8 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 		List<IRule> rules = new ArrayList<IRule>();
 
-		// Comments
-		rules.add(new EndOfLineRule("#", commentToken)); //$NON-NLS-1$
-
-		// %{ .... }
-		rules.add(new SingleLineRule("%{", "}", macroToken)); //$NON-NLS-1$ //$NON-NLS-2$
+		rules.add(new CommentRule(commentToken)); 
+		rules.add(new MacroRule( macroToken));
 
 		// %define, %make, ...
 		WordRule wordRule = new WordRule(new MacroWordDetector(),
