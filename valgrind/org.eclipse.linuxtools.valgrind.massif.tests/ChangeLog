@@ -1,3 +1,7 @@
+2009-02-02  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: Move to valgrind.test-feature.
+
 2009-01-13  Elliott Baron  <ebaron@redhat.com>
 
 	* AllTests: ChartTests added to suite.
