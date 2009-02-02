@@ -29,6 +29,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.console.ConsoleColorProvider;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
@@ -36,8 +37,6 @@ import org.eclipse.linuxtools.valgrind.core.utils.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 
@@ -161,15 +160,16 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				final String errorLog = readLogs();
 
 				// find this process' console and write any error messages stored in the log to it
-				IConsole[] consoles = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
-				IOConsole console = null;
-				String procLabel = process.getLabel();
-				for (int i = 0; i < consoles.length; i++) {
-					String name = consoles[i].getName();
-					if (consoles[i] instanceof IOConsole && name != null && name.contains(procLabel)) {
-						console = (IOConsole) consoles[i];
-					}
-				}
+				IOConsole console = (IOConsole) DebugUITools.getConsole(process);
+//				IConsole[] consoles = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
+//				IOConsole console = null;
+//				String procLabel = process.getLabel();
+//				for (int i = 0; i < consoles.length; i++) {
+//					String name = consoles[i].getName();
+//					if (consoles[i] instanceof IOConsole && name != null && name.contains(procLabel)) {
+//						console = (IOConsole) consoles[i];
+//					}
+//				}
 
 				if (console != null) {
 					writeErrorsToConsole(errorLog, console);

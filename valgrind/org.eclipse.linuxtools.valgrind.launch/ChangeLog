@@ -1,3 +1,8 @@
+2009-02-02  ebaron  <ebaron@toriamos.yyz.redhat.com>
+
+	* ValgrindLaunchConfigurationDelegate: Use DebugUITools to retrieve IProcess'
+	console. 
+
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindLaunchConfigurationDelegate: Graceful handling for absence of
