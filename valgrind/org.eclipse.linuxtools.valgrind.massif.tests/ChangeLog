@@ -1,5 +1,6 @@
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
 
+	* build.properties: Add test.xml.
 	* test.xml: Update.
 
 2009-01-13  Elliott Baron  <ebaron@redhat.com>
