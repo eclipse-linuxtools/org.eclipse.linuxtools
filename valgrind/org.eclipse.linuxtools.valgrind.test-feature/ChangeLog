@@ -1,3 +1,7 @@
+2009-02-02  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: New file.  Run test suites.
+
 2008-12-17  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add tests plugin.
