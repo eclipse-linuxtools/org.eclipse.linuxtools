@@ -1,6 +1,6 @@
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
 
-	* test.xml: Move to valgrind.test-feature.
+	* test.xml: Update.
 
 2009-01-13  Elliott Baron  <ebaron@redhat.com>
 
