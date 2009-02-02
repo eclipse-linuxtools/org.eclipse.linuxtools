@@ -2,7 +2,7 @@
 
 <project name="testsuite" default="run" basedir=".">
 	<property name="memcheck_classname" value="org.eclipse.linuxtools.valgrind.memcheck.tests.AllTests" />
-	<property name="memcheck-plugin-name" value="org.eclipse.linuxtools.valgrind.memcheck.tests" />
+	<property name="plugin-name" value="org.eclipse.linuxtools.valgrind.memcheck.tests" />
 
 	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 

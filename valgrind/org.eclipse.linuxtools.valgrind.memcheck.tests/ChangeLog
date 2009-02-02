@@ -1,6 +1,6 @@
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
 
-	* test.xml: Update.
+	* test.xml: Update.  Fix plugin-name.
 
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
