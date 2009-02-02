@@ -1,5 +1,6 @@
 2009-02-02  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java (SpecfileNewWizardPage): Fix javadoc.
 	* .classpath: Make classpath entry refer to J2SE-1.5.
 
 2009-01-28  Alexander Kurtakov  <akurtako@redhat.com>

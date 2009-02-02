@@ -92,7 +92,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 	/**
 	 * Constructor for SpecfileNewWizardPage.
 	 * 
-	 * @param selection 
+	 * @param selection The selection to put the new spec file in.
 	 */
 	public SpecfileNewWizardPage(ISelection selection) {
 		super("wizardPage"); //$NON-NLS-1$
