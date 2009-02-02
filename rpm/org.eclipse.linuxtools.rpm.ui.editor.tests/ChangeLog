@@ -1,7 +1,3 @@
-2009-02-02  Andrew Overholt  <overholt@redhat.com>
-
-	* test.xml: Move to feature.
-
 2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
 	Mimic plugin packages for easier navigation.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTests.java: Removed.
