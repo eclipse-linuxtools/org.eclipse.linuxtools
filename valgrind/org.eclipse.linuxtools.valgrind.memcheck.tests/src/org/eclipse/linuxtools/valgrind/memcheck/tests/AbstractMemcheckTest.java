@@ -30,8 +30,9 @@ public class AbstractMemcheckTest extends AbstractTest {
 	@Override
 	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc)
 			throws CoreException {
-		ValgrindOptionsTab.setDefaultGeneralAttributes(wc);
-		ILaunchConfigurationTab tab = ValgrindLaunchPlugin.getDefault().getToolPage(MemcheckPlugin.TOOL_ID);
+		ILaunchConfigurationTab tab = new ValgrindOptionsTab();
+		tab.setDefaults(wc);
+		tab = ValgrindLaunchPlugin.getDefault().getToolPage(MemcheckPlugin.TOOL_ID);
 		tab.setDefaults(wc);
 		wc.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, MemcheckPlugin.TOOL_ID);
 	}
