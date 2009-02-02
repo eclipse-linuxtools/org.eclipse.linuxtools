@@ -59,6 +59,7 @@ public class RunRpmlintAction implements IObjectActionDelegate {
 						String line;
 						MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
 						MessageConsoleStream out = myConsole.newMessageStream();
+						myConsole.clearConsole();
 						myConsole.activate();
 						while ((line = is.readLine()) != null) {
 							out.println(line);

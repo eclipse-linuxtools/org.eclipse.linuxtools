@@ -1,3 +1,7 @@
+2009-02-02  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Clear console before outputting to not merge different runs.
+
 2009-02-01  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #262926.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/Messages.java: New file.
