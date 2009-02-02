@@ -1,7 +1,3 @@
-2009-02-02  Andrew Overholt  <overholt@redhat.com>
-
-	* test.xml: Move from test plugin.
-
 2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* feature.xml: Include doc plugin.
