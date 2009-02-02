@@ -9,7 +9,7 @@
 
 	<!-- sets the properties eclipse-home, and library-file -->
 	<property name="plugin-name" value="org.eclipse.linuxtools.rpm.ui.editor.tests" />
-	<property name="library-file" value="${eclipse-home}/dropins/eclipse/plugins/org.eclipse.test/library.xml" />
+	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
@@ -48,5 +48,8 @@
 			<property name="output-file" value="${plugin-name}.xml" />
 		</ant>
 	</target>
+	
+    <target name="all" depends="junits" description="Dummy target to run all JUnit tests">
+    </target>
 
 </project>
