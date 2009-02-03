@@ -26,7 +26,7 @@
 		<delete dir="${massif-folder}" quiet="true" />
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${massif-folder}" />
-			<property name="plugin-name" value="${plugin-name}" />
+			<property name="plugin-name" value="${massif-plugin-name}" />
 			<property name="classname" value="${massif_classname}" />
 		</ant>
 	</target>
@@ -44,7 +44,7 @@
 	<target name="run" depends="init,massif_suite,cleanup">
 		<ant target="collect" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="includes" value="org*.xml" />
-			<property name="output-file" value="${plugin-name}.xml" />
+			<property name="output-file" value="${massif-plugin-name}.xml" />
 		</ant>
 	</target>
 	

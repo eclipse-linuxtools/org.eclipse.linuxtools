@@ -1,3 +1,7 @@
+2009-02-03  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: plugin-name -> massif-plugin-name.
+
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Add test.xml.
