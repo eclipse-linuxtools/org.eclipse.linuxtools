@@ -1,3 +1,8 @@
+2009-02-03  Elliott Baron  <ebaron@redhat.com>
+
+	* LaunchConfigTabTest: Removed for now.
+	* META-INF/MANIFEST.MF: Require-Bundle for JUnit < 4.0.0
+
 2009-02-03  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Move JUnit from Import-package to Require-bundle to see
