@@ -1,3 +1,8 @@
+2009-02-03  Elliott Baron  <ebaron@redhat.com>
+
+	* LaunchConfigTabTest: Removed for now.
+	* META-INF/MANIFEST.MF: Require-Bundle for JUnit < 4.0.0
+
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Changed version to 0.1.0.
