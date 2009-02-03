@@ -1,5 +1,7 @@
 2009-02-03  Andrew Overholt  <overholt@redhat.com>
 
+	* META-INF/MANIFEST.MF: Move JUnit from Import-package to Require-bundle to see
+	if this fixes the JUnit4 vs. JUnit 3.x issues.
 	* test.xml: plugin-name -> massif-plugin-name.
 
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
