@@ -1,3 +1,8 @@
+2009-02-03  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Use Require-Bundle instead of Import-Package to
+	ensure we get JUnit 3 and not JUnit4.
+
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: Update.  Fix plugin-name.
