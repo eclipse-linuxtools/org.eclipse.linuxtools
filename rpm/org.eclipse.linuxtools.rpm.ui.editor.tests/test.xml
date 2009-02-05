@@ -5,7 +5,7 @@
 
 	<!-- The property ${eclipse-home} should be passed into this script -->
 	<!-- Set a meaningful default value for when it is not. -->
-	<property name="eclipse-home" value="${basedir}\..\.." />
+	<property name="eclipse-home" value="${basedir}/../.." />
 
 	<!-- sets the properties eclipse-home, and library-file -->
 	<property name="plugin-name" value="org.eclipse.linuxtools.rpm.ui.editor.tests" />
@@ -25,6 +25,7 @@
 	<target name="suite">
 		<property name="specfile-folder" value="${eclipse-home}/specfile_folder" />
 		<delete dir="${specfile-folder}" quiet="true" />
+		<echo message="About to run ${classname} with library-file=${library-file}"/>
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${specfile-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
@@ -50,6 +51,9 @@
 	</target>
 	
     <target name="all" depends="junits" description="Dummy target to run all JUnit tests">
+    </target>
+	
+    <target name="run" depends="junits" description="Dummy target to run all JUnit tests">
     </target>
 
 </project>
