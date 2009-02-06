@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
-import org.eclipse.swt.graphics.Image;
+import java.util.List;
 
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * Resolution for the no-%build-section rpmlint warning.
@@ -42,8 +43,8 @@ public class NoBuildSection extends AInsertLineResolution {
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
-		SpecfileElement[] sections = editor.getSpecfile().getSections();
-		for (SpecfileElement section : sections) {
+		List<SpecfileSection> sections = editor.getSpecfile().getSections();
+		for (SpecfileSection section : sections) {
 			if (section.getName().equals("install")) { //$NON-NLS-1$
 				return section.getLineNumber();
 			}

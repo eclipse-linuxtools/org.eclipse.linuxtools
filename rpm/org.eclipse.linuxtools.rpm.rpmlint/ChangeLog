@@ -1,5 +1,14 @@
 2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java (getLineNumberForInsert): Remove methods that return section arrays.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java (getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java (getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleanSection.java (getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoInstallSection.java (getLineNumberForInsert): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoPrepSection.java (getLineNumberForInsert): Likewise.
+	
+2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Use utils for command invocation.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (parseVisisted): Likewise.
 	(parseRpmlintOutput): Fix typo.

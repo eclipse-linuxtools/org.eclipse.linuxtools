@@ -44,7 +44,7 @@ public class NoBuildrootTag extends AInsertLineResolution {
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
 		List<SpecfileSection> sections = editor.getSpecfile()
-				.getComplexSectionsAsList();
+				.getComplexSections();
 		for (SpecfileSection section : sections) {
 			if (section.getName().equals("description") //$NON-NLS-1$
 					&& section.getPackage() == null) {

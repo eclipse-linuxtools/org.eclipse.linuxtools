@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
+import java.util.List;
+
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 import org.eclipse.swt.graphics.Image;
 
 public class NoCleaningOfBuildroot extends AInsertLineResolution {
@@ -37,8 +39,8 @@ public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
 	@Override
 	public int getLineNumberForInsert(SpecfileEditor editor) {
-		SpecfileElement[] sections = editor.getSpecfile().getSections();
-		for (SpecfileElement section : sections) {
+		List<SpecfileSection> sections = editor.getSpecfile().getSections();
+		for (SpecfileSection section : sections) {
 			if (section.getName().equals("install") //$NON-NLS-1$
 					|| section.getName().equals("clean")) { //$NON-NLS-1$
 				if (markerLine == section.getLineNumber()) {
