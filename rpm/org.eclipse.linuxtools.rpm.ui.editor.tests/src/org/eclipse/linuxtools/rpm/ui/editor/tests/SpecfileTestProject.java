@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 
 public class SpecfileTestProject {
 	private IProject project;
@@ -33,9 +34,8 @@ public class SpecfileTestProject {
 
 	public void dispose() throws CoreException {
 		project.delete(true, true, null);
-		String[] cmd = { "rm", "-f", "/tmp/pkglist" };
 		try {
-			Runtime.getRuntime().exec(cmd);
+			Utils.runCommandToInputStream("rm", "-f", "/tmp/pkglist");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
