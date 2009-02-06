@@ -20,42 +20,39 @@
 
 package org.eclipse.linuxtools.cdt.libhover;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.Map.Entry;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.eclipse.cdt.ui.CUIPlugin;
+import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
+import org.eclipse.cdt.core.dom.ast.IASTName;
+import org.eclipse.cdt.core.dom.ast.IASTNamedTypeSpecifier;
+import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
+import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.cdt.core.dom.ast.IBinding;
+import org.eclipse.cdt.core.model.ILanguage;
+import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.ui.ICHelpBook;
 import org.eclipse.cdt.ui.ICHelpProvider;
 import org.eclipse.cdt.ui.ICHelpResourceDescriptor;
 import org.eclipse.cdt.ui.IFunctionSummary;
 import org.eclipse.cdt.ui.IRequiredInclude;
 import org.eclipse.cdt.ui.text.ICHelpInvocationContext;
-import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.cdt.ui.text.SharedASTJob;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.help.IHelpResource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import org.eclipse.jface.text.IRegion;
 
 
 public class LibHover implements ICHelpProvider {
@@ -84,57 +81,14 @@ public class LibHover implements ICHelpProvider {
     static final int structIndex        = 4;
     static final int typeIndex          = 5;
     static final int unionIndex         = 6;
-    
-    private class LibHoverLibrary {
-    	private String name;
-    	private String location;
-    	private String docs;
-    	private Document document;
-    	public LibHoverLibrary(String name, String location, String docs, Document document) {
-    		this.name = name;
-    		this.location = location;
-    		this.document = document;
-    		this.docs = docs;
-    	}
-    	public String getName() { 
-    		return name; 
-    	}
-    	public String getLocation() {
-    		return location;
-    	}
-    	public String getDocs() {
-    		return docs;
-    	}
-    	public Document getDocument() {
-    		return document;
-    	}
-    }
 
-    private class HelpBook implements ICHelpBook {
-    	private String title;
-    	private int type;
-    	
-    	public HelpBook (String title, String typeName) {
-    		this.title = title;
-    		if (typeName.equals("C"))
-    		    type = HELP_TYPE_C;
-    		else if (typeName.equals("C++"))
-    			type = HELP_TYPE_CPP;
-    		else
-    			type = HELP_TYPE_ASM;
-    	}
-		public String getTitle () {
-			return title;
-		}
-		
-		public int getCHelpType () {
-			return type;
-		}
-	}
+    private static ArrayList<ICHelpBook> helpBooks = new ArrayList<ICHelpBook>();
+    public static boolean docsFetched = false;
 
-    private ArrayList<ICHelpBook> helpBooks = new ArrayList<ICHelpBook>();
-    
-	public void getLibHoverDocs() {
+	public static synchronized void getLibHoverDocs() {
+		if (docsFetched)
+			return;
+//		System.out.println("getlibhoverdocs");
 		libraries.clear();
 		helpBooks.clear();
 		IExtensionRegistry x = RegistryFactory.getRegistry();
@@ -142,61 +96,21 @@ public class LibHover implements ICHelpProvider {
 		for (int i = 0; i < ces.length; ++i) {
 			IConfigurationElement ce = ces[i];
 			if (ce.getName().equals("library")) { //$NON-NLS-1$
-				Document doc = null;
-				try {
-					// see comment in initialize()
-					try {
-						// Use the FileLocator class to open the magic hover doc file
-						// in the plugin's jar.
-						// Either open the html file or file system file depending
-						// on what has been specified.
-						String location = ce.getAttribute("location"); //$NON-NLS-1$
-						String name = ce.getAttribute("name"); //$NON-NLS-1$
-						String helpdocs = ce.getAttribute("docs"); //$NON-NLS-1$
-						String type = ce.getAttribute("type"); //$NON-NLS-1$
-						URI acDoc = new URI(location);
-						IPath p = URIUtil.toPath(acDoc);
-						InputStream docStream = null;
-						if (p == null) {
-							URL url = acDoc.toURL();
-							docStream = url.openStream();
-						} else {
-							docStream = new FileInputStream(p.toFile());
-						}
-						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-						factory.setValidating(false);
-						try {
-							DocumentBuilder builder = factory.newDocumentBuilder();
-							doc = builder.parse(docStream);
-						}
-						catch (SAXParseException saxException) {
-							doc = null;
-						}
-						catch (SAXException saxEx) {
-							doc = null;
-						}
-						catch (ParserConfigurationException pce) {
-							doc = null;
-						}
-						catch (IOException ioe) {
-							doc = null;
-						}
-						// If we found the document, add it to our library list.
-						if (doc != null) {
-							HelpBook h = new HelpBook(name, type);
-							helpBooks.add(h);
-							libraries.put(h, new LibHoverLibrary(name, location, helpdocs, doc));
-						}
-					} catch (MalformedURLException e) {
-						CUIPlugin.log(e);
-					} catch (FileNotFoundException e) {
-						CUIPlugin.log(e);
-					} catch (URISyntaxException e) {
-						CUIPlugin.log(e);
-					}
-				}
-				catch (IOException ioe) {
-				}
+				// see comment in initialize()
+				// Use the FileLocator class to open the magic hover doc file
+				// in the plugin's jar.
+				// Either open the html file or file system file depending
+				// on what has been specified.
+				String location = ce.getAttribute("location"); //$NON-NLS-1$
+				String name = ce.getAttribute("name"); //$NON-NLS-1$
+				String helpdocs = ce.getAttribute("docs"); //$NON-NLS-1$
+				String type = ce.getAttribute("type"); //$NON-NLS-1$
+				HelpBook h = new HelpBook(name, type);
+				helpBooks.add(h);
+				LibHoverLibrary l = new LibHoverLibrary(name, location, helpdocs, 
+						true);
+				libraries.put(h, l);
+				docsFetched = true;
 			}
 		}
 	}
@@ -213,9 +127,11 @@ public class LibHover implements ICHelpProvider {
 	private class FunctionSummary implements IFunctionSummary, Comparable<FunctionSummary> {
 
         private String Name;
+        private String NameSpace;
         private String ReturnType;
         private String Prototype;
         private String Summary;
+        private boolean prototypeHasBrackets;
         
 //        private String Synopsis;
         private class RequiredInclude implements IRequiredInclude {
@@ -253,17 +169,23 @@ public class LibHover implements ICHelpProvider {
             public String getArguments()        { return Prototype; }
             public String getPrototypeString(boolean namefirst) {
                 if (true == namefirst) {
+                	if (prototypeHasBrackets())
+                		return Name + " " + Prototype + " " + ReturnType; // $NON-NLS-1$ // $NON-NLS-2$
                     return Name + " (" + Prototype + ") " + ReturnType; // $NON-NLS-1$ // $NON-NLS-2$
                 }
                 else {
+                	if (prototypeHasBrackets())
+                		return ReturnType + " " + Name + " " + Prototype; // $NON-NLS-1$ // $NON-NLS-2$
                     return ReturnType + " " + Name + " (" + Prototype + ")"; // $NON-NLS-1$ // $NON-NLS-2$ // $NON-NLS-3$
                 }
             }
         }
 
         public String getName()                         { return Name; }
-        public String getNamespace()                    { return null; }
+        public String getNamespace()                    { return NameSpace; }
         public String getDescription()                  { return Summary; }
+        public boolean prototypeHasBrackets()			{ return prototypeHasBrackets; }
+        public void setPrototypeHasBrackets(boolean value)	{ prototypeHasBrackets = value; }
         public IFunctionPrototypeSummary getPrototype() { return new FunctionPrototypeSummary(); }
         
         public IRequiredInclude[] getIncludes() {
@@ -276,177 +198,285 @@ public class LibHover implements ICHelpProvider {
         
     }
 	
-	protected FunctionSummary getFunctionSummaryFromNode(String name, Node function_node, Document document) {
-        FunctionSummary f = new FunctionSummary();
-        f.Name = name;
-        NamedNodeMap function_node_map = function_node.getAttributes();
-        Node function_node_returntype_node = function_node_map.item(0);
-        String function_node_rt_name = function_node_returntype_node.getNodeName();
+	public boolean isCPPCharacter(int ch) {
+		return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':'; 
+	}
 
-        if (function_node_rt_name.equals("returntype")) { // $NON-NLS-1$
-
-            // return type
-
-            String function_node_rt_value = function_node_returntype_node.getNodeValue();
-            f.ReturnType = function_node_rt_value;
-        }		// returntype
-        
-        NodeList function_node_kids = function_node.getChildNodes();
-        for (int fnk = 0; fnk < function_node_kids.getLength(); fnk++) {
-        	Node function_node_kid = function_node_kids.item(fnk);
-            String function_node_kid_name = function_node_kid.getNodeName();
-            if (function_node_kid_name.equals("prototype")) { // $NON-NLS-1$
-
-                // prototype
-
-                String prototype = null;
-
-                NodeList function_node_parms = function_node_kid.getChildNodes();
-                for (int fnp = 0; fnp < function_node_parms.getLength(); fnp++) {
-                    Node function_node_parm = function_node_parms.item(fnp);
-                    String function_node_parm_name =  function_node_parm.getNodeName();
-                    if (function_node_parm_name.equals("parameter")) { // $NON-NLS-1$
-                        NamedNodeMap function_node_parm_map = function_node_parm.getAttributes();
-                        Node function_node_parm_node = function_node_parm_map.item(0);
-                        String parameter = function_node_parm_node.getNodeValue();
-                        prototype = (null == prototype)
-                            ? parameter
-                            : prototype + ", " + parameter;
-                    }
-                }
-                f.Prototype = prototype;
-            }	// prototype
-            
-            else if (function_node_kid_name.equals("headers")) { // $NON-NLS-1$
-
-                // headers
-
-                NodeList function_node_headers = function_node_kid.getChildNodes();
-                for (int fnh = 0; fnh < function_node_headers.getLength(); fnh++) {
-                    Node function_node_header = function_node_headers.item(fnh);
-                    String function_node_header_name =  function_node_header.getNodeName();
-                    if (function_node_header_name.equals("header")) { // $NON-NLS-1$
-                        NamedNodeMap function_node_header_map = function_node_header.getAttributes();
-                        Node function_node_header_node = function_node_header_map.item(0);
-                        f.setIncludeName(function_node_header_node.getNodeValue());
-                    }
-                }
-            }	// headers
-            
-
-            else if (function_node_kid_name.equals("groupsynopsis")) { // $NON-NLS-1$
-            	
-            	// group synopsis
-            	
-            	NamedNodeMap attr = function_node_kid.getAttributes();
-            	Node idnode = attr.getNamedItem("id"); // $NON-NLS-1$
-            	String id = idnode.getNodeValue();
-				if (id != null) {
-        			Element elem2 = document.getElementById(id);
-        			if (null != elem2) {
-        				NodeList synopsisNode = elem2.getElementsByTagName("synopsis"); // $NON-NLS-1$
-        				if (null != synopsisNode && synopsisNode.getLength() > 0) {
-        					Node synopsis = synopsisNode.item(0);
-        					Node textNode = synopsis.getLastChild();
-        					f.Summary = textNode.getNodeValue();
-        				}
-        			}
-				}
-            }
-            
-            else if (function_node_kid_name.equals("synopsis")) { // $NON-NLS-1$
-
-                // synopsis
-
-                Node textNode = function_node_kid.getLastChild();
-                f.Summary =  textNode.getNodeValue();
-            }
-        }
-        return f;
+	private class EnclosingASTNameJob extends SharedASTJob {
+		private int tlength;
+		private int toffset;
+		private IASTName result = null;
+		public EnclosingASTNameJob (ITranslationUnit t, 
+				int toffset, int tlength) {
+			super("EnclosingASTNameJob", t); // $NON-NLS-1$
+			this.toffset = toffset;
+			this.tlength = tlength;
+		}
+		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
+			if (ast != null) {
+				result = ast.getNodeSelector(null).findEnclosingName(toffset, tlength);
+			}
+			return Status.OK_STATUS;
+		}
+		public IASTName getASTName() {
+			return result;
+		}
 	}
 	
-	
+	public class ASTDeclarationFinderJob extends SharedASTJob {
+		private IBinding binding;
+		private IASTName[] decls = null;
+		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
+			super("ASTDeclarationFinderJob", t); // $NON-NLS-1$
+			this.binding = binding;
+		}
+    	public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
+    		if (ast != null) {
+    			decls = ast.getDeclarationsInAST(binding);
+    		}
+    		return Status.OK_STATUS;
+    	}
+    	public IASTName[] getDeclarations() {
+    		return decls;
+    	}
+	}
+
+	@SuppressWarnings("unchecked")
 	public IFunctionSummary getFunctionInfo(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String name) {
-        FunctionSummary f;
+        IFunctionSummary f;
 
         f = null;
+        boolean isPTR = false;
+        boolean isREF = false;
+        boolean isCPP = false;
+        int offset = -1;
+        int length = 0;
         
+        ITranslationUnit t = context.getTranslationUnit();
+        
+        String className = null;
+        
+        if (t.isCXXLanguage()) {
+        	isCPP = true;
+        	try {
+        		// We use reflection to cast the context to ICHelpInvocationContextExtended as this is
+        		// not guaranteed to be in CDT except in Fedora.  We need ICHelpInvocationExtended to get
+        		// the document region.  Otherwise, we have no way of doing C++ hover help/completion because
+        		// we need to figure out the class name which is not given to us.
+        		Class<? extends ICHelpInvocationContext> contextClass = context.getClass();
+        		Class[] interfaces = contextClass.getInterfaces();
+        		for (int i = 0; i < interfaces.length; ++i) {
+        			if (interfaces[i].getName().contains("ICHelpInvocationContextExtended")) // $NON-NLS-1$ 
+        				contextClass = interfaces[i];
+        		}
+        		Method getRegion = contextClass.getMethod("getHoverRegion", (Class<?>[])null);  // $NON-NLS-1$
+        		IRegion region = (IRegion)getRegion.invoke(context, (Object[])null);
+        		char[] contents = t.getCodeReader().buffer;
+				int i = region.getOffset();
+				if (i > 2 && contents[i-1] == '>' && contents[i-2] == '-') {
+					// Pointer reference
+					int j = i - 3;
+					int pointer = 0;
+					while (j > 0 && isCPPCharacter(contents[j])) {
+						pointer = j;
+						--j;
+					}
+					if (pointer != 0) {
+						offset = pointer;
+						length = region.getOffset() - pointer - 2;
+						isPTR = true;
+//						String pointerName = new String(contents, pointer, region.getOffset() - pointer - 2);
+//						System.out.println("pointer reference to " + pointerName);
+					}
+				} else if (i > 1 && contents[i-1] == '.') {
+					int j = i - 2;
+					int ref = 0;
+					while (j > 0 && isCPPCharacter(contents[j])) {
+						ref = j;
+						--j;
+					}
+					if (ref != 0) {
+						offset = ref;
+						length = region.getOffset() - ref - 1;
+						isREF = true;
+//						String refName = new String(contents, ref, region.getOffset() - ref - 1);
+//						System.out.println("regular reference to " + refName);
+					}
+				}
+				final IASTName[] result= {null};
+				final int toffset = offset;
+				final int tlength = length;
+
+				if (isPTR || isREF) {
+					EnclosingASTNameJob job = new EnclosingASTNameJob(t, toffset, tlength);
+					job.schedule();
+					try {
+						job.join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (job.getResult() == Status.OK_STATUS)
+						result[0] = job.getASTName();
+				}
+
+				final IASTName[][] decl = {null};
+				if (result[0] != null) {
+					final IBinding binding = result[0].getBinding();
+					ASTDeclarationFinderJob job = new ASTDeclarationFinderJob(t, binding);
+					job.schedule();
+					try {
+						job.join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (job.getResult() == Status.OK_STATUS) {
+						decl[0] = job.getDeclarations();
+					}
+				}
+				
+				IASTNode n = null;
+				if (decl[0] != null && decl[0].length > 0) {
+					n = decl[0][0];
+					while (n != null && !(n instanceof IASTSimpleDeclaration)) {
+						n = n.getParent();
+					}
+				}
+
+				if (n != null) {
+					IASTSimpleDeclaration d = (IASTSimpleDeclaration)n;
+					IASTDeclSpecifier s = d.getDeclSpecifier();
+					if (s instanceof IASTNamedTypeSpecifier) {
+						IASTName astName = ((IASTNamedTypeSpecifier)s).getName();
+						if (astName != null)
+							className = astName.toString();
+					}
+				}
+			    
+//				System.out.println("classname is " + className);
+        	} catch (NoSuchMethodException e) {
+        		// do nothing...we don't have enough info to do C++ members
+        	} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        	
         // Loop through all the documents we have and report first match.
         for (int i = 0; i < helpBooks.length; ++i) {
         	LibHoverLibrary l = libraries.get(helpBooks[i]);
-        	Document document = l != null ? l.getDocument() : null;
-        	if ((null != document) && (null != name)) {
-        		String sss;
-
-        		for (int ci = 0; ci < constructTypes.length; ci++) {
-        			sss = constructTypes[ci] + "-" + name; // $NON-NLS-1$
-        			Element elem = document.getElementById(sss);
-        			if (null != elem) {
-        				switch(ci) {
-        				case dtypeIndex:
-        					break;
-        				case enumIndex:
-        					break;
-        				case functionIndex:
-        					NodeList functionNode = elem.getElementsByTagName("function"); // $NON-NLS-1$
-        					if (null != functionNode) {
-        						for (int fni = 0; fni < functionNode.getLength(); fni++) {
-        							Node function_node = functionNode.item(fni);
-        							String function_node_name = function_node.getNodeName();
-        							if (function_node_name.equals("function")) { // $NON-NLS-1$
-        								f = getFunctionSummaryFromNode(name, function_node, document);
-        								return f;
-        							}			// function node
-        						}				// fni loop
-        					}					// null != functionNode
-        					break;
-        				case structIndex:
-        					break;
-        				case typeIndex:
-        					break;
-        				case unionIndex:
-        					break;
-        				}
-        			}
+        	if (name != null) {
+        		if (className != null) {
+        			if (l.isCPP())
+        				f = getMemberSummary(l, className, name);
+        		} else {
+        			f = getFunctionSummary(l, name);
         		}
+        		if (f != null)
+        			return f;
         	}
         }
+        
         return null;
 	}
-                
+	
+	private IFunctionSummary getFunctionSummary(LibHoverLibrary l, String name) {
+		FunctionInfo x = l.getFunctionInfo(name);
+		if (x != null) {
+			FunctionSummary f = new FunctionSummary();
+			f.ReturnType = x.getReturnType();
+			f.Prototype = x.getPrototype();
+			f.Summary = x.getDescription();
+			f.Name = x.getName();
+			ArrayList<String> headers = x.getHeaders();
+			for (int i = 0; i < headers.size(); ++i)
+				f.setIncludeName(headers.get(i));
+			return f;
+		}
+		return null;
+	}
+	
+	private IFunctionSummary getMemberSummary(LibHoverLibrary l, String className, String memberName) {
+
+		ClassInfo info = l.getClassInfo(className);
+		if (info == null)
+			return null;
+		MemberInfo m = info.getMember(memberName);
+		if (m != null) {
+			// FIXME: do some work to determine parameters and return type.
+			FunctionSummary f = new FunctionSummary();
+			f.ReturnType = m.getReturnType();
+			f.Prototype = m.getPrototype();
+			f.Summary = m.getDescription();
+			f.setPrototypeHasBrackets(true);
+			f.setIncludeName(info.getInclude());
+			String actualClassName = className.substring(className.indexOf("::")+2); // $NON-NLS-1$
+			actualClassName = actualClassName.replaceAll("<", "&lt;"); // $NON-NLS-1$ // $NON-NLS-2$
+			actualClassName = actualClassName.replaceAll(">", "&gt;"); // $NON-NLS-1$ // $NON-NLS-2$
+			f.Name = actualClassName + "::" + memberName; // $NON-NLS-1$
+			return f;
+		}
+		return null;
+	}
+     
  	
 	public IFunctionSummary[] getMatchingFunctions(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String prefix) {
 		ArrayList<IFunctionSummary> fList = new ArrayList<IFunctionSummary>();
 
 		for (int di = 0; di < helpBooks.length; ++di) {
 			LibHoverLibrary l = libraries.get(helpBooks[di]);
-			Document document = l != null ? l.getDocument() : null;
-			if ((null != document) && (null != prefix)) {
-				NodeList elems = document.getElementsByTagName("construct"); // $NON-NLS-1$
-				for (int i = 0; i < elems.getLength(); ++i) {
-					Element elem = (Element)elems.item(i);
-					NamedNodeMap attrs = elem.getAttributes();
-					Node id_node = attrs.item(0);
-					String elemName = id_node.getNodeValue();
-					if (elemName != null && elemName.startsWith("function-")) { // $NON-NLS-1$
-						String funcName = elemName.substring(9);
-						if (funcName != null && funcName.startsWith(prefix)) {
-							NodeList functionNodes = elem.getElementsByTagName("function"); // $NON-NLS-1$
-							for (int j = 0; j < functionNodes.getLength(); ++j) {
-								Node function_node = functionNodes.item(j);
-								FunctionSummary f = getFunctionSummaryFromNode(funcName, function_node, document);
-								fList.add(f);
-							}
-						}
-					}
+			LibHoverInfo cppInfo = l.getHoverInfo();
+			SortedMap<String, FunctionInfo> map = cppInfo.functions.tailMap(prefix);
+			Set<Map.Entry<String, FunctionInfo>> c = map.entrySet();
+			for (Iterator<Entry<String, FunctionInfo>> i = c.iterator(); i.hasNext();) {
+				Map.Entry<String, FunctionInfo> e = (Map.Entry<String, FunctionInfo>)i.next();
+				FunctionInfo x = e.getValue();
+				if (x.getName().startsWith(prefix)) {
+					FunctionSummary f = new FunctionSummary();
+					f.ReturnType = x.getReturnType();
+					f.Prototype = x.getPrototype();
+					f.Summary = x.getDescription();
+					f.Name = x.getName();
+					ArrayList<String> headers = x.getHeaders();
+					for (int i1 = 0; i1 < headers.size(); ++i1)
+						f.setIncludeName(headers.get(i1));
+					fList.add(f);
 				}
 			}
+			
+//			Document document = l != null ? l.getDocument() : null;
+//			if ((null != document) && (null != prefix)) {
+//				NodeList elems = document.getElementsByTagName("construct"); // $NON-NLS-1$
+//				for (int i = 0; i < elems.getLength(); ++i) {
+//					Element elem = (Element)elems.item(i);
+//					NamedNodeMap attrs = elem.getAttributes();
+//					Node id_node = attrs.item(0);
+//					String elemName = id_node.getNodeValue();
+//					if (elemName != null && elemName.startsWith("function-")) { // $NON-NLS-1$
+//						String funcName = elemName.substring(9);
+//						if (funcName != null && funcName.startsWith(prefix)) {
+//							NodeList functionNodes = elem.getElementsByTagName("function"); // $NON-NLS-1$
+//							for (int j = 0; j < functionNodes.getLength(); ++j) {
+//								Node function_node = functionNodes.item(j);
+//								FunctionSummary f = getFunctionSummaryFromNode(funcName, function_node, document);
+//								fList.add(f);
+//							}
+//						}
+//					}
+//				}
+//			}
 		}
 		IFunctionSummary[] summaries = new IFunctionSummary[fList.size()];
 		for (int k = 0; k < summaries.length; k++) {
 			summaries[k] = (IFunctionSummary)fList.get(k);
 		}
-		Arrays.sort(summaries);
 		return summaries;
 	}
 	

@@ -59,7 +59,7 @@
          <attribute name="location" type="string" use="required">
             <annotation>
                <documentation>
-                  Location of the xml file containing the hover info: either an absolute file name or a URL
+                  Location of the binary file containing the serialized LibHoverInfo for the documentation: either an absolute file name or a URL
                </documentation>
             </annotation>
          </attribute>
