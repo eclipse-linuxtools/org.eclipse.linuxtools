@@ -66,8 +66,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	 */
 	@Override
 	protected String getContents() {
-		return "Requires: test_underscore" + "\n" + "%{name}" + "\n"
-				+ "# Requires:" + "\n";
+		return "Requires: test_underscore\n%{name}\n# Requires:\n";
 	}
 
 	/*

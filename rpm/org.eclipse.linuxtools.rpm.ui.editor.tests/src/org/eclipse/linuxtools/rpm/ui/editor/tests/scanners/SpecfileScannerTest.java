@@ -39,9 +39,7 @@ public class SpecfileScannerTest extends AScannerTest {
 	 */
 	@Override
 	protected String getContents() {
-		return "# This is a comment" + "\n" + "Name: test" + "\n" + "%prep"
-				+ "\n" + "%{name}" + "\n" + "%define" + "\n" + "%if" + "\n"
-				+ "Name=test";
+		return "# This is a comment\nName: test\n%prep\n%{name}\n%define\n%if\nName=test";
 	}
 
 	/*

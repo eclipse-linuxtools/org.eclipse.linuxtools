@@ -1,3 +1,8 @@
+2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfilePackagesScannerTest.java (getContents): Do not concatenate strings.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfileScannerTest.java (getContents): Likewise.
+
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: Update.
