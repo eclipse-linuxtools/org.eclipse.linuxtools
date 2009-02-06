@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.actions;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
@@ -22,6 +19,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -49,21 +47,14 @@ public class RunRpmlintAction implements IObjectActionDelegate {
 				}
 				if (rpmFile != null) {
 					try {
-						Process child = new ProcessBuilder(Activator
+						String output = Utils.runCommandToString(Activator
 								.getRpmlintPath(), "-i", rpmFile.getLocation() //$NON-NLS-1$
-								.toString()).start();
-						BufferedInputStream in = new BufferedInputStream(child
-								.getInputStream());
-						BufferedReader is = new BufferedReader(
-								new InputStreamReader(in));
-						String line;
+								.toString());
 						MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
 						MessageConsoleStream out = myConsole.newMessageStream();
 						myConsole.clearConsole();
 						myConsole.activate();
-						while ((line = is.readLine()) != null) {
-							out.println(line);
-						}
+						out.println(output);
 
 					} catch (IOException e) {
 						// FIXME: rpmlint is not installed in the default place

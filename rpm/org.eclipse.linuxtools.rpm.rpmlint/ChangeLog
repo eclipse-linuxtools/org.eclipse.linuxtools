@@ -1,3 +1,10 @@
+2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Use utils for command invocation.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (parseVisisted): Likewise.
+	(parseRpmlintOutput): Fix typo.
+	(runRpmlintCommand): Use utils for command invocation.
+
 2009-02-02  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Clear console before outputting to not merge different runs.

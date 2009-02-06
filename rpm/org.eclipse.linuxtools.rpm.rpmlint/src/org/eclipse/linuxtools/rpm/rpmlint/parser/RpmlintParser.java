@@ -28,6 +28,7 @@ import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.rpmlint.builder.RpmlintBuilder;
 import org.eclipse.linuxtools.rpm.rpmlint.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.rpmlint.resolutions.RpmlintMarkerResolutionGenerator;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 
 public class RpmlintParser {
 	
@@ -63,9 +64,9 @@ public class RpmlintParser {
 		Iterator<List<String>> iterator = commandsList.iterator();
 		while (iterator.hasNext()) {
 			if (commandsList.size() > 1)
-				retList.addAll(parseRpmlintOurput(runRpmlintCommand(iterator.next())));
+				retList.addAll(parseRpmlintOutput(runRpmlintCommand(iterator.next())));
 			else
-				return parseRpmlintOurput(runRpmlintCommand(visitedResources));
+				return parseRpmlintOutput(runRpmlintCommand(visitedResources));
 		}
 		return retList;
 
@@ -106,7 +107,7 @@ public class RpmlintParser {
 	 * @return
 	 * 		a <code>RpmlintItem</code> ArrayList.
 	 */
-	private ArrayList<RpmlintItem> parseRpmlintOurput(BufferedInputStream in) {
+	private ArrayList<RpmlintItem> parseRpmlintOutput(BufferedInputStream in) {
 		RpmlintItem item =  new RpmlintItem();
 		ArrayList<RpmlintItem> rpmlintItems = new ArrayList<RpmlintItem>();
 		LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
@@ -200,8 +201,7 @@ public class RpmlintParser {
 			i++;
 		}
 		try {
-			Process child = new ProcessBuilder(cmd).start();
-			in = new BufferedInputStream(child.getInputStream());
+			in = Utils.runCommandToInputStream(cmd);
 		} catch (IOException e) {
 			// FIXME: rpmlint is not installed in the default place -> ask user to open the prefs page.
 			RpmlintLog.logError(e);
