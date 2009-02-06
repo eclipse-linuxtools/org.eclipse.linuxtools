@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -206,16 +205,9 @@ public class RpmMacroProposalsList {
 	 * @return the resolved macro content.
 	 */
 	public static String getMacroEval(String macroName) {
-		String 	eval = EMPTY_STRING;
-		String[] cmd = {"rpm", "--eval", macroName};  //$NON-NLS-1$//$NON-NLS-2$
+		String eval = EMPTY_STRING;
 		try {
-			Process child = new ProcessBuilder(cmd).start();
-			InputStream in = child.getInputStream();
-			int c;
-			while ((c = in.read()) != -1) {
-				eval += ((char) c);
-			}
-			in.close();
+			eval = Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 		}

@@ -33,6 +33,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -422,10 +423,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 	private BufferedInputStream runRpmdevNewSpec(String template) {
 		BufferedInputStream in = null;
 		// Here we assuming that the rpmdevtools package is installed.
-		String[] cmd = { "rpmdev-newspec", "-o", "-", "-t", template }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		try {
-			Process child = new ProcessBuilder(cmd).start();
-			in = new BufferedInputStream(child.getInputStream());
+			in = Utils.runCommandToInputStream("rpmdev-newspec", "-o", "-", "-t", template ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		} catch (IOException e) {
 			// FIXME: rpmdev-newspec is not in the system $PATH, what should we do here?.
 			SpecfileLog.logError(e);

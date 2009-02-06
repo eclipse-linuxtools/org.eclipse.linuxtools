@@ -37,8 +37,7 @@ public class Utils {
 	    // Check if ~/.rpmmacros exist, if the file don't exist we create 
 		// it with the appropriate command.
 		if (!exists) {
-	    	String[] command = {"rpmdev-setuptree"}; //$NON-NLS-1$
-	    	runCommandToInputStream(command);
+	    	runCommandToInputStream("rpmdev-setuptree"); //$NON-NLS-1$
 	    }
 		
 		// Check RPM tool preference.
@@ -56,14 +55,14 @@ public class Utils {
 		return new File(cmdPath).exists();
 	}
 	
-	public static BufferedInputStream runCommandToInputStream(String[] command) throws IOException {
+	public static BufferedInputStream runCommandToInputStream(String... command) throws IOException {
 		BufferedInputStream in = null;
-		Process child = Runtime.getRuntime().exec(command);
+		Process child = new ProcessBuilder(command).start();
 		in = new BufferedInputStream(child.getInputStream());
 		return in;
 	}
 	
-	public static String runCommandToString(String[] command) throws IOException {
+	public static String runCommandToString(String... command) throws IOException {
 		BufferedInputStream in = runCommandToInputStream(command);
 		return inputStreamToString(in);
 	}

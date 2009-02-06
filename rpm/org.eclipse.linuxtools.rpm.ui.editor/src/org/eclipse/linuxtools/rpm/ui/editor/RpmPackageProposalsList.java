@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -103,16 +102,9 @@ public class RpmPackageProposalsList {
 
 	public String getRpmInfo(String pkgName) {
 		String ret = ""; //$NON-NLS-1$
-		String[] cmd = { "rpm", "-q", pkgName, "--qf",  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-				getformattedRpmInformations() };
 		try {
-			Process child = new ProcessBuilder(cmd).start();
-			InputStream in = child.getInputStream();
-			int c;
-			while ((c = in.read()) != -1) {
-				ret += ((char) c);
-			}
-			in.close();
+			ret = Utils.runCommandToString("rpm", "-q", pkgName, "--qf",  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+					getformattedRpmInformations());
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 			return Messages.RpmPackageProposalsList_2

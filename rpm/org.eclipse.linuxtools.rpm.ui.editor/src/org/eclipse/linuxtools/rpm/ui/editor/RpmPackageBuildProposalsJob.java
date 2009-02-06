@@ -144,11 +144,9 @@ public class RpmPackageBuildProposalsJob extends Job {
 				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
 		File bkupFile = new File(rpmListFilepath + ".bkup"); //$NON-NLS-1$
 		try {
-			String[] cmd = new String[] { "/bin/sh", "-c", rpmListCmd }; //$NON-NLS-1$ //$NON-NLS-2$
 			monitor.beginTask(Messages.RpmPackageBuildProposalsJob_1,
 					IProgressMonitor.UNKNOWN);
-			Process child = new ProcessBuilder(cmd).start();
-			InputStream in = child.getInputStream();
+			InputStream in = Utils.runCommandToInputStream("/bin/sh", "-c", rpmListCmd); //$NON-NLS-1$ //$NON-NLS-2$
 			// backup pkg list file
 			File rpmListFile = new File(rpmListFilepath);
 			if (rpmListFile.exists())
