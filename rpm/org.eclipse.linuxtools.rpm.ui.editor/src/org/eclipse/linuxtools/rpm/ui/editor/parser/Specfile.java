@@ -63,16 +63,11 @@ public class Specfile {
 		this.name = name;
 	}
 
-	public List<SpecfileSection> getSectionsAsList() {
+	public List<SpecfileSection> getSections() {
 		return sections;
 	}
 	
-	public SpecfileElement[] getSections() {
-		SpecfileElement[] elements = new SpecfileElement[sections.size()]; 
-		return sections.toArray(elements);
-	}
-	
-	public List<SpecfileSection> getComplexSectionsAsList() {
+	public List<SpecfileSection> getComplexSections() {
 		return complexSections;
 	}
 	

@@ -39,6 +39,7 @@ import org.eclipse.jface.text.templates.TemplateProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
 
@@ -354,17 +355,17 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return a TemplateContextType
 	 */
 	private TemplateContextType getContextType(Specfile specfile, int offset) {
-		SpecfileElement[] elements = specfile.getSections();
-			if (elements.length == 0 || offset < elements[0].getLineEndPosition()) {
+		List<SpecfileSection> elements = specfile.getSections();
+			if (elements.size() == 0 || offset < elements.get(0).getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(PREAMBLE_SECTION_TEMPLATE);
-			} else if (elements.length == 1 || offset < elements[1].getLineEndPosition()) {
+			} else if (elements.size() == 1 || offset < elements.get(1).getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(PRE_SECTION_TEMPLATE);
-			} else if (elements.length == 2 || offset < elements[2].getLineEndPosition()) {
+			} else if (elements.size() == 2 || offset < elements.get(2).getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(BUILD_SECTION_TEMPLATE);
-			} else if (elements.length == 3 || offset < elements[3].getLineEndPosition()) {
+			} else if (elements.size() == 3 || offset < elements.get(3).getLineEndPosition()) {
 				return Activator.getDefault().getContextTypeRegistry()
 						.getContextType(INSTALL_SECTION_TEMPLATE);
 			} else {

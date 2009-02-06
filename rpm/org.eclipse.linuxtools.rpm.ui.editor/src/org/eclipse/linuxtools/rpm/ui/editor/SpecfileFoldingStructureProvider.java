@@ -101,8 +101,8 @@ public class SpecfileFoldingStructureProvider {
 		Set<Position> set = new HashSet<Position>();
 		
 		List<SpecfileElement> elements = new ArrayList<SpecfileElement>();
-		elements.addAll(specfile.getSectionsAsList());
-		elements.addAll(specfile.getComplexSectionsAsList());
+		elements.addAll(specfile.getSections());
+		elements.addAll(specfile.getComplexSections());
 		Collections.sort(elements, new ElementByLineNbrComparator());
 		addFoldingRegions(set, elements.toArray());
 		return set;

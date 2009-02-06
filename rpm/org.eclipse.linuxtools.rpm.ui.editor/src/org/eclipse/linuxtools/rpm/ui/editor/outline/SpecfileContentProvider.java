@@ -77,10 +77,10 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement == specfile) {
-			Object[] elms = new Object[1 + 1 + specfile.getSections().length];
+			Object[] elms = new Object[1 + 1 + specfile.getSections().size()];
 			elms[0] = specfile.getPreamble();
 			elms[1] = specfile.getPackages();
-			Object[] sections = specfile.getSections();
+			Object[] sections = specfile.getSections().toArray();
 			for (int i = 0; i < sections.length; i++) {
 				 elms[i + 2] = sections[i];
 			}

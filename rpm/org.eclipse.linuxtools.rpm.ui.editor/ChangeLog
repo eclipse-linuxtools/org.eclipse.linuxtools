@@ -1,5 +1,13 @@
 2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentProvider.java (getChildren): Remove methods that return array.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getSections): Likewise.
+	(getComplexSections): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (getContextType): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java (createFoldingStructure): Likewise.
+	
+2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java (getMacroEval): Use utils for command invocation.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (retrievePackageList): Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (getRpmInfo): Likewise
