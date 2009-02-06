@@ -1,5 +1,6 @@
 2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java (dispose): Use utils for command invocation.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfilePackagesScannerTest.java (getContents): Do not concatenate strings.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfileScannerTest.java (getContents): Likewise.
 
