@@ -1,3 +1,20 @@
+2009-02-09  Alexander Kurtakov  <akurtako@redhat.com>
+	Initial version of a form based editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java: New file.
+	* META-INF/MANIFEST.MF: Add dependency on ui.forms.
+	* plugin.xml: Add form based editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (organizePatches): Replace get[Sources|Patches]AsList with simple get[Sources|Patches] 
+	(getSources): Likewise.
+	(getPatches): Likewise.
+	(setEpoch): Use constants for RPM tags.
+	(setVersion): Likewise.
+	(setName): Likewise.
+	(setRelease): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parse): Set summary.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (getSources): Replace get[Sources|Patches]AsList with simple get[Sources|Patches] 
+	(getPatches): Likewise.
+
 2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentProvider.java (getChildren): Remove methods that return array.

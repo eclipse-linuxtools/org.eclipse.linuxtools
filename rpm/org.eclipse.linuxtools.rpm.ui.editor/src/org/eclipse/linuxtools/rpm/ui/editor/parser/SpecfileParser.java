@@ -58,7 +58,7 @@ public class SpecfileParser {
 	private static String[] simpleDefinitions = { RpmTags.EPOCH, RpmTags.NAME, RpmTags.VERSION,
 		RpmTags.RELEASE, RpmTags.URL };
 	
-	private static String[] directValuesDefinitions = { RpmTags.LICENSE };
+	private static String[] directValuesDefinitions = { RpmTags.LICENSE, RpmTags.SUMMARY };
 	// Note that the ordering here should match that in SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" }; //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -104,21 +104,23 @@ public class SpecfileParser {
 					if (element.getClass() == SpecfileTag.class) {
 						SpecfileTag tag = (SpecfileTag) element;
 						String name = tag.getName();
-						if (name.equals("epoch")) { //$NON-NLS-1$
+						if (name.equals(RpmTags.EPOCH.toLowerCase())) { 
 							// Epoch
 							specfile.setEpoch(tag.getIntValue());
-						} else if (name.equals("name")) { //$NON-NLS-1$
+						} else if (name.equals(RpmTags.NAME.toLowerCase())) { 
 							// Name
 							specfile.setName(tag.getStringValue());
-						} else if (name.equals("version")) { //$NON-NLS-1$
+						} else if (name.equals(RpmTags.VERSION.toLowerCase())) { 
 							// Version
 							specfile.setVersion(tag.getStringValue());
-						} else if (name.equals("release")) { //$NON-NLS-1$
+						} else if (name.equals(RpmTags.RELEASE.toLowerCase())) { 
 							// Release
 							specfile.setRelease(tag.getStringValue());
-						} else if (name.equals("license")) { //$NON-NLS-1$
+						} else if (name.equals(RpmTags.LICENSE.toLowerCase())) {
 							// License
 							specfile.setLicense(tag.getStringValue());
+						} else if (name.equals(RpmTags.SUMMARY.toLowerCase())) {
+							specfile.addDefine(RpmTags.SUMMARY.toLowerCase(), tag.getStringValue());
 						}
 					} else if ((element.getClass() == SpecfilePatchMacro.class)) {
 						SpecfilePatchMacro thisPatchMacro = (SpecfilePatchMacro) element;

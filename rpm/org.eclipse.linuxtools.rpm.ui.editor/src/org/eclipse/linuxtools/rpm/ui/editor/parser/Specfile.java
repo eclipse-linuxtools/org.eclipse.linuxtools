@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 
 public class Specfile {
 	String name = ""; //$NON-NLS-1$
@@ -91,7 +92,7 @@ public class Specfile {
 	 */
 	public void setName(String name) {
 		this.name = name;
-		addDefine("name", name); //$NON-NLS-1$
+		addDefine(RpmTags.NAME.toLowerCase(), name);
 	}
 
 	public void addSection(SpecfileSection section) {
@@ -157,7 +158,7 @@ public class Specfile {
 	 */
 	public void setEpoch(int epoch) {
 		this.epoch = epoch;
-		addDefine("epoch", epoch); //$NON-NLS-1$
+		addDefine(RpmTags.EPOCH.toLowerCase(), epoch);
 	}
 
 	public String getRelease() {
@@ -172,7 +173,7 @@ public class Specfile {
 	 */
 	public void setRelease(String release) {
 		this.release = release;
-		addDefine("release", release); //$NON-NLS-1$
+		addDefine(RpmTags.RELEASE.toLowerCase(), release);
 	}
 
 	public String getVersion() {
@@ -187,24 +188,16 @@ public class Specfile {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
-		addDefine("version", version); //$NON-NLS-1$
+		addDefine(RpmTags.VERSION.toLowerCase(), version);
 	}
 
-	public Map<Integer, SpecfileSource> getPatches() {
-		return patches;
-	}
-
-	public Map<Integer, SpecfileSource> getSources() {
-		return sources;
-	}
-
-	public List<SpecfileSource> getPatchesAsList() {
+	public List<SpecfileSource> getPatches() {
 		List<SpecfileSource> patchesList = new ArrayList<SpecfileSource>(patches.values());
 		Collections.sort(patchesList, new SourceComparator());
 		return patchesList;
 	}
 
-	public Collection<SpecfileSource> getSourcesAsList() {
+	public Collection<SpecfileSource> getSources() {
 		List<SpecfileSource> sourcesList = new ArrayList<SpecfileSource>(sources.values());
 		Collections.sort(sourcesList, new SourceComparator());
 		return sourcesList;
@@ -216,7 +209,7 @@ public class Specfile {
 	}
 	
 	public void organizePatches() {
-		List<SpecfileSource> patches = getPatchesAsList();
+		List<SpecfileSource> patches = getPatches();
 		int newPatchNumber = 0;
 		int oldPatchNumber = -1;
 		Map<Integer, SpecfileSource> newPatches = new HashMap<Integer, SpecfileSource>();

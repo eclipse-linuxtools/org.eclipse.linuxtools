@@ -30,6 +30,14 @@
             class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
             id="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
       </editor>
+      <editor
+            name="Specfile Form Editor"
+            extensions="spec"
+            icon="icons/rpm.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor"
+            id="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor">
+      </editor>
    </extension>
    
    <extension

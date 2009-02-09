@@ -38,7 +38,6 @@ import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
@@ -478,7 +477,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private Map<String, String> getPatches(Specfile specfile, String prefix) {
-		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+		Collection<SpecfileSource> patches = specfile.getPatches();
 		Map<String, String> ret = new HashMap<String, String>();
 		String patchName;
 		for (SpecfileSource patch: patches) {
@@ -503,7 +502,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private Map<String, String> getSources(Specfile specfile, String prefix) {
-		Collection<SpecfileSource> sources = specfile.getSourcesAsList();
+		Collection<SpecfileSource> sources = specfile.getSources();
 		Map<String, String> ret = new HashMap<String, String>();
 		String sourceName;
 		for (SpecfileSource source : sources) {
