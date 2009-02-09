@@ -24,6 +24,7 @@ public class Activator extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpm.rpmlint"; //$NON-NLS-1$
 	public static final String SPECFILE_EXTENSION = "spec"; //$NON-NLS-1$
+	public static final String RPMFILE_EXTENSION = "rpm"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

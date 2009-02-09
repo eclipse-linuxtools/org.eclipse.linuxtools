@@ -1,3 +1,16 @@
+2009-02-09  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable warnings for missing javadoc.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java: Add constant for rpm file extension.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/Messages.java (static initializer): Remove not used message. 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java (visitAndMarkRpmlintItems): Likewise.
+	(incrementalBuild): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintDeltaVisitor.java (visit): Add rpm files to the to be checked list.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java (visit): Handle markers for rpm files.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintPreVisitor.java (visit): Add rpm files to the to be checked list.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (addMarker): New method for markers not related with a source line.
+
 2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java (getLineNumberForInsert): Remove methods that return section arrays.

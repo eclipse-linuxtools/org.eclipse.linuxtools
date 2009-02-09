@@ -104,6 +104,33 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 							item.getReferedContent());
 				}
 			}
+		} else if (Activator.RPMFILE_EXTENSION.equals(resource
+				.getFileExtension())) {
+			firstWarningInResource = true;
+			for (RpmlintItem item : rpmlintItems) {
+					currentFile = ((IFile) resource);
+					if (firstWarningInResource) {
+						RpmlintParser.getInstance().deleteMarkers(resource);
+						// remove internal marks on the current resource
+						currentFile.deleteMarkers(
+								SpecfileErrorHandler.SPECFILE_ERROR_MARKER_ID,
+								false, IResource.DEPTH_ZERO);
+						firstWarningInResource = false;
+					}
+
+					// BTW we mark specfile with the internal marker.
+					builder.getSpecfileParser().setErrorHandler(
+							builder.getSpecfileErrorHandler(currentFile,
+									specContent));
+					builder.getSpecfileParser().setTaskHandler(
+							builder.getSpecfileTaskHandler(currentFile,
+									specContent));
+
+					RpmlintParser.getInstance().addMarker((IFile) resource,
+							item.getId() + ": " //$NON-NLS-1$
+									+ item.getMessage(), item.getSeverity(),
+							item.getId(), item.getReferedContent());
+			}
 		}
 		return true;
 	}

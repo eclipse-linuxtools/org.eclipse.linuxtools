@@ -82,7 +82,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		RpmlintDeltaVisitor deltaVisitor = new RpmlintDeltaVisitor();
 		delta.accept(deltaVisitor);
 		monitor.worked(50);
-		monitor.setTaskName(Messages.RpmlintBuilder_2);
+		monitor.setTaskName(Messages.RpmlintBuilder_1);
 		ArrayList<RpmlintItem> rpmlintItems = RpmlintParser.getInstance().parseVisisted(
 				deltaVisitor.getVisitedPaths());
 		visitAndMarkRpmlintItems(monitor, rpmlintItems);
@@ -93,7 +93,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		if (rpmlintItems.size() > 0) {
 			checkCancel(monitor);
 			monitor.worked(70);
-			monitor.setTaskName(Messages.RpmlintBuilder_3);
+			monitor.setTaskName(Messages.RpmlintBuilder_2);
 			getProject().accept(new RpmlintMarkerVisitor(this, rpmlintItems));
 			monitor.worked(MAX_WORKS);
 		}

@@ -27,7 +27,9 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 	 */
 	public boolean visit(IResourceDelta delta) {
 		IResource resource = delta.getResource();
-		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())) {
+		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
+				|| Activator.RPMFILE_EXTENSION.equals(resource
+						.getFileExtension())) {
 			switch (delta.getKind()) {
 			// we first visiting resources to be able to run the rpmlint command
 			// only once. That improve drastically the performance.

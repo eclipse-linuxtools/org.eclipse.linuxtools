@@ -24,7 +24,9 @@ public class RpmlintPreVisitor implements IResourceVisitor {
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) {
-		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())) {
+		if (Activator.SPECFILE_EXTENSION.equals(resource.getFileExtension())
+				|| Activator.RPMFILE_EXTENSION.equals(resource
+						.getFileExtension())) {
 			// we previsiting resource to be able to run rpmlint command
 			// only once. That improve drasticaly the perfs.
 			paths.add(resource.getLocation().toOSString());

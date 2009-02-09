@@ -91,6 +91,27 @@ public class RpmlintParser {
 		}
 	}
 	
+	public void addMarker(IFile file, String message, int severity,
+			String rpmlintID, String rpmlintReferedContent) {
+		try {
+			IMarker marker = file.createMarker(RpmlintBuilder.MARKER_ID);
+			marker
+					.setAttribute(IMarker.LOCATION, file.getFullPath()
+							.toString());
+			marker.setAttribute(IMarker.MESSAGE, message);
+			marker.setAttribute(IMarker.SEVERITY, severity);
+			marker.setAttribute(
+					RpmlintMarkerResolutionGenerator.RPMLINT_ERROR_ID,
+					rpmlintID);
+			marker.setAttribute(
+					RpmlintMarkerResolutionGenerator.RPMLINT_REFERED_CONTENT,
+					rpmlintReferedContent);
+
+		} catch (CoreException e) {
+			RpmlintLog.logError(e);
+		}
+	}
+	
 	public void deleteMarkers(IResource resource) {
 		try {
 			resource.deleteMarkers(RpmlintBuilder.MARKER_ID, false, IResource.DEPTH_ZERO);
