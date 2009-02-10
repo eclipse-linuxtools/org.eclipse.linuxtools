@@ -1,3 +1,16 @@
+2009-02-10  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix for specfile defines without line number and simplification.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Put modify listener.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getVersion): Simplify tags handling by auto creating defines for them.
+	(getEpoch): Likewise.
+	(addDefine): Likewise.
+	(getRelease): Likewise.
+	(getName): Likewise.
+	(getLicense): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileDefine.java (SpecfileDefine): Create define from tag.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parse): Simplify tags handling.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (SpecfileTag): Add empty constructor.
+
 2009-02-09  Alexander Kurtakov  <akurtako@redhat.com>
 	Initial version of a form based editor.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java: New file.

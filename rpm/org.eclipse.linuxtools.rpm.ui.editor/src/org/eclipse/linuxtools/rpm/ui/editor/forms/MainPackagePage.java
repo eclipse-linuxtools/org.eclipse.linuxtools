@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -60,11 +64,29 @@ public class MainPackagePage extends FormPage {
 		client2.setLayout(gridLayout);
 
 		Label label = toolkit.createLabel(client2, "Name:", SWT.SINGLE);
-		Text text = toolkit.createText(client2, specfile.getName(),
+		final Text nameText = toolkit.createText(client2, specfile.getName(),
 				SWT.BORDER_SOLID);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		nameText.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				Text text = (Text) e.widget;
+				int lineNumber = specfile.getDefine(RpmTags.NAME.toLowerCase())
+						.getLineNumber();
+				try {
+					IRegion region = specfile.getDocument().getLineInformation(lineNumber);
+					String line = specfile.getDocument().get(region.getOffset(), region.getLength());
+				System.out.println(line);
+				System.out.println(text.getText());
+				} catch (BadLocationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		label = toolkit.createLabel(client2, "Version:");
-		text = toolkit.createText(client2, specfile.getVersion(),
+		Text text = toolkit.createText(client2, specfile.getVersion(),
 				SWT.BORDER_SOLID);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		label = toolkit.createLabel(client2, "Release:");

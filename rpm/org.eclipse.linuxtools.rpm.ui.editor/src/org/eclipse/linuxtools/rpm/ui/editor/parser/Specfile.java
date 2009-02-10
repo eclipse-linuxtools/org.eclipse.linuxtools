@@ -24,16 +24,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 
 public class Specfile {
-	String name = ""; //$NON-NLS-1$
 
-	int epoch = -1;
-
-	String version;
-
-	String release;
-	
-	String license;
-	
 	SpecfilePreamble preamble;
 	
 	SpecfilePackageContainer packages;
@@ -61,7 +52,6 @@ public class Specfile {
 
 	public Specfile(String name) {
 		this();
-		this.name = name;
 	}
 
 	public List<SpecfileSection> getSections() {
@@ -81,18 +71,11 @@ public class Specfile {
 	}
 
 	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Sets the name of this specfile. This method also
-	 * adds/updates the SpecfileDefine name.
-	 * 
-	 * @param name The name of the spec file.
-	 */
-	public void setName(String name) {
-		this.name = name;
-		addDefine(RpmTags.NAME.toLowerCase(), name);
+		SpecfileDefine define = getDefine(RpmTags.NAME.toLowerCase());
+		if (define != null){
+			return define.getStringValue();
+		}
+		return " "; //$NON-NLS-1$
 	}
 
 	public void addSection(SpecfileSection section) {
@@ -118,6 +101,10 @@ public class Specfile {
      */
     public void addDefine(SpecfileDefine define) {
 		defines.put(define.getName(), define);
+	}
+    
+    public void addDefine(SpecfileTag tag) {
+		addDefine(new SpecfileDefine(tag));
 	}
 	
 	/**
@@ -147,48 +134,19 @@ public class Specfile {
 	}
 
 	public int getEpoch() {
-		return epoch;
-	}
-
-	/**
-	 * Sets the epoch of this specfile. This method also
-	 * adds/updates the SpecfileDefine epoch.
-	 * 
-	 * @param epoch The epoch.
-	 */
-	public void setEpoch(int epoch) {
-		this.epoch = epoch;
-		addDefine(RpmTags.EPOCH.toLowerCase(), epoch);
+		SpecfileDefine define = getDefine(RpmTags.EPOCH.toLowerCase());
+		if (define != null){
+			return define.getIntValue();
+		}
+		return -1;
 	}
 
 	public String getRelease() {
-		return release;
-	}
-
-	/**
-	 * Sets the release of this specfile. This method also
-	 * adds/updates the SpecfileDefine release.
-	 * 
-	 * @param release The release.
-	 */
-	public void setRelease(String release) {
-		this.release = release;
-		addDefine(RpmTags.RELEASE.toLowerCase(), release);
+		return defines.get(RpmTags.RELEASE.toLowerCase()).getStringValue();
 	}
 
 	public String getVersion() {
-		return version;
-	}
-
-	/**
-	 * Sets the version of this specfile. This method also
-	 * adds/updates the SpecfileDefine version.
-	 * 
-	 * @param version The version.
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-		addDefine(RpmTags.VERSION.toLowerCase(), version);
+		return defines.get(RpmTags.VERSION.toLowerCase()).getStringValue();
 	}
 
 	public List<SpecfileSource> getPatches() {
@@ -269,11 +227,7 @@ public class Specfile {
 	}
 
 	public String getLicense() {
-		return license;
-	}
-
-	public void setLicense(String license) {
-		this.license = license;
+		return defines.get(RpmTags.LICENSE.toLowerCase()).getStringValue();
 	}
 
 	public SpecfilePackageContainer getPackages() {

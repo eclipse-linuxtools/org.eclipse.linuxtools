@@ -20,5 +20,17 @@ public class SpecfileDefine extends SpecfileTag {
 	public SpecfileDefine(String name, String value, Specfile specfile) {
 		super(name, value, specfile);
 	}
-	
+
+	public SpecfileDefine(SpecfileTag tag) {
+		setName(tag.getName().toLowerCase());
+		setSpecfile(tag.getSpecfile());
+		setLineNumber(tag.getLineNumber());
+		if (tag.getTagType().equals(TagType.STRING)) {
+			setStringValue(tag.getStringValue());
+		}
+		if (tag.getTagType().equals(TagType.INT)) {
+			setIntValue(tag.getIntValue());
+		}
+	}
+
 }

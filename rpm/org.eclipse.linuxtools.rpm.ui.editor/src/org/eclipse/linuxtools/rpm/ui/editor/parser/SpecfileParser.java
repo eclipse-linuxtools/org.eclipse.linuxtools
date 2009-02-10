@@ -103,25 +103,7 @@ public class SpecfileParser {
 							+ line.length());
 					if (element.getClass() == SpecfileTag.class) {
 						SpecfileTag tag = (SpecfileTag) element;
-						String name = tag.getName();
-						if (name.equals(RpmTags.EPOCH.toLowerCase())) { 
-							// Epoch
-							specfile.setEpoch(tag.getIntValue());
-						} else if (name.equals(RpmTags.NAME.toLowerCase())) { 
-							// Name
-							specfile.setName(tag.getStringValue());
-						} else if (name.equals(RpmTags.VERSION.toLowerCase())) { 
-							// Version
-							specfile.setVersion(tag.getStringValue());
-						} else if (name.equals(RpmTags.RELEASE.toLowerCase())) { 
-							// Release
-							specfile.setRelease(tag.getStringValue());
-						} else if (name.equals(RpmTags.LICENSE.toLowerCase())) {
-							// License
-							specfile.setLicense(tag.getStringValue());
-						} else if (name.equals(RpmTags.SUMMARY.toLowerCase())) {
-							specfile.addDefine(RpmTags.SUMMARY.toLowerCase(), tag.getStringValue());
-						}
+						specfile.addDefine(tag);
 					} else if ((element.getClass() == SpecfilePatchMacro.class)) {
 						SpecfilePatchMacro thisPatchMacro = (SpecfilePatchMacro) element;
 						if (thisPatchMacro != null) {

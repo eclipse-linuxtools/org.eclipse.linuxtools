@@ -20,6 +20,10 @@ public class SpecfileTag extends SpecfileElement {
 	String stringValue;
 	int intValue;
 	
+	public SpecfileTag(){
+		// Empty constructor
+	}
+	
 	public SpecfileTag(String name, String value, Specfile specfile) {
 		setName(name);
 		this.stringValue = value;
