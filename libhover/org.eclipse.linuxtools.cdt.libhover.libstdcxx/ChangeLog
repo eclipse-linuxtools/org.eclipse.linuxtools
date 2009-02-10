@@ -1,3 +1,7 @@
+2009-02-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* toc.xml: Add missing toc file referenced by plugin. 
+
 2009-02-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Initial creation.
