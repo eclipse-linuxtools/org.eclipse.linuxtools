@@ -256,122 +256,127 @@ public class LibHover implements ICHelpProvider {
         
         String className = null;
         
-        if (t.isCXXLanguage()) {
-        	isCPP = true;
-        	try {
-        		// We use reflection to cast the context to ICHelpInvocationContextExtended as this is
-        		// not guaranteed to be in CDT except in Fedora.  We need ICHelpInvocationExtended to get
-        		// the document region.  Otherwise, we have no way of doing C++ hover help/completion because
-        		// we need to figure out the class name which is not given to us.
-        		Class<? extends ICHelpInvocationContext> contextClass = context.getClass();
-        		Class[] interfaces = contextClass.getInterfaces();
-        		for (int i = 0; i < interfaces.length; ++i) {
-        			if (interfaces[i].getName().contains("ICHelpInvocationContextExtended")) // $NON-NLS-1$ 
-        				contextClass = interfaces[i];
-        		}
-        		Method getRegion = contextClass.getMethod("getHoverRegion", (Class<?>[])null);  // $NON-NLS-1$
-        		IRegion region = (IRegion)getRegion.invoke(context, (Object[])null);
-        		char[] contents = t.getCodeReader().buffer;
-				int i = region.getOffset();
-				if (i > 2 && contents[i-1] == '>' && contents[i-2] == '-') {
-					// Pointer reference
-					int j = i - 3;
-					int pointer = 0;
-					while (j > 0 && isCPPCharacter(contents[j])) {
-						pointer = j;
-						--j;
-					}
-					if (pointer != 0) {
-						offset = pointer;
-						length = region.getOffset() - pointer - 2;
-						isPTR = true;
-//						String pointerName = new String(contents, pointer, region.getOffset() - pointer - 2);
-//						System.out.println("pointer reference to " + pointerName);
-					}
-				} else if (i > 1 && contents[i-1] == '.') {
-					int j = i - 2;
-					int ref = 0;
-					while (j > 0 && isCPPCharacter(contents[j])) {
-						ref = j;
-						--j;
-					}
-					if (ref != 0) {
-						offset = ref;
-						length = region.getOffset() - ref - 1;
-						isREF = true;
-//						String refName = new String(contents, ref, region.getOffset() - ref - 1);
-//						System.out.println("regular reference to " + refName);
-					}
-				}
-				final IASTName[] result= {null};
-				final int toffset = offset;
-				final int tlength = length;
-
-				if (isPTR || isREF) {
-					EnclosingASTNameJob job = new EnclosingASTNameJob(t, toffset, tlength);
-					job.schedule();
-					try {
-						job.join();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (job.getResult() == Status.OK_STATUS)
-						result[0] = job.getASTName();
-				}
-
-				final IASTName[][] decl = {null};
-				if (result[0] != null) {
-					final IBinding binding = result[0].getBinding();
-					ASTDeclarationFinderJob job = new ASTDeclarationFinderJob(t, binding);
-					job.schedule();
-					try {
-						job.join();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (job.getResult() == Status.OK_STATUS) {
-						decl[0] = job.getDeclarations();
-					}
-				}
-				
-				IASTNode n = null;
-				if (decl[0] != null && decl[0].length > 0) {
-					n = decl[0][0];
-					while (n != null && !(n instanceof IASTSimpleDeclaration)) {
-						n = n.getParent();
-					}
-				}
-
-				if (n != null) {
-					IASTSimpleDeclaration d = (IASTSimpleDeclaration)n;
-					IASTDeclSpecifier s = d.getDeclSpecifier();
-					if (s instanceof IASTNamedTypeSpecifier) {
-						IASTName astName = ((IASTNamedTypeSpecifier)s).getName();
-						if (astName != null)
-							className = astName.toString();
-					}
-				}
-			    
-//				System.out.println("classname is " + className);
-        	} catch (NoSuchMethodException e) {
-        		// do nothing...we don't have enough info to do C++ members
-        	} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+        // FIXME: Uncomment following code out for CDT 6.0 to support C++ hover.
+        
+//        if (t.isCXXLanguage()) {
+//        	isCPP = true;
+//        	try {
+//        		// We use reflection to cast the context to ICHelpInvocationContextExtended as this is
+//        		// not guaranteed to be in CDT except in Fedora.  We need ICHelpInvocationExtended to get
+//        		// the document region.  Otherwise, we have no way of doing C++ hover help/completion because
+//        		// we need to figure out the class name which is not given to us.
+//        		Class<? extends ICHelpInvocationContext> contextClass = context.getClass();
+//        		Class[] interfaces = contextClass.getInterfaces();
+//        		for (int i = 0; i < interfaces.length; ++i) {
+//        			if (interfaces[i].getName().contains("ICHelpInvocationContextExtended")) // $NON-NLS-1$ 
+//        				contextClass = interfaces[i];
+//        		}
+//        		Method getRegion = contextClass.getMethod("getHoverRegion", (Class<?>[])null);  // $NON-NLS-1$
+//        		IRegion region = (IRegion)getRegion.invoke(context, (Object[])null);
+//        		char[] contents = t.getCodeReader().buffer;
+//				int i = region.getOffset();
+//				if (i > 2 && contents[i-1] == '>' && contents[i-2] == '-') {
+//					// Pointer reference
+//					int j = i - 3;
+//					int pointer = 0;
+//					while (j > 0 && isCPPCharacter(contents[j])) {
+//						pointer = j;
+//						--j;
+//					}
+//					if (pointer != 0) {
+//						offset = pointer;
+//						length = region.getOffset() - pointer - 2;
+//						isPTR = true;
+////						String pointerName = new String(contents, pointer, region.getOffset() - pointer - 2);
+////						System.out.println("pointer reference to " + pointerName);
+//					}
+//				} else if (i > 1 && contents[i-1] == '.') {
+//					int j = i - 2;
+//					int ref = 0;
+//					while (j > 0 && isCPPCharacter(contents[j])) {
+//						ref = j;
+//						--j;
+//					}
+//					if (ref != 0) {
+//						offset = ref;
+//						length = region.getOffset() - ref - 1;
+//						isREF = true;
+////						String refName = new String(contents, ref, region.getOffset() - ref - 1);
+////						System.out.println("regular reference to " + refName);
+//					}
+//				}
+//				final IASTName[] result= {null};
+//				final int toffset = offset;
+//				final int tlength = length;
+//
+//				if (isPTR || isREF) {
+//					EnclosingASTNameJob job = new EnclosingASTNameJob(t, toffset, tlength);
+//					job.schedule();
+//					try {
+//						job.join();
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					if (job.getResult() == Status.OK_STATUS)
+//						result[0] = job.getASTName();
+//				}
+//
+//				final IASTName[][] decl = {null};
+//				if (result[0] != null) {
+//					final IBinding binding = result[0].getBinding();
+//					ASTDeclarationFinderJob job = new ASTDeclarationFinderJob(t, binding);
+//					job.schedule();
+//					try {
+//						job.join();
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					if (job.getResult() == Status.OK_STATUS) {
+//						decl[0] = job.getDeclarations();
+//					}
+//				}
+//				
+//				IASTNode n = null;
+//				if (decl[0] != null && decl[0].length > 0) {
+//					n = decl[0][0];
+//					while (n != null && !(n instanceof IASTSimpleDeclaration)) {
+//						n = n.getParent();
+//					}
+//				}
+//
+//				if (n != null) {
+//					IASTSimpleDeclaration d = (IASTSimpleDeclaration)n;
+//					IASTDeclSpecifier s = d.getDeclSpecifier();
+//					if (s instanceof IASTNamedTypeSpecifier) {
+//						IASTName astName = ((IASTNamedTypeSpecifier)s).getName();
+//						if (astName != null)
+//							className = astName.toString();
+//					}
+//				}
+//			    
+////				System.out.println("classname is " + className);
+//        	} catch (NoSuchMethodException e) {
+//        		// do nothing...we don't have enough info to do C++ members
+//        	} catch (IllegalArgumentException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IllegalAccessException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (InvocationTargetException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//        }
         	
         // Loop through all the documents we have and report first match.
         for (int i = 0; i < helpBooks.length; ++i) {
         	LibHoverLibrary l = libraries.get(helpBooks[i]);
+        	// FIXME: remove following 2 lines when CDT 6.0 to enable C++ hover.
+        	if (l.isCPP())
+        		continue;
         	if (name != null) {
         		if (className != null) {
         			if (l.isCPP())

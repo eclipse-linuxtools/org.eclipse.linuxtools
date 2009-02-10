@@ -1,3 +1,8 @@
+2009-02-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java (getFunctionInfo): Disable
+	C++ support for time-being as it is not supported in CDT 5.x.
+
 2009-02-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* schema/org.eclipse.linuxtools.cdt.libhover.library.exsd: Change description for
