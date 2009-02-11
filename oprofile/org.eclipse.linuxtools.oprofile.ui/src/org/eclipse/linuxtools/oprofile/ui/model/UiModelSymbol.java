@@ -11,8 +11,6 @@
 package org.eclipse.linuxtools.oprofile.ui.model;
 
 import java.io.File;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSample;
@@ -57,20 +55,8 @@ public class UiModelSymbol implements IUiModelElement {
 	
 	@Override
 	public String toString() {
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		if (nf instanceof DecimalFormat) {
-			nf.setMinimumFractionDigits(2);
-			nf.setMaximumFractionDigits(2);
-		}
-
 		double countPercentage = (double)_symbol.getCount() / (double)_totalCount;
-		
-		String percentage;
-		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-			percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
-		} else {
-			percentage = nf.format(countPercentage);
-		}
+		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 		
 		//a hack to get `basename` type functionality
 		String fileName = (new File(_symbol.getFile())).getName();

@@ -12,6 +12,9 @@
 
 package org.eclipse.linuxtools.oprofile.ui;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -43,6 +46,8 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif"; //$NON-NLS-1$
 	
 	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
+	
+	public static final String ANNOTATION_TYPE_LT_MIN_PERCENTAGE = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.min.pct"; //$NON-NLS-1$
 	
 	
 	/**
@@ -112,5 +117,19 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 			return window.getShell();
 		}
 		return null;
+	}
+	
+	public static String getPercentageString(double percentage) {
+		NumberFormat nf = NumberFormat.getPercentInstance();
+		if (nf instanceof DecimalFormat) {
+			nf.setMinimumFractionDigits(2);
+			nf.setMaximumFractionDigits(2);
+		}
+		
+		if (percentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
+			return "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
+		} else {
+			return nf.format(percentage);
+		}
 	}
 }

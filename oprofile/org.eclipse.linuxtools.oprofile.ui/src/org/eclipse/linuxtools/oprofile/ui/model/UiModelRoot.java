@@ -20,12 +20,12 @@ import org.eclipse.swt.graphics.Image;
  */
 public class UiModelRoot implements IUiModelElement {
 	private static UiModelRoot _uiModelRoot = new UiModelRoot();	//singleton
-	private UiModelEvent[] _events;									//this node's children
+	private UiModelEvent[] _events = null;							//this node's children
 
 
 	/** constructor, private for singleton use **/
 	private UiModelRoot() {
-		refreshModel();
+//		refreshModel();
 		_uiModelRoot = this;
 	}
 	
@@ -64,7 +64,7 @@ public class UiModelRoot implements IUiModelElement {
 	}
 
 	public boolean hasChildren() {
-		return (_events.length == 0 ? false : true);
+		return (_events == null || _events.length == 0 ? false : true);
 	}
 
 	public IUiModelElement getParent() {

@@ -10,9 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.model;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSymbol;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
@@ -59,19 +56,8 @@ public class UiModelImage implements IUiModelElement {
 		if (_image.getCount() == OpModelImage.IMAGE_PARSE_ERROR) {
 			return OprofileUiMessages.getString("opxmlParse.error.multipleImages"); //$NON-NLS-1$
 		} else {
-			NumberFormat nf = NumberFormat.getPercentInstance();
-			if (nf instanceof DecimalFormat) {
-				nf.setMinimumFractionDigits(2);
-				nf.setMaximumFractionDigits(2);
-			}
 			double countPercentage = (double)(_image.getCount() - _depCount) / (double)_totalCount;
-			
-			String percentage;
-			if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
-				percentage = "<" + nf.format(OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE); //$NON-NLS-1$
-			} else {
-				percentage = nf.format(countPercentage);
-			}
+			String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 			
 			return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _image.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
