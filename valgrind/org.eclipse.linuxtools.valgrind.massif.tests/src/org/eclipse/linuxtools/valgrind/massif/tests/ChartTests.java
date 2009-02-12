@@ -21,7 +21,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.linuxtools.valgrind.massif.MassifToolPage;
+import org.eclipse.linuxtools.valgrind.massif.MassifLaunchConstants;
 import org.eclipse.linuxtools.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.valgrind.massif.birt.ChartEditorInput;
 import org.eclipse.linuxtools.valgrind.massif.birt.HeapChart;
@@ -77,7 +77,7 @@ public class ChartTests extends AbstractMassifTest {
 		ILaunchConfiguration config = createConfiguration(bin);
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, String.valueOf(bytes) + " " + String.valueOf(times)); //$NON-NLS-1$
-		wc.setAttribute(MassifToolPage.ATTR_MASSIF_TIMEUNIT, MassifToolPage.TIME_B);
+		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, MassifLaunchConstants.TIME_B);
 		config = wc.doSave();
 		
 		config.launch(ILaunchManager.PROFILE_MODE, null, true);

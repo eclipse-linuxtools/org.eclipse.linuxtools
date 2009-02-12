@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.linuxtools.valgrind.core.utils.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
@@ -29,7 +29,7 @@ public class AbstractMemcheckTest extends AbstractTest {
 
 	@Override
 	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc)
-			throws CoreException {
+	throws CoreException {
 		ILaunchConfigurationTab tab = new ValgrindOptionsTab();
 		tab.setDefaults(wc);
 		tab = ValgrindLaunchPlugin.getDefault().getToolPage(MemcheckPlugin.TOOL_ID);
@@ -41,7 +41,7 @@ public class AbstractMemcheckTest extends AbstractTest {
 	protected ILaunchConfigurationType getLaunchConfigType() {
 		return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
 	}
-	
+
 	protected ICProject createProject(String projname) throws CoreException, URISyntaxException, InvocationTargetException, InterruptedException, IOException {
 		return createProject(MemcheckTestsPlugin.getDefault().getBundle(), projname);
 	}

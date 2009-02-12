@@ -1,4 +1,30 @@
-2009-02-02  ebaron  <ebaron@toriamos.yyz.redhat.com>
+2009-02-12  Elliott Baron  <ebaron@redhat.com>
+
+	* schema/org.eclipse.linuxtools.valgrind.launch.valgrindTools.exsd: Renamed.
+	* schema/outputDirectoryProviders.exsd: New file.
+	* schema/valgrindTools.exsd: New file.
+	* IValgrindOutputDirectoryProvider.java: New file.
+	* ValgrindOutputDirectoryProvider.java: New file.
+	* META-INF/MANIFEST.MF: Removed core.util import.
+	* plugin.properties: New key for new extension point.
+	* plugin.xml: New extension point for output directory handling.
+	* IValgrindLaunchDelegate.java: Passing ValgrindCommand removed.
+	* messages.properties: New keys.
+	* ValgrindLaunchConfigurationDelegate.java
+	(verifyOutputPath): Retrieve path for output directory, optionally from extension point.
+	(launch): New output directory handling, store command line in IProcess, removed passing
+	of ValgrindCommand to tool extension.
+	* ValgrindLaunchPlugin.java (getOutputDirectoryProvider): Retrieve path for output directory,
+	optionally from extension point.
+	* ValgrindLaunchShortcut.java: Update with refactored constants.
+	* ValgrindOptionsTab.java
+	(setDefaults): Refactoring.
+	(performApply): Likewise.
+	(initializeFrom): Likewise.
+	(createToolCombo): Switch toolsCombo from SelectionListener to ModifyListener. 
+	(setOutputDirectory): Store output directory in launch config.
+
+2009-02-02  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindLaunchConfigurationDelegate: Use DebugUITools to retrieve IProcess'
 	console. 

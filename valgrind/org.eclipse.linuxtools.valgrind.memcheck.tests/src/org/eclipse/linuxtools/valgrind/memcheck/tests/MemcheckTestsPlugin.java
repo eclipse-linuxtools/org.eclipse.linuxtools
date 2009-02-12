@@ -10,10 +10,10 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class MemcheckTestsPlugin extends Plugin {
+public class MemcheckTestsPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.memcheck.tests"; //$NON-NLS-1$

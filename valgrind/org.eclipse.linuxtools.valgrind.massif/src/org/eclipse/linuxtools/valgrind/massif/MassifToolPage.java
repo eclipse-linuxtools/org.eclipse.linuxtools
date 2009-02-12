@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.valgrind.massif;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -42,11 +41,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		implements IValgrindToolPage {
 	public static final String MASSIF = "massif"; //$NON-NLS-1$
 	public static final String PLUGIN_ID = MassifPlugin.PLUGIN_ID;
-	
-	public static final String TIME_I = "i"; //$NON-NLS-1$
-	public static final String TIME_MS = "ms"; //$NON-NLS-1$
-	public static final String TIME_B = "B"; //$NON-NLS-1$
-	
+		
 	// Massif controls
 	protected Button heapButton;
 	protected Spinner heapAdminSpinner;
@@ -59,21 +54,6 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	protected Spinner detailedFreqSpinner;
 	protected Spinner maxSnapshotsSpinner;
 	protected Spinner alignmentSpinner;
-	
-	// LaunchConfiguration attributes
-	public static final String ATTR_MASSIF_OUTFILE = PLUGIN_ID + ".MASSIF_OUTFILE"; //$NON-NLS-1$
-	
-	public static final String ATTR_MASSIF_HEAP = PLUGIN_ID + ".MASSIF_HEAP"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_HEAPADMIN = PLUGIN_ID + ".MASSIF_HEAPADMIN"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_STACKS = PLUGIN_ID + ".MASSIF_STACKS"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_DEPTH = PLUGIN_ID + ".MASSIF_DEPTH"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_ALLOCFN = PLUGIN_ID + ".MASSIF_ALLOCFN"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_THRESHOLD = PLUGIN_ID + ".MASSIF_THRESHOLD"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_PEAKINACCURACY = PLUGIN_ID + ".MASSIF_PEAKINACCURACY"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_TIMEUNIT = PLUGIN_ID + ".MASSIF_TIMEUNIT"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_DETAILEDFREQ = PLUGIN_ID + ".MASSIF_DETAILEDFREQ"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_MAXSNAPSHOTS = PLUGIN_ID + ".MASSIF_MAXSNAPSHOTS"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_ALIGNMENT = PLUGIN_ID + ".MASSIF_ALIGNMENT"; //$NON-NLS-1$
 	
 	protected boolean isInitializing = false;
 	protected SelectionListener selectListener = new SelectionAdapter() {
@@ -276,27 +256,27 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		isInitializing = true;
 		try {
-			heapButton.setSelection(configuration.getAttribute(ATTR_MASSIF_HEAP, true));
-			heapAdminSpinner.setSelection(configuration.getAttribute(ATTR_MASSIF_HEAPADMIN, 8));
-			stacksButton.setSelection(configuration.getAttribute(ATTR_MASSIF_STACKS, false));
-			depthSpinner.setSelection(configuration.getAttribute(ATTR_MASSIF_DEPTH, 30));
-			java.util.List<String> allocFns = configuration.getAttribute(ATTR_MASSIF_ALLOCFN, Collections.EMPTY_LIST);
+			heapButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP));
+			heapAdminSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN));
+			stacksButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, MassifLaunchConstants.DEFAULT_MASSIF_STACKS));
+			depthSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DEPTH, MassifLaunchConstants.DEFAULT_MASSIF_DEPTH));
+			java.util.List<String> allocFns = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALLOCFN, MassifLaunchConstants.DEFAULT_MASSIF_ALLOCFN);
 			allocFnList.setItems(allocFns.toArray(new String[allocFns.size()]));
-			thresholdSpinner.setSelection(configuration.getAttribute(ATTR_MASSIF_THRESHOLD, 10));
-			peakInaccuracySpinner.setSelection(configuration.getAttribute(ATTR_MASSIF_PEAKINACCURACY, 10));
-			String timeUnit = configuration.getAttribute(ATTR_MASSIF_TIMEUNIT, TIME_I);
-			if (timeUnit.equals(TIME_I)) {
+			thresholdSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_THRESHOLD, MassifLaunchConstants.DEFAULT_MASSIF_THRESHOLD));
+			peakInaccuracySpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PEAKINACCURACY, MassifLaunchConstants.DEFAULT_MASSIF_PEAKINACCURACY));
+			String timeUnit = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, MassifLaunchConstants.DEFAULT_MASSIF_TIMEUNIT);
+			if (timeUnit.equals(MassifLaunchConstants.TIME_I)) {
 				timeUnitCombo.select(0);
 			}
-			else if (timeUnit.equals(TIME_MS)) {
+			else if (timeUnit.equals(MassifLaunchConstants.TIME_MS)) {
 				timeUnitCombo.select(1);
 			}
 			else {
 				timeUnitCombo.select(2);
 			}
-			detailedFreqSpinner.setSelection(configuration.getAttribute(ATTR_MASSIF_DETAILEDFREQ, 10));
-			maxSnapshotsSpinner.setSelection(configuration.getAttribute(ATTR_MASSIF_MAXSNAPSHOTS, 100));
-			int alignment = configuration.getAttribute(ATTR_MASSIF_ALIGNMENT, 8);
+			detailedFreqSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, MassifLaunchConstants.DEFAULT_MASSIF_DETAILEDFREQ));
+			maxSnapshotsSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS));
+			int alignment = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT);
 			alignmentSpinner.setSelection(alignment);
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -305,42 +285,60 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ATTR_MASSIF_HEAP, heapButton.getSelection());
-		configuration.setAttribute(ATTR_MASSIF_HEAPADMIN, heapAdminSpinner.getSelection());
-		configuration.setAttribute(ATTR_MASSIF_STACKS, stacksButton.getSelection());
-		configuration.setAttribute(ATTR_MASSIF_DEPTH, depthSpinner.getSelection());
-		configuration.setAttribute(ATTR_MASSIF_ALLOCFN, Arrays.asList(allocFnList.getItems()));
-		configuration.setAttribute(ATTR_MASSIF_THRESHOLD, thresholdSpinner.getSelection());
-		configuration.setAttribute(ATTR_MASSIF_PEAKINACCURACY, peakInaccuracySpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, heapButton.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, heapAdminSpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, stacksButton.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DEPTH, depthSpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALLOCFN, Arrays.asList(allocFnList.getItems()));
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_THRESHOLD, thresholdSpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_PEAKINACCURACY, peakInaccuracySpinner.getSelection());
 		int ix = timeUnitCombo.getSelectionIndex();
 		String value;
 		if (ix == 0) {
-			value = TIME_I;
+			value = MassifLaunchConstants.TIME_I;
 		}
 		else if (ix == 1) {
-			value = TIME_MS;
+			value = MassifLaunchConstants.TIME_MS;
 		}
 		else {
-			value = TIME_B;
+			value = MassifLaunchConstants.TIME_B;
 		}
-		configuration.setAttribute(ATTR_MASSIF_TIMEUNIT, value);
-		configuration.setAttribute(ATTR_MASSIF_DETAILEDFREQ, detailedFreqSpinner.getSelection());
-		configuration.setAttribute(ATTR_MASSIF_MAXSNAPSHOTS, maxSnapshotsSpinner.getSelection());
-		configuration.setAttribute(ATTR_MASSIF_ALIGNMENT, alignmentSpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, value);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, detailedFreqSpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, maxSnapshotsSpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, alignmentSpinner.getSelection());
 	}
 
+	@Override
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		setErrorMessage(null);
+		
+		boolean result = false;
+		try {
+			int alignment = launchConfig.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT);
+			result = (alignment & (alignment - 1)) == 0; // is power of two?
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		
+		if (!result) {
+			setErrorMessage(Messages.getString("MassifToolPage.Alignment_must_be_power_2")); //$NON-NLS-1$
+		}
+		return result;
+	}
+	
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(ATTR_MASSIF_HEAP, true);
-		configuration.setAttribute(ATTR_MASSIF_HEAPADMIN, 8);
-		configuration.setAttribute(ATTR_MASSIF_STACKS, false);
-		configuration.setAttribute(ATTR_MASSIF_DEPTH, 30);
-		configuration.setAttribute(ATTR_MASSIF_ALLOCFN, Collections.EMPTY_LIST);
-		configuration.setAttribute(ATTR_MASSIF_THRESHOLD, 10);
-		configuration.setAttribute(ATTR_MASSIF_PEAKINACCURACY, 10);
-		configuration.setAttribute(ATTR_MASSIF_TIMEUNIT, TIME_I);
-		configuration.setAttribute(ATTR_MASSIF_DETAILEDFREQ, 10);
-		configuration.setAttribute(ATTR_MASSIF_MAXSNAPSHOTS, 100);
-		configuration.setAttribute(ATTR_MASSIF_ALIGNMENT, 8);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, MassifLaunchConstants.DEFAULT_MASSIF_STACKS);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DEPTH, MassifLaunchConstants.DEFAULT_MASSIF_DEPTH);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALLOCFN, MassifLaunchConstants.DEFAULT_MASSIF_ALLOCFN);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_THRESHOLD, MassifLaunchConstants.DEFAULT_MASSIF_THRESHOLD);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_PEAKINACCURACY, MassifLaunchConstants.DEFAULT_MASSIF_PEAKINACCURACY);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, MassifLaunchConstants.DEFAULT_MASSIF_TIMEUNIT);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, MassifLaunchConstants.DEFAULT_MASSIF_DETAILEDFREQ);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT);
 	}
 	
 	protected void createHorizontalSpacer(Composite comp, int numlines) {

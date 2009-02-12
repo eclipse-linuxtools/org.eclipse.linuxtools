@@ -1,3 +1,17 @@
+2009-02-12  Elliott Baron  <ebaron@redhat.com>
+
+	* resources/basicTest/test suppfile.supp: New file.
+	* resources/basicTest/testsuppfile.supp: New file.
+	* LaunchConfigTabTest.java: New file.
+	* MemcheckLaunchMockPlugin.java: New file.
+	* MemcheckTestToolPage.java: New file.
+	* META-INF/MANIFEST.MF: Added ui.console import.
+	* resources/basicTest/test.c: Removed useless statement.
+	* AbstractMemcheckTest.java: Refactoring. 
+	* AllTests.java: Added LaunchConfigTabTest. 
+	* MarkerTest.java (getTopWorkspaceFrame): Changed to getAbsolutePath. 
+	* MemcheckTestsPlugin.java: Extend AbstractUIPlugin instead of Plugin.
+
 2009-02-03  Elliott Baron  <ebaron@redhat.com>
 
 	* LaunchConfigTabTest: Removed for now.

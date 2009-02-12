@@ -10,7 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.launch;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -25,30 +24,31 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.valgrind.core.PluginConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.launch"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = PluginConstants.LAUNCH_PLUGIN_ID;
 	public static final String LAUNCH_ID = PLUGIN_ID + ".valgrindLaunch"; //$NON-NLS-1$
-	
+
 	// Extension point constants
-	public static final String TOOL_EXT_ID = "valgrindTools"; //$NON-NLS-1$
-	public static final String TOOL_EXT_DEFAULT = PLUGIN_ID + ".memcheck"; //$NON-NLS-1$
-	
-	protected static final String EXT_ELEMENT = "tool"; //$NON-NLS-1$
+	protected static final String EXT_ELEMENT_TOOL = "tool"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_NAME = "name"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_ID = "id"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_PAGE = "page"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_DELEGATE = "delegate"; //$NON-NLS-1$
-	
+
+	protected static final String EXT_ELEMENT_PROVIDER = "provider"; //$NON-NLS-1$
+	protected static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
+
 	protected HashMap<String, IConfigurationElement> toolMap; 
-	
+
 	// The shared instance
 	private static ValgrindLaunchPlugin plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -81,12 +81,12 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	public static ValgrindLaunchPlugin getDefault() {
 		return plugin;
 	}
-	
+
 	public String[] getRegisteredToolIDs() {
 		Set<String> ids = getToolMap().keySet();
 		return ids.toArray(new String[ids.size()]);
 	}
-	
+
 	public String getToolName(String id) {
 		String name = null;
 		IConfigurationElement config = getToolMap().get(id);
@@ -95,7 +95,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		}
 		return name;
 	}
-	
+
 	public IValgrindToolPage getToolPage(String id) throws CoreException {
 		IValgrindToolPage tab = null;
 		IConfigurationElement config = getToolMap().get(id);
@@ -110,7 +110,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		}
 		return tab;
 	}
-	
+
 	public IValgrindLaunchDelegate getToolDelegate(String id) throws CoreException {
 		IValgrindLaunchDelegate delegate = null;
 		IConfigurationElement config = getToolMap().get(id);
@@ -125,32 +125,49 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		}
 		return delegate;
 	}
-	
-	public File parseWSPath(String strpath) throws CoreException {
-		strpath = LaunchUtils.getStringVariableManager().performStringSubstitution(strpath);
-		IPath path = new Path(strpath);
-		File suppfile = null;
-		if (path.isAbsolute()) {
-			suppfile = new File(path.toOSString());
-		}
-		else {
-			IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-			if (res != null) {
-				IPath absPath = res.getLocation();
-				if (absPath != null) {
-					suppfile = absPath.toFile();
+
+	public IValgrindOutputDirectoryProvider getOutputDirectoryProvider() throws CoreException {
+		IValgrindOutputDirectoryProvider provider = null;
+		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, PluginConstants.OUTPUT_DIR_EXT_ID);
+
+		// if we find more than one provider just take the first one
+		IConfigurationElement[] configs = extPoint.getConfigurationElements();
+		for (int i = 0; i < configs.length && provider == null; i++) {
+			IConfigurationElement config = configs[i];
+			if (config.getName().equals(EXT_ELEMENT_PROVIDER)) {
+				Object obj = config.createExecutableExtension(EXT_ATTR_CLASS);
+				if (obj instanceof IValgrindOutputDirectoryProvider) {
+					provider = (IValgrindOutputDirectoryProvider) obj;
 				}
 			}
-		}		
-		return suppfile;
+		}
+		
+		// if no extender, use default
+		if (provider == null) {
+			provider = new ValgrindOutputDirectoryProvider();
+		}
+
+		return provider;
 	}
-	
+
+	IPath parseWSPath(String strpath) throws CoreException {
+		strpath = LaunchUtils.getStringVariableManager().performStringSubstitution(strpath);
+		IPath path = new Path(strpath);
+		if (!path.isAbsolute()) {
+			IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+			if (res != null) {
+				path = res.getLocation();
+			}
+		}		
+		return path;
+	}
+
 	protected void initializeToolMap() {
 		toolMap = new HashMap<String, IConfigurationElement>();
-		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, TOOL_EXT_ID);
+		IExtensionPoint extPoint = Platform.getExtensionRegistry().getExtensionPoint(PLUGIN_ID, PluginConstants.TOOL_EXT_ID);
 		IConfigurationElement[] configs = extPoint.getConfigurationElements();
 		for (IConfigurationElement config : configs) {
-			if (config.getName().equals(EXT_ELEMENT)) {
+			if (config.getName().equals(EXT_ELEMENT_TOOL)) {
 				String id = config.getAttribute(EXT_ATTR_ID);
 				if (id != null && config.getAttribute(EXT_ATTR_NAME) != null
 						&& config.getAttribute(EXT_ATTR_PAGE) != null
@@ -168,8 +185,4 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		return toolMap;
 	}
 
-	public String escapeAndQuote(String canonicalPath) {
-		String ret = canonicalPath.replaceAll(" ", "\\ "); //$NON-NLS-1$ //$NON-NLS-2$
-		return ret;
-	}
 }

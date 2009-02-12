@@ -81,7 +81,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 			if (expectedResource != null) {
 				File expectedFile = expectedResource.getLocation().toFile();
 				File actualFile = fileInput.getFile().getLocation().toFile();
-				assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
+				assertEquals(expectedFile, actualFile);
 			}
 			else {
 				fail();

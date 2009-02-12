@@ -76,7 +76,7 @@ public class MarkerTest extends AbstractMemcheckTest {
 			ValgrindStackFrame frame = frames.get(i);
 			String strpath = frame.getDir() + Path.SEPARATOR + frame.getFile();
 			File file = new File(strpath);
-			Path path = new Path(file.getCanonicalPath());
+			Path path = new Path(file.getAbsolutePath());
 			
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			IFile resource = root.getFileForLocation(path);

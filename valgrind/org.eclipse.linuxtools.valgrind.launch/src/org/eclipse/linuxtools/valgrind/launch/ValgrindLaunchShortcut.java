@@ -15,14 +15,16 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
+import org.eclipse.linuxtools.valgrind.core.PluginConstants;
 
 public class ValgrindLaunchShortcut extends ProfileLaunchShortcut {
 
 
 	protected void setDefaultProfileAttributes(
 			ILaunchConfigurationWorkingCopy wc) throws CoreException {
-		ValgrindOptionsTab.setDefaultGeneralAttributes(wc);
-		ILaunchConfigurationTab defaultTab = ValgrindLaunchPlugin.getDefault().getToolPage(ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
+		ValgrindOptionsTab tab = new ValgrindOptionsTab();
+		tab.setDefaults(wc);
+		ILaunchConfigurationTab defaultTab = ValgrindLaunchPlugin.getDefault().getToolPage(PluginConstants.TOOL_EXT_DEFAULT);
 		defaultTab.setDefaults(wc);
 	}
 

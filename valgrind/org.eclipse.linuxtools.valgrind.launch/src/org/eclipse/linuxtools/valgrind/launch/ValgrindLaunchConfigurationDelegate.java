@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -32,8 +33,9 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.console.ConsoleColorProvider;
+import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
+import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
-import org.eclipse.linuxtools.valgrind.core.utils.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -57,7 +59,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 	protected String toolID;
 	protected ValgrindCommand command;
-	protected File datadir;
+	protected IPath outputPath;
 	protected IValgrindLaunchDelegate dynamicDelegate;
 	protected ILaunchConfiguration config;
 	protected ILaunch launch;
@@ -69,7 +71,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		if (m == null) {
 			m = new NullProgressMonitor();
 		}
-		
+
 		SubMonitor monitor = SubMonitor.convert(m, Messages.getString("ValgrindLaunchConfigurationDelegate.Profiling_Local_CCPP_Application"), 10); //$NON-NLS-1$
 		// check for cancellation
 		if (monitor.isCanceled()) {
@@ -79,8 +81,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		this.config = config;
 		this.launch	= launch;
 		try {
-			datadir = ValgrindLaunchPlugin.getDefault().getStateLocation().toFile();
-			command = new ValgrindCommand(datadir);
+			command = new ValgrindCommand();
 
 			// find Valgrind
 			String valgrindCmd = null;
@@ -92,6 +93,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
+			outputPath = verifyOutputPath(config);
 
 			String[] arguments = getProgramArgumentsArray(config);
 
@@ -126,7 +128,8 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			command.execute(commandArray, getEnvironment(config), wd, usePty);
 			monitor.worked(3);
 			process = DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
-
+			// set the command line used
+			process.setAttribute(IProcess.ATTR_CMDLINE, command.getCommandLine());
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
 			}
@@ -143,8 +146,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				monitor.worked(1);
 
 				// pass off control to extender
-				dynamicDelegate.launch(command, config, launch, monitor.newChild(3));
-
+				dynamicDelegate.launch(config, launch, monitor.newChild(3));
 
 				// refresh view
 				ValgrindUIPlugin.getDefault().refreshView();
@@ -161,15 +163,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 				// find this process' console and write any error messages stored in the log to it
 				IOConsole console = (IOConsole) DebugUITools.getConsole(process);
-//				IConsole[] consoles = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
-//				IOConsole console = null;
-//				String procLabel = process.getLabel();
-//				for (int i = 0; i < consoles.length; i++) {
-//					String name = consoles[i].getName();
-//					if (consoles[i] instanceof IOConsole && name != null && name.contains(procLabel)) {
-//						console = (IOConsole) consoles[i];
-//					}
-//				}
 
 				if (console != null) {
 					writeErrorsToConsole(errorLog, console);
@@ -183,6 +176,18 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		} finally {
 			m.done();
 		}
+	}
+
+	protected IPath verifyOutputPath(ILaunchConfiguration config) throws CoreException {
+		IPath result = null;
+		String strPath = config.getAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, (String) null);
+		if (strPath != null) {
+			result = Path.fromOSString(strPath);
+		}
+		if (result == null) {
+			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Retrieving_location_failed"), null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+		}
+		return result;
 	}
 
 	protected void writeErrorsToConsole(String errors, IOConsole console)
@@ -207,32 +212,29 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 	protected String[] getValgrindArgumentsArray(ILaunchConfiguration config) throws CoreException, IOException {
 		ArrayList<String> opts = new ArrayList<String>();
-		opts.add(ValgrindCommand.OPT_TOOL + EQUALS + ValgrindLaunchPlugin.getDefault().getToolName(toolID));
-		opts.add(ValgrindCommand.OPT_QUIET);
-		opts.add(ValgrindCommand.OPT_LOGFILE + EQUALS + datadir.getCanonicalPath() + File.separator + LOG_FILE);
+		opts.add(CommandLineConstants.OPT_TOOL + EQUALS + ValgrindLaunchPlugin.getDefault().getToolName(toolID));
+		opts.add(CommandLineConstants.OPT_QUIET); // suppress uninteresting output
+		opts.add(CommandLineConstants.OPT_LOGFILE + EQUALS + outputPath.append(LOG_FILE).toOSString());
 
-		opts.add(ValgrindCommand.OPT_TRACECHILD + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, false) ? YES : NO));
-		opts.add(ValgrindCommand.OPT_CHILDSILENT + EQUALS + YES);//(config.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_CHILDSILENT, false) ? YES : NO));
-		//		opts.add(ValgrindCommand.OPT_TRACKFDS + EQUALS + (config.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TRACKFDS, false) ? YES : NO));
-		//		opts.add(ValgrindCommand.OPT_TIMESTAMP + EQUALS + (config.getAttribute(ValgrindLaunchPlugin.ATTR_GENERAL_TIMESTAMP, false) ? YES : NO));
-		opts.add(ValgrindCommand.OPT_FREERES + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, true) ? YES : NO));
+		opts.add(CommandLineConstants.OPT_TRACECHILD + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, LaunchConfigurationConstants.DEFAULT_GENERAL_TRACECHILD) ? YES : NO));
+		opts.add(CommandLineConstants.OPT_CHILDSILENT + EQUALS + YES); // necessary for parsing
+		opts.add(CommandLineConstants.OPT_FREERES + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_FREERES, LaunchConfigurationConstants.DEFAULT_GENERAL_FREERES) ? YES : NO));
 
-		opts.add(ValgrindCommand.OPT_DEMANGLE + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DEMANGLE, true) ? YES : NO));
-		opts.add(ValgrindCommand.OPT_NUMCALLERS + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_NUMCALLERS, 12));
-		opts.add(ValgrindCommand.OPT_ERRLIMIT + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, true) ? YES : NO));
-		opts.add(ValgrindCommand.OPT_BELOWMAIN + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, false) ? YES : NO));
-		opts.add(ValgrindCommand.OPT_MAXFRAME + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, 2000000));
+		opts.add(CommandLineConstants.OPT_DEMANGLE + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DEMANGLE, LaunchConfigurationConstants.DEFAULT_GENERAL_DEMANGLE) ? YES : NO));
+		opts.add(CommandLineConstants.OPT_NUMCALLERS + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_NUMCALLERS, LaunchConfigurationConstants.DEFAULT_GENERAL_NUMCALLERS));
+		opts.add(CommandLineConstants.OPT_ERRLIMIT + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, LaunchConfigurationConstants.DEFAULT_GENERAL_ERRLIMIT) ? YES : NO));
+		opts.add(CommandLineConstants.OPT_BELOWMAIN + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN) ? YES : NO));
+		opts.add(CommandLineConstants.OPT_MAXFRAME + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME));
 
-		String strpath = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, EMPTY_STRING);
+		String strpath = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE);
 		if (!strpath.equals(EMPTY_STRING)) {
-			File suppfile = ValgrindLaunchPlugin.getDefault().parseWSPath(strpath);
+			IPath suppfile = ValgrindLaunchPlugin.getDefault().parseWSPath(strpath);
 			if (suppfile != null) {
-				String escapedPath = ValgrindLaunchPlugin.getDefault().escapeAndQuote(suppfile.getCanonicalPath());
-				opts.add(ValgrindCommand.OPT_SUPPFILE + EQUALS + escapedPath);
+				opts.add(CommandLineConstants.OPT_SUPPFILE + EQUALS + suppfile.toOSString());
 			}
 		}
 
-		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(command, config)));		
+		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config)));		
 
 		String[] ret = new String[opts.size()];
 		return opts.toArray(ret);
@@ -253,7 +255,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	//	}
 
 	protected String getTool(ILaunchConfiguration config) throws CoreException {
-		return config.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, ValgrindLaunchPlugin.TOOL_EXT_DEFAULT);
+		return config.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, LaunchConfigurationConstants.DEFAULT_TOOL);
 	}
 
 	@Override
@@ -263,14 +265,23 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 	protected String readLogs() throws IOException {
 		StringBuffer buf = new StringBuffer();
-		File[] logs = command.getDatadir().listFiles(LOG_FILTER);
-		for (int i = 0; i < logs.length; i++) {
-			BufferedReader br = new BufferedReader(new FileReader(logs[i]));
-			String line;
-			while ((line = br.readLine()) != null) {
-				buf.append(line);
-				buf.append('\n');
+		BufferedReader br = null;
+		try {
+			File[] logs = outputPath.toFile().listFiles(LOG_FILTER);
+			for (int i = 0; i < logs.length; i++) {
+				br = new BufferedReader(new FileReader(logs[i]));
+				String line;
+				while ((line = br.readLine()) != null) {
+					buf.append(line);
+					buf.append('\n');
+				}
+				br.close();
 			}
+		} catch (IOException e) {
+			if (br != null) {
+				br.close();
+			}
+			throw e;
 		}
 		return buf.toString();
 	}
@@ -282,5 +293,4 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			}							
 		});
 	}
-
 }

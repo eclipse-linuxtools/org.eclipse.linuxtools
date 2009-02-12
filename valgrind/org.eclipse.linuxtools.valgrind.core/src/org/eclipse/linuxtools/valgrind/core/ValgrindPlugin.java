@@ -16,7 +16,7 @@ import org.osgi.framework.BundleContext;
 public class ValgrindPlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.core"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = PluginConstants.CORE_PLUGIN_ID;
 
 	// The shared instance
 	private static ValgrindPlugin plugin;

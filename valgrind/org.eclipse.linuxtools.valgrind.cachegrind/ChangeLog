@@ -1,3 +1,11 @@
+2009-02-12  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindCommandConstants.java: New file.
+	* CachegrindLaunchConstants.java: New file.
+	* CachegrindLaunchDelegate.java: Better output directory path handling, command line 
+	arguments extracted to CachegrindCommandConstants.
+	* CachegrindToolPage.java: Launch config constants extracted to CachegrindLaunchConstants.
+
 2009-01-22  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindViewPart: Added sorting to TreeViewer, full event names

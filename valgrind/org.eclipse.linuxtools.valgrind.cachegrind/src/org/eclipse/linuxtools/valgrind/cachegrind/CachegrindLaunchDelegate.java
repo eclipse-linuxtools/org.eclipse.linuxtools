@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
@@ -38,22 +38,14 @@ public class CachegrindLaunchDelegate extends
 		}
 	};
 	
-	// Valgrind program arguments
-	public static final String OPT_CACHEGRIND_OUTFILE = "--cachegrind-out-file"; //$NON-NLS-1$
-	public static final String OPT_I1 = "--I1"; //$NON-NLS-1$
-	public static final String OPT_D1 = "--D1"; //$NON-NLS-1$
-	public static final String OPT_L2 = "--L2"; //$NON-NLS-1$
-	public static final String OPT_CACHE_SIM = "--cache-sim"; //$NON-NLS-1$
-	public static final String OPT_BRANCH_SIM = "--branch-sim"; //$NON-NLS-1$
-	
 	private static final String COMMA = ","; //$NON-NLS-1$
 	
-	public void launch(ValgrindCommand command, ILaunchConfiguration config,
-			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	public void launch(ILaunchConfiguration config,	ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(Messages.getString("CachegrindLaunchDelegate.Parsing_Cachegrind_Output"), 3); //$NON-NLS-1$
 			
-			File[] cachegrindOutputs = command.getDatadir().listFiles(CACHEGRIND_FILTER);
+			IPath outputPath = verifyOutputPath(config);
+			File[] cachegrindOutputs = outputPath.toFile().listFiles(CACHEGRIND_FILTER);
 			parseOutput(cachegrindOutputs, monitor);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,31 +72,27 @@ public class CachegrindLaunchDelegate extends
 		monitor.worked(1);
 	}
 	
-	public String[] getCommandArray(ValgrindCommand command,
-			ILaunchConfiguration config) throws CoreException {
+	public String[] getCommandArray(ILaunchConfiguration config) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
-		try {
-			opts.add(OPT_CACHEGRIND_OUTFILE + EQUALS + command.getDatadir().getCanonicalPath() + File.separator + OUT_FILE);
-			opts.add(OPT_CACHE_SIM + EQUALS + (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_CACHE_SIM, true) ? YES : NO));
-			opts.add(OPT_BRANCH_SIM + EQUALS + (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_BRANCH_SIM, false) ? YES : NO));
-			if (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1, false)) {
-				opts.add(OPT_I1 + EQUALS + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1_SIZE, 0)
-						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1_ASSOC, 0)
-						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_I1_LSIZE, 0));
-			}
-			if (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1, false)) {
-				opts.add(OPT_D1 + EQUALS + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1_SIZE, 0)
-						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1_ASSOC, 0)
-						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_D1_LSIZE, 0));
-			}
-			if (config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2, false)) {
-				opts.add(OPT_L2 + EQUALS + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2_SIZE, 0)
-						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2_ASSOC, 0)
-						+ COMMA + config.getAttribute(CachegrindToolPage.ATTR_CACHEGRIND_L2_LSIZE, 0));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			abort(Messages.getString("CachegrindLaunchDelegate.Retrieving_cachegrind_data_dir_failed"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+		
+		IPath outputPath = verifyOutputPath(config);
+		opts.add(CachegrindCommandConstants.OPT_CACHEGRIND_OUTFILE + EQUALS + outputPath.append(OUT_FILE).toOSString());
+		opts.add(CachegrindCommandConstants.OPT_CACHE_SIM + EQUALS + (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_CACHE_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_CACHE_SIM) ? YES : NO));
+		opts.add(CachegrindCommandConstants.OPT_BRANCH_SIM + EQUALS + (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_BRANCH_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_BRANCH_SIM) ? YES : NO));
+		if (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1)) {
+			opts.add(CachegrindCommandConstants.OPT_I1 + EQUALS + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1_SIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1_SIZE)
+					+ COMMA + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1_ASSOC, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1_ASSOC)
+					+ COMMA + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1_LSIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1_LSIZE));
+		}
+		if (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_D1, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_D1)) {
+			opts.add(CachegrindCommandConstants.OPT_D1 + EQUALS + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_D1_SIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_D1_SIZE)
+					+ COMMA + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_D1_ASSOC, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_D1_ASSOC)
+					+ COMMA + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_D1_LSIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_D1_LSIZE));
+		}
+		if (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_L2)) {
+			opts.add(CachegrindCommandConstants.OPT_L2 + EQUALS + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2_SIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_L2_SIZE)
+					+ COMMA + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2_ASSOC, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_L2_ASSOC)
+					+ COMMA + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2_LSIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_L2_LSIZE));
 		}
 		return opts.toArray(new String[opts.size()]);
 	}

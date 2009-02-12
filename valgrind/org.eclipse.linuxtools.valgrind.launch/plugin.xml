@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="org.eclipse.linuxtools.valgrind.launch.valgrindTools" name="%extension-point.name.0" schema="schema/org.eclipse.linuxtools.valgrind.launch.valgrindTools.exsd"/>
+   <extension-point id="valgrindTools" name="%extension-point.name.0" schema="schema/valgrindTools.exsd"/>
+   <extension-point id="outputDirectoryProviders" name="%extension-point.name.1" schema="schema/outputDirectoryProviders.exsd"/>
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType

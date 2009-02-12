@@ -1,3 +1,15 @@
+2009-02-12  Elliott Baron  <ebaron@redhat.com>
+
+	* .classpath: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* ValgrindLaunchMockPlugin.java: New file.
+	* ValgrindTestOptionsTab.java: New file.
+	* ValgrindTestsPlugin.java: New file.
+	* .project: Project -> Java nature.
+	* build.properties: Likewise.
+	* META-INF/MANIFEST.MF: Likewise.
+	* plugin.properties: Likewise.
+
 2009-01-05  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Changed version to 0.1.0.

@@ -1,3 +1,15 @@
+2009-02-12  Elliott Baron  <ebaron@redhat.com>
+
+	* PowerOfTwoSpinner.java: Removed.
+	* MassifCommandConstants.java: New file.
+	* MassifLaunchConstants.java: New file.
+	* MassifLaunchDelegate.java: New output path handling.
+	* MassifToolPage.java (setDefaults): Refactored constants.
+	(performApply): Likewise.
+	(initializeFrom): Likewise.
+	(isValid): Check alignment for power of 2.
+	* messages.properties: New key.
+
 2009-01-21  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifParser: Moved parsePID to AbstractValgrindTextParser.

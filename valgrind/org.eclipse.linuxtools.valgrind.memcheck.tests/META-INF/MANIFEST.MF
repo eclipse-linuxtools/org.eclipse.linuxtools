@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
-Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.memcheck.tests
+Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.memcheck.tests;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.valgrind.memcheck.tests.MemcheckTestsPlugin
 Bundle-Vendor: %Bundle-Vendor.0
@@ -23,12 +23,13 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.valgrind.core,
- org.eclipse.linuxtools.valgrind.core.utils,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.memcheck,
  org.eclipse.linuxtools.valgrind.memcheck.model,
+ org.eclipse.linuxtools.valgrind.tests,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui,
  org.eclipse.ui.actions,
+ org.eclipse.ui.console,
  org.eclipse.ui.texteditor,
  org.eclipse.ui.wizards.datatransfer

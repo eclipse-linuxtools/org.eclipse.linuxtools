@@ -21,7 +21,6 @@
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.junit4"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
       <import plugin="org.eclipse.cdt.debug.ui"/>
@@ -37,7 +36,9 @@
       <import plugin="org.eclipse.linuxtools.valgrind.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.junit4"/>
       <import plugin="org.eclipse.linuxtools.valgrind.massif"/>
+      <import plugin="org.junit" version="0.0.0"/>
    </requires>
 
    <plugin

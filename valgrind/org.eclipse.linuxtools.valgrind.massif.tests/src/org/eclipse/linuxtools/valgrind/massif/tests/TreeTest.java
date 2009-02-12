@@ -16,8 +16,8 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifHeapTreeNode;
+import org.eclipse.linuxtools.valgrind.massif.MassifLaunchConstants;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
-import org.eclipse.linuxtools.valgrind.massif.MassifToolPage;
 import org.eclipse.linuxtools.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 
@@ -53,7 +53,7 @@ public class TreeTest extends AbstractMassifTest {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(MassifToolPage.ATTR_MASSIF_DETAILEDFREQ, 12); // > #snapshots
+		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 12); // > #snapshots
 		config = wc.doSave();
 		config.launch(ILaunchManager.PROFILE_MODE, null, true);
 				

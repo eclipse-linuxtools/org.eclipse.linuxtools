@@ -34,7 +34,6 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	public static final String PLUGIN_ID = MemcheckPlugin.PLUGIN_ID;
 	
 	// MEMCHECK controls
-//	protected Combo leakCheckCombo;
 	protected Combo leakResCombo;
 	protected Button showReachableButton;
 	protected Spinner freelistSpinner;
@@ -42,21 +41,6 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	protected Button undefValueButton;
 	protected Button gccWorkaroundButton;
 	protected Spinner alignmentSpinner;
-	
-	// LaunchConfiguration attributes
-	public static final String ATTR_MEMCHECK_LEAKCHECK = PLUGIN_ID + ".MEMCHECK_LEAKCHECK"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_LEAKRES = PLUGIN_ID + ".MEMCHECK_LEAKRES"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_SHOWREACH = PLUGIN_ID + ".MEMCHECK_SHOWREACH"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_PARTIAL = PLUGIN_ID + ".MEMCHECK_PARTIAL"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_UNDEF = PLUGIN_ID + ".MEMCHECK_UNDEF"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_FREELIST = PLUGIN_ID + ".MEMCHECK_FREELIST"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_GCCWORK = PLUGIN_ID + ".MEMCHECK_GCCWORK"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_ALIGNMENT = PLUGIN_ID + ".MEMCHECK_ALIGNMENT"; //$NON-NLS-1$
-	
-	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
-	protected static final String NO = "no"; //$NON-NLS-1$
-	protected static final String YES = "yes"; //$NON-NLS-1$
-	protected static final String EQUALS = "="; //$NON-NLS-1$
 	
 	protected boolean isInitializing = false;
 	protected SelectionListener selectListener = new SelectionAdapter() {
@@ -77,16 +61,6 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		top.setLayout(memcheckLayout);
 		top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-//		Label leakCheckLabel = new Label(top, SWT.NONE);
-//		leakCheckLabel.setText(Messages.getString("MemcheckToolPage.leak_check")); //$NON-NLS-1$
-//		leakCheckCombo = new Combo(top, SWT.READ_ONLY);
-//		leakCheckCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		String[] leakCheckOpts = { "no", "summary", "yes", "full" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-//		leakCheckCombo.setItems(leakCheckOpts);
-//		leakCheckCombo.select(2);
-//		leakCheckCombo.setEnabled(false);
-//		leakCheckCombo.addSelectionListener(selectListener);
-
 		Composite leakResTop = new Composite(top, SWT.NONE);
 		leakResTop.setLayout(new GridLayout(2, false));
 		leakResTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -94,7 +68,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		Label leakResLabel = new Label(leakResTop, SWT.NONE);
 		leakResLabel.setText(Messages.getString("MemcheckToolPage.leak_resolution")); //$NON-NLS-1$
 		leakResCombo = new Combo(leakResTop, SWT.READ_ONLY);
-		String[] leakResOpts = { "low", "med", "high" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String[] leakResOpts = { MemcheckLaunchConstants.LEAK_RES_LOW, MemcheckLaunchConstants.LEAK_RES_MED, MemcheckLaunchConstants.LEAK_RES_HIGH };
 		leakResCombo.setItems(leakResOpts);
 		leakResCombo.addSelectionListener(selectListener);
 
@@ -148,52 +122,57 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		isInitializing = true;
 		try {
-			initializeMemcheck(configuration);
+			leakResCombo.setText(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKRES));
+			showReachableButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_SHOWREACH, MemcheckLaunchConstants.DEFAULT_MEMCHECK_SHOWREACH));
+			freelistSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREELIST, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREELIST));
+			partialLoadsButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_PARTIAL));
+			undefValueButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, MemcheckLaunchConstants.DEFAULT_MEMCHECK_UNDEF));
+			gccWorkaroundButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_GCCWORK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_GCCWORK));
+			alignmentSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		isInitializing = false;
 	}
-
-	protected void initializeMemcheck(ILaunchConfiguration configuration)
-	throws CoreException {
-//		leakCheckCombo.setText(configuration.getAttribute(ATTR_MEMCHECK_LEAKCHECK, "summary"));
-		leakResCombo.setText(configuration.getAttribute(ATTR_MEMCHECK_LEAKRES, "low")); //$NON-NLS-1$
-		showReachableButton.setSelection(configuration.getAttribute(ATTR_MEMCHECK_SHOWREACH, false));
-		freelistSpinner.setSelection(configuration.getAttribute(ATTR_MEMCHECK_FREELIST, 10000000));
-		partialLoadsButton.setSelection(configuration.getAttribute(ATTR_MEMCHECK_PARTIAL, false));
-		undefValueButton.setSelection(configuration.getAttribute(ATTR_MEMCHECK_UNDEF, true));
-		gccWorkaroundButton.setSelection(configuration.getAttribute(ATTR_MEMCHECK_GCCWORK, false));
-		alignmentSpinner.setSelection(configuration.getAttribute(ATTR_MEMCHECK_ALIGNMENT, 8));
-	}
 	
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-//		configuration.setAttribute(ATTR_MEMCHECK_LEAKCHECK, leakCheckCombo.getText());
-		configuration.setAttribute(ATTR_MEMCHECK_LEAKRES, leakResCombo.getText());
-		configuration.setAttribute(ATTR_MEMCHECK_SHOWREACH, showReachableButton.getSelection());
-		configuration.setAttribute(ATTR_MEMCHECK_FREELIST, freelistSpinner.getSelection());
-		configuration.setAttribute(ATTR_MEMCHECK_PARTIAL, partialLoadsButton.getSelection());		
-		configuration.setAttribute(ATTR_MEMCHECK_UNDEF, undefValueButton.getSelection());
-		configuration.setAttribute(ATTR_MEMCHECK_GCCWORK, gccWorkaroundButton.getSelection());
-		configuration.setAttribute(ATTR_MEMCHECK_ALIGNMENT, alignmentSpinner.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, leakResCombo.getText());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_SHOWREACH, showReachableButton.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREELIST, freelistSpinner.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, partialLoadsButton.getSelection());		
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, undefValueButton.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_GCCWORK, gccWorkaroundButton.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, alignmentSpinner.getSelection());
 	}
 
+	@Override
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		setErrorMessage(null);
+		
+		boolean result = false;
+		try {
+			int alignment = launchConfig.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT);
+			result = (alignment & (alignment - 1)) == 0; // is power of two?
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		
+		if (!result) {
+			setErrorMessage(Messages.getString("MemcheckToolPage.Alignment_must_be_power_2")); //$NON-NLS-1$
+		}
+		return result;
+	}
+	
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		setDefaultToolAttributes(configuration);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKRES);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_SHOWREACH, MemcheckLaunchConstants.DEFAULT_MEMCHECK_SHOWREACH);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREELIST, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREELIST);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_PARTIAL);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, MemcheckLaunchConstants.DEFAULT_MEMCHECK_UNDEF);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_GCCWORK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_GCCWORK);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT);
 	}
-	
-	protected static void setDefaultToolAttributes(
-			ILaunchConfigurationWorkingCopy configuration) {
-//		configuration.setAttribute(ATTR_MEMCHECK_LEAKCHECK, "summary");
-		configuration.setAttribute(ATTR_MEMCHECK_LEAKRES, "low"); //$NON-NLS-1$
-		configuration.setAttribute(ATTR_MEMCHECK_SHOWREACH, false);
-		configuration.setAttribute(ATTR_MEMCHECK_FREELIST, 10000000);
-		configuration.setAttribute(ATTR_MEMCHECK_PARTIAL, false);
-		configuration.setAttribute(ATTR_MEMCHECK_UNDEF, true);
-		configuration.setAttribute(ATTR_MEMCHECK_GCCWORK, false);
-		configuration.setAttribute(ATTR_MEMCHECK_ALIGNMENT, 8);
-	}
-	
+		
 	protected void createHorizontalSpacer(Composite comp, int numlines) {
 		Label lbl = new Label(comp, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);

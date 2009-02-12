@@ -21,6 +21,7 @@ public class AllTests {
 		// $JUnit-BEGIN$
 		suite.addTestSuite(BasicMemcheckTest.class);
 		suite.addTestSuite(DoubleClickTest.class);
+		suite.addTestSuite(LaunchConfigTabTest.class);
 		suite.addTestSuite(MarkerTest.class);
 		// $JUnit-END$
 		return suite;

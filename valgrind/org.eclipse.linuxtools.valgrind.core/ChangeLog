@@ -1,3 +1,17 @@
+2009-02-12  Elliott Baron  <ebaron@redhat.com>
+
+	* ConsoleWriterThread.java: Removed.
+	* StreamReaderThread.java: Removed.
+	* LaunchConfigurationConstants.java: Removed.
+	* CommandLineConstants.java: New file.
+	* LaunchConfigurationConstants.java: New file.
+	* PluginConstants.java: New file.
+	* META-INF/MANIFEST.MF: Removed .util package.
+	* messages.properties: Removed unused keys.
+	* ValgrindCommand.java Extracted command line options to CommandLineConstants;
+	moved output directory handling to Launch plugin.
+	* ValgrindPlugin.java: Extracted PLUGIN_ID to PluginConstants.
+
 2009-01-21  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractValgrindTextParser: Moved parsePID from MassifParser.
