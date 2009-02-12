@@ -273,17 +273,19 @@ public class AnnotateCommandHandler implements IHandler {
 		if (countPercentage < OprofileUiPlugin.MINIMUM_SAMPLE_PERCENTAGE) {
 			type = OprofileUiPlugin.ANNOTATION_TYPE_LT_MIN_PERCENTAGE;
 		} else if (countPercentage < 0.05) {
-			type = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.5.pct";
+			type = OprofileUiPlugin.ANNOTATION_TYPE_LT_05;
+		} else if (countPercentage < 0.1) {
+			type = OprofileUiPlugin.ANNOTATION_TYPE_LT_10;
 		} else if (countPercentage < 0.2) {
-			type = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.20.pct";
+			type = OprofileUiPlugin.ANNOTATION_TYPE_LT_20;
+		} else if (countPercentage < 0.3) {
+			type = OprofileUiPlugin.ANNOTATION_TYPE_LT_30;
 		} else if (countPercentage < 0.4) {
-			type = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.40.pct";
-		} else if (countPercentage < 0.6) {
-			type = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.60.pct";
-		} else if (countPercentage < 0.8) {
-			type = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.80.pct";
-		} else if (countPercentage >= 0.8) {
-			type = "org.eclipse.linuxtools.oprofile.ui.annotation.gt.80.pct";
+			type = OprofileUiPlugin.ANNOTATION_TYPE_LT_40;
+		} else if (countPercentage < 0.5) {
+			type = OprofileUiPlugin.ANNOTATION_TYPE_LT_50;
+		} else if (countPercentage >= 0.5) {
+			type = OprofileUiPlugin.ANNOTATION_TYPE_GT_50;
 		}
 
 		return type;

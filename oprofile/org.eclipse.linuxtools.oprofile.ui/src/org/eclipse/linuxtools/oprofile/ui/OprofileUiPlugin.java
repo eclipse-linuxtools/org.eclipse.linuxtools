@@ -48,7 +48,13 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
 	
 	public static final String ANNOTATION_TYPE_LT_MIN_PERCENTAGE = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.min.pct"; //$NON-NLS-1$
-	
+	public static final String ANNOTATION_TYPE_LT_05 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.05.pct"; //$NON-NLS-1$
+	public static final String ANNOTATION_TYPE_LT_10 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.10.pct"; //$NON-NLS-1$
+	public static final String ANNOTATION_TYPE_LT_20 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.20.pct"; //$NON-NLS-1$
+	public static final String ANNOTATION_TYPE_LT_30 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.30.pct"; //$NON-NLS-1$
+	public static final String ANNOTATION_TYPE_LT_40 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.40.pct"; //$NON-NLS-1$
+	public static final String ANNOTATION_TYPE_LT_50 = "org.eclipse.linuxtools.oprofile.ui.annotation.lt.50.pct"; //$NON-NLS-1$
+	public static final String ANNOTATION_TYPE_GT_50 = "org.eclipse.linuxtools.oprofile.ui.annotation.gt.50.pct"; //$NON-NLS-1$
 	
 	/**
 	 * The constructor.
