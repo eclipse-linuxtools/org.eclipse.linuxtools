@@ -1,3 +1,14 @@
+2009-02-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java (getDescription): Fix javadoc.
+	(ID): Likewise.
+	(getImage): Likewise.
+	(getLabel): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPrefixTag.java (getDescription): Likewise.
+	(ID): Likewise.
+	(getImage): Likewise.
+	(getLabel): Likewise.
+
 2009-02-09  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable warnings for missing javadoc.

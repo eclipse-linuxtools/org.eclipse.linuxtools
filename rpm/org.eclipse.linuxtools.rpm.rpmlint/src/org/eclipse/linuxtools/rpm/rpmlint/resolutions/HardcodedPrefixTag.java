@@ -17,23 +17,26 @@ import org.eclipse.swt.graphics.Image;
  *
  */
 public class HardcodedPrefixTag extends ARemoveLineResolution{
+	/**
+	 * Rpmlint warning id.
+	 */
 	public static final String ID = "hardcoded-prefix-tag"; //$NON-NLS-1$
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.ui.IMarkerResolution2#getDescription()
 	 */
 	public String getDescription() {
 		return Messages.HardcodedPrefixTag_0;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
 	 */
 	public Image getImage() {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.ui.IMarkerResolution#getLabel()
 	 */
 	public String getLabel() {
