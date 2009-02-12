@@ -146,7 +146,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				int lineOffset = document.getLineOffset(lineNumber);
 				if (region.getOffset() - lineOffset > 5){
 					result.clear();
-					result.addAll(computeRpmGroupProposals(viewer, region,specfile, prefix));
+					String groupPrefix = getGroupPrefix(viewer, offset);
+					result.addAll(computeRpmGroupProposals(viewer, region,specfile, groupPrefix));
 				}
 			} catch (BadLocationException e) {
 				SpecfileLog.logError(e);
@@ -332,14 +333,16 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	
 	private List<ICompletionProposal> computeRpmGroupProposals(ITextViewer viewer,
 			IRegion region,Specfile specfile, String prefix) {
-		
-		List<String> rpmGroupProposalsList = Activator.getDefault().getRpmGroups();
+		List<String> rpmGroupProposalsList = Activator.getDefault()
+				.getRpmGroups();
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		for (String item : rpmGroupProposalsList){
-			proposals.add(new CompletionProposal(item, region
-					.getOffset(), region.getLength(), item.length(),
-					Activator.getDefault().getImage(PACKAGE_ICON), item,
-					null, item));
+		for (String item : rpmGroupProposalsList) {
+			if (item.startsWith(prefix)) {
+				proposals.add(new CompletionProposal(item, region.getOffset(),
+						region.getLength(), item.length(), Activator
+								.getDefault().getImage(PACKAGE_ICON), item,
+						null, item));
+			}
 		}
 		return proposals;
 	}
@@ -433,6 +436,35 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			while (i > 0) {
 				char ch = document.getChar(i - 1);
 				if (!Character.isLetterOrDigit(ch) && (ch != '%') && (ch != '_') && (ch != '-') && (ch != '{'))
+					break;
+				i--;
+			}
+			return document.get(i, offset - i);
+		} catch (BadLocationException e) {
+			return EMPTY_STRING;
+		}
+	}
+	
+	/**
+	 * Get the prefix for a given viewer, offset.
+	 * 
+	 * @param viewer
+	 *            the viewer for which the context is created
+	 * @param offset
+	 *            the offset into <code>document</code> for which the prefix
+	 *            is research
+	 * @return the prefix
+	 */
+	private String getGroupPrefix(ITextViewer viewer, int offset) {
+		int i = offset;
+		IDocument document = viewer.getDocument();
+		if (i > document.getLength())
+			return EMPTY_STRING;
+
+		try {
+			while (i > 0) {
+				char ch = document.getChar(i - 1);
+				if (!Character.isLetterOrDigit(ch) && (ch != '/'))
 					break;
 				i--;
 			}

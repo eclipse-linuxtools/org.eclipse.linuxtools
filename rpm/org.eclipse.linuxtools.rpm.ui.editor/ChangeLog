@@ -1,3 +1,7 @@
+2009-02-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java: Fix completion for groups.
+
 2009-02-10  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix for specfile defines without line number and simplification.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Put modify listener.
