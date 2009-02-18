@@ -48,8 +48,8 @@ if [ $? -ne 0 ]; then
 fi
 
 #check for opxml executable, make sure it is u+x
-ALLOPXML=`find ../../../.. -name opxml -type f | wc -l`
-EXECOPXML=`find ../../../.. -name opxml -type f -perm -u+x | wc -l`
+ALLOPXML=`find ../../../../org.eclipse.linuxtools.oprofile.core.linux.* -name opxml -type f | wc -l`
+EXECOPXML=`find ../../../../org.eclipse.linuxtools.oprofile.core.linux.* -name opxml -type f -perm -u+x | wc -l`
 if [ $ALLOPXML -eq 0 ]; then
   echo Error: cannot find opxml binary, required plugin missing
   exit 1
