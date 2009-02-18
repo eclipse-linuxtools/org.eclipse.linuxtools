@@ -50,7 +50,7 @@ rm -f org.eclipse.linuxtools.oprofile.core.linux.*/os/linux/*/opxml
 %build
 #build binaries
 cd org.eclipse.linuxtools.oprofile.core/natives/linux/opxml
-make CFLAGS=" "
+make
 
 mv opxml %{_builddir}/%{name}-%{version}/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}/os/linux/%{eclipse_arch}
 
