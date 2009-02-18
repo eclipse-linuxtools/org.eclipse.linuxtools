@@ -36,7 +36,7 @@ public class Utils {
 		boolean exists = (new File(PreferenceConstants.RPMMACRO_FILE)).exists();
 	    // Check if ~/.rpmmacros exist, if the file don't exist we create 
 		// it with the appropriate command.
-		if (!exists) {
+		if (!exists && fileExist("/usr/bin/rpmdev-setuptree")) { //$NON-NLS-1$
 	    	runCommandToInputStream("rpmdev-setuptree"); //$NON-NLS-1$
 	    }
 		
