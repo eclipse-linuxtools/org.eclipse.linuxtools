@@ -1,3 +1,10 @@
+2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LinePositionTests.java (testLineNumber): Adapt to latest api changes.
+	(testLineNumber2): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java (testPatchComparator): Likewise.
+	(testPatchComparator2): Likewise.
+
 2009-02-06  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java (dispose): Use utils for command invocation.

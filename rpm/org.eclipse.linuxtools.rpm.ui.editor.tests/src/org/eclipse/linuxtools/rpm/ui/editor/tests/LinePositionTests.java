@@ -22,7 +22,7 @@ public class LinePositionTests extends FileTestCase {
 				+ "Patch2: someotherfile.patch";
 
 		newFile(specText);
-		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+		Collection<SpecfileSource> patches = specfile.getPatches();
 		for (SpecfileSource patch : patches) {
 			if (patch.getNumber() == 2)
 				assertEquals(1, patch.getLineNumber());
@@ -37,7 +37,7 @@ public class LinePositionTests extends FileTestCase {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 
 		newFile(specText);
-		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+		Collection<SpecfileSource> patches = specfile.getPatches();
 		for (SpecfileSource patch : patches) {
 			if (patch.getNumber() == 3) {
 				assertEquals(0, patch.getLineNumber());

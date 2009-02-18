@@ -23,7 +23,7 @@ public class SourceComparatorTests extends FileTestCase {
 				+ "Patch2: someotherfile.patch";
 
 		newFile(specText);
-		Collection<SpecfileSource> patches = specfile.getPatchesAsList();
+		Collection<SpecfileSource> patches = specfile.getPatches();
 		int i = 1;
 		for (SpecfileSource patch : patches) {
 			i++;
@@ -41,7 +41,7 @@ public class SourceComparatorTests extends FileTestCase {
 				+ "Patch2: someotherfile.patch";
 
 		newFile(specText);
-		List<SpecfileSource> patches = specfile.getPatchesAsList();
+		List<SpecfileSource> patches = specfile.getPatches();
 		assertEquals(2, patches.get(0).getNumber());
 		assertEquals(3, patches.get(1).getNumber());
 	}
