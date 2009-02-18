@@ -1,5 +1,12 @@
 2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (replaceTagValue): Try to save changes.
+	(createFormContent): Likewise.
+	(MainPackagePage): Likewise.
+	(.modifyText): Likewise.
+	
+2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseMacro): Add suppport for %global.
 	(parseDefine): Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java (DEFINED_MACROS): Likewise.

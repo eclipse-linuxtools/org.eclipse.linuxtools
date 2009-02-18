@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
@@ -35,10 +34,11 @@ public class MainPackagePage extends FormPage {
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private Specfile specfile;
+	SpecfileParser parser;
 
 	public MainPackagePage(SpecfileFormEditor editor, IDocument document) {
 		super(editor, "Overview", "Overview");
-		SpecfileParser parser = new SpecfileParser();
+		parser = new SpecfileParser();
 		specfile = parser.parse(document);
 	}
 
@@ -54,7 +54,7 @@ public class MainPackagePage extends FormPage {
 		gd.horizontalSpan = 2;
 		Section section = toolkit.createSection(form.getBody(),
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
-						| Section.EXPANDED);
+						| ExpandableComposite.EXPANDED);
 		section.setText("Main package information");
 		section.setLayout(new GridLayout());
 		Composite client2 = toolkit.createComposite(section);
@@ -73,16 +73,8 @@ public class MainPackagePage extends FormPage {
 				Text text = (Text) e.widget;
 				int lineNumber = specfile.getDefine(RpmTags.NAME.toLowerCase())
 						.getLineNumber();
-				try {
-					IRegion region = specfile.getDocument().getLineInformation(lineNumber);
-					String line = specfile.getDocument().get(region.getOffset(), region.getLength());
-				System.out.println(line);
-				System.out.println(text.getText());
-				} catch (BadLocationException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
+				replaceTagValue(specfile.getDocument(), lineNumber,
+						RpmTags.NAME.toLowerCase(), text.getText());
 			}
 		});
 		label = toolkit.createLabel(client2, "Version:");
@@ -104,6 +96,18 @@ public class MainPackagePage extends FormPage {
 
 		toolkit.paintBordersFor(section);
 
+	}
+
+	private void replaceTagValue(IDocument document, int lineNumber,
+			String tagName, String newValue) {
+		try {
+			document.replace(document.getLineOffset(lineNumber)
+					+ tagName.length() + 2, newValue.length(), newValue);
+			specfile = parser.parse(document); 
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
