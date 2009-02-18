@@ -1,3 +1,11 @@
+2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): Put Fixme in commented block so it get annotated. 
+	(generateSpecfile): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java (getDescription): Proper constant name.
+	(getLicense): Likewise
+	(getURL): Likewise.
+
 2009-01-29  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java (write): Lowercase fetch file and spec file names.

@@ -79,7 +79,7 @@ public class StubbyGenerator {
 		if (withGCJSupport)
 			buffer.append("%define gcj_support    1\n");
 		if (withFetchScript)
-			buffer.append("%define src_repo_tag   FIXME\n");
+			buffer.append("%define src_repo_tag   #FIXME\n");
 		buffer.append("%define eclipse_base   %{_libdir}/eclipse\n");
 		buffer.append("%define install_loc    %{_datadir}/eclipse/dropins/"
 				+ simplePackageName.toLowerCase() + "\n\n");
@@ -98,7 +98,7 @@ public class StubbyGenerator {
 			buffer.append("Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2\n");
 			buffer.append("Source1:        " ).append(fetchScriptName).append("\n");
 		} else {
-			buffer.append("Source0:        FIXME\n");
+			buffer.append("Source0:        #FIXME\n");
 		}
 		buffer
 				.append("BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)\n\n");
@@ -165,7 +165,7 @@ public class StubbyGenerator {
 		}
 		generateFilesSections(buffer);
 		buffer.append("%changelog\n\n");
-		buffer.append("FIXME\n");
+		buffer.append("#FIXME\n");
 		return buffer.toString();
 	}
 
@@ -199,7 +199,7 @@ public class StubbyGenerator {
 		if (withFetchScript) {
 			buffer.append("%setup -q -c\n\n");
 		} else {
-			buffer.append("# Replace FIXME with the root directory name in Source0\n");
+			buffer.append("#FIXME Replace FIXME with the root directory name in Source0\n");
 			buffer.append("%setup -q -n FIXME\n\n");
 		}
 		if (!usePdebuildScript) {

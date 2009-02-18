@@ -43,7 +43,7 @@ import org.xml.sax.SAXException;
  */
 public class StubbyPackageModel {
 
-	private static final String valueNoFoundMessage = "FIXME";
+	private static final String VALUE_NOT_FOUND = "#FIXME";
 	private String featurePropertiesFile;
 	private IPath featureDir;
 	private FeatureModel featureModel;
@@ -214,7 +214,7 @@ public class StubbyPackageModel {
 	}
 
 	private String getLicense() {
-		String license = valueNoFoundMessage;
+		String license = VALUE_NOT_FOUND;
 		URLEntryModel licenseModel = featureModel.getLicenseModel();
 		if (licenseModel != null) {
 			String urlString = resolveFeatureProperties(licenseModel
@@ -235,7 +235,7 @@ public class StubbyPackageModel {
 	}
 
 	private String getURL() {
-		String url = valueNoFoundMessage;
+		String url = VALUE_NOT_FOUND;
 		URLEntryModel descriptionModel = featureModel.getDescriptionModel();
 		if (descriptionModel != null && descriptionModel.getURLString() != null)
 			url = descriptionModel.getURLString();
@@ -265,7 +265,7 @@ public class StubbyPackageModel {
 			description += descriptionToken[i - 1];
 			return description;
 		} else
-			return valueNoFoundMessage;
+			return VALUE_NOT_FOUND;
 	}
 
 	private List<PackageItem> getProvides() {
