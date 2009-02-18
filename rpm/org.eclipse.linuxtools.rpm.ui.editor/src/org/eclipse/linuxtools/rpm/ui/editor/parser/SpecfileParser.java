@@ -292,7 +292,7 @@ public class SpecfileParser {
 	private SpecfileElement parseMacro(String lineText, Specfile specfile, int lineNumber) {
 		// FIXME:  handle other macros
 		
-		if (lineText.startsWith("%define")) { //$NON-NLS-1$
+		if (lineText.startsWith("%define") || lineText.startsWith("%global")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return parseDefine(lineText, specfile, lineNumber);
 		} else if (lineText.startsWith("%patch")) { //$NON-NLS-1$
 			return parsePatch(lineText, specfile, lineNumber);
@@ -342,7 +342,7 @@ public class SpecfileParser {
 		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
 		SpecfileDefine toReturn = null;
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
-			// Eat the actual "%define" token
+			// Eat the actual "%define" or "%global" token
 			iter.next();
 			while (iter.hasNext()) {
 				String defineName = iter.next();

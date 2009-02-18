@@ -79,7 +79,8 @@ public class SpecfileScanner extends RuleBasedScanner {
 		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, 
 		CHECK_SECTION };
 
-	public static String[] DEFINED_MACROS = { "%define", "%make", "%setup", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public static String[] DEFINED_MACROS = {
+			"%define", "%global", "%make", "%setup", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 			"%doc", "%lang", "%verify", "%ghost" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
