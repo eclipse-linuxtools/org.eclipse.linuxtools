@@ -367,7 +367,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		/**
 		 * Notifies that the list selection has changed.
 		 */
-		private void selectionChanged() {
+		protected void selectionChanged() {
 
 			int index = list.getSelectionIndex();
 			int size = list.getItemCount();

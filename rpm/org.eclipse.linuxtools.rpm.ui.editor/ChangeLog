@@ -1,3 +1,7 @@
+2009-02-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java (MacroListEditor.selectionChanged): Fix compilation with Eclipse 3.5 M5.
+
 2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (replaceTagValue): Try to save changes.
