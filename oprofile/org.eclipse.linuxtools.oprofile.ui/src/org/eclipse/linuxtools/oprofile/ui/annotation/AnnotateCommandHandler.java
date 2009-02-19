@@ -117,7 +117,7 @@ public class AnnotateCommandHandler implements IHandler {
 	private HashSet<String> sessionSymbolFilePaths = null;
 
 	public Object execute(ExecutionEvent exEvent) throws ExecutionException {
-		boolean toggleEnabled = ((ToolItem)((Event)exEvent.getTrigger()).widget).getSelection();
+		boolean toggleEnabled = true;//((ToolItem)((Event)exEvent.getTrigger()).widget).getSelection();
 		
 		if (toggleEnabled) {
 			if (!UiModelRoot.getDefault().hasChildren()) {
