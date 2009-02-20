@@ -10,8 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.launch;
 
-import java.io.IOException;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -447,23 +445,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE);
-		
-		setOutputDirectory(configuration);
-		
+				
 		if (dynamicTab != null) {
 			dynamicTab.setDefaults(configuration);
 			initDefaults = false;
-		}
-	}
-
-	protected void setOutputDirectory(ILaunchConfigurationWorkingCopy wc) {
-		try {
-			IValgrindOutputDirectoryProvider provider = getPlugin().getOutputDirectoryProvider();
-			wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, provider.getOutputPath().toOSString());
-		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 

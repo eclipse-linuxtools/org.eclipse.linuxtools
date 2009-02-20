@@ -11,10 +11,7 @@
 package org.eclipse.linuxtools.valgrind.cachegrind.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import org.eclipse.swt.graphics.Image;
 
 public class CachegrindOutput implements ICachegrindElement {
 	protected List<CachegrindDescription> descriptions;
@@ -62,7 +59,7 @@ public class CachegrindOutput implements ICachegrindElement {
 	}
 	
 	public String[] getEvents() {
-		return Arrays.copyOf(events, events.length);
+		return events;
 	}
 	
 	public CachegrindFile[] getFiles() {
@@ -70,22 +67,14 @@ public class CachegrindOutput implements ICachegrindElement {
 	}
 	
 	public long[] getSummary() {
-		return Arrays.copyOf(summary, summary.length);
+		return summary;
 	}
 
 	public ICachegrindElement[] getChildren() {
 		return getFiles();
 	}
 
-	public Image getImage(int index) {
-		return null;
-	}
-
 	public ICachegrindElement getParent() {
-		return null;
-	}
-
-	public String getText(int index) {
 		return null;
 	}
 	

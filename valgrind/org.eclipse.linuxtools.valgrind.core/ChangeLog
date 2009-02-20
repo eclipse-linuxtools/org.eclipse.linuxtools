@@ -1,3 +1,8 @@
+2009-02-20  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTextParser.java (parseStrValue): Added limit argument to String.split().
+	(parseLongValue): Likewise.
+
 2009-02-12  Elliott Baron  <ebaron@redhat.com>
 
 	* ConsoleWriterThread.java: Removed.

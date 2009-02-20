@@ -14,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindDescription;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
@@ -57,8 +56,7 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 		CachegrindFunction curFn = null;
 		while ((line = br.readLine()) != null) {		
 			if (line.startsWith(EVENTS + COLON)) {
-				String[] tokens = line.split(SPACE);
-				output.setEvents(Arrays.copyOfRange(tokens, 1, tokens.length));
+				output.setEvents(parseStrValue(line, COLON + SPACE).split(SPACE));
 			}
 			else if (line.startsWith(CMD + COLON)) {
 				output.setCommand(parseStrValue(line, COLON + SPACE));
@@ -81,15 +79,15 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 				}
 			}
 			else if (line.startsWith(SUMMARY + COLON)) {
-				String[] tokens = line.split(SPACE);
-				long[] summary = parseData(line, Arrays.copyOfRange(tokens, 1, tokens.length));
+				long[] summary = parseData(line, parseStrValue(line, COLON + SPACE).split(SPACE));
 				output.setSummary(summary);
 			}
 			else { // line data
-				String[] tokens = line.split(SPACE);
+				String[] tokens = line.split(SPACE, 2);
 				if (isNumber(tokens[0])) {
 					int lineNo = Integer.parseInt(tokens[0]);
-					long[] data = parseData(line, Arrays.copyOfRange(tokens, 1, tokens.length));
+					
+					long[] data = parseData(line, tokens[1].split(SPACE));
 					if (curFn != null) {
 						curFn.addLine(new CachegrindLine(curFn, lineNo, data));
 					}

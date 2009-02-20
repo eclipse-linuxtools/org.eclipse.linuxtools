@@ -1,3 +1,10 @@
+2009-02-20  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindParser.java (parse): Removed Arrays.copyOf().
+	* model/CachegrindOutput.java (getEvents): Replaced Arrays.copyOfRange().
+	(getParent): Likewise.
+	(getSummary): Likewise.
+
 2009-02-12  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindCommandConstants.java: New file.

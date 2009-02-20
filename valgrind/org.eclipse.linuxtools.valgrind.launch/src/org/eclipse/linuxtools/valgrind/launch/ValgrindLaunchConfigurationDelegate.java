@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
@@ -37,6 +38,7 @@ import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.IOConsole;
@@ -93,7 +95,12 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
+			
+			// set output directory in config
+			setOutputPath(config);
 			outputPath = verifyOutputPath(config);
+			// create/empty output directory
+			createDirectory(outputPath);
 
 			String[] arguments = getProgramArgumentsArray(config);
 
@@ -188,6 +195,31 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Retrieving_location_failed"), null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 		}
 		return result;
+	}
+	
+	protected void setOutputPath(ILaunchConfiguration config) throws CoreException, IOException {
+		IValgrindOutputDirectoryProvider provider = ValgrindLaunchPlugin.getDefault().getOutputDirectoryProvider();
+		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+		wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, provider.getOutputPath().toOSString());
+		wc.doSave();
+		
+	}
+
+
+	protected void createDirectory(IPath path) throws IOException {
+		File outputDir = path.toFile();
+
+		if (outputDir.exists()) {
+			// delete any preexisting files
+			for (File outputFile : outputDir.listFiles()) {
+				if (!outputFile.delete()) {
+					throw new IOException(NLS.bind(Messages.getString("ValgrindOutputDirectory.Couldnt_delete"), outputFile.getAbsolutePath())); //$NON-NLS-1$
+				}
+			}
+		}
+		else if (!outputDir.mkdir()) {
+			throw new IOException(NLS.bind(Messages.getString("ValgrindOutputDirectory.Couldnt_create"), outputDir.getAbsolutePath())); //$NON-NLS-1$
+		}
 	}
 
 	protected void writeErrorsToConsole(String errors, IOConsole console)

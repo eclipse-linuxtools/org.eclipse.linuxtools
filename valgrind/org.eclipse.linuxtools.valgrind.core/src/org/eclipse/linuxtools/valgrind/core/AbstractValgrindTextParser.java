@@ -33,7 +33,7 @@ public class AbstractValgrindTextParser {
 	protected Long parseLongValue(String line, String delim)
 	throws IOException {
 		Long result = null;
-		String[] parts = line.split(delim);
+		String[] parts = line.split(delim, 2);
 		if (parts.length > 1 && isNumber(parts[1])) {
 			result = Long.parseLong(parts[1]);
 		}
@@ -54,7 +54,7 @@ public class AbstractValgrindTextParser {
 	protected String parseStrValue(String line, String delim)
 	throws IOException {
 		String result = null;
-		String[] parts = line.split(delim);
+		String[] parts = line.split(delim, 2);
 		if (parts.length > 1) {
 			result = parts[1];
 		}

@@ -22,9 +22,7 @@ public interface IValgrindOutputDirectoryProvider {
 
 	/**
 	 * Obtains a directory to store Valgrind output files.
-	 * If it exists, it is first emptied.
 	 * @return the path to this directory
-	 * @throws IOException
 	 */
 	public abstract IPath getOutputPath() throws IOException;
 

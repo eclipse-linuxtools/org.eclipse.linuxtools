@@ -1,3 +1,14 @@
+2009-02-20  Elliott Baron  <ebaron@redhat.com>
+
+	* IValgrindOutputDirectoryProvider.java (getOutputPath): No longer responsible for
+	creating/emptying directory. Simply return path.
+	* ValgrindLaunchConfigurationDelegate.java (createDirectory): Receive role of above. 
+	(setOutputPath): Stores output directory in LaunchConfiguration.
+	(launch): Changes from above.
+	* ValgrindOptionsTab.java: No longer sets output directory. Moved to delegate for
+	compatibility with old Launch Configurations.
+	* ValgrindOutputDirectoryProvider.java (getOutputPath): Changes from interface. 
+
 2009-02-12  Elliott Baron  <ebaron@redhat.com>
 
 	* schema/org.eclipse.linuxtools.valgrind.launch.valgrindTools.exsd: Renamed.
