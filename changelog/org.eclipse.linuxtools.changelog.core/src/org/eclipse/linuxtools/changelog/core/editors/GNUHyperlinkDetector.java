@@ -11,28 +11,26 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.editors;
 
+import org.eclipse.compare.CompareEditorInput;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.ITypedRegion;
+import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.hyperlink.IHyperlink;
+import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
+import org.eclipse.jface.text.rules.Token;
 import org.eclipse.team.ui.synchronize.SyncInfoCompareInput;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.compare.CompareEditorInput;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.hyperlink.IHyperlink;
-import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
-
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.rules.Token;
-
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 
 /**
  * 
@@ -75,19 +73,16 @@ public class GNUHyperlinkDetector implements IHyperlinkDetector {
 
 		scanner.setDefaultReturnToken(new Token("default"));
 
-		IRegion lineInfo = null;
+		ITypedRegion partitionInfo = null;
 
 		try {
-			lineInfo = thisDoc.getLineInformationOfOffset(region.getOffset());
+			partitionInfo = thisDoc.getPartition(region.getOffset());
 		} catch (org.eclipse.jface.text.BadLocationException e1) {
 			e1.printStackTrace();
 			return null;
 		}
 
-		if (lineInfo == null)
-			return null;
-
-		scanner.setRange(thisDoc, lineInfo.getOffset(), lineInfo.getLength());
+		scanner.setRange(thisDoc, partitionInfo.getOffset(), partitionInfo.getLength());
 
 		Token tmpToken = (Token) scanner.nextToken();
 
@@ -97,13 +92,14 @@ public class GNUHyperlinkDetector implements IHyperlinkDetector {
 			return null;
 		}
 
-		// try to find non-default token if fail, return null.
-		while (tokenStr.equals("default")) {
+		// try to find non-default token containing region..if none, return null.
+		while (region.getOffset() < scanner.getTokenOffset() ||
+				region.getOffset() > scanner.getOffset() ||
+				tokenStr.equals("default")) {
 			tmpToken = (Token) scanner.nextToken();
 			tokenStr = (String) tmpToken.getData();
 			if (tokenStr == null)
 				return null;
-
 		}
 
 		Region tokenRegion = new Region(scanner.getTokenOffset(), scanner
@@ -123,17 +119,22 @@ public class GNUHyperlinkDetector implements IHyperlinkDetector {
 
 			Region pathRegion = null;
 
-			// cut "* "
-			line = line.substring(2);
+			int lineOffset = 0;
+			
+			// cut "* " if necessary
+			if (line.startsWith("* ")) {
+				lineOffset = 2;
+				line = line.substring(2);
+			}
 			int trailingWhiteSpace;
 			if (((trailingWhiteSpace = line.indexOf(":")) > 0)
 					|| ((trailingWhiteSpace = line.indexOf(" ")) > 0)) {
 
 				line = line.substring(0, trailingWhiteSpace);
-				pathRegion = new Region(tokenRegion.getOffset() + 2,
+				pathRegion = new Region(tokenRegion.getOffset() + lineOffset,
 						trailingWhiteSpace);
 			} else {
-				pathRegion = new Region(tokenRegion.getOffset() + 2, line
+				pathRegion = new Region(tokenRegion.getOffset() + lineOffset, line
 						.length());
 			}
 			
