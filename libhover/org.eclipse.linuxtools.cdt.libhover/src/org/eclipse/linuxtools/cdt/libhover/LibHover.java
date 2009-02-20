@@ -108,7 +108,7 @@ public class LibHover implements ICHelpProvider {
 				HelpBook h = new HelpBook(name, type);
 				helpBooks.add(h);
 				LibHoverLibrary l = new LibHoverLibrary(name, location, helpdocs, 
-						true);
+						h.getCHelpType() == ICHelpBook.HELP_TYPE_CPP);
 				libraries.put(h, l);
 				docsFetched = true;
 			}
