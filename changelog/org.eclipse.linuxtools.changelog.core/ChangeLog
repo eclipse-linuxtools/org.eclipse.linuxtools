@@ -1,3 +1,26 @@
+2009-02-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #264343
+	
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogDocumentSetupParticipant.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUFileEntryDamagerRepairer.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUFileEntryRule.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUPartitionScanner.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/editors/MultilineRuleDamagerRepairer.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/IEditorChangeLogContrib2.java: New file.
+	* build.properties: Add schema directory.
+	* plugin.xml: Add DocumentSetupParticipant extension to point to ChangeLogDocumentSetupParticipant.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java (getPresentationReconciler): 
+	(setup): New method to set up partitioning.  From IEditorChangeLogContrib2 interface.
+	(getConfiguredDocumentPartitioning): Return CHANGELOG_PARTITIONING string.
+	(getConfiguredContentTypes): Return the various content types of GNU Partition scanner.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUElementScanner.java (getOffset): 
+	(getDefaultToken): New.
+	(GNUElementScanner): Add new GNUFileEntryRule to find file entries.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java (detectHyperlinks): Change
+	to set range to current partition to allow for multiple file entries in a single ChangeLog entry.
+	Also be prepared to strip off trailing colon if needed. 
+
 2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Enable Ctrl+Alt+P to work in compare window.
