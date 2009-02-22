@@ -38,6 +38,7 @@ public class SpecfilePartitionScanner extends RuleBasedPartitionScanner {
 	public final static String SPEC_CHANGELOG = "__spec_changelog"; //$NON-NLS-1$
 	public final static String SPEC_PACKAGES = "__spec_packages"; //$NON-NLS-1$
 	public final static String SPEC_GROUP = "__spec_group"; //$NON-NLS-1$
+	public final static String SPEC_FILE_PARTITIONING = "___spec_partitioning"; //$NON-NLS-1$
 	
 	public static String[] SPEC_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE, SPEC_PREP, SPEC_SCRIPT,
 			SPEC_FILES, SPEC_CHANGELOG, SPEC_PACKAGES, SPEC_GROUP};

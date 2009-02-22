@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
@@ -52,7 +53,7 @@ public class MainPackagePage extends FormPage {
 		layout.numColumns = 2;
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
-		Section section = toolkit.createSection(form.getBody(),
+		final Section section = toolkit.createSection(form.getBody(),
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 						| ExpandableComposite.EXPANDED);
 		section.setText("Main package information");

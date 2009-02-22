@@ -61,7 +61,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		this.editor = editor;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getConfiguredContentTypes(org.eclipse.jface.text.source.ISourceViewer)
 	 */
 	@Override
@@ -69,7 +69,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 		return SpecfilePartitionScanner.SPEC_PARTITION_TYPES;
 	}
 	
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getDoubleClickStrategy(org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
 	 */
 	@Override

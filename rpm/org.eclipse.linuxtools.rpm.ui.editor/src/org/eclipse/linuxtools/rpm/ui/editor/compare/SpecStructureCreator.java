@@ -30,10 +30,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfilePartitioner;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
@@ -100,37 +98,25 @@ public class SpecStructureCreator extends StructureCreator {
 	private void parseSpecfile(DocumentRangeNode root, IDocument doc,
 			IProgressMonitor monitor) {
 		try {
+			String id = "Specfile"; //$NON-NLS-1$
+			SpecNode parent = new SpecNode(root, 0, id, doc, 0, doc.getLength());
 			SpecfileParser parser = new SpecfileParser();
 			Specfile specfile = parser.parse(doc);
-			String id = specfile.getName();
-			SpecNode parent = new SpecNode(root, 0, id, doc, 0, doc.getLength());
 			monitor = beginWork(monitor);
 			for (SpecfileSection sec : specfile.getSections()) {
-				try {
-					addNode(parent, doc, sec.getName(), doc.getLineOffset(sec
-							.getLineNumber()), doc.getLineOffset(sec
-							.getSectionEndLine())
-							- doc.getLineOffset(sec.getLineNumber()));
-				} catch (BadLocationException e) {
-					SpecfileLog.logError(e);
-				}
+				addNode(parent, doc, sec.getName(), sec.getLineStartPosition(),
+						sec.getLineEndPosition());
 			}
 			for (SpecfilePackage sPackage : specfile.getPackages()
 					.getPackages()) {
-				try {
-					SpecNode pNode = addNode(parent, doc, sPackage
-							.getPackageName(), doc.getLineOffset(sPackage
-							.getLineNumber()), doc.getLineOffset(sPackage
-							.getSectionEndLine())
-							- doc.getLineOffset(sPackage.getLineNumber()));
-					for (SpecfileSection section : sPackage.getSections()) {
-						addNode(pNode, doc, section.getName(), doc
-								.getLineOffset(section.getLineNumber()), doc
-								.getLineOffset(section.getSectionEndLine())
-								- doc.getLineOffset(section.getLineNumber()));
-					}
-				} catch (BadLocationException e) {
-					SpecfileLog.logError(e);
+				SpecNode pNode = addNode(parent, doc,
+						sPackage.getPackageName(), sPackage
+								.getLineStartPosition(), sPackage
+								.getLineEndPosition());
+				for (SpecfileSection section : sPackage.getSections()) {
+					addNode(pNode, doc, section.getName(), section
+							.getLineStartPosition(), section
+							.getLineEndPosition());
 				}
 			}
 		} finally {

@@ -278,4 +278,23 @@
          </action>
       </viewerContribution>
    </extension>   
+   <!-- Compare support-->
+   <extension point="org.eclipse.compare.contentMergeViewers">
+	  <viewer
+		id="org.eclipse.linuxtools.rpm.ui.editor.SpecMergeViewer"
+		extensions="spec"
+		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecMergeViewerCreator">
+	  </viewer>
+   </extension>
+   <extension point="org.eclipse.compare.structureMergeViewers">
+	  <viewer
+		id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureMergeViewer"
+		extensions="spec"
+		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecStructureMergeViewerCreator">
+	  </viewer>
+   </extension>
+   <extension point ="org.eclipse.compare.structureCreators">
+ 		<structureCreator id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureCreator" 
+		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecStructureCreator" extensions="spec"/>
+   </extension>
 </plugin>
