@@ -25,7 +25,7 @@ Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2
 Source1:        %{name}-fetch-src.sh
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-ExcludeArch: ppc64
+ExcludeArch: ppc ppc64
 
 BuildRequires: eclipse-pde >= 1:3.4.0
 BuildRequires: eclipse-cdt >= 5.0.1
@@ -50,7 +50,7 @@ rm -f org.eclipse.linuxtools.oprofile.core.linux.*/os/linux/*/opxml
 %build
 #build binaries
 cd org.eclipse.linuxtools.oprofile.core/natives/linux/opxml
-make
+make "CFLAGS=$RPM_OPT_FLAGS"
 
 mv opxml %{_builddir}/%{name}-%{version}/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}/os/linux/%{eclipse_arch}
 
@@ -87,7 +87,10 @@ rm -f %{corepath}/natives/linux/scripts/uninstall.sh
 
 #remove opxml source (rpmlint warnings)
 rm -rf %{corepath}/natives/linux/opxml
-rm -rf %{corepath}/natives/linux/scripts/.svnignore
+rm -f %{corepath}/natives/linux/scripts/.svnignore
+
+#+x opxml
+chmod +x %{buildroot}%{install_loc}/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}_%{ver_qual}/os/linux/%{eclipse_arch}/opxml
 
 
 %clean
@@ -97,7 +100,6 @@ rm -rf %{corepath}/natives/linux/scripts/.svnignore
 %defattr(-,root,root,-)
 %{install_loc}
 %doc org.eclipse.linuxtools.oprofile-feature/epl-v10.html
-%attr(755,root,root) %{install_loc}/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}_%{ver_qual}/os/linux/%{eclipse_arch}/opxml
 %{_sysconfdir}/security/console.apps/opcontrol
 %{_sysconfdir}/pam.d/opcontrol
 
