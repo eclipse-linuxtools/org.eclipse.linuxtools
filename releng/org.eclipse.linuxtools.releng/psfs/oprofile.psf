@@ -3,6 +3,7 @@
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile-feature,org.eclipse.linuxtools.oprofile-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core,org.eclipse.linuxtools.oprofile.core"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.tests,org.eclipse.linuxtools.oprofile.core.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86,org.eclipse.linuxtools.oprofile.core.linux.x86"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86_64,org.eclipse.linuxtools.oprofile.core.linux.x86_64"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.launch,org.eclipse.linuxtools.oprofile.launch"/>
