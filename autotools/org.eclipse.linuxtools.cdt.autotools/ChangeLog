@@ -1,3 +1,13 @@
+2009-02-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #265873
+	
+	* META-INF/MANIFEST.MF: Add dependency on org.eclipse.core.net.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsPlugin.java (stop): Add call to
+	ServiceTracker close() method.
+	(start): Add ServiceTracker open() call for IProxyService.
+	(getProxyService): New method to get IProxyService. 
+
 2009-01-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #261717
