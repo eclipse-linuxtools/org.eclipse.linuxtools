@@ -1,3 +1,8 @@
+2009-02-24  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java: Comment out
+	SharedASTJob references.
+
 2009-02-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java (getLibHoverDocs): Don't set isCPP

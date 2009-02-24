@@ -45,7 +45,6 @@ import org.eclipse.cdt.ui.ICHelpResourceDescriptor;
 import org.eclipse.cdt.ui.IFunctionSummary;
 import org.eclipse.cdt.ui.IRequiredInclude;
 import org.eclipse.cdt.ui.text.ICHelpInvocationContext;
-import org.eclipse.cdt.ui.text.SharedASTJob;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
@@ -202,44 +201,44 @@ public class LibHover implements ICHelpProvider {
 		return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':'; 
 	}
 
-	private class EnclosingASTNameJob extends SharedASTJob {
-		private int tlength;
-		private int toffset;
-		private IASTName result = null;
-		public EnclosingASTNameJob (ITranslationUnit t, 
-				int toffset, int tlength) {
-			super("EnclosingASTNameJob", t); // $NON-NLS-1$
-			this.toffset = toffset;
-			this.tlength = tlength;
-		}
-		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
-			if (ast != null) {
-				result = ast.getNodeSelector(null).findEnclosingName(toffset, tlength);
-			}
-			return Status.OK_STATUS;
-		}
-		public IASTName getASTName() {
-			return result;
-		}
-	}
+//	private class EnclosingASTNameJob extends SharedASTJob {
+//		private int tlength;
+//		private int toffset;
+//		private IASTName result = null;
+//		public EnclosingASTNameJob (ITranslationUnit t, 
+//				int toffset, int tlength) {
+//			super("EnclosingASTNameJob", t); // $NON-NLS-1$
+//			this.toffset = toffset;
+//			this.tlength = tlength;
+//		}
+//		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
+//			if (ast != null) {
+//				result = ast.getNodeSelector(null).findEnclosingName(toffset, tlength);
+//			}
+//			return Status.OK_STATUS;
+//		}
+//		public IASTName getASTName() {
+//			return result;
+//		}
+//	}
 	
-	public class ASTDeclarationFinderJob extends SharedASTJob {
-		private IBinding binding;
-		private IASTName[] decls = null;
-		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
-			super("ASTDeclarationFinderJob", t); // $NON-NLS-1$
-			this.binding = binding;
-		}
-    	public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
-    		if (ast != null) {
-    			decls = ast.getDeclarationsInAST(binding);
-    		}
-    		return Status.OK_STATUS;
-    	}
-    	public IASTName[] getDeclarations() {
-    		return decls;
-    	}
-	}
+//	public class ASTDeclarationFinderJob extends SharedASTJob {
+//		private IBinding binding;
+//		private IASTName[] decls = null;
+//		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
+//			super("ASTDeclarationFinderJob", t); // $NON-NLS-1$
+//			this.binding = binding;
+//		}
+//    	public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
+//    		if (ast != null) {
+//    			decls = ast.getDeclarationsInAST(binding);
+//    		}
+//    		return Status.OK_STATUS;
+//    	}
+//    	public IASTName[] getDeclarations() {
+//    		return decls;
+//    	}
+//	}
 
 	@SuppressWarnings("unchecked")
 	public IFunctionSummary getFunctionInfo(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String name) {
