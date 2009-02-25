@@ -28,10 +28,10 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
  */
 public abstract class FileTestCase extends TestCase {
 
-	SpecfileParser parser;
+	protected SpecfileParser parser;
 	protected Specfile specfile;
 	protected IFile testFile;
-	Document testDocument;
+	protected Document testDocument;
 	SpecfileErrorHandler errorHandler;
 	SpecfileTestProject testProject;
 

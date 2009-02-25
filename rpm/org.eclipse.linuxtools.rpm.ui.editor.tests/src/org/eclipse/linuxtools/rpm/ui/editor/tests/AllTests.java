@@ -25,7 +25,6 @@ public class AllTests {
 				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests");
 		// $JUnit-BEGIN$
 		suite.addTestSuite(EpochTagTest.class);
-		suite.addTestSuite(DefineTests.class);
 		suite.addTestSuite(ReleaseTagTests.class);
 		suite.addTestSuite(NameTagTests.class);
 		suite.addTestSuite(VersionTagTests.class);

@@ -1,5 +1,13 @@
 2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/DefineTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileDefineTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite): Remove DefineTests, which is renamed and moved.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/FileTestCase.java: More protected fields.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/ParserAllTests.java (suite): Add SpecfileDefineTest.
+
+2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/URLHyperlinkWithMacroDetectorTest.java: New file.
