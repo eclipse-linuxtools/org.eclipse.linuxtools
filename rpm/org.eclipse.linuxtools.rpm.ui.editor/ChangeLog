@@ -1,3 +1,12 @@
+2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (Specfile): Removed, not needed.
+	(addDefine): Likewise. 
+	(setSources): Likewise.
+	(getDefines): Renamed from getDefinesAsList.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroOccurrencesUpdater.java (getMacros): Adapt to Specfile API changes.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (getDefines): Likewise.
+
 2009-02-22  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/compare/Messages.java: New file.

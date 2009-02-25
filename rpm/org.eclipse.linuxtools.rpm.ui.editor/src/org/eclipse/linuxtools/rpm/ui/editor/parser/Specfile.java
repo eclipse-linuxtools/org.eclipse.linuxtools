@@ -50,10 +50,6 @@ public class Specfile {
 		patches = new HashMap<Integer, SpecfileSource>();
 	}
 
-	public Specfile(String name) {
-		this();
-	}
-
 	public List<SpecfileSection> getSections() {
 		return sections;
 	}
@@ -107,28 +103,6 @@ public class Specfile {
 		addDefine(new SpecfileDefine(tag));
 	}
 	
-	/**
-	 * Creates a SpecfileDefine with the given name and value for this specfile and 
-	 * adds it to the map of defines.
-	 * 
-	 * @param name The name of the define.
-	 * @param value the value of the define.
-	 */
-	public void addDefine(String name, String value) {
-		defines.put(name, new SpecfileDefine(name, value, this));
-	}
-	
-	/**
-	 * Creates a SpecfileDefine with the given name and value for this specfile and 
-	 * adds it to the map of defines.
-	 * 
-	 * @param name The name of the define.
-	 * @param value the value of the define.
-	 */
-	public void addDefine(String name, int value) {
-		defines.put(name, new SpecfileDefine(name, value, this));
-	}
-
 	public SpecfileDefine getDefine(String defineName) {
 		return defines.get(defineName);
 	}
@@ -161,7 +135,7 @@ public class Specfile {
 		return sourcesList;
 	}
 
-	public List<SpecfileDefine> getDefinesAsList() {
+	public List<SpecfileDefine> getDefines() {
 		List<SpecfileDefine> definesList = new ArrayList<SpecfileDefine>(defines.values());
 		return definesList;
 	}
@@ -217,10 +191,6 @@ public class Specfile {
 		this.patches = patches;
 	}
 
-	public void setSources(Map<Integer, SpecfileSource> sources) {
-		this.sources = sources;
-	}
-	
 	@Override
 	public String toString() {
 		return getName();

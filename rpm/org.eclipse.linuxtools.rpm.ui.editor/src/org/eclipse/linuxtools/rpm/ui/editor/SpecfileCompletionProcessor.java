@@ -486,7 +486,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private Map<String, String> getDefines(Specfile specfile, String prefix) {
-		Collection<SpecfileDefine> defines = specfile.getDefinesAsList();
+		Collection<SpecfileDefine> defines = specfile.getDefines();
 		Map<String, String> ret = new HashMap<String, String>();
 		String defineName;
 		for (SpecfileDefine define: defines) {

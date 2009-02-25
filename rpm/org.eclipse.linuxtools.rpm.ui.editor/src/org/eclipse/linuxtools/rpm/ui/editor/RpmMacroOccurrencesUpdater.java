@@ -141,7 +141,7 @@ class RpmMacroOccurrencesUpdater implements ISelectionChangedListener {
 	private List<SpecfileDefine> getMacros() {
 		Specfile specfile = fEditor.getSpecfile();
 		if (specfile != null) {
-			List<SpecfileDefine> macros = specfile.getDefinesAsList();
+			List<SpecfileDefine> macros = specfile.getDefines();
 			if (macros != null)
 				return macros;
 		}
