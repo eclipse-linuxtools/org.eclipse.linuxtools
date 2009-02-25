@@ -178,11 +178,9 @@ public class SpecfileParser {
 		
 		// FIXME: Handle package-level definitions
 		if (lineText.startsWith(complexDefinitions[0])) {
-			return parseComplexDefinition(lineText, specfile, lineNumber,
-					SourceType.SOURCE);
+			return parseComplexDefinition(lineText, lineNumber,	SourceType.SOURCE);
 		} else if (lineText.startsWith(complexDefinitions[1])) {
-			return parseComplexDefinition(lineText, specfile, lineNumber,
-					SourceType.PATCH);
+			return parseComplexDefinition(lineText, lineNumber,	SourceType.PATCH);
 		}
 
 		return null;
@@ -295,7 +293,7 @@ public class SpecfileParser {
 		if (lineText.startsWith("%define") || lineText.startsWith("%global")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return parseDefine(lineText, specfile, lineNumber);
 		} else if (lineText.startsWith("%patch")) { //$NON-NLS-1$
-			return parsePatch(lineText, specfile, lineNumber);
+			return parsePatch(lineText, lineNumber);
 		}
 		
 		String[] sections = new String[simpleSections.length + complexSections.length];
@@ -309,7 +307,7 @@ public class SpecfileParser {
 		return null;
 	}
 	
-	private SpecfileElement parsePatch(String lineText, Specfile specfile, int lineNumber) {
+	private SpecfileElement parsePatch(String lineText, int lineNumber) {
 		
 		SpecfilePatchMacro toReturn = null;
 		
@@ -392,7 +390,7 @@ public class SpecfileParser {
 		return toReturn;
 	}
 
-	private SpecfileElement parseComplexDefinition(String lineText, Specfile specfile, int lineNumber, SourceType sourceType) {
+	private SpecfileElement parseComplexDefinition(String lineText, int lineNumber, SourceType sourceType) {
 		SpecfileSource toReturn = null;
 		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
 		int number = -1;

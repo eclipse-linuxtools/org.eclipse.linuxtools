@@ -112,16 +112,16 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				+ selection.getLength());
 		// RPM macro's are useful in the whole specfile.
 		List<ICompletionProposal> rpmMacroProposals = computeRpmMacroProposals(
-				viewer, region, specfile, prefix);
+				region, specfile, prefix);
 		// Sources completion
 		List<ICompletionProposal> sourcesProposals = computeSourcesProposals(
-				viewer, region, specfile, prefix);
+				region, specfile, prefix);
 		result.addAll(sourcesProposals);
 		// Get the current content type
 		String currentContentType = editor.getInputDocument().getDocumentPartitioner().getContentType(region.getOffset());
 		if (currentContentType.equals(SpecfilePartitionScanner.SPEC_PREP)){
 			List<ICompletionProposal> patchesProposals = computePatchesProposals(
-					viewer, region, specfile, prefix);
+					region, specfile, prefix);
 			result.addAll(patchesProposals);
 		}
 		
@@ -129,7 +129,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 			// don't show template in the RPM packages content type.
 			// (when the line begin with Requires, BuildRequires etc...)
 			List<ICompletionProposal> rpmPackageProposals = computeRpmPackageProposals(
-					viewer, region, prefix);
+					region, prefix);
 			result.addAll(rpmPackageProposals);
 			result.addAll(rpmMacroProposals);
 		} else {
@@ -147,7 +147,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 				if (region.getOffset() - lineOffset > 5){
 					result.clear();
 					String groupPrefix = getGroupPrefix(viewer, offset);
-					result.addAll(computeRpmGroupProposals(viewer, region,specfile, groupPrefix));
+					result.addAll(computeRpmGroupProposals(region, groupPrefix));
 				}
 			} catch (BadLocationException e) {
 				SpecfileLog.logError(e);
@@ -216,8 +216,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computeRpmMacroProposals(ITextViewer viewer,
-			IRegion region, Specfile specfile, String prefix) {
+	private List<ICompletionProposal> computeRpmMacroProposals(IRegion region, 
+			Specfile specfile, String prefix) {
 		Map<String, String> rpmMacroProposalsMap = Activator.getDefault().getRpmMacroList().getProposals(prefix);
 		
 		// grab defines and put them into the proposals map
@@ -254,8 +254,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computePatchesProposals(ITextViewer viewer,
-			IRegion region, Specfile specfile, String prefix) {
+	private List<ICompletionProposal> computePatchesProposals(IRegion region, 
+			Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> patchesProposalsMap = getPatches(specfile, prefix);
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
@@ -285,8 +285,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computeSourcesProposals(ITextViewer viewer,
-			IRegion region, Specfile specfile, String prefix) {
+	private List<ICompletionProposal> computeSourcesProposals(IRegion region, 
+			Specfile specfile, String prefix) {
 		// grab patches and put them into the proposals map
 		Map<String, String> sourcesProposalsMap = getSources(specfile, prefix);
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
@@ -316,8 +316,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * @return 
 	 *            a ICompletionProposal[]
 	 */
-	private List<ICompletionProposal> computeRpmPackageProposals(ITextViewer viewer,
-			IRegion region, String prefix) {
+	private List<ICompletionProposal> computeRpmPackageProposals(IRegion region, 
+			String prefix) {
 		List<String[]> rpmPkgProposalsList = Activator.getDefault().getRpmPackageList().getProposals(prefix);
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		if (rpmPkgProposalsList != null) {
@@ -331,8 +331,8 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 		return proposals;
 	}
 	
-	private List<ICompletionProposal> computeRpmGroupProposals(ITextViewer viewer,
-			IRegion region,Specfile specfile, String prefix) {
+	private List<ICompletionProposal> computeRpmGroupProposals(IRegion region,
+			String prefix) {
 		List<String> rpmGroupProposalsList = Activator.getDefault()
 				.getRpmGroups();
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();

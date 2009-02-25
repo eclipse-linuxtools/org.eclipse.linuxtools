@@ -103,7 +103,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 							word.length() - 1)).intValue();
 			SpecfileSource source = specfile.getSource(sourceNumber);
 			if (source != null)
-				return prepareHyperlink(lineInfo, line, word, document, source);
+				return prepareHyperlink(lineInfo, line, word, source);
 		} else if (word.startsWith(PATCH_IDENTIFIER)) {
 
 			int sourceNumber = Integer.valueOf(
@@ -111,13 +111,13 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 					.intValue();
 			SpecfileSource source = specfile.getPatch(sourceNumber);
 			if (source != null)
-				return prepareHyperlink(lineInfo, line, word, document, source);
+				return prepareHyperlink(lineInfo, line, word, source);
 		} else {
 			String defineName = getDefineName(word);
 			SpecfileDefine define = specfile.getDefine(defineName);
 			if (define != null) {
-				return prepareHyperlink(lineInfo, line, defineName, document,
-						define, wordOffsetInLine);
+				return prepareHyperlink(lineInfo, line, defineName, define,
+						wordOffsetInLine);
 			}
 		}
 		return null;
@@ -131,7 +131,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	}
 
 	private IHyperlink[] prepareHyperlink(IRegion lineInfo, String line,
-			String word, IDocument document, SpecfileElement source, int lineIndex) {
+			String word, SpecfileElement source, int lineIndex) {
 		IRegion urlRegion = new Region(lineInfo.getOffset()
 				+ line.indexOf(word, lineIndex), word.length());
 
@@ -153,7 +153,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	}
 	
 	private IHyperlink[] prepareHyperlink(IRegion lineInfo, String line,
-			String word, IDocument document, SpecfileElement source) {
-		return prepareHyperlink(lineInfo, line, word, document, source, 0);
+			String word, SpecfileElement source) {
+		return prepareHyperlink(lineInfo, line, word, source, 0);
 	}
 }

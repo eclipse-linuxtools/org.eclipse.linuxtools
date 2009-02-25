@@ -1,5 +1,23 @@
 2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* .settings/org.eclipse.jdt.core.prefs: Enable warning for not used parameters.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java (createChangelogEntry): Drop unused parameter.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (prepareHyperlink): Likewise.
+	(detectHyperlinks): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseMacro): Likewise.
+	(parseLine): Likewise.
+	(parseComplexDefinition): Likewise. 
+	(parsePatch): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (computeSourcesProposals): Likewise.
+	(computePatchesProposals): Likewise.
+	(computeCompletionProposals): Likewise.
+	(computeRpmGroupProposals): Likewise.
+	(computeRpmPackageProposals): Likewise.
+	(computeRpmMacroProposals): Likewise.
+	
+	2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (Specfile): Removed, not needed.
 	(addDefine): Likewise. 
 	(setSources): Likewise.

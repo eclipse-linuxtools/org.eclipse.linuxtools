@@ -107,7 +107,7 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 					String[] changelogLines = changelogText.split(NEW_LINE);
 					StringBuilder buf = new StringBuilder();
 					buf.append(changelogLines[0]).append(NEW_LINE);
-					buf.append(createChangelogEntry(specEditor.getSpecfile(), doc)).append(NEW_LINE);
+					buf.append(createChangelogEntry(specEditor.getSpecfile())).append(NEW_LINE);
 					buf.append(" - \n"); //$NON-NLS-1$
 					int newCursorOffset = changelogPartition.getOffset() + buf.length() -1;
 					
@@ -164,7 +164,7 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 		this.window = window;
 	}
 
-	protected String createChangelogEntry(Specfile specfile, IDocument doc) {
+	protected String createChangelogEntry(Specfile specfile) {
 		if (specfile == null)
 			return EMPTY_STRING;
 		// FIXME:  this is hack-tastic
