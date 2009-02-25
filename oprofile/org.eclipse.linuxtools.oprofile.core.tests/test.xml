@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
-	<property name="oprofile_core_classname" value="org.eclipse.linuxtools.oprofile.core.tests.AllCoreTests" />
-	<property name="oprofile-core-plugin-name" value="org.eclipse.linuxtools.oprofile.core.tests" />
+	<property name="classname" value="org.eclipse.linuxtools.oprofile.core.tests.AllCoreTests" />
+	<property name="plugin-name" value="org.eclipse.linuxtools.oprofile.core.tests" />
 
 	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 
@@ -27,7 +27,7 @@
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${oprofile-core-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
-			<property name="classname" value="${oprofile_core_classname}" />
+			<property name="classname" value="${classname}" />
 		</ant>
 	</target>
 

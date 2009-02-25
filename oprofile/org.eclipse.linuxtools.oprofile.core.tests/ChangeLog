@@ -1,3 +1,9 @@
+2009-02-25  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: Clean up variable names.
+	* META-INF/MANIFEST.MF: Explicitly require JUnit 3.
+	* build.properties: Add test.xml.
+
 2009-02-02  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: Initial checkin.
