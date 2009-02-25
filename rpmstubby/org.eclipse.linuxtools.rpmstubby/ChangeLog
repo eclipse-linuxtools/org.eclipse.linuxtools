@@ -1,3 +1,7 @@
+2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable warning for parameter not used.
+
 2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): Put Fixme in commented block so it get annotated. 
