@@ -30,7 +30,7 @@ public abstract class FileTestCase extends TestCase {
 
 	SpecfileParser parser;
 	protected Specfile specfile;
-	IFile testFile;
+	protected IFile testFile;
 	Document testDocument;
 	SpecfileErrorHandler errorHandler;
 	SpecfileTestProject testProject;

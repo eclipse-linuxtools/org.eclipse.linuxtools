@@ -14,7 +14,8 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.linuxtools.rpm.ui.editor.tests.parser.SpecfileTest;
+import org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink.URLHyperlinkWithMacroDetectorTest;
+import org.eclipse.linuxtools.rpm.ui.editor.tests.parser.ParserAllTests;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.scanners.ScannersAllTests;
 
 public class AllTests {
@@ -32,12 +33,11 @@ public class AllTests {
 		suite.addTestSuite(LicenseTagTest.class);
 		suite.addTestSuite(PatchApplicationTest.class);
 		suite.addTestSuite(LinePositionTests.class);
-		suite.addTestSuite(SourceComparatorTests.class);
-		suite.addTestSuite(SpecfileTest.class);
 		suite.addTestSuite(RpmMacroProposalsListTest.class);
 		suite.addTestSuite(RpmPackageProposalsListTest.class);
-		suite.addTestSuite(HyperlinkWithMacroTests.class);
+		suite.addTestSuite(URLHyperlinkWithMacroDetectorTest.class);
 		suite.addTest(ScannersAllTests.suite());
+		suite.addTest(ParserAllTests.suite());
 		suite.addTestSuite(SpecfileCompletionProcessorTest.class);
 		// $JUnit-END$
 		return suite;

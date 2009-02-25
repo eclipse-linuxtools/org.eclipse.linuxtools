@@ -17,7 +17,6 @@ public class ParserAllTests extends TestSuite {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests.parser");
 		suite.addTestSuite(SourceComparatorTest.class);
-		suite.addTestSuite(SpecfileDefineTest.class);
 		suite.addTestSuite(SpecfileTest.class);
 		return suite;
 	}

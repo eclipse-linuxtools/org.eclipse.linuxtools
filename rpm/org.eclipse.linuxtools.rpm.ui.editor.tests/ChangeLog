@@ -1,5 +1,15 @@
 2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HyperlinkWithMacroTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SourceComparatorTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/URLHyperlinkWithMacroDetectorTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/ParserAllTests.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SourceComparatorTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite): Use ParserAllTests instead of every test.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/FileTestCase.java: Make testFileProtected.
+	
+2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RefactoringTests.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileTest.java: New file.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite): Adapt to SpecfileTest rename.
