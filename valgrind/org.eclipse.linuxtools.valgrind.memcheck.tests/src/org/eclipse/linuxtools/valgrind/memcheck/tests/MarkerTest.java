@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart;
 import org.eclipse.linuxtools.valgrind.memcheck.ValgrindError;
@@ -44,7 +43,7 @@ public class MarkerTest extends AbstractMemcheckTest {
 	public void testMarkers() throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		doLaunch(config, "testMarkers"); //$NON-NLS-1$
 
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		ValgrindError[] errors = view.getErrors();

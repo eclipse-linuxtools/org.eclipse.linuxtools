@@ -15,7 +15,7 @@ import java.io.File;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifHeapTreeNode;
+import org.eclipse.linuxtools.valgrind.massif.MassifLaunchConstants;
 import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.valgrind.massif.MassifTreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifViewPart;
@@ -39,11 +40,10 @@ public class DoubleClickTest extends AbstractMassifTest {
 
 	@Override
 	public void setUp() throws Exception {
-		proj = createProject("alloctest"); //$NON-NLS-1$
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
-		
+		proj = createProject("alloctest"); //$NON-NLS-1$	
+	}
+
+	private void doDoubleClick() {
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		MassifTreeViewer treeViewer = (MassifTreeViewer) view.getTreeViewer();
 		
@@ -64,7 +64,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 		}
 		else {
 			fail();
-		}		
+		}
 	}
 	
 	@Override
@@ -72,7 +72,16 @@ public class DoubleClickTest extends AbstractMassifTest {
 		deleteProject(proj);
 	}
 	
-	public void testFile() throws Exception {
+	public void testDoubleClickFile() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
+		wc.doSave();
+		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
+		
+		doDoubleClick();
+		
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		IEditorInput input = editor.getEditorInput();
 		if (input instanceof IFileEditorInput) {
@@ -92,7 +101,16 @@ public class DoubleClickTest extends AbstractMassifTest {
 		}
 	}
 	
-	public void testLine() throws Exception {
+	public void testDoubleClickLine() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
+		wc.doSave();
+		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+		
+		doDoubleClick();
+		
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		if (editor instanceof ITextEditor) {
 			ITextEditor textEditor = (ITextEditor) editor;

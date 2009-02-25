@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 
@@ -28,14 +27,10 @@ public class BasicMemcheckTest extends AbstractMemcheckTest {
 		deleteProject(proj);
 	}
 	
-	public void testTest() throws Exception {
-		assertNotNull(proj.getBinaryContainer().getBinaries()[0]);
-	}
-	
-	public void testErrors() throws Exception {
+	public void testNumErrors() throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		doLaunch(config, "testNumErrors"); //$NON-NLS-1$
 				
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		assertEquals(3, view.getErrors().length);

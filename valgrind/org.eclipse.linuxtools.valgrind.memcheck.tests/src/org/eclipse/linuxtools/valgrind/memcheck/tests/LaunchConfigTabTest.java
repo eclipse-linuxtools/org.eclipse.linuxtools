@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import java.util.Arrays;
@@ -10,7 +20,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
@@ -69,18 +78,18 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		return wc;
 	}
 
-	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc)
-	throws CoreException {
+	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc, String testName)
+	throws Exception {
 		tab.performApply(wc);
 		config = wc.doSave();
 
-		ILaunch launch = config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		ILaunch launch = doLaunch(config, testName);
 		return launch;
 	}
 
 	public void testDefaults() throws Exception {		
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testDefaults"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -116,7 +125,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		String text = "${workspace_loc:/basicTest/testsuppfile.supp}"; //$NON-NLS-1$
 		tab.getSuppFileText().setText(text);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testWSSuppresions"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -133,7 +142,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
 		tab.getSuppFileText().setText(suppPath.toOSString());
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testSuppressions"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -149,7 +158,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/test suppfile.supp")).getLocation(); //$NON-NLS-1$
 		tab.getSuppFileText().setText(suppPath.toOSString());
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testSuppressionsSpaces"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -164,7 +173,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testTraceChildren() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getTraceChildrenButton().setSelection(true);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testTraceChildren"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -179,7 +188,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testDemangle() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getDemangleButton().setSelection(false);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testDemangle"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -194,7 +203,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testNumCallers() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getNumCallersSpinner().setSelection(24);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testNumCallers"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -209,7 +218,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testErrorLimit() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getErrorLimitButton().setSelection(false);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testErrorLimit"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -224,7 +233,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testShowBelowMain() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getShowBelowMainButton().setSelection(true);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testShowBelowMain"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -239,7 +248,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testMaxStackframe() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getMaxStackFrameSpinner().setSelection(50000000);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testMaxStackframe"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -254,7 +263,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testRunFreeRes() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		tab.getRunFreeresButton().setSelection(false);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testRunFreeRes"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -274,7 +283,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 		assertTrue(tab.isValid(config));
 
-		ILaunch launch = config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		ILaunch launch = doLaunch(config, "testAlignment"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -298,7 +307,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testShowReachable() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getShowReachableButton().setSelection(true);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testShowReachable"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -315,7 +324,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		String[] opts = dynamicTab.getLeakResCombo().getItems();
 		int ix = Arrays.asList(opts).indexOf(MemcheckLaunchConstants.LEAK_RES_MED);
 		dynamicTab.getLeakResCombo().select(ix);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testLeakResolutionMed"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -332,7 +341,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		String[] opts = dynamicTab.getLeakResCombo().getItems();
 		int ix = Arrays.asList(opts).indexOf(MemcheckLaunchConstants.LEAK_RES_HIGH);
 		dynamicTab.getLeakResCombo().select(ix);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testLeakResolutionHigh"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -347,7 +356,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testFreeListVol() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getFreelistSpinner().setSelection(2000000);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testFreeListVol"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -362,7 +371,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testWorkaroundGCCBugs() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getGccWorkaroundButton().setSelection(true);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testWorkaroundGCCBugs"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -377,7 +386,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testPartialLoads() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getPartialLoadsButton().setSelection(true);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testPartialLoads"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -392,7 +401,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testUndefValueErrors() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getUndefValueButton().setSelection(false);
-		ILaunch launch = saveAndLaunch(wc);
+		ILaunch launch = saveAndLaunch(wc, "testUndefValueErrors"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -410,10 +419,10 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		tab.getSuppFileText().setText(notExistentFile);
 		tab.performApply(wc);
 		config = wc.doSave();
-		
+
 		assertFalse(tab.isValid(config));
-		
-		ILaunch launch = config.launch(ILaunchManager.PROFILE_MODE, null, true);
+
+		ILaunch launch = doLaunch(config, "testValgrindError"); //$NON-NLS-1$
 
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
@@ -451,7 +460,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 					Thread.sleep(1000);
 				}
 			}
-			
+
 			String text = console.getDocument().get();
 			assertTrue(text.contains(notExistentFile));
 		}

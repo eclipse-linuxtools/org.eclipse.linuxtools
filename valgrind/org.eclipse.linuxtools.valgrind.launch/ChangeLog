@@ -1,3 +1,11 @@
+2009-02-25  Elliott Baron  <ebaron@redhat.com>
+
+	* IValgrindLaunchDelegate.java: Renamed launch to handleLaunch.
+	* ValgrindLaunchConfigurationDelegate.java (handleValgrindError): Extracted.
+	(getDynamicDelegate): Extracted.
+	(launch): Various changes to facilitate subclassing.
+	(getValgrindCommand): Extracted.
+
 2009-02-20  Elliott Baron  <ebaron@redhat.com>
 
 	* IValgrindOutputDirectoryProvider.java (getOutputPath): No longer responsible for

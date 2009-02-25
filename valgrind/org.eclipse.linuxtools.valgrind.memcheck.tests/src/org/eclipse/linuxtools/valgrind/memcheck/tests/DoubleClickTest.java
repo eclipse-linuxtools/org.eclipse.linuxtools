@@ -14,7 +14,6 @@ import java.io.File;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -38,11 +37,9 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 	@Override
 	protected void setUp() throws Exception {
 		proj = createProject("basicTest"); //$NON-NLS-1$
-		
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
+	}
 
+	private void doDoubleClick() throws Exception {
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer viewer = view.getViewer();
 
@@ -72,7 +69,13 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		deleteProject(proj);
 	}
 
-	public void testFile() throws Exception {
+	public void testDoubleClickFile() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
+
+		doDoubleClick();
+		
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		IEditorInput input = editor.getEditorInput();
 		if (input instanceof IFileEditorInput) {
@@ -87,7 +90,13 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		}
 	}
 	
-	public void testLine() throws Exception {
+	public void testDoubleClickLine() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+
+		doDoubleClick();
+		
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		if (editor instanceof ITextEditor) {
 			ITextEditor textEditor = (ITextEditor) editor;

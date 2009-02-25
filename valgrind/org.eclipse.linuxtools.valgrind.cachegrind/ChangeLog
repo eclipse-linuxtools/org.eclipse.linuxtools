@@ -1,3 +1,7 @@
+2009-02-25  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindLaunchDelegate.java (handleLaunch): Renamed method.
+
 2009-02-20  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindParser.java (parse): Removed Arrays.copyOf().

@@ -1,9 +1,13 @@
-/*
- * alloctest.c
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Created on: Oct 27, 2008
- *      Author: ebaron
- */
+ * Contributors:
+ *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ *******************************************************************************/
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -19,7 +23,7 @@ int main(int argc, char **argv) {
 	else {
 		bytes = 40;
 	}
-	
+
 	while (times-- > 0) {
 		int *foo();
 		void bar(int *);
@@ -29,7 +33,7 @@ int main(int argc, char **argv) {
 		int *ptr4 = foo();
 		int *ptr5 = (int *)malloc(bytes);
 		int *ptr6 = foo();
-	
+
 		free(ptr1);
 		bar(ptr2);
 		free(ptr3);

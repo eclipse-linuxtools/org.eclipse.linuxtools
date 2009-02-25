@@ -35,7 +35,7 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 
 	protected ArrayList<ValgrindError> errors;
 
-	public void launch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(Messages.getString("MemcheckLaunchDelegate.Parsing_Memcheck_Output"), 3); //$NON-NLS-1$
 

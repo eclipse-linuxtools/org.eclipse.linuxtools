@@ -31,7 +31,7 @@ public interface IValgrindLaunchDelegate {
 	 * @param monitor - to report progress
 	 * @throws CoreException - if this method fails
 	 */
-	public void launch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException;
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException;
 
 	/**
 	 * Parses attributes of an <code>ILaunchConfiguration</code> into an array

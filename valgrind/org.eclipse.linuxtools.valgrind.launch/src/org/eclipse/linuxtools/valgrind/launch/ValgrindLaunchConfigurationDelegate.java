@@ -83,18 +83,19 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		this.config = config;
 		this.launch	= launch;
 		try {
-			command = new ValgrindCommand();
+			command = getValgrindCommand();
 
 			// find Valgrind
 			String valgrindCmd = null;
 			try {
-				valgrindCmd = ValgrindCommand.whichValgrind();
+				valgrindCmd = command.whichValgrind();
 			} catch (IOException e) {
 				abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Please_ensure_Valgrind"), e, ICDTLaunchConfigurationConstants.ERR_PROGRAM_NOT_EXIST); //$NON-NLS-1$
 			}
 
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
+			String[] arguments = getProgramArgumentsArray(config);
 			
 			// set output directory in config
 			setOutputPath(config);
@@ -102,12 +103,10 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// create/empty output directory
 			createDirectory(outputPath);
 
-			String[] arguments = getProgramArgumentsArray(config);
-
 			// tool that was launched
 			toolID = getTool(config);
 			// ask tool extension for arguments
-			dynamicDelegate = ValgrindLaunchPlugin.getDefault().getToolDelegate(toolID);
+			dynamicDelegate = getDynamicDelegate(toolID);
 			String[] opts = getValgrindArgumentsArray(config);
 
 			// set the default source locator if required
@@ -153,7 +152,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				monitor.worked(1);
 
 				// pass off control to extender
-				dynamicDelegate.launch(config, launch, monitor.newChild(3));
+				dynamicDelegate.handleLaunch(config, launch, monitor.newChild(3));
 
 				// refresh view
 				ValgrindUIPlugin.getDefault().refreshView();
@@ -166,14 +165,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				//			saveState(monitor.newChild(2));
 			}
 			else {
-				final String errorLog = readLogs();
-
-				// find this process' console and write any error messages stored in the log to it
-				IOConsole console = (IOConsole) DebugUITools.getConsole(process);
-
-				if (console != null) {
-					writeErrorsToConsole(errorLog, console);
-				}
+				handleValgrindError();
 			}
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
@@ -183,6 +175,25 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		} finally {
 			m.done();
 		}
+	}
+
+	protected void handleValgrindError() throws IOException {
+		final String errorLog = readLogs();
+
+		// find this process' console and write any error messages stored in the log to it
+		IOConsole console = (IOConsole) DebugUITools.getConsole(process);
+
+		if (console != null) {
+			writeErrorsToConsole(errorLog, console);
+		}
+	}
+
+	protected IValgrindLaunchDelegate getDynamicDelegate(String toolID) throws CoreException {
+		return ValgrindLaunchPlugin.getDefault().getToolDelegate(toolID);
+	}
+
+	protected ValgrindCommand getValgrindCommand() {
+		return new ValgrindCommand();
 	}
 
 	protected IPath verifyOutputPath(ILaunchConfiguration config) throws CoreException {

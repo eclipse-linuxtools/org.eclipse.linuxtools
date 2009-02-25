@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.valgrind.massif.tests;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifHeapTreeNode;
 import org.eclipse.linuxtools.valgrind.massif.MassifLaunchConstants;
@@ -35,7 +34,10 @@ public class TreeTest extends AbstractMassifTest {
 	public void testTreeNodes() throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
+		wc.doSave();
+		doLaunch(config, "testTreeNodes"); //$NON-NLS-1$
 				
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer treeViewer = view.getTreeViewer();
@@ -54,8 +56,8 @@ public class TreeTest extends AbstractMassifTest {
 		ILaunchConfiguration config = createConfiguration(bin);
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 12); // > #snapshots
-		config = wc.doSave();
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		wc.doSave();
+		doLaunch(config, "testNoDetailed"); //$NON-NLS-1$
 				
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer treeViewer = view.getTreeViewer();

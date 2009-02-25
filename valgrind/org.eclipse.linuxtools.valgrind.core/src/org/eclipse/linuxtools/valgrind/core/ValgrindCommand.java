@@ -24,7 +24,7 @@ public class ValgrindCommand {
 	protected Process process;
 	protected String[] args;
 
-	public static String whichValgrind() throws IOException {
+	public String whichValgrind() throws IOException {
 		StringBuffer out = new StringBuffer();
 		Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
 		boolean success;

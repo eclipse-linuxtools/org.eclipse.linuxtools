@@ -66,6 +66,10 @@ public class ChartEditor extends EditorPart {
 		control = new ChartControl(top, chart, SWT.NONE);
 	}
 
+	public ChartControl getControl() {
+		return control;
+	}
+	
 	@Override
 	public void setFocus() {
 		if (control != null) {

@@ -10,19 +10,25 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.tests;
 
-import org.eclipse.cdt.core.model.CModelException;
+import java.util.Arrays;
+
+import org.eclipse.birt.chart.computation.DataPointHints;
+import org.eclipse.birt.chart.event.WrappedStructureSource;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.linuxtools.valgrind.massif.MassifLaunchConstants;
+import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.valgrind.massif.MassifViewPart;
+import org.eclipse.linuxtools.valgrind.massif.birt.ChartControl;
+import org.eclipse.linuxtools.valgrind.massif.birt.ChartEditor;
 import org.eclipse.linuxtools.valgrind.massif.birt.ChartEditorInput;
 import org.eclipse.linuxtools.valgrind.massif.birt.HeapChart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
@@ -45,7 +51,7 @@ public class ChartTests extends AbstractMassifTest {
 	public void testEditorName() throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		doLaunch(config, "testEditorName"); //$NON-NLS-1$
 				
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		IAction chartAction = getChartAction(view);
@@ -57,22 +63,47 @@ public class ChartTests extends AbstractMassifTest {
 	}
 	
 	public void testByteScalingKiB() throws Exception {
-		byteScalingHelper(1, 1, 1024 * 10);
+		byteScalingHelper(1, 1, 1024 * 10, "testByteScalingKiB"); //$NON-NLS-1$
 	}
 	
 	public void testByteScalingMiB() throws Exception {
-		byteScalingHelper(2, 1, 1024 * 1024 * 10);
+		byteScalingHelper(2, 1, 1024 * 1024 * 10, "testByteScalingMiB"); //$NON-NLS-1$
 	}
 	
 	public void testByteScalingGiB() throws Exception {
-		byteScalingHelper(3, 1024, 1024 * 1024 * 10);
+		byteScalingHelper(3, 1024, 1024 * 1024 * 10, "testByteScalingGiB"); //$NON-NLS-1$
 	}
 
 	public void testByteScalingTiB() throws Exception {
-		byteScalingHelper(4, 1024 * 1024, 1024 * 1024 *10);
+		byteScalingHelper(4, 1024 * 1024, 1024 * 1024 *10, "testByteScalingTiB"); //$NON-NLS-1$
 	}
 	
-	private void byteScalingHelper(int ix, long times, long bytes) throws CModelException, CoreException {
+	public void testChartCallback() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testChartCallback"); //$NON-NLS-1$
+		
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		IAction chartAction = getChartAction(view);
+		assertNotNull(chartAction);
+		chartAction.run();
+		
+		IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (part instanceof ChartEditor) {
+			ChartControl control = ((ChartEditor) part).getControl();
+			DataPointHints source = new DataPointHints(null, null, null, null, null, null, null, null, null, 4, null, 0, null);
+			control.callback(null, new WrappedStructureSource(source), null);
+			
+			TableViewer viewer = ((MassifViewPart) view.getDynamicView()).getTableViewer();
+			MassifSnapshot[] snapshots = (MassifSnapshot[]) viewer.getInput();
+			MassifSnapshot snapshot = (MassifSnapshot) ((StructuredSelection) viewer.getSelection()).getFirstElement();
+			assertEquals(4, Arrays.asList(snapshots).indexOf(snapshot));
+		} else {
+			fail();
+		}
+	}
+	
+	private void byteScalingHelper(int ix, long times, long bytes, String testName) throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
@@ -80,7 +111,7 @@ public class ChartTests extends AbstractMassifTest {
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, MassifLaunchConstants.TIME_B);
 		config = wc.doSave();
 		
-		config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		doLaunch(config, testName);
 				
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		IAction chartAction = getChartAction(view);
@@ -96,6 +127,7 @@ public class ChartTests extends AbstractMassifTest {
 			fail();
 		}
 	}
+	
 	private IAction getChartAction(IViewPart view) {
 		IAction result = null;
 		IToolBarManager manager = view.getViewSite().getActionBars().getToolBarManager();

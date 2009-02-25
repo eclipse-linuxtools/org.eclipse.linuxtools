@@ -1,3 +1,8 @@
+2009-02-25  Elliott Baron  <ebaron@redhat.com>
+
+	* birt/ChartEditor.java (getControl): New getter.
+	* MassifLaunchDelegate.java (handleLaunch): Renamed. 
+
 2009-02-20  Elliott Baron  <ebaron@redhat.com>
 
 	* HeapChart.java (HeapChart): Added suppressWarnings.

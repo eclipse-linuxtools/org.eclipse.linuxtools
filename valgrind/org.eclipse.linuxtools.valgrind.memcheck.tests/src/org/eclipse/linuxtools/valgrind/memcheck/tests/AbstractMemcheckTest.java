@@ -10,40 +10,20 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 
-import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
-import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
+import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
+import org.osgi.framework.Bundle;
 
-public class AbstractMemcheckTest extends AbstractTest {
-
-	@Override
-	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc)
-	throws CoreException {
-		ILaunchConfigurationTab tab = new ValgrindOptionsTab();
-		tab.setDefaults(wc);
-		tab = ValgrindLaunchPlugin.getDefault().getToolPage(MemcheckPlugin.TOOL_ID);
-		tab.setDefaults(wc);
-		wc.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, MemcheckPlugin.TOOL_ID);
-	}
+public class AbstractMemcheckTest extends AbstractValgrindTest {
 
 	@Override
-	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
+	public Bundle getBundle() {
+		return MemcheckTestsPlugin.getDefault().getBundle();
 	}
-
-	protected ICProject createProject(String projname) throws CoreException, URISyntaxException, InvocationTargetException, InterruptedException, IOException {
-		return createProject(MemcheckTestsPlugin.getDefault().getBundle(), projname);
+	
+	public String getToolID() {
+		return MemcheckPlugin.TOOL_ID;
 	}
 
 }

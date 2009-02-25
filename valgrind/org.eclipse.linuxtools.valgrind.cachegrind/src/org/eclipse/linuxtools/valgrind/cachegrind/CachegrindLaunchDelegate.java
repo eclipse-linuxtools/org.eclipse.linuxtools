@@ -40,7 +40,7 @@ public class CachegrindLaunchDelegate extends
 	
 	private static final String COMMA = ","; //$NON-NLS-1$
 	
-	public void launch(ILaunchConfiguration config,	ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	public void handleLaunch(ILaunchConfiguration config,	ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(Messages.getString("CachegrindLaunchDelegate.Parsing_Cachegrind_Output"), 3); //$NON-NLS-1$
 			

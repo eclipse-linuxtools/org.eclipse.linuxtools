@@ -40,7 +40,7 @@ implements IValgrindLaunchDelegate {
 
 	protected MassifOutput output;
 
-	public void launch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor)
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor)
 	throws CoreException {
 		MassifPlugin.getDefault().setConfig(config);
 		MassifPlugin.getDefault().setSourceLocator(launch.getSourceLocator());
