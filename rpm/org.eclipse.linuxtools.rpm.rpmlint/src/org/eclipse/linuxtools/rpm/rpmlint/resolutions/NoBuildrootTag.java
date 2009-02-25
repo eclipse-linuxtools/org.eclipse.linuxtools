@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
-import org.eclipse.swt.graphics.Image;
 
 /**
  * Quick fix for the "no-buildroot-tag" error.
@@ -26,10 +25,6 @@ public class NoBuildrootTag extends AInsertLineResolution {
 
 	public String getDescription() {
 		return Messages.NoBuildrootTag_0;
-	}
-
-	public Image getImage() {
-		return null;
 	}
 
 	public String getLabel() {

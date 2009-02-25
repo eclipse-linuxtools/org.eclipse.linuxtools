@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import org.eclipse.swt.graphics.Image;
-
 /**
  * Quick fix for the hardcoded-packager-tag warning.
  * This is as simple as removing the line.
@@ -28,13 +26,6 @@ public class HardcodedPackagerTag extends ARemoveLineResolution {
 	 */
 	public String getDescription() {
 		return Messages.HardcodedPackagerTag_0;
-	}
-
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
-	 */
-	public Image getImage() {
-		return null;
 	}
 
 	/**

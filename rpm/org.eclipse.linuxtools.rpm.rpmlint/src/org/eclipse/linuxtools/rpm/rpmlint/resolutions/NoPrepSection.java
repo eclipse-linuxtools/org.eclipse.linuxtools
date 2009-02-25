@@ -14,17 +14,12 @@ import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
-import org.eclipse.swt.graphics.Image;
 
 public class NoPrepSection extends AInsertLineResolution{
 	public static final String ID = "no-%prep-section"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return Messages.NoPrepSection_0;
-	}
-
-	public Image getImage() {
-		return null;
 	}
 
 	public String getLabel() {

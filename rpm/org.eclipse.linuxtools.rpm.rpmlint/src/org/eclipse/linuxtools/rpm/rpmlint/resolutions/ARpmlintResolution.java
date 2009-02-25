@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMarkerResolution2;
 import org.eclipse.ui.IWorkbenchPage;
@@ -26,6 +27,16 @@ import org.eclipse.ui.ide.IDE;
  */
 public abstract class ARpmlintResolution implements IMarkerResolution2 {
 
+	
+	/**
+	 * No image for rpmlint resolutions for now. 
+	 * 
+	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
+	 */
+	public Image getImage() {
+		return null;
+	}
+	
 	/**
 	 * Returns the SpecfileEditor for the given IMarker if any.
 	 * 

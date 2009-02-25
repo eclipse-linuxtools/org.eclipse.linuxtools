@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import org.eclipse.swt.graphics.Image;
-
 public class RpmBuildrootUsage extends ARemoveLineResolution{
 	public static final String ID = "rpm-buildroot-usage"; //$NON-NLS-1$
 
@@ -22,15 +20,6 @@ public class RpmBuildrootUsage extends ARemoveLineResolution{
 	 */
 	public String getDescription() {
 		return Messages.RpmBuildrootUsage_0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
-	 */
-	public Image getImage() {
-		return null;
 	}
 
 	/*

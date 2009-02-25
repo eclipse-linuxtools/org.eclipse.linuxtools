@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
-import org.eclipse.swt.graphics.Image;
 
 public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
@@ -22,10 +21,6 @@ public class NoCleaningOfBuildroot extends AInsertLineResolution {
 
 	public String getDescription() {
 		return Messages.NoCleaningOfBuildroot_0;
-	}
-
-	public Image getImage() {
-		return null;
 	}
 
 	public String getLabel() {

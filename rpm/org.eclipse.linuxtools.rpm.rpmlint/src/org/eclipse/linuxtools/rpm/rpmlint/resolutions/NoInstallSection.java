@@ -14,17 +14,12 @@ import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
-import org.eclipse.swt.graphics.Image;
 
 public class NoInstallSection extends AInsertLineResolution {
 	public static final String ID = "no-%install-section"; //$NON-NLS-1$
 
 	public String getDescription() {
 		return Messages.NoInstallSection_0;
-	}
-
-	public Image getImage() {
-		return null;
 	}
 
 	public String getLabel() {

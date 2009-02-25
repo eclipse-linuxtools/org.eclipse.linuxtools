@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import org.eclipse.swt.graphics.Image;
-
 public class SetupNotQuiet extends AReplaceTextResolution {
 
 	public static final String ID = "setup-not-quiet"; //$NON-NLS-1$
@@ -37,13 +35,6 @@ public class SetupNotQuiet extends AReplaceTextResolution {
 	 */
 	public String getDescription() {
 		return Messages.SetupNotQuiet_0;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
-	 */
-	public Image getImage() {
-		return null;
 	}
 
 	/* (non-Javadoc)

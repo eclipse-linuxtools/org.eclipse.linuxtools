@@ -1,3 +1,20 @@
+2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable warning for not used parameter.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/ARpmlintResolution.java (getImage): Let's have getImage in the base class to not copy it everywhere.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPrefixTag.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/MacroInChangelog.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildrootTag.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoBuildSection.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleaningOfBuildroot.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoCleanSection.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoInstallSection.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/NoPrepSection.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/PatchNotApplied.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmBuildrootUsage.java (getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/SetupNotQuiet.java (getImage): Likewise.
+
 2009-02-12  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/HardcodedPackagerTag.java (getDescription): Fix javadoc.

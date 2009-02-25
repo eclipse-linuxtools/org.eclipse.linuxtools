@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import org.eclipse.swt.graphics.Image;
-
 public class MacroInChangelog extends AReplaceTextResolution {
 
 	public static final String ID = "macro-in-%changelog"; //$NON-NLS-1$
@@ -44,15 +42,6 @@ public class MacroInChangelog extends AReplaceTextResolution {
 	public String getDescription() {
 		return Messages.MacroInChangelog_0
 				+ Messages.MacroInChangelog_1;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
-	 */
-	public Image getImage() {
-		return null;
 	}
 
 	/*

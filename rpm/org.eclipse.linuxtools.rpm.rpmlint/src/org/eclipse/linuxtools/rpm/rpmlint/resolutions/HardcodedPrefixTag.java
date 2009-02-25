@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.resolutions;
 
-import org.eclipse.swt.graphics.Image;
 
 /**
  * Quick fix for the hardcoded-prefix-tag warning.
@@ -27,13 +26,6 @@ public class HardcodedPrefixTag extends ARemoveLineResolution{
 	 */
 	public String getDescription() {
 		return Messages.HardcodedPrefixTag_0;
-	}
-
-	/**
-	 * @see org.eclipse.ui.IMarkerResolution2#getImage()
-	 */
-	public Image getImage() {
-		return null;
 	}
 
 	/**
