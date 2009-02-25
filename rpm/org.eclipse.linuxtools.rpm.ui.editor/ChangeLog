@@ -1,5 +1,10 @@
 2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlink.java (open): Log error.
+	(getSource): New method.
+	
+2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* .settings/org.eclipse.jdt.core.prefs: Enable warning for not used parameters.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java (createChangelogEntry): Drop unused parameter.
 	(run): Likewise.
