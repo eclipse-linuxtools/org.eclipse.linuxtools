@@ -1,3 +1,10 @@
+2009-02-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/JavaParser.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/parsers/java/JavaParser.java: New file.
+	* fragment.xml: Change extension to point to new location of JavaParser.java
+	which is in a path that matches the bundle name.
+
 2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.	
