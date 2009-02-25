@@ -1,3 +1,10 @@
+2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RefactoringTests.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite): Adapt to SpecfileTest rename.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/FileTestCase.java: Make specfile member protected.
+	
 2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/LinePositionTests.java (testLineNumber): Adapt to latest api changes.

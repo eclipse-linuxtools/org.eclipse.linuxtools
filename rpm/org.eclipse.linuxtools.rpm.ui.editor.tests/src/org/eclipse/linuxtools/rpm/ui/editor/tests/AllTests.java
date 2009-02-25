@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.tests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.eclipse.linuxtools.rpm.ui.editor.tests.parser.SpecfileTest;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.scanners.ScannersAllTests;
 
 public class AllTests {
@@ -32,7 +33,7 @@ public class AllTests {
 		suite.addTestSuite(PatchApplicationTest.class);
 		suite.addTestSuite(LinePositionTests.class);
 		suite.addTestSuite(SourceComparatorTests.class);
-		suite.addTestSuite(RefactoringTests.class);
+		suite.addTestSuite(SpecfileTest.class);
 		suite.addTestSuite(RpmMacroProposalsListTest.class);
 		suite.addTestSuite(RpmPackageProposalsListTest.class);
 		suite.addTestSuite(HyperlinkWithMacroTests.class);
