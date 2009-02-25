@@ -40,7 +40,7 @@ Requires: oprofile >= 0.9.3
 Requires: usermode >= 1.98
 
 %description
-Plugins to bring OProfile-based profiling into the workbench.
+Eclipse plugins to integrate OProfile's powerful profiling capabilities in the workbench.
 
 %prep
 %setup -q -c
