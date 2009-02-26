@@ -34,8 +34,6 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPCONTROL_REL_PATH = "natives/linux/scripts/opcontrol"; //$NON-NLS-1$
 	private final String OPCONTROL_PROGRAM;
 
-//	private static final String SUDO_PROGRAM = "sudo"; //$NON-NLS-1$
-
 	// Initialize the Oprofile kernel module and oprofilefs
 	private static final String _OPD_INIT_MODULE = "--init"; //$NON-NLS-1$
 	
@@ -211,9 +209,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	// args: list of opcontrol arguments (not including opcontrol program itself)
 	private void _runOpcontrol(ArrayList<String> args) throws OpcontrolException {
 		args.add(0, OPCONTROL_PROGRAM);
-//		args.add(0, SUDO_PROGRAM);
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
-//		String cmd = (String) args.get(2);
 		String cmd = (String) args.get(1);
 		if (_verbosity.length() > 0 && (cmd.equals (_OPD_START_COLLECTION) || cmd.equals(_OPD_START_DAEMON))) {
 			args.add(_verbosity);
@@ -241,7 +237,8 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 					// drain
 				}
 				
-				if (p.waitFor() != 0) {
+				int ret = p.waitFor();
+				if (ret != 0) {
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
 				}
 			} catch (IOException ioe) { 
@@ -317,5 +314,4 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		//callgraph depth
 		args.add(_OPD_CALLGRAPH_DEPTH + options.getCallgraphDepth());
 	}
-
 }
