@@ -1,8 +1,8 @@
 %define src_repo_tag   0.1.0
 %define eclipse_base   %{_libdir}/eclipse
 %define install_loc    %{_libdir}/eclipse/dropins/oprofile
-%define qualifier	   200901141551
-%define ver_qual	   %{src_repo_tag}.%{qualifier}
+%define qualifier      200901141551
+%define ver_qual       %{src_repo_tag}.%{qualifier}
 
 # All arches line up between Eclipse and Linux kernel names except i386 -> x86
 %ifarch %{ix86}
@@ -15,7 +15,7 @@
 Name:           eclipse-oprofile
 Version:        0.1.0
 Release:        1%{?dist}
-Summary:        OProfile Integration (Incubation)
+Summary:        Eclipse plugin for OProfile integration
 
 Group:          Development/Tools
 License:        EPL
@@ -40,7 +40,8 @@ Requires: oprofile >= 0.9.3
 Requires: usermode >= 1.98
 
 %description
-Eclipse plugins to integrate OProfile's powerful profiling capabilities in the workbench.
+Eclipse plugins to integrate OProfile's powerful profiling capabilities
+in the workbench.
 
 %prep
 %setup -q -c
@@ -52,13 +53,14 @@ rm -f org.eclipse.linuxtools.oprofile.core.linux.*/os/linux/*/opxml
 cd org.eclipse.linuxtools.oprofile.core/natives/linux/opxml
 make "CFLAGS=$RPM_OPT_FLAGS"
 
-mv opxml %{_builddir}/%{name}-%{version}/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}/os/linux/%{eclipse_arch}
+mv opxml \
+  %{_builddir}/%{name}-%{version}/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}/os/linux/%{eclipse_arch}
 
 cd %{_builddir}/%{name}-%{version}
 
 %{eclipse_base}/buildscripts/pdebuild -f org.eclipse.linuxtools.oprofile.feature \
-									-d "cdt linuxprofilingframework" \
-									-a "-DjavacSource=1.5 -DjavacTarget=1.5"
+                                      -d "cdt linuxprofilingframework" \
+                                      -a "-DjavacSource=1.5 -DjavacTarget=1.5"
 
 %install
 %{__rm} -rf %{buildroot}
@@ -71,15 +73,18 @@ install -d -m 755 %{buildroot}%{install_loc}
 %define corepath %{buildroot}%{install_loc}/eclipse/plugins/org.eclipse.linuxtools.oprofile.core_%{ver_qual}
 
 #create opcontrol wrapper
-ln -s ../../../../../../../../../../../usr/bin/consolehelper %{corepath}/natives/linux/scripts/opcontrol
+ln -s ../../../../../../../../../../../usr/bin/consolehelper \
+  %{corepath}/natives/linux/scripts/opcontrol
 
 #install opcontrol wrapper permission files
 install -d -m 755 %{buildroot}%{_sysconfdir}/security/console.apps
-install -D -m 644 org.eclipse.linuxtools.oprofile.core/natives/linux/scripts/opcontrol-wrapper.security \
-					%{buildroot}%{_sysconfdir}/security/console.apps/opcontrol
+install -D -m 644 \
+  org.eclipse.linuxtools.oprofile.core/natives/linux/scripts/opcontrol-wrapper.security \
+  %{buildroot}%{_sysconfdir}/security/console.apps/opcontrol
 install -d -m 755 %{buildroot}%{_sysconfdir}/pam.d
-install -D -m 644 org.eclipse.linuxtools.oprofile.core/natives/linux/scripts/opcontrol-wrapper.pamd \
-					%{buildroot}%{_sysconfdir}/pam.d/opcontrol
+install -D -m 644 \
+  org.eclipse.linuxtools.oprofile.core/natives/linux/scripts/opcontrol-wrapper.pamd \
+  %{buildroot}%{_sysconfdir}/pam.d/opcontrol
 
 #remove install/uninstall script (used in update site only)
 rm -f %{corepath}/natives/linux/scripts/install.sh
@@ -90,7 +95,8 @@ rm -rf %{corepath}/natives/linux/opxml
 rm -f %{corepath}/natives/linux/scripts/.svnignore
 
 #+x opxml
-chmod +x %{buildroot}%{install_loc}/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}_%{ver_qual}/os/linux/%{eclipse_arch}/opxml
+chmod +x \
+  %{buildroot}%{install_loc}/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.%{eclipse_arch}_%{ver_qual}/os/linux/%{eclipse_arch}/opxml
 
 
 %clean
