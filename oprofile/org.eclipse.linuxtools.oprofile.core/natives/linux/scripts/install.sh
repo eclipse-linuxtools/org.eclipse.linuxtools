@@ -32,7 +32,7 @@ fi
 #need consolehelper to run opcontrol as root from within eclipse
 test -x /usr/bin/consolehelper 
 if [ $? -ne 0 ]; then
-  echo Error: /usr/bin/consolehelper does not exist, run '`yum install usermode`'
+  echo Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead 
   exit 1
 fi
 
