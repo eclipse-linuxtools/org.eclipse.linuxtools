@@ -1,5 +1,6 @@
 2009-02-27  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/TagRule.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlink.java: Log error.
 
 2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
