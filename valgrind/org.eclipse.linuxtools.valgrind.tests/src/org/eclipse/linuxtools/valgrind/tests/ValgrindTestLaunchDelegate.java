@@ -22,12 +22,11 @@ import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegat
 
 public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDelegate {
 
-	public static final String SYSTEM_PROPERTY_RUN_VALGRIND = "eclipse.valgrind.tests.runValgrind"; //$NON-NLS-1$
 	protected static final String ERROR_CODE_FILE = "errorCode"; //$NON-NLS-1$
 
 	@Override
 	protected ValgrindCommand getValgrindCommand() {
-		if (System.getProperty(SYSTEM_PROPERTY_RUN_VALGRIND, "yes").equals("no")) {   //$NON-NLS-1$//$NON-NLS-2$
+		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
 			int exitcode = 0;
 			try {
 				exitcode = readErrorCode();
@@ -43,7 +42,7 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 
 	@Override
 	protected void createDirectory(IPath path) throws IOException {
-		if (!System.getProperty(SYSTEM_PROPERTY_RUN_VALGRIND, "yes").equals("no")) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (ValgrindTestsPlugin.RUN_VALGRIND) {
 			super.createDirectory(path);
 		}
 	}
@@ -51,12 +50,16 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 	@Override
 	protected void setOutputPath(ILaunchConfiguration config)
 	throws CoreException, IOException {
-		// Do nothing, done manually
+		if (!ValgrindTestsPlugin.GENERATE_FILES && ValgrindTestsPlugin.RUN_VALGRIND) {
+			super.setOutputPath(config);
+		}
 	}
 
 	@Override
 	protected void handleValgrindError() throws IOException {
-		writeErrorCode();
+		if (ValgrindTestsPlugin.GENERATE_FILES) {
+			writeErrorCode();
+		}
 		super.handleValgrindError();
 	}
 

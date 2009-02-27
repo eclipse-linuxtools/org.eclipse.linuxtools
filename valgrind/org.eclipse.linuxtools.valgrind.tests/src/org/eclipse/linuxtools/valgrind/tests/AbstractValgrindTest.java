@@ -10,12 +10,19 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.tests;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -34,15 +41,35 @@ import org.osgi.framework.Bundle;
 
 public abstract class AbstractValgrindTest extends AbstractTest {
 
+	private static final String TEMPLATE_PREFIX = "template_"; //$NON-NLS-1$
+	private static final FileFilter TEMPLATE_FILTER = new FileFilter() {
+		public boolean accept(File pathname) {
+			return pathname.getName().startsWith(TEMPLATE_PREFIX);
+		}			
+	};
+	private static final FileFilter NOT_TEMPLATE_FILTER = new FileFilter() {
+		public boolean accept(File pathname) {
+			return !pathname.getName().startsWith(TEMPLATE_PREFIX);
+		}			
+	};
+	
+	private static final String SEARCH_STRING_WS = "XXXXXXXXXXXX"; //$NON-NLS-1$
+	private static final String SEARCH_STRING_BL = "YYYYYYYYYYYY"; //$NON-NLS-1$
+
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
 		return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
 	}
 
 	protected ILaunch doLaunch(ILaunchConfiguration config, String testName) throws Exception {
+		ILaunch launch;
 		URL location = FileLocator.find(getBundle(), new Path("valgrindFiles"), null); //$NON-NLS-1$
 		File file = new File(FileLocator.toFileURL(location).toURI());
-		IPath pathToFiles = new Path(file.getAbsolutePath()).append(testName);
+		IPath pathToFiles = new Path(file.getCanonicalPath()).append(testName);
+		
+		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
+			bindLocation(pathToFiles);
+		}
 
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, pathToFiles.toOSString());
@@ -51,7 +78,66 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		wc.setPreferredLaunchDelegate(modes, ValgrindTestsPlugin.DELEGATE_ID);
 		wc.doSave();
 
-		return config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		launch = config.launch(ILaunchManager.PROFILE_MODE, null, true);
+
+		if (ValgrindTestsPlugin.GENERATE_FILES) {
+			unbindLocation(pathToFiles);
+		}
+		return launch;
+	}
+
+	private void unbindLocation(IPath pathToFiles) throws IOException {
+		String bundleLoc = FileLocator.getBundleFile(getBundle()).getCanonicalPath();
+		String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+		File testDir = pathToFiles.toFile();
+		for (File log : testDir.listFiles(NOT_TEMPLATE_FILTER)) {
+			File template = new File(testDir, TEMPLATE_PREFIX + log.getName());
+			replaceLocation(log, template, new String[] { bundleLoc, workspaceLoc }, new String[] { SEARCH_STRING_BL , SEARCH_STRING_WS });
+		}
+	}
+
+	private void bindLocation(IPath pathToFiles) throws IOException {
+		String bundleLoc = FileLocator.getBundleFile(getBundle()).getCanonicalPath();
+		String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+		File testDir = pathToFiles.toFile();
+		for (File template : testDir.listFiles(TEMPLATE_FILTER)) {
+			String name = template.getName().replace(TEMPLATE_PREFIX, ""); //$NON-NLS-1$
+			File log = new File(testDir, name.substring(name.indexOf(TEMPLATE_PREFIX) + 1));
+			replaceLocation(template, log, new String[] { SEARCH_STRING_BL, SEARCH_STRING_WS }, new String[] { bundleLoc, workspaceLoc });
+		}
+	}
+
+	private void replaceLocation(File oldFile, File newFile, String[] from, String[] to) {
+		if (oldFile.isFile()) {
+			BufferedReader br = null;
+			PrintWriter pw = null;
+			try {
+				br = new BufferedReader(new FileReader(oldFile));
+				pw = new PrintWriter(new FileWriter(newFile));
+
+				String line;
+				while ((line = br.readLine()) != null) {
+					for (int i = 0; i < from.length; i++) {
+						line = line.replaceAll(from[i], to[i]);
+					}
+					pw.println(line);
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (br != null) {
+					try {
+						br.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (pw != null) {
+					pw.close();
+				}
+			}
+		}
 	}
 
 	@Override
@@ -62,13 +148,13 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		tab.setDefaults(wc);
 		wc.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, getToolID());
 	}
-	
+
 	protected ICProject createProject(String projname) throws Exception {
 		return createProject(getBundle(), projname);
 	}
-	
+
 	protected abstract Bundle getBundle();
-	
+
 	protected abstract String getToolID();	
 
 }

@@ -36,18 +36,6 @@ public class ValgrindXMLParser {
 			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			errors = new ArrayList<ValgrindError>();
 
-			//		StringBuffer xmlBuf = new StringBuffer();
-			//		StringBuffer plainBuf = new StringBuffer();
-			//		separateOutput(in, xmlBuf, plainBuf);
-
-			// any plaintext in memcheck output is an error
-			//		String err = plainBuf.toString().trim();
-			//		if (err.length() > 0) {
-			//			throw new CoreException(new Status(IStatus.ERROR, ValgrindPlugin.PLUGIN_ID, err));
-			//		}
-
-			//		InputSource is = new InputSource(new ByteArrayInputStream(xmlBuf.toString().getBytes()));
-			//		Document doc = builder.parse(is);
 			Document doc = builder.parse(in);
 
 			NodeList nodes = doc.getElementsByTagName("error"); //$NON-NLS-1$

@@ -96,7 +96,11 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
 			String[] arguments = getProgramArgumentsArray(config);
-			
+			File workDir = getWorkingDirectory(config);
+			if (workDir == null) {
+				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
 			// set output directory in config
 			setOutputPath(config);
 			outputPath = verifyOutputPath(config);
@@ -112,11 +116,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// set the default source locator if required
 			setDefaultSourceLocator(launch, config);
 
-			File wd = getWorkingDirectory(config);
-			if (wd == null) {
-				wd = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
 			ArrayList<String> cmdLine = new ArrayList<String>(1 + arguments.length);
 			cmdLine.add(valgrindCmd);
 			cmdLine.addAll(Arrays.asList(opts));
@@ -131,7 +130,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				return;
 			}
 			// call Valgrind
-			command.execute(commandArray, getEnvironment(config), wd, usePty);
+			command.execute(commandArray, getEnvironment(config), workDir, usePty);
 			monitor.worked(3);
 			process = DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
 			// set the command line used
@@ -200,22 +199,21 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		IPath result = null;
 		String strPath = config.getAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, (String) null);
 		if (strPath != null) {
-			result = Path.fromOSString(strPath);
+			result = Path.fromPortableString(strPath);			
 		}
 		if (result == null) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Retrieving_location_failed"), null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 		}
 		return result;
 	}
-	
+
 	protected void setOutputPath(ILaunchConfiguration config) throws CoreException, IOException {
 		IValgrindOutputDirectoryProvider provider = ValgrindLaunchPlugin.getDefault().getOutputDirectoryProvider();
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, provider.getOutputPath().toOSString());
+		wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, provider.getOutputPath().toPortableString());
 		wc.doSave();
-		
-	}
 
+	}
 
 	protected void createDirectory(IPath path) throws IOException {
 		File outputDir = path.toFile();
@@ -223,7 +221,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		if (outputDir.exists()) {
 			// delete any preexisting files
 			for (File outputFile : outputDir.listFiles()) {
-				if (!outputFile.delete()) {
+				if (outputFile.isFile() && !outputFile.delete()) {
 					throw new IOException(NLS.bind(Messages.getString("ValgrindOutputDirectory.Couldnt_delete"), outputFile.getAbsolutePath())); //$NON-NLS-1$
 				}
 			}

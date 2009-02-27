@@ -1,3 +1,8 @@
+2009-02-27  Elliott Baron  <ebaron@redhat.com>
+
+	* ChartControl.java: Clicking on interactive data point now also gives
+	Valgrind view focus.
+
 2009-02-25  Elliott Baron  <ebaron@redhat.com>
 
 	* birt/ChartEditor.java (getControl): New getter.

@@ -1,3 +1,11 @@
+2009-02-27  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTest.java: Added methods for binding and unbinding workspace
+	and bundle locations. Output generated with template_ prefix.
+	* ValgrindTestLaunchDelegate.java: Added new eclipse.valgrind.tests.generateFiles
+	system property to control the generation of template_ files.
+	* ValgrindTestsPlugin.java: Added new constants.
+	
 2009-02-25  Elliott Baron  <ebaron@redhat.com>
 
 	* plugin.xml: Contribute launchDelegate.

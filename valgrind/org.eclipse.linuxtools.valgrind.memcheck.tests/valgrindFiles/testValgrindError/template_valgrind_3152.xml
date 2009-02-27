@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<valgrindoutput>
+
+<protocolversion>2</protocolversion>
+
+<preamble>
+  <line>Memcheck, a memory error detector.</line>
+  <line>Copyright (C) 2002-2007, and GNU GPL'd, by Julian Seward et al.</line>
+  <line>Using LibVEX rev 1804, a library for dynamic binary translation.</line>
+  <line>Copyright (C) 2004-2007, and GNU GPL'd, by OpenWorks LLP.</line>
+  <line>Using valgrind-3.3.0, a dynamic binary instrumentation framework.</line>
+  <line>Copyright (C) 2000-2007, and GNU GPL'd, by Julian Seward et al.</line>
+</preamble>
+
+<pid>3152</pid>
+<ppid>1805</ppid>
+<tool>memcheck</tool>
+
+<args>
+  <vargv>
+    <exe>/usr/bin/valgrind</exe>
+    <arg>--tool=memcheck</arg>
+    <arg>-q</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testValgrindError/valgrind_%p.xml</arg>
+    <arg>--trace-children=no</arg>
+    <arg>--child-silent-after-fork=yes</arg>
+    <arg>--run-libc-freeres=yes</arg>
+    <arg>--demangle=yes</arg>
+    <arg>--num-callers=12</arg>
+    <arg>--error-limit=yes</arg>
+    <arg>--show-below-main=no</arg>
+    <arg>--max-stackframe=2000000</arg>
+    <arg>--suppressions=DOES NOT EXIST</arg>
+    <arg>--xml=yes</arg>
+    <arg>--leak-check=yes</arg>
+    <arg>--show-reachable=no</arg>
+    <arg>--leak-resolution=low</arg>
+    <arg>--freelist-vol=10000000</arg>
+    <arg>--workaround-gcc296-bugs=no</arg>
+    <arg>--partial-loads-ok=no</arg>
+    <arg>--undef-value-errors=yes</arg>
+    <arg>--alignment=8</arg>
+  </vargv>
+  <argv>
+    <exe>XXXXXXXXXXXX/basicTest/Debug/test</exe>
+  </argv>
+</args>
+
+</valgrindoutput>
+
+FATAL: can't open suppressions file 'DOES NOT EXIST'

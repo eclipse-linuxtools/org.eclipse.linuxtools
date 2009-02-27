@@ -103,6 +103,9 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		});
 	}
 
+	/**
+	 * Shows the Valgrind view in the active page and gives it focus.
+	 */
 	public void showView() {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
@@ -115,6 +118,9 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		});
 	}
 	
+	/**
+	 * Refreshes the Valgrind view
+	 */
 	public void refreshView() {
 		if (view != null) {
 			Display.getDefault().syncExec(new Runnable() {
@@ -125,6 +131,9 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		}
 	}
 	
+	/**
+	 * Empties the contents of the view and restores its original state.
+	 */
 	public void resetView() {
 		if (view != null) {
 			Display.getDefault().syncExec(new Runnable() {
@@ -143,6 +152,9 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		this.view = view;
 	}
 
+	/**
+	 * @return the Valgrind view
+	 */
 	public ValgrindViewPart getView() {
 		return view;
 	}

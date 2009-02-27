@@ -1,3 +1,9 @@
+2009-02-27  Elliott Baron  <ebaron@redhat.com>
+
+	* IValgrindOutputDirectoryProvider.java: Clarified comment.
+	* ValgrindLaunchConfigurationDelegate.java: Ensure files to delete when cleaning
+	output directory are not directories themselves.
+
 2009-02-25  Elliott Baron  <ebaron@redhat.com>
 
 	* IValgrindLaunchDelegate.java: Renamed launch to handleLaunch.

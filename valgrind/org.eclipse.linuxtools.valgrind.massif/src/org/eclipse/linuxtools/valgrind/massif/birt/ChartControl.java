@@ -85,6 +85,8 @@ public class ChartControl extends Canvas implements PaintListener, ControlListen
 	}
 
 	public void callback(Object event, Object source, CallBackValue value) {
+		// give Valgrind view focus
+		ValgrindUIPlugin.getDefault().showView();
 		DataPointHints point = ((DataPointHints)((WrappedStructureSource)source).getSource());
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		// select the corresponding snapshot in the TableViewer
