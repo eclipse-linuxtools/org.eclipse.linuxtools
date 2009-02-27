@@ -1,3 +1,9 @@
+2009-02-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/MailHyperlinkDetectorTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/SourcesFileHyperlinkDetectorTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/HyperlinkAllTests.java (suite): Add new test files.
+
 2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/HyperlinkAllTests.java: New file.

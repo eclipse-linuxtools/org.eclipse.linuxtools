@@ -16,6 +16,8 @@ public class HyperlinkAllTests extends TestSuite {
 	public static TestSuite suite() {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink");
+		suite.addTestSuite(MailHyperlinkDetectorTest.class);
+		suite.addTestSuite(SourcesFileHyperlinkDetectorTest.class);
 		suite.addTestSuite(SpecfileElementHyperlinkDetectorTest.class);
 		suite.addTestSuite(URLHyperlinkWithMacroDetectorTest.class);
 		return suite;
