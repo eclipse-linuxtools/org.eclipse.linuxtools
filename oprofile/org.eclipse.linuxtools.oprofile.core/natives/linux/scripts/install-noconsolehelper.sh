@@ -41,7 +41,7 @@ elif [ $EXECOPXML -ne $ALLOPXML ]; then
 fi
 
 echo Copy the following line for the sudoers file, replacing "<username>" with your username:
-echo -e \t"<username> ALL=NOPASSWD : /usr/bin/opcontrol"
+echo -e \\t"<username> ALL=NOPASSWD : /usr/bin/opcontrol"
 read -p 'Running visudo, paste the above line in the editor, save it and exit. Press ENTER to continue.'
 visudo
 
