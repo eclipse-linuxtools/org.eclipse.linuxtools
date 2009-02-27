@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -90,7 +91,7 @@ public class SourcesFileHyperlink implements IHyperlink {
 				IDE.openEditor(page, (IFile) resourceToOpen);
 			}
 		} catch (PartInitException e) {
-			// Put your exception handler here if you wish to
+			SpecfileLog.logError(e);
 		}
 	}
 
