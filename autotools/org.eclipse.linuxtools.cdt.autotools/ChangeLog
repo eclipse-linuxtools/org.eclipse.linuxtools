@@ -1,12 +1,22 @@
 2009-03-02  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #266451
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Use
+	property "line.separator" instead of "lineSeparator".
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (initializeBuildConfigDirs):
+	Store a workspace-neutral builddir that can be moved to another workspace.
+	Use IBuilder.setBuildPath method instead of IBuilder.setBuildAttribute to set the new build
+	dir.  Also, check to see if the builddir has changed first. 
+	
+2009-03-02  Jeff Johnston  <jjohnstn@redhat.com>
+ 
 	Resolves #264935
 	
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/CBuildStepsConsole.java: New file.
 	* plugin.xml: Add CBuildSteps console.
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Perform
-	prebuild and postbuild steps if present. 
-	(build): 
+	prebuild and postbuild steps if present.
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/ConsoleMessages.properties: Add name
 	for Build Steps console. 
 

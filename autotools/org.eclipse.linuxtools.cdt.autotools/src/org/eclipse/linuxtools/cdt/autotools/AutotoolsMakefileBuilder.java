@@ -219,7 +219,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 
 				StringBuffer buffer = new StringBuffer();
 				buffer.append(preannouncebuildStep);
-				buffer.append(System.getProperty("lineSeparator", "\n")); // $NON-NLS-1$ // $NON-NLS-2$
+				buffer.append(System.getProperty("line.separator", "\n")); // $NON-NLS-1$ // $NON-NLS-2$
 
 				try {
 					consoleOutStream.write(buffer.toString().getBytes());
@@ -271,7 +271,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 				monitor.subTask(postannouncebuildStep);
 				StringBuffer buffer = new StringBuffer();
 				buffer.append(postannouncebuildStep);
-				buffer.append(System.getProperty("lineSeparator", "\n")); // $NON-NLS-1$ // $NON-NLS-2$
+				buffer.append(System.getProperty("line.separator", "\n")); // $NON-NLS-1$ // $NON-NLS-2$
 
 				try {
 					consoleOutStream.write(buffer.toString().getBytes());

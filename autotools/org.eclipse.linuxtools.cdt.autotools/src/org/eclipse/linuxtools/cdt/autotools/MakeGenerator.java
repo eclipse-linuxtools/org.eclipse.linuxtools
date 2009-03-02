@@ -145,12 +145,14 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
-				try {
-					builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION, 
-							project.getLocation().append(buildDir).toOSString());
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
+				// Fix for 266451.  Check if value has changed and use setBuildPath() instead of setBuildAttribute() 
+				// since we want the builder marked as dirty and the project info saved.  We must use getBuildAttribute()
+				// instead of getBuildPath() to avoid an infinite loop where getBuildPath() may call this function to
+				// find the default path.
+				String oldPath = builder.getBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION,"");
+				String newPath = "${workspace_loc:/" + project.getName() + "/" + buildDir + "}";
+				if (oldPath == null || !oldPath.equals(newPath))
+					builder.setBuildPath(newPath);
 			} else if (id.indexOf("configdir") > 0) {  //$NON-NLS-1$
 				srcDir = (String) options[i].getValue();
 				try {
