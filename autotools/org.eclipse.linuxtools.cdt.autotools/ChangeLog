@@ -1,3 +1,15 @@
+2009-03-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #264935
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/CBuildStepsConsole.java: New file.
+	* plugin.xml: Add CBuildSteps console.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Perform
+	prebuild and postbuild steps if present. 
+	(build): 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/ConsoleMessages.properties: Add name
+	for Build Steps console. 
+
 2009-02-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #265873

@@ -569,6 +569,10 @@
       <CBuildConsole
             class="org.eclipse.linuxtools.cdt.autotools.internal.ui.CConfigureConsole"
             id="org.eclipse.linuxtools.cdt.autotools.configureConsole"/>
+      <CBuildConsole
+            class="org.eclipse.linuxtools.cdt.autotools.internal.ui.CBuildStepsConsole"
+            id="org.eclipse.linuxtools.cdt.autotools.buildStepsConsole">
+      </CBuildConsole>
    </extension>
    <extension
    	     id="AutotoolsScannerInfoProvider"
