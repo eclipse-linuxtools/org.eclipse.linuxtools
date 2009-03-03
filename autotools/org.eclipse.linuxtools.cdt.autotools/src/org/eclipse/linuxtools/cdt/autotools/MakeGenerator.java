@@ -452,12 +452,48 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					// If we are going to do a full reconfigure, then if the current
 					// build directory exists, we should clean it out first.  This is
 					// because the reconfiguration could change compile flags, etc..
-					// and the Makefile might not detect a rebuild is required.  In
-					// addition, the build directory itself could have been changed and
-					// we should remove the previous build.
+					// and the Makefile might not detect a rebuild is required.
 					IResource r = root.findMember(project.getFullPath().append(buildDir));
-					if (r != null && r.exists())
-						r.delete(true, new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN));
+					if (r != null && r.exists()) {
+						// See what type of cleaning the user has set up in the
+						// build properties dialog.
+						String cleanDelete = null;
+						try {
+							cleanDelete = getProject().getPersistentProperty(AutotoolsPropertyConstants.CLEAN_DELETE);
+						} catch (CoreException ce) {
+							// do nothing
+						}
+						
+						if (cleanDelete != null && cleanDelete.equals(AutotoolsPropertyConstants.TRUE))
+							r.delete(true, new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN));
+						else {
+							// There is a make target for cleaning.
+							if (makefile != null && makefile.exists()) {
+								String[] makeargs = new String[1];
+								IPath makeCmd = new Path("make"); //$NON-NLS-1$
+								String target = null;
+								try {
+									target = getProject().getPersistentProperty(AutotoolsPropertyConstants.CLEAN_MAKE_TARGET);
+								} catch (CoreException ce) {
+									// do nothing
+								}
+								if (target == null)
+									target = AutotoolsPropertyConstants.CLEAN_MAKE_TARGET_DEFAULT;
+								String args = builder.getBuildArguments();
+								if (args != null && !(args = args.trim()).equals("")) { //$NON-NLS-1$
+									String[] newArgs = makeArray(args);
+									makeargs = new String[newArgs.length + 1];
+									System.arraycopy(newArgs, 0, makeargs, 0, newArgs.length);
+								}
+								makeargs[makeargs.length - 1] = target;
+								rc = runCommand(makeCmd,
+										project.getLocation().append(buildDir),
+										makeargs,
+										AutotoolsPlugin.getResourceString("MakeGenerator.clean.builddir"), //$NON-NLS-1$
+										errMsg, console, true);
+							}
+						}
+					}
 					initializeBuildConfigDirs();
 					createDirectory(buildDir);
 					// Mark the scanner info as dirty.
@@ -1301,6 +1337,46 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				|| (targetName.indexOf('$') >= 0)
 				|| (targetName.charAt(0) == '.')
 				|| targetName.equals(targetName.toUpperCase()));
+	}
+	
+	// Turn the string into an array.
+	private String[] makeArray(String string) {
+		string = string.trim();
+		char[] array = string.toCharArray();
+		ArrayList aList = new ArrayList();
+		StringBuilder buffer = new StringBuilder();
+		boolean inComment = false;
+		for (int i = 0; i < array.length; i++) {
+			char c = array[i];
+			boolean needsToAdd = true;
+			if (array[i] == '"' || array[i] == '\'') {
+				if (i > 0 && array[i - 1] == '\\') {
+					inComment = false;
+				} else {
+					inComment = !inComment;
+					needsToAdd = false; // skip it
+				}
+			}
+			if (c == ' ' && !inComment) {
+				if (buffer.length() > 0){
+					String str = buffer.toString().trim();
+					if(str.length() > 0){
+						aList.add(str);
+					}
+				}
+				buffer = new StringBuilder();
+			} else {
+				if (needsToAdd)
+					buffer.append(c);
+			}
+		}
+		if (buffer.length() > 0){
+			String str = buffer.toString().trim();
+			if(str.length() > 0){
+				aList.add(str);
+			}
+		}
+		return (String[])aList.toArray(new String[aList.size()]);
 	}
 
 }

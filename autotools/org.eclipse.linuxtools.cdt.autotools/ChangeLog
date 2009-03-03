@@ -1,3 +1,13 @@
+2009-03-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #265996
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (regenerateMakefiles): If we are
+	doing full reconfigure, use same cleaning method on build directory as "clean" build.
+	(makeArray): New method to convert String into array of Strings.
+	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Add message when cleaning
+	build directory prior to reconfigure. 
+
 2009-03-02  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #266451
