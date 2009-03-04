@@ -1,3 +1,10 @@
+2009-03-04  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/ActionsAllTests.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/SpecfileChangelogFormatterTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/SpecfileChangelogParserTest.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/AllTests.java (suite): Add new tests.
+
 2009-02-28  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/MailHyperlinkDetectorTest.java: New file.
