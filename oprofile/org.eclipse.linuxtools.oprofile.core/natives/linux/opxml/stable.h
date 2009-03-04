@@ -45,7 +45,7 @@ class symboltable
   bool get_debug_info (bfd_vma vma, const char*& function,
 		       const char*& source_file, unsigned int& line);
 
-#if 1
+#if 0
   // Debugging. Dump the symbol table
   void dump_table (void);
 #endif

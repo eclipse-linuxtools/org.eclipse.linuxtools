@@ -269,7 +269,7 @@ symboltable::get_debug_info (bfd_vma vma, const char*& function,
   return false;
 }
 
-#if 1
+#if 0
 void
 symboltable::dump_table (void)
 {
