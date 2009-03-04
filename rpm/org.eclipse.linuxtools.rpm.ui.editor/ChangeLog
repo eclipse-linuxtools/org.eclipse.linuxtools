@@ -1,3 +1,10 @@
+2009-03-04  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.moreunit.prefs: Fix template.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java (formatTodaysDate): Make format a constant.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getVersion): Return default value.
+	(getRelease): Likewise.
+
 2009-02-27  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/TagRule.java: Removed.

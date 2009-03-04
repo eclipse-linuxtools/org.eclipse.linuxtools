@@ -116,11 +116,19 @@ public class Specfile {
 	}
 
 	public String getRelease() {
-		return defines.get(RpmTags.RELEASE.toLowerCase()).getStringValue();
+		SpecfileDefine define = getDefine(RpmTags.RELEASE.toLowerCase());
+		if (define != null){
+			return define.getStringValue();
+		}
+		return "0"; //$NON-NLS-1$
 	}
 
 	public String getVersion() {
-		return defines.get(RpmTags.VERSION.toLowerCase()).getStringValue();
+		SpecfileDefine define = getDefine(RpmTags.VERSION.toLowerCase());
+		if (define != null){
+			return define.getStringValue();
+		}
+		return "0"; //$NON-NLS-1$
 	}
 
 	public List<SpecfileSource> getPatches() {

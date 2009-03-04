@@ -36,7 +36,8 @@ import org.eclipse.ui.IEditorPart;
 
 public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 
-    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("EEE MMM d yyyy"); //$NON-NLS-1$
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private IEditorPart changelog;
 
     public String formatDateLine(String authorName, String authorEmail) {
@@ -97,8 +98,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
         // Get default locale
         Locale defaultLocale = Locale.getDefault();
         Locale.setDefault(new Locale(Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_LOCAL)));
-        String date = (new SimpleDateFormat("EEE MMM d yyyy")) //$NON-NLS-1$
-                .format(new Date());
+        String date = SIMPLE_DATE_FORMAT.format(new Date());
         Locale.setDefault(defaultLocale);
         return date;
     }
