@@ -223,50 +223,12 @@ public class ProjectTools {
 		
 		IPath runPath = root.getLocation().append(destPath);
 
+		// Run the genfiles.sh shell script which will simulate
+		// running aclocal, autoconf, and automake
 		launcher.showCommand(true);
-		IPath commandPath = new Path("aclocal");
-		Process proc = launcher.execute(commandPath, new String[0], new String[0],
-				runPath);
-		if (proc != null) {
-			try {
-				// Close the input of the process since we will never write to
-				// it
-				proc.getOutputStream().close();
-			} catch (IOException e) {
-			}
-
-			if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
-					monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
-				return false;
-			}
-		} else
-			return false;
-		
-		launcher.showCommand(true);
-		commandPath = new Path("autoconf");
-		proc = launcher.execute(commandPath, new String[0], new String[0],
-				runPath);
-		if (proc != null) {
-			try {
-				// Close the input of the process since we will never write to
-				// it
-				proc.getOutputStream().close();
-			} catch (IOException e) {
-			}
-
-			if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
-					monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
-				return false;
-			}
-		} else
-			return false;
-
-		launcher.showCommand(true);
-		commandPath = new Path("automake");
-		String[] args = new String[1];
-		args[0] = "--add-missing";
-
-		proc = launcher.execute(commandPath, args, new String[0],
+		IPath commandPath = new Path("sh");
+		String[] cmdargs = new String[]{"genfiles.sh"};
+		Process proc = launcher.execute(commandPath, cmdargs, new String[0],
 				runPath);
 		if (proc != null) {
 			try {

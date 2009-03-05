@@ -1,5 +1,13 @@
 2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java (generateFiles): Call
+	genfiles.sh instead of issuing aclocal, autoconf, and automake which might not exist on
+	test system.
+	* zip/project1.zip: Add generated files into special genfiles directory and add EPL. 
+	* zip/project2.zip: Ditto.
+	
+2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* build.properties: Add zip directory to binary build.
 
 2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
