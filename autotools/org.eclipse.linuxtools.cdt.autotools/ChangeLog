@@ -1,3 +1,8 @@
+2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Use
+	System.arraycopy rather than Arrays.copyOfRange because the latter is a 1.6 API.
+
 2009-03-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #265996

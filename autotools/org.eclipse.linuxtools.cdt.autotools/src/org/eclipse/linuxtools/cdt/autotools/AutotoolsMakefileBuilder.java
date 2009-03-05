@@ -230,7 +230,9 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 
 				launcher.showCommand(true);
 				String[] tmp = prebuildStep.split("\\s");
-				String[] cmdargs = (String[]) Arrays.copyOfRange(tmp, 1, tmp.length);
+				String[] cmdargs = new String[tmp.length - 1];
+				if (tmp.length > 1)
+					System.arraycopy(tmp, 1, cmdargs, 0, tmp.length - 1);
 				proc = launcher.execute(new Path(tmp[0]), cmdargs, env,
 						project.getLocation().append(generator.getBuildWorkingDir()));
 				if (proc != null) {
@@ -280,7 +282,9 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 					// do nothing
 				}
 				String[] tmp = postbuildStep.split("\\s");
-				String[] cmdargs = (String[]) Arrays.copyOfRange(tmp, 1, tmp.length);
+				String[] cmdargs = new String[tmp.length - 1];
+				if (tmp.length > 1)
+					System.arraycopy(tmp, 1, cmdargs, 0, tmp.length - 1);
 				proc = launcher.execute(new Path(tmp[0]), cmdargs, env,
 						project.getLocation().append(generator.getBuildWorkingDir()));
 				if (proc != null) {
