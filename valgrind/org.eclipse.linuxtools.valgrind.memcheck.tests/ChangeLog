@@ -1,3 +1,7 @@
+2009-03-04  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: s/autoconf-folder/memcheck-folder.
+
 2009-02-25  Elliott Baron  <ebaron@redhat.com>
 
 	* valgrindFiles/*: Saved output from actual valgrind run. Used for testing

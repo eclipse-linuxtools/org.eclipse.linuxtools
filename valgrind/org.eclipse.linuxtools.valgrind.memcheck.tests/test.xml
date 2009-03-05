@@ -26,7 +26,7 @@
 		<property name="memcheck-folder" value="${eclipse-home}/memcheck_folder" />
 		<delete dir="${memcheck-folder}" quiet="true" />
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-			<property name="data-dir" value="${autoconf-folder}" />
+			<property name="data-dir" value="${memcheck-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="${memcheck_classname}" />
 		</ant>
