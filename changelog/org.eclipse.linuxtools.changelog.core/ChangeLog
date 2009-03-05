@@ -1,3 +1,12 @@
+2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #267281
+	
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogWriter.java (setEntryFilePath): Replace editor
+	tokenization characters such as blank, parentheses, and colon with escaped characters. 
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java (detectHyperlinks):
+	Resolve any escaped characters in the file name so the file can be opened. 
+
 2009-02-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #264343

@@ -65,7 +65,15 @@ public class ChangeLogWriter {
 	}
 
 	public void setEntryFilePath(String entryFilePath) {
-		this.entryFilePath = entryFilePath;
+		// Replace characters in the name that are supposed to be
+		// token markers such as blanks, parentheses, and colon with
+		// escaped characters so they won't fool the colorization or
+		// other parsing.
+		String resolvedPath = entryFilePath.replace("(", "\\(");
+		resolvedPath = resolvedPath.replace(")", "\\)");
+		resolvedPath = resolvedPath.replace(":", "\\:");
+		resolvedPath = resolvedPath.replace(" ", "\\ ");
+		this.entryFilePath = resolvedPath;
 	}
 
 	public IFormatterChangeLogContrib getFormatter() {

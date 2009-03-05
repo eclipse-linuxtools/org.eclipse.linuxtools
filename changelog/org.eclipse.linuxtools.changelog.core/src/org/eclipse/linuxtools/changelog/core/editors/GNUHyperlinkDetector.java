@@ -126,21 +126,24 @@ public class GNUHyperlinkDetector implements IHyperlinkDetector {
 				lineOffset = 2;
 				line = line.substring(2);
 			}
-			int trailingWhiteSpace;
-			if (((trailingWhiteSpace = line.indexOf(":")) > 0)
-					|| ((trailingWhiteSpace = line.indexOf(" ")) > 0)) {
-
-				line = line.substring(0, trailingWhiteSpace);
-				pathRegion = new Region(tokenRegion.getOffset() + lineOffset,
-						trailingWhiteSpace);
-			} else {
+//			int trailingWhiteSpace;
+//			if (((trailingWhiteSpace = line.indexOf(":")) > 0)
+//					|| ((trailingWhiteSpace = line.indexOf(" ")) > 0)) {
+//
+//				line = line.substring(0, trailingWhiteSpace);
+//				pathRegion = new Region(tokenRegion.getOffset() + lineOffset,
+//						trailingWhiteSpace);
+//			} else {
 				pathRegion = new Region(tokenRegion.getOffset() + lineOffset, line
 						.length());
-			}
+//			}
 			
 			
 			if (documentLocation == null)
 				return null;
+
+			// Replace any escape characters added to name
+			line = line.replaceAll("\\\\(.)", "$1");
 
 			IPath filePath = documentLocation.append(line);
 
