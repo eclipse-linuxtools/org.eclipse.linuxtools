@@ -1,3 +1,7 @@
+2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add zip directory to binary build.
+
 2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add .qualifier to id.
