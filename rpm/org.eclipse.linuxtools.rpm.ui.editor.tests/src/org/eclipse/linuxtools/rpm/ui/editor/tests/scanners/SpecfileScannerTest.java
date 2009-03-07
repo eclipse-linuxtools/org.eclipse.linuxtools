@@ -58,8 +58,7 @@ public class SpecfileScannerTest extends AScannerTest {
 		assertEquals(20, rulesBasedScanner.getTokenLength());
 		assertEquals(0, rulesBasedScanner.getTokenOffset());
 		ta = (TextAttribute) token.getData();
-		assertEquals(ta.getForeground().getRGB(),
-				ISpecfileColorConstants.COMMENT);
+		assertEquals(ISpecfileColorConstants.COMMENT, ta.getForeground().getRGB());
 	}
 
 	public void testTag() {
@@ -68,7 +67,7 @@ public class SpecfileScannerTest extends AScannerTest {
 		assertEquals(5, rulesBasedScanner.getTokenLength());
 		assertEquals(20, rulesBasedScanner.getTokenOffset());
 		ta = (TextAttribute) token.getData();
-		assertEquals(ta.getForeground().getRGB(), ISpecfileColorConstants.TAGS);
+		assertEquals(ISpecfileColorConstants.TAGS, ta.getForeground().getRGB());
 	}
 
 	public void testSection() {
@@ -77,8 +76,7 @@ public class SpecfileScannerTest extends AScannerTest {
 		assertEquals(5, rulesBasedScanner.getTokenLength());
 		assertEquals(31, rulesBasedScanner.getTokenOffset());
 		ta = (TextAttribute) token.getData();
-		assertEquals(ta.getForeground().getRGB(),
-				ISpecfileColorConstants.SECTIONS);
+		assertEquals(ISpecfileColorConstants.SECTIONS, ta.getForeground().getRGB());
 	}
 
 	public void testMacro() {
@@ -87,8 +85,7 @@ public class SpecfileScannerTest extends AScannerTest {
 		assertEquals(7, rulesBasedScanner.getTokenLength());
 		assertEquals(37, rulesBasedScanner.getTokenOffset());
 		ta = (TextAttribute) token.getData();
-		assertEquals(ta.getForeground().getRGB(),
-				ISpecfileColorConstants.MACROS);
+		assertEquals(ISpecfileColorConstants.MACROS, ta.getForeground().getRGB());
 	}
 
 	public void testDefinedMacro() {
@@ -97,8 +94,7 @@ public class SpecfileScannerTest extends AScannerTest {
 		assertEquals(7, rulesBasedScanner.getTokenLength());
 		assertEquals(45, rulesBasedScanner.getTokenOffset());
 		ta = (TextAttribute) token.getData();
-		assertEquals(ta.getForeground().getRGB(),
-				ISpecfileColorConstants.MACROS);
+		assertEquals(ISpecfileColorConstants.MACROS, ta.getForeground().getRGB());
 	}
 
 	public void testKeyword() {
@@ -107,8 +103,7 @@ public class SpecfileScannerTest extends AScannerTest {
 		assertEquals(3, rulesBasedScanner.getTokenLength());
 		assertEquals(53, rulesBasedScanner.getTokenOffset());
 		ta = (TextAttribute) token.getData();
-		assertEquals(ta.getForeground().getRGB(),
-				ISpecfileColorConstants.KEYWORDS);
+		assertEquals(ISpecfileColorConstants.KEYWORDS, ta.getForeground().getRGB());
 	}
 
 	/**

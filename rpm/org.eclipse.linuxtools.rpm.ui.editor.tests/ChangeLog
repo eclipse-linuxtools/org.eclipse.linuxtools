@@ -1,3 +1,7 @@
+2009-03-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfileScannerTest.java (testKeyword): Fix order in asserts.
+
 2009-03-04  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/ActionsAllTests.java: New file.
