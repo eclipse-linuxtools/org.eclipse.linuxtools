@@ -1,3 +1,8 @@
+2009-03-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java (run): Remove empty lines.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorOrganizePatchesActionDelegate.java: Remove notneeded constructor.
+
 2009-03-04  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.moreunit.prefs: Fix template.

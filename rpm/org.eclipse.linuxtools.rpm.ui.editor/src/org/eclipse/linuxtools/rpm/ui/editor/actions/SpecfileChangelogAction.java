@@ -49,12 +49,6 @@ public class SpecfileChangelogAction implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow window;
 
 	/**
-	 * The constructor.
-	 */
-	public SpecfileChangelogAction() {
-	}
-
-	/**
 	 * The action has been activated. The argument of the method represents the
 	 * 'real' action sitting in the workbench UI.
 	 * 

@@ -55,7 +55,6 @@ public class SpecfileEditorOrganizePatchesActionDelegate implements
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
 	 */
 	public void init(IWorkbenchWindow window) {
-
 	}
 
 	/*
@@ -65,7 +64,6 @@ public class SpecfileEditorOrganizePatchesActionDelegate implements
 	 *      org.eclipse.ui.IEditorPart)
 	 */
 	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-
 	}
 
 	/*
@@ -74,7 +72,6 @@ public class SpecfileEditorOrganizePatchesActionDelegate implements
 	 * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
 	 */
 	public void dispose() {
-
 	}
 
 }
