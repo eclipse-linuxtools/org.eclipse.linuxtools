@@ -12,6 +12,7 @@
    version.  */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "symbol.h"
 #include "xmlfmt.h"
