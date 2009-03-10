@@ -19,7 +19,6 @@
 #include <list>
 #include <string>
 #include <set>
-#include <string.h>
 
 #include "samplefile.h"
 #include "symbol.h"
@@ -69,7 +68,16 @@ class profileimage
 };
 
 struct depimage_comp {
-  bool operator() (const profileimage* lhs, const profileimage* rhs) { return (lhs->get_count() == rhs->get_count() ? true : lhs->get_count() > rhs->get_count() ); }
+  bool operator() (const profileimage* lhs, const profileimage* rhs)
+    {
+      if (lhs->get_count() == rhs->get_count())
+        if (lhs->get_name() == rhs->get_name())
+          return true;
+        else
+          return lhs->get_name() < rhs->get_name();
+      else
+        return lhs->get_count() > rhs->get_count();
+    }
 };
 
 struct symbol_comp {
@@ -77,13 +85,11 @@ struct symbol_comp {
     {
       if (lhs->get_count() == rhs->get_count())
         {
-          int ret = strcmp(lhs->name(), rhs->name());
-          if (ret == 0)
-            return true;
-          else if (ret == -1)
+          std::string ln(lhs->name()), rn(rhs->name());
+          if (ln == rn)
             return true;
           else
-            return false;
+            return ln < rn;
         }
       else
         return lhs->get_count() > rhs->get_count();
