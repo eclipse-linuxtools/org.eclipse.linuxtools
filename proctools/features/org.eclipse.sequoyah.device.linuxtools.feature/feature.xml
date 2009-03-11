@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.tml.linuxtools.feature"
       label="%featureName"
-      version="0.1.0.200901300600"
+      version="0.1.0.200903120600"
       provider-name="%providerName"
       plugin="org.eclipse.tml.linuxtools">
 
