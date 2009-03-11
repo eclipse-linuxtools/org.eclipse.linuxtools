@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.tml.linuxtools.feature"
       label="%featureName"
-      version="0.1.0.200903120600"
+      version="0.1.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.tml.linuxtools">
 
@@ -19,7 +19,7 @@
    </license>
 
    <url>
-      <update label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3M5/"/>
+      <update label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3M6/"/>
       <discovery label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3M5/"/>
    </url>
 
