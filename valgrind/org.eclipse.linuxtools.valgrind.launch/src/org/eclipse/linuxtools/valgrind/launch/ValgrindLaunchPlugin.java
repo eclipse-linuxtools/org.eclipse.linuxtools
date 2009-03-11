@@ -10,6 +10,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.launch;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -25,8 +26,11 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.valgrind.core.PluginConstants;
+import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 
 public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
@@ -43,8 +47,17 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 	protected static final String EXT_ELEMENT_PROVIDER = "provider"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
+	
+	public static final Version VER_3_3_0 = new Version(3, 3, 0);
+	public static final Version VER_3_3_1 = new Version(3, 3, 1);
+	public static final Version VER_3_4_0 = new Version(3, 4, 0);
+	public static final Version VER_3_4_1 = new Version(3, 4, 1);
+	private static final String VERSION_PREFIX = "valgrind-"; //$NON-NLS-1$
 
-	protected HashMap<String, IConfigurationElement> toolMap; 
+	protected HashMap<String, IConfigurationElement> toolMap;
+	
+	protected IPath valgrindLocation;
+	protected Version valgrindVersion;
 
 	// The shared instance
 	private static ValgrindLaunchPlugin plugin;
@@ -82,6 +95,41 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	public IPath findValgrindLocation() throws CoreException {
+		if (valgrindLocation == null) {
+			try {
+				valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
+			} catch (IOException e) {
+				IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
+				throw new CoreException(status);
+			}
+		}
+		return valgrindLocation;
+	}
+	
+	public Version findValgrindVersion(IPath valgrindLocation) throws CoreException {
+		if (valgrindVersion == null) {
+			try {
+				String verString = getValgrindCommand().whichVersion(valgrindLocation.toOSString());
+				verString = verString.replace(VERSION_PREFIX, ""); //$NON-NLS-1$
+				if (verString.length() > 0) {
+					valgrindVersion = Version.parseVersion(verString);
+				}
+				else {
+					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation))); //$NON-NLS-1$
+				}
+			} catch (IOException e) {
+				IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation), e); //$NON-NLS-1$
+				throw new CoreException(status);
+			}
+		}
+		return valgrindVersion;
+	}
+	
+	protected ValgrindCommand getValgrindCommand() {
+		return new ValgrindCommand();
+	}
+	
 	public String[] getRegisteredToolIDs() {
 		Set<String> ids = getToolMap().keySet();
 		return ids.toArray(new String[ids.size()]);

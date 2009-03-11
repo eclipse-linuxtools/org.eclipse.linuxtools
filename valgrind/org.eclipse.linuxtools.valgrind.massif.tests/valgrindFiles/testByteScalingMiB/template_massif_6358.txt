@@ -1,0 +1,123 @@
+desc: --massif-out-file=YYYYYYYYYYYY/valgrindFiles/testByteScalingMiB/massif_%p.txt --heap=yes --heap-admin=8 --stacks=no --depth=30 --threshold=1.0 --peak-inaccuracy=1.0 --time-unit=B --detailed-freq=10 --max-snapshots=100 --alignment=8
+cmd: XXXXXXXXXXXX/alloctest/Debug/alloctest 10485760 1
+time_unit: B
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=10485768
+mem_heap_B=10485760
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=20971536
+mem_heap_B=20971520
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=31457304
+mem_heap_B=31457280
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=41943072
+mem_heap_B=41943040
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=52428840
+mem_heap_B=52428800
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=62914608
+mem_heap_B=62914560
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=62914608
+mem_heap_B=62914560
+mem_heap_extra_B=48
+mem_stacks_B=0
+heap_tree=peak
+n4: 62914560 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 31457280 0x804858C: foo (alloctest.c:48)
+  n0: 10485760 0x80484C3: main (alloctest.c:31)
+  n0: 10485760 0x80484D9: main (alloctest.c:33)
+  n0: 10485760 0x80484EF: main (alloctest.c:35)
+ n0: 10485760 0x80484BB: main (alloctest.c:30)
+ n0: 10485760 0x80484D1: main (alloctest.c:32)
+ n0: 10485760 0x80484E7: main (alloctest.c:34)
+#-----------
+snapshot=8
+#-----------
+time=73400376
+mem_heap_B=52428800
+mem_heap_extra_B=40
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=83886144
+mem_heap_B=41943040
+mem_heap_extra_B=32
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=94371912
+mem_heap_B=31457280
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=104857680
+mem_heap_B=20971520
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=115343448
+mem_heap_B=10485760
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=125829216
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty

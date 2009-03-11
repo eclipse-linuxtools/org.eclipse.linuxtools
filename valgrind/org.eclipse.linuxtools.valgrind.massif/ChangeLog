@@ -1,3 +1,7 @@
+2009-03-11  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifToolPage.java: Extracted constants for time unit names.
+
 2009-02-27  Elliott Baron  <ebaron@redhat.com>
 
 	* ChartControl.java: Clicking on interactive data point now also gives

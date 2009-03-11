@@ -23,6 +23,7 @@ public class AllTests {
 		suite.addTestSuite(ChartTests.class);
 		suite.addTestSuite(TreeTest.class);
 		suite.addTestSuite(BasicMassifTest.class);
+		suite.addTestSuite(LaunchConfigTabTest.class);
 		//$JUnit-END$
 		return suite;
 	}

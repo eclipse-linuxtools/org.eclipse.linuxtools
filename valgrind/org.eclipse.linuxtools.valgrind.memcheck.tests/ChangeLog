@@ -1,3 +1,12 @@
+2009-03-10  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractMemcheckTest.java (getToolPage): Pass tool page to superclass.
+	* BasicMemcheckTest.java: Call super on setUp and tearDown.
+	* DoubleClickTest.java: Likewise.
+	* LaunchConfigTabTest.java: Likewise.
+	* MarkerTest.java: Likewise.
+	* MemcheckLaunchMockPlugin.java: Removed.
+
 2009-03-04  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: s/autoconf-folder/memcheck-folder.

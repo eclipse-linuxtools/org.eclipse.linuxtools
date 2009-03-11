@@ -18,7 +18,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.cdt.core.model.ICProject;
@@ -27,14 +29,17 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.osgi.framework.Bundle;
@@ -44,18 +49,40 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	private static final String TEMPLATE_PREFIX = "template_"; //$NON-NLS-1$
 	private static final FileFilter TEMPLATE_FILTER = new FileFilter() {
 		public boolean accept(File pathname) {
-			return pathname.getName().startsWith(TEMPLATE_PREFIX);
+			return pathname.getName().startsWith(TEMPLATE_PREFIX) && !pathname.isHidden();
 		}			
 	};
 	private static final FileFilter NOT_TEMPLATE_FILTER = new FileFilter() {
 		public boolean accept(File pathname) {
-			return !pathname.getName().startsWith(TEMPLATE_PREFIX);
+			return !pathname.getName().startsWith(TEMPLATE_PREFIX) && !pathname.isHidden();
 		}			
 	};
 	
 	private static final String SEARCH_STRING_WS = "XXXXXXXXXXXX"; //$NON-NLS-1$
 	private static final String SEARCH_STRING_BL = "YYYYYYYYYYYY"; //$NON-NLS-1$
+	
+	private List<ILaunch> launches;
 
+	public AbstractValgrindTest() {
+		ValgrindTestLaunchPlugin.getDefault().setTestBundle(getBundle());
+		ValgrindTestLaunchPlugin.getDefault().setToolPage(getToolPage());
+	}
+	
+	@Override
+	protected void setUp() throws Exception {
+		launches = new ArrayList<ILaunch>();
+		super.setUp();
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		if (launches.size() > 0) {
+			DebugPlugin.getDefault().getLaunchManager().removeLaunches(launches.toArray(new ILaunch[launches.size()]));
+			launches.clear();
+		}
+		super.tearDown();
+	}
+	
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
 		return getLaunchManager().getLaunchConfigurationType(ValgrindLaunchPlugin.LAUNCH_ID);
@@ -78,7 +105,14 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		wc.setPreferredLaunchDelegate(modes, ValgrindTestsPlugin.DELEGATE_ID);
 		wc.doSave();
 
-		launch = config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		ValgrindTestLaunchDelegate delegate = new ValgrindTestLaunchDelegate();
+		launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+		
+		DebugPlugin.getDefault().getLaunchManager().addLaunch(launch);
+		launches.add(launch);
+		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
+		//launch = config.launch(ILaunchManager.PROFILE_MODE, null, true);
+		//DebugPlugin.getDefault().getLaunchManager().removeLaunch(launch);
 
 		if (ValgrindTestsPlugin.GENERATE_FILES) {
 			unbindLocation(pathToFiles);
@@ -155,6 +189,8 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 
 	protected abstract Bundle getBundle();
 
-	protected abstract String getToolID();	
+	protected abstract String getToolID();
+	
+	protected abstract IValgrindToolPage getToolPage();
 
 }

@@ -19,11 +19,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 
 public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDelegate {
 
-	protected static final String ERROR_CODE_FILE = "errorCode"; //$NON-NLS-1$
-
+	protected static final String ERROR_CODE_FILE = ".errorCode"; //$NON-NLS-1$
+	
 	@Override
 	protected ValgrindCommand getValgrindCommand() {
 		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
@@ -33,7 +34,7 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return new ValgrindMockCommand(exitcode);
+			return new ValgrindStubCommand(exitcode);
 		}
 		else {
 			return super.getValgrindCommand();
@@ -62,7 +63,12 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 		}
 		super.handleValgrindError();
 	}
-
+	
+	@Override
+	protected ValgrindLaunchPlugin getPlugin() {
+		return ValgrindTestLaunchPlugin.getDefault();
+	}
+	
 	private void writeErrorCode() throws IOException {
 		FileWriter fw = null;
 		try {

@@ -80,6 +80,8 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		branchButton.setText(Messages.getString("CachegrindToolPage.Profile_Branch")); //$NON-NLS-1$
 		branchButton.addSelectionListener(selectListener);
 		
+		createVerticalSpacer(top, 1);
+		
 		Group cacheGroup = new Group(top, SWT.SHADOW_OUT);
 		cacheGroup.setLayout(new GridLayout(2, false));
 		cacheGroup.setText(Messages.getString("CachegrindToolPage.Manually_Set_Cache")); //$NON-NLS-1$

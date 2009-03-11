@@ -23,11 +23,13 @@ import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 public class TreeTest extends AbstractMassifTest {
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		proj = createProject("alloctest"); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
+		super.tearDown();
 		deleteProject(proj);
 	}
 	

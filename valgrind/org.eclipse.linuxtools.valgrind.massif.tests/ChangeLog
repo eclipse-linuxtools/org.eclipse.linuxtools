@@ -1,6 +1,18 @@
+2009-03-11  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractMassifTest.java: Pass tool page to superclass.
+	* AllTests.java: Added LaunchConfigTabTest to suite.
+	* BasicMassifTest.java: Call super on setUp tearDown.
+	* ChartTests.java: Likewise.
+	* DoubleClickTest.java: Likewise.
+	* TreeTest.java: Likewise.
+	* LaunchConfigTabTest.java: New file.
+	* MassifTestToolPage.java: New file.
+	* META-INF/MANIFEST.MF: Added debug.core.model dependency.
+
 2009-02-25  Elliott Baron  <ebaron@redhat.com>
 
-	* valgrindFiles/*: Saved output from actual valgrind run. Used for testing
+	* valgrindFiles/: Saved output from actual valgrind run. Used for testing
 	in environments without Valgrind.
 	* build.properties: Added valgrindFiles.
 	* META-INF/MANIFEST.MF: New dependencies.

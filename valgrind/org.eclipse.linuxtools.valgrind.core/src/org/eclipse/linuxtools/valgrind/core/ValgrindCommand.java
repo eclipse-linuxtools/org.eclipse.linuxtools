@@ -27,28 +27,17 @@ public class ValgrindCommand {
 	public String whichValgrind() throws IOException {
 		StringBuffer out = new StringBuffer();
 		Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
-		boolean success;
-		InputStream in;
-		try {
-			if (success = (p.waitFor() == 0)) {
-				in = p.getInputStream();
-			}
-			else {
-				in = p.getErrorStream();
-			}
-			int ch;
-			while ((ch = in.read()) != -1) {
-				out.append((char) ch);
-			}
-			if (!success) {
-				throw new IOException(out.toString());
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		readIntoBuffer(out, p);
 		return out.toString().trim();
 	}
 
+	public String whichVersion(String whichValgrind) throws IOException {
+		StringBuffer out = new StringBuffer();
+		Process p = Runtime.getRuntime().exec(new String[] { whichValgrind, CommandLineConstants.OPT_VERSION });
+		readIntoBuffer(out, p);
+		return out.toString().trim();
+	}
+	
 	public void execute(String[] commandArray, String[] env, File wd, boolean usePty) throws IOException {
 		args = commandArray;
 		try {
@@ -82,5 +71,27 @@ public class ValgrindCommand {
 			ret.append(arg + " "); //$NON-NLS-1$
 		}
 		return ret.toString().trim();
+	}
+
+	private void readIntoBuffer(StringBuffer out, Process p) throws IOException {
+		boolean success;
+		InputStream in;
+		try {
+			if (success = (p.waitFor() == 0)) {
+				in = p.getInputStream();
+			}
+			else {
+				in = p.getErrorStream();
+			}
+			int ch;
+			while ((ch = in.read()) != -1) {
+				out.append((char) ch);
+			}
+			if (!success) {
+				throw new IOException(out.toString());
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -85,13 +85,8 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		try {
 			command = getValgrindCommand();
 
-			// find Valgrind
-			String valgrindCmd = null;
-			try {
-				valgrindCmd = command.whichValgrind();
-			} catch (IOException e) {
-				abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Please_ensure_Valgrind"), e, ICDTLaunchConfigurationConstants.ERR_PROGRAM_NOT_EXIST); //$NON-NLS-1$
-			}
+			// find Valgrind binary if not already done
+			IPath valgrindLocation = getPlugin().findValgrindLocation();
 
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
@@ -117,7 +112,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			setDefaultSourceLocator(launch, config);
 
 			ArrayList<String> cmdLine = new ArrayList<String>(1 + arguments.length);
-			cmdLine.add(valgrindCmd);
+			cmdLine.add(valgrindLocation.toOSString());
 			cmdLine.addAll(Arrays.asList(opts));
 			cmdLine.add(exePath.toOSString());
 			cmdLine.addAll(Arrays.asList(arguments));
@@ -176,6 +171,14 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		}
 	}
 
+	protected ValgrindCommand getValgrindCommand() {
+		return getPlugin().getValgrindCommand();
+	}
+
+	protected ValgrindLaunchPlugin getPlugin() {
+		return ValgrindLaunchPlugin.getDefault();
+	}
+
 	protected void handleValgrindError() throws IOException {
 		final String errorLog = readLogs();
 
@@ -188,11 +191,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	}
 
 	protected IValgrindLaunchDelegate getDynamicDelegate(String toolID) throws CoreException {
-		return ValgrindLaunchPlugin.getDefault().getToolDelegate(toolID);
-	}
-
-	protected ValgrindCommand getValgrindCommand() {
-		return new ValgrindCommand();
+		return getPlugin().getToolDelegate(toolID);
 	}
 
 	protected IPath verifyOutputPath(ILaunchConfiguration config) throws CoreException {
@@ -208,11 +207,10 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	}
 
 	protected void setOutputPath(ILaunchConfiguration config) throws CoreException, IOException {
-		IValgrindOutputDirectoryProvider provider = ValgrindLaunchPlugin.getDefault().getOutputDirectoryProvider();
+		IValgrindOutputDirectoryProvider provider = getPlugin().getOutputDirectoryProvider();
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, provider.getOutputPath().toPortableString());
 		wc.doSave();
-
 	}
 
 	protected void createDirectory(IPath path) throws IOException {
@@ -248,12 +246,12 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	}
 
 	protected String createLaunchStr() {
-		return config.getName() + " [" + ValgrindLaunchPlugin.getDefault().getToolName(toolID) + "] " + process.getLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+		return config.getName() + " [" + getPlugin().getToolName(toolID) + "] " + process.getLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected String[] getValgrindArgumentsArray(ILaunchConfiguration config) throws CoreException, IOException {
 		ArrayList<String> opts = new ArrayList<String>();
-		opts.add(CommandLineConstants.OPT_TOOL + EQUALS + ValgrindLaunchPlugin.getDefault().getToolName(toolID));
+		opts.add(CommandLineConstants.OPT_TOOL + EQUALS + getPlugin().getToolName(toolID));
 		opts.add(CommandLineConstants.OPT_QUIET); // suppress uninteresting output
 		opts.add(CommandLineConstants.OPT_LOGFILE + EQUALS + outputPath.append(LOG_FILE).toOSString());
 
@@ -269,7 +267,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 		String strpath = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE);
 		if (!strpath.equals(EMPTY_STRING)) {
-			IPath suppfile = ValgrindLaunchPlugin.getDefault().parseWSPath(strpath);
+			IPath suppfile = getPlugin().parseWSPath(strpath);
 			if (suppfile != null) {
 				opts.add(CommandLineConstants.OPT_SUPPFILE + EQUALS + suppfile.toOSString());
 			}

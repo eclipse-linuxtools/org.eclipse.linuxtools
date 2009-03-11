@@ -21,7 +21,6 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -39,6 +38,9 @@ import org.eclipse.swt.widgets.Spinner;
 
 public class MassifToolPage extends AbstractLaunchConfigurationTab
 		implements IValgrindToolPage {
+	public static final String TIME_B_STRING = Messages.getString("MassifToolPage.bytes"); //$NON-NLS-1$
+	public static final String TIME_MS_STRING = Messages.getString("MassifToolPage.milliseconds"); //$NON-NLS-1$
+	public static final String TIME_I_STRING = Messages.getString("MassifToolPage.instructions"); //$NON-NLS-1$
 	public static final String MASSIF = "massif"; //$NON-NLS-1$
 	public static final String PLUGIN_ID = MassifPlugin.PLUGIN_ID;
 		
@@ -69,11 +71,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	};
 	
 	public void createControl(Composite parent) {
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		sc.setLayoutData(new GridData(GridData.FILL_BOTH));
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-		Composite top = new Composite(sc, SWT.NONE);
+		Composite top = new Composite(parent, SWT.NONE);
 		
 		GridLayout topLayout = new GridLayout(2, true);
 		topLayout.horizontalSpacing = 10;
@@ -151,7 +149,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		timeUnitLabel.setText(Messages.getString("MassifToolPage.time_unit")); //$NON-NLS-1$
 		
 		timeUnitCombo = new Combo(timeUnitTop, SWT.READ_ONLY);
-		String[] items = new String[] { Messages.getString("MassifToolPage.instructions"), Messages.getString("MassifToolPage.milliseconds"), Messages.getString("MassifToolPage.bytes") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String[] items = new String[] { TIME_I_STRING, TIME_MS_STRING, TIME_B_STRING };
 		timeUnitCombo.setItems(items);
 		timeUnitCombo.addSelectionListener(selectListener);
 		
@@ -162,6 +160,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		detailedFreqLabel.setText(Messages.getString("MassifToolPage.detailed_snapshot_freq")); //$NON-NLS-1$
 		
 		detailedFreqSpinner = new Spinner(detailedFreqTop, SWT.BORDER);
+		detailedFreqSpinner.setMinimum(1);
 		detailedFreqSpinner.setMaximum(Integer.MAX_VALUE);
 		detailedFreqSpinner.addModifyListener(modifyListener);
 		
@@ -195,9 +194,6 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		allocFnLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
 				
 		createAllocFnControls(allocFnTop);
-		
-		sc.setContent(top);
-		sc.setMinSize(top.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
 	private void createAllocFnControls(Composite top) {

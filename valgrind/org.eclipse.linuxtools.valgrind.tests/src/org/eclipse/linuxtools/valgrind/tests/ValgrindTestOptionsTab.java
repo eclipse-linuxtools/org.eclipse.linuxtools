@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.tests;
 
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.swt.widgets.Button;
@@ -19,24 +20,20 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
 public class ValgrindTestOptionsTab extends ValgrindOptionsTab {
-	private ValgrindLaunchMockPlugin mockPlugin;
-
-	public ValgrindTestOptionsTab(ValgrindLaunchMockPlugin mockPlugin) {
-		this.mockPlugin = mockPlugin;
-//		ValgrindTestsPlugin.getDefault().setValgrindTab(this);
+	protected ValgrindTestLaunchPlugin launchPlugin;
+	
+	@Override
+	protected ValgrindLaunchPlugin getPlugin() {
+		return ValgrindTestLaunchPlugin.getDefault();
 	}
 	
 	public String[] getTools() {
 		return tools;
 	}
-	
+
 	@Override
-	protected ValgrindLaunchPlugin getPlugin() {
-		return mockPlugin;
-	}
-	
-	public ILaunchConfigurationTab getDynamicTab() {
-		return dynamicTab;
+	public IValgrindToolPage getDynamicTab() throws CoreException {
+		return super.getDynamicTab();
 	}
 	
 	public Button getTraceChildrenButton() {

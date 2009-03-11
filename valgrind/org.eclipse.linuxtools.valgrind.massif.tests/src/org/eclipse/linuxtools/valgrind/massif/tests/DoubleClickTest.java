@@ -39,10 +39,17 @@ public class DoubleClickTest extends AbstractMassifTest {
 	private MassifHeapTreeNode node;
 
 	@Override
-	public void setUp() throws Exception {
+	protected void setUp() throws Exception {
+		super.setUp();
 		proj = createProject("alloctest"); //$NON-NLS-1$	
 	}
 
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		deleteProject(proj);
+	}
+	
 	private void doDoubleClick() {
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		MassifTreeViewer treeViewer = (MassifTreeViewer) view.getTreeViewer();
@@ -57,7 +64,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 		if (node.hasSourceFile()) {
 			treeViewer.expandToLevel(node, TreeViewer.ALL_LEVELS);
 			TreeSelection selection = new TreeSelection(path);
-
+	
 			// do double click
 			IDoubleClickListener listener = treeViewer.getDoubleClickListener();
 			listener.doubleClick(new DoubleClickEvent(treeViewer, selection));
@@ -66,12 +73,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 			fail();
 		}
 	}
-	
-	@Override
-	protected void tearDown() throws Exception {
-		deleteProject(proj);
-	}
-	
+
 	public void testDoubleClickFile() throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);

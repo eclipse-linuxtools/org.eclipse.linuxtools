@@ -1,3 +1,20 @@
+2009-03-10  Elliott Baron  <ebaron@redhat.com>
+
+	* plugin.xml: Removed.
+	* ValgrindLaunchMockPlugin.java: Removed.
+	* ValgrindMockCommand.java: Removed.
+	* ValgrindMockProcess.java: Removed.
+	* ValgrindStubCommand.java: Renamed from ValgrindMockCommand.
+	* ValgrindStubProcess.java: Renamed from ValgrindMockProcess.
+	* ValgrindTestLaunchPlugin.java: Renamed from ValgrindLaunchMockPlugin,
+	now singleton. Load/store version number. No longer abstract.
+	* build.properties: plugin.xml removed.
+	* META-INF/MANIFEST.MF: Extension removed. Launch delegate directly.
+	* AbstractValgrindTest.java: Initialize ValgrindTestLaunchPlugin in constructor,
+	create and launch delegate instead of using LaunchManager.
+	* ValgrindTestLaunchDelegate.java: Use singleton ValgrindTestLaunchPlugin.
+	* ValgrindTestOptionsTab.java: Likewise.
+
 2009-02-27  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractValgrindTest.java: Added methods for binding and unbinding workspace

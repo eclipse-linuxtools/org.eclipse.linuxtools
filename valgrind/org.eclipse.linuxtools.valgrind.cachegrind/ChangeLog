@@ -1,3 +1,7 @@
+2009-03-11  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindToolPage.java (createControl): Added vertical spacer.
+
 2009-02-25  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindLaunchDelegate.java (handleLaunch): Renamed method.

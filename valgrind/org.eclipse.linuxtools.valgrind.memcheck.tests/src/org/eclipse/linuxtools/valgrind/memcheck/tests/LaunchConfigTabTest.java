@@ -44,6 +44,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		proj = createProject("basicTest"); //$NON-NLS-1$
 
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
@@ -51,11 +52,12 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
-		tab = new ValgrindTestOptionsTab(new MemcheckLaunchMockPlugin());
+		tab = new ValgrindTestOptionsTab();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
+		super.tearDown();
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
@@ -69,12 +71,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		int ix = Arrays.asList(tab.getTools()).indexOf(MemcheckPlugin.TOOL_ID);
 		tab.getToolsCombo().select(ix);
 		ILaunchConfigurationTab dynamicTab = tab.getDynamicTab();
-		if (dynamicTab != null && dynamicTab instanceof MemcheckTestToolPage) {
-			this.dynamicTab = (MemcheckTestToolPage) dynamicTab;
-		}
-		else {
-			fail();
-		}
+		this.dynamicTab = (MemcheckTestToolPage) dynamicTab;
 		return wc;
 	}
 

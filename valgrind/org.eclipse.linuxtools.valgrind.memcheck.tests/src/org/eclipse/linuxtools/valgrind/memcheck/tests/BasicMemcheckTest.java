@@ -19,11 +19,13 @@ public class BasicMemcheckTest extends AbstractMemcheckTest {
 	
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		proj = createProject("basicTest"); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
+		super.tearDown();
 		deleteProject(proj);
 	}
 	

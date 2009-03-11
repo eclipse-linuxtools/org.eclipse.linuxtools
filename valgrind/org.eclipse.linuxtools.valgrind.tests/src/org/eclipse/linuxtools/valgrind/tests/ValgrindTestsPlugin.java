@@ -79,5 +79,4 @@ public class ValgrindTestsPlugin extends AbstractUIPlugin {
 	public static ValgrindTestsPlugin getDefault() {
 		return plugin;
 	}
-
 }

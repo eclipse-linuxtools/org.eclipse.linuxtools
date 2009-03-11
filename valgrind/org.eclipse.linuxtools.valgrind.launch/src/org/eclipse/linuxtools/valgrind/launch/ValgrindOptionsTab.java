@@ -20,17 +20,18 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,6 +49,7 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
+import org.osgi.framework.Version;
 
 public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
@@ -66,6 +68,9 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 	protected String tool;
 	protected String[] tools;
+
+	protected Composite top;
+	protected ScrolledComposite scrollTop;
 	protected Combo toolsCombo;
 	protected TabFolder optionsFolder;
 	protected TabItem toolTab;
@@ -73,11 +78,15 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected ILaunchConfigurationWorkingCopy launchConfigurationWorkingCopy;
 	protected ILaunchConfiguration launchConfiguration;
 
-	protected ILaunchConfigurationTab dynamicTab;
+	protected IValgrindToolPage dynamicTab;
 	protected Composite dynamicTabHolder;
 
 	protected boolean isInitializing = false;
 	protected boolean initDefaults = false;
+	
+	protected IPath valgrindLocation;
+	protected Version valgrindVersion;
+	protected Exception ex;
 
 	protected SelectionListener selectListener = new SelectionAdapter() {
 		@Override
@@ -92,8 +101,23 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	};
 
 	public void createControl(Composite parent) {
-		Composite top = new Composite(parent, SWT.NONE);
-		setControl(top);
+		try {
+			valgrindLocation = getPlugin().findValgrindLocation();
+			valgrindVersion = getPlugin().findValgrindVersion(valgrindLocation);
+		} catch (CoreException e) {
+			// report in dialog later
+			ex = e;
+			e.printStackTrace();
+		}
+		
+		scrollTop = new ScrolledComposite(parent,	SWT.H_SCROLL | SWT.V_SCROLL);
+		scrollTop.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		scrollTop.setExpandVertical(true);
+		scrollTop.setExpandHorizontal(true);
+		
+		setControl(scrollTop);
+		
+		top = new Composite(scrollTop, SWT.NONE);
 		top.setLayout(new GridLayout());
 
 		createVerticalSpacer(top, 1);
@@ -119,6 +143,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 		createErrorOptions(generalTop);
 
+		createVerticalSpacer(generalTop, 1);
+
+		createSuppressionsOption(generalTop);		
+		
 		generalTab.setControl(generalTop);
 
 		toolTab = new TabItem(optionsFolder, SWT.NONE);
@@ -129,6 +157,15 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		dynamicTabHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		toolTab.setControl(dynamicTabHolder);
+		
+		scrollTop.setContent(top);
+		recomputeSize();
+	}
+
+	protected void recomputeSize() {
+		Point point = top.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		top.setSize(point);
+		scrollTop.setMinSize(point);
 	}
 
 	private void createToolCombo(Composite top) {
@@ -166,30 +203,25 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		basicGroup.setText(Messages.getString("ValgrindOptionsTab.Basic_Options")); //$NON-NLS-1$
 
 		Composite basicTop = new Composite(basicGroup, SWT.NONE);
-		basicTop.setLayout(new GridLayout(8, false));
+		basicTop.setLayout(new GridLayout(3, true));
 		basicTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label traceChildrenLabel = new Label(basicTop, SWT.NONE);
-		traceChildrenLabel.setText(Messages.getString("ValgrindOptionsTab.trace_children")); //$NON-NLS-1$
 		traceChildrenButton = new Button(basicTop, SWT.CHECK);
+		traceChildrenButton.setText(Messages.getString("ValgrindOptionsTab.trace_children")); //$NON-NLS-1$
 		traceChildrenButton.addSelectionListener(selectListener);
-
-		createHorizontalSpacer(basicTop, 1);
+		traceChildrenButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Must be on to prevent mangled XML output
-		Label childSilentLabel = new Label(basicTop, SWT.NONE);
-		childSilentLabel.setText(Messages.getString("ValgrindOptionsTab.child_silent")); //$NON-NLS-1$
 		childSilentButton = new Button(basicTop, SWT.CHECK);
+		childSilentButton.setText(Messages.getString("ValgrindOptionsTab.child_silent")); //$NON-NLS-1$
 		childSilentButton.setSelection(true);
 		childSilentButton.setEnabled(false);
-		//childSilentButton.addSelectionListener(selectListener);
+		childSilentButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		createHorizontalSpacer(basicTop, 1);
-
-		Label runFreeresLabel = new Label(basicTop, SWT.NONE);
-		runFreeresLabel.setText(Messages.getString("ValgrindOptionsTab.run_freeres")); //$NON-NLS-1$
 		runFreeresButton = new Button(basicTop, SWT.CHECK);
+		runFreeresButton.setText(Messages.getString("ValgrindOptionsTab.run_freeres")); //$NON-NLS-1$
 		runFreeresButton.addSelectionListener(selectListener);
+		runFreeresButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	protected void createErrorOptions(Composite top) {
@@ -199,62 +231,57 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		errorGroup.setText(Messages.getString("ValgrindOptionsTab.Error_Options")); //$NON-NLS-1$
 
 		Composite errorTop = new Composite(errorGroup, SWT.NONE);
-		errorTop.setLayout(new GridLayout(8, false));
+		errorTop.setLayout(new GridLayout(3, false));
 		errorTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label demangleLabel = new Label(errorTop, SWT.NONE);
-		demangleLabel.setText(Messages.getString("ValgrindOptionsTab.demangle")); //$NON-NLS-1$
 		demangleButton = new Button(errorTop, SWT.CHECK);
+		demangleButton.setText(Messages.getString("ValgrindOptionsTab.demangle")); //$NON-NLS-1$
 		demangleButton.addSelectionListener(selectListener);
+		demangleButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		createHorizontalSpacer(errorTop, 1);
-
-		Label numCallersLabel = new Label(errorTop, SWT.NONE);
+		Composite numCallersTop = new Composite(errorTop, SWT.NONE);
+		numCallersTop.setLayout(new GridLayout(2, false));
+		Label numCallersLabel = new Label(numCallersTop, SWT.NONE);
 		numCallersLabel.setText(Messages.getString("ValgrindOptionsTab.num_callers")); //$NON-NLS-1$
-		numCallersSpinner = new Spinner(errorTop, SWT.BORDER);
+		numCallersSpinner = new Spinner(numCallersTop, SWT.BORDER);
 		numCallersSpinner.setMaximum(50);
 		numCallersSpinner.addModifyListener(modifyListener);
+		numCallersSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		createHorizontalSpacer(errorTop, 1);
-
-		Label errorLimitLabel = new Label(errorTop, SWT.NONE);
-		errorLimitLabel.setText(Messages.getString("ValgrindOptionsTab.limit_errors")); //$NON-NLS-1$
 		errorLimitButton = new Button(errorTop, SWT.CHECK);
+		errorLimitButton.setText(Messages.getString("ValgrindOptionsTab.limit_errors")); //$NON-NLS-1$
 		errorLimitButton.addSelectionListener(selectListener);
+		errorLimitButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		createVerticalSpacer(errorTop, 1);
-
-		Label showBelowMainLabel = new Label(errorTop, SWT.NONE);
-		showBelowMainLabel.setText(Messages.getString("ValgrindOptionsTab.show_errors_below_main")); //$NON-NLS-1$
 		showBelowMainButton = new Button(errorTop, SWT.CHECK);
+		showBelowMainButton.setText(Messages.getString("ValgrindOptionsTab.show_errors_below_main")); //$NON-NLS-1$
 		showBelowMainButton.addSelectionListener(selectListener);
+		showBelowMainButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		createHorizontalSpacer(errorTop, 1);
-
-		Label maxStackFrameLabel = new Label(errorTop, SWT.NONE);
+		Composite maxStackFrameTop = new Composite(errorTop, SWT.NONE);
+		maxStackFrameTop.setLayout(new GridLayout(2, false));
+		Label maxStackFrameLabel = new Label(maxStackFrameTop, SWT.NONE);
 		maxStackFrameLabel.setText(Messages.getString("ValgrindOptionsTab.max_size_of_stack_frame")); //$NON-NLS-1$
-		maxStackFrameSpinner = new Spinner(errorTop, SWT.BORDER);
+		maxStackFrameSpinner = new Spinner(maxStackFrameTop, SWT.BORDER);
 		maxStackFrameSpinner.setMaximum(Integer.MAX_VALUE);
-		maxStackFrameSpinner.addModifyListener(modifyListener);
-
-		createVerticalSpacer(errorTop, 1);
-
-		createSuppressionsOption(errorTop);		
+		maxStackFrameSpinner.addModifyListener(modifyListener);	
+		maxStackFrameSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	protected void createSuppressionsOption(Composite top) {
-		Label suppFileLabel = new Label(top, SWT.NONE);
-		suppFileLabel.setText(Messages.getString("ValgrindOptionsTab.suppressions_file")); //$NON-NLS-1$
-
-		Composite browseTop = new Composite(top, SWT.NONE);
-		GridLayout browseLayout = new GridLayout(3, false);
-		browseLayout.marginHeight = 0;
-		browseLayout.marginWidth = 0;
-		browseTop.setLayout(browseLayout);
+		Group suppGroup = new Group(top, SWT.NONE);
+		suppGroup.setLayout(new GridLayout());
+		suppGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		suppGroup.setText(Messages.getString("ValgrindOptionsTab.Suppressions")); //$NON-NLS-1$
+		
+		Composite browseTop = new Composite(suppGroup, SWT.NONE);		
+		browseTop.setLayout(new GridLayout(4, false));
 		GridData browseData = new GridData(GridData.FILL_HORIZONTAL);
-		browseData.horizontalSpan = 7;
 		browseTop.setLayoutData(browseData);
 
+		Label suppFileLabel = new Label(browseTop, SWT.NONE);
+		suppFileLabel.setText(Messages.getString("ValgrindOptionsTab.suppressions_file")); //$NON-NLS-1$
+		
 		suppFileText = new Text(browseTop, SWT.BORDER);
 		suppFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		suppFileText.addModifyListener(modifyListener);
@@ -312,6 +339,9 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			// change name of tool TabItem
 			toolTab.setText(dynamicTab.getName());
 			optionsFolder.layout(true);
+			
+			// adjust minimum size for ScrolledComposite
+			recomputeSize();
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -321,8 +351,8 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		for (Control child : dynamicTabHolder.getChildren()) {
 			child.dispose();
 		}
-
-		dynamicTab = getPlugin().getToolPage(tool);
+		
+		dynamicTab = getDynamicTab();
 		if (dynamicTab == null) {
 			throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindOptionsTab.No_options_tab_found") + tool)); //$NON-NLS-1$
 		}
@@ -330,6 +360,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		dynamicTab.createControl(dynamicTabHolder);
 
 		dynamicTabHolder.layout(true);		
+	}
+
+	protected IValgrindToolPage getDynamicTab() throws CoreException {
+		return getPlugin().getToolPage(tool);
 	}
 
 	protected ValgrindLaunchPlugin getPlugin() {
@@ -385,7 +419,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		setErrorMessage(null);
 
 		boolean result = false;
-		if (result = isGeneralValid() && dynamicTab != null) {
+		if (ex != null) {
+			setErrorMessage(ex.getLocalizedMessage());
+		}
+		else if (result = isGeneralValid() && dynamicTab != null) {
 			result = dynamicTab.isValid(launchConfig);
 			setErrorMessage(dynamicTab.getErrorMessage());
 		}

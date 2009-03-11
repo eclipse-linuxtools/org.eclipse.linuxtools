@@ -40,11 +40,13 @@ import org.eclipse.ui.PlatformUI;
 public class ChartTests extends AbstractMassifTest {
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
 		proj = createProject("alloctest"); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
+		super.tearDown();
 		deleteProject(proj);
 	}
 	

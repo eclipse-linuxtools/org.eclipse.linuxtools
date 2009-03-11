@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.tests;
 
+import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
@@ -25,6 +26,11 @@ public class AbstractMassifTest extends AbstractValgrindTest {
 	@Override
 	protected String getToolID() {
 		return MassifPlugin.TOOL_ID;
+	}
+
+	@Override
+	protected IValgrindToolPage getToolPage() {
+		return new MassifTestToolPage();
 	}
 
 }

@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 
+import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
@@ -24,6 +25,11 @@ public class AbstractMemcheckTest extends AbstractValgrindTest {
 	
 	public String getToolID() {
 		return MemcheckPlugin.TOOL_ID;
+	}
+
+	@Override
+	protected IValgrindToolPage getToolPage() {
+		return new MemcheckTestToolPage();
 	}
 
 }

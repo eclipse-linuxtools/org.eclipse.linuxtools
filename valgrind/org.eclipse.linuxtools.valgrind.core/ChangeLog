@@ -1,3 +1,10 @@
+2009-03-11  Elliott Baron  <ebaron@redhat.com>
+
+	* CommandLineConstants.java: Added --version argument.
+	* ValgrindCommand.java (whichVersion): New method.
+	(whichValgrind): Extracted readIntoBuffer.
+	(readIntoBuffer): New method.
+
 2009-02-25  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindCommand.java (whichValgrind): No longer static.
