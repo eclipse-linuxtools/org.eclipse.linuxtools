@@ -16,7 +16,7 @@ import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
 
 
-public class AbstractMassifTest extends AbstractValgrindTest {
+public abstract class AbstractMassifTest extends AbstractValgrindTest {
 
 	@Override
 	protected Bundle getBundle() {

@@ -10,13 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
-
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
 
-public class AbstractMemcheckTest extends AbstractValgrindTest {
+public abstract class AbstractMemcheckTest extends AbstractValgrindTest {
 
 	@Override
 	public Bundle getBundle() {

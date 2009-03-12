@@ -1,7 +1,11 @@
+2009-03-12  Elliott Baron  <ebaron@redhat.com>
+
+	* messages.properties: Remove colons from checkboxes.
+	* ValgrindOptionsTab.java: Use two columns, equal width.
+
 2009-03-11  Elliott Baron  <ebaron@redhat.com>
 
-	* src/org/eclipse/linuxtools/valgrind/launch/messages.properties: 
-	* src/org/eclipse/linuxtools/valgrind/launch/ValgrindLaunchConfigurationDelegate.java:
+	* ValgrindLaunchConfigurationDelegate.java:
 	(launch): Use new findValgrindLocation method.
 	(getPlugin): New method for subclassing.
 	* ValgrindLaunchPlugin.java (findValgrindVersion): New method.

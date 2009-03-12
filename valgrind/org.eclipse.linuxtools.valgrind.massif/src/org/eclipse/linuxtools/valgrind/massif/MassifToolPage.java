@@ -81,10 +81,8 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		Composite heapTop = new Composite(top, SWT.NONE);
 		heapTop.setLayout(new GridLayout(2, false));
 		
-		Label heapLabel = new Label(heapTop, SWT.NONE);
-		heapLabel.setText(Messages.getString("MassifToolPage.profile_heap")); //$NON-NLS-1$
-		
 		heapButton = new Button(heapTop, SWT.CHECK);
+		heapButton.setText(Messages.getString("MassifToolPage.profile_heap")); //$NON-NLS-1$
 		heapButton.addSelectionListener(selectListener);		
 		
 		Composite heapAdminTop = new Composite(top, SWT.NONE);
@@ -98,11 +96,9 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 			
 		Composite stacksTop = new Composite(top, SWT.NONE);
 		stacksTop.setLayout(new GridLayout(2, false));
-		
-		Label stacksLabel = new Label(stacksTop, SWT.NONE);
-		stacksLabel.setText(Messages.getString("MassifToolPage.profile_stack")); //$NON-NLS-1$
-		
+				
 		stacksButton = new Button(stacksTop, SWT.CHECK);
+		stacksButton.setText(Messages.getString("MassifToolPage.profile_stack")); //$NON-NLS-1$
 		stacksButton.addSelectionListener(selectListener);
 		
 		Composite depthTop = new Composite(top, SWT.NONE);

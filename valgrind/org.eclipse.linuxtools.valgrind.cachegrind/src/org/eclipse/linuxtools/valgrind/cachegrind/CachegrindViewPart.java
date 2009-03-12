@@ -7,7 +7,6 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *    IBM Corporation - painting text over multiple cells
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind;
 

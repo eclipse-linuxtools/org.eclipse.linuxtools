@@ -203,7 +203,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		basicGroup.setText(Messages.getString("ValgrindOptionsTab.Basic_Options")); //$NON-NLS-1$
 
 		Composite basicTop = new Composite(basicGroup, SWT.NONE);
-		basicTop.setLayout(new GridLayout(3, true));
+		basicTop.setLayout(new GridLayout(2, true));
 		basicTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		traceChildrenButton = new Button(basicTop, SWT.CHECK);
@@ -231,7 +231,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		errorGroup.setText(Messages.getString("ValgrindOptionsTab.Error_Options")); //$NON-NLS-1$
 
 		Composite errorTop = new Composite(errorGroup, SWT.NONE);
-		errorTop.setLayout(new GridLayout(3, false));
+		errorTop.setLayout(new GridLayout(2, true));
 		errorTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		demangleButton = new Button(errorTop, SWT.CHECK);
