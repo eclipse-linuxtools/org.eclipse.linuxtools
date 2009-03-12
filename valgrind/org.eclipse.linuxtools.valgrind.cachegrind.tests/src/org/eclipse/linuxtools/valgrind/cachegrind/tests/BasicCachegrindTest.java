@@ -43,7 +43,7 @@ public class BasicCachegrindTest extends AbstractCachegrindTest {
 	public void testFileNames() throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
-		doLaunch(config, "testNumFiles"); //$NON-NLS-1$
+		doLaunch(config, "testFileNames"); //$NON-NLS-1$
 		
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		CachegrindOutput output = view.getOutputs()[0];

@@ -15,7 +15,7 @@ import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
 
-public class AbstractCachegrindTest extends AbstractValgrindTest {
+public abstract class AbstractCachegrindTest extends AbstractValgrindTest {
 
 	@Override
 	protected Bundle getBundle() {
