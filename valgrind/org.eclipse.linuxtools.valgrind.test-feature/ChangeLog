@@ -1,5 +1,9 @@
 2009-03-13  Andrew Overholt  <overholt@redhat.com>
 
+	* feature.xml: Unpack cachegrind tests plugin so test.xml is present. 
+
+2009-03-13  Andrew Overholt  <overholt@redhat.com>
+
 	* feature.xml: Add cachegrind tests plugin.
 
 2009-02-12  Elliott Baron  <ebaron@redhat.com>
