@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
+	<property name="cachegrindClassname" value="org.eclipse.linuxtools.valgrind.cachegrind.tests.AllTests" />
 	<property name="massifClassname" value="org.eclipse.linuxtools.valgrind.massif.tests.AllTests" />
 	<property name="memcheckClassname" value="org.eclipse.linuxtools.valgrind.memcheck.tests.AllTests" />
 
+	<property name="cachegrind-plugin-name" value="org.eclipse.linuxtools.valgrind.cachegrind.tests" />
 	<property name="massif-plugin-name" value="org.eclipse.linuxtools.valgrind.massif.tests" />
 	<property name="memcheck-plugin-name" value="org.eclipse.linuxtools.valgrind.memcheck.tests" />
 
@@ -41,6 +43,16 @@
 			<property name="classname" value="${massifClassname}" />
 		</ant>
 	</target>
+	
+	<target name="cachegrindsuite">
+			<property name="cachegrind-folder" value="${eclipse-home}/cachegrind_folder" />
+			<delete dir="${cachegrind-folder}" quiet="true" />
+			<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+				<property name="data-dir" value="${cachegrind-folder}" />
+				<property name="plugin-name" value="${cachegrind-plugin-name}" />
+				<property name="classname" value="${cachegrindClassname}" />
+			</ant>
+		</target>
 
 	<!-- This target holds code to cleanup the testing environment after -->
 	<!-- after all of the tests have been run. You can use this target to -->
@@ -52,7 +64,7 @@
 
 	<!-- This target runs the test suite. Any actions that need to happen -->
 	<!-- after all the tests have been run should go here. -->
-	<target name="run" depends="init,memchecksuite,massifsuite,cleanup">
+	<target name="run" depends="init,memchecksuite,massifsuite,cachegrindsuite,cleanup">
 		<ant target="collect" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="includes" value="org*.xml" />
 			<property name="output-file" value="${plugin-name}.xml" />
