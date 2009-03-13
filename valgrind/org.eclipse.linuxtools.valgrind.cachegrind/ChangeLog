@@ -1,3 +1,7 @@
+2009-03-13  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Add icons to binary build.
+
 2009-03-11  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindToolPage.java (createControl): Added vertical spacer.
