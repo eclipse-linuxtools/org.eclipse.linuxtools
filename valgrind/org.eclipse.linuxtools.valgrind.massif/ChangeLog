@@ -1,3 +1,7 @@
+2009-03-13  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifParser.java (parseTree): Fixed NFE on localized percentage strings.
+	
 2009-03-12  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifPlugin.java: Use PluginConstants for referencing LaunchPlugin. 

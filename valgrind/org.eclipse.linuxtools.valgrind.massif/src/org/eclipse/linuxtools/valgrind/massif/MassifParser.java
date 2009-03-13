@@ -132,7 +132,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 		else {
 			percentage = numBytes.doubleValue() / snapshot.getTotal() * 100;
 		}
-		nodeText.append(Double.valueOf(new DecimalFormat("0.##").format(percentage)) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
+		nodeText.append(new DecimalFormat("0.##").format(percentage) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
 		nodeText.append(" ("); //$NON-NLS-1$
 		nodeText.append(new DecimalFormat("#,##0").format(numBytes.longValue()) + "B"); //$NON-NLS-1$ //$NON-NLS-2$
 		nodeText.append(")"); //$NON-NLS-1$
