@@ -1,5 +1,10 @@
 2009-03-13  Andrew Overholt  <overholt@redhat.com>
 
+	* about.html: Initial checkin.
+	* build.properties: Add test.xml, etc. to build.
+
+2009-03-13  Andrew Overholt  <overholt@redhat.com>
+
 	* test.xml: Initial checkin.
 
 2009-03-12  Elliott Baron  <ebaron@redhat.com>
