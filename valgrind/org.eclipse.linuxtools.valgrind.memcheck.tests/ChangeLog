@@ -1,3 +1,7 @@
+2009-03-13  Andrew Overholt  <overholt@redhat.com>
+
+	* test.xml: classname -> memcheck_classname.
+
 2009-03-10  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractMemcheckTest.java (getToolPage): Pass tool page to superclass.
