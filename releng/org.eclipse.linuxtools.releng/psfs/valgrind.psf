@@ -7,6 +7,8 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.tests,org.eclipse.linuxtools.profiling.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.ui,org.eclipse.linuxtools.profiling.ui"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind-feature,org.eclipse.linuxtools.valgrind-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind,org.eclipse.linuxtools.valgrind.cachegrind"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind.tests,org.eclipse.linuxtools.valgrind.cachegrind.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.core,org.eclipse.linuxtools.valgrind.core"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.launch,org.eclipse.linuxtools.valgrind.launch"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.massif,org.eclipse.linuxtools.valgrind.massif"/>
