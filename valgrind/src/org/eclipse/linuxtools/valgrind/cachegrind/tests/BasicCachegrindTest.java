@@ -64,14 +64,4 @@ public class BasicCachegrindTest extends AbstractCachegrindTest {
 		assertNotNull(file);
 		assertEquals(8, file.getFunctions().length);
 	}
-
-	private CachegrindFile getFileByName(CachegrindOutput output, String name) {
-		CachegrindFile file = null;
-		for (CachegrindFile f : output.getFiles()) {
-			if (f.getName().equals(name)) {
-				file = f;
-			}
-		}
-		return file;
-	}
 }

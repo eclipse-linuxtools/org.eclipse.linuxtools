@@ -1,3 +1,9 @@
+2009-03-16  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Added cdt.ui to deps.
+	* AbstractCachegrindTest.java (getFileByName): Extracted method.
+	* BasicCachegrindTest.java: Likewise.
+
 2009-03-13  Andrew Overholt  <overholt@redhat.com>
 
 	* about.html: Initial checkin.
