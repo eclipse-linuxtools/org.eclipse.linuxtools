@@ -303,9 +303,11 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 						p.setRemovedFile(true);
 						removeList.add(p);
 					} else if (kind == SyncInfo.CHANGE) {
-						changeList.add(p);
-						// Save the resource so we can later figure out which lines were changed
-						p.setResource(info.getLocal());
+						if (info.getLocal().getType() == IResource.FILE) {
+							changeList.add(p);
+							// Save the resource so we can later figure out which lines were changed
+							p.setResource(info.getLocal());
+						}
 					}
 				}
 			}
