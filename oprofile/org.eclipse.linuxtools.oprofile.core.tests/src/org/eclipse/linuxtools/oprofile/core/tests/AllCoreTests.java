@@ -22,6 +22,7 @@ public class AllCoreTests {
 		suite.addTestSuite(TestSessionsParse.class);
 		suite.addTestSuite(TestCheckEventsParse.class);
 		suite.addTestSuite(TestInfoParse.class);
+		suite.addTestSuite(TestDataModel.class);
 		
 		return suite;
 	}

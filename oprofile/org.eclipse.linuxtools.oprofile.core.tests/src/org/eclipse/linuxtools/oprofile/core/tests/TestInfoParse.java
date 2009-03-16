@@ -175,7 +175,7 @@ public class TestInfoParse extends TestCase {
 	public void testUnitMask() throws Exception {
 		//test types of masks setting/unsetting
 		OpUnitMask mask_bit1 = info.getEvents(0)[1].getUnitMask(),
-					mask_bit2 = info.getEvents(1)[1].getUnitMask(),
+//					mask_bit2 = info.getEvents(1)[1].getUnitMask(),
 					mask_exl = info.getEvents(0)[0].getUnitMask(),
 					mask_mand = info.getEvents(0)[2].getUnitMask(),
 					mask_invalid = info.getEvents(1)[0].getUnitMask();
