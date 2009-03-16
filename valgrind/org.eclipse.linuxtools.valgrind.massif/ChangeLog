@@ -1,3 +1,7 @@
+2009-03-16  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifParser.java (MassifParser): Explicitly close file.
+
 2009-03-13  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifParser.java (parseTree): Fixed NFE on localized percentage strings.

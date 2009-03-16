@@ -1,5 +1,9 @@
 2009-03-16  Elliott Baron  <ebaron@redhat.com>
 
+	* CachegrindParser.java (parse): Explicitly close file.
+	* CachegrindLine.java (getModel): Return null.
+	* CachegrindOutput.java (getModel): Return null.
+	* ICachegrindElement.java: Added getModel to interface.
 	* CachegrindLabelProvider.java: New file.
 	* CachegrindViewPart.java (getViewer): Getter for TreeViewer.
 	(CachegrindTreeContentProvider): Extracted.

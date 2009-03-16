@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind.model;
 
+import org.eclipse.core.runtime.IAdaptable;
+
 
 public class CachegrindLine implements ICachegrindElement {
 	protected CachegrindFunction parent;
@@ -44,6 +46,10 @@ public class CachegrindLine implements ICachegrindElement {
 			result = line - ((CachegrindLine) o).getLine();
 		}
 		return result;
+	}
+
+	public IAdaptable getModel() {
+		return null;
 	}
 	
 }

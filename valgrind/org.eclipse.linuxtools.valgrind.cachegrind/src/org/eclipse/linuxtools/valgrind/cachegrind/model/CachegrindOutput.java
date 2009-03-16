@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.valgrind.cachegrind.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
+
 public class CachegrindOutput implements ICachegrindElement {
 	protected List<CachegrindDescription> descriptions;
 	protected List<CachegrindFile> files;
@@ -88,6 +90,10 @@ public class CachegrindOutput implements ICachegrindElement {
 			result = pid - ((CachegrindOutput) o).getPid();
 		}
 		return result;
+	}
+
+	public IAdaptable getModel() {
+		return null;
 	}
 	
 }

@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.valgrind.cachegrind.tests;
 
 import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindPlugin;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
+import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
@@ -42,6 +43,16 @@ public abstract class AbstractCachegrindTest extends AbstractValgrindTest {
 			}
 		}
 		return file;
+	}
+	
+	protected CachegrindFunction getFunctionByName(CachegrindFile file, String name) {
+		CachegrindFunction function = null;
+		for (CachegrindFunction f : file.getFunctions()) {
+			if (f.getName().equals(name)) {
+				function = f;
+			}
+		}
+		return function;
 	}
 
 }

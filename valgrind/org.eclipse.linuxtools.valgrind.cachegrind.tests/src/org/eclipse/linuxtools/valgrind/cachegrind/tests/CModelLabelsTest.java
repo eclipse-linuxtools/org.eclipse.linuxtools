@@ -11,6 +11,8 @@
 package org.eclipse.linuxtools.valgrind.cachegrind.tests;
 
 import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.cdt.core.model.IFunction;
+import org.eclipse.cdt.core.model.IMethod;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -20,11 +22,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindLabelProvider;
 import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindViewPart;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
+import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
+import org.eclipse.linuxtools.valgrind.cachegrind.model.ICachegrindElement;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.widgets.TreeItem;
 
-public class TableTest extends AbstractCachegrindTest {
+public class CModelLabelsTest extends AbstractCachegrindTest {
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -66,22 +70,79 @@ public class TableTest extends AbstractCachegrindTest {
 		
 		checkLabelProvider(file);
 	}
+	
+	public void testFunctionLabel() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testFunctionLabel"); //$NON-NLS-1$
+		
+		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
+		CachegrindOutput output = view.getOutputs()[0];
+		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+		CachegrindFunction func = getFunctionByName(file, "main"); //$NON-NLS-1$
+		
+		assertTrue(func.getModel() instanceof IFunction);
+		
+		checkLabelProvider(func, file);
+	}
+	
+	public void testMethodLabel() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testMethodLabel"); //$NON-NLS-1$
+		
+		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
+		CachegrindOutput output = view.getOutputs()[0];
+		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+		CachegrindFunction func = getFunctionByName(file, "A::A()"); //$NON-NLS-1$
+		
+		assertTrue(func.getModel() instanceof IMethod);
+		
+		checkLabelProvider(func, file);
+	}
+	
+	public void testNestedMethodLabel() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testNestedMethodLabel"); //$NON-NLS-1$
+		
+		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
+		CachegrindOutput output = view.getOutputs()[0];
+		CachegrindFile file = getFileByName(output, "cpptest.cpp"); //$NON-NLS-1$
+		CachegrindFunction func = getFunctionByName(file, "A::B::e()"); //$NON-NLS-1$
+		
+		assertTrue(func.getModel() instanceof IMethod);
+		
+		checkLabelProvider(func, file);
+	}
 
 	private void checkLabelProvider(CachegrindFile file) {
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer viewer = view.getViewer();
 		
-		// collapse the tree, then expand only the interesting item
-		viewer.expandToLevel(file, TreeViewer.ALL_LEVELS);
 		TreePath path = new TreePath(new Object[] { view.getOutputs()[0], file });
+		checkLabelProvider(viewer, path, file);
+	}
+	
+	private void checkLabelProvider(CachegrindFunction func, CachegrindFile file) {
+		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
+		TreeViewer viewer = view.getViewer();
+		
+		TreePath path = new TreePath(new Object[] { view.getOutputs()[0], file, func });
+		checkLabelProvider(viewer, path, func);
+	}
+	
+	private void checkLabelProvider(TreeViewer viewer, TreePath path, ICachegrindElement element) {
+		// expand only the interesting item
+		viewer.expandToLevel(element, TreeViewer.ALL_LEVELS);
 		TreeSelection selection = new TreeSelection(path);
 		viewer.setSelection(selection);		
 		TreeItem item = viewer.getTree().getSelection()[0];
 		
 		// ensure the CElementLabelProvider is called correctly
 		CElementLabelProvider provider = ((CachegrindLabelProvider) viewer.getLabelProvider(0)).getCLabelProvider();
-		assertEquals(provider.getText(file.getModel()), item.getText());
-		assertEquals(provider.getImage(file.getModel()), item.getImage());
+		assertEquals(provider.getText(element.getModel()), item.getText());
+		assertEquals(provider.getImage(element.getModel()), item.getImage());
 	}
 
 }

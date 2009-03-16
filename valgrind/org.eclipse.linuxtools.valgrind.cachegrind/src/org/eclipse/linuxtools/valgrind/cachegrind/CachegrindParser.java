@@ -29,17 +29,17 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 	private static final String FN = "fn"; //$NON-NLS-1$
 	private static final String EVENTS = "events"; //$NON-NLS-1$
 	private static final String SUMMARY = "summary"; //$NON-NLS-1$
-	
+
 	private static final String EQUALS = "="; //$NON-NLS-1$
 	private static final String SPACE = " "; //$NON-NLS-1$
 	private static final String COLON = ":"; //$NON-NLS-1$
 	private static final String COMMA = ","; //$NON-NLS-1$
-	
+
 	protected static CachegrindParser instance;
-	
+
 	protected CachegrindParser() {
 	}
-	
+
 	public static CachegrindParser getParser() {
 		if (instance == null) {
 			instance = new CachegrindParser();
@@ -48,60 +48,67 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 	}
 
 	public void parse(CachegrindOutput output, File cgOut) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(cgOut));
-		output.setPid(parsePID(cgOut.getName(), CachegrindLaunchDelegate.OUT_PREFIX));
-		
-		String line;
-		CachegrindFile curFl = null;
-		CachegrindFunction curFn = null;
-		while ((line = br.readLine()) != null) {		
-			if (line.startsWith(EVENTS + COLON)) {
-				output.setEvents(parseStrValue(line, COLON + SPACE).split(SPACE));
-			}
-			else if (line.startsWith(CMD + COLON)) {
-				output.setCommand(parseStrValue(line, COLON + SPACE));
-			}
-			else if (line.startsWith(DESC + COLON)) {
-				CachegrindDescription description = parseDescription(line);
-				output.addDescription(description);
-			}
-			else if (line.startsWith(FL + EQUALS)) {
-				curFl = new CachegrindFile(output, parseStrValue(line, EQUALS));
-				output.addFile(curFl);
-			}
-			else if (line.startsWith(FN + EQUALS)) {				
-				if (curFl != null) {
-					curFn = new CachegrindFunction(curFl, parseStrValue(line, EQUALS));
-					curFl.addFunction(curFn);
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(cgOut));
+			output.setPid(parsePID(cgOut.getName(), CachegrindLaunchDelegate.OUT_PREFIX));
+
+			String line;
+			CachegrindFile curFl = null;
+			CachegrindFunction curFn = null;
+			while ((line = br.readLine()) != null) {		
+				if (line.startsWith(EVENTS + COLON)) {
+					output.setEvents(parseStrValue(line, COLON + SPACE).split(SPACE));
 				}
-				else {
-					fail(line);
+				else if (line.startsWith(CMD + COLON)) {
+					output.setCommand(parseStrValue(line, COLON + SPACE));
 				}
-			}
-			else if (line.startsWith(SUMMARY + COLON)) {
-				long[] summary = parseData(line, parseStrValue(line, COLON + SPACE).split(SPACE));
-				output.setSummary(summary);
-			}
-			else { // line data
-				String[] tokens = line.split(SPACE, 2);
-				if (isNumber(tokens[0])) {
-					int lineNo = Integer.parseInt(tokens[0]);
-					
-					long[] data = parseData(line, tokens[1].split(SPACE));
-					if (curFn != null) {
-						curFn.addLine(new CachegrindLine(curFn, lineNo, data));
+				else if (line.startsWith(DESC + COLON)) {
+					CachegrindDescription description = parseDescription(line);
+					output.addDescription(description);
+				}
+				else if (line.startsWith(FL + EQUALS)) {
+					curFl = new CachegrindFile(output, parseStrValue(line, EQUALS));
+					output.addFile(curFl);
+				}
+				else if (line.startsWith(FN + EQUALS)) {				
+					if (curFl != null) {
+						curFn = new CachegrindFunction(curFl, parseStrValue(line, EQUALS));
+						curFl.addFunction(curFn);
 					}
 					else {
 						fail(line);
 					}
 				}
-				else {
-					fail(line);
+				else if (line.startsWith(SUMMARY + COLON)) {
+					long[] summary = parseData(line, parseStrValue(line, COLON + SPACE).split(SPACE));
+					output.setSummary(summary);
 				}
+				else { // line data
+					String[] tokens = line.split(SPACE, 2);
+					if (isNumber(tokens[0])) {
+						int lineNo = Integer.parseInt(tokens[0]);
+
+						long[] data = parseData(line, tokens[1].split(SPACE));
+						if (curFn != null) {
+							curFn.addLine(new CachegrindLine(curFn, lineNo, data));
+						}
+						else {
+							fail(line);
+						}
+					}
+					else {
+						fail(line);
+					}
+				}
+			}
+		} finally {
+			if (br != null) {
+				br.close();
 			}
 		}
 	}
-	
+
 	private long[] parseData(String line, String[] data) throws IOException {
 		long[] result = new long[data.length];
 		for (int i = 0; i < data.length; i++) {

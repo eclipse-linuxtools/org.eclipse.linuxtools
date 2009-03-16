@@ -47,64 +47,71 @@ public class MassifParser extends AbstractValgrindTextParser {
 
 	public MassifParser(File inputFile) throws IOException {
 		ArrayList<MassifSnapshot> list = new ArrayList<MassifSnapshot>();
-		BufferedReader br = new BufferedReader(new FileReader(inputFile));
-		String line;
-		MassifSnapshot snapshot = null;
-		String cmd = null;
-		TimeUnit unit = null;  
-		int n = 0;
-		
-		// retrive PID from filename
-		String filename = inputFile.getName();
-		pid = parsePID(filename, MassifLaunchDelegate.OUT_PREFIX);
-		
-		// parse contents of file
-		while ((line = br.readLine()) != null) {
-			if (line.startsWith(CMD + COLON)){
-				cmd = parseStrValue(line, COLON + SPACE);
-			}
-			else if (line.startsWith(TIME_UNIT + COLON)) {
-				unit = parseTimeUnit(line);
-			}			
-			else if (line.startsWith(SNAPSHOT)) {
-				if (snapshot != null) {
-					// this snapshot finished parsing
-					list.add(snapshot);
-					n++;
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(inputFile));
+			String line;
+			MassifSnapshot snapshot = null;
+			String cmd = null;
+			TimeUnit unit = null;  
+			int n = 0;
+
+			// retrive PID from filename
+			String filename = inputFile.getName();
+			pid = parsePID(filename, MassifLaunchDelegate.OUT_PREFIX);
+
+			// parse contents of file
+			while ((line = br.readLine()) != null) {
+				if (line.startsWith(CMD + COLON)){
+					cmd = parseStrValue(line, COLON + SPACE);
 				}
-				snapshot = new MassifSnapshot(n);
-				snapshot.setCmd(cmd);
-				snapshot.setUnit(unit);
-			}
-			else if (line.startsWith(TIME + EQUALS)) {
-				snapshot.setTime(parseLongValue(line, EQUALS));
-			}
-			else if (line.startsWith(MEM_HEAP_B + EQUALS)) {
-				snapshot.setHeapBytes(parseLongValue(line, EQUALS));
-			}
-			else if (line.startsWith(MEM_HEAP_EXTRA_B + EQUALS)) {
-				snapshot.setHeapExtra(parseLongValue(line, EQUALS));
-			}
-			else if (line.startsWith(MEM_STACKS_B + EQUALS)) {
-				snapshot.setStacks(parseLongValue(line, EQUALS));
-			}
-			else if (line.startsWith(HEAP_TREE + EQUALS)) {
-				SnapshotType type = parseSnapshotType(line);
-				snapshot.setType(type);
-				switch (type) {
-				case DETAILED:
-				case PEAK:
-					MassifHeapTreeNode node = parseTree(snapshot, null, br);
-					node.setText(NLS.bind(Messages.getString("MassifParser.Snapshot_n"), n, node.getText())); // prepend snapshot number //$NON-NLS-1$
-					snapshot.setRoot(node);
+				else if (line.startsWith(TIME_UNIT + COLON)) {
+					unit = parseTimeUnit(line);
+				}			
+				else if (line.startsWith(SNAPSHOT)) {
+					if (snapshot != null) {
+						// this snapshot finished parsing
+						list.add(snapshot);
+						n++;
+					}
+					snapshot = new MassifSnapshot(n);
+					snapshot.setCmd(cmd);
+					snapshot.setUnit(unit);
 				}
+				else if (line.startsWith(TIME + EQUALS)) {
+					snapshot.setTime(parseLongValue(line, EQUALS));
+				}
+				else if (line.startsWith(MEM_HEAP_B + EQUALS)) {
+					snapshot.setHeapBytes(parseLongValue(line, EQUALS));
+				}
+				else if (line.startsWith(MEM_HEAP_EXTRA_B + EQUALS)) {
+					snapshot.setHeapExtra(parseLongValue(line, EQUALS));
+				}
+				else if (line.startsWith(MEM_STACKS_B + EQUALS)) {
+					snapshot.setStacks(parseLongValue(line, EQUALS));
+				}
+				else if (line.startsWith(HEAP_TREE + EQUALS)) {
+					SnapshotType type = parseSnapshotType(line);
+					snapshot.setType(type);
+					switch (type) {
+					case DETAILED:
+					case PEAK:
+						MassifHeapTreeNode node = parseTree(snapshot, null, br);
+						node.setText(NLS.bind(Messages.getString("MassifParser.Snapshot_n"), n, node.getText())); // prepend snapshot number //$NON-NLS-1$
+						snapshot.setRoot(node);
+					}
+				}
+			}
+			if (snapshot != null) {
+				// last snapshot that finished parsing
+				list.add(snapshot);
+			}
+			snapshots = list.toArray(new MassifSnapshot[list.size()]);
+		} finally {
+			if (br != null) {
+				br.close();
 			}
 		}
-		if (snapshot != null) {
-			// last snapshot that finished parsing
-			list.add(snapshot);
-		}
-		snapshots = list.toArray(new MassifSnapshot[list.size()]);
 	}
 
 	private MassifHeapTreeNode parseTree(MassifSnapshot snapshot, MassifHeapTreeNode parent, BufferedReader br) throws IOException {
