@@ -10,6 +10,7 @@ public class AllTests {
 				"Tests for org.eclipse.linuxtools.valgrind.cachegrind.tests"); //$NON-NLS-1$
 		//$JUnit-BEGIN$
 		suite.addTestSuite(BasicCachegrindTest.class);
+		suite.addTestSuite(CModelLabelsTest.class);
 		//$JUnit-END$
 		return suite;
 	}
