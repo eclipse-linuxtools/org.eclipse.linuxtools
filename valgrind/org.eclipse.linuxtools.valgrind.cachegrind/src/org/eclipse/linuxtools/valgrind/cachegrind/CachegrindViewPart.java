@@ -10,20 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.ISourceRange;
 import org.eclipse.cdt.core.model.ISourceReference;
-import org.eclipse.cdt.core.model.util.CElementBaseLabels;
-import org.eclipse.cdt.ui.CElementLabelProvider;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -31,7 +24,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
@@ -40,20 +32,16 @@ import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindLine;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.ICachegrindElement;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
@@ -62,7 +50,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	protected TreeViewer viewer;
 
 	protected static final int COLUMN_SIZE = 75;
-	protected CellLabelProvider labelProvider;
+	protected CachegrindLabelProvider labelProvider;
 	
 	// Events - Cache
 	protected static final String IR = "Ir"; //$NON-NLS-1$
@@ -81,8 +69,6 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	protected static final String BI = "Bi"; //$NON-NLS-1$
 	protected static final String BIM = "Bim"; //$NON-NLS-1$
 	
-	protected static final Image FUNC_IMG = CachegrindPlugin.imageDescriptorFromPlugin(CachegrindPlugin.PLUGIN_ID, "icons/function_obj.gif").createImage(); //$NON-NLS-1$
-
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
@@ -177,6 +163,82 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 			viewer.setInput(outputs);
 			viewer.getTree().layout(true);
 		}
+	}
+
+	//	private String getShortEventName(String event) {
+	//		String result = event;
+	//		if (event.equals(IR)) {
+	//			result = Messages.getString("CachegrindViewPart.Ir_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(I1MR)) {
+	//			result = Messages.getString("CachegrindViewPart.I1mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(I2MR)) {
+	//			result = Messages.getString("CachegrindViewPart.I2mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(DR)) {
+	//			result = Messages.getString("CachegrindViewPart.Dr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D1MR)) {
+	//			result = Messages.getString("CachegrindViewPart.D1mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D2MR)) {
+	//			result = Messages.getString("CachegrindViewPart.D2mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(DW)) {
+	//			result = Messages.getString("CachegrindViewPart.Dw_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D1MW)) {
+	//			result = Messages.getString("CachegrindViewPart.D1mw_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D2MW)) {
+	//			result = Messages.getString("CachegrindViewPart.D2mw_short"); //$NON-NLS-1$
+	//		}
+	//		return result;
+	//	}
+	
+	public void setOutputs(CachegrindOutput[] outputs) {
+		this.outputs = outputs;
+	}
+
+	//	private String getShortEventName(String event) {
+	//		String result = event;
+	//		if (event.equals(IR)) {
+	//			result = Messages.getString("CachegrindViewPart.Ir_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(I1MR)) {
+	//			result = Messages.getString("CachegrindViewPart.I1mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(I2MR)) {
+	//			result = Messages.getString("CachegrindViewPart.I2mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(DR)) {
+	//			result = Messages.getString("CachegrindViewPart.Dr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D1MR)) {
+	//			result = Messages.getString("CachegrindViewPart.D1mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D2MR)) {
+	//			result = Messages.getString("CachegrindViewPart.D2mr_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(DW)) {
+	//			result = Messages.getString("CachegrindViewPart.Dw_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D1MW)) {
+	//			result = Messages.getString("CachegrindViewPart.D1mw_short"); //$NON-NLS-1$
+	//		}
+	//		else if (event.equals(D2MW)) {
+	//			result = Messages.getString("CachegrindViewPart.D2mw_short"); //$NON-NLS-1$
+	//		}
+	//		return result;
+	//	}
+
+	public CachegrindOutput[] getOutputs() {
+		return outputs;
+	}
+	
+	public TreeViewer getViewer() {
+		return viewer;
 	}
 
 	private SelectionListener getHeaderListener() {
@@ -320,14 +382,6 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 //		return result;
 //	}
 
-	public void setOutputs(CachegrindOutput[] outputs) {
-		this.outputs = outputs;
-	}
-
-	public CachegrindOutput[] getOutputs() {
-		return outputs;
-	}
-
 	protected class CachegrindTreeContentProvider implements ITreeContentProvider {
 
 		public Object[] getChildren(Object parentElement) {
@@ -362,70 +416,6 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
 	}
 
-	protected class CachegrindLabelProvider extends CellLabelProvider {
-
-		protected CElementLabelProvider cLabelProvider = new CElementLabelProvider(CElementLabelProvider.SHOW_SMALL_ICONS | CElementLabelProvider.SHOW_PARAMETERS | CElementLabelProvider.SHOW_RETURN_TYPE) {
-			@Override
-			public int getTextFlags() {
-				int flags = super.getTextFlags();
-				return flags |= CElementBaseLabels.M_FULLY_QUALIFIED;
-			}
-		};
-		
-		protected DecimalFormat df = new DecimalFormat("#,##0"); //$NON-NLS-1$
-
-		@Override
-		public void update(ViewerCell cell) {
-			ICachegrindElement element = ((ICachegrindElement) cell.getElement());
-			int index = cell.getColumnIndex();
-
-			if (index == 0) {
-				if (element instanceof CachegrindFile) {
-					// Try to use the CElementLabelProvider
-					IAdaptable model = ((CachegrindFile) element).getModel();
-					if (model != null) {
-						cell.setText(cLabelProvider.getText(model));
-						cell.setImage(cLabelProvider.getImage(model));
-					}
-					else { // Fall back
-						String name = ((CachegrindFile) element).getName();
-						cell.setText(name);
-						cell.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE));
-					}
-				}
-				else if (element instanceof CachegrindFunction) {
-					// Try to use the CElementLabelProvider
-					IAdaptable model = ((CachegrindFunction) element).getModel();
-					if (model != null) {
-						cell.setText(cLabelProvider.getText(model));
-						cell.setImage(cLabelProvider.getImage(model));
-					}
-					else { // Fall back
-						String name = ((CachegrindFunction) element).getName();
-						cell.setText(name);
-						cell.setImage(FUNC_IMG);
-					}
-				}
-				else if (element instanceof CachegrindLine) {
-					cell.setText(NLS.bind(Messages.getString("CachegrindViewPart.line"), ((CachegrindLine) element).getLine())); //$NON-NLS-1$
-					cell.setImage(DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_INSTRUCTION_POINTER_TOP));
-				}
-				else if (element instanceof CachegrindOutput) {
-					cell.setText(NLS.bind(Messages.getString("CachegrindViewPart.Total_PID"), ((CachegrindOutput) element).getPid())); //$NON-NLS-1$
-					cell.setImage(DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_REGISTER));
-				}
-			}
-			else if (element instanceof CachegrindFunction) {
-				cell.setText(df.format(((CachegrindFunction) element).getTotals()[index - 1]));
-			}
-			else if (element instanceof CachegrindLine) {
-				cell.setText(df.format(((CachegrindLine) element).getValues()[index - 1]));
-			}
-			else if (element instanceof CachegrindOutput) {
-				cell.setText(df.format(((CachegrindOutput) element).getSummary()[index - 1]));
-			}
-		}
-
-	}
+	
 
 }

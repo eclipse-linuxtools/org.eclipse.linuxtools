@@ -1,3 +1,9 @@
+2009-03-16  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindLabelProvider.java: New file.
+	* CachegrindViewPart.java (getViewer): Getter for TreeViewer.
+	(CachegrindTreeContentProvider): Extracted.
+
 2009-03-13  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Add icons to binary build.
