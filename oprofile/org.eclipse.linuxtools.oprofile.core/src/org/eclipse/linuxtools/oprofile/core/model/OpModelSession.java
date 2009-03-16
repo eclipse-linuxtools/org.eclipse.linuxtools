@@ -58,7 +58,11 @@ public class OpModelSession {
 	
 	public void refreshModel() {
 		//populate this session with samples
-		_image = Oprofile.getModelData(_parentEvent.getName(), _name);
+		_image = getNewImage();
+	}
+	
+	protected OpModelImage getNewImage() {
+		return Oprofile.getModelData(_parentEvent.getName(), _name);
 	}
 
 	public String toString(String tabs) {

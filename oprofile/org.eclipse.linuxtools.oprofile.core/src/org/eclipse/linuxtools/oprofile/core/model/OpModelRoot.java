@@ -30,10 +30,10 @@ public class OpModelRoot {
 	private OpModelEvent[] _events;
 //	private String _printTabs = "\t";		//for nice output
 
-	private OpModelRoot() {
+	protected OpModelRoot() {
 //		refreshModel();
 		_events = null;
-		_modelRoot = this;
+//		_modelRoot = this;
 	}
 
 	public static OpModelRoot getDefault() {
@@ -44,13 +44,17 @@ public class OpModelRoot {
 		//TODO-performance/interactivity: some persistence for events/sessions
 		// that dont change from run to run (non default sessions) 
 		
-		//launch `opxml sessions`, gather up events & the sessions under them
-		_events = Oprofile.getEvents();
+		_events = getNewEvents();
 		if (_events != null) {
 			for (int i = 0; i < _events.length; i++) {
 				_events[i].refreshModel();
 			}
 		}
+	}
+	
+	protected OpModelEvent[] getNewEvents() {
+		//launch `opxml sessions`, gather up events & the sessions under them
+		return Oprofile.getEvents(); 
 	}
 	
 	public OpModelEvent[] getEvents() {
