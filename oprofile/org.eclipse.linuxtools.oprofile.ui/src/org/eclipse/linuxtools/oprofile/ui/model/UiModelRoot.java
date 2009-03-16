@@ -20,13 +20,14 @@ import org.eclipse.swt.graphics.Image;
  */
 public class UiModelRoot implements IUiModelElement {
 	private static UiModelRoot _uiModelRoot = new UiModelRoot();	//singleton
-	private UiModelEvent[] _events = null;							//this node's children
+	private UiModelEvent[] _events;							//this node's children
 
 
 	/** constructor, private for singleton use **/
 	private UiModelRoot() {
 //		refreshModel();
-		_uiModelRoot = this;
+		_events = null;
+//		_uiModelRoot = this;
 	}
 	
 	/**
