@@ -231,14 +231,16 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 		
 		if (p != null) {
-			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			String output = "", s; //$NON-NLS-1$
 			try {
-				while ((stdout.readLine()) != null) {
-					// drain
+				while ((s = stdout.readLine()) != null) {
+					output += s;
 				}
 				
 				int ret = p.waitFor();
 				if (ret != 0) {
+					System.out.println(output);
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
 				}
 			} catch (IOException ioe) { 
