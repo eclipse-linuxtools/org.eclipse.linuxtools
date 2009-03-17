@@ -21,6 +21,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(BasicCachegrindTest.class);
 		suite.addTestSuite(CModelLabelsTest.class);
+		suite.addTestSuite(DoubleClickTest.class);
 		//$JUnit-END$
 		return suite;
 	}
