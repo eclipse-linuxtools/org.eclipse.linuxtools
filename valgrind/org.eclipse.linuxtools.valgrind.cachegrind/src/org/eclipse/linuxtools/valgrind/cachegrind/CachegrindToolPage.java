@@ -300,21 +300,21 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		}
 	}
 
-	private void checkI1Enablement() {
+	protected void checkI1Enablement() {
 		boolean checked = i1Button.getSelection();
 		i1SizeSpinner.setEnabled(checked);
 		i1AssocSpinner.setEnabled(checked);
 		i1LineSizeSpinner.setEnabled(checked);
 	}
 	
-	private void checkD1Enablement() {
+	protected void checkD1Enablement() {
 		boolean checked = d1Button.getSelection();
 		d1SizeSpinner.setEnabled(checked);
 		d1AssocSpinner.setEnabled(checked);
 		d1LineSizeSpinner.setEnabled(checked);
 	}
 	
-	private void checkL2Enablement() {
+	protected void checkL2Enablement() {
 		boolean checked = l2Button.getSelection();
 		l2SizeSpinner.setEnabled(checked);
 		l2AssocSpinner.setEnabled(checked);

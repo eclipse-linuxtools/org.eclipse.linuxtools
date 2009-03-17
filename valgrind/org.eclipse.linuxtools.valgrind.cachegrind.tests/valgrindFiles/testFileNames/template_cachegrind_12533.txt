@@ -144,7 +144,7 @@ fn=_dl_setup_hash
 fn=_dl_sort_fini
 0 823 7 7 305 5 0 64 0 0
 fn=_dl_start
-0 413 17 16 70 9 7 66 11 10
+0 417 17 16 71 9 7 66 11 10
 fn=_dl_sysdep_read_whole_file
 0 48 4 4 8 0 0 24 0 0
 fn=_dl_sysdep_start
@@ -237,4 +237,4 @@ fn=uname
 0 8 1 1 2 0 0 0 0 0
 fn=version_check_doit
 0 19 2 1 7 0 0 5 0 0
-summary: 1356644 738 729 397212 5701 3270 146536 700 519
+summary: 1356648 738 729 397213 5701 3270 146536 700 519

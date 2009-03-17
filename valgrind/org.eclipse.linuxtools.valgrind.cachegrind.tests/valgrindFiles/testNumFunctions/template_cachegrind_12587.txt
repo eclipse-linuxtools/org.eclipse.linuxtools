@@ -94,7 +94,7 @@ fn=_dl_check_all_versions
 fn=_dl_check_map_versions
 0 4148 14 14 1863 25 24 773 22 22
 fn=_dl_debug_initialize
-0 183 3 3 43 0 0 32 0 0
+0 186 3 3 45 0 0 32 0 0
 fn=_dl_debug_state
 0 8 0 0 4 0 0 2 0 0
 fn=_dl_determine_tlsoffset
@@ -136,7 +136,7 @@ fn=_dl_protect_relro
 fn=_dl_receive_error
 0 31 2 2 12 0 0 16 0 0
 fn=_dl_relocate_object
-0 237247 68 68 85321 2343 1412 37429 406 241
+0 237247 68 68 85321 2343 1415 37429 406 241
 fn=_dl_runtime_resolve
 0 66 1 1 36 0 0 30 1 0
 fn=_dl_setup_hash
@@ -144,7 +144,7 @@ fn=_dl_setup_hash
 fn=_dl_sort_fini
 0 823 7 7 305 5 0 64 0 0
 fn=_dl_start
-0 765 21 20 205 18 16 94 11 10
+0 417 17 16 71 9 7 66 11 10
 fn=_dl_sysdep_read_whole_file
 0 48 4 4 8 0 0 24 0 0
 fn=_dl_sysdep_start
@@ -168,11 +168,11 @@ fn=cache_rpath
 fn=calloc
 0 350 1 1 112 0 0 98 2 2
 fn=check_match.8092
-0 65424 7 7 24518 41 8 11719 1 0
+0 65424 7 7 24518 42 12 11719 1 0
 fn=close
 0 48 1 1 12 0 0 0 0 0
 fn=dl_main
-0 1183 69 69 353 24 13 200 14 13
+0 1183 69 69 353 24 13 200 15 14
 fn=do_lookup_x
 0 330352 9 9 133802 1697 495 52527 2 0
 fn=do_preload
@@ -194,7 +194,7 @@ fn=malloc
 fn=map_doit
 0 19 2 2 8 0 0 8 0 0
 fn=match_symbol
-0 2107 3 3 802 21 20 230 0 0
+0 2107 3 3 802 22 21 230 0 0
 fn=memcpy
 0 758 2 2 326 0 0 206 13 13
 fn=mempcpy
@@ -237,4 +237,4 @@ fn=uname
 0 8 1 1 2 0 0 0 0 0
 fn=version_check_doit
 0 19 2 1 7 0 0 5 0 0
-summary: 1356993 742 733 397345 5708 3271 146564 699 518
+summary: 1356648 738 729 397213 5701 3270 146536 700 519

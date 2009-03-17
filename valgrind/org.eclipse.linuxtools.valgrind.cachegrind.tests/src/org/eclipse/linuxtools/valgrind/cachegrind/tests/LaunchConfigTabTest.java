@@ -1,0 +1,203 @@
+package org.eclipse.linuxtools.valgrind.cachegrind.tests;
+
+import java.util.Arrays;
+
+import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindPlugin;
+import org.eclipse.linuxtools.valgrind.tests.ValgrindTestOptionsTab;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+public class LaunchConfigTabTest extends AbstractCachegrindTest {
+	
+	protected ILaunchConfiguration config;
+	protected Shell testShell;
+	protected ValgrindTestOptionsTab tab;
+	protected CachegrindTestToolPage dynamicTab;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		proj = createProject("cpptest"); //$NON-NLS-1$
+
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		config = createConfiguration(bin);
+
+		testShell = new Shell(Display.getDefault());
+		testShell.setLayout(new GridLayout());
+		tab = new ValgrindTestOptionsTab();
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		tab.dispose();
+		testShell.dispose();
+		deleteProject(proj);
+	}
+	
+	private ILaunchConfigurationWorkingCopy initConfig() throws CoreException {
+		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+		tab.setDefaults(wc);
+		tab.createControl(testShell);
+		tab.initializeFrom(config);
+		int ix = Arrays.asList(tab.getTools()).indexOf(CachegrindPlugin.TOOL_ID);
+		tab.getToolsCombo().select(ix);
+		ILaunchConfigurationTab dynamicTab = tab.getDynamicTab();
+		this.dynamicTab = (CachegrindTestToolPage) dynamicTab;
+		return wc;
+	}
+	
+	private ILaunch saveAndLaunch(ILaunchConfigurationWorkingCopy wc, String testName)
+	throws Exception {
+		tab.performApply(wc);
+		config = wc.doSave();
+
+		ILaunch launch = doLaunch(config, testName);
+		return launch;
+	}
+	
+	public void testDefaults() throws Exception {		
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		ILaunch launch = saveAndLaunch(wc, "testDefaults"); //$NON-NLS-1$
+		IProcess[] p = launch.getProcesses();
+		if (p.length > 0) {
+			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+			assertEquals(0, p[0].getExitValue());
+			assertTrue(cmd.contains("--tool=cachegrind")); //$NON-NLS-1$
+			assertFalse(cmd.contains("--xml=yes")); //$NON-NLS-1$
+			assertTrue(cmd.contains("-q")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--trace-children=no")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--child-silent-after-fork=yes")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--demangle=yes")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--num-callers=12")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--error-limit=yes")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--show-below-main=no")); //$NON-NLS-1$
+			assertFalse(cmd.contains("--suppressions")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--max-stackframe=2000000")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--run-libc-freeres=yes")); //$NON-NLS-1$
+
+			assertTrue(cmd.contains("--cache-sim=yes")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--branch-sim=no")); //$NON-NLS-1$
+		}
+		else {
+			fail();
+		}
+	}
+	
+	public void testNoSim() throws Exception {		
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		dynamicTab.getCacheButton().setSelection(false);
+		tab.performApply(wc);
+		wc.doSave();
+		
+		assertFalse(tab.isValid(config));
+	}
+	
+	public void testBranchSim() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		dynamicTab.getBranchButton().setSelection(true);
+		tab.performApply(wc);
+		wc.doSave();
+		
+		ILaunch launch = saveAndLaunch(wc, "testBranchSim"); //$NON-NLS-1$
+		IProcess[] p = launch.getProcesses();
+		if (p.length > 0) {
+			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+			assertEquals(0, p[0].getExitValue());
+			assertTrue(cmd.contains("--branch-sim=yes")); //$NON-NLS-1$
+		}
+		else {
+			fail();
+		}
+	}
+	
+	public void testI1Cache() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		
+		assertFalse(dynamicTab.getI1SizeSpinner().isEnabled());
+		dynamicTab.getI1Button().setSelection(true);
+		dynamicTab.checkI1Enablement();
+		assertTrue(dynamicTab.getI1SizeSpinner().isEnabled());
+		
+		dynamicTab.getI1SizeSpinner().setSelection(0);
+		dynamicTab.getI1AssocSpinner().setSelection(0);
+		dynamicTab.getI1LineSizeSpinner().setSelection(0);
+		
+		tab.performApply(wc);
+		wc.doSave();
+		
+		ILaunch launch = saveAndLaunch(wc, "testI1Cache"); //$NON-NLS-1$
+		IProcess[] p = launch.getProcesses();
+		if (p.length > 0) {
+			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+			assertFalse(p[0].getExitValue() == 0);
+			assertTrue(cmd.contains("--I1=0,0,0")); //$NON-NLS-1$
+		}
+		else {
+			fail();
+		}
+	}
+	
+	public void testD1Cache() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		
+		assertFalse(dynamicTab.getD1SizeSpinner().isEnabled());
+		dynamicTab.getD1Button().setSelection(true);
+		dynamicTab.checkD1Enablement();
+		assertTrue(dynamicTab.getD1SizeSpinner().isEnabled());
+		
+		dynamicTab.getD1SizeSpinner().setSelection(0);
+		dynamicTab.getD1AssocSpinner().setSelection(0);
+		dynamicTab.getD1LineSizeSpinner().setSelection(0);
+		
+		tab.performApply(wc);
+		wc.doSave();
+		
+		ILaunch launch = saveAndLaunch(wc, "testD1Cache"); //$NON-NLS-1$
+		IProcess[] p = launch.getProcesses();
+		if (p.length > 0) {
+			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+			assertFalse(p[0].getExitValue() == 0);
+			assertTrue(cmd.contains("--D1=0,0,0")); //$NON-NLS-1$
+		}
+		else {
+			fail();
+		}
+	}
+	
+	public void testL2Cache() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+
+		assertFalse(dynamicTab.getL2SizeSpinner().isEnabled());
+		dynamicTab.getL2Button().setSelection(true);
+		dynamicTab.checkL2Enablement();
+		assertTrue(dynamicTab.getL2SizeSpinner().isEnabled());
+
+		dynamicTab.getL2SizeSpinner().setSelection(0);
+		dynamicTab.getL2AssocSpinner().setSelection(0);
+		dynamicTab.getL2LineSizeSpinner().setSelection(0);
+
+		tab.performApply(wc);
+		wc.doSave();
+
+		ILaunch launch = saveAndLaunch(wc, "testL2Cache"); //$NON-NLS-1$
+		IProcess[] p = launch.getProcesses();
+		if (p.length > 0) {
+			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+			assertFalse(p[0].getExitValue() == 0);
+			assertTrue(cmd.contains("--L2=0,0,0")); //$NON-NLS-1$
+		}
+		else {
+			fail();
+		}
+	}
+
+}

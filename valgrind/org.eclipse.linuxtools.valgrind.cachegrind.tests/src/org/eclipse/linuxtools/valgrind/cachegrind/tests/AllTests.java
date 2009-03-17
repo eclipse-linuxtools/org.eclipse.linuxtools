@@ -22,6 +22,7 @@ public class AllTests {
 		suite.addTestSuite(BasicCachegrindTest.class);
 		suite.addTestSuite(CModelLabelsTest.class);
 		suite.addTestSuite(DoubleClickTest.class);
+		suite.addTestSuite(LaunchConfigTabTest.class);
 		//$JUnit-END$
 		return suite;
 	}

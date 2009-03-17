@@ -1,5 +1,8 @@
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
+	* CachegrindToolPage.java (checkL2Enablement): Change visibility to protected.
+	(checkD1Enablement): Likewise.
+	(checkI1Enablement): Likewise.
 	* CachegrindViewPart.java (getDoubleClickListener): New getter.
 
 2009-03-16  Elliott Baron  <ebaron@redhat.com>
