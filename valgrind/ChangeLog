@@ -1,9 +1,13 @@
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
+	* LaunchConfigTabTest.java: New file.
+	* CachegrindTestToolPage.java (checkL2Enablement): Subclassed as public.
+	(checkD1Enablement): Likewise.
+	(checkI1Enablement): Likewise.
 	* test.xml: In cleanup change classname to cachegrind_classname.
 	* DoubleClickTest.java: New file.
-	* META-INF/MANIFEST.MF: New deps.
-	* AllTests.java (suite): Added DoubleClickTest.
+	* META-INF/MANIFEST.MF: New deps.	
+	* AllTests.java (suite): Added DoubleClickTest and LaunchConfigTabTest.
 
 2009-03-16  Elliott Baron  <ebaron@redhat.com>
 

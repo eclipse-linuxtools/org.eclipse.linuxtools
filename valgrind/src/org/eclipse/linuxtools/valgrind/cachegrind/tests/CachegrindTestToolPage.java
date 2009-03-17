@@ -71,4 +71,19 @@ public class CachegrindTestToolPage extends CachegrindToolPage {
 	public Button getL2Button() {
 		return l2Button;
 	}
+	
+	@Override
+	public void checkI1Enablement() {
+		super.checkI1Enablement();
+	}
+	
+	@Override
+	public void checkD1Enablement() {
+		super.checkD1Enablement();
+	}
+	
+	@Override
+	public void checkL2Enablement() {
+		super.checkL2Enablement();
+	}
 }
