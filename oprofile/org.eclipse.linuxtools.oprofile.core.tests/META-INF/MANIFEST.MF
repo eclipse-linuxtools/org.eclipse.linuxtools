@@ -17,5 +17,6 @@ Import-Package: org.eclipse.linuxtools.oprofile.core,
  org.eclipse.linuxtools.oprofile.core.opxml.checkevent,
  org.eclipse.linuxtools.oprofile.core.opxml.info,
  org.eclipse.linuxtools.oprofile.core.opxml.modeldata,
- org.eclipse.linuxtools.oprofile.core.opxml.sessions
+ org.eclipse.linuxtools.oprofile.core.opxml.sessions,
+ org.eclipse.linuxtools.oprofile.tests
 Bundle-Localization: plugin
