@@ -71,4 +71,11 @@
          version="0.0.0"
          fragment="true"/>
 
+   <plugin
+         id="org.eclipse.linuxtools.oprofile.core.linux.ppc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
 </feature>
