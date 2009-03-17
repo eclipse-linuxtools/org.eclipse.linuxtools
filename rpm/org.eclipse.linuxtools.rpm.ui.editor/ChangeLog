@@ -1,3 +1,7 @@
+2009-03-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parse): Fix NPE, generateTaskMarker only when taskHandler is present.
+
 2009-03-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java (run): Remove empty lines.

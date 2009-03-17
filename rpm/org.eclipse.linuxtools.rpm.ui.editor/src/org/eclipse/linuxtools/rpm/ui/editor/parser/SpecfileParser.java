@@ -91,7 +91,9 @@ public class SpecfileParser {
 		specfile.setDocument(specfileDocument);
 		try {
 			while ((line = reader.readLine()) != null) {
-				generateTaskMarker(reader.getLineNumber() - 1, line);
+				if (taskHandler != null) {
+					generateTaskMarker(reader.getLineNumber() - 1, line);
+				}
 				// IDocument.getLine(#) is 0-indexed whereas
 				// reader.getLineNumber appears to be 1-indexed
 				SpecfileElement element = parseLine(line, specfile, reader
