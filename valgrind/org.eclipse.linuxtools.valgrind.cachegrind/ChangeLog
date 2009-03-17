@@ -1,5 +1,6 @@
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
+	* CachegrindLaunchDelegate.java (handleLaunch): Bounds checking on number of output files.
 	* CachegrindToolPage.java (checkL2Enablement): Change visibility to protected.
 	(checkD1Enablement): Likewise.
 	(checkI1Enablement): Likewise.

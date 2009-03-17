@@ -1,3 +1,7 @@
+2009-03-17  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifLaunchDelegate.java (handleLaunch): Bounds checking on number of output files.
+
 2009-03-16  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifParser.java (MassifParser): Explicitly close file.

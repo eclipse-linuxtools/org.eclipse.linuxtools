@@ -49,8 +49,10 @@ implements IValgrindLaunchDelegate {
 			
 			IPath outputPath = verifyOutputPath(config);
 			File[] massifOutputs = outputPath.toFile().listFiles(MASSIF_FILTER);
-
-			parseOutput(massifOutputs, monitor);
+			
+			if (massifOutputs.length > 0) {
+				parseOutput(massifOutputs, monitor);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			abort(Messages.getString("MassifLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$

@@ -46,7 +46,10 @@ public class CachegrindLaunchDelegate extends
 			
 			IPath outputPath = verifyOutputPath(config);
 			File[] cachegrindOutputs = outputPath.toFile().listFiles(CACHEGRIND_FILTER);
-			parseOutput(cachegrindOutputs, monitor);
+			
+			if (cachegrindOutputs.length > 0) {
+				parseOutput(cachegrindOutputs, monitor);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			abort(Messages.getString("CachegrindLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
