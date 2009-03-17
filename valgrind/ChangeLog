@@ -1,5 +1,6 @@
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
+	* test.xml: In cleanup change classname to cachegrind_classname.
 	* DoubleClickTest.java: New file.
 	* META-INF/MANIFEST.MF: New deps.
 	* AllTests.java (suite): Added DoubleClickTest.
