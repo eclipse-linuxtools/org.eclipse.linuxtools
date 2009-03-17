@@ -51,6 +51,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
 	protected static final int COLUMN_SIZE = 75;
 	protected CachegrindLabelProvider labelProvider;
+	protected IDoubleClickListener doubleClickListener;
 	
 	// Events - Cache
 	protected static final String IR = "Ir"; //$NON-NLS-1$
@@ -97,7 +98,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		viewer.setContentProvider(new CachegrindTreeContentProvider());
 		viewer.setLabelProvider(labelProvider);
 		viewer.setAutoExpandLevel(2);
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
+		doubleClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				Object selection = ((StructuredSelection) event.getSelection()).getFirstElement();
 				String path = null;
@@ -136,7 +137,8 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 					}
 				}
 			}			
-		});
+		};
+		viewer.addDoubleClickListener(doubleClickListener);
 	}
 
 	@Override
@@ -165,73 +167,9 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		}
 	}
 
-	//	private String getShortEventName(String event) {
-	//		String result = event;
-	//		if (event.equals(IR)) {
-	//			result = Messages.getString("CachegrindViewPart.Ir_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(I1MR)) {
-	//			result = Messages.getString("CachegrindViewPart.I1mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(I2MR)) {
-	//			result = Messages.getString("CachegrindViewPart.I2mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(DR)) {
-	//			result = Messages.getString("CachegrindViewPart.Dr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D1MR)) {
-	//			result = Messages.getString("CachegrindViewPart.D1mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D2MR)) {
-	//			result = Messages.getString("CachegrindViewPart.D2mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(DW)) {
-	//			result = Messages.getString("CachegrindViewPart.Dw_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D1MW)) {
-	//			result = Messages.getString("CachegrindViewPart.D1mw_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D2MW)) {
-	//			result = Messages.getString("CachegrindViewPart.D2mw_short"); //$NON-NLS-1$
-	//		}
-	//		return result;
-	//	}
-	
 	public void setOutputs(CachegrindOutput[] outputs) {
 		this.outputs = outputs;
 	}
-
-	//	private String getShortEventName(String event) {
-	//		String result = event;
-	//		if (event.equals(IR)) {
-	//			result = Messages.getString("CachegrindViewPart.Ir_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(I1MR)) {
-	//			result = Messages.getString("CachegrindViewPart.I1mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(I2MR)) {
-	//			result = Messages.getString("CachegrindViewPart.I2mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(DR)) {
-	//			result = Messages.getString("CachegrindViewPart.Dr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D1MR)) {
-	//			result = Messages.getString("CachegrindViewPart.D1mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D2MR)) {
-	//			result = Messages.getString("CachegrindViewPart.D2mr_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(DW)) {
-	//			result = Messages.getString("CachegrindViewPart.Dw_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D1MW)) {
-	//			result = Messages.getString("CachegrindViewPart.D1mw_short"); //$NON-NLS-1$
-	//		}
-	//		else if (event.equals(D2MW)) {
-	//			result = Messages.getString("CachegrindViewPart.D2mw_short"); //$NON-NLS-1$
-	//		}
-	//		return result;
-	//	}
 
 	public CachegrindOutput[] getOutputs() {
 		return outputs;
@@ -239,6 +177,10 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 	
 	public TreeViewer getViewer() {
 		return viewer;
+	}
+	
+	public IDoubleClickListener getDoubleClickListener() {
+		return doubleClickListener;
 	}
 
 	private SelectionListener getHeaderListener() {
@@ -349,38 +291,6 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		}
 		return result;
 	}
-
-//	private String getShortEventName(String event) {
-//		String result = event;
-//		if (event.equals(IR)) {
-//			result = Messages.getString("CachegrindViewPart.Ir_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(I1MR)) {
-//			result = Messages.getString("CachegrindViewPart.I1mr_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(I2MR)) {
-//			result = Messages.getString("CachegrindViewPart.I2mr_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(DR)) {
-//			result = Messages.getString("CachegrindViewPart.Dr_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(D1MR)) {
-//			result = Messages.getString("CachegrindViewPart.D1mr_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(D2MR)) {
-//			result = Messages.getString("CachegrindViewPart.D2mr_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(DW)) {
-//			result = Messages.getString("CachegrindViewPart.Dw_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(D1MW)) {
-//			result = Messages.getString("CachegrindViewPart.D1mw_short"); //$NON-NLS-1$
-//		}
-//		else if (event.equals(D2MW)) {
-//			result = Messages.getString("CachegrindViewPart.D2mw_short"); //$NON-NLS-1$
-//		}
-//		return result;
-//	}
 
 	protected class CachegrindTreeContentProvider implements ITreeContentProvider {
 

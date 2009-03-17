@@ -1,3 +1,9 @@
+2009-03-17  Elliott Baron  <ebaron@redhat.com>
+
+	* DoubleClickTest.java: New file.
+	* META-INF/MANIFEST.MF: New deps.
+	* AllTests.java (suite): Added DoubleClickTest.
+
 2009-03-16  Elliott Baron  <ebaron@redhat.com>
 
 	* CModelLabelsTest.java: New file.
