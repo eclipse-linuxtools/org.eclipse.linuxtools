@@ -49,8 +49,13 @@ public class ValgrindViewPart extends ViewPart {
 		}
 
 		// remove old view controls
+		if (dynamicView != null) {
+			dynamicView.dispose();
+		}
 		for (Control child : dynamicViewHolder.getChildren()) {
-			child.dispose();
+			if (!child.isDisposed()) {
+				child.dispose();
+			}
 		}
 
 		if (toolID != null) {

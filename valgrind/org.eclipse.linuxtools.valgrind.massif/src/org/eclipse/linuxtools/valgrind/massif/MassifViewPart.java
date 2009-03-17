@@ -48,6 +48,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -325,6 +327,19 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void dispose() {
+		// Close all chart editors to keep Valgrind output consistent throughout workbench
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		for (IEditorInput input : chartInputs) {
+			IEditorPart part = page.findEditor(input);
+			if (part != null) {
+				page.closeEditor(part, false);
+			}
+		}
+		super.dispose();
 	}
 
 	public void setTopControl(Control control) {

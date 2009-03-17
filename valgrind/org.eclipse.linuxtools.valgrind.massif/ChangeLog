@@ -1,5 +1,6 @@
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
+	* MassifViewPart.java (dispose): Close all chart editors.
 	* MassifLaunchDelegate.java (handleLaunch): Bounds checking on number of output files.
 
 2009-03-16  Elliott Baron  <ebaron@redhat.com>

@@ -1,3 +1,7 @@
+2009-03-17  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindViewPart.java (createDynamicContent): Call dispose on old dynamicView.
+
 2009-02-27  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindUIPlugin.java: Added some documentation.
