@@ -24,7 +24,7 @@ public class UiModelRoot implements IUiModelElement {
 
 
 	/** constructor, private for singleton use **/
-	private UiModelRoot() {
+	protected UiModelRoot() {
 //		refreshModel();
 		_events = null;
 //		_uiModelRoot = this;
@@ -44,8 +44,7 @@ public class UiModelRoot implements IUiModelElement {
 	 *  the child elements from their constructor.
 	 */
 	public void refreshModel() {
-		OpModelRoot modelRoot = OpModelRoot.getDefault();
-		OpModelEvent dataModelEvents[] = modelRoot.getEvents();
+		OpModelEvent dataModelEvents[] = getModelDataEvents();
 
 		if (dataModelEvents != null) {
 			_events = new UiModelEvent[dataModelEvents.length];
@@ -53,6 +52,11 @@ public class UiModelRoot implements IUiModelElement {
 				_events[i] = new UiModelEvent(dataModelEvents[i]);
 			}
 		}
+	}
+	
+	protected OpModelEvent[] getModelDataEvents() {
+		OpModelRoot modelRoot = OpModelRoot.getDefault();
+		return modelRoot.getEvents();
 	}
 
 	/** IUiModelElement functions **/
