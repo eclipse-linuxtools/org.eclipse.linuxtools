@@ -45,8 +45,21 @@ public abstract class AbstractTest extends TestCase {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
-	protected ICProject createProject(Bundle bundle, String projname) throws CoreException, URISyntaxException,
+	protected ICProject createProjectAndBuild(Bundle bundle, String projname) throws CoreException, URISyntaxException,
 			InvocationTargetException, InterruptedException, IOException {
+		ICProject proj = createProject(bundle, projname);
+		buildProject(proj);
+		return proj;
+	}
+
+	public void buildProject(ICProject proj) throws CoreException {
+		proj.getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
+		proj.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+	}
+
+	public ICProject createProject(Bundle bundle, String projname)
+			throws CoreException, URISyntaxException, IOException,
+			InvocationTargetException, InterruptedException {
 		ICProject proj = CProjectHelper.createCProject(projname , "Debug"); //$NON-NLS-1$
 		URL location = FileLocator.find(bundle, new Path("resources/" + projname), null); //$NON-NLS-1$
 		File testDir = new File(FileLocator.toFileURL(location).toURI());
@@ -58,8 +71,6 @@ public abstract class AbstractTest extends TestCase {
 		});
 		op.setCreateContainerStructure(false);
 		op.run(null);
-		proj.getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
-		proj.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 		return proj;
 	}
 	
