@@ -1,3 +1,17 @@
+2009-03-18  Elliott Baron  <ebaron@redhat.com>
+
+	* resources/linkedTest/: New test project.
+	* AbstractLinkedResourceMemcheckTest.java: New file.
+	* LinkedResourceDoubleClickTest.java: New file.
+	* LinkedResourceMarkerTest.java: New file.
+	* META-INF/MANIFEST.MF: New deps.
+	* AllTests.java (suite): Added new tests to suite.
+	* BasicMemcheckTest.java (setUp): Refactoring from profiling.tests.
+	* DoubleClickTest.java (setUp): Likewise.
+	* LaunchConfigTabTest.java (setUp): Likewise.
+	* MarkerTest.java (setUp): Likewise.
+	(getTopWorkspaceFrame): Use findFilesForLocation for linked resource compatibility.
+
 2009-03-13  Andrew Overholt  <overholt@redhat.com>
 
 	* test.xml: classname -> memcheck_classname.

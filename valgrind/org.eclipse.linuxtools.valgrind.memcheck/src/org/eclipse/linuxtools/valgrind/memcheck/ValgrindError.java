@@ -89,9 +89,10 @@ public class ValgrindError {
 				Path path = new Path(file.getAbsolutePath());
 				
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-				IFile resource = root.getFileForLocation(path);
-				if (resource != null && resource.exists()) {
-					marker = resource.createMarker(MemcheckPlugin.MARKER_TYPE);
+				// use findFilesForLocation in case of linked resources
+				IFile[] resource = root.findFilesForLocation(path);
+				if (resource.length > 0 && resource[0].exists()) {
+					marker = resource[0].createMarker(MemcheckPlugin.MARKER_TYPE);
 					marker.setAttribute(IMarker.MESSAGE, what);
 					marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 					marker.setAttribute(IMarker.LINE_NUMBER, frame.getLine());

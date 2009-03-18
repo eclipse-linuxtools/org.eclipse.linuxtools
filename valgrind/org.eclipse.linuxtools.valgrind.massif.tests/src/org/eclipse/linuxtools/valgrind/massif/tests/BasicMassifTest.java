@@ -20,7 +20,7 @@ public class BasicMassifTest extends AbstractMassifTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProject("alloctest"); //$NON-NLS-1$
+		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 	}
 	
 	@Override

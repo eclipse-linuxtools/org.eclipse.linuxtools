@@ -1,18 +1,9 @@
-/*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import java.io.File;
 
 import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -31,15 +22,58 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class DoubleClickTest extends AbstractMemcheckTest {
+public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemcheckTest {	
 	private StackFrameTreeElement frame;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-	}
+	public void testLinkedDoubleClickFile() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testLinkedDoubleClickFile"); //$NON-NLS-1$
 
+		doDoubleClick();
+		
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		IEditorInput input = editor.getEditorInput();
+		if (input instanceof IFileEditorInput) {
+			IFileEditorInput fileInput = (IFileEditorInput) input;
+			File expectedFile = new File(frame.getFrame().getDir(), frame.getFrame().getFile());
+			File actualFile = fileInput.getFile().getLocation().toFile();
+			
+			assertTrue(fileInput.getFile().isLinked(IResource.CHECK_ANCESTORS));
+			assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
+		}
+		else {
+			fail();
+		}
+	}
+	
+	public void testLinkedDoubleClickLine() throws Exception {
+		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+		ILaunchConfiguration config = createConfiguration(bin);
+		doLaunch(config, "testLinkedDoubleClickLine"); //$NON-NLS-1$
+
+		doDoubleClick();
+		
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (editor instanceof ITextEditor) {
+			ITextEditor textEditor = (ITextEditor) editor;
+			
+			ISelection selection = textEditor.getSelectionProvider().getSelection();
+			if (selection instanceof TextSelection) {
+				TextSelection textSelection = (TextSelection) selection;
+				int line = textSelection.getStartLine() + 1; // zero-indexed
+				
+				assertEquals(frame.getFrame().getLine(), line);
+			}
+			else {
+				fail();
+			}
+		}
+		else {
+			fail();
+		}
+	}
+	
 	private void doDoubleClick() throws Exception {
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		TreeViewer viewer = view.getViewer();
@@ -63,59 +97,5 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		// do double click
 		IDoubleClickListener listener = view.getDoubleClickListener();
 		listener.doubleClick(new DoubleClickEvent(viewer, selection));
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		deleteProject(proj);
-	}
-
-	public void testDoubleClickFile() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
-		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
-
-		doDoubleClick();
-		
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		IEditorInput input = editor.getEditorInput();
-		if (input instanceof IFileEditorInput) {
-			IFileEditorInput fileInput = (IFileEditorInput) input;
-			File expectedFile = new File(frame.getFrame().getDir(), frame.getFrame().getFile());
-			File actualFile = fileInput.getFile().getLocation().toFile();
-			
-			assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
-		}
-		else {
-			fail();
-		}
-	}
-	
-	public void testDoubleClickLine() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
-		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
-
-		doDoubleClick();
-		
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		if (editor instanceof ITextEditor) {
-			ITextEditor textEditor = (ITextEditor) editor;
-			
-			ISelection selection = textEditor.getSelectionProvider().getSelection();
-			if (selection instanceof TextSelection) {
-				TextSelection textSelection = (TextSelection) selection;
-				int line = textSelection.getStartLine() + 1; // zero-indexed
-				
-				assertEquals(frame.getFrame().getLine(), line);
-			}
-			else {
-				fail();
-			}
-		}
-		else {
-			fail();
-		}
 	}
 }

@@ -1,3 +1,11 @@
+2009-03-18  Elliott Baron  <ebaron@redhat.com>
+
+	* BasicMassifTest.java (setUp): Refactoring from profiling.tests.
+	* ChartTests.java (setUp): Likewise.
+	* DoubleClickTest.java (setUp): Likewise.
+	* LaunchConfigTabTest.java (setUp): Likewise.
+	* TreeTest.java (setUp): Likewise.
+
 2009-03-11  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractMassifTest.java: Pass tool page to superclass.

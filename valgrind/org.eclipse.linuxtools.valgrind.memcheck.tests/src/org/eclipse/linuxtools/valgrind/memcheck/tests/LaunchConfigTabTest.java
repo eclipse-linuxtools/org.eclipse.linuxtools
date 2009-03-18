@@ -45,7 +45,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProject("basicTest"); //$NON-NLS-1$
+		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		config = createConfiguration(bin);

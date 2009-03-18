@@ -1,3 +1,7 @@
+2009-03-18  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTest.java (createProjectAndBuild): Refactoring from profiling.tests.
+
 2009-03-10  Elliott Baron  <ebaron@redhat.com>
 
 	* plugin.xml: Removed.

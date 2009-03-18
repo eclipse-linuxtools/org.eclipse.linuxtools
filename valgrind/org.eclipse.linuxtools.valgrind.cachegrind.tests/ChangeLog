@@ -1,3 +1,10 @@
+2009-03-18  Elliott Baron  <ebaron@redhat.com>
+
+	* BasicCachegrindTest.java (setUp): Refactoring from profiling.tests.
+	* CModelLabelsTest.java (setUp): Likewise.
+	* DoubleClickTest.java (setUp): Likewise.
+	* LaunchConfigTabTest.java (setUp): Likewise.
+
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
 	* LaunchConfigTabTest.java: New file.

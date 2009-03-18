@@ -1,3 +1,7 @@
+2009-03-18  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindError.java (createMarker): Use findFilesForLocation for linked resource compatibility.
+
 2009-03-12  Elliott Baron  <ebaron@redhat.com>
 
 	* MemcheckPlugin.java: Use PluginConstants for referencing LaunchPlugin. 

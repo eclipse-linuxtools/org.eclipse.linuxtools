@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>30740</pid>
-<ppid>30220</ppid>
+<pid>12818</pid>
+<ppid>12406</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,14 +22,14 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testShowBelowMain/valgrind_%p.xml</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testDemangle/valgrind_%p.xml</arg>
     <arg>--trace-children=no</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
-    <arg>--demangle=yes</arg>
+    <arg>--demangle=no</arg>
     <arg>--num-callers=12</arg>
     <arg>--error-limit=yes</arg>
-    <arg>--show-below-main=yes</arg>
+    <arg>--show-below-main=no</arg>
     <arg>--max-stackframe=2000000</arg>
     <arg>--xml=yes</arg>
     <arg>--leak-check=yes</arg>
@@ -52,7 +52,7 @@
 </status>
 
 <error>
-  <unique>0xd</unique>
+  <unique>0xc</unique>
   <tid>1</tid>
   <kind>UninitValue</kind>
   <what>Use of uninitialised value of size 4</what>
@@ -65,20 +65,11 @@
       <file>test.c</file>
       <line>19</line>
     </frame>
-    <frame>
-      <ip>0x40356E4</ip>
-      <obj>/lib/libc-2.9.so</obj>
-      <fn>(below main)</fn>
-    </frame>
-    <frame>
-      <ip>0x8048360</ip>
-      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
-    </frame>
   </stack>
 </error>
 
 <error>
-  <unique>0xe</unique>
+  <unique>0xd</unique>
   <tid>1</tid>
   <kind>InvalidWrite</kind>
   <what>Invalid write of size 1</what>
@@ -91,22 +82,13 @@
       <file>test.c</file>
       <line>20</line>
     </frame>
-    <frame>
-      <ip>0x40356E4</ip>
-      <obj>/lib/libc-2.9.so</obj>
-      <fn>(below main)</fn>
-    </frame>
-    <frame>
-      <ip>0x8048360</ip>
-      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
-    </frame>
   </stack>
-  <auxwhat>Address 0x4194032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
+  <auxwhat>Address 0x4022032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
   <stack>
     <frame>
       <ip>0x4006F4D</ip>
       <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
-      <fn>malloc</fn>
+      <fn>_vgrZU_libcZdsoZa_malloc</fn>
       <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>
       <file>vg_replace_malloc.c</file>
       <line>207</line>
@@ -119,43 +101,34 @@
       <file>test.c</file>
       <line>17</line>
     </frame>
-    <frame>
-      <ip>0x40356E4</ip>
-      <obj>/lib/libc-2.9.so</obj>
-      <fn>(below main)</fn>
-    </frame>
-    <frame>
-      <ip>0x8048360</ip>
-      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
-    </frame>
   </stack>
 </error>
 
 <errorcounts>
   <pair>
     <count>1</count>
-    <unique>0xe</unique>
+    <unique>0xd</unique>
   </pair>
   <pair>
     <count>1</count>
-    <unique>0xd</unique>
+    <unique>0xc</unique>
   </pair>
 </errorcounts>
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:00.242</time>
+  <time>00:00:00:00.245</time>
 </status>
 
 <suppcounts>
   <pair>
-    <count>13</count>
+    <count>12</count>
     <name>dl-hack3-cond-1</name>
   </pair>
 </suppcounts>
 
 <error>
-  <unique>0xf</unique>
+  <unique>0xe</unique>
   <tid>1</tid>
   <kind>Leak_DefinitelyLost</kind>
   <what>10 bytes in 1 blocks are definitely lost in loss record 1 of 1</what>
@@ -165,7 +138,7 @@
     <frame>
       <ip>0x4006F4D</ip>
       <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
-      <fn>malloc</fn>
+      <fn>_vgrZU_libcZdsoZa_malloc</fn>
       <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>
       <file>vg_replace_malloc.c</file>
       <line>207</line>
@@ -177,15 +150,6 @@
       <dir>XXXXXXXXXXXX/basicTest/Debug/..</dir>
       <file>test.c</file>
       <line>17</line>
-    </frame>
-    <frame>
-      <ip>0x40356E4</ip>
-      <obj>/lib/libc-2.9.so</obj>
-      <fn>(below main)</fn>
-    </frame>
-    <frame>
-      <ip>0x8048360</ip>
-      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
     </frame>
   </stack>
 </error>

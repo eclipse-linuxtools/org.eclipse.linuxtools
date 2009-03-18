@@ -181,8 +181,8 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		wc.setAttribute(LaunchConfigurationConstants.ATTR_TOOL, getToolID());
 	}
 
-	protected ICProject createProject(String projname) throws Exception {
-		return createProject(getBundle(), projname);
+	protected ICProject createProjectAndBuild(String projname) throws Exception {
+		return createProjectAndBuild(getBundle(), projname);
 	}
 
 	protected abstract Bundle getBundle();

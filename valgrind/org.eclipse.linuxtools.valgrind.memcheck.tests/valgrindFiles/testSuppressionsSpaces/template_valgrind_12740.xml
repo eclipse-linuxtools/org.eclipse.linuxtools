@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>30583</pid>
-<ppid>30220</ppid>
+<pid>12740</pid>
+<ppid>12406</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,8 +22,8 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testTraceChildren/valgrind_%p.xml</arg>
-    <arg>--trace-children=yes</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testSuppressionsSpaces/valgrind_%p.xml</arg>
+    <arg>--trace-children=no</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
     <arg>--demangle=yes</arg>
@@ -31,6 +31,7 @@
     <arg>--error-limit=yes</arg>
     <arg>--show-below-main=no</arg>
     <arg>--max-stackframe=2000000</arg>
+    <arg>--suppressions=XXXXXXXXXXXX/basicTest/test suppfile.supp</arg>
     <arg>--xml=yes</arg>
     <arg>--leak-check=yes</arg>
     <arg>--show-reachable=no</arg>
@@ -48,25 +49,8 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.029</time>
+  <time>00:00:00:00.028</time>
 </status>
-
-<error>
-  <unique>0xc</unique>
-  <tid>1</tid>
-  <kind>UninitValue</kind>
-  <what>Use of uninitialised value of size 4</what>
-  <stack>
-    <frame>
-      <ip>0x8048417</ip>
-      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
-      <fn>main</fn>
-      <dir>XXXXXXXXXXXX/basicTest/Debug/..</dir>
-      <file>test.c</file>
-      <line>19</line>
-    </frame>
-  </stack>
-</error>
 
 <error>
   <unique>0xd</unique>
@@ -83,7 +67,7 @@
       <line>20</line>
     </frame>
   </stack>
-  <auxwhat>Address 0x4020032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
+  <auxwhat>Address 0x4022032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
   <stack>
     <frame>
       <ip>0x4006F4D</ip>
@@ -109,18 +93,18 @@
     <count>1</count>
     <unique>0xd</unique>
   </pair>
-  <pair>
-    <count>1</count>
-    <unique>0xc</unique>
-  </pair>
 </errorcounts>
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:00.246</time>
+  <time>00:00:00:00.248</time>
 </status>
 
 <suppcounts>
+  <pair>
+    <count>1</count>
+    <name>test</name>
+  </pair>
   <pair>
     <count>12</count>
     <name>dl-hack3-cond-1</name>

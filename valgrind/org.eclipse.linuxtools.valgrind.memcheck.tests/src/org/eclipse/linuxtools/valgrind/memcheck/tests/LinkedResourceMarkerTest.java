@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
- *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import java.io.File;
@@ -29,23 +19,12 @@ import org.eclipse.linuxtools.valgrind.memcheck.ValgrindError;
 import org.eclipse.linuxtools.valgrind.memcheck.ValgrindStackFrame;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 
-public class MarkerTest extends AbstractMemcheckTest {
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		deleteProject(proj);
-	}
-
-	public void testMarkers() throws Exception {
+public class LinkedResourceMarkerTest extends AbstractLinkedResourceMemcheckTest {
+	
+	public void testLinkedMarkers() throws Exception {
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		ILaunchConfiguration config = createConfiguration(bin);
-		doLaunch(config, "testMarkers"); //$NON-NLS-1$
+		doLaunch(config, "testLinkedMarkers"); //$NON-NLS-1$
 
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		ValgrindError[] errors = view.getErrors();
@@ -60,6 +39,7 @@ public class MarkerTest extends AbstractMemcheckTest {
 				if (marker.getAttribute(IMarker.MESSAGE).equals(error.getWhat())
 						&& marker.getResource().getName().equals(frame.getFile())
 						&& marker.getAttribute(IMarker.LINE_NUMBER).equals(frame.getLine())) {
+					assertTrue(marker.getResource().isLinked(IResource.CHECK_ANCESTORS));
 					ix = i;
 				}
 			}

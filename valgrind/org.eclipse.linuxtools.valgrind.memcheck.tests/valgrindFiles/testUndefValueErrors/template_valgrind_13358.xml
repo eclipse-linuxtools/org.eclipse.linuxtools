@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>31136</pid>
-<ppid>30220</ppid>
+<pid>13358</pid>
+<ppid>12406</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,7 +22,7 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testPartialLoads/valgrind_%p.xml</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testUndefValueErrors/valgrind_%p.xml</arg>
     <arg>--trace-children=no</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
@@ -37,8 +37,8 @@
     <arg>--leak-resolution=low</arg>
     <arg>--freelist-vol=10000000</arg>
     <arg>--workaround-gcc296-bugs=no</arg>
-    <arg>--partial-loads-ok=yes</arg>
-    <arg>--undef-value-errors=yes</arg>
+    <arg>--partial-loads-ok=no</arg>
+    <arg>--undef-value-errors=no</arg>
     <arg>--alignment=8</arg>
   </vargv>
   <argv>
@@ -48,28 +48,11 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.029</time>
+  <time>00:00:00:00.028</time>
 </status>
 
 <error>
-  <unique>0xc</unique>
-  <tid>1</tid>
-  <kind>UninitValue</kind>
-  <what>Use of uninitialised value of size 4</what>
-  <stack>
-    <frame>
-      <ip>0x8048417</ip>
-      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
-      <fn>main</fn>
-      <dir>XXXXXXXXXXXX/basicTest/Debug/..</dir>
-      <file>test.c</file>
-      <line>19</line>
-    </frame>
-  </stack>
-</error>
-
-<error>
-  <unique>0xd</unique>
+  <unique>0x0</unique>
   <tid>1</tid>
   <kind>InvalidWrite</kind>
   <what>Invalid write of size 1</what>
@@ -83,7 +66,7 @@
       <line>20</line>
     </frame>
   </stack>
-  <auxwhat>Address 0x4020032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
+  <auxwhat>Address 0x4022032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
   <stack>
     <frame>
       <ip>0x4006F4D</ip>
@@ -107,28 +90,20 @@
 <errorcounts>
   <pair>
     <count>1</count>
-    <unique>0xd</unique>
-  </pair>
-  <pair>
-    <count>1</count>
-    <unique>0xc</unique>
+    <unique>0x0</unique>
   </pair>
 </errorcounts>
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:00.244</time>
+  <time>00:00:00:00.195</time>
 </status>
 
 <suppcounts>
-  <pair>
-    <count>12</count>
-    <name>dl-hack3-cond-1</name>
-  </pair>
 </suppcounts>
 
 <error>
-  <unique>0xe</unique>
+  <unique>0x1</unique>
   <tid>1</tid>
   <kind>Leak_DefinitelyLost</kind>
   <what>10 bytes in 1 blocks are definitely lost in loss record 1 of 1</what>

@@ -23,6 +23,8 @@ public class AllTests {
 		suite.addTestSuite(DoubleClickTest.class);
 		suite.addTestSuite(LaunchConfigTabTest.class);
 		suite.addTestSuite(MarkerTest.class);
+		suite.addTestSuite(LinkedResourceDoubleClickTest.class);
+		suite.addTestSuite(LinkedResourceMarkerTest.class);
 		// $JUnit-END$
 		return suite;
 	}

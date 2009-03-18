@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>30344</pid>
-<ppid>30220</ppid>
+<pid>12935</pid>
+<ppid>12406</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,14 +22,14 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testDoubleClickFile/valgrind_%p.xml</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testShowBelowMain/valgrind_%p.xml</arg>
     <arg>--trace-children=no</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
     <arg>--demangle=yes</arg>
     <arg>--num-callers=12</arg>
     <arg>--error-limit=yes</arg>
-    <arg>--show-below-main=no</arg>
+    <arg>--show-below-main=yes</arg>
     <arg>--max-stackframe=2000000</arg>
     <arg>--xml=yes</arg>
     <arg>--leak-check=yes</arg>
@@ -48,7 +48,7 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.026</time>
+  <time>00:00:00:00.028</time>
 </status>
 
 <error>
@@ -64,6 +64,15 @@
       <dir>XXXXXXXXXXXX/basicTest/Debug/..</dir>
       <file>test.c</file>
       <line>19</line>
+    </frame>
+    <frame>
+      <ip>0x6E36E4</ip>
+      <obj>/lib/libc-2.9.so</obj>
+      <fn>(below main)</fn>
+    </frame>
+    <frame>
+      <ip>0x8048360</ip>
+      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
     </frame>
   </stack>
 </error>
@@ -82,8 +91,17 @@
       <file>test.c</file>
       <line>20</line>
     </frame>
+    <frame>
+      <ip>0x6E36E4</ip>
+      <obj>/lib/libc-2.9.so</obj>
+      <fn>(below main)</fn>
+    </frame>
+    <frame>
+      <ip>0x8048360</ip>
+      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
+    </frame>
   </stack>
-  <auxwhat>Address 0x4020032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
+  <auxwhat>Address 0x4022032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
   <stack>
     <frame>
       <ip>0x4006F4D</ip>
@@ -100,6 +118,15 @@
       <dir>XXXXXXXXXXXX/basicTest/Debug/..</dir>
       <file>test.c</file>
       <line>17</line>
+    </frame>
+    <frame>
+      <ip>0x6E36E4</ip>
+      <obj>/lib/libc-2.9.so</obj>
+      <fn>(below main)</fn>
+    </frame>
+    <frame>
+      <ip>0x8048360</ip>
+      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
     </frame>
   </stack>
 </error>
@@ -150,6 +177,15 @@
       <dir>XXXXXXXXXXXX/basicTest/Debug/..</dir>
       <file>test.c</file>
       <line>17</line>
+    </frame>
+    <frame>
+      <ip>0x6E36E4</ip>
+      <obj>/lib/libc-2.9.so</obj>
+      <fn>(below main)</fn>
+    </frame>
+    <frame>
+      <ip>0x8048360</ip>
+      <obj>XXXXXXXXXXXX/basicTest/Debug/test</obj>
     </frame>
   </stack>
 </error>

@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>31018</pid>
-<ppid>30220</ppid>
+<pid>13241</pid>
+<ppid>12406</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,7 +22,7 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testLeakResolutionHigh/valgrind_%p.xml</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testFreeListVol/valgrind_%p.xml</arg>
     <arg>--trace-children=no</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
@@ -34,8 +34,8 @@
     <arg>--xml=yes</arg>
     <arg>--leak-check=yes</arg>
     <arg>--show-reachable=no</arg>
-    <arg>--leak-resolution=high</arg>
-    <arg>--freelist-vol=10000000</arg>
+    <arg>--leak-resolution=low</arg>
+    <arg>--freelist-vol=2000000</arg>
     <arg>--workaround-gcc296-bugs=no</arg>
     <arg>--partial-loads-ok=no</arg>
     <arg>--undef-value-errors=yes</arg>
@@ -48,7 +48,7 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.046</time>
+  <time>00:00:00:00.026</time>
 </status>
 
 <error>
@@ -83,7 +83,7 @@
       <line>20</line>
     </frame>
   </stack>
-  <auxwhat>Address 0x4020032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
+  <auxwhat>Address 0x4022032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
   <stack>
     <frame>
       <ip>0x4006F4D</ip>
@@ -117,7 +117,7 @@
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:00.295</time>
+  <time>00:00:00:00.241</time>
 </status>
 
 <suppcounts>
