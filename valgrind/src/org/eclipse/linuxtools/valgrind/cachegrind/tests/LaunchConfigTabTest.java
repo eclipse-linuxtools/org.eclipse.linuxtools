@@ -25,7 +25,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProject("cpptest"); //$NON-NLS-1$
+		proj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 
 		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 		config = createConfiguration(bin);
