@@ -1,3 +1,9 @@
+2009-03-18  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractTest.java (createProject): Split into creation and building.
+	(createProjectAndBuild): Renamed from createProject.
+	(buildProject): New method.
+
 2009-02-03  Elliott Baron  <ebaron@redhat.com>
 
 	* LaunchConfigTabTest: Removed for now.
