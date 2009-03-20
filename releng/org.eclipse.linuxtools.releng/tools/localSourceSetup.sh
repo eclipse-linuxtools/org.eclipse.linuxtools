@@ -4,9 +4,9 @@
 cd `dirname $0`
 buildProperties=../build.properties
 #org.eclipse.linuxtools.releng/setup
-pushd ../.. > /dev/null
+pushd ../..
 workspace=`pwd`
-popd > /dev/null
+popd
 mapfile=../maps/linuxtools.map
 dirProp=localSourceCheckoutDir
 
@@ -52,7 +52,7 @@ done
 
 echo "Moving docs"
 mkdir -p "$checkoutDir/doc"
-mv -f "$checkoutDir/plugins/"*{.,-}{doc,docs}{,.*} "$checkoutDir/doc/" 2>/dev/null
+mv -f "$checkoutDir/plugins/"*{.doc,.docs,_doc,_docs}{,.*} "$checkoutDir/doc/" 2>/dev/null
 
 echo "Moving examples"
 mkdir -p "$checkoutDir/examples"
