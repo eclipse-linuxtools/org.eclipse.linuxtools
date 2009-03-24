@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-
    <extension
          id="rpmlintBuilder"
          name="Rpmlint project builder"
@@ -44,6 +43,19 @@
             objectClass="org.eclipse.core.resources.IFile"
             nameFilter="*.rpm"
             id="org.eclipse.linuxtools.rpm.rpmlint.contribution2">
+         <action
+               label="Run Rpmlint "
+               class="org.eclipse.linuxtools.rpm.rpmlint.actions.RunRpmlintAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="org.eclipse.linuxtools.rpm.rpmlint.runRpmlintAction">
+         </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.spec"
+            id="org.eclipse.linuxtools.rpm.rpmlint.contribution3">
          <action
                label="Run Rpmlint "
                class="org.eclipse.linuxtools.rpm.rpmlint.actions.RunRpmlintAction"
