@@ -20,6 +20,10 @@ import java.util.Arrays;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -34,15 +38,22 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.console.ConsoleColorProvider;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
+import org.eclipse.ui.handlers.IHandlerActivation;
+import org.eclipse.ui.handlers.IHandlerService;
 
 public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
@@ -67,6 +78,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected ILaunch launch;
 	protected IProcess process;
 	protected String launchStr;
+	protected IHandlerActivation handlerActivation;
 
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor m) throws CoreException {
@@ -120,6 +132,15 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			monitor.worked(1);
 
+			// Cleanup
+			IHandlerService service = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
+			if (handlerActivation != null) {
+				// remove old handler
+				service.deactivateHandler(handlerActivation);
+			}
+			// remove any output from previous run
+			ValgrindUIPlugin.getDefault().resetView();
+			
 			// check for cancellation
 			if (monitor.isCanceled()) {
 				return;
@@ -133,9 +154,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
 			}
-
-			// remove any output from previous run
-			ValgrindUIPlugin.getDefault().resetView();
 
 			if (process.getExitValue() == 0) {
 				// create launch summary string to distinguish this launch
@@ -155,6 +173,26 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				ValgrindUIPlugin.getDefault().showView();
 				monitor.worked(1);
 
+				IHandler handler = new AbstractHandler() {
+					public Object execute(ExecutionEvent event) throws ExecutionException {
+						Display.getDefault().syncExec(new Runnable() {
+							public void run() {
+								Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+								IWorkbenchWizard wizard = new ValgrindExportWizard();
+								wizard.init(PlatformUI.getWorkbench(), null);
+								
+								WizardDialog dialog = new WizardDialog(parent, wizard);
+								dialog.open();
+							}							
+						});
+						
+						return null;
+					}					
+				};
+				handlerActivation = service.activateHandler(PluginConstants.EXPORT_CMD_ID, handler);
+				
+				getPlugin().setLaunchConfiguration(config);
+				getPlugin().setLaunch(launch);
 				// save results of launch to persistent storage
 				//			saveState(monitor.newChild(2));
 			}
@@ -196,7 +234,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 	protected IPath verifyOutputPath(ILaunchConfiguration config) throws CoreException {
 		IPath result = null;
-		String strPath = config.getAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, (String) null);
+		String strPath = config.getAttribute(LaunchConfigurationConstants.ATTR_INTERNAL_OUTPUT_DIR, (String) null);
 		if (strPath != null) {
 			result = Path.fromPortableString(strPath);			
 		}
@@ -209,7 +247,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected void setOutputPath(ILaunchConfiguration config) throws CoreException, IOException {
 		IValgrindOutputDirectoryProvider provider = getPlugin().getOutputDirectoryProvider();
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, provider.getOutputPath().toPortableString());
+		wc.setAttribute(LaunchConfigurationConstants.ATTR_INTERNAL_OUTPUT_DIR, provider.getOutputPath().toPortableString());
 		wc.doSave();
 	}
 

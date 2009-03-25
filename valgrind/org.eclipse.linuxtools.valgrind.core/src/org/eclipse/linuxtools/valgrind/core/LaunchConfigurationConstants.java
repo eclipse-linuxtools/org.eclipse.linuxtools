@@ -17,7 +17,7 @@ public final class LaunchConfigurationConstants {
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.launch"; //$NON-NLS-1$
 	
 	public static final String ATTR_TOOL = PLUGIN_ID + ".TOOL"; //$NON-NLS-1$
-	public static final String ATTR_OUTPUT_DIR = PLUGIN_ID + ".OUTPUT_DIR"; //$NON-NLS-1$
+	public static final String ATTR_INTERNAL_OUTPUT_DIR = PLUGIN_ID + ".OUTPUT_DIR"; //$NON-NLS-1$
 
 	public static final String ATTR_GENERAL_TRACECHILD = PLUGIN_ID + ".GENERAL_TRACECHILD"; //$NON-NLS-1$
 	public static final String ATTR_GENERAL_CHILDSILENT = PLUGIN_ID + ".GENERAL_CHILDSILENT"; //$NON-NLS-1$

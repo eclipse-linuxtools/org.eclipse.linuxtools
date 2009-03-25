@@ -24,6 +24,7 @@ public class AllTests {
 		suite.addTestSuite(TreeTest.class);
 		suite.addTestSuite(BasicMassifTest.class);
 		suite.addTestSuite(LaunchConfigTabTest.class);
+		suite.addTestSuite(ExportWizardTest.class);
 		//$JUnit-END$
 		return suite;
 	}

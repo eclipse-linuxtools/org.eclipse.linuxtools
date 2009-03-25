@@ -18,11 +18,7 @@ public class ValgrindTestsPlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.tests"; //$NON-NLS-1$
 	
-	// Test Launch Delegate ID
-	public static final String DELEGATE_ID = PLUGIN_ID + ".launchDelegate"; //$NON-NLS-1$
-
-	// Java Runtime System Properties
-	
+	// Java Runtime System Properties	
 	/**
 	 *  usage: -Declipse.valgrind.tests.generateFiles=<yes|no> [default: no]
 	 *  if yes, will run Valgrind and store its output files for each test under

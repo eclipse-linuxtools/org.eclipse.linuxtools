@@ -1,3 +1,8 @@
+2009-03-25  Elliott Baron  <ebaron@redhat.com>
+
+	* ExportWizardTest.java: New file.
+	* AllTests.java (suite): Added ExportWizardTest.
+
 2009-03-18  Elliott Baron  <ebaron@redhat.com>
 
 	* BasicMassifTest.java (setUp): Refactoring from profiling.tests.

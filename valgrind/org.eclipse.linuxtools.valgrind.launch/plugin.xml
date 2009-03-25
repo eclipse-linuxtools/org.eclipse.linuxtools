@@ -84,5 +84,36 @@
          </configurationType>
       </shortcut>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="%command.description.0"
+            id="org.eclipse.linuxtools.valgrind.launch.exportCommand"
+            name="%command.name.0">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+            <menuContribution
+            locationURI="toolbar:org.eclipse.linuxtools.valgrind.ui.valgrindview?after=toolbarLocal">
+         <command
+               commandId="org.eclipse.linuxtools.valgrind.launch.exportCommand"
+               icon="icons/export_wiz.gif"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <wizard
+            class="org.eclipse.linuxtools.valgrind.launch.ValgrindExportWizard"
+            icon="icons/valgrind-icon.png"
+            id="org.eclipse.linuxtools.valgrind.launch.exportWizard"
+            name="%wizard.name.0">
+         <description>
+            %wizard.description.0
+         </description>
+      </wizard>
+   </extension>
 
 </plugin>

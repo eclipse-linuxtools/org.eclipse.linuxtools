@@ -1,3 +1,14 @@
+2009-03-25  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindTestExportWizard.java: New file.
+	* ValgrindTestExportWizardPage.java: New file.
+	* AbstractValgrindTest.java (getPathToFiles): Extracted from doLaunch.
+
+2009-03-19  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTest.java (doLaunch): Remove code that sets preferred delegate.
+	* ValgrindTestsPlugin.java: DELEGATE_ID no longer used.
+
 2009-03-18  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractValgrindTest.java (createProjectAndBuild): Refactoring from profiling.tests.

@@ -1,3 +1,16 @@
+2009-03-25  Elliott Baron  <ebaron@redhat.com>
+
+	* icons/export_wiz.gif: New file.
+	* ExportWizardConstants.java: New file.
+	* ValgrindExportWizard.java: New file.
+	* ValgrindExportWizardPage.java: New file.
+	* META-INF/MANIFEST.MF: New deps.
+	* plugin.properties: New strings.
+	* plugin.xml: Added exportWizards extension and commands extension
+	* messages.properties: New strings.
+	* ValgrindLaunchConfigurationDelegate.java: Added handler for export command.
+	* ValgrindLaunchPlugin.java: Store most recent launch config and launch.
+
 2009-03-12  Elliott Baron  <ebaron@redhat.com>
 
 	* messages.properties: Remove colons from checkboxes.

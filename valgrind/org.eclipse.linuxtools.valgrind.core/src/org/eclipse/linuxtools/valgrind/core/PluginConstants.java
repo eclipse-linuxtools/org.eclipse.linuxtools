@@ -21,4 +21,7 @@ public final class PluginConstants {
 	public static final String TOOL_EXT_DEFAULT = LAUNCH_PLUGIN_ID + ".memcheck"; //$NON-NLS-1$
 	public static final String VIEW_EXT_ID = "valgrindToolViews"; //$NON-NLS-1$
 	public static final String OUTPUT_DIR_EXT_ID = "outputDirectoryProviders"; //$NON-NLS-1$
+	
+	// Extension constants
+	public static final String EXPORT_CMD_ID = LAUNCH_PLUGIN_ID + ".exportCommand"; //$NON-NLS-1$
 }

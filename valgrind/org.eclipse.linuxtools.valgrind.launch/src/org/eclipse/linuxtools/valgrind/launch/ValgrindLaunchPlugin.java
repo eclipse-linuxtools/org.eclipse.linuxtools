@@ -25,6 +25,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.osgi.util.NLS;
@@ -58,6 +60,8 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	
 	protected IPath valgrindLocation;
 	protected Version valgrindVersion;
+	protected ILaunchConfiguration config;
+	protected ILaunch launch;
 
 	// The shared instance
 	private static ValgrindLaunchPlugin plugin;
@@ -197,7 +201,23 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 		return provider;
 	}
+	
+	public void setLaunchConfiguration(ILaunchConfiguration config) {
+		this.config = config;		
+	}
 
+	public ILaunchConfiguration getLaunchConfiguration() {
+		return config;
+	}
+
+	public void setLaunch(ILaunch launch) {
+		this.launch = launch;
+	}
+	
+	public ILaunch getLaunch() {
+		return launch;
+	}
+	
 	IPath parseWSPath(String strpath) throws CoreException {
 		strpath = LaunchUtils.getStringVariableManager().performStringSubstitution(strpath);
 		IPath path = new Path(strpath);
@@ -232,5 +252,5 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		}
 		return toolMap;
 	}
-
+	
 }

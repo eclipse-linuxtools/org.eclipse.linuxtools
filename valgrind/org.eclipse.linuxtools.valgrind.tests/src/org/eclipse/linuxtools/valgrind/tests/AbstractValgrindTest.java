@@ -17,11 +17,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -90,19 +89,14 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 
 	protected ILaunch doLaunch(ILaunchConfiguration config, String testName) throws Exception {
 		ILaunch launch;
-		URL location = FileLocator.find(getBundle(), new Path("valgrindFiles"), null); //$NON-NLS-1$
-		File file = new File(FileLocator.toFileURL(location).toURI());
-		IPath pathToFiles = new Path(file.getCanonicalPath()).append(testName);
+		IPath pathToFiles = getPathToFiles(testName);
 		
 		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
 			bindLocation(pathToFiles);
 		}
 
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(LaunchConfigurationConstants.ATTR_OUTPUT_DIR, pathToFiles.toOSString());
-		Set<String> modes = new HashSet<String>(1);
-		modes.add(ILaunchManager.PROFILE_MODE);
-		wc.setPreferredLaunchDelegate(modes, ValgrindTestsPlugin.DELEGATE_ID);
+		wc.setAttribute(LaunchConfigurationConstants.ATTR_INTERNAL_OUTPUT_DIR, pathToFiles.toOSString());
 		wc.doSave();
 
 		ValgrindTestLaunchDelegate delegate = new ValgrindTestLaunchDelegate();
@@ -116,6 +110,14 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 			unbindLocation(pathToFiles);
 		}
 		return launch;
+	}
+
+	protected IPath getPathToFiles(String testName) throws URISyntaxException,
+			IOException {
+		URL location = FileLocator.find(getBundle(), new Path("valgrindFiles"), null); //$NON-NLS-1$
+		File file = new File(FileLocator.toFileURL(location).toURI());
+		IPath pathToFiles = new Path(file.getCanonicalPath()).append(testName);
+		return pathToFiles;
 	}
 
 	private void unbindLocation(IPath pathToFiles) throws IOException {

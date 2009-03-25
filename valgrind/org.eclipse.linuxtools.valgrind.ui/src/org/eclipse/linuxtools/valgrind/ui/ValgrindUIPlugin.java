@@ -41,15 +41,15 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	protected static final String EXT_ATTR_ID = "definitionId"; //$NON-NLS-1$
 	protected static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
 
-	protected HashMap<String, IConfigurationElement> toolMap; 
+	protected HashMap<String, IConfigurationElement> toolMap;
 
 	// The shared instance
 	private static ValgrindUIPlugin plugin;
 
 	protected ValgrindViewPart view;
-
 	// The page containing the created Valgrind view
 	protected IWorkbenchPage activePage;
+	
 	/**
 	 * The constructor
 	 */
@@ -158,7 +158,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 	public ValgrindViewPart getView() {
 		return view;
 	}
-
+	
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {

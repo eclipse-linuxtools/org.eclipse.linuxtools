@@ -1,3 +1,8 @@
+2009-03-25  Elliott Baron  <ebaron@redhat.com>
+
+	* LaunchConfigurationConstants.java: ATTR_OUTPUT_DIR -> ATTR_INTERNAL_OUTPUT_DIR.
+	* PluginConstants.java (EXPORT_CMD_ID): ID for export command.
+
 2009-03-11  Elliott Baron  <ebaron@redhat.com>
 
 	* CommandLineConstants.java: Added --version argument.
