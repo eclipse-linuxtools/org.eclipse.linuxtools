@@ -1,0 +1,2 @@
+--20257-- warning: 6Mb L2 cache detected, treating as 4Mb
+==20257== error: D1 size of 0B not a power of two; aborting.

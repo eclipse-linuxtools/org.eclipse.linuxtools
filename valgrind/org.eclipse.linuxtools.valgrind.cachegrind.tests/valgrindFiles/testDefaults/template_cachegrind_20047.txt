@@ -144,7 +144,7 @@ fn=_dl_setup_hash
 fn=_dl_sort_fini
 0 823 7 7 305 5 0 64 0 0
 fn=_dl_start
-0 417 17 16 71 9 7 66 11 10
+0 420 17 16 71 9 7 67 11 10
 fn=_dl_sysdep_read_whole_file
 0 48 4 4 8 0 0 24 0 0
 fn=_dl_sysdep_start
@@ -184,7 +184,7 @@ fn=expand_dynamic_string_token
 fn=fillin_rpath
 0 1093 11 11 576 0 0 229 3 3
 fn=index
-0 2914 5 5 252 12 12 19 0 0
+0 2887 5 5 249 12 12 19 0 0
 fn=init_tls
 0 115 5 5 27 1 0 25 1 1
 fn=local_strdup
@@ -196,7 +196,7 @@ fn=map_doit
 fn=match_symbol
 0 2107 3 3 802 22 21 230 0 0
 fn=memcpy
-0 758 2 2 326 0 0 206 13 13
+0 764 2 2 327 0 0 207 13 13
 fn=mempcpy
 0 2672 1 1 1262 2 1 698 10 10
 fn=memset
@@ -230,11 +230,11 @@ fn=sbrk
 fn=strcmp
 0 113133 2 2 35752 57 23 0 0 0
 fn=strlen
-0 2799 3 3 409 3 3 0 0 0
+0 2798 3 3 407 3 3 0 0 0
 fn=strsep
 0 7322 3 3 1584 0 0 74 0 0
 fn=uname
 0 8 1 1 2 0 0 0 0 0
 fn=version_check_doit
 0 19 2 1 7 0 0 5 0 0
-summary: 1356648 738 729 397213 5701 3270 146536 700 519
+summary: 1356629 738 729 397209 5701 3270 146538 700 519

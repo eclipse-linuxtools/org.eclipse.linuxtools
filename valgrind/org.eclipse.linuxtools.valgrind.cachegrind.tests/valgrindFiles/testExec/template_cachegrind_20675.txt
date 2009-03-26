@@ -1,7 +1,7 @@
 desc: I1 cache:         32768 B, 64 B, 8-way associative
 desc: D1 cache:         32768 B, 64 B, 8-way associative
 desc: L2 cache:         4194304 B, 64 B, 16-way associative
-cmd: XXXXXXXXXXXX/cpptest/Debug/cpptest
+cmd: ../cpptest/Debug/cpptest
 events: Ir I1mr I2mr Dr D1mr D2mr Dw D1mw D2mw 
 fl=XXXXXXXXXXXX/cpptest/Debug/../cpptest.cpp
 fn=A::A()
@@ -46,7 +46,7 @@ fl=???
 fn=(below main)
 0 63 4 4 21 1 0 25 0 0
 fn=???
-0 9365 94 88 8749 34 9 298 8 6
+0 9367 94 88 8751 34 9 298 8 6
 fn=_Exit
 0 3 1 1 2 0 0 1 0 0
 fn=_IO_check_libio
@@ -128,7 +128,7 @@ fn=_dl_name_match_p
 fn=_dl_new_object
 0 1343 12 12 332 7 7 332 20 20
 fn=_dl_next_ld_env_entry
-0 301 1 1 102 20 20 8 1 1
+0 308 1 1 104 20 20 8 1 1
 fn=_dl_next_tls_modid
 0 40 2 2 14 0 0 12 2 2
 fn=_dl_protect_relro
@@ -144,11 +144,11 @@ fn=_dl_setup_hash
 fn=_dl_sort_fini
 0 823 7 7 305 5 0 64 0 0
 fn=_dl_start
-0 413 17 16 70 9 7 66 11 10
+0 420 17 16 71 9 7 67 11 10
 fn=_dl_sysdep_read_whole_file
 0 48 4 4 8 0 0 24 0 0
 fn=_dl_sysdep_start
-0 449 13 13 109 10 9 50 4 4
+0 453 13 13 110 10 9 50 4 4
 fn=_dl_sysdep_start_cleanup
 0 4 1 0 2 0 0 1 0 0
 fn=_dl_sysinfo_int80
@@ -172,7 +172,7 @@ fn=check_match.8092
 fn=close
 0 48 1 1 12 0 0 0 0 0
 fn=dl_main
-0 1183 69 69 353 24 13 200 15 14
+0 1192 69 69 355 24 13 203 15 14
 fn=do_lookup_x
 0 330352 9 9 133802 1697 495 52527 2 0
 fn=do_preload
@@ -184,7 +184,7 @@ fn=expand_dynamic_string_token
 fn=fillin_rpath
 0 1093 11 11 576 0 0 229 3 3
 fn=index
-0 2914 5 5 252 12 12 19 0 0
+0 2887 5 5 249 11 11 19 0 0
 fn=init_tls
 0 115 5 5 27 1 0 25 1 1
 fn=local_strdup
@@ -196,7 +196,7 @@ fn=map_doit
 fn=match_symbol
 0 2107 3 3 802 22 21 230 0 0
 fn=memcpy
-0 758 2 2 326 0 0 206 13 13
+0 765 2 2 328 0 0 208 13 13
 fn=mempcpy
 0 2672 1 1 1262 2 1 698 10 10
 fn=memset
@@ -220,7 +220,7 @@ fn=process_envvars
 fn=read
 0 50 1 1 25 0 0 5 0 0
 fn=rindex
-0 308 7 7 21 2 0 2 0 0
+0 145 6 6 12 2 0 2 0 0
 fn=rtld_lock_default_lock_recursive
 0 96 1 1 64 0 0 16 0 0
 fn=rtld_lock_default_unlock_recursive
@@ -230,11 +230,11 @@ fn=sbrk
 fn=strcmp
 0 113133 2 2 35752 57 23 0 0 0
 fn=strlen
-0 2799 3 3 409 3 3 0 0 0
+0 2795 3 3 407 3 3 0 0 0
 fn=strsep
-0 7322 3 3 1584 0 0 74 0 0
+0 7368 3 3 1598 0 0 82 0 0
 fn=uname
 0 8 1 1 2 0 0 0 0 0
 fn=version_check_doit
 0 19 2 1 7 0 0 5 0 0
-summary: 1356644 738 729 397212 5701 3270 146536 700 519
+summary: 1356532 737 728 397222 5700 3269 146550 700 519
