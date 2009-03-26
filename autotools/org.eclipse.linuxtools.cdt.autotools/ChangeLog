@@ -1,3 +1,11 @@
+2009-03-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #269974
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add
+	logic to handle a makefile target being for a subdirectory Makefile as opposed to
+	the main Makefile.
+
 2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Use
