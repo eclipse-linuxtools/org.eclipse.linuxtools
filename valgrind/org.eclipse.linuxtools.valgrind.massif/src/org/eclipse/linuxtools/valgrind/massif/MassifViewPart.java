@@ -350,9 +350,17 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public void setOutput(MassifOutput output) {
 		this.output = output;
 	}
+	
+	public MassifOutput getOutput() {
+		return output;
+	}
 
 	public void setPid(Integer pid) {
 		this.pid = pid;
+	}
+	
+	public Integer getPid() {
+		return pid;
 	}
 	
 	public MassifSnapshot[] getSnapshots() {

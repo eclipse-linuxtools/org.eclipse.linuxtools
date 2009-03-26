@@ -1,3 +1,9 @@
+2009-03-26  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifPidMenuAction.java (getMenu): Access for testing.
+	* MassifViewPart.java (getPid): Likewise.
+	(getOutput): Likewise.
+
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifViewPart.java (dispose): Close all chart editors.

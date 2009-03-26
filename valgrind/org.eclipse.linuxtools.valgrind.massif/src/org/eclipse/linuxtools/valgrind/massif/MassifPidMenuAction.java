@@ -67,8 +67,10 @@ public class MassifPidMenuAction extends Action implements IMenuCreator {
 					});
 					item.fill(menu, -1);
 				}	
-				menu.getItem(0).setSelection(true);
 			}
+			// Check first item
+			ActionContributionItem item = (ActionContributionItem) menu.getItem(0).getData();
+			item.getAction().setChecked(true);
 		}
 		return menu;
 	}
