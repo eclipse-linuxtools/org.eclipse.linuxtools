@@ -40,10 +40,12 @@ public class UiModelSession implements IUiModelElement {
 	
 	private void refreshModel() {
 		OpModelImage dataModelImage = _session.getImage();
-		_image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
-		
-		if (dataModelImage.hasDependents()) {
-			_dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
+		if (dataModelImage != null) {
+			_image = new UiModelImage(this, dataModelImage, dataModelImage.getCount(), dataModelImage.getDepCount());
+			
+			if (dataModelImage.hasDependents()) {
+				_dependent = new UiModelDependent(this, dataModelImage.getDependents(), dataModelImage.getCount(), dataModelImage.getDepCount());
+			}
 		}
 	}
 
