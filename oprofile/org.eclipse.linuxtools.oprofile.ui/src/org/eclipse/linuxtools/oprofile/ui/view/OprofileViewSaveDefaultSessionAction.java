@@ -25,7 +25,6 @@ import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.model.IUiModelElement;
-import org.eclipse.linuxtools.oprofile.ui.model.UiModelError;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelRoot;
 import org.eclipse.linuxtools.oprofile.ui.model.UiModelSession;
 
@@ -46,9 +45,6 @@ public class OprofileViewSaveDefaultSessionAction extends Action {
 		if (modelRoot.hasChildren()) {
 			IUiModelElement[] events = modelRoot.getChildren();
 			for (IUiModelElement e : events) {
-				if (e instanceof UiModelError)
-					break;
-				
 				IUiModelElement[] sessions = e.getChildren();
 				for (IUiModelElement s : sessions) {
 					if (((UiModelSession)s).isDefaultSession()) {

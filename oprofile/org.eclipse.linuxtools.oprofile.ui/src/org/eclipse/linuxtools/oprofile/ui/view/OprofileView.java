@@ -76,8 +76,9 @@ public class OprofileView extends ViewPart {
 	private void _createActionMenu() {
 		IMenuManager manager = getViewSite().getActionBars().getMenuManager();
 		
-		manager.add(new OprofileViewRefreshAction());
 		manager.add(new OprofileViewLogReaderAction());
+		manager.add(new OprofileViewRefreshAction());
+		manager.add(new OprofileViewSaveDefaultSessionAction());
 	}
 	
 	private TreeViewer getTreeViewer() {
