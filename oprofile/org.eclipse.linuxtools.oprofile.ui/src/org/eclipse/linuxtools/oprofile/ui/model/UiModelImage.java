@@ -70,12 +70,15 @@ public class UiModelImage implements IUiModelElement {
 
 	public IUiModelElement[] getChildren() {
 		IUiModelElement children[] = null;
-		children = new IUiModelElement[_symbols.length];
 		
-		for (int i = 0; i < _symbols.length; i++) {
-			children[i] = _symbols[i];
+		if (_symbols != null) {
+			children = new IUiModelElement[_symbols.length];
+			
+			for (int i = 0; i < _symbols.length; i++) {
+				children[i] = _symbols[i];
+			}
 		}
-
+		
 		return children;
 	}
 
