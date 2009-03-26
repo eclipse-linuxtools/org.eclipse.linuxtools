@@ -23,6 +23,7 @@ public class AllTests {
 		suite.addTestSuite(CModelLabelsTest.class);
 		suite.addTestSuite(DoubleClickTest.class);
 		suite.addTestSuite(LaunchConfigTabTest.class);
+		suite.addTestSuite(MultiProcessTest.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -1,3 +1,9 @@
+2009-03-26  Elliott Baron  <ebaron@redhat.com>
+
+	* resources/multiProcTest: New test project.
+	* MultiProcessTest.java: New file.
+	* AllTests.java (suite): Added MultiProcessTest.
+
 2009-03-18  Elliott Baron  <ebaron@redhat.com>
 
 	* BasicCachegrindTest.java (setUp): Refactoring from profiling.tests.
