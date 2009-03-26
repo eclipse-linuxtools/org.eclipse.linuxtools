@@ -17,7 +17,14 @@ public class TestPlugin extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.tests"; //$NON-NLS-1$
+	
+	public static final String SYMBOL1_FILENAME = "/test/path/for/src/image.cpp"; //$NON-NLS-1$
+	public static final String SYMBOL2_FILENAME = "/test/path/for/src/image2.cpp"; //$NON-NLS-1$
 
+	public static final String DEP2_SYMBOL1_FILENAME = "dl-lookup.c"; //$NON-NLS-1$
+	public static final String DEP2_SYMBOL2_FILENAME = "rawmemchr.c"; //$NON-NLS-1$
+	public static final String DEP4_SYMBOL_FILENAME = ""; //$NON-NLS-1$
+	
 	// The shared instance
 	private static TestPlugin plugin = null;
 	
