@@ -1,3 +1,9 @@
+2009-03-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.ui.prefs: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/ActionsAllTests.java (suite): Add one more test.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/SpecfileEditorShowOutlineActionDelegateTest.java: New file. 
+
 2009-03-08  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfileScannerTest.java (testKeyword): Fix order in asserts.

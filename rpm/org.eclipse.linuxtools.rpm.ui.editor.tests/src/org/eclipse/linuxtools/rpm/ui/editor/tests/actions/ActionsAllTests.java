@@ -18,6 +18,7 @@ public class ActionsAllTests {
 				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests.actions");
 		suite.addTestSuite(SpecfileChangelogFormatterTest.class);
 		suite.addTestSuite(SpecfileChangelogParserTest.class);
+		suite.addTestSuite(SpecfileEditorShowOutlineActionDelegateTest.class);
 		return suite;
 	}
 }
