@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.oprofile.core.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
+import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
 import org.eclipse.linuxtools.oprofile.tests.TestingOpModelRoot;
 
@@ -31,23 +32,27 @@ public class TestDataModel extends TestCase {
 	
 	public void testParse() {
 		OpModelEvent[] events = _testRoot.getEvents();
-		assertEquals(2, events.length);
+		assertEquals(3, events.length);
 		assertEquals(TestingOpModelRoot.NAME_E1, events[0].getName());
 		assertEquals(TestingOpModelRoot.NAME_E2, events[1].getName());
 		
 		OpModelSession[] e1_sessions = events[0].getSessions(), e2_sessions = events[1].getSessions();
 		assertEquals(1, e1_sessions.length);
-		assertEquals(3, e2_sessions.length);
+		assertEquals(4, e2_sessions.length);
 		
 		assertEquals(205000, e1_sessions[0].getCount());
 		assertEquals(205000, e2_sessions[0].getCount());
-		assertEquals(205000, e2_sessions[1].getCount());
-		assertEquals(0, e2_sessions[2].getCount());
+		assertEquals(200000, e2_sessions[1].getCount());
+		assertEquals(OpModelImage.IMAGE_PARSE_ERROR, e2_sessions[2].getCount());
+		assertEquals(0, e2_sessions[3].getCount());
 		
-		assertEquals(TestingOpModelRoot.NAME_S1E1, e1_sessions[0].getName());
-		assertEquals(TestingOpModelRoot.NAME_S2E1, e2_sessions[0].getName());
-		assertEquals(TestingOpModelRoot.NAME_S2E2, e2_sessions[1].getName());
-		assertEquals(TestingOpModelRoot.NAME_S2E3, e2_sessions[2].getName());
+		assertEquals(TestingOpModelRoot.NAME_E1_S1, e1_sessions[0].getName());
+		assertEquals(TestingOpModelRoot.NAME_E2_S1, e2_sessions[0].getName());
+		assertEquals(TestingOpModelRoot.NAME_E2_S2, e2_sessions[1].getName());
+		assertEquals(TestingOpModelRoot.NAME_E2_S3, e2_sessions[2].getName());
+		assertEquals(TestingOpModelRoot.NAME_E2_S4, e2_sessions[3].getName());
+		
+		//further image parsing is tested in the TestModelDataParse testParse
 	}
 	
 	public void testStringOutput() {
