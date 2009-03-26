@@ -47,7 +47,8 @@ public class OpModelRoot {
 		_events = getNewEvents();
 		if (_events != null) {
 			for (int i = 0; i < _events.length; i++) {
-				_events[i].refreshModel();
+				if (_events[i] != null)
+					_events[i].refreshModel();
 			}
 		}
 	}
@@ -66,8 +67,10 @@ public class OpModelRoot {
 		String s = ""; //$NON-NLS-1$
 		if (_events != null) {
 			for (int i = 0; i < _events.length; i++) {
-				s += "Event: "; //$NON-NLS-1$
-				s += _events[i].toString("\t"); //$NON-NLS-1$
+				if (_events[i] != null) {
+					s += "Event: "; //$NON-NLS-1$
+					s += _events[i].toString("\t"); //$NON-NLS-1$
+				}
 			}
 		}
 		return s;
