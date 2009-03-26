@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>12701</pid>
-<ppid>12406</ppid>
+<pid>13643</pid>
+<ppid>13343</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -49,7 +49,7 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.028</time>
+  <time>00:00:00:00.027</time>
 </status>
 
 <error>
@@ -67,10 +67,10 @@
       <line>20</line>
     </frame>
   </stack>
-  <auxwhat>Address 0x4044032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
+  <auxwhat>Address 0x4022032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
   <stack>
     <frame>
-      <ip>0x4028F4D</ip>
+      <ip>0x4006F4D</ip>
       <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
       <fn>malloc</fn>
       <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>
@@ -97,7 +97,7 @@
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:00.249</time>
+  <time>00:00:00:00.241</time>
 </status>
 
 <suppcounts>
@@ -120,7 +120,7 @@
   <leakedblocks>1</leakedblocks>
   <stack>
     <frame>
-      <ip>0x4028F4D</ip>
+      <ip>0x4006F4D</ip>
       <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
       <fn>malloc</fn>
       <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>

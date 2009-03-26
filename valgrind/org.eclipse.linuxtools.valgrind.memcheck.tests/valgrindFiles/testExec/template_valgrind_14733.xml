@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>13397</pid>
-<ppid>12406</ppid>
+<pid>14733</pid>
+<ppid>13343</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,8 +22,8 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testValgrindError/valgrind_%p.xml</arg>
-    <arg>--trace-children=no</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testExec/valgrind_%p.xml</arg>
+    <arg>--trace-children=yes</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
     <arg>--demangle=yes</arg>
@@ -31,7 +31,6 @@
     <arg>--error-limit=yes</arg>
     <arg>--show-below-main=no</arg>
     <arg>--max-stackframe=2000000</arg>
-    <arg>--suppressions=DOES NOT EXIST</arg>
     <arg>--xml=yes</arg>
     <arg>--leak-check=yes</arg>
     <arg>--show-reachable=no</arg>
@@ -43,10 +42,50 @@
     <arg>--alignment=8</arg>
   </vargv>
   <argv>
-    <exe>XXXXXXXXXXXX/basicTest/Debug/test</exe>
+    <exe>XXXXXXXXXXXX/multiProcTest/Debug/multiProcTest</exe>
   </argv>
 </args>
 
+<status>
+  <state>RUNNING</state>
+  <time>00:00:00:00.026</time>
+</status>
+
+<error>
+  <unique>0xc</unique>
+  <tid>1</tid>
+  <kind>UninitValue</kind>
+  <what>Use of uninitialised value of size 4</what>
+  <stack>
+    <frame>
+      <ip>0x80484A1</ip>
+      <obj>XXXXXXXXXXXX/multiProcTest/Debug/multiProcTest</obj>
+      <fn>main</fn>
+      <dir>YYYYYYYYYYYY/resources/multiProcTest/Debug/..</dir>
+      <file>parent.c</file>
+      <line>9</line>
+    </frame>
+  </stack>
+</error>
+
+<errorcounts>
+  <pair>
+    <count>1</count>
+    <unique>0xc</unique>
+  </pair>
+</errorcounts>
+
+<status>
+  <state>FINISHED</state>
+  <time>00:00:00:00.255</time>
+</status>
+
+<suppcounts>
+  <pair>
+    <count>12</count>
+    <name>dl-hack3-cond-1</name>
+  </pair>
+</suppcounts>
+
 </valgrindoutput>
 
-FATAL: can't open suppressions file "DOES NOT EXIST"

@@ -25,6 +25,7 @@ public class AllTests {
 		suite.addTestSuite(MarkerTest.class);
 		suite.addTestSuite(LinkedResourceDoubleClickTest.class);
 		suite.addTestSuite(LinkedResourceMarkerTest.class);
+		suite.addTestSuite(MultiProcessTest.class);
 		// $JUnit-END$
 		return suite;
 	}

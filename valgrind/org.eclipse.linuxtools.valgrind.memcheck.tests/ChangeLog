@@ -1,3 +1,9 @@
+2009-03-26  Elliott Baron  <ebaron@redhat.com>
+
+	* resources/multiProcTest: New test project.
+	* MultiProcessTest.java: New file.
+	* AllTests.java: Added MultiProcessTest to suite.
+
 2009-03-18  Elliott Baron  <ebaron@redhat.com>
 
 	* resources/linkedTest/: New test project.

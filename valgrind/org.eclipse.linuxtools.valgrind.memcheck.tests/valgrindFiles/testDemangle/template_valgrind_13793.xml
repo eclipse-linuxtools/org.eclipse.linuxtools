@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>13163</pid>
-<ppid>12406</ppid>
+<pid>13793</pid>
+<ppid>13343</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,11 +22,11 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testLeakResolutionMed/valgrind_%p.xml</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testDemangle/valgrind_%p.xml</arg>
     <arg>--trace-children=no</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
-    <arg>--demangle=yes</arg>
+    <arg>--demangle=no</arg>
     <arg>--num-callers=12</arg>
     <arg>--error-limit=yes</arg>
     <arg>--show-below-main=no</arg>
@@ -34,7 +34,7 @@
     <arg>--xml=yes</arg>
     <arg>--leak-check=yes</arg>
     <arg>--show-reachable=no</arg>
-    <arg>--leak-resolution=med</arg>
+    <arg>--leak-resolution=low</arg>
     <arg>--freelist-vol=10000000</arg>
     <arg>--workaround-gcc296-bugs=no</arg>
     <arg>--partial-loads-ok=no</arg>
@@ -48,7 +48,7 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.028</time>
+  <time>00:00:00:00.029</time>
 </status>
 
 <error>
@@ -88,7 +88,7 @@
     <frame>
       <ip>0x4006F4D</ip>
       <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
-      <fn>malloc</fn>
+      <fn>_vgrZU_libcZdsoZa_malloc</fn>
       <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>
       <file>vg_replace_malloc.c</file>
       <line>207</line>
@@ -117,7 +117,7 @@
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:00.245</time>
+  <time>00:00:00:00.244</time>
 </status>
 
 <suppcounts>
@@ -138,7 +138,7 @@
     <frame>
       <ip>0x4006F4D</ip>
       <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
-      <fn>malloc</fn>
+      <fn>_vgrZU_libcZdsoZa_malloc</fn>
       <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>
       <file>vg_replace_malloc.c</file>
       <line>207</line>

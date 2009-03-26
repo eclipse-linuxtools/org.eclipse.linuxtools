@@ -13,8 +13,8 @@
   <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
 </preamble>
 
-<pid>12542</pid>
-<ppid>12406</ppid>
+<pid>13949</pid>
+<ppid>13343</ppid>
 <tool>memcheck</tool>
 
 <args>
@@ -22,7 +22,7 @@
     <exe>/usr/bin/valgrind</exe>
     <arg>--tool=memcheck</arg>
     <arg>-q</arg>
-    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testDoubleClickFile/valgrind_%p.xml</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testMaxStackframe/valgrind_%p.xml</arg>
     <arg>--trace-children=no</arg>
     <arg>--child-silent-after-fork=yes</arg>
     <arg>--run-libc-freeres=yes</arg>
@@ -30,7 +30,7 @@
     <arg>--num-callers=12</arg>
     <arg>--error-limit=yes</arg>
     <arg>--show-below-main=no</arg>
-    <arg>--max-stackframe=2000000</arg>
+    <arg>--max-stackframe=50000000</arg>
     <arg>--xml=yes</arg>
     <arg>--leak-check=yes</arg>
     <arg>--show-reachable=no</arg>
@@ -48,7 +48,7 @@
 
 <status>
   <state>RUNNING</state>
-  <time>00:00:00:00.026</time>
+  <time>00:00:00:00.027</time>
 </status>
 
 <error>
@@ -117,7 +117,7 @@
 
 <status>
   <state>FINISHED</state>
-  <time>00:00:00:00.240</time>
+  <time>00:00:00:00.244</time>
 </status>
 
 <suppcounts>
