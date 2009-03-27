@@ -1,3 +1,8 @@
+2009-03-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add
+	logic to also respect the makefile command being changed in the Makefile target.
+
 2009-03-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #269974

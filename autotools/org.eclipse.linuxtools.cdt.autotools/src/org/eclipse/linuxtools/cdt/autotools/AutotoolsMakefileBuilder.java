@@ -258,8 +258,10 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			// we get the build occurring in the builddir configure tool setting.
 			builders[0] = new AutotoolsBuilder(cfg.getEditableBuilder(), project);
 			String buildLocation = null;
+			String buildCommand = null;
 			if (makeTargetName != null) {
 				buildLocation = (String)args.get("org.eclipse.cdt.make.core.build.location"); // $NON-NLS-1$
+				buildCommand = (String)args.get("org.eclipse.cdt.make.core.build.command"); // $NON-NLS-1$
 			}
 			if (buildLocation == null)
 				builders[0].setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toOSString());
@@ -267,6 +269,8 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 				IWorkspace workspace = project.getWorkspace();
 				builders[0].setBuildPath(workspace.getRoot().getLocation().append(buildLocation).toOSString());
 			}
+			if (buildCommand != null)
+				builders[0].setBuildCommand(new Path(buildCommand));
 			builders[0].setAutoBuildEnable(true);
 			builders[0].setCleanBuildEnable(true);
 			IProject[] projects = build(kind, project, builders, true, monitor);
