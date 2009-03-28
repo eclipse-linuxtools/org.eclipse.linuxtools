@@ -35,49 +35,55 @@ import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileParser {
-	
-	/** These are SRPM-wide sections, and they also cannot have any flags like
-	 * -n or -f. Hence they are called simple. This is probably a misleading
-	 * name and it should be renamed to reflect that they are SRPM-wide sections.
+
+	/**
+	 * These are SRPM-wide sections, and they also cannot have any flags like -n
+	 * or -f. Hence they are called simple. This is probably a misleading name
+	 * and it should be renamed to reflect that they are SRPM-wide sections.
 	 */
-	public static String[] simpleSections = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
-		CLEAN_SECTION, CHANGELOG_SECTION};
+	public static String[] simpleSections = { PREP_SECTION, BUILD_SECTION,
+			INSTALL_SECTION, CLEAN_SECTION, CHANGELOG_SECTION };
 
 	/**
 	 * These are sections that apply to a particular sub-package (i.e. binary
-	 * RPM), including the main package. These can also have flags like
-	 * -f or -n appended to them, hence they are called complex. This should
-	 * probably be renamed to reflect that they are in fact per-RPM sections.
+	 * RPM), including the main package. These can also have flags like -f or -n
+	 * appended to them, hence they are called complex. This should probably be
+	 * renamed to reflect that they are in fact per-RPM sections.
 	 */
-	private static String[] complexSections = { PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION,
-		POSTUN_SECTION, POSTTRANS_SECTION, FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
-	
+	private static String[] complexSections = { PRETRANS_SECTION, PRE_SECTION,
+			PREUN_SECTION, POST_SECTION, POSTUN_SECTION, POSTTRANS_SECTION,
+			FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
+
 	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771
-	//	private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
-	//		"Release", "License", "URL" };
-	private static String[] simpleDefinitions = { RpmTags.EPOCH, RpmTags.NAME, RpmTags.VERSION,
-		RpmTags.RELEASE, RpmTags.URL };
-	
-	private static String[] directValuesDefinitions = { RpmTags.LICENSE, RpmTags.SUMMARY };
-	// Note that the ordering here should match that in SpecfileSource#SOURCETYPE
+	// private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
+	// "Release", "License", "URL" };
+	private static String[] simpleDefinitions = { RpmTags.EPOCH, RpmTags.NAME,
+			RpmTags.VERSION, RpmTags.RELEASE, RpmTags.URL };
+
+	private static String[] directValuesDefinitions = { RpmTags.LICENSE,
+			RpmTags.SUMMARY };
+	// Note that the ordering here should match that in
+	// SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-	// FIXME:  Handle package-level definitions	
-//	private static String[] packageLevelDefinitions = { "Summary", "Group",
-//			"Obsoletes", "Provides", "BuildRequires", "Requires",
-//			"Requires(pre)", "Requires(post)", "Requires(postun)" };
+	// FIXME: Handle package-level definitions
+	// private static String[] packageLevelDefinitions = { "Summary", "Group",
+	// "Obsoletes", "Provides", "BuildRequires", "Requires",
+	// "Requires(pre)", "Requires(post)", "Requires(postun)" };
 
 	private SpecfileErrorHandler errorHandler;
 	private SpecfileTaskHandler taskHandler;
 	private IPreferenceStore store;
-	
+	private SpecfileSection lastSection;
+
 	public SpecfileParser() {
 		store = Activator.getDefault().getPreferenceStore();
 	}
 
 	public Specfile parse(IDocument specfileDocument) {
 
-		// remove all existing markers, if a SpecfileErrorHandler is instantiated.
+		// remove all existing markers, if a SpecfileErrorHandler is
+		// instantiated.
 		if (errorHandler != null)
 			errorHandler.removeExistingMarkers();
 		if (taskHandler != null) {
@@ -140,10 +146,12 @@ public class SpecfileParser {
 		}
 		return specfile;
 	}
-	
+
 	private void generateTaskMarker(int lineNumber, String line) {
-		String[] taskTags = store.getString(PreferenceConstants.P_TASK_TAGS).split(";"); //$NON-NLS-1$
-		int commentCharIndex = line.indexOf(ISpecfileSpecialSymbols.COMMENT_START);
+		String[] taskTags = store.getString(PreferenceConstants.P_TASK_TAGS)
+				.split(";"); //$NON-NLS-1$
+		int commentCharIndex = line
+				.indexOf(ISpecfileSpecialSymbols.COMMENT_START);
 		if (commentCharIndex > -1) {
 			for (String item : taskTags) {
 				int taskIndex = line.indexOf(item);
@@ -153,7 +161,7 @@ public class SpecfileParser {
 			}
 		}
 	}
-	
+
 	public Specfile parse(String specfileContent) {
 		return parse(new Document(specfileContent));
 	}
@@ -163,32 +171,37 @@ public class SpecfileParser {
 
 		if (lineText.startsWith("%")) //$NON-NLS-1$
 			return parseMacro(lineText, specfile, lineNumber);
-		
+
 		for (String simpleDefinition : simpleDefinitions) {
 			if (lineText.startsWith(simpleDefinition + ":")) { //$NON-NLS-1$
 				if (simpleDefinition.equals("License")) { //$NON-NLS-1$
-					return parseSimpleDefinition(lineText, specfile, lineNumber, true);
+					return parseSimpleDefinition(lineText, specfile,
+							lineNumber, true);
 				} else
-					return parseSimpleDefinition(lineText, specfile, lineNumber, false);
+					return parseSimpleDefinition(lineText, specfile,
+							lineNumber, false);
 			}
 		}
-		for (String directValuesDefinition: directValuesDefinitions){
+		for (String directValuesDefinition : directValuesDefinitions) {
 			if (lineText.startsWith(directValuesDefinition + ":")) { //$NON-NLS-1$
 				return parseDirectDefinition(lineText, specfile, lineNumber);
 			}
 		}
-		
+
 		// FIXME: Handle package-level definitions
 		if (lineText.startsWith(complexDefinitions[0])) {
-			return parseComplexDefinition(lineText, lineNumber,	SourceType.SOURCE);
+			return parseComplexDefinition(lineText, lineNumber,
+					SourceType.SOURCE);
 		} else if (lineText.startsWith(complexDefinitions[1])) {
-			return parseComplexDefinition(lineText, lineNumber,	SourceType.PATCH);
+			return parseComplexDefinition(lineText, lineNumber,
+					SourceType.PATCH);
 		}
 
 		return null;
 	}
-	
-	private SpecfileElement parseSection(String lineText, Specfile specfile, int lineNumber) {
+
+	private SpecfileSection parseSection(String lineText, Specfile specfile,
+			int lineNumber) {
 		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
 		SpecfileSection toReturn = null;
 		boolean isSimpleSection = false;
@@ -220,8 +233,11 @@ public class SpecfileParser {
 							if (!iter.hasNext()) {
 								errorHandler
 										.handleError(new SpecfileParseException(
-												Messages.getString("SpecfileParser.1") //$NON-NLS-1$
-														+ name + Messages.getString("SpecfileParser.2"), //$NON-NLS-1$
+												Messages
+														.getString("SpecfileParser.1") //$NON-NLS-1$
+														+ name
+														+ Messages
+																.getString("SpecfileParser.2"), //$NON-NLS-1$
 												lineNumber, 0, lineText
 														.length(),
 												IMarker.SEVERITY_ERROR));
@@ -232,8 +248,11 @@ public class SpecfileParser {
 							if (nextToken.startsWith("-")) { //$NON-NLS-1$
 								errorHandler
 										.handleError(new SpecfileParseException(
-												Messages.getString("SpecfileParser.3") //$NON-NLS-1$
-														+ nextToken + Messages.getString("SpecfileParser.4"), //$NON-NLS-1$
+												Messages
+														.getString("SpecfileParser.3") //$NON-NLS-1$
+														+ nextToken
+														+ Messages
+																.getString("SpecfileParser.4"), //$NON-NLS-1$
 												lineNumber, 0, lineText
 														.length(),
 												IMarker.SEVERITY_ERROR));
@@ -273,49 +292,58 @@ public class SpecfileParser {
 			}
 		}
 
-                // if this package is part of the top level package, add it to
-				// it
-                if (toReturn != null && toReturn.getPackage() == null){
-                    SpecfilePackage topPackage = specfile.getPackage(specfile.getName());
-                    if (topPackage == null){
-                        topPackage = new SpecfilePackage(specfile.getName(), specfile);
-                        specfile.addPackage(topPackage);
-                    }
-                    if (!isSimpleSection){
-                    topPackage.addSection(toReturn);
-                    }
-                }
-                
+		// if this package is part of the top level package, add it to
+		// it
+		if (toReturn != null && toReturn.getPackage() == null) {
+			SpecfilePackage topPackage = specfile
+					.getPackage(specfile.getName());
+			if (topPackage == null) {
+				topPackage = new SpecfilePackage(specfile.getName(), specfile);
+				specfile.addPackage(topPackage);
+			}
+			if (!isSimpleSection) {
+				topPackage.addSection(toReturn);
+			}
+		}
+		if (lastSection != null) {
+			lastSection.setSectionEndLine(lineNumber);
+		}
 		return toReturn;
 	}
 
-	private SpecfileElement parseMacro(String lineText, Specfile specfile, int lineNumber) {
-		// FIXME:  handle other macros
-		
+	private SpecfileElement parseMacro(String lineText, Specfile specfile,
+			int lineNumber) {
+		// FIXME: handle other macros
+
 		if (lineText.startsWith("%define") || lineText.startsWith("%global")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return parseDefine(lineText, specfile, lineNumber);
 		} else if (lineText.startsWith("%patch")) { //$NON-NLS-1$
 			return parsePatch(lineText, lineNumber);
 		}
-		
-		String[] sections = new String[simpleSections.length + complexSections.length];
+
+		String[] sections = new String[simpleSections.length
+				+ complexSections.length];
 		System.arraycopy(simpleSections, 0, sections, 0, simpleSections.length);
-		System.arraycopy(complexSections, 0, sections, simpleSections.length, complexSections.length);
+		System.arraycopy(complexSections, 0, sections, simpleSections.length,
+				complexSections.length);
 		for (String section : sections) {
-			if (lineText.startsWith(section))
-				return parseSection(lineText, specfile, lineNumber);
+			if (lineText.startsWith(section)) {
+				lastSection = parseSection(lineText, specfile, lineNumber);
+				lastSection.setSectionEndLine(lineNumber+1);
+				return lastSection;
+			}
 		}
-		// FIXME:  add handling of lines containing %{SOURCENNN}
+		// FIXME: add handling of lines containing %{SOURCENNN}
 		return null;
 	}
-	
+
 	private SpecfileElement parsePatch(String lineText, int lineNumber) {
-		
+
 		SpecfilePatchMacro toReturn = null;
-		
+
 		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
-		
-		for (String token: tokens) {
+
+		for (String token : tokens) {
 			// %patchN+
 			try {
 				if (token.startsWith("%patch")) { //$NON-NLS-1$
@@ -326,19 +354,19 @@ public class SpecfileParser {
 					toReturn = new SpecfilePatchMacro(patchNumber);
 				}
 			} catch (NumberFormatException e) {
-				errorHandler
-				.handleError(new SpecfileParseException(
+				errorHandler.handleError(new SpecfileParseException(
 						Messages.getString("SpecfileParser.5"), //$NON-NLS-1$
 						lineNumber, 0, lineText.length(),
 						IMarker.SEVERITY_ERROR));
 				return null;
 			}
 		}
-		
+
 		return toReturn;
 	}
 
-	private SpecfileDefine parseDefine(String lineText, Specfile specfile, int lineNumber) {
+	private SpecfileDefine parseDefine(String lineText, Specfile specfile,
+			int lineNumber) {
 		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
 		SpecfileDefine toReturn = null;
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
@@ -346,11 +374,11 @@ public class SpecfileParser {
 			iter.next();
 			while (iter.hasNext()) {
 				String defineName = iter.next();
-				// FIXME: is this true?  investigate in rpmbuild source
+				// FIXME: is this true? investigate in rpmbuild source
 				// Definitions must being with a letter
-				if (!Character.isLetter(defineName.charAt(0)) && (defineName.charAt(0) != '_')) {
-					errorHandler
-					.handleError(new SpecfileParseException(
+				if (!Character.isLetter(defineName.charAt(0))
+						&& (defineName.charAt(0) != '_')) {
+					errorHandler.handleError(new SpecfileParseException(
 							Messages.getString("SpecfileParser.6"), //$NON-NLS-1$
 							lineNumber, 0, lineText.length(),
 							IMarker.SEVERITY_ERROR));
@@ -358,11 +386,9 @@ public class SpecfileParser {
 				} else {
 					if (!iter.hasNext()) {
 						// FIXME: Should this be an error?
-						errorHandler
-						.handleError(new SpecfileParseException(
+						errorHandler.handleError(new SpecfileParseException(
 								Messages.getString("SpecfileParser.7"), //$NON-NLS-1$
-								lineNumber, 0, lineText
-								.length(),
+								lineNumber, 0, lineText.length(),
 								IMarker.SEVERITY_WARNING));
 					} else {
 						String defineStringValue = iter.next();
@@ -377,14 +403,14 @@ public class SpecfileParser {
 						int defineIntValue = -1;
 						try {
 							defineIntValue = Integer
-							.parseInt(defineStringValue);
+									.parseInt(defineStringValue);
 						} catch (NumberFormatException e) {
 							toReturn = new SpecfileDefine(defineName,
 									defineStringValue, specfile);
 						}
 						if (toReturn == null)
 							toReturn = new SpecfileDefine(defineName,
-								defineIntValue, specfile);
+									defineIntValue, specfile);
 					}
 				}
 			}
@@ -392,7 +418,8 @@ public class SpecfileParser {
 		return toReturn;
 	}
 
-	private SpecfileElement parseComplexDefinition(String lineText, int lineNumber, SourceType sourceType) {
+	private SpecfileElement parseComplexDefinition(String lineText,
+			int lineNumber, SourceType sourceType) {
 		SpecfileSource toReturn = null;
 		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
 		int number = -1;
@@ -405,10 +432,10 @@ public class SpecfileParser {
 					if (token.endsWith(":")) { //$NON-NLS-1$
 						token = token.substring(0, token.length() - 1);
 					} else {
-						// FIXME:  come up with a better error message here
-						// FIXME:  what about descriptions that begin a line with the word "Source" or "Patch"?
-						errorHandler
-						.handleError(new SpecfileParseException(
+						// FIXME: come up with a better error message here
+						// FIXME: what about descriptions that begin a line with
+						// the word "Source" or "Patch"?
+						errorHandler.handleError(new SpecfileParseException(
 								Messages.getString("SpecfileParser.8"), //$NON-NLS-1$
 								lineNumber, 0, lineText.length(),
 								IMarker.SEVERITY_WARNING));
@@ -419,10 +446,12 @@ public class SpecfileParser {
 							number = Integer.parseInt(token.substring(5));
 							if (!("patch" + number).equalsIgnoreCase(token)) { //$NON-NLS-1$
 								errorHandler
-								.handleError(new SpecfileParseException(
-										Messages.getString("SpecfileParser.10"), //$NON-NLS-1$
-										lineNumber, 0, lineText.length(),
-										IMarker.SEVERITY_ERROR));
+										.handleError(new SpecfileParseException(
+												Messages
+														.getString("SpecfileParser.10"), //$NON-NLS-1$
+												lineNumber, 0, lineText
+														.length(),
+												IMarker.SEVERITY_ERROR));
 								return null;
 							}
 						} else {
@@ -433,10 +462,12 @@ public class SpecfileParser {
 							number = Integer.parseInt(token.substring(6));
 							if (!("source" + number).equalsIgnoreCase(token)) { //$NON-NLS-1$
 								errorHandler
-								.handleError(new SpecfileParseException(
-										Messages.getString("SpecfileParser.11"), //$NON-NLS-1$
-										lineNumber, 0, lineText.length(),
-										IMarker.SEVERITY_ERROR));
+										.handleError(new SpecfileParseException(
+												Messages
+														.getString("SpecfileParser.11"), //$NON-NLS-1$
+												lineNumber, 0, lineText
+														.length(),
+												IMarker.SEVERITY_ERROR));
 								return null;
 							}
 						} else {
@@ -459,45 +490,49 @@ public class SpecfileParser {
 				}
 			}
 		}
-		
+
 		return toReturn;
 	}
 
-	private SpecfileElement parseSimpleDefinition(String lineText, Specfile specfile, int lineNumber, boolean warnMultipleValues) {
+	private SpecfileElement parseSimpleDefinition(String lineText,
+			Specfile specfile, int lineNumber, boolean warnMultipleValues) {
 		List<String> tokens = Arrays.asList(lineText.split("\\s+")); //$NON-NLS-1$
 		SpecfileTag toReturn = null;
-		
+
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
 			String token = iter.next();
 
 			if (token.length() <= 0) {
 				break;
 			}
-			
+
 			if (iter.hasNext()) {
 				String possValue = iter.next();
-				if (possValue.startsWith("%") && iter.hasNext()){ //$NON-NLS-1$
-					possValue += ' '+iter.next();
+				if (possValue.startsWith("%") && iter.hasNext()) { //$NON-NLS-1$
+					possValue += ' ' + iter.next();
 				}
-				toReturn = new SpecfileTag(token.substring(0, token.length() - 1).toLowerCase(),
-						possValue, specfile);
+				toReturn = new SpecfileTag(token.substring(0,
+						token.length() - 1).toLowerCase(), possValue, specfile);
 				if (iter.hasNext() && !warnMultipleValues) {
 					errorHandler.handleError(new SpecfileParseException(
-							token.substring(0, token.length() - 1) + Messages.getString("SpecfileParser.13"), //$NON-NLS-1$
+							token.substring(0, token.length() - 1)
+									+ Messages.getString("SpecfileParser.13"), //$NON-NLS-1$
 							lineNumber, 0, lineText.length(),
 							IMarker.SEVERITY_ERROR));
 					return null;
 				}
-				// FIXME:  investigate whether we should keep this or not
-//				} else {
-//					errorHandler.handleError(new SpecfileParseException(
-//							token.substring(0, token.length() - 1) + " should be an acronym.",
-//							lineNumber, 0, lineText.length(),
-//							IMarker.SEVERITY_WARNING));
-//				}
+				// FIXME: investigate whether we should keep this or not
+				// } else {
+				// errorHandler.handleError(new SpecfileParseException(
+				// token.substring(0, token.length() - 1) +
+				// " should be an acronym.",
+				// lineNumber, 0, lineText.length(),
+				// IMarker.SEVERITY_WARNING));
+				// }
 			} else {
-				errorHandler.handleError(new SpecfileParseException(
-						token.substring(0, token.length() - 1) + Messages.getString("SpecfileParser.14"), lineNumber, //$NON-NLS-1$
+				errorHandler.handleError(new SpecfileParseException(token
+						.substring(0, token.length() - 1)
+						+ Messages.getString("SpecfileParser.14"), lineNumber, //$NON-NLS-1$
 						0, lineText.length(), IMarker.SEVERITY_ERROR));
 				toReturn = null;
 			}
@@ -505,9 +540,11 @@ public class SpecfileParser {
 		if ((toReturn != null) && (toReturn.getStringValue() != null)) {
 			if (toReturn.getStringValue().indexOf("_") > 0) { //$NON-NLS-1$
 				if (toReturn.getName().equalsIgnoreCase("release")) //$NON-NLS-1$
-					errorHandler.handleError(new SpecfileParseException(
-							Messages.getString("SpecfileParser.15"), lineNumber, //$NON-NLS-1$
-							0, lineText.length(), IMarker.SEVERITY_WARNING));
+					errorHandler
+							.handleError(new SpecfileParseException(
+									Messages.getString("SpecfileParser.15"), lineNumber, //$NON-NLS-1$
+									0, lineText.length(),
+									IMarker.SEVERITY_WARNING));
 			}
 			try {
 				int intValue = Integer.parseInt(toReturn.getStringValue());
@@ -516,20 +553,23 @@ public class SpecfileParser {
 				toReturn.setTagType(SpecfileTag.TagType.INT);
 			} catch (NumberFormatException e) {
 				if (toReturn.getName().equals("epoch")) { //$NON-NLS-1$
-					errorHandler.handleError(new SpecfileParseException(
-							Messages.getString("SpecfileParser.16"), lineNumber, //$NON-NLS-1$
-							0, lineText.length(), IMarker.SEVERITY_ERROR));
+					errorHandler
+							.handleError(new SpecfileParseException(
+									Messages.getString("SpecfileParser.16"), lineNumber, //$NON-NLS-1$
+									0, lineText.length(),
+									IMarker.SEVERITY_ERROR));
 					toReturn = null;
 				}
 			}
 		}
 		return toReturn;
 	}
-	
+
 	private SpecfileElement parseDirectDefinition(String lineText,
 			Specfile specfile, int lineNumber) {
 		String[] parts = lineText.split(":"); //$NON-NLS-1$
-		SpecfileTag licenseElement = new SpecfileTag(parts[0].toLowerCase(),parts[1].trim(), specfile);
+		SpecfileTag licenseElement = new SpecfileTag(parts[0].toLowerCase(),
+				parts[1].trim(), specfile);
 		licenseElement.setLineNumber(lineNumber);
 		return licenseElement;
 	}
@@ -537,7 +577,7 @@ public class SpecfileParser {
 	public void setErrorHandler(SpecfileErrorHandler specfileErrorHandler) {
 		errorHandler = specfileErrorHandler;
 	}
-	
+
 	public void setTaskHandler(SpecfileTaskHandler specfileTaskHandler) {
 		taskHandler = specfileTaskHandler;
 	}

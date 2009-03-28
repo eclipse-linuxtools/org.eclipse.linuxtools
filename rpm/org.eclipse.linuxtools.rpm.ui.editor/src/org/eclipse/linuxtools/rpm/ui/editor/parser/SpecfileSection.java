@@ -16,8 +16,8 @@ import java.text.MessageFormat;
 public class SpecfileSection extends SpecfileElement {
 
 	private SpecfilePackage parentPackage;
+	private int sectionEndLine;
 
-	
 	public SpecfileSection(String name, Specfile specfile) {
 		super(name);
 		parentPackage = null;
@@ -40,9 +40,24 @@ public class SpecfileSection extends SpecfileElement {
 			return MessageFormat.format("{0} {1}", getName(), parentPackage); //$NON-NLS-1$
 		}
 	}
-        
-        public String getPackageName(){
-            return parentPackage.getPackageName();
-        }
-	
+
+	public String getPackageName() {
+		return parentPackage.getPackageName();
+	}
+
+	/**
+	 * @param sectionEnd
+	 *            the sectionEnd to set
+	 */
+	public void setSectionEndLine(int sectionEnd) {
+		this.sectionEndLine = sectionEnd;
+	}
+
+	/**
+	 * @return the sectionEnd
+	 */
+	public int getSectionEndLine() {
+		return sectionEndLine;
+	}
+
 }

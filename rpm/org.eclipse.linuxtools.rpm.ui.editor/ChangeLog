@@ -1,3 +1,27 @@
+2009-03-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/compare/SpecStructureCreator.java (parseSpecfile): User correct section borders.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Format.
+	(complexSections): Likewise.
+	(complexDefinitions): Likewise.
+	(parseMacro): Set section boundaries.
+	(generateTaskMarker): Format.
+	(parseDefine): Likewise.
+	(parseComplexDefinition): Likewise.
+	(parsePatch): Likewise.
+	(errorHandler): Likewise.
+	(simpleDefinitions): Likewise.
+	(directValuesDefinitions): Likewise.
+	(parseSection): Set section boundaries.
+	(parseDirectDefinition): Format.
+	(parseLine): Likewise.
+	(simpleSections): Likewise.
+	(parse): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSection.java (getPackageName): Format.
+	(SpecfileSection): Likewise.
+	(setSectionEndLine): Store end line.
+	(getSectionEndLine): Likewise.
+
 2009-03-17  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parse): Fix NPE, generateTaskMarker only when taskHandler is present.
