@@ -1,3 +1,7 @@
+2009-03-31  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindViewPart.java (createPartControl): Added expand/collapse actions.
+
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindLaunchDelegate.java (handleLaunch): Bounds checking on number of output files.

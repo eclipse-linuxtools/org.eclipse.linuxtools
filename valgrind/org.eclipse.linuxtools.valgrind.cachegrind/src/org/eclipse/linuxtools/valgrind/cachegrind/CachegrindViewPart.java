@@ -16,10 +16,14 @@ import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.ISourceRange;
 import org.eclipse.cdt.core.model.ISourceReference;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
@@ -31,6 +35,8 @@ import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindLine;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.ICachegrindElement;
+import org.eclipse.linuxtools.valgrind.ui.CollapseAction;
+import org.eclipse.linuxtools.valgrind.ui.ExpandAction;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -39,6 +45,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.PartInitException;
@@ -51,7 +58,10 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 
 	protected static final int COLUMN_SIZE = 75;
 	protected CachegrindLabelProvider labelProvider;
+	protected CachegrindTreeContentProvider contentProvider;
 	protected IDoubleClickListener doubleClickListener;
+	protected ExpandAction expandAction;
+	protected CollapseAction collapseAction;
 	
 	// Events - Cache
 	protected static final String IR = "Ir"; //$NON-NLS-1$
@@ -78,7 +88,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		top.setLayout(topLayout);
 		top.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		viewer = new TreeViewer(top, SWT.SINGLE | SWT.BORDER
+		viewer = new TreeViewer(top, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.FULL_SELECTION);
 
 		labelProvider = new CachegrindLabelProvider();
@@ -95,7 +105,8 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 		column.getColumn().addSelectionListener(getHeaderListener());
 		column.setLabelProvider(labelProvider);
 
-		viewer.setContentProvider(new CachegrindTreeContentProvider());
+		contentProvider = new CachegrindTreeContentProvider();
+		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(labelProvider);
 		viewer.setAutoExpandLevel(2);
 		doubleClickListener = new IDoubleClickListener() {
@@ -139,6 +150,25 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 			}			
 		};
 		viewer.addDoubleClickListener(doubleClickListener);
+		
+		expandAction = new ExpandAction(viewer);
+		collapseAction = new CollapseAction(viewer);
+		
+		MenuManager manager = new MenuManager();
+		manager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+				ICachegrindElement element = (ICachegrindElement) selection.getFirstElement();
+				if (contentProvider.hasChildren(element)) {
+					manager.add(expandAction);
+					manager.add(collapseAction);
+				}
+			}			
+		});
+		
+		manager.setRemoveAllWhenShown(true);	
+		Menu contextMenu = manager.createContextMenu(viewer.getTree());
+		viewer.getControl().setMenu(contextMenu);
 	}
 
 	@Override
