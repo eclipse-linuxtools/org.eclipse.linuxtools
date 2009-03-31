@@ -42,10 +42,13 @@ feature@org.eclipse.linuxtools.profiling.test.feature=SVN,,http://dev.eclipse.or
 !*** oprofile
 plugin@org.eclipse.linuxtools.oprofile.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core
 plugin@org.eclipse.linuxtools.oprofile.core.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.tests
+fragment@org.eclipse.linuxtools.oprofile.core.linux.ppc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.ppc
 fragment@org.eclipse.linuxtools.oprofile.core.linux.x86=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86
 fragment@org.eclipse.linuxtools.oprofile.core.linux.x86_64=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86_64
 plugin@org.eclipse.linuxtools.oprofile.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.launch
+plugin@org.eclipse.linuxtools.oprofile.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.tests
 plugin@org.eclipse.linuxtools.oprofile.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui
+plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui.tests
 feature@org.eclipse.linuxtools.oprofile.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile-feature
 
 !*** valgrind
