@@ -15,26 +15,37 @@ import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
+import org.eclipse.linuxtools.valgrind.ui.CollapseAction;
+import org.eclipse.linuxtools.valgrind.ui.ExpandAction;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PartInitException;
 
 public class MassifTreeViewer extends TreeViewer {
 
 	protected IDoubleClickListener doubleClickListener;
 	protected ITreeContentProvider contentProvider;
+	protected Action expandAction;
+	protected Action collapseAction;
 
 	public MassifTreeViewer(Composite parent) {
-		super(parent);
+		super(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		contentProvider = new ITreeContentProvider() {
 			public Object[] getChildren(Object parentElement) {
@@ -105,6 +116,25 @@ public class MassifTreeViewer extends TreeViewer {
 			}			
 		};
 		addDoubleClickListener(doubleClickListener);
+		
+		expandAction = new ExpandAction(this);
+		collapseAction = new CollapseAction(this);
+		
+		MenuManager manager = new MenuManager();
+		manager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				ITreeSelection selection = (ITreeSelection) getSelection();
+				MassifHeapTreeNode element = (MassifHeapTreeNode) selection.getFirstElement();
+				if (contentProvider.hasChildren(element)) {
+					manager.add(expandAction);
+					manager.add(collapseAction);
+				}
+			}			
+		});
+		
+		manager.setRemoveAllWhenShown(true);	
+		Menu contextMenu = manager.createContextMenu(getTree());
+		getControl().setMenu(contextMenu);
 	}
 
 	public IDoubleClickListener getDoubleClickListener() {

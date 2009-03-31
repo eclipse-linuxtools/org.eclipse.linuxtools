@@ -90,19 +90,19 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	protected Action treeAction;
 	protected Action chartAction;
 	protected MassifPidMenuAction pidAction;
-	
+
 	protected List<ChartEditorInput> chartInputs;
 
 	@Override
 	public void createPartControl(Composite parent) {
 		chartInputs = new ArrayList<ChartEditorInput>();
-		
+
 		top = new Composite(parent, SWT.NONE);
 		stackLayout = new StackLayout();
 		top.setLayout(stackLayout);
 		top.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		viewer = new TableViewer(top, SWT.SINGLE | SWT.BORDER
+		viewer = new TableViewer(top, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
 				| SWT.FULL_SELECTION);
 
 		Table table = viewer.getTable();
@@ -202,7 +202,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 						// ascending / descending
 						result = direction == SWT.UP ? result : -result;
-						
+
 						// overflow check
 						if (result > Integer.MAX_VALUE) {
 							result = Integer.MAX_VALUE;
@@ -219,7 +219,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public IAction[] getToolbarActions() {
 		pidAction = new MassifPidMenuAction(this);
 		pidAction.setId(PID_ACTION);
-		
+
 		chartAction = new Action(
 				Messages.getString("MassifViewPart.Display_Heap_Allocation"), IAction.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			@Override
@@ -328,15 +328,17 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			}
 		}
 	}
-	
+
 	@Override
 	public void dispose() {
 		// Close all chart editors to keep Valgrind output consistent throughout workbench
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		for (IEditorInput input : chartInputs) {
-			IEditorPart part = page.findEditor(input);
-			if (part != null) {
-				page.closeEditor(part, false);
+		if (page != null) {
+			for (IEditorInput input : chartInputs) {
+				IEditorPart part = page.findEditor(input);
+				if (part != null) {
+					page.closeEditor(part, false);
+				}
 			}
 		}
 		super.dispose();
@@ -350,7 +352,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public void setOutput(MassifOutput output) {
 		this.output = output;
 	}
-	
+
 	public MassifOutput getOutput() {
 		return output;
 	}
@@ -358,11 +360,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	public void setPid(Integer pid) {
 		this.pid = pid;
 	}
-	
+
 	public Integer getPid() {
 		return pid;
 	}
-	
+
 	public MassifSnapshot[] getSnapshots() {
 		return output != null && pid != null ? output.getSnapshots(pid) : null;
 	}
@@ -389,7 +391,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				case DETAILED:
 					image = MassifPlugin
 					.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID,
-					"icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
+							"icons/call_hierarchy.gif").createImage(); //$NON-NLS-1$
 				}
 			}
 			return image;
@@ -438,7 +440,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		}
 		return list.toArray(new MassifSnapshot[list.size()]);
 	}
-	
+
 	private ChartEditorInput getChartInput(Integer pid) {
 		ChartEditorInput result = null;
 		for (int i = 0; i < chartInputs.size(); i++) {

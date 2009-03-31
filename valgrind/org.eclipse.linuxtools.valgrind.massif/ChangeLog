@@ -1,3 +1,9 @@
+2009-03-31  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifTreeViewer.java: Added expand/collapse actions. 
+	* MassifViewPart.java (dispose): Check if page is null.
+	(createPartControl): Changed style bits for viewers. 
+
 2009-03-26  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifPidMenuAction.java (getMenu): Access for testing.

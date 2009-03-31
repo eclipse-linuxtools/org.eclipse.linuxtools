@@ -26,6 +26,7 @@ public class AllTests {
 		suite.addTestSuite(LaunchConfigTabTest.class);
 		suite.addTestSuite(ExportWizardTest.class);
 		suite.addTestSuite(MultiProcessTest.class);
+		suite.addTestSuite(ExpandCollapseTest.class);
 		//$JUnit-END$
 		return suite;
 	}
