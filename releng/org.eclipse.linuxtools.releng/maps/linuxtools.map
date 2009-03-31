@@ -53,6 +53,7 @@ feature@org.eclipse.linuxtools.oprofile.feature=SVN,,http://dev.eclipse.org/svnr
 
 !*** valgrind
 plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind
+plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind.tests
 plugin@org.eclipse.linuxtools.valgrind.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.core
 plugin@org.eclipse.linuxtools.valgrind.history=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.history
 plugin@org.eclipse.linuxtools.valgrind.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.launch

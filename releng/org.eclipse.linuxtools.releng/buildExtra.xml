@@ -10,21 +10,21 @@
 
 	<target name="getDependencies">
 		<!-- TODO: if your project requires more dependencies, add them here; if it does not require all of these, remove those not required -->
-		<echo message="Download, then unpack CDT" />
+		<echo message="Download, then unpack CDT, BIRT and EMF" />
 		<ant target="getUpdateSiteDependency"
 		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
-			<property name="url" value="${cdtURL}" />
-			<property name="file" value="${cdtFile}" />
+			<property name="url" value="${tools.cdt.master.url}" />
+			<property name="file" value="${tools.cdt.master.file}" />
 		</ant>
 		<ant target="getDependency"
 		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
-			<property name="url" value="${birtURL}" />
-			<property name="file" value="${birtFile}" />
+			<property name="url" value="${birt.report.framework.url}" />
+			<property name="file" value="${birt.report.framework.file}" />
 		</ant>
 		<ant target="getDependency"
 		     antfile="${relengCommonBuilderDir}/tools/scripts/getDependencies.xml">
-			<property name="url" value="${emfURL}" />
-			<property name="file" value="${emfFile}" />
+			<property name="url" value="${modeling.emf.runtime.url}" />
+			<property name="file" value="${modeling.emf.runtime.file}" />
 		</ant>
 	</target>
 </project>
