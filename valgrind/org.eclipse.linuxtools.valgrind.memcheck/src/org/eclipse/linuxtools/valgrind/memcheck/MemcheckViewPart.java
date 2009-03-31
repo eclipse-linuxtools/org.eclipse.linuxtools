@@ -12,10 +12,14 @@ package org.eclipse.linuxtools.valgrind.memcheck;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -24,10 +28,14 @@ import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.memcheck.model.RootTreeElement;
 import org.eclipse.linuxtools.valgrind.memcheck.model.StackFrameTreeElement;
 import org.eclipse.linuxtools.valgrind.memcheck.model.ValgrindTreeElement;
+import org.eclipse.linuxtools.valgrind.ui.CollapseAction;
+import org.eclipse.linuxtools.valgrind.ui.ExpandAction;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
@@ -35,12 +43,15 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 	protected TreeViewer viewer;
 	protected ValgrindError[] errors;
 	protected IDoubleClickListener doubleClickListener;
+	protected ITreeContentProvider contentProvider;
+	protected IAction expandAction;
+	protected IAction collapseAction;
 
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new TreeViewer(parent);
+		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-		viewer.setContentProvider(new ITreeContentProvider() {
+		contentProvider = new ITreeContentProvider() {
 
 			public Object[] getChildren(Object parentElement) {
 				return ((ValgrindTreeElement) parentElement).getChildren();
@@ -63,7 +74,8 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 			public void inputChanged(Viewer viewer, Object oldInput,
 					Object newInput) {}
 
-		});
+		};
+		viewer.setContentProvider(contentProvider);
 
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
@@ -107,7 +119,25 @@ public class MemcheckViewPart extends ViewPart implements IValgrindToolView {
 			}
 		};
 		viewer.addDoubleClickListener(doubleClickListener);
-
+		
+		expandAction = new ExpandAction(viewer);
+		collapseAction = new CollapseAction(viewer);
+		
+		MenuManager manager = new MenuManager();
+		manager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				ITreeSelection selection = (ITreeSelection) viewer.getSelection();
+				ValgrindTreeElement element = (ValgrindTreeElement) selection.getFirstElement();
+				if (contentProvider.hasChildren(element)) {
+					manager.add(expandAction);
+					manager.add(collapseAction);
+				}
+			}			
+		});
+		
+		manager.setRemoveAllWhenShown(true);	
+		Menu contextMenu = manager.createContextMenu(viewer.getTree());
+		viewer.getControl().setMenu(contextMenu);
 	}
 
 	public void setErrors(ValgrindError[] errors) {

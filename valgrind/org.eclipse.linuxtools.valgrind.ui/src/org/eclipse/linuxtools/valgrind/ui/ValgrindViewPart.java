@@ -32,7 +32,9 @@ public class ValgrindViewPart extends ViewPart {
 		setContentDescription(Messages.getString("ValgrindViewPart.No_Valgrind_output")); //$NON-NLS-1$
 
 		dynamicViewHolder = new Composite(parent, SWT.NONE);
-		dynamicViewHolder.setLayout(new GridLayout());
+		GridLayout dynamicViewLayout = new GridLayout();
+		dynamicViewLayout.marginWidth = dynamicViewLayout.marginHeight = 0;
+		dynamicViewHolder.setLayout(dynamicViewLayout);
 		dynamicViewHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 		ValgrindUIPlugin.getDefault().setView(this);
 	}

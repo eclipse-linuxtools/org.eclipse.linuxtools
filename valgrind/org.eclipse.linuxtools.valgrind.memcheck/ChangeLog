@@ -1,3 +1,7 @@
+2009-03-31  Elliott Baron  <ebaron@redhat.com>
+
+	* MemcheckViewPart.java (createPartControl): Added expand/collapse to context menu.
+
 2009-03-18  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindError.java (createMarker): Use findFilesForLocation for linked resource compatibility.

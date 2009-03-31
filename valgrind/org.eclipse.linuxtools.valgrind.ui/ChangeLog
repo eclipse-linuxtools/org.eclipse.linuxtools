@@ -1,3 +1,10 @@
+2009-03-31  Elliott Baron  <ebaron@redhat.com>
+
+	* CollapseAction.java: New file.
+	* ExpandAction.java: New file.
+	* messages.properties: New strings.
+	* ValgrindViewPart.java (createPartControl): Remove margins for dynamic content.
+
 2009-03-17  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindViewPart.java (createDynamicContent): Call dispose on old dynamicView.
