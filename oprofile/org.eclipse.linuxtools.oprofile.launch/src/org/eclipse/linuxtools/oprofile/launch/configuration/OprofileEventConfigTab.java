@@ -78,37 +78,42 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		setControl(top);
 		top.setLayout(new GridLayout());
 
-		createVerticalSpacer(top, 1);
-
-		//default event checkbox
-		_defaultEventCheck = new Button(top, SWT.CHECK);
-		_defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
-		_defaultEventCheck.setLayoutData(new GridData());
-		_defaultEventCheck.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent se) {
-				_handleEnabledToggle();
-			}
-		});
-
-		createVerticalSpacer(top, 1);
-
-		//tabs for each of the counters
-		OprofileCounter[] counters = OprofileCounter.getCounters(null);
-		TabItem[] counterTabs = new TabItem[counters.length];
-		_counterSubTabs = new CounterSubTab[counters.length];
-		
-		TabFolder tabFolder = new TabFolder(top, SWT.NONE);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-
-		for (int i = 0; i < counters.length; i++) {
-			Composite c = new Composite(tabFolder, SWT.NONE);
-			CounterSubTab currentTab = new CounterSubTab(c, counters[i]);
-			_counterSubTabs[i] = currentTab;
+		if (Oprofile.getTimerMode()) {
+			Label timerModeLabel = new Label(top, SWT.LEFT);
+			timerModeLabel.setText(OprofileLaunchMessages.getString("tab.event.timermode.no.options")); //$NON-NLS-1$
+		} else {
+			createVerticalSpacer(top, 1);
+	
+			//default event checkbox
+			_defaultEventCheck = new Button(top, SWT.CHECK);
+			_defaultEventCheck.setText(OprofileLaunchMessages.getString("tab.event.defaultevent.button.text")); //$NON-NLS-1$
+			_defaultEventCheck.setLayoutData(new GridData());
+			_defaultEventCheck.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent se) {
+					_handleEnabledToggle();
+				}
+			});
+	
+			createVerticalSpacer(top, 1);
+	
+			//tabs for each of the counters
+			OprofileCounter[] counters = OprofileCounter.getCounters(null);
+			TabItem[] counterTabs = new TabItem[counters.length];
+			_counterSubTabs = new CounterSubTab[counters.length];
 			
-			counterTabs[i] = new TabItem(tabFolder, SWT.NONE);
-			counterTabs[i].setControl(c);
-			counterTabs[i].setText(OprofileLaunchMessages.getString("tab.event.counterTab.counterText") + String.valueOf(i)); //$NON-NLS-1$
+			TabFolder tabFolder = new TabFolder(top, SWT.NONE);
+			tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+	
+	
+			for (int i = 0; i < counters.length; i++) {
+				Composite c = new Composite(tabFolder, SWT.NONE);
+				CounterSubTab currentTab = new CounterSubTab(c, counters[i]);
+				_counterSubTabs[i] = currentTab;
+				
+				counterTabs[i] = new TabItem(tabFolder, SWT.NONE);
+				counterTabs[i].setControl(c);
+				counterTabs[i].setText(OprofileLaunchMessages.getString("tab.event.counterTab.counterText") + String.valueOf(i)); //$NON-NLS-1$
+			}
 		}
 	}
 
@@ -116,22 +121,24 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#initializeFrom(ILaunchConfiguration)
 	 */
 	public void initializeFrom(ILaunchConfiguration config) {
-		try {
-			for (int i = 0; i < _counters.length; i++) {
-				_counters[i].loadConfiguration(config);
+		if (!Oprofile.getTimerMode()) {
+			try {
+				for (int i = 0; i < _counters.length; i++) {
+					_counters[i].loadConfiguration(config);
+				}
+				
+				for (CounterSubTab tab : _counterSubTabs) {
+					tab.initializeTab(config);
+				}
+	
+				boolean enabledState = config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
+				_defaultEventCheck.setSelection(enabledState);
+				setEnabledState(!enabledState);
+	
+				updateLaunchConfigurationDialog();
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
-			
-			for (CounterSubTab tab : _counterSubTabs) {
-				tab.initializeTab(config);
-			}
-
-			boolean enabledState = config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
-			_defaultEventCheck.setSelection(enabledState);
-			setEnabledState(!enabledState);
-
-			updateLaunchConfigurationDialog();
-		} catch (CoreException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -139,61 +146,69 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#isValid(ILaunchConfiguration)
 	 */
 	public boolean isValid(ILaunchConfiguration config) {
-		int numEnabledEvents = 0;
-		boolean valid = true;
-
-		try {
-			if (config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false)) {
-				numEnabledEvents = 1;
-			} else {
-				//This seems like an odd way to validate, but since most of the validation
-				// is done with the OprofileDaemonEvent that the counter wraps, this
-				// is the easiest way.
-				OprofileCounter[] counters = new OprofileCounter[Oprofile.getNumberOfCounters()];
-				for (int i = 0; i < counters.length; i++) {
-					counters[i] = new OprofileCounter(i);
-					counters[i].loadConfiguration(config);
-					if (counters[i].getEnabled()) {
-						++numEnabledEvents;
-
-						if (counters[i].getEvent() == null) {
-							valid = false;
-							break;
-						}
-
-						// First check min count
-						int min = counters[i].getEvent().getMinCount();
-						if (counters[i].getCount() < min) {
-							valid = false;
-							break;
-						}
-
-						// Next ask oprofile if it is valid
-						if (!OprofileLaunchPlugin.getCache().checkEvent(
-									counters[i].getNumber(), 
-									counters[i].getEvent().getNumber(), 
-									counters[i].getEvent().getUnitMask().getMaskValue())) {
-							valid = false;
-							break;
+		if (Oprofile.getTimerMode()) {
+			return true;		//no options to check for validity
+		} else {
+			int numEnabledEvents = 0;
+			boolean valid = true;
+	
+			try {
+				if (config.getAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false)) {
+					numEnabledEvents = 1;
+				} else {
+					//This seems like an odd way to validate, but since most of the validation
+					// is done with the OprofileDaemonEvent that the counter wraps, this
+					// is the easiest way.
+					OprofileCounter[] counters = new OprofileCounter[Oprofile.getNumberOfCounters()];
+					for (int i = 0; i < counters.length; i++) {
+						counters[i] = new OprofileCounter(i);
+						counters[i].loadConfiguration(config);
+						if (counters[i].getEnabled()) {
+							++numEnabledEvents;
+	
+							if (counters[i].getEvent() == null) {
+								valid = false;
+								break;
+							}
+	
+							// First check min count
+							int min = counters[i].getEvent().getMinCount();
+							if (counters[i].getCount() < min) {
+								valid = false;
+								break;
+							}
+	
+							// Next ask oprofile if it is valid
+							if (!OprofileLaunchPlugin.getCache().checkEvent(
+										counters[i].getNumber(), 
+										counters[i].getEvent().getNumber(), 
+										counters[i].getEvent().getUnitMask().getMaskValue())) {
+								valid = false;
+								break;
+							}
 						}
 					}
 				}
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-
-		return (numEnabledEvents > 0 && valid);
+	
+			return (numEnabledEvents > 0 && valid);
+		} 
 	}
 
 	/**
 	 * @see ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
-		config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, _defaultEventCheck.getSelection());
-		
-		for (CounterSubTab cst : _counterSubTabs) {
-			cst.performApply(config);
+		if (Oprofile.getTimerMode()) {
+			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
+		} else {
+			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, _defaultEventCheck.getSelection());
+			
+			for (CounterSubTab cst : _counterSubTabs) {
+				cst.performApply(config);
+			}
 		}
 	}
 
