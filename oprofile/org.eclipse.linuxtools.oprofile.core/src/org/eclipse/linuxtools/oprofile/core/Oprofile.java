@@ -146,6 +146,14 @@ public class Oprofile
 	}
 	
 	/**
+	 * Returns whether or not oprofile is in timer mode.
+	 * @return true if oprofile is in timer mode, false otherwise
+	 */
+	public static boolean getTimerMode() {
+		return _info.getTimerMode();
+	}
+	
+	/**
 	 * Checks the requested counter, event, and unit mask for vailidity.
 	 * @param ctr	the counter
 	 * @param event	the event number

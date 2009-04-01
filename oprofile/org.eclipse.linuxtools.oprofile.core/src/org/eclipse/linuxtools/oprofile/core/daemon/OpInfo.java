@@ -69,6 +69,9 @@ public class OpInfo {
 	// The CPU frequency of this CPU in MHz
 	private double _cpuSpeed;
 	
+	// Whether or not oprofile is running in timer mode
+	private boolean _timerMode;
+	
 	/**
 	 * Return all of Oprofile's generic information.
 	 * @return a class containing the information
@@ -136,6 +139,15 @@ public class OpInfo {
 	}
 	
 	/**
+	 * Sets whether or not oprofile is operating in timer mode.
+	 * Only called from XML parsers.
+	 * @param timerMode true if oprofile is in timer mode, false if not
+	 */
+	public void _setTimerMode(boolean timerMode) {
+		_timerMode = timerMode;
+	}
+
+	/**
 	 * Returns the number of counters allowed by Oprofile
 	 * @return the number of counters
 	 */
@@ -172,6 +184,14 @@ public class OpInfo {
 			return _eventList[num];
 		
 		return new OpEvent[0];
+	}
+	
+	/**
+	 * Returns whether or not oprofile is operating in timer mode.
+	 * @return a boolean, true if in timer mode, false if not
+	 */
+	public boolean getTimerMode() {
+		return _timerMode;
 	}
 	
 	/**
