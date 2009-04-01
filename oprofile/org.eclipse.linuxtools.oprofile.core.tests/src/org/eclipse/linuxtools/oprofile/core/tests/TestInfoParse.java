@@ -71,6 +71,7 @@ public class TestInfoParse extends TestCase {
 		assertEquals("/var/lib/oprofile/lock", info.getDefault(OpInfo.DEFAULT_LOCK_FILE)); //$NON-NLS-1$
 		assertEquals("/var/lib/oprofile/samples/oprofiled.log", info.getDefault(OpInfo.DEFAULT_LOG_FILE)); //$NON-NLS-1$
 		assertEquals("/var/lib/oprofile/complete_dump", info.getDefault(OpInfo.DEFAULT_DUMP_STATUS)); //$NON-NLS-1$
+		assertTrue(info.getTimerMode());
 		
 		assertEquals((double)800, info.getCPUSpeed());
 		assertEquals(2, info.getNrCounters());

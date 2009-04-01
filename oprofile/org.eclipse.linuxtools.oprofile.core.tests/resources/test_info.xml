@@ -8,6 +8,7 @@
 		<log-file>/var/lib/oprofile/samples/oprofiled.log</log-file>
 		<dump-status>/var/lib/oprofile/complete_dump</dump-status>
 	</defaults>
+	<timer-mode>true</timer-mode>
 	<event-list counter="0">
 		<event>
 			<name>CPU_CLK_UNHALTED</name>
