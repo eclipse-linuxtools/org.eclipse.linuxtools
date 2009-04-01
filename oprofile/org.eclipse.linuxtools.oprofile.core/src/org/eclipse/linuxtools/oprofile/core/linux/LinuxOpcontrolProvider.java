@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
+import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
@@ -156,11 +157,13 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		ArrayList<String> args = new ArrayList<String>();
 		args.add(_OPD_SETUP);
 		_optionsToArguments(args, options);
-		if (events == null || events.length == 0) {
-			args.add(_OPD_SETUP_EVENT + _OPD_SETUP_EVENT_DEFAULT);
-		} else {
-			for (int i = 0; i < events.length; ++i) {
-				_eventToArguments(args, events[i]);
+		if (!Oprofile.getTimerMode()) {
+			if (events == null || events.length == 0) {
+				args.add(_OPD_SETUP_EVENT + _OPD_SETUP_EVENT_DEFAULT);
+			} else {
+				for (int i = 0; i < events.length; ++i) {
+					_eventToArguments(args, events[i]);
+				}
 			}
 		}
 		_runOpcontrol(args);
