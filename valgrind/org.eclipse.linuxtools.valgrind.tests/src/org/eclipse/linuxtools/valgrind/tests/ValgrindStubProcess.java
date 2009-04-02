@@ -27,6 +27,7 @@ public class ValgrindStubProcess extends Process {
 
 	@Override
 	public int exitValue() {
+		System.out.println("java.lang.Process Exit Code=" + exitcode);
 		return exitcode;
 	}
 
@@ -60,6 +61,7 @@ public class ValgrindStubProcess extends Process {
 
 	@Override
 	public int waitFor() throws InterruptedException {
+		System.out.println("java.lang.Process Exit Code=" + exitcode);
 		return exitcode;
 	}
 

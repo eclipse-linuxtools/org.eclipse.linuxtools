@@ -90,7 +90,7 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 		FileReader fr = null;
 		try {
 			IPath path = verifyOutputPath(config).append(ERROR_CODE_FILE);
-			
+			System.out.println("Path to .errorCode: " + path.toOSString());
 			int exitcode = 0;
 			if (path.toFile().exists()) {
 				fr = new FileReader(path.toFile());

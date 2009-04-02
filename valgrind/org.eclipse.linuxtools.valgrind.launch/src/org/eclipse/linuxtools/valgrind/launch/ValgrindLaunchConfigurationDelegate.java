@@ -155,6 +155,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				Thread.sleep(100);
 			}
 
+			System.out.println("org.eclipse.debug.core.model.IProcess Exit Code: " + process.getExitValue());
 			if (process.getExitValue() == 0) {
 				// create launch summary string to distinguish this launch
 				launchStr = createLaunchStr();
