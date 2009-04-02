@@ -32,7 +32,7 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 			try {
 				exitcode = readErrorCode();
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 			return new ValgrindStubCommand(exitcode);
 		}

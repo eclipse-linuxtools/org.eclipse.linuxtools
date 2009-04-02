@@ -1,3 +1,8 @@
+2009-04-02  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindTestLaunchDelegate.java (getValgrindCommand): Reading error code
+	must succeed.
+
 2009-03-25  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindTestExportWizard.java: New file.
