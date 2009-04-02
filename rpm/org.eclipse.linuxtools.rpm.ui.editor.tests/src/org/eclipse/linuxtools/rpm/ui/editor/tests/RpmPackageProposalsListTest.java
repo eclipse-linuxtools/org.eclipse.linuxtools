@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmPackageProposalsList;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 public class RpmPackageProposalsListTest extends TestCase {
@@ -49,9 +50,11 @@ public class RpmPackageProposalsListTest extends TestCase {
 	}
 
 	public final void testGetValue() {
-		if (!packageProposalsList.getValue("setup").startsWith(
-				"<b>Name: </b>setup")) {
-			fail("getValue failed, setup package info doesn't start with '<b>Name:<b> setup'");
+		if (Utils.fileExist("/bin/rpm")) {
+			if (!packageProposalsList.getValue("setup").startsWith(
+					"<b>Name: </b>setup")) {
+				fail("getValue failed, setup package info doesn't start with '<b>Name:<b> setup'");
+			}
 		}
 	}
 
@@ -62,9 +65,11 @@ public class RpmPackageProposalsListTest extends TestCase {
 	}
 
 	public final void testGetRpmInfo() {
-		if (!packageProposalsList.getRpmInfo("setup").startsWith(
-				"<b>Name: </b>setup")) {
-			fail("getRpmInfo failed, setup package info doesn't start with '<b>Name:<b> setup'");
+		if (Utils.fileExist("/bin/rpm")) {
+			if (!packageProposalsList.getRpmInfo("setup").startsWith(
+					"<b>Name: </b>setup")) {
+				fail("getRpmInfo failed, setup package info doesn't start with '<b>Name:<b> setup'");
+			}
 		}
 	}
 

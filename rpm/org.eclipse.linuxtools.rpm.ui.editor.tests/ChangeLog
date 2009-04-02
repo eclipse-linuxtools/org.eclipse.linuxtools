@@ -2,6 +2,8 @@
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java (testGetMacroEval): Run the test only when rpm executable is available.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTest.java (setUp): Fix deprecation.
+	(testGetRpmInfo): Exec only when rpm executable is available.
+	(testGetValue): Likewise.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfilePackagesScannerTest.java (setUp): Likewise.
 
 2009-03-26  Alexander Kurtakov  <akurtako@redhat.com>
