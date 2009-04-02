@@ -45,7 +45,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	 */
 	@Override
 	protected void setUp() throws CoreException {
-		Activator.getDefault().getPluginPreferences().setValue(
+		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(

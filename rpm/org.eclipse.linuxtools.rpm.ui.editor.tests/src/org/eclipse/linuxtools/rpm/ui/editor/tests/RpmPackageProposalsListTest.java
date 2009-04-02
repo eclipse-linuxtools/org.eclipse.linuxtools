@@ -28,7 +28,7 @@ public class RpmPackageProposalsListTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		Activator.getDefault().getPluginPreferences().setValue(
+		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(
