@@ -1,5 +1,12 @@
 2009-04-02  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java (testGetMacroEval): Fix %_libdir expectation.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTest.java (testGetRpmInfo): Use rpm package for the test.
+	(setUp): Add rpm to the packagelist.
+	(testGetValue): Use rpm package for the test.
+	
+2009-04-02  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java (testGetMacroEval): Run the test only when rpm executable is available.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTest.java (setUp): Fix deprecation.
 	(testGetRpmInfo): Exec only when rpm executable is available.

@@ -34,7 +34,7 @@ public class RpmPackageProposalsListTest extends TestCase {
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(
 					"/tmp/pkglist"));
-			out.write("setup\ntest\n");
+			out.write("setup\ntest\nrpm\n");
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -51,9 +51,9 @@ public class RpmPackageProposalsListTest extends TestCase {
 
 	public final void testGetValue() {
 		if (Utils.fileExist("/bin/rpm")) {
-			if (!packageProposalsList.getValue("setup").startsWith(
-					"<b>Name: </b>setup")) {
-				fail("getValue failed, setup package info doesn't start with '<b>Name:<b> setup'");
+			if (!packageProposalsList.getValue("rpm").startsWith(
+					"<b>Name: </b>rpm")) {
+				fail("getValue failed, rpm package info doesn't start with '<b>Name:<b> rpm'");
 			}
 		}
 	}
@@ -66,9 +66,9 @@ public class RpmPackageProposalsListTest extends TestCase {
 
 	public final void testGetRpmInfo() {
 		if (Utils.fileExist("/bin/rpm")) {
-			if (!packageProposalsList.getRpmInfo("setup").startsWith(
-					"<b>Name: </b>setup")) {
-				fail("getRpmInfo failed, setup package info doesn't start with '<b>Name:<b> setup'");
+			if (!packageProposalsList.getRpmInfo("rpm").startsWith(
+					"<b>Name: </b>rpm")) {
+				fail("getRpmInfo failed, rpm package info doesn't start with '<b>Name:<b> rpm'");
 			}
 		}
 	}

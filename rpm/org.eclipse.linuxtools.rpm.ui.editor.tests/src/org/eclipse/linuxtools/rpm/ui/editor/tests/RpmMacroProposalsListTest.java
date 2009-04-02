@@ -63,7 +63,7 @@ public class RpmMacroProposalsListTest extends TestCase {
 
 	public final void testGetMacroEval() {
 		if (Utils.fileExist("/bin/rpm")) {
-			if (!RpmMacroProposalsList.getMacroEval("%_libdir").endsWith("lib")) {
+			if (RpmMacroProposalsList.getMacroEval("%_libdir").indexOf("lib") == -1) {
 				fail("getMacroEval faild, eval don't end with 'lib'");
 			}
 		}
