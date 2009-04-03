@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.valgrind.cachegrind.tests;
 
 import java.io.File;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.IFunction;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -62,8 +61,7 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 	}
 
 	public void testDoubleClickFile() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
 
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
@@ -77,8 +75,7 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 	}
 	
 	public void testDoubleClickFunction() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
 
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
@@ -104,8 +101,7 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 	}
 	
 	public void testDoubleClickLine() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFunction"); //$NON-NLS-1$
 
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();

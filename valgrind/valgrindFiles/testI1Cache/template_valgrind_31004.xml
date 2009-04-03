@@ -1,0 +1,2 @@
+--31004-- warning: 6Mb L2 cache detected, treating as 4Mb
+==31004== error: I1 size of 0B not a power of two; aborting.

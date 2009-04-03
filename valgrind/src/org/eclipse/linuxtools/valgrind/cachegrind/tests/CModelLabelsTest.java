@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.cachegrind.tests;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.IFunction;
 import org.eclipse.cdt.core.model.IMethod;
 import org.eclipse.cdt.core.model.ITranslationUnit;
@@ -43,8 +42,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 	}
 	
 	public void testFileLabelsCPP() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testFileLabelsCPP"); //$NON-NLS-1$
 		
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
@@ -57,8 +55,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 	}
 	
 	public void testFileLabelsH() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testFileLabelsH"); //$NON-NLS-1$
 		
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
@@ -72,8 +69,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 	}
 	
 	public void testFunctionLabel() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testFunctionLabel"); //$NON-NLS-1$
 		
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
@@ -87,8 +83,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 	}
 	
 	public void testMethodLabel() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testMethodLabel"); //$NON-NLS-1$
 		
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
@@ -102,8 +97,7 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 	}
 	
 	public void testNestedMethodLabel() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNestedMethodLabel"); //$NON-NLS-1$
 		
 		CachegrindViewPart view = (CachegrindViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();		
