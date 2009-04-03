@@ -25,6 +25,7 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -95,7 +96,13 @@ public abstract class AbstractTest extends TestCase {
 			fail(NLS.bind(Messages.getString("AbstractTest.Build_failed"), curProject.getName(), status.getMessage())); //$NON-NLS-1$
 		}
 
-		curProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {		
+			public void run(IProgressMonitor monitor) throws CoreException {
+				curProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+			}
+		};
+		
+		wsp.run(runnable, wsp.getRoot(), IWorkspace.AVOID_UPDATE, null);
 	}
 
 	public ICProject createProject(Bundle bundle, String projname)
@@ -125,6 +132,9 @@ public abstract class AbstractTest extends TestCase {
 			String projectName = proj.getName();
 			// hard-coded to work around getBinaries() returning empty issue
 			IResource bin = proj.findMember(new Path(BIN_DIR).append(projectName));
+			if (bin == null) {
+				fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
+			}
 			String binPath = bin.getProjectRelativePath().toString();
 			ILaunchConfigurationType configType = getLaunchConfigType();
 			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
