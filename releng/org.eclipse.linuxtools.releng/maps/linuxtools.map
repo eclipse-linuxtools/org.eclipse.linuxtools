@@ -66,9 +66,9 @@ plugin@org.eclipse.linuxtools.valgrind.ui=SVN,,http://dev.eclipse.org/svnroot/te
 feature@org.eclipse.linuxtools.valgrind.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind-feature
 feature@org.eclipse.linuxtools.valgrind.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.test-feature
 
-feature@org.eclipse.linuxtools.all=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/branches/0.2.0/org.eclipse.linuxtools.all
-feature@org.eclipse.linuxtools.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/branches/0.2.0/org.eclipse.linuxtools.test-feature
-plugin@org.eclipse.linuxtools.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/branches/0.2.0/org.eclipse.linuxtools.tests
+feature@org.eclipse.linuxtools.all=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.all
+feature@org.eclipse.linuxtools.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.test-feature
+plugin@org.eclipse.linuxtools.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.tests
 
 !*** used for tests
 plugin@org.eclipse.test=v20080313,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
