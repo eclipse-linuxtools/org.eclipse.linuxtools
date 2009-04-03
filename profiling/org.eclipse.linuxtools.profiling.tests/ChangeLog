@@ -1,3 +1,17 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/tests/Messages.java: New file.
+	* src/org/eclipse/linuxtools/profiling/tests/messages.properties: New file.
+	* src/org/eclipse/linuxtools/profiling/tests/AbstractTest.java (createProject): 
+	(createConfiguration): 
+	(.run): 
+	(buildProject): 
+	* AbstractTest.java (createProject): Refactored "Debug".
+	(createConfiguration): Use job with buildRule, taken from ManagedBuilder tests.
+	* META-INF/MANIFEST.MF: 0.2.0 version.
+	
+	
+
 2009-03-18  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractTest.java (createProject): Split into creation and building.

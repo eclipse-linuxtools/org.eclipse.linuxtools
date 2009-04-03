@@ -1,3 +1,7 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: 0.2.0 version.
+	
 2009-02-12  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Updated dependencies org.junit4 -> org.junit

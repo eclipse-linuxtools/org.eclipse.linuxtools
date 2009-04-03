@@ -1,3 +1,7 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: 0.2.0 version.
+
 2009-01-14  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Re-add update site information (sorry).
