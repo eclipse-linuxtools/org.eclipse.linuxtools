@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import java.util.Arrays;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -47,8 +46,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		super.setUp();
 		proj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		config = createConfiguration(bin);
+		config = createConfiguration(proj.getProject());
 
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());

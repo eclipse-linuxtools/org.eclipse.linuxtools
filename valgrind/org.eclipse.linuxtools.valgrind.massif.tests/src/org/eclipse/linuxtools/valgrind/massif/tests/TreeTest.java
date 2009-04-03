@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.tests;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -34,8 +33,7 @@ public class TreeTest extends AbstractMassifTest {
 	}
 	
 	public void testTreeNodes() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
 		wc.doSave();
@@ -54,8 +52,7 @@ public class TreeTest extends AbstractMassifTest {
 	}
 	
 	public void testNoDetailed() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 12); // > #snapshots
 		wc.doSave();

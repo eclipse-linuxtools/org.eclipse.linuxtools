@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.tests;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
@@ -30,8 +29,7 @@ public class BasicMassifTest extends AbstractMassifTest {
 	}
 	
 	public void testNumSnapshots() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNumSnapshots"); //$NON-NLS-1$
 		
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();

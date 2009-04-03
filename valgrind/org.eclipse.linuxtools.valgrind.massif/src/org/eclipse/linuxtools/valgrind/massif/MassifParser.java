@@ -14,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.eclipse.linuxtools.valgrind.core.AbstractValgrindTextParser;
@@ -121,12 +120,16 @@ public class MassifParser extends AbstractValgrindTextParser {
 		}
 		line = line.trim(); // remove leading whitespace
 		String[] parts = line.split(" "); //$NON-NLS-1$
+		// bounds checking so we can fail with a more informative error
+		if (parts.length < 2) {
+			fail(line);
+		}
+		
 		Integer numChildren = parseNumChildren(parts[0]);
 		if (numChildren == null) {
 			fail(line);
 		}
 
-		StringBuffer nodeText = new StringBuffer();
 		Long numBytes = parseNumBytes(parts[1]);
 		if (numBytes == null) {
 			fail(line);
@@ -139,45 +142,90 @@ public class MassifParser extends AbstractValgrindTextParser {
 		else {
 			percentage = numBytes.doubleValue() / snapshot.getTotal() * 100;
 		}
-		nodeText.append(new DecimalFormat("0.##").format(percentage) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
-		nodeText.append(" ("); //$NON-NLS-1$
-		nodeText.append(new DecimalFormat("#,##0").format(numBytes.longValue()) + "B"); //$NON-NLS-1$ //$NON-NLS-2$
-		nodeText.append(")"); //$NON-NLS-1$
-		
-		// append the rest
-		for (int i = 2; i < parts.length; i++) {
-			nodeText.append(" "); //$NON-NLS-1$
-			nodeText.append(parts[i]);
+
+		MassifHeapTreeNode node;
+		String address = null;
+		String function = null;
+		String filename = null;
+		int lineNo = 0;
+		if (parts[2].startsWith("0x")) { //$NON-NLS-1$
+			// we extend the above bounds checking
+			if (parts.length < 3) {
+				fail(line);
+			}
+			// remove colon from address
+			address = parts[2].substring(0, parts[2].length() - 1);
+			
+			function = parseFunction(parts[3], line);
+			
+			// Parse source file if specified
+			Object[] subparts = parseFilename(line);
+			filename = (String) subparts[0];
+			lineNo = (Integer) subparts[1];
+			
+			node = new MassifHeapTreeNode(parent, percentage, numBytes, address, function, filename, lineNo);
+		}
+		else {
+			// concatenate the rest
+			StringBuffer text = new StringBuffer();
+			for (int i = 2; i < parts.length; i++) {
+				text.append(parts[i]);
+				text.append(" "); //$NON-NLS-1$
+			}
+			
+			node = new MassifHeapTreeNode(parent, percentage, numBytes, text.toString().trim());
 		}
 		
-		MassifHeapTreeNode node = new MassifHeapTreeNode(parent, nodeText.toString());
 		
-		// Parse source file if specified
-		parseSourceFile(node, line);
 		for (int i = 0; i < numChildren.intValue(); i++) {
 			node.addChild(parseTree(snapshot, node, br));
 		}
 		return node;
 	}
 
+	private String parseFunction(String start, String line) throws IOException {
+		String function = null;
+		int ix = line.lastIndexOf("("); //$NON-NLS-1$
+		if (ix >= 0) {
+			function = line.substring(line.indexOf(start), ix);
+			if (function != null) {
+				function = function.trim();
+			}
+			else {
+				fail(line);
+			}
+		}
+		else {
+			fail(line);
+		}
+		
+		return function;
+	}
+
 	/*
 	 * Assumes syntax is: "\(.*:[0-9]+\)$"
 	 */
-	private void parseSourceFile(MassifHeapTreeNode node, String line) {
-		int ix = line.indexOf("("); //$NON-NLS-1$
+	private Object[] parseFilename(String line) {
+		String filename = null;
+		int lineNo = 0;
+
+		int ix = line.lastIndexOf("("); //$NON-NLS-1$
 		if (ix >= 0) {
 			String part = line.substring(ix, line.length());
 			part = part.substring(1, part.length() - 1); // remove leading and trailing parentheses
-			if ((ix = part.lastIndexOf(":")) >= 0 && ix < part.length()) { //$NON-NLS-1$		
+			if ((ix = part.lastIndexOf(":")) >= 0) { //$NON-NLS-1$		
 				String strLineNo = part.substring(ix + 1);
 				if (isNumber(strLineNo)) {
-					int lineNo = Integer.parseInt(strLineNo);
-					String filename = part.substring(0, ix);
-					node.setFilename(filename);
-					node.setLine(lineNo);
+					lineNo = Integer.parseInt(strLineNo);
+					filename = part.substring(0, ix);
 				}
 			}
+			else {
+				filename = part; // library, no line number
+			}
 		}
+		
+		return new Object[] { filename, lineNo };
 	}
 	
 	private Long parseNumBytes(String string) {

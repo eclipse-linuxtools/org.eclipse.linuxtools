@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -43,8 +42,7 @@ public class MarkerTest extends AbstractMemcheckTest {
 	}
 
 	public void testMarkers() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testMarkers"); //$NON-NLS-1$
 
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();

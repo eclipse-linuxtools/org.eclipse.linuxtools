@@ -115,5 +115,22 @@
          </description>
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPropertyTester"
+            id="org.eclipse.linuxtools.valgrind.launch.launchPropertyTester"
+            namespace="org.eclipse.linuxtools.valgrind.launch"
+            properties="launchAvailable"
+            type="org.eclipse.core.expressions.PropertyTester">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.linuxtools.valgrind.launch.ExportHandler"
+            commandId="org.eclipse.linuxtools.valgrind.launch.exportCommand">
+      </handler>
+   </extension>
 
 </plugin>

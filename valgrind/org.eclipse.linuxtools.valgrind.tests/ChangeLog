@@ -1,3 +1,15 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindStubStreamsProxy.java: New file.
+	* META-INF/MANIFEST.MF: 0.2.0 version.
+	* ValgrindStubCommand.java (getProcess): Return null.
+	* ValgrindStubProcess.java: Stub implementation of IProcess.
+	* ValgrindTestLaunchDelegate.java (getValgrindCommand): No longer 
+	passed exit code.
+	(createNewProcess): Hook into ValgrindStubProcess.
+	* ValgrindTestLaunchPlugin.java (getValgrindCommand): No longer 
+	passed exit code.
+
 2009-04-02  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindTestLaunchDelegate.java (getValgrindCommand): Reading error code

@@ -1,3 +1,17 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/valgrind/launch/ExportHandler.java: New file.
+	* META-INF/MANIFEST.MF: 0.2.0 version.
+	* plugin.xml: New extensions.
+	* ValgrindExportWizardPage.java (createControl): Renaming.
+	* ValgrindLaunchConfigurationDelegate.java (launch): Clear previous saved
+	launch config/launch at beginning of method.
+	(createNewProcess): Wrapper for creating a new IProcess.
+	* ValgrindLaunchPlugin.java (setCurrentLaunchConfiguration): Renamed.
+	(getCurrentLaunchConfiguration): Likewise.
+	(getCurrentLaunch): Likewise.
+	(setCurrentLaunch): Likewise.
+
 2009-03-25  Elliott Baron  <ebaron@redhat.com>
 
 	* icons/export_wiz.gif: New file.

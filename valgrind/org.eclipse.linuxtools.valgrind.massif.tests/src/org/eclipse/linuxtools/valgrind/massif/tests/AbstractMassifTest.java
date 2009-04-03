@@ -10,9 +10,21 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.tests;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
+import org.eclipse.linuxtools.valgrind.massif.MassifHeapTreeNode;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.osgi.framework.Bundle;
 
 
@@ -31,6 +43,47 @@ public abstract class AbstractMassifTest extends AbstractValgrindTest {
 	@Override
 	protected IValgrindToolPage getToolPage() {
 		return new MassifTestToolPage();
+	}
+
+	protected void checkFile(IProject proj, MassifHeapTreeNode node) {
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		IEditorInput input = editor.getEditorInput();
+		if (input instanceof IFileEditorInput) {
+			IFileEditorInput fileInput = (IFileEditorInput) input;
+			IResource expectedResource = proj.findMember(node.getFilename());
+			if (expectedResource != null) {
+				File expectedFile = expectedResource.getLocation().toFile();
+				File actualFile = fileInput.getFile().getLocation().toFile();
+				assertEquals(expectedFile, actualFile);
+			}
+			else {
+				fail();
+			}
+		}
+		else {
+			fail();
+		}
+	}
+
+	protected void checkLine(MassifHeapTreeNode node) {
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (editor instanceof ITextEditor) {
+			ITextEditor textEditor = (ITextEditor) editor;
+			
+			ISelection selection = textEditor.getSelectionProvider().getSelection();
+			if (selection instanceof TextSelection) {
+				TextSelection textSelection = (TextSelection) selection;
+				int line = textSelection.getStartLine() + 1; // zero-indexed
+				
+				assertEquals(node.getLine(), line);
+			}
+			else {
+				fail();
+			}
+		}
+		else {
+			fail();
+		}
 	}
 
 }

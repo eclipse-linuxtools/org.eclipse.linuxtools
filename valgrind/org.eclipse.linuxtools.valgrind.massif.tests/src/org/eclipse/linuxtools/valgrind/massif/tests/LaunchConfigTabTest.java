@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.valgrind.massif.tests;
 
 import java.util.Arrays;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -38,8 +37,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		config = createConfiguration(bin);
+		config = createConfiguration(proj.getProject());
 
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());

@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import java.io.File;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.text.TextSelection;
@@ -36,8 +35,7 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
 	private StackFrameTreeElement frame;
 
 	public void testLinkedDoubleClickFile() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testLinkedDoubleClickFile"); //$NON-NLS-1$
 
 		doDoubleClick();
@@ -58,8 +56,7 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
 	}
 	
 	public void testLinkedDoubleClickLine() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testLinkedDoubleClickLine"); //$NON-NLS-1$
 
 		doDoubleClick();

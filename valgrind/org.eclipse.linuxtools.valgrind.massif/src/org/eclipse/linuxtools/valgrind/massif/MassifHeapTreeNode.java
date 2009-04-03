@@ -10,20 +10,64 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.massif;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MassifHeapTreeNode {
 	protected MassifHeapTreeNode parent;
 	protected String text;
+	protected double percent;
+	protected long bytes;
+	protected String address;
+	protected String function;
 	protected String filename;
 	protected int line;
 	protected List<MassifHeapTreeNode> children;
 	
-	public MassifHeapTreeNode(MassifHeapTreeNode parent, String text) {
+	public MassifHeapTreeNode(MassifHeapTreeNode parent, double percent, long bytes, String address, String function, String filename, int line) {
 		this.parent = parent;
-		this.text = text;
+		
+		StringBuffer nodeText = new StringBuffer();
+		formatBytes(percent, bytes, nodeText);
+		nodeText.append(address).append(": "); //$NON-NLS-1$
+		nodeText.append(function).append(" "); //$NON-NLS-1$
+		nodeText.append("(").append(filename); //$NON-NLS-1$
+		if (line > 0) {
+			nodeText.append(":").append(line);//$NON-NLS-1$
+		}
+		nodeText.append(")"); //$NON-NLS-1$
+		this.percent = percent;
+		this.bytes = bytes;
+		this.address = address;
+		this.function = function;
+		this.filename = filename;
+		this.line = line;
+		this.text = nodeText.toString();
 		children = new ArrayList<MassifHeapTreeNode>();
+	}
+
+	public MassifHeapTreeNode(MassifHeapTreeNode parent, double percent, long bytes, String text) {
+		this.parent = parent;
+		
+		StringBuffer nodeText = new StringBuffer();
+		formatBytes(percent, bytes, nodeText);
+		nodeText.append(text);
+		this.percent = percent;
+		this.bytes = bytes;
+		this.address = null;
+		this.function = null;
+		this.filename = null;
+		this.line = 0;
+		this.text = nodeText.toString();
+		children = new ArrayList<MassifHeapTreeNode>();
+	}
+
+	private void formatBytes(double percent, long bytes, StringBuffer buffer) {
+		buffer.append(new DecimalFormat("0.##").format(percent) + "%"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append(" ("); //$NON-NLS-1$
+		buffer.append(new DecimalFormat("#,##0").format(bytes) + "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append(") "); //$NON-NLS-1$
 	}
 	
 	public void addChild(MassifHeapTreeNode child) {
@@ -42,32 +86,51 @@ public class MassifHeapTreeNode {
 		return text;
 	}
 	
-	protected void setText(String text) {
+	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public double getPercent() {
+		return percent;
+	}
+	
+	public long getBytes() {
+		return bytes;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public String getFunction() {
+		return function;
 	}
 	
 	public String getFilename() {
 		return filename;
 	}
 	
-	protected void setFilename(String filename) {
-		this.filename = filename;
-	}
-	
 	public int getLine() {
 		return line;
 	}
-	
-	protected void setLine(int line) {
-		this.line = line;
-	}
-	
+		
 	@Override
 	public String toString() {
 		return text;
 	}
 
 	public boolean hasSourceFile() {
-		return filename != null;
+		return filename != null && line > 0;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof MassifHeapTreeNode 
+		&& text.equals(((MassifHeapTreeNode) obj).getText()); 
+	}
+	
+	@Override
+	public int hashCode() {
+		return text.hashCode();
 	}
 }

@@ -1,3 +1,7 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: 0.2.0 version.
+
 2009-03-31  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindViewPart.java (createPartControl): Added expand/collapse actions.

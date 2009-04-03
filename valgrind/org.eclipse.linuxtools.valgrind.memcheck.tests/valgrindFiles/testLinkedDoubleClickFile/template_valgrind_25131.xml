@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+
+<valgrindoutput>
+
+<protocolversion>3</protocolversion>
+
+<preamble>
+  <line>Memcheck, a memory error detector.</line>
+  <line>Copyright (C) 2002-2008, and GNU GPL'd, by Julian Seward et al.</line>
+  <line>Using LibVEX rev 1878, a library for dynamic binary translation.</line>
+  <line>Copyright (C) 2004-2008, and GNU GPL'd, by OpenWorks LLP.</line>
+  <line>Using valgrind-3.4.0, a dynamic binary instrumentation framework.</line>
+  <line>Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.</line>
+</preamble>
+
+<pid>25131</pid>
+<ppid>24027</ppid>
+<tool>memcheck</tool>
+
+<args>
+  <vargv>
+    <exe>/usr/bin/valgrind</exe>
+    <arg>--tool=memcheck</arg>
+    <arg>-q</arg>
+    <arg>--log-file=YYYYYYYYYYYY/valgrindFiles/testLinkedDoubleClickFile/valgrind_%p.xml</arg>
+    <arg>--trace-children=no</arg>
+    <arg>--child-silent-after-fork=yes</arg>
+    <arg>--run-libc-freeres=yes</arg>
+    <arg>--demangle=yes</arg>
+    <arg>--num-callers=12</arg>
+    <arg>--error-limit=yes</arg>
+    <arg>--show-below-main=no</arg>
+    <arg>--max-stackframe=2000000</arg>
+    <arg>--xml=yes</arg>
+    <arg>--leak-check=yes</arg>
+    <arg>--show-reachable=no</arg>
+    <arg>--leak-resolution=low</arg>
+    <arg>--freelist-vol=10000000</arg>
+    <arg>--workaround-gcc296-bugs=no</arg>
+    <arg>--partial-loads-ok=no</arg>
+    <arg>--undef-value-errors=yes</arg>
+    <arg>--alignment=8</arg>
+  </vargv>
+  <argv>
+    <exe>XXXXXXXXXXXX/linkedTest/Debug/linkedTest</exe>
+  </argv>
+</args>
+
+<status>
+  <state>RUNNING</state>
+  <time>00:00:00:00.027</time>
+</status>
+
+<error>
+  <unique>0xc</unique>
+  <tid>1</tid>
+  <kind>UninitValue</kind>
+  <what>Use of uninitialised value of size 4</what>
+  <stack>
+    <frame>
+      <ip>0x8048417</ip>
+      <obj>XXXXXXXXXXXX/linkedTest/Debug/linkedTest</obj>
+      <fn>main</fn>
+      <dir>YYYYYYYYYYYY/resources/linkedTest/src</dir>
+      <file>test.c</file>
+      <line>19</line>
+    </frame>
+  </stack>
+</error>
+
+<error>
+  <unique>0xd</unique>
+  <tid>1</tid>
+  <kind>InvalidWrite</kind>
+  <what>Invalid write of size 1</what>
+  <stack>
+    <frame>
+      <ip>0x804842F</ip>
+      <obj>XXXXXXXXXXXX/linkedTest/Debug/linkedTest</obj>
+      <fn>main</fn>
+      <dir>YYYYYYYYYYYY/resources/linkedTest/src</dir>
+      <file>test.c</file>
+      <line>20</line>
+    </frame>
+  </stack>
+  <auxwhat>Address 0x4023032 is 0 bytes after a block of size 10 alloc'd</auxwhat>
+  <stack>
+    <frame>
+      <ip>0x4006F4D</ip>
+      <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
+      <fn>malloc</fn>
+      <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>
+      <file>vg_replace_malloc.c</file>
+      <line>207</line>
+    </frame>
+    <frame>
+      <ip>0x8048410</ip>
+      <obj>XXXXXXXXXXXX/linkedTest/Debug/linkedTest</obj>
+      <fn>main</fn>
+      <dir>YYYYYYYYYYYY/resources/linkedTest/src</dir>
+      <file>test.c</file>
+      <line>17</line>
+    </frame>
+  </stack>
+</error>
+
+<errorcounts>
+  <pair>
+    <count>1</count>
+    <unique>0xd</unique>
+  </pair>
+  <pair>
+    <count>1</count>
+    <unique>0xc</unique>
+  </pair>
+</errorcounts>
+
+<status>
+  <state>FINISHED</state>
+  <time>00:00:00:00.245</time>
+</status>
+
+<suppcounts>
+  <pair>
+    <count>12</count>
+    <name>dl-hack3-cond-1</name>
+  </pair>
+</suppcounts>
+
+<error>
+  <unique>0xe</unique>
+  <tid>1</tid>
+  <kind>Leak_DefinitelyLost</kind>
+  <what>10 bytes in 1 blocks are definitely lost in loss record 1 of 1</what>
+  <leakedbytes>10</leakedbytes>
+  <leakedblocks>1</leakedblocks>
+  <stack>
+    <frame>
+      <ip>0x4006F4D</ip>
+      <obj>/usr/lib/valgrind/x86-linux/vgpreload_memcheck.so</obj>
+      <fn>malloc</fn>
+      <dir>/builddir/build/BUILD/valgrind-3.4.0/coregrind/m_replacemalloc</dir>
+      <file>vg_replace_malloc.c</file>
+      <line>207</line>
+    </frame>
+    <frame>
+      <ip>0x8048410</ip>
+      <obj>XXXXXXXXXXXX/linkedTest/Debug/linkedTest</obj>
+      <fn>main</fn>
+      <dir>YYYYYYYYYYYY/resources/linkedTest/src</dir>
+      <file>test.c</file>
+      <line>17</line>
+    </frame>
+  </stack>
+</error>
+
+</valgrindoutput>
+

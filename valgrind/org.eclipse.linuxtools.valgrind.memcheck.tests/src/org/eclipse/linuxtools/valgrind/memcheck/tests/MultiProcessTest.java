@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
@@ -32,8 +31,7 @@ public class MultiProcessTest extends AbstractMemcheckTest {
 	}
 	
 	public void testNoExec() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNoExec"); //$NON-NLS-1$
 
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
@@ -41,8 +39,7 @@ public class MultiProcessTest extends AbstractMemcheckTest {
 	}
 	
 	public void testExec() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfigurationWorkingCopy config = createConfiguration(bin).getWorkingCopy();
+		ILaunchConfigurationWorkingCopy config = createConfiguration(proj.getProject()).getWorkingCopy();
 		config.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
 		config.doSave();
 		doLaunch(config, "testExec"); //$NON-NLS-1$

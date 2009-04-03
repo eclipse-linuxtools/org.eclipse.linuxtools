@@ -1,0 +1,71 @@
+desc: --massif-out-file=YYYYYYYYYYYY/valgrindFiles/testNoExec/massif_%p.txt --heap=yes --heap-admin=8 --stacks=no --depth=30 --threshold=1.0 --peak-inaccuracy=1.0 --time-unit=i --detailed-freq=10 --max-snapshots=100 --alignment=8
+cmd: XXXXXXXXXXXX/multiProcTest/Debug/multiProcTest
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=134393
+mem_heap_B=400
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=134435
+mem_heap_B=800
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=134477
+mem_heap_B=1200
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=135421
+mem_heap_B=1200
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=peak
+n3: 1200 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 400 0x80484A8: main (parent.c:8)
+ n0: 400 0x80484B7: main (parent.c:9)
+ n0: 400 0x80484C6: main (parent.c:10)
+#-----------
+snapshot=5
+#-----------
+time=135421
+mem_heap_B=800
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=135459
+mem_heap_B=400
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=135497
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty

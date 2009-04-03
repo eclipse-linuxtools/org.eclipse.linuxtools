@@ -9,7 +9,7 @@ int main() {
 		printf("%d\n", *a);
 	}
 	else {
-		execv("../basicTest/Debug/test", NULL);
+		execv("../basicTest/Debug/basicTest", NULL);
 		perror("execv");
 	}
 	return 0;

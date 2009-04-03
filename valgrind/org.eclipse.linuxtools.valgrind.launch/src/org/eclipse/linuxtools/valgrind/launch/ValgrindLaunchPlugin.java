@@ -202,19 +202,27 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		return provider;
 	}
 	
-	public void setLaunchConfiguration(ILaunchConfiguration config) {
+	public void setCurrentLaunchConfiguration(ILaunchConfiguration config) {
 		this.config = config;		
 	}
 
-	public ILaunchConfiguration getLaunchConfiguration() {
+	/**
+	 * @return ILaunchConfiguration associated with Valgrind execution
+	 * currently displayed in the Valgrind view.
+	 */
+	public ILaunchConfiguration getCurrentLaunchConfiguration() {
 		return config;
 	}
 
-	public void setLaunch(ILaunch launch) {
+	public void setCurrentLaunch(ILaunch launch) {
 		this.launch = launch;
 	}
 	
-	public ILaunch getLaunch() {
+	/**
+	 * @return ILaunch associated with Valgrind execution currently displayed
+	 * in the Valgrind view.
+	 */
+	public ILaunch getCurrentLaunch() {
 		return launch;
 	}
 	

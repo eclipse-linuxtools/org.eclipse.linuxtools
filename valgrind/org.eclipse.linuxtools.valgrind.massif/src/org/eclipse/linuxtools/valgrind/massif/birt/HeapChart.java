@@ -33,6 +33,7 @@ import org.eclipse.birt.chart.model.data.NumberDataSet;
 import org.eclipse.birt.chart.model.data.OrthogonalSampleData;
 import org.eclipse.birt.chart.model.data.SampleData;
 import org.eclipse.birt.chart.model.data.SeriesDefinition;
+import org.eclipse.birt.chart.model.data.Trigger;
 import org.eclipse.birt.chart.model.data.impl.ActionImpl;
 import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
 import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
@@ -236,11 +237,8 @@ public class HeapChart extends ChartWithAxesImpl {
 
 		ls1.setPaletteLineColor(true);
 		ls1.setSeriesIdentifier(Messages.getString("HeapChart.Useful_Heap")); //$NON-NLS-1$	
-		ls1.getTriggers().add(
-				TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
-						.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
-								.create(String.valueOf(ls1
-										.getSeriesIdentifier())))));
+		ls1.getTriggers().add(getClickTrigger(ls1));
+		ls1.getTriggers().add(getDblClickTrigger(ls1));
 
 		// Y-Series
 		LineSeries ls2 = (LineSeries) LineSeriesImpl.create();
@@ -252,11 +250,8 @@ public class HeapChart extends ChartWithAxesImpl {
 		}
 		ls2.setPaletteLineColor(true);
 		ls2.setSeriesIdentifier(Messages.getString("HeapChart.Extra_Heap")); //$NON-NLS-1$
-		ls2.getTriggers().add(
-				TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
-						.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
-								.create(String.valueOf(ls2
-										.getSeriesIdentifier())))));
+		ls2.getTriggers().add(getClickTrigger(ls2));
+		ls2.getTriggers().add(getDblClickTrigger(ls2));
 
 		// Y-Series
 		LineSeries lsS = null;
@@ -270,11 +265,8 @@ public class HeapChart extends ChartWithAxesImpl {
 			}
 			lsS.setPaletteLineColor(true);
 			lsS.setSeriesIdentifier(Messages.getString("HeapChart.Stacks")); //$NON-NLS-1$
-			lsS.getTriggers().add(
-					TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
-							.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
-									.create(String.valueOf(lsS
-											.getSeriesIdentifier())))));
+			lsS.getTriggers().add(getClickTrigger(lsS));
+			lsS.getTriggers().add(getDblClickTrigger(lsS));
 		}
 
 		// Y-Series
@@ -287,11 +279,8 @@ public class HeapChart extends ChartWithAxesImpl {
 		}
 		ls3.setPaletteLineColor(true);
 		ls3.setSeriesIdentifier(Messages.getString("HeapChart.Total_Heap")); //$NON-NLS-1$
-		ls3.getTriggers().add(
-				TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
-						.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
-								.create(String.valueOf(ls3
-										.getSeriesIdentifier())))));
+		ls3.getTriggers().add(getClickTrigger(ls3));
+		ls3.getTriggers().add(getDblClickTrigger(ls3));
 
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		sdY.getSeriesPalette().shift(-1);
@@ -306,6 +295,20 @@ public class HeapChart extends ChartWithAxesImpl {
 		// // Z-Series
 		// SeriesDefinition sdZ = SeriesDefinitionImpl.create();
 		// zAxis.getSeriesDefinitions().add(sdZ);
+	}
+
+	private Trigger getClickTrigger(LineSeries ls) {
+		return TriggerImpl.create(TriggerCondition.ONCLICK_LITERAL, ActionImpl
+				.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
+						.create(String.valueOf(ls
+								.getSeriesIdentifier()))));
+	}
+	
+	private Trigger getDblClickTrigger(LineSeries ls) {
+		return TriggerImpl.create(TriggerCondition.ONDBLCLICK_LITERAL, ActionImpl
+				.create(ActionType.CALL_BACK_LITERAL, CallBackValueImpl
+						.create(String.valueOf(ls
+								.getSeriesIdentifier()))));
 	}
 
 	private boolean isStackProfiled(MassifSnapshot[] snapshots) {

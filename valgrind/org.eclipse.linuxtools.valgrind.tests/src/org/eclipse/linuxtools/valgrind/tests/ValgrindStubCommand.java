@@ -18,10 +18,6 @@ import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 public class ValgrindStubCommand extends ValgrindCommand {
 	protected int exitcode;
 	
-	public ValgrindStubCommand(int exitcode) {
-		this.exitcode = exitcode;
-	}
-	
 	@Override
 	public String whichValgrind() throws IOException {
 		return "/path/to/valgrind"; //$NON-NLS-1$
@@ -35,6 +31,6 @@ public class ValgrindStubCommand extends ValgrindCommand {
 	
 	@Override
 	public Process getProcess() {
-		return new ValgrindStubProcess(exitcode);
+		return null;
 	}
 }

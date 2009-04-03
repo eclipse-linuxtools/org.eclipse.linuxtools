@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.tests;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -44,8 +43,7 @@ public class MultiProcessTest extends AbstractMassifTest {
 	}
 	
 	public void testNoExec() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNoExec"); //$NON-NLS-1$
 		
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
@@ -55,8 +53,7 @@ public class MultiProcessTest extends AbstractMassifTest {
 	}
 	
 	public void testExec() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfigurationWorkingCopy config = createConfiguration(bin).getWorkingCopy();
+		ILaunchConfigurationWorkingCopy config = createConfiguration(proj.getProject()).getWorkingCopy();
 		config.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
 		config.doSave();
 		doLaunch(config, "testExec"); //$NON-NLS-1$
@@ -76,8 +73,7 @@ public class MultiProcessTest extends AbstractMassifTest {
 	}
 	
 	public void testExecPidMenu() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfigurationWorkingCopy config = createConfiguration(bin).getWorkingCopy();
+		ILaunchConfigurationWorkingCopy config = createConfiguration(proj.getProject()).getWorkingCopy();
 		config.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_TRACECHILD, true);
 		config.doSave();
 		doLaunch(config, "testExec"); //$NON-NLS-1$

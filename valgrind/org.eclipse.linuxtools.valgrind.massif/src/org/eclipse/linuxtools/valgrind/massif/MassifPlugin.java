@@ -10,12 +10,17 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.massif;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.core.PluginConstants;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -66,6 +71,23 @@ public class MassifPlugin extends AbstractUIPlugin {
 		 FontMetrics fontMetrics = gc.getFontMetrics();
 		 gc.dispose();
 		 return fontMetrics;
+	}
+	
+	public void openEditorForNode(MassifHeapTreeNode element) {
+		// do source lookup
+		ISourceLocator sourceLocator = MassifPlugin.getDefault().getSourceLocator();
+		if (sourceLocator instanceof ISourceLookupDirector) {
+			Object obj = ((ISourceLookupDirector) sourceLocator).getSourceElement(element.getFilename());
+			if (obj != null && obj instanceof IFile) {
+				try {
+					ProfileUIUtils.openEditorAndSelect(((IFile) obj).getLocation().toOSString(), element.getLine());
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public ISourceLocator getSourceLocator() {

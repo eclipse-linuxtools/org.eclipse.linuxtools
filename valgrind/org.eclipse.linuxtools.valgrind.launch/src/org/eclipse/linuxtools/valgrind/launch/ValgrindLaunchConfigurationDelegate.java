@@ -20,10 +20,6 @@ import java.util.Arrays;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -38,22 +34,15 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.console.ConsoleColorProvider;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
-import org.eclipse.ui.handlers.IHandlerActivation;
-import org.eclipse.ui.handlers.IHandlerService;
 
 public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
@@ -78,7 +67,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected ILaunch launch;
 	protected IProcess process;
 	protected String launchStr;
-	protected IHandlerActivation handlerActivation;
 
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor m) throws CoreException {
@@ -97,6 +85,12 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		try {
 			command = getValgrindCommand();
 
+			// remove any output from previous run
+			ValgrindUIPlugin.getDefault().resetView();
+			// reset stored launch data
+			getPlugin().setCurrentLaunchConfiguration(null);
+			getPlugin().setCurrentLaunch(null);
+			
 			// find Valgrind binary if not already done
 			IPath valgrindLocation = getPlugin().findValgrindLocation();
 
@@ -131,15 +125,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			String[] commandArray = (String[]) cmdLine.toArray(new String[cmdLine.size()]);
 			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			monitor.worked(1);
-
-			// Cleanup
-			IHandlerService service = (IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class);
-			if (handlerActivation != null) {
-				// remove old handler
-				service.deactivateHandler(handlerActivation);
-			}
-			// remove any output from previous run
-			ValgrindUIPlugin.getDefault().resetView();
 			
 			// check for cancellation
 			if (monitor.isCanceled()) {
@@ -148,14 +133,13 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// call Valgrind
 			command.execute(commandArray, getEnvironment(config), workDir, usePty);
 			monitor.worked(3);
-			process = DebugPlugin.newProcess(launch, command.getProcess(), renderProcessLabel(commandArray[0]));
+			process = createNewProcess(launch, command.getProcess() ,commandArray[0]);
 			// set the command line used
 			process.setAttribute(IProcess.ATTR_CMDLINE, command.getCommandLine());
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
 			}
 
-			System.out.println("org.eclipse.debug.core.model.IProcess Exit Code: " + process.getExitValue());
 			if (process.getExitValue() == 0) {
 				// create launch summary string to distinguish this launch
 				launchStr = createLaunchStr();
@@ -173,29 +157,10 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				// show view
 				ValgrindUIPlugin.getDefault().showView();
 				monitor.worked(1);
-
-				IHandler handler = new AbstractHandler() {
-					public Object execute(ExecutionEvent event) throws ExecutionException {
-						Display.getDefault().syncExec(new Runnable() {
-							public void run() {
-								Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-								IWorkbenchWizard wizard = new ValgrindExportWizard();
-								wizard.init(PlatformUI.getWorkbench(), null);
-								
-								WizardDialog dialog = new WizardDialog(parent, wizard);
-								dialog.open();
-							}							
-						});
-						
-						return null;
-					}					
-				};
-				handlerActivation = service.activateHandler(PluginConstants.EXPORT_CMD_ID, handler);
 				
-				getPlugin().setLaunchConfiguration(config);
-				getPlugin().setLaunch(launch);
-				// save results of launch to persistent storage
-				//			saveState(monitor.newChild(2));
+				// store these for use by other classes
+				getPlugin().setCurrentLaunchConfiguration(config);
+				getPlugin().setCurrentLaunch(launch);
 			}
 			else {
 				handleValgrindError();
@@ -208,6 +173,10 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		} finally {
 			m.done();
 		}
+	}
+
+	protected IProcess createNewProcess(ILaunch launch, Process systemProcess, String programName) {
+		return DebugPlugin.newProcess(launch, systemProcess, renderProcessLabel(programName));
 	}
 
 	protected ValgrindCommand getValgrindCommand() {

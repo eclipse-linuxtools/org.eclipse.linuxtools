@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.valgrind.massif.tests;
 
 import java.io.File;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -53,8 +52,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 	}
 	
 	public void testExportBadPath() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 		
 		IProcess p = launch.getProcesses()[0];
@@ -71,8 +69,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 	}
 	
 	public void testExportNotDir() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 		
 		IProcess p = launch.getProcesses()[0];
@@ -92,8 +89,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 	}
 	
 	public void testExportBoth() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 		
 		IProcess p = launch.getProcesses()[0];
@@ -119,8 +115,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 	}
 
 	public void testExportOne() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 		
 		IProcess p = launch.getProcesses()[0];
@@ -153,8 +148,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 	}
 	
 	public void testExportNone() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunch launch = doLaunch(config, "testExport"); //$NON-NLS-1$
 		
 		IProcess p = launch.getProcesses()[0];

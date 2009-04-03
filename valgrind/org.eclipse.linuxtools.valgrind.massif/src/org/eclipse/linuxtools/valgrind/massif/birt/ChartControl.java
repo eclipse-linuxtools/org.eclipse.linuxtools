@@ -26,6 +26,8 @@ import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.chart.util.PluginSettings;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.Window;
+import org.eclipse.linuxtools.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.valgrind.massif.MassifViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.SWT;
@@ -33,6 +35,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -87,12 +90,30 @@ public class ChartControl extends Canvas implements PaintListener, ControlListen
 	public void callback(Object event, Object source, CallBackValue value) {
 		// give Valgrind view focus
 		ValgrindUIPlugin.getDefault().showView();
+		MouseEvent mEvent = (MouseEvent) event;
+		
 		DataPointHints point = ((DataPointHints)((WrappedStructureSource)source).getSource());
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		// select the corresponding snapshot in the TableViewer
 		TableViewer viewer = view.getTableViewer();
 		view.setTopControl(viewer.getControl());
-		viewer.setSelection(new StructuredSelection(viewer.getElementAt(point.getIndex())));
+		
+		MassifSnapshot snapshot = (MassifSnapshot) viewer.getElementAt(point.getIndex());
+		
+		switch (mEvent.count) {
+		case 1: // single click
+			viewer.setSelection(new StructuredSelection(snapshot));
+			break;
+		case 2: // double click
+			if (snapshot.isDetailed()) {
+				ChartLocationsDialog dialog = new ChartLocationsDialog(getShell());
+				dialog.setInput(snapshot);
+				
+				if (dialog.open() == Window.OK) {
+					dialog.openEditorForResult();
+				}				
+			}
+		}
 	}
 
 	public Chart getDesignTimeModel() {
@@ -221,5 +242,5 @@ public class ChartControl extends Canvas implements PaintListener, ControlListen
 		needsGeneration = true;
 		redraw();
 	}
-
+	
 }

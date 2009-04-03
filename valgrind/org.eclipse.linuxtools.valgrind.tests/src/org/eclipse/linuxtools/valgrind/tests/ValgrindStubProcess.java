@@ -10,59 +10,69 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.tests;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ValgrindStubProcess extends Process {
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IStreamsProxy;
+
+public class ValgrindStubProcess implements IProcess {
+	protected Map<String, String> attributes;
+	protected ILaunch launch;
+	protected String label;
+	protected IStreamsProxy streamsProxy;
 	protected int exitcode;
 	
-	public ValgrindStubProcess(int exitcode) {
+	public ValgrindStubProcess(ILaunch launch, String label, int exitcode) {
+		attributes = new HashMap<String, String>();
+		streamsProxy = new ValgrindStubStreamsProxy();
+		this.launch = launch;
+		this.label = label;
 		this.exitcode = exitcode;
+		
+		launch.addProcess(this);
 	}
 
-	@Override
-	public void destroy() {
+	public String getAttribute(String key) {
+		return attributes.get(key);
 	}
 
-	@Override
-	public int exitValue() {
-		System.out.println("java.lang.Process Exit Code=" + exitcode);
+	public int getExitValue() throws DebugException {
 		return exitcode;
 	}
 
-	@Override
-	public InputStream getErrorStream() {
-		return new InputStream() {
-			@Override
-			public int read() throws IOException {
-				return -1;
-			}			
-		};
+	public String getLabel() {
+		return label;
 	}
 
-	@Override
-	public InputStream getInputStream() {
-		return new InputStream() {
-			@Override
-			public int read() throws IOException {
-				return -1;
-			}			
-		};
+	public ILaunch getLaunch() {
+		return launch;
 	}
 
-	@Override
-	public OutputStream getOutputStream() {
-		return new OutputStream() {
-			public void write(int b) throws IOException {
-			}			
-		};
+	public IStreamsProxy getStreamsProxy() {
+		return streamsProxy;
 	}
 
-	@Override
-	public int waitFor() throws InterruptedException {
-		System.out.println("java.lang.Process Exit Code=" + exitcode);
-		return exitcode;
+	public void setAttribute(String key, String value) {
+		attributes.put(key, value);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapter) {
+		return null;
+	}
+
+	public boolean canTerminate() {
+		return true;
+	}
+
+	public boolean isTerminated() {
+		return true;
+	}
+
+	public void terminate() throws DebugException {
 	}
 
 }

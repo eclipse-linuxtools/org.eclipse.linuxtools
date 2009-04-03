@@ -16,7 +16,9 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
@@ -28,13 +30,7 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 	@Override
 	protected ValgrindCommand getValgrindCommand() {
 		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
-			int exitcode = 0;
-			try {
-				exitcode = readErrorCode();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-			return new ValgrindStubCommand(exitcode);
+			return new ValgrindStubCommand();
 		}
 		else {
 			return super.getValgrindCommand();
@@ -46,6 +42,24 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 		if (ValgrindTestsPlugin.RUN_VALGRIND) {
 			super.createDirectory(path);
 		}
+	}
+	
+	@Override
+	protected IProcess createNewProcess(ILaunch launch, Process systemProcess,
+			String programName) {
+		IProcess process;
+		if (ValgrindTestsPlugin.RUN_VALGRIND) {
+			process = super.createNewProcess(launch, systemProcess, programName);
+		}
+		else {
+			try {
+				int exitcode = readErrorCode();
+				process = new ValgrindStubProcess(launch, programName, exitcode);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return process;
 	}
 
 	@Override
@@ -90,7 +104,6 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 		FileReader fr = null;
 		try {
 			IPath path = verifyOutputPath(config).append(ERROR_CODE_FILE);
-			System.out.println("Path to .errorCode: " + path.toOSString());
 			int exitcode = 0;
 			if (path.toFile().exists()) {
 				fr = new FileReader(path.toFile());

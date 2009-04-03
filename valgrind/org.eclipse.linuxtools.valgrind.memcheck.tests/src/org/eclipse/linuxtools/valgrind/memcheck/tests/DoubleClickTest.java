@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import java.io.File;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -72,8 +71,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 	}
 
 	public void testDoubleClickFile() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
 
 		doDoubleClick();
@@ -93,8 +91,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 	}
 	
 	public void testDoubleClickLine() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
 
 		doDoubleClick();

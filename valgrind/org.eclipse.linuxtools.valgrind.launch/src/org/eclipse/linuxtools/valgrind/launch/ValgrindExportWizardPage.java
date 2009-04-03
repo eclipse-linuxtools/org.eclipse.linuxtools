@@ -68,7 +68,7 @@ public class ValgrindExportWizardPage extends WizardPage implements IWizardPage 
 		IPath logPath = null;
 
 		// Retrieve location of Valgrind logs from launch configuration
-		ILaunchConfiguration config = getPlugin().getLaunchConfiguration();
+		ILaunchConfiguration config = getPlugin().getCurrentLaunchConfiguration();
 		if (config != null && config.exists()) {
 			String strpath;
 			try {

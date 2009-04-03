@@ -102,7 +102,6 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		ValgrindTestLaunchDelegate delegate = new ValgrindTestLaunchDelegate();
 		launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 		
-		System.out.println(testName);
 		DebugPlugin.getDefault().getLaunchManager().addLaunch(launch);
 		launches.add(launch);
 		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);

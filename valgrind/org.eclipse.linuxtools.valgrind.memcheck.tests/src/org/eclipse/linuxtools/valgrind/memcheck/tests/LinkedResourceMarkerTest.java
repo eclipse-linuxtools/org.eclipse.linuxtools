@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -32,8 +31,7 @@ import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 public class LinkedResourceMarkerTest extends AbstractLinkedResourceMemcheckTest {
 	
 	public void testLinkedMarkers() throws Exception {
-		IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-		ILaunchConfiguration config = createConfiguration(bin);
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testLinkedMarkers"); //$NON-NLS-1$
 
 		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();

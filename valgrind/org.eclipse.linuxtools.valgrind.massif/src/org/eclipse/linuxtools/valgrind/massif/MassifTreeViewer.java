@@ -10,32 +10,22 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.massif;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.debug.core.model.ISourceLocator;
-import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
-import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.ui.CollapseAction;
 import org.eclipse.linuxtools.valgrind.ui.ExpandAction;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.PartInitException;
 
 public class MassifTreeViewer extends TreeViewer {
 
@@ -73,42 +63,13 @@ public class MassifTreeViewer extends TreeViewer {
 		};
 		setContentProvider(contentProvider);
 
-		setLabelProvider(new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				return ((MassifHeapTreeNode) element).getText();
-			}
-
-			@Override
-			public Image getImage(Object element) {
-				Image img = null;
-				if (((MassifHeapTreeNode) element).getParent() == null) { // only show for root elements
-					img = MassifPlugin.imageDescriptorFromPlugin(MassifPlugin.PLUGIN_ID, "icons/memory_view.gif").createImage(); //$NON-NLS-1$
-				} else { // stack frame
-					img = DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_STACKFRAME);
-				}
-				return img;
-			}
-		});
+		setLabelProvider(new MassifTreeLabelProvider());
 
 		doubleClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				MassifHeapTreeNode element = (MassifHeapTreeNode) ((TreeSelection) event.getSelection()).getFirstElement();
 				if (element.hasSourceFile()) {
-					// do source lookup
-					ISourceLocator sourceLocator = MassifPlugin.getDefault().getSourceLocator();
-					if (sourceLocator instanceof ISourceLookupDirector) {
-						Object obj = ((ISourceLookupDirector) sourceLocator).getSourceElement(element.getFilename());
-						if (obj != null && obj instanceof IFile) {
-							try {
-								ProfileUIUtils.openEditorAndSelect(((IFile) obj).getLocation().toOSString(), element.getLine());
-							} catch (PartInitException e) {
-								e.printStackTrace();
-							} catch (BadLocationException e) {
-								e.printStackTrace();
-							}
-						}
-					}
+					MassifPlugin.getDefault().openEditorForNode(element);
 				} 
 				if (contentProvider.hasChildren(element)) {
 					expandToLevel(element, 1);

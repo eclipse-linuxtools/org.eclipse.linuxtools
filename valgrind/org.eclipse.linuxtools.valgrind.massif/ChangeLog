@@ -1,3 +1,19 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* birt/ChartLocationsDialog.java: New file.
+	* MassifTreeLabelProvider.java: New file.
+	* META-INF/MANIFEST.MF: 0.2.0 version.
+	* ChartControl.java (callback): Added double-click callback.
+	* HeapChart.java: Likewise.
+	* messages.properties: New strings.
+	* MassifHeapTreeNode.java: Redesigned to store parsed components instead
+	of just text.  
+	* MassifParser.java (parseFilename): Helper for parsing filenames.
+	(parseTree): Parse each component in the heap tree.
+	(parseFunction): Helper for parsing function names.
+	* MassifPlugin.java (openEditorForNode): Refactored.
+	* MassifTreeViewer.java (MassifTreeViewer): Likewise. 
+
 2009-03-31  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifTreeViewer.java: Added expand/collapse actions. 

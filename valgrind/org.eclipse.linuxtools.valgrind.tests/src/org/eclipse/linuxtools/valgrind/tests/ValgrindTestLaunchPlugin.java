@@ -65,7 +65,7 @@ public class ValgrindTestLaunchPlugin extends ValgrindLaunchPlugin {
 	@Override
 	protected ValgrindCommand getValgrindCommand() {
 		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
-			return new ValgrindStubCommand(0);
+			return new ValgrindStubCommand();
 		}
 		else {
 			return super.getValgrindCommand();

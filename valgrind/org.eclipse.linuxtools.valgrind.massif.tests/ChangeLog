@@ -1,3 +1,12 @@
+2009-04-03  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: 0.2.0 version.
+	* AbstractMassifTest.java (checkFile): New helper.
+	(checkLine): Likewise.
+	* ChartTests.java (testChartLocationsDialog): New test. 
+	* DoubleClickTest.java (testDoubleClickLine): Changes from refactoring.
+	(testDoubleClickFile): Likewise.
+
 2009-03-31  Elliott Baron  <ebaron@redhat.com>
 
 	* ExpandCollapseTest.java: New file.
