@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ *    Intel Corporation - build job code
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.tests;
 
@@ -18,27 +19,37 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
-import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.osgi.framework.Bundle;
 
 public abstract class AbstractTest extends TestCase {
+	private static final String BIN_DIR = "Debug"; //$NON-NLS-1$
 	protected ICProject proj;
 	
 	protected ILaunchManager getLaunchManager() {
@@ -53,14 +64,44 @@ public abstract class AbstractTest extends TestCase {
 	}
 
 	public void buildProject(ICProject proj) throws CoreException {
-		proj.getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
-		proj.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+		IWorkspace wsp = ResourcesPlugin.getWorkspace();
+		final IProject curProject = proj.getProject();
+		ISchedulingRule rule = wsp.getRuleFactory().buildRule();
+		Job buildJob = new Job("project build job") { //$NON-NLS-1$
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					curProject.build(
+							IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+				} catch (CoreException e) {
+					fail(e.getStatus().getMessage());
+				} catch (OperationCanceledException e) {
+					fail(NLS.bind(Messages.getString("AbstractTest.Build_cancelled"), curProject.getName(), e.getMessage())); //$NON-NLS-1$
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		buildJob.setRule(rule);
+
+		buildJob.schedule();
+
+		try {
+			buildJob.join();
+		} catch (InterruptedException e) {
+			fail(NLS.bind(Messages.getString("AbstractTest.Build_interrupted"), curProject.getName(), e.getMessage())); //$NON-NLS-1$
+		}
+
+		IStatus status = buildJob.getResult();
+		if (status.getCode() != IStatus.OK) {
+			fail(NLS.bind(Messages.getString("AbstractTest.Build_failed"), curProject.getName(), status.getMessage())); //$NON-NLS-1$
+		}
+
+		curProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
 	public ICProject createProject(Bundle bundle, String projname)
 			throws CoreException, URISyntaxException, IOException,
 			InvocationTargetException, InterruptedException {
-		ICProject proj = CProjectHelper.createCProject(projname , "Debug"); //$NON-NLS-1$
+		ICProject proj = CProjectHelper.createCProject(projname , BIN_DIR);
 		URL location = FileLocator.find(bundle, new Path("resources/" + projname), null); //$NON-NLS-1$
 		File testDir = new File(FileLocator.toFileURL(location).toURI());
 		
@@ -78,16 +119,22 @@ public abstract class AbstractTest extends TestCase {
 		CProjectHelper.delete(cproject);
 	}
 	
-	protected ILaunchConfiguration createConfiguration(IBinary bin) {
+	protected ILaunchConfiguration createConfiguration(IProject proj) {
 		ILaunchConfiguration config = null;
 		try {
-			String projectName = bin.getResource().getProjectRelativePath().toString();
+			String projectName = proj.getName();
+			// hard-coded to work around getBinaries() returning empty issue
+			IResource bin = proj.findMember(new Path(BIN_DIR).append(projectName));
+			String binPath = bin.getProjectRelativePath().toString();
 			ILaunchConfigurationType configType = getLaunchConfigType();
-			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, getLaunchManager().generateUniqueLaunchConfigurationNameFrom(bin.getElementName()));
+			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
+					getLaunchManager()
+							.generateUniqueLaunchConfigurationNameFrom(
+									projectName));
 	
-			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, projectName);
-			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin.getCProject().getElementName());
-			wc.setMappedResources(new IResource[] {bin.getResource(), bin.getResource().getProject()});
+			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, binPath);
+			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+			wc.setMappedResources(new IResource[] {bin, proj});
 			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String) null);
 			
 			// Make launch run in foreground
