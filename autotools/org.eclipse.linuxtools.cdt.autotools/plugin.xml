@@ -539,6 +539,16 @@
                      natureFilter="both"
                      superClass="org.eclipse.linuxtools.cdt.autotools.tool.autogen">
                </tool>
+               <tool
+                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc"
+                     isAbstract="false"
+                     superClass="cdt.managedbuild.tool.gnu.c.compiler">
+               </tool>
+               <tool
+                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
+                     isAbstract="false"
+                     superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
+               </tool>
                <builder
                      id="org.eclipse.linuxtools.cdt.autotools.toolchain.builder"
                      isAbstract="false"
@@ -739,15 +749,31 @@
             class="org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyPage"
             id="org.eclipse.linuxtools.cdt.autotools.propertypage"
             name="%PropertyAutotools.name">
+         <filter
+               name="projectNature"
+               value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
+         </filter>
          <enabledWhen>
-            <and>
+            <or>
                <instanceof
-                     value="org.eclipse.core.resources.IResource">
+                     value="org.eclipse.core.resources.IProject">
                </instanceof>
-               <test
-                     property="org.eclipse.linuxtools.cdt.autotools.isAutotoolsProject">
-               </test>
-            </and>
+               <instanceof
+                     value="org.eclipse.cdt.core.model.ICProject">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.core.resources.IFolder">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.cdt.core.model.ICContainer">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.cdt.core.model.ITranslationUnit">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.core.resources.IFile">
+               </instanceof>
+            </or>
          </enabledWhen>
       </page>
    </extension>

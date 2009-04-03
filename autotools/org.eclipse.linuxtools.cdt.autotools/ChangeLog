@@ -1,3 +1,10 @@
+2009-04-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #270680
+	
+	* plugin.xml: Fix Autotools properties page to only show up for Autotools nature.
+	Add gcc and g++ to Toolchain so indexing will work.
+
 2009-03-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Add
