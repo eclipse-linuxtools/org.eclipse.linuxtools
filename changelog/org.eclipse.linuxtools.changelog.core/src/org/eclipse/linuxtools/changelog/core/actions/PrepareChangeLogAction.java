@@ -207,33 +207,35 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				IThreeWayDiff diff = (IThreeWayDiff)d;
 				monitor.beginTask(null, 100);
 				IResourceDiff localDiff = (IResourceDiff)diff.getLocalChange();
-				IFile file = (IFile)localDiff.getResource();
-				monitor.subTask(Messages.getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
-				String osEncoding = file.getCharset();
-				IFileRevision ancestorState = localDiff.getBeforeState();
-				IStorage ancestorStorage;
-				if (ancestorState != null)
-					ancestorStorage = ancestorState.getStorage(monitor);
-				else 
-					ancestorStorage = null;
+				IResource resource = localDiff.getResource();
+				if (resource instanceof IFile) {
+					IFile file = (IFile)resource;
+					monitor.subTask(Messages.getString("ChangeLog.MergingDiffs")); // $NON-NLS-1$
+					String osEncoding = file.getCharset();
+					IFileRevision ancestorState = localDiff.getBeforeState();
+					IStorage ancestorStorage;
+					if (ancestorState != null)
+						ancestorStorage = ancestorState.getStorage(monitor);
+					else 
+						ancestorStorage = null;
 
-				try {
-					// We compare using a standard differencer to get ranges
-					// of changes.  We modify them to be document-based (i.e.
-					// first line is line 1) and store them for later parsing.
-					LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
-					LineComparator right = new LineComparator(file.getContents(), osEncoding);
-					for (RangeDifference tmp: RangeDifferencer.findDifferences(left, right)) {
-						if (tmp.kind() == RangeDifference.CHANGE) {
-							int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
-							p.addLineRange(tmp.rightStart() + 1, tmp.rightStart() + rightLength);
+					try {
+						// We compare using a standard differencer to get ranges
+						// of changes.  We modify them to be document-based (i.e.
+						// first line is line 1) and store them for later parsing.
+						LineComparator left = new LineComparator(ancestorStorage.getContents(), osEncoding);
+						LineComparator right = new LineComparator(file.getContents(), osEncoding);
+						for (RangeDifference tmp: RangeDifferencer.findDifferences(left, right)) {
+							if (tmp.kind() == RangeDifference.CHANGE) {
+								int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
+								p.addLineRange(tmp.rightStart() + 1, tmp.rightStart() + rightLength);
+							}
 						}
+					} catch (UnsupportedEncodingException e) {
+						// do nothing for now
 					}
-				} catch (UnsupportedEncodingException e) {
-					// do nothing for now
 				}
 				monitor.done();
-
 			}
 		} catch (CoreException e) {
 			// Do nothing if error occurs

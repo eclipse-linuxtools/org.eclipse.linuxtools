@@ -1,3 +1,8 @@
+2009-04-07  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (getChangedLines): 
+	Verify we have an IFile resource before treating it as an IFile resource.
+
 2009-03-16  Elliott Baron  <ebaron@redhat.com>
 
 	Resolves #268224.
