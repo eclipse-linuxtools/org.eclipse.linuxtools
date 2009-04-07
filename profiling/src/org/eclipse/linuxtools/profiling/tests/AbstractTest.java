@@ -122,8 +122,12 @@ public abstract class AbstractTest extends TestCase {
 		return proj;
 	}
 	
-	protected void deleteProject(ICProject cproject) {
-		CProjectHelper.delete(cproject);
+	protected void deleteProject(final ICProject cproject) throws CoreException {
+		ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+			public void run(IProgressMonitor monitor) throws CoreException {
+				CProjectHelper.delete(cproject);
+			}			
+		}, null);
 	}
 	
 	protected ILaunchConfiguration createConfiguration(IProject proj) {

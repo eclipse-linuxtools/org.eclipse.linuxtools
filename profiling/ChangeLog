@@ -1,3 +1,7 @@
+2009-04-07  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractTest.java (deleteProject): Wrap this in a IWorkspaceRunnable.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* Messages.java: New file.
