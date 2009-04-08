@@ -12,7 +12,7 @@ echo "[`date +%Y/%m/%d\ %H:%M`] Hudson job ${JOBNAME} build #${BUILD_NUMBER} (${
 
 buildTimestamp="`date +%Y%m%d%H%M`"
 projectid="technology.linuxtools"
-projRelengRoot=http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/trunk
+projRelengRoot=svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/trunk
 projRelengPath=org.eclipse.linuxtools.releng
 
 # where should we look for pre-checked out project sources for org.eclipse.dash.common.releng and org.eclipse.releng.basebuilder ?
@@ -69,12 +69,11 @@ ln -s ${cvsProjectBaseDir}/org.eclipse.dash.common.releng ${writableBuildRoot}/
 
 # symlink 3rdPartyJars (reuse existing content on build.eclipse.org for ant-contrib.jar, etc.)
 ln -s ${thirdPartyJarsDir} ${writableBuildRoot}/
-thirdPartyJarsDir="${writableBuildRoot}/3rdPartyJars"
 
 # run a build - may have to pass in "-javaHome /usr/lib/jvm/java" or similar here if default JVM not found
 cd ${writableBuildRoot}/org.eclipse.dash.common.releng/tools/scripts
 ./start.sh -projectid ${projectid} -version ${version} -buildType ${buildType} -buildTimestamp ${buildTimestamp} \
   -writableBuildRoot ${writableBuildRoot} -thirdPartyJarsDir ${thirdPartyJarsDir} -downloadsDir ${downloadsDir} -buildDir ${buildDir} \
-  ${projRelengRoot} ${projRelengPath} ${EXTRAFLAGS} 2>&1
+  -projRelengRoot ${projRelengRoot} -projRelengPath ${projRelengPath} ${EXTRAFLAGS} 2>&1
 
 echo "[`date +%Y/%m/%d\ %H:%M`] Hudson job ${JOBNAME} build #${BUILD_NUMBER} (${BUILD_ID}) done." 
