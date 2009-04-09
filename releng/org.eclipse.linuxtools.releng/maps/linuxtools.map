@@ -6,15 +6,15 @@ fragment@org.eclipse.linuxtools.changelog.parsers.java=SVN,,http://dev.eclipse.o
 feature@org.eclipse.linuxtools.changelog=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/changelog/tags/B0_2_0/org.eclipse.linuxtools.changelog-feature
 
 !*** rpm
-plugin@org.eclipse.linuxtools.rpm.rpmlint=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0org.eclipse.linuxtools.rpm.rpmlint
-plugin@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0org.eclipse.linuxtools.rpm.ui.editor
-plugin@org.eclipse.linuxtools.rpm.ui.editor.doc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0org.eclipse.linuxtools.rpm.ui.editor.doc
-plugin@org.eclipse.linuxtools.rpm.ui.editor.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0org.eclipse.linuxtools.rpm.ui.editor.tests
-feature@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0org.eclipse.linuxtools.rpm.ui.editor-feature
+plugin@org.eclipse.linuxtools.rpm.rpmlint=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.rpm.rpmlint
+plugin@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.rpm.ui.editor
+plugin@org.eclipse.linuxtools.rpm.ui.editor.doc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.rpm.ui.editor.doc
+plugin@org.eclipse.linuxtools.rpm.ui.editor.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.rpm.ui.editor.tests
+feature@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.rpm.ui.editor-feature
 
 !*** rpmstubby
-plugin@org.eclipse.linuxtools.rpmstubby=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpmstubby/tags/LinuxTools_0_2_0org.eclipse.linuxtools.rpmstubby
-feature@org.eclipse.linuxtools.rpmstubby=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpmstubby/tags/LinuxTools_0_2_0org.eclipse.linuxtools.rpmstubby-feature
+plugin@org.eclipse.linuxtools.rpmstubby=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpmstubby/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.rpmstubby
+feature@org.eclipse.linuxtools.rpmstubby=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpmstubby/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.rpmstubby-feature
 
 !*** autotools
 plugin@org.eclipse.linuxtools.cdt.autotools=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/autotools/tags/B0_2_0/org.eclipse.linuxtools.cdt.autotools
@@ -29,8 +29,8 @@ plugin@org.eclipse.linuxtools.cdt.libhover.library_docs=SVN,,http://dev.eclipse.
 feature@org.eclipse.linuxtools.cdt.libhover.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/tags/B0_2_0/org.eclipse.linuxtools.cdt.libhover.feature
 
 !*** systemtap
-plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/branches/0.2.0/org.eclipse.linuxtools.systemtap.ui.editor
-feature@org.eclipse.linuxtools.systemtap.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/branches/0.2.0/org.eclipse.linuxtools.systemtap.feature
+plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.systemtap.ui.editor
+feature@org.eclipse.linuxtools.systemtap.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/tags/LinuxTools_0_2_0/org.eclipse.linuxtools.systemtap.feature
 
 !*** profiling framework
 plugin@org.eclipse.linuxtools.profiling.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/tags/RELEASE_0_2_0/org.eclipse.linuxtools.profiling.launch
