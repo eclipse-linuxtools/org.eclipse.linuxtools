@@ -1,0 +1,113 @@
+SystemTapGui
+
+Table of Contents
+-----------------
+
+1. Introduction
+2. Requirements
+3. Architecture
+4. Installation
+5. Known Bugs
+6. Future Plans
+7. FAQ 
+
+
+1. Introduction
+----------------
+
+SystemtapGui is a tool being developed to assist in writing SystemTap
+scripts and viewing kernel performance. It is both an Integrated
+Development Environment for the SystemTap scripting language, as well as
+a data visualization and analysis tool.
+
+The GUI is targetted at System Administrators who want to get
+information out of their system using SystemTap, as well as Developers
+who wish to write new SystemTap scripts. It is an Eclipse-based
+application.
+
+
+2. Requirements
+----------------
+
+Hardware Requirements:
+    * x86, x86_64, ppc64, s390
+
+Software Requirements:
+    * Linux kernel v2.6.14 or newer
+    * Eclipse v3.4
+    * SystemTap v0.7 or newer
+
+
+3. Architecture
+---------------
+
+The Gui is a client-server application and the server and client can be installed seperately. The client is an eclipse plugin and requires eclipse to be installed. It provides an IDE to write scripts and a visualizer to view the output in graphical form.
+ The server (stapgui-server) provides stdout/stderr data collection and process management services for processes run on a remote system. The  server executes the SystemTap script, collects all output to stderr and stdout from that process, then funnels it via a socket to the client.
+The client and server can be installed on machines with different architectures.This allows users to monitor remote machines. You may also download and build the source yourself.
+
+4. Installation
+----------------
+
+NOTE: Installation assumes you already have both Eclipse and SystemTap
+installed.
+
+   Server
+   ------
+   1  Install the systemtapguiserver rpm. Eg on Fedora run the command 
+      yum install systemtapguiserver
+   2. Run the command 'stapgui-server'. You will get a message saying "Listening for Connections..." in a minute or so which shows that the server is up and running.  
+
+   Client
+   -------
+   1. Install the  eclipse-systemtapgui rpm. Eg on Fedora run the command
+      yum install eclipse-systemtapgui
+   2. Launch eclipse and open the SystemTap IDE perspective to start writing scripts. 
+   3. For detailed help see the Help Section in Eclipse. 
+
+5. Known Bugs
+--------------
+
+This is a list of known bugs that the developers are aware of and will
+be fixed:
+
+a.  Performance issues with large outputs
+
+b.  Indicate terminate on self ending scripts
+
+c.  Multiple probes can be added for the same line
+
+d.  Time-wait between script submission and execution.
+
+
+6. Future Plans
+---------------- 
+
+The next steps in development are to fix the known bugs in they system
+as well as to improve system performance. 
+
+Please post any feedback, whether it be bugs, requested features, or
+general questions. Feedback can be posted directly to the projects
+website (https://sourceforge.net/projects/stapgui/) or to the systemtap
+mailing list. We welcome your input and hope to develop an excellent
+open source tool for the community in the coming months.
+
+
+7. FAQ
+--------
+
+
+1. Why does it freeze / do nothing when I try to run a script?
+The script would take 2-3 minutes to execute. The time taken is for the
+script to be transferred to and executed on the remote machine. If you
+do not see a response after 3 minutes make sure SystemTap and your
+kernel are set up properly on the remote machine. For information on how
+to do this visit the SystemTap Wiki at
+http://sourceware.org/systemtap/wiki
+
+2. Why does it take a long time to start up the first time I open the IDE?
+It is running each of the probes to gather information about the
+available variables. This only has to be done once, so its recommended
+that you let it complete. If you don't need this information, you can
+click "Cancel" to stop this process.
+
+END OF DOCUMENT
