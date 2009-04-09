@@ -33,11 +33,11 @@ plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,,http://dev.eclipse.org/sv
 feature@org.eclipse.linuxtools.systemtap.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/branches/0.2.0/org.eclipse.linuxtools.systemtap.feature
 
 !*** profiling framework
-plugin@org.eclipse.linuxtools.profiling.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/branches/0.2.0/org.eclipse.linuxtools.profiling.launch
-plugin@org.eclipse.linuxtools.profiling.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/branches/0.2.0/org.eclipse.linuxtools.profiling.tests
-plugin@org.eclipse.linuxtools.profiling.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/branches/0.2.0/org.eclipse.linuxtools.profiling.ui
-feature@org.eclipse.linuxtools.profiling.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/branches/0.2.0/org.eclipse.linuxtools.profiling-feature
-feature@org.eclipse.linuxtools.profiling.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/branches/0.2.0/org.eclipse.linuxtools.profiling.test-feature
+plugin@org.eclipse.linuxtools.profiling.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/tags/RELEASE_0_2_0/org.eclipse.linuxtools.profiling.launch
+plugin@org.eclipse.linuxtools.profiling.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/tags/RELEASE_0_2_0/org.eclipse.linuxtools.profiling.tests
+plugin@org.eclipse.linuxtools.profiling.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/tags/RELEASE_0_2_0/org.eclipse.linuxtools.profiling.ui
+feature@org.eclipse.linuxtools.profiling.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/tags/RELEASE_0_2_0/org.eclipse.linuxtools.profiling-feature
+feature@org.eclipse.linuxtools.profiling.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/tags/RELEASE_0_2_0/org.eclipse.linuxtools.profiling.test-feature
 
 !*** oprofile
 plugin@org.eclipse.linuxtools.oprofile.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/branches/0.2.0/org.eclipse.linuxtools.oprofile.core
@@ -52,19 +52,19 @@ plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,,http://dev.eclipse.org/svnr
 feature@org.eclipse.linuxtools.oprofile.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/branches/0.2.0/org.eclipse.linuxtools.oprofile-feature
 
 !*** valgrind
-plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.cachegrind
-plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.cachegrind.tests
-plugin@org.eclipse.linuxtools.valgrind.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.core
-plugin@org.eclipse.linuxtools.valgrind.history=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.history
-plugin@org.eclipse.linuxtools.valgrind.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.launch
-plugin@org.eclipse.linuxtools.valgrind.massif=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.massif
-plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.massif.tests
-plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.memcheck
-plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.memcheck.tests
-plugin@org.eclipse.linuxtools.valgrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.tests
-plugin@org.eclipse.linuxtools.valgrind.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.ui
-feature@org.eclipse.linuxtools.valgrind.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind-feature
-feature@org.eclipse.linuxtools.valgrind.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/branches/0.2.0/org.eclipse.linuxtools.valgrind.test-feature
+plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.cachegrind
+plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.cachegrind.tests
+plugin@org.eclipse.linuxtools.valgrind.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.core
+plugin@org.eclipse.linuxtools.valgrind.history=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.history
+plugin@org.eclipse.linuxtools.valgrind.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.launch
+plugin@org.eclipse.linuxtools.valgrind.massif=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.massif
+plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.massif.tests
+plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.memcheck
+plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.memcheck.tests
+plugin@org.eclipse.linuxtools.valgrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.tests
+plugin@org.eclipse.linuxtools.valgrind.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.ui
+feature@org.eclipse.linuxtools.valgrind.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind-feature
+feature@org.eclipse.linuxtools.valgrind.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/tags/RELEASE_0_2_0/org.eclipse.linuxtools.valgrind.test-feature
 
 feature@org.eclipse.linuxtools.all=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.all
 feature@org.eclipse.linuxtools.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.test-feature
