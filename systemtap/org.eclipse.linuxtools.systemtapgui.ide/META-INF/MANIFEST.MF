@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: IDE Plug-in
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.ide;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.linuxtools.systemtapgui.ide.internal.IDEPlugin
+Bundle-Vendor: IBM
+Bundle-Localization: plugin
+Export-Package: org.eclipse.linuxtools.systemtapgui.ide,
+ org.eclipse.linuxtools.systemtapgui.ide.actions,
+ org.eclipse.linuxtools.systemtapgui.ide.structures
+Require-Bundle: org.eclipse.linuxtools.systemtapgui.logging,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.linuxtools.systemtapgui.editor,
+ org.eclipse.linuxtools.systemtapgui.systemtapgui,
+ org.eclipse.linuxtools.systemtapgui.consolelog,
+ org.eclipse.linuxtools.systemtapgui.structures,
+ org.eclipse.core.resources;bundle-version="3.4.1"
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.linuxtools.systemtapgui.graphing,
+ org.eclipse.linuxtools.systemtapgui.graphing.views,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.datasets,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.structures,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.ui.wizards.dataset,
+ org.eclipse.linuxtools.systemtapgui.structures,
+ org.eclipse.linuxtools.systemtapgui.structures.listeners,
+ org.eclipse.linuxtools.systemtapgui.structures.runnable,
+ org.eclipse.linuxtools.systemtapgui.structures.ui,
+ org.eclipse.linuxtools.systemtapgui.structures.validators
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+

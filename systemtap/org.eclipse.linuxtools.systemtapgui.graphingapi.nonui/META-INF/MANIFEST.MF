@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GraphingAPI NonUI Plug-in
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.graphingapi.nonui;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.internal.GraphingAPINonUIPlugin
+Bundle-Vendor: IBM
+Export-Package: org.eclipse.linuxtools.systemtapgui.graphingapi.nonui,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.adapters,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.aggregates,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.datasets,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.datasets.row,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.datasets.table,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.filters,
+ org.eclipse.linuxtools.systemtapgui.graphingapi.nonui.structures
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.linuxtools.systemtapgui.structures
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.linuxtools.systemtapgui.consolelog.structures
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

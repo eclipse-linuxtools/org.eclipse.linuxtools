@@ -1,0 +1,113 @@
+/*******************************************************************************
+ * Copyright (c) 2006 IBM Corporation.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *******************************************************************************/
+
+package org.eclipse.linuxtools.systemtapgui.editor;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.systemtapgui.editor.internal.Localization;
+
+import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IPersistableElement;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.ILocationProvider;
+
+
+
+public class PathEditorInput implements IPathEditorInput, ILocationProvider {
+	private IPath fPath;
+	private IWorkbenchWindow fMainWindow;
+	public boolean temp = false;
+	private static int tempcount = 0;
+
+	public PathEditorInput(IPath path) {
+		if (path == null) {
+			throw new IllegalArgumentException();
+		}
+		this.fPath = path;
+	}
+	public PathEditorInput(IPath path, IWorkbenchWindow window) {
+		this(path);
+		this.fMainWindow = window;
+	}
+
+	public PathEditorInput() throws IOException	{
+		temp = true;
+		tempcount++;
+		File file = File.createTempFile(Localization.getString("PathEditorInput.Untitled") , ".stp"); //$NON-NLS-1$ //$NON-NLS-2$
+		fPath = new Path(file.getAbsolutePath());
+	}
+
+	public int hashCode() {
+		return fPath.hashCode();
+	}
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof PathEditorInput))
+			return false;
+		PathEditorInput other = (PathEditorInput) obj;
+
+		return fPath.equals(other.fPath);
+	}
+	
+	public boolean exists() {
+		return fPath.toFile().exists();
+	}
+	
+	public ImageDescriptor getImageDescriptor() {
+		return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(fPath.toString());
+	}
+	
+	public String getName() {
+		String[] substr = fPath.segments();
+		return substr[substr.length -1];
+	}
+	
+	public String getToolTipText() {
+		return fPath.makeRelative().toOSString();
+	}
+	
+	public IPath getPath() {
+		return fPath;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapter) {
+		return null;
+	}
+
+	public IPersistableElement getPersistable() {
+		return null;
+	}
+
+	public IWorkbenchWindow getMainWindow() {
+		return fMainWindow;
+	}
+
+	public IPath getPath(Object element) {
+		if(element instanceof PathEditorInput) {
+			return ((PathEditorInput)element).getPath();
+		}
+		return null;
+	}
+
+	public void setPath(IPath newPath) {
+		fPath = newPath;
+	}
+}

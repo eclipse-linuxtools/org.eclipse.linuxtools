@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Structures Plug-in
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.structures;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.linuxtools.systemtapgui.structures.internal.StructuresPlugin
+Bundle-Vendor: IBM
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.linuxtools.systemtapgui.structures,
+ org.eclipse.linuxtools.systemtapgui.structures.listeners,
+ org.eclipse.linuxtools.systemtapgui.structures.runnable,
+ org.eclipse.linuxtools.systemtapgui.structures.ui,
+ org.eclipse.linuxtools.systemtapgui.structures.validators
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
