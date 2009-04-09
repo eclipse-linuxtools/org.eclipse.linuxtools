@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RPM UI Plug-in (Incubation)
+Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui;singleton:=true
+Bundle-Version: 3.0.0
+Bundle-Activator: org.eclipse.linuxtools.rpm.ui.RPMUIPlugin
+Bundle-Vendor: Eclipse.org
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-Classpath: RpmUi.jar
+Require-Bundle: org.eclipse.ui.ide,
+ org.eclipse.jface.text,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui,
+ org.eclipse.swt,
+ org.eclipse.jface,
+ org.eclipse.text,
+ org.eclipse.linuxtools.rpm.core
+Export-Package: 
+ org.eclipse.linuxtools.rpm.ui,
+ org.eclipse.linuxtools.rpm.ui.logviewer,
+ org.eclipse.linuxtools.rpm.ui.preferences,
+ org.eclipse.linuxtools.rpm.ui.propertypage,
+ org.eclipse.linuxtools.rpm.ui.util

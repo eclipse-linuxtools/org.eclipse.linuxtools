@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
 import org.eclipse.osgi.util.NLS;
 
-public final class Messages extends NLS {
+public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.preferences.messages"; //$NON-NLS-1$
 	public static String MacroProposalsPreferencePage_0;
 	public static String MacroProposalsPreferencePage_1;
@@ -26,8 +26,6 @@ public final class Messages extends NLS {
 	public static String MainPreferencePage_3;
 	public static String MainPreferencePage_4;
 	public static String MainPreferencePage_5;
-	public static String MainPreferencePage_6;
-	public static String MainPreferencePage_7;
 	public static String RpmInformationsPreferencePage_0;
 	public static String RpmInformationsPreferencePage_1;
 	public static String RpmInformationsPreferencePage_2;
@@ -56,6 +54,5 @@ public final class Messages extends NLS {
 	}
 
 	private Messages() {
-		super();
 	}
 }

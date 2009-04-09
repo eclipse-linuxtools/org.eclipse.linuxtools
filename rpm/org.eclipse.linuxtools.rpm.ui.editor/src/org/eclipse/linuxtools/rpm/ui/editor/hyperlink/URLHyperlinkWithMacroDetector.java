@@ -17,7 +17,7 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.hyperlink.URLHyperlink;
 import org.eclipse.jface.text.hyperlink.URLHyperlinkDetector;
-import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 
 
@@ -47,7 +47,7 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 		IHyperlink hyperlink = returned[0];
 			if (hyperlink instanceof URLHyperlink) {
 				URLHyperlink urlHyperlink = (URLHyperlink) hyperlink;
-				String newURLString = UiUtils.resolveDefines(specfile, urlHyperlink.getURLString());
+				String newURLString = Utils.resolveDefines(specfile, urlHyperlink.getURLString());
 				return new IHyperlink[] {new URLHyperlink(urlHyperlink.getHyperlinkRegion(), newURLString)};
 			}
 		}

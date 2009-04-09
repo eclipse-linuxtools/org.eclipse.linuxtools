@@ -12,8 +12,14 @@ package org.eclipse.linuxtools.rpm.ui.editor.actions;
 
 import org.eclipse.osgi.util.NLS;
 
-public final class Messages extends NLS {
+public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.actions.messages"; //$NON-NLS-1$
+	public static String SpecfileChangelogAction_0;
+	public static String SpecfileChangelogAction_1;
+	public static String SpecfileChangelogAction_2;
+	public static String SpecfileChangelogAction_3;
+	public static String SpecfileChangelogAction_4;
+	public static String SpecfileChangelogAction_5;
 	public static String SpecfileChangelogFormatter_0;
 	public static String SpecfileChangelogFormatter_1;
 	static {
@@ -22,6 +28,5 @@ public final class Messages extends NLS {
 	}
 
 	private Messages() {
-		super();
 	}
 }

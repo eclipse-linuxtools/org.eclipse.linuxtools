@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public final class Messages {
+public class Messages {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.parser.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle

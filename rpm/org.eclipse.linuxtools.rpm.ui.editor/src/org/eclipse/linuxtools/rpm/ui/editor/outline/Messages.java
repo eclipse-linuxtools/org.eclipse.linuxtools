@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.outline;
 
 import org.eclipse.osgi.util.NLS;
 
-public final class Messages extends NLS {
+public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.outline.messages"; //$NON-NLS-1$
 	public static String SpecfileLabelProvider_0;
 	public static String SpecfileLabelProvider_1;
@@ -22,6 +22,5 @@ public final class Messages extends NLS {
 	}
 
 	private Messages() {
-		super();
 	}
 }

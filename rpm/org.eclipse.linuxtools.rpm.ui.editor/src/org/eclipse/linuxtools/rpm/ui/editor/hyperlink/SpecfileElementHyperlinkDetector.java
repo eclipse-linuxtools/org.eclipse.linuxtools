@@ -47,7 +47,6 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	private Specfile specfile;
 
 	public SpecfileElementHyperlinkDetector(Specfile specfile) {
-		super();
 		this.specfile = specfile;
 	}
 
@@ -128,7 +127,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 		if (word.startsWith(ISpecfileSpecialSymbols.MACRO_START_LONG)) {
 			return word.substring(2, word.length() - 1);
 		}
-		return ""; //$NON-NLS-1$
+		return null;
 	}
 
 	private IHyperlink[] prepareHyperlink(IRegion lineInfo, String line,

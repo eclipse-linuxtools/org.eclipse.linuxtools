@@ -18,6 +18,9 @@ import org.eclipse.ui.IEditorPart;
 
 public class SpecfileChangelogParser implements IParserChangeLogContrib {
 
+	public SpecfileChangelogParser() {
+	}
+
 	public String parseCurrentFunction(IEditorPart editor) throws CoreException {
 		return ""; //$NON-NLS-1$
 	}

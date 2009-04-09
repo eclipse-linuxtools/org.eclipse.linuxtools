@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 /**
@@ -44,16 +43,12 @@ public class RpmPackageProposalsList {
 		String rpmpkgsFile = Activator.getDefault().getPreferenceStore()
 				.getString(PreferenceConstants.P_RPM_LIST_FILEPATH);
 		try {
-			if (Utils.fileExist(rpmpkgsFile)) {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(new FileInputStream(rpmpkgsFile)));
-				String line = reader.readLine();
-				while (line != null) {
-					list.add(line.trim());
-					line = reader.readLine();
-				}
-			} else {
-				RpmPackageBuildProposalsJob.update();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					new FileInputStream(rpmpkgsFile)));
+			String line = reader.readLine();
+			while (line != null) {
+				list.add(line.trim());
+				line = reader.readLine();
 			}
 		} catch (IOException e) {
 			RpmPackageBuildProposalsJob.update();
@@ -108,7 +103,7 @@ public class RpmPackageProposalsList {
 	public String getRpmInfo(String pkgName) {
 		String ret = ""; //$NON-NLS-1$
 		try {
-			ret = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToString("rpm", "-q", pkgName, "--qf",  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+			ret = Utils.runCommandToString("rpm", "-q", pkgName, "--qf",  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 					getformattedRpmInformations());
 		} catch (IOException e) {
 			SpecfileLog.logError(e);

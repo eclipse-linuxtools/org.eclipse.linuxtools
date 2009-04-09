@@ -14,7 +14,7 @@
 
    <extension point="org.eclipse.ui.contexts">
       <context
-            name="%context.name"
+            name="Specfile Editor Context"
             id="org.eclipse.linuxtools.rpm.ui.specEditorScope"
             parentId="org.eclipse.ui.textEditorScope">
       </context>
@@ -23,27 +23,19 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="%editor.name"
+            name="Specfile Editor"
             extensions="spec"
             icon="icons/rpm.gif"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
             id="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
       </editor>
-      <editor
-            name="%editor.name.0"
-            extensions="spec"
-            icon="icons/rpm.gif"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            class="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor"
-            id="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor">
-      </editor>
    </extension>
    
    <extension
 	   id="specfileerror"
 	   point="org.eclipse.core.resources.markers"
-	   name="%extension.name">
+	   name="Specfile Error Marker">
 	   <super type="org.eclipse.core.resources.problemmarker"/>
 	   <super type="org.eclipse.core.resources.textmarker"/>
 	   <persistent value="true"/>
@@ -51,14 +43,14 @@
 	 <extension
 	   id="specfiletask"
 	   point="org.eclipse.core.resources.markers"
-	   name="%extension.name.0">
+	   name="Specfile Task Marker">
 	   <super type="org.eclipse.core.resources.taskmarker"/>
 	   <persistent value="true"/>
 	</extension>
    <extension
          point="org.eclipse.ui.editors.documentProviders">
       <provider
-      		extensions="spec"
+      		extensions=".spec"
             class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileDocumentProvider"
             id="org.eclipse.linuxtools.rpm.ui.editor.specfileDocumentProvider">
       </provider>
@@ -111,32 +103,32 @@
       <page
             class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MainPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            name="%page.name"/>
+            name="Specfile Editor"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
             class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
-            name="%page.name.0"/>
+            name="RPM Completions"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
             class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
-            name="%page.name.1"/>
+            name="Macro Completion"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
             class="org.eclipse.linuxtools.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
-            name="%page.name.2"/>
+            name="Templates"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
             class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
-            name="%page.name.3"/>
+            name="Package Information"/>
       <page
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
             class="org.eclipse.linuxtools.rpm.ui.editor.preferences.TaskTagsPreferencePage"
             id="org.eclipse.linuxtools.rpm.ui.editor.preferences.TaskTagsPreferencePage"
-            name="%page.name.4"/>
+            name="Task Tags"/>
    </extension>
 
    <extension
@@ -169,46 +161,35 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="org.eclipse.linuxtools.rpm.ui.editor"
-            name="%category.name">
+            name="RPM Wizards">
       </category>
       <wizard
             category="org.eclipse.linuxtools.rpm.ui.editor"
             class="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
             icon="icons/rpm.gif"
             id="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
-            name="%wizard.name">
+            name="New specfile based on a template">
       </wizard>
    </extension>
    <!-- Commands -->
    <extension
          point="org.eclipse.ui.commands">
          <category
-            name="%category.name.0"
-            description="%category.description"
+            name="Editor Commands"
+            description="Specfile Editor Commands"
             id="rpmEditor.category"/>
          <command
             categoryId="rpmEditor.category"
-            name="%command.name"
+            name="Toggle Comment"
             id="rpmEditor.toggleComment.command"/>
          <command
             categoryId="rpmEditor.category"
-            name="%command.name.0"
+            name="Organize patches"
             id="rpmEditor.organizePatches.command"/>
          <command
          	categoryId="rpmEditor.category"
             id="rpmEditor.showOutline.command"
-            name="%command.name.1"/>
-   </extension>
-   <extension point="org.eclipse.ui.handlers">
-    	<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
-         	commandId="rpmEditor.toggleComment.command" />
-   		<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
-         	commandId="rpmEditor.organizePatches.command" />
-   		<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
-         	commandId="rpmEditor.showOutline.command" />
+            name="Show outline"/>
    </extension>
    <!-- Key bindings -->
    <extension
@@ -229,25 +210,66 @@
            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
+   <!-- Action set for command bindings -->
+   <extension
+         point="org.eclipse.ui.actionSets">
+
+      <actionSet
+            label="Editor Commands"
+            description="Specfile Editor Commands"
+            visible="true"
+            id="rpmEditor.actionSet">
+
+         <action
+               label="Toggle Comments"
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+               definitionId="rpmEditor.toggleComment.command"
+               id="rpmEditor.toggleComment.command"/>
+         <action
+               label="Organize patches"
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+               definitionId="rpmEditor.organizePatches.command"
+               id="rpmEditor.organizePatches.command"/>
+         <action
+               label="Show outline"
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+               definitionId="rpmEditor.showOutline.command"
+               id="rpmEditor.showOutline.command"/>
+      </actionSet>
+   </extension>      
    <!-- Editor menu actions -->
    <extension
-         point="org.eclipse.ui.menus">
-         <menuContribution
-            locationURI="popup:#TextEditorContext?after=additions">
-         <command
-               commandId="rpmEditor.toggleComment.command"
-               label="%command.label"
-               tooltip="%command.tooltip" />
-         <command
-               commandId="rpmEditor.organizePatches.command"
-               label="%command.label.0"
-               tooltip="%command.tooltip.0" />
-         <command
-               commandId="rpmEditor.showOutline.command"
-               label="%command.label.1"
-               tooltip="%command.tooltip.1" />
-      </menuContribution>
-   </extension>
+         id="org.eclipse.linuxtools.rpm.ui.editor.popupMenu"
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="org.eclipse.linuxtools.rpm.ui.editor.viewerContribution"
+            targetID="#TextEditorContext">
+         <action
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.organizePatchesAction"
+               label="Organize patches"
+               menubarPath="additions"
+               tooltip="Organize patches numerically"
+               definitionId="rpmEditor.organizePatches.command">
+         </action>
+         <action
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.toggleCommentAction"
+               label="Toggle Comments"
+               menubarPath="additions"
+               tooltip="Add or Remove Comments"
+               definitionId="rpmEditor.toggleComment.command">
+         </action>
+         <action
+               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+               id="org.eclipse.linuxtools.rpm.ui.editor.showOutlineAction"
+               label="Show Outline"
+               menubarPath="additions"
+               tooltip="Show Outline"
+               definitionId="rpmEditor.showOutline.command">
+         </action>
+      </viewerContribution>
+   </extension>   
    <!-- Compare support-->
    <extension point="org.eclipse.compare.contentMergeViewers">
 	  <viewer

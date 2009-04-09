@@ -22,7 +22,6 @@ import java.util.Map;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
-import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 
 public class Specfile {
 
@@ -38,10 +37,6 @@ public class Specfile {
 	Map<Integer, SpecfileSource> sources;
 
 	Map<Integer, SpecfileSource> patches;
-	
-	private List<SpecfileTag> buildRequires;
-	
-	private List<SpecfileTag> requires;
 
 	private IDocument document;
 
@@ -53,21 +48,10 @@ public class Specfile {
 		defines = new HashMap<String, SpecfileDefine>();
 		sources = new HashMap<Integer, SpecfileSource>();
 		patches = new HashMap<Integer, SpecfileSource>();
-		buildRequires = new ArrayList<SpecfileTag>();
-		requires = new ArrayList<SpecfileTag>();
 	}
 
 	public List<SpecfileSection> getSections() {
 		return sections;
-	}
-
-	public SpecfileSection getSection(String sectionName){
-		for (SpecfileSection section : sections) {
-			if (sectionName.equals(section.getName())) {
-				return section;
-			}
-		}
-		return null;
 	}
 	
 	public List<SpecfileSection> getComplexSections() {
@@ -112,24 +96,15 @@ public class Specfile {
      * @param define The define to add.
      */
     public void addDefine(SpecfileDefine define) {
-    	SpecfilePackage rpmPackage = define.getParent();
-    	if (rpmPackage != null && !rpmPackage.isMainPackage()) {
-    		defines.put(UiUtils.getPackageDefineId(define, rpmPackage), define);
-    		return;
-    	}
 		defines.put(define.getName(), define);
 	}
     
     public void addDefine(SpecfileTag tag) {
 		addDefine(new SpecfileDefine(tag));
 	}
-    
-    public SpecfileDefine getDefine(String defineName) {
-		return defines.get(defineName.toLowerCase());
-	}
 	
-	public SpecfileDefine getDefine(String defineName, SpecfilePackage rpmPackage) {
-		return defines.get(UiUtils.getPackageDefineId(defineName, rpmPackage));
+	public SpecfileDefine getDefine(String defineName) {
+		return defines.get(defineName);
 	}
 
 	public int getEpoch() {
@@ -249,67 +224,4 @@ public class Specfile {
 		if (! packages.contains(subPackage))
 			packages.addPackage(subPackage);
 	}
-
-	public void modifyDefine(String defineName, SpecfilePackage rpmPackage,
-			String newValue) {
-		SpecfileDefine define = getDefine(UiUtils.getPackageDefineId(defineName, rpmPackage));
-		if (define != null) {
-			define.setValue(newValue);
-			try {
-				changeLine(define.getLineNumber(), defineName + ": " + newValue); //$NON-NLS-1$
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-
-	public void modifyDefine(String defineName, String newValue) {
-		SpecfileDefine define = getDefine(defineName.toLowerCase());
-		if (define != null) {
-			define.setValue(newValue);
-			try {
-				changeLine(define.getLineNumber(), defineName + ": " + newValue); //$NON-NLS-1$
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void modifyDefine(SpecfileTag define, String newValue) {
-		if (define != null) {
-			define.setValue(newValue);
-			try {
-				changeLine(define.getLineNumber(), define.getName() + ": " + newValue); //$NON-NLS-1$
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * @param buildRequire the buildRequire to add
-	 */
-	public void addBuildRequire(SpecfileDefine buildRequire) {
-		buildRequires.add(buildRequire);
-	}
-	
-	/**
-	 * @param require the require to add
-	 */
-	public void addRequire(SpecfileTag require) {
-		requires.add(require);
-	}
-
-	/**
-	 * @return the buildRequires
-	 */
-	public List<SpecfileTag> getBuildRequires() {
-		return buildRequires;
-	}
-
-	public List<SpecfileTag> getRequires() {
-		return requires;
-	}
-	
 }

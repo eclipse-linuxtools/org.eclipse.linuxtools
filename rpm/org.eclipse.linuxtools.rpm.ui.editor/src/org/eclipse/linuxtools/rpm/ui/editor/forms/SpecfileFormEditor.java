@@ -11,9 +11,7 @@
 package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -21,15 +19,9 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class SpecfileFormEditor extends FormEditor {
-
+	
 	FormPage mainPackage;
 	SpecfileEditor editor;
-	private Specfile specfile;
-
-	public SpecfileFormEditor() {
-		super();
-		editor = new SpecfileEditor();
-	}
 
 	@Override
 	protected FormToolkit createToolkit(Display display) {
@@ -40,14 +32,15 @@ public class SpecfileFormEditor extends FormEditor {
 	@Override
 	protected void addPages() {
 		try {
+			editor = new SpecfileEditor();
+			editor.init(getEditorSite(), getEditorInput());
+			editor.setInput(getEditorInput());
+			mainPackage = new MainPackagePage(this, editor.getDocumentProvider().getDocument(getEditorInput()));
+			addPage(mainPackage);
 			int index = addPage(editor, getEditorInput());
-			setPageText(index, Messages.SpecfileFormEditor_0);
-			specfile = editor.getSpecfile();
-			mainPackage = new MainPackagePage(this, specfile);
-			addPage(0, mainPackage);
-			addPage(1, new RpmSectionPage(this, specfile, RpmSections.PREP_SECTION));
-			addPage(2, new RpmSectionPage(this, specfile, RpmSections.BUILD_SECTION));
-			addPage(3, new RpmSectionPage(this, specfile, RpmSections.INSTALL_SECTION));
+			setPageText(index, "Source");
+//			setActivePage(index);
+
 		} catch (PartInitException e) {
 			//
 		}
@@ -56,11 +49,11 @@ public class SpecfileFormEditor extends FormEditor {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		editor.doSave(monitor);
+		mainPackage.doSave(monitor);
 	}
 
 	@Override
 	public void doSaveAs() {
-		//noop
 	}
 
 	@Override
@@ -68,8 +61,4 @@ public class SpecfileFormEditor extends FormEditor {
 		return false;
 	}
 
-	@Override
-	public boolean isDirty() {
-		return editor.isDirty();
-	}
 }

@@ -20,7 +20,6 @@ public class SpecfilePackageContainer extends SpecfileElement {
 	List<SpecfilePackage> packages;
 	
 	public SpecfilePackageContainer() {
-		super();
 		packages = new ArrayList<SpecfilePackage>();
 	}
 	
@@ -62,9 +61,8 @@ public class SpecfilePackageContainer extends SpecfileElement {
 	
 	@Override
 	public int getLineEndPosition() {
-		if ((packages == null) || packages.isEmpty()) {
+		if ((packages == null) || (packages.size() == 0))
 			return 0;
-		}
 
 		int highestEndLine = 0;
 		

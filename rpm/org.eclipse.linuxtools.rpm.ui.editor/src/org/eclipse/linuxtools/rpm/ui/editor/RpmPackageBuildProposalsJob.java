@@ -21,15 +21,22 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
-import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
-public final class RpmPackageBuildProposalsJob extends Job {
+/**
+ * Job to initialize and update the RPM packages proposal list.
+ * 
+ * FIXME: The job seems to be run twice on 3.3 (in the job progress view) but
+ * when break point are strategically placed, the job seems to run only once,
+ * these symptoms appear only when the job is trigged from Activator#start
+ * method.
+ * 
+ */
+public class RpmPackageBuildProposalsJob extends Job {
 
 	private RpmPackageBuildProposalsJob(String name) {
 		super(name);
@@ -39,13 +46,13 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	private static RpmPackageBuildProposalsJob job = null;
 
-	private static final IEclipsePreferences PREFERENCES = new DefaultScope().getNode(Activator.PLUGIN_ID);
+	private static final Preferences preferences = Activator.getDefault()
+			.getPluginPreferences();
 
-	protected static final IEclipsePreferences.IPreferenceChangeListener PROPERTY_LISTENER = new IEclipsePreferences.IPreferenceChangeListener() {
-		public void preferenceChange(PreferenceChangeEvent event) {
-			if (event.getKey().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
+	protected static final Preferences.IPropertyChangeListener propertyListener = new Preferences.IPropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent event) {
+			if (event.getProperty() == PreferenceConstants.P_CURRENT_RPMTOOLS)
 				update();
-			}
 		}
 	};
 
@@ -77,16 +84,16 @@ public final class RpmPackageBuildProposalsJob extends Job {
 		boolean runJob = false;
 		// Today's date
 		Date today = new Date();
-		if (PREFERENCES
-				.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, PreferenceConstants.DP_RPM_LIST_BACKGROUND_BUILD)) {
-			int period = PREFERENCES
-					.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, PreferenceConstants.DP_RPM_LIST_BUILD_PERIOD);
+		if (preferences
+				.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD)) {
+			int period = preferences
+					.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD);
 			// each time that the plugin is loaded.
 			if (period == 1) {
 				runJob = true;
 			} else {
-				long lastBuildTime = PREFERENCES
-						.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, PreferenceConstants.DP_RPM_LIST_LAST_BUILD);
+				long lastBuildTime = preferences
+						.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD);
 				if (lastBuildTime == 0) {
 					runJob = true;
 				} else {
@@ -104,12 +111,13 @@ public final class RpmPackageBuildProposalsJob extends Job {
 				if (job == null) {
 					job = new RpmPackageBuildProposalsJob(JOB_NAME);
 					job.schedule();
-					PREFERENCES.putLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
-							.getTime());
+					preferences.setValue(
+							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
+									.getTime());
 				} else {
 					job.cancel();
 					job.schedule();
-					PREFERENCES.putLong(
+					preferences.setValue(
 							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
 									.getTime());
 				}
@@ -138,40 +146,37 @@ public final class RpmPackageBuildProposalsJob extends Job {
 		try {
 			monitor.beginTask(Messages.RpmPackageBuildProposalsJob_1,
 					IProgressMonitor.UNKNOWN);
-			if (Utils.fileExist("/bin/sh")) { //$NON-NLS-1$
-				InputStream in = Utils.runCommandToInputStream(
-						"/bin/sh", "-c", rpmListCmd); //$NON-NLS-1$ //$NON-NLS-2$
-				// backup pkg list file
-				File rpmListFile = new File(rpmListFilepath);
-				if (rpmListFile.exists())
-					Utils.copyFile(new File(rpmListFilepath), bkupFile);
-
-				BufferedWriter out = new BufferedWriter(new FileWriter(
-						rpmListFile, false));
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(in));
-				monitor.subTask(Messages.RpmPackageBuildProposalsJob_2
-						+ rpmListCmd + Messages.RpmPackageBuildProposalsJob_3);
-				String line;
-				while ((line = reader.readLine()) != null) {
-					monitor.subTask(line);
-					out.write(line + "\n"); //$NON-NLS-1$
-					if (monitor.isCanceled()) {
-						in.close();
-						out.close();
-						// restore backup
-						if (rpmListFile.exists() && bkupFile.exists()) {
-							Utils.copyFile(bkupFile, rpmListFile);
-							bkupFile.delete();
-						}
-						Activator.packagesList = new RpmPackageProposalsList();
-						return Status.CANCEL_STATUS;
+			InputStream in = Utils.runCommandToInputStream("/bin/sh", "-c", rpmListCmd); //$NON-NLS-1$ //$NON-NLS-2$
+			// backup pkg list file
+			File rpmListFile = new File(rpmListFilepath);
+			if (rpmListFile.exists())
+				Utils.copyFile(new File(rpmListFilepath), bkupFile);
+						
+			BufferedWriter out = new BufferedWriter(new FileWriter(
+					rpmListFile, false));
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(in));
+			monitor.subTask(Messages.RpmPackageBuildProposalsJob_2 + rpmListCmd
+					+ Messages.RpmPackageBuildProposalsJob_3);
+			String line;
+			while ((line = reader.readLine()) != null) {
+				monitor.subTask(line);
+				out.write(line + "\n"); //$NON-NLS-1$
+				if (monitor.isCanceled()) {
+					in.close();
+					out.close();
+					// restore backup
+					if (rpmListFile.exists() && bkupFile.exists()) {
+						Utils.copyFile(bkupFile, rpmListFile);
+						bkupFile.delete();
 					}
+					Activator.packagesList = new RpmPackageProposalsList();
+					return Status.CANCEL_STATUS;
 				}
-				in.close();
-				out.close();
-				bkupFile.delete();
 			}
+			in.close();
+			out.close();
+			bkupFile.delete();
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 			return null;
@@ -190,9 +195,9 @@ public final class RpmPackageBuildProposalsJob extends Job {
 	 */
 	protected static void setPropertyChangeListener(boolean activated) {
 		if (activated) {
-			PREFERENCES.addPreferenceChangeListener(PROPERTY_LISTENER);
+			preferences.addPropertyChangeListener(propertyListener);
 		} else {
-			PREFERENCES.removePreferenceChangeListener(PROPERTY_LISTENER);
+			preferences.removePropertyChangeListener(propertyListener);
 		}
 	}
 

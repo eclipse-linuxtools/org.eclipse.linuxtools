@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * RPM macro proposals and hover preference page class.
@@ -47,6 +48,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
+	ScopedPreferenceStore preferences;
 
 	public MacroProposalsPreferencePage() {
 		super(FLAT);
@@ -122,7 +124,6 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		private SelectionListener selectionListener;
 
 		public MacroListEditor(String name, String labelText, Composite parent) {
-			super();
 			init(name, labelText);
 			createControl(parent);
 			list = getListControl(parent);
@@ -306,7 +307,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		 * @return the list control
 		 */
 		@Override
-		public final List getListControl(Composite parent) {
+		public List getListControl(Composite parent) {
 			if (list == null) {
 				list = new List(parent, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL
 						| SWT.H_SCROLL);
@@ -368,7 +369,6 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		/**
 		 * Notifies that the list selection has changed.
 		 */
-		@Override
 		protected void selectionChanged() {
 
 			int index = list.getSelectionIndex();

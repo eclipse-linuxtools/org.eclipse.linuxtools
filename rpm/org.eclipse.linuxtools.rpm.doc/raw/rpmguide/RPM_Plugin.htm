@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>RPM Plugin for Eclipse</title>
+  <link rel="stylesheet" href="../book.css" type="text/css">
+  <meta http-equiv="Content-Language" content="en-us">
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=windows-1252">
+</head>
+<body>
+<h1>RPM Plugin for Eclipse</h1>
+<!-- Version 1.?  Introduction  The RPM Plugin for Eclipse enables 
+ you to manage 
+ Linux <b>RPM</b> software packages. You can easily import 
+ source RPMs and 
+ re-export them as source and/or binary RPMs. -->
+<p>If you are unfamiliar with the RPM package format, creating the
+files necessary to generate a properly formatted, installable <span
+ class="filename">.rpm</span> file can be a complex process. The RPM
+Plugin for Eclipse provides you with an automated method of creating
+RPM packages from simple C/C++ projects.
+You can also import previously-created source RPMs, modify them, and
+re-export them in both binary and source format with minimal effort.
+The resulting packages will be ready to install on any Linux system.</p>
+<p class="note"><span class="notetitle">Note: </span>
+If there are features regarding RPM you would like to see implemented
+or want to report a bug or recommend a feature be added, go to <a
+ href="https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Linux%20Distros&component=RPM" target="_blank">https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Linux%20Distros&component=RPM</a>.
+Then, either enter a feature request or bug report under the <span
+ class="guilabel">LinuxTools &gt; RPM</span> section in bugzilla.
+</p>
+<h2>RPM Plugin Preference Page Setup</h2>
+<p>Before using the RPM plugin, you should set default values in the
+RPM plugin's preference page. To get to the <b>RPM plugin Preferences</b>
+page, click <b>Window &gt; Preferences &gt; RPM Plugin</b>.
+The screen below is displayed:</p>
+<p><img alt="" src="../images/01_eclipse_rpm_prefs_page1.png"></p>
+<p>There are several fields you can change. The first two fields are
+values the RPM plugin will use to populate the changelog section of the
+<span class="filename">spec</span> files. The first line of a <span
+ class="filename">spec</span> file changelog entry typically looks like
+this:</p>
+<pre>* Thu May 27, 2004  John Smith  &lt;jsmith@mydomain.com&gt;<br></pre>
+<p>When a change is made to a project and the RPM plugin is used to
+export it as a source RPM, the <b>Author Name</b> and <b>Author E-mail</b>
+fields are used as the default values to place in the changelog line
+section of the spec file. A screen is presented that enables you to
+change the directory where the RPM plugin will create a temporary work
+area using your userid. In the above example, if the default <code>/var/tmp</code>
+is used, the RPM plugin will create a work area under <code>/var/tmp/jsmith</code>
+during an RPM import/export operation. All directories under <code>/var/tmp/jsmith</code>
+will be deleted after the import/export is complete.
+If the import/export aborts for any reason, the work area will remain
+intact so that you can debug any problems, in which case the work area
+will be deleted when the next
+import/export is attempted.
+</p>
+<p>For the time being, the RPM plugin actually shells out and executes
+commands to perform the necessary functions to import/export RPMs.
+(In the future, Java bindings for RPM will be explored.)
+In the "Shell Commands" section, you are given the opportunity to
+change the actual shell commands that the RPM plugin uses.
+These commands default to the standard
+locations for most Linux installations, but you can change them to
+point to the proper locations of these commands on your system.
+</p>
+<h2>Import of SRPM (Source RPM)</h2>
+<p>One of the features of the RPM Manipulation plugin is the ability to
+import C/C++ source that is in packaged in <b>srpm</b> format into an
+Eclipse C/C++ project. A selection has been added to the screen that is
+displayed when the Eclipse <b>File &gt; Import</b> pulldown item is
+selected. This allows you to quickly and easily import source RPMs into
+the Eclipse development environment.</p>
+<h3>Invoking the Eclipse SRPM Import Feature for C/C++ Projects</h3>
+<p>Invoking the SRPM Import feature of Eclipse is a very simple matter.
+At the top of the Eclipse click on <b>File</b> which causes a pulldown
+menu to appear. From this menu click on <b>Import</b>. This causes the
+screen below to appear:</p>
+<p><img src="../images/04_eclipse_rpm_srpm_import.png"></p>
+<p>From this screen select <b>Source RPM</b> and then <b>Next</b> to
+activate the next screen shown here:</p>
+<p><img alt="" src="../images/05_eclipse_rpm_srpm_import.png"
+ style="width: 525px; height: 564px;"><br>
+</p>
+<p>There are three functions that this screen must perform in order to
+successfully import a source RPM into Eclipse. The first thing you must
+do is select a source RPM to be imported using the <b>Browse</b>
+button. When this button is depressed the following window is presented.</p>
+<p><img src="../images/06_eclipse_rpm_srpm_import.png"></p>
+<p>This screen is used to <b>browse</b> around a system to the desired
+source RPM. As can be seen from the right side of the screen, all
+source RPMs have the extension <tt>.src.rpm</tt>.
+Once the desired source RPM is found, either double-click on it or
+single-click and then click <b>OK</b>. The source RPMs name should now
+appear in the <b>SRPM Name</b> window.</p>
+<p>Next, either select the already-existing C/C++ project where this
+source RPM will be imported or click on the "Check out as a project
+using the New Project Wizard" button. If you select the latter, the
+C/C++ project wizard pops up and guides you through the process of
+creating a new C/C++ project.&nbsp; Once the wizard is done, the import
+process begins automatically.&nbsp; If there is a project already
+created you want to import into, the <b>Select a project</b> window
+contains a list of the available Eclipse C/C++ projects. Scroll to the
+desired project and select it so it is highlighted and click on
+"Finish".<br>
+</p>
+<p>Now, the <b>Build Options</b> window probably already has the
+options selected that you typically want when a source RPM is to be
+imported. That is, most of the time you will want all of the patches
+applied and will want <b>configure</b> run so the project is ready to
+run make after it is imported. If either one or the other option is not
+desired, unselect either one or both by clicking on the appropriate
+boxes to the left of the screen.</p>
+<p>Once all of the fields have been set to the desired state, to
+complete the source RPM import function simply click <b>Finish</b>.
+This activates a sequence that, again, could possibly take
+quite a while depending on the size of the RPM. If <b>Run AutoConf</b>
+has been selected, it could take a while for the <b>configure</b>
+script to run.</p>
+<p><img src="../images/07_eclipse_rpm_srpm_import_2.png"
+ alt="SRPM Import progress bar screenshot here"
+ style="width: 525px; height: 550px;"><br>
+</p>
+<p>A progress-bar indicates what step the import process is executing,
+but not necessarily how long has been taken or is remaining. Once this
+step is successfully completed, the window disappears and the project
+can be viewed in the Eclipse <b>C/C++ project</b> view as shown in the
+figure below.</p>
+<p><img src="../images/08_eclipse_rpm_cproject_view.png"></p>
+<p>Now you can use all of the resources of Eclipse on this imported
+C/C++ project just as any other project. Notice that the source RPM
+that was selected for import has been copied into the project. The
+source RPM will be required if you make changes to the project and
+wants to export it as a patched source RPM. The original source RPM
+will be installed and compared against the current source in the
+Eclipse project to create a patch.</p>
+<p class="note"><span class="important">Important: </span>
+Not all source RPMs will be able to be imported as the formats various
+maintainers varies widely. An effort has been made to accommodate as
+many of the formats as possible. If you find a source RPM that cannot
+be imported, please file a bug report with the Eclipse project. There
+is no guarantee that we can fix the problem, but if the source RPM is
+in a reasonable format every effort will be made to get the RPM Plugin
+to handle it. Sometimes it may make more sense if the source RPM is
+modified to be more in line with most of the other source RPM formats.</p>
+<h3>RPM Plugin-created files</h3>
+<p>To facilitate the later exporting of this project as a binary or
+source RPM, the RPM plugin creates two files that hold vital
+information: <tt>.srpminfo</tt> and <tt><i>eclipse_packagename</i></tt>.
+</p>
+<p>Generally you should not modify these files�particularly the <b>.srpminfo</b>
+file. This file contains five lines, one which contains the name of the
+source RPM from which this project was imported.</p>
+<p>Part of the import process is to copy the source RPM (which ends
+with <tt>.src.rpm</tt>) into the project to ensure there is a copy
+should you try to export this project as a source RPM. If this project
+is to be re-exported as a source RPM, the RPM plugin will need to
+re-install the original source RPM from which this project was created
+in order to generate a proper patch to be included in the new source
+RPM. This also implies that the original source RPM should not be
+deleted or renamed until a new source RPM is created. <tt>.srpminfo</tt>
+is modified by the RPM plugin when a source RPM is exported to point to
+the new source RPM path, usually within the Eclipse project itself. It
+is deleted before the source RPM is created, so it is not included with
+the source code.</p>
+<p>The <tt>eclipse_packagename.spec</tt> file is a copy of the spec
+file from the <code>SPECS</code> directory from when the source RPM
+was installed in the <code>/var/tmp/userid/...</code> temporary work
+area. This spec file is modified by the RPM plugin appropriately when
+either the binary or source RPM export operation is run. If you edit
+this file, you do so at your own risk. It is <b><i>permanently</i></b>
+modified by the RPM plugin <b><i>only</i></b> when a source RPM is
+exported. Additional <tt>Patchx:/%patch</tt> statements are inserted
+in the appropriate places and the version and/or release numbers are
+updated if they are changed. Like the <tt>.srpminfo</tt> file, this
+file is deleted by the RPM plugin before the source RPM is created so
+the <tt>diff</tt> will not see it and include it in any patch that is
+created.
+</p>
+<h3>RPM Plugin Export Feature Binary and Source</h3>
+<p>The ability to export Eclipse C/C++ projects to binary and source
+RPMs can be divided into two categories with sub-categories beneath
+those:
+</p>
+<ul>
+  <li>Projects created from imported source RPMs
+    <ul>
+      <li>The RPM plugin modifies the previous spec file appropriately</li>
+      <li>You provide a spec file</li>
+      <li>The RPM generates a simple spec file (recommended only for
+simple projects).</li>
+    </ul>
+  </li>
+  <li>Projects that have never been RPMs
+    <ul>
+      <li>The RPM plugin generates a simple spec file</li>
+      <li>You provide a spec file.</li>
+    </ul>
+  </li>
+</ul>
+<p>If you choose to export only a binary RPM, the RPM plugin will
+create a temporary spec file and patches to apply, but these will be
+discarded after the creation of the binary RPM. That is, the <span
+ class="filename"><i>eclipse_packagename</i>.spec</span> does not get
+permanently modified. If a source RPM is created, the above-mentioned <span
+ class="filename">spec</span> file is permanently modified and the <tt>.srpminfo</tt>
+file is changed to now point to the new source RPM as its base.</p>
+<h3>Invoking the Eclipse RPM Manipulation Methods</h3>
+<p>Initiating the export of a simple C/C++ project to an RPM package is
+very simple. Simply click <b>File &gt; Export</b> and a screen like
+the one below appears:</p>
+<p><img src="../images/09_eclipse_rpm_export.png"></p>
+<p>This screen lists the selections to which an Eclipse project can be
+exported. Notice one of the selections is <b>Source/Binary RPM</b>.
+Make sure this is selected and click <b>Next</b>. That will bring you
+to the next screen shown below:</p>
+<p><img src="../images/10_eclipse_rpm_export.png"></p>
+<p>This screen enables you to select a project to be turned into an RPM
+format. Select a project to be exported in the <b>Select a project</b>
+window. Notice as different projects are selected the values in the <b>SPEC
+file</b>, <b>Version</b>, and <b>Release</b> fields change. If a
+project is selected that has never been exported, those fields will be
+blank. If a project is selected that has been imported/exported as an
+RPM, those fields will contain info derived from the source RPM it was
+imported from or from the last source RPM that was exported from this
+project.</p>
+<p>If you want to provide a spec file other than the one associated
+with the RPM, use the <b>Browse</b> button to select the desired spec
+file and that is the one that will be used to create the RPMs. If the
+default <span class="filename">spec</span> file is used, it will be
+modified by the RPM plugin with
+the new version and/or release numbers entered by you and that will
+become the new default <span class="filename">spec</span> file.</p>
+<p>Sometimes the last box on the screen has information in it and
+sometimes it does not. When a project is selected that has never been
+exported before or has not been modified since it was last exported, no
+information is shown, the <b>Next</b> button is grayed out, and the <b>Finish</b>
+button is enabled:</p>
+<p><img src="../images/11_eclipse_rpm_export.png"></p>
+<p>On the screen above, you can change any of the three fields
+associated with the project: <b>SPEC file</b>, <b>Version</b> or <b>Release</b>.
+If no changes are made to the version and/or release fields and the <b>Finish</b>
+button is clicked, the values in the fields will be used. This means,
+depending on whether Binary RPM and/or Source RPM is selected, that the
+previously-created source/binary RPMs with those version release
+numbers will be overwritten inside the project.</p>
+<p>If the <b>Patch Needed</b> information sign appears, then you can
+modify any of the three fields and will be forced to click on the <b>Next</b>
+button to enter information associated with creating a patch:</p>
+<p><img src="../images/12_eclipse_rpm_export.png"></p>
+<p>On this screen, you must enter data into the <b>Patch Tag</b> and <b>Changelog
+Comment:</b> fields. It is recommended that even though default
+information is supplied in the <b>Changelog Date Stamp:</b> field, you
+should enter the correct data for the name and e-mail address portion
+of the field. </p>
+<p class="note"><span class="important">Warning: </span>
+The format for the RPM changelog fields is very sensitive and should
+not be changed.
+Any changes may cause the RPM creation to fail when the <b>rpmbuild</b>
+command is invoked.</p>
+<p>Once the <b>Patch Tag</b> and <b>Changelog Comment:</b> fields
+have data entered into them, the <b>Finish</b> button will be enabled.
+Clicking on the <b>Finish</b> button will begin the RPM creation
+sequence, which goes something like this:</p>
+<ol>
+  <li>Install the original source RPM pointed to by <tt>.srpminfo</tt></li>
+  <li>Run the <b>configure</b> and the <b>make</b> commands</li>
+  <li>Copy that RPM directory over to a duplicate directory with a <tt>.new</tt>
+appended in preparation for generating a patch</li>
+  <li>Copy the source from the appropriate Eclipse project to the
+duplicate directory</li>
+  <li>Run <b>make clean/distclean/maintainer-clean</b> command to
+remove all extraneous files on both directories</li>
+  <li>Use the <b>diff -uNr</b> command to generate a patch of the
+differences between the directories</li>
+  <li>If the version number changed, untar the master source and rename
+the tarball to match the new version number</li>
+  <li>Modify the spec file to add the <b>Patch:/%patch</b> statements
+and modify the version and/or release numbers</li>
+  <li>Use the <b>rpmbuild -b?</b> command to generate the requested
+RPMs</li>
+</ol>
+<p>The following screen is shown with a progress bar indicating where
+the RPM creation process currently is.</p>
+<p><img src="../images/13_eclipse_rpm_export.png"></p>
+<p>If the RPM creation process was successful, the <b>Export an SRPM</b>
+screen will disappear and the requested RPMs will show up in the
+Eclipse project that was exported. If the RPM creation process was
+unsuccessful, an error screen like the one below appears:</p>
+<p><img src="../images/14_eclipse_rpm_export.png"></p>
+<p>Click <b>Details&gt;</b> to get more information about the error.
+For every export (and import for that matter), a log file is created in
+the designated RPM work area directory with a name formatted like: <tt><i>packagename-version-release-MMDD_HHMM.</i>rpmbuild.log</tt>.
+The contents of this log should help you determine what caused the
+error as it contains output from the processes that ran during the RPM
+creation process.</p>
+<p>You can view this logfile through the Eclipse <b>Console</b> view
+by activating the RPM plugin log viewer. Click <b>Window &gt; Show
+View &gt; Other &gt; RPM Plugin Log Viewer</b>. The <b>RPM Plugin Log
+Viewer</b> selection is shown below:</p>
+<p><img src="../images/15_eclipse_rpm_logviewer.png"></p>
+<p>Once this is done, a tab in the Eclipse console window should appear
+labeled <b>RPM Plugin Log Viewer</b>. The display should appear as in
+the example below:</p>
+<p><img src="../images/16_eclipse_rpm_logviewer.png"></p>
+<p>The <b>RPM log</b> view shows the last log generated by the RPM
+plugin. The name of the logfile that the viewer displays is kept in a
+file in the RPM work area designated by the preference page. So, if <code>/var/tmp</code>
+is the designated work area, the file would be named <code>/var/tmp/.logfilename_userid</code>,
+where userid is your login id. Each time an import/export is performed,
+the filename is changed, and the log viewer picks it up and displays
+it.
+</p>
+<p class="copyright"><a href="../hglegal2004.htm" class="copyright">&nbsp;�
+Copyright Red Hat 2004. All Rights Reserved.</a></p>
+</body>
+</html>

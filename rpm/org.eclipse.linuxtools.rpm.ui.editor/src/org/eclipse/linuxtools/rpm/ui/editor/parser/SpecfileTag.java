@@ -19,27 +19,16 @@ public class SpecfileTag extends SpecfileElement {
 	
 	String stringValue;
 	int intValue;
-	SpecfilePackage parent;
 	
-
 	public SpecfileTag(){
 		// Empty constructor
 	}
 	
-	public SpecfileTag(String name, String value, Specfile specfile, SpecfilePackage parentPackage) {
+	public SpecfileTag(String name, String value, Specfile specfile) {
 		setName(name);
 		this.stringValue = value;
 		this.tagType = TagType.STRING;
 		super.setSpecfile(specfile);
-		this.parent=parentPackage;
-	}
-	
-	public SpecfileTag(String name, int value, Specfile specfile, SpecfilePackage parentPackage) {
-		setName(name);
-		this.intValue = value;
-		this.tagType = TagType.INT;
-		super.setSpecfile(specfile);
-		this.parent=parentPackage;
 	}
 	
 	public String getStringValue() {
@@ -48,26 +37,23 @@ public class SpecfileTag extends SpecfileElement {
 		}
 		return resolve(stringValue);
 	}
-	public void setValue(String value) {
-		this.tagType = TagType.STRING;
+	public void setStringValue(String value) {
 		this.stringValue = value;
+	}
+	
+	public SpecfileTag(String name, int value, Specfile specfile) {
+		setName(name);
+		this.intValue = value;
+		this.tagType = TagType.INT;
+		super.setSpecfile(specfile);
 	}
 	
 	public int getIntValue() {
 		return intValue;
 	}
 	
-	public void setValue(int value) {
-		this.tagType = TagType.INT;
+	public void setIntValue(int value) {
 		this.intValue = value;
-	}
-	
-	public SpecfilePackage getParent() {
-		return parent;
-	}
-	
-	public void setParent(SpecfilePackage parent) {
-		this.parent = parent;
 	}
 	
 	@Override
@@ -76,7 +62,7 @@ public class SpecfileTag extends SpecfileElement {
 			return getName() + ": " + getIntValue(); //$NON-NLS-1$
 		}
 		String tagValue = getStringValue();
-		if ((tagValue != null) && (tagValue.length() > 0) && (tagValue.indexOf('%') > 0)) { 
+		if ((tagValue != null) && (tagValue.length() > 0) && (tagValue.indexOf("%") > 0)) { //$NON-NLS-1$
 			return getName() + ": " + super.resolve(tagValue); //$NON-NLS-1$
 		}
 		return getName() + ": " + getStringValue(); //$NON-NLS-1$
@@ -85,4 +71,9 @@ public class SpecfileTag extends SpecfileElement {
 	public TagType getTagType() {
 		return tagType;
 	}
+
+	public void setTagType(TagType tagType) {
+		this.tagType = tagType;
+	}
+	
 }

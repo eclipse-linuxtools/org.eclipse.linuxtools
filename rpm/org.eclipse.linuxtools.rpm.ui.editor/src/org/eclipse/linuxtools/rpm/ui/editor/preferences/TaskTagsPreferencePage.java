@@ -70,7 +70,8 @@ public class TaskTagsPreferencePage extends FieldEditorPreferencePage implements
 
 		@Override
 		protected String[] parseString(String stringList) {
-			return stringList.split(";"); //$NON-NLS-1$
+			String[] items = stringList.split(";"); //$NON-NLS-1$
+			return items;
 		}
 
 	}

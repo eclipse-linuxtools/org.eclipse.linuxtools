@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+   id="org.eclipse.linuxtools.rpm.doc"
+   name="RPM Plug-in Documentation (Incubation)"
+   version="3.0.0"
+   provider-name="Eclipse.org">
+
+   <runtime>
+   </runtime>
+
+<!-- This part should be in a documentation plugin -->
+<!-- Configure the help contribution for this plugin -->
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>
+   </extension>
+</plugin>

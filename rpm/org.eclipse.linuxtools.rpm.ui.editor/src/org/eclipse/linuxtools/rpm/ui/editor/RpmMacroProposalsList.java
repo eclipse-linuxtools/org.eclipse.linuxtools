@@ -46,7 +46,7 @@ public class RpmMacroProposalsList {
 	/**
 	 * Build the macro list.
 	 */
-	public final void buildMacroList() {
+	public void buildMacroList() {
 		for (String definedMacro: SpecfileScanner.DEFINED_MACROS){
 			macroMap.put(definedMacro, Messages.RpmMacroProposalsList_0);
 			//TODO find way to provide info about buildin macros.
@@ -207,7 +207,7 @@ public class RpmMacroProposalsList {
 	public static String getMacroEval(String macroName) {
 		String eval = EMPTY_STRING;
 		try {
-			eval = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
+			eval = Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 		}

@@ -11,7 +11,8 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
-import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SpecfileElement {
 	private Specfile specfile;
@@ -19,7 +20,7 @@ public class SpecfileElement {
 	private int lineNumber;
 	private int lineStartPosition;
 	private int lineEndPosition;
-
+	
 	public int getLineNumber() {
 		return lineNumber;
 	}
@@ -28,10 +29,10 @@ public class SpecfileElement {
 		this.lineNumber = lineNumber;
 	}
 
-	public SpecfileElement() {
-		// weird
+	public SpecfileElement(){
+		//weird
 	}
-
+	
 	public SpecfileElement(String name) {
 		setName(name);
 	}
@@ -40,10 +41,10 @@ public class SpecfileElement {
 		return resolve(name);
 	}
 
-	public final void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	@Override
 	public String toString() {
 		return name;
@@ -72,14 +73,29 @@ public class SpecfileElement {
 	public void setSpecfile(Specfile specfile) {
 		this.specfile = specfile;
 	}
-
+	
 	public String resolve(String toResolve) {
-		if (specfile == null || toResolve.equals("")) {//$NON-NLS-1$
-			if (toResolve.length()>2 && toResolve.substring(2, toResolve.length() - 1).equals(name)) { 
-				return toResolve;
-			}
+		if (specfile == null) {
+			return toResolve;
 		}
-		return UiUtils.resolveDefines(specfile, toResolve);
+		String resolved = toResolve;
+		Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
+		try {
+			Matcher variableMatcher = variablePattern.matcher(toResolve);
+			while (variableMatcher.find()) {
+				SpecfileDefine define = specfile
+				.getDefine(variableMatcher.group(1));
+				if (define != null) {
+					resolved = resolved.replaceAll("%\\{" //$NON-NLS-1$
+							+ variableMatcher.group(1) + "\\}", define //$NON-NLS-1$
+							.getStringValue());
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return resolved;
 	}
 
 }

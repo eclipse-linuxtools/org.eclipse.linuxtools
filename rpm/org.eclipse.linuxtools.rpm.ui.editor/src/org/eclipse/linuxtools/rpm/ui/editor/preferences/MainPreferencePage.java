@@ -13,18 +13,18 @@ package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
 import java.util.Locale;
 
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
@@ -43,6 +43,8 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	
 	private int defaultItem;
 	
+	private Composite fieldEditorParent;
+
 	/**
 	 * default constructor
 	 */
@@ -52,6 +54,36 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 		//setDescription("Main preference page for Specfile Plug-in editor");
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+	 */
+	@Override
+	protected Control createContents(Composite parent) {
+		fieldEditorParent = new Composite(parent, SWT.LEFT);
+		fieldEditorParent.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		fieldEditorParent.setLayout(new GridLayout());
+        
+        Link link= new Link(fieldEditorParent, SWT.NONE);
+		link.setText(Messages.MainPreferencePage_0);
+		link.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				PreferencesUtil.createPreferenceDialogOn(fieldEditorParent.getShell() , e.text, null, null); 
+			}
+		});
+		
+		createFieldEditors();
+        
+		Label labelLocal = new Label(fieldEditorParent, SWT.NONE);
+		labelLocal.setText(Messages.MainPreferencePage_1);
+		createLocalesCombo(fieldEditorParent);
+
+        initialize();
+        checkState();
+		
+		return fieldEditorParent;
+	}
+	
 	private FieldEditor changelogEntryFormatFieldEditor(Composite parent) { 
 		RadioGroupFieldEditor changelogEntryFormatRadioGroupEditor = new RadioGroupFieldEditor(
 				PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT,
@@ -63,7 +95,7 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	}		
 	
 	private void createLocalesCombo(Composite parent) {
-		combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY |SWT.BEGINNING);
+		combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		// populate the combo with all ISO countries
 		int selectedItem = 0;
 		String lastLocale = getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_LOCAL);
@@ -96,30 +128,8 @@ public class MainPreferencePage extends FieldEditorPreferencePage implements
 	 */
 	@Override
 	public void createFieldEditors() {
-		GridData data = new GridData();
-		data.horizontalSpan = 2;
-		final Composite parent = getFieldEditorParent();
-		Link link= new Link(parent, SWT.NONE);
-		link.setText(Messages.MainPreferencePage_0);
-		link.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				PreferencesUtil.createPreferenceDialogOn(parent.getShell() , e.text, null, null); 
-			}
-		});
-		addField(changelogEntryFormatFieldEditor(parent));
-		Label labelLocal = new Label(parent, SWT.NONE);
-		labelLocal.setText(Messages.MainPreferencePage_1);
-		
-		labelLocal.setLayoutData(data);
-		createLocalesCombo(parent);
-		addField(new BooleanFieldEditor(PreferenceConstants.P_SPACES_FOR_TABS,
-				Messages.MainPreferencePage_6, parent));
-		Composite numEditorComp = new Composite(parent, SWT.NONE);
-		IntegerFieldEditor numEditor = new IntegerFieldEditor(
-				PreferenceConstants.P_NBR_OF_SPACES_FOR_TAB,
-				Messages.MainPreferencePage_7, numEditorComp, 1);
-		addField(numEditor);
+		addField(changelogEntryFormatFieldEditor(fieldEditorParent));
+
 	}
 
 	/* (non-Javadoc)

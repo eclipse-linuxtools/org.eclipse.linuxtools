@@ -86,9 +86,11 @@ public class SpecfileContentProvider implements ITreeContentProvider {
 			}
 			return elms;
 		} else if (parentElement instanceof SpecfilePackageContainer) {
-			return ((SpecfilePackageContainer) parentElement).getPackages();
+			Object [] ret = ((SpecfilePackageContainer) parentElement).getPackages();
+			return ret;
 		} else if (parentElement instanceof SpecfilePackage) {
-			return ((SpecfilePackage) parentElement).getSections();
+			Object [] ret = ((SpecfilePackage) parentElement).getSections();
+			return ret;
 		}
 		return new Object[0];
 	}
