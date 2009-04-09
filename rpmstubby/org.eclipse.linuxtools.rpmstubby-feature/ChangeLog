@@ -1,0 +1,25 @@
+2009-01-14  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add update site information.  Add qualifier back to trunk.
+
+2009-01-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.xml: Bump release for Linuxtools 0.1 release.
+
+2009-01-13  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* feature.xml: Remove feature from the feature id.
+
+2009-01-09  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* feature.properties: Add 2009 to copyright text.
+	* feature.xml: Add qualifier to version.
+
+2008-12-10  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* feature.xml: Fix feature id.
+
+2008-12-08  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* feature.xml: It deserves at least version 0.1.0.
+	* .project: Rename to match repo path.
