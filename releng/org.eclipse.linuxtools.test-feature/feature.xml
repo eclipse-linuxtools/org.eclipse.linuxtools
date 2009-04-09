@@ -18,15 +18,11 @@
    </license>
 
    <includes
-         id="org.eclipse.linuxtools.profiling.test"
+         id="org.eclipse.linuxtools.profiling.test.feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.valgrind.test"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.oprofile.test"
+         id="org.eclipse.linuxtools.valgrind.test.feature"
          version="0.0.0"/>
 
    <plugin
@@ -56,6 +52,24 @@
 
    <plugin
          id="org.eclipse.linuxtools.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.oprofile.core.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.oprofile.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+         
+   <plugin
+         id="org.eclipse.linuxtools.oprofile.ui.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

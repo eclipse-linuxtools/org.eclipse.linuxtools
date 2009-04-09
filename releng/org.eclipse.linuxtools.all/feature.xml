@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.all"
       label="%featureName"
-      version="0.3.0.qualifier"
+      version="0.1.0.qualifier"
       provider-name="%provider">
 
    <description>
@@ -22,19 +22,15 @@
    </url>
 
    <includes
-         id="org.eclipse.linuxtools.cdt.libhover"
+         id="org.eclipse.linuxtools.cdt.libhover.feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.cdt.autotools"
+         id="org.eclipse.linuxtools.cdt.autotools.feature"
          version="0.0.0"/>
 
    <includes
          id="org.eclipse.linuxtools.changelog"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.rpm"
          version="0.0.0"/>
 
    <includes
@@ -46,23 +42,19 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.systemtap"
+         id="org.eclipse.linuxtools.systemtap.feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.profiling"
+         id="org.eclipse.linuxtools.profiling.feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.oprofile"
+         id="org.eclipse.linuxtools.oprofile.feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.valgrind"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.cdt.libhover.newlib"
+         id="org.eclipse.linuxtools.valgrind.feature"
          version="0.0.0"/>
 
 </feature>
