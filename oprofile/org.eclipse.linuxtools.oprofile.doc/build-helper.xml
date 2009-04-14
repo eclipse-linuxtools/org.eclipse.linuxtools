@@ -68,6 +68,11 @@ This document is maintained in a collaborative wiki.  If you wish to update or m
 @{help.doc.url.html}
 			</echo>
 			
+			<!-- Removing Phoenix extensions -->
+			<replaceregexp match="\{\{\#eclipseproject.*" replace="" flags="g" byline="true">
+				<fileset dir="tmp" includes="**/*.mediawiki"/>
+			</replaceregexp>
+			
 			<wikitext-to-eclipse-help markupLanguage="org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage" 
 				multipleOutputFiles="true"
 				navigationImages="true"
