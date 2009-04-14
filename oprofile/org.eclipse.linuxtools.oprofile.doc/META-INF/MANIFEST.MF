@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: org.eclipse.linuxtools.oprofile.doc; singleton:=true
+Bundle-Version: 0.3.0
+Bundle-Vendor: %Bundle-Vendor
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.apache.ant;bundle-version="1.7.0";resolution:=optional

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="OProfile Integration User Guide">
+ <anchor id="before-reference" />
+ <topic label="Feature Reference">
+  	<anchor id="before-reference-content"/>
+    <link toc="userguide/OProfile Reference-toc.xml"/>
+    <anchor id="after-reference-content"/>
+    <anchor id="additions-reference" />
+ </topic>
+  	<anchor id="after-reference" />
+  	<anchor id="additions" />
+ 	<topic href="doc/notices.html" label="Legal" />
+</toc>
