@@ -3,9 +3,16 @@
 <plugin>
 
    <extension
+         id="org.eclipse.linuxtools.oprofile.doc.helpDocs"
+         name="OProfile"
          point="org.eclipse.help.toc">
       <toc
-            file="toc.xml">
+            file="toc.xml"
+            primary="true">
+      </toc>
+      <toc
+            file="userguide/OProfile Reference-toc.xml"
+            primary="false">
       </toc>
    </extension>
 
