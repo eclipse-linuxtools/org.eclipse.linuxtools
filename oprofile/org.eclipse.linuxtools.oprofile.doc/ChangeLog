@@ -1,5 +1,10 @@
 2009-04-14  Andrew Overholt  <overholt@redhat.com>
 
+	* userguide/OProfile Reference.html: Newly-generated to include image.
+	* userguide/images/LinuxTools-0.2.0-OProfile-Screenshot.png: Initial checkin.
+
+2009-04-14  Andrew Overholt  <overholt@redhat.com>
+
 	* META-INF/MANIFEST.MF: Add .qualifier.  Set bundle localization.
 	* plugin.xml: Set id on toc extension.  Add generated toc.
 	* toc.xml: Get rid of extraneous stuff.  We can re-add if we feel we need it.
