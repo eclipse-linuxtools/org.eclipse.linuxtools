@@ -12,7 +12,7 @@ echo "[`date +%Y/%m/%d\ %H:%M`] Hudson job ${JOBNAME} build #${BUILD_NUMBER} (${
 
 buildTimestamp="`date +%Y%m%d%H%M`"
 projectid="technology.linuxtools"
-version="0.2.0"
+version="0.3.0"
 projRelengRoot=svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/tags/R0_2_0
 projRelengPath=org.eclipse.linuxtools.releng
 

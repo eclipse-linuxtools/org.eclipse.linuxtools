@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# This script unpacks the latest 0.2 candidate build into our updates-nightly update site.
+# This script unpacks the latest build against Ganymede deps into our updates-nightly update site.
 # It is in aoverholt's crontab as the following entry:
 # 0 * * * * /home/data/users/aoverholt/.bin/linuxtoolsupdatesite-trunk.sh
 
-dropLocation=/opt/users/hudsonbuild/.hudson/jobs/cbi-linuxtools-0.2.x-Ganymede-RCbuilds/lastSuccessful/archive/build/
+dropLocation=/opt/users/hudsonbuild/.hudson/jobs/cbi-linuxtools-Ganymede/lastSuccessful/archive/build/
 downloadsDir=~/linuxtoolsdownloads
 updateSite=${downloadsDir}/updates-nightly
 
@@ -15,10 +15,10 @@ timestamp=$(date +"%Y-%M-%d %H:%M:%S")
 cd ${updateSite}
 
 if [ ! -e site.xml ]; then
-  svn export http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/branches/0.2.0/org.eclipse.linuxtools.updatesite/updates-nightly/site.xml
+  svn export http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.updatesite/updates-nightly/site.xml
 fi
 if [ ! -e associateSites.xml ]; then
-  svn export http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/branches/0.2.0/org.eclipse.linuxtools.updatesite/updates-nightly/associateSites.xml
+  svn export http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.updatesite/updates-nightly/associateSites.xml
 fi
 
 # 20 is for 2009, 2010, etc.
