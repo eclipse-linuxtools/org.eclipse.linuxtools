@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rpm Specfile Editor Documentation
+Bundle-Name: Documentation for RPM specfile editor (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui.editor.doc; singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Vendor: Eclipse
