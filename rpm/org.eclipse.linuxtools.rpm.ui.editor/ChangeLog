@@ -1,3 +1,17 @@
+2009-04-15  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .project: Add apianalysis nature.
+	* plugin.properties: Better name.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Clean old code. 
+	(MainPackagePage): Likewise.
+	(.modifyText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Likewise.
+	(isDirty): Likewise.
+	(doSaveAs): Likewise.
+	(doSave): Likewise.
+	(SpecfileFormEditor): Likewise.
+	(createToolkit): Likewise.
+
 2009-03-28  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/compare/SpecStructureCreator.java (parseSpecfile): User correct section borders.

@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -36,15 +35,17 @@ public class MainPackagePage extends FormPage {
 	private ScrolledForm form;
 	private Specfile specfile;
 	SpecfileParser parser;
+	SpecfileFormEditor editor;
 
-	public MainPackagePage(SpecfileFormEditor editor, IDocument document) {
+	public MainPackagePage(SpecfileFormEditor editor, Specfile specfile) {
 		super(editor, "Overview", "Overview");
-		parser = new SpecfileParser();
-		specfile = parser.parse(document);
+		this.editor = editor;
+		this.specfile = specfile;
 	}
 
 	@Override
 	protected void createFormContent(IManagedForm managedForm) {
+		super.createFormContent(managedForm);
 		toolkit = managedForm.getToolkit();
 		form = managedForm.getForm();
 		form.setText("Main Package information");
@@ -63,7 +64,6 @@ public class MainPackagePage extends FormPage {
 		gridLayout.marginWidth = gridLayout.marginHeight = 5;
 		gridLayout.numColumns = 2;
 		client2.setLayout(gridLayout);
-
 		Label label = toolkit.createLabel(client2, "Name:", SWT.SINGLE);
 		final Text nameText = toolkit.createText(client2, specfile.getName(),
 				SWT.BORDER_SOLID);
@@ -71,11 +71,8 @@ public class MainPackagePage extends FormPage {
 		nameText.addModifyListener(new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
-				Text text = (Text) e.widget;
-				int lineNumber = specfile.getDefine(RpmTags.NAME.toLowerCase())
-						.getLineNumber();
-				replaceTagValue(specfile.getDocument(), lineNumber,
-						RpmTags.NAME.toLowerCase(), text.getText());
+				specfile.addDefine(new SpecfileTag(RpmTags.NAME.toLowerCase(),
+						nameText.getText(), specfile));
 			}
 		});
 		label = toolkit.createLabel(client2, "Version:");
@@ -86,29 +83,14 @@ public class MainPackagePage extends FormPage {
 		text = toolkit.createText(client2, specfile.getRelease(),
 				SWT.BORDER_SOLID);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label = toolkit.createLabel(client2, "Summary:");
+/*		label = toolkit.createLabel(client2, "Summary:");
 		text = toolkit.createText(client2, specfile.getDefine(
 				RpmTags.SUMMARY.toLowerCase()).getStringValue(),
 				SWT.BORDER_SOLID);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));*/
 		section.setClient(client2);
-
 		toolkit.paintBordersFor(client2);
-
 		toolkit.paintBordersFor(section);
-
+		managedForm.refresh();
 	}
-
-	private void replaceTagValue(IDocument document, int lineNumber,
-			String tagName, String newValue) {
-		try {
-			document.replace(document.getLineOffset(lineNumber)
-					+ tagName.length() + 2, newValue.length(), newValue);
-			specfile = parser.parse(document); 
-		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }
