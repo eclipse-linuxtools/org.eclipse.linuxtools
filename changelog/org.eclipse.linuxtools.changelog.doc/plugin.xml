@@ -7,5 +7,9 @@
             file="toc.xml"
             primary="true">
       </toc>
+      <toc
+            file="userguide/ChangeLog Reference-toc.xml"
+            primary="false">
+      </toc>
    </extension>
 </plugin>

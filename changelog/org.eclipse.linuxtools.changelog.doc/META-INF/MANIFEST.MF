@@ -4,3 +4,4 @@ Bundle-Name: ChangeLog Documentation (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.changelog.doc;singleton:=true
 Bundle-Version: 2.6.3.qualifier
 Bundle-Vendor: Eclipse.org
+Require-Bundle: org.apache.ant;bundle-version="1.7.0"
