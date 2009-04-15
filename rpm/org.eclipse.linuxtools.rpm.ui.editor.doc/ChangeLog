@@ -1,3 +1,7 @@
+2009-04-15  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Fix Bundle-Name and Bundle-Vendor.
+
 2009-01-26  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* html/images/settings_rpms_details.png: New file.
