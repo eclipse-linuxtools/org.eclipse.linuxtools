@@ -1,3 +1,7 @@
+2009-04-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump version up to 2.6.7.
+
 2009-04-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (getChangedLines): 
