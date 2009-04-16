@@ -1,3 +1,8 @@
+2009-04-16  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtools_build.eclipse.org_hudson.sh: Switch back to trunk for the
+	releng project.
+
 2009-04-14  Andrew Overholt  <overholt@redhat.com>
 
 	* maps/linuxtools.map: Switch back to trunk for everything.
