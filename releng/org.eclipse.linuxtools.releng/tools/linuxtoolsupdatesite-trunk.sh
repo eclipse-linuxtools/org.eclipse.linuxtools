@@ -5,10 +5,13 @@
 # 0 * * * * /home/data/users/aoverholt/.bin/linuxtoolsupdatesite-trunk.sh
 
 dropLocation=/opt/users/hudsonbuild/.hudson/jobs/cbi-linuxtools-Ganymede/lastSuccessful/archive/build/
-downloadsDir=~/linuxtoolsdownloads
+downloadsDir=/home/data/users/aoverholt/downloads/technology/linuxtools
 updateSite=${downloadsDir}/updates-nightly
 
 rsync -a ${dropLocation} ${downloadsDir}
+
+chown -R aoverholt:linuxtoolsadmin ${downloadsDir}
+chmod -R 755 ${downloadsDir}
 
 timestamp=$(date +"%Y-%M-%d %H:%M:%S")
 

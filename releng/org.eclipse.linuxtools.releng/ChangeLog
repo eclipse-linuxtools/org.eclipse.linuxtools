@@ -1,5 +1,9 @@
 2009-04-16  Andrew Overholt  <overholt@redhat.com>
 
+	* tools/linuxtoolsupdatesite-trunk.sh: chmod and chown to fix bug #272328.
+
+2009-04-16  Andrew Overholt  <overholt@redhat.com>
+
 	* tools/linuxtools_build.eclipse.org_hudson.sh: Switch back to trunk for the
 	releng project.
 
