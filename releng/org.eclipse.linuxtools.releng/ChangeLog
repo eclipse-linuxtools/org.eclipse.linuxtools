@@ -1,3 +1,7 @@
+2009-04-17  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/linuxtools.psf: Add releng project.
+
 2009-04-16  Andrew Overholt  <overholt@redhat.com>
 
 	* tools/linuxtoolsupdatesite-trunk.sh: chmod and chown to fix bug #272328.

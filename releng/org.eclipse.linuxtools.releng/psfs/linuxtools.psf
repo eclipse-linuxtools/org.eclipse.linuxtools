@@ -30,6 +30,7 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.test-feature,org.eclipse.linuxtools.profiling.test-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.tests,org.eclipse.linuxtools.profiling.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.ui,org.eclipse.linuxtools.profiling.ui"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.releng,org.eclipse.linuxtools.releng"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.rpmlint,org.eclipse.linuxtools.rpm.rpmlint"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor,org.eclipse.linuxtools.rpm.ui.editor"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor-feature,org.eclipse.linuxtools.rpm.ui.editor-feature"/>
