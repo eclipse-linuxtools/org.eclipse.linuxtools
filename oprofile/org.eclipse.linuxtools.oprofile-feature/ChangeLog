@@ -1,5 +1,9 @@
 2009-04-20  Andrew Overholt  <overholt@redhat.com>
 
+	* feature.xml: 	Add ws qualifiers.
+
+2009-04-20  Andrew Overholt  <overholt@redhat.com>
+
 	* feature.xml: Add os and arch qualifiers to fragment stanzas.
 
 2009-01-14  Andrew Overholt  <overholt@redhat.com>
