@@ -1,3 +1,14 @@
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #272916.
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java (createRules): Use templated
+	List.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileCodeScanner.java (createRules): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/AbstractMakefileCodeScanner.java (createTextAttribute):
+	Correctly access static member function. 
+	(initializeRules): Use templated List.
+
 2009-04-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #270680
