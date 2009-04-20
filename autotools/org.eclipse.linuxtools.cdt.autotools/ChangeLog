@@ -1,4 +1,10 @@
 2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #272923
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileMessages.java (getFormattedString): Fix
+	compiler warnings.
+
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
 	
 	Resolves #272922
 	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Fix compiler
