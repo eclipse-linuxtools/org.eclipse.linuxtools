@@ -1,4 +1,15 @@
 2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Fix compiler
+	warnings. 
+	(addMakeTargetsToManager): Ditto. 
+	(runScript): Ditto.
+	(getConfigArgs): Ditto.
+	(MakeTargetComparator): Ditto.
+	(makeArray): Ditto.
+	(runCommand): Ditto.
+	
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #272921
 	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeMessages.java (getFormattedString): 

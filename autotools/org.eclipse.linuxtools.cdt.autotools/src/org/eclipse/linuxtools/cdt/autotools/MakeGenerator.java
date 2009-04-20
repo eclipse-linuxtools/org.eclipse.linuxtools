@@ -677,7 +677,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		// Get the arguments to be passed to config from build model
 		ITool[] tool = cfg.getToolsBySuperClassId(AUTOGEN_TOOL_ID);
 		IOption[] options = tool[0].getOptions();
-		ArrayList autogenArgs = new ArrayList();
+		ArrayList<String> autogenArgs = new ArrayList<String>();
 		
 		for (int i = 0; i < options.length; ++i) {
 			if (options[i].getValueType() == IOption.STRING) {
@@ -720,7 +720,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		// Get the arguments to be passed to config from build model
 		ITool tool = cfg.getToolFromOutputExtension("status"); //$NON-NLS-1$
 		IOption[] options = tool.getOptions();
-		ArrayList configArgs = new ArrayList();
+		ArrayList<String> configArgs = new ArrayList<String>();
 		for (int i = 0; i < options.length; ++i) {
 			if (options[i].getValueType() == IOption.STRING) {
 				String value = (String) options[i].getValue();
@@ -845,7 +845,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		IEnvironmentVariable variables[] = ManagedBuildManager
 				.getEnvironmentVariableProvider().getVariables(cfg, true);
 		String[] env = null;
-		ArrayList envList = new ArrayList();
+		ArrayList<String> envList = new ArrayList<String>();
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
 				envList.add(variables[i].getName()
@@ -1028,7 +1028,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		IEnvironmentVariable variables[] = ManagedBuildManager
 				.getEnvironmentVariableProvider().getVariables(cfg, true);
 		String[] env = null;
-		ArrayList envList = new ArrayList();
+		ArrayList<String> envList = new ArrayList<String>();
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
 				envList.add(variables[i].getName()
@@ -1205,7 +1205,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	}
 	
 
-	protected class MakeTargetComparator implements Comparator {
+	protected class MakeTargetComparator implements Comparator<Object> {
 		public int compare(Object a, Object b) {
 			IMakeTarget make1 = (IMakeTarget)a;
 			IMakeTarget make2 = (IMakeTarget)b;
@@ -1235,7 +1235,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		IMakefile makefile = MakeCorePlugin.createMakefile(makefileFile.toURI(), false, null);
 		ITargetRule[] targets = makefile.getTargetRules();
 		ITarget target = null;
-		Map makeTargets = new HashMap(); // use a HashMap so duplicate names are handled
+		Map<String, IMakeTarget> makeTargets = new HashMap<String, IMakeTarget>(); // use a HashMap so duplicate names are handled
 		for (int i = 0; i < targets.length; i++) {
 			target = targets[i].getTarget();
 			String targetName = target.toString();
@@ -1262,8 +1262,8 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		}
 		
 		IMakeTarget[] makeTargetArray = new IMakeTarget[makeTargets.size()];
-		Collection values = makeTargets.values();
-		ArrayList valueList = new ArrayList(values);
+		Collection<IMakeTarget> values = makeTargets.values();
+		ArrayList<IMakeTarget> valueList = new ArrayList<IMakeTarget>(values);
 		valueList.toArray(makeTargetArray);
 		MakeTargetComparator compareMakeTargets = new MakeTargetComparator();
 		Arrays.sort(makeTargetArray, compareMakeTargets);
@@ -1306,11 +1306,11 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		Method shutdown;
 		Method startup;
 		try {
-			shutdown = makeTargetManager.getClass().getMethod("shutdown", null);
-			startup = makeTargetManager.getClass().getMethod("startup", null);
+			shutdown = makeTargetManager.getClass().getMethod("shutdown", (Class<?>[])null);
+			startup = makeTargetManager.getClass().getMethod("startup", (Class<?>[])null);
 			if (shutdown != null && startup != null) {
-				shutdown.invoke(makeTargetManager, null);
-				startup.invoke(makeTargetManager, null);
+				shutdown.invoke(makeTargetManager, (Object[])null);
+				startup.invoke(makeTargetManager, (Object[])null);
 			}
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
@@ -1343,7 +1343,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	private String[] makeArray(String string) {
 		string = string.trim();
 		char[] array = string.toCharArray();
-		ArrayList aList = new ArrayList();
+		ArrayList<String> aList = new ArrayList<String>();
 		StringBuilder buffer = new StringBuilder();
 		boolean inComment = false;
 		for (int i = 0; i < array.length; i++) {
