@@ -1,5 +1,12 @@
 2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #272919
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/AutotoolsPluginImages.java (makeIconFileURL):
+	Fix static member reference to avoid compiler warning. 
+	(static initializer): Ditto.
+	
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves #272918
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsPlugin.java (getFormattedString): Cast
 	2nd argument to avoid compiler warning.
