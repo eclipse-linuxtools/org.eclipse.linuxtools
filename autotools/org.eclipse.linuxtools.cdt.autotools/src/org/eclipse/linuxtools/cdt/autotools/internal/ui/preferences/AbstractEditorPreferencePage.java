@@ -47,7 +47,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public abstract class AbstractEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 	OverlayPreferenceStore fOverlayStore;
 	
-	Map fCheckBoxes= new HashMap();
+	Map<Button, String> fCheckBoxes= new HashMap<Button, String>();
 	private SelectionListener fCheckBoxListener= new SelectionListener() {
 		public void widgetDefaultSelected(SelectionEvent e) {
 		}
@@ -57,7 +57,7 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 		}
 	};
 	
-	Map fTextFields= new HashMap();
+	Map<Text, String> fTextFields= new HashMap<Text, String>();
 	private ModifyListener fTextFieldListener= new ModifyListener() {
 		public void modifyText(ModifyEvent e) {
 			Text text= (Text) e.widget;
@@ -65,7 +65,7 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 		}
 	};
 
-	private Map fNumberFields= new HashMap();
+	private Map<Text, Object> fNumberFields= new HashMap<Text, Object>();
 	private ModifyListener fNumberFieldListener= new ModifyListener() {
 		public void modifyText(ModifyEvent e) {
 			numberFieldChanged((Text) e.widget);
@@ -87,18 +87,18 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 	}
 	
 	protected void initializeFields() {
-		Map checkBoxes= getCheckBoxes();
-		Map textFields= getTextFields();
-		Iterator e= checkBoxes.keySet().iterator();
+		Map<Button, String> checkBoxes= getCheckBoxes();
+		Map<Text, String> textFields= getTextFields();
+		Iterator<Button> e= checkBoxes.keySet().iterator();
 		while (e.hasNext()) {
 			Button b= (Button) e.next();
 			String key= (String) checkBoxes.get(b);
 			b.setSelection(getOverlayStore().getBoolean(key));
 		}
 		
-		e= textFields.keySet().iterator();
-		while (e.hasNext()) {
-			Text t= (Text) e.next();
+		Iterator<Text> e2 = textFields.keySet().iterator();
+		while (e2.hasNext()) {
+			Text t= (Text) e2.next();
 			String key= (String) textFields.get(t);
 			t.setText(getOverlayStore().getString(key));
 		}		
@@ -121,15 +121,15 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 		return fOverlayStore;
 	}
 	
-	protected Map getCheckBoxes() {
+	protected Map<Button, String> getCheckBoxes() {
 		return fCheckBoxes;
 	}
 	
-	protected Map getTextFields() {
+	protected Map<Text, String> getTextFields() {
 		return fTextFields;
 	}
 	
-	protected Map getNumberFields() {
+	protected Map<Text, Object> getNumberFields() {
 		return fNumberFields;
 	}
 	
@@ -216,9 +216,9 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 			try {
 				int value= Integer.parseInt(number);
 				if (value < 0)
-					status.setError(MessageFormat.format(errorMessages[1], new String[]{number})); //$NON-NLS-1$
+					status.setError(MessageFormat.format(errorMessages[1], new Object[]{number})); //$NON-NLS-1$
 			} catch (NumberFormatException e) {
-				status.setError(MessageFormat.format(errorMessages[1], new String[]{number})); //$NON-NLS-1$
+				status.setError(MessageFormat.format(errorMessages[1], new Object[]{number})); //$NON-NLS-1$
 			}
 		}
 		return status;
@@ -226,8 +226,8 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 	
 	private void updateStatus(IStatus status) {
 		if (!status.matches(IStatus.ERROR)) {
-			Set keys= getNumberFields().keySet();
-			for (Iterator iter = keys.iterator(); iter.hasNext();) {
+			Set<Text> keys= getNumberFields().keySet();
+			for (Iterator<Text> iter = keys.iterator(); iter.hasNext();) {
 				Text text = (Text) iter.next();
 				IStatus s= validatePositiveNumber(text.getText(), (String[])getNumberFields().get(text));
 				status= s.getSeverity() > status.getSeverity() ? s : status;

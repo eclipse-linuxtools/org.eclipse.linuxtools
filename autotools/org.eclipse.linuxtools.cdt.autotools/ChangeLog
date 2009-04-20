@@ -1,7 +1,18 @@
 2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
 
-	Resolves #272916.
+	Resolves #272917
+	* .settings: Updated.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/preferences/AbstractEditorPreferencePage.java (validatePositiveNumber):
+	Properly template containers. 
+	(getTextFields): Ditto.
+	(initializeFields): Ditto.
+	(updateStatus): Ditto.
+	(getCheckBoxes): Ditto.
+	(getNumberFields): Ditto.
 	
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+	
+	Resolves #272916.	
 	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java (createRules): Use templated
 	List.
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileCodeScanner.java (createRules): Ditto.
