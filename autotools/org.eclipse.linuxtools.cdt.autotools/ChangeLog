@@ -1,5 +1,11 @@
 2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #272921
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeMessages.java (getFormattedString): 
+	Cast 2nd argument for message fomatting to avoid compile warnings. 
+
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves #272920
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/wizards/AutotoolsWizardMessages.java (getFormattedString):
 	Cast 2nd argument for message formatting to avoid compiler warnings. 

@@ -47,7 +47,7 @@ public class InvokeMessages {
 	 * @return the resource bundle message
 	 */
 	public static String getFormattedString(String key, String[] args) {
-		return MessageFormat.format(getString(key), args);
+		return MessageFormat.format(getString(key), (Object[])args);
 	}
 
 }
