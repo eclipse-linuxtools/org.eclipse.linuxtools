@@ -12,31 +12,31 @@
          <description>These features are used by the other user-visible Linux Tools features.  They are not meant to be installed on their own.</description>
    </category-def>
 
-   <feature url="features/org.eclipse.linuxtools.cdt.autotools.feature_1.0.1.jar" id="org.eclipse.linuxtools.cdt.autotools.feature" version="1.0.1">
+   <feature url="features/org.eclipse.linuxtools.cdt.autotools.feature_${org.eclipse.linuxtools.cdt.autotools.feature.version}.jar" id="org.eclipse.linuxtools.cdt.autotools.feature" version="${org.eclipse.linuxtools.cdt.autotools.feature.version}">
         <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_0.1.0.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="0.1.0">
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_${org.eclipse.linuxtools.cdt.libhover.feature.version}.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="${org.eclipse.linuxtools.cdt.libhover.feature.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.changelog_2.6.3.jar" id="org.eclipse.linuxtools.changelog" version="2.6.3">
+   <feature url="features/org.eclipse.linuxtools.changelog_${org.eclipse.linuxtools.changelog.version}.jar" id="org.eclipse.linuxtools.changelog" version="${org.eclipse.linuxtools.changelog.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.oprofile.feature_0.1.0.jar" id="org.eclipse.linuxtools.oprofile.feature" version="0.1.0">
+   <feature url="features/org.eclipse.linuxtools.oprofile.feature_${org.eclipse.linuxtools.oprofile.feature.version}.jar" id="org.eclipse.linuxtools.oprofile.feature" version="${org.eclipse.linuxtools.oprofile.feature.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.profiling.feature_0.1.0.jar" id="org.eclipse.linuxtools.profiling.feature" version="0.1.0">
+   <feature url="features/org.eclipse.linuxtools.profiling.feature_${org.eclipse.linuxtools.profiling.feature.version}.jar" id="org.eclipse.linuxtools.profiling.feature" version="${org.eclipse.linuxtools.profiling.feature.version}">
      <category name="Linux Tools Enabling Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_0.4.1.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="0.4.1">
+   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_${org.eclipse.linuxtools.rpm.ui.editor.version}.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="${org.eclipse.linuxtools.rpm.ui.editor.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.rpmstubby_0.1.0.200901130905.jar" id="org.eclipse.linuxtools.rpmstubby" version="0.1.0.200901130905">
+   <feature url="features/org.eclipse.linuxtools.rpmstubby_${org.eclipse.linuxtools.rpmstubby.version}.jar" id="org.eclipse.linuxtools.rpmstubby" version="${org.eclipse.linuxtools.rpmstubby.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.systemtap.feature_0.1.0.jar" id="org.eclipse.linuxtools.systemtap.feature" version="0.1.0">
+   <feature url="features/org.eclipse.linuxtools.systemtap.feature_${org.eclipse.linuxtools.systemtap.feature.version}.jar" id="org.eclipse.linuxtools.systemtap.feature" version="${org.eclipse.linuxtools.systemtap.feature.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.valgrind.feature_0.1.0.jar" id="org.eclipse.linuxtools.valgrind.feature" version="0.1.0">
+   <feature url="features/org.eclipse.linuxtools.valgrind.feature_${org.eclipse.linuxtools.valgrind.feature.version}.jar" id="org.eclipse.linuxtools.valgrind.feature" version="${org.eclipse.linuxtools.valgrind.feature.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
 </site>
