@@ -59,6 +59,8 @@
 
    <plugin
          id="org.eclipse.linuxtools.oprofile.core.linux.x86"
+         os="linux"
+         arch="x86"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -66,6 +68,8 @@
 
    <plugin
          id="org.eclipse.linuxtools.oprofile.core.linux.x86_64"
+         os="linux"
+         arch="x86_64"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -73,6 +77,8 @@
 
    <plugin
          id="org.eclipse.linuxtools.oprofile.core.linux.ppc"
+         os="linux"
+         arch="ppc"
          download-size="0"
          install-size="0"
          version="0.0.0"
