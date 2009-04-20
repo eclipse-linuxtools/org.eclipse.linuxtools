@@ -172,7 +172,7 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	 * @return the resource bundle message
 	 */
 	public static String getFormattedString(String key, String[] args) {
-		return MessageFormat.format(getResourceString(key), args);
+		return MessageFormat.format(getResourceString(key), (Object[])args);
 	}
 
 	/**
