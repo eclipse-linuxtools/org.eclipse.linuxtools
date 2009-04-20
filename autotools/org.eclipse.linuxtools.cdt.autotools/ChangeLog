@@ -1,5 +1,15 @@
 2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #272924
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/OpenIncludeAction.java (run): 
+	Fix compiler warnings.
+	(getIncludeStatement): Ditto.
+	(chooseFile): Ditto.
+	(.visit): Ditto.
+	(findFile): Ditto.
+
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves #272923
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileMessages.java (getFormattedString): Fix
 	compiler warnings.
