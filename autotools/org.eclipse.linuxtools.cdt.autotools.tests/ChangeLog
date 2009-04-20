@@ -1,3 +1,9 @@
+2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/CoreUtility.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java: Use local CoreUtility
+	class to avoid internal class access warnings.
+
 2009-03-05  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java (generateFiles): Call

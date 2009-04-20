@@ -9,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.zip.ZipFile;
 
 import org.eclipse.cdt.core.CommandLauncher;
-import org.eclipse.cdt.internal.ui.util.CoreUtility;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
