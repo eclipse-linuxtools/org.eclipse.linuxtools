@@ -1,5 +1,6 @@
 2009-04-20  Jeff Johnston  <jjohnstn@redhat.com>
 	
+	Resolves #272922
 	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Fix compiler
 	warnings. 
 	(addMakeTargetsToManager): Ditto. 
