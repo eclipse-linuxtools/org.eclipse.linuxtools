@@ -24,8 +24,8 @@ public class BasicMassifTest extends AbstractMassifTest {
 	
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 	
 	public void testNumSnapshots() throws Exception {

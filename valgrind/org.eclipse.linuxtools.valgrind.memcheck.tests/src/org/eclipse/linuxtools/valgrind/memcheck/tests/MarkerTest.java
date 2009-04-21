@@ -37,8 +37,8 @@ public class MarkerTest extends AbstractMemcheckTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 
 	public void testMarkers() throws Exception {

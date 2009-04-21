@@ -55,10 +55,10 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
+		super.tearDown();
 	}
 
 	private ILaunchConfigurationWorkingCopy initConfig() throws CoreException {

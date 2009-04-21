@@ -51,8 +51,8 @@ public class ChartTests extends AbstractMassifTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 
 	public void testEditorName() throws Exception {

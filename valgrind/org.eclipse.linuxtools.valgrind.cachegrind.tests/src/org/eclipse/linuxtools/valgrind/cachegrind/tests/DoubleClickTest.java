@@ -44,8 +44,8 @@ public class DoubleClickTest extends AbstractCachegrindTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 
 	private void doDoubleClick(TreePath path) {

@@ -36,8 +36,8 @@ public class DoubleClickTest extends AbstractMassifTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 	
 	private void doDoubleClick() {

@@ -35,13 +35,13 @@ public class ExportWizardTest extends AbstractMassifTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
 		
 		// close dialog just in case
 		if (dialog != null) {
 			dialog.close();
 		}
+		super.tearDown();
 	}
 	
 	public void testExportNoLaunch() throws Exception {

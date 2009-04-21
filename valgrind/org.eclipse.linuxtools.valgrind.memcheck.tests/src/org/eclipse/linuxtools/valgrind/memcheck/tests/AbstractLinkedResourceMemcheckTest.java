@@ -14,9 +14,7 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRunnable;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -28,14 +26,7 @@ public abstract class AbstractLinkedResourceMemcheckTest extends AbstractMemchec
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-
-		// Turn off auto-building
-		IWorkspaceDescription wsd = ResourcesPlugin.getWorkspace().getDescription();
-		if (wsd.isAutoBuilding()) {
-			wsd.setAutoBuilding(false);
-			ResourcesPlugin.getWorkspace().setDescription(wsd);
-		}
-		
+	
 		proj = createProject(getBundle(), "linkedTest"); //$NON-NLS-1$
 		
 		// delete source folder and replace it with a link to its bundle location
@@ -61,14 +52,13 @@ public abstract class AbstractLinkedResourceMemcheckTest extends AbstractMemchec
 
 		assertEquals(0, proj.getBinaryContainer().getBinaries().length);
 		
-		proj.getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
-		proj.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+		buildProject(proj);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 
 }

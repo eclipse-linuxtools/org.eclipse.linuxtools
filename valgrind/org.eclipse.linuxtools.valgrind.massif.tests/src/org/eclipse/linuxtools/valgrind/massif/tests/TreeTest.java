@@ -28,8 +28,8 @@ public class TreeTest extends AbstractMassifTest {
 	
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 	
 	public void testTreeNodes() throws Exception {

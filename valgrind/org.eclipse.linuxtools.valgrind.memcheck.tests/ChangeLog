@@ -1,3 +1,16 @@
+2009-04-21  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractLinkedResourceMemcheckTest.java (setUp): Turning off autobuilding now done in super,
+	call buildProject, instead of building manually.
+	(tearDown): Call super last.
+	* BasicMemcheckTest.java (tearDown): Likewise.
+	* DoubleClickTest.java (tearDown): Likewise.
+	* ExpandCollapseTest.java (tearDown): Likewise.
+	* LaunchConfigTabTest.java (tearDown): Likewise.
+	* MarkerTest.java (tearDown): Likewise.
+	* MultiProcessTest.java (tearDown): Likewise.
+	* test.xml: Fix classname in cleanup target.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: 0.2.0 version.

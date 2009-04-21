@@ -24,8 +24,8 @@ public class BasicMemcheckTest extends AbstractMemcheckTest {
 	
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 	
 	public void testNumErrors() throws Exception {
