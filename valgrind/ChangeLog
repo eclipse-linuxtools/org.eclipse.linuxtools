@@ -1,3 +1,13 @@
+2009-04-21  Elliott Baron  <ebaron@redhat.com>
+
+	* plugin.properties: Added "(Incubation)" to plugin name.
+	* BasicCachegrindTest.java (tearDown): Call super last.
+	* CModelLabelsTest.java (tearDown): Likewise.
+	* DoubleClickTest.java (tearDown): Likewise.
+	* ExpandCollapseTest.java (tearDown): Likewise.
+	* LaunchConfigTabTest.java (tearDown): Likewise.
+	* MultiProcessTest.java (tearDown): Likewise.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: 0.2.0 version.

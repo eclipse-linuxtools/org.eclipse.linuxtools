@@ -37,8 +37,8 @@ public class CModelLabelsTest extends AbstractCachegrindTest {
 	
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 	
 	public void testFileLabelsCPP() throws Exception {

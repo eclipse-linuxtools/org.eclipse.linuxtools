@@ -34,8 +34,8 @@ public class ExpandCollapseTest extends AbstractCachegrindTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		deleteProject(proj);
+		super.tearDown();
 	}
 	
 	public void testExpand() throws Exception {

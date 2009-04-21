@@ -45,10 +45,10 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		tab.dispose();
 		testShell.dispose();
 		deleteProject(proj);
+		super.tearDown();
 	}
 	
 	private ILaunchConfigurationWorkingCopy initConfig() throws CoreException {
