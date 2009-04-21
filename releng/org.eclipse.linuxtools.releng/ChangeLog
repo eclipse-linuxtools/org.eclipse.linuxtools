@@ -1,9 +1,5 @@
 2009-04-20  Andrew Overholt  <overholt@redhat.com>
 
-	* site.xml: Temporarily remove.
-
-2009-04-20  Andrew Overholt  <overholt@redhat.com>
-
 	* site.xml: Initial check-in.  Will be used by Athena to generate p2
 	categories.
 
