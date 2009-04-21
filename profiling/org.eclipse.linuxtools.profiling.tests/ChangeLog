@@ -1,3 +1,11 @@
+2009-04-21  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Added new deps for controlling Indexer.
+	* AbstractTest.java (createProject): Turn off workspace building,
+	turn off indexer while creating.
+	(createProjectAndBuild): Make protected.
+	(buildProject): Build type from INCREMENTAL to FULL. Make protected.
+
 2009-04-07  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractTest.java (deleteProject): Wrap this in a IWorkspaceRunnable.

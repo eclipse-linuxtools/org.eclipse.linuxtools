@@ -19,12 +19,15 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
+import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.core.index.IIndexManager;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -32,6 +35,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -64,7 +68,7 @@ public abstract class AbstractTest extends TestCase {
 		return proj;
 	}
 
-	public void buildProject(ICProject proj) throws CoreException {
+	protected void buildProject(ICProject proj) throws CoreException {
 		IWorkspace wsp = ResourcesPlugin.getWorkspace();
 		final IProject curProject = proj.getProject();
 		ISchedulingRule rule = wsp.getRuleFactory().buildRule();
@@ -72,7 +76,7 @@ public abstract class AbstractTest extends TestCase {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					curProject.build(
-							IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+							IncrementalProjectBuilder.FULL_BUILD, null);
 				} catch (CoreException e) {
 					fail(e.getStatus().getMessage());
 				} catch (OperationCanceledException e) {
@@ -105,10 +109,20 @@ public abstract class AbstractTest extends TestCase {
 		wsp.run(runnable, wsp.getRoot(), IWorkspace.AVOID_UPDATE, null);
 	}
 
-	public ICProject createProject(Bundle bundle, String projname)
+	protected ICProject createProject(Bundle bundle, String projname)
 			throws CoreException, URISyntaxException, IOException,
 			InvocationTargetException, InterruptedException {
-		ICProject proj = CProjectHelper.createCProject(projname , BIN_DIR);
+		// Turn off auto-building
+		IWorkspace wsp = ResourcesPlugin.getWorkspace();
+		IWorkspaceDescription desc = wsp.getDescription();
+		desc.setAutoBuilding(false);
+		wsp.setDescription(desc);
+		
+		// Disable the indexer while the project is being created to avoid threading issues
+		IIndexManager indexManager = CCorePlugin.getIndexManager();
+		indexManager.setDefaultIndexerId(IIndexManager.ID_NO_INDEXER);
+		
+		ICProject proj = CProjectHelper.createCProject(projname, BIN_DIR);
 		URL location = FileLocator.find(bundle, new Path("resources/" + projname), null); //$NON-NLS-1$
 		File testDir = new File(FileLocator.toFileURL(location).toURI());
 		
@@ -119,6 +133,22 @@ public abstract class AbstractTest extends TestCase {
 		});
 		op.setCreateContainerStructure(false);
 		op.run(null);
+		
+		IStatus status = op.getStatus();
+		if (!status.isOK()) {
+			throw new CoreException(status);
+		}
+				
+		// Project should not be indexed yet
+		assertFalse(indexManager.isProjectIndexed(proj));
+		
+		// Re-enable the indexer 
+		indexManager.setDefaultIndexerId(CCorePlugin.DEFAULT_INDEXER);
+		
+		// Index the project
+		indexManager.reindex(proj);
+		indexManager.joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
+		
 		return proj;
 	}
 	
@@ -134,7 +164,6 @@ public abstract class AbstractTest extends TestCase {
 		ILaunchConfiguration config = null;
 		try {
 			String projectName = proj.getName();
-			// hard-coded to work around getBinaries() returning empty issue
 			IResource bin = proj.findMember(new Path(BIN_DIR).append(projectName));
 			if (bin == null) {
 				fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
