@@ -1,3 +1,8 @@
+2009-04-22  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtoolsupdatesite-trunk.sh: Use Update zips instead of Master
+	zips.
+
 2009-04-20  Andrew Overholt  <overholt@redhat.com>
 
 	* site.xml: Initial check-in.  Will be used by Athena to generate p2

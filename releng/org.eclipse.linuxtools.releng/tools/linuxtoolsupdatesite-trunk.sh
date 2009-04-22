@@ -27,18 +27,14 @@ fi
 # 20 is for 2009, 2010, etc.
 latest=$(ls -1 ${downloadsDir} | grep ^[NS]20 | cut -c2- | sort | tail -n 1)
 
-if [ -e ${downloadsDir}/*${latest}/linuxtools-Master*.zip ]; then
+if [ -e ${downloadsDir}/*${latest}/linuxtools-Update*.zip ]; then
 
 # Clean out old
 #rm -f old.tar.bz2
 #tar jcf old.tar.bz2 *
-rm -rf features plugins pack.properties
+rm -rf features plugins pack.properties *.xml
 
-unzip -q -n ${downloadsDir}/*${latest}/linuxtools-Master*.zip
-mv eclipse/* .
-rmdir eclipse
-
-# Update site.xml with the versions we have in this build
-for f in `ls features/*.jar`; do version=$(echo $f | sed -e 's:features/.*_::' -e 's:\.jar::'); name=$(echo $f | sed -e 's:features/::' -e 's:\.jar::' -e 's:_::' -e "s:$version::"); sed -i -e "/${name}/ s/_.*\.jar/_${version}\.jar/" -e "/${name}/ s/version=\".*\"/version=\"${version}\"/" site.xml; done
-
+unzip -q -n ${downloadsDir}/*${latest}/linuxtools-Update*.zip
+chown -R aoverholt:linuxtoolsadmin *
+chmod -R 755 *
 fi
