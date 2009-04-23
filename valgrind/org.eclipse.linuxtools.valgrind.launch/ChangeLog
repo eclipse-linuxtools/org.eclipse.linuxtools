@@ -1,5 +1,6 @@
 2009-04-23  Elliott Baron  <ebaron@redhat.com>
 
+	* plugin.xml: Removed unused extension.
 	* ExportWizardConstants.java: Window title added.
 	* messages.properties: New key, capitalized options in tab.
 	* ValgrindExportWizard.java (init): Set window title. 
