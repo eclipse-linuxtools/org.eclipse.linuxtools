@@ -1,3 +1,8 @@
+2009-04-23  Elliott Baron  <ebaron@redhat.com>
+
+	* SortTest.java: New file.
+	* AllTests.java (suite): Added SortTest.
+
 2009-04-21  Elliott Baron  <ebaron@redhat.com>
 
 	* BasicMassifTest.java (tearDown): Call super last.

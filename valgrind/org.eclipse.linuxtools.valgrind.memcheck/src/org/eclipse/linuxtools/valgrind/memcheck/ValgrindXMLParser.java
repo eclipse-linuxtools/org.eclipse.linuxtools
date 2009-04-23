@@ -10,10 +10,8 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.memcheck;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -45,32 +43,6 @@ public class ValgrindXMLParser {
 		} finally {
 			in.close();
 		}
-	}
-
-	/*
-	 * Currently only memcheck works with xml output so core messages such as fatal errors
-	 * will result in malformed xml documents.
-	 */
-	protected void separateOutput(InputStream in, StringBuffer xmlBuf, StringBuffer plainBuf) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-		boolean xml = false;
-		String line;
-		while ((line = br.readLine()) != null) {
-			if (line.startsWith("<?xml")) { //$NON-NLS-1$
-				xml = true;
-			}
-			if (xml) {
-				xmlBuf.append(line + "\n"); //$NON-NLS-1$
-			}
-			else {
-				plainBuf.append(line + "\n"); //$NON-NLS-1$
-			}
-			if (line.equals(END_TAG)) {
-				xml = false;
-			}
-		}
-
 	}
 
 	public ArrayList<ValgrindError> getErrors() {

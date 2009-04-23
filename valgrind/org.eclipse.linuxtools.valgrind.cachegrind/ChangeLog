@@ -1,3 +1,7 @@
+2009-04-23  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindViewPart.java (.widgetSelected): Default sorting now ascending.
+
 2009-04-21  Elliott Baron  <ebaron@redhat.com>
 
 	* plugin.properties: Add "(Incubation)" to Plugin name. 

@@ -224,7 +224,7 @@ public class CachegrindViewPart extends ViewPart implements IValgrindToolView {
 							: SWT.UP;
 					tree.setSortDirection(direction);
 				} else {
-					tree.setSortDirection(SWT.DOWN);
+					tree.setSortDirection(SWT.UP);
 				}
 				tree.setSortColumn(column);
 				viewer.setComparator(new ViewerComparator() {

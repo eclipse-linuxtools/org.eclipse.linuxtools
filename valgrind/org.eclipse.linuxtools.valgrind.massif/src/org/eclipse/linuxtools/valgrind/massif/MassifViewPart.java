@@ -174,7 +174,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 							: SWT.UP;
 					table.setSortDirection(direction);
 				} else {
-					table.setSortDirection(SWT.DOWN);
+					table.setSortDirection(SWT.UP);
 				}
 				table.setSortColumn(column);
 				viewer.setComparator(new ViewerComparator() {

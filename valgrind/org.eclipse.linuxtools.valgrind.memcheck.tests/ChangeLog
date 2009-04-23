@@ -1,3 +1,9 @@
+2009-04-23  Elliott Baron  <ebaron@redhat.com>
+
+	* ShortcutTest.java: New file.
+	* META-INF/MANIFEST.MF: New dep.
+	* AllTests.java (suite): ShortcutTest added.
+
 2009-04-21  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractLinkedResourceMemcheckTest.java (setUp): Turning off autobuilding now done in super,

@@ -1,3 +1,10 @@
+2009-04-23  Elliott Baron  <ebaron@redhat.com>
+
+	* ExportWizardConstants.java: Window title added.
+	* messages.properties: New key, capitalized options in tab.
+	* ValgrindExportWizard.java (init): Set window title. 
+	* ValgrindOptionsTab.java: Moved suppressions to a new tab.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/valgrind/launch/ExportHandler.java: New file.

@@ -1,3 +1,7 @@
+2009-04-23  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifViewPart.java (.widgetSelected): Default sorting now ascending.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* birt/ChartLocationsDialog.java: New file.

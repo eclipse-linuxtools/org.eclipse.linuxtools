@@ -1,6 +1,10 @@
+2009-04-23  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindTestLaunchShortcut.java: Stub for testing Launch Shortcut.
+
 2009-04-21  Elliott Baron  <ebaron@redhat.com>
 
-	* src/org/eclipse/linuxtools/valgrind/tests/ResourceChangePrinter.java: New file.
+	* ResourceChangePrinter.java: New file.
 	* plugin.properties: Removed unused key.
 
 2009-04-03  Elliott Baron  <ebaron@redhat.com>

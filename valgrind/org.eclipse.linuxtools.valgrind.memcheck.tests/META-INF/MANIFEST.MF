@@ -35,5 +35,6 @@ Import-Package: org.eclipse.cdt.core,
  org.eclipse.ui,
  org.eclipse.ui.actions,
  org.eclipse.ui.console,
+ org.eclipse.ui.ide,
  org.eclipse.ui.texteditor,
  org.eclipse.ui.wizards.datatransfer

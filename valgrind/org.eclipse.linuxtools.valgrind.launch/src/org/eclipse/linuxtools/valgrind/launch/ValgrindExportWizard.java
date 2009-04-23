@@ -99,6 +99,7 @@ public class ValgrindExportWizard extends Wizard implements IExportWizard {
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		setWindowTitle(ExportWizardConstants.WIZARD_WINDOW_TITLE);
 		exportPage = getWizardPage();
 		exportPage.setDescription(ExportWizardConstants.WIZARD_DESCRIPTION);
 		addPage(exportPage);

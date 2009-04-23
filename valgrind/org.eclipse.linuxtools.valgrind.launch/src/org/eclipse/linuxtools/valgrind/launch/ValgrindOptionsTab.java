@@ -143,12 +143,21 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 		createErrorOptions(generalTop);
 
-		createVerticalSpacer(generalTop, 1);
-
-		createSuppressionsOption(generalTop);		
-		
+		//createVerticalSpacer(generalTop, 1);
+	
 		generalTab.setControl(generalTop);
+		
+		TabItem suppTab = new TabItem(optionsFolder, SWT.NONE);
+		suppTab.setText(Messages.getString("ValgrindOptionsTab.Suppressions")); //$NON-NLS-1$
+		
+		Composite suppTop = new Composite(optionsFolder, SWT.NONE);
+		suppTop.setLayout(new GridLayout());
+		suppTop.setLayoutData(new GridData(GridData.FILL_BOTH));
 
+		createSuppressionsOption(suppTop);
+		
+		suppTab.setControl(suppTop);
+		
 		toolTab = new TabItem(optionsFolder, SWT.NONE);
 		toolTab.setText(Messages.getString("ValgrindOptionsTab.Tool")); //$NON-NLS-1$
 
@@ -178,7 +187,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 
 		String[] names = new String[tools.length];
 		for (int i = 0; i < names.length; i++) {
-			names[i] = getPlugin().getToolName(tools[i]);
+			names[i] = capitalize(getPlugin().getToolName(tools[i]));
 		}
 		toolsCombo.setItems(names);
 
@@ -194,6 +203,16 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				}
 			}			
 		});
+	}
+
+	private String capitalize(String str) {
+		if (str.length() > 0) {
+			char[] buf = str.toCharArray();
+			buf[0] = Character.toUpperCase(buf[0]);
+			
+			str = String.valueOf(buf);
+		}
+		return str;
 	}
 
 	protected void createBasicOptions(Composite top) {
@@ -269,12 +288,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	protected void createSuppressionsOption(Composite top) {
-		Group suppGroup = new Group(top, SWT.NONE);
-		suppGroup.setLayout(new GridLayout());
-		suppGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		suppGroup.setText(Messages.getString("ValgrindOptionsTab.Suppressions")); //$NON-NLS-1$
-		
-		Composite browseTop = new Composite(suppGroup, SWT.NONE);		
+		Composite browseTop = new Composite(top, SWT.NONE);		
 		browseTop.setLayout(new GridLayout(4, false));
 		GridData browseData = new GridData(GridData.FILL_HORIZONTAL);
 		browseTop.setLayoutData(browseData);
