@@ -35,10 +35,10 @@
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.debug.core"/>
-      <import feature="org.eclipse.cdt" version="5.0.0.qualifier"/>
-      <import feature="org.eclipse.cdt.gnu.build" version="5.0.0.qualifier"/>
-      <import feature="org.eclipse.cdt.gnu.debug" version="5.0.0.qualifier"/>
-      <import feature="org.eclipse.cdt.platform" version="5.0.0.qualifier"/>
+      <import feature="org.eclipse.cdt"/>
+      <import feature="org.eclipse.cdt.gnu.build"/>
+      <import feature="org.eclipse.cdt.gnu.debug"/>
+      <import feature="org.eclipse.cdt.platform"/>
    </requires>
 
    <plugin

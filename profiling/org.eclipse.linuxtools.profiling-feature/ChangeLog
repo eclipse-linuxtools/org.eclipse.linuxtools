@@ -1,3 +1,7 @@
+2009-04-23  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Remove 5.0.0.qualifier versions on CDT dependencies.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: 0.2.0 version.
