@@ -31,10 +31,9 @@ public class SortTest extends AbstractMassifTest {
 
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, 2);
 		wc.setAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, true);
 		wc.doSave();
-		doLaunch(config, "testDefaults"); //$NON-NLS-1$
+		doLaunch(config, "testStacks"); //$NON-NLS-1$
 	}
 
 	@Override
