@@ -1,3 +1,7 @@
+2009-04-27  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Build against Ganymede SR2 dependencies.
+
 2009-04-22  Andrew Overholt  <overholt@redhat.com>
 
 	* tools/linuxtoolsupdatesite-trunk.sh: Use Update zips instead of Master
