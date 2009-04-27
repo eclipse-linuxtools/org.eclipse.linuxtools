@@ -40,8 +40,7 @@ fi
 ### install ###
 
 #create the sym link to consolehelper
-test -L ./opcontrol && rm -f ./opcontrol
-ln -s /usr/bin/consolehelper opcontrol 
+test -L ./opcontrol || { rm -f ./opcontrol && ln -s /usr/bin/consolehelper opcontrol ; }
 if [ $? -ne 0 ]; then
   echo Error: cannot create opcontrol wrapper in `pwd`
   exit 1
