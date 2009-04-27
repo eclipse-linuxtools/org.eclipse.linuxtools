@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.cdt.autotools;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +70,8 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 	protected boolean buildCalled;
 	
 	private String makeTargetName;
+	private String preBuildErrMsg = new String();
+	private String postBuildErrMsg = new String();
 	
 	public static String getBuilderId() {
 		return BUILDER_ID;
@@ -108,6 +109,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
 		IProject[] results = null;
 		IProject project = getProject();
@@ -154,7 +156,6 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			IConfiguration cfg = info.getDefaultConfiguration();
 
 			// Assemble the information needed to generate the targets
-			String errMsg;
 			String prebuildStep = cfg.getPrebuildStep();
 			try{
 				//try to resolve the build macros in the prebuild step
@@ -203,7 +204,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 				// Set the environment
 				IEnvironmentVariable variables[] = ManagedBuildManager
 						.getEnvironmentVariableProvider().getVariables(cfg, true);
-				ArrayList envList = new ArrayList();
+				ArrayList<String> envList = new ArrayList<String>();
 				if (variables != null) {
 					for (int i = 0; i < variables.length; i++) {
 						envList.add(variables[i].getName()
@@ -245,7 +246,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 
 					if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
 							monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
-						errMsg = launcher.getErrorMessage();
+						preBuildErrMsg = launcher.getErrorMessage();
 					}
 				}
 			}
@@ -310,7 +311,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 
 					if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
 							monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
-						errMsg = launcher.getErrorMessage();
+						postBuildErrMsg = launcher.getErrorMessage();
 					}
 				}
 			}
@@ -415,7 +416,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 	 * @return
 	 */
 	protected String[] getTargets(int kind, IBuilder builder) {
-		List args = new ArrayList();
+		List<String> args = new ArrayList<String>();
 		String buildTarget = "all";
 		switch (kind) {
 			case CLEAN_BUILD:
@@ -444,10 +445,10 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 	}
 
 	// Turn the string into an array.
-	ArrayList makeArrayList(String string) {
+	ArrayList<String> makeArrayList(String string) {
 		string.trim();
 		char[] array = string.toCharArray();
-		ArrayList aList = new ArrayList();
+		ArrayList<String> aList = new ArrayList<String>();
 		StringBuffer buffer = new StringBuffer();
 		boolean inComment = false;
 		for (int i = 0; i < array.length; i++) {
@@ -469,5 +470,13 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 		if (buffer.length() > 0)
 			aList.add(buffer.toString());
 		return aList;
+	}
+
+	public String getPreBuildErrMsg() {
+		return preBuildErrMsg;
+	}
+	
+	public String getPostBuildErrMsg() {
+		return postBuildErrMsg;
 	}
 }

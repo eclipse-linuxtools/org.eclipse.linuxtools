@@ -1,3 +1,18 @@
+2009-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #270518.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (getPostBuildErrMsg):
+	New method. 
+	(getPreBuildErrMsg): Ditto. 
+	(getTargets): Fix warnings.
+	(makeArrayList): Ditto.
+	(build): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (addMakeTargetsToManager): Add
+	check for non-existent Makefile.
+	(regenerateMakefiles): Check for Makefile at end and if not present, always return error.
+	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Change message for
+	non-generation of Makefile.
+
 2009-04-20  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/HTMLTextPresenter.java

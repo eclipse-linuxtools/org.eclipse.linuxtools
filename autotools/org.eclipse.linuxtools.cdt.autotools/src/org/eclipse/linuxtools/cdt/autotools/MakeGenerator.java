@@ -586,7 +586,8 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					saveConfigArgs(configArgs);
 				}
 			}
-			else if (!makefile.exists()) {
+    		// If we didn't create a Makefile, consider that an error.
+			if (makefile == null || !makefile.exists()) {
 				rc = IStatus.ERROR;
 				errMsg = AutotoolsPlugin.getResourceString("MakeGenerator.didnt.generate"); //$NON-NLS-1$
 			}
@@ -1222,7 +1223,10 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @throws CoreException
 	 */
 	private void addMakeTargetsToManager(File makefileFile) throws CoreException {
-		// Ask the makefile generator to generate any makefiles needed to build delta
+		// We don't bother if the Makefile wasn't created successfully.
+		if (!makefileFile.exists())
+			return;
+		
 		checkCancel();
 		if (monitor == null)
 			monitor = new NullProgressMonitor();
