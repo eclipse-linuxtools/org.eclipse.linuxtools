@@ -67,6 +67,8 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration config) {
 		_options.loadConfiguration(config);
 		
+		_kernelImageFileText.setText(_options.getKernelImageFile());
+		
 		int separate = _options.getSeparateSamples();
 		
 		if (separate == OprofileDaemonOptions.SEPARATE_NONE) {
