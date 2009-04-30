@@ -1,3 +1,19 @@
+2009-04-30  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #249199
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/AbstractAutotoolsHandler.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoconfHandler.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutomakeHandler.java: New file.
+	* plugin.properties: Add messages for invoking autotools.
+	* plugin.xml: Change invoke autotools actions from Actions in an ActionSet to instead
+	use org.eclipse.ui.menus, org.eclipse.ui.commands, and org.eclipse.ui.handlers and
+	do not add these actions to project menu if not an Autotools project.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/AclocalHandler.java (execute): Implemented. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAclocalAction.java (run): Add check
+	for null container.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoconfAction.java (run): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutomakeAction.java (run): Ditto.
+
 2009-04-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #270518.

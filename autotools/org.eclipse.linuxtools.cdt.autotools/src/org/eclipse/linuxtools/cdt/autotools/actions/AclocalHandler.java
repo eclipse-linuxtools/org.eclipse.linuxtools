@@ -10,32 +10,28 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.actions;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.resources.IContainer;
 
 /**
  * @author Jeff Johnston
  *
  */
-public class AclocalHandler extends AbstractHandler {
+public class AclocalHandler extends AbstractAutotoolsHandler {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
-	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		// TODO Auto-generated method stub
+		InvokeAclocalAction a = new InvokeAclocalAction();
+		Object o = event.getApplicationContext();
+		if (o instanceof IEvaluationContext) {
+			IContainer container = getContainer((IEvaluationContext)o);
+			if (container != null) {
+				a.setSelectedContainer(container);
+				a.run(null);
+			}
+		}
 		return null;
-	}
-	
-	/**
-	 * Whether this handler is capable of executing at this time. Subclasses may
-	 * override this method.
-	 * 
-	 * @return <code>true</code>
-	 */
-	public boolean isEnabled() {
-		return true;
 	}
 
 }

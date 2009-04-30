@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Red Hat Inc..
+ * Copyright (c) 2006, 2007 2009 Red Hat Inc..
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,9 @@ public class InvokeAclocalAction extends InvokeAction {
 	public void run(IAction action) {
 
 		IContainer container = getSelectedContainer();
+		if (container == null)
+			return;
+		
 		IPath execDir = getExecDir(container);
 		String cwd = "CWD:" + getCWD(container);
 
