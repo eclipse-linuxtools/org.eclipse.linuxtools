@@ -1,3 +1,15 @@
+2009-05-06  Alphonse Van Assche <alcapcom@fedoraproject.org>
+    Convert tab by space (https://bugs.eclipse.org/bugs/show_bug.cgi?id=185227)
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTabConverter.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MainPreferencePage.java: Add a checkbox.  
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/Messages.java: Externalize strings.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java: add convert tab by space capability.
+
 2009-04-15  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .project: Add apianalysis nature.
