@@ -1,3 +1,8 @@
+2009-05-08  Alphonse Van Assche <alcapcom@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileDefineTest.java: Disable test define 
+	without value, because of the fact that this error is no more managed by our internal parser.  
+
 2009-04-02  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java (testGetMacroEval): Fix %_libdir expectation.

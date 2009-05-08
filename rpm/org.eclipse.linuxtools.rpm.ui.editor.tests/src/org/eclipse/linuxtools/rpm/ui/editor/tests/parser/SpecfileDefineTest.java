@@ -79,21 +79,22 @@ public class SpecfileDefineTest extends FileTestCase {
 		assertEquals(1, blahDefine.getIntValue());
 	}
 
-	public void testNullDefinition() {
-		boolean fail = true;
-		for (IMarker marker : getFailureMarkers()) {
-			if ((marker.getAttribute(IMarker.CHAR_START, 0) == 70)
-					&& (marker.getAttribute(IMarker.CHAR_END, 0) == 83)) {
-				assertEquals(IMarker.SEVERITY_WARNING, marker.getAttribute(
-						IMarker.SEVERITY, -1));
-				assertEquals("No value name after define.", marker
-						.getAttribute(IMarker.MESSAGE, ""));
-				fail = false;
-			}
-		}
-		if (fail)
-			fail();
-	}
+// This error is no more managed by our 'internal' parser. 
+//	public void testNullDefinition() {
+//		boolean fail = true;
+//		for (IMarker marker : getFailureMarkers()) {
+//			if ((marker.getAttribute(IMarker.CHAR_START, 0) == 70)
+//					&& (marker.getAttribute(IMarker.CHAR_END, 0) == 83)) {
+//				assertEquals(IMarker.SEVERITY_WARNING, marker.getAttribute(
+//						IMarker.SEVERITY, -1));
+//				assertEquals("No value name after define.", marker
+//						.getAttribute(IMarker.MESSAGE, ""));
+//				fail = false;
+//			}
+//		}
+//		if (fail)
+//			fail();
+//	}
 
 	public void testNonLetterDefinitionName() {
 		boolean fail = true;
