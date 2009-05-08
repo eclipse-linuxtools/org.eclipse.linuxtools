@@ -1,3 +1,10 @@
+2009-05-08  Alphonse Van Assche <alcapcom@fedoraproject.org>
+	Remove 'No value name after define.' parsing error, this error is now 
+	throw by RPM parser through rpmlint.
+	
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java: Remove no more needed code. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/message.properties Remove above message string.
+
 2009-05-06  Alphonse Van Assche <alcapcom@fedoraproject.org>
     Convert tab by space (https://bugs.eclipse.org/bugs/show_bug.cgi?id=185227)
 

@@ -384,13 +384,7 @@ public class SpecfileParser {
 							IMarker.SEVERITY_ERROR));
 					return null;
 				} else {
-					if (!iter.hasNext()) {
-						// FIXME: Should this be an error?
-						errorHandler.handleError(new SpecfileParseException(
-								Messages.getString("SpecfileParser.7"), //$NON-NLS-1$
-								lineNumber, 0, lineText.length(),
-								IMarker.SEVERITY_WARNING));
-					} else {
+					if (iter.hasNext()) {
 						String defineStringValue = iter.next();
 						// Defines that are more than one token
 						if (iter.hasNext()) {
