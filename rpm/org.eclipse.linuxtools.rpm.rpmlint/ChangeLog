@@ -1,3 +1,15 @@
+2009-05-08  Alphonse Van Assche  <alcapcom@fedoraproject.org>
+	Add support for the new 'specfile-error' rpmlint error. This error is 
+	returned by rpmlint when it cannot parse a given .spec file using 
+	'rpm -q --qf= --specfile file.spec' command. The output of the RPM parser 
+	give us some useful information about many .spec file syntax errors.  
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java: Parse rpm parser error message.
+	* plugin.xml: Fix typo.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintItem.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java: Likewise.
+
 2009-03-24  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Add popup menu item for running rpmlint on spec files.
@@ -130,7 +142,7 @@
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintNature.java: Likewise.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintItem.java (setSeverity): Likewise. 
 	(toString): Likewise.
-	(setReferedContent): Likewise.
+	(setRefferedContent): Likewise.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (getRealLineNbr): Likewise.
 	(parseRpmlintOurput): Likewise.
 	(runRpmlintCommand): Likewise.
