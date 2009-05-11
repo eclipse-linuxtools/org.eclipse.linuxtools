@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008,2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,12 +21,13 @@ import org.eclipse.swt.graphics.Image;
 public class UiModelRoot implements IUiModelElement {
 	private static UiModelRoot _uiModelRoot = new UiModelRoot();	//singleton
 	private UiModelEvent[] _events;							//this node's children
-
+	private UiModelError _rootError;
 
 	/** constructor, private for singleton use **/
 	protected UiModelRoot() {
 //		refreshModel();
 		_events = null;
+		_rootError = null;
 //		_uiModelRoot = this;
 	}
 	
@@ -46,7 +47,9 @@ public class UiModelRoot implements IUiModelElement {
 	public void refreshModel() {
 		OpModelEvent dataModelEvents[] = getModelDataEvents();
 
-		if (dataModelEvents != null) {
+		if (dataModelEvents == null || dataModelEvents.length == 0) {
+			_rootError = UiModelError.NO_SAMPLES_ERROR;
+		} else {
 			_events = new UiModelEvent[dataModelEvents.length];
 			for (int i = 0; i < dataModelEvents.length; i++) {
 				_events[i] = new UiModelEvent(dataModelEvents[i]);
@@ -65,11 +68,14 @@ public class UiModelRoot implements IUiModelElement {
 	}
 
 	public IUiModelElement[] getChildren() {
-		return _events;
+		if (_events != null)
+			return _events;
+		else
+			return new IUiModelElement[] { _rootError };
 	}
 
 	public boolean hasChildren() {
-		return (_events == null || _events.length == 0 ? false : true);
+		return true;
 	}
 
 	public IUiModelElement getParent() {

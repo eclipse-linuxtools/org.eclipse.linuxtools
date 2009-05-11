@@ -44,6 +44,7 @@ public class OprofileUiPlugin extends AbstractUIPlugin {
 	public static final String DEPENDENT_ICON = ICON_PATH + "dependent.gif"; //$NON-NLS-1$
 	public static final String SYMBOL_ICON = ICON_PATH + "symbol.gif"; //$NON-NLS-1$
 	public static final String SAMPLE_ICON = ICON_PATH + "sample.gif"; //$NON-NLS-1$
+	public static final String ERROR_ICON = ICON_PATH + "error.png"; //$NON-NLS-1$
 	
 	public static final double MINIMUM_SAMPLE_PERCENTAGE = 0.0001;
 	

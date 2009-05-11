@@ -15,7 +15,7 @@ import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
 public class UiModelError implements IUiModelElement {
-	public static final UiModelError NO_SAMPLES_ERROR = new UiModelError(OprofileUiMessages.getString("root.error.nosamples")); //$NON-NLS-1$
+	public static UiModelError NO_SAMPLES_ERROR = new UiModelError(OprofileUiMessages.getString("root.error.nosamples")); //$NON-NLS-1$
 
 	private String errorMessage;
 	
