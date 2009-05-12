@@ -12,12 +12,14 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.profiling.tests
-Import-Package: org.eclipse.cdt.core,
+Import-Package: org.eclipse.cdt.build.core.scannerconfig,
+ org.eclipse.cdt.core,
  org.eclipse.cdt.core.dom,
  org.eclipse.cdt.core.index,
  org.eclipse.cdt.core.model,
  org.eclipse.cdt.core.testplugin,
  org.eclipse.cdt.debug.core,
+ org.eclipse.cdt.managedbuilder.core,
  org.eclipse.core.resources,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
