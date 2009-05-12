@@ -1,3 +1,7 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* MultiProcessTest.java: Delete referenced project. 
+
 2009-04-21  Elliott Baron  <ebaron@redhat.com>
 
 	* plugin.properties: Added "(Incubation)" to plugin name.

@@ -14,7 +14,9 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.core.filesystem,
  org.eclipse.core.resources,
  org.eclipse.debug.core,
+ org.eclipse.debug.core.model,
  org.eclipse.debug.ui,
+ org.eclipse.debug.ui.sourcelookup,
  org.eclipse.jface.text,
  org.eclipse.linuxtools.profiling.ui,
  org.eclipse.linuxtools.valgrind.core,
@@ -23,5 +25,4 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.valgrind.memcheck,
- org.eclipse.linuxtools.valgrind.memcheck.model
+Export-Package: org.eclipse.linuxtools.valgrind.memcheck

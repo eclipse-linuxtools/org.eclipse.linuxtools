@@ -38,9 +38,6 @@ public class MassifParser extends AbstractValgrindTextParser {
 	private static final String DETAILED = "detailed"; //$NON-NLS-1$
 	private static final String EMPTY = "empty"; //$NON-NLS-1$
 
-	private static final String COLON = ":"; //$NON-NLS-1$
-	private static final String SPACE = " "; //$NON-NLS-1$
-	private static final String EQUALS = "="; //$NON-NLS-1$
 	protected Integer pid;
 	protected MassifSnapshot[] snapshots;
 
@@ -202,32 +199,6 @@ public class MassifParser extends AbstractValgrindTextParser {
 		return function;
 	}
 
-	/*
-	 * Assumes syntax is: "\(.*:[0-9]+\)$"
-	 */
-	private Object[] parseFilename(String line) {
-		String filename = null;
-		int lineNo = 0;
-
-		int ix = line.lastIndexOf("("); //$NON-NLS-1$
-		if (ix >= 0) {
-			String part = line.substring(ix, line.length());
-			part = part.substring(1, part.length() - 1); // remove leading and trailing parentheses
-			if ((ix = part.lastIndexOf(":")) >= 0) { //$NON-NLS-1$		
-				String strLineNo = part.substring(ix + 1);
-				if (isNumber(strLineNo)) {
-					lineNo = Integer.parseInt(strLineNo);
-					filename = part.substring(0, ix);
-				}
-			}
-			else {
-				filename = part; // library, no line number
-			}
-		}
-		
-		return new Object[] { filename, lineNo };
-	}
-	
 	private Long parseNumBytes(String string) {
 		Long result = null;
 		if (isNumber(string)) {

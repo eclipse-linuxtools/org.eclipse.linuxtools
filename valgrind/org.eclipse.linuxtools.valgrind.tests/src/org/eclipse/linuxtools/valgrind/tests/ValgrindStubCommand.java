@@ -16,11 +16,18 @@ import java.io.IOException;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 
 public class ValgrindStubCommand extends ValgrindCommand {
+	protected static final String VERSION_FILE = ".version"; //$NON-NLS-1$
+	
 	protected int exitcode;
 	
 	@Override
 	public String whichValgrind() throws IOException {
 		return "/path/to/valgrind"; //$NON-NLS-1$
+	}
+	
+	@Override
+	public String whichVersion(String whichValgrind) throws IOException {
+		return "valgrind-3.4.0"; //$NON-NLS-1$
 	}
 	
 	@Override
@@ -33,4 +40,5 @@ public class ValgrindStubCommand extends ValgrindCommand {
 	public Process getProcess() {
 		return null;
 	}
+
 }

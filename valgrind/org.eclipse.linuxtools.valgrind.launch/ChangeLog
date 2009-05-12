@@ -1,3 +1,11 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: New deps.
+	* plugin.properties: Marker moved from Memcheck plugin.
+	* plugin.xml: Likewise.
+	* ValgrindLaunchConfigurationDelegate.java: Parsing Valgrind logs and creating markers
+	now done here.
+
 2009-04-23  Elliott Baron  <ebaron@redhat.com>
 
 	* plugin.xml: Removed unused extension.

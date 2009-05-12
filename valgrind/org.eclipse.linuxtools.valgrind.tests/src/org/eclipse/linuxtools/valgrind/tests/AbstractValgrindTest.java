@@ -63,8 +63,12 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	private List<ILaunch> launches;
 
 	public AbstractValgrindTest() {
-		ValgrindTestLaunchPlugin.getDefault().setTestBundle(getBundle());
-		ValgrindTestLaunchPlugin.getDefault().setToolPage(getToolPage());
+		getPlugin().setTestBundle(getBundle());
+		getPlugin().setToolPage(getToolPage());
+	}
+
+	protected ValgrindTestLaunchPlugin getPlugin() {
+		return ValgrindTestLaunchPlugin.getDefault();
 	}
 	
 	@Override

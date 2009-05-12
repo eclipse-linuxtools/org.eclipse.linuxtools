@@ -11,31 +11,60 @@
 package org.eclipse.linuxtools.valgrind.ui;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 
 public class ValgrindViewPart extends ViewPart {
 
+	protected PageBook pageBook;
 	protected Composite dynamicViewHolder;
 	protected IValgrindToolView dynamicView;
 	protected ActionContributionItem[] dynamicActions;
+	protected IValgrindMessage[] messages;
+	protected CoreMessagesViewer messagesViewer;
+	protected Action showCoreAction;
+	protected Action showToolAction;
+	protected boolean hasDynamicContent = false;
 
 	@Override
 	public void createPartControl(Composite parent) {
 		setContentDescription(Messages.getString("ValgrindViewPart.No_Valgrind_output")); //$NON-NLS-1$
 
-		dynamicViewHolder = new Composite(parent, SWT.NONE);
+		pageBook = new PageBook(parent, SWT.NONE);
+		pageBook.setLayoutData(new GridData(GridData.FILL_BOTH));
+		
+		messagesViewer = new CoreMessagesViewer(pageBook, SWT.NONE);
+		
+		dynamicViewHolder = new Composite(pageBook, SWT.NONE);
 		GridLayout dynamicViewLayout = new GridLayout();
 		dynamicViewLayout.marginWidth = dynamicViewLayout.marginHeight = 0;
 		dynamicViewHolder.setLayout(dynamicViewLayout);
 		dynamicViewHolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+	
+		showCoreAction = new Action(Messages.getString("ValgrindViewPart.Show_Core_Action"), IAction.AS_RADIO_BUTTON) { //$NON-NLS-1$
+			@Override
+			public void run() {
+				showCorePage();
+			}
+		};
+		showToolAction = new Action(Messages.getString("ValgrindViewPart.Show_Tool_Action"), IAction.AS_RADIO_BUTTON) { //$NON-NLS-1$
+			@Override
+			public void run() {
+				showToolPage();
+			}
+		};
+		
 		ValgrindUIPlugin.getDefault().setView(this);
 	}
 
@@ -49,7 +78,7 @@ public class ValgrindViewPart extends ViewPart {
 				toolbar.remove(item);
 			}
 		}
-
+		
 		// remove old view controls
 		if (dynamicView != null) {
 			dynamicView.dispose();
@@ -78,13 +107,31 @@ public class ValgrindViewPart extends ViewPart {
 			dynamicView = null;
 		}
 
+		// remove old menu items
+		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+		menu.removeAll();
+		// was content was created?
+		hasDynamicContent = dynamicViewHolder.getChildren().length > 0;
+		if (hasDynamicContent) {
+			menu.add(showCoreAction);
+			menu.add(showToolAction);			
+		}		
+		
+		menu.update(true);		
 		toolbar.update(true);
-
 		dynamicViewHolder.layout(true);
 
 		return dynamicView;
 	}
 
+	public void setMessages(IValgrindMessage[] messages) {
+		this.messages = messages;
+	}
+	
+	public IValgrindMessage[] getMessages() {
+		return messages;
+	}
+	
 	@Override
 	public void setFocus() {
 		if (dynamicView != null) {
@@ -93,6 +140,20 @@ public class ValgrindViewPart extends ViewPart {
 	}
 
 	public void refreshView() {
+		if (messages != null) {
+			messagesViewer.setInput(messages);
+			
+			// decide which page to show
+			if (hasDynamicContent && messages.length == 0) {
+				// no valgrind messages to show
+				showCoreAction.setEnabled(false);
+				showToolPage();
+			}
+			else {
+				showCoreAction.setEnabled(true);
+				showCorePage();
+			}
+		}
 		if (dynamicView != null) {
 			dynamicView.refreshView();
 		}
@@ -108,6 +169,22 @@ public class ValgrindViewPart extends ViewPart {
 
 	public IValgrindToolView getDynamicView() {
 		return dynamicView;
+	}
+
+	public CoreMessagesViewer getMessagesViewer() {
+		return messagesViewer;
+	}
+	
+	private void showCorePage() {
+		pageBook.showPage(messagesViewer.getControl());
+		showCoreAction.setChecked(true);
+		showToolAction.setChecked(false);
+	}
+	
+	private void showToolPage() {
+		pageBook.showPage(dynamicViewHolder);
+		showToolAction.setChecked(true);
+		showCoreAction.setChecked(false);
 	}
 
 }

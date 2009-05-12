@@ -20,18 +20,16 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckLaunchConstants;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
 import org.eclipse.linuxtools.valgrind.tests.ValgrindTestOptionsTab;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.console.IOConsole;
 
 public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
@@ -39,7 +37,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	protected MemcheckTestToolPage dynamicTab;
 	protected ILaunchConfiguration config;
 	protected Shell testShell;
-	private boolean consoleFinished;
+	//private boolean consoleFinished;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -90,7 +88,6 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
 			assertEquals(0, p[0].getExitValue());
 			assertTrue(cmd.contains("--tool=memcheck")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--xml=yes")); //$NON-NLS-1$
 			assertTrue(cmd.contains("-q")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--trace-children=no")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--child-silent-after-fork=yes")); //$NON-NLS-1$
@@ -417,50 +414,13 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 		assertFalse(tab.isValid(config));
 
-		ILaunch launch = doLaunch(config, "testValgrindError"); //$NON-NLS-1$
+		doLaunch(config, "testValgrindError"); //$NON-NLS-1$
 
-		IProcess[] p = launch.getProcesses();
-		if (p.length > 0) {
-			assertTrue(p[0].getExitValue() != 0);
-			IOConsole console = (IOConsole) DebugUITools.getConsole(p[0]);
-			IPropertyChangeListener consoleListener = new IPropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent event) {
-					if (event.getProperty().equals(IConsoleConstants.P_CONSOLE_OUTPUT_COMPLETE)) {
-						consoleFinished = true;
-					}
-				}				
-			};
-
-			// must be atomic, otherwise we could wait infinitely
-			synchronized (console) {
-				// only output should be from Valgrind
-				if (console.getDocument().getLength() > 0) {
-					consoleFinished = true;
-				}
-				else {
-					consoleFinished = false;					
-					console.addPropertyChangeListener(consoleListener);
-				}
-			}
-
-			// sleep until console done
-			Display display = Display.getCurrent();
-			while (!consoleFinished) {
-				if (display != null) {
-					if (!display.readAndDispatch()) {
-						display.sleep();
-					}
-				}
-				else {
-					Thread.sleep(1000);
-				}
-			}
-
-			String text = console.getDocument().get();
-			assertTrue(text.contains(notExistentFile));
-		}
-		else {
-			fail();
-		}
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		IValgrindMessage[] messages = view.getMessages(); 
+		assertTrue(messages.length > 0);
+		
+		String text = messages[0].getText();
+		assertTrue(text.contains(notExistentFile));
 	}
 }

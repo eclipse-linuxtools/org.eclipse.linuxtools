@@ -11,8 +11,8 @@
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 
 public class BasicMemcheckTest extends AbstractMemcheckTest {
 	
@@ -32,8 +32,8 @@ public class BasicMemcheckTest extends AbstractMemcheckTest {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNumErrors"); //$NON-NLS-1$
 				
-		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		assertEquals(3, view.getErrors().length);
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		assertEquals(3, view.getMessages().length);
 	}
 
 

@@ -28,6 +28,7 @@ public class AllTests {
 		suite.addTestSuite(MultiProcessTest.class);
 		suite.addTestSuite(ExpandCollapseTest.class);
 		suite.addTestSuite(ShortcutTest.class);
+		suite.addTestSuite(SignalTest.class);
 		// $JUnit-END$
 		return suite;
 	}

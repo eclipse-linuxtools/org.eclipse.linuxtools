@@ -10,23 +10,27 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 
 public class MultiProcessTest extends AbstractMemcheckTest {
+	ICProject refProj;
+	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		createProjectAndBuild("basicTest"); //$NON-NLS-1$
+		refProj = createProjectAndBuild("basicTest"); //$NON-NLS-1$
 		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		deleteProject(proj);
+		deleteProject(refProj);
 		super.tearDown();
 	}
 	
@@ -34,8 +38,8 @@ public class MultiProcessTest extends AbstractMemcheckTest {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testNoExec"); //$NON-NLS-1$
 
-		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		assertEquals(1, view.getErrors().length);
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		assertEquals(1, view.getMessages().length);
 	}
 	
 	public void testExec() throws Exception {
@@ -44,7 +48,7 @@ public class MultiProcessTest extends AbstractMemcheckTest {
 		config.doSave();
 		doLaunch(config, "testExec"); //$NON-NLS-1$
 
-		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		assertEquals(4, view.getErrors().length);
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		assertEquals(4, view.getMessages().length);
 	}
 }

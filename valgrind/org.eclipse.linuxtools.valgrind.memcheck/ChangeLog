@@ -1,3 +1,24 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* model/AuxErrorTreeElement.java: Removed.
+	* model/ErrorTreeElement.java: Removed.
+	* model/Messages.java: Removed.
+	* model/messages.properties: Removed.
+	* model/RootTreeElement.java: Removed.
+	* model/StackFrameTreeElement.java: Removed.
+	* model/TextTreeElement.java: Removed.
+	* model/ValgrindTreeElement.java: Removed.
+	* ValgrindError.java: Removed.
+	* ValgrindStackFrame.java: Removed.
+	* ValgrindXMLParser.java: Removed. 
+	* META-INF/MANIFEST.MF: Removed model package.
+	* plugin.properties: Removed marker name.
+	* plugin.xml: Moved marker extension to launch plugin.
+	* MemcheckLaunchDelegate.java (handleLaunch): Do nothing.
+	(getCommandArray): Remove --xml=yes.
+	* MemcheckPlugin.java (plugin): Remove marker ID.
+	* MemcheckViewPart.java: Nothing required.
+
 2009-04-23  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindXMLParser.java: Removed unused method.

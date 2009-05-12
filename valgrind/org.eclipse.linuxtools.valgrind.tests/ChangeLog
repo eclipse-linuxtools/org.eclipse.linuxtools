@@ -1,3 +1,13 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTest.java (getPlugin): New method.
+	* ValgrindStubCommand.java (whichVersion): Just return 3.4.0 version string.
+	* ValgrindTestLaunchPlugin.java (setCurrentLaunchConfiguration): Act as proxy to
+	real launch plugin's instance.
+	(getCurrentLaunchConfiguration): Likewise. 
+	(getCurrentLaunch): Likewise.
+	(setCurrentLaunch): Likewise.
+
 2009-04-23  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindTestLaunchShortcut.java: Stub for testing Launch Shortcut.

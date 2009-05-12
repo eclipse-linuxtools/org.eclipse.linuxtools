@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.massif.tests;
 
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -28,17 +29,19 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 
 public class MultiProcessTest extends AbstractMassifTest {
-
+	ICProject refProj;
+	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		createProjectAndBuild("alloctest"); //$NON-NLS-1$
+		refProj = createProjectAndBuild("alloctest"); //$NON-NLS-1$
 		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		deleteProject(proj);
+		deleteProject(refProj);
 		super.tearDown();
 	}
 	

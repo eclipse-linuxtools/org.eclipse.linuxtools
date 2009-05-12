@@ -20,10 +20,11 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart;
-import org.eclipse.linuxtools.valgrind.memcheck.model.StackFrameTreeElement;
-import org.eclipse.linuxtools.valgrind.memcheck.model.ValgrindTreeElement;
+import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
+import org.eclipse.linuxtools.valgrind.core.ValgrindStackFrame;
+import org.eclipse.linuxtools.valgrind.ui.CoreMessagesViewer;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -31,7 +32,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class DoubleClickTest extends AbstractMemcheckTest {
-	private StackFrameTreeElement frame;
+	private ValgrindStackFrame frame;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -40,18 +41,19 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 	}
 
 	private void doDoubleClick() throws Exception {
-		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		TreeViewer viewer = view.getViewer();
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		CoreMessagesViewer viewer = view.getMessagesViewer();
 
 		// get first leaf
-		ValgrindTreeElement element = (ValgrindTreeElement) viewer.getInput();
+		IValgrindMessage[] elements = (IValgrindMessage[]) viewer.getInput();
+		IValgrindMessage element = elements[0];
 		TreePath path = new TreePath(new Object[] { element });
 		frame = null;
 		while (element.getChildren().length > 0) {
 			element = element.getChildren()[0];
 			path = path.createChildPath(element);
-			if (element instanceof StackFrameTreeElement) {
-				frame = (StackFrameTreeElement) element;
+			if (element instanceof ValgrindStackFrame) {
+				frame = (ValgrindStackFrame) element;
 			}
 		}
 		assertNotNull(frame);
@@ -60,7 +62,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		TreeSelection selection = new TreeSelection(path);
 
 		// do double click
-		IDoubleClickListener listener = view.getDoubleClickListener();
+		IDoubleClickListener listener = viewer.getDoubleClickListener();
 		listener.doubleClick(new DoubleClickEvent(viewer, selection));
 	}
 
@@ -80,7 +82,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 		IEditorInput input = editor.getEditorInput();
 		if (input instanceof IFileEditorInput) {
 			IFileEditorInput fileInput = (IFileEditorInput) input;
-			File expectedFile = new File(frame.getFrame().getDir(), frame.getFrame().getFile());
+			File expectedFile = new File(proj.getProject().getLocation().toOSString(), frame.getFile());
 			File actualFile = fileInput.getFile().getLocation().toFile();
 			
 			assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
@@ -105,7 +107,7 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 				TextSelection textSelection = (TextSelection) selection;
 				int line = textSelection.getStartLine() + 1; // zero-indexed
 				
-				assertEquals(frame.getFrame().getLine(), line);
+				assertEquals(frame.getLine(), line);
 			}
 			else {
 				fail();

@@ -1,3 +1,13 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindMessage.java: New file.
+	* IValgrindMessage.java: New file.
+	* ValgrindCoreParser.java: New file.
+	* ValgrindError.java: New file.
+	* ValgrindStackFrame.java: New file.
+	* AbstractValgrindTextParser.java: Actually made abstract, pull up parseFilename.
+	* CommandLineConstants.java: LOG_PREFIX moved here.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: 0.2.0 version.

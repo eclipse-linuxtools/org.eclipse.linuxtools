@@ -39,6 +39,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = PluginConstants.LAUNCH_PLUGIN_ID;
 	public static final String LAUNCH_ID = PLUGIN_ID + ".valgrindLaunch"; //$NON-NLS-1$
+	public static final String MARKER_TYPE = PLUGIN_ID + ".marker"; //$NON-NLS-1$
 
 	// Extension point constants
 	protected static final String EXT_ELEMENT_TOOL = "tool"; //$NON-NLS-1$
@@ -58,10 +59,10 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 	protected HashMap<String, IConfigurationElement> toolMap;
 	
-	protected IPath valgrindLocation;
-	protected Version valgrindVersion;
-	protected ILaunchConfiguration config;
-	protected ILaunch launch;
+	private IPath valgrindLocation;
+	private Version valgrindVersion;
+	private ILaunchConfiguration config;
+	private ILaunch launch;
 
 	// The shared instance
 	private static ValgrindLaunchPlugin plugin;
@@ -129,7 +130,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		}
 		return valgrindVersion;
 	}
-	
+		
 	protected ValgrindCommand getValgrindCommand() {
 		return new ValgrindCommand();
 	}

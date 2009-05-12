@@ -143,7 +143,8 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			}
 		});
 
-		setTopControl(viewer.getControl());
+		stackLayout.topControl = viewer.getControl();
+		top.layout();
 	}
 
 	private String getUnitString(MassifSnapshot[] snapshots) {
@@ -241,9 +242,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			@Override
 			public void run() {
 				if (isChecked()) {
-					setTopControl(treeViewer.getControl());
+					stackLayout.topControl = treeViewer.getControl();
+					top.layout();
 				} else {
-					setTopControl(viewer.getControl());
+					stackLayout.topControl = viewer.getControl();
+					top.layout();
 				}
 			}
 		};

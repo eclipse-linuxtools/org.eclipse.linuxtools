@@ -122,5 +122,12 @@
             commandId="org.eclipse.linuxtools.valgrind.launch.exportCommand">
       </handler>
    </extension>
-
+      <extension
+         id="org.eclipse.linuxtools.valgrind.launch.marker"
+         name="%marker.name"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.cdt.core.problem">
+      </super>
+   </extension>
 </plugin>

@@ -10,23 +10,21 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.memcheck.tests;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
-import org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart;
-import org.eclipse.linuxtools.valgrind.memcheck.ValgrindError;
-import org.eclipse.linuxtools.valgrind.memcheck.ValgrindStackFrame;
+import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
+import org.eclipse.linuxtools.valgrind.core.ValgrindError;
+import org.eclipse.linuxtools.valgrind.core.ValgrindStackFrame;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 
 public class MarkerTest extends AbstractMemcheckTest {
 	@Override
@@ -43,46 +41,54 @@ public class MarkerTest extends AbstractMemcheckTest {
 
 	public void testMarkers() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testMarkers"); //$NON-NLS-1$
+		doLaunch(config, "testDefaults"); //$NON-NLS-1$
 
-		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		ValgrindError[] errors = view.getErrors();
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		IValgrindMessage[] errors = view.getMessages();
 
-		ArrayList<IMarker> markers = new ArrayList<IMarker>(Arrays.asList(proj.getProject().findMarkers(MemcheckPlugin.MARKER_TYPE, true, IResource.DEPTH_INFINITE)));
-		for (ValgrindError error : errors) {
-			ValgrindStackFrame frame = getTopWorkspaceFrame(error.getFrames());
-
-			int ix = -1;
-			for (int i = 0; i < markers.size(); i++) {
-				IMarker marker = markers.get(i);
-				if (marker.getAttribute(IMarker.MESSAGE).equals(error.getWhat())
-						&& marker.getResource().getName().equals(frame.getFile())
-						&& marker.getAttribute(IMarker.LINE_NUMBER).equals(frame.getLine())) {
-					ix = i;
-				}
-			}
-			if (ix < 0) {
-				fail();
-			}
-			markers.remove(ix);
+		ArrayList<IMarker> markers = new ArrayList<IMarker>(Arrays.asList(proj
+				.getProject().findMarkers(ValgrindLaunchPlugin.MARKER_TYPE,
+						true, IResource.DEPTH_INFINITE)));
+		assertEquals(4, markers.size());
+		for (IValgrindMessage error : errors) {
+			findMarker(markers, error);
 		}
 		assertEquals(0, markers.size());
 	}
-	
-	private ValgrindStackFrame getTopWorkspaceFrame(List<ValgrindStackFrame> frames) throws Exception {
-		ValgrindStackFrame result = null;
-		for (int i = 0; result == null && i < frames.size(); i++) {
-			ValgrindStackFrame frame = frames.get(i);
-			String strpath = frame.getDir() + Path.SEPARATOR + frame.getFile();
-			File file = new File(strpath);
-			Path path = new Path(file.getAbsolutePath());
-			
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			IFile[] resource = root.findFilesForLocation(path);
-			if (resource.length > 0 && resource[0].exists()) {
-				result = frame;
+
+	private void findMarker(ArrayList<IMarker> markers, IValgrindMessage error)
+			throws Exception, CoreException {
+		ValgrindStackFrame frame = null;
+		IValgrindMessage[] children = error.getChildren();
+		for (int i = 0; i < children.length; i++) {
+			if (frame == null && children[i] instanceof ValgrindStackFrame
+					&& isWorkspaceFrame((ValgrindStackFrame) children[i])) {
+				frame = (ValgrindStackFrame) children[i];
+			} else if (children[i] instanceof ValgrindError) {
+				findMarker(markers, children[i]);
 			}
 		}
-		return result;
+
+		int ix = -1;
+		for (int i = 0; i < markers.size(); i++) {
+			IMarker marker = markers.get(i);
+			if (marker.getAttribute(IMarker.MESSAGE).equals(error.getText())
+					&& marker.getResource().getName().equals(frame.getFile())
+					&& marker.getAttribute(IMarker.LINE_NUMBER).equals(
+							frame.getLine())) {
+				ix = i;
+			}
+		}
+		if (ix < 0) {
+			fail();
+		}
+		markers.remove(ix);
+	}
+
+	private boolean isWorkspaceFrame(ValgrindStackFrame frame) throws Exception {
+		ISourceLocator locator = frame.getLaunch().getSourceLocator();
+		Object result = DebugUITools.lookupSource(frame.getFile(), locator)
+				.getSourceElement();
+		return result != null && result instanceof IResource;
 	}
 }

@@ -29,7 +29,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 	protected ILaunchConfiguration config;
 	protected Shell testShell;
 	protected ValgrindTestOptionsTab tab;
-	protected CachegrindTestToolPage dynamicTab;
+	protected CachegrindTestToolPage dynamicTab; 
 
 	@Override
 	protected void setUp() throws Exception {
@@ -135,9 +135,9 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		dynamicTab.checkI1Enablement();
 		assertTrue(dynamicTab.getI1SizeSpinner().isEnabled());
 		
-		dynamicTab.getI1SizeSpinner().setSelection(0);
-		dynamicTab.getI1AssocSpinner().setSelection(0);
-		dynamicTab.getI1LineSizeSpinner().setSelection(0);
+		dynamicTab.getI1SizeSpinner().setSelection(16384);
+		dynamicTab.getI1AssocSpinner().setSelection(1);
+		dynamicTab.getI1LineSizeSpinner().setSelection(16);
 		
 		tab.performApply(wc);
 		wc.doSave();
@@ -146,8 +146,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertFalse(p[0].getExitValue() == 0);
-			assertTrue(cmd.contains("--I1=0,0,0")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--I1=16384,1,16")); //$NON-NLS-1$
 		}
 		else {
 			fail();
@@ -162,9 +161,9 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		dynamicTab.checkD1Enablement();
 		assertTrue(dynamicTab.getD1SizeSpinner().isEnabled());
 		
-		dynamicTab.getD1SizeSpinner().setSelection(0);
-		dynamicTab.getD1AssocSpinner().setSelection(0);
-		dynamicTab.getD1LineSizeSpinner().setSelection(0);
+		dynamicTab.getD1SizeSpinner().setSelection(16384);
+		dynamicTab.getD1AssocSpinner().setSelection(1);
+		dynamicTab.getD1LineSizeSpinner().setSelection(16);
 		
 		tab.performApply(wc);
 		wc.doSave();
@@ -173,8 +172,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertFalse(p[0].getExitValue() == 0);
-			assertTrue(cmd.contains("--D1=0,0,0")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--D1=16384,1,16")); //$NON-NLS-1$
 		}
 		else {
 			fail();
@@ -189,9 +187,9 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		dynamicTab.checkL2Enablement();
 		assertTrue(dynamicTab.getL2SizeSpinner().isEnabled());
 
-		dynamicTab.getL2SizeSpinner().setSelection(0);
-		dynamicTab.getL2AssocSpinner().setSelection(0);
-		dynamicTab.getL2LineSizeSpinner().setSelection(0);
+		dynamicTab.getL2SizeSpinner().setSelection(16384);
+		dynamicTab.getL2AssocSpinner().setSelection(1);
+		dynamicTab.getL2LineSizeSpinner().setSelection(16);
 
 		tab.performApply(wc);
 		wc.doSave();
@@ -200,8 +198,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
-			assertFalse(p[0].getExitValue() == 0);
-			assertTrue(cmd.contains("--L2=0,0,0")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--L2=16384,1,16")); //$NON-NLS-1$
 		}
 		else {
 			fail();

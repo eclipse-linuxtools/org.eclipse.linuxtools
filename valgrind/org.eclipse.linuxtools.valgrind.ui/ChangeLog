@@ -1,3 +1,9 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* CoreMessagesViewer.java: New file.
+	* META-INF/MANIFEST.MF: New deps.
+	* ValgrindViewPart.java: Handle the work previously done in MemcheckViewPart.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: 0.2.0 version.

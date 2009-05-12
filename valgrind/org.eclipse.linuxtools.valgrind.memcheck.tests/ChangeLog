@@ -1,3 +1,21 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* resources/segvtest/.cproject: New file.
+	* resources/segvtest/.project: New file.
+	* resources/segvtest/Debug: New file.
+	* resources/segvtest/main.c: New file.
+	* SignalTest.java: New file.
+	* META-INF/MANIFEST.MF: New deps.
+	* AllTests.java (suite): Added SignalTest.
+	* BasicMemcheckTest.java: Handle refactoring of Memcheck plugin.
+	* DoubleClickTest.java: Likewise.
+	* ExpandCollapseTest.java: Likewise.
+	* LaunchConfigTabTest.java: Likewise.
+	* LinkedResourceDoubleClickTest.java: Likewise.
+	* LinkedResourceMarkerTest.java: Likewise.
+	* MarkerTest.java: Likewise.
+	* MultiProcessTest.java: Likewise; delete referenced project.
+
 2009-04-23  Elliott Baron  <ebaron@redhat.com>
 
 	* ShortcutTest.java: New file.

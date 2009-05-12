@@ -30,9 +30,6 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 	private static final String EVENTS = "events"; //$NON-NLS-1$
 	private static final String SUMMARY = "summary"; //$NON-NLS-1$
 
-	private static final String EQUALS = "="; //$NON-NLS-1$
-	private static final String SPACE = " "; //$NON-NLS-1$
-	private static final String COLON = ":"; //$NON-NLS-1$
 	private static final String COMMA = ","; //$NON-NLS-1$
 
 	protected static CachegrindParser instance;

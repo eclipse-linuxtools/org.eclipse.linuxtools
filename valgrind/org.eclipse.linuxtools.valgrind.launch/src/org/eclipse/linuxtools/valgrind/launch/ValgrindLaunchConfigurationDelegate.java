@@ -17,9 +17,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -31,12 +35,18 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.console.ConsoleColorProvider;
+import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
 import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
+import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
+import org.eclipse.linuxtools.valgrind.core.ValgrindCoreParser;
+import org.eclipse.linuxtools.valgrind.core.ValgrindError;
+import org.eclipse.linuxtools.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Color;
@@ -51,11 +61,11 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected static final String YES = "yes"; //$NON-NLS-1$
 	protected static final String EQUALS = "="; //$NON-NLS-1$
 
-	protected static final String LOG_PREFIX = "valgrind_"; //$NON-NLS-1$
-	protected static final String LOG_FILE = LOG_PREFIX + "%p.xml"; //$NON-NLS-1$
+	//protected static final String LOG_FILE = LOG_PREFIX + "%p.xml"; //$NON-NLS-1$
+	protected static final String LOG_FILE = CommandLineConstants.LOG_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter LOG_FILTER = new FileFilter() {
 		public boolean accept(File pathname) {
-			return pathname.getName().startsWith(LOG_PREFIX);
+			return pathname.getName().startsWith(CommandLineConstants.LOG_PREFIX);
 		}		
 	};
 
@@ -139,13 +149,22 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
 			}
+			
+//			if (process.getExitValue() == 0) {
+				// store these for use by other classes
+				getPlugin().setCurrentLaunchConfiguration(config);
+				getPlugin().setCurrentLaunch(launch);
 
-			if (process.getExitValue() == 0) {
+				// parse Valgrind logs
+				IValgrindMessage[] messages = parseLogs(outputPath);
+				
 				// create launch summary string to distinguish this launch
 				launchStr = createLaunchStr();
 
 				// create view
 				ValgrindUIPlugin.getDefault().createView(launchStr, toolID);
+				// set log messages
+				ValgrindUIPlugin.getDefault().getView().setMessages(messages);
 				monitor.worked(1);
 
 				// pass off control to extender
@@ -156,15 +175,11 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 
 				// show view
 				ValgrindUIPlugin.getDefault().showView();
-				monitor.worked(1);
-				
-				// store these for use by other classes
-				getPlugin().setCurrentLaunchConfiguration(config);
-				getPlugin().setCurrentLaunch(launch);
-			}
-			else {
-				handleValgrindError();
-			}
+				monitor.worked(1);				
+//			}
+//			else {
+//				handleValgrindError();
+//			}
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 			e.printStackTrace();
@@ -172,6 +187,54 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			e.printStackTrace();
 		} finally {
 			m.done();
+		}
+	}
+
+	protected IValgrindMessage[] parseLogs(IPath outputPath) throws IOException, CoreException {
+		List<IValgrindMessage> messages = new ArrayList<IValgrindMessage>();
+		
+		for (File log : outputPath.toFile().listFiles(LOG_FILTER)) {
+			ValgrindCoreParser parser = new ValgrindCoreParser(log, launch);
+			IValgrindMessage[] results = parser.getMessages();
+			messages.addAll(Arrays.asList(results));
+			createMarkers(results);
+		}
+		
+		return messages.toArray(new IValgrindMessage[messages.size()]);
+	}
+	
+	protected void createMarkers(IValgrindMessage[] messages) throws CoreException, IOException {
+		// find the topmost stack frame within the workspace to annotate with marker
+		// traverse nested errors as well
+		Stack<IValgrindMessage> messageStack = new Stack<IValgrindMessage>();
+		messageStack.addAll(Arrays.asList(messages));
+		while (!messageStack.isEmpty()) {
+			IValgrindMessage message = messageStack.pop();
+			IMarker marker = null;
+			IValgrindMessage[] children = message.getChildren();
+			for (int i = 0; i < children.length; i++) {
+				// if we've found our marker we don't care about any further frames in this stack
+				if (children[i] instanceof ValgrindStackFrame && marker == null) {
+					ValgrindStackFrame frame = (ValgrindStackFrame) children[i];
+					if (frame.getLine() > 0) {
+						ISourceLocator locator = frame.getLaunch().getSourceLocator();					
+						ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);
+						Object sourceElement = result.getSourceElement();
+
+						if (sourceElement != null && sourceElement instanceof IResource) {
+							IResource resource = (IResource) sourceElement;
+							marker = resource.createMarker(ValgrindLaunchPlugin.MARKER_TYPE);
+							marker.setAttribute(IMarker.MESSAGE, message.getText());
+							marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+							marker.setAttribute(IMarker.LINE_NUMBER, frame.getLine());
+						}
+					}
+				}
+				else if (children[i] instanceof ValgrindError) {
+					// nested error
+					messageStack.push(children[i]);
+				}
+			}
 		}
 	}
 

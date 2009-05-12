@@ -14,13 +14,13 @@ import java.io.IOException;
 
 import org.eclipse.osgi.util.NLS;
 
-public class AbstractValgrindTextParser {
+public abstract class AbstractValgrindTextParser {
 
 	private static final String DOT = "."; //$NON-NLS-1$
-
-	public AbstractValgrindTextParser() {
-		super();
-	}
+	protected static final String COLON = ":"; //$NON-NLS-1$
+	protected static final String SPACE = " "; //$NON-NLS-1$
+	protected static final String EQUALS = "="; //$NON-NLS-1$
+	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	/**
 	 * Retrieves ARGUMENT portion of [OPTION][DELIMITER][ARGUMENT]
@@ -104,6 +104,39 @@ public class AbstractValgrindTextParser {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Parses string ending with format ([FILE]:[LINE])
+	 * Assumes syntax is: "\(.*:[0-9]+\)$"
+	 * @param line - String with the above criteria
+	 * @return a tuple of [String filename, Integer line] 
+	 */
+	protected Object[] parseFilename(String line) {
+		String filename = null;
+		int lineNo = 0;
+	
+		int ix = line.lastIndexOf("("); //$NON-NLS-1$
+		if (ix >= 0) {
+			String part = line.substring(ix, line.length());
+			part = part.substring(1, part.length() - 1); // remove leading and trailing parentheses
+			if ((ix = part.lastIndexOf(":")) >= 0) { //$NON-NLS-1$		
+				String strLineNo = part.substring(ix + 1);
+				if (isNumber(strLineNo)) {
+					lineNo = Integer.parseInt(strLineNo);
+					filename = part.substring(0, ix);
+				}
+			}
+			else {
+				// check for "in " token (lib, with symbol)
+				part = part.replaceFirst("^in ", EMPTY_STRING); //$NON-NLS-1$
+				// check for "within " token (lib, without symbol)
+				part = part.replaceFirst("^within ", EMPTY_STRING); //$NON-NLS-1$
+				filename = part; // library, no line number
+			}
+		}
+		
+		return new Object[] { filename, lineNo };
 	}	
 
 }

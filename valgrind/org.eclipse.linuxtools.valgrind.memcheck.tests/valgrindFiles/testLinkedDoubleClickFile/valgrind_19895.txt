@@ -1,0 +1,13 @@
+==19895== Use of uninitialised value of size 4
+==19895==    at 0x8048411: main (test.c:19)
+==19895== 
+==19895== Invalid write of size 1
+==19895==    at 0x804842B: main (test.c:20)
+==19895==  Address 0x402d032 is 0 bytes after a block of size 10 alloc'd
+==19895==    at 0x4006AEE: malloc (vg_replace_malloc.c:207)
+==19895==    by 0x8048408: main (test.c:17)
+==19895== 
+==19895== 
+==19895== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==19895==    at 0x4006AEE: malloc (vg_replace_malloc.c:207)
+==19895==    by 0x8048408: main (test.c:17)

@@ -1,3 +1,8 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifParser.java: Pulled up parseFilename.
+	* MassifViewPart.java: Make proper use of StackLayout.
+
 2009-04-23  Elliott Baron  <ebaron@redhat.com>
 
 	* MassifViewPart.java (.widgetSelected): Default sorting now ascending.

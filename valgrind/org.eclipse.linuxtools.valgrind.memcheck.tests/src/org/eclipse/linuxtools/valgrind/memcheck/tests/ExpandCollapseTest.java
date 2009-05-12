@@ -13,16 +13,16 @@ package org.eclipse.linuxtools.valgrind.memcheck.tests;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart;
-import org.eclipse.linuxtools.valgrind.memcheck.model.ValgrindTreeElement;
+import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
+import org.eclipse.linuxtools.valgrind.ui.CoreMessagesViewer;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Menu;
 
 public class ExpandCollapseTest extends AbstractMemcheckTest {
 	
-	protected TreeViewer viewer;
+	protected CoreMessagesViewer viewer;
 	protected Menu contextMenu;
 
 	@Override
@@ -41,14 +41,14 @@ public class ExpandCollapseTest extends AbstractMemcheckTest {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
 		
-		MemcheckViewPart view = (MemcheckViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		viewer = view.getViewer();
+		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+		viewer = view.getMessagesViewer();
 		contextMenu = viewer.getTree().getMenu();
 		
 		// Select first error and expand it
-		ValgrindTreeElement root = (ValgrindTreeElement) viewer.getInput();
-		ValgrindTreeElement element = root.getChildren()[0];
-		TreeSelection selection = new TreeSelection(new TreePath(new Object[] { root, element }));
+		IValgrindMessage[] messages = (IValgrindMessage[]) viewer.getInput();
+		IValgrindMessage element = messages[0];
+		TreeSelection selection = new TreeSelection(new TreePath(new Object[] { element }));
 		viewer.setSelection(selection);
 		contextMenu.notifyListeners(SWT.Show, null);
 		contextMenu.getItem(0).notifyListeners(SWT.Selection, null);
@@ -61,9 +61,9 @@ public class ExpandCollapseTest extends AbstractMemcheckTest {
 		testExpand();
 		
 		// Then collapse it
-		ValgrindTreeElement root = (ValgrindTreeElement) viewer.getInput();
-		ValgrindTreeElement element = root.getChildren()[0];
-		TreeSelection selection = new TreeSelection(new TreePath(new Object[] { root, element }));
+		IValgrindMessage[] messages = (IValgrindMessage[]) viewer.getInput();
+		IValgrindMessage element = messages[0];
+		TreeSelection selection = new TreeSelection(new TreePath(new Object[] { element }));
 		viewer.setSelection(selection);
 		contextMenu.notifyListeners(SWT.Show, null);
 		contextMenu.getItem(1).notifyListeners(SWT.Selection, null);
@@ -71,7 +71,7 @@ public class ExpandCollapseTest extends AbstractMemcheckTest {
 		checkExpanded(element, false);
 	}
 
-	private void checkExpanded(ValgrindTreeElement element, boolean expanded) {
+	private void checkExpanded(IValgrindMessage element, boolean expanded) {
 		if (element.getChildren().length > 0) {
 			// only applicable to internal nodes
 			if (expanded) {
@@ -81,7 +81,7 @@ public class ExpandCollapseTest extends AbstractMemcheckTest {
 				assertFalse(viewer.getExpandedState(element));
 			}
 		}
-		for (ValgrindTreeElement child : element.getChildren()) {
+		for (IValgrindMessage child : element.getChildren()) {
 			checkExpanded(child, expanded);
 		}
 	}
