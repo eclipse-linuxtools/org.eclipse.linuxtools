@@ -19,11 +19,13 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
+import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.index.IIndexManager;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -118,7 +120,7 @@ public abstract class AbstractTest extends TestCase {
 		desc.setAutoBuilding(false);
 		wsp.setDescription(desc);
 		
-		// Disable the indexer while the project is being created to avoid threading issues
+		// Disable the indexer while the project is being created
 		IIndexManager indexManager = CCorePlugin.getIndexManager();
 		indexManager.setDefaultIndexerId(IIndexManager.ID_NO_INDEXER);
 		
@@ -126,7 +128,12 @@ public abstract class AbstractTest extends TestCase {
 		URL location = FileLocator.find(bundle, new Path("resources/" + projname), null); //$NON-NLS-1$
 		File testDir = new File(FileLocator.toFileURL(location).toURI());
 		
-		ImportOperation op = new ImportOperation(proj.getProject().getFullPath(), testDir, FileSystemStructureProvider.INSTANCE, new IOverwriteQuery() {
+		IProject project = proj.getProject();
+		// Add these natures before project is imported due to #273079
+		ManagedCProjectNature.addManagedNature(project, null);
+		ScannerConfigNature.addScannerConfigNature(project);
+		
+		ImportOperation op = new ImportOperation(project.getFullPath(), testDir, FileSystemStructureProvider.INSTANCE, new IOverwriteQuery() {
 			public String queryOverwrite(String pathString) {
 				return ALL;
 			}			
@@ -148,6 +155,10 @@ public abstract class AbstractTest extends TestCase {
 		// Index the project
 		indexManager.reindex(proj);
 		indexManager.joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
+		
+		// These natures must be enabled at this point to continue
+		assertTrue(project.isNatureEnabled(ScannerConfigNature.NATURE_ID));
+		assertTrue(project.isNatureEnabled(ManagedCProjectNature.MNG_NATURE_ID));
 		
 		return proj;
 	}

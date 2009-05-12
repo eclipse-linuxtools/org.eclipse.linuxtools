@@ -1,3 +1,8 @@
+2009-04-30  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: New deps.
+	* ProfileUIUtils.java (openEditorAndSelect): Overloaded to take ISourceLookupResult.
+
 2009-04-03  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: 0.2.0 version.

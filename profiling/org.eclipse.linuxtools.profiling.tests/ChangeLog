@@ -1,3 +1,9 @@
+2009-05-12  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: New deps.
+	* AbstractTest.java (createProject): Preemptively add ManagedBuild and ScannerConfig
+	natures before project is imported for #273079.
+
 2009-04-21  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Added new deps for controlling Indexer.

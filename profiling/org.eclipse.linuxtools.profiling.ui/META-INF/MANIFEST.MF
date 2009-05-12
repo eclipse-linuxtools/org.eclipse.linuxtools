@@ -11,8 +11,11 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.profiling.ui
-Import-Package: org.eclipse.core.filesystem,
+Import-Package: org.eclipse.cdt.debug.core,
+ org.eclipse.core.filesystem,
+ org.eclipse.debug.core.model,
  org.eclipse.debug.ui,
+ org.eclipse.debug.ui.sourcelookup,
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
  org.eclipse.ui.texteditor
