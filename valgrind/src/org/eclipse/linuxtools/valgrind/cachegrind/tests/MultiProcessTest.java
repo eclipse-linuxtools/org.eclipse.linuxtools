@@ -10,6 +10,7 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.cachegrind.tests;
 
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindViewPart;
@@ -19,17 +20,19 @@ import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 
 public class MultiProcessTest extends AbstractCachegrindTest {
+	ICProject refProj;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		createProjectAndBuild("cpptest"); //$NON-NLS-1$
+		refProj = createProjectAndBuild("cpptest"); //$NON-NLS-1$
 		proj = createProjectAndBuild("multiProcTest"); //$NON-NLS-1$
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		deleteProject(proj);
+		deleteProject(refProj);
 		super.tearDown();
 	}
 	
