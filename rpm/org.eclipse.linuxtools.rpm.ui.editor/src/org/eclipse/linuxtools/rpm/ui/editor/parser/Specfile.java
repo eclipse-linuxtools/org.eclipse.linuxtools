@@ -102,6 +102,19 @@ public class Specfile {
     public void addDefine(SpecfileTag tag) {
 		addDefine(new SpecfileDefine(tag));
 	}
+    
+    public void modifyDefine(String defineName, String newValue) {
+		SpecfileDefine define = getDefine(defineName.toLowerCase());
+		if (define != null) {
+			define.setStringValue(newValue);
+			try {
+				changeLine(define.getLineNumber(), defineName + ": " + newValue);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public SpecfileDefine getDefine(String defineName) {
 		return defines.get(defineName);

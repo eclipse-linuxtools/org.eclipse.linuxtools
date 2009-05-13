@@ -12,9 +12,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -69,10 +67,8 @@ public class MainPackagePage extends FormPage {
 				SWT.BORDER_SOLID);
 		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		nameText.addModifyListener(new ModifyListener() {
-
 			public void modifyText(ModifyEvent e) {
-				specfile.addDefine(new SpecfileTag(RpmTags.NAME.toLowerCase(),
-						nameText.getText(), specfile));
+				specfile.modifyDefine(RpmTags.NAME, nameText.getText());
 			}
 		});
 		label = toolkit.createLabel(client2, "Version:");
@@ -83,11 +79,6 @@ public class MainPackagePage extends FormPage {
 		text = toolkit.createText(client2, specfile.getRelease(),
 				SWT.BORDER_SOLID);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-/*		label = toolkit.createLabel(client2, "Summary:");
-		text = toolkit.createText(client2, specfile.getDefine(
-				RpmTags.SUMMARY.toLowerCase()).getStringValue(),
-				SWT.BORDER_SOLID);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));*/
 		section.setClient(client2);
 		toolkit.paintBordersFor(client2);
 		toolkit.paintBordersFor(section);

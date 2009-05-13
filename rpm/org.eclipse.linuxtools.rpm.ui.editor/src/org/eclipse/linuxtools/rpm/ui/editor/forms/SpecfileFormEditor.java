@@ -26,16 +26,9 @@ public class SpecfileFormEditor extends FormEditor {
 	SpecfileEditor editor;
 	private Specfile specfile;
 	SpecfileParser parser;
-	boolean dirty = true;
-
-	@Override
-	public boolean isDirty() {
-		return dirty;
-	}
 
 	public SpecfileFormEditor() {
 		editor = new SpecfileEditor();
-		parser = new SpecfileParser();
 	}
 
 	@Override
@@ -47,16 +40,11 @@ public class SpecfileFormEditor extends FormEditor {
 	@Override
 	protected void addPages() {
 		try {
-			editor.init(getEditorSite(), getEditorInput());
-			editor.setInput(getEditorInput());
-			specfile = parser.parse(editor.getDocumentProvider().getDocument(
-					getEditorInput()));
-			mainPackage = new MainPackagePage(this,specfile);
-			addPage(mainPackage);
 			int index = addPage(editor, getEditorInput());
 			setPageText(index, "Source");
-			// setActivePage(index);
-
+			specfile = editor.getSpecfile();
+			mainPackage = new MainPackagePage(this, specfile);
+			addPage(0, mainPackage);
 		} catch (PartInitException e) {
 			//
 		}
@@ -64,7 +52,7 @@ public class SpecfileFormEditor extends FormEditor {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		System.out.println("Name:" + specfile.getName());
+		editor.doSave(monitor);
 	}
 
 	@Override
@@ -75,5 +63,10 @@ public class SpecfileFormEditor extends FormEditor {
 	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
+	}
+
+	@Override
+	public boolean isDirty() {
+		return editor.isDirty();
 	}
 }

@@ -1,3 +1,13 @@
+2009-05-13  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Remove commented code. 
+	(.modifyText): Connect with the document.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Remove all dirty handling.
+	(isDirty): Likewise.
+	(doSave): Likewise.
+	(SpecfileFormEditor): Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (modifyDefine): Useful method for manipulating define's value.
+
 2009-05-08  Alphonse Van Assche <alcapcom@fedoraproject.org>
 	Remove 'No value name after define.' parsing error, this error is now 
 	throw by RPM parser through rpmlint.
