@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,10 +24,9 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
  *   shortcut, where the ProfileLaunchShortcut has the logic to automatically
  *   find binaries and create a default launch if one doesn't exist.
  */
-public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
+public class OprofileManualLaunchShortcut extends ProfileLaunchShortcut {
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
-		
 		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
 	}
 
@@ -43,17 +42,16 @@ public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 		//default event option
 		wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
 	}
-
-	//need to have this here because a saved launch config will have the manual
-	// attribute left over, and a previous manual run will still run manually
-	// even if launched from the non-manual shortcut
+	
 	@Override
 	protected ILaunchConfiguration findLaunchConfiguration(IBinary bin, String mode) {
 		ILaunchConfiguration config = super.findLaunchConfiguration(bin, mode);
 		
+		//hijack the launch config and add in the manual profile value, which will be 
+		// used in the delegate 
 		try {
 			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-			wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
+			wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, true);
 			wc.doSave();
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -61,4 +59,5 @@ public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 		
 		return config;
 	}
+
 }

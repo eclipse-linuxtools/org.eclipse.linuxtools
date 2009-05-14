@@ -77,27 +77,32 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			daemonEvents = new OprofileDaemonEvent[events.size()];
 			events.toArray(daemonEvents);
 		}
+		
+		//determine if this is a manual launch or automated launch
+		boolean manualProfile = config.getAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
 
-		//set up and launch the oprofile daemon
-		try {
-			//kill the daemon (it shouldn't be running already, but to be safe)
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
-			
-			//reset data from the (possibly) existing default session, 
-			// otherwise multiple runs will combine samples and results
-			// won't make much sense
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
-			
-			//setup the events and other parameters
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(options.getOprofileDaemonOptions(), daemonEvents);
-			
-			//start the daemon & collection of samples 
-			//note: since the daemon is only profiling for the specific image we told 
-			// it to, no matter to start the daemon before the binary itself is run
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
-		} catch (OpcontrolException oe) {
-			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
-			return;
+		if (!manualProfile) {
+			//set up and launch the oprofile daemon
+			try {
+				//kill the daemon (it shouldn't be running already, but to be safe)
+				OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
+				
+				//reset data from the (possibly) existing default session, 
+				// otherwise multiple runs will combine samples and results
+				// won't make much sense
+				OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
+				
+				//setup the events and other parameters
+				OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(options.getOprofileDaemonOptions(), daemonEvents);
+				
+				//start the daemon & collection of samples 
+				//note: since the daemon is only profiling for the specific image we told 
+				// it to, no matter to start the daemon before the binary itself is run
+				OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
+			} catch (OpcontrolException oe) {
+				OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
+				return;
+			}
 		}
 
 		/* 
@@ -124,10 +129,13 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			e.printStackTrace();
 		}
 		
-		//add a listener for termination of the launch
-		ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
-		lmgr.addLaunchListener(new LaunchTerminationWatcher(launch));
-
+		if (!manualProfile) {
+			//add a listener for termination of the launch
+			ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
+			lmgr.addLaunchListener(new LaunchTerminationWatcher(launch));
+		} else {
+			//do manual dialog popup magic here
+		}
 	}
 	
 	/**

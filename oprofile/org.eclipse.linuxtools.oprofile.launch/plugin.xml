@@ -61,5 +61,49 @@
            </enablement>
   		 </contextualLaunch>
       </shortcut>
+      <shortcut
+            class="org.eclipse.linuxtools.oprofile.launch.launching.OprofileManualLaunchShortcut"
+            icon="icons/profile_run.png"
+            id="org.eclipse.linuxtools.oprofile.launch.profileshortcut.manual"
+            label="%manual.launchshortcuts.label"
+            modes="profile">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <or>
+                        <instanceof
+                              value="org.eclipse.cdt.core.model.IBinary">
+                        </instanceof>
+                        <instanceof
+                              value="org.eclipse.cdt.core.model.ICProject">
+                        </instanceof>
+                        <test
+                              property="org.eclipse.cdt.launch.isExecutable">
+                        </test>
+                        <test
+                              property="org.eclipse.cdt.launch.isCProject">
+                        </test>
+                        <and>
+                           <instanceof
+                                 value="org.eclipse.ui.IFileEditorInput">
+                           </instanceof>
+                           <adapt
+                                 type="org.eclipse.core.resources.IResource">
+                              <adapt
+                                    type="org.eclipse.cdt.core.model.ICElement">
+                              </adapt>
+                           </adapt>
+                        </and>
+                     </or>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
    </extension>
 </plugin>
