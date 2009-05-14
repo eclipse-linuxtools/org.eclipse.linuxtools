@@ -1,3 +1,7 @@
+2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump release to 0.3.
+
 2009-02-25  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable warning for parameter not used.
