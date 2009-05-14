@@ -58,8 +58,16 @@ public class TestUiDataModel extends TestCase {
 		assertNull(_uiModelRoot2.getLabelImage());
 		assertNull(_uiModelRoot2.getParent());
 		assertNull(_uiModelRoot2.getLabelText());
-		assertFalse(_uiModelRoot2.hasChildren());
-		assertNull(_uiModelRoot2.getChildren());
+		assertTrue(_uiModelRoot2.hasChildren());
+		IUiModelElement r2_events[] = _uiModelRoot2.getChildren();
+		assertNotNull(r2_events);
+		assertEquals(1, r2_events.length);
+		IUiModelElement r2_event1 = r2_events[0];
+		assertFalse(r2_event1.hasChildren());
+		assertNull(r2_event1.getChildren());
+		assertNull(r2_event1.getParent());
+		assertNotNull(r2_event1.getLabelImage());
+		assertNotNull(r2_event1.getLabelText());
 		
 		assertNull(_uiModelRoot.getLabelImage());
 		assertNull(_uiModelRoot.getParent());
