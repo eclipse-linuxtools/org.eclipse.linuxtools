@@ -1,5 +1,6 @@
 2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java: New file. Add Copyright header.
 	* META-INF/MANIFEST.MF: Bump release.
 
 2009-05-13  Alexander Kurtakov  <akurtako@redhat.com>
