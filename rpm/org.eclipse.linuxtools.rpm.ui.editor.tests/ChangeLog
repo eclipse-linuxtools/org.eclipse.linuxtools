@@ -1,3 +1,7 @@
+2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Sync release with the feature 0.4.3.
+
 2009-05-08  Alphonse Van Assche <alcapcom@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileDefineTest.java: Disable test define 

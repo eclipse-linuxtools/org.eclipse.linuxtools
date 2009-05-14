@@ -19,7 +19,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -62,7 +61,9 @@ public class MainPackagePage extends FormPage {
 		gridLayout.marginWidth = gridLayout.marginHeight = 5;
 		gridLayout.numColumns = 2;
 		client2.setLayout(gridLayout);
-		Label label = toolkit.createLabel(client2, "Name:", SWT.SINGLE);
+		toolkit.createLabel(client2, RpmTags.NAME, SWT.SINGLE);
+		Text proba = new Text(client2, SWT.BORDER_SOLID);
+		proba.setText("proba");
 		final Text nameText = toolkit.createText(client2, specfile.getName(),
 				SWT.BORDER_SOLID);
 		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -71,11 +72,11 @@ public class MainPackagePage extends FormPage {
 				specfile.modifyDefine(RpmTags.NAME, nameText.getText());
 			}
 		});
-		label = toolkit.createLabel(client2, "Version:");
+		toolkit.createLabel(client2, RpmTags.VERSION);
 		Text text = toolkit.createText(client2, specfile.getVersion(),
 				SWT.BORDER_SOLID);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label = toolkit.createLabel(client2, "Release:");
+		toolkit.createLabel(client2, RpmTags.RELEASE);
 		text = toolkit.createText(client2, specfile.getRelease(),
 				SWT.BORDER_SOLID);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

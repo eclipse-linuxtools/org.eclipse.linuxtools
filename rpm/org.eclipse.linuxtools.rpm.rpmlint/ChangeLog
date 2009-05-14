@@ -1,3 +1,7 @@
+2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump release 0.4.3.
+
 2009-05-08  Alphonse Van Assche  <alcapcom@fedoraproject.org>
 	Add support for the new 'specfile-error' rpmlint error. This error is 
 	returned by rpmlint when it cannot parse a given .spec file using 
