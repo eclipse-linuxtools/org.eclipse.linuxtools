@@ -61,25 +61,16 @@ public class MainPackagePage extends FormPage {
 		gridLayout.marginWidth = gridLayout.marginHeight = 5;
 		gridLayout.numColumns = 2;
 		client2.setLayout(gridLayout);
-		toolkit.createLabel(client2, RpmTags.NAME, SWT.SINGLE);
-		Text proba = new Text(client2, SWT.BORDER_SOLID);
-		proba.setText("proba");
-		final Text nameText = toolkit.createText(client2, specfile.getName(),
-				SWT.BORDER_SOLID);
-		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		nameText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				specfile.modifyDefine(RpmTags.NAME, nameText.getText());
-			}
-		});
-		toolkit.createLabel(client2, RpmTags.VERSION);
-		Text text = toolkit.createText(client2, specfile.getVersion(),
-				SWT.BORDER_SOLID);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		toolkit.createLabel(client2, RpmTags.RELEASE);
-		text = toolkit.createText(client2, specfile.getRelease(),
-				SWT.BORDER_SOLID);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		new RpmTagText(client2, RpmTags.NAME, specfile);
+		new RpmTagText(client2, RpmTags.VERSION, specfile);
+		new RpmTagText(client2, RpmTags.RELEASE, specfile);
+		new RpmTagText(client2, RpmTags.URL, specfile);
+		new RpmTagText(client2, RpmTags.LICENSE, specfile);
+		new RpmTagText(client2, RpmTags.GROUP, specfile);
+		new RpmTagText(client2, RpmTags.EPOCH, specfile);
+		new RpmTagText(client2, RpmTags.BUILD_ROOT, specfile);
+		new RpmTagText(client2, RpmTags.BUILD_ARCH, specfile);
+		new RpmTagText(client2, RpmTags.SUMMARY, specfile, SWT.MULTI);
 		section.setClient(client2);
 		toolkit.paintBordersFor(client2);
 		toolkit.paintBordersFor(section);

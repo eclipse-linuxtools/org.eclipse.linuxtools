@@ -1,3 +1,16 @@
+2009-05-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Simplify.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (.modifyText): Make the text responsible for all the data.
+	(RpmTagText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (doSaveAs): Add comment. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getDefine): Make sure that define name is lower case.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Extract constant.
+	(parseDefine): Likewise.
+	(parseComplexDefinition): Likewise.
+	(parsePatch): Likewise.
+	(parseSection): Likewise.
+
 2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java: New file. Add Copyright header.

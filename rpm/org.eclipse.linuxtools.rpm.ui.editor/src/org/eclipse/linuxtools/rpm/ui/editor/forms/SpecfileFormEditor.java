@@ -57,7 +57,7 @@ public class SpecfileFormEditor extends FormEditor {
 
 	@Override
 	public void doSaveAs() {
-
+		//noop
 	}
 
 	@Override

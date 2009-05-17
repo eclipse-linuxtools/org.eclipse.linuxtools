@@ -11,19 +11,37 @@
 package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class RpmTagText extends Text {
+public class RpmTagText {
 
-	private String tag;
-	private Specfile specfile;
-	
-	public RpmTagText(Composite parent, int style, String rpmTag, Specfile specfile) {
-		super(parent, style);
-		this.tag = rpmTag;
-		this.specfile = specfile;
-		setText(specfile.getDefine(rpmTag).getStringValue());
+	public RpmTagText(Composite parent, final String rpmTag,
+			final Specfile specfile) {
+		this(parent, rpmTag, specfile, SWT.SINGLE);
+	}
+
+	public RpmTagText(Composite parent, final String rpmTag,
+			final Specfile specfile, int flag) {
+		Label label = new Label(parent, SWT.SINGLE);
+		label.setText(rpmTag);
+		final Text text = new Text(parent, SWT.BORDER_SOLID|flag);
+		SpecfileDefine define = specfile.getDefine(rpmTag);
+		if (null != define) {
+			text.setText(define.getStringValue());
+		}
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				specfile.modifyDefine(rpmTag, text.getText());
+			}
+		});
 	}
 
 }

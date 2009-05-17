@@ -117,7 +117,7 @@ public class Specfile {
 	}
 	
 	public SpecfileDefine getDefine(String defineName) {
-		return defines.get(defineName);
+		return defines.get(defineName.toLowerCase());
 	}
 
 	public int getEpoch() {
