@@ -12,14 +12,13 @@ package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -47,7 +46,11 @@ public class MainPackagePage extends FormPage {
 		form = managedForm.getForm();
 		form.setText("Main Package information");
 		GridLayout layout = new GridLayout();
-		form.getBody().setLayout(layout);
+		layout.marginWidth = layout.marginHeight = 5;
+		layout.numColumns = 2;
+		RowLayout rowLayout = new RowLayout();
+		rowLayout.type = SWT.VERTICAL;
+		form.getBody().setLayout(rowLayout);
 		layout.numColumns = 2;
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
@@ -74,6 +77,31 @@ public class MainPackagePage extends FormPage {
 		section.setClient(client2);
 		toolkit.paintBordersFor(client2);
 		toolkit.paintBordersFor(section);
+		// subpackages
+		final Section packagesSection = toolkit.createSection(form.getBody(),
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
+		packagesSection.setText("Subpackages");
+		packagesSection.setLayout(rowLayout);
+		Composite client3 = toolkit.createComposite(packagesSection);
+		client3.setLayout(rowLayout);
+		for (SpecfilePackage specfilePackage : specfile.getPackages()
+				.getPackages()) {
+			final Section packageSection = toolkit.createSection(client3,
+					ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+							| ExpandableComposite.EXPANDED);
+			packageSection.setText(specfilePackage.getFullPackageName());
+			packageSection.setExpanded(false);
+			Composite packageClient = toolkit.createComposite(packageSection);
+			packageClient.setLayout(gridLayout);
+			packageSection.setClient(packageClient);
+			
+			toolkit.paintBordersFor(packageClient);
+			toolkit.paintBordersFor(packageSection);
+		}
+		packagesSection.setClient(client3);
+		toolkit.paintBordersFor(client3);
+		toolkit.paintBordersFor(packagesSection);
 		managedForm.refresh();
 	}
 }

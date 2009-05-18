@@ -65,6 +65,18 @@ public class SpecfilePackage extends SpecfileSection {
 	public String getPackageName() {
 		return resolve(this.packageName);
 	}
+	
+	/**
+	 * Returns the full package name. 
+	 * 
+	 * @return The name of the package with the common part appended in front.
+	 */
+	public String getFullPackageName() {
+		if (getSpecfile().getName().equals(getPackageName())){
+			return getPackageName();
+		}
+		return getSpecfile().getName()+"-" + getPackageName(); //$NON-NLS-1$
+	}
 
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;

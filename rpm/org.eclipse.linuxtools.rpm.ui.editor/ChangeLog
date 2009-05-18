@@ -1,3 +1,8 @@
+2009-05-18  Alexander Kurtakov  <akurtako@redhat.com>
+	Initial support for subpackages in the form editor. Only names for now.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Display sections for all the subpackages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (getFullPackageName): New method for returning the full name of a package.
+
 2009-05-17  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Simplify.
