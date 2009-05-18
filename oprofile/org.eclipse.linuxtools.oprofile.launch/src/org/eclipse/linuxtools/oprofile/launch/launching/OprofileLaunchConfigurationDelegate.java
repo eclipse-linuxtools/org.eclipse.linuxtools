@@ -33,15 +33,28 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
+import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchMessages;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
 import org.eclipse.linuxtools.oprofile.launch.configuration.OprofileCounter;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -134,7 +147,16 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
 			lmgr.addLaunchListener(new LaunchTerminationWatcher(launch));
 		} else {
-			//do manual dialog popup magic here
+			Display.getDefault().asyncExec(new Runnable() { 
+				public void run() {
+					//TODO: have a initialization dialog to do reset and setupDaemon
+					
+					
+					//manual oprofile control dialog
+					OprofiledControlDialog dlg = new OprofiledControlDialog();
+					dlg.open();
+				} 
+			});
 		}
 	}
 	
@@ -231,4 +253,82 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
 	}	
 	
+	/**
+	 * A custom dialog box to display the oprofiled log file.
+	 */
+	class OprofiledControlDialog extends MessageDialog {
+		Button _startDaemonButton;
+		Button _stopDaemonButton;
+		Button _dumpSamplesButton;
+		Button _refreshViewButton;
+		
+		public OprofiledControlDialog () {
+			super(new Shell(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()), OprofileLaunchMessages.getString("oprofiledcontroldialog.title"), null, null, MessageDialog.NONE, new String[] { IDialogConstants.OK_LABEL }, 0); //$NON-NLS-1$
+		
+			//makes the dialog non-modal
+			setShellStyle(SWT.CLOSE | SWT.TITLE );
+		}
+		
+		@Override
+	    protected Control createCustomArea(Composite parent) {
+			Composite area = new Composite(parent, 0);
+			Layout layout = new GridLayout(2, true);
+			GridData gd = new GridData();
+			
+			area.setLayout(layout);
+			area.setLayoutData(gd);
+
+			Button startDaemonButton = new Button(area, SWT.PUSH);
+			startDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.startdaemon")); //$NON-NLS-1$
+			startDaemonButton.addSelectionListener(new SelectionListener() {
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+				public void widgetSelected(SelectionEvent e) {
+					System.out.println("start daemon");
+					_startDaemonButton.setEnabled(false);
+					_stopDaemonButton.setEnabled(true);
+					_dumpSamplesButton.setEnabled(true);
+					_refreshViewButton.setEnabled(true);
+				}});
+			_startDaemonButton = startDaemonButton;
+			
+			Button stopDaemonButton = new Button(area, SWT.PUSH);
+			stopDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.stopdaemon")); //$NON-NLS-1$
+			stopDaemonButton.setEnabled(false);		//disabled at start
+			stopDaemonButton.addSelectionListener(new SelectionListener() {
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+				public void widgetSelected(SelectionEvent e) {
+					System.out.println("stop daemon");
+					_startDaemonButton.setEnabled(true);
+					_stopDaemonButton.setEnabled(false);
+				}});
+			_stopDaemonButton = stopDaemonButton;
+			
+			Button dumpSamplesButton = new Button(area, SWT.PUSH);
+			dumpSamplesButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.dumpsamples")); //$NON-NLS-1$
+			dumpSamplesButton.setEnabled(false);		//disabled at start
+			dumpSamplesButton.addSelectionListener(new SelectionListener() {
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+				public void widgetSelected(SelectionEvent e) {
+					System.out.println("dump samples");
+				}});
+			_dumpSamplesButton = dumpSamplesButton;
+
+			Button refreshViewButton = new Button(area, SWT.PUSH);
+			refreshViewButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.refreshview")); //$NON-NLS-1$
+			refreshViewButton.setEnabled(false);		//disabled at start
+			refreshViewButton.addSelectionListener(new SelectionListener() {
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+				public void widgetSelected(SelectionEvent e) {
+					System.out.println("dump samples");
+				}});
+			_refreshViewButton = refreshViewButton;
+
+			
+	        return area;
+	    }
+	}
 }
