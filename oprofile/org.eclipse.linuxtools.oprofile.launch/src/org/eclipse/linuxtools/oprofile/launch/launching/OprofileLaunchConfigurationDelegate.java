@@ -147,14 +147,29 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
 			lmgr.addLaunchListener(new LaunchTerminationWatcher(launch));
 		} else {
+			final LaunchOptions fOptions = options;
+			final OprofileDaemonEvent[] fDaemonEvents = daemonEvents;
 			Display.getDefault().asyncExec(new Runnable() { 
 				public void run() {
 					//TODO: have a initialization dialog to do reset and setupDaemon
-					
+					try {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
+						OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(fOptions.getOprofileDaemonOptions(), fDaemonEvents);
+					} catch (OpcontrolException oe) {
+						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
+						return;
+					}
 					
 					//manual oprofile control dialog
 					OprofiledControlDialog dlg = new OprofiledControlDialog();
 					dlg.open();
+
+					//TODO: have a dialog to do show the shutdown (for interactivity purposes)
+					try {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
+					} catch (OpcontrolException e) {
+						e.printStackTrace();
+					}
 				} 
 			});
 		}
@@ -228,17 +243,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 						// based on concurrency issues
 						Display.getDefault().syncExec(new Runnable() {
 							public void run() {
-								OprofileView view = OprofileUiPlugin.getDefault().getOprofileView();
-								if (view != null) {
-									view.refreshView();
-								} else {
-									try {
-										PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OPROFILE_VIEW);
-									} catch (PartInitException e) {
-										e.printStackTrace();
-									}
-									OprofileUiPlugin.getDefault().getOprofileView().refreshView();
-								}
+								refreshOprofileView();
 							}
 						});
 					}
@@ -259,8 +264,8 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	class OprofiledControlDialog extends MessageDialog {
 		Button _startDaemonButton;
 		Button _stopDaemonButton;
-		Button _dumpSamplesButton;
 		Button _refreshViewButton;
+		Button _resetSessionButton;
 		
 		public OprofiledControlDialog () {
 			super(new Shell(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()), OprofileLaunchMessages.getString("oprofiledcontroldialog.title"), null, null, MessageDialog.NONE, new String[] { IDialogConstants.OK_LABEL }, 0); //$NON-NLS-1$
@@ -277,6 +282,11 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			
 			area.setLayout(layout);
 			area.setLayoutData(gd);
+			
+			/**
+			 * TODO:
+			 * have the 4 buttons in a single row with a status text box above/below for feedback?
+			 */
 
 			Button startDaemonButton = new Button(area, SWT.PUSH);
 			startDaemonButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.startdaemon")); //$NON-NLS-1$
@@ -284,11 +294,20 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 				public void widgetSelected(SelectionEvent e) {
-					System.out.println("start daemon");
-					_startDaemonButton.setEnabled(false);
-					_stopDaemonButton.setEnabled(true);
-					_dumpSamplesButton.setEnabled(true);
-					_refreshViewButton.setEnabled(true);
+					try {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
+						_startDaemonButton.setEnabled(false);
+						_stopDaemonButton.setEnabled(true);
+						_refreshViewButton.setEnabled(true);
+						_resetSessionButton.setEnabled(true);
+					} catch (OpcontrolException oe) {
+						//disable buttons, notify user of error
+						_startDaemonButton.setEnabled(false);
+						_stopDaemonButton.setEnabled(false);
+						_refreshViewButton.setEnabled(false);
+						_resetSessionButton.setEnabled(false);
+						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
+					}
 				}});
 			_startDaemonButton = startDaemonButton;
 			
@@ -299,23 +318,41 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 				public void widgetSelected(SelectionEvent e) {
-					System.out.println("stop daemon");
-					_startDaemonButton.setEnabled(true);
-					_stopDaemonButton.setEnabled(false);
+					try {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
+						_startDaemonButton.setEnabled(true);
+						_stopDaemonButton.setEnabled(false);
+					} catch (OpcontrolException oe) {
+						//disable buttons, notify user of error
+						_startDaemonButton.setEnabled(false);
+						_stopDaemonButton.setEnabled(false);
+						_refreshViewButton.setEnabled(false);
+						_resetSessionButton.setEnabled(false);
+						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
+					}
 				}});
 			_stopDaemonButton = stopDaemonButton;
 			
-			Button dumpSamplesButton = new Button(area, SWT.PUSH);
-			dumpSamplesButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.dumpsamples")); //$NON-NLS-1$
-			dumpSamplesButton.setEnabled(false);		//disabled at start
-			dumpSamplesButton.addSelectionListener(new SelectionListener() {
+			Button resetSessionButton = new Button(area, SWT.PUSH);
+			resetSessionButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.resetsession")); //$NON-NLS-1$
+			resetSessionButton.setEnabled(false);		//disabled at start
+			resetSessionButton.addSelectionListener(new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 				public void widgetSelected(SelectionEvent e) {
-					System.out.println("dump samples");
+					try {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
+					} catch (OpcontrolException oe) {
+						//disable buttons, notify user of error
+						_startDaemonButton.setEnabled(false);
+						_stopDaemonButton.setEnabled(false);
+						_refreshViewButton.setEnabled(false);
+						_resetSessionButton.setEnabled(false);
+						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
+					}
 				}});
-			_dumpSamplesButton = dumpSamplesButton;
-
+			_resetSessionButton = resetSessionButton;
+			
 			Button refreshViewButton = new Button(area, SWT.PUSH);
 			refreshViewButton.setText(OprofileLaunchMessages.getString("oprofiledcontroldialog.buttons.refreshview")); //$NON-NLS-1$
 			refreshViewButton.setEnabled(false);		//disabled at start
@@ -323,12 +360,33 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 				public void widgetSelected(SelectionEvent e) {
-					System.out.println("dump samples");
+					try {
+						OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
+					} catch (OpcontrolException oe) {
+						//no error in this case; the user might refresh when the daemon isnt running
+					}
+
+					refreshOprofileView();
 				}});
 			_refreshViewButton = refreshViewButton;
-
 			
 	        return area;
 	    }
+	}
+	
+	//Helper function to refresh the oprofile view. Opens and focuses the view 
+	// if it isn't already. 
+	private void refreshOprofileView() {
+		OprofileView view = OprofileUiPlugin.getDefault().getOprofileView();
+		if (view != null) {
+			view.refreshView();
+		} else {
+			try {
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(OprofileUiPlugin.ID_OPROFILE_VIEW);
+			} catch (PartInitException e2) {
+				e2.printStackTrace();
+			}
+			OprofileUiPlugin.getDefault().getOprofileView().refreshView();
+		}
 	}
 }
