@@ -1,3 +1,7 @@
+2009-05-19  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Change provider from Eclipse.org to Eclipse.
+
 2009-04-23  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Remove 5.0.0.qualifier versions on CDT dependencies.
