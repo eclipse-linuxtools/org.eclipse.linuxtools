@@ -83,26 +83,29 @@ public class MainPackagePage extends FormPage {
 						| ExpandableComposite.EXPANDED);
 		packagesSection.setText("Subpackages");
 		packagesSection.setLayout(rowLayout);
-		Composite client3 = toolkit.createComposite(packagesSection);
-		client3.setLayout(rowLayout);
+		Composite packagesClient = toolkit.createComposite(packagesSection);
+		packagesClient.setLayout(rowLayout);
 		for (SpecfilePackage specfilePackage : specfile.getPackages()
 				.getPackages()) {
-			final Section packageSection = toolkit.createSection(client3,
+			if (specfilePackage.isMainPackage()){
+				continue;
+			}
+			final Section packageSection = toolkit.createSection(packagesClient,
 					ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 							| ExpandableComposite.EXPANDED);
 			packageSection.setText(specfilePackage.getFullPackageName());
 			packageSection.setExpanded(false);
 			Composite packageClient = toolkit.createComposite(packageSection);
 			packageClient.setLayout(gridLayout);
-			new RpmTagText(packageClient, RpmTags.SUMMARY, specfile, SWT.MULTI);
-			new RpmTagText(packageClient, RpmTags.GROUP, specfile, SWT.MULTI);
+			new RpmTagText(packageClient, RpmTags.SUMMARY, specfile, specfilePackage, SWT.MULTI);
+			new RpmTagText(packageClient, RpmTags.GROUP, specfile, specfilePackage, SWT.MULTI);
 			packageSection.setClient(packageClient);
 			
 			toolkit.paintBordersFor(packageClient);
 			toolkit.paintBordersFor(packageSection);
 		}
-		packagesSection.setClient(client3);
-		toolkit.paintBordersFor(client3);
+		packagesSection.setClient(packagesClient);
+		toolkit.paintBordersFor(packagesClient);
 		toolkit.paintBordersFor(packagesSection);
 		managedForm.refresh();
 	}

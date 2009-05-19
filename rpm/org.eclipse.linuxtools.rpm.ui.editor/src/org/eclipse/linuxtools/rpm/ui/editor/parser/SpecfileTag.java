@@ -19,16 +19,27 @@ public class SpecfileTag extends SpecfileElement {
 	
 	String stringValue;
 	int intValue;
+	SpecfilePackage parent;
 	
+
 	public SpecfileTag(){
 		// Empty constructor
 	}
 	
-	public SpecfileTag(String name, String value, Specfile specfile) {
+	public SpecfileTag(String name, String value, Specfile specfile, SpecfilePackage parentPackage) {
 		setName(name);
 		this.stringValue = value;
 		this.tagType = TagType.STRING;
 		super.setSpecfile(specfile);
+		this.parent=parentPackage;
+	}
+	
+	public SpecfileTag(String name, int value, Specfile specfile, SpecfilePackage parentPackage) {
+		setName(name);
+		this.intValue = value;
+		this.tagType = TagType.INT;
+		super.setSpecfile(specfile);
+		this.parent=parentPackage;
 	}
 	
 	public String getStringValue() {
@@ -41,19 +52,20 @@ public class SpecfileTag extends SpecfileElement {
 		this.stringValue = value;
 	}
 	
-	public SpecfileTag(String name, int value, Specfile specfile) {
-		setName(name);
-		this.intValue = value;
-		this.tagType = TagType.INT;
-		super.setSpecfile(specfile);
-	}
-	
 	public int getIntValue() {
 		return intValue;
 	}
 	
 	public void setIntValue(int value) {
 		this.intValue = value;
+	}
+	
+	public SpecfilePackage getParent() {
+		return parent;
+	}
+	
+	public void setParent(SpecfilePackage parent) {
+		this.parent = parent;
 	}
 	
 	@Override

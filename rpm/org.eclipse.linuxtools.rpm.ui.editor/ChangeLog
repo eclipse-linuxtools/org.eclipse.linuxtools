@@ -1,5 +1,29 @@
 2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Put more meaningful names. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (.modifyText): Support for package specific tags.
+	(RpmTagText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (addDefine): Likewise.
+	(getDefine): Likewise.
+	(modifyDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileDefine.java (SpecfileDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (isMainPackage): Utility method to determine the main package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Suppport for package specific tags.
+	(packageLevelDefinitions): Likewise.
+	(parseDirectDefinition): Likewise.
+	(parseDefine): Likewise.
+	(parseLine): Likewise.
+	(simpleDefinitions): Likewise.
+	(parseSection): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setParent): Likewise.
+	(getParent): Likewise.
+	(SpecfileTag): Likewise.
+	(getIntValue): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmTags.java: Add missing tags.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java (getPackageDefineId): Method to create a package specific define id.
+	
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (getGroup): Add group and summary fields and accessors.
 	(getSummary): Likewise.
 	(setGroup): Likewise.

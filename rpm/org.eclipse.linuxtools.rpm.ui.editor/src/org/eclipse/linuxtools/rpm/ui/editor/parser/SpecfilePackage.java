@@ -111,4 +111,11 @@ public class SpecfilePackage extends SpecfileSection {
 	public String getGroup() {
 		return group;
 	}
+
+	public boolean isMainPackage() {
+		if (getSpecfile().getName().equals(getPackageName())){
+			return true;
+		}
+		return false;
+	}
 }

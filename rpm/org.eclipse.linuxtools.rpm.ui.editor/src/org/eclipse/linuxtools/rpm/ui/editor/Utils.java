@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 /*
@@ -116,6 +117,14 @@ public class Utils {
 		} catch (Exception e) {
 			return originalUrlString;
 		}
+	}
+	
+	public static String getPackageDefineId(SpecfileDefine define, SpecfilePackage rpmPackage){
+		return getPackageDefineId(define.getName().toLowerCase(),rpmPackage);
+	}
+	
+	public static String getPackageDefineId(String defineName, SpecfilePackage rpmPackage){
+		return defineName+":"+rpmPackage.getPackageName(); //$NON-NLS-1$
 	}
 	
 }

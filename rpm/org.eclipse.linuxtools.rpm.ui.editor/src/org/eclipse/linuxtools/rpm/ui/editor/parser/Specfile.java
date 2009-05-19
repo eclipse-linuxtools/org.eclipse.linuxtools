@@ -22,6 +22,7 @@ import java.util.Map;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 
 public class Specfile {
 
@@ -96,6 +97,11 @@ public class Specfile {
      * @param define The define to add.
      */
     public void addDefine(SpecfileDefine define) {
+    	SpecfilePackage rpmPackage = define.getParent();
+    	if (rpmPackage != null && !rpmPackage.isMainPackage()) {
+    		defines.put(Utils.getPackageDefineId(define, rpmPackage), define);
+    		return;
+    	}
 		defines.put(define.getName(), define);
 	}
     
@@ -103,21 +109,12 @@ public class Specfile {
 		addDefine(new SpecfileDefine(tag));
 	}
     
-    public void modifyDefine(String defineName, String newValue) {
-		SpecfileDefine define = getDefine(defineName.toLowerCase());
-		if (define != null) {
-			define.setStringValue(newValue);
-			try {
-				changeLine(define.getLineNumber(), defineName + ": " + newValue);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+    public SpecfileDefine getDefine(String defineName) {
+		return defines.get(defineName.toLowerCase());
 	}
 	
-	public SpecfileDefine getDefine(String defineName) {
-		return defines.get(defineName.toLowerCase());
+	public SpecfileDefine getDefine(String defineName, SpecfilePackage rpmPackage) {
+		return defines.get(Utils.getPackageDefineId(defineName, rpmPackage));
 	}
 
 	public int getEpoch() {
@@ -237,4 +234,33 @@ public class Specfile {
 		if (! packages.contains(subPackage))
 			packages.addPackage(subPackage);
 	}
+
+	public void modifyDefine(String defineName, SpecfilePackage rpmPackage,
+			String newValue) {
+		SpecfileDefine define = getDefine(defineName.toLowerCase()+":"+rpmPackage.getPackageName());
+		if (define != null) {
+			define.setStringValue(newValue);
+			try {
+				changeLine(define.getLineNumber(), defineName + ": " + newValue);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	public void modifyDefine(String defineName, String newValue) {
+		SpecfileDefine define = getDefine(defineName.toLowerCase());
+		if (define != null) {
+			define.setStringValue(newValue);
+			try {
+				changeLine(define.getLineNumber(), defineName + ": " + newValue);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

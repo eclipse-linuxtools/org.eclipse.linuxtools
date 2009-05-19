@@ -56,27 +56,25 @@ public class SpecfileParser {
 			PREUN_SECTION, POST_SECTION, POSTUN_SECTION, POSTTRANS_SECTION,
 			FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
 
-	// Fix bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=215771
-	// private static String[] simpleDefinitions = { "Epoch", "Name", "Version",
-	// "Release", "License", "URL" };
 	private static String[] simpleDefinitions = { RpmTags.EPOCH, RpmTags.NAME,
 			RpmTags.VERSION, RpmTags.RELEASE, RpmTags.URL };
 
-	private static String[] directValuesDefinitions = { RpmTags.LICENSE,
-			RpmTags.SUMMARY };
+	private static String[] directValuesDefinitions = { RpmTags.LICENSE };
 	// Note that the ordering here should match that in
 	// SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	// FIXME: Handle package-level definitions
-	// private static String[] packageLevelDefinitions = { "Summary", "Group",
-	// "Obsoletes", "Provides", "BuildRequires", "Requires",
-	// "Requires(pre)", "Requires(post)", "Requires(postun)" };
+	private static String[] packageLevelDefinitions = { RpmTags.SUMMARY,
+			RpmTags.GROUP, RpmTags.OBSOLETES, RpmTags.PROVIDES,
+			RpmTags.REQUIRES, RpmTags.REQUIRES_PRE, RpmTags.REQUIRES_POST,
+			RpmTags.REQUIRES_POSTUN };
 
 	private SpecfileErrorHandler errorHandler;
 	private SpecfileTaskHandler taskHandler;
 	private IPreferenceStore store;
 	private SpecfileSection lastSection;
+	private SpecfilePackage activePackage;
 
 	public SpecfileParser() {
 		store = Activator.getDefault().getPreferenceStore();
@@ -189,6 +187,11 @@ public class SpecfileParser {
 				return parseDirectDefinition(lineText, specfile, lineNumber);
 			}
 		}
+		for (String directValuesDefinition : packageLevelDefinitions) {
+			if (lineText.startsWith(directValuesDefinition + ":")) { //$NON-NLS-1$
+				return parseDirectDefinition(lineText, specfile, lineNumber);
+			}
+		}
 
 		// FIXME: Handle package-level definitions
 		if (lineText.startsWith(complexDefinitions[0])) {
@@ -269,14 +272,15 @@ public class SpecfileParser {
 
 						// this is a package
 						if (toReturn == null) {
-							toReturn = specfile.getPackage(nextToken);
+							SpecfilePackage tmpPackage = specfile.getPackage(nextToken);
 
-							if (toReturn == null) {
-								toReturn = new SpecfilePackage(nextToken,
+							if (tmpPackage == null) {
+								tmpPackage = new SpecfilePackage(nextToken,
 										specfile);
-								specfile.addPackage((SpecfilePackage) toReturn);
+								specfile.addPackage((SpecfilePackage) tmpPackage);
 							}
-							return toReturn;
+							activePackage = tmpPackage;
+							return tmpPackage;
 						}
 
 						// this is another section
@@ -402,11 +406,11 @@ public class SpecfileParser {
 									.parseInt(defineStringValue);
 						} catch (NumberFormatException e) {
 							toReturn = new SpecfileDefine(defineName,
-									defineStringValue, specfile);
+									defineStringValue, specfile, activePackage);
 						}
 						if (toReturn == null)
 							toReturn = new SpecfileDefine(defineName,
-									defineIntValue, specfile);
+									defineIntValue, specfile, activePackage);
 					}
 				}
 			}
@@ -508,7 +512,7 @@ public class SpecfileParser {
 					possValue += ' ' + iter.next();
 				}
 				toReturn = new SpecfileTag(token.substring(0,
-						token.length() - 1).toLowerCase(), possValue, specfile);
+						token.length() - 1).toLowerCase(), possValue, specfile, activePackage);
 				if (iter.hasNext() && !warnMultipleValues) {
 					errorHandler.handleError(new SpecfileParseException(
 							token.substring(0, token.length() - 1)
@@ -565,7 +569,7 @@ public class SpecfileParser {
 			Specfile specfile, int lineNumber) {
 		String[] parts = lineText.split(":"); //$NON-NLS-1$
 		SpecfileTag licenseElement = new SpecfileTag(parts[0].toLowerCase(),
-				parts[1].trim(), specfile);
+				parts[1].trim(), specfile, activePackage);
 		licenseElement.setLineNumber(lineNumber);
 		return licenseElement;
 	}

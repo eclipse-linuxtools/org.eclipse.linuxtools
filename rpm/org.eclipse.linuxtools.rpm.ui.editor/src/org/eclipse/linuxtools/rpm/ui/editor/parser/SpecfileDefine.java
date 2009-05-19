@@ -13,18 +13,19 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 public class SpecfileDefine extends SpecfileTag {
 
-	public SpecfileDefine(String name, int value, Specfile specfile) {
-		super(name, value, specfile);
+	public SpecfileDefine(String name, int value, Specfile specfile, SpecfilePackage parent) {
+		super(name, value, specfile, parent);
 	}
 
-	public SpecfileDefine(String name, String value, Specfile specfile) {
-		super(name, value, specfile);
+	public SpecfileDefine(String name, String value, Specfile specfile, SpecfilePackage parent) {
+		super(name, value, specfile, parent);
 	}
 
 	public SpecfileDefine(SpecfileTag tag) {
 		setName(tag.getName().toLowerCase());
 		setSpecfile(tag.getSpecfile());
 		setLineNumber(tag.getLineNumber());
+		setParent(tag.getParent());
 		if (tag.getTagType().equals(TagType.STRING)) {
 			setStringValue(tag.getStringValue());
 		}
