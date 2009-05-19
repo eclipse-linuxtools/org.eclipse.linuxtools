@@ -94,6 +94,8 @@ public class MainPackagePage extends FormPage {
 			packageSection.setExpanded(false);
 			Composite packageClient = toolkit.createComposite(packageSection);
 			packageClient.setLayout(gridLayout);
+			new RpmTagText(packageClient, RpmTags.SUMMARY, specfile, SWT.MULTI);
+			new RpmTagText(packageClient, RpmTags.GROUP, specfile, SWT.MULTI);
 			packageSection.setClient(packageClient);
 			
 			toolkit.paintBordersFor(packageClient);
