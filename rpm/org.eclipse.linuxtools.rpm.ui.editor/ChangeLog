@@ -1,5 +1,14 @@
 2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (modifyDefine): Adapt to SpecfileTag API simplification.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileDefine.java (SpecfileDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Likewise.
+	(packageLevelDefinitions): Remove fixed todo.
+	(parseSection): Remove unneeded cast.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setValue): Simplify API.
+	
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Put more meaningful names. 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (.modifyText): Support for package specific tags.
 	(RpmTagText): Likewise.

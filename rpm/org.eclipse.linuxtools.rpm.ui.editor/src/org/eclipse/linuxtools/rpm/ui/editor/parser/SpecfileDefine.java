@@ -27,10 +27,10 @@ public class SpecfileDefine extends SpecfileTag {
 		setLineNumber(tag.getLineNumber());
 		setParent(tag.getParent());
 		if (tag.getTagType().equals(TagType.STRING)) {
-			setStringValue(tag.getStringValue());
+			setValue(tag.getStringValue());
 		}
 		if (tag.getTagType().equals(TagType.INT)) {
-			setIntValue(tag.getIntValue());
+			setValue(tag.getIntValue());
 		}
 	}
 

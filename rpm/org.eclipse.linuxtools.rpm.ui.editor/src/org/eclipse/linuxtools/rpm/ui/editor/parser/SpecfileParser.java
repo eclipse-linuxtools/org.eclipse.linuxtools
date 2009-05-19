@@ -64,7 +64,6 @@ public class SpecfileParser {
 	// SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-	// FIXME: Handle package-level definitions
 	private static String[] packageLevelDefinitions = { RpmTags.SUMMARY,
 			RpmTags.GROUP, RpmTags.OBSOLETES, RpmTags.PROVIDES,
 			RpmTags.REQUIRES, RpmTags.REQUIRES_PRE, RpmTags.REQUIRES_POST,
@@ -277,7 +276,7 @@ public class SpecfileParser {
 							if (tmpPackage == null) {
 								tmpPackage = new SpecfilePackage(nextToken,
 										specfile);
-								specfile.addPackage((SpecfilePackage) tmpPackage);
+								specfile.addPackage(tmpPackage);
 							}
 							activePackage = tmpPackage;
 							return tmpPackage;
@@ -548,8 +547,7 @@ public class SpecfileParser {
 			}
 			try {
 				int intValue = Integer.parseInt(toReturn.getStringValue());
-				toReturn.setIntValue(intValue);
-				toReturn.setStringValue(null);
+				toReturn.setValue(intValue);
 				toReturn.setTagType(SpecfileTag.TagType.INT);
 			} catch (NumberFormatException e) {
 				if (toReturn.getName().equals("epoch")) { //$NON-NLS-1$

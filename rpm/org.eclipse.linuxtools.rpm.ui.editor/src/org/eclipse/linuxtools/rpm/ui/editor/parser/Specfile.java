@@ -237,13 +237,12 @@ public class Specfile {
 
 	public void modifyDefine(String defineName, SpecfilePackage rpmPackage,
 			String newValue) {
-		SpecfileDefine define = getDefine(defineName.toLowerCase()+":"+rpmPackage.getPackageName());
+		SpecfileDefine define = getDefine(Utils.getPackageDefineId(defineName, rpmPackage));
 		if (define != null) {
-			define.setStringValue(newValue);
+			define.setValue(newValue);
 			try {
 				changeLine(define.getLineNumber(), defineName + ": " + newValue);
 			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -253,11 +252,10 @@ public class Specfile {
 	public void modifyDefine(String defineName, String newValue) {
 		SpecfileDefine define = getDefine(defineName.toLowerCase());
 		if (define != null) {
-			define.setStringValue(newValue);
+			define.setValue(newValue);
 			try {
 				changeLine(define.getLineNumber(), defineName + ": " + newValue);
 			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
