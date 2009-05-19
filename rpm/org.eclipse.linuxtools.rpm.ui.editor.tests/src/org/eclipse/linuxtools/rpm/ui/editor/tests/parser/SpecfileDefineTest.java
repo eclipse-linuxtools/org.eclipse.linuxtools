@@ -46,7 +46,7 @@ public class SpecfileDefineTest extends FileTestCase {
 
 	public void testResolve() {
 		SpecfileDefine define1 = new SpecfileDefine("name", "testspec",
-				specfile);
+				specfile, specfile.getPackages().getPackage(specfile.getName()));
 		specfile.addDefine(define1);
 		assertEquals("testspec", ((SpecfileElement) define1).resolve("%{name}"));
 	}
