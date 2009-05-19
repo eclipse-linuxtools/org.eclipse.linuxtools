@@ -1,0 +1,8 @@
+Hierarchy;Name (location);Time;Calls;Time/Call;%Time
++-;Summary;30.0ms;;;100.0
+  +-;func_077 (bigtest.c:16297);10.0ms;;;33.333332
+  | +-;0x8071b9c;10.0ms;;;33.333332
+  +-;func_578 (bigtest.c:7663);10.0ms;;;33.333332
+  | +-;0x80584c0;10.0ms;;;33.333332
+  +-;func_931 (bigtest.c:13313);10.0ms;;;33.333332
+    +-;0x80641ac;10.0ms;;;33.333332

@@ -1,0 +1,6 @@
+Hierarchy;Name (location);Time;Calls;Time/Call;%Time
++-;Summary;0ns;;;0.0
+  +-;func_a;0ns;2;0ns;0.0
+  +-;func_b;0ns;1;0ns;0.0
+  +-;func_f;0ns;2;0ns;0.0
+  +-;main;0ns;0;;0.0

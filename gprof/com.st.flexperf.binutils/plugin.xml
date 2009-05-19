@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="com.st.flexperf.binutils.crossCompilerBinutils" name="Cross compiler binutils" schema="schema/com.st.flexperf.binutils.crossCompile.exsd"/>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.st.flexperf.binutils.link2source.STCSourceNotFoundEditor"
+            icon="icons/c_file_obj.gif"
+            id="com.st.flexperf.binutils.link2source.STCSourceNotFoundEditor"
+            name="Source Not Found">
+      </editor>
+   </extension>
+
+</plugin>

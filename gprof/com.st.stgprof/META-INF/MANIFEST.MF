@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: STGprof Plug-in
+Bundle-SymbolicName: com.st.stgprof;singleton:=true
+Bundle-Version: 4.0.0.qualifier
+Bundle-Activator: com.st.stgprof.Activator
+Bundle-Vendor: STMicroelectronics
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.variables,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.debug.ui,
+ org.eclipse.cdt.core,
+ com.st.dataviewers,
+ com.st.flexperf.binutils,
+ org.eclipse.cdt.launch
+Bundle-ActivationPolicy: lazy
+Export-Package: com.st.stgprof,
+ com.st.stgprof.utils,
+ com.st.stgprof.view
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

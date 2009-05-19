@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>DataViewersFind</title>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(204, 255, 255);"
+ alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<div style="text-align: center;">
+<h3><span style="color: rgb(204, 0, 0);">DATA VIEWERS FIND <br>
+</span></h3>
+<div style="text-align: left;"><small>The package
+"com.st.dataviewers.findreplace" added into the plugin
+"com.st.dataviewers" allows to enable the "FIND" action of the standard
+workbench adapting to the dataviewers.<br>
+If the developer want to use this new feature, he has to create an
+instance of the interface</small><span style="font-weight: bold;"> I</span><span
+ style="font-weight: bold;">STFindReplaceTarget</span><small>.<br>
+The interface </small><big><small><span style="font-weight: bold;">I</span><span
+ style="font-weight: bold;">STFindReplaceTarget</span></small><small><small>&nbsp;
+adapts&nbsp; the original IFindReplaceTarget to the dataviewers. In
+particular way, it uses&nbsp; the class&nbsp; </small><big><small><span
+ style="font-weight: bold;">ViewerCell</span><small> to get the
+searched string position into the dataviewer.</small><br>
+<br>
+<small>There are two classes that implement ISTFindReplaceTarget:<br>
+</small></small></big></small></big>
+<ul>
+  <li><small>STTableFindReplaceTarget and extends AbstractSTTableViewer<br>
+    </small></li>
+  <li><small>STTreeFindReplaceTarget and extends AbstractSTTreeViewer</small></li>
+</ul>
+</div>
+<div style="text-align: left;"><small>Both have to extend an
+AbstractSTViewer because the "FIND" targert work on a viewer.<br>
+When a developer want to use the "FIND", he has to create your customer
+data viewer extending:<br>
+</small>
+<ul>
+  <li><small>&nbsp;STTableFindReplaceTarget for the
+AbstractSTTableViewer</small><br>
+  </li>
+</ul>
+<small>or<br>
+</small>
+<ul>
+  <li><small>STTreeFindReplaceTarget for the AbstractSTTreeViewer</small><br>
+  </li>
+</ul>
+<div style="text-align: center;">
+<h3><span style="color: rgb(204, 0, 0);">Briefly</span></h3>
+<div style="text-align: left;"><small>In order to enable the "FIND"
+action, the developer has to:<br>
+</small>
+<ul>
+  <li><small><small><span style="font-weight: bold; font-style: italic;">create
+an instance of&nbsp; ISTFindReplaceTarget doing the overrideing of
+createSTFindReplaceTarget() into the AbstractSTDataView</span></small></small></li>
+  <li><small><small><span style="font-weight: bold; font-style: italic;">extend
+your custom viewer with STTableFindReplaceTarget or
+STTreeFindReplaceTargert</span></small></small></li>
+</ul>
+</div>
+<h3><big><span style="color: rgb(204, 0, 0);">Examples</span></big></h3>
+<div style="text-align: left;"><small>As an example the user can play
+with the plugin:<br>
+</small>
+<ul style="font-weight: bold; font-style: italic;">
+  <li><small>com.st.dataviewers.examples.hugomodel</small></li>
+</ul>
+</div>
+<br>
+</div>
+</div>
+</div>
+</body>
+</html>

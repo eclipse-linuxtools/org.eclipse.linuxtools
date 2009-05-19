@@ -1,0 +1,42 @@
+Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
++-;Summary;0;;;0.0
+  +-;A::foocpp::foocpp[in-charge]();0;2;0ns;0.0
+  | +-;parents;0;2;0ns;0.0
+  |   +-;B::foocpp::foocpp[in-charge]() (foox.cpp:82);0;1;0ns;0.0
+  |   +-;main (foox.cpp:110);0;1;0ns;0.0
+  +-;A::foocpp::func_a(int);0;2;0ns;0.0
+  | +-;children;0;2;0ns;0.0
+  | | +-;A::foocpp::func_f(int) (foox.cpp:47);0;2;0ns;0.0
+  | +-;parents;0;2;0ns;0.0
+  |   +-;B::foocpp::func_b(int) (foox.cpp:95);0;1;0ns;0.0
+  |   +-;main (foox.cpp:112);0;1;0ns;0.0
+  +-;A::foocpp::func_f(int);0;2;0ns;0.0
+  | +-;parents;0;2;0ns;0.0
+  |   +-;A::foocpp::func_a(int) (foox.cpp:59);0;2;0ns;0.0
+  +-;A::foocpp::~foocpp [in-charge]();0;2;0ns;0.0
+  | +-;parents;0;2;0ns;0.0
+  |   +-;B::foocpp::~foocpp [in-charge]() (foox.cpp:87);0;1;0ns;0.0
+  |   +-;main (foox.cpp:118);0;1;0ns;0.0
+  +-;B::foocpp::foocpp[in-charge]();0;1;0ns;0.0
+  | +-;children;0;1;0ns;0.0
+  | | +-;A::foocpp::foocpp[in-charge]() (foox.cpp:42);0;1;0ns;0.0
+  | +-;parents;0;1;0ns;0.0
+  |   +-;main (foox.cpp:109);0;1;0ns;0.0
+  +-;B::foocpp::func_b(int);0;1;0ns;0.0
+  | +-;children;0;1;0ns;0.0
+  | | +-;A::foocpp::func_a(int) (foox.cpp:54);0;1;0ns;0.0
+  | +-;parents;0;1;0ns;0.0
+  |   +-;main (foox.cpp:115);0;1;0ns;0.0
+  +-;B::foocpp::~foocpp [in-charge]();0;1;0ns;0.0
+  | +-;children;0;1;0ns;0.0
+  | | +-;A::foocpp::~foocpp [in-charge]() (foox.cpp:44);0;1;0ns;0.0
+  | +-;parents;0;1;0ns;0.0
+  |   +-;main (foox.cpp:119);0;1;0ns;0.0
+  +-;main;0;0;;0.0
+    +-;children;0;6;0ns;0.0
+      +-;A::foocpp::foocpp[in-charge]() (foox.cpp:42);0;1;0ns;0.0
+      +-;A::foocpp::func_a(int) (foox.cpp:54);0;1;0ns;0.0
+      +-;A::foocpp::~foocpp [in-charge]() (foox.cpp:44);0;1;0ns;0.0
+      +-;B::foocpp::foocpp[in-charge]() (foox.cpp:81);0;1;0ns;0.0
+      +-;B::foocpp::func_b(int) (foox.cpp:91);0;1;0ns;0.0
+      +-;B::foocpp::~foocpp [in-charge]() (foox.cpp:86);0;1;0ns;0.0

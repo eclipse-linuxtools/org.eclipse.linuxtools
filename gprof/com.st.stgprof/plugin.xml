@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            default="true"
+            filenames="gmon.out, gmon.outDCACHE, gmon.outICACHE, gmon.sum, gmon.sumDCACHE, gmon.sumICACHE, gmon.sum.xyz, gmon.out.000, gmon.out.001, gmon.out.002, gmon.out.003, gmon.out.004, gmon.out.005, gmon.out.006, gmon.out.007, gmon.out.008, gmon.out.009, gmon.out.010, gmon.out.011, gmon.out.012, gmon.out.013, gmon.out.014, gmon.out.015, gmon.out.016"
+            icon="icons/toggle.gif"
+            id="com.st.stgprof.editor.single"
+            launcher="com.st.stgprof.action.OpenGmonAction"
+            name="STgprof Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="com.st.system.analyses"
+            class="com.st.stgprof.view.GmonView"
+            icon="icons/toggle.gif"
+            id="com.st.stgprof.view"
+            name="STgprof"
+            restorable="false">
+         <description>
+            STGprof view displays the profiling information contained in a gmon.out file
+         </description>
+      </view>
+      <category
+            id="com.st.system.analyses"
+            name="ST Analysis Tools">
+      </category>
+   </extension>
+
+</plugin>

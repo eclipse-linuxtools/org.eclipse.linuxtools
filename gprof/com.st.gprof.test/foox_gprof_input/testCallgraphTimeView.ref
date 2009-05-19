@@ -1,0 +1,20 @@
+Hierarchy;Name (location);Time;Calls;Time/Call;%Time
++-;Summary;0ns;;;0.0
+  +-;func_a;0ns;2;0ns;0.0
+  | +-;children;0ns;2;0ns;0.0
+  | | +-;func_f (foox.c:29);0ns;2;0ns;0.0
+  | +-;parents;0ns;2;0ns;0.0
+  |   +-;func_b (foox.c:53);0ns;1;0ns;0.0
+  |   +-;main (foox.c:62);0ns;1;0ns;0.0
+  +-;func_b;0ns;1;0ns;0.0
+  | +-;children;0ns;1;0ns;0.0
+  | | +-;func_a (foox.c:36);0ns;1;0ns;0.0
+  | +-;parents;0ns;1;0ns;0.0
+  |   +-;main (foox.c:64);0ns;1;0ns;0.0
+  +-;func_f;0ns;2;0ns;0.0
+  | +-;parents;0ns;2;0ns;0.0
+  |   +-;func_a (foox.c:41);0ns;2;0ns;0.0
+  +-;main;0ns;0;;0.0
+    +-;children;0ns;2;0ns;0.0
+      +-;func_a (foox.c:36);0ns;1;0ns;0.0
+      +-;func_b (foox.c:50);0ns;1;0ns;0.0

@@ -1,0 +1,7 @@
+Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
++-;Summary;0;;;0.0
+  +-;foox.c;0;;;0.0
+    +-;func_a;0;2;0ns;0.0
+    +-;func_b;0;1;0ns;0.0
+    +-;func_f;0;2;0ns;0.0
+    +-;main;0;0;;0.0
