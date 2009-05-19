@@ -36,7 +36,7 @@ import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileParser {
 
-	private static final String SPACE_REGEX = "\\s+";
+	private static final String SPACE_REGEX = "\\s+"; //$NON-NLS-1$
 
 	/**
 	 * These are SRPM-wide sections, and they also cannot have any flags like -n
@@ -204,7 +204,7 @@ public class SpecfileParser {
 
 	private SpecfileSection parseSection(String lineText, Specfile specfile,
 			int lineNumber) {
-		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX)); //$NON-NLS-1$
+		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX));
 		SpecfileSection toReturn = null;
 		boolean isSimpleSection = false;
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
@@ -343,7 +343,7 @@ public class SpecfileParser {
 
 		SpecfilePatchMacro toReturn = null;
 
-		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX)); //$NON-NLS-1$
+		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX));
 
 		for (String token : tokens) {
 			// %patchN+
@@ -369,7 +369,7 @@ public class SpecfileParser {
 
 	private SpecfileDefine parseDefine(String lineText, Specfile specfile,
 			int lineNumber) {
-		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX)); //$NON-NLS-1$
+		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX));
 		SpecfileDefine toReturn = null;
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {
 			// Eat the actual "%define" or "%global" token
@@ -417,7 +417,7 @@ public class SpecfileParser {
 	private SpecfileElement parseComplexDefinition(String lineText,
 			int lineNumber, SourceType sourceType) {
 		SpecfileSource toReturn = null;
-		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX)); //$NON-NLS-1$
+		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX));
 		int number = -1;
 		boolean firstToken = true;
 
@@ -492,7 +492,7 @@ public class SpecfileParser {
 
 	private SpecfileElement parseSimpleDefinition(String lineText,
 			Specfile specfile, int lineNumber, boolean warnMultipleValues) {
-		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX)); //$NON-NLS-1$
+		List<String> tokens = Arrays.asList(lineText.split(SPACE_REGEX));
 		SpecfileTag toReturn = null;
 
 		for (Iterator<String> iter = tokens.iterator(); iter.hasNext();) {

@@ -1,5 +1,21 @@
 2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (getGroup): Add group and summary fields and accessors.
+	(getSummary): Likewise.
+	(setGroup): Likewise.
+	(setSummary): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Fix NON-NLS.
+	(parseDefine): Likewise.
+	(parseComplexDefinition): Likewise. 
+	(parsePatch): Likewise.
+	(parseSection): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java (removeTextConverter): Use IAutoEditStrategy instead of our own interface.
+	(customizeDocumentCommand): Likewise.
+	(addTextConverter): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTabConverter.java: Likewise.
+	
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Show fields for subpackages Summary and Group.
 
 2009-05-18  Alexander Kurtakov  <akurtako@redhat.com>

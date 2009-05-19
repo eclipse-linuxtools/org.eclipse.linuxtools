@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jface.text.DocumentCommand;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -25,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  */
 class SpecfileProjectionViewer extends ProjectionViewer {
-	private List<ITextConverter> textConverters;
+	private List<IAutoEditStrategy> textConverters;
 
 	private boolean ignoreTextConverters = false;
 
@@ -66,9 +67,9 @@ class SpecfileProjectionViewer extends ProjectionViewer {
 	 *            to add
 	 * 
 	 */
-	public void addTextConverter(ITextConverter textConverter) {
+	public void addTextConverter(IAutoEditStrategy textConverter) {
 		if (textConverters == null) {
-			textConverters = new LinkedList<ITextConverter>();
+			textConverters = new LinkedList<IAutoEditStrategy>();
 			textConverters.add(textConverter);
 		} else if (!textConverters.contains(textConverter))
 			textConverters.add(textConverter);
@@ -80,7 +81,7 @@ class SpecfileProjectionViewer extends ProjectionViewer {
 	 * @param textConverter
 	 *            to remove
 	 */
-	public void removeTextConverter(ITextConverter textConverter) {
+	public void removeTextConverter(IAutoEditStrategy textConverter) {
 		if (textConverters != null) {
 			textConverters.remove(textConverter);
 			if (textConverters.size() == 0)
@@ -99,7 +100,7 @@ class SpecfileProjectionViewer extends ProjectionViewer {
 	protected void customizeDocumentCommand(DocumentCommand command) {
 		super.customizeDocumentCommand(command);
 		if (!ignoreTextConverters && textConverters != null) {
-			for (ITextConverter converter : textConverters) {
+			for (IAutoEditStrategy converter : textConverters) {
 				converter.customizeDocumentCommand(getDocument(), command);
 			}
 		}

@@ -12,19 +12,16 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentCommand;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ILineTracker;
 import org.eclipse.jface.text.IRegion;
-
-interface ITextConverter {
-	void customizeDocumentCommand(IDocument document, DocumentCommand command);
-}
 
 /**
  * Converts tab character to spaces.
  *
  */
-public class SpecfileTabConverter implements ITextConverter {
+public class SpecfileTabConverter implements IAutoEditStrategy {
 	private int fTabRatio;
 	private ILineTracker fLineTracker;
 

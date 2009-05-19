@@ -18,6 +18,8 @@ public class SpecfilePackage extends SpecfileSection {
 	private String description;
 	private List<SpecfileSection> sections;
 	private String packageName;
+	private String summary;
+	private String group;
 
 	public SpecfilePackage(String packageName, Specfile specfile) {
 		super("package", specfile); //$NON-NLS-1$
@@ -80,5 +82,33 @@ public class SpecfilePackage extends SpecfileSection {
 
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
+	}
+
+	/**
+	 * @param summary the summary to set
+	 */
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	/**
+	 * @return the summary
+	 */
+	public String getSummary() {
+		return summary;
+	}
+
+	/**
+	 * @param group the group to set
+	 */
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	/**
+	 * @return the group
+	 */
+	public String getGroup() {
+		return group;
 	}
 }
