@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.valgrind.test.feature"
+      id="org.eclipse.linuxtools.valgrind.test"
       label="%featureName"
       version="0.2.0.qualifier"
-      provider-name="%featureProvider"
-      os="linux">
+      provider-name="%featureProvider">
 
    <description>
       %description
@@ -21,6 +20,7 @@
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.junit" version="0.0.0"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
       <import plugin="org.eclipse.cdt.debug.ui"/>
@@ -36,9 +36,14 @@
       <import plugin="org.eclipse.linuxtools.valgrind.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.junit4"/>
       <import plugin="org.eclipse.linuxtools.valgrind.massif"/>
-      <import plugin="org.junit" version="0.0.0"/>
+      <import plugin="org.eclipse.cdt.core.tests"/>
+      <import plugin="org.eclipse.cdt.launch"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.birt.chart.engine"/>
+      <import plugin="org.eclipse.birt.core"/>
+      <import plugin="org.eclipse.cdt.ui"/>
+      <import plugin="org.eclipse.linuxtools.valgrind.cachegrind"/>
    </requires>
 
    <plugin
