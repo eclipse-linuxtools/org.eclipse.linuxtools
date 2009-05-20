@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.profiling.test.feature"
+      id="org.eclipse.linuxtools.profiling.test"
       label="%featureName"
       version="0.2.0.qualifier"
-      provider-name="%featureProvider"
-      os="linux">
+      provider-name="%featureProvider">
 
    <description>
       %description
