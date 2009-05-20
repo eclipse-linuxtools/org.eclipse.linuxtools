@@ -36,8 +36,8 @@ feature@org.eclipse.linuxtools.systemtap.feature=SVN,,http://dev.eclipse.org/svn
 plugin@org.eclipse.linuxtools.profiling.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.launch
 plugin@org.eclipse.linuxtools.profiling.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.tests
 plugin@org.eclipse.linuxtools.profiling.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.ui
-feature@org.eclipse.linuxtools.profiling.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling-feature
-feature@org.eclipse.linuxtools.profiling.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.test-feature
+feature@org.eclipse.linuxtools.profiling=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling-feature
+feature@org.eclipse.linuxtools.profiling.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/profiling/trunk/org.eclipse.linuxtools.profiling.test-feature
 
 !*** oprofile
 plugin@org.eclipse.linuxtools.oprofile.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core
@@ -49,7 +49,7 @@ plugin@org.eclipse.linuxtools.oprofile.launch=SVN,,http://dev.eclipse.org/svnroo
 plugin@org.eclipse.linuxtools.oprofile.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.tests
 plugin@org.eclipse.linuxtools.oprofile.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui
 plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui.tests
-feature@org.eclipse.linuxtools.oprofile.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile-feature
+feature@org.eclipse.linuxtools.oprofile=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile-feature
 
 !*** valgrind
 plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind
@@ -63,8 +63,8 @@ plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,,http://dev.eclipse.org/svnr
 plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.memcheck.tests
 plugin@org.eclipse.linuxtools.valgrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.tests
 plugin@org.eclipse.linuxtools.valgrind.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.ui
-feature@org.eclipse.linuxtools.valgrind.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind-feature
-feature@org.eclipse.linuxtools.valgrind.test.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.test-feature
+feature@org.eclipse.linuxtools.valgrind=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind-feature
+feature@org.eclipse.linuxtools.valgrind.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.test-feature
 
 feature@org.eclipse.linuxtools.all=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.all
 feature@org.eclipse.linuxtools.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.test-feature
