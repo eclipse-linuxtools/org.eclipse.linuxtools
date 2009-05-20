@@ -18,11 +18,11 @@
    </license>
 
    <includes
-         id="org.eclipse.linuxtools.profiling.test.feature"
+         id="org.eclipse.linuxtools.profiling.test"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.valgrind.test.feature"
+         id="org.eclipse.linuxtools.valgrind.test"
          version="0.0.0"/>
 
    <plugin
