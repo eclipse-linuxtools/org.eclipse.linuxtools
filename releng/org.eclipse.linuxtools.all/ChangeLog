@@ -1,3 +1,7 @@
+2009-05-20  Andre Overholt  <overholt@redhat.com>
+
+	* feature.xml: Remove unnecessary ".feature".
+
 2009-04-21  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Change from Linux Distros/Linux Tools to Linux Tools.
