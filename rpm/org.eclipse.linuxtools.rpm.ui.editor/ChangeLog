@@ -1,3 +1,12 @@
+2009-05-20  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (RpmTagText): Fix defines handling.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Support BuildArch and BuildRoot.
+	(parseLine): Likewisel
+	(simpleDefinitions): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setValue): Set correct type.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java (getPackageDefineId): Fix lower casing.
+
 2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (modifyDefine): Adapt to SpecfileTag API simplification.

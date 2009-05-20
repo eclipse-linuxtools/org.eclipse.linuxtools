@@ -49,6 +49,7 @@ public class SpecfileTag extends SpecfileElement {
 		return resolve(stringValue);
 	}
 	public void setValue(String value) {
+		this.tagType = TagType.STRING;
 		this.stringValue = value;
 	}
 	
@@ -57,6 +58,7 @@ public class SpecfileTag extends SpecfileElement {
 	}
 	
 	public void setValue(int value) {
+		this.tagType = TagType.INT;
 		this.intValue = value;
 	}
 	

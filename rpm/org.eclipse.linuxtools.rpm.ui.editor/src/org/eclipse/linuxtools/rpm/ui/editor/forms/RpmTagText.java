@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.forms;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag.TagType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -32,10 +33,14 @@ public class RpmTagText {
 			final Specfile specfile, int flag) {
 		Label label = new Label(parent, SWT.SINGLE);
 		label.setText(rpmTag);
-		final Text text = new Text(parent, SWT.BORDER_SOLID|flag);
+		final Text text = new Text(parent, SWT.BORDER_SOLID | flag);
 		SpecfileDefine define = specfile.getDefine(rpmTag);
 		if (null != define) {
-			text.setText(define.getStringValue());
+			if (define.getTagType().equals(TagType.INT)) {
+				text.setText(String.valueOf(define.getIntValue()));
+			} else {
+				text.setText(define.getStringValue());
+			}
 		}
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.addModifyListener(new ModifyListener() {
@@ -44,12 +49,12 @@ public class RpmTagText {
 			}
 		});
 	}
-	
+
 	public RpmTagText(Composite parent, final String rpmTag,
 			final Specfile specfile, final SpecfilePackage rpmPackage, int flag) {
 		Label label = new Label(parent, SWT.SINGLE);
 		label.setText(rpmTag);
-		final Text text = new Text(parent, SWT.BORDER_SOLID|flag);
+		final Text text = new Text(parent, SWT.BORDER_SOLID | flag);
 		SpecfileDefine define = specfile.getDefine(rpmTag, rpmPackage);
 		if (null != define) {
 			text.setText(define.getStringValue());

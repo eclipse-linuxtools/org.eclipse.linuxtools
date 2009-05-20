@@ -120,11 +120,11 @@ public class Utils {
 	}
 	
 	public static String getPackageDefineId(SpecfileDefine define, SpecfilePackage rpmPackage){
-		return getPackageDefineId(define.getName().toLowerCase(),rpmPackage);
+		return getPackageDefineId(define.getName(),rpmPackage);
 	}
 	
 	public static String getPackageDefineId(String defineName, SpecfilePackage rpmPackage){
-		return defineName+":"+rpmPackage.getPackageName(); //$NON-NLS-1$
+		return defineName.toLowerCase()+":"+rpmPackage.getPackageName(); //$NON-NLS-1$
 	}
 	
 }

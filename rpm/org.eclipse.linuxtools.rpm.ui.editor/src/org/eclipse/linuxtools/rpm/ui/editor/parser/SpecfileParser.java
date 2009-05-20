@@ -57,7 +57,8 @@ public class SpecfileParser {
 			FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
 
 	private static String[] simpleDefinitions = { RpmTags.EPOCH, RpmTags.NAME,
-			RpmTags.VERSION, RpmTags.RELEASE, RpmTags.URL };
+			RpmTags.VERSION, RpmTags.RELEASE, RpmTags.URL, RpmTags.BUILD_ARCH,
+			RpmTags.BUILD_ROOT };
 
 	private static String[] directValuesDefinitions = { RpmTags.LICENSE };
 	// Note that the ordering here should match that in
@@ -173,12 +174,8 @@ public class SpecfileParser {
 
 		for (String simpleDefinition : simpleDefinitions) {
 			if (lineText.startsWith(simpleDefinition + ":")) { //$NON-NLS-1$
-				if (simpleDefinition.equals("License")) { //$NON-NLS-1$
-					return parseSimpleDefinition(lineText, specfile,
-							lineNumber, true);
-				} else
-					return parseSimpleDefinition(lineText, specfile,
-							lineNumber, false);
+				return parseSimpleDefinition(lineText, specfile, lineNumber,
+						false);
 			}
 		}
 		for (String directValuesDefinition : directValuesDefinitions) {
@@ -511,7 +508,7 @@ public class SpecfileParser {
 					possValue += ' ' + iter.next();
 				}
 				toReturn = new SpecfileTag(token.substring(0,
-						token.length() - 1).toLowerCase(), possValue, specfile, activePackage);
+						token.length() - 1).toLowerCase(), possValue, specfile, null);
 				if (iter.hasNext() && !warnMultipleValues) {
 					errorHandler.handleError(new SpecfileParseException(
 							token.substring(0, token.length() - 1)
@@ -520,14 +517,6 @@ public class SpecfileParser {
 							IMarker.SEVERITY_ERROR));
 					return null;
 				}
-				// FIXME: investigate whether we should keep this or not
-				// } else {
-				// errorHandler.handleError(new SpecfileParseException(
-				// token.substring(0, token.length() - 1) +
-				// " should be an acronym.",
-				// lineNumber, 0, lineText.length(),
-				// IMarker.SEVERITY_WARNING));
-				// }
 			} else {
 				errorHandler.handleError(new SpecfileParseException(token
 						.substring(0, token.length() - 1)
