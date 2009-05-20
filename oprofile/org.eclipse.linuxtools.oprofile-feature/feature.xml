@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.oprofile.feature"
+      id="org.eclipse.linuxtools.oprofile"
       label="%featureName"
       version="0.2.0.qualifier"
       provider-name="%featureProvider">
