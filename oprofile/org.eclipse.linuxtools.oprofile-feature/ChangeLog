@@ -1,3 +1,8 @@
+2009-05-21  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Remove unnecessary ".feature" qualifier in requirement of
+	profilingframework.
+
 2009-05-20  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Remove unnecessary .feature qualifier.
