@@ -1,3 +1,8 @@
+2009-05-22  Elliott Baron  <ebaron@redhat.com>
+
+	#275685
+	* ValgrindLaunchPlugin.java (findValgrindVersion): Version parsing fixed on Debian distros.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: New deps.

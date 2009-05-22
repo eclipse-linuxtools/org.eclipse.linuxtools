@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ *    Patrick Hofer (Noser Engineering AG) - fix for Bug 275685
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.launch;
 
@@ -56,7 +57,8 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	public static final Version VER_3_4_0 = new Version(3, 4, 0);
 	public static final Version VER_3_4_1 = new Version(3, 4, 1);
 	private static final String VERSION_PREFIX = "valgrind-"; //$NON-NLS-1$
-
+	private static final char VERSION_DELIMITER = '-';
+	
 	protected HashMap<String, IConfigurationElement> toolMap;
 	
 	private IPath valgrindLocation;
@@ -117,6 +119,9 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 			try {
 				String verString = getValgrindCommand().whichVersion(valgrindLocation.toOSString());
 				verString = verString.replace(VERSION_PREFIX, ""); //$NON-NLS-1$
+				if (verString.indexOf(VERSION_DELIMITER) > 0) {
+					verString = verString.substring(0, verString.indexOf(VERSION_DELIMITER));
+				} 
 				if (verString.length() > 0) {
 					valgrindVersion = Version.parseVersion(verString);
 				}
