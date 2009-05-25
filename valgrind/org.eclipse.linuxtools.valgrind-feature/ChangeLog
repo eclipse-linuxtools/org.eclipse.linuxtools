@@ -1,3 +1,8 @@
+2009-05-25  Elliott Baron  <ebaron@redhat.com>
+	
+	#275685
+	* feature.xml: Maintenance update for version string issues on Debian.
+	
 2009-05-20  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Remove '.feature' from feature ID.
