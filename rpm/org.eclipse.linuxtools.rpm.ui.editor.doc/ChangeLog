@@ -1,4 +1,8 @@
 2009-05-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Don't require versioned org.apache.ant.
+
+2009-05-26  Alexander Kurtakov  <akurtako@redhat.com>
 	Move documentation to wiki.eclipse.org.
 	* html/generic.html: Removed.
 	* html/images/enable_rpmlint.png: Removed.
