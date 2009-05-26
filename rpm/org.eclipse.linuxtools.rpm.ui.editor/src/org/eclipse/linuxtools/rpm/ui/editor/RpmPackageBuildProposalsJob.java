@@ -146,37 +146,40 @@ public class RpmPackageBuildProposalsJob extends Job {
 		try {
 			monitor.beginTask(Messages.RpmPackageBuildProposalsJob_1,
 					IProgressMonitor.UNKNOWN);
-			InputStream in = Utils.runCommandToInputStream("/bin/sh", "-c", rpmListCmd); //$NON-NLS-1$ //$NON-NLS-2$
-			// backup pkg list file
-			File rpmListFile = new File(rpmListFilepath);
-			if (rpmListFile.exists())
-				Utils.copyFile(new File(rpmListFilepath), bkupFile);
-						
-			BufferedWriter out = new BufferedWriter(new FileWriter(
-					rpmListFile, false));
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(in));
-			monitor.subTask(Messages.RpmPackageBuildProposalsJob_2 + rpmListCmd
-					+ Messages.RpmPackageBuildProposalsJob_3);
-			String line;
-			while ((line = reader.readLine()) != null) {
-				monitor.subTask(line);
-				out.write(line + "\n"); //$NON-NLS-1$
-				if (monitor.isCanceled()) {
-					in.close();
-					out.close();
-					// restore backup
-					if (rpmListFile.exists() && bkupFile.exists()) {
-						Utils.copyFile(bkupFile, rpmListFile);
-						bkupFile.delete();
+			if (Utils.fileExist("/bin/sh")) { //$NON-NLS-1$
+				InputStream in = Utils.runCommandToInputStream(
+						"/bin/sh", "-c", rpmListCmd); //$NON-NLS-1$ //$NON-NLS-2$
+				// backup pkg list file
+				File rpmListFile = new File(rpmListFilepath);
+				if (rpmListFile.exists())
+					Utils.copyFile(new File(rpmListFilepath), bkupFile);
+
+				BufferedWriter out = new BufferedWriter(new FileWriter(
+						rpmListFile, false));
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(in));
+				monitor.subTask(Messages.RpmPackageBuildProposalsJob_2
+						+ rpmListCmd + Messages.RpmPackageBuildProposalsJob_3);
+				String line;
+				while ((line = reader.readLine()) != null) {
+					monitor.subTask(line);
+					out.write(line + "\n"); //$NON-NLS-1$
+					if (monitor.isCanceled()) {
+						in.close();
+						out.close();
+						// restore backup
+						if (rpmListFile.exists() && bkupFile.exists()) {
+							Utils.copyFile(bkupFile, rpmListFile);
+							bkupFile.delete();
+						}
+						Activator.packagesList = new RpmPackageProposalsList();
+						return Status.CANCEL_STATUS;
 					}
-					Activator.packagesList = new RpmPackageProposalsList();
-					return Status.CANCEL_STATUS;
 				}
+				in.close();
+				out.close();
+				bkupFile.delete();
 			}
-			in.close();
-			out.close();
-			bkupFile.delete();
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 			return null;

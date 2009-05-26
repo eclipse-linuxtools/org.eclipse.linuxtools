@@ -38,6 +38,8 @@ public class Specfile {
 	Map<Integer, SpecfileSource> sources;
 
 	Map<Integer, SpecfileSource> patches;
+	
+	private List<SpecfileElement> buildRequires;
 
 	private IDocument document;
 
@@ -49,6 +51,7 @@ public class Specfile {
 		defines = new HashMap<String, SpecfileDefine>();
 		sources = new HashMap<Integer, SpecfileSource>();
 		patches = new HashMap<Integer, SpecfileSource>();
+		buildRequires = new ArrayList<SpecfileElement>();
 	}
 
 	public List<SpecfileSection> getSections() {
@@ -241,7 +244,7 @@ public class Specfile {
 		if (define != null) {
 			define.setValue(newValue);
 			try {
-				changeLine(define.getLineNumber(), defineName + ": " + newValue);
+				changeLine(define.getLineNumber(), defineName + ": " + newValue); //$NON-NLS-1$
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
@@ -254,11 +257,25 @@ public class Specfile {
 		if (define != null) {
 			define.setValue(newValue);
 			try {
-				changeLine(define.getLineNumber(), defineName + ": " + newValue);
+				changeLine(define.getLineNumber(), defineName + ": " + newValue); //$NON-NLS-1$
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * @param buildRequires the buildRequires to set
+	 */
+	public void setBuildRequires(List<SpecfileElement> buildRequires) {
+		this.buildRequires = buildRequires;
+	}
+
+	/**
+	 * @return the buildRequires
+	 */
+	public List<SpecfileElement> getBuildRequires() {
+		return buildRequires;
 	}
 	
 }

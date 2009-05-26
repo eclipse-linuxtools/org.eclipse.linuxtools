@@ -1,3 +1,12 @@
+2009-05-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getBuildRequires): Add buildrequires member.
+	(setBuildRequires): Likewise. 
+	(Specfile): Likewise.
+	(modifyDefine): Add NON-NLS.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (retrievePackageList): Guard /bin/sh execution.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (setPackagesList): Read .pkglist only when available.
+
 2009-05-20  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (RpmTagText): Fix defines handling.
