@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>SpecfileEditorReference - Rpmlint</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Rpmlint</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="SpecfileEditorReference.html" title="Overview">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Customizing-Editor-Settings.html" title="Customizing Editor Settings">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Overview</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Customizing Editor Settings</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Rpmlint">Rpmlint</h1>
+		<h2 id="Enable_rpmlint_warnings">Enable rpmlint warnings</h2>
+		<p>Enabling rpmlint warnings is as easy as right clicking on the project containing the spec file to be checked by rpmlint and select "Add/Remove rpmlint warnings" from the context menu.</p>
+		<p>
+			<img border="0" src="images/ Specfile_enable_rpmlint.png"/>
+		</p>
+		<p>To disable rpmlint warnings just execute the same steps again.</p>
+		<h2 id="Benefits_from_rpmlint_integrations">Benefits from rpmlint integrations</h2>
+		<h3 id="Warnings_for_common_mistakes">Warnings for common mistakes</h3>
+		<p>After rpmlint warnings are enabled new Rpmlint project builder is added to the project builders and the reported warnings/errors are showed as markers in the editor view.</p>
+		<p>
+			<img border="0" src="images/ Specfile_warnings_rpmlint.png"/>
+		</p>
+		<p>For better integration with the Eclipse platform these warnings are also added to the Problems view.</p>
+		<p>
+			<img border="0" src="images/ Specfile_problems_rpmlint.png"/>
+		</p>
+		<h3 id="Fix_the_warnings">Fix the warnings</h3>
+		<p>Part of the rpmlint integration is the ability to provide quick fixes for some of the reported warnings. While not providing quick fixes for all the fixes available in rpmlint, the number of fixes is constantly improving. If you want to see a quick fix for the most disturbing for you warning please report it 
+			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?product=Linux%20Distros">here</a> against the RPM component.
+		</p>
+		<p>To execute some quick fix right click on the warning/error in the Problems view and select "Quick fix" or just use the shortcut Ctrl+1 with a selected warning. In the dialog that appears
+
+			<img border="0" src="images/ Specfile_rpmlint_quickfix.png"/>
+		</p>
+		<p>select the provided fix and click Finish. The changes will auto appear in the specfile editor. For comparison look at the following screenshots - Before and After.
+
+			<img border="0" src="images/ Specfile_rpmlint_fix_before.png"/>
+			<img border="0" src="images/ Specfile_rpmlint_fix_after.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="SpecfileEditorReference.html" title="Overview">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="SpecfileEditorReference.html" title="SpecfileEditorReference">
+						<img alt="SpecfileEditorReference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Customizing-Editor-Settings.html" title="Customizing Editor Settings">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Overview</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Customizing Editor Settings</td>
+			</tr>
+		</table>
+	</body>
+</html>

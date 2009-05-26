@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>SpecfileEditorReference - Customizing Editor Settings</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Customizing Editor Settings</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Rpmlint.html" title="Rpmlint">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Rpmlint</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Customizing_Editor_Settings">Customizing Editor Settings</h1>
+		<p>Spec file editor should be completely working without any tweaking of the settings but doing it you should be able to save even more time.</p>
+		<h2 id="Changelog_settings">Changelog settings</h2>
+		<p>Simple properties allowing customizing the generated ChangeLog entries (Ctrl+Alt+C).</p>
+		<p>
+			<img border="0" src="images/ Specfile_settings_changelog.png"/>
+		</p>
+		<p>
+			<b>Note:</b> Be sure to set the Author name and Author email in ChangeLog plugin preferences so they get properly generated.
+		</p>
+		<h2 id="Rpmlint_settings">Rpmlint settings</h2>
+		<p>This page is really useful when you have rpmlint installed in place different from the default (/usr/bin). The ability to set custom rpmlint is especially useful during development of quick-fixes or rpmlint itself.
+			Another option on this page is whether warnings should be shown for space usage or for tabs usage, when they are used in a mixed mode in the spec file.</p>
+		<p>
+			<img border="0" src="images/ Specfile_settings_rpmlint.png"/>
+		</p>
+		<h2 id="Tasks_settings">Tasks settings</h2>
+		<p>This page provides the ability to select the task tags to be used when searching for tasks. Task tags are looked only in comments. When a task tag is found it is added to the Tasks view and a marker in the editor is created. Task tags used by default are TODO and FIXME. Users have the power to define their own Task tags by just pressing the New button and entering the new tag (e.g. REMOVE).</p>
+		<p>
+			<img border="0" src="images/ Specfile_settings_tasks.png"/>
+		</p>
+		<h2 id="Templates_settings">Templates settings</h2>
+		<p>A list of predefined/generic templates to speed up creation various fragments of the specfile in the editor.
+			Provided features match the templates functionality provided by Java editor. </p>
+		<p>
+			<img border="0" src="images/ Specfile_settings_templates.png"/>
+		</p>
+		<p>The user can manipulate the list by:</p>
+		<pre>   * Adding new template
+   * Editing existing template
+   * Deleting existing template
+   * Import a list of templates
+   * Export the list of templates for future usage on another machine or for providing default templates for your team
+</pre>
+		<h2 id="Macros_settings">Macros settings</h2>
+		<p>Properly setting up macros locations is a crucial part for the editor to work properly. Having all the macros path configures enables the editor to properly highlight, autocomplete and showing hover for all the available macros.</p>
+		<h3 id="Macros_location">Macros location</h3>
+		<p>The path used for looking for macros can be formed by either single files or a directory. When a directory is added to the path all files in it are read and macros from them added to the list of available macros.</p>
+		<p>
+			<img border="0" src="images/ Specfile_settings_macros.png"/>
+		</p>
+		<h3 id="Macros_preview">Macros preview</h3>
+		<p>This setting controls how to present macros value in hovers in case they contain another macros in their value. To distinguish the options look at the following hovers:</p>
+		<p>
+			<img border="0" src="images/ Specfile_macros_description.png"/>
+			<img border="0" src="images/ Specfile_macros_content.png"/>
+		</p>
+		<h2 id="Packages_settings">Packages settings</h2>
+		<h3 id="Generic_Packages_Settings">Generic Packages Settings</h3>
+		<p>Using distribution specific tools enhances auto-completion for packages with not only installed rpm files but also with the packages available in the online repositories. Support is there for YUM and URPMI tools. Users of other tools should contact us to find a way for adding support for them. If none of the distribution tools is selected packages auto completion will contains only the installed packages.</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_rpms_generic.png"/>
+		</p>
+		<p>Additional settings are the frequency of refreshing packages list and the file to store the package list.</p>
+		<h3 id="Package_details">Package details</h3>
+		<p>These are just visualization tweaking options like the number of packages to show details for and what RPM tags should the hover contains.</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_rpms_details.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Rpmlint.html" title="Rpmlint">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="SpecfileEditorReference.html" title="SpecfileEditorReference">
+						<img alt="SpecfileEditorReference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Rpmlint</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
