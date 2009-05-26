@@ -114,7 +114,10 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		return valgrindLocation;
 	}
 	
-	public Version findValgrindVersion(IPath valgrindLocation) throws CoreException {
+	public Version findValgrindVersion() throws CoreException {
+		if (valgrindLocation == null) {
+			findValgrindLocation();
+		}
 		if (valgrindVersion == null) {
 			try {
 				String verString = getValgrindCommand().whichVersion(valgrindLocation.toOSString());

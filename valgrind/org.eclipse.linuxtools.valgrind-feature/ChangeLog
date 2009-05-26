@@ -1,3 +1,7 @@
+2009-05-26  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Make profiling feature dependency; version >= 0.2.0.
+
 2009-05-25  Elliott Baron  <ebaron@redhat.com>
 	
 	#275685

@@ -20,6 +20,7 @@ public abstract class AbstractValgrindTextParser {
 	protected static final String COLON = ":"; //$NON-NLS-1$
 	protected static final String SPACE = " "; //$NON-NLS-1$
 	protected static final String EQUALS = "="; //$NON-NLS-1$
+	protected static final String DASH = "-"; //$NON-NLS-1$
 	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	/**

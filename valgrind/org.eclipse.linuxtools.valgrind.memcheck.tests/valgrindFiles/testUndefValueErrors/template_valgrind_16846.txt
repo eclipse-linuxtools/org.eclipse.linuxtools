@@ -1,0 +1,10 @@
+==16846== Invalid write of size 1
+==16846==    at 0x804842F: main (test.c:20)
+==16846==  Address 0x4023032 is 0 bytes after a block of size 10 alloc'd
+==16846==    at 0x4006F4D: malloc (vg_replace_malloc.c:207)
+==16846==    by 0x8048410: main (test.c:17)
+==16846== 
+==16846== 
+==16846== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==16846==    at 0x4006F4D: malloc (vg_replace_malloc.c:207)
+==16846==    by 0x8048410: main (test.c:17)

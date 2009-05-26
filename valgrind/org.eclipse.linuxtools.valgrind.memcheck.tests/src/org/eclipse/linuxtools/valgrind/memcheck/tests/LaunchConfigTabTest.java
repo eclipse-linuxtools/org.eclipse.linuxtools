@@ -22,14 +22,17 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckLaunchConstants;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
 import org.eclipse.linuxtools.valgrind.tests.ValgrindTestOptionsTab;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.osgi.framework.Version;
 
 public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
@@ -107,6 +110,16 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			assertTrue(cmd.contains("--workaround-gcc296-bugs=no")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--partial-loads-ok=no")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--undef-value-errors=yes")); //$NON-NLS-1$
+			
+			// 3.4.0 specific
+			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+				assertTrue(cmd.contains("--track-origins=no")); //$NON-NLS-1$
+			}
+			else {
+				assertFalse(cmd.contains("--track-origins")); //$NON-NLS-1$
+			}
+			assertFalse(cmd.contains("--main-stacksize")); //$NON-NLS-1$
 		}
 		else {
 			fail();
@@ -402,6 +415,66 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		}
 		else {
 			fail();
+		}
+	}
+	
+	public void testMainStackFrame() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			assertFalse(tab.getMainStackFrameSpinner().isEnabled());
+			tab.getMainStackFrameButton().setSelection(true);
+			tab.getMainStackFrameButton().notifyListeners(SWT.Selection, null);
+			assertTrue(tab.getMainStackFrameSpinner().isEnabled());
+			tab.getMainStackFrameSpinner().setSelection(2048);
+			ILaunch launch = saveAndLaunch(wc, "testMainStackFrame"); //$NON-NLS-1$
+			IProcess[] p = launch.getProcesses();
+			if (p.length > 0) {
+				String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+				assertEquals(0, p[0].getExitValue());
+				assertTrue(cmd.contains("--main-stacksize=2048")); //$NON-NLS-1$
+			}
+			else {
+				fail();
+			}
+		}
+		else {
+			assertNull(tab.getMainStackFrameButton());
+			assertNull(tab.getMainStackFrameSpinner());
+		}
+	}
+	
+	public void testTrackOrigins() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			dynamicTab.getTrackOriginsButton().setSelection(true);
+			ILaunch launch = saveAndLaunch(wc, "testTrackOrigins"); //$NON-NLS-1$
+			IProcess[] p = launch.getProcesses();
+			if (p.length > 0) {
+				String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+				assertEquals(0, p[0].getExitValue());
+				assertTrue(cmd.contains("--track-origins=yes")); //$NON-NLS-1$
+			}
+			else {
+				fail();
+			}
+		}
+		else {
+			assertNull(dynamicTab.getTrackOriginsButton());
+		}
+	}
+	
+	public void testTrackOriginsValidity() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			dynamicTab.getTrackOriginsButton().setSelection(true);
+			tab.performApply(wc);
+			assertTrue(tab.isValid(wc));
+			dynamicTab.getUndefValueButton().setSelection(false);
+			tab.performApply(wc);
+			assertFalse(tab.isValid(wc));
 		}
 	}
 

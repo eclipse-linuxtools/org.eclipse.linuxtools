@@ -20,6 +20,9 @@ public final class MemcheckLaunchConstants {
 	public static final String ATTR_MEMCHECK_GCCWORK = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_GCCWORK"; //$NON-NLS-1$
 	public static final String ATTR_MEMCHECK_ALIGNMENT = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_ALIGNMENT"; //$NON-NLS-1$
 	
+	// VG >= 3.4.0
+	public static final String ATTR_MEMCHECK_TRACKORIGINS = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_TRACKORIGINS"; //$NON-NLS-1$
+	
 	public static final String LEAK_RES_LOW = "low"; //$NON-NLS-1$
 	public static final String LEAK_RES_MED = "med"; //$NON-NLS-1$
 	public static final String LEAK_RES_HIGH = "high"; //$NON-NLS-1$
@@ -31,4 +34,7 @@ public final class MemcheckLaunchConstants {
 	public static final int DEFAULT_MEMCHECK_FREELIST = 10000000;
 	public static final boolean DEFAULT_MEMCHECK_GCCWORK = false;
 	public static final int DEFAULT_MEMCHECK_ALIGNMENT = 8;
+	
+	// VG >= 3.4.0
+	public static final boolean DEFAULT_MEMCHECK_TRACKORIGINS = false;
 }

@@ -29,6 +29,9 @@ public final class CommandLineConstants {
 	public static final String OPT_BELOWMAIN = "--show-below-main"; //$NON-NLS-1$
 	public static final String OPT_MAXFRAME = "--max-stackframe"; //$NON-NLS-1$
 	public static final String OPT_SUPPFILE = "--suppressions"; //$NON-NLS-1$
+	
+	// 3.4.0 specific
+	public static final String OPT_MAINSTACK = "--main-stacksize"; //$NON-NLS-1$
 
 	public static final String LOG_PREFIX = "valgrind_"; //$NON-NLS-1$
 }

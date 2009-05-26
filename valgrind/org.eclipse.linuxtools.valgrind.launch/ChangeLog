@@ -1,3 +1,11 @@
+2009-05-26  Elliott Baron  <ebaron@redhat.com>
+
+	* messages.properties: New key.
+	* ValgrindLaunchConfigurationDelegate.java (getValgrindArgumentsArray): Support for --main-stacksize.
+	* ValgrindLaunchPlugin.java (findValgrindVersion): Remove path arg, call findValgrindLocation
+	if necessary.
+	* ValgrindOptionsTab.java: Support for --main-stacksize.
+
 2009-05-22  Elliott Baron  <ebaron@redhat.com>
 
 	#275685

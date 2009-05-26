@@ -1,3 +1,8 @@
+2009-05-26  Elliott Baron  <ebaron@redhat.com>
+
+	* LaunchConfigTabTest.java: New tests for --main-stacksize and --track-origins.
+	* MemcheckTestToolPage.java: Getters for new controls.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* resources/segvtest/.cproject: New file.

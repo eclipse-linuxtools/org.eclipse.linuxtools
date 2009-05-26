@@ -53,6 +53,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.IOConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
+import org.osgi.framework.Version;
 
 public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 
@@ -336,6 +337,15 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		opts.add(CommandLineConstants.OPT_BELOWMAIN + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN) ? YES : NO));
 		opts.add(CommandLineConstants.OPT_MAXFRAME + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME));
 
+		// 3.4.0 specific
+		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			boolean useMainStack = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
+			if (useMainStack) {
+				opts.add(CommandLineConstants.OPT_MAINSTACK + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK));
+			}
+		}
+		
 		String strpath = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE);
 		if (!strpath.equals(EMPTY_STRING)) {
 			IPath suppfile = getPlugin().parseWSPath(strpath);

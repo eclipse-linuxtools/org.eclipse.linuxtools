@@ -1,2 +1,0 @@
-==20054== Use of uninitialised value of size 4
-==20054==    at 0x804846A: main (parent.c:9)

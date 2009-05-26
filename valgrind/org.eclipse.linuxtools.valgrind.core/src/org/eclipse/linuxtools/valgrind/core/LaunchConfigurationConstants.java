@@ -29,6 +29,10 @@ public final class LaunchConfigurationConstants {
 	public static final String ATTR_GENERAL_MAXFRAME = PLUGIN_ID + ".GENERAL_MAXFRAME"; //$NON-NLS-1$
 	public static final String ATTR_GENERAL_SUPPFILE = PLUGIN_ID + ".GENERAL_SUPPFILE"; //$NON-NLS-1$
 	
+	// 3.4.0 specific
+	public static final String ATTR_GENERAL_MAINSTACK_BOOL = PLUGIN_ID + ".GENERAL_MAINSTACK_BOOL"; //$NON-NLS-1$
+	public static final String ATTR_GENERAL_MAINSTACK = PLUGIN_ID + ".GENERAL_MAINSTACK"; //$NON-NLS-1$
+	
 	public static final String DEFAULT_TOOL = PluginConstants.TOOL_EXT_DEFAULT;
 	
 	public static final boolean DEFAULT_GENERAL_TRACECHILD = false;
@@ -40,4 +44,8 @@ public final class LaunchConfigurationConstants {
 	public static final boolean DEFAULT_GENERAL_BELOWMAIN = false;
 	public static final int DEFAULT_GENERAL_MAXFRAME = 2000000;
 	public static final String DEFAULT_GENERAL_SUPPFILE = ""; //$NON-NLS-1$
+	
+	// 3.4.0 specific
+	public static final boolean DEFAULT_GENERAL_MAINSTACK_BOOL = false;
+	public static final int DEFAULT_GENERAL_MAINSTACK = 0;
 }

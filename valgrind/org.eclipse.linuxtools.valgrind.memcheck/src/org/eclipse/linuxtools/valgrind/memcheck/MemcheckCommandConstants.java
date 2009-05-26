@@ -20,4 +20,7 @@ public final class MemcheckCommandConstants {
 	public static final String OPT_PARTIAL = "--partial-loads-ok"; //$NON-NLS-1$
 	public static final String OPT_UNDEF = "--undef-value-errors"; //$NON-NLS-1$
 	public static final String OPT_ALIGNMENT = "--alignment"; //$NON-NLS-1$
+	
+	// VG >= 3.4.0
+	public static final String OPT_TRACKORIGINS = "--track-origins"; //$NON-NLS-1$
 }

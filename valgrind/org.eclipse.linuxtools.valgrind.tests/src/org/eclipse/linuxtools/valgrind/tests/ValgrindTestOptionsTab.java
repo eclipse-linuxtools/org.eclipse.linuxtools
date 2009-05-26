@@ -71,9 +71,17 @@ public class ValgrindTestOptionsTab extends ValgrindOptionsTab {
 	public Text getSuppFileText() {
 		return suppFileText;
 	}
-
+	
 	public Combo getToolsCombo() {
 		return toolsCombo;
 	}
+	
+	// 3.4.0 specific
+	public Button getMainStackFrameButton() {
+		return mainStackSizeButton;
+	}
 
+	public Spinner getMainStackFrameSpinner() {
+		return mainStackSizeSpinner;
+	}
 }

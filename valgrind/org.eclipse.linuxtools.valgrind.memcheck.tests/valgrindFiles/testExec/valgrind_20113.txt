@@ -1,2 +1,0 @@
-==20113== Use of uninitialised value of size 4
-==20113==    at 0x8048471: main (parent.c:9)

@@ -1,3 +1,9 @@
+2009-05-26  Elliott Baron  <ebaron@redhat.com>
+
+	* AbstractValgrindTextParser.java: Add constant.
+	* CommandLineConstants.java (OPT_MAINSTACK): Support for --main-stacksize.
+	* LaunchConfigurationConstants.java: Likewise.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractValgrindMessage.java: New file.

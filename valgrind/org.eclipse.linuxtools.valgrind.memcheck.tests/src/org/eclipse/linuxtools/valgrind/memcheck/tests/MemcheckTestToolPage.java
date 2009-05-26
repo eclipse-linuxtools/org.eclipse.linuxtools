@@ -49,4 +49,8 @@ public class MemcheckTestToolPage extends MemcheckToolPage {
 	public Spinner getAlignmentSpinner() {
 		return alignmentSpinner;
 	}
+	
+	public Button getTrackOriginsButton() {
+		return trackOriginsButton;
+	}
 }

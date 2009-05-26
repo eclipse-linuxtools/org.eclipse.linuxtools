@@ -1,3 +1,11 @@
+2009-05-26  Elliott Baron  <ebaron@redhat.com>
+
+	* MemcheckCommandConstants.java (OPT_TRACKORIGINS): Support for --track-origins.
+	* MemcheckLaunchConstants.java: Likewise.
+	* MemcheckLaunchDelegate.java (getCommandArray): Likewise. 
+	* MemcheckToolPage.java: Likewise.
+	* messages.properties: New key.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* model/AuxErrorTreeElement.java: Removed.

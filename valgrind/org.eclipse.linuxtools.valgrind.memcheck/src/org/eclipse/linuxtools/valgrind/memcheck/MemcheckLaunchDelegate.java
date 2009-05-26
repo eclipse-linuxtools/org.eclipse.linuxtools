@@ -18,6 +18,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
+import org.osgi.framework.Version;
 
 public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate implements IValgrindLaunchDelegate {
 
@@ -36,6 +38,16 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 		opts.add(MemcheckCommandConstants.OPT_PARTIAL + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_PARTIAL) ? YES : NO));
 		opts.add(MemcheckCommandConstants.OPT_UNDEF + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, MemcheckLaunchConstants.DEFAULT_MEMCHECK_UNDEF) ? YES : NO));
 		opts.add(MemcheckCommandConstants.OPT_ALIGNMENT + EQUALS + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT));
+		
+		// 3.4.0 specific
+		try {
+			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+				opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
+			}
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 
 		return opts.toArray(new String[opts.size()]);
 	}
