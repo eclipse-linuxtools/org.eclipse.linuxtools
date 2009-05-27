@@ -112,7 +112,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			assertTrue(cmd.contains("--undef-value-errors=yes")); //$NON-NLS-1$
 			
 			// 3.4.0 specific
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				assertTrue(cmd.contains("--track-origins=no")); //$NON-NLS-1$
 			}
@@ -420,7 +420,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	
 	public void testMainStackFrame() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			assertFalse(tab.getMainStackFrameSpinner().isEnabled());
 			tab.getMainStackFrameButton().setSelection(true);
@@ -446,7 +446,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	
 	public void testTrackOrigins() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			dynamicTab.getTrackOriginsButton().setSelection(true);
 			ILaunch launch = saveAndLaunch(wc, "testTrackOrigins"); //$NON-NLS-1$
@@ -467,7 +467,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	
 	public void testTrackOriginsValidity() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			dynamicTab.getTrackOriginsButton().setSelection(true);
 			tab.performApply(wc);

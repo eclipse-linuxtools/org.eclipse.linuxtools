@@ -1,3 +1,8 @@
+2009-05-27  Elliott Baron  <ebaron@redhat.com>
+
+	* MemcheckLaunchDelegate.java: Changed for restructuring of findValgrindLocation. 
+	* MemcheckToolPage.java: Likewise.
+	
 2009-05-26  Elliott Baron  <ebaron@redhat.com>
 
 	* MemcheckCommandConstants.java (OPT_TRACKORIGINS): Support for --track-origins.

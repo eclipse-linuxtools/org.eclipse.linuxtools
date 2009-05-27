@@ -1,3 +1,14 @@
+2009-05-27  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindLaunchPlugin.java (setValgrindLocation): Setter for use by test suite.
+	(setValgrindVersion): Likewise.
+	(findValgrindLocation): Made into private helper.
+	(findValgrindVersion): Likewise.
+	(getValgrindLocation): Use instead of find*.
+	(getValgrindVersion): Likewise.
+	* ValgrindLaunchConfigurationDelegate.java: Changed for above.
+	* ValgrindOptionsTab.java: Likewise. 
+
 2009-05-26  Elliott Baron  <ebaron@redhat.com>
 
 	* messages.properties: New key.

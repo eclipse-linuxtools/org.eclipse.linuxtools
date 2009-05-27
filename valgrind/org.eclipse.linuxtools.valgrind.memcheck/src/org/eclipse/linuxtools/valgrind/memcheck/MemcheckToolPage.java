@@ -105,7 +105,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 
 		// 3.4.0 specific
 		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				trackOriginsButton = new Button(top, SWT.CHECK);
 				trackOriginsButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -150,7 +150,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 			alignmentSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT));
 			
 			// 3.4.0 specific
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				trackOriginsButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS));
 			}
@@ -171,7 +171,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		
 		// 3.4.0 specific
 		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, trackOriginsButton.getSelection());
 			}
@@ -194,7 +194,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 			}
 			else {
 				// 3.4.0 specific
-				Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+				Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 				if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 					// check track-origins
 					boolean trackOrigins = launchConfig.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
@@ -224,7 +224,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		
 		// 3.4.0 specific
 		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
 			}

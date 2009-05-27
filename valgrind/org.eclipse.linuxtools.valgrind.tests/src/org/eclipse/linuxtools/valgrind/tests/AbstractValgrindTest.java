@@ -42,6 +42,7 @@ import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 public abstract class AbstractValgrindTest extends AbstractTest {
 
@@ -74,6 +75,13 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	@Override
 	protected void setUp() throws Exception {
 		launches = new ArrayList<ILaunch>();
+		
+		// Substitute Valgrind location and version
+		IPath path = getPlugin().getValgrindLocation();
+		Version ver = getPlugin().getValgrindVersion();
+		ValgrindLaunchPlugin.getDefault().setValgrindLocation(path);
+		ValgrindLaunchPlugin.getDefault().setValgrindVersion(ver);
+		
 		super.setUp();
 	}
 

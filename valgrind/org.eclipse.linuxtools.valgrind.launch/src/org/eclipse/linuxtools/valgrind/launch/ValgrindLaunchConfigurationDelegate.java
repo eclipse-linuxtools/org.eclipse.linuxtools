@@ -103,7 +103,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			getPlugin().setCurrentLaunch(null);
 			
 			// find Valgrind binary if not already done
-			IPath valgrindLocation = getPlugin().findValgrindLocation();
+			IPath valgrindLocation = getPlugin().getValgrindLocation();
 
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);
@@ -338,7 +338,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		opts.add(CommandLineConstants.OPT_MAXFRAME + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME));
 
 		// 3.4.0 specific
-		Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+		Version ver = getPlugin().getValgrindVersion();
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			boolean useMainStack = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
 			if (useMainStack) {

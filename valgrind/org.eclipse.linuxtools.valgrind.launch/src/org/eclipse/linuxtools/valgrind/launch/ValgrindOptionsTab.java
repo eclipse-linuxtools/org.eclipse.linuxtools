@@ -279,7 +279,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		
 		// 3.4.0 specific
 		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = getPlugin().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				Composite mainStackSizeTop = new Composite(errorTop, SWT.NONE);
 				GridLayout mainStackSizeLayout = new GridLayout(2, false);
@@ -441,7 +441,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			suppFileText.setText(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE));
 			
 			// 3.4.0 specific
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = getPlugin().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				mainStackSizeButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL));
 				mainStackSizeSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK));
@@ -507,7 +507,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		
 		// 3.4.0 specific
 		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = getPlugin().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, mainStackSizeButton.getSelection());
 				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, mainStackSizeSpinner.getSelection());
@@ -536,7 +536,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		
 		// 3.4.0 specific
 		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = getPlugin().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
 				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK);

@@ -41,7 +41,7 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 		
 		// 3.4.0 specific
 		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().findValgrindVersion();
+			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
 			}

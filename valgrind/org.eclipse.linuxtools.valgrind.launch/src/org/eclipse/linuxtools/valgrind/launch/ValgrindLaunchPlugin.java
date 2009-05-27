@@ -102,41 +102,54 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public IPath findValgrindLocation() throws CoreException {
+	public IPath getValgrindLocation() throws CoreException {
 		if (valgrindLocation == null) {
-			try {
-				valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
-			} catch (IOException e) {
-				IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
-				throw new CoreException(status);
-			}
+			findValgrindLocation();
 		}
 		return valgrindLocation;
 	}
 	
-	public Version findValgrindVersion() throws CoreException {
-		if (valgrindLocation == null) {
-			findValgrindLocation();
-		}
+	public void setValgrindLocation(IPath valgrindLocation) {
+		this.valgrindLocation = valgrindLocation;
+	}
+	
+	public Version getValgrindVersion() throws CoreException {
 		if (valgrindVersion == null) {
-			try {
-				String verString = getValgrindCommand().whichVersion(valgrindLocation.toOSString());
-				verString = verString.replace(VERSION_PREFIX, ""); //$NON-NLS-1$
-				if (verString.indexOf(VERSION_DELIMITER) > 0) {
-					verString = verString.substring(0, verString.indexOf(VERSION_DELIMITER));
-				} 
-				if (verString.length() > 0) {
-					valgrindVersion = Version.parseVersion(verString);
-				}
-				else {
-					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation))); //$NON-NLS-1$
-				}
-			} catch (IOException e) {
-				IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation), e); //$NON-NLS-1$
-				throw new CoreException(status);
-			}
+			findValgrindVersion();
 		}
 		return valgrindVersion;
+	}
+	
+	public void setValgrindVersion(Version valgrindVersion) {
+		this.valgrindVersion = valgrindVersion;
+	}
+	
+	private void findValgrindLocation() throws CoreException {
+		try {
+			valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
+		} catch (IOException e) {
+			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
+			throw new CoreException(status);
+		}
+	}
+	
+	private void findValgrindVersion() throws CoreException {
+		try {
+			String verString = getValgrindCommand().whichVersion(valgrindLocation.toOSString());
+			verString = verString.replace(VERSION_PREFIX, ""); //$NON-NLS-1$
+			if (verString.indexOf(VERSION_DELIMITER) > 0) {
+				verString = verString.substring(0, verString.indexOf(VERSION_DELIMITER));
+			} 
+			if (verString.length() > 0) {
+				valgrindVersion = Version.parseVersion(verString);
+			}
+			else {
+				throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation))); //$NON-NLS-1$
+			}
+		} catch (IOException e) {
+			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation), e); //$NON-NLS-1$
+			throw new CoreException(status);
+		}
 	}
 		
 	protected ValgrindCommand getValgrindCommand() {

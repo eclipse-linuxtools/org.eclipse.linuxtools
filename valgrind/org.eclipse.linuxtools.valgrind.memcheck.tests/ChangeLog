@@ -1,3 +1,7 @@
+2009-05-27  Elliott Baron  <ebaron@redhat.com>
+
+	* LaunchConfigTabTest.java: Changed for restructuring of findValgrindVersion.
+
 2009-05-26  Elliott Baron  <ebaron@redhat.com>
 
 	* LaunchConfigTabTest.java: New tests for --main-stacksize and --track-origins.
