@@ -48,7 +48,7 @@
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.ui.console"/>
-      <import feature="org.eclipse.linuxtools.profiling" version="0.2.0.qualifier" match="greaterOrEqual"/>
+      <import feature="org.eclipse.linuxtools.profiling" version="0.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

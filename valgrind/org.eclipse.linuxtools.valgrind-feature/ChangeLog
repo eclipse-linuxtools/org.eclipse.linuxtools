@@ -1,3 +1,7 @@
+2009-05-27  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Removing ".qualifier" from profiling feature dep.
+
 2009-05-26  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Make profiling feature dependency; version >= 0.2.0.
