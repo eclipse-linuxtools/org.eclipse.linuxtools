@@ -326,7 +326,7 @@ public class RPMProject implements IRPMProject {
 	 * @throws CoreException if the operation fails
 	 */
 	private String[] findExcludedFiles() throws CoreException {
-		Vector excludes = new Vector();
+		Vector<String> excludes = new Vector<String>();
 		IResource[] resources = getProject().members();
 		for(int i=0; i < resources.length; i++) {
 			find(resources[i], excludes);
@@ -334,12 +334,12 @@ public class RPMProject implements IRPMProject {
 
 		String[] excludesArr = new String[excludes.size()];
 		for(int i=0; i < excludes.size(); i++) {
-			excludesArr[i] = (String) excludes.get(i);
+			excludesArr[i] = excludes.get(i);
 		}
 		return excludesArr;
 	}
 	
-	private void find(IResource resource, Vector excludes) throws CoreException {
+	private void find(IResource resource, Vector<String> excludes) throws CoreException {
 		if(resource.isDerived()) {
 			excludes.add(resource.getName());
 		}

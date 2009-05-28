@@ -1,3 +1,23 @@
+2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
+	Modernize.
+	* plugin.properties: New file.
+	* build.properties: Include plugin.properties.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (findExcludedFiles): Modernize.
+	(find): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SpecFileParser.java (getNumPatches): Likewise.
+	(getLastPatchMacroLine): Likewise.
+	(parseDefine): Likewise.
+	(getSetupLine): Likewise.
+	(parseNameVerRel): Likewise.
+	(getUniquePatchId): Likewise.
+	(parse): Likewise.
+	(getLastSourceLine): Likewise.
+	(parseConfigureArgs): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectNature.java (removeNature): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/Command.java (exec): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (RPMBuild): Likewise.
+
 2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: Replace deprecated Eclipse-LazyStart usage.

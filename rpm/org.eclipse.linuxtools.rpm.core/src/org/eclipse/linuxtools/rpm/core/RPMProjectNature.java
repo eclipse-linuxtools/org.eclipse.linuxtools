@@ -98,9 +98,9 @@ public class RPMProjectNature implements IProjectNature {
 	private static void removeNature(IProject project, String natureId, IProgressMonitor monitor) throws CoreException {
 		IProjectDescription description = project.getDescription();
 		String[] prevNatures = description.getNatureIds();
-		List newNatures = new ArrayList(Arrays.asList(prevNatures));
+		List<String> newNatures = new ArrayList<String>(Arrays.asList(prevNatures));
 		newNatures.remove(natureId);
-		description.setNatureIds((String[]) newNatures.toArray(new String[newNatures.size()]));
+		description.setNatureIds(newNatures.toArray(new String[newNatures.size()]));
 		project.setDescription(description, monitor);
 	}
 	

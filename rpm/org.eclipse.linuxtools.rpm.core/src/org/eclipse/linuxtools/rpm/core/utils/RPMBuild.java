@@ -19,8 +19,6 @@ import org.eclipse.linuxtools.rpm.core.utils.internal.ShellScript;
  */
 public class RPMBuild {
     
-    private IRPMConfiguration config;
-	
 	private String macroDefines;
 	
 	private String rpmBuildCmd;
@@ -30,7 +28,6 @@ public class RPMBuild {
 	 * @param config the RPM configuration to use
 	 */
     public RPMBuild(IRPMConfiguration config) {
-        this.config = config;
 		rpmBuildCmd = 
 			RPMCorePlugin.getDefault().getPluginPreferences().getString(IRPMConstants.RPMBUILD_CMD) + 
 			" -v "; //$NON-NLS-1$

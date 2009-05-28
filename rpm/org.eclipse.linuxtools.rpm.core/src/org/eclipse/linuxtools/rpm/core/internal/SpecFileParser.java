@@ -61,15 +61,11 @@ public class SpecFileParser {
          * eventualities are so when we mod the file we will know where to insert
          * the necessary new lines.
          */
-        ArrayList patchlist = new ArrayList();
-        boolean found_source_line = false;
+        ArrayList<String> patchlist = new ArrayList<String>();
         boolean found_patch = false;
         boolean found_define = false;
         boolean found_define_name = false;
-        boolean found_version = false;
-        boolean found_release = false;
         int define_ctr = 0;
-        int define_line_ctr = 0;
         int lines = 1;
 
         try {
@@ -130,13 +126,11 @@ public class SpecFileParser {
                     
                     // See if we have found the Version: line
                     if (new_word.equals("Version:")) {  //$NON-NLS-1$
-                        found_version = true;
                         break;
                     }
                     
                     // See if we have found the Release: line
                     if (new_word.equals("Release:")) {  //$NON-NLS-1$
-                        found_release = true;
                         break;
                     }
 
@@ -144,7 +138,6 @@ public class SpecFileParser {
                         if (new_word.startsWith("Source") &  //$NON-NLS-1$
                              new_word.endsWith(":")) { //$NON-NLS-1$
                             lastSourceLine = lines;
-                            found_source_line = true;
                             break;
                         }
 
@@ -297,7 +290,6 @@ public class SpecFileParser {
             st.eolIsSignificant(true);
             
             String new_word;
-            int if_ctr = 0;
             int token = st.nextToken();
             while (token != StreamTokenizer.TT_EOF) {
                 token = st.nextToken();
@@ -355,8 +347,8 @@ public class SpecFileParser {
 
     private void parseNameVerRel() throws CoreException {
         String path_to_specfile = specFile.getLocation().toOSString();
-        ArrayList rpm_info = new ArrayList();
-        ArrayList define_info = new ArrayList();
+        ArrayList<String> rpm_info = new ArrayList<String>();
+        ArrayList<String> define_info = new ArrayList<String>();
 
         // initialize version/release numbers to 0 in case none are found in the spec file
         rpm_info.add(0, "0"); //$NON-NLS-1$
@@ -529,9 +521,9 @@ outer:
          * [1] = Release
          * [2] = Name
          */
-        setVersion((String) rpm_info.get(0));
-        setRelease((String) rpm_info.get(1));
-        setName((String) rpm_info.get(2));
+        setVersion(rpm_info.get(0));
+        setRelease(rpm_info.get(1));
+        setName(rpm_info.get(2));
     }
     
     /**
@@ -548,7 +540,7 @@ outer:
       * @return a string with the correct version or release number
       *               else throw a CoreException
       */
-    private String parseDefine(String token, ArrayList token_value) 
+    private String parseDefine(String token, ArrayList<String> token_value) 
         throws CoreException {
           // See if there in anything in the ArrayList
           if (token_value.isEmpty()) {
@@ -560,14 +552,13 @@ outer:
           // A token usually looks this: %{name}
           String token_name = token.substring(2,token.length()-1);
           int i = token_value.indexOf(token_name);
-          return (String) token_value.get(i+1);
+          return token_value.get(i+1);
     }
     
-    private int getUniquePatchId(ArrayList patchlist, int patch_ctr) {
+    private int getUniquePatchId(ArrayList<String> patchlist, int patch_ctr) {
         int patch_array_size = patchlist.size();
-        String num_string;
         int patch_num;
-        String last_patch = (String) patchlist.get(patch_array_size - 1);
+        String last_patch = patchlist.get(patch_array_size - 1);
         int indx = 5;
 
         while (last_patch.charAt(indx) != ':') {
@@ -619,39 +610,19 @@ outer:
 		return lastPatchLine;
 	}
 
-	private void setLastPatchLine(int lastPatchLine) {
-		this.lastPatchLine = lastPatchLine;
-	}
-
 	public int getLastPatchMacroLine() {
 		return lastPatchMacroLine;
-	}
-
-	private void setLastPatchMacroLine(int lastPatchMacroLine) {
-		this.lastPatchMacroLine = lastPatchMacroLine;
 	}
 
 	public int getLastSourceLine() {
 		return lastSourceLine;
 	}
 
-	private void setLastSourceLine(int lastSourceLine) {
-		this.lastSourceLine = lastSourceLine;
-	}
-
 	public int getNumPatches() {
 		return numPatches;
 	}
 
-	private void setNumPatches(int numPatches) {
-		this.numPatches = numPatches;
-	}
-
 	public int getSetupLine() {
 		return setupLine;
-	}
-
-	private void setSetupLine(int setupLine) {
-		this.setupLine = setupLine;
 	}
 }

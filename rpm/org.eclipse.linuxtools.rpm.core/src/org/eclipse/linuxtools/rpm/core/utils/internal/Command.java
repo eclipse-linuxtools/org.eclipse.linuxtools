@@ -34,14 +34,12 @@ public class Command {
         Runtime r = Runtime.getRuntime();
         Process p = null;
         int returnCode;
-        String line = ""; //$NON-NLS-1$
-        String line2 = ""; //$NON-NLS-1$
         // prepare buffers for process output and error streams
         StringBuffer err = new StringBuffer();
         StringBuffer out = new StringBuffer();
 
         try {
-			p = r.exec((String) command);
+			p = r.exec(command);
             // create thread for reading inputStream (process' stdout)
             StreamReaderThread outThread = new StreamReaderThread(p
                     .getInputStream(), out);

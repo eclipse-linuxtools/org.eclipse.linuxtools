@@ -21,14 +21,12 @@ public class RPM {
     
 	private String macroDefines;
 	private String rpmCmd;
-	private IRPMConfiguration config;
 	
 	/**
 	 * Constructs a new RPM object.
 	 * @param config the RPM configuration to use
 	 */
     public RPM(IRPMConfiguration config) {
-		this.config = config;
 		rpmCmd = RPMCorePlugin.getDefault().getPluginPreferences().getString(IRPMConstants.RPM_CMD) + 
 			" -v "; //$NON-NLS-1$
 		macroDefines = " --define '_sourcedir " + //$NON-NLS-1$
