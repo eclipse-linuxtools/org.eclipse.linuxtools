@@ -58,6 +58,7 @@ public class RPMCorePlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
@@ -65,6 +66,7 @@ public class RPMCorePlugin extends AbstractUIPlugin {
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
@@ -96,6 +98,7 @@ public class RPMCorePlugin extends AbstractUIPlugin {
 		return resourceBundle;
 	}
 	
+	@Override
 	protected void initializeDefaultPreferences(IPreferenceStore store)
 		 {
 		  String user_name = System.getProperty("user.name");

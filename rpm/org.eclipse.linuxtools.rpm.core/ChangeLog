@@ -1,4 +1,13 @@
 2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* META-INF/MANIFEST.MF: BREE J2SE-1.5
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java (stop): Add @Override.
+	(start): Likewise.
+	(initializeDefaultPreferences): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/StreamReaderThread.java (run): Likewise.
+
+2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
 	Modernize.
 	* plugin.properties: New file.
 	* build.properties: Include plugin.properties.

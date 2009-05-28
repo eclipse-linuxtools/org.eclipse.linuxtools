@@ -23,7 +23,8 @@ public class StreamReaderThread extends Thread
     mIn=new InputStreamReader(in);
     }
     
-    public void run()
+    @Override
+	public void run()
     {
     int ch;
     try {
