@@ -15,7 +15,6 @@
  */
 package org.eclipse.linuxtools.rpm.ui;
 
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

@@ -9,8 +9,6 @@ package org.eclipse.linuxtools.rpm.ui;
 
 public interface IRPMUIConstants {
 
-	public static final String FILE_SEP = System.getProperty("file.separator"); //$NON-NLS-1$
-
 	public static final String LINE_SEP = System.getProperty("line.separator"); //$NON-NLS-1$
 	
 	public static final int BUILD_ALL = 1;

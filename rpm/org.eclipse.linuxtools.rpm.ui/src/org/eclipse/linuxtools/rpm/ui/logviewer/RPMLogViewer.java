@@ -35,6 +35,7 @@ public class RPMLogViewer extends ViewPart {
 			public Image getColumnImage(Object obj, int index) {
 				return getImage(obj);
 			}
+			@Override
 			public Image getImage(Object obj) {
 				return PlatformUI.getWorkbench().
 						getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
@@ -46,6 +47,7 @@ public class RPMLogViewer extends ViewPart {
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createPartControl(Composite top) {
 		_viewer = new TextViewer(top, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		_defineLayout(top);
@@ -57,6 +59,7 @@ public class RPMLogViewer extends ViewPart {
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPart#dispose()
 	 */
+	@Override
 	public void dispose() {
 		_reader.dispose();
 	}
@@ -71,6 +74,7 @@ public class RPMLogViewer extends ViewPart {
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPart#setFocus()
 	 */
+	@Override
 	public void setFocus() {
 		// Start the reader -- can I invoke the run method directly?
 		Display.getCurrent().timerExec(2000, _reader);

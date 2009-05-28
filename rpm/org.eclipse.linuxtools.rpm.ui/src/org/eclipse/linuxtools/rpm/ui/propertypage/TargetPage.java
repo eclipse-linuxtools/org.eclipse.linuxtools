@@ -122,6 +122,7 @@ public class TargetPage extends PropertyPage {
 	/**
 	 * @see PreferencePage#createContents(Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -147,14 +148,4 @@ public class TargetPage extends PropertyPage {
 
 		return composite;
 	}
-
-	protected void performDefaults() {
-
-	}
-
-	public boolean performOk() {
-
-		return true;
-	}
-
 }

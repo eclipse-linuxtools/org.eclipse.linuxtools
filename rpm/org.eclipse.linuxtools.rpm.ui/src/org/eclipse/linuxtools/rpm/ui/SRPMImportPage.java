@@ -27,7 +27,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -125,7 +124,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	
 	private File getSelectedSRPM() {
 		String srpmName = sourceSRPM.getText();
-		if(srpmName.equals("") || srpmName == null) { //$NON-NLS-1$
+		if(srpmName == null || srpmName.equals("")) { //$NON-NLS-1$
 			return null;
 		}
 		return new File(sourceSRPM.getText());

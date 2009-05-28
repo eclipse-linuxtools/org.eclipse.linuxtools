@@ -49,6 +49,7 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
 
 	// We have elected to do the Finish button clickin in the SRPMImportPage. So override
 	//the default and point to SRPMImport finish()
+	@Override
 	public boolean performFinish() {
 		try {
 			return mainPage.finish();
@@ -62,6 +63,7 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
 	 *
 	 * Select to finish validation in the SRPMImportPage
 	 */
+	@Override
 	public boolean canFinish() {
 		return mainPage.canFinish();
 	}
@@ -71,6 +73,7 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
 	 */
 
 	// Add the SRPMImportPage as the only page in this wizard.
+	@Override
 	public void addPages() {
 		mainPage = new SRPMImportPage(workbench, selection);
 		addPage(mainPage);

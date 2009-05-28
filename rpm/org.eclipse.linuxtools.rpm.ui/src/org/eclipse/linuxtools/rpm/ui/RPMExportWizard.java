@@ -33,6 +33,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 		selection = currentSelection;
 	}
 
+	@Override
 	public boolean performFinish() {
 		RPMExportDelta exportDelta = new RPMExportDelta();
 		exportDelta.setVersion(mainPage.getSelectedVersion());
@@ -73,6 +74,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 		return true;
 	}
 
+	@Override
 	public boolean canFinish() {
 		if (!mainPage.canGoNext()) {
 			return mainPage.canFinish();
@@ -83,6 +85,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 	}
 
 	// Add the RPMExportPage as the only page in this wizard.
+	@Override
 	public void addPages() {
 		mainPage = new RPMExportPage(selection);
 		addPage(mainPage);

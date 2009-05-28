@@ -1,4 +1,29 @@
 2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* META-INF/MANIFEST.MF: BREE J2SE-1.5.
+	* src/org/eclipse/linuxtools/rpm/ui/IRPMUIConstants.java: More dead code removal.
+	* src/org/eclipse/linuxtools/rpm/ui/logviewer/RPMLogViewer.java (setFocus): Add @Override.
+	(dispose): Likewise.
+	(createPartControl): Likewise. 
+	(ViewLabelProvider.getImage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ChangelogPage.java (createContents): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/InstallScriptsPage.java (createContents): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ProvidesPage.java (createContents): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/SpecFileHeaderPage.java (createContents): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/TargetPage.java (createContents): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPatchPage.java: Remove unneeded imports.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java (performFinish): Add @Override.
+	(addPages): Add @Override.
+	(canFinish): Add @Override.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMUIPlugin.java (stop): Likewise.
+	(start): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (getSelectedSRPM): Fix comparison.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportWizard.java (performFinish): Add @Override.
+	(addPages): Likewise.
+	(canFinish): Likewise.
+
+2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
 	Remove preference page it was done in the rpm.ui.editor package long ago.
 	* src/org/eclipse/linuxtools/rpm/ui/preferences/RPMPluginPreferencesPage.java: Removed.
 	* META-INF/MANIFEST.MF: Don't export not existing package.
