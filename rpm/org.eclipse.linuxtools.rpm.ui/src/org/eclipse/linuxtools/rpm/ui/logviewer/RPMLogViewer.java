@@ -9,15 +9,15 @@ package org.eclipse.linuxtools.rpm.ui.logviewer;
 
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.action.*;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.*;
 
 /**
  * A view to display the oprofied log file.
@@ -27,7 +27,6 @@ public class RPMLogViewer extends ViewPart {
 
 	private TextViewer _viewer;
 	private LogReader _reader;
-	private String _logfile;
 	
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 			public String getColumnText(Object obj, int index) {
@@ -50,48 +49,16 @@ public class RPMLogViewer extends ViewPart {
 	public void createPartControl(Composite top) {
 		_viewer = new TextViewer(top, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		_defineLayout(top);
-		_defineActions(top);
 		
 		// Create log reader runnable
 		_reader = new LogReader(_viewer);
 	}
-	
-	private void hookContextMenu() {
-			MenuManager menuMgr = new MenuManager("#PopupMenu");
-			menuMgr.setRemoveAllWhenShown(true);
-//			menuMgr.addMenuListener(new IMenuListener() {
-//				public void menuAboutToShow(IMenuManager manager) {
-//					RPMLogViewer.this.fillContextMenu(manager);
-//				}
-//			});
-			Menu menu = menuMgr.createContextMenu(_viewer.getControl());
-			_viewer.getControl().setMenu(menu);
-			getSite().registerContextMenu(menuMgr, _viewer);
-		}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPart#dispose()
 	 */
 	public void dispose() {
 		_reader.dispose();
-	}
-	
-	// Defines the actions associated with this view
-	private void _defineActions(Composite top) {
-		//DumpAction dumpAction = new DumpAction("label");
-		//IActionBars actionBars = getViewSite().getActionBars();
-		
-		/* THIS ADDS TO OUR LOCAL TOOLBAR/MENU
-		// Add menu contributions
-		IMenuManager menubar = actionBars.getMenuManager();
-		menubar.add(dumpAction);
-		//menubar.add(new StopAction());
-		
-		// Add toolbar contributions
-		IToolBarManager toolbar = actionBars.getToolBarManager();
-		toolbar.add(dumpAction);
-		//toolbar.add(new StopAction());
-		 */
 	}
 	
 	// Defines the UI layout for this view

@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.rpm.core.IRPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMExportDelta;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
@@ -21,7 +20,6 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 	private RPMExportPage mainPage;
 	private RPMExportPatchPage patchPage;
 	private IStructuredSelection selection;
-	private IRPMProject rpmProject;
 	
 	/**
 	 * @see org.eclipse.ui.IWorkbenchWizard#init(IWorkbench, IStructuredSelection)

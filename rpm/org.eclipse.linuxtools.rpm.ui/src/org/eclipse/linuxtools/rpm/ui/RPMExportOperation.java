@@ -25,7 +25,7 @@ import java.util.Iterator;
 
 public class RPMExportOperation implements IRunnableWithProgress {
 	private IProgressMonitor monitor;
-	private ArrayList rpm_errorTable;
+	private ArrayList<Exception> rpm_errorTable;
 	private IRPMProject rpmProject;
 	private RPMExportDelta exportDelta;
 	private int exportType;
@@ -48,7 +48,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 		monitor = progressMonitor;
 
 		// We keep a all our reported errors in an ArrayList.
-		rpm_errorTable = new ArrayList();
+		rpm_errorTable = new ArrayList<Exception>();
 
 		// Start progress
 		monitor.beginTask(Messages.getString("RPMExportOperation.Starting"), //$NON-NLS-1$
@@ -88,7 +88,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 	
 	public MultiStatus getStatus() {
 		IStatus[] errors = new IStatus[rpm_errorTable.size()];
-		Iterator count = rpm_errorTable.iterator();
+		Iterator<Exception> count = rpm_errorTable.iterator();
 		int iCount = 0;
 		String error_message=Messages.getString("RPMExportOperation.0"); //$NON-NLS-1$
 		while (count.hasNext()) {
@@ -107,8 +107,8 @@ public class RPMExportOperation implements IRunnableWithProgress {
 				}
 			IStatus error =
 				new Status(
-					Status.ERROR,
-					"RPM Plugin",Status.OK, //$NON-NLS-1$
+					IStatus.ERROR,
+					"RPM Plugin",IStatus.OK, //$NON-NLS-1$
 					error_message,
 					null);
 			errors[iCount] = error;

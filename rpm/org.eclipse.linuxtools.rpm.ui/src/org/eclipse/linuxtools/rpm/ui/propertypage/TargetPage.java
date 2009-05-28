@@ -8,7 +8,6 @@
 package org.eclipse.linuxtools.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
@@ -33,8 +32,6 @@ public class TargetPage extends PropertyPage {
 
 	private static final String RPM_TIME = Messages.getString("TargetPage.BuildTime"); //$NON-NLS-1$
 
-	private static final int NAME_FIELD_WIDTH = 20;
-
 	private static final int ARCH_FIELD_WIDTH = 8;
 
 	private static final int PLATFORM_FIELD_WIDTH = 20;
@@ -44,8 +41,6 @@ public class TargetPage extends PropertyPage {
 	private static final int HOST_FIELD_WIDTH = 40;
 
 	private static final int TIME_FIELD_WIDTH = 35;
-
-	private Label rpm_nameText;
 
 	private Label rpm_archText;
 
@@ -107,8 +102,6 @@ public class TargetPage extends PropertyPage {
 		// Populate RPM text fields
 		try {
 			IFile rpmFile = (IFile) getElement();
-			String rpm_path = ((IResource) getElement()).getRawLocation()
-			.toString();
 			String rpm_arch = RPMQuery.getArch(rpmFile);
 			rpm_archText.setText(rpm_arch);
 			String rpm_platform = RPMQuery.getPlatform(rpmFile);

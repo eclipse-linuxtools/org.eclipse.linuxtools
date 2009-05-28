@@ -31,13 +31,9 @@ public class InstallScriptsPage extends PropertyPage {
 
 	private static final String RPM_POST_UNINSTALL = Messages.getString("InstallScriptsPage.PostuninstallScript"); //$NON-NLS-1$
 
-	private static final int NAME_FIELD_WIDTH = 20;
-
 	private static final int SCRIPT_ENTRIES_FIELD_WIDTH = 80;
 
 	private static final int SCRIPT_ENTRIES_FIELD_HEIGHT = 20;
-
-	private Text rpm_nameText;
 
 	private Text rpm_PreInstallText;
 

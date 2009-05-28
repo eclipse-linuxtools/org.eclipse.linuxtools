@@ -38,7 +38,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class RPMPluginPreferencesPage extends PreferencePage
 	implements IWorkbenchPreferencePage, SelectionListener, ModifyListener {
     
-	private Button dateFormat;
 	private Text emailField;
 	private Text nameField;
 	
@@ -46,15 +45,6 @@ public class RPMPluginPreferencesPage extends PreferencePage
 	private Text rpmbuildField;
 	private Text diffField;
     
-	private Button createCheckBox(Composite group, String label) {
-	   Button button = new Button(group, SWT.CHECK | SWT.LEFT);
-	   button.setText(label);
-	   button.addSelectionListener(this);
-	   GridData data = new GridData();
-	   button.setLayoutData(data);
-	   return button;
-   }
-   
    private Composite createComposite(Composite parent, int numColumns) {
 	   Composite composite = new Composite(parent, SWT.NULL);
 
@@ -81,16 +71,6 @@ public class RPMPluginPreferencesPage extends PreferencePage
 	   return label;
    }
   
-   private Button createPushButton(Composite parent, String label) {
-	   Button button = new Button(parent, SWT.PUSH);
-	   button.setText(label);
-	   button.addSelectionListener(this);
-	   GridData data = new GridData();
-	   data.horizontalAlignment = GridData.FILL;
-	   button.setLayoutData(data);
-	   return button;
-   }
-   
    private Button createBrowseButton(Composite parent, Text field, String command) {
 	   Button button = new Button(parent, SWT.PUSH);
 	   button.setText("Browse..."); //$NON-NLS-1$
@@ -99,15 +79,6 @@ public class RPMPluginPreferencesPage extends PreferencePage
 									"' Command", field)); //$NON-NLS-1$
 	   GridData data = new GridData();
 	   data.horizontalAlignment = GridData.FILL;
-	   button.setLayoutData(data);
-	   return button;
-   }
- 
-   private Button createRadioButton(Composite parent, String label) {
-	   Button button = new Button(parent, SWT.RADIO | SWT.LEFT);
-	   button.setText(label);
-	   button.addSelectionListener(this);
-	   GridData data = new GridData();
 	   button.setLayoutData(data);
 	   return button;
    }
@@ -131,24 +102,7 @@ public class RPMPluginPreferencesPage extends PreferencePage
    	   label.setLayoutData(gd);
    }
    
-   private void tabForward(Composite parent) {
-	   Label vfiller = new Label(parent, SWT.LEFT);
-	   GridData gridData = new GridData();
-	   gridData = new GridData();
-	   gridData.horizontalAlignment = GridData.BEGINNING;
-	   gridData.grabExcessHorizontalSpace = false;
-	   gridData.verticalAlignment = GridData.CENTER;
-	   gridData.grabExcessVerticalSpace = false;
-	   vfiller.setLayoutData(gridData);
-   }
-   
    public void init(IWorkbench workbench){
-   }
-   
-   private String getUserName()
-   {
-		return System.getProperty ( "user.name" ); //$NON-NLS-1$
-	
    }
    
    private void initializeDefaults()

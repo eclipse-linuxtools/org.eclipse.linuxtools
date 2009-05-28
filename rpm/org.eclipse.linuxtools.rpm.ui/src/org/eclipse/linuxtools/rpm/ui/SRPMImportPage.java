@@ -88,8 +88,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		}
 	}
 
-	private IWorkbench workbench;
-
 	// GUI Control variables	
 	private Combo sourceSRPM;
 	private Button intoConfigured;
@@ -97,7 +95,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	private List projectList;
 	private IStructuredSelection selection;
 
-	static private Vector srpmVector;
+	static private Vector<String> srpmVector;
 	
 	/**
 	 * @see java.lang.Object#Object()
@@ -110,7 +108,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		super(Messages.getString("SRPMImportPage.Import_SRPM"), //$NON-NLS-1$
 			Messages.getString("SRPMImportPage.Select_project_to_import"), null); //$NON-NLS-1$ //$NON-NLS-2$
 
-		this.workbench = aWorkbench;
 		setPageComplete(false);
 		setDescription(Messages.getString(
 				"SRPMImportPage.Select_project_to_import")); //$NON-NLS-1$
@@ -171,9 +168,9 @@ public class SRPMImportPage extends WizardPage implements Listener {
 				"SRPMImportPage.toolTip_SRPM_Name")); //$NON-NLS-1$
 
 		if (srpmVector == null)
-			srpmVector = new Vector();
+			srpmVector = new Vector<String>();
 		for (int i = srpmVector.size(); i > 0; i--)
-			sourceSRPM.add((String)(srpmVector.elementAt(i - 1)));
+			sourceSRPM.add((srpmVector.elementAt(i - 1)));
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -220,7 +217,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		
 		// Declare an array of IProject;
 		IProject[] internalProjectList;
-		String Proj_Enum;
 
 		//Get the current workspace root.
 		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace()
@@ -378,7 +374,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	 * @throws CoreException
 	 * 	 */
 	public boolean finish() throws CoreException {
-		IPath detailedProjectLocation = null;
 		IProject detailedProject;
 			
 		// Get the handle to the current activate Workspace	    
@@ -409,7 +404,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 				break;
 			}
 		}
-		srpmVector.add((String)(sourceSRPM.getText()));
+		srpmVector.add((sourceSRPM.getText()));
 		
 		SRPMImportOperation srpmImportOp = null;
 		try {

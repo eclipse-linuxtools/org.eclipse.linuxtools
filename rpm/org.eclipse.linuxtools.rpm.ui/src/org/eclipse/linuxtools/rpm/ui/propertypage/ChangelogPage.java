@@ -26,13 +26,9 @@ public class ChangelogPage extends PropertyPage {
 	private static final String RPM_CHANGELOG_ENTRIES = 
 		Messages.getString("ChangelogPage.entries"); //$NON-NLS-1$
 
-	private static final int NAME_FIELD_WIDTH = 20;
-
 	private static final int CL_ENTRIES_FIELD_WIDTH = 80;
 
 	private static final int CL_ENTRIES_FIELD_HEIGHT = 50;
-
-	private Text rpm_nameText;
 
 	private Text rpm_ChangelogEntriesText;
 

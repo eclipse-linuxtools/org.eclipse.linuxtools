@@ -8,8 +8,8 @@
 package org.eclipse.linuxtools.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
 import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
@@ -25,13 +25,9 @@ public class ProvidesPage extends PropertyPage {
 	
 	private static final String RPM_QL = Messages.getString("ProvidesPage.Provides"); //$NON-NLS-1$
 
-	private static final int NAME_FIELD_WIDTH = 20;
-
 	private static final int QL_FIELD_WIDTH = 80;
 
 	private static final int QL_FIELD_HEIGHT = 40;
-
-	private Text rpm_nameText;
 
 	private Text rpm_qlText;
 
@@ -57,9 +53,6 @@ public class ProvidesPage extends PropertyPage {
 		rpm_qlText.setLayoutData(gdQL);
 
 		// Populate RPM text fields
-		String rpm_path = ((IResource) getElement()).getRawLocation()
-				.toString();
-		
 		try {
 			String rpm_ql = RPMQuery.getProvides((IFile) getElement());
 			rpm_qlText.setText(rpm_ql);

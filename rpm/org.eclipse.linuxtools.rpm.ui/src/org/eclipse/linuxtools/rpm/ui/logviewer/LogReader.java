@@ -28,7 +28,6 @@ import org.eclipse.swt.widgets.Display;
 public class LogReader implements Runnable {
 	private static String log_name = ""; //$NON-NLS-1$
 	private static TextViewer _viewer = null;
-	private static String _logfile = null;
 	private static long last_modified = 0;
 	static final String file_sep = System.getProperty("file.separator"); //$NON-NLS-1$
 	static final String line_sep = System.getProperty("line.separator"); //$NON-NLS-1$

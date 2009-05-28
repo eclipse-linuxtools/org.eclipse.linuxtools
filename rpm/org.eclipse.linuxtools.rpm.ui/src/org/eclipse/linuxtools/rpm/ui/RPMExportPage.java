@@ -67,7 +67,6 @@ public class RPMExportPage extends WizardPage implements Listener {
 	private static final String VALID_CHARS = "0123456789.";  //$NON-NLS-1$
 	
 	// Checkbox Buttons
-	private Button generatePatch;
 	private Button exportBinary;
 	private Button exportSource;
 	
@@ -240,7 +239,6 @@ public class RPMExportPage extends WizardPage implements Listener {
 		// Creates a control that enumerates all the projects in the current 
 		// Workspace and places them in a listbox. 
 		IProject[] internalProjectList;
-		String Proj_Enum;
 
 		//Get the current workspace root.
 		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace()

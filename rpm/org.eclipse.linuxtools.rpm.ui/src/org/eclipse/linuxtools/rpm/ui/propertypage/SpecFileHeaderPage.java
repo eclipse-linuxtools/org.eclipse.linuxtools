@@ -25,13 +25,9 @@ public class SpecFileHeaderPage extends PropertyPage {
 	
 	private static final String RPM_QI = Messages.getString("SpecFileHeaderPage.info"); //$NON-NLS-1$
 	
-	private static final int NAME_FIELD_WIDTH = 20;
-
 	private static final int QI_FIELD_WIDTH = 80;
 
 	private static final int QI_FIELD_HEIGHT = 40;
-
-	private Text rpm_nameText;
 
 	private Text rpm_qiText;
 

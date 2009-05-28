@@ -29,7 +29,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -38,9 +37,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 public class RPMExportPatchPage extends WizardPage implements Listener {
-	// Checkbox Buttons
-	private Button generatePatch;
-
 	// Patch Fields
 	private Text patchTag;
 
@@ -251,29 +247,5 @@ public class RPMExportPatchPage extends WizardPage implements Listener {
 
 	public void handleEvent(Event e) {
 		setPageComplete(canFinish());
-	}
-
-	private String getHostName() {
-		String hostname;
-		try {
-			hostname = java.net.InetAddress.getLocalHost().getHostName();
-		} catch (UnknownHostException e) {
-			return ""; //$NON-NLS-1$
-		}
-		// Trim off superflous stuff from the hostname
-		int firstdot = hostname.indexOf("."); //$NON-NLS-1$
-		int lastdot = hostname.lastIndexOf("."); //$NON-NLS-1$
-		// If the two are equal, no need to trim name
-		if (firstdot == lastdot) {
-			return hostname;
-		}
-		String hosttemp = ""; //$NON-NLS-1$
-		String hosttemp2 = hostname;
-		while (firstdot != lastdot) {
-			hosttemp = hosttemp2.substring(lastdot) + hosttemp;
-			hosttemp2 = hostname.substring(0, lastdot);
-			lastdot = hosttemp2.lastIndexOf("."); //$NON-NLS-1$
-		}
-		return hosttemp.substring(1);
 	}
 }

@@ -35,7 +35,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	// Progressmonitor
 	private IProgressMonitor monitor;
 
-	private List rpm_errorTable;
+	private List<Exception> rpm_errorTable;
 
 	/**
 	 * Method SRPMImportOperation.
@@ -60,7 +60,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 		int totalWork = 2;
 
 		monitor = progressMonitor;
-		rpm_errorTable = new ArrayList();
+		rpm_errorTable = new ArrayList<Exception>();
 
 		monitor.beginTask(Messages.getString("SRPMImportOperation.Starting"), //$NON-NLS-1$
 		totalWork); //$NON-NLS-1$
@@ -81,7 +81,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 
 	public MultiStatus getStatus() {
 	IStatus[] errors = new IStatus[rpm_errorTable.size()];
-	Iterator count = rpm_errorTable.iterator();
+	Iterator<Exception> count = rpm_errorTable.iterator();
 	int iCount = 0;
 	String error_message=Messages.getString("SRPMImportOperation.0"); //$NON-NLS-1$
 	while (count.hasNext()) {
@@ -104,8 +104,8 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 			}
 		IStatus error =
 			new Status(
-				Status.ERROR,
-				"RPM Plugin",Status.OK, //$NON-NLS-1$
+				IStatus.ERROR,
+				"RPM Plugin",IStatus.OK, //$NON-NLS-1$
 				error_message,
 				null);
 		errors[iCount] = error;

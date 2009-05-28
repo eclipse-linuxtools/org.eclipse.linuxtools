@@ -1,3 +1,32 @@
+2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/logviewer/LogReader.java: Remove dead code.
+	* src/org/eclipse/linuxtools/rpm/ui/logviewer/RPMLogViewer.java (dispose): Likewise.
+	(createPartControl): Likewise.
+	(_defineLayout): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/preferences/RPMPluginPreferencesPage.java (createTextField):Likewise. 
+	(initializeDefaults): Likewise.
+	(createBrowseButton): Likewise.
+	(init): Likewise.
+	(createComposite): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ChangelogPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/InstallScriptsPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ProvidesPage.java (addProvidesField): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/SpecFileHeaderPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/TargetPage.java (addTargetFields): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (getStatus): Likewise.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java (createProjectBox): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPatchPage.java (patchTag): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (getStatus): Likewise.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (createProjectBox): Likewise.
+	(finish): Likewise.
+	(sourceSRPM): Likewise.
+	(createSourceRPMCombo): Likewise.
+	(SRPMImportPage): Likewise.
+
 2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: Replace deprecated Eclipse-LazyStart usage.
