@@ -43,8 +43,10 @@
 		</p>
 		<p>Once the 
 			<i>valgrind</i> package is installed, the easiest way to install the Valgrind plug-in for Eclipse is through the 
-			<b>''Software Updates and Add-ons '</b>' menu. For information on how to use this menu, refer to 
-			<a href="http://wiki.eclipse.org/http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site_this_link" title="http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site this link">http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site this link</a>.
+			<b>
+				<i>Software Updates and Add-ons</i>
+			</b> menu. For information on how to use this menu, refer to 
+			<a href="http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site">this link</a>.
 		</p>
 		<h2 id="General_Usage">General Usage</h2>
 		<p>You can use the Valgrind plug-in's "one-click launch" shortcut to run a default profile. Doing so is similar to running <code>valgrind ./<i>program_name</i></code> from the command line. To use the one-click launch shortcut, right-click on the 
@@ -282,8 +284,8 @@
 		</p>
 		<ul>
 			<li>
-				<b>Heap Tree</b>. Detailed snapshots are denoted by the <u>Show Heap Tree</u> icon (
-				<a href="Image:hierarchy.gif">Image:hierarchy.gif</a>]). Double-clicking any of these snapshots will modify the Valgrind view to display all detailed snapshots. Collapsing each detailed snapshot in this view will display a heirarchy of function calls (i.e. heap tree) detailing the heap allocations used during the snapshot.
+				<b>Heap Tree</b>. Detailed snapshots are denoted by the <u>Show Heap Tree</u> icon ( 
+				<img border="0" src="images/hierarchy.gif"/> ). Double-clicking any of these snapshots will modify the Valgrind view to display all detailed snapshots. Collapsing each detailed snapshot in this view will display a heirarchy of function calls (i.e. heap tree) detailing the heap allocations used during the snapshot.
 				<br/>
 				<img border="0" src="images/MassifTree.png"/>
 				<br/>Some functions within the heap tree list a related source file. Double-clicking these functions will open the listed source file and place the insertion point on the specific function responsible for the call.
