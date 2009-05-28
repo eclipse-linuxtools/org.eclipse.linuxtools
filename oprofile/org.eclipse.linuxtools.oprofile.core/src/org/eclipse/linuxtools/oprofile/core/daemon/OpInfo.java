@@ -17,9 +17,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
+import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider.OpInfoRunner;
 import org.eclipse.linuxtools.oprofile.core.opxml.info.DefaultsProcessor;
 
 
@@ -81,8 +81,10 @@ public class OpInfo {
 		OpInfo info = new OpInfo();
 
 		try {
-			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().info(info);
-			opxml.run(null);
+			OpInfoRunner opxml = (OpInfoRunner) OprofileCorePlugin.getDefault().getOpxmlProvider().info(info);
+			boolean ret = opxml.run0(null);
+			if (ret == false) 
+				info = null;
 		} catch (InvocationTargetException e) {
 		} catch (InterruptedException e) {
 		} catch (OpxmlException e) {

@@ -43,17 +43,30 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 	public abstract String _getOpxmlPath();
 	
 	public IRunnableWithProgress info(final OpInfo info) {
-		IRunnableWithProgress runnable = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
-				String[] args = new String[] {
-					OpxmlConstants.OPXML_INFO
-				};
-				runner.run(args, info);
-			}
-		};
+		return new OpInfoRunner(info);
+	}
+
+	//public because it is used in OpInfo.java:getInfo()
+	public class OpInfoRunner implements IRunnableWithProgress {
+		private boolean b;
+		final private OpInfo info;
 		
-		return runnable;
+		public OpInfoRunner(OpInfo _info) {
+			info = _info;
+		}
+		
+		public boolean run0(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			run(monitor);
+			return b;
+		}
+		
+		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
+			String[] args = new String[] {
+				OpxmlConstants.OPXML_INFO
+			};
+			b = runner.run(args, info);
+		}
 	}
 	
 	public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {

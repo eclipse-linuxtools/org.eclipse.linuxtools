@@ -92,6 +92,10 @@ public class Oprofile
 	// Initializes static data for oprofile.	
 	private static void _initializeOprofileCore () {
 		_info = OpInfo.getInfo();
+		
+		if (_info == null) {
+			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.opinfoNotParsed")); //$NON-NLS-1$
+		}
 	}
 	
 	/**

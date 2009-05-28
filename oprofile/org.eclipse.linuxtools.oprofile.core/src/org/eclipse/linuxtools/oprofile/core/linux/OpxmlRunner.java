@@ -81,15 +81,17 @@ public class OpxmlRunner {
 		try {
 			Process p = Runtime.getRuntime().exec(cmdArray);
 			BufferedReader bi = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			reader.parse(new InputSource(bi));			
-			if (p.waitFor() != 0) {
+			reader.parse(new InputSource(bi));	
+			int ret = p.waitFor();
+			if (ret != 0) {
 				//System.out.println("error running opxml");
 				return false;
 			}
 			
 			return true;
 		} catch (SAXException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			OprofileCorePlugin.showErrorDialog("opxmlSAXParseException", null); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
