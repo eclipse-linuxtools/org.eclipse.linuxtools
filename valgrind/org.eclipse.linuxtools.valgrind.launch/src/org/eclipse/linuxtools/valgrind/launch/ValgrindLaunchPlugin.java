@@ -135,6 +135,10 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	
 	private void findValgrindVersion() throws CoreException {
 		try {
+			if (valgrindLocation == null) {
+				findValgrindLocation();
+			}
+			
 			String verString = getValgrindCommand().whichVersion(valgrindLocation.toOSString());
 			verString = verString.replace(VERSION_PREFIX, ""); //$NON-NLS-1$
 			if (verString.indexOf(VERSION_DELIMITER) > 0) {
