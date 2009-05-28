@@ -49,7 +49,9 @@ public class UiModelRoot implements IUiModelElement {
 
 		if (dataModelEvents == null || dataModelEvents.length == 0) {
 			_rootError = UiModelError.NO_SAMPLES_ERROR;
+			_events = null;
 		} else {
+			_rootError = null;
 			_events = new UiModelEvent[dataModelEvents.length];
 			for (int i = 0; i < dataModelEvents.length; i++) {
 				_events[i] = new UiModelEvent(dataModelEvents[i]);
