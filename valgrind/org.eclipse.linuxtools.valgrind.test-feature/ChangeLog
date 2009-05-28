@@ -1,3 +1,7 @@
+2009-05-28  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.properties: Fix featureProvider key.
+
 2009-05-20  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Remove '.feature' from feature ID.
