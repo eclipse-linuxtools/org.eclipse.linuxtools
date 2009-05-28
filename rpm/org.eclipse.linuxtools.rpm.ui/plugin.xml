@@ -47,14 +47,6 @@
    		</extension>
 	
 	<extension
-      point = "org.eclipse.ui.preferencePages">
-       <page id="org.eclipse.cdt.rpm.ui.preferences.Page1"
-	      class="org.eclipse.linuxtools.rpm.ui.preferences.RPMPluginPreferencesPage"
-            name="RPM">
-       </page>
-	</extension>
-	
-	<extension
          point="org.eclipse.ui.propertyPages">
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"

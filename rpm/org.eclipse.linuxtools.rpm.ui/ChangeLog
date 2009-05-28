@@ -1,4 +1,10 @@
 2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
+	Remove preference page it was done in the rpm.ui.editor package long ago.
+	* src/org/eclipse/linuxtools/rpm/ui/preferences/RPMPluginPreferencesPage.java: Removed.
+	* META-INF/MANIFEST.MF: Don't export not existing package.
+	* plugin.xml: Remove references for the preference page.
+	
+2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/logviewer/LogReader.java: Remove dead code.
 	* src/org/eclipse/linuxtools/rpm/ui/logviewer/RPMLogViewer.java (dispose): Likewise.
