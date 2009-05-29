@@ -21,10 +21,11 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 /**
@@ -46,13 +47,13 @@ public class RpmPackageBuildProposalsJob extends Job {
 
 	private static RpmPackageBuildProposalsJob job = null;
 
-	private static final Preferences preferences = Activator.getDefault()
-			.getPluginPreferences();
+	private static final IEclipsePreferences preferences = new DefaultScope().getNode(Activator.PLUGIN_ID);
 
-	protected static final Preferences.IPropertyChangeListener propertyListener = new Preferences.IPropertyChangeListener() {
-		public void propertyChange(PropertyChangeEvent event) {
-			if (event.getProperty() == PreferenceConstants.P_CURRENT_RPMTOOLS)
+	protected static final IEclipsePreferences.IPreferenceChangeListener propertyListener = new IEclipsePreferences.IPreferenceChangeListener() {
+		public void preferenceChange(PreferenceChangeEvent event) {
+			if (event.getKey().equals(PreferenceConstants.P_CURRENT_RPMTOOLS)) {
 				update();
+			}
 		}
 	};
 
@@ -85,15 +86,15 @@ public class RpmPackageBuildProposalsJob extends Job {
 		// Today's date
 		Date today = new Date();
 		if (preferences
-				.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD)) {
+				.getBoolean(PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, PreferenceConstants.DP_RPM_LIST_BACKGROUND_BUILD)) {
 			int period = preferences
-					.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD);
+					.getInt(PreferenceConstants.P_RPM_LIST_BUILD_PERIOD, PreferenceConstants.DP_RPM_LIST_BUILD_PERIOD);
 			// each time that the plugin is loaded.
 			if (period == 1) {
 				runJob = true;
 			} else {
 				long lastBuildTime = preferences
-						.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD);
+						.getLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, PreferenceConstants.DP_RPM_LIST_LAST_BUILD);
 				if (lastBuildTime == 0) {
 					runJob = true;
 				} else {
@@ -111,13 +112,12 @@ public class RpmPackageBuildProposalsJob extends Job {
 				if (job == null) {
 					job = new RpmPackageBuildProposalsJob(JOB_NAME);
 					job.schedule();
-					preferences.setValue(
-							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
-									.getTime());
+					preferences.putLong(PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
+							.getTime());
 				} else {
 					job.cancel();
 					job.schedule();
-					preferences.setValue(
+					preferences.putLong(
 							PreferenceConstants.P_RPM_LIST_LAST_BUILD, today
 									.getTime());
 				}
@@ -198,9 +198,9 @@ public class RpmPackageBuildProposalsJob extends Job {
 	 */
 	protected static void setPropertyChangeListener(boolean activated) {
 		if (activated) {
-			preferences.addPropertyChangeListener(propertyListener);
+			preferences.addPreferenceChangeListener(propertyListener);
 		} else {
-			preferences.removePropertyChangeListener(propertyListener);
+			preferences.removePreferenceChangeListener(propertyListener);
 		}
 	}
 

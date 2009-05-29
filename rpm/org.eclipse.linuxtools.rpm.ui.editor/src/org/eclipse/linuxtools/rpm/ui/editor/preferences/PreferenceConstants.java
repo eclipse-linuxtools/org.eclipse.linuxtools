@@ -77,7 +77,7 @@ public class PreferenceConstants {
 	public static final String DP_RPMTOOLS_URPM = "urpmq --list"; //$NON-NLS-1$
 	// public static final String DP_RPM_LIST_HIDE_PROPOSALS_WARNING = "false";
 	public static final boolean DP_RPM_LIST_BACKGROUND_BUILD = true;
-	public static final String DP_RPM_LIST_BUILD_PERIOD = "1"; //$NON-NLS-1$
+	public static final int DP_RPM_LIST_BUILD_PERIOD = 1;
 	// public static final String DP_RPM_LIST_LAST_BUILD = "";
 
 	// macro
@@ -108,5 +108,7 @@ public class PreferenceConstants {
 	public static final boolean DP_RPMINFO_VENDOR = true;
 	public static final boolean DP_RPMINFO_BUILDTIME = true;
 	public static final boolean DP_RPMINFO_SOURCERPM = true;
+
+	public static final long DP_RPM_LIST_LAST_BUILD = 0;
 
 }

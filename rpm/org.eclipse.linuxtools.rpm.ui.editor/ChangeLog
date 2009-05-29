@@ -1,3 +1,11 @@
+2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
+	Remove deprecated Preferences usage.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java: Correct constant types.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java (performOk): Don't use deprecated Preferences.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (update): Likewise.
+	(.preferenceChange): Likewise.
+	(setPropertyChangeListener): Likewise.
+
 2009-05-26  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getBuildRequires): Add buildrequires member.
