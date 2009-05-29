@@ -28,13 +28,23 @@ import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
+/**
+ * Manually invoke rpmlint action, which prints the output of rpmlint execution to the console.
+ *
+ */
 public class RunRpmlintAction implements IObjectActionDelegate {
 	private ISelection selection;
 
+	/**
+	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction, org.eclipse.ui.IWorkbenchPart)
+	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 */
 	public void run(IAction action) {
 		if (selection instanceof IStructuredSelection) {
 			for (Object element : ((IStructuredSelection) selection).toList()) {
@@ -67,6 +77,9 @@ public class RunRpmlintAction implements IObjectActionDelegate {
 
 	}
 
+	/**
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 		this.selection = selection;
 	}

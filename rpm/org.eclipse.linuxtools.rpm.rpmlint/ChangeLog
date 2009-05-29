@@ -1,3 +1,21 @@
+2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Add javadoc.
+	(selectionChanged): Likewise.
+	(setActivePart): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java (run): Likewise.
+	(selectionChanged): Likewise.
+	(setActivePart): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java (stop): Likewise.
+	(SPECFILE_EXTENSION): Likewise.
+	(start): Likewise.
+	(PLUGIN_ID): Likewise.
+	(RPMFILE_EXTENSION): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java (MARKER_ID): Likewise.
+	(MAX_WORKS): Likewise.
+	(BUILDER_ID): Likewise.
+	(getSpecfileTaskHandler): Make it protected.
+
 2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump release 0.4.3.

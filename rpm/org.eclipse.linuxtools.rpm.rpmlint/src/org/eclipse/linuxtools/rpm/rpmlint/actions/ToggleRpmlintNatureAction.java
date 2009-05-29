@@ -21,13 +21,16 @@ import org.eclipse.linuxtools.rpm.rpmlint.builder.RpmlintNature;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+/**
+ * Toggle rpmlint nature for the given project. 
+ * As a result this enables/disables rpmlint builder.
+ *
+ */
 public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 
 	private ISelection selection;
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/** 
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
@@ -47,9 +50,7 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/** 
 	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
 	 *      org.eclipse.jface.viewers.ISelection)
 	 */
@@ -57,9 +58,7 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 		this.selection = selection;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/** 
 	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
 	 *      org.eclipse.ui.IWorkbenchPart)
 	 */

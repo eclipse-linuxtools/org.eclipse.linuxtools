@@ -28,12 +28,24 @@ import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 
+/**
+ * Project builder responsible for invoking rpmlint and processing it's response.
+ */
 public class RpmlintBuilder extends IncrementalProjectBuilder {
 
+	/**
+	 * Total number of chunks to divede the work in.
+	 */
 	public static final int MAX_WORKS = 100;
 
+	/**
+	 * ID for this builder.
+	 */
 	public static final String BUILDER_ID = Activator.PLUGIN_ID + ".rpmlintBuilder"; //$NON-NLS-1$
 
+	/**
+	 * ID for rpmlint marker problems.
+	 */
 	public static final String MARKER_ID = Activator.PLUGIN_ID +  ".rpmlintProblem"; //$NON-NLS-1$
 
 	private SpecfileParser specfileParser;
@@ -118,7 +130,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 		return errorHandler;
 	}
 
-	public SpecfileTaskHandler getSpecfileTaskHandler(IFile file,
+	protected SpecfileTaskHandler getSpecfileTaskHandler(IFile file,
 			String specContent) {
 		if (taskHandler == null) {
 			taskHandler = new SpecfileTaskHandler(file, new Document(
