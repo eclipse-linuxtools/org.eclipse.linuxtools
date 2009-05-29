@@ -8,6 +8,8 @@ package org.eclipse.linuxtools.rpm.core.utils;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.rpm.core.IRPMConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
@@ -28,9 +30,8 @@ public class RPMBuild {
 	 * @param config the RPM configuration to use
 	 */
     public RPMBuild(IRPMConfiguration config) {
-		rpmBuildCmd = 
-			RPMCorePlugin.getDefault().getPluginPreferences().getString(IRPMConstants.RPMBUILD_CMD) + 
-			" -v "; //$NON-NLS-1$
+    	IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
+		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, "") + " -v "; //$NON-NLS-1$
 		macroDefines = " --define '_sourcedir " + 
     			config.getSourcesFolder().getLocation().toOSString() + "' "; //$NON-NLS-1$
 		macroDefines += "--define '_srcrpmdir " + //$NON-NLS-1$

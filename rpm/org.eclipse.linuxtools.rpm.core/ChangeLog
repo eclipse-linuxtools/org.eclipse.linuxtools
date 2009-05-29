@@ -1,3 +1,11 @@
+2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .classpath: J2SE-1.5.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java (Diff): Remove deprecated usage.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (RPMBuild): Likewise. 
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java (query): Likewise.
+
 2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: New file.

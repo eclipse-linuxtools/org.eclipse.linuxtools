@@ -9,7 +9,8 @@ package org.eclipse.linuxtools.rpm.core.utils;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.utils.internal.ShellScript;
@@ -73,8 +74,8 @@ public class RPMQuery {
 	}
 	
 	private static String query(String args, IFile rpmFile) throws CoreException {
-		Preferences prefs = RPMCorePlugin.getDefault().getPluginPreferences();
-		String rpmCmd = prefs.getString(IRPMConstants.RPM_CMD);
+		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
+		String rpmCmd = node.get(IRPMConstants.RPM_CMD, "");
 		String command = rpmCmd + " " + args + " " + //$NON-NLS-1$ //$NON-NLS-2$
 			rpmFile.getLocation().toOSString();
 		ShellScript script = new ShellScript(command, 0);

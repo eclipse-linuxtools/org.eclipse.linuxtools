@@ -8,7 +8,8 @@
 package org.eclipse.linuxtools.rpm.core.utils;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.utils.internal.ShellScript;
@@ -31,8 +32,8 @@ public class Diff {
 	 */
 	public Diff(String baseDir, String oldPath, String newPath, String[] excludes, 
 			String outputFile) {
-		Preferences prefs = RPMCorePlugin.getDefault().getPluginPreferences();
-		String pathToDiff = prefs.getString(IRPMConstants.DIFF_CMD);
+		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
+		String pathToDiff = node.get(IRPMConstants.DIFF_CMD, "");
 		
 		diffCmd = "cd " + baseDir + " && "; //$NON-NLS-1$ //$NON-NLS-2$
 		diffCmd += pathToDiff + " -uNr "; //$NON-NLS-1$
