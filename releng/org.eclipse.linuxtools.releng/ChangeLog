@@ -1,3 +1,7 @@
+2009-05-29  Elliott Baron  <ebaron@redhat.com>
+
+	* psfs/valgrind.psf: Added org.eclipse.birt.chart plugin.
+
 2009-05-20  Andrew Overholt  <overholt@redhat.com>
 
 	* maps/linuxtools.map: Modify features for removed ".feature" suffix.
