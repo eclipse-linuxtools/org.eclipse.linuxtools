@@ -384,6 +384,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 						disableAllButtons();
 						OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 					}
+					refreshOprofileView();	//without refresh can lead to inconsistencies for save session
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.reset")); //$NON-NLS-1$
 				}});
 			_resetSessionButton = resetSessionButton;
@@ -402,7 +403,6 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 					} catch (OpcontrolException oe) {
 						//no error in this case; the user might refresh when the daemon isnt running
 					}
-
 					refreshOprofileView();
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.refreshed")); //$NON-NLS-1$
 				}});
