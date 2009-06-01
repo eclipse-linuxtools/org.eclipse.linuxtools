@@ -90,7 +90,7 @@ public class OpxmlRunner {
 			
 			return true;
 		} catch (SAXException e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			OprofileCorePlugin.showErrorDialog("opxmlSAXParseException", null); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			e.printStackTrace();
