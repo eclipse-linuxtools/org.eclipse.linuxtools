@@ -85,9 +85,4 @@ public class SpecfileTag extends SpecfileElement {
 	public TagType getTagType() {
 		return tagType;
 	}
-
-	public void setTagType(TagType tagType) {
-		this.tagType = tagType;
-	}
-	
 }

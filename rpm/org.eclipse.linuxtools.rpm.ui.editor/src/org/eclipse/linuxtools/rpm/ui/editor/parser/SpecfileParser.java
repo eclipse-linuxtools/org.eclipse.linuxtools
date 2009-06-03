@@ -556,7 +556,6 @@ public class SpecfileParser {
 			try {
 				int intValue = Integer.parseInt(toReturn.getStringValue());
 				toReturn.setValue(intValue);
-				toReturn.setTagType(SpecfileTag.TagType.INT);
 			} catch (NumberFormatException e) {
 				if (toReturn.getName().equalsIgnoreCase(RpmTags.EPOCH)) {
 					errorHandler

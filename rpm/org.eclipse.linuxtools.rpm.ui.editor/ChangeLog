@@ -1,4 +1,9 @@
 2009-06-03  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setTagType): Remove it is auto handled now. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Do not set tag type it's auto set now.
+
+2009-06-03  Alexander Kurtakov  <akurtako@redhat.com>
 	Support BuildRequires/Requires in the form editor and parser.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Add BuildRequires/Requires fields.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (.modifyText): New constructor.
