@@ -17,7 +17,8 @@ import java.util.List;
 public class SpecfilePackage extends SpecfileSection {
 	private String description;
 	private List<SpecfileSection> sections;
-	private String packageName;
+	private List<SpecfileTag> requires;
+ 	private String packageName;
 	private String summary;
 	private String group;
 
@@ -27,6 +28,7 @@ public class SpecfilePackage extends SpecfileSection {
 		setPackageName(packageName);
         setPackage(this);
         sections = new ArrayList<SpecfileSection>();
+        requires = new ArrayList<SpecfileTag>();
 	}
 
 	public String getDescription() {
@@ -117,5 +119,16 @@ public class SpecfilePackage extends SpecfileSection {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * @param require the require to add
+	 */
+	public void addRequire(SpecfileTag require) {
+		requires.add(require);
+	}
+
+	public List<SpecfileTag> getRequires() {
+		return requires;
 	}
 }

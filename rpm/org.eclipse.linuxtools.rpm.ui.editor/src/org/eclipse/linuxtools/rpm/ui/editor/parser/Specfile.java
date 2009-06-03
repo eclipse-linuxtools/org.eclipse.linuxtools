@@ -39,7 +39,9 @@ public class Specfile {
 
 	Map<Integer, SpecfileSource> patches;
 	
-	private List<SpecfileElement> buildRequires;
+	private List<SpecfileTag> buildRequires;
+	
+	private List<SpecfileTag> requires;
 
 	private IDocument document;
 
@@ -51,7 +53,8 @@ public class Specfile {
 		defines = new HashMap<String, SpecfileDefine>();
 		sources = new HashMap<Integer, SpecfileSource>();
 		patches = new HashMap<Integer, SpecfileSource>();
-		buildRequires = new ArrayList<SpecfileElement>();
+		buildRequires = new ArrayList<SpecfileTag>();
+		requires = new ArrayList<SpecfileTag>();
 	}
 
 	public List<SpecfileSection> getSections() {
@@ -263,19 +266,41 @@ public class Specfile {
 			}
 		}
 	}
+	
+	public void modifyDefine(SpecfileTag define, String newValue) {
+		if (define != null) {
+			define.setValue(newValue);
+			try {
+				changeLine(define.getLineNumber(), define.getName() + ": " + newValue); //$NON-NLS-1$
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	/**
-	 * @param buildRequires the buildRequires to set
+	 * @param buildRequire the buildRequire to add
 	 */
-	public void setBuildRequires(List<SpecfileElement> buildRequires) {
-		this.buildRequires = buildRequires;
+	public void addBuildRequire(SpecfileDefine buildRequire) {
+		buildRequires.add(buildRequire);
+	}
+	
+	/**
+	 * @param require the require to add
+	 */
+	public void addRequire(SpecfileTag require) {
+		requires.add(require);
 	}
 
 	/**
 	 * @return the buildRequires
 	 */
-	public List<SpecfileElement> getBuildRequires() {
+	public List<SpecfileTag> getBuildRequires() {
 		return buildRequires;
+	}
+
+	public List<SpecfileTag> getRequires() {
+		return requires;
 	}
 	
 }

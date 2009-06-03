@@ -14,6 +14,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -50,41 +51,83 @@ public class MainPackagePage extends FormPage {
 		layout.numColumns = 2;
 		RowLayout rowLayout = new RowLayout();
 		rowLayout.type = SWT.VERTICAL;
+		rowLayout.justify = true;
+		rowLayout.fill = true;
+		
 		form.getBody().setLayout(rowLayout);
+		form.getBody().setLayoutData(rowLayout);
 		layout.numColumns = 2;
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
-		final Section section = toolkit.createSection(form.getBody(),
+		gd.horizontalAlignment = SWT.FILL;
+		final Section mainPackageSection = toolkit.createSection(form.getBody(),
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 						| ExpandableComposite.EXPANDED);
-		section.setText("Main package information");
-		section.setLayout(new GridLayout());
-		Composite client2 = toolkit.createComposite(section);
+		mainPackageSection.setText("Main package information");
+		mainPackageSection.setLayout(new GridLayout());
+		Composite mainPackageClient = toolkit.createComposite(mainPackageSection);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginWidth = gridLayout.marginHeight = 5;
 		gridLayout.numColumns = 2;
-		client2.setLayout(gridLayout);
-		new RpmTagText(client2, RpmTags.NAME, specfile);
-		new RpmTagText(client2, RpmTags.VERSION, specfile);
-		new RpmTagText(client2, RpmTags.RELEASE, specfile);
-		new RpmTagText(client2, RpmTags.URL, specfile);
-		new RpmTagText(client2, RpmTags.LICENSE, specfile);
-		new RpmTagText(client2, RpmTags.GROUP, specfile);
-		new RpmTagText(client2, RpmTags.EPOCH, specfile);
-		new RpmTagText(client2, RpmTags.BUILD_ROOT, specfile);
-		new RpmTagText(client2, RpmTags.BUILD_ARCH, specfile);
-		new RpmTagText(client2, RpmTags.SUMMARY, specfile, SWT.MULTI);
-		section.setClient(client2);
-		toolkit.paintBordersFor(client2);
-		toolkit.paintBordersFor(section);
+		
+		mainPackageClient.setLayout(gridLayout);
+		new RpmTagText(mainPackageClient, RpmTags.NAME, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.VERSION, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.RELEASE, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.URL, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.LICENSE, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.GROUP, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.EPOCH, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.BUILD_ROOT, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.BUILD_ARCH, specfile);
+		new RpmTagText(mainPackageClient, RpmTags.SUMMARY, specfile, SWT.MULTI);
+		
+		// BuildRequires
+		final Section buildRequiresSection = toolkit.createSection(mainPackageClient,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
+		buildRequiresSection.setText("Build Requires");
+		buildRequiresSection.setLayout(rowLayout);
+		buildRequiresSection.setExpanded(false);
+		Composite buildRequiresClient = toolkit.createComposite(buildRequiresSection);
+		buildRequiresClient.setLayout(gridLayout);
+		for (SpecfileTag buildRequire: specfile.getBuildRequires()) {
+			new RpmTagText(buildRequiresClient, buildRequire, specfile);
+		}
+		buildRequiresSection.setClient(buildRequiresClient);
+		toolkit.paintBordersFor(buildRequiresClient);
+		toolkit.paintBordersFor(buildRequiresSection);
+		
+		// Requires
+		final Section requiresSection = toolkit.createSection(mainPackageClient,
+				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+						| ExpandableComposite.EXPANDED);
+		requiresSection.setText("Requires");
+		requiresSection.setLayout(rowLayout);
+		requiresSection.setExpanded(false);
+		Composite requiresClient = toolkit.createComposite(requiresSection);
+		requiresClient.setLayout(gridLayout);
+		requiresClient.setLayoutData(gd);
+		for (SpecfileTag require: specfile.getRequires()) {
+			new RpmTagText(requiresClient, require, specfile);
+		}
+		requiresSection.setClient(requiresClient);
+		toolkit.paintBordersFor(requiresClient);
+		toolkit.paintBordersFor(requiresSection);
+		
+		mainPackageSection.setClient(mainPackageClient);
+		toolkit.paintBordersFor(mainPackageClient);
+		toolkit.paintBordersFor(mainPackageSection);
+		
 		// subpackages
 		final Section packagesSection = toolkit.createSection(form.getBody(),
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 						| ExpandableComposite.EXPANDED);
 		packagesSection.setText("Subpackages");
-		packagesSection.setLayout(rowLayout);
+		packagesSection.setLayout(gridLayout);
 		Composite packagesClient = toolkit.createComposite(packagesSection);
-		packagesClient.setLayout(rowLayout);
+		packagesClient.setLayout(gridLayout);
+		packagesClient.setLayoutData(gd);
 		for (SpecfilePackage specfilePackage : specfile.getPackages()
 				.getPackages()) {
 			if (specfilePackage.isMainPackage()){
@@ -95,12 +138,31 @@ public class MainPackagePage extends FormPage {
 							| ExpandableComposite.EXPANDED);
 			packageSection.setText(specfilePackage.getFullPackageName());
 			packageSection.setExpanded(false);
+			packageSection.setLayout(rowLayout);
 			Composite packageClient = toolkit.createComposite(packageSection);
 			packageClient.setLayout(gridLayout);
+			packageClient.setLayoutData(gd);
 			new RpmTagText(packageClient, RpmTags.SUMMARY, specfile, specfilePackage, SWT.MULTI);
 			new RpmTagText(packageClient, RpmTags.GROUP, specfile, specfilePackage, SWT.MULTI);
-			packageSection.setClient(packageClient);
 			
+			final Section packageRequiresSection = toolkit.createSection(packageClient,
+					ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+							| ExpandableComposite.EXPANDED);
+			packageRequiresSection.setText("Requires");
+			packageRequiresSection.setLayout(rowLayout);
+			packageRequiresSection.setLayoutData(gd);
+			Composite packageRequiresClient = toolkit.createComposite(packageRequiresSection);
+			packageRequiresClient.setLayout(gridLayout);
+			packageRequiresClient.setLayoutData(gd);
+			for (SpecfileTag require: specfilePackage.getRequires()) {
+				new RpmTagText(packageRequiresClient, require, specfile);
+			}
+			packageRequiresSection.setClient(packageRequiresClient);
+			
+			toolkit.paintBordersFor(packageRequiresClient);
+			toolkit.paintBordersFor(packageRequiresSection);
+			
+			packageSection.setClient(packageClient);
 			toolkit.paintBordersFor(packageClient);
 			toolkit.paintBordersFor(packageSection);
 		}

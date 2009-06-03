@@ -80,19 +80,15 @@ public class SpecfileElement {
 		}
 		String resolved = toResolve;
 		Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
-		try {
-			Matcher variableMatcher = variablePattern.matcher(toResolve);
-			while (variableMatcher.find()) {
-				SpecfileDefine define = specfile
-				.getDefine(variableMatcher.group(1));
-				if (define != null) {
-					resolved = resolved.replaceAll("%\\{" //$NON-NLS-1$
-							+ variableMatcher.group(1) + "\\}", define //$NON-NLS-1$
-							.getStringValue());
-				}
+		Matcher variableMatcher = variablePattern.matcher(toResolve);
+		while (variableMatcher.find()) {
+			SpecfileDefine define = specfile
+					.getDefine(variableMatcher.group(1));
+			if (define != null) {
+				resolved = resolved.replaceAll("%\\{" //$NON-NLS-1$
+						+ variableMatcher.group(1) + "\\}", define //$NON-NLS-1$
+						.getStringValue());
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
 		}
 
 		return resolved;

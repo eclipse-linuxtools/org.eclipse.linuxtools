@@ -36,6 +36,8 @@ import static org.eclipse.linuxtools.rpm.ui.editor.RpmSections.*;
 
 public class SpecfileParser {
 
+	private static final String DEFINE_SEPARATOR = ":"; //$NON-NLS-1$
+
 	private static final String SPACE_REGEX = "\\s+"; //$NON-NLS-1$
 
 	/**
@@ -173,32 +175,49 @@ public class SpecfileParser {
 			return parseMacro(lineText, specfile, lineNumber);
 
 		for (String simpleDefinition : simpleDefinitions) {
-			if (lineText.startsWith(simpleDefinition + ":")) { //$NON-NLS-1$
+			if (lineText.startsWith(simpleDefinition + DEFINE_SEPARATOR)) {
 				return parseSimpleDefinition(lineText, specfile, lineNumber,
 						false);
 			}
 		}
 		for (String directValuesDefinition : directValuesDefinitions) {
-			if (lineText.startsWith(directValuesDefinition + ":")) { //$NON-NLS-1$
+			if (lineText.startsWith(directValuesDefinition + DEFINE_SEPARATOR)) {
 				return parseDirectDefinition(lineText, specfile, lineNumber);
 			}
 		}
 		for (String directValuesDefinition : packageLevelDefinitions) {
-			if (lineText.startsWith(directValuesDefinition + ":")) { //$NON-NLS-1$
-				return parseDirectDefinition(lineText, specfile, lineNumber);
+			if (lineText.startsWith(directValuesDefinition + DEFINE_SEPARATOR)) {
+				SpecfileElement definition = parseDirectDefinition(lineText, specfile, lineNumber);
+				if (directValuesDefinition.equals(RpmTags.REQUIRES)){
+					if (activePackage != null) {
+						activePackage.addRequire((SpecfileTag)definition);
+					} else {
+						specfile.addRequire((SpecfileTag)definition);
+					}
+				}
+				return definition;
 			}
 		}
 
-		// FIXME: Handle package-level definitions
 		if (lineText.startsWith(complexDefinitions[0])) {
 			return parseComplexDefinition(lineText, lineNumber,
 					SourceType.SOURCE);
 		} else if (lineText.startsWith(complexDefinitions[1])) {
 			return parseComplexDefinition(lineText, lineNumber,
 					SourceType.PATCH);
-		}
+		} else if (lineText.startsWith("BuildRequires")) { //$NON-NLS-1$
+			return parseBuildRequire(lineText, lineNumber, specfile);
+		} 
 
 		return null;
+	}
+
+	private SpecfileElement parseBuildRequire(String lineText, int lineNumber, Specfile specfile) {
+		String value = lineText.substring(lineText.indexOf(':')+1, lineText.length()).trim();
+		SpecfileDefine buildRequire = new SpecfileDefine("BuildRequires", value, specfile, null); //$NON-NLS-1$
+		buildRequire.setLineNumber(lineNumber);
+		specfile.addBuildRequire(buildRequire);
+		return buildRequire;
 	}
 
 	private SpecfileSection parseSection(String lineText, Specfile specfile,
@@ -425,7 +444,7 @@ public class SpecfileParser {
 			String token = iter.next();
 			if (token != null && token.length() > 0) {
 				if (firstToken) {
-					if (token.endsWith(":")) { //$NON-NLS-1$
+					if (token.endsWith(DEFINE_SEPARATOR)) {
 						token = token.substring(0, token.length() - 1);
 					} else {
 						// FIXME: come up with a better error message here
@@ -527,7 +546,7 @@ public class SpecfileParser {
 		}
 		if ((toReturn != null) && (toReturn.getStringValue() != null)) {
 			if (toReturn.getStringValue().indexOf("_") > 0) { //$NON-NLS-1$
-				if (toReturn.getName().equalsIgnoreCase("release")) //$NON-NLS-1$
+				if (toReturn.getName().equalsIgnoreCase(RpmTags.RELEASE))
 					errorHandler
 							.handleError(new SpecfileParseException(
 									Messages.getString("SpecfileParser.15"), lineNumber, //$NON-NLS-1$
@@ -539,7 +558,7 @@ public class SpecfileParser {
 				toReturn.setValue(intValue);
 				toReturn.setTagType(SpecfileTag.TagType.INT);
 			} catch (NumberFormatException e) {
-				if (toReturn.getName().equals("epoch")) { //$NON-NLS-1$
+				if (toReturn.getName().equalsIgnoreCase(RpmTags.EPOCH)) {
 					errorHandler
 							.handleError(new SpecfileParseException(
 									Messages.getString("SpecfileParser.16"), lineNumber, //$NON-NLS-1$
@@ -554,8 +573,8 @@ public class SpecfileParser {
 
 	private SpecfileElement parseDirectDefinition(String lineText,
 			Specfile specfile, int lineNumber) {
-		String[] parts = lineText.split(":"); //$NON-NLS-1$
-		SpecfileTag licenseElement = new SpecfileTag(parts[0].toLowerCase(),
+		String[] parts = lineText.split(DEFINE_SEPARATOR);
+		SpecfileTag licenseElement = new SpecfileTag(parts[0],
 				parts[1].trim(), specfile, activePackage);
 		licenseElement.setLineNumber(lineNumber);
 		return licenseElement;

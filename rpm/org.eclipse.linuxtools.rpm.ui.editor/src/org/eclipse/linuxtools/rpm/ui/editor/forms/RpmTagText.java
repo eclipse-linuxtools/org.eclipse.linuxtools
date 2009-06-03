@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.forms;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
+import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag.TagType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -63,6 +64,19 @@ public class RpmTagText {
 		text.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				specfile.modifyDefine(rpmTag, rpmPackage, text.getText());
+			}
+		});
+	}
+
+	public RpmTagText(Composite parent, final SpecfileTag require, final Specfile specfile) {
+		Label label = new Label(parent, SWT.SINGLE);
+		label.setText("Require");
+		final Text text = new Text(parent, SWT.BORDER_SOLID);
+		text.setText(require.getStringValue());
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				 specfile.modifyDefine(require, text.getText());
 			}
 		});
 	}
