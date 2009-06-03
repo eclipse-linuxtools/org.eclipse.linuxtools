@@ -52,36 +52,31 @@
             class="org.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
             id="rg.eclipse.cdt.rpm.ui.propertypage.SpecFileHeaderPage"
             name="Spec File Header"
-            nameFilter="*.rpm"
-            objectClass="org.eclipse.core.resources.IFile">
+            nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
             id="org.eclipse.cdt.rpm.ui.propertypage.ChangelogPage"
             name="Changelog Entries"
-            nameFilter="*.rpm"
-            objectClass="org.eclipse.core.resources.IFile">
+            nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
             id="org.eclipse.cdt.rpm.ui.propertypage.TargetPage"
             name="Target"
-            nameFilter="*.rpm"
-            objectClass="org.eclipse.core.resources.IFile">
+            nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
             id="org.eclipse.cdt.rpm.ui.propertypage.InstallScriptsPage"
             name="Install/Uninstall Scripts"
-            nameFilter="*.rpm"
-            objectClass="org.eclipse.core.resources.IFile">
+            nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
             id="org.eclipse.cdt.rpm.ui.propertypage.ProvidesPage"
             name="Files Package Provides"
-            nameFilter="*.rpm"
-            objectClass="org.eclipse.core.resources.IFile">
+            nameFilter="*.rpm">
       </page>
    </extension>
 </plugin>
