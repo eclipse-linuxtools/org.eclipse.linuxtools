@@ -50,9 +50,9 @@ public class SymbolsProcessor extends XMLProcessor {
 	 */
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(SYMBOL_TAG)) {
-			_symbol._setName(attrs.getValue(ATTR_NAME));
+			_symbol._setName(valid_string(attrs.getValue(ATTR_NAME)));
 			_symbol._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
-			_symbol._setFile(attrs.getValue(ATTR_FILE));
+			_symbol._setFile(valid_string(attrs.getValue(ATTR_FILE)));
 		} else if (name.equals(SAMPLE_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_samplesProcessor);
 		}

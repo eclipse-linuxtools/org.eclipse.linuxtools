@@ -46,7 +46,7 @@ public class DependentProcessor extends XMLProcessor {
 
 	public void startElement(String name, Attributes attrs, Object callData) {
 		if (name.equals(IMAGE_TAG)) {
-			_image._setName(attrs.getValue(ATTR_IMAGENAME));
+			_image._setName(valid_string(attrs.getValue(ATTR_IMAGENAME)));
 			_image._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
 		} else if (name.equals(SYMBOLS_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_symbolsProcessor);
