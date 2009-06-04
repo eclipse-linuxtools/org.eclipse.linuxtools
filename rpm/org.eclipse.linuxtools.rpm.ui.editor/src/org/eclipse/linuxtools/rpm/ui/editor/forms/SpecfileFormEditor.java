@@ -41,7 +41,7 @@ public class SpecfileFormEditor extends FormEditor {
 	protected void addPages() {
 		try {
 			int index = addPage(editor, getEditorInput());
-			setPageText(index, "Source");
+			setPageText(index, Messages.SpecfileFormEditor_0);
 			specfile = editor.getSpecfile();
 			mainPackage = new MainPackagePage(this, specfile);
 			addPage(0, mainPackage);

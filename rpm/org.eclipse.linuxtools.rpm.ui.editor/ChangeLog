@@ -1,3 +1,12 @@
+2009-06-04  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/messages.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Removed double ;.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Externalize strings. 
+	(MainPackagePage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Likewise.
+
 2009-06-03  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setTagType): Remove it is auto handled now. 

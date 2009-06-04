@@ -35,7 +35,7 @@ public class MainPackagePage extends FormPage {
 	SpecfileFormEditor editor;
 
 	public MainPackagePage(SpecfileFormEditor editor, Specfile specfile) {
-		super(editor, "Overview", "Overview");
+		super(editor, Messages.MainPackagePage_0, Messages.MainPackagePage_1);
 		this.editor = editor;
 		this.specfile = specfile;
 	}
@@ -45,7 +45,7 @@ public class MainPackagePage extends FormPage {
 		super.createFormContent(managedForm);
 		toolkit = managedForm.getToolkit();
 		form = managedForm.getForm();
-		form.setText("Main Package information");
+		form.setText(Messages.MainPackagePage_2);
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = layout.marginHeight = 5;
 		layout.numColumns = 2;
@@ -63,7 +63,7 @@ public class MainPackagePage extends FormPage {
 		final Section mainPackageSection = toolkit.createSection(form.getBody(),
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 						| ExpandableComposite.EXPANDED);
-		mainPackageSection.setText("Main package information");
+		mainPackageSection.setText(Messages.MainPackagePage_3);
 		mainPackageSection.setLayout(new GridLayout());
 		Composite mainPackageClient = toolkit.createComposite(mainPackageSection);
 		GridLayout gridLayout = new GridLayout();
@@ -86,7 +86,7 @@ public class MainPackagePage extends FormPage {
 		final Section buildRequiresSection = toolkit.createSection(mainPackageClient,
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 						| ExpandableComposite.EXPANDED);
-		buildRequiresSection.setText("Build Requires");
+		buildRequiresSection.setText(Messages.MainPackagePage_4);
 		buildRequiresSection.setLayout(rowLayout);
 		buildRequiresSection.setExpanded(false);
 		Composite buildRequiresClient = toolkit.createComposite(buildRequiresSection);
@@ -102,7 +102,7 @@ public class MainPackagePage extends FormPage {
 		final Section requiresSection = toolkit.createSection(mainPackageClient,
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 						| ExpandableComposite.EXPANDED);
-		requiresSection.setText("Requires");
+		requiresSection.setText(Messages.MainPackagePage_5);
 		requiresSection.setLayout(rowLayout);
 		requiresSection.setExpanded(false);
 		Composite requiresClient = toolkit.createComposite(requiresSection);
@@ -123,7 +123,7 @@ public class MainPackagePage extends FormPage {
 		final Section packagesSection = toolkit.createSection(form.getBody(),
 				ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 						| ExpandableComposite.EXPANDED);
-		packagesSection.setText("Subpackages");
+		packagesSection.setText(Messages.MainPackagePage_6);
 		packagesSection.setLayout(gridLayout);
 		Composite packagesClient = toolkit.createComposite(packagesSection);
 		packagesClient.setLayout(gridLayout);
@@ -148,7 +148,7 @@ public class MainPackagePage extends FormPage {
 			final Section packageRequiresSection = toolkit.createSection(packageClient,
 					ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
 							| ExpandableComposite.EXPANDED);
-			packageRequiresSection.setText("Requires");
+			packageRequiresSection.setText(Messages.MainPackagePage_7);
 			packageRequiresSection.setLayout(rowLayout);
 			packageRequiresSection.setLayoutData(gd);
 			Composite packageRequiresClient = toolkit.createComposite(packageRequiresSection);
