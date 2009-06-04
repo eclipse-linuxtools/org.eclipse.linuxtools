@@ -64,7 +64,7 @@
 							<line>0</line>
 						</sample>
 					</symbol>
-					<symbol name="bcopy" file="" count="40">
+					<symbol name="bool std::operator!=&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;(std::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, char const*)" file="" count="40">
 						<sample>
 							<count>40</count>
 							<line>0</line>

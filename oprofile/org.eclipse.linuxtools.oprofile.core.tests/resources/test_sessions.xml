@@ -11,7 +11,7 @@
 	<event name="UOPS_RETIRED">
 		<session name="current">
 		</session>
-		<session name="saved">
+		<session name="&quot;&lt;&gt;&amp;&apos;">
 		</session>
 	</event>
 </sessions>

@@ -32,8 +32,8 @@ public class TestSessionsParse extends TestCase {
 	private static final String EVENT1_OUTPUT_WITHTAB = "BR_INST_EXEC\n\tSession: current\n"; //$NON-NLS-1$
 	private static final String EVENT2_OUTPUT = "CPU_CLK_UNHALTED\nSession: saved\n"; //$NON-NLS-1$
 	private static final String EVENT2_OUTPUT_WITHTAB = "CPU_CLK_UNHALTED\n\tSession: saved\n"; //$NON-NLS-1$
-	private static final String EVENT3_OUTPUT = "UOPS_RETIRED\nSession: current\nSession: saved\n"; //$NON-NLS-1$
-	private static final String EVENT3_OUTPUT_WITHTAB = "UOPS_RETIRED\n\tSession: current\n\tSession: saved\n"; //$NON-NLS-1$
+	private static final String EVENT3_OUTPUT = "UOPS_RETIRED\nSession: current\nSession: \"<>&'\n"; //$NON-NLS-1$
+	private static final String EVENT3_OUTPUT_WITHTAB = "UOPS_RETIRED\n\tSession: current\n\tSession: \"<>&'\n"; //$NON-NLS-1$
 	
 	private ArrayList<OpModelEvent> eventList; 
 
@@ -97,7 +97,7 @@ public class TestSessionsParse extends TestCase {
 		assertEquals(0, evt3_ss_s1.getCount());
 		assertEquals(evt3, evt3_ss_s1.getEvent());
 		
-		assertEquals("saved", evt3_ss_s2.getName()); //$NON-NLS-1$
+		assertEquals("\"<>&'", evt3_ss_s2.getName()); //$NON-NLS-1$
 		assertEquals(false, evt3_ss_s2.isDefaultSession());
 		assertNull(evt3_ss_s2.getImage());
 		assertEquals(0, evt3_ss_s2.getCount());
