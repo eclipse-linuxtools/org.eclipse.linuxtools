@@ -1,9 +1,9 @@
-Native Build Info:
+	Native Build Info:
 ------------------
 
 platform:         ppc64 linux
 built by:         ksebasti@redhat.com
-build date:       01-Apr-2009
+build date:       04-Jun-2009
 OS Name:          Fedora 10 PPC
 OS Version:       Linux 2.6.27.5-117.fc10.ppc64 (glibc-2.9-2)
 Compiler version: g++ v4.3.2
