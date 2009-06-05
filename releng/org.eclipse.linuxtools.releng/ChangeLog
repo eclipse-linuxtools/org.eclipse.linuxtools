@@ -1,5 +1,9 @@
 2009-06-05  Andrew Overholt  <overholt@redhat.com>
 
+	* category.xml: Rename from site.xml (bug #272991).
+
+2009-06-05  Andrew Overholt  <overholt@redhat.com>
+
 	* build.properties: Use Galileo dependencies.
 	* tools/linuxtoolsupdatesite-trunk.sh: Pull from Galileo builds.
 
