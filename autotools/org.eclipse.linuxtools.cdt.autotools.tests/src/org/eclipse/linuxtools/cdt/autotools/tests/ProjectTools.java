@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.linuxtools.cdt.autotools.wizards.ConvertToAutotoolsProjectWizard;
 import org.eclipse.linuxtools.cdt.autotools.wizards.ConvertToAutotoolsProjectWizardPage;
@@ -101,20 +102,24 @@ public class ProjectTools {
 	 * @param filePath The relative path to the file
 	 * @return true if the change was successful, false otherwise
 	 */
-	public static boolean markExecutable(IProject project, String filePath) {
+	public static boolean markExecutable(IProject project, String filePath) throws CoreException {
 		// Get a launcher for the config command
 		CommandLauncher launcher = new CommandLauncher();
 		OutputStream stdout = new ByteArrayOutputStream();
 		OutputStream stderr = new ByteArrayOutputStream();
 
 		launcher.showCommand(true);
+		// FIXME: kludge to allow nightly Galileo build to use older CDT
+		//        master.
+		if (launcher == null)
+			throw new CoreException(Status.CANCEL_STATUS);
 		IPath commandPath = new Path("chmod");
 		IPath runPath = project.getLocation().append(filePath).removeLastSegments(1);
 		String[] args = new String[2];
 		args[0] = "+x";
 		args[1] = project.getLocation().append(filePath).toOSString();
 		Process proc = launcher.execute(commandPath, args, new String[0],
-				runPath);
+				runPath, new NullProgressMonitor());
 		if (proc != null) {
 			try {
 				// Close the input of the process since we will never write to
@@ -214,7 +219,7 @@ public class ProjectTools {
 		}
 	}
 
-	private static boolean generateFiles(IPath destPath) {
+	private static boolean generateFiles(IPath destPath) throws CoreException {
 		// Get a launcher for the config command
 		CommandLauncher launcher = new CommandLauncher();
 		OutputStream stdout = new ByteArrayOutputStream();
@@ -225,10 +230,14 @@ public class ProjectTools {
 		// Run the genfiles.sh shell script which will simulate
 		// running aclocal, autoconf, and automake
 		launcher.showCommand(true);
+		// FIXME: kludge to allow Galileo nightly build to use old
+		//        CDT base.
+		if (launcher == null)
+			throw new CoreException(Status.CANCEL_STATUS);
 		IPath commandPath = new Path("sh");
 		String[] cmdargs = new String[]{"genfiles.sh"};
 		Process proc = launcher.execute(commandPath, cmdargs, new String[0],
-				runPath);
+				runPath, new NullProgressMonitor());
 		if (proc != null) {
 			try {
 				// Close the input of the process since we will never write to
@@ -249,8 +258,12 @@ public class ProjectTools {
 
 	private static void importFilesFromZipAndGenerate(ZipFile srcZipFile, IPath destPath, IProgressMonitor monitor) throws InvocationTargetException {
 		importFilesFromZip(srcZipFile, destPath, monitor);
+		try {
 		if (!generateFiles(destPath))
 			throw new InvocationTargetException(new Exception("Unsuccessful test file generation"));
+		} catch (CoreException e) {
+			throw new InvocationTargetException(e);
+		}
 	}
 	
 	private static class ImportOverwriteQuery implements IOverwriteQuery {
