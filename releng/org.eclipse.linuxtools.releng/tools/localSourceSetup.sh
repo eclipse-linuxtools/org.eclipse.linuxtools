@@ -27,7 +27,7 @@ do
   if [[ -d "$workspace/$plugin" ]]; then
     ln -sfT "$workspace/$plugin" "$checkoutDir/plugins/$plugin"
   else
-    echo "Warning: '$workspace/$plugin' not found" >&2
+    echo "Skipping: $plugin"
   fi
 done
 
@@ -46,7 +46,7 @@ do
     fi
     ln -sfT "$workspace/$feature" "$checkoutDir/features/$fixedName"
   else
-    echo "Warning: '$workspace/$feature' not found" >&2
+    echo "Skipping: $feature"
   fi
 done
 
