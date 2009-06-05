@@ -1,0 +1,7 @@
+2009-05-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* about.html: Initial check-in.
+	* build.properties: Ditto.
+	* epl-v10.html:  Ditto.
+	* feature.properties:  Ditto.
+	* feature.xml: Ditto.
