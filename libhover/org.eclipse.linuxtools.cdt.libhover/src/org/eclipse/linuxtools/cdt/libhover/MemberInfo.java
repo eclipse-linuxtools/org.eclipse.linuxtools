@@ -19,6 +19,7 @@ public class MemberInfo implements Serializable {
 	private String prototype;
 	private String desc;
 	private String returnType;
+	private String[] paramTypes = new String[0];
 	private ArrayList<MemberInfo> children = null;
 	
 	/**
@@ -75,6 +76,23 @@ public class MemberInfo implements Serializable {
 		this.desc = desc;
 	}
 
+	/**
+	 * Get param types for member.
+	 * 
+	 * @return return array of param types
+	 */
+	public String[] getParamTypes() {
+		return paramTypes;
+	}
+
+	/**
+	 * Set param types for member.
+	 * 
+	 * @param array of param types
+	 */
+	public void setParamTypes(String[] paramTypes) {
+		this.paramTypes = paramTypes;
+	}
 	/**
 	 * Get return type for member.
 	 * 

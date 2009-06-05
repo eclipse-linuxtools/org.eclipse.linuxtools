@@ -1,17 +1,29 @@
-2009-02-24  Andrew Overholt  <overholt@redhat.com>
+2009-05-29  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java: Comment out
-	SharedASTJob references.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java (getMemberSummary): Fix compiler warnings. 
+	(getFunctionInfo): Ditto.
+	* src/org/eclipse/linuxtools/cdt/libhover/preferences/CheckboxFieldEditor.java (doLoad): Ditto. 
+	(doLoadDefault): Ditto.
+	(adjustForNumColumns): Ditto.
+	* src/org/eclipse/linuxtools/cdt/libhover/properties/LibHoverPropertyPage.java (updateCheckboxData): Ditto. 
 
-2009-02-20  Jeff Johnston  <jjohnstn@redhat.com>
+2009-05-08  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java (getLibHoverDocs): Don't set isCPP
-	to true for a new hover library.  Instead look at the type to determine this.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java (getFunctionInfo): Add logic
+	to find the qualified name of the class, even when namespaces are being used.
+	
+2009-05-08  Jeff Johnston  <jjohnstn@redhat.com>
 
-2009-02-10  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java (getFunctionInfo): Disable
-	C++ support for time-being as it is not supported in CDT 5.x.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java (resolveArgs): New method.
+	(isParmMatch): Ditto. 
+	(getMemberSummary): Add parameter matching support and template resolution.
+	(getFunctionInfo): Add AST logic to resolve member name for C++.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibHoverLibrary.java (resolveTemplateTypes):
+	New method. 
+	(getClassInfo): Add additional parameter of template types and fill in.
+	* src/org/eclipse/linuxtools/cdt/libhover/MemberInfo.java (getReturnType): New method.
+	(setParamTypes): Ditto. 
+	(getParamTypes): Ditto.
 
 2009-02-06  Jeff Johnston  <jjohnstn@redhat.com>
 

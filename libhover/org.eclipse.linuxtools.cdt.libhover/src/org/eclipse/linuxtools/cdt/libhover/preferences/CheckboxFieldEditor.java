@@ -65,7 +65,6 @@ public class CheckboxFieldEditor extends FieldEditor {
 	protected void adjustForNumColumns(int numColumns) {
 		if (numColumns > 1) {
 			Control control = getLabelControl();
-			int left = numColumns;
 			if (control != null) {
 				((GridData)control.getLayoutData()).horizontalSpan = numColumns;
 			}
@@ -127,6 +126,7 @@ public class CheckboxFieldEditor extends FieldEditor {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doLoad() {
 		// Combine user preference string with existing libhover extensions.
@@ -166,6 +166,7 @@ public class CheckboxFieldEditor extends FieldEditor {
 		updateButtons();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doLoadDefault() {
 	    // Default is to find all current extensions and turn them on by default.

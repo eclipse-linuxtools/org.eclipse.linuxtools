@@ -20,9 +20,8 @@
 
 package org.eclipse.linuxtools.cdt.libhover;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -30,6 +29,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.Map.Entry;
 
+import org.eclipse.cdt.core.dom.ast.DOMException;
 import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTNamedTypeSpecifier;
@@ -37,6 +37,10 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IBinding;
+import org.eclipse.cdt.core.dom.ast.IType;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPBinding;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunction;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionType;
 import org.eclipse.cdt.core.model.ILanguage;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.ui.ICHelpBook;
@@ -45,6 +49,8 @@ import org.eclipse.cdt.ui.ICHelpResourceDescriptor;
 import org.eclipse.cdt.ui.IFunctionSummary;
 import org.eclipse.cdt.ui.IRequiredInclude;
 import org.eclipse.cdt.ui.text.ICHelpInvocationContext;
+import org.eclipse.cdt.ui.text.IHoverHelpInvocationContext;
+import org.eclipse.cdt.ui.text.SharedASTJob;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
@@ -107,7 +113,7 @@ public class LibHover implements ICHelpProvider {
 				HelpBook h = new HelpBook(name, type);
 				helpBooks.add(h);
 				LibHoverLibrary l = new LibHoverLibrary(name, location, helpdocs, 
-						h.getCHelpType() == ICHelpBook.HELP_TYPE_CPP);
+						true);
 				libraries.put(h, l);
 				docsFetched = true;
 			}
@@ -201,185 +207,205 @@ public class LibHover implements ICHelpProvider {
 		return Character.isLetterOrDigit(ch) || ch == '_' || ch == ':'; 
 	}
 
-//	private class EnclosingASTNameJob extends SharedASTJob {
-//		private int tlength;
-//		private int toffset;
-//		private IASTName result = null;
-//		public EnclosingASTNameJob (ITranslationUnit t, 
-//				int toffset, int tlength) {
-//			super("EnclosingASTNameJob", t); // $NON-NLS-1$
-//			this.toffset = toffset;
-//			this.tlength = tlength;
-//		}
-//		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
-//			if (ast != null) {
-//				result = ast.getNodeSelector(null).findEnclosingName(toffset, tlength);
-//			}
-//			return Status.OK_STATUS;
-//		}
-//		public IASTName getASTName() {
-//			return result;
-//		}
-//	}
+	private class EnclosingASTNameJob extends SharedASTJob {
+		private int tlength;
+		private int toffset;
+		private IASTName result = null;
+		public EnclosingASTNameJob (ITranslationUnit t, 
+				int toffset, int tlength) {
+			super("EnclosingASTNameJob", t); // $NON-NLS-1$
+			this.toffset = toffset;
+			this.tlength = tlength;
+		}
+		public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
+			if (ast != null) {
+				result = ast.getNodeSelector(null).findEnclosingName(toffset, tlength);
+			}
+			return Status.OK_STATUS;
+		}
+		public IASTName getASTName() {
+			return result;
+		}
+	}
 	
-//	public class ASTDeclarationFinderJob extends SharedASTJob {
-//		private IBinding binding;
-//		private IASTName[] decls = null;
-//		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
-//			super("ASTDeclarationFinderJob", t); // $NON-NLS-1$
-//			this.binding = binding;
-//		}
-//    	public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
-//    		if (ast != null) {
-//    			decls = ast.getDeclarationsInAST(binding);
-//    		}
-//    		return Status.OK_STATUS;
-//    	}
-//    	public IASTName[] getDeclarations() {
-//    		return decls;
-//    	}
-//	}
+	public class ASTDeclarationFinderJob extends SharedASTJob {
+		private IBinding binding;
+		private IASTName[] decls = null;
+		public ASTDeclarationFinderJob (ITranslationUnit t, IBinding binding) {
+			super("ASTDeclarationFinderJob", t); // $NON-NLS-1$
+			this.binding = binding;
+		}
+    	public IStatus runOnAST(ILanguage lang, IASTTranslationUnit ast) {
+    		if (ast != null) {
+    			decls = ast.getDeclarationsInAST(binding);
+    		}
+    		return Status.OK_STATUS;
+    	}
+    	public IASTName[] getDeclarations() {
+    		return decls;
+    	}
+	}
 
-	@SuppressWarnings("unchecked")
 	public IFunctionSummary getFunctionInfo(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String name) {
         IFunctionSummary f;
 
         f = null;
         boolean isPTR = false;
         boolean isREF = false;
-        boolean isCPP = false;
         int offset = -1;
         int length = 0;
         
         ITranslationUnit t = context.getTranslationUnit();
         
         String className = null;
+        ICPPFunctionType methodType = null;
         
-        // FIXME: Uncomment following code out for CDT 6.0 to support C++ hover.
-        
-//        if (t.isCXXLanguage()) {
-//        	isCPP = true;
-//        	try {
-//        		// We use reflection to cast the context to ICHelpInvocationContextExtended as this is
-//        		// not guaranteed to be in CDT except in Fedora.  We need ICHelpInvocationExtended to get
-//        		// the document region.  Otherwise, we have no way of doing C++ hover help/completion because
-//        		// we need to figure out the class name which is not given to us.
-//        		Class<? extends ICHelpInvocationContext> contextClass = context.getClass();
-//        		Class[] interfaces = contextClass.getInterfaces();
-//        		for (int i = 0; i < interfaces.length; ++i) {
-//        			if (interfaces[i].getName().contains("ICHelpInvocationContextExtended")) // $NON-NLS-1$ 
-//        				contextClass = interfaces[i];
-//        		}
-//        		Method getRegion = contextClass.getMethod("getHoverRegion", (Class<?>[])null);  // $NON-NLS-1$
-//        		IRegion region = (IRegion)getRegion.invoke(context, (Object[])null);
-//        		char[] contents = t.getCodeReader().buffer;
-//				int i = region.getOffset();
-//				if (i > 2 && contents[i-1] == '>' && contents[i-2] == '-') {
-//					// Pointer reference
-//					int j = i - 3;
-//					int pointer = 0;
-//					while (j > 0 && isCPPCharacter(contents[j])) {
-//						pointer = j;
-//						--j;
-//					}
-//					if (pointer != 0) {
-//						offset = pointer;
-//						length = region.getOffset() - pointer - 2;
-//						isPTR = true;
-////						String pointerName = new String(contents, pointer, region.getOffset() - pointer - 2);
-////						System.out.println("pointer reference to " + pointerName);
-//					}
-//				} else if (i > 1 && contents[i-1] == '.') {
-//					int j = i - 2;
-//					int ref = 0;
-//					while (j > 0 && isCPPCharacter(contents[j])) {
-//						ref = j;
-//						--j;
-//					}
-//					if (ref != 0) {
-//						offset = ref;
-//						length = region.getOffset() - ref - 1;
-//						isREF = true;
-////						String refName = new String(contents, ref, region.getOffset() - ref - 1);
-////						System.out.println("regular reference to " + refName);
-//					}
-//				}
-//				final IASTName[] result= {null};
-//				final int toffset = offset;
-//				final int tlength = length;
-//
-//				if (isPTR || isREF) {
-//					EnclosingASTNameJob job = new EnclosingASTNameJob(t, toffset, tlength);
-//					job.schedule();
-//					try {
-//						job.join();
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					if (job.getResult() == Status.OK_STATUS)
-//						result[0] = job.getASTName();
-//				}
-//
-//				final IASTName[][] decl = {null};
-//				if (result[0] != null) {
-//					final IBinding binding = result[0].getBinding();
-//					ASTDeclarationFinderJob job = new ASTDeclarationFinderJob(t, binding);
-//					job.schedule();
-//					try {
-//						job.join();
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					if (job.getResult() == Status.OK_STATUS) {
-//						decl[0] = job.getDeclarations();
-//					}
-//				}
-//				
-//				IASTNode n = null;
-//				if (decl[0] != null && decl[0].length > 0) {
-//					n = decl[0][0];
-//					while (n != null && !(n instanceof IASTSimpleDeclaration)) {
-//						n = n.getParent();
-//					}
-//				}
-//
-//				if (n != null) {
-//					IASTSimpleDeclaration d = (IASTSimpleDeclaration)n;
-//					IASTDeclSpecifier s = d.getDeclSpecifier();
-//					if (s instanceof IASTNamedTypeSpecifier) {
-//						IASTName astName = ((IASTNamedTypeSpecifier)s).getName();
-//						if (astName != null)
-//							className = astName.toString();
-//					}
-//				}
-//			    
-////				System.out.println("classname is " + className);
-//        	} catch (NoSuchMethodException e) {
-//        		// do nothing...we don't have enough info to do C++ members
-//        	} catch (IllegalArgumentException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IllegalAccessException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (InvocationTargetException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//        }
+        if (t.isCXXLanguage()) {
+        	try {
+        		if (context instanceof IHoverHelpInvocationContext) {
+        			// We know the file offset of the member reference.
+        			IRegion region = (IRegion)((IHoverHelpInvocationContext)context).getHoverRegion();
+        			char[] contents = t.getCodeReader().buffer;
+        			int i = region.getOffset();
+        			// Let's figure out if it is a pointer reference or a direct reference in which case we can
+        			// find the variable and hence it's class.
+        			if (i > 2 && contents[i-1] == '>' && contents[i-2] == '-') {
+        				// Pointer reference
+        				int j = i - 3;
+        				int pointer = 0;
+        				while (j > 0 && isCPPCharacter(contents[j])) {
+        					pointer = j;
+        					--j;
+        				}
+        				if (pointer != 0) {
+        					offset = pointer;
+        					length = region.getOffset() - pointer - 2;
+        					isPTR = true;
+        					//						String pointerName = new String(contents, pointer, region.getOffset() - pointer - 2);
+        					//						System.out.println("pointer reference to " + pointerName);
+        				}
+        			} else if (i > 1 && contents[i-1] == '.') {
+        				int j = i - 2;
+        				int ref = 0;
+        				while (j > 0 && isCPPCharacter(contents[j])) {
+        					ref = j;
+        					--j;
+        				}
+        				if (ref != 0) {
+        					offset = ref;
+        					length = region.getOffset() - ref - 1;
+        					isREF = true;
+        					//						String refName = new String(contents, ref, region.getOffset() - ref - 1);
+        					//						System.out.println("regular reference to " + refName);
+        				}
+        			}
+        			final IASTName[] result= {null};
+        			final int toffset = offset;
+        			final int tlength = length;
+
+        			// If we have a pointer or reference variable, get its ASTName.
+        			if (isPTR || isREF) {
+        				EnclosingASTNameJob job = new EnclosingASTNameJob(t, toffset, tlength);
+        				job.schedule();
+        				try {
+        					job.join();
+        				} catch (InterruptedException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}
+        				if (job.getResult() == Status.OK_STATUS)
+        					result[0] = job.getASTName();
+        			}
+
+        			// If we get the ASTName for the variable, let's find its declaration which will give us its class.
+        			final IASTName[][] decl = {null};
+        			if (result[0] != null) {
+        				final IBinding binding = result[0].resolveBinding();
+        				ASTDeclarationFinderJob job = new ASTDeclarationFinderJob(t, binding);
+        				job.schedule();
+        				try {
+        					job.join();
+        				} catch (InterruptedException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}
+        				if (job.getResult() == Status.OK_STATUS) {
+        					decl[0] = job.getDeclarations();
+        				}
+        			}
+
+        			// Look for a simple declaration.
+        			IASTNode n = null;
+        			if (decl[0] != null && decl[0].length > 0) {
+         				n = decl[0][0];
+        				while (n != null && !(n instanceof IASTSimpleDeclaration)) {
+        					n = n.getParent();
+        				}
+        			}
+
+        			// If we have the simple declaration, get its declaration specifier which hopefully will
+        			// be a named type.
+        			if (n != null) {
+        				IASTSimpleDeclaration d = (IASTSimpleDeclaration)n;
+        				IASTDeclSpecifier s = d.getDeclSpecifier();
+        				if (s instanceof IASTNamedTypeSpecifier) {
+        					// From the named type, we can get the binding of the type name and from that,
+        					// its qualified name.  We need a qualified name (i.e. with namespace) because our
+        					// repository of classes and typedefs are hashed by fully qualified names.
+        					IASTName astName = ((IASTNamedTypeSpecifier)s).getName();
+        					if (astName != null) {
+        						IBinding nameBinding = astName.resolveBinding();
+        						if (nameBinding instanceof ICPPBinding) {
+        							String[] qualified = ((ICPPBinding)nameBinding).getQualifiedName();
+        							className = qualified[0];
+        							for (int k = 1; k < qualified.length; ++k)
+        								className += "::" + qualified[k];
+        						} else {
+        							className = nameBinding.getName();
+        						}
+        					}
+        				}
+        			}
+//        							System.out.println("classname is " + className);
+        			
+        			// Now, let's find the declaration of the method.  We need to do this because we want the specific
+        			// member prototype to go searching for.  There could be many members called "x" which have different
+        			// documentation.
+        			if (className != null) {
+        				EnclosingASTNameJob job = new EnclosingASTNameJob(t, region.getOffset(), region.getLength());
+        				job.schedule();
+        				try {
+        					job.join();
+        				} catch (InterruptedException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}
+        				if (job.getResult() == Status.OK_STATUS)
+        					result[0] = job.getASTName();
+        			}
+        			if (result[0] != null) {
+        				final IBinding binding = result[0].getBinding();
+        				if (binding instanceof ICPPFunction) {
+        					methodType = ((ICPPFunction)binding).getType();
+        				}
+        			}
+        		}
+        	} catch (IllegalArgumentException e) {
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	} catch (DOMException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
         	
         // Loop through all the documents we have and report first match.
         for (int i = 0; i < helpBooks.length; ++i) {
         	LibHoverLibrary l = libraries.get(helpBooks[i]);
-        	// FIXME: remove following 2 lines when CDT 6.0 to enable C++ hover.
-        	if (l.isCPP())
-        		continue;
         	if (name != null) {
         		if (className != null) {
         			if (l.isCPP())
-        				f = getMemberSummary(l, className, name);
+        				f = getMemberSummary(l, className, name, methodType);
         		} else {
         			f = getFunctionSummary(l, name);
         		}
@@ -407,30 +433,104 @@ public class LibHover implements ICHelpProvider {
 		return null;
 	}
 	
-	private IFunctionSummary getMemberSummary(LibHoverLibrary l, String className, String memberName) {
+	private IFunctionSummary getMemberSummary(LibHoverLibrary l, String className, 
+			String memberName, ICPPFunctionType methodType) {
 
-		ClassInfo info = l.getClassInfo(className);
+		ArrayList<String> templateTypes = new ArrayList<String>();
+		ClassInfo info = l.getClassInfo(className, templateTypes);
+		String[] args = new String[0];
+		@SuppressWarnings("unused")
+		IType returnType = null;
 		if (info == null)
 			return null;
-		MemberInfo m = info.getMember(memberName);
-		if (m != null) {
-			// FIXME: do some work to determine parameters and return type.
-			FunctionSummary f = new FunctionSummary();
-			f.ReturnType = m.getReturnType();
-			f.Prototype = m.getPrototype();
-			f.Summary = m.getDescription();
-			f.setPrototypeHasBrackets(true);
-			f.setIncludeName(info.getInclude());
-			String actualClassName = className.substring(className.indexOf("::")+2); // $NON-NLS-1$
-			actualClassName = actualClassName.replaceAll("<", "&lt;"); // $NON-NLS-1$ // $NON-NLS-2$
-			actualClassName = actualClassName.replaceAll(">", "&gt;"); // $NON-NLS-1$ // $NON-NLS-2$
-			f.Name = actualClassName + "::" + memberName; // $NON-NLS-1$
-			return f;
+		if (methodType != null) {
+			try {
+				args = resolveArgs(info, methodType.getParameterTypes());
+				returnType = methodType.getReturnType();
+			} catch (DOMException e) {
+				// TODO Auto-generated catch block
+				return null;
+			}
+//			for (int i = 0; i < args.length; ++i)
+//				System.out.println("args<" + i + "> is " + args[i].toString());
+//			System.out.println("return type is " + returnType.toString());
+			
+		}
+		MemberInfo member = info.getMember(memberName);
+		if (member != null) {
+			MemberInfo m = null;
+			if (!isParmMatch(member, args)) {
+				ArrayList<MemberInfo> members = member.getChildren();
+				for (int i = 0; i < members.size(); ++i) {
+					MemberInfo k = members.get(i);
+					if (isParmMatch(k, args)) {
+						m = k;
+						break;
+					}
+				}
+			} else {
+				m = member;
+			}
+			
+			if (m != null) {
+				// FIXME: do some work to determine parameters and return type.
+				FunctionSummary f = new FunctionSummary();
+				f.ReturnType = m.getReturnType();
+				f.Prototype = m.getPrototype();
+				f.Summary = m.getDescription();
+				String actualClassName = className.substring(className.indexOf("::")+2); // $NON-NLS-1$
+				f.Name = actualClassName + "::" + memberName; // $NON-NLS-1$
+				String[] templateParms = info.getTemplateParms();
+				for (int i = 0; i < templateTypes.size(); ++i) {
+					f.ReturnType = f.ReturnType.replaceAll(templateParms[i], templateTypes.get(i));
+					f.Prototype = f.Prototype.replaceAll(templateParms[i], templateTypes.get(i));
+					f.Name = f.Name.replaceAll(templateParms[i], templateTypes.get(i));
+				}
+				if (f.ReturnType.indexOf('<') >= 0) {
+					f.ReturnType = f.ReturnType.replaceAll("<", "&lt;");
+					f.ReturnType = f.ReturnType.replaceAll(">", "&gt;");
+				}
+				if (f.Prototype.indexOf('<') >= 0) {
+					f.Prototype = f.Prototype.replaceAll("<", "&lt;");
+					f.Prototype = f.Prototype.replaceAll(">", "&gt;");
+				}
+				if (f.Name.indexOf('<') >= 0) {
+					f.Name = f.Name.replaceAll("<", "&lt;");
+					f.Name = f.Name.replaceAll(">", "&gt;");
+				}
+				f.setPrototypeHasBrackets(true);
+				f.setIncludeName(info.getInclude());
+				return f;
+			}
 		}
 		return null;
 	}
      
  	
+	private boolean isParmMatch(MemberInfo m, String[] args) {
+		String[] memberParms = m.getParamTypes();
+		return Arrays.equals(memberParms, args);
+	}
+
+	private String[] resolveArgs(ClassInfo info, IType[] parameterTypes) {
+		String[] templateParms = info.getTemplateParms();
+		String[] result = new String[parameterTypes.length];
+		for (int i = 0; i < parameterTypes.length; ++i) {
+			String param = parameterTypes[i].toString();
+			param = param.replaceAll("\\{.*\\}", "");
+			param = param.trim();
+			int index = param.indexOf("#");
+			while (index >= 0) {
+				// We assume no class has more than 9 template parms.
+				int digit = param.charAt(index + 1) - '0';
+				param = param.replaceFirst(param.substring(index, index + 2), templateParms[digit]);
+				index = param.indexOf("#");
+			}
+			result[i] = param;
+		}
+		return result;
+	}
+
 	public IFunctionSummary[] getMatchingFunctions(ICHelpInvocationContext context, ICHelpBook[] helpBooks, String prefix) {
 		ArrayList<IFunctionSummary> fList = new ArrayList<IFunctionSummary>();
 

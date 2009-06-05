@@ -380,6 +380,7 @@ public class LibHoverPropertyPage extends PropertyPage {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void updateCheckboxData(boolean useProject) {
 		// Combine user preference string with existing libhover extensions.
 		getExtensions();

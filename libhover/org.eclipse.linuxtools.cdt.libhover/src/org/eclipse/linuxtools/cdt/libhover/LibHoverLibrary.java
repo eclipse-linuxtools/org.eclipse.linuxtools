@@ -133,7 +133,7 @@ public class LibHoverLibrary {
 	 * @param className the name of the class to fetch info for
 	 * @return ClassInfo or null if no class info can be found
 	 */
-	public ClassInfo getClassInfo(String className) {
+	public ClassInfo getClassInfo(String className, ArrayList<String> templateTypes) {
 		String typedefName = className.replaceAll("<.*>", "<>"); // $NON-NLS-1$ // $NON-NLS-2$
 		TypedefInfo typedef = getHoverInfo().typedefs.get(typedefName);
 		if (typedef != null) {
@@ -142,6 +142,7 @@ public class LibHoverLibrary {
 		int index = className.indexOf('<');
 		// Check if it is a template reference.
 		if (index != -1) {
+			resolveTemplateTypes(className, templateTypes, index);
 			// It is.  We want to see if there are partial specific templates
 			// and we choose the first match.  If nothing matches our particular
 			// case, we fall back on the initial generic template.
@@ -162,6 +163,34 @@ public class LibHoverLibrary {
 		return getHoverInfo().classes.get(className);
 	}
 	
+	private void resolveTemplateTypes(String className,
+			ArrayList<String> templateTypes, int index) {
+		int startIndex = index + 1;
+		int i = startIndex;
+		int count = 1;
+		while (count > 0 && i < className.length()) {
+			char x = className.charAt(i);
+			switch (x) {
+			case ('<'):
+				++count;
+			break;
+			case ('>'):
+				--count;
+				if (count == 0)
+					templateTypes.add(className.substring(startIndex, i).trim());
+			break;
+			case (','): {
+				if (count == 1) {
+					templateTypes.add(className.substring(startIndex, i).trim());
+					startIndex = i + 1;
+				}
+			}
+			break;
+			}
+			++i;
+		}
+	}
+
 	/**
 	 * Fetch the function info for a given function.
 	 * 
