@@ -1,0 +1,24 @@
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier to version and bump to 1.0.1.
+
+2008-11-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Remove doc.zip.
+	* doc.zip: Removed.
+
+2008-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Add plugin.properties.
+
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Initial import.
+	* META-INF/MANIFEST.MF: Use plugin.propeties.  Add "(Incubation)".
+
+2008-10-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* toc.xml: Initial release.
+	* doc.zip: Ditto.
+	* plugin.xml: Ditto.
+	* about.html: Ditto.
