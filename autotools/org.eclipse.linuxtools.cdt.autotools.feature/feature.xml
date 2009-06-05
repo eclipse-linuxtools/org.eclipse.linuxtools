@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.cdt.autotools.feature"
       label="%featureName"
-      version="1.0.3.qualifier"
+      version="1.0.2.qualifier"
       provider-name="%provider">
 
    <description>
@@ -22,27 +22,26 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.ui" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.jface.text" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.editors" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.core.resources" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.ide" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.cdt.managedbuilder.core" version="5.0.0" match="compatible"/>
-      <import plugin="org.eclipse.cdt.core" version="5.0.0" match="compatible"/>
-      <import plugin="org.eclipse.cdt.ui" version="5.0.0" match="compatible"/>
-      <import plugin="org.eclipse.cdt.managedbuilder.ui" version="5.0.0" match="compatible"/>
-      <import plugin="org.eclipse.cdt.managedbuilder.gnu.ui" version="5.0.0" match="compatible"/>
-      <import plugin="org.eclipse.cdt.make.core" version="5.0.0" match="compatible"/>
-      <import plugin="org.eclipse.cdt.make.ui" version="5.0.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.console" version="3.3.0" match="compatible"/>
-      <import plugin="org.eclipse.help" version="3.3.100" match="compatible"/>
-      <import plugin="org.eclipse.core.variables" version="3.2.100" match="compatible"/>
-      <import plugin="org.eclipse.ui.views" version="3.3.0" match="compatible"/>
-      <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="compatible"/>
+      <import plugin="org.eclipse.cdt.managedbuilder.core" version="5.0.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.core" version="5.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.ui" version="5.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.managedbuilder.ui" version="5.0.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.managedbuilder.gnu.ui" version="5.0.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.cheatsheets"/>
-      <import plugin="org.eclipse.cdt"/>
+      <import plugin="org.eclipse.ui" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface.text" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.make.core" version="5.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.make.ui" version="5.0.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.help" version="3.3.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.variables" version="3.2.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.views" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
