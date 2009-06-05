@@ -14,16 +14,11 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.ICDescriptor;
-import org.eclipse.cdt.core.dom.IPDOMManager;
-import org.eclipse.cdt.core.model.CoreModel;
-import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.IManagedProject;
 import org.eclipse.cdt.managedbuilder.core.IProjectType;
-import org.eclipse.cdt.managedbuilder.core.ITargetPlatform;
-import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
 import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
@@ -184,6 +179,7 @@ public class NewAutotoolsCCProjectWizard extends NewCCProjectWizard {
 		return projectConfigurationPage.getProjectType();
 	}
 
+	@SuppressWarnings("deprecation")
 	protected void doRun(IProgressMonitor monitor) throws CoreException {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -244,10 +240,10 @@ public class NewAutotoolsCCProjectWizard extends NewCCProjectWizard {
 					//  TODO:  The binary parser setting is currently per-project in the rest of CDT.
 					//         In the MBS, it is per-coonfiguration.  For now, select the binary parsers of the
 					//         first configuration.
-					if (newConfigs.length > 0) {
-						IToolChain tc = newConfigs[0].getToolChain();
-						ITargetPlatform targetPlatform = tc.getTargetPlatform();
-					}
+//					if (newConfigs.length > 0) {
+//						IToolChain tc = newConfigs[0].getToolChain();
+//						ITargetPlatform targetPlatform = tc.getTargetPlatform();
+//					}
 				} catch (CoreException e) {
 					AutotoolsPlugin.log(e);
 				}

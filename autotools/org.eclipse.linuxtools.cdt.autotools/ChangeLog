@@ -1,3 +1,216 @@
+2009-06-05  Andrew Overholt  <overholt@redhat.com>
+
+	* Fix up after erroneous SVN operation.
+
+2009-05-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* .classpath: Updated.
+
+2009-05-28  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #273830
+	* plugin.xml: Remove warnings.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java (executeCommand): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/TwoInputDialog.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsBuilder.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsDefaultBuildDirHandler.java (handleValue): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (clean): Ditto.
+	(build): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsPlugin.java (setScannerInfoProvider): Ditto. 
+	(verifyScannerInfoProvider): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (buildFile): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfoProvider.java (setDirty): Ditto. 
+	(getScannerInformation): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutoconfSubstRule.java (DecreasingCharArrayLengthComparator): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeDocumentProvider.java (connect): Ditto.
+	(shutdown): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeEditor.java (getAdapter): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeErrorHandler.java (AutomakeMarker): Ditto. 
+	(checkChildren): Ditto. 
+	(AutomakeMarker.setAttributes): Ditto. 
+	(AutomakeMarker.getAttributes): Ditto.
+	(createMarker): Ditto.
+	(AutomakeMarker.AutomakeMarker): Ditto. 
+	(AutomakeMarker.getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/EditorUtility.java (getWorkspaceFileAtLocation): Ditto. 
+	(isLinked): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/ElementListSelectionDialog.java (open): Ditto. 
+	(setElements): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/ExternalEditorInput.java (getAdapter): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/GNUAutomakefile.java (getBuiltins): Ditto.
+	(addDirective): Ditto. 
+	(parseVPath): Ditto.
+	(getDirectives): Ditto.
+	(parse): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/LexicalSortingAction.java (LexicalCSorter.isSorterProperty): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileCompletionProcessor.java (DirectiveComparator): Ditto.
+	(computeContextInformation): Ditto.
+	(computeCompletionProposals): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileContentOutlinePage.java (MakefileContentProvider.getElements): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileDocumentProvider.java (shutdown): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileEditor.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefileMessages.java (getFormattedString): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/MakefilePartitionScanner.java (MakefilePartitionScanner): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/NullMakefile.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/OpenIncludeAction.java (resolveIncludeLink): Ditto. 
+	(findFile): Ditto.
+	(getIncludeStatement): Ditto. 
+	(chooseFile): Ditto.
+	(run): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/Parent.java: Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/PosixMakefileUtil.java (findTargets): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/ProjectionMakefileUpdater.java (createAnnotationMap): Ditto. 
+	(fCollapseConditional): Ditto.
+	(fCollapseRule): Ditto.
+	(fCollapseMacroDef): Ditto.
+	(match): Ditto.
+	(processReconcile): Ditto. 
+	(computeAdditions): Ditto.
+	(initialize): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/Rule.java (getCommands): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/SelectionStatusDialog.java (setInitialSelection): Ditto. 
+	(getPrimaryInitialSelection): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/StringMatcher.java (parseWildCards): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/WorkingCopyManager.java (setWorkingCopy): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/MakeTarget.java (getAdapter): Ditto.
+	(getEnvironment): Ditto.
+	(setEnvironment): Ditto.
+	(build): Ditto.
+	(getExpandedEnvironment): Ditto. 
+	(getAttributeMap): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/MakeTargetManager.java (initializeBuilders): Ditto. 
+	(getTargetBuilders): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ProjectTargets.java (findTarget): Ditto. 
+	(remove): Ditto.
+	(get): Ditto.
+	(getAsXML): Ditto.
+	(translateCDTProjectToDocument): Ditto. 
+	(translateDocumentToCDTProject): Ditto.
+	(contains): Ditto.
+	(add): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/editors/autoconf/ProjectionFileUpdater.java (createAnnotationMap): Ditto.
+	(match): Ditto.
+	(processReconcile): Ditto. 
+	(computeAdditions): Ditto.
+	(initialize): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/ErrorParserBlock.java: Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/HTML2TextReader.java (static initializer): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/HTMLTextPresenter.java (updatePresentation): Ditto.
+	(adaptTextPresentation): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/preferences/ColorManager.java (dispose): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/preferences/StatusInfo.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (runScript): Ditto.
+	(runCommand): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/popup/actions/GetDefinedSymbolsAction.java (run): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (shutdown): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java (getAdapter): Ditto.
+	(InformationDispatchAction.makeTextHoverFocusable): Ditto.
+	(.createInformationControl): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfErrorHandler.java (AutoconfMarker.getAttributes): Ditto. 
+	(handleError): Ditto.
+	(AutoconfMarker.getAdapter): Ditto. 
+	(createMarker): Ditto. 
+	(AutoconfMarker.setAttributes): Ditto. 
+	(removeExistingMarkers): Ditto.
+	(AutoconfMarker.AutoconfMarker): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfIdentifierRule.java: Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfMacro.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfMacroDamagerRepairer.java (createPresentation): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfMacroParameterListValidator.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/IAutotoolsEditor.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/InlineDataRule.java (evaluate): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/AutoconfOutlineErrorHandler.java (handleError): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/RecursiveSingleLineRule.java (RecursiveSingleLineRule): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/RestrictedEndOfLineRule.java (RestrictedEndOfLineRule): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsPropertyManager.java (AutotoolsPropertyManager): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsToolsPropertyPage.java (performOK): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/ConvertToAutotoolsProjectWizardPage.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/CProjectPlatformPage.java (handleConfigurationSelectionChange): Ditto. 
+	(CProjectPlatformPage): Ditto.
+	(filterSupportedConfigurations): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCCProjectWizard.java (doRun): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCProjectWizard.java (doRun): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsProjectOptionPage.java (ManagedWizardOptionBlock.setupHelpContextIds): Ditto. 
+
+2009-05-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #276204
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsProjectNature.java (removeNature): 
+	(addAutotoolsBuilder): Fix compiler warnings.
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakeCompletionProcessor.java (DirectiveComparator): Ditto. 
+	(computeContextInformation): Ditto. 
+	(computeCompletionProposals): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileCodeScanner.java (createRules): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/editors/automake/AutomakefileContentOutlinePage.java (AutomakefileContentProvider.getElements): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/AbstractElementListSelectionDialog.java (setSelectionListElements): Ditto.
+	(getWidgetSelection): Ditto.
+	(verifyCurrentSelection): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/AbstractMakefile.java (getMacroDefinitions): Ditto. 
+	(getBuiltinInferenceRules): Ditto. 
+	(getRules): Ditto.
+	(getInferenceRules): Ditto. 
+	(getTargetRules): Ditto.
+	(getBuiltinMacroDefinitions): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/AddBuildTargetAction.java (getTargetRules): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/CompletionProposalComparator.java (compare): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/SelectionList.java (getSelection): Ditto.
+	(setElements): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfPrototype.java (AutoconfPrototype): Ditto. 
+	(getParmName): Ditto.
+	(setParmName): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/text/hover/AutoconfTextHover.java (getAMDoc): Ditto. 
+	(getMacroList): Ditto.
+	(getACDoc): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/preferences/AutoconfEditorPreferencePage.java (fHighlightingColorList): Ditto. 
+	(ColorListContentProvider.getElements): Ditto. 
+	(addTextKeyToCover): Ditto.
+	(createSyntaxPage): Ditto.
+	(createOverlayStore): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/preferences/AutomakeEditorPreferencePage.java (fHighlightingColorList): Ditto. 
+	(ColorListContentProvider.getElements): Ditto.
+	(addTextKeyToCover): Ditto.
+	(createSyntaxPage): Ditto.
+	(createOverlayStore): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfAnnotationHover.java (getMarkersForLine): Ditto. 
+	(select): Ditto.
+	(getHoverInfo): Ditto.
+	(formatMultipleMessages): Ditto. 
+	(.createInformationControl): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfCodeScanner.java (AutoconfCodeScanner): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfMacroContentAssistProcessor.java (computeCompletionProposals): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfPartitionScanner.java (AutoconfPartitionScanner): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/outline/AutoconfContentOutlinePage.java (updateSelection): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/AutoconfElement.java (AutoconfElement): Ditto.
+	(toString): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/AutoconfParser.java (ExprEndCondition): Ditto. 
+	(ExprEndCondition.serialVersionUID): Ditto.
+	(BlockEndCondition): Ditto.
+	(checkBlockValidity): Ditto.
+	(BlockEndCondition.serialVersionUID): Ditto. 
+
+2009-05-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAclocalAction.java (run): Fix to
+	add type for result of InvokeAction.executeCommand call.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoconfAction.java (run): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutomakeAction.java (run): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java (separateTargets): Fix
+	compiler warnings. 
+	(separateOptions): Ditto.
+	(executeCommand): Add type for resulting Collection.  Regress previous fix until Galileo
+	build catches up to recent CDT changes.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (buildFile): Regress
+	previous fix until Galileo build catches up to recent CDT changes.
+	(getDefinedSymbols): Fix compiler warnings.
+	(getIncludePaths): Ditto.
+	(definedSymbols): Ditto.
+
+2009-05-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java (executeCommand): Use new
+	launcher execute method which isn't deprecated and handle CoreException.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (buildFile): Ditto. 
+
 2009-04-30  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #249199

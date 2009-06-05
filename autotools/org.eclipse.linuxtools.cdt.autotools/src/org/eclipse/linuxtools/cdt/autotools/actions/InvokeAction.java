@@ -18,9 +18,13 @@ import java.util.StringTokenizer;
 
 import org.eclipse.cdt.core.CommandLauncher;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
 import org.eclipse.swt.widgets.Shell;
 
 public abstract class InvokeAction extends AbstractTargetAction {
@@ -59,7 +63,7 @@ public abstract class InvokeAction extends AbstractTargetAction {
 	protected String[] separateTargets(String rawArgList) {
 
 		StringTokenizer st = new StringTokenizer(rawArgList, " "); //$NON-NLS-1$
-		ArrayList targetList = new ArrayList();
+		ArrayList<String> targetList = new ArrayList<String>();
 
 		while (st.hasMoreTokens()) {
 			String currentWord = st.nextToken().trim();
@@ -105,7 +109,7 @@ public abstract class InvokeAction extends AbstractTargetAction {
 	}
 
 	protected String[] separateOptions(String rawArgList) {
-		ArrayList argList = new ArrayList();
+		ArrayList<String> argList = new ArrayList<String>();
 		// May be multiple user-specified options in which case we
 		// need to split them up into individual options
 		rawArgList = rawArgList.trim();
@@ -152,7 +156,7 @@ public abstract class InvokeAction extends AbstractTargetAction {
 		return cwd;
 	}
 	
-	protected HashMap executeCommand(IPath command,
+	protected HashMap<String, String> executeCommand(IPath command,
 			String[] argumentList, String[] envList, IPath execDir) {
 
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -160,25 +164,38 @@ public abstract class InvokeAction extends AbstractTargetAction {
 		CommandLauncher cmdL = new CommandLauncher();
 
 		// invoke command
-		Process automakeProcess = cmdL.execute(command, argumentList, envList,
-				execDir);
+		try {
+			Process automakeProcess = cmdL.execute(command, argumentList, envList,
+					execDir, new NullProgressMonitor());
 
-		if (cmdL.waitAndRead(stdout, stderr) == CommandLauncher.OK) {
-			try {
-				automakeProcess.getOutputStream().close();
-			} catch (IOException e) {
-				// ignore
+			if (cmdL.waitAndRead(stdout, stderr) == CommandLauncher.OK) {
+				try {
+					automakeProcess.getOutputStream().close();
+				} catch (IOException e) {
+					// ignore
+				}
+			} else {
+				// FIXME: following is kludge so Galileo build can build
+				//        with outdated CDT.
+				if (cmdL == null)
+					throw new CoreException(Status.CANCEL_STATUS);
+				// failed to execute command
+				showError(InvokeMessages
+						.getString("InvokeAction.execute.windowTitle.error"), InvokeMessages //$NON-NLS-1$
+						.getString("InvokeAction.execute.message") //$NON-NLS-1$
+						+ command.toOSString()); //$NON-NLS-1$
+				return null;
 			}
-		} else {
-			// failed to execute command
+		} catch (CoreException e) {
 			showError(InvokeMessages
-									.getString("InvokeAction.execute.windowTitle.error"), InvokeMessages //$NON-NLS-1$
-									.getString("InvokeAction.execute.message") //$NON-NLS-1$
-									+ command.toOSString()); //$NON-NLS-1$
+					.getString("InvokeAction.execute.windowTitle.error"), InvokeMessages //$NON-NLS-1$
+					.getString("InvokeAction.execute.message") //$NON-NLS-1$
+					+ command.toOSString()); //$NON-NLS-1$
+			AutotoolsPlugin.logException(e);
 			return null;
 		}
-
-		HashMap outputs = new HashMap();
+ 
+		HashMap<String, String> outputs = new HashMap<String, String>();
 
 		outputs.put("stdout", stdout.toString()); //$NON-NLS-1$
 		outputs.put("stderr", stderr.toString()); //$NON-NLS-1$

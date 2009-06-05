@@ -36,7 +36,7 @@ public class AutomakeErrorHandler {
 	}
 	
 	private class AutomakeMarker implements IMarker {
-		private Map attributes;
+		private Map<String, Object> attributes;
 		private String type;
 		private long id;
 		
@@ -52,6 +52,7 @@ public class AutomakeErrorHandler {
 			// TODO Auto-generated method stub
 			return true;
 		}
+		@SuppressWarnings("unchecked")
 		public Object getAdapter(Class adapter) {
 			// TODO Auto-generated method stub
 			return null;
@@ -77,12 +78,13 @@ public class AutomakeErrorHandler {
 				return (String)o;
 			return defaultValue;
 		}
+		@SuppressWarnings("unchecked")
 		public Map getAttributes() throws CoreException {
 			return attributes;
 		}
 		public Object[] getAttributes(String[] attributeNames)
 				throws CoreException {
-			Collection c = attributes.values();
+			Collection<Object> c = attributes.values();
 			return c.toArray();
 		}
 		public long getCreationTime() throws CoreException {
@@ -117,6 +119,7 @@ public class AutomakeErrorHandler {
 				throws CoreException {
 			attributes.put(attributeName, value);
 		}
+		@SuppressWarnings("unchecked")
 		public void setAttributes(Map map) throws CoreException {
 			attributes.putAll(map);
 		}
@@ -133,10 +136,11 @@ public class AutomakeErrorHandler {
 		public AutomakeMarker(String type, long id) {
 			this.type = type;
 			this.id = id;
-			this.attributes = new HashMap();
+			this.attributes = new HashMap<String, Object>();
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private IMarker createMarker(Map attributes, String markerType) throws CoreException {
 		IMarker marker= new AutomakeMarker(markerType, -1);
 		marker.setAttributes(attributes);
@@ -160,7 +164,7 @@ public class AutomakeErrorHandler {
 				
 				int lineNumber = directive.getStartLine();
 				
-				Map map = new HashMap();
+				Map<String, Object> map = new HashMap<String, Object>();
 				MarkerUtilities.setLineNumber(map, lineNumber);
 				// FIXME:  message
 				MarkerUtilities.setMessage(map, "Bad Directive");

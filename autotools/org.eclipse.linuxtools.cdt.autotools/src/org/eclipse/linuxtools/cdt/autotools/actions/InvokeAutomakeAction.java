@@ -88,7 +88,7 @@ InvokeMessages
 			if (automakeCommand == null)
 				automakeCommand = "automake"; // $NON-NLS-1$
 
-			HashMap result = executeCommand(new Path(automakeCommand),
+			HashMap<String, String> result = executeCommand(new Path(automakeCommand),
 					argumentList, null, execDir);
 
 			String autoconf_error = (String)result.get("stderr"); //$NON-NLS-1$

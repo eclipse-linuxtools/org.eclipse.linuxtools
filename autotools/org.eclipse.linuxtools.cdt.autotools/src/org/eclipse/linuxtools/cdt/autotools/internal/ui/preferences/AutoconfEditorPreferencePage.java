@@ -13,7 +13,7 @@
 package org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import org.eclipse.cdt.make.ui.IMakeHelpContextIds;
 import org.eclipse.cdt.ui.PreferenceConstants;
@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.model.WorkbenchViewerSorter;
+import org.eclipse.ui.model.WorkbenchViewerComparator;
 
 
 
@@ -63,7 +63,8 @@ public class AutoconfEditorPreferencePage extends AbstractEditorPreferencePage {
 	private String[][] fSyntaxColorListModel;
 
 	private TableViewer fHighlightingColorListViewer;
-	private final java.util.List fHighlightingColorList= new ArrayList(5);
+	private final List<HighlightingColorListItem> fHighlightingColorList = 
+		new ArrayList<HighlightingColorListItem>(5);
 
 	ColorEditor fAppearanceColorEditor;
 	Button fAppearanceColorDefault;
@@ -78,9 +79,6 @@ public class AutoconfEditorPreferencePage extends AbstractEditorPreferencePage {
 	// version
 	protected Combo fACVersionCombo;
 	protected Combo fAMVersionCombo;
-	
-	protected Map fWorkingValues;
-	protected ArrayList fComboBoxes;
 	
 
 	/**
@@ -192,8 +190,9 @@ public class AutoconfEditorPreferencePage extends AbstractEditorPreferencePage {
 		/*
 		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 		 */
+		@SuppressWarnings("unchecked")
 		public Object[] getElements(Object inputElement) {
-			return ((java.util.List)inputElement).toArray();
+			return ((List<Object>)inputElement).toArray();
 		}
 
 		/*
@@ -229,7 +228,7 @@ public class AutoconfEditorPreferencePage extends AbstractEditorPreferencePage {
 				{AutotoolsPreferencesMessages.getString("AutoconfEditorPreferencePage.autoconf_editor_var_set"), ColorManager.AUTOCONF_VAR_SET_COLOR, null},  //$NON-NLS-1$
 				{AutotoolsPreferencesMessages.getString("AutoconfEditorPreferencePage.autoconf_editor_default"), ColorManager.AUTOCONF_DEFAULT_COLOR, null},  //$NON-NLS-1$
 			};
-		ArrayList overlayKeys= new ArrayList();
+		ArrayList<OverlayPreferenceStore.OverlayKey> overlayKeys= new ArrayList<OverlayPreferenceStore.OverlayKey>();
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, AutotoolsEditorPreferenceConstants.EDITOR_FOLDING_ENABLED));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, AutotoolsEditorPreferenceConstants.EDITOR_FOLDING_CONDITIONAL));
@@ -248,7 +247,7 @@ public class AutoconfEditorPreferencePage extends AbstractEditorPreferencePage {
 		return new OverlayPreferenceStore(getPreferenceStore(), keys);
 	}
 
-	private void addTextKeyToCover(ArrayList overlayKeys, String mainKey) {
+	private void addTextKeyToCover(ArrayList<OverlayPreferenceStore.OverlayKey> overlayKeys, String mainKey) {
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.STRING, mainKey));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.STRING, mainKey + AutotoolsEditorPreferenceConstants.EDITOR_BOLD_SUFFIX));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.STRING, mainKey + AutotoolsEditorPreferenceConstants.EDITOR_ITALIC_SUFFIX));
@@ -381,7 +380,7 @@ public class AutoconfEditorPreferencePage extends AbstractEditorPreferencePage {
 		fHighlightingColorListViewer= new TableViewer(editorComposite, SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
 		fHighlightingColorListViewer.setLabelProvider(new ColorListLabelProvider());
 		fHighlightingColorListViewer.setContentProvider(new ColorListContentProvider());
-		fHighlightingColorListViewer.setSorter(new WorkbenchViewerSorter());
+		fHighlightingColorListViewer.setComparator(new WorkbenchViewerComparator());
 		gd= new GridData(GridData.FILL_BOTH);
 		gd.heightHint= convertHeightInCharsToPixels(5);
 		fHighlightingColorListViewer.getControl().setLayoutData(gd);

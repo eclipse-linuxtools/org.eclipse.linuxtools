@@ -18,8 +18,8 @@ import java.util.Map;
 import org.eclipse.cdt.make.core.makefile.IMakefile;
 import org.eclipse.cdt.make.ui.IWorkingCopyManager;
 import org.eclipse.cdt.make.ui.IWorkingCopyManagerExtension;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.text.Assert;
 import org.eclipse.ui.IEditorInput;
 
 
@@ -30,7 +30,7 @@ import org.eclipse.ui.IEditorInput;
 public class WorkingCopyManager implements IWorkingCopyManager, IWorkingCopyManagerExtension {
 	
 	private IMakefileDocumentProvider fDocumentProvider;
-	private Map fMap;
+	private Map<IEditorInput, IMakefile> fMap;
 	private boolean fIsShuttingDown;
 
 	/**
@@ -90,7 +90,7 @@ public class WorkingCopyManager implements IWorkingCopyManager, IWorkingCopyMana
 	public void setWorkingCopy(IEditorInput input, IMakefile workingCopy) {
 		if (fDocumentProvider.getDocument(input) != null) {
 			if (fMap == null)
-				fMap= new HashMap();
+				fMap= new HashMap<IEditorInput, IMakefile>();
 			fMap.put(input, workingCopy);
 		}
 	}

@@ -65,13 +65,13 @@ public class ColorManager implements ISharedTextColors {
 		return fgColorManager;
 	}
 
-	protected Map fColorTable = new HashMap(10);
+	protected Map<RGB, Color> fColorTable = new HashMap<RGB, Color>(10);
 
 	/**
 	 * @see IMakefileColorManager#dispose()
 	 */
 	public void dispose() {
-		Iterator e = fColorTable.values().iterator();
+		Iterator<Color> e = fColorTable.values().iterator();
 		while (e.hasNext())
 			 ((Color) e.next()).dispose();
 	}

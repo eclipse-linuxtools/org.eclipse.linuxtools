@@ -143,9 +143,9 @@ public abstract class AbstractElementListSelectionDialog extends SelectionStatus
 	 * Returns the widget selection. Returns empty list when the widget is not
 	 * usable.
 	 */
-	protected List getWidgetSelection() {
+	protected List<Object> getWidgetSelection() {
 		if (fSelectionList == null || fSelectionList.isDisposed())
-			return new ArrayList(0);
+			return new ArrayList<Object>(0);
 		return fSelectionList.getSelection();	
 	}
 	/**
@@ -247,7 +247,7 @@ public abstract class AbstractElementListSelectionDialog extends SelectionStatus
 	 * Initializes the selection list widget with the given list of
 	 * elements.
 	 */
-	protected void setSelectionListElements(List elements, boolean refilter) {
+	protected void setSelectionListElements(List<Object> elements, boolean refilter) {
 		fSelectionList.setElements(elements, refilter);
 	}
 	/**
@@ -262,7 +262,7 @@ public abstract class AbstractElementListSelectionDialog extends SelectionStatus
 	 * accordingly.
 	 */
 	protected boolean verifyCurrentSelection() {
-		List sel= getWidgetSelection();
+		List<Object> sel= getWidgetSelection();
 		int length= sel.size();
 		if (length > 0) {
 			if (fValidator != null) {

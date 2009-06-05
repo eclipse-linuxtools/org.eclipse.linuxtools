@@ -42,10 +42,11 @@ public class AutoconfContentOutlinePage extends ContentOutlinePage {
 		update();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected ISelection updateSelection(ISelection sel) {
-		ArrayList newSelection= new ArrayList();
+		ArrayList<Object> newSelection= new ArrayList<Object>();
 		if (sel instanceof IStructuredSelection) {
-			Iterator iter= ((IStructuredSelection)sel).iterator();
+			Iterator<Object> iter= ((IStructuredSelection)sel).iterator();
 			for (;iter.hasNext();) {
 				//ICElement elem= fInput.findEqualMember((ICElement)iter.next());
 				Object o = iter.next();

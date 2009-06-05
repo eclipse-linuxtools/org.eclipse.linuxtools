@@ -91,6 +91,7 @@ public abstract class SelectionStatusDialog extends SelectionDialog {
 	 * if there isn't any initial selection.
 	 * @return the first element of the initial selection.
 	 */
+	@SuppressWarnings("unchecked")
 	protected Object getPrimaryInitialSelection() {
 		List result= getInitialElementSelections();
 		if (result == null || result.size() == 0)
@@ -129,6 +130,7 @@ public abstract class SelectionStatusDialog extends SelectionDialog {
 	public void setImage(Image image) {
 		fImage= image;
 	}
+	@SuppressWarnings("unchecked")
 	protected void setInitialSelection(int position, Object element) {
 		List l= getInitialElementSelections();
 		l.set(position, element);

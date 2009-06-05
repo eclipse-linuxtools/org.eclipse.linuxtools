@@ -19,7 +19,6 @@ import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.ICDescriptor;
 import org.eclipse.cdt.core.ICExtensionReference;
 import org.eclipse.cdt.make.core.IMakeTargetManager;
-import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -34,7 +33,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -44,7 +42,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static AutotoolsPlugin plugin;
 	private ResourceBundle resourceBundle;
-	private ServiceTracker tracker;
 	
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.cdt.autotools"; //$NON-NLS-1$
 
@@ -85,6 +82,7 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 		return fTargetManager;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void verifyScannerInfoProvider(IProject project) throws CoreException {
 		boolean found = false;
 		ICDescriptor desc = CCorePlugin.getDefault().getCProjectDescription(project, true);
@@ -98,6 +96,7 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
         }
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void setScannerInfoProvider(IProject project) throws CoreException {
 		ICDescriptor desc = CCorePlugin.getDefault().getCProjectDescription(project, true);
 		desc.remove(CCorePlugin.BUILD_SCANNER_INFO_UNIQ_ID);
@@ -109,8 +108,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		this.tracker = new ServiceTracker(context, IProxyService.class.getName(), null);
-		this.tracker.open();
 	}
 
 	/**
@@ -118,7 +115,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		this.tracker.close();
 		plugin = null;
 	}
 
@@ -129,13 +125,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Returns IProxyService which means we can safely read a URL.
-	 */
-	public IProxyService getProxyService() {
-		return (IProxyService)tracker.getService();
-	}
-	
 	/**
 	 * Returns active shell.
 	 */

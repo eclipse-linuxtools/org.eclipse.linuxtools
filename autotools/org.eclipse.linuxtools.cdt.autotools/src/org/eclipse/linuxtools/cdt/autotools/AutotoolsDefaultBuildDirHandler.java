@@ -50,7 +50,7 @@ public class AutotoolsDefaultBuildDirHandler extends ManagedOptionValueHandler
 		if (buildObject instanceof IConfiguration &&
 				(event == IManagedOptionValueHandler.EVENT_OPEN)) {
 //						|| event == IManagedOptionValueHandler.EVENT_APPLY)) {
-			SortedSet nums = new TreeSet();
+			SortedSet<Integer> nums = new TreeSet<Integer>();
 			IConfiguration configuration = (IConfiguration)buildObject;
 			IConfiguration[] cfgs = configuration.getManagedProject().getConfigurations();
 			int index = 1;

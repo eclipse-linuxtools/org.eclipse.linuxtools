@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
+import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
@@ -32,7 +33,7 @@ public class AutoconfPartitionScanner extends RuleBasedPartitionScanner {
 	public AutoconfPartitionScanner() {
 		super();
 		
-		List rules= new ArrayList();
+		List<IRule> rules= new ArrayList<IRule>();
 		Token macro = new Token(AUTOCONF_MACRO);
 		Token comment = new Token(AUTOCONF_COMMENT);
 

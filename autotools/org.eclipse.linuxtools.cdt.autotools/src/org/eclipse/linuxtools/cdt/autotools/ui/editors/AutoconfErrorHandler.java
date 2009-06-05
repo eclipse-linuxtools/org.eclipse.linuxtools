@@ -35,7 +35,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 	public static final String PARSE_ERROR_MARKER_ID = AutotoolsPlugin.PLUGIN_ID
 	+ ".parsefileerror";
 	
-	private Map annotations = new HashMap();
+	private Map<Position, MarkerAnnotation> annotations = new HashMap<Position, MarkerAnnotation>();
 	private AnnotationModel fAnnotationModel;
 	
 	public AutoconfErrorHandler(IEditorInput input) {
@@ -43,7 +43,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 	}
 	
 	private class AutoconfMarker implements IMarker {
-		private Map attributes;
+		private Map<String, Object> attributes;
 		private String type;
 		private long id;
 		
@@ -59,6 +59,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 			// TODO Auto-generated method stub
 			return true;
 		}
+		@SuppressWarnings("unchecked")
 		public Object getAdapter(Class adapter) {
 			// TODO Auto-generated method stub
 			return null;
@@ -84,12 +85,12 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 				return (String)o;
 			return defaultValue;
 		}
-		public Map getAttributes() throws CoreException {
+		public Map<String, Object> getAttributes() throws CoreException {
 			return attributes;
 		}
 		public Object[] getAttributes(String[] attributeNames)
 				throws CoreException {
-			Collection c = attributes.values();
+			Collection<Object> c = attributes.values();
 			return c.toArray();
 		}
 		public long getCreationTime() throws CoreException {
@@ -124,6 +125,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 				throws CoreException {
 			attributes.put(attributeName, value);
 		}
+		@SuppressWarnings("unchecked")
 		public void setAttributes(Map map) throws CoreException {
 			attributes.putAll(map);
 		}
@@ -140,10 +142,10 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 		public AutoconfMarker(String type, long id) {
 			this.type = type;
 			this.id = id;
-			this.attributes = new HashMap();
+			this.attributes = new HashMap<String, Object>();
 		}
 	}
-	private IMarker createMarker(Map attributes, String markerType) throws CoreException {
+	private IMarker createMarker(Map<String, Object> attributes, String markerType) throws CoreException {
 		IMarker marker= new AutoconfMarker(markerType, -1);
 		marker.setAttributes(attributes);
 		return marker;
@@ -156,7 +158,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 		
 		int lineNumber = e.getLineNumber();
 		
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<String, Object>();
 		MarkerUtilities.setLineNumber(map, lineNumber);
 		MarkerUtilities.setMessage(map, e.getMessage());
 		map.put(IMarker.MESSAGE, e.getMessage());
@@ -193,6 +195,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 		annotations.clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void removeExistingMarkers(int offset, int length)
 	{	
 		Iterator i = fAnnotationModel.getAnnotationIterator();

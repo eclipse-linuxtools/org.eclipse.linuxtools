@@ -14,13 +14,14 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.ICharacterScanner;
+import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 
 public class RestrictedEndOfLineRule extends EndOfLineRule {
 	
-	private ArrayList rules;
+	private ArrayList<IRule> rules;
 	private int startIndex;
 	private int endIndex;
 	private String startSequence;
@@ -70,7 +71,7 @@ public class RestrictedEndOfLineRule extends EndOfLineRule {
 		super(startSequence, token, escapeCharacter, breaksOnEOF);
 		this.startSequence = startSequence;
 		this.restrictedChars = restrictedChars;
-		rules = new ArrayList();
+		rules = new ArrayList<IRule>();
 		startIndex = 0;
 		endIndex = 0;
 	}

@@ -30,7 +30,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.LineRange;
 import org.eclipse.linuxtools.cdt.autotools.internal.ui.HTMLPrinter;
 import org.eclipse.linuxtools.cdt.autotools.internal.ui.HTMLTextPresenter;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 
@@ -60,14 +59,15 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 	 * Selects a set of markers from the two lists. By default, it just returns
 	 * the set of exact matches.
 	 */
-	protected List select(List exactMatch, List including) {
+	protected List<IMarker> select(List<IMarker> exactMatch, List<IMarker> including) {
 		return exactMatch;
 	}
 
 	/**
 	 * Returns one marker which includes the ruler's line of activity.
 	 */
-	protected List getMarkersForLine(ISourceViewer viewer, int line) {
+	@SuppressWarnings("unchecked")
+	protected List<IMarker> getMarkersForLine(ISourceViewer viewer, int line) {
 		
 		IDocument document= viewer.getDocument();
 		IAnnotationModel model= viewer.getAnnotationModel();
@@ -75,10 +75,10 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 		if (model == null)
 			return null;
 			
-		List exact= new ArrayList();
-		List including= new ArrayList();
+		List<IMarker> exact= new ArrayList<IMarker>();
+		List<IMarker> including= new ArrayList<IMarker>();
 		
-		Iterator e= model.getAnnotationIterator();
+		Iterator<Object> e= model.getAnnotationIterator();
 		while (e.hasNext()) {
 			Object o= e.next();
 			if (o instanceof MarkerAnnotation) {
@@ -101,7 +101,7 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 	 * @see IVerticalRulerHover#getHoverInfo(ISourceViewer, int)
 	 */
 	public String getHoverInfo(ISourceViewer sourceViewer, int lineNumber) {
-		List markers= getMarkersForLine(sourceViewer, lineNumber);
+		List<IMarker> markers= getMarkersForLine(sourceViewer, lineNumber);
 		if (markers != null && markers.size() > 0) {
 			
 			if (markers.size() == 1) {
@@ -114,9 +114,9 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 					
 			} else {
 					
-				List messages= new ArrayList();
+				List<String> messages= new ArrayList<String>();
 				
-				Iterator e= markers.iterator();
+				Iterator<IMarker> e= markers.iterator();
 				while (e.hasNext()) {
 					IMarker marker= (IMarker) e.next();
 					String message= marker.getAttribute(IMarker.MESSAGE, (String) null);
@@ -160,13 +160,13 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 	/*
 	 * Formats several message as HTML text.
 	 */
-	private String formatMultipleMessages(List messages) {
+	private String formatMultipleMessages(List<String> messages) {
 		StringBuffer buffer= new StringBuffer();
 		HTMLPrinter.addPageProlog(buffer);
 		HTMLPrinter.addParagraph(buffer, HTMLPrinter.convertToHTMLContent(AutoconfEditorMessages.getString("AutoconfAnnotationHover.multipleMarkers"))); //$NON-NLS-1$
 		
 		HTMLPrinter.startBulletList(buffer);
-		Iterator e= messages.iterator();
+		Iterator<String> e= messages.iterator();
 		while (e.hasNext())
 			HTMLPrinter.addBullet(buffer, HTMLPrinter.convertToHTMLContent((String) e.next()));
 		HTMLPrinter.endBulletList(buffer);	
@@ -183,9 +183,8 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 	public IInformationControlCreator getHoverControlCreator() {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, SWT.NONE,
-						new HTMLTextPresenter(false),
-						null);
+				return new DefaultInformationControl(parent, (String)null,
+						new HTMLTextPresenter(false));
 			}
 		};
 	}

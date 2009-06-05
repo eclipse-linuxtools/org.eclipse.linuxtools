@@ -32,6 +32,7 @@ import org.eclipse.linuxtools.cdt.autotools.internal.wizards.ManagedProjectOptio
 import org.eclipse.ui.PlatformUI;
 
 
+@SuppressWarnings("deprecation")
 public class NewAutotoolsProjectOptionPage extends NewCProjectWizardOptionPage {
 	
 	public static final String PAGE_ID = "org.eclipse.cdt.managedbuilder.ui.wizard.projectOptionsPage"; //$NON-NLS-1$
@@ -85,9 +86,9 @@ public class NewAutotoolsProjectOptionPage extends NewCProjectWizardOptionPage {
 		}
 		
 		public void setupHelpContextIds(){
-			List pages = getOptionPages();
+			List<ICOptionPage> pages = getOptionPages();
 			
-			Iterator iter = pages.iterator();
+			Iterator<ICOptionPage> iter = pages.iterator();
 			for( int i = 0; i < 3 && iter.hasNext(); i++ ) {
 				ICOptionPage page = (ICOptionPage) iter.next();
 				

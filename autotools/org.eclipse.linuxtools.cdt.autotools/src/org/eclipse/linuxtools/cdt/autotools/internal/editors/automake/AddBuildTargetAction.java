@@ -134,11 +134,12 @@ public class AddBuildTargetAction extends Action {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	private ITargetRule[] getTargetRules(ISelection sel) {
 		if (!sel.isEmpty() && sel instanceof IStructuredSelection) {
-			List list = ((IStructuredSelection)sel).toList();
+			List<Object> list = ((IStructuredSelection)sel).toList();
 			if (list.size() > 0) {
-				List targets = new ArrayList(list.size());
+				List<Object> targets = new ArrayList<Object>(list.size());
 				Object[] elements = list.toArray();
 				for (int i = 0; i < elements.length; i++) {
 					if (elements[i] instanceof ITargetRule) {

@@ -52,11 +52,12 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 	private IProject project;
 	private IPath filePath;
 	private String[] includePaths;
+	@SuppressWarnings("unchecked")
 	private HashMap definedSymbols;
 	private boolean isDirty;
 	private String compilationString;
 	private String dirName;
-	private HashSet listeners = new HashSet();
+	private HashSet<IScannerInfoChangeListener> listeners = new HashSet<IScannerInfoChangeListener>();
 	
 	public AutotoolsScannerInfo (IResource res) {
 		this.res = res;
@@ -120,23 +121,28 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		makeArgs[1] = "all"; // $NON-NLS-1$
 		makeArgs[2] = "MAKE=make -W " + relFilePath.toOSString(); //$NON-NLS-1$
 
-		Process proc = launcher.execute(makeCommandPath, makeArgs, env,
-				runPath);
-		if (proc != null) {
-			try {
-				// Close the input of the process since we will never write to
-				// it
-				proc.getOutputStream().close();
-			} catch (IOException e) {
-			}
+		try {
+			Process proc = launcher.execute(makeCommandPath, makeArgs, env,
+					runPath, new NullProgressMonitor());
+			if (proc != null) {
+				try {
+					// Close the input of the process since we will never write to
+					// it
+					proc.getOutputStream().close();
+				} catch (IOException e) {
+				}
 
-			if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
-					monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
+				if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
+						monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
+					errMsg = launcher.getErrorMessage();
+				}
+				outString = stdout.toString();
+			} else {
 				errMsg = launcher.getErrorMessage();
 			}
-			outString = stdout.toString();
-		} else {
-			errMsg = launcher.getErrorMessage();
+		} catch (CoreException e) {
+			errMsg = e.getLocalizedMessage();
+			AutotoolsPlugin.logErrorMessage(errMsg);
 		}
 		return outString;
 	}
@@ -240,7 +246,7 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		if (includePaths != null && !isDirty && compilationString != null) {
 			return includePaths;
 		}
-		ArrayList pathList = new ArrayList();
+		ArrayList<String> pathList = new ArrayList<String>();
 		String cs = getCompilationString();
 		if (cs != null) {
 			// Grab include paths specified via -I
@@ -298,7 +304,7 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		includePaths = (String[])pathList.toArray(pathArray);
 		
 		// FIXME: Info has been updated.  Is this the best place to notify listeners?
-		Iterator i = listeners.iterator();
+		Iterator<IScannerInfoChangeListener> i = listeners.iterator();
 		while (i.hasNext()) {
 			IScannerInfoChangeListener listener = (IScannerInfoChangeListener)i.next();
 			listener.changeNotification(project, this);
@@ -306,6 +312,7 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		return includePaths;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Map getDefinedSymbols () {
 		HashMap symbolMap = new HashMap();
 		if (project == null || filePath == null)

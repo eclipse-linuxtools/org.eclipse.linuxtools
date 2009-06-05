@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.swt.widgets.Composite;
 
+@SuppressWarnings("deprecation")
 public class ErrorParserBlock extends AbstractErrorParserBlock {
 
 	// make builder enabled

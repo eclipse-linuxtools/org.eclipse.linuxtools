@@ -15,15 +15,15 @@ import java.util.ArrayList;
 public class AutoconfPrototype {
 	protected String name;
 	protected int numPrototypes;
-	protected ArrayList minParms;
-	protected ArrayList maxParms;
-	protected ArrayList parmList;
+	protected ArrayList<Integer> minParms;
+	protected ArrayList<Integer> maxParms;
+	protected ArrayList<ArrayList<String>> parmList;
 	
 	public AutoconfPrototype() {
 		numPrototypes = 0;
-		minParms = new ArrayList();
-		maxParms = new ArrayList();
-		parmList = new ArrayList();
+		minParms = new ArrayList<Integer>();
+		maxParms = new ArrayList<Integer>();
+		parmList = new ArrayList<ArrayList<String>>();
 	}
 	
 	public String getName() {
@@ -59,20 +59,20 @@ public class AutoconfPrototype {
 	}
 	
 	public String getParmName(int prototypeNum, int parmNum) {
-		ArrayList parms = (ArrayList)parmList.get(prototypeNum);
+		ArrayList<String> parms = parmList.get(prototypeNum);
 		return (String)parms.get(parmNum);
 	}
 
 	// This function assumes that parms will be added in order starting
 	// with lowest prototype first.
 	public void setParmName(int prototypeNum, int parmNum, String value) {
-		ArrayList parms;
+		ArrayList<String> parms;
 		if (parmList.size() == prototypeNum) {
-			parms = new ArrayList();
+			parms = new ArrayList<String>();
 			parmList.add(parms);
 		}
 		else
-			parms = (ArrayList)parmList.get(prototypeNum);
+			parms = (ArrayList<String>)parmList.get(prototypeNum);
 		if (parms.size() == parmNum)
 			parms.add(value);	
 		else

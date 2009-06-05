@@ -29,10 +29,9 @@ import org.eclipse.cdt.make.core.MakeCorePlugin;
 import org.eclipse.cdt.make.core.makefile.IDirective;
 import org.eclipse.cdt.make.core.makefile.IMakefile;
 import org.eclipse.cdt.make.core.makefile.gnu.IGNUMakefile;
-import org.eclipse.cdt.make.internal.core.makefile.MakefileReader;
 import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.cdt.autotools.editors.automake.AutomakeConfigMacro;
 import org.eclipse.linuxtools.cdt.autotools.editors.automake.AutomakefileUtil;
 
@@ -88,8 +87,8 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 	protected void parse(URI fileURI, MakefileReader reader) throws IOException {
 		String line;
 		Rule[] rules = null;
-		Stack conditions = new Stack();
-		Stack defines = new Stack();
+		Stack<IDirective> conditions = new Stack<IDirective>();
+		Stack<GNUVariableDef> defines = new Stack<GNUVariableDef>();
 		int startLine = 0;
 		int endLine = 0;
 
@@ -379,7 +378,7 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 		//validator.validateDirectives(null, getDirectives());
 	}
 
-	private void addDirective(Stack conditions, Directive directive) {
+	private void addDirective(Stack<IDirective> conditions, Directive directive) {
 		if (conditions.empty()) {
 			addDirective(directive);
 		} else {
@@ -624,7 +623,7 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 		String[] directories;
 		StringTokenizer st = new StringTokenizer(line);
 		int count = st.countTokens();
-		List dirs = new ArrayList(count);
+		List<String> dirs = new ArrayList<String>(count);
 		if (count > 0) {
 			for (int i = 0; i < count; i++) {
 				if (count == 0) {
@@ -879,7 +878,7 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 			return getDirectives();
 		}
 		IDirective[] dirs = getDirectives();
-		ArrayList list = new ArrayList(Arrays.asList(dirs));
+		ArrayList<IDirective> list = new ArrayList<IDirective>(Arrays.asList(dirs));
 		for (int i = 0; i < dirs.length; ++i) {
 			if (dirs[i] instanceof Include) {
 				Include include = (Include)dirs[i];
@@ -900,10 +899,10 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 		if (builtins == null) {
 			String location =  "builtin" + File.separator + "gnu.mk"; //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				InputStream stream = MakeCorePlugin.getDefault().openStream(new Path(location));
+				InputStream stream = FileLocator.openStream(MakeCorePlugin.getDefault().getBundle(), new Path(location), false);
 				GNUAutomakefile gnu = new GNUAutomakefile();
-				URL url = Platform.find(MakeCorePlugin.getDefault().getBundle(), new Path(location));
-				url = Platform.resolve(url);
+				URL url = FileLocator.find(MakeCorePlugin.getDefault().getBundle(), new Path(location), null);
+				url = FileLocator.resolve(url);
 				location = url.getFile();
 				gnu.parse(location, new InputStreamReader(stream));
 				builtins = gnu.getDirectives();

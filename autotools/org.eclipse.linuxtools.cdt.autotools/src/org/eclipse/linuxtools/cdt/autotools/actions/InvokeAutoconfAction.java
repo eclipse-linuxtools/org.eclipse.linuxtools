@@ -52,7 +52,7 @@ public class InvokeAutoconfAction extends InvokeAction {
 			if (autoconfCommand == null)
 				autoconfCommand = "autoconf"; // $NON-NLS-1$
 			
-			HashMap result = executeCommand(new Path(autoconfCommand), new String[]{}, null, execDir);
+			HashMap<String, String> result = executeCommand(new Path(autoconfCommand), new String[]{}, null, execDir);
 			
 			autoconf_error = (String)result.get("stderr"); //$NON-NLS-1$
 			autoconf_result = (String)result.get("stdout"); //$NON-NLS-1$

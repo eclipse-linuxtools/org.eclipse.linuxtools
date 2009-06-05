@@ -94,7 +94,7 @@ public class InvokeAclocalAction extends InvokeAction {
 			if (aclocalCommand == null)
 				aclocalCommand = "aclocal"; // $NON-NLS-1$
 			
-			HashMap result = executeCommand(new Path(aclocalCommand),
+			HashMap<String, String> result = executeCommand(new Path(aclocalCommand),
 					argumentList, null, execDir);
 
 			String autoconf_error = (String)result.get("stderr"); //$NON-NLS-1$

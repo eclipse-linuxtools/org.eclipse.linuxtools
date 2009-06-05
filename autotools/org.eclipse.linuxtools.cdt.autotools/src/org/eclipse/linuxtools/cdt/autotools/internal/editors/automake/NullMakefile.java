@@ -15,7 +15,6 @@ import java.io.Reader;
 import java.net.URI;
 
 import org.eclipse.cdt.make.core.makefile.IDirective;
-import org.eclipse.cdt.make.internal.core.makefile.MakefileReader;
 
 /**
  * Makefile : ( statement ) *

@@ -138,6 +138,7 @@ public class MakefileDocumentProvider extends TextFileDocumentProvider implement
 	/*
 	 * @see org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.MakefileDocumentProvider#shutdown()
 	 */
+	@SuppressWarnings("unchecked")
 	public void shutdown() {
 		Iterator e= getConnectedElementsIterator();
 		while (e.hasNext())

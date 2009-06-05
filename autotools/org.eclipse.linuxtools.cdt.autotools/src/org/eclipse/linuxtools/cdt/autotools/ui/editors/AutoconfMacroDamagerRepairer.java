@@ -51,8 +51,8 @@ public class AutoconfMacroDamagerRepairer extends DefaultDamagerRepairer {
 	 */
 	public void createPresentation(TextPresentation presentation, ITypedRegion region) {
 
-		int offset = region.getOffset();
-		int length = region.getLength();
+//		int offset = region.getOffset();
+//		int length = region.getLength();
 		
 		super.createPresentation(presentation, region);
 	}

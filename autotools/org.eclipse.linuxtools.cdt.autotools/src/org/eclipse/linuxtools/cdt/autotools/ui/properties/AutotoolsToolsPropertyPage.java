@@ -103,8 +103,6 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 		String aclocalPath = null;
 		String automakePath = null;
 		String autoconfPath = null;
-		boolean changed = false;
-		
 		try {
 			aclocalPath = project.getPersistentProperty(AutotoolsPropertyConstants.ACLOCAL_TOOL);
 		} catch (CoreException e1) {
@@ -113,7 +111,6 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 
 		String newAclocalPath = fAclocalPath.getText().trim();
 		if (aclocalPath == null || !newAclocalPath.equals(aclocalPath)) {
-			changed = true;
 			try {
 				project.setPersistentProperty(AutotoolsPropertyConstants.ACLOCAL_TOOL, newAclocalPath);
 			} catch (CoreException e1) {
@@ -129,7 +126,6 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 
 		String newAutomakePath = fAutomakePath.getText().trim();
 		if (automakePath == null || !newAutomakePath.equals(automakePath)) {
-			changed = true;
 			try {
 				project.setPersistentProperty(AutotoolsPropertyConstants.AUTOMAKE_TOOL, newAutomakePath);
 			} catch (CoreException e2) {
@@ -145,7 +141,6 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 
 		String newAutoconfPath = fAutoconfPath.getText().trim();
 		if (autoconfPath == null || !newAutoconfPath.equals(autoconfPath)) {
-			changed = true;
 			try {
 				project.setPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_TOOL, newAutoconfPath);
 			} catch (CoreException e2) {

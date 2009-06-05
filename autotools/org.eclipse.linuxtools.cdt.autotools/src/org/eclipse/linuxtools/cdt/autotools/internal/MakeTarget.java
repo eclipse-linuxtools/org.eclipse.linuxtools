@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.cdt.autotools.internal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.cdt.make.core.IMakeBuilderInfo;
 import org.eclipse.cdt.make.core.IMakeCommonBuildInfo;
@@ -47,8 +48,8 @@ public class MakeTarget extends PlatformObject implements IMakeTarget {
 	private IContainer container;
 	private int appendEnvironment = USE_PROJECT_ENV_SETTING;
 	private boolean appendProjectEnvironment = true;
-	private Map buildEnvironment = new HashMap();
-	private Map targetAttributes = new HashMap();
+	private Map<String, String> buildEnvironment = new HashMap<String, String>();
+	private Map<String, String> targetAttributes = new HashMap<String, String>();
 
 	MakeTarget(MakeTargetManager manager, IProject project, String targetBuilderID, String name) throws CoreException {
 		this.manager = manager;
@@ -74,7 +75,7 @@ public class MakeTarget extends PlatformObject implements IMakeTarget {
 		this.name = name;
 	}
 	
-	Map getAttributeMap() {
+	Map<String, String> getAttributeMap() {
 		return targetAttributes;
 	}
 
@@ -192,8 +193,8 @@ public class MakeTarget extends PlatformObject implements IMakeTarget {
 		throw new UnsupportedOperationException();
 	}
 
-	public Map getExpandedEnvironment() throws CoreException {
-		Map env = null;
+	public Map<String, String> getExpandedEnvironment() throws CoreException {
+		Map<String, String> env = null;
 		if (appendProjectEnvironment()) {
 			IMakeBuilderInfo projectInfo;
 			projectInfo = MakeCorePlugin.createBuildInfo(getProject(), manager.getBuilderID(targetBuilderID));
@@ -204,11 +205,11 @@ public class MakeTarget extends PlatformObject implements IMakeTarget {
 		} else {
 			env.putAll(getEnvironment());
 		}
-		HashMap envMap = new HashMap(env.entrySet().size());
-		Iterator iter = env.entrySet().iterator();
+		HashMap<String, String> envMap = new HashMap<String, String>(env.entrySet().size());
+		Iterator<Entry<String, String>> iter = env.entrySet().iterator();
 		boolean win32 = Platform.getOS().equals(Constants.OS_WIN32);
 		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry)iter.next();
+			Map.Entry<String, String> entry = iter.next();
 			String key = (String)entry.getKey();
 			if (win32) {
 				// Win32 vars are case insensitive. Uppercase everything so
@@ -232,12 +233,12 @@ public class MakeTarget extends PlatformObject implements IMakeTarget {
 		appendProjectEnvironment = append;
 	}	
 
-	public Map getEnvironment() {
+	public Map<String, String> getEnvironment() {
 		return buildEnvironment;
 	}
 
-	public void setEnvironment(Map env) throws CoreException {
-		buildEnvironment = new HashMap(env);
+	public void setEnvironment(Map<String, String> env) throws CoreException {
+		buildEnvironment = new HashMap<String, String>(env);
 		manager.updateTarget(this);
 	}
 
@@ -278,6 +279,7 @@ public class MakeTarget extends PlatformObject implements IMakeTarget {
 		return container.hashCode() * 17 + name != null ? name.hashCode(): 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void build(IProgressMonitor monitor) throws CoreException {
 		final String builderID = manager.getBuilderID(targetBuilderID);
 		final HashMap infoMap = new HashMap();
@@ -328,6 +330,7 @@ public class MakeTarget extends PlatformObject implements IMakeTarget {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IProject.class)) {
 			return getProject();

@@ -21,8 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,15 +28,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.CommandLauncher;
 import org.eclipse.cdt.core.ConsoleOutputStream;
 import org.eclipse.cdt.core.ICDescriptor;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.resources.IConsole;
+import org.eclipse.cdt.core.settings.model.ICStorageElement;
 import org.eclipse.cdt.make.core.IMakeTarget;
 import org.eclipse.cdt.make.core.IMakeTargetManager;
 import org.eclipse.cdt.make.core.MakeCorePlugin;
@@ -74,14 +70,9 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.linuxtools.cdt.autotools.internal.MarkerGenerator;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMakefileGenerator, IManagedBuilderMakefileGenerator2 {
@@ -145,14 +136,12 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
-				// Fix for 266451.  Check if value has changed and use setBuildPath() instead of setBuildAttribute() 
-				// since we want the builder marked as dirty and the project info saved.  We must use getBuildAttribute()
-				// instead of getBuildPath() to avoid an infinite loop where getBuildPath() may call this function to
-				// find the default path.
-				String oldPath = builder.getBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION,"");
-				String newPath = "${workspace_loc:/" + project.getName() + "/" + buildDir + "}";
-				if (oldPath == null || !oldPath.equals(newPath))
-					builder.setBuildPath(newPath);
+				try {
+					builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION, 
+							project.getLocation().append(buildDir).toOSString());
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
 			} else if (id.indexOf("configdir") > 0) {  //$NON-NLS-1$
 				srcDir = (String) options[i].getValue();
 				try {
@@ -452,48 +441,12 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					// If we are going to do a full reconfigure, then if the current
 					// build directory exists, we should clean it out first.  This is
 					// because the reconfiguration could change compile flags, etc..
-					// and the Makefile might not detect a rebuild is required.
+					// and the Makefile might not detect a rebuild is required.  In
+					// addition, the build directory itself could have been changed and
+					// we should remove the previous build.
 					IResource r = root.findMember(project.getFullPath().append(buildDir));
-					if (r != null && r.exists()) {
-						// See what type of cleaning the user has set up in the
-						// build properties dialog.
-						String cleanDelete = null;
-						try {
-							cleanDelete = getProject().getPersistentProperty(AutotoolsPropertyConstants.CLEAN_DELETE);
-						} catch (CoreException ce) {
-							// do nothing
-						}
-						
-						if (cleanDelete != null && cleanDelete.equals(AutotoolsPropertyConstants.TRUE))
-							r.delete(true, new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN));
-						else {
-							// There is a make target for cleaning.
-							if (makefile != null && makefile.exists()) {
-								String[] makeargs = new String[1];
-								IPath makeCmd = new Path("make"); //$NON-NLS-1$
-								String target = null;
-								try {
-									target = getProject().getPersistentProperty(AutotoolsPropertyConstants.CLEAN_MAKE_TARGET);
-								} catch (CoreException ce) {
-									// do nothing
-								}
-								if (target == null)
-									target = AutotoolsPropertyConstants.CLEAN_MAKE_TARGET_DEFAULT;
-								String args = builder.getBuildArguments();
-								if (args != null && !(args = args.trim()).equals("")) { //$NON-NLS-1$
-									String[] newArgs = makeArray(args);
-									makeargs = new String[newArgs.length + 1];
-									System.arraycopy(newArgs, 0, makeargs, 0, newArgs.length);
-								}
-								makeargs[makeargs.length - 1] = target;
-								rc = runCommand(makeCmd,
-										project.getLocation().append(buildDir),
-										makeargs,
-										AutotoolsPlugin.getResourceString("MakeGenerator.clean.builddir"), //$NON-NLS-1$
-										errMsg, console, true);
-							}
-						}
-					}
+					if (r != null && r.exists())
+						r.delete(true, new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN));
 					initializeBuildConfigDirs();
 					createDirectory(buildDir);
 					// Mark the scanner info as dirty.
@@ -586,7 +539,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					saveConfigArgs(configArgs);
 				}
 			}
-    		// If we didn't create a Makefile, consider that an error.
+    		// Treat no Makefile as generation error.
 			if (makefile == null || !makefile.exists()) {
 				rc = IStatus.ERROR;
 				errMsg = AutotoolsPlugin.getResourceString("MakeGenerator.didnt.generate"); //$NON-NLS-1$
@@ -866,7 +819,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 
 		launcher.showCommand(true);
 		Process proc = launcher.execute(commandPath, configTargets, env,
-				runPath);
+				runPath, new NullProgressMonitor());
 		if (proc != null) {
 			try {
 				// Close the input of the process since we will never write to
@@ -1050,7 +1003,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		launcher.showCommand(true);
 		// Run the shell script via shell command.
 		Process proc = launcher.execute(new Path(SHELL_COMMAND), configTargets, env,
-				runPath);
+				runPath, new NullProgressMonitor());
 		if (proc != null) {
 			try {
 				// Close the input of the process since we will never write to
@@ -1137,40 +1090,35 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return rc;
 	}
 	
-	private Node createTargetElement(Document doc, IMakeTarget target) {
-		Element targetElem = doc.createElement(TARGET_ELEMENT);
+	private ICStorageElement createTargetElement(ICStorageElement parent, IMakeTarget target) {
+		ICStorageElement targetElem = parent.createChild(TARGET_ELEMENT);
 		targetElem.setAttribute(TARGET_ATTR_NAME, target.getName());
 		targetElem.setAttribute(TARGET_ATTR_ID, target.getTargetBuilderID());
 		targetElem.setAttribute(TARGET_ATTR_PATH, target.getContainer().getProjectRelativePath().toString());
-		Element elem = doc.createElement(TARGET_COMMAND);
-		targetElem.appendChild(elem);
-		elem.appendChild(doc.createTextNode(target.getBuildAttribute(IMakeCommonBuildInfo.BUILD_COMMAND, "make"))); //$NON-NLS-1$
+		ICStorageElement elem = targetElem.createChild(TARGET_COMMAND);
+		elem.setValue(target.getBuildAttribute(IMakeCommonBuildInfo.BUILD_COMMAND, "make")); //$NON-NLS-1$
 
 		String targetAttr = target.getBuildAttribute(IMakeCommonBuildInfo.BUILD_ARGUMENTS, null);
 		if ( targetAttr != null) {
-			elem = doc.createElement(TARGET_ARGUMENTS);
-			elem.appendChild(doc.createTextNode(targetAttr));
-			targetElem.appendChild(elem);
+			elem = targetElem.createChild(TARGET_ARGUMENTS);
+			elem.setValue(targetAttr);
 		}
 
 		targetAttr = target.getBuildAttribute(IMakeTarget.BUILD_TARGET, null);
 		if (targetAttr != null) {
-			elem = doc.createElement(TARGET);
-			elem.appendChild(doc.createTextNode(targetAttr));
-			targetElem.appendChild(elem);
+			elem = targetElem.createChild(TARGET);
+			elem.setValue(targetAttr);
 		}
 
-		elem = doc.createElement(TARGET_STOP_ON_ERROR);
-		elem.appendChild(doc.createTextNode(new Boolean(target.isStopOnError()).toString()));
-		targetElem.appendChild(elem);
+		elem = targetElem.createChild(TARGET_STOP_ON_ERROR);
+		elem.setValue(new Boolean(target.isStopOnError()).toString());
 
-		elem = doc.createElement(TARGET_USE_DEFAULT_CMD);
-		elem.appendChild(doc.createTextNode(new Boolean(target.isDefaultBuildCmd()).toString()));
-		targetElem.appendChild(elem);
-		
-		elem = doc.createElement(TARGET_RUN_ALL_BUILDERS);
-		elem.appendChild(doc.createTextNode(new Boolean(target.runAllBuilders()).toString()));
-		targetElem.appendChild(elem);
+		elem = targetElem.createChild(TARGET_USE_DEFAULT_CMD);
+		elem.setValue(new Boolean(target.isDefaultBuildCmd()).toString());
+
+		elem = targetElem.createChild(TARGET_RUN_ALL_BUILDERS);
+		elem.setValue(new Boolean(target.runAllBuilders()).toString());
+
 		return targetElem;
 	}
 
@@ -1180,27 +1128,18 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @param doc
 	 * @throws CoreException
 	 */
-	private void translateDocumentToCDTProject(Document doc) throws CoreException {
-		ICDescriptor descriptor;
-		descriptor = CCorePlugin.getDefault().getCProjectDescription(getProject(), true);
-
-		Element rootElement = descriptor.getProjectData(MAKE_TARGET_KEY);
+	private void saveTargets(IMakeTarget[] makeTargets) throws CoreException {
+		ICDescriptor descriptor = CCorePlugin.getDefault().getCProjectDescription(getProject(), true);
+		ICStorageElement rootElement = descriptor.getProjectStorageElement(MAKE_TARGET_KEY);
 
 		//Nuke the children since we are going to write out new ones
-		NodeList kids = rootElement.getChildNodes();
-		for (int i = 0; i < kids.getLength(); i++) {
-			rootElement.removeChild(kids.item(i));
-			i--;
-		}
+		rootElement.clear();
 
-		//Extract the root of our temporary document
-		Node node = doc.getFirstChild();
-		if (node.hasChildNodes()) {
-			//Create a copy which is a part of the new document
-			Node appendNode = rootElement.getOwnerDocument().importNode(node, true);
-			//Put the copy into the document in the appropriate location
-			rootElement.appendChild(appendNode);
-		}
+		// Fetch the ProjectTargets as ICStorageElements
+		rootElement = rootElement.createChild(BUILD_TARGET_ELEMENT);
+		for (int i = 0; i < makeTargets.length; ++i)
+			createTargetElement(rootElement, makeTargets[i]);
+
 		//Save the results
 		descriptor.saveProjectData();
 	}
@@ -1223,8 +1162,8 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @throws CoreException
 	 */
 	private void addMakeTargetsToManager(File makefileFile) throws CoreException {
-		// We don't bother if the Makefile wasn't created successfully.
-		if (!makefileFile.exists())
+		// Return immediately if no Makefile.
+		if (makefileFile == null || !makefileFile.exists())
 			return;
 		
 		checkCancel();
@@ -1272,66 +1211,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		MakeTargetComparator compareMakeTargets = new MakeTargetComparator();
 		Arrays.sort(makeTargetArray, compareMakeTargets);
 		
-		// At this point, we could use IMakeTargetManager to add new targets and
-		// remove old ones that no longer exist.  Unfortunately, the Makefile
-		// MakeTarget class is rather inefficient at this and rewrites the .cproject
-		// file for every change made to the set of MakeTargets.  In our case,
-		// we are better off performing the rewrite of the .cproject file ourselves
-		// and then restarting the MakeTargetManager manually.  This will cause it
-		// to read the .cproject file to get the MakeTargets again but there is
-		// only 1 read and 1 write vs thousands of potential operations.
-		// each 
-		Document doc;
-		try {
-			doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		} catch (ParserConfigurationException ex) {
-			//This should never happen.
-			throw new CoreException(new Status(IStatus.ERROR, MakeCorePlugin.getUniqueIdentifier(), -1,
-					"Error creating new XML storage document", ex)); //$NON-NLS-1$
-		}
-		Element targetsRootElement = doc.createElement(BUILD_TARGET_ELEMENT);
-		doc.appendChild(targetsRootElement);
-		for (int i = 0; i < makeTargetArray.length; i++) {
-			IMakeTarget t = (IMakeTarget)makeTargetArray[i];
-			targetsRootElement.appendChild(createTargetElement(doc, t));
-		}
-		
-		try {
-			translateDocumentToCDTProject(doc);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// To perform the shutdown and restart, we know that MakeCorePlugin's
-		// MakeTargetManager has two special methods that are not exposed as
-		// part of IMakeTargetManager.  We use reflection to access them and
-		// avoid referencing an internal CDT class: MakeTargetManager.
-		Method shutdown;
-		Method startup;
-		try {
-			shutdown = makeTargetManager.getClass().getMethod("shutdown", (Class<?>[])null);
-			startup = makeTargetManager.getClass().getMethod("startup", (Class<?>[])null);
-			if (shutdown != null && startup != null) {
-				shutdown.invoke(makeTargetManager, (Object[])null);
-				startup.invoke(makeTargetManager, (Object[])null);
-			}
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		saveTargets(makeTargetArray);
 	}
 
 	private boolean isValidTarget(String targetName, IMakeTargetManager makeTargetManager) {
@@ -1341,46 +1221,6 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				|| (targetName.indexOf('$') >= 0)
 				|| (targetName.charAt(0) == '.')
 				|| targetName.equals(targetName.toUpperCase()));
-	}
-	
-	// Turn the string into an array.
-	private String[] makeArray(String string) {
-		string = string.trim();
-		char[] array = string.toCharArray();
-		ArrayList<String> aList = new ArrayList<String>();
-		StringBuilder buffer = new StringBuilder();
-		boolean inComment = false;
-		for (int i = 0; i < array.length; i++) {
-			char c = array[i];
-			boolean needsToAdd = true;
-			if (array[i] == '"' || array[i] == '\'') {
-				if (i > 0 && array[i - 1] == '\\') {
-					inComment = false;
-				} else {
-					inComment = !inComment;
-					needsToAdd = false; // skip it
-				}
-			}
-			if (c == ' ' && !inComment) {
-				if (buffer.length() > 0){
-					String str = buffer.toString().trim();
-					if(str.length() > 0){
-						aList.add(str);
-					}
-				}
-				buffer = new StringBuilder();
-			} else {
-				if (needsToAdd)
-					buffer.append(c);
-			}
-		}
-		if (buffer.length() > 0){
-			String str = buffer.toString().trim();
-			if(str.length() > 0){
-				aList.add(str);
-			}
-		}
-		return (String[])aList.toArray(new String[aList.size()]);
 	}
 
 }

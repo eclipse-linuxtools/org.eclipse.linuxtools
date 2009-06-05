@@ -118,11 +118,11 @@ public class SelectionList extends Composite {
 	 * returned in the list are the same as the ones passed to the selection list
 	 * via <code>setElements</code>. The list doesn't contain the rendered strings.
 	 */
-	public List getSelection() {
+	public List<Object> getSelection() {
 		if (fList == null || fList.isDisposed() || fList.getSelectionCount() == 0)
-			return new ArrayList(0);
+			return new ArrayList<Object>(0);
 		int[] listSelection= fList.getSelectionIndices();
-		List selected= new ArrayList(listSelection.length);
+		List<Object> selected= new ArrayList<Object>(listSelection.length);
 		for (int i= 0; i < listSelection.length; i++) {
 			selected.add(fElements[fFilteredElements[listSelection[i]]]);
 		}
@@ -171,7 +171,7 @@ public class SelectionList extends Composite {
 	/**
 	 * Sets the list of elements presented in the widget.
 	 */
-	public void setElements(List elements, boolean refilter) {
+	public void setElements(List<Object> elements, boolean refilter) {
 		// We copy the list since we sort it.
 		if (elements == null)
 			fElements= new Object[0];

@@ -70,7 +70,7 @@ public class MakefileCompletionProcessor implements IContentAssistProcessor {
 		}
 	}
 
-	public class DirectiveComparator implements Comparator {
+	public class DirectiveComparator implements Comparator<Object>{
 
 		/* (non-Javadoc)
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -131,7 +131,7 @@ public class MakefileCompletionProcessor implements IContentAssistProcessor {
 			statements = makefile.getTargetRules();
 		}
 
-		ArrayList proposalList = new ArrayList(statements.length);
+		ArrayList<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>(statements.length);
 
 		// iterate over all the different categories
 		for (int i = 0; i < statements.length; i++) {
@@ -175,7 +175,7 @@ public class MakefileCompletionProcessor implements IContentAssistProcessor {
 		WordPartDetector wordPart = new WordPartDetector(viewer, documentOffset);
 		boolean macro = WordPartDetector.inMacro(viewer, documentOffset);
 		IMakefile makefile = fManager.getWorkingCopy(fEditor.getEditorInput());
-		ArrayList contextList = new ArrayList();
+		ArrayList<String> contextList = new ArrayList<String>();
 		if (macro) {
 			IDirective[] statements = makefile.getMacroDefinitions();
 			for (int i = 0; i < statements.length; i++) {

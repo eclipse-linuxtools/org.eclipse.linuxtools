@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
+import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
@@ -55,7 +56,7 @@ public class MakefilePartitionScanner extends RuleBasedPartitionScanner {
 		IToken tDef = new Token(MAKEFILE_DEF_BLOCK_PARTITION);
 		IToken tOther = new Token(MAKEFILE_OTHER_PARTITION);
 
-		List rules = new ArrayList();
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// Add rule for single line comments.
 

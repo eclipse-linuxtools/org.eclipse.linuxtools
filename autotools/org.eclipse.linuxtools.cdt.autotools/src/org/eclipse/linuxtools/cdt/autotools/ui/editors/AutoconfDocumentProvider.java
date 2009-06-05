@@ -18,6 +18,7 @@ import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
 public class AutoconfDocumentProvider extends TextFileDocumentProvider {
 	
+	@SuppressWarnings("unchecked")
 	public void shutdown() {
 		Iterator e= getConnectedElementsIterator();
 		while (e.hasNext())

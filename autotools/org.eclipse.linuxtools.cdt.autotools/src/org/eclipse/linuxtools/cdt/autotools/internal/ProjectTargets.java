@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -64,7 +64,7 @@ public class ProjectTargets {
 	private static final String BAD_TARGET = "buidlTarget"; //$NON-NLS-1$
 	private static final String TARGET = "buildTarget"; //$NON-NLS-1$
 
-	private HashMap targetMap = new HashMap();
+	private HashMap<IContainer, ArrayList<IMakeTarget>> targetMap = new HashMap<IContainer, ArrayList<IMakeTarget>>();
 
 	private IProject project;
 
@@ -122,7 +122,7 @@ public class ProjectTargets {
 	}
 
 	public IMakeTarget[] get(IContainer container) {
-		ArrayList list = (ArrayList) targetMap.get(container);
+		ArrayList<IMakeTarget> list = targetMap.get(container);
 		if (list != null) {
 			return (IMakeTarget[]) list.toArray(new IMakeTarget[list.size()]);
 		}
@@ -130,9 +130,9 @@ public class ProjectTargets {
 	}
 
 	public IMakeTarget findTarget(IContainer container, String name) {
-		ArrayList list = (ArrayList) targetMap.get(container);
+		ArrayList<IMakeTarget> list = targetMap.get(container);
 		if (list != null) {
-			Iterator targets = list.iterator();
+			Iterator<IMakeTarget> targets = list.iterator();
 			while (targets.hasNext()) {
 				IMakeTarget target = (IMakeTarget) targets.next();
 				if (target.getName().equals(name)) {
@@ -144,20 +144,20 @@ public class ProjectTargets {
 	}
 
 	public void add(MakeTarget target) throws CoreException {
-		ArrayList list = (ArrayList) targetMap.get(target.getContainer());
+		ArrayList<IMakeTarget> list = targetMap.get(target.getContainer());
 		if (list != null && list.contains(target)) {
 			throw new CoreException(new Status(IStatus.ERROR, MakeCorePlugin.getUniqueIdentifier(), -1,
 					MakeMessages.getString("MakeTargetManager.target_exists"), null)); //$NON-NLS-1$
 		}
 		if (list == null) {
-			list = new ArrayList();
+			list = new ArrayList<IMakeTarget>();
 			targetMap.put(target.getContainer(), list);
 		}
 		list.add(target);
 	}
 
 	public boolean contains(MakeTarget target) {
-		ArrayList list = (ArrayList) targetMap.get(target.getContainer());
+		ArrayList<IMakeTarget> list = targetMap.get(target.getContainer());
 		if (list != null && list.contains(target)) {
 			return true;
 		}
@@ -165,7 +165,7 @@ public class ProjectTargets {
 	}
 
 	public boolean remove(MakeTarget target) {
-		ArrayList list = (ArrayList) targetMap.get(target.getContainer());
+		ArrayList<IMakeTarget> list = targetMap.get(target.getContainer());
 		if (list == null || !list.contains(target)) {
 			return false;
 		}
@@ -191,9 +191,9 @@ public class ProjectTargets {
 		}
 		Element targetsRootElement = doc.createElement(BUILD_TARGET_ELEMENT);
 		doc.appendChild(targetsRootElement);
-		Iterator container = targetMap.entrySet().iterator();
+		Iterator<Entry<IContainer, ArrayList<IMakeTarget>>> container = targetMap.entrySet().iterator();
 		while (container.hasNext()) {
-			List targets = (List) ((Map.Entry) container.next()).getValue();
+			List<IMakeTarget> targets = container.next().getValue();
 			for (int i = 0; i < targets.size(); i++) {
 				MakeTarget target = (MakeTarget) targets.get(i);
 				targetsRootElement.appendChild(createTargetElement(doc, target));
@@ -259,6 +259,7 @@ public class ProjectTargets {
 	 * @param doc
 	 * @throws CoreException
 	 */
+	@SuppressWarnings("deprecation")
 	protected void translateDocumentToCDTProject(Document doc) throws CoreException {
 		ICDescriptor descriptor;
 		descriptor = CCorePlugin.getDefault().getCProjectDescription(getProject(), true);
@@ -290,6 +291,7 @@ public class ProjectTargets {
 	 * @param input
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	protected Document translateCDTProjectToDocument() {
 		Document document = null;
 		Element rootElement = null;

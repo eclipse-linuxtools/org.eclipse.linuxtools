@@ -95,9 +95,9 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 		}
 	};
 
-	private static Map acHoverDocs;
-	private static Map amHoverDocs;
-	private static Map acHoverMacros;
+	private static Map<String, Document> acHoverDocs;
+	private static Map<String, Document> amHoverDocs;
+	private static Map<Document, ArrayList<AutoconfMacro>> acHoverMacros;
 	private static String fgStyleSheet;
 	private static AutoconfEditor fEditor;
 
@@ -136,7 +136,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 	protected static Document getACDoc(String acDocName) {
 		Document ac_document = null;
 		if (acHoverDocs == null) {
-			acHoverDocs = new HashMap();
+			acHoverDocs = new HashMap<String, Document>();
 		}
 		ac_document = (Document)acHoverDocs.get(acDocName);
 		if (ac_document == null) {
@@ -194,7 +194,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 	protected static Document getAMDoc(String amDocName) {
 		Document am_document = null;
 		if (amHoverDocs == null) {
-			amHoverDocs = new HashMap();
+			amHoverDocs = new HashMap<String, Document>();
 		}
 		am_document = (Document)amHoverDocs.get(amDocName);
 		if (am_document == null) {
@@ -348,16 +348,16 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 	
 	private static AutoconfMacro[] getMacroList(AutotoolsHoverDoc hoverdoc) {
 		if (acHoverMacros == null) {
-			acHoverMacros = new HashMap();
+			acHoverMacros = new HashMap<Document, ArrayList<AutoconfMacro>>();
 		}
 
-		ArrayList masterList = new ArrayList();
+		ArrayList<AutoconfMacro> masterList = new ArrayList<AutoconfMacro>();
 		Document[] doc = hoverdoc.getDocuments();
 		for (int ix = 0; ix < doc.length; ++ix) {
 			Document macroDoc = doc[ix];
-			ArrayList list = (ArrayList)acHoverMacros.get(macroDoc);
+			ArrayList<AutoconfMacro> list = acHoverMacros.get(macroDoc);
 			if (list == null && macroDoc != null) {
-				list = new ArrayList();
+				list = new ArrayList<AutoconfMacro>();
 				NodeList nl = macroDoc.getElementsByTagName("macro"); //$NON-NLS-1$
 				for (int i = 0; i < nl.getLength(); ++i) {
 					Node macro = nl.item(i);

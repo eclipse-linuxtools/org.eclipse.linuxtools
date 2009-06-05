@@ -6,7 +6,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public interface IAutotoolsEditor extends ITextEditor {
 	
-	public Object getAdapter(Class key);
+	public Object getAdapter(Class<?> key);
 	
 	/**
 	 * Adds the given listener.

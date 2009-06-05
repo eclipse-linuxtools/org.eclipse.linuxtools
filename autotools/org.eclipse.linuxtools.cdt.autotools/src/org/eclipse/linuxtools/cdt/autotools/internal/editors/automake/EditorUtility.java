@@ -33,6 +33,7 @@ import org.eclipse.cdt.core.model.IWorkingCopy;
 import org.eclipse.cdt.core.resources.FileStorage;
 import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -165,12 +166,12 @@ public class EditorUtility {
 		return null;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static boolean isLinked(IFile file) {
 		if (file.isLinked())
 			return true;
 		
 		IPath path = file.getLocation();
-		
 		while (path.segmentCount() > 0) {
 			path = path.removeLastSegments(1);
 			IContainer[] containers = ResourcesPlugin.getWorkspace().getRoot().findContainersForLocation(path);
@@ -346,7 +347,7 @@ public class EditorUtility {
 			}
 			IFile bestMatch= null;
 			IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
-			IFile[] files= root.findFilesForLocation(location);
+			IFile[] files= root.findFilesForLocationURI(URIUtil.toURI(location));
 			for (int i= 0; i < files.length; i++) {
 				file= files[i];
 				if (file.isAccessible()) {

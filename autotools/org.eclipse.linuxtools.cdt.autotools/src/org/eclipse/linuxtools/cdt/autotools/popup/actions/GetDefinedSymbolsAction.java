@@ -50,6 +50,7 @@ public class GetDefinedSymbolsAction implements IObjectActionDelegate {
 	/**
 	 * @see IActionDelegate#run(IAction)
 	 */
+	@SuppressWarnings("unchecked")
 	public void run(IAction action) {
 		Map p = new HashMap();
 		if (file != null) {

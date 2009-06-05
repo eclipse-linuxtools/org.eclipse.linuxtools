@@ -54,7 +54,6 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IReconcilingParticipant;
 import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.MakefileEditorPreferenceConstants;
-import org.eclipse.linuxtools.cdt.autotools.internal.ui.HTMLTextPresenter;
 import org.eclipse.linuxtools.cdt.autotools.internal.ui.editors.autoconf.ProjectionFileUpdater;
 import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutoconfEditorPreferencePage;
 import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutotoolsEditorPreferenceConstants;
@@ -67,7 +66,6 @@ import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.IAutoconfMacroVali
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyManager;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.IProjectPropertyListener;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
@@ -214,7 +212,8 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
 		}
 	}
 
-    public Object getAdapter(Class required) {
+    @SuppressWarnings("unchecked")
+	public Object getAdapter(Class required) {
 		if (ProjectionAnnotationModel.class.equals(required)) {
 			if (fProjectionSupport != null) {
 				Object result = fProjectionSupport.getAdapter(getSourceViewer(), required);
@@ -477,7 +476,8 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
     	 * @param textHover the hover to make focusable
     	 * @return <code>true</code> if successful, <code>false</code> otherwise
     	 */
-    	private boolean makeTextHoverFocusable(ISourceViewer sourceViewer, ITextHover textHover) {
+    	@SuppressWarnings("deprecation")
+		private boolean makeTextHoverFocusable(ISourceViewer sourceViewer, ITextHover textHover) {
     		Point hoverEventLocation= ((ITextViewerExtension2) sourceViewer).getHoverEventLocation();
     		int offset= computeOffsetAtLocation(sourceViewer, hoverEventLocation.x, hoverEventLocation.y);
     		if (offset == -1)
@@ -699,9 +699,7 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
     	// Sticky hover support
     	IInformationControlCreator informationControlCreator= new IInformationControlCreator() {
     		public IInformationControl createInformationControl(Shell shell) {
-    			boolean cutDown= false;
-    			int style= cutDown ? SWT.NONE : (SWT.V_SCROLL | SWT.H_SCROLL);
-    			return new DefaultInformationControl(shell, SWT.RESIZE | SWT.TOOL, style, new HTMLTextPresenter(cutDown));
+       			return new DefaultInformationControl(shell, true);
     		}
     	};
 

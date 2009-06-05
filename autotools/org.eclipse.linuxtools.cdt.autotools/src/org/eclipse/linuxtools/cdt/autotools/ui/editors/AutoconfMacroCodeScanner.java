@@ -36,7 +36,7 @@ import org.eclipse.swt.graphics.RGB;
 
 public class AutoconfMacroCodeScanner extends RuleBasedScanner {
 
-	private Map fTokenMap= new HashMap();
+	private Map<String, IToken> fTokenMap= new HashMap<String, IToken>();
 	private String[] fPropertyNamesColor;
 	
 	private int quoteLevel;
@@ -82,7 +82,7 @@ public class AutoconfMacroCodeScanner extends RuleBasedScanner {
 		IToken ammacro = getToken(ColorManager.AUTOCONF_AMMACRO_COLOR);
 		IToken code = getToken(ColorManager.AUTOCONF_CODESEQ_COLOR);
 		
-		List rules= new ArrayList();
+		List<IRule> rules= new ArrayList<IRule>();
 
 		// Add rule for single line comments.
 		rules.add(new RestrictedEndOfLineRule("dnl", "[]", comment)); //$NON-NLS-1$

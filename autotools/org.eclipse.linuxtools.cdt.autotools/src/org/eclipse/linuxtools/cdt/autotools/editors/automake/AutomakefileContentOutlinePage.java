@@ -118,7 +118,7 @@ public class AutomakefileContentOutlinePage extends ContentOutlinePage implement
 			} else {
 				directives = new IDirective[0];
 			}
-			List list = new ArrayList(directives.length);
+			List<IDirective> list = new ArrayList<IDirective>(directives.length);
 			for (int i = 0; i < directives.length; i++) {
 				if (showMacroDefinition && directives[i] instanceof IMacroDefinition) {
 					list.add(directives[i]);

@@ -187,6 +187,7 @@ public class MakefileEditor extends TextEditor implements ISelectionChangedListe
 	/* (non-Javadoc)
 	 * Method declared on IAdaptable
 	 */
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class key) {
 		if (ProjectionAnnotationModel.class.equals(key)) {
 			if (projectionSupport != null) {

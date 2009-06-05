@@ -23,7 +23,7 @@ public class PosixMakefileUtil {
 	}
 
 	public static String[] findTargets(String line) {
-		List aList = new ArrayList();
+		List<String> aList = new ArrayList<String>();
 		int space;
 		// Trim away trailing and prepending spaces.
 		line = line.trim();

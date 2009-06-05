@@ -62,7 +62,7 @@ public class AutoconfMacroContentAssistProcessor implements
 		}
 		ICompletionProposal[] result = null;
 		if (macros != null) {
-			ArrayList validList = new ArrayList();
+			ArrayList<ICompletionProposal> validList = new ArrayList<ICompletionProposal>();
 			for (int i = 0; i < macros.length; ++i) {
 				String name = macros[i].getName();
 				if (name.length() >= prefix.length()) {

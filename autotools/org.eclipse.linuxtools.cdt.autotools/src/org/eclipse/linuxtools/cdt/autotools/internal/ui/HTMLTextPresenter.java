@@ -14,16 +14,15 @@ package org.eclipse.linuxtools.cdt.autotools.internal.ui;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-
 import java.util.Iterator;
-import org.eclipse.swt.custom.StyleRange;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextPresentation;
+import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Display;
 
 
 public class HTMLTextPresenter implements DefaultInformationControl.IInformationPresenter {
@@ -46,6 +45,7 @@ public class HTMLTextPresenter implements DefaultInformationControl.IInformation
 		return new HTML2TextReader(new StringReader(hoverInfo), presentation);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void adaptTextPresentation(TextPresentation presentation, int offset, int insertLength) {
 				
 		int yoursStart= offset;
@@ -154,7 +154,7 @@ public class HTMLTextPresenter implements DefaultInformationControl.IInformation
 			
 		} catch (IOException e) {
 			
-			CUIPlugin.log(e);
+			AutotoolsPlugin.log(e);
 			return null;
 			
 		} finally {

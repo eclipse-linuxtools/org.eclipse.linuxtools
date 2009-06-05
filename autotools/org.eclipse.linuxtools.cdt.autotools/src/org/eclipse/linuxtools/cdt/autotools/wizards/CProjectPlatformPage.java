@@ -75,7 +75,7 @@ public class CProjectPlatformPage extends WizardPage {
 	
 	protected Wizard parentWizard;
 	protected Text platformSelection;
-	private ArrayList selectedConfigurations;
+	private ArrayList<Object> selectedConfigurations;
 	protected IProjectType projectType;
 	protected Button showAllConfigs;
 	protected boolean showAllConfigsForced;
@@ -91,7 +91,7 @@ public class CProjectPlatformPage extends WizardPage {
 		super(pageName);
 		setPageComplete(false);
 		projectType = ManagedBuildManager.getExtensionProjectType("org.eclipse.linuxtools.cdt.autotools.projectType"); //$NON-NLS-1$
-		selectedConfigurations = new ArrayList(0);
+		selectedConfigurations = new ArrayList<Object>(0);
 		this.parentWizard = parentWizard;
 		showAllConfigsForced = false;
 	}
@@ -232,7 +232,7 @@ public class CProjectPlatformPage extends WizardPage {
 		// pages will know which toolchains have been selected
 		
 		// get the toolchains from the selected configs and put them into a set
-		Set toolchainSet = new LinkedHashSet();
+		Set<IToolChain> toolchainSet = new LinkedHashSet<IToolChain>();
 		for(int k = 0; k < selectedConfigurations.size(); k++)
 		{
 			IConfiguration config = (IConfiguration) selectedConfigurations.get(k);
@@ -283,7 +283,7 @@ public class CProjectPlatformPage extends WizardPage {
 	 * passed to this method
 	 */
 	IConfiguration[] filterSupportedConfigurations(IConfiguration cfgs[]){
-		ArrayList supported = new ArrayList();
+		ArrayList<IConfiguration> supported = new ArrayList<IConfiguration>();
 		String os = Platform.getOS();
 		String arch = Platform.getOSArch();
 
@@ -293,9 +293,9 @@ public class CProjectPlatformPage extends WizardPage {
 				// Now, apply the OS and ARCH filters to determine if the configuration should be shown
 				// Determine if the configuration's tool-chain supports this OS & Architecture.
 				IToolChain tc = cfgs[i].getToolChain();
-				List osList = Arrays.asList(tc.getOSList());
+				List<String> osList = Arrays.asList(tc.getOSList());
 				if (osList.contains("all") || osList.contains(os)) {	//$NON-NLS-1$
-					List archList = Arrays.asList(tc.getArchList());
+					List<String> archList = Arrays.asList(tc.getArchList());
 					if (archList.contains("all") || archList.contains(arch)) { //$NON-NLS-1$
 						supported.add(cfgs[i]);						
 					}

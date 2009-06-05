@@ -491,16 +491,6 @@
                      natureFilter="both"
                      superClass="org.eclipse.linuxtools.cdt.autotools.tool.autogen">
                </tool>
-               <tool
-                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc"
-                     isAbstract="false"
-                     superClass="cdt.managedbuild.tool.gnu.c.compiler">
-               </tool>
-               <tool
-                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
-                     isAbstract="false"
-                     superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
-               </tool>
                <builder
                      id="org.eclipse.linuxtools.cdt.autotools.toolchain.builder"
                      isAbstract="false"
@@ -531,10 +521,6 @@
       <CBuildConsole
             class="org.eclipse.linuxtools.cdt.autotools.internal.ui.CConfigureConsole"
             id="org.eclipse.linuxtools.cdt.autotools.configureConsole"/>
-      <CBuildConsole
-            class="org.eclipse.linuxtools.cdt.autotools.internal.ui.CBuildStepsConsole"
-            id="org.eclipse.linuxtools.cdt.autotools.buildStepsConsole">
-      </CBuildConsole>
    </extension>
    <extension
    	     id="AutotoolsScannerInfoProvider"
@@ -599,13 +585,13 @@
             id="org.eclipse.linuxtools.cdt.autotools.ui.editors.text.show.tooltip"
             name="%ShowTooltip.name"/>
    </extension>
-  <extension point="org.eclipse.core.runtime.contentTypes">
+  <extension point="org.eclipse.core.contenttype.contentTypes">
 	  <!-- declares a content type for automake files -->
 	  <content-type id="org.eclipse.linuxtools.cdt.autotools.automake" name="%Automake.name" 
 		  base-type="org.eclipse.core.runtime.text"
 		  priority="high"/>
   </extension>
-   <extension point="org.eclipse.core.runtime.contentTypes"> 
+   <extension point="org.eclipse.core.contenttype.contentTypes"> 
       <file-association 
        content-type="org.eclipse.linuxtools.cdt.autotools.automake"
        file-names="Makefile.am"
@@ -701,31 +687,16 @@
             class="org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyPage"
             id="org.eclipse.linuxtools.cdt.autotools.propertypage"
             name="%PropertyAutotools.name">
-         <filter
-               name="projectNature"
-               value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
-         </filter>
          <enabledWhen>
-            <or>
+            <and>
                <instanceof
-                     value="org.eclipse.core.resources.IProject">
+                     value="org.eclipse.core.resources.IResource">
                </instanceof>
-               <instanceof
-                     value="org.eclipse.cdt.core.model.ICProject">
-               </instanceof>
-               <instanceof
-                     value="org.eclipse.core.resources.IFolder">
-               </instanceof>
-               <instanceof
-                     value="org.eclipse.cdt.core.model.ICContainer">
-               </instanceof>
-               <instanceof
-                     value="org.eclipse.cdt.core.model.ITranslationUnit">
-               </instanceof>
-               <instanceof
-                     value="org.eclipse.core.resources.IFile">
-               </instanceof>
-            </or>
+               <test
+                     property="org.eclipse.linuxtools.cdt.autotools.isAutotoolsProject"
+                     value="true">
+               </test>
+            </and>
          </enabledWhen>
       </page>
    </extension>
@@ -953,4 +924,4 @@
          </enabledWhen>
       </handler>
    </extension>
-</plugin>
+ </plugin>

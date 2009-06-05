@@ -128,7 +128,7 @@ public class MakefileContentOutlinePage extends ContentOutlinePage implements IC
 			} else {
 				directives = new IDirective[0];
 			}
-			List list = new ArrayList(directives.length);
+			List<Object> list = new ArrayList<Object>(directives.length);
 			for (int i = 0; i < directives.length; i++) {
 				if (showMacroDefinition && directives[i] instanceof IMacroDefinition) {
 					list.add(directives[i]);

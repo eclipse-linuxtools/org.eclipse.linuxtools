@@ -22,7 +22,7 @@ import org.eclipse.cdt.make.core.makefile.IDirective;
 
 public abstract class Parent extends Directive implements IParent {
 
-	ArrayList children = new ArrayList();
+	ArrayList<IDirective> children = new ArrayList<IDirective>();
 
 	public Parent(Directive parent) {
 		super(parent);

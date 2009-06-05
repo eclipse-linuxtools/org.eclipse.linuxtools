@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.preference.PreferencePage;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.osgi.service.prefs.BackingStoreException;
 
 
 /**
@@ -97,7 +99,7 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 		}
 		
 		Iterator<Text> e2 = textFields.keySet().iterator();
-		while (e2.hasNext()) {
+		while (e.hasNext()) {
 			Text t= (Text) e2.next();
 			String key= (String) textFields.get(t);
 			t.setText(getOverlayStore().getString(key));
@@ -109,7 +111,13 @@ public abstract class AbstractEditorPreferencePage extends PreferencePage implem
 	 */
 	public boolean performOk() {
 		getOverlayStore().propagate();
-		AutotoolsPlugin.getDefault().savePluginPreferences();
+		InstanceScope scope = new InstanceScope();
+		try {
+			scope.getNode(AutotoolsPlugin.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return true;
 	}
 	

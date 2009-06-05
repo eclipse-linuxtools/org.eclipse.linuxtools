@@ -27,7 +27,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
  */
 public class ElementListSelectionDialog extends AbstractElementListSelectionDialog {
 	
-	private List fElements;
+	private List<Object> fElements;
 	
 	/*
 	 * @private
@@ -96,7 +96,7 @@ public class ElementListSelectionDialog extends AbstractElementListSelectionDial
 	 * @param elements The elements to show in the list
 	 * @return Returns OK or CANCEL
 	 */	
-	public int open(List elements) {
+	public int open(List<Object> elements) {
 		setElements(elements);
 		return open();
 	}
@@ -106,7 +106,7 @@ public class ElementListSelectionDialog extends AbstractElementListSelectionDial
 	 * @param initialSelection The initial content of the match text box.
 	 * @return Returns OK or CANCEL
 	 */
-	public int open(List elements, String initialSelection) {
+	public int open(List<Object> elements, String initialSelection) {
 		setElements(elements);
 		setInitialSelection(initialSelection);
 		return open();
@@ -114,7 +114,7 @@ public class ElementListSelectionDialog extends AbstractElementListSelectionDial
 	/**
 	 * Sets the elements presented by this dialog.
 	 */
-	public void setElements(List elements) {
+	public void setElements(List<Object> elements) {
 		fElements= elements;	
 	}
 }

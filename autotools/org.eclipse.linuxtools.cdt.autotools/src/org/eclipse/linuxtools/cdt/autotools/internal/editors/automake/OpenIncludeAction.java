@@ -30,6 +30,7 @@ import org.eclipse.cdt.core.parser.IScannerInfo;
 import org.eclipse.cdt.core.parser.IScannerInfoProvider;
 import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.cdt.utils.PathUtil;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -84,7 +85,7 @@ public class OpenIncludeAction extends Action {
 		
 		try {
 			IResource res = include.getUnderlyingResource();
-			ArrayList<IPath> filesFound = new ArrayList<IPath>(4);
+			ArrayList<Object> filesFound = new ArrayList<Object>(4);
 			String fullFileName= include.getFullFileName();
 			if (fullFileName != null) {
 				IPath fullPath= new Path(fullFileName);
@@ -178,7 +179,7 @@ public class OpenIncludeAction extends Action {
 	 */
 	private IPath[] resolveIncludeLink(IPath path) {
 		if (!isInProject(path)) {
-			IFile[] files = getWorkspaceRoot().findFilesForLocation(path);
+			IFile[] files = getWorkspaceRoot().findFilesForLocationURI(URIUtil.toURI(path));
 			if (files.length > 0) {
 				IPath[] paths = new IPath[files.length];
 				for (int i = 0; i < files.length; i++) {
@@ -195,7 +196,7 @@ public class OpenIncludeAction extends Action {
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
 	
-	private void findFile(String[] includePaths, String name, ArrayList<IPath> list)
+	private void findFile(String[] includePaths, String name, ArrayList<Object> list)
 			throws CoreException {
 		// in case it is an absolute path
 		IPath includeFile= new Path(name);		
@@ -229,7 +230,7 @@ public class OpenIncludeAction extends Action {
 	 * @param list
 	 * @throws CoreException
 	 */
-	private void findFile(IContainer parent, final IPath name, final ArrayList<IPath> list) throws CoreException {
+	private void findFile(IContainer parent, final IPath name, final ArrayList<Object> list) throws CoreException {
 		parent.accept(new IResourceProxyVisitor() {
 
 			public boolean visit(IResourceProxy proxy) throws CoreException {
@@ -251,8 +252,7 @@ public class OpenIncludeAction extends Action {
 	}
 
 
-	@SuppressWarnings("unchecked")
-	private IPath chooseFile(ArrayList filesFound) {
+	private IPath chooseFile(ArrayList<Object> filesFound) {
 		ILabelProvider renderer= new LabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof IPath) {
