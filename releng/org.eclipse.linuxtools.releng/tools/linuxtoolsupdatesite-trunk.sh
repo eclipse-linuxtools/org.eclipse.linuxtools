@@ -4,7 +4,7 @@
 # It is in aoverholt's crontab as the following entry:
 # 0 * * * * /home/data/users/aoverholt/.bin/linuxtoolsupdatesite-trunk.sh
 
-dropLocation=/opt/users/hudsonbuild/.hudson/jobs/cbi-linuxtools-Ganymede/lastSuccessful/archive/build/
+dropLocation=/opt/users/hudsonbuild/.hudson/jobs/cbi-linuxtools-Galileo/lastSuccessful/archive/build/
 downloadsDir=/home/data/users/aoverholt/downloads/technology/linuxtools
 updateSite=${downloadsDir}/updates-nightly
 

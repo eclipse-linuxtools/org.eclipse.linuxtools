@@ -1,3 +1,8 @@
+2009-06-05  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Use Galileo dependencies.
+	* tools/linuxtoolsupdatesite-trunk.sh: Pull from Galileo builds.
+
 2009-05-29  Elliott Baron  <ebaron@redhat.com>
 
 	* psfs/valgrind.psf: Added org.eclipse.birt.chart plugin.
