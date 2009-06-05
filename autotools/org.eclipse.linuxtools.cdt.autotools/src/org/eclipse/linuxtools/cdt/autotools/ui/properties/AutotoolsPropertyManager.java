@@ -19,10 +19,10 @@ import org.eclipse.core.runtime.ListenerList;
 public class AutotoolsPropertyManager implements IPropertyChangeManager {
 
 	private static AutotoolsPropertyManager fInstance;
-	private Map<IProject, ListenerList> projectList;
+	private Map projectList;
 	
 	private AutotoolsPropertyManager() {
-		projectList = new HashMap<IProject, ListenerList>();
+		projectList = new HashMap();
 	}
 	
 	public static AutotoolsPropertyManager getDefault() {

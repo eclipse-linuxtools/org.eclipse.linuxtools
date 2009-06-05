@@ -421,14 +421,6 @@
                name="%Configure.outputType"
                outputs="status"
                primaryOutput="true"/>
-         <inputType
-               id="org.eclipse.linuxtools.cdt.autotools.inputType.configure"
-               languageId="org.eclipse.cdt.core.gcc">
-         </inputType>
-         <inputType
-               id="org.eclipse.linuxtools.cdt.autotools.inputType.configure1"
-               languageId="org.eclipse.cdt.core.g++">
-         </inputType>
       </tool>
       <tool
             command="autogen.sh"
@@ -499,6 +491,16 @@
                      natureFilter="both"
                      superClass="org.eclipse.linuxtools.cdt.autotools.tool.autogen">
                </tool>
+               <tool
+                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc"
+                     isAbstract="false"
+                     superClass="cdt.managedbuild.tool.gnu.c.compiler">
+               </tool>
+               <tool
+                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
+                     isAbstract="false"
+                     superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
+               </tool>
                <builder
                      id="org.eclipse.linuxtools.cdt.autotools.toolchain.builder"
                      isAbstract="false"
@@ -510,14 +512,6 @@
                      name="%Autotools.targetplatform.name"
                      superClass="org.eclipse.linuxtools.cdt.autotools.targetPlatform">
                </targetPlatform>
-               <supportedProperties>
-                  <property
-                        id="org.eclipse.cdt.build.core.buildArtefactType">
-                     <value
-                           id="org.eclipse.linuxtools.cdt.autotools.buildArtefactType.autotools">
-                     </value>
-                  </property>
-               </supportedProperties>
             </toolChain>
          </configuration>
       </projectType>
@@ -535,15 +529,11 @@
    <extension
          point="org.eclipse.cdt.core.CBuildConsole">
       <CBuildConsole
-            class="org.eclipse.linuxtools.internal.cdt.autotools.ui.CConfigureConsole"
+            class="org.eclipse.linuxtools.cdt.autotools.internal.ui.CConfigureConsole"
             id="org.eclipse.linuxtools.cdt.autotools.configureConsole"/>
       <CBuildConsole
-            class="org.eclipse.linuxtools.internal.cdt.autotools.ui.CBuildStepsConsole"
+            class="org.eclipse.linuxtools.cdt.autotools.internal.ui.CBuildStepsConsole"
             id="org.eclipse.linuxtools.cdt.autotools.buildStepsConsole">
-      </CBuildConsole>
-      <CBuildConsole
-            class="org.eclipse.linuxtools.internal.cdt.autotools.ui.AutotoolsConsole"
-            id="org.eclipse.linuxtools.cdt.autotools.autotoolsConsole">
       </CBuildConsole>
    </extension>
    <extension
@@ -574,7 +564,7 @@
       <editor
             name="%AutomakeEditor.name"
             icon="icons/automake.gif"
-            contributorClass="org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.MakefileEditorActionContributor"
+            contributorClass="org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.MakefileEditorActionContributor"
             class="org.eclipse.linuxtools.cdt.autotools.editors.automake.AutomakeEditor"
             id="org.eclipse.linuxtools.cdt.autotools.editors.AutomakeEditor"
             filenames="Makefile.am,Makefile.in">
@@ -609,13 +599,13 @@
             id="org.eclipse.linuxtools.cdt.autotools.ui.editors.text.show.tooltip"
             name="%ShowTooltip.name"/>
    </extension>
-  <extension point="org.eclipse.core.contenttype.contentTypes">
+  <extension point="org.eclipse.core.runtime.contentTypes">
 	  <!-- declares a content type for automake files -->
 	  <content-type id="org.eclipse.linuxtools.cdt.autotools.automake" name="%Automake.name" 
 		  base-type="org.eclipse.core.runtime.text"
 		  priority="high"/>
   </extension>
-   <extension point="org.eclipse.core.contenttype.contentTypes"> 
+   <extension point="org.eclipse.core.runtime.contentTypes"> 
       <file-association 
        content-type="org.eclipse.linuxtools.cdt.autotools.automake"
        file-names="Makefile.am"
@@ -657,19 +647,19 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
-            class="org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutotoolsPreferencePage"
+            class="org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutotoolsPreferencePage"
             id="org.eclipse.linuxtools.cdt.autotools.preferences1"
             name="%PreferenceAutotools.name">
       </page>
       <page
             category="org.eclipse.linuxtools.cdt.autotools.preferences1"
-            class="org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutomakeEditorPreferencePage"
+            class="org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutomakeEditorPreferencePage"
             id="org.eclipse.linuxtools.cdt.autotools.preferences.automake.editor1"
             name="%PreferenceAutomakeEditor.name">
       </page>
       <page
             category="org.eclipse.linuxtools.cdt.autotools.preferences1"
-            class="org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutoconfEditorPreferencePage"
+            class="org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutoconfEditorPreferencePage"
             id="org.eclipse.linuxtools.cdt.autotools.preferences.autoconf.editor1"
             name="%PreferenceAutoconfEditor.name">
       </page>
@@ -711,16 +701,31 @@
             class="org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyPage"
             id="org.eclipse.linuxtools.cdt.autotools.propertypage"
             name="%PropertyAutotools.name">
+         <filter
+               name="projectNature"
+               value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
+         </filter>
          <enabledWhen>
-            <and>
+            <or>
                <instanceof
-                     value="org.eclipse.core.resources.IResource">
+                     value="org.eclipse.core.resources.IProject">
                </instanceof>
-               <test
-                     property="org.eclipse.linuxtools.cdt.autotools.isAutotoolsProject"
-                     value="true">
-               </test>
-            </and>
+               <instanceof
+                     value="org.eclipse.cdt.core.model.ICProject">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.core.resources.IFolder">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.cdt.core.model.ICContainer">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.cdt.core.model.ITranslationUnit">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.core.resources.IFile">
+               </instanceof>
+            </or>
          </enabledWhen>
       </page>
    </extension>
@@ -741,109 +746,80 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:project?after=additions">
-         <menu
-               id="invokeAutotools"
-               label="%InvokeAutotools.label"
-               mnemonic="%InvokeAutotools.mnemonic">
-            <visibleWhen
-                  checkEnabled="false">
-               <and>
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false"
-                        operator="and">
-                     <adapt
-                           type="org.eclipse.core.resources.IResource">
-                        <test
-                              property="org.eclipse.core.resources.projectNature"
-                              value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
-                        </test>
-                     </adapt>
-                  </iterate>
-               </and>
-            </visibleWhen>
-         </menu>
-      </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="menu:project?after=additions">
-         <command
-               commandId="org.eclipse.linuxtools.cdt.autotools.command.reconfigure"
-               id="reconfigure"
-               label="%Reconfigure.label"
-               mnemonic="%Reconfigure.mnemonic"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <and>
-                  <count
-                        value="1">
-                  </count>
-                  <iterate
-                        ifEmpty="false"
-                        operator="and">
-                     <adapt
-                           type="org.eclipse.core.resources.IResource">
-                        <test
-                              property="org.eclipse.core.resources.projectNature"
-                              value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
-                        </test>
-                     </adapt>
-                  </iterate>
-               </and>
-            </visibleWhen>
-         </command>
-       </menuContribution>
-   </extension>
-    <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="menu:invokeAutotools">
          <command
                commandId="org.eclipse.linuxtools.cdt.autotools.command.autoconf"
                id="autoconf"
                label="%InvokeAutoconf.label"
-               mnemonic="%InvokeAutoconf.mnemonic"
                style="push">
-         </command>
-         <command
-               commandId="org.eclipse.linuxtools.cdt.autotools.command.autoheader"
-               id="autoheader"
-               label="%InvokeAutoheader.label"
-               mnemonic="%InvokeAutoheader.mnemonic"
-               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.projectNature"
+                              value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </and>
+            </visibleWhen>
          </command>
          <command
                commandId="org.eclipse.linuxtools.cdt.autotools.command.automake"
                id="automake"
                label="%InvokeAutomake.label"
-               mnemonic="%InvokeAutomake.mnemonic"
                style="push">
-         </command>
-         <command
-               commandId="org.eclipse.linuxtools.cdt.autotools.command.autoreconf"
-               id="autoreconf"
-               label="%InvokeAutoreconf.label"
-               mnemonic="%InvokeAutoreconf.mnemonic"
-               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.projectNature"
+                              value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </and>
+            </visibleWhen>
          </command>
          <command
                commandId="org.eclipse.linuxtools.cdt.autotools.command.aclocal"
                id="aclocal"
                label="%InvokeAclocal.label"
-               mnemonic="%InvokeAclocal.mnemonic"
                style="push">
-         </command>
-         <command
-               commandId="org.eclipse.linuxtools.cdt.autotools.command.libtoolize"
-               id="libtoolize"
-               label="%InvokeLibtoolize.label"
-               mnemonic="%InvokeLibtoolize.mnemonic"
-               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.projectNature"
+                              value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </and>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
@@ -863,39 +839,15 @@
       </command>
       <command
             categoryId="org.eclipse.linuxtools.cdt.autotools.category.invokeAutotools"
-            description="%InvokeAutoheader.description"
-            id="org.eclipse.linuxtools.cdt.autotools.command.autoheader"
-            name="%InvokeAutoheader.label">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.cdt.autotools.category.invokeAutotools"
             description="%InvokeAutomake.description"
             id="org.eclipse.linuxtools.cdt.autotools.command.automake"
             name="%InvokeAutomake.label">
       </command>
       <command
             categoryId="org.eclipse.linuxtools.cdt.autotools.category.invokeAutotools"
-            description="%InvokeAutoreconf.description"
-            id="org.eclipse.linuxtools.cdt.autotools.command.autoreconf"
-            name="%InvokeAutoreconf.label">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.cdt.autotools.category.invokeAutotools"
             description="%InvokeAclocal.description"
             id="org.eclipse.linuxtools.cdt.autotools.command.aclocal"
             name="%InvokeAclocal.label">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.cdt.autotools.category.invokeAutotools"
-            description="%InvokeLibtoolize.description"
-            id="org.eclipse.linuxtools.cdt.autotools.command.libtoolize"
-            name="%InvokeLibtoolize.label">
-      </command>
-      <command
-            categoryId="org.eclipse.linuxtools.cdt.autotools.category.invokeAutotools"
-            description="%Reconfigure.description"
-            id="org.eclipse.linuxtools.cdt.autotools.command.reconfigure"
-            name="%Reconfigure.label">
       </command>
    </extension>
    <extension
@@ -933,76 +885,8 @@
          </enabledWhen>
       </handler>
       <handler
-            class="org.eclipse.linuxtools.cdt.autotools.actions.AutoheaderHandler"
-            commandId="org.eclipse.linuxtools.cdt.autotools.command.autoheader">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </activeWhen>
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
             class="org.eclipse.linuxtools.cdt.autotools.actions.AutomakeHandler"
             commandId="org.eclipse.linuxtools.cdt.autotools.command.automake">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </activeWhen>
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="org.eclipse.linuxtools.cdt.autotools.actions.AutoreconfHandler"
-            commandId="org.eclipse.linuxtools.cdt.autotools.command.autoreconf">
          <activeWhen>
             <with
                   variable="selection">
@@ -1068,73 +952,5 @@
             </with>
          </enabledWhen>
       </handler>
-      <handler
-            class="org.eclipse.linuxtools.cdt.autotools.actions.LibtoolizeHandler"
-            commandId="org.eclipse.linuxtools.cdt.autotools.command.libtoolize">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </activeWhen>
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="org.eclipse.linuxtools.cdt.autotools.actions.ReconfigureHandler"
-            commandId="org.eclipse.linuxtools.cdt.autotools.command.reconfigure">
-         <activeWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </activeWhen>
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <count
-                     value="1">
-               </count>
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <adapt
-                        type="org.eclipse.core.resources.IResource">
-                  </adapt>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
    </extension>
- </plugin>
+</plugin>

@@ -52,12 +52,11 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 	private IProject project;
 	private IPath filePath;
 	private String[] includePaths;
-	@SuppressWarnings("unchecked")
 	private HashMap definedSymbols;
 	private boolean isDirty;
 	private String compilationString;
 	private String dirName;
-	private HashSet<IScannerInfoChangeListener> listeners = new HashSet<IScannerInfoChangeListener>();
+	private HashSet listeners = new HashSet();
 	
 	public AutotoolsScannerInfo (IResource res) {
 		this.res = res;
@@ -106,8 +105,8 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 					String id = options[i].getId();
 					if (id.indexOf("builddir") > 0) { // $NON-NLS-1$
 						runPath = makefile.getProject().getLocation().append(value.trim());
-						done = true;
 					}
+					done = true;
 				}
 			} catch (BuildException e) {
 				// do nothing
@@ -121,28 +120,23 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		makeArgs[1] = "all"; // $NON-NLS-1$
 		makeArgs[2] = "MAKE=make -W " + relFilePath.toOSString(); //$NON-NLS-1$
 
-		try {
-			Process proc = launcher.execute(makeCommandPath, makeArgs, env,
-					runPath, new NullProgressMonitor());
-			if (proc != null) {
-				try {
-					// Close the input of the process since we will never write to
-					// it
-					proc.getOutputStream().close();
-				} catch (IOException e) {
-				}
+		Process proc = launcher.execute(makeCommandPath, makeArgs, env,
+				runPath);
+		if (proc != null) {
+			try {
+				// Close the input of the process since we will never write to
+				// it
+				proc.getOutputStream().close();
+			} catch (IOException e) {
+			}
 
-				if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
-						monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
-					errMsg = launcher.getErrorMessage();
-				}
-				outString = stdout.toString();
-			} else {
+			if (launcher.waitAndRead(stdout, stderr, new SubProgressMonitor(
+					monitor, IProgressMonitor.UNKNOWN)) != CommandLauncher.OK) {
 				errMsg = launcher.getErrorMessage();
 			}
-		} catch (CoreException e) {
-			errMsg = e.getLocalizedMessage();
-			AutotoolsPlugin.logErrorMessage(errMsg);
+			outString = stdout.toString();
+		} else {
+			errMsg = launcher.getErrorMessage();
 		}
 		return outString;
 	}
@@ -211,50 +205,22 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 			// refer to it this way.
 			String out = buildFile(filePath, makefile, info);
 			try {
-				boolean topLevel = dir.equals(project.getFullPath());
-				Pattern p = null;
-				Matcher m = null;
-				if (!topLevel) {
-					String regex1 = "^Making.*in.*" + dir.lastSegment(); // $NON-NLS-1$
-					p = Pattern.compile(regex1, Pattern.MULTILINE);
-					m = p.matcher(out);
-				}
-				if (topLevel || m.find()) {
-					Pattern p2 = null;
-					Matcher m2 = null;
-					String substr2 = out;
-					if (!topLevel) {
-						substr2 = out.substring(m.end());
-						String regex2 = "^make.*Entering directory.*`(.*)'"; // $NON-NLS-1$
-						p2 = Pattern.compile(regex2, Pattern.MULTILINE);
-						m2 = p2.matcher(substr2);
-					}
-					if (topLevel || m2.find()) {
-						String substr3 = null;
-						if (!topLevel) {
-							dirName = m2.group(1);
-							substr3 = substr2.substring(m2.start());
-						} else {
-							dirName = "";
-							substr3 = out;
-						}
-						// We need to test for both gcc and g++ compilers.
-						String regex3 = "^.*gcc.*?-I.*?" + filePath.lastSegment(); // $NON-NLS-1$
-						String regex4 = "^.*g[+][+].*?-I.*?" + filePath.lastSegment(); // $NON-NLS-1$
-						// Replace all continuation markers so we don't have to worry about newlines in
-						// the middle of a compilation string.
-						substr3 = substr3.replaceAll("\\\\\\n", "");
+				String regex1 = "^Making.*in.*" + dir.lastSegment(); // $NON-NLS-1$
+				Pattern p = Pattern.compile(regex1, Pattern.MULTILINE);
+				Matcher m = p.matcher(out);
+				if (m.find()) {
+					String substr2 = out.substring(m.end());
+					String regex2 = "^make.*Entering directory.*`(.*)'"; // $NON-NLS-1$
+					Pattern p2 = Pattern.compile(regex2, Pattern.MULTILINE);
+					Matcher m2 = p2.matcher(substr2);
+					if (m2.find()) {
+						dirName = m2.group(1);
+						String substr3 = substr2.substring(m2.start());
+						String regex3 = "^.*gcc.*-I.*" + filePath.lastSegment(); // $NON-NLS-1$
 						Pattern p3 = Pattern.compile(regex3, Pattern.MULTILINE);
 						Matcher m3 = p3.matcher(substr3);
 						if (m3.find())
 							compilationString = substr3.substring(m3.start(),m3.end());
-						else {
-							String substr4 = substr3;
-							Pattern p4 = Pattern.compile(regex4, Pattern.MULTILINE);
-							Matcher m4 = p4.matcher(substr4);
-							if (m4.find())
-								compilationString = substr3.substring(m4.start(),m4.end());
-						}
 					}
 				} else if (!out.equals("")) {
 					compilationString = "";
@@ -274,7 +240,7 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		if (includePaths != null && !isDirty && compilationString != null) {
 			return includePaths;
 		}
-		ArrayList<String> pathList = new ArrayList<String>();
+		ArrayList pathList = new ArrayList();
 		String cs = getCompilationString();
 		if (cs != null) {
 			// Grab include paths specified via -I
@@ -332,7 +298,7 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		includePaths = (String[])pathList.toArray(pathArray);
 		
 		// FIXME: Info has been updated.  Is this the best place to notify listeners?
-		Iterator<IScannerInfoChangeListener> i = listeners.iterator();
+		Iterator i = listeners.iterator();
 		while (i.hasNext()) {
 			IScannerInfoChangeListener listener = (IScannerInfoChangeListener)i.next();
 			listener.changeNotification(project, this);
@@ -340,7 +306,6 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 		return includePaths;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map getDefinedSymbols () {
 		HashMap symbolMap = new HashMap();
 		if (project == null || filePath == null)

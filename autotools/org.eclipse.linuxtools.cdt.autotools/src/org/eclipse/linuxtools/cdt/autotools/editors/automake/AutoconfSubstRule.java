@@ -14,13 +14,13 @@ public class AutoconfSubstRule implements IPredicateRule {
 	private char[][] fLineDelimiters;
 	private char[][] fSortedLineDelimiters;
 	
-	private static class DecreasingCharArrayLengthComparator implements Comparator<Object> {
+	private static class DecreasingCharArrayLengthComparator implements Comparator {
 		public int compare(Object o1, Object o2) {
 			return ((char[]) o2).length - ((char[]) o1).length;
 		}
 	}
 
-	private Comparator<Object> fLineDelimiterComparator= new DecreasingCharArrayLengthComparator();
+	private Comparator fLineDelimiterComparator= new DecreasingCharArrayLengthComparator();
 
 	public AutoconfSubstRule(IToken token) {
 		this.token = token;

@@ -1,12 +1,12 @@
 package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.IReconcilingParticipant;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IReconcilingParticipant;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 
 public interface IAutotoolsEditor extends ITextEditor {
 	
-	public Object getAdapter(Class<?> key);
+	public Object getAdapter(Class key);
 	
 	/**
 	 * Adds the given listener.

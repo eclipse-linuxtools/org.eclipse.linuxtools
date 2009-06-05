@@ -19,16 +19,12 @@ import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.ICDescriptor;
 import org.eclipse.cdt.core.ICExtensionReference;
 import org.eclipse.cdt.make.core.IMakeTargetManager;
-import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
+import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -38,6 +34,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -47,16 +44,11 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static AutotoolsPlugin plugin;
 	private ResourceBundle resourceBundle;
+	private ServiceTracker tracker;
 	
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.cdt.autotools"; //$NON-NLS-1$
 
 	private AutotoolsMakeTargetManager fTargetManager;
-	private IConfigurationElement generatorElement;
-
-	public static final String EXTENSION_POINT_ID = ManagedBuilderCorePlugin.getUniqueIdentifier() + ".buildDefinitions";		//$NON-NLS-1$
-	public static final String BUILDER = "builder";   //$NON-NLS-1$
-	public static final String ID_ELEMENT_NAME = "id"; // $NON-NLS-1$
-	public static final String AUTOTOOLS_BUILDER_ID = PLUGIN_ID + ".builder"; // $NON-NLS-1$
 	
 	/**
 	 * The constructor.
@@ -93,7 +85,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 		return fTargetManager;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void verifyScannerInfoProvider(IProject project) throws CoreException {
 		boolean found = false;
 		ICDescriptor desc = CCorePlugin.getDefault().getCProjectDescription(project, true);
@@ -107,7 +98,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
         }
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void setScannerInfoProvider(IProject project) throws CoreException {
 		ICDescriptor desc = CCorePlugin.getDefault().getCProjectDescription(project, true);
 		desc.remove(CCorePlugin.BUILD_SCANNER_INFO_UNIQ_ID);
@@ -119,6 +109,8 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		this.tracker = new ServiceTracker(context, IProxyService.class.getName(), null);
+		this.tracker.open();
 	}
 
 	/**
@@ -126,6 +118,7 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+		this.tracker.close();
 		plugin = null;
 	}
 
@@ -136,6 +129,13 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	/**
+	 * Returns IProxyService which means we can safely read a URL.
+	 */
+	public IProxyService getProxyService() {
+		return (IProxyService)tracker.getService();
+	}
+	
 	/**
 	 * Returns active shell.
 	 */
@@ -182,39 +182,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 		return resourceBundle;
 	}
 
-	/**
-	 * Get the configuration element for the Autotools Makefile generator
-	 * @return the generator element
-	 */
-	public IConfigurationElement getGeneratorElement() {
-		if (generatorElement == null) {
-			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
-			if( extensionPoint != null) {
-				IExtension[] extensions = extensionPoint.getExtensions();
-				if (extensions != null) {
-					for (int i = 0; i < extensions.length; ++i) {
-						IExtension extension = extensions[i];
-				
-						IConfigurationElement[] elements = extension.getConfigurationElements();
-						
-						// Get the managedBuildRevsion of the extension.
-						for (int j = 0; j < elements.length; j++) {
-							IConfigurationElement element = elements[j];
-							if (element.getName().equals(BUILDER)) {
-								String id = element.getAttribute(ID_ELEMENT_NAME);
-								if (id.equals(AUTOTOOLS_BUILDER_ID)) {
-									generatorElement = element;
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return generatorElement;
-	}
-	
 	/**
 	 * Returns an image descriptor for the image file at the given
 	 * plug-in relative path.

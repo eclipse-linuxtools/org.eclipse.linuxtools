@@ -15,12 +15,12 @@ package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
+import org.eclipse.linuxtools.cdt.autotools.internal.text.hover.AutoconfPrototype;
+import org.eclipse.linuxtools.cdt.autotools.internal.text.hover.AutoconfTextHover;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutotoolsEditorPreferenceConstants;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfMacroElement;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.IAutoconfMacroValidator;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.ParseException;
-import org.eclipse.linuxtools.internal.cdt.autotools.text.hover.AutoconfPrototype;
-import org.eclipse.linuxtools.internal.cdt.autotools.text.hover.AutoconfTextHover;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutotoolsEditorPreferenceConstants;
 
 
 /**

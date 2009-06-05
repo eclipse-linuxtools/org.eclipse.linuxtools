@@ -33,9 +33,9 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.linuxtools.internal.cdt.autotools.wizards.AutotoolsWizardMessages;
-import org.eclipse.linuxtools.internal.cdt.autotools.wizards.ConfigurationContentProvider;
-import org.eclipse.linuxtools.internal.cdt.autotools.wizards.ConfigurationLabelProvider;
+import org.eclipse.linuxtools.cdt.autotools.internal.wizards.AutotoolsWizardMessages;
+import org.eclipse.linuxtools.cdt.autotools.internal.wizards.ConfigurationContentProvider;
+import org.eclipse.linuxtools.cdt.autotools.internal.wizards.ConfigurationLabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -75,7 +75,7 @@ public class CProjectPlatformPage extends WizardPage {
 	
 	protected Wizard parentWizard;
 	protected Text platformSelection;
-	private ArrayList<Object> selectedConfigurations;
+	private ArrayList selectedConfigurations;
 	protected IProjectType projectType;
 	protected Button showAllConfigs;
 	protected boolean showAllConfigsForced;
@@ -91,7 +91,7 @@ public class CProjectPlatformPage extends WizardPage {
 		super(pageName);
 		setPageComplete(false);
 		projectType = ManagedBuildManager.getExtensionProjectType("org.eclipse.linuxtools.cdt.autotools.projectType"); //$NON-NLS-1$
-		selectedConfigurations = new ArrayList<Object>(0);
+		selectedConfigurations = new ArrayList(0);
 		this.parentWizard = parentWizard;
 		showAllConfigsForced = false;
 	}
@@ -232,7 +232,7 @@ public class CProjectPlatformPage extends WizardPage {
 		// pages will know which toolchains have been selected
 		
 		// get the toolchains from the selected configs and put them into a set
-		Set<IToolChain> toolchainSet = new LinkedHashSet<IToolChain>();
+		Set toolchainSet = new LinkedHashSet();
 		for(int k = 0; k < selectedConfigurations.size(); k++)
 		{
 			IConfiguration config = (IConfiguration) selectedConfigurations.get(k);
@@ -283,7 +283,7 @@ public class CProjectPlatformPage extends WizardPage {
 	 * passed to this method
 	 */
 	IConfiguration[] filterSupportedConfigurations(IConfiguration cfgs[]){
-		ArrayList<IConfiguration> supported = new ArrayList<IConfiguration>();
+		ArrayList supported = new ArrayList();
 		String os = Platform.getOS();
 		String arch = Platform.getOSArch();
 
@@ -293,9 +293,9 @@ public class CProjectPlatformPage extends WizardPage {
 				// Now, apply the OS and ARCH filters to determine if the configuration should be shown
 				// Determine if the configuration's tool-chain supports this OS & Architecture.
 				IToolChain tc = cfgs[i].getToolChain();
-				List<String> osList = Arrays.asList(tc.getOSList());
+				List osList = Arrays.asList(tc.getOSList());
 				if (osList.contains("all") || osList.contains(os)) {	//$NON-NLS-1$
-					List<String> archList = Arrays.asList(tc.getArchList());
+					List archList = Arrays.asList(tc.getArchList());
 					if (archList.contains("all") || archList.contains(arch)) { //$NON-NLS-1$
 						supported.add(cfgs[i]);						
 					}

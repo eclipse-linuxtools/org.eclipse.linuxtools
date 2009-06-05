@@ -21,7 +21,6 @@ import org.eclipse.cdt.core.CommandLauncher;
 import org.eclipse.cdt.core.ConsoleOutputStream;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.resources.IConsole;
-import org.eclipse.cdt.make.core.IMakeCommonBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
@@ -29,9 +28,7 @@ import org.eclipse.cdt.managedbuilder.core.IManagedProject;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
 import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
-import org.eclipse.cdt.managedbuilder.internal.core.Builder;
 import org.eclipse.cdt.managedbuilder.internal.core.CommonBuilder;
-import org.eclipse.cdt.managedbuilder.internal.core.ToolChain;
 import org.eclipse.cdt.managedbuilder.macros.BuildMacroException;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
@@ -56,7 +53,6 @@ import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConst
  * 
  * @since 1.2 
  */
-@SuppressWarnings("restriction")
 public class AutotoolsMakefileBuilder extends CommonBuilder {
 	public static final String BUILDER_NAME = "genmakebuilder"; //$NON-NLS-1$
 	public static final String BUILDER_ID = AutotoolsPlugin.getUniqueIdentifier() + "." + BUILDER_NAME; //$NON-NLS-1$
@@ -74,12 +70,9 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 	protected boolean buildCalled;
 	
 	private String makeTargetName;
-
-	@SuppressWarnings("unused")
 	private String preBuildErrMsg = new String();
-	@SuppressWarnings("unused")
 	private String postBuildErrMsg = new String();
-
+	
 	public static String getBuilderId() {
 		return BUILDER_ID;
 	}
@@ -132,7 +125,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 				if (root != null) {
 					if (info.getDefaultConfiguration() == null)
 						return null;
-					generator = new MakeGenerator();
+					generator = ManagedBuildManager.getBuildfileGenerator(info.getDefaultConfiguration());
 					generator.initialize(getProject(), info, monitor);
 					IPath buildDir = project.getLocation().append(generator.getBuildWorkingDir());
 					IPath makefilePath = buildDir.append(generator.getMakefileName());
@@ -160,7 +153,6 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			// perform a make from the top-level.
 			if(VERBOSE)
 				outputTrace(project.getName(), ">>build requested, type = " + kind); //$NON-NLS-1$
-			
 			IConfiguration cfg = info.getDefaultConfiguration();
 
 			// Assemble the information needed to generate the targets
@@ -243,7 +235,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 				if (tmp.length > 1)
 					System.arraycopy(tmp, 1, cmdargs, 0, tmp.length - 1);
 				proc = launcher.execute(new Path(tmp[0]), cmdargs, env,
-						project.getLocation().append(generator.getBuildWorkingDir()), monitor);
+						project.getLocation().append(generator.getBuildWorkingDir()));
 				if (proc != null) {
 					try {
 						// Close the input of the process since we will never write to
@@ -260,49 +252,36 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			}
 
 			// Perform build
-
-			ToolChain toolChain = (ToolChain)cfg.getToolChain();
-			IBuilder builder = new AutotoolsBuilder(cfg.getEditableBuilder(), project, toolChain);
+			
+			IBuilder builders[] = new IBuilder[1];
+			// Hijack the builder itself so that instead of ManagedMake
+			// policy of defaulting the build path to the configuration name,
+			// we get the build occurring in the builddir configure tool setting.
+			builders[0] = new AutotoolsBuilder(cfg.getEditableBuilder(), project);
 			String buildLocation = null;
 			String buildCommand = null;
-			String buildArguments = null;
 			if (makeTargetName != null) {
-				// We have a MakeTarget.  Get the location and command.
 				buildLocation = (String)args.get("org.eclipse.cdt.make.core.build.location"); // $NON-NLS-1$
 				buildCommand = (String)args.get("org.eclipse.cdt.make.core.build.command"); // $NON-NLS-1$
-				buildArguments = (String)args.get("org.eclipse.cdt.make.core.build.arguments"); // $NON-NLS-1$
 			}
 			if (buildLocation == null)
-				builder.setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toString());
+				builders[0].setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toOSString());
 			else {
 				IWorkspace workspace = project.getWorkspace();
-				builder.setBuildPath(workspace.getRoot().getLocation().append(buildLocation).toString());
-				builder.setManagedBuildOn(false); // needed to avoid ManagedBuild from defaulting directory of makefile.
+				builders[0].setBuildPath(workspace.getRoot().getLocation().append(buildLocation).toOSString());
 			}
 			if (buildCommand != null)
-				builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_COMMAND, buildCommand);
-			if (buildArguments != null)
-				builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_ARGUMENTS, buildArguments);
-			builder.setAutoBuildEnable(true);
-			builder.setCleanBuildEnable(false); // Don't want clean build done ahead of our build.
-			// Following is needed to circumvent the CommonBuilder from using the default
-			// GNUMakefileGenerator.
-			builder.setBuildFileGeneratorElement(AutotoolsPlugin.getDefault().getGeneratorElement());
-			toolChain.setBuilder((Builder)builder);
-			
-			IProject[] projects = null;
-			try {
-				projects = super.build(kind, args, monitor);
-			} finally {
-				// Must ensure we reset ManagedBuild back on so configuration will be run in future.
-				builder.setManagedBuildOn(true);
-			}
+				builders[0].setBuildCommand(new Path(buildCommand));
+			builders[0].setAutoBuildEnable(true);
+			builders[0].setCleanBuildEnable(true);
+			IProject[] projects = build(kind, project, builders, true, monitor);
 
 			if(VERBOSE)
 				outputTrace(project.getName(), "<<done build requested, type = " + kind); //$NON-NLS-1$
 
 			results = projects;
 			buildCalled = false;
+			
 			// Check for a postbuild step and execute it if it exists.
 			if (!postbuildStep.equals("")) {
 				monitor.subTask(postannouncebuildStep);
@@ -321,7 +300,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 				if (tmp.length > 1)
 					System.arraycopy(tmp, 1, cmdargs, 0, tmp.length - 1);
 				proc = launcher.execute(new Path(tmp[0]), cmdargs, env,
-						project.getLocation().append(generator.getBuildWorkingDir()), monitor);
+						project.getLocation().append(generator.getBuildWorkingDir()));
 				if (proc != null) {
 					try {
 						// Close the input of the process since we will never write to
@@ -336,11 +315,11 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 					}
 				}
 			}
+
 		}
 		return results;
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		// See what type of cleaning the user has set up in the
 		// build properties dialog.
@@ -354,37 +333,26 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 		if (cleanDelete != null && cleanDelete.equals(AutotoolsPropertyConstants.TRUE))
 			removeBuildDir(monitor);
 		else {
+			IBuilder builders[] = new IBuilder[1];
 			IProject project = getProject();
 			IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 			IConfiguration cfg = info.getDefaultConfiguration();
-			IManagedBuilderMakefileGenerator generator = new MakeGenerator();
+			IManagedBuilderMakefileGenerator generator = ManagedBuildManager.getBuildfileGenerator(cfg);
 			generator.initialize(getProject(), info, monitor);
 
-//			// Hijack the builder itself so that instead of ManagedMake
-//			// policy of defaulting the build path to the configuration name,
-//			// we get the build occurring in the builddir configure tool setting.
-//			builders[0] = new AutotoolsBuilder(cfg.getEditableBuilder(), project);
-//			builders[0].setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toOSString());
-//			builders[0].setAutoBuildEnable(true);
-//			builders[0].setCleanBuildEnable(true);
-//			builders[0].setManagedBuildOn(false);
-
-			ToolChain toolChain = (ToolChain)cfg.getToolChain();
-			IBuilder builder = new AutotoolsBuilder(cfg.getEditableBuilder(), project, toolChain);
-			builder.setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toOSString());
-			builder.setAutoBuildEnable(true);
-			builder.setCleanBuildEnable(true);
-			builder.setManagedBuildOn(false);
-			// Following is needed to circumvent the CommonBuilder from using the default
-			// GNUMakefileGenerator.
-			builder.setBuildFileGeneratorElement(AutotoolsPlugin.getDefault().getGeneratorElement());
-			toolChain.setBuilder((Builder)builder);
-			
+			// Hijack the builder itself so that instead of ManagedMake
+			// policy of defaulting the build path to the configuration name,
+			// we get the build occurring in the builddir configure tool setting.
+			builders[0] = new AutotoolsBuilder(cfg.getEditableBuilder(), project);
+			builders[0].setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toOSString());
+			builders[0].setAutoBuildEnable(true);
+			builders[0].setCleanBuildEnable(true);
+			builders[0].setManagedBuildOn(false);
 			try {
-				super.build(CLEAN_BUILD, (Map)null, monitor);
+				build(CLEAN_BUILD, project, builders, true, monitor);
 			} finally {
-				builder.setManagedBuildOn(true);
-				builder.setCleanBuildEnable(false);
+				builders[0].setManagedBuildOn(true);
+				builders[0].setCleanBuildEnable(false);
 			}
 		}
 	}
@@ -396,7 +364,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			IWorkspace workspace = AutotoolsPlugin.getWorkspace();
 			IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 			IConfiguration cfg = info.getDefaultConfiguration();
-			IManagedBuilderMakefileGenerator generator = new MakeGenerator();
+			IManagedBuilderMakefileGenerator generator = ManagedBuildManager.getBuildfileGenerator(cfg);
 			generator.initialize(getProject(), info, monitor);
 			String buildPath = project.getFullPath().append(generator.getBuildWorkingDir()).toOSString();
 			IResource rc = workspace.getRoot().findMember(buildPath);
@@ -502,5 +470,13 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 		if (buffer.length() > 0)
 			aList.add(buffer.toString());
 		return aList;
+	}
+
+	public String getPreBuildErrMsg() {
+		return preBuildErrMsg;
+	}
+	
+	public String getPostBuildErrMsg() {
+		return postBuildErrMsg;
 	}
 }

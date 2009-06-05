@@ -13,14 +13,13 @@ package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 import java.util.ArrayList;
 
 import org.eclipse.jface.text.rules.ICharacterScanner;
-import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 
 public class RecursiveSingleLineRule extends SingleLineRule {
 	
-	private ArrayList<IRule> rules;
+	private ArrayList rules;
 	private int evalIndex;
 	private int startIndex;
 	private int endIndex;
@@ -72,7 +71,7 @@ public class RecursiveSingleLineRule extends SingleLineRule {
 		super(startSequence, endSequence, token, escapeCharacter, breaksOnEOF);
 		this.startSequence = startSequence;
 		this.endSequence = endSequence;
-		rules = new ArrayList<IRule>();
+		rules = new ArrayList();
 		startIndex = 0;
 		endIndex = 0;
 	}
@@ -99,7 +98,7 @@ public class RecursiveSingleLineRule extends SingleLineRule {
 		super(startSequence, endSequence, token, escapeCharacter, breaksOnEOF, escapeContinuesLine);
 		this.startSequence = startSequence;
 		this.endSequence = endSequence;
-		rules = new ArrayList<IRule>();
+		rules = new ArrayList();
 		startIndex = 0;
 		endIndex = 0;
 	}

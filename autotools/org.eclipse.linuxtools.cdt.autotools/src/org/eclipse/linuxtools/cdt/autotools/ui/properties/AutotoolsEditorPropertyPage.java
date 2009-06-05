@@ -17,7 +17,7 @@ import org.eclipse.cdt.ui.newui.AbstractCPropertyTab;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutotoolsEditorPreferenceConstants;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutotoolsEditorPreferenceConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

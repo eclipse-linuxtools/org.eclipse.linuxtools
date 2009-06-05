@@ -18,9 +18,9 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.MakefileEditor;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutomakeEditorPreferencePage;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutotoolsEditorPreferenceConstants;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.MakefileEditor;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutomakeEditorPreferencePage;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutotoolsEditorPreferenceConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
@@ -103,7 +103,6 @@ public class AutomakeEditor extends MakefileEditor {
 	/* (non-Javadoc)
 	 * Method declared on IAdaptable
 	 */
-	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class key) {
 		if (key.equals(IContentOutlinePage.class)) {
 			return getAutomakeOutlinePage();

@@ -18,7 +18,8 @@ import java.util.Iterator;
 import org.eclipse.cdt.make.core.makefile.IMakefile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.IMakefileDocumentProvider;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IMakefileDocumentProvider;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
@@ -83,7 +84,7 @@ public class AutomakeDocumentProvider extends TextFileDocumentProvider implement
 	}
 	
 	/*
-	 * @see org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.IMakefileDocumentProvider#getWorkingCopy(java.lang.Object)
+	 * @see org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IMakefileDocumentProvider#getWorkingCopy(java.lang.Object)
 	 */
 	public IMakefile getWorkingCopy(Object element) {
 		FileInfo fileInfo= getFileInfo(element);		
@@ -95,9 +96,8 @@ public class AutomakeDocumentProvider extends TextFileDocumentProvider implement
 	}
 	
 	/*
-	 * @see org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.IMakefileDocumentProvider#shutdown()
+	 * @see org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IMakefileDocumentProvider#shutdown()
 	 */
-	@SuppressWarnings("unchecked")
 	public void shutdown() {
 		Iterator e= getConnectedElementsIterator();
 		while (e.hasNext())
@@ -106,6 +106,7 @@ public class AutomakeDocumentProvider extends TextFileDocumentProvider implement
 	
 	public void connect(Object element) throws CoreException {
 		super.connect(element);
+		IEditorInput input= (IEditorInput) element;
 		IMakefile makefile = getWorkingCopy(element);
 		IDocument document = getDocument(element);
 		AutomakeErrorHandler errorHandler = new AutomakeErrorHandler(document);

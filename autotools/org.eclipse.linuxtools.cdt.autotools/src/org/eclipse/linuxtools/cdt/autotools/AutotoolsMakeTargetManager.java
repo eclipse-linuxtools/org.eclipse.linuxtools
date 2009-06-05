@@ -14,9 +14,9 @@ import org.eclipse.cdt.make.core.IMakeTarget;
 import org.eclipse.cdt.make.core.MakeTargetEvent;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.linuxtools.internal.cdt.autotools.MakeTarget;
-import org.eclipse.linuxtools.internal.cdt.autotools.MakeTargetManager;
-import org.eclipse.linuxtools.internal.cdt.autotools.ProjectTargets;
+import org.eclipse.linuxtools.cdt.autotools.internal.MakeTarget;
+import org.eclipse.linuxtools.cdt.autotools.internal.MakeTargetManager;
+import org.eclipse.linuxtools.cdt.autotools.internal.ProjectTargets;
 
 
 public class AutotoolsMakeTargetManager extends MakeTargetManager {

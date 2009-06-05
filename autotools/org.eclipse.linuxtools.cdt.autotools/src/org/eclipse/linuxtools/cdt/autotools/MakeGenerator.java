@@ -21,14 +21,17 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.CommandLauncher;
@@ -36,7 +39,6 @@ import org.eclipse.cdt.core.ConsoleOutputStream;
 import org.eclipse.cdt.core.ICDescriptor;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.resources.IConsole;
-import org.eclipse.cdt.core.settings.model.ICStorageElement;
 import org.eclipse.cdt.make.core.IMakeTarget;
 import org.eclipse.cdt.make.core.IMakeTargetManager;
 import org.eclipse.cdt.make.core.MakeCorePlugin;
@@ -72,10 +74,14 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.linuxtools.cdt.autotools.internal.MarkerGenerator;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
-import org.eclipse.linuxtools.internal.cdt.autotools.MarkerGenerator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMakefileGenerator, IManagedBuilderMakefileGenerator2 {
@@ -139,12 +145,14 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
-//				try {
-//					builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION, 
-//							project.getLocation().append(buildDir).toOSString());
-//				} catch (CoreException e) {
-//					e.printStackTrace();
-//				}
+				// Fix for 266451.  Check if value has changed and use setBuildPath() instead of setBuildAttribute() 
+				// since we want the builder marked as dirty and the project info saved.  We must use getBuildAttribute()
+				// instead of getBuildPath() to avoid an infinite loop where getBuildPath() may call this function to
+				// find the default path.
+				String oldPath = builder.getBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION,"");
+				String newPath = "${workspace_loc:/" + project.getName() + "/" + buildDir + "}";
+				if (oldPath == null || !oldPath.equals(newPath))
+					builder.setBuildPath(newPath);
 			} else if (id.indexOf("configdir") > 0) {  //$NON-NLS-1$
 				srcDir = (String) options[i].getValue();
 				try {
@@ -303,7 +311,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		if (!path.isAbsolute()) {
 			IPath absPath = getProjectLocation().addTrailingSeparator().append(
 					path);
-			return getPathString(absPath);
+			return absPath.toOSString();
 		}
 		return dir;
 	}
@@ -323,19 +331,14 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @return the path to the configuration settings file
 	 */
 	protected IPath getConfigSettingsPath() {
-		IPath path = project.getWorkingLocation(AutotoolsPlugin.PLUGIN_ID).append(SETTINGS_FILE_NAME + "." + cfg.getName()); //$NON-NLS-1$
+		IPath path = project.getLocation().append(SETTINGS_FILE_NAME + "." + cfg.getName()); //$NON-NLS-1$
 		return path;
 	}
 	
-	public void removeConfigSettings() {
-		File f = getConfigSettingsPath().toFile();
-		try {
-			f.delete();
-		} catch (Exception e) {
-			// do nothing
-		}
-	}
-	
+	private class PathVar {
+		IPath path;
+	};
+
 	public MultiStatus regenerateMakefiles() throws CoreException {
 		MultiStatus status;
 		int rc = IStatus.OK;
@@ -395,8 +398,9 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 			IFile configStatus = root.getFileForLocation(configfile);
 			IFile makefile = root.getFileForLocation(makefilePath);
 			IPath configSettingsPath = getConfigSettingsPath();
-			File configSettings = configSettingsPath.toFile();
+			IFile configSettings = root.getFileForLocation(configSettingsPath);
 			String[] configArgs = getConfigArgs();
+			PathVar autogenPath = new PathVar();
 
 			// We need to figure out if the end-user has changed the configuration
 			// settings.  In such a case, we need to reconfigure from scratch
@@ -407,9 +411,11 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				int i = 0;
 				boolean needSaveConfigArgs = false;
 				needFullConfigure = false;
+				IPath settingsPath = getConfigSettingsPath();
 				try {
+					File f = new File(settingsPath.toOSString());
 					DataInputStream settings = new DataInputStream(
-							new BufferedInputStream(new FileInputStream(configSettings)));
+							new BufferedInputStream(new FileInputStream(f)));
 					// Get the first String in the configure settings file.
 					// Newer configure settings file start with the project name.  
 					// If the project name is present and doesn't match the
@@ -446,9 +452,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					// If we are going to do a full reconfigure, then if the current
 					// build directory exists, we should clean it out first.  This is
 					// because the reconfiguration could change compile flags, etc..
-					// and the Makefile might not detect a rebuild is required.  In
-					// addition, the build directory itself could have been changed and
-					// we should remove the previous build.
+					// and the Makefile might not detect a rebuild is required.
 					IResource r = root.findMember(project.getFullPath().append(buildDir));
 					if (r != null && r.exists()) {
 						// See what type of cleaning the user has set up in the
@@ -505,12 +509,6 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					saveConfigArgs(configArgs);
 				}
 			}
-			
-			ArrayList<String> configureEnvs = new ArrayList<String>();
-			IPath configurePath = getConfigurePath(configureEnvs);
-			ArrayList<String> autogenEnvs = new ArrayList<String>();
-			IPath autogenPath = getAutogenPath(autogenEnvs);
-			
 			// Check if we have a config.status (meaning configure has already run).
     		if (!needFullConfigure && configStatus != null && configStatus.exists()) {
 			    // If no corresponding Makefile in the same build location, then we
@@ -520,16 +518,16 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					rc = runScript(configfile, project.getLocation().append(
 							buildDir), null, 
 							AutotoolsPlugin.getResourceString("MakeGenerator.run.config.status"), //$NON-NLS-1$
-							errMsg, console, null, true);
+							errMsg, console, true);
 				}
 			}
 			// Look for configure and configure from scratch
-			else if (configurePath.toFile().exists()) {
-				rc = runScript(configurePath, 
+			else if (configureExists()) {
+				rc = runScript(getConfigurePath(), 
 						project.getLocation().append(buildDir),
 						configArgs, 
 						AutotoolsPlugin.getResourceString("MakeGenerator.gen.makefile"), //$NON-NLS-1$
-						errMsg, console, configureEnvs, true);
+						errMsg, console, true);
 				if (rc != IStatus.ERROR) {
 					File makefileFile = project.getLocation().append(buildDir)
 					.append(MAKEFILE).toFile();
@@ -541,37 +539,33 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 			}
 			// If no configure, look for autogen.sh which may create configure and
     		// possibly even run it.
-			else if (autogenPath.toFile().exists()) {
+			else if (autogenExists(autogenPath)) {
 				// Remove the existing config.status file since we use it
 				// to figure out if configure was run.
 				if (configStatus.exists())
 					configStatus.delete(true, null);
 				// Get any user-specified arguments for autogen.
 				String[] autogenArgs = getAutogenArgs();
-				rc = runScript(autogenPath,
-						autogenPath.removeLastSegments(1), autogenArgs,
+				rc = runScript(autogenPath.path,
+						autogenPath.path.removeLastSegments(1), autogenArgs,
 						AutotoolsPlugin.getResourceString("MakeGenerator.autogen.sh"), //$NON-NLS-1$
-						errMsg, console, autogenEnvs, true);
+						errMsg, console, true);
 				if (rc != IStatus.ERROR) {
 					configStatus = root.getFileForLocation(configfile);
 					// Check for config.status.  If it is created, then
 					// autogen.sh ran configure and we should not run it
 					// ourselves.
 					if (configStatus == null || !configStatus.exists()) {
-						rc = runScript(configurePath, 
+						rc = runScript(getConfigurePath(), 
 								project.getLocation().append(buildDir),
 								configArgs, 
 								AutotoolsPlugin.getResourceString("MakeGenerator.gen.makefile"), //$NON-NLS-1$
-								errMsg, console, configureEnvs, false);
+								errMsg, console, false);
 						if (rc != IStatus.ERROR) {
 							File makefileFile = project.getLocation().append(buildDir)
 							.append(MAKEFILE).toFile();
 							addMakeTargetsToManager(makefileFile);
 						}
-					} else {
-						File makefileFile = project.getLocation().append(buildDir)
-						.append(MAKEFILE).toFile();
-						addMakeTargetsToManager(makefileFile);						
 					}
 				}
 			}
@@ -592,41 +586,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					saveConfigArgs(configArgs);
 				}
 			}
-			// If nothing this far, try running autoreconf -i
-			else {
-				String[] reconfArgs = new String[1];
-				String reconfCmd = project.getPersistentProperty(AutotoolsPropertyConstants.AUTORECONF_TOOL);
-				if (reconfCmd == null)
-					reconfCmd = "autoreconf"; // $NON-NLS-1$
-				IPath reconfCmdPath = new Path(reconfCmd);
-				reconfArgs[0] = "-i"; //$NON-NLS-1$
-				rc = runCommand(reconfCmdPath,
-						project.getLocation().append(srcDir),
-						reconfArgs,
-						AutotoolsPlugin.getResourceString("MakeGenerator.autoreconf"), //$NON-NLS-1$
-						errMsg, console, true);
-				// Check if configure generated and if yes, run it.
-				if (rc != IStatus.ERROR) {
-					if (configurePath.toFile().exists()) {
-						
-						rc = runScript(configurePath, 
-								project.getLocation().append(buildDir),
-								configArgs, 
-								AutotoolsPlugin.getResourceString("MakeGenerator.gen.makefile"), //$NON-NLS-1$
-								errMsg, console, configureEnvs, true);
-						if (rc != IStatus.ERROR) {
-							File makefileFile = project.getLocation().append(buildDir)
-							.append(MAKEFILE).toFile();
-							addMakeTargetsToManager(makefileFile);
-							// TODO: should we do something special if configure doesn't
-							// return ok?
-							saveConfigArgs(configArgs);
-						}
-					}
-				}
-			}
-    		
-    		// Treat no Makefile as generation error.
+    		// If we didn't create a Makefile, consider that an error.
 			if (makefile == null || !makefile.exists()) {
 				rc = IStatus.ERROR;
 				errMsg = AutotoolsPlugin.getResourceString("MakeGenerator.didnt.generate"); //$NON-NLS-1$
@@ -643,50 +603,10 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return status;
 	}
 
-	/**
-	 * Strip a command of VAR=VALUE pairs that appear ahead of the command and add
-	 * them to a list of environment variables.
-	 *
-	 * @param command - command to strip
-	 * @param envVars - ArrayList to add environment variables to
-	 * @return stripped command
-	 */
-	public static String stripEnvVars(String command, ArrayList<String> envVars) {
-		Pattern p = Pattern.compile("(\\w+[=]([$]?\\w+[:;]?)+\\s+)\\w+.*");
-		Pattern p2 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s+)\\w+.*");
-		Pattern p3 = Pattern.compile("(\\w+[=]'.*?'\\s+)\\w+.*");
-		boolean finished = false;
-		while (!finished) {
-			Matcher m = p.matcher(command);
-			if (m.matches()) {
-				command = command.replaceFirst("\\w+[=]([$]?\\w+[:;]?)+", "").trim();
-				envVars.add(m.group(1).trim());
-			} else {
-				Matcher m2 = p2.matcher(command);
-				if (m2.matches()) {
-					command = command.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
-					String s = m2.group(1).trim();
-					envVars.add(s.replaceAll("\\\"", ""));
-				} else {
-					Matcher m3 = p3.matcher(command);
-					if (m3.matches()) {
-						command = command.replaceFirst("\\w+[=]'.*?'", "").trim();
-						String s = m3.group(1).trim();
-						envVars.add(s.replaceAll("'", ""));
-					} else {
-						finished = true;
-					}
-				}
-			}
-		}
-		return command;
-	}
-	
-	protected IPath getConfigurePath(ArrayList<String> envVars) {
+	protected IPath getConfigurePath() {
 		IPath configPath;
 		ITool[] tool = cfg.getToolsBySuperClassId(CONFIGURE_TOOL_ID);
-		String command = stripEnvVars(tool[0].getToolCommand().trim(), envVars);
-			
+		String command = tool[0].getToolCommand();
 		if (srcDir.equals(""))
 			configPath = project.getLocation().append(command);
 		else
@@ -694,6 +614,11 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return configPath;
 	}
 	
+	protected boolean configureExists() {
+		IPath configCommand = getConfigurePath();
+		return configCommand.toFile().exists();
+	}
+
 	protected IPath getMakefileCVSPath() {
 		IPath makefileCVSPath;
 		if (srcDir.equals(""))
@@ -709,22 +634,32 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return makefileCVSPath.toFile().exists();
 	}
 
-	protected IPath getAutogenPath(ArrayList<String> envVars) {
-		IPath autogenPath;
+	/*
+	 * Calculate whether a *autogen.sh file exists in the src directory.
+	 * 
+	 * @param autogenPath is an empty path passed in which will be filled in with location of file if found
+	 * 
+	 * @return true if *autogen.sh is found, false otherwise
+	 */
+	protected boolean autogenExists(PathVar autogenPath) {
+		IPath path = project.getLocation();
+		if (!srcDir.equals("") && !srcDir.equals("."))
+			path = path.append(srcDir);
 		ITool[] tool = cfg.getToolsBySuperClassId(AUTOGEN_TOOL_ID);
-		String command = stripEnvVars(tool[0].getToolCommand().trim(), envVars);
-			
-		if (srcDir.equals(""))
-			autogenPath = project.getLocation().append(command);
-		else
-			autogenPath = project.getLocation().append(srcDir).append(command);
-		return autogenPath;
+		String command = tool[0].getToolCommand();
+		IPath autogenCommand = path.append(command);
+		if (autogenCommand.toFile().exists()) {
+			autogenPath.path = autogenCommand;
+			return true;
+		}
+		// No match, return false
+		return false;
 	}
-	
+
 	private void saveConfigArgs(String[] args) {
 		IPath settingsPath = getConfigSettingsPath();
 		try {
-			File f = settingsPath.toFile();
+			File f = new File(settingsPath.toOSString());
 			DataOutputStream settings = new DataOutputStream(
 					new BufferedOutputStream(new FileOutputStream(f)));
 			// Write the project name in the configure arguments
@@ -931,7 +866,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 
 		launcher.showCommand(true);
 		Process proc = launcher.execute(commandPath, configTargets, env,
-				runPath, new NullProgressMonitor());
+				runPath);
 		if (proc != null) {
 			try {
 				// Close the input of the process since we will never write to
@@ -1018,21 +953,9 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return rc;
 	}
 	
-	// Get the path string.  We add a Win check to handle MingW.
-	// For MingW, we would rather represent C:\a\b as /C/a/b which
-	// doesn't cause Makefile to choke.
-	// TODO: further logic would be needed to handle cygwin if desired
-	private String getPathString(IPath path) {
-		String s = path.toString();
-		if (Platform.getOS().equals(Platform.OS_WIN32))
-			s = s.replaceAll("^([A-Z])(:)", "/$1");
-		return s;
-	}
-	
 	// Run an autotools script (e.g. configure, autogen.sh, config.status).
 	private int runScript(IPath commandPath, IPath runPath, String[] args,
 			String jobDescription, String errMsg, IConsole console, 
-			ArrayList<String> additionalEnvs, 
 			boolean consoleStart) throws BuildException, CoreException,
 			NullPointerException, IOException {
 		// TODO: Figure out what this next stuff is used for
@@ -1064,7 +987,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 			configTargets = new String[args.length+1];
 			System.arraycopy(args, 0, configTargets, 1, args.length);
 		}
-		configTargets[0] = getPathString(commandPath);
+		configTargets[0] = commandPath.toOSString();
 		
 		String[] msgs = new String[2];
 		msgs[0] = commandPath.toString();
@@ -1093,7 +1016,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		if (!cfg.isSupported()) {
 			String msgArgs[] = new String[1];
 			msgArgs[0] = cfg.getName();
-			buf.append(AutotoolsPlugin.getFormattedString("MakeGenerator.unsupportedConfig", msgArgs)); // $NON-NLS-1$
+			buf.append(AutotoolsPlugin.getFormattedString("MakeGenerator.unsupportedConfig", msgArgs));
 			buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
 			buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
 		}
@@ -1112,8 +1035,6 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				envList.add(variables[i].getName()
 						+ "=" + variables[i].getValue()); //$NON-NLS-1$
 			}
-			if (additionalEnvs != null)
-				envList.addAll(additionalEnvs); // add any additional environment variables specified ahead of script
 			env = (String[]) envList.toArray(new String[envList.size()]);
 		}
 
@@ -1129,7 +1050,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		launcher.showCommand(true);
 		// Run the shell script via shell command.
 		Process proc = launcher.execute(new Path(SHELL_COMMAND), configTargets, env,
-				runPath, new NullProgressMonitor());
+				runPath);
 		if (proc != null) {
 			try {
 				// Close the input of the process since we will never write to
@@ -1216,35 +1137,40 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return rc;
 	}
 	
-	private ICStorageElement createTargetElement(ICStorageElement parent, IMakeTarget target) {
-		ICStorageElement targetElem = parent.createChild(TARGET_ELEMENT);
+	private Node createTargetElement(Document doc, IMakeTarget target) {
+		Element targetElem = doc.createElement(TARGET_ELEMENT);
 		targetElem.setAttribute(TARGET_ATTR_NAME, target.getName());
 		targetElem.setAttribute(TARGET_ATTR_ID, target.getTargetBuilderID());
 		targetElem.setAttribute(TARGET_ATTR_PATH, target.getContainer().getProjectRelativePath().toString());
-		ICStorageElement elem = targetElem.createChild(TARGET_COMMAND);
-		elem.setValue(target.getBuildAttribute(IMakeCommonBuildInfo.BUILD_COMMAND, "make")); //$NON-NLS-1$
+		Element elem = doc.createElement(TARGET_COMMAND);
+		targetElem.appendChild(elem);
+		elem.appendChild(doc.createTextNode(target.getBuildAttribute(IMakeCommonBuildInfo.BUILD_COMMAND, "make"))); //$NON-NLS-1$
 
 		String targetAttr = target.getBuildAttribute(IMakeCommonBuildInfo.BUILD_ARGUMENTS, null);
 		if ( targetAttr != null) {
-			elem = targetElem.createChild(TARGET_ARGUMENTS);
-			elem.setValue(targetAttr);
+			elem = doc.createElement(TARGET_ARGUMENTS);
+			elem.appendChild(doc.createTextNode(targetAttr));
+			targetElem.appendChild(elem);
 		}
 
 		targetAttr = target.getBuildAttribute(IMakeTarget.BUILD_TARGET, null);
 		if (targetAttr != null) {
-			elem = targetElem.createChild(TARGET);
-			elem.setValue(targetAttr);
+			elem = doc.createElement(TARGET);
+			elem.appendChild(doc.createTextNode(targetAttr));
+			targetElem.appendChild(elem);
 		}
 
-		elem = targetElem.createChild(TARGET_STOP_ON_ERROR);
-		elem.setValue(new Boolean(target.isStopOnError()).toString());
+		elem = doc.createElement(TARGET_STOP_ON_ERROR);
+		elem.appendChild(doc.createTextNode(new Boolean(target.isStopOnError()).toString()));
+		targetElem.appendChild(elem);
 
-		elem = targetElem.createChild(TARGET_USE_DEFAULT_CMD);
-		elem.setValue(new Boolean(target.isDefaultBuildCmd()).toString());
-
-		elem = targetElem.createChild(TARGET_RUN_ALL_BUILDERS);
-		elem.setValue(new Boolean(target.runAllBuilders()).toString());
-
+		elem = doc.createElement(TARGET_USE_DEFAULT_CMD);
+		elem.appendChild(doc.createTextNode(new Boolean(target.isDefaultBuildCmd()).toString()));
+		targetElem.appendChild(elem);
+		
+		elem = doc.createElement(TARGET_RUN_ALL_BUILDERS);
+		elem.appendChild(doc.createTextNode(new Boolean(target.runAllBuilders()).toString()));
+		targetElem.appendChild(elem);
 		return targetElem;
 	}
 
@@ -1254,18 +1180,27 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @param doc
 	 * @throws CoreException
 	 */
-	private void saveTargets(IMakeTarget[] makeTargets) throws CoreException {
-		ICDescriptor descriptor = CCorePlugin.getDefault().getCProjectDescription(getProject(), true);
-		ICStorageElement rootElement = descriptor.getProjectStorageElement(MAKE_TARGET_KEY);
+	private void translateDocumentToCDTProject(Document doc) throws CoreException {
+		ICDescriptor descriptor;
+		descriptor = CCorePlugin.getDefault().getCProjectDescription(getProject(), true);
+
+		Element rootElement = descriptor.getProjectData(MAKE_TARGET_KEY);
 
 		//Nuke the children since we are going to write out new ones
-		rootElement.clear();
+		NodeList kids = rootElement.getChildNodes();
+		for (int i = 0; i < kids.getLength(); i++) {
+			rootElement.removeChild(kids.item(i));
+			i--;
+		}
 
-		// Fetch the ProjectTargets as ICStorageElements
-		rootElement = rootElement.createChild(BUILD_TARGET_ELEMENT);
-		for (int i = 0; i < makeTargets.length; ++i)
-			createTargetElement(rootElement, makeTargets[i]);
-
+		//Extract the root of our temporary document
+		Node node = doc.getFirstChild();
+		if (node.hasChildNodes()) {
+			//Create a copy which is a part of the new document
+			Node appendNode = rootElement.getOwnerDocument().importNode(node, true);
+			//Put the copy into the document in the appropriate location
+			rootElement.appendChild(appendNode);
+		}
 		//Save the results
 		descriptor.saveProjectData();
 	}
@@ -1288,8 +1223,8 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @throws CoreException
 	 */
 	private void addMakeTargetsToManager(File makefileFile) throws CoreException {
-		// Return immediately if no Makefile.
-		if (makefileFile == null || !makefileFile.exists())
+		// We don't bother if the Makefile wasn't created successfully.
+		if (!makefileFile.exists())
 			return;
 		
 		checkCancel();
@@ -1337,7 +1272,66 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		MakeTargetComparator compareMakeTargets = new MakeTargetComparator();
 		Arrays.sort(makeTargetArray, compareMakeTargets);
 		
-		saveTargets(makeTargetArray);
+		// At this point, we could use IMakeTargetManager to add new targets and
+		// remove old ones that no longer exist.  Unfortunately, the Makefile
+		// MakeTarget class is rather inefficient at this and rewrites the .cproject
+		// file for every change made to the set of MakeTargets.  In our case,
+		// we are better off performing the rewrite of the .cproject file ourselves
+		// and then restarting the MakeTargetManager manually.  This will cause it
+		// to read the .cproject file to get the MakeTargets again but there is
+		// only 1 read and 1 write vs thousands of potential operations.
+		// each 
+		Document doc;
+		try {
+			doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		} catch (ParserConfigurationException ex) {
+			//This should never happen.
+			throw new CoreException(new Status(IStatus.ERROR, MakeCorePlugin.getUniqueIdentifier(), -1,
+					"Error creating new XML storage document", ex)); //$NON-NLS-1$
+		}
+		Element targetsRootElement = doc.createElement(BUILD_TARGET_ELEMENT);
+		doc.appendChild(targetsRootElement);
+		for (int i = 0; i < makeTargetArray.length; i++) {
+			IMakeTarget t = (IMakeTarget)makeTargetArray[i];
+			targetsRootElement.appendChild(createTargetElement(doc, t));
+		}
+		
+		try {
+			translateDocumentToCDTProject(doc);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// To perform the shutdown and restart, we know that MakeCorePlugin's
+		// MakeTargetManager has two special methods that are not exposed as
+		// part of IMakeTargetManager.  We use reflection to access them and
+		// avoid referencing an internal CDT class: MakeTargetManager.
+		Method shutdown;
+		Method startup;
+		try {
+			shutdown = makeTargetManager.getClass().getMethod("shutdown", (Class<?>[])null);
+			startup = makeTargetManager.getClass().getMethod("startup", (Class<?>[])null);
+			if (shutdown != null && startup != null) {
+				shutdown.invoke(makeTargetManager, (Object[])null);
+				startup.invoke(makeTargetManager, (Object[])null);
+			}
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private boolean isValidTarget(String targetName, IMakeTargetManager makeTargetManager) {

@@ -27,12 +27,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.ErrorParserBlock;
-import org.eclipse.linuxtools.internal.cdt.autotools.wizards.ManagedProjectOptionBlock;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.ErrorParserBlock;
+import org.eclipse.linuxtools.cdt.autotools.internal.wizards.ManagedProjectOptionBlock;
 import org.eclipse.ui.PlatformUI;
 
 
-@SuppressWarnings("deprecation")
 public class NewAutotoolsProjectOptionPage extends NewCProjectWizardOptionPage {
 	
 	public static final String PAGE_ID = "org.eclipse.cdt.managedbuilder.ui.wizard.projectOptionsPage"; //$NON-NLS-1$
@@ -86,9 +85,9 @@ public class NewAutotoolsProjectOptionPage extends NewCProjectWizardOptionPage {
 		}
 		
 		public void setupHelpContextIds(){
-			List<ICOptionPage> pages = getOptionPages();
+			List pages = getOptionPages();
 			
-			Iterator<ICOptionPage> iter = pages.iterator();
+			Iterator iter = pages.iterator();
 			for( int i = 0; i < 3 && iter.hasNext(); i++ ) {
 				ICOptionPage page = (ICOptionPage) iter.next();
 				

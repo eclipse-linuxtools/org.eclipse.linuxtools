@@ -26,8 +26,8 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.MakefilePartitionScanner;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.MakefileSourceConfiguration;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.MakefilePartitionScanner;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.MakefileSourceConfiguration;
 
 
 public class AutomakefileSourceConfiguration extends

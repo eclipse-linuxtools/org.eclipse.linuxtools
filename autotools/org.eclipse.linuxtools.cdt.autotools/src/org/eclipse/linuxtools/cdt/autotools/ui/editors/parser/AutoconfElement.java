@@ -22,7 +22,7 @@ public class AutoconfElement {
 	protected String var;
 	protected int startOffset;
 	protected int endOffset;
-	protected ArrayList<AutoconfElement> children;
+	protected ArrayList children;
 	protected AutoconfElement parent;
 	private IDocument document;
 	
@@ -34,7 +34,7 @@ public class AutoconfElement {
 		this.name = name;
 		this.var = var;
 		this.startOffset = 0;
-		this.children = new ArrayList<AutoconfElement>();
+		this.children = new ArrayList();
 	}
 	
 
@@ -42,7 +42,7 @@ public class AutoconfElement {
 		String source = getSource();
 		if (source == null) {
 			StringBuffer kids = new StringBuffer();
-			for (Iterator<AutoconfElement> iterator = children.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = children.iterator(); iterator.hasNext();) {
 				AutoconfElement kid = (AutoconfElement) iterator.next();
 				kids.append(kid.toString());
 				kids.append(",");

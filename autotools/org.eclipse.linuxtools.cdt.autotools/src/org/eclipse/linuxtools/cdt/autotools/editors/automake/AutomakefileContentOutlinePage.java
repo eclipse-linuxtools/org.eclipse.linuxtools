@@ -34,9 +34,9 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.IAutomakeConditional;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.NullMakefile;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.MakeUIImages;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IAutomakeConditional;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.NullMakefile;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.MakeUIImages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -118,7 +118,7 @@ public class AutomakefileContentOutlinePage extends ContentOutlinePage implement
 			} else {
 				directives = new IDirective[0];
 			}
-			List<IDirective> list = new ArrayList<IDirective>(directives.length);
+			List list = new ArrayList(directives.length);
 			for (int i = 0; i < directives.length; i++) {
 				if (showMacroDefinition && directives[i] instanceof IMacroDefinition) {
 					list.add(directives[i]);

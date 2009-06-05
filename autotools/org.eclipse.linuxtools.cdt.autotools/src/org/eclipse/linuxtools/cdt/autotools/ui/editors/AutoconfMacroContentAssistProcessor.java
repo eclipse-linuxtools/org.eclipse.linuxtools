@@ -21,7 +21,7 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.jface.text.rules.ICharacterScanner;
-import org.eclipse.linuxtools.internal.cdt.autotools.text.hover.AutoconfTextHover;
+import org.eclipse.linuxtools.cdt.autotools.internal.text.hover.AutoconfTextHover;
 
 
 public class AutoconfMacroContentAssistProcessor implements
@@ -62,7 +62,7 @@ public class AutoconfMacroContentAssistProcessor implements
 		}
 		ICompletionProposal[] result = null;
 		if (macros != null) {
-			ArrayList<ICompletionProposal> validList = new ArrayList<ICompletionProposal>();
+			ArrayList validList = new ArrayList();
 			for (int i = 0; i < macros.length; ++i) {
 				String name = macros[i].getName();
 				if (name.length() >= prefix.length()) {

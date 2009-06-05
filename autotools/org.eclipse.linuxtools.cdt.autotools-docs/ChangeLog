@@ -1,16 +1,3 @@
-2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves #285865
-	* plugin.properties: Change Provider to Eclipse instead of Eclipse.org.
-
-2009-06-05  Andrew Overholt  <overholt@redhat.com>
-
-	* Fix up after erroneous SVN operation.
-
-2009-05-14  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* build.properties: Include plugin.properties in binaries.
-
 2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add .qualifier to id.

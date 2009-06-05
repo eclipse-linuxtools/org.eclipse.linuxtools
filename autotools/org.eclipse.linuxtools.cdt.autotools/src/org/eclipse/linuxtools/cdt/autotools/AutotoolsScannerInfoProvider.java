@@ -29,7 +29,7 @@ import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConst
 
 public class AutotoolsScannerInfoProvider extends AbstractCExtension implements IScannerInfoProvider {
 
-	static private Map<String, Map<IResource, AutotoolsScannerInfo>> infoCollections = new HashMap<String, Map<IResource, AutotoolsScannerInfo>>();
+	static private Map infoCollections = new HashMap();
 	static public final String INTERFACE_IDENTITY = 
 		AutotoolsPlugin.PLUGIN_ID + "." + "AutotoolsScannerInfoProvider"; // $NON-NLS-1$
 
@@ -72,9 +72,9 @@ public class AutotoolsScannerInfoProvider extends AbstractCExtension implements 
 		String config = getCollectionName(project);
 		// Get the ScannerInfo collection for current configuration or else
 		// create an empty collection if one doesn't already exist.
-		Map<IResource, AutotoolsScannerInfo> infoCollection = infoCollections.get(config);
+		Map infoCollection = (Map)infoCollections.get(config);
 		if (infoCollection == null) {
-			infoCollection = new HashMap<IResource, AutotoolsScannerInfo>();
+			infoCollection = new HashMap();
 			infoCollections.put(config, infoCollection);
 		}
 		AutotoolsScannerInfo info = (AutotoolsScannerInfo)infoCollection.get(res);
@@ -87,10 +87,10 @@ public class AutotoolsScannerInfoProvider extends AbstractCExtension implements 
 
 	private void setDirty(IProject project) {
 		String config = getCollectionName(project);
-		Map<IResource, AutotoolsScannerInfo> infoCollection = infoCollections.get(config);
+		Map infoCollection = (Map)infoCollections.get(config);
 		if (infoCollection != null) {
-			Collection<AutotoolsScannerInfo> s = infoCollection.values();
-			for (Iterator<AutotoolsScannerInfo> i = s.iterator(); i.hasNext();) {
+			Collection s = infoCollection.values();
+			for (Iterator i = s.iterator(); i.hasNext();) {
 				AutotoolsScannerInfo info = (AutotoolsScannerInfo)i.next();
 				info.setDirty(true);
 			}

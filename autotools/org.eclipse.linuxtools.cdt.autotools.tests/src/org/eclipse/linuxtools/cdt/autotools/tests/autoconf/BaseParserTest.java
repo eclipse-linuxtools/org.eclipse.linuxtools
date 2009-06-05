@@ -32,9 +32,9 @@ import junit.framework.TestCase;
 public abstract class BaseParserTest extends TestCase {
 
 	private IAutoconfErrorHandler errorHandler;
-	protected List<Exception> errors;
+	protected List errors;
 	private IAutoconfMacroValidator macroValidator;
-	private Set<String> macroNames;
+	private Set macroNames;
 	private AutoconfMacroDetector macroDetector;
 
 	public BaseParserTest() {
@@ -46,7 +46,7 @@ public abstract class BaseParserTest extends TestCase {
 	}
 
 	protected void setUp() throws Exception {
-		errors = new ArrayList<Exception>();
+		errors = new ArrayList();
 		this.errorHandler = new IAutoconfErrorHandler() {
 	
 			public void handleError(ParseException exception) {
@@ -58,7 +58,7 @@ public abstract class BaseParserTest extends TestCase {
 	
 		this.macroDetector = new AutoconfMacroDetector();
 		
-		macroNames = new HashSet<String>();
+		macroNames = new HashSet/*<String>*/();
 		this.macroValidator = new IAutoconfMacroValidator() {
 	
 			public void validateMacroCall(AutoconfMacroElement element)
@@ -147,7 +147,7 @@ public abstract class BaseParserTest extends TestCase {
 	}
 
 	protected void checkError(String msgKey) {
-		for (Iterator<Exception> iter = errors.iterator(); iter.hasNext(); ) {
+		for (Iterator iter = errors.iterator(); iter.hasNext(); ) {
 			ParseException exc = (ParseException) iter.next();
 			if (exc.getMessage().contains(msgKey))
 				return;
@@ -161,7 +161,7 @@ public abstract class BaseParserTest extends TestCase {
 	protected void checkError(String msgKey, int line) {
 		ParseException possible = null;
 		int distance = 999;
-		for (Iterator<Exception> iter = errors.iterator(); iter.hasNext(); ) {
+		for (Iterator iter = errors.iterator(); iter.hasNext(); ) {
 			ParseException exc = (ParseException) iter.next();
 			if (exc.getMessage().contains(msgKey)) {
 				int curDistance = Math.abs(possible.getLineNumber() - line);

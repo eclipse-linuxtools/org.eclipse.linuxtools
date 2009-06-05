@@ -25,11 +25,11 @@ import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.AbstractMakefileCodeScanner;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.MakefileWordDetector;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.ColorManager;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.AutoconfIdentifierRule;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.AutoconfWhitespaceDetector;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.AbstractMakefileCodeScanner;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.MakefileWordDetector;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.ColorManager;
 
 
 public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {

@@ -27,8 +27,8 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutotoolsEditorPreferenceConstants;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.ColorManager;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.AutotoolsEditorPreferenceConstants;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.ColorManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -36,7 +36,7 @@ import org.eclipse.swt.graphics.RGB;
 
 public class AutoconfMacroCodeScanner extends RuleBasedScanner {
 
-	private Map<String, IToken> fTokenMap= new HashMap<String, IToken>();
+	private Map fTokenMap= new HashMap();
 	private String[] fPropertyNamesColor;
 	
 	private int quoteLevel;
@@ -82,7 +82,7 @@ public class AutoconfMacroCodeScanner extends RuleBasedScanner {
 		IToken ammacro = getToken(ColorManager.AUTOCONF_AMMACRO_COLOR);
 		IToken code = getToken(ColorManager.AUTOCONF_CODESEQ_COLOR);
 		
-		List<IRule> rules= new ArrayList<IRule>();
+		List rules= new ArrayList();
 
 		// Add rule for single line comments.
 		rules.add(new RestrictedEndOfLineRule("dnl", "[]", comment)); //$NON-NLS-1$

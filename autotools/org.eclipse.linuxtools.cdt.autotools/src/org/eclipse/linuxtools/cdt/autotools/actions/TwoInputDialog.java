@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.actions;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;

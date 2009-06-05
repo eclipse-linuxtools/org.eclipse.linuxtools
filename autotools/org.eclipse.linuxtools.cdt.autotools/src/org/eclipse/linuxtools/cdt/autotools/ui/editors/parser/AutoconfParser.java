@@ -61,7 +61,7 @@ public class AutoconfParser {
 		"format incr decr eval syscmd esyscmd sysval mkstemp maketemp errprint m4exit " +
 		"__file__ __line__ __program__ ";
 	
-	private static List<String> m4builtins = new ArrayList<String>();
+	private static List/*<String>*/ m4builtins = new ArrayList();
 	static {
 		m4builtins.addAll(Arrays.asList(M4_BUILTINS.split(" ")));
 	}
@@ -119,10 +119,6 @@ public class AutoconfParser {
 
 
 	static class BlockEndCondition extends Exception {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 		private Token token;
 
 		public BlockEndCondition(Token token) {
@@ -136,10 +132,6 @@ public class AutoconfParser {
 	}
 
 	static class ExprEndCondition extends Exception {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
 		private Token token;
 
 		public ExprEndCondition(Token token) {
@@ -781,7 +773,7 @@ public class AutoconfParser {
 	private void checkBlockValidity(
 			AutoconfElement parent, 
 			Token token,
-			Class<?>[] classes,
+			Class[] classes,
 			String errorMessage) {
 		for (int i = 0; i < classes.length; i++) {
 			if (classes[i].isInstance(parent)) {

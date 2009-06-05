@@ -11,8 +11,8 @@
 
 package org.eclipse.linuxtools.cdt.autotools.editors.automake;
 
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.Directive;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.Parent;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.Directive;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.Parent;
 
 
 public class AutomakeIfElse extends Parent {

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 
-public class AutoconfMacro implements Comparable<Object> {
+public class AutoconfMacro implements Comparable {
 		protected String name;
 		protected String parms;
 		

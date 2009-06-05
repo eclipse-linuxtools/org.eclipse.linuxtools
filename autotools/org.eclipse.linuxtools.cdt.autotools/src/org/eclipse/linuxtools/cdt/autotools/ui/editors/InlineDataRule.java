@@ -76,12 +76,16 @@ public class InlineDataRule implements IRule {
 
 		char[][] lineDelimeters = scanner.getLegalLineDelimiters();
 		StringBuffer endMarkerBuffer = new StringBuffer();
+		boolean quoted = false;
+		
+		
 		if (c == '-') {
 			fBuffer.append((char)c);
 			c = scanner.read();
 		} else if (c == '\'') {
 			fBuffer.append((char)c);
 			c = scanner.read();
+			quoted = true;
 		}
 		
 		while (c != ICharacterScanner.EOF &&

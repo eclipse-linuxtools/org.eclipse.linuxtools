@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.cdt.autotools.tests.editors;
 
 import junit.framework.TestCase;
 
+import org.eclipse.cdt.make.internal.ui.text.ColorManager;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -27,7 +28,6 @@ import org.eclipse.linuxtools.cdt.autotools.editors.automake.AutomakefileSourceC
 import org.eclipse.linuxtools.cdt.autotools.tests.AutotoolsTestsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.tests.ProjectTools;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 
@@ -37,12 +37,6 @@ public class AutomakeColourizationTests extends TestCase {
 	ProjectTools tools;
 	private IProject project;
 	private IFile makefileAmFile;
-	public static final RGB MAKE_COMMENT_RGB = new RGB(128, 0, 0);
-	public static final RGB MAKE_KEYWORD_RGB = new RGB(128, 255, 0);
-	public static final RGB MAKE_FUNCTION_RGB = new RGB(128, 0, 128);
-	public static final RGB MAKE_MACRO_DEF_RGB = new RGB(0, 0, 128);
-	public static final RGB MAKE_MACRO_REF_RGB = new RGB(0, 128, 0);
-	public static final RGB MAKE_DEFAULT_RGB = new RGB(0, 0, 0);
 	
 	static String makefileAmContents =
 		"# This is a comment" + "\n" +
@@ -101,7 +95,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		Token token = (Token) token0;
 		TextAttribute ta = (TextAttribute) token.getData();
-		assertEquals(MAKE_COMMENT_RGB, ((Color) ta.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_COMMENT_RGB, ((Color) ta.getForeground()).getRGB());
 
 		// if CONDITION
 		token0 = getNextToken();
@@ -111,7 +105,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		token = (Token) token0;
 		TextAttribute attribute = (TextAttribute) token.getData();
-		assertEquals(MAKE_KEYWORD_RGB, ((Color) attribute.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_KEYWORD_RGB, ((Color) attribute.getForeground()).getRGB());
 
 		// blank space between "if" and "CONDITION"
 		token0 = getNextToken();
@@ -131,7 +125,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		token = (Token) token0;
 		attribute = (TextAttribute) token.getData();
-		assertEquals(MAKE_DEFAULT_RGB, ((Color) attribute.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_DEFAULT_RGB, ((Color) attribute.getForeground()).getRGB());
 
 		// line break
 		token0 = getNextToken();
@@ -151,7 +145,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		token = (Token) token0;
 		attribute = (TextAttribute) token.getData();
-		assertEquals(MAKE_MACRO_DEF_RGB, ((Color) attribute.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_MACRO_DEF_RGB, ((Color) attribute.getForeground()).getRGB());
 
 		// else
 		token0 = getNextToken();
@@ -161,7 +155,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		token = (Token) token0;
 		attribute = (TextAttribute) token.getData();
-		assertEquals(MAKE_KEYWORD_RGB, ((Color) attribute.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_KEYWORD_RGB, ((Color) attribute.getForeground()).getRGB());
 
 		// line break
 		token0 = getNextToken();
@@ -181,7 +175,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		token = (Token) token0;
 		attribute = (TextAttribute) token.getData();
-		assertEquals(MAKE_MACRO_DEF_RGB, ((Color) attribute.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_MACRO_DEF_RGB, ((Color) attribute.getForeground()).getRGB());
 
 		// $(MACRO)
 		token0 = getNextToken();
@@ -191,7 +185,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		token = (Token) token0;
 		attribute = (TextAttribute) token.getData();
-		assertEquals(MAKE_MACRO_REF_RGB, ((Color) attribute.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_MACRO_REF_RGB, ((Color) attribute.getForeground()).getRGB());
 
 		// line break
 		token0 = getNextToken();
@@ -211,7 +205,7 @@ public class AutomakeColourizationTests extends TestCase {
 
 		token = (Token) token0;
 		attribute = (TextAttribute) token.getData();
-		assertEquals(MAKE_MACRO_REF_RGB, ((Color) attribute.getForeground()).getRGB());
+		assertEquals(ColorManager.MAKE_MACRO_REF_RGB, ((Color) attribute.getForeground()).getRGB());
 	}
 	
 	protected void tearDown() throws Exception {

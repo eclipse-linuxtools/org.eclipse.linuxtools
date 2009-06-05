@@ -31,9 +31,9 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.CompletionProposalComparator;
-import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.WordPartDetector;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.MakeUIImages;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.CompletionProposalComparator;
+import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.WordPartDetector;
+import org.eclipse.linuxtools.cdt.autotools.internal.ui.MakeUIImages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 
@@ -70,7 +70,7 @@ public class AutomakeCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 
-		public class DirectiveComparator implements Comparator<Object> {
+		public class DirectiveComparator implements Comparator {
 
 			/* (non-Javadoc)
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -131,7 +131,7 @@ public class AutomakeCompletionProcessor implements IContentAssistProcessor {
 				statements = makefile.getTargetRules();
 			}
 
-			ArrayList<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>(statements.length);
+			ArrayList proposalList = new ArrayList(statements.length);
 
 			// iterate over all the different categories
 			for (int i = 0; i < statements.length; i++) {
@@ -175,7 +175,7 @@ public class AutomakeCompletionProcessor implements IContentAssistProcessor {
 			WordPartDetector wordPart = new WordPartDetector(viewer, documentOffset);
 			boolean macro = WordPartDetector.inMacro(viewer, documentOffset);
 			IMakefile makefile = fManager.getWorkingCopy(fEditor.getEditorInput());
-			ArrayList<String> contextList = new ArrayList<String>();
+			ArrayList contextList = new ArrayList();
 			if (macro) {
 				IDirective[] statements = makefile.getMacroDefinitions();
 				for (int i = 0; i < statements.length; i++) {

@@ -25,9 +25,6 @@ public class AutotoolsPropertyConstants {
 	public static final QualifiedName AUTOCONF_TOOL = new QualifiedName(PREFIX, "AutoconfToolPath"); // $NON-NLS-1$
 	public static final QualifiedName AUTOMAKE_TOOL = new QualifiedName(PREFIX, "AutomakeToolPath"); // $NON-NLS-1$
 	public static final QualifiedName ACLOCAL_TOOL = new QualifiedName(PREFIX, "AclocalToolPath");  // $NON-NLS-1$
-	public static final QualifiedName AUTOHEADER_TOOL = new QualifiedName(PREFIX, "AutoheaderToolPath");  // $NON-NLS-1$
-	public static final QualifiedName AUTORECONF_TOOL = new QualifiedName(PREFIX, "AutoreconfToolPath");  // $NON-NLS-1$
-	public static final QualifiedName LIBTOOLIZE_TOOL = new QualifiedName(PREFIX, "LibtoolizePath");  // $NON-NLS-1$
 	public static final QualifiedName CLEAN_DELETE = new QualifiedName(PREFIX, "CleanDelete"); // $NON-NLS-1$
 	public static final QualifiedName CLEAN_MAKE_TARGET = new QualifiedName(PREFIX, "CleanMakeTarget"); // $NON-NLS-1$
 	public static final QualifiedName SCANNER_USE_MAKE_W = new QualifiedName(PREFIX, "ScannerUseMakeW");
