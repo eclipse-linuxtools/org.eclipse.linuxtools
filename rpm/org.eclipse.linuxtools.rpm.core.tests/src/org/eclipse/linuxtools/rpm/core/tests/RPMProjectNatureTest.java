@@ -48,9 +48,6 @@ public class RPMProjectNatureTest extends TestCase {
 		IProject testProject = root.getProject("testProject");
 		testProject.create(monitor);
 		testProject.open(monitor);
-		if(testProject == null) {
-            fail("Unable to create test project");
-        }
 		RPMProjectNature.addRPMNature(testProject, monitor);
 		assertTrue(testProject.hasNature(RPMProjectNature.RPM_NATURE_ID));
 		testProject.delete(true, false, monitor);

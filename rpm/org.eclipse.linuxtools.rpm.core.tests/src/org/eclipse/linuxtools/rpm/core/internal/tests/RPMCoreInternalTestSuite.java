@@ -16,7 +16,6 @@ public class RPMCoreInternalTestSuite extends TestSuite {
 				"Test for org.eclipse.linuxtools.rpm.core.internal.tests");
 		//$JUnit-BEGIN$
         suite.addTest(RPMProjectTest.suite());
-        suite.addTest(SpecFileParserTest.suite());
 		//$JUnit-END$
 		return suite;
 	}

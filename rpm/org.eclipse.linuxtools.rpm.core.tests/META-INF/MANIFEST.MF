@@ -6,7 +6,7 @@ Bundle-Version: 3.0.0
 Bundle-Activator: org.eclipse.linuxtools.rpm.core.tests.RPMCoreTestsPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Classpath: tests.jar
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

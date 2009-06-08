@@ -51,9 +51,6 @@ public class RPMProjectFactoryTest extends TestCase {
         IProject testProject = root.getProject("testHelloWorld");
         testProject.create(monitor);
         testProject.open(monitor);
-        if(testProject == null) {
-            fail("Unable to create test project");
-        }
 		
 		IRPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
 		assertNotNull(rpmProject);

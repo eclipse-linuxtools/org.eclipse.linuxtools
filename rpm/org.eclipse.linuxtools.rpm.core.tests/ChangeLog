@@ -1,3 +1,23 @@
+2009-06-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/SpecFileParserTest.java: Removed.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* .classpath: J2SE-1.5.
+	* build.properties: Likewise.
+	* META-INF/MANIFEST.MF: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java (suite): Remove test not present anymore. 
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java (testIsChangedHelloWorld1): Remove code testing old implementation.
+	(setUp): Likewise.
+	(testBuildPrepHelloWorld): Likewise.
+	(testImportHelloWorld): Likewise.
+	(testIsChangedHelloWorld): Likewise.
+	(testBuildSourceRPMHelloWorld): Likewise.
+	(suite): Likewise.
+	(testBuildSourceRPMHelloWorld1): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java (testGetNewProject): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectNatureTest.java (testAddRPMProjectNature): Likewise.
+
 2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: Replace deprecated Eclipse-LazyStart usage.
