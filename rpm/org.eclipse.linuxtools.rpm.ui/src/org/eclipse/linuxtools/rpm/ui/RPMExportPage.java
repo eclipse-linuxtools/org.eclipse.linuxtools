@@ -171,27 +171,11 @@ public class RPMExportPage extends WizardPage implements Listener {
 		
 		// Fill in the fields
 		setSpecFileField();
-		setVersionReleaseFields();
 
 		// Check if the project has changed
 		// and therefore the project needs a patch
-		boolean projectChanged = false;
-		try {
-			if(rpmProject != null) {
-				projectChanged = rpmProject.isChanged();
-			}
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(), Messages.getString("ErrorDialog.title"),
-					e.getMessage());
-		}
-		if(projectChanged) {
-			patchNeedHintGrid.setVisible(true);
-			setPatchNeeded(true);
-			setPageComplete(true);
-		} else {
 			setPatchNeeded(false);
 			setPageComplete(false);
-		}
 	}
 
 	private void createExportTypeControls(Composite parent) { 
@@ -320,27 +304,14 @@ public class RPMExportPage extends WizardPage implements Listener {
 					// Reset the RPM project
 					int i = projectList.getSelectionIndex();
 					if(i != -1) {
-						IProject project = workspaceRoot.getProject(projectList.getSelection()[0]);
-						try {
-							rpmProject = RPMProjectFactory.getRPMProject(project);
-							if(rpmProject.isChanged()) {
-								setPatchNeeded(true);
-								patchNeedHintGrid.setVisible(true);
-							} else {
 								setPatchNeeded(false);
 								patchNeedHintGrid.setVisible(false);
-							}
-						} catch(CoreException e) {
-							ExceptionHandler.handle(e, getShell(),
-									Messages.getString("ErrorDialog.title"), e.getMessage());
-						}
 					} else {
 						rpmProject = null;
 						setPatchNeeded(false);
 						patchNeedHintGrid.setVisible(false);
 					}
 					setSpecFileField();
-					setVersionReleaseFields();
 				}
 		});
 		projectList.addListener(SWT.Modify, this);
@@ -355,7 +326,7 @@ public class RPMExportPage extends WizardPage implements Listener {
 	private void setSpecFileField() {
 		if(rpmProject != null) {
 			String specFile = 
-				rpmProject.getSpecFile().getFile().getProjectRelativePath().toOSString();
+				rpmProject.getSpecFile().getProjectRelativePath().toOSString();
 			specFileField.setText(specFile);
 		}
 	}
@@ -508,15 +479,6 @@ public class RPMExportPage extends WizardPage implements Listener {
 			Messages.getString("RPMExportPage.needPatch_desc")); //$NON-NLS-1$
 	}
 
-	
-	private void setVersionReleaseFields() {
-		if(rpmProject != null) {
-			String version = rpmProject.getSpecFile().getVersion();
-			String release = rpmProject.getSpecFile().getRelease();
-			rpmVersion.setText(version);
-			rpmRelease.setText(release);
-		}
-	}
 	
 	/**
 	 * Method createSpacer.

@@ -1,3 +1,11 @@
+2009-06-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java (createProjectBox): Update to latest o.e.l.rpm.core API.
+	(setSpecFileField): Likewise.
+	(.handleEvent): Likewise.
+	(createControl): Likewise.
+	(createSpacer): Likewise.
+
 2009-06-03  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .classpath: Update classpath.
