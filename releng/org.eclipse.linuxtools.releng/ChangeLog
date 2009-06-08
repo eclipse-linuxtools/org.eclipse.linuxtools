@@ -1,3 +1,7 @@
+2009-06-08  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Fix some feature names (bug #272991).
+
 2009-06-05  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Update to newer Galileo dependencies. 
