@@ -35,7 +35,7 @@
    <feature url="features/org.eclipse.linuxtools.systemtap.feature_${org.eclipse.linuxtools.systemtap.feature.version}.jar" id="org.eclipse.linuxtools.systemtap.feature" version="${org.eclipse.linuxtools.systemtap.feature.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.valgrind.feature_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.feature" version="${org.eclipse.linuxtools.valgrind.version}">
+   <feature url="features/org.eclipse.linuxtools.valgrind.feature_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.valgrind" version="${org.eclipse.linuxtools.valgrind.version}">
      <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
 </site>
