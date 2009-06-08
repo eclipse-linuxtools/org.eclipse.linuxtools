@@ -1,3 +1,27 @@
+2009-06-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/internal/Patch.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SpecFile.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SpecFileParser.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/IPatch.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/ISpecFile.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (setSpecFile): Remove not needed parts.
+	(buildBinaryRPM): Likewise.
+	(buildSourceRPM): Likewise.
+	(buildAll): Likewise.
+	(importSourceRPM): Likewise.
+	(buildPrep): Likewise.
+	(copySources): Likewise.
+	(getSpecFile): Likewise.
+	(getSourceRPM): Likewise.
+	(RPMProject): Likewise.
+	(setSourceRPM): Likewise.
+	(prepareExport): Likewise.
+	(generateFileCheckSum): Likewise.
+	(generateProjectChecksum): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java (getProject): No more ISpecFile, use IFile.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectFactory.java (getRPMProject): Likewise.
+
 2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .classpath: J2SE-1.5.

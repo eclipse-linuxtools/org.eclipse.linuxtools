@@ -7,6 +7,7 @@
 
 package org.eclipse.linuxtools.rpm.core;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -16,7 +17,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.rpm.core.internal.Messages;
 import org.eclipse.linuxtools.rpm.core.internal.RPMProject;
 import org.eclipse.linuxtools.rpm.core.internal.SourceRPM;
-import org.eclipse.linuxtools.rpm.core.internal.SpecFile;
 
 /**
  * Factory class for obtaining an instance of an RPM project.
@@ -65,8 +65,8 @@ public class RPMProjectFactory {
 			String specFileName = 
 				project.getPersistentProperty(new QualifiedName(RPMCorePlugin.ID, IRPMConstants.SPEC_FILE_PROPERTY));
 			if(specFileName != null) {
-				ISpecFile specFile = 
-					new SpecFile(rpmProject.getConfiguration().getSpecsFolder().getFile(specFileName));
+				IFile specFile = 
+					rpmProject.getConfiguration().getSpecsFolder().getFile(specFileName);
 				rpmProject.setSpecFile(specFile);
 			}
 			else {

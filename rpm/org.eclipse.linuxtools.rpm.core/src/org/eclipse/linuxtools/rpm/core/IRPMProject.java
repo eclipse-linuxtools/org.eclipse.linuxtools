@@ -8,6 +8,7 @@ package org.eclipse.linuxtools.rpm.core;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 
@@ -99,16 +100,6 @@ public interface IRPMProject {
 	public void importSourceRPM(File externalFile) throws CoreException;
 	
 	/**
-	 * Returns whether the project has been modified since it has been imported.
-	 * @return true if the project has been modified, false if it has not
-	 * @throws CoreException if:
-	 * <ul>
-	 * <li>Calculating project checksum fails</li>
-	 * </ul>
-	 */
-	public boolean isChanged() throws CoreException;
-	
-	/**
 	 * Returns the project handle associated with the RPM project.
 	 * @return the project handle
 	 */
@@ -142,7 +133,7 @@ public interface IRPMProject {
 	 * @return the spec file, or <code>null</code> if no source RPM 
 	 * has been imported
 	 */
-	public ISpecFile getSpecFile();
+	public IFile getSpecFile();
 	
 	/**
 	 * Sets the spec file associated with the RPM project.
@@ -152,6 +143,6 @@ public interface IRPMProject {
 	 * <li>Setting the project property associated with the spec file fails</li>
 	 * </ul>
 	 */
-	public void setSpecFile(ISpecFile specFile) throws CoreException;
+	public void setSpecFile(IFile specFile) throws CoreException;
 	
 }
