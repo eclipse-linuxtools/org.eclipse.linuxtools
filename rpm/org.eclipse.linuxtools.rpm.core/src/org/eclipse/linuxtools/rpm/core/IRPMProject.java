@@ -49,7 +49,7 @@ public interface IRPMProject {
 	 * <li>The project is not an RPM project (a source RPM has not been imported)</li>
 	 * </ul>
 	 */
-	public void buildAll(RPMExportDelta export) throws CoreException;
+	public void buildAll() throws CoreException;
 	
 	/**
 	 * Builds a binary RPM according to the directives in the project's spec file.
@@ -66,7 +66,7 @@ public interface IRPMProject {
 	 * <li>The project is not an RPM project (a source RPM has not been imported)</li>
 	 * </ul>
 	 */
-	public void buildBinaryRPM(RPMExportDelta export) throws CoreException;
+	public void buildBinaryRPM() throws CoreException;
 	
 	/**
 	 * Builds a source RPM according to the directives in the project's spec file.
@@ -83,7 +83,7 @@ public interface IRPMProject {
 	 * <li>The project is not an RPM project (a source RPM has not been imported)</li>
 	 * </ul>
 	 */
-	public void buildSourceRPM(RPMExportDelta export) throws CoreException;
+	public void buildSourceRPM() throws CoreException;
 	
 	/**
 	 * Imports an external source RPM into the project and installs project 

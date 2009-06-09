@@ -1,3 +1,13 @@
+2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMExportDelta.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (buildSourceRPM): Adapt to RPMExportDelta removal.
+	(buildBinaryRPM): Likewise.
+	(buildAll): Likewise.
+	(prepareExport): Likewise.
+	(importSourceRPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java: Likewise.
+
 2009-06-08  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/core/internal/Patch.java: Removed.

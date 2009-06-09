@@ -18,7 +18,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
@@ -28,7 +27,6 @@ import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.IRPMProject;
 import org.eclipse.linuxtools.rpm.core.ISourceRPM;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
-import org.eclipse.linuxtools.rpm.core.RPMExportDelta;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
 import org.eclipse.linuxtools.rpm.core.utils.RPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
@@ -116,9 +114,6 @@ public class RPMProject implements IRPMProject {
 		buildPrep();
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 
-		// Copy sources from build root
-		copySources();
-
 		// Set the project nature
 		RPMProjectNature.addRPMNature(getProject(), null);
 
@@ -131,8 +126,8 @@ public class RPMProject implements IRPMProject {
 				new Long(checksum).toString());
 	}
 
-	public void buildAll(RPMExportDelta exportOp) throws CoreException {
-		prepareExport(exportOp);
+	public void buildAll() throws CoreException {
+		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		rpmbuild.buildAll(getSpecFile());
 
@@ -143,11 +138,10 @@ public class RPMProject implements IRPMProject {
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		buildPrep();
-		copySources();
 	}
 
-	public void buildBinaryRPM(RPMExportDelta exportOp) throws CoreException {
-		prepareExport(exportOp);
+	public void buildBinaryRPM() throws CoreException {
+		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		rpmbuild.buildBinary(getSpecFile());
 
@@ -157,8 +151,8 @@ public class RPMProject implements IRPMProject {
 				IResource.DEPTH_INFINITE, null);
 	}
 
-	public void buildSourceRPM(RPMExportDelta exportOp) throws CoreException {
-		prepareExport(exportOp);
+	public void buildSourceRPM() throws CoreException {
+		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		rpmbuild.buildSource(getSpecFile());
 
@@ -167,7 +161,6 @@ public class RPMProject implements IRPMProject {
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		buildPrep();
-		copySources();
 	}
 
 	public void buildPrep() throws CoreException {
@@ -182,44 +175,6 @@ public class RPMProject implements IRPMProject {
 					sources[0].getProjectRelativePath());
 			getSourceRPM().setSourcesFolder(foo);
 		}
-	}
-
-	/**
-	 * Copies sources from the project's BUILD directory to the project root.
-	 * 
-	 * @throws CoreException
-	 *             if copying fails
-	 */
-	private void copySources() throws CoreException {
-		// Copy all sources to the project root
-		IResource[] sources = null;
-		if (getSourceRPM().getSourcesFolder() != null) {
-			sources = getSourceRPM().getSourcesFolder().members();
-		} else {
-			getConfiguration().getBuildFolder().members();
-		}
-		for (int i = 0; i < sources.length; i++) {
-			IPath path = getProject().getFullPath().addTrailingSeparator();
-			path = path.append(sources[i].getName());
-			if (sources[i].getType() == IResource.FILE) {
-				IFile oldFile = getProject().getParent().getFile(path);
-				IFile newFile = getProject().getFile(
-						sources[i].getProjectRelativePath());
-				if (oldFile.exists()) {
-					oldFile.setContents(newFile.getContents(), false, true,
-							null);
-				} else {
-					sources[i].copy(path, false, null);
-				}
-			} else if (sources[i].getType() == IResource.FOLDER) {
-				IFolder oldDir = getProject().getParent().getFolder(path);
-				if (oldDir.exists()) {
-					oldDir.delete(false, true, null);
-				}
-				sources[i].copy(path, false, null);
-			}
-		}
-		getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
 	/**
@@ -242,7 +197,7 @@ public class RPMProject implements IRPMProject {
 	 *             <li>Writing the spec file fails</li>
 	 *             </ul>
 	 */
-	private void prepareExport(RPMExportDelta exportOp) throws CoreException {
+	private void prepareExport() throws CoreException {
 		/* Don't support exporting projects that have not been imported as SRPMs */
 		if (!getProject().hasNature(RPMProjectNature.RPM_NATURE_ID)) {
 			String throw_message = Messages
@@ -251,15 +206,6 @@ public class RPMProject implements IRPMProject {
 			IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
 					throw_message, null);
 			throw new CoreException(error);
-		}
-
-		// We need to reset the spec file (which may be user-defined)
-		if (exportOp.getSpecFile() != null
-				&& !getSpecFile().getProjectRelativePath().equals(
-						exportOp.getSpecFile().getProjectRelativePath())) {
-			setSpecFile(exportOp.getSpecFile());
-		} else {
-			setSpecFile(getSpecFile());
 		}
 
 		// Do a buildPrep again to make sure the BUILD folder is pristine
