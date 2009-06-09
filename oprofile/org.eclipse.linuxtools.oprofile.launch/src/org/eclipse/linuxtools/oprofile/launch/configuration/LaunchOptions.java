@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004,2008 Red Hat, Inc.
+ * Copyright (c) 2004,2008,2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,12 +25,13 @@ import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
  * Eclipse launcher facility.
  */
 public class LaunchOptions {
-	
 	// The launch options for the daemon
 	private OprofileDaemonOptions _options;
+	private boolean _manualProfile;
 
 	public LaunchOptions() {
 		_options = new OprofileDaemonOptions();
+		_manualProfile = false;
 	}
 	
 	/**
@@ -68,6 +69,7 @@ public class LaunchOptions {
 		try {
 			_options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, "")); //$NON-NLS-1$
 			_options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
+			_manualProfile = config.getAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
 		} catch (CoreException e) {
 		}
 	}
@@ -128,4 +130,19 @@ public class LaunchOptions {
 		_options.setBinaryImage(_image);
 	}
 
+	/**
+	 * Returns whether or not this is a manual profile.
+	 * @return a boolean indicating manual profiling
+	 */
+	public boolean getManualProfile() {
+		return _manualProfile;
+	}
+
+	/**
+	 * Sets the type of profiling launch, manual or not.
+	 * @param profile true if a manual profile, false if not
+	 */
+	public void setManualProfile(boolean profile) {
+		_manualProfile = profile;
+	}
 }

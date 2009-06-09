@@ -47,6 +47,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 	//maybe these later
 //	private Button _checkSeparateThread;
 //	private Button _checkSeparateCpu;
+	private Button _checkManualProfile;
 
 	private static LaunchOptions _options = null;
 
@@ -62,6 +63,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		_options.saveConfiguration(config);
+		config.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, _checkManualProfile.getSelection());
 	}
 
 	public void initializeFrom(ILaunchConfiguration config) {
@@ -85,6 +87,8 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 //			if ((separate & OprofileDaemonOptions.SEPARATE_CPU) != 0)
 //				_checkSeparateCpu.setSelection(true);
 		}
+		
+		_checkManualProfile.setSelection(_options.getManualProfile());
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
@@ -158,6 +162,11 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 		_checkSeparateKernel = _createCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateKernel.text")); //$NON-NLS-1$
 //		_checkSeparateThread = _createCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateThread.text")); //$NON-NLS-1$
 //		_checkSeparateCpu = _createCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.separateCpu.text")); //$NON-NLS-1$
+		
+		createVerticalSpacer(p, 8);
+		
+		_checkManualProfile = _createCheckButton(p, OprofileLaunchMessages.getString("tab.global.check.manualProfile.text")); //$NON-NLS-1$
+		
 	}
 
 	// convenience method to create radio buttons with the given label
@@ -202,6 +211,8 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 //			} else {
 //				newSeparate = oldSeparate & ~OprofileDaemonOptions.SEPARATE_CPU;
 //			}
+		} else if (button == _checkManualProfile) {
+			_options.setManualProfile(button.getSelection());
 		}
 		
 		_options.setSeparateSamples(newSeparate);
