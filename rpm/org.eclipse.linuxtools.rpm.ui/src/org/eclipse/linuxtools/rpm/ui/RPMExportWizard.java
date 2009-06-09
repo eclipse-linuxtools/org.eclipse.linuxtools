@@ -12,13 +12,11 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.rpm.core.RPMExportDelta;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
 public class RPMExportWizard extends Wizard implements IExportWizard {
 	private RPMExportPage mainPage;
-	private RPMExportPatchPage patchPage;
 	private IStructuredSelection selection;
 	
 	/**
@@ -35,18 +33,9 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 
 	@Override
 	public boolean performFinish() {
-		RPMExportDelta exportDelta = new RPMExportDelta();
-		exportDelta.setVersion(mainPage.getSelectedVersion());
-		exportDelta.setRelease(mainPage.getSelectedRelease());
-		exportDelta.setSpecFile(mainPage.getSelectedSpecFile());
-		if(mainPage.canGoNext()) {
-			exportDelta.setPatchName(patchPage.getSelectedPatchName());
-			exportDelta.setChangelogEntry(patchPage.getSelectedChangelog());
-		}
-		
 		// Create a new instance of the RPMExportOperation runnable
 		RPMExportOperation rpmExport = new RPMExportOperation(mainPage.getSelectedRPMProject(),
-				mainPage.getExportType(), exportDelta); 
+				mainPage.getExportType()); 
 		
 		 // Run the export
 		  try {
@@ -76,9 +65,7 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 
 	@Override
 	public boolean canFinish() {
-		if (!mainPage.canGoNext()) {
-			return mainPage.canFinish();
-		} else if (mainPage.canFinish() && patchPage.canFinish()) {
+		if (mainPage.canFinish()) {
 			return true;
 		}
 		return false;
@@ -89,7 +76,5 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 	public void addPages() {
 		mainPage = new RPMExportPage(selection);
 		addPage(mainPage);
-		patchPage = new RPMExportPatchPage();
-		addPage(patchPage);
 	}
 }

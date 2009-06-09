@@ -80,7 +80,7 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		try {
 			if (resourceBundle == null)
-				resourceBundle = ResourceBundle.getBundle("rpmui.RpmuiPluginResources");
+				resourceBundle = ResourceBundle.getBundle("rpmui.RpmuiPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -95,7 +95,7 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("rpmui", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("rpmui", path); //$NON-NLS-1$
 	}
 	
 	public void log(Throwable e) {

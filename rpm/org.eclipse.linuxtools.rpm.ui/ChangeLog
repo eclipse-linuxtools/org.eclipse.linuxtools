@@ -1,3 +1,30 @@
+2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPatchPage.java: Removed.
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* plugin.xml: Fix ids to o.e.linuxtools from o.e.cdt.
+	* src/org/eclipse/linuxtools/rpm/ui/logviewer/LogReader.java (run): Remove not needed NON-NLS.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ChangelogPage.java (addChangelogField): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/InstallScriptsPage.java (addScriptFields): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ProvidesPage.java (addProvidesField): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/SpecFileHeaderPage.java (addInfoField): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/TargetPage.java (addTargetFields): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (RPMExportOperation): Adapt to RPMExportDelta removal.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java (getExportType): Major simplification.
+	(handleEvent): Likewise.
+	(RPMExportPage): Likewise.
+	(createControl): Likewise.
+	(canFinish): Likewise.
+	(rpmProject): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java (performFinish): Remove not needed checks.
+	(canFinish): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMUIPlugin.java (getImageDescriptor): Remove not needed NON-NLS.
+	(getResourceBundle): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (SRPMImportPage): Likewise.
+	(canFinish): Likewise.
+
 2009-06-08  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java (createProjectBox): Update to latest o.e.l.rpm.core API.

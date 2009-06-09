@@ -58,7 +58,7 @@ public class SpecFileHeaderPage extends PropertyPage {
 			rpm_qiText.setText(rpm_qi);
 		} catch(CoreException e) {
 			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+					Messages.getString("ErrorDialog.title"), e.getMessage()); //$NON-NLS-1$
 		}
 	}
 

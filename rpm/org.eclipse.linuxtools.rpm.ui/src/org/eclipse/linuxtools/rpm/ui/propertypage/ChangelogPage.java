@@ -58,7 +58,7 @@ public class ChangelogPage extends PropertyPage {
 			rpm_ChangelogEntriesText.setText(rpm_ChangelogEntries);
 		} catch(CoreException e) {
 			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+					Messages.getString("ErrorDialog.title"), e.getMessage()); //$NON-NLS-1$
 		}
 
 	}

@@ -7,33 +7,26 @@
 
 package org.eclipse.linuxtools.rpm.ui;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.rpm.core.IRPMProject;
-import org.eclipse.linuxtools.rpm.core.RPMExportDelta;
-
 import org.eclipse.ui.PlatformUI;
-
-import java.lang.reflect.InvocationTargetException;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class RPMExportOperation implements IRunnableWithProgress {
 	private IProgressMonitor monitor;
 	private ArrayList<Exception> rpm_errorTable;
 	private IRPMProject rpmProject;
-	private RPMExportDelta exportDelta;
 	private int exportType;
 	
-	public RPMExportOperation(IRPMProject rpmProject, int exportType,
-			RPMExportDelta exportDelta) {
+	public RPMExportOperation(IRPMProject rpmProject, int exportType) {
 		this.rpmProject = rpmProject;
-		this.exportDelta = exportDelta;
 		this.exportType = exportType;
 	}
 
@@ -58,8 +51,8 @@ public class RPMExportOperation implements IRunnableWithProgress {
 		switch(exportType) {
 		case IRPMUIConstants.BUILD_ALL:
 			try {
-				monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_RPM_Export"));
-				rpmProject.buildAll(exportDelta);
+				monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
+				rpmProject.buildAll();
 			} catch(Exception e) {
 				rpm_errorTable.add(e);
 			}
@@ -68,7 +61,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 		case IRPMUIConstants.BUILD_BINARY:
 			monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 			try {
-				rpmProject.buildBinaryRPM(exportDelta);
+				rpmProject.buildBinaryRPM();
 			} catch(Exception e) {
 				rpm_errorTable.add(e);
 			}
@@ -77,7 +70,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 		case IRPMUIConstants.BUILD_SOURCE:
 			monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
 			try {
-				rpmProject.buildSourceRPM(exportDelta);
+				rpmProject.buildSourceRPM();
 			} catch(Exception e) {
 				rpm_errorTable.add(e);
 			}

@@ -82,7 +82,7 @@ public class LogReader implements Runnable {
 		}
 	  } else {
 	  		last_modified = 0;
-	  		log_name = "";
+	  		log_name = ""; //$NON-NLS-1$
 		}
 	}
 	

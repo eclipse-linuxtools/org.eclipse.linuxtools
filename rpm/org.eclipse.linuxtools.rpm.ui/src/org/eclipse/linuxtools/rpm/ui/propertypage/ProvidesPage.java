@@ -58,7 +58,7 @@ public class ProvidesPage extends PropertyPage {
 			rpm_qlText.setText(rpm_ql);
 		} catch(CoreException e) {
 			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+					Messages.getString("ErrorDialog.title"), e.getMessage()); //$NON-NLS-1$
 		}
 
 	}

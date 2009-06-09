@@ -105,7 +105,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	 */
 	public SRPMImportPage(IWorkbench aWorkbench, IStructuredSelection currentSelection) {
 		super(Messages.getString("SRPMImportPage.Import_SRPM"), //$NON-NLS-1$
-			Messages.getString("SRPMImportPage.Select_project_to_import"), null); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getString("SRPMImportPage.Select_project_to_import"), null); //$NON-NLS-1$
 
 		setPageComplete(false);
 		setDescription(Messages.getString(
@@ -353,12 +353,12 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		}
 		File srpm = new File(sourceSRPM.getText());
 		if (!srpm.isFile()){
-			setErrorMessage(Messages.getString("SRPMImportPage.Source_not_Valid"));
+			setErrorMessage(Messages.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
 			return false;
 		}
-		if (sourceSRPM.getText().lastIndexOf(".src.rpm") == -1)
+		if (sourceSRPM.getText().lastIndexOf(".src.rpm") == -1) //$NON-NLS-1$
 		{
-			setErrorMessage(Messages.getString("SRPMImportPage.No_src_rpm_ext"));
+			setErrorMessage(Messages.getString("SRPMImportPage.No_src_rpm_ext")); //$NON-NLS-1$
 			return false;
 		}
   

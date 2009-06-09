@@ -107,7 +107,7 @@ public class InstallScriptsPage extends PropertyPage {
 			rpm_PostUnInstallText.setText(rpm_PostUnInstall);
 		} catch(CoreException e) {
 			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+					Messages.getString("ErrorDialog.title"), e.getMessage()); //$NON-NLS-1$
 		}
 
 	}

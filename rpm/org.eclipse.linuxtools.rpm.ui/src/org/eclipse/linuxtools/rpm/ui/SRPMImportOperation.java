@@ -63,7 +63,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 		rpm_errorTable = new ArrayList<Exception>();
 
 		monitor.beginTask(Messages.getString("SRPMImportOperation.Starting"), //$NON-NLS-1$
-		totalWork); //$NON-NLS-1$
+		totalWork);
 
 		// Try to create an instance of the build class. 
 		try {
