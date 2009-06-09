@@ -154,6 +154,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		} else {
 			final LaunchOptions fOptions = options;
 			final OprofileDaemonEvent[] fDaemonEvents = daemonEvents;
+			final ILaunch fLaunch = launch;
 			Display.getDefault().asyncExec(new Runnable() { 
 				public void run() {
 					//TODO: have a initialization dialog to do reset and setupDaemon?
@@ -167,8 +168,12 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 					}
 					
 					//manual oprofile control dialog
-					OprofiledControlDialog dlg = new OprofiledControlDialog();
+					final OprofiledControlDialog dlg = new OprofiledControlDialog();
+					ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
+					lmgr.addLaunchListener(new LaunchTerminationDialogCloser(fLaunch, dlg));
+					//FIXME: possible that the launch terminates here and an attempt to close the dialog fails?
 					dlg.open();
+					
 
 					//progress dialog for ensuring the daemon is shut down
 					IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
@@ -236,17 +241,37 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected String getPluginID() {
 		return OprofileLaunchPlugin.getUniqueIdentifier();
 	}
+	
+	//A class used to listen for the termination of the current launch, and 
+	// run some functions when it is finished. 
+	class LaunchTerminationDialogCloser implements ILaunchesListener2 {
+		private ILaunch launch;
+		private OprofiledControlDialog dialog;
+		public LaunchTerminationDialogCloser(ILaunch il, OprofiledControlDialog dlg) {
+			launch = il;
+			dialog = dlg;
+		}
+		public void launchesTerminated(ILaunch[] launches) {
+			for (ILaunch l : launches) {
+				//kill the dialog when the launch is done
+				if (l.equals(launch)) {
+					dialog.close();
+				}
+			}
+		}
+		public void launchesAdded(ILaunch[] launches) { /* dont care */}
+		public void launchesChanged(ILaunch[] launches) { /* dont care */ }
+		public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
+	}	
 
 	
 	//A class used to listen for the termination of the current launch, and 
 	// run some functions when it is finished. 
 	class LaunchTerminationWatcher implements ILaunchesListener2 {
 		private ILaunch launch;
-		
 		public LaunchTerminationWatcher(ILaunch il) {
 			launch = il;
 		}
-		
 		public void launchesTerminated(ILaunch[] launches) {
 			try {
 				for (ILaunch l : launches) {
@@ -273,11 +298,11 @@ public class OprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 			}
 		}
-
 		public void launchesAdded(ILaunch[] launches) { /* dont care */}
 		public void launchesChanged(ILaunch[] launches) { /* dont care */ }
 		public void launchesRemoved(ILaunch[] launches) { /* dont care */ }
 	}	
+
 	
 	/**
 	 * A custom dialog box to display the oprofiled log file.
