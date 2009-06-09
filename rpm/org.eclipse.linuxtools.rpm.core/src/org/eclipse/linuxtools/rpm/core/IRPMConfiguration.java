@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IFolder;
  * Represents an RPM configuration associated with an RPM project.
  * An RPM configuration contains information about RPM folder locations 
  * and other RPM macro definitions.
- *
+ * TODO make this per project settings.
  */
 public interface IRPMConfiguration {
 

@@ -1,5 +1,9 @@
 2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConfiguration.java: Add TODO.
+	
+2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/core/RPMExportDelta.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (buildSourceRPM): Adapt to RPMExportDelta removal.
 	(buildBinaryRPM): Likewise.
