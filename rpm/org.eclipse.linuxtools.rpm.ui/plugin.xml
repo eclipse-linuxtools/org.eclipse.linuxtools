@@ -31,21 +31,6 @@
          </selection>
       </wizard>
    </extension>
-   <extension
-   				point="org.eclipse.ui.views">
-   		<category
-   				name="RPM Log File"
-   				id="org.eclipse.linuxtools.rpm.ui.logviewer">
-   		</category>
-   <view
-   			name="RPM Log Viewer"
-   			icon="icons/rpm.gif"
-   			class="org.eclipse.linuxtools.rpm.ui.logviewer.RPMLogViewer"
-   			id="org.eclipse.linuxtools.rpm.ui.logviewer.RPMLogViewer"
-   			category="org.eclipse.linuxtools.rpm.ui.logviewer">
-   	</view>
-   		</extension>
-	
 	<extension
          point="org.eclipse.ui.propertyPages">
       <page

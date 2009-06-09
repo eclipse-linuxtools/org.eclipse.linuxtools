@@ -1,5 +1,12 @@
 2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/logviewer/LogReader.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/logviewer/RPMLogViewer.java: Removed.
+	* META-INF/MANIFEST.MF: Remove non working log viewer.
+	* plugin.xml: Likewise.
+	
+2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPatchPage.java: Removed.
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
 	* plugin.xml: Fix ids to o.e.linuxtools from o.e.cdt.

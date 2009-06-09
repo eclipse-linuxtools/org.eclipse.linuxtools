@@ -19,6 +19,5 @@ Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.linuxtools.rpm.core
 Export-Package: 
  org.eclipse.linuxtools.rpm.ui,
- org.eclipse.linuxtools.rpm.ui.logviewer,
  org.eclipse.linuxtools.rpm.ui.propertypage,
  org.eclipse.linuxtools.rpm.ui.util
