@@ -1,3 +1,9 @@
+2009-06-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #280117
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (buildFile): Fix so
+	loop doesn't exit early before finding build directory.
+
 2009-06-05  Andrew Overholt  <overholt@redhat.com>
 
 	* Fix up after erroneous SVN operation.

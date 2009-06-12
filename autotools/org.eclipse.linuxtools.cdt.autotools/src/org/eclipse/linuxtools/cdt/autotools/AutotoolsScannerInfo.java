@@ -106,8 +106,8 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 					String id = options[i].getId();
 					if (id.indexOf("builddir") > 0) { // $NON-NLS-1$
 						runPath = makefile.getProject().getLocation().append(value.trim());
+						done = true;
 					}
-					done = true;
 				}
 			} catch (BuildException e) {
 				// do nothing
