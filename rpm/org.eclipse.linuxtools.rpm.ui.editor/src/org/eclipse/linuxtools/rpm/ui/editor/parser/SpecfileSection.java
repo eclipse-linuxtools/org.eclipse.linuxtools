@@ -13,6 +13,9 @@ package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
 import java.text.MessageFormat;
 
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+
 public class SpecfileSection extends SpecfileElement {
 
 	private SpecfilePackage parentPackage;
@@ -58,6 +61,24 @@ public class SpecfileSection extends SpecfileElement {
 	 */
 	public int getSectionEndLine() {
 		return sectionEndLine;
+	}
+
+	public String getContents() {
+		IDocument document = getSpecfile().getDocument();
+		int beginning = getLineStartPosition();
+		try {
+		int end = document.getLineOffset(getSectionEndLine());
+			return document.get(beginning, end-beginning);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public void setContents(String newContent) {
+		// TODO Modify document to change the contents
+		
 	}
 
 }

@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
@@ -45,6 +46,9 @@ public class SpecfileFormEditor extends FormEditor {
 			specfile = editor.getSpecfile();
 			mainPackage = new MainPackagePage(this, specfile);
 			addPage(0, mainPackage);
+			addPage(1, new RpmSectionPage(this, specfile, RpmSections.PREP_SECTION));
+			addPage(2, new RpmSectionPage(this, specfile, RpmSections.BUILD_SECTION));
+			addPage(3, new RpmSectionPage(this, specfile, RpmSections.INSTALL_SECTION));
 		} catch (PartInitException e) {
 			//
 		}

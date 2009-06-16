@@ -1,3 +1,11 @@
+2009-06-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmSectionPage.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Add pages for %prep/%build/%install.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getSection): Add method for getting a section by name.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSection.java (setContents): New method for changing contents of the section.
+	(getContents): New method for retrieving the content of the section.
+
 2009-06-04  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/Messages.java: New file.

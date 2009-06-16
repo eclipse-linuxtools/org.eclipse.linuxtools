@@ -60,6 +60,15 @@ public class Specfile {
 	public List<SpecfileSection> getSections() {
 		return sections;
 	}
+
+	public SpecfileSection getSection(String sectionName){
+		for (SpecfileSection section : sections) {
+			if (sectionName.equals(section.getName())) {
+				return section;
+			}
+		}
+		return null;
+	}
 	
 	public List<SpecfileSection> getComplexSections() {
 		return complexSections;
