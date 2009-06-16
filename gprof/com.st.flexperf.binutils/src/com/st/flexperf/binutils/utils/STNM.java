@@ -8,13 +8,6 @@
  * Contributors:
  *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *******************************************************************************/
-/*
- *                        (c) STMicroelectronics
- * Reproduction and Communication of this document is strictly prohibited 
- * unless specifically authorized in writing by STMicroelectronics.
- * 
- * Created on October 15th 2008
- */
 
 package com.st.flexperf.binutils.utils;
 
