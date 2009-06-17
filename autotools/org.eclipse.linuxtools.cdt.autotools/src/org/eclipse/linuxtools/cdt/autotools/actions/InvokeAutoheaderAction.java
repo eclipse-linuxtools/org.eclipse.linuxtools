@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.actions;
 
+import java.util.HashMap;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
@@ -23,7 +26,6 @@ import org.eclipse.swt.widgets.Shell;
 public class InvokeAutoheaderAction extends InvokeAction {
 
 	private static final String DEFAULT_OPTION = ""; //$NON-NLS-1$
-	private static final String DEFAULT_COMMAND = "autoheader"; //$NON-NLS-1$
 
 	public void run(IAction action) {
 
@@ -32,7 +34,7 @@ public class InvokeAutoheaderAction extends InvokeAction {
 			return;
 		
 		IPath execDir = getExecDir(container);
-		String cwd = InvokeMessages.getString("CWD") + getCWD(container); //$NON-NLS-1$
+		String cwd = "CWD:" + getCWD(container);
 
 		InputDialog optionDialog = new SingleInputDialog(
 				new Shell(),
@@ -64,10 +66,29 @@ public class InvokeAutoheaderAction extends InvokeAction {
 			
 			// If unset, use default system path
 			if (autoheaderCommand == null)
-				autoheaderCommand = DEFAULT_COMMAND;
+				autoheaderCommand = "autoheader"; // $NON-NLS-1$
 			
-			executeConsoleCommand(DEFAULT_COMMAND, autoheaderCommand,
-					argumentList, execDir);
+			HashMap<String, String> result = executeCommand(new Path(autoheaderCommand),
+					argumentList, null, execDir);
+
+			String autoconf_error = (String)result.get("stderr"); //$NON-NLS-1$
+			String autoconf_result = (String)result.get("stdout"); //$NON-NLS-1$
+
+			// if the process produced stdout/err, display in dialog
+
+			if (autoconf_error.length() > 0) {
+				showError(InvokeMessages
+						.getString("InvokeAutoheaderAction.windowTitle.stderr"), //$NON-NLS-1$
+						autoconf_error);
+			} else if (autoconf_result.length() > 0) {
+				showInformation(InvokeMessages
+						.getString("InvokeAutoheaderAction.windowTitle.stdout"), //$NON-NLS-1$
+						autoconf_result);
+			} else {
+				showSuccess(InvokeMessages
+						.getString("InvokeAutoheaderAction.command")); //$NON-NLS-1$
+			}
+
 		}
 
 	}

@@ -28,10 +28,16 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 	public static final String DEFAULT_ACLOCAL = "aclocal"; // $NON-NLS-1$
 	public static final String DEFAULT_AUTOMAKE = "automake"; // $NON-NLS-1$
 	public static final String DEFAULT_AUTOCONF = "autoconf"; // $NON-NLS-1$
+	public static final String DEFAULT_AUTOHEADER = "autoheader"; // $NON-NLS-1$
+	public static final String DEFAULT_AUTORECONF = "autoreconf"; // $NON-NLS-1$
+	public static final String DEFAULT_LIBTOOLIZE = "libtoolize"; // $NON-NLS-1$
 	
 	protected Text fAclocalPath;
+	protected Text fAutoheaderPath;
 	protected Text fAutomakePath;
+	protected Text fAutoreconfPath;
 	protected Text fAutoconfPath;
+	protected Text fLibtoolizePath;
 	private IProject project;
 
 	
@@ -96,6 +102,42 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 		gd= new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
 		fAutoconfPath.setLayoutData(gd);
 
+		Label label4= new Label(composite, SWT.LEFT);
+		label4.setText(AutotoolsPropertyMessages.getString("Autotools.autoheaderPath")); //$NON-NLS-1$
+		gd= new GridData();
+		gd.horizontalAlignment= GridData.BEGINNING;
+		label4.setLayoutData(gd);
+		
+		/* text window for aclocal path */
+		fAutoheaderPath = new Text(composite, SWT.BORDER | SWT.SINGLE);
+		fAutoheaderPath.setToolTipText(AutotoolsPropertyMessages.getString("Autotools.autoheaderPath.tooltip")); // $NON-NLS-1$
+		gd= new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
+		fAutoheaderPath.setLayoutData(gd);
+
+		Label label5= new Label(composite, SWT.LEFT);
+		label5.setText(AutotoolsPropertyMessages.getString("Autotools.autoreconfPath")); //$NON-NLS-1$
+		gd= new GridData();
+		gd.horizontalAlignment= GridData.BEGINNING;
+		label5.setLayoutData(gd);
+		
+		/* text window for aclocal path */
+		fAutoreconfPath = new Text(composite, SWT.BORDER | SWT.SINGLE);
+		fAutoreconfPath.setToolTipText(AutotoolsPropertyMessages.getString("Autotools.autoreconfPath.tooltip")); // $NON-NLS-1$
+		gd= new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
+		fAutoreconfPath.setLayoutData(gd);
+
+		Label label6= new Label(composite, SWT.LEFT);
+		label6.setText(AutotoolsPropertyMessages.getString("Autotools.libtoolizePath")); //$NON-NLS-1$
+		gd= new GridData();
+		gd.horizontalAlignment= GridData.BEGINNING;
+		label6.setLayoutData(gd);
+		
+		/* text window for aclocal path */
+		fLibtoolizePath = new Text(composite, SWT.BORDER | SWT.SINGLE);
+		fLibtoolizePath.setToolTipText(AutotoolsPropertyMessages.getString("Autotools.libtoolizePath.tooltip")); // $NON-NLS-1$
+		gd= new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
+		fLibtoolizePath.setLayoutData(gd);
+
 		initialize();
 	}
 
@@ -103,6 +145,9 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 		String aclocalPath = null;
 		String automakePath = null;
 		String autoconfPath = null;
+		String autoheaderPath = null;
+		String autoreconfPath = null;
+		String libtoolizePath = null;
 		try {
 			aclocalPath = project.getPersistentProperty(AutotoolsPropertyConstants.ACLOCAL_TOOL);
 		} catch (CoreException e1) {
@@ -147,6 +192,51 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 				// Not much we can do at this point
 			}
 		}
+
+		try {
+			autoheaderPath = project.getPersistentProperty(AutotoolsPropertyConstants.AUTOHEADER_TOOL);
+		} catch (CoreException e1) {
+			autoheaderPath = DEFAULT_AUTOHEADER;
+		}
+
+		String newAutoheaderPath = fAutoheaderPath.getText().trim();
+		if (autoheaderPath == null || !newAutoheaderPath.equals(autoheaderPath)) {
+			try {
+				project.setPersistentProperty(AutotoolsPropertyConstants.AUTOHEADER_TOOL, newAutoheaderPath);
+			} catch (CoreException e2) {
+				// Not much we can do at this point
+			}
+		}
+
+		try {
+			autoreconfPath = project.getPersistentProperty(AutotoolsPropertyConstants.AUTORECONF_TOOL);
+		} catch (CoreException e1) {
+			autoreconfPath = DEFAULT_AUTORECONF;
+		}
+
+		String newAutoreconfPath = fAutoreconfPath.getText().trim();
+		if (autoreconfPath == null || !newAutoreconfPath.equals(autoreconfPath)) {
+			try {
+				project.setPersistentProperty(AutotoolsPropertyConstants.AUTORECONF_TOOL, newAutoreconfPath);
+			} catch (CoreException e2) {
+				// Not much we can do at this point
+			}
+		}
+
+		try {
+			libtoolizePath = project.getPersistentProperty(AutotoolsPropertyConstants.LIBTOOLIZE_TOOL);
+		} catch (CoreException e1) {
+			libtoolizePath = DEFAULT_LIBTOOLIZE;
+		}
+
+		String newLibtoolizePath = fLibtoolizePath.getText().trim();
+		if (libtoolizePath == null || !newLibtoolizePath.equals(libtoolizePath)) {
+			try {
+				project.setPersistentProperty(AutotoolsPropertyConstants.LIBTOOLIZE_TOOL, newLibtoolizePath);
+			} catch (CoreException e2) {
+				// Not much we can do at this point
+			}
+		}
 	}
 	
 	protected void performApply(ICResourceDescription src, ICResourceDescription dst) {
@@ -158,6 +248,9 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 		fAclocalPath.setText(DEFAULT_ACLOCAL);
 		fAutomakePath.setText(DEFAULT_AUTOMAKE);
 		fAutoconfPath.setText(DEFAULT_AUTOCONF);
+		fAutoheaderPath.setText(DEFAULT_AUTOHEADER);
+		fAutoreconfPath.setText(DEFAULT_AUTORECONF);
+		fLibtoolizePath.setText(DEFAULT_LIBTOOLIZE);
 	}
 	
 	public void updateData(ICResourceDescription cfgd) {
@@ -176,6 +269,9 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 		String aclocalPath = null;
 		String automakePath = null;
 		String autoconfPath = null;
+		String autoheaderPath = null;
+		String autoreconfPath = null;
+		String libtoolizePath = null;
 		
 		try {
 			aclocalPath = project.getPersistentProperty(AutotoolsPropertyConstants.ACLOCAL_TOOL);
@@ -209,6 +305,39 @@ public class AutotoolsToolsPropertyPage extends AbstractCPropertyTab {
 			autoconfPath = DEFAULT_AUTOCONF;
 		
 		fAutoconfPath.setText(autoconfPath);
+
+		try {
+			autoheaderPath = project.getPersistentProperty(AutotoolsPropertyConstants.AUTOHEADER_TOOL);
+		} catch (CoreException e1) {
+			// do nothing
+		}
+		
+		if (autoheaderPath == null)
+			autoheaderPath = DEFAULT_AUTOHEADER;
+		
+		fAutoheaderPath.setText(autoheaderPath);
+
+		try {
+			autoreconfPath = project.getPersistentProperty(AutotoolsPropertyConstants.AUTORECONF_TOOL);
+		} catch (CoreException e1) {
+			// do nothing
+		}
+		
+		if (autoreconfPath == null)
+			autoreconfPath = DEFAULT_AUTORECONF;
+		
+		fAutoreconfPath.setText(autoreconfPath);
+		
+		try {
+			libtoolizePath = project.getPersistentProperty(AutotoolsPropertyConstants.LIBTOOLIZE_TOOL);
+		} catch (CoreException e1) {
+			// do nothing
+		}
+		
+		if (libtoolizePath == null)
+			libtoolizePath = DEFAULT_LIBTOOLIZE;
+		
+		fLibtoolizePath.setText(libtoolizePath);
 	}
 	
 }

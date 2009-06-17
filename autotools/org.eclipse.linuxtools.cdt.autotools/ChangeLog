@@ -1,3 +1,28 @@
+2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoheaderHandler.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoreconfHandler.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoheaderAction.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoreconfAction.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeLibtoolizeAction.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/LibtoolizeHandler.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/SingleInputDialog.java: New file.
+	* plugin.properties: Add new messages for additional tools/commands added.
+	* plugin.xml: Change invoking autotools to be a single menu item in Project menu which
+	expands to show all tools available, including aclocal, autoconf, autoheader, automake,
+	autoreconf, and libtoolize.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java (simpleParseOptions): New
+	method to parse options and account for quoted strings.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeMessages.properties: Add support
+	for autoheader, autoreconf, and libtoolize. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsPropertyConstants.java: Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsPropertyMessages.properties: Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsToolsPropertyPage.java (createControls):
+	Ditto. 
+	(initialize): Ditto. 
+	(performDefaults): Ditto.
+	(performOK): Ditto.
+
 2009-06-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #280117

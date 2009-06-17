@@ -134,6 +134,50 @@ public abstract class InvokeAction extends AbstractTargetAction {
 
 	}
 
+	protected String[] simpleParseOptions(String rawArgList) {
+		ArrayList<String> argList = new ArrayList<String>();
+		int lastArgIndex = -1;
+		int i = 0;
+		while (i < rawArgList.length()) {
+			char ch = rawArgList.charAt(i);
+			// Skip white-space
+			while (Character.isWhitespace(ch)) {
+				++i;
+				if (i < rawArgList.length())
+					ch = rawArgList.charAt(i);
+				else // Otherwise we are done
+					return argList.toArray(new String[argList.size()]);
+			}
+
+			// Simplistic parser.  We break up into strings delimited
+			// by blanks.  If quotes are used, we ignore blanks within.
+			// If a backslash is used, we ignore the next character and
+			// pass it through.
+			lastArgIndex = i;
+			boolean inString = false;
+			while (i < rawArgList.length()) {
+				ch = rawArgList.charAt(i);
+				if (ch == '\\') // escape character
+					++i; // skip over the next character
+				else if (ch == '\"') { // double quotes
+					inString = !inString;
+				} else if (Character.isWhitespace(ch)) {
+					if (!inString) {
+						argList.add(rawArgList.substring(lastArgIndex, i));
+						break;
+					}
+				}
+				++i;
+			}
+			// Look for the case where we ran out of chars for the last
+			// token.
+			if (i >= rawArgList.length())
+				argList.add(rawArgList.substring(lastArgIndex));
+			++i;
+		}
+		return argList.toArray(new String[argList.size()]);
+	}
+
 	protected IPath getExecDir(IContainer container) {
 		int type = container.getType();
 		IPath execDir = null;
