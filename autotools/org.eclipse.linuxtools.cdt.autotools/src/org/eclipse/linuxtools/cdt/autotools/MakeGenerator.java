@@ -539,6 +539,39 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					saveConfigArgs(configArgs);
 				}
 			}
+			// If nothing this far, try running autoreconf -i
+			else {
+				String[] reconfArgs = new String[1];
+				String reconfCmd = project.getPersistentProperty(AutotoolsPropertyConstants.AUTORECONF_TOOL);
+				if (reconfCmd == null)
+					reconfCmd = "autoreconf"; // $NON-NLS-1$
+				IPath reconfCmdPath = new Path(reconfCmd);
+				reconfArgs[0] = "-i"; //$NON-NLS-1$
+				rc = runCommand(reconfCmdPath,
+						project.getLocation().append(srcDir),
+						reconfArgs,
+						AutotoolsPlugin.getResourceString("MakeGenerator.autoreconf"), //$NON-NLS-1$
+						errMsg, console, true);
+				// Check if configure generated and if yes, run it.
+				if (rc != IStatus.ERROR) {
+					if (configureExists()) {
+						rc = runScript(getConfigurePath(), 
+								project.getLocation().append(buildDir),
+								configArgs, 
+								AutotoolsPlugin.getResourceString("MakeGenerator.gen.makefile"), //$NON-NLS-1$
+								errMsg, console, true);
+						if (rc != IStatus.ERROR) {
+							File makefileFile = project.getLocation().append(buildDir)
+							.append(MAKEFILE).toFile();
+							addMakeTargetsToManager(makefileFile);
+							// TODO: should we do something special if configure doesn't
+							// return ok?
+							saveConfigArgs(configArgs);
+						}
+					}
+				}
+			}
+    		
     		// Treat no Makefile as generation error.
 			if (makefile == null || !makefile.exists()) {
 				rc = IStatus.ERROR;

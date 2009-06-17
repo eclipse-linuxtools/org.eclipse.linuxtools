@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.cdt.autotools;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
 import org.eclipse.cdt.managedbuilder.internal.core.Builder;
 import org.eclipse.cdt.managedbuilder.internal.core.ToolChain;
+import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
@@ -58,6 +59,13 @@ public class AutotoolsBuilder extends Builder {
 		if (target == null)
 			target = AutotoolsPropertyConstants.CLEAN_MAKE_TARGET_DEFAULT;
 		return target;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.cdt.managedbuilder.core.IBuilder#getBuildFileGenerator()
+	 */
+	public IManagedBuilderMakefileGenerator getBuildFileGenerator() {
+		return new MakeGenerator();
 	}
 
 }

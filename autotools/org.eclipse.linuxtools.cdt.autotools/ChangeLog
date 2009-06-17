@@ -1,5 +1,15 @@
 2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #280509
+	* META-INF/MANIFEST.MF: Bump version to 1.0.3. 
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsBuilder.java (getBuildFileGenerator): New
+	method to override Builder method so we get Autotools Makefile generator. 
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (regenerateMakefiles): Add
+	logic to use autoreconf if no configure script and no autogen.sh. 
+	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Add messages. 
+
+2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves #280504, #280505, #280506.
 	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoheaderHandler.java: New file.
 	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoreconfHandler.java: New file.
