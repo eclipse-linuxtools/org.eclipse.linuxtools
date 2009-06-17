@@ -1,5 +1,6 @@
 2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #280504, #280505, #280506.
 	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoheaderHandler.java: New file.
 	* src/org/eclipse/linuxtools/cdt/autotools/actions/AutoreconfHandler.java: New file.
 	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoheaderAction.java: New file.
