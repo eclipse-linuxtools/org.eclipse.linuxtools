@@ -1,3 +1,7 @@
+2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Bump up version to 1.0.4.
+
 2009-06-05  Andrew Overholt  <overholt@redhat.com>
 
 	* Fix up after erroneous SVN operation.
