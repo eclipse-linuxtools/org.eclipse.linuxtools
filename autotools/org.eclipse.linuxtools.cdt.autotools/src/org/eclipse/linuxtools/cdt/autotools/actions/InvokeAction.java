@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.cdt.autotools.actions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -20,10 +21,12 @@ import org.eclipse.cdt.core.CommandLauncher;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
 import org.eclipse.swt.widgets.Shell;
 
@@ -40,7 +43,7 @@ public abstract class InvokeAction extends AbstractTargetAction {
 	}
 
 	protected void showSuccess(String title) {
-		MessageDialog.openConfirm(new Shell(), title, 
+		MessageDialog.openInformation(new Shell(), title, 
 				InvokeMessages.getString("InvokeAction.success")); //$NON-NLS-1$
 	}
 	
@@ -200,57 +203,101 @@ public abstract class InvokeAction extends AbstractTargetAction {
 		return cwd;
 	}
 	
+	private class ExecuteProgressDialog implements IRunnableWithProgress {
+		private IPath command;
+		private String[] argumentList;
+		private String[] envList;
+		private IPath execDir;
+		private int status;
+		private HashMap<String, String> outputs = null;
+		
+		public ExecuteProgressDialog(IPath command, String[] argumentList,
+				String[] envList, IPath execDir) {
+			this.command = command;
+			this.argumentList = argumentList;
+			this.envList = envList;
+			this.execDir = execDir;
+		}
+
+		public void run(IProgressMonitor monitor)
+		throws InvocationTargetException, InterruptedException {
+			ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+			ByteArrayOutputStream stderr = new ByteArrayOutputStream();
+			CommandLauncher cmdL = new CommandLauncher();
+			outputs = null;
+
+			// invoke command
+			try {
+				monitor.beginTask(
+						InvokeMessages.getFormattedString("InvokeAction.progress.message", // $NON-NLS-1$
+								new String[]{command.toOSString()}), IProgressMonitor.UNKNOWN);
+				monitor.worked(1);
+				Process process = cmdL.execute(command, argumentList, envList,
+						execDir, new NullProgressMonitor());
+
+				if (cmdL.waitAndRead(stdout, stderr) == CommandLauncher.OK) {
+					try {
+						status = 0;
+						monitor.done();
+						process.getOutputStream().close();
+					} catch (IOException e) {
+						// ignore
+					}
+				} else {
+					// failed to execute command
+					status = -1;
+					monitor.done();
+					return;
+				}
+			} catch (CoreException e) {
+				monitor.done();
+				throw new InvocationTargetException(e);
+			}
+
+			outputs = new HashMap<String, String>();
+
+			outputs.put("stdout", stdout.toString()); //$NON-NLS-1$
+			outputs.put("stderr", stderr.toString()); //$NON-NLS-1$
+
+			try {
+				stdout.close();
+				stderr.close();
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+			
+		public HashMap<String, String> getOutputs() {
+			return outputs;
+		}
+		
+		public int getStatus() {
+			return status;
+		}
+	}
+	
+	
 	protected HashMap<String, String> executeCommand(IPath command,
 			String[] argumentList, String[] envList, IPath execDir) {
-
-		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-		ByteArrayOutputStream stderr = new ByteArrayOutputStream();
-		CommandLauncher cmdL = new CommandLauncher();
-
-		// invoke command
 		try {
-			Process automakeProcess = cmdL.execute(command, argumentList, envList,
-					execDir, new NullProgressMonitor());
-
-			if (cmdL.waitAndRead(stdout, stderr) == CommandLauncher.OK) {
-				try {
-					automakeProcess.getOutputStream().close();
-				} catch (IOException e) {
-					// ignore
-				}
-			} else {
-				// FIXME: following is kludge so Galileo build can build
-				//        with outdated CDT.
-				if (cmdL == null)
-					throw new CoreException(Status.CANCEL_STATUS);
-				// failed to execute command
+			ExecuteProgressDialog d = new ExecuteProgressDialog(command,
+					argumentList, envList, execDir);
+			new ProgressMonitorDialog(new Shell()).run(false, false, d);
+			if (d.getStatus() == -1)
 				showError(InvokeMessages
-						.getString("InvokeAction.execute.windowTitle.error"), InvokeMessages //$NON-NLS-1$
-						.getString("InvokeAction.execute.message") //$NON-NLS-1$
-						+ command.toOSString()); //$NON-NLS-1$
-				return null;
-			}
-		} catch (CoreException e) {
+					.getString("InvokeAction.execute.windowTitle.error"), InvokeMessages //$NON-NLS-1$
+					.getString("InvokeAction.execute.message") //$NON-NLS-1$
+					+ command.toOSString()); //$NON-NLS-1$
+			return d.getOutputs();
+		} catch (InvocationTargetException e) {
 			showError(InvokeMessages
 					.getString("InvokeAction.execute.windowTitle.error"), InvokeMessages //$NON-NLS-1$
 					.getString("InvokeAction.execute.message") //$NON-NLS-1$
 					+ command.toOSString()); //$NON-NLS-1$
 			AutotoolsPlugin.logException(e);
 			return null;
+		} catch (InterruptedException e) {
+		    return null;
 		}
- 
-		HashMap<String, String> outputs = new HashMap<String, String>();
-
-		outputs.put("stdout", stdout.toString()); //$NON-NLS-1$
-		outputs.put("stderr", stderr.toString()); //$NON-NLS-1$
-
-		try {
-			stdout.close();
-			stderr.close();
-		} catch (IOException e) {
-			// ignore
-		}
-
-		return outputs;
 	}
 }
