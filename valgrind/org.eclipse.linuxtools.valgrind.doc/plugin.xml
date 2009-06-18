@@ -12,7 +12,7 @@
       </toc>
       <toc
             file="userguide/Valgrind Reference-toc.xml"
-            primary="false">
+            primary="true">
       </toc>
    </extension>
 

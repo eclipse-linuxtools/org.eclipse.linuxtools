@@ -1,3 +1,11 @@
+2009-06-18  Elliott Baron  <ebaron@redhat.com>
+
+	* build-helper.xml: Added call to wikitext-to-docbook target.
+	* META-INF/MANIFEST.MF: New dep for Eclipse help.
+	* plugin.xml: New extension for Eclipse help.
+	* userguide/images/Screenshot-ProfileConfigurations.png: Retook screenshot.
+	* userguide/Valgrind Reference.xml: Generated docbook.
+
 2009-05-28  Elliott Baron  <ebaron@redhat.com>
 
 	* .classpath: New file.
