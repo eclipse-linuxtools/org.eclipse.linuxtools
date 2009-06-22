@@ -1,8 +1,3 @@
-2009-06-22  Elliott Baron  <ebaron@redhat.com>
-
-	* MinVersionTest.java: New file.
-	* AllTests.java (suite): Added MinVersionTest.
-
 2009-05-27  Elliott Baron  <ebaron@redhat.com>
 
 	* LaunchConfigTabTest.java: Changed for restructuring of findValgrindVersion.

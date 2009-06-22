@@ -1,10 +1,3 @@
-2009-06-22  Elliott Baron  <ebaron@redhat.com>
-
-	* ValgrindTestLaunchPlugin.java	(setValgrindLocation): Act as proxy for real plugin. 
-	(getValgrindLocation): Likewise.
-	(setValgrindVersion): Likewise.
-	(getValgrindVersion): Likewise.
-
 2009-05-27  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractValgrindTest.java (setUp): Retrieve stub location and version and explicitly

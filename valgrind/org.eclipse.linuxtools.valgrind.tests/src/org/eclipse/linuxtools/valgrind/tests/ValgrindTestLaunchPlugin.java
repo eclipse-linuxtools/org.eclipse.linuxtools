@@ -11,14 +11,12 @@
 package org.eclipse.linuxtools.valgrind.tests;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
 
 public class ValgrindTestLaunchPlugin extends ValgrindLaunchPlugin {
 
@@ -68,26 +66,6 @@ public class ValgrindTestLaunchPlugin extends ValgrindLaunchPlugin {
 	@Override
 	public void setCurrentLaunchConfiguration(ILaunchConfiguration config) {
 		ValgrindLaunchPlugin.getDefault().setCurrentLaunchConfiguration(config);
-	}
-	
-	@Override
-	public IPath getValgrindLocation() throws CoreException {
-		return ValgrindLaunchPlugin.getDefault().getValgrindLocation();
-	}
-	
-	@Override
-	public void setValgrindLocation(IPath valgrindLocation) {
-		ValgrindLaunchPlugin.getDefault().setValgrindLocation(valgrindLocation);
-	}
-	
-	@Override
-	public Version getValgrindVersion() throws CoreException {
-		return ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-	}
-	
-	@Override
-	public void setValgrindVersion(Version valgrindVersion) {
-		ValgrindLaunchPlugin.getDefault().setValgrindVersion(valgrindVersion);
 	}
 	
 	@Override

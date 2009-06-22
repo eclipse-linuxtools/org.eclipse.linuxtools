@@ -29,7 +29,6 @@ public class AllTests {
 		suite.addTestSuite(ExpandCollapseTest.class);
 		suite.addTestSuite(ShortcutTest.class);
 		suite.addTestSuite(SignalTest.class);
-		suite.addTestSuite(MinVersionTest.class);
 		// $JUnit-END$
 		return suite;
 	}

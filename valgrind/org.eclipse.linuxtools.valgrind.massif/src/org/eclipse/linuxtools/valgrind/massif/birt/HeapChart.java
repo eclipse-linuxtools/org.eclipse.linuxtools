@@ -79,6 +79,7 @@ public class HeapChart extends ChartWithAxesImpl {
 	protected String xUnits;
 	protected String yUnits;
 
+	@SuppressWarnings("unchecked")
 	public HeapChart(MassifSnapshot[] snapshots) {
 		TimeUnit timeUnit = snapshots[0].getUnit();
 		long xScaling = getXScaling(snapshots, timeUnit);
