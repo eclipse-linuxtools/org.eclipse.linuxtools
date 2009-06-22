@@ -56,6 +56,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	public static final Version VER_3_3_1 = new Version(3, 3, 1);
 	public static final Version VER_3_4_0 = new Version(3, 4, 0);
 	public static final Version VER_3_4_1 = new Version(3, 4, 1);
+	private static final Version MIN_VER = VER_3_3_0;
 	private static final String VERSION_PREFIX = "valgrind-"; //$NON-NLS-1$
 	private static final char VERSION_DELIMITER = '-';
 	
@@ -116,6 +117,10 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	public Version getValgrindVersion() throws CoreException {
 		if (valgrindVersion == null) {
 			findValgrindVersion();
+		}
+		// check for minimum supported version
+		if (valgrindVersion.compareTo(MIN_VER) < 0) {
+			throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Error_min_version"), valgrindVersion.toString(), MIN_VER.toString()))); //$NON-NLS-1$
 		}
 		return valgrindVersion;
 	}

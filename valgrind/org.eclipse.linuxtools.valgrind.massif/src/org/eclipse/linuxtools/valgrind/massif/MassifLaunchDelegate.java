@@ -104,26 +104,4 @@ implements IValgrindLaunchDelegate {
 
 		return opts.toArray(new String[opts.size()]);
 	}
-
-//	public void restoreState(HistoryEntry entry) throws CoreException {
-//		try {
-//			Map<?, ?> config = entry.getAttributes();
-//			MassifPlugin.getDefault().setConfig(config);
-//			
-//			// retrieve or create sourceLocator
-//			ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
-//			setDefaultSourceLocator(launch, config);			
-//			MassifPlugin.getDefault().setSourceLocator(launch.getSourceLocator());
-//			
-//			File[] massifOutputs = entry.getDatadir().listFiles(MASSIF_FILTER);
-//			parseOutput(massifOutputs);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			abort(Messages.getString("MassifLaunchDelegate.Error_parsing_output"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
-//		}
-//	}
-//
-//	public void saveState(HistoryEntry entry) throws CoreException {
-//	}
-
 }
