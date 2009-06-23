@@ -14,7 +14,6 @@ import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindPlugin;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
 import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
 
@@ -28,11 +27,6 @@ public abstract class AbstractCachegrindTest extends AbstractValgrindTest {
 	@Override
 	protected String getToolID() {
 		return CachegrindPlugin.TOOL_ID;
-	}
-
-	@Override
-	protected IValgrindToolPage getToolPage() {
-		return new CachegrindTestToolPage();
 	}
 
 	protected CachegrindFile getFileByName(CachegrindOutput output, String name) {
