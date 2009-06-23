@@ -1,5 +1,6 @@
 2009-06-23  Elliott Baron  <ebaron@redhat.com>
 
+	* ChartExportTest.java (testChartExportSVG): Fix test name.
 	* MassifTestToolPage.java: Removed.
 	* AbstractMassifTest.java: Remove reference to TestToolPage.
 	* ExportWizardTest.java (createWizard): Use actual ExportWizard.

@@ -44,7 +44,7 @@ public class ChartExportTest extends AbstractMassifTest {
 		super.tearDown();
 	}
 	
-	public void testNumSnapshots() throws Exception {
+	public void testChartExportSVG() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
 		
