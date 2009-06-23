@@ -1,6 +1,7 @@
 2009-06-23  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractTest.java (createConfiguration): Throw CoreException.
+	(createProject): Use IndexSetupParticipant to control indexer. 
 
 2009-05-12  Elliott Baron  <ebaron@redhat.com>
 
