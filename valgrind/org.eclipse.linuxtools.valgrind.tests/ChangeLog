@@ -1,3 +1,19 @@
+2009-06-23  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindTestExportWizard.java: Removed.
+	* ValgrindTestExportWizardPage.java: Removed.
+	* ValgrindTestLaunchPlugin.java: Removed.
+	* ValgrindTestOptionsTab.java: Removed.
+	* AbstractValgrindTest.java: Set ValgrindStubCommand explicitly. 
+	* ValgrindTestLaunchDelegate.java: Remove reference to TestLaunchPlugin.
+
+2009-06-22  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindTestLaunchPlugin.java	(setValgrindLocation): Act as proxy for real plugin. 
+	(getValgrindLocation): Likewise.
+	(setValgrindVersion): Likewise.
+	(getValgrindVersion): Likewise.
+
 2009-05-27  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractValgrindTest.java (setUp): Retrieve stub location and version and explicitly

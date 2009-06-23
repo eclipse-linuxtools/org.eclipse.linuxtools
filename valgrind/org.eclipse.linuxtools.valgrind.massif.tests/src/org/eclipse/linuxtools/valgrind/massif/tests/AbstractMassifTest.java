@@ -16,7 +16,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.linuxtools.valgrind.massif.MassifHeapTreeNode;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
@@ -38,11 +37,6 @@ public abstract class AbstractMassifTest extends AbstractValgrindTest {
 	@Override
 	protected String getToolID() {
 		return MassifPlugin.TOOL_ID;
-	}
-
-	@Override
-	protected IValgrindToolPage getToolPage() {
-		return new MassifTestToolPage();
 	}
 
 	protected void checkFile(IProject proj, MassifHeapTreeNode node) {

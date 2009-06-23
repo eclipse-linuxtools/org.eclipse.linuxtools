@@ -38,11 +38,10 @@ import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
 import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
+import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
 
 public abstract class AbstractValgrindTest extends AbstractTest {
 
@@ -62,25 +61,13 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 	private static final String SEARCH_STRING_BL = "YYYYYYYYYYYY"; //$NON-NLS-1$
 	
 	private List<ILaunch> launches;
-
-	public AbstractValgrindTest() {
-		getPlugin().setTestBundle(getBundle());
-		getPlugin().setToolPage(getToolPage());
-	}
-
-	protected ValgrindTestLaunchPlugin getPlugin() {
-		return ValgrindTestLaunchPlugin.getDefault();
-	}
 	
 	@Override
 	protected void setUp() throws Exception {
 		launches = new ArrayList<ILaunch>();
 		
-		// Substitute Valgrind location and version
-		IPath path = getPlugin().getValgrindLocation();
-		Version ver = getPlugin().getValgrindVersion();
-		ValgrindLaunchPlugin.getDefault().setValgrindLocation(path);
-		ValgrindLaunchPlugin.getDefault().setValgrindVersion(ver);
+		// Substitute Valgrind command line interaction
+		ValgrindLaunchPlugin.getDefault().setValgrindCommand(getValgrindCommand());
 		
 		super.setUp();
 	}
@@ -203,6 +190,13 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 
 	protected abstract String getToolID();
 	
-	protected abstract IValgrindToolPage getToolPage();
+	private ValgrindCommand getValgrindCommand() {
+		if (!ValgrindTestsPlugin.RUN_VALGRIND) {
+			return new ValgrindStubCommand();
+		}
+		else {
+			return new ValgrindCommand();
+		}
+	}
 
 }

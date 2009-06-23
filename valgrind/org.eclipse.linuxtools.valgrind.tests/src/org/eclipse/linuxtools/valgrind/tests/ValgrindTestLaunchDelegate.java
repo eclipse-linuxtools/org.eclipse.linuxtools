@@ -21,7 +21,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.linuxtools.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
 
 public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDelegate {
 
@@ -77,12 +76,7 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 		}
 		super.handleValgrindError();
 	}
-	
-	@Override
-	protected ValgrindLaunchPlugin getPlugin() {
-		return ValgrindTestLaunchPlugin.getDefault();
-	}
-	
+		
 	private void writeErrorCode() throws IOException {
 		FileWriter fw = null;
 		try {

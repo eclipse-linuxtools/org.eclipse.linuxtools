@@ -174,7 +174,7 @@ public class ChartControl extends Canvas implements PaintListener, ControlListen
 
 			GC gcImage = new GC(buffer);
 
-			// fill default backgournd as white.
+			// fill default background as white.
 			gcImage.setForeground(Display.getDefault().getSystemColor(
 					SWT.COLOR_WHITE));
 			gcImage.fillRectangle(buffer.getBounds());

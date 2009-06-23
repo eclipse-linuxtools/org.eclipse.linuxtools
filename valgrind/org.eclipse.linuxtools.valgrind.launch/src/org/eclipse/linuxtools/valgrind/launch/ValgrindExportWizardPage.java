@@ -218,4 +218,20 @@ public class ValgrindExportWizardPage extends WizardPage implements IWizardPage 
 		return ValgrindLaunchPlugin.getDefault();
 	}
 
+	public CheckboxTableViewer getViewer() {
+		return viewer;
+	}
+
+	public Text getDestText() {
+		return destText;
+	}
+
+	public Button getSelectAllButton() {
+		return selectAllButton;
+	}
+
+	public Button getDeselectAllButton() {
+		return deselectAllButton;
+	}
+
 }

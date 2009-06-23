@@ -17,15 +17,15 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.linuxtools.valgrind.tests.ValgrindTestExportWizard;
-import org.eclipse.linuxtools.valgrind.tests.ValgrindTestExportWizardPage;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindExportWizard;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindExportWizardPage;
 import org.eclipse.ui.PlatformUI;
 
 public class ExportWizardTest extends AbstractMassifTest {
 
-	protected ValgrindTestExportWizard wizard;
+	protected ValgrindExportWizard wizard;
 	protected WizardDialog dialog;
-	protected ValgrindTestExportWizardPage page;
+	protected ValgrindExportWizardPage page;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -177,7 +177,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 	}
 	
 	protected void createWizard() {
-		wizard = new ValgrindTestExportWizard();
+		wizard = new ValgrindExportWizard();
 		wizard.init(PlatformUI.getWorkbench(), null);
 		
 		dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
@@ -186,7 +186,7 @@ public class ExportWizardTest extends AbstractMassifTest {
 		
 		assertFalse(wizard.canFinish());
 		
-		page = (ValgrindTestExportWizardPage) wizard.getPages()[0];
+		page = (ValgrindExportWizardPage) wizard.getPages()[0];
 		assertFalse(page.isPageComplete());
 	}
 }

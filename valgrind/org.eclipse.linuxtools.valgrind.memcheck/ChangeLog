@@ -1,3 +1,14 @@
+2009-06-23  Elliott Baron  <ebaron@redhat.com>
+
+	* MemcheckToolPage.java (getGccWorkaroundButton): Added getter.
+	(getShowReachableButton): Likewise.
+	(getLeakResCombo): Likewise.
+	(getUndefValueButton): Likewise.
+	(getAlignmentSpinner): Likewise.
+	(getTrackOriginsButton): Likewise.
+	(getFreelistSpinner): Likewise.
+	(getPartialLoadsButton): Likewise.
+
 2009-05-27  Elliott Baron  <ebaron@redhat.com>
 
 	* MemcheckLaunchDelegate.java: Changed for restructuring of findValgrindLocation. 

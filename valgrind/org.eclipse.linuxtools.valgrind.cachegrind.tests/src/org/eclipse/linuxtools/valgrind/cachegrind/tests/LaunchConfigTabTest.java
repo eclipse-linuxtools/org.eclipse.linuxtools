@@ -19,7 +19,9 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindPlugin;
-import org.eclipse.linuxtools.valgrind.tests.ValgrindTestOptionsTab;
+import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindToolPage;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -28,8 +30,8 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 	
 	protected ILaunchConfiguration config;
 	protected Shell testShell;
-	protected ValgrindTestOptionsTab tab;
-	protected CachegrindTestToolPage dynamicTab; 
+	protected ValgrindOptionsTab tab;
+	protected CachegrindToolPage dynamicTab; 
 
 	@Override
 	protected void setUp() throws Exception {
@@ -40,7 +42,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
-		tab = new ValgrindTestOptionsTab();
+		tab = new ValgrindOptionsTab();
 	}
 
 	@Override
@@ -59,7 +61,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		int ix = Arrays.asList(tab.getTools()).indexOf(CachegrindPlugin.TOOL_ID);
 		tab.getToolsCombo().select(ix);
 		ILaunchConfigurationTab dynamicTab = tab.getDynamicTab();
-		this.dynamicTab = (CachegrindTestToolPage) dynamicTab;
+		this.dynamicTab = (CachegrindToolPage) dynamicTab;
 		return wc;
 	}
 	
@@ -132,7 +134,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		
 		assertFalse(dynamicTab.getI1SizeSpinner().isEnabled());
 		dynamicTab.getI1Button().setSelection(true);
-		dynamicTab.checkI1Enablement();
+		dynamicTab.getI1Button().notifyListeners(SWT.Selection, null);
 		assertTrue(dynamicTab.getI1SizeSpinner().isEnabled());
 		
 		dynamicTab.getI1SizeSpinner().setSelection(16384);
@@ -158,7 +160,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 		
 		assertFalse(dynamicTab.getD1SizeSpinner().isEnabled());
 		dynamicTab.getD1Button().setSelection(true);
-		dynamicTab.checkD1Enablement();
+		dynamicTab.getD1Button().notifyListeners(SWT.Selection, null);
 		assertTrue(dynamicTab.getD1SizeSpinner().isEnabled());
 		
 		dynamicTab.getD1SizeSpinner().setSelection(16384);
@@ -184,7 +186,7 @@ public class LaunchConfigTabTest extends AbstractCachegrindTest {
 
 		assertFalse(dynamicTab.getL2SizeSpinner().isEnabled());
 		dynamicTab.getL2Button().setSelection(true);
-		dynamicTab.checkL2Enablement();
+		dynamicTab.getL2Button().notifyListeners(SWT.Selection, null);
 		assertTrue(dynamicTab.getL2SizeSpinner().isEnabled());
 
 		dynamicTab.getL2SizeSpinner().setSelection(16384);

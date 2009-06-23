@@ -384,7 +384,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			child.dispose();
 		}
 		
-		dynamicTab = getDynamicTab();
+		loadDynamicTab();
 		if (dynamicTab == null) {
 			throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindOptionsTab.No_options_tab_found") + tool)); //$NON-NLS-1$
 		}
@@ -394,8 +394,12 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		dynamicTabHolder.layout(true);		
 	}
 
-	protected IValgrindToolPage getDynamicTab() throws CoreException {
-		return getPlugin().getToolPage(tool);
+	private void loadDynamicTab() throws CoreException {
+		 dynamicTab = getPlugin().getToolPage(tool);		
+	}
+	
+	public IValgrindToolPage getDynamicTab() {
+		return dynamicTab;
 	}
 
 	protected ValgrindLaunchPlugin getPlugin() {
@@ -577,4 +581,55 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		mainStackSizeSpinner.setEnabled(mainStackSizeButton.getSelection());
 	}
 
+	public Button getTraceChildrenButton() {
+		return traceChildrenButton;
+	}
+
+	public Button getChildSilentButton() {
+		return childSilentButton;
+	}
+
+	public Button getRunFreeresButton() {
+		return runFreeresButton;
+	}
+
+	public Button getDemangleButton() {
+		return demangleButton;
+	}
+
+	public Spinner getNumCallersSpinner() {
+		return numCallersSpinner;
+	}
+
+	public Button getErrorLimitButton() {
+		return errorLimitButton;
+	}
+
+	public Button getShowBelowMainButton() {
+		return showBelowMainButton;
+	}
+
+	public Spinner getMaxStackFrameSpinner() {
+		return maxStackFrameSpinner;
+	}
+
+	public Button getMainStackSizeButton() {
+		return mainStackSizeButton;
+	}
+
+	public Spinner getMainStackSizeSpinner() {
+		return mainStackSizeSpinner;
+	}
+
+	public Text getSuppFileText() {
+		return suppFileText;
+	}
+
+	public Combo getToolsCombo() {
+		return toolsCombo;
+	}
+
+	public String[] getTools() {
+		return tools;
+	}
 }

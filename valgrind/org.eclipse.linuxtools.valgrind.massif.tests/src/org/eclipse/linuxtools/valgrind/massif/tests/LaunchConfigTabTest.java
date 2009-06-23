@@ -18,17 +18,17 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.valgrind.massif.MassifToolPage;
-import org.eclipse.linuxtools.valgrind.tests.ValgrindTestOptionsTab;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 public class LaunchConfigTabTest extends AbstractMassifTest {
 	
-	protected ValgrindTestOptionsTab tab;
-	protected MassifTestToolPage dynamicTab;
+	protected ValgrindOptionsTab tab;
+	protected MassifToolPage dynamicTab;
 	protected ILaunchConfiguration config;
 	protected Shell testShell;
 	
@@ -41,7 +41,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
-		tab = new ValgrindTestOptionsTab();
+		tab = new ValgrindOptionsTab();
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 		int ix = Arrays.asList(tab.getTools()).indexOf(MassifPlugin.TOOL_ID);
 		tab.getToolsCombo().select(ix);
 		ILaunchConfigurationTab dynamicTab = tab.getDynamicTab();
-		this.dynamicTab = (MassifTestToolPage) dynamicTab;
+		this.dynamicTab = (MassifToolPage) dynamicTab;
 		return wc;
 	}
 	

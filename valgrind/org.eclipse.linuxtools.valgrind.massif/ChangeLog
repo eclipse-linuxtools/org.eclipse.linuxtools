@@ -1,3 +1,29 @@
+2009-06-23  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifToolPage.java (getMaxSnapshotsSpinner): Added getter.
+	(getHeapAdminSpinner): Likewise.
+	(getAllocFnList): Likewise.
+	(getStacksButton): Likewise.
+	(getDepthSpinner): Likewise.
+	(getHeapButton): Likewise.
+	(getTimeUnitCombo): Likewise.
+	(getAlignmentSpinner): Likewise.
+	(getDetailedFreqSpinner): Likewise.
+	(getThresholdSpinner): Likewise.
+	(getPeakInaccuracySpinner): Likewise.
+
+2009-06-22  Elliott Baron  <ebaron@redhat.com>
+
+	* icons/chart-save.png: New file.
+	* src/org/eclipse/linuxtools/valgrind/massif/birt/ChartSVG.java: New file.
+	* META-INF/MANIFEST.MF: New deps.
+	* birt/ChartControl.java (paintControl): Fix comment typo.
+	* birt/HeapChart.java (HeapChart): Remove suppress warnings for unchecked casts,
+	fixed with BIRT 2.5.
+	* MassifLaunchDelegate.java: Cleanup unused code.
+	* MassifViewPart.java: Add action for chart export.
+	* messages.properties: New key.
+
 2009-06-04  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Removing birt.chart plugin from dependencies.

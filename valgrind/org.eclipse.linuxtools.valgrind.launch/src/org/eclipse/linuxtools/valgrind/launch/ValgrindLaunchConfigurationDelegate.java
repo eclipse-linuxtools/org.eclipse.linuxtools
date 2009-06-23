@@ -104,6 +104,8 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			
 			// find Valgrind binary if not already done
 			IPath valgrindLocation = getPlugin().getValgrindLocation();
+			// also ensure Valgrind version is usable
+			getPlugin().getValgrindVersion();
 
 			monitor.worked(1);
 			IPath exePath = verifyProgramPath(config);

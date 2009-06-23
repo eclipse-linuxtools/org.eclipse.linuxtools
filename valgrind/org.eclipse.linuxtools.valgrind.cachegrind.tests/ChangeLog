@@ -1,3 +1,13 @@
+2009-06-23  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindTestToolPage.java: Removed.
+	* AbstractCachegrindTest.java: Remove reference to TestToolPage.
+	* LaunchConfigTabTest.java (setUp): Use actual ToolPage.
+	(testD1Cache): Fire selection event.
+	(testI1Cache): Likewise.
+	(testL2Cache): Likewise.
+	(initConfig): Use actual ToolPage.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* MultiProcessTest.java: Delete referenced project. 

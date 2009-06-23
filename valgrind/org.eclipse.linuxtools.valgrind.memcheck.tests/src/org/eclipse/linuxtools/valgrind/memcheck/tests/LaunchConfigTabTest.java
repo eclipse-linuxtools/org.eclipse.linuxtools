@@ -23,9 +23,10 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.launch.ValgrindLaunchPlugin;
+import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckLaunchConstants;
 import org.eclipse.linuxtools.valgrind.memcheck.MemcheckPlugin;
-import org.eclipse.linuxtools.valgrind.tests.ValgrindTestOptionsTab;
+import org.eclipse.linuxtools.valgrind.memcheck.MemcheckToolPage;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart;
 import org.eclipse.swt.SWT;
@@ -36,11 +37,10 @@ import org.osgi.framework.Version;
 
 public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
-	protected ValgrindTestOptionsTab tab;
-	protected MemcheckTestToolPage dynamicTab;
+	protected ValgrindOptionsTab tab;
+	protected MemcheckToolPage dynamicTab;
 	protected ILaunchConfiguration config;
 	protected Shell testShell;
-	//private boolean consoleFinished;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -51,7 +51,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
-		tab = new ValgrindTestOptionsTab();
+		tab = new ValgrindOptionsTab();
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		int ix = Arrays.asList(tab.getTools()).indexOf(MemcheckPlugin.TOOL_ID);
 		tab.getToolsCombo().select(ix);
 		ILaunchConfigurationTab dynamicTab = tab.getDynamicTab();
-		this.dynamicTab = (MemcheckTestToolPage) dynamicTab;
+		this.dynamicTab = (MemcheckToolPage) dynamicTab;
 		return wc;
 	}
 
@@ -418,15 +418,15 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		}
 	}
 	
-	public void testMainStackFrame() throws Exception {
+	public void testMainStackSize() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-			assertFalse(tab.getMainStackFrameSpinner().isEnabled());
-			tab.getMainStackFrameButton().setSelection(true);
-			tab.getMainStackFrameButton().notifyListeners(SWT.Selection, null);
-			assertTrue(tab.getMainStackFrameSpinner().isEnabled());
-			tab.getMainStackFrameSpinner().setSelection(2048);
+			assertFalse(tab.getMainStackSizeSpinner().isEnabled());
+			tab.getMainStackSizeButton().setSelection(true);
+			tab.getMainStackSizeButton().notifyListeners(SWT.Selection, null);
+			assertTrue(tab.getMainStackSizeSpinner().isEnabled());
+			tab.getMainStackSizeSpinner().setSelection(2048);
 			ILaunch launch = saveAndLaunch(wc, "testMainStackFrame"); //$NON-NLS-1$
 			IProcess[] p = launch.getProcesses();
 			if (p.length > 0) {
@@ -439,8 +439,8 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			}
 		}
 		else {
-			assertNull(tab.getMainStackFrameButton());
-			assertNull(tab.getMainStackFrameSpinner());
+			assertNull(tab.getMainStackSizeButton());
+			assertNull(tab.getMainStackSizeSpinner());
 		}
 	}
 	

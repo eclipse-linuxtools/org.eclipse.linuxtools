@@ -320,4 +320,60 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		l2AssocSpinner.setEnabled(checked);
 		l2LineSizeSpinner.setEnabled(checked);
 	}
+
+	public Button getCacheButton() {
+		return cacheButton;
+	}
+
+	public Button getBranchButton() {
+		return branchButton;
+	}
+
+	public Spinner getI1SizeSpinner() {
+		return i1SizeSpinner;
+	}
+
+	public Spinner getI1AssocSpinner() {
+		return i1AssocSpinner;
+	}
+
+	public Spinner getI1LineSizeSpinner() {
+		return i1LineSizeSpinner;
+	}
+
+	public Button getI1Button() {
+		return i1Button;
+	}
+
+	public Spinner getD1SizeSpinner() {
+		return d1SizeSpinner;
+	}
+
+	public Spinner getD1AssocSpinner() {
+		return d1AssocSpinner;
+	}
+
+	public Spinner getD1LineSizeSpinner() {
+		return d1LineSizeSpinner;
+	}
+
+	public Button getD1Button() {
+		return d1Button;
+	}
+
+	public Spinner getL2SizeSpinner() {
+		return l2SizeSpinner;
+	}
+
+	public Spinner getL2AssocSpinner() {
+		return l2AssocSpinner;
+	}
+
+	public Spinner getL2LineSizeSpinner() {
+		return l2LineSizeSpinner;
+	}
+
+	public Button getL2Button() {
+		return l2Button;
+	}
 }

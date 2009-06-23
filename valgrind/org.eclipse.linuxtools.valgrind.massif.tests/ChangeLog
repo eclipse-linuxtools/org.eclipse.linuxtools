@@ -1,3 +1,16 @@
+2009-06-23  Elliott Baron  <ebaron@redhat.com>
+
+	* MassifTestToolPage.java: Removed.
+	* AbstractMassifTest.java: Remove reference to TestToolPage.
+	* ExportWizardTest.java (createWizard): Use actual ExportWizard.
+	* LaunchConfigTabTest.java: Use actual ToolPage.
+
+2009-06-22  Elliott Baron  <ebaron@redhat.com>
+
+	* ChartExportTest.java: New file.
+	* META-INF/MANIFEST.MF: New deps.
+	* AllTests.java (suite): Added ChartExportTest.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* MultiProcessTest.java: Delete referenced project.

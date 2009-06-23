@@ -247,4 +247,44 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		}
 	}
 
+
+	public Combo getLeakResCombo() {
+		return leakResCombo;
+	}
+
+
+	public Button getShowReachableButton() {
+		return showReachableButton;
+	}
+
+
+	public Spinner getFreelistSpinner() {
+		return freelistSpinner;
+	}
+
+
+	public Button getPartialLoadsButton() {
+		return partialLoadsButton;
+	}
+
+
+	public Button getUndefValueButton() {
+		return undefValueButton;
+	}
+
+
+	public Button getGccWorkaroundButton() {
+		return gccWorkaroundButton;
+	}
+
+
+	public Spinner getAlignmentSpinner() {
+		return alignmentSpinner;
+	}
+
+
+	public Button getTrackOriginsButton() {
+		return trackOriginsButton;
+	}
+
 }

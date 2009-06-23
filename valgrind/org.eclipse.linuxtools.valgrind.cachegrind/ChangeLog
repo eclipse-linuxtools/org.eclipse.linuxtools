@@ -1,3 +1,20 @@
+2009-06-23  Elliott Baron  <ebaron@redhat.com>
+
+	* CachegrindToolPage.java (getD1LineSizeSpinner): Created getter.
+	(getI1SizeSpinner): Likewise.
+	(getBranchButton): Likewise.
+	(getI1AssocSpinner): Likewise.
+	(getD1Button): Likewise.
+	(getD1AssocSpinner): Likewise.
+	(getL2Button): Likewise.
+	(getL2LineSizeSpinner): Likewise.
+	(getL2AssocSpinner): Likewise.
+	(getD1SizeSpinner): Likewise.
+	(getL2SizeSpinner): Likewise.
+	(getI1Button): Likewise.
+	(getCacheButton): Likewise.
+	(getI1LineSizeSpinner): Likewise.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindParser.java: Pull up constants.
