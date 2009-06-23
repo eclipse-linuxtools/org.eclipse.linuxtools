@@ -171,35 +171,30 @@ public abstract class AbstractTest extends TestCase {
 		}, null);
 	}
 	
-	protected ILaunchConfiguration createConfiguration(IProject proj) {
-		ILaunchConfiguration config = null;
-		try {
-			String projectName = proj.getName();
-			IResource bin = proj.findMember(new Path(BIN_DIR).append(projectName));
-			if (bin == null) {
-				fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
-			}
-			String binPath = bin.getProjectRelativePath().toString();
-			ILaunchConfigurationType configType = getLaunchConfigType();
-			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-					getLaunchManager()
-							.generateUniqueLaunchConfigurationNameFrom(
-									projectName));
-	
-			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, binPath);
-			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
-			wc.setMappedResources(new IResource[] {bin, proj});
-			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String) null);
-			
-			// Make launch run in foreground
-			wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
-			
-			setProfileAttributes(wc);
-	
-			config = wc.doSave();
-		} catch (CoreException e) {
-			e.printStackTrace();
+	protected ILaunchConfiguration createConfiguration(IProject proj) throws CoreException {
+		String projectName = proj.getName();
+		IResource bin = proj.findMember(new Path(BIN_DIR).append(projectName));
+		if (bin == null) {
+			fail(NLS.bind(Messages.getString("AbstractTest.No_binary"), projectName)); //$NON-NLS-1$
 		}
+		String binPath = bin.getProjectRelativePath().toString();
+		ILaunchConfigurationType configType = getLaunchConfigType();
+		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
+				getLaunchManager()
+				.generateUniqueLaunchConfigurationNameFrom(
+						projectName));
+
+		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, binPath);
+		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+		wc.setMappedResources(new IResource[] {bin, proj});
+		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String) null);
+
+		// Make launch run in foreground
+		wc.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
+
+		setProfileAttributes(wc);
+
+		ILaunchConfiguration config = wc.doSave();
 		return config;
 	}
 	
