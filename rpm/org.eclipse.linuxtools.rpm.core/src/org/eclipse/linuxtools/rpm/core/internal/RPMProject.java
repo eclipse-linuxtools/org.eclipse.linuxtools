@@ -114,10 +114,6 @@ public class RPMProject implements IRPMProject {
 		setSpecFile(getConfiguration().getSpecsFolder().getFile(
 				installedSpecs[0].getName()));
 
-		// Prepare the sources
-		buildPrep();
-		getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
-
 		// Set the project nature
 		RPMProjectNature.addRPMNature(getProject(), null);
 

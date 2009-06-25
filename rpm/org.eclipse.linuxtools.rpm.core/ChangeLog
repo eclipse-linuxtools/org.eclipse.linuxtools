@@ -1,4 +1,9 @@
 2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix for #281480.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (importSourceRPM): Do not  build on import. 
+	This prevents importing srpms that are not buildable for some reason. 
+
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix for #179156.
 	* src/org/eclipse/linuxtools/rpm/core/utils/internal/Command.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/core/utils/internal/ShellScript.java: Removed.
