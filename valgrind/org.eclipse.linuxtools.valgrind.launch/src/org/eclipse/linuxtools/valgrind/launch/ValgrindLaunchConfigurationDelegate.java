@@ -10,10 +10,8 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.launch;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +35,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.debug.ui.console.ConsoleColorProvider;
 import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
 import org.eclipse.linuxtools.valgrind.core.CommandLineConstants;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
@@ -49,10 +45,6 @@ import org.eclipse.linuxtools.valgrind.core.ValgrindError;
 import org.eclipse.linuxtools.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.IOConsole;
-import org.eclipse.ui.console.IOConsoleOutputStream;
 import org.osgi.framework.Version;
 
 public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
@@ -62,7 +54,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected static final String YES = "yes"; //$NON-NLS-1$
 	protected static final String EQUALS = "="; //$NON-NLS-1$
 
-	//protected static final String LOG_FILE = LOG_PREFIX + "%p.xml"; //$NON-NLS-1$
 	protected static final String LOG_FILE = CommandLineConstants.LOG_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter LOG_FILTER = new FileFilter() {
 		public boolean accept(File pathname) {
@@ -153,36 +144,31 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				Thread.sleep(100);
 			}
 			
-//			if (process.getExitValue() == 0) {
-				// store these for use by other classes
-				getPlugin().setCurrentLaunchConfiguration(config);
-				getPlugin().setCurrentLaunch(launch);
+			// store these for use by other classes
+			getPlugin().setCurrentLaunchConfiguration(config);
+			getPlugin().setCurrentLaunch(launch);
 
-				// parse Valgrind logs
-				IValgrindMessage[] messages = parseLogs(outputPath);
-				
-				// create launch summary string to distinguish this launch
-				launchStr = createLaunchStr();
+			// parse Valgrind logs
+			IValgrindMessage[] messages = parseLogs(outputPath);
 
-				// create view
-				ValgrindUIPlugin.getDefault().createView(launchStr, toolID);
-				// set log messages
-				ValgrindUIPlugin.getDefault().getView().setMessages(messages);
-				monitor.worked(1);
+			// create launch summary string to distinguish this launch
+			launchStr = createLaunchStr();
 
-				// pass off control to extender
-				dynamicDelegate.handleLaunch(config, launch, monitor.newChild(3));
+			// create view
+			ValgrindUIPlugin.getDefault().createView(launchStr, toolID);
+			// set log messages
+			ValgrindUIPlugin.getDefault().getView().setMessages(messages);
+			monitor.worked(1);
 
-				// refresh view
-				ValgrindUIPlugin.getDefault().refreshView();
+			// pass off control to extender
+			dynamicDelegate.handleLaunch(config, launch, monitor.newChild(3));
 
-				// show view
-				ValgrindUIPlugin.getDefault().showView();
-				monitor.worked(1);				
-//			}
-//			else {
-//				handleValgrindError();
-//			}
+			// refresh view
+			ValgrindUIPlugin.getDefault().refreshView();
+
+			// show view
+			ValgrindUIPlugin.getDefault().showView();
+			monitor.worked(1);				
 		} catch (IOException e) {
 			abort(Messages.getString("ValgrindLaunchConfigurationDelegate.Error_starting_process"), e, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 			e.printStackTrace();
@@ -253,17 +239,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return ValgrindLaunchPlugin.getDefault();
 	}
 
-	protected void handleValgrindError() throws IOException {
-		final String errorLog = readLogs();
-
-		// find this process' console and write any error messages stored in the log to it
-		IOConsole console = (IOConsole) DebugUITools.getConsole(process);
-
-		if (console != null) {
-			writeErrorsToConsole(errorLog, console);
-		}
-	}
-
 	protected IValgrindLaunchDelegate getDynamicDelegate(String toolID) throws CoreException {
 		return getPlugin().getToolDelegate(toolID);
 	}
@@ -300,22 +275,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		}
 		else if (!outputDir.mkdir()) {
 			throw new IOException(NLS.bind(Messages.getString("ValgrindOutputDirectory.Couldnt_create"), outputDir.getAbsolutePath())); //$NON-NLS-1$
-		}
-	}
-
-	protected void writeErrorsToConsole(String errors, IOConsole console)
-	throws IOException {
-		IOConsoleOutputStream os = null;
-		try {
-			os = console.newOutputStream();
-			changeConsoleOutputStreamColor(os, new ConsoleColorProvider().getColor(IDebugUIConstants.ID_STANDARD_ERROR_STREAM));
-			os.setActivateOnWrite(true);
-			os.write(errors.getBytes());
-			os.flush();
-		} finally {
-			if (os != null) {
-				os.close();
-			}
 		}
 	}
 
@@ -362,20 +321,6 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return opts.toArray(ret);
 	}
 
-	//	protected void saveState(IProgressMonitor monitor) throws CoreException, IOException {
-	//		monitor.beginTask(Messages.getString("ValgrindLaunchConfigurationDelegate.Saving_Valgrind_output"), 2); //$NON-NLS-1$
-	//		try {
-	//			XMLMemento memento = XMLMemento.createWriteRoot(MementoConstants.ELEMENT_ROOT);
-	//			//		memento.putString(MementoConstants.ELEMENT_LABEL, process.getLabel());
-	//			//		memento.putString(MementoConstants.ELEMENT_DATADIR, command.getDatadir().getCanonicalPath());
-	//	
-	//			// write launch history to persistent storage
-	//			HistoryFile.getInstance().save(launchStr, datadir, memento, config);
-	//		} finally {
-	//			monitor.done();
-	//		}
-	//	}
-
 	protected String getTool(ILaunchConfiguration config) throws CoreException {
 		return config.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, LaunchConfigurationConstants.DEFAULT_TOOL);
 	}
@@ -385,34 +330,4 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return ValgrindLaunchPlugin.PLUGIN_ID;
 	}
 
-	protected String readLogs() throws IOException {
-		StringBuffer buf = new StringBuffer();
-		BufferedReader br = null;
-		try {
-			File[] logs = outputPath.toFile().listFiles(LOG_FILTER);
-			for (int i = 0; i < logs.length; i++) {
-				br = new BufferedReader(new FileReader(logs[i]));
-				String line;
-				while ((line = br.readLine()) != null) {
-					buf.append(line);
-					buf.append('\n');
-				}
-				br.close();
-			}
-		} catch (IOException e) {
-			if (br != null) {
-				br.close();
-			}
-			throw e;
-		}
-		return buf.toString();
-	}
-
-	private void changeConsoleOutputStreamColor(final IOConsoleOutputStream os, final Color color) {
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				os.setColor(color);
-			}							
-		});
-	}
 }

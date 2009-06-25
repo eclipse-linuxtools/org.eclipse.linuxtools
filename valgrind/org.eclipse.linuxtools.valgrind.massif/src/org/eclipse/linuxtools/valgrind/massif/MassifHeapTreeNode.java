@@ -30,13 +30,18 @@ public class MassifHeapTreeNode {
 		
 		StringBuffer nodeText = new StringBuffer();
 		formatBytes(percent, bytes, nodeText);
-		nodeText.append(address).append(": "); //$NON-NLS-1$
-		nodeText.append(function).append(" "); //$NON-NLS-1$
-		nodeText.append("(").append(filename); //$NON-NLS-1$
-		if (line > 0) {
-			nodeText.append(":").append(line);//$NON-NLS-1$
+		nodeText.append(address).append(":"); //$NON-NLS-1$
+		if (function.length() > 0) {
+			nodeText.append(" "); //$NON-NLS-1$
+			nodeText.append(function);
 		}
-		nodeText.append(")"); //$NON-NLS-1$
+		if (filename != null) {
+			nodeText.append(" (").append(filename); //$NON-NLS-1$
+			if (line > 0) {
+				nodeText.append(":").append(line);//$NON-NLS-1$
+			}
+			nodeText.append(")"); //$NON-NLS-1$
+		}
 		this.percent = percent;
 		this.bytes = bytes;
 		this.address = address;

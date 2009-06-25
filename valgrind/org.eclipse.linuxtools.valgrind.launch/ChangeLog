@@ -1,3 +1,7 @@
+2009-06-25  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindLaunchConfigurationDelegate.java: Removed unused code.
+
 2009-06-23  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindExportWizardPage.java (getSelectAllButton): Created getter.

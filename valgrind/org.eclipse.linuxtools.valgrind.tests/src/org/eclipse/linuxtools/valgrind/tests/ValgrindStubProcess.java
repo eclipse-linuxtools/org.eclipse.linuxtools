@@ -23,14 +23,12 @@ public class ValgrindStubProcess implements IProcess {
 	protected ILaunch launch;
 	protected String label;
 	protected IStreamsProxy streamsProxy;
-	protected int exitcode;
 	
-	public ValgrindStubProcess(ILaunch launch, String label, int exitcode) {
+	public ValgrindStubProcess(ILaunch launch, String label) {
 		attributes = new HashMap<String, String>();
 		streamsProxy = new ValgrindStubStreamsProxy();
 		this.launch = launch;
 		this.label = label;
-		this.exitcode = exitcode;
 		
 		launch.addProcess(this);
 	}
@@ -40,7 +38,7 @@ public class ValgrindStubProcess implements IProcess {
 	}
 
 	public int getExitValue() throws DebugException {
-		return exitcode;
+		return 0;
 	}
 
 	public String getLabel() {

@@ -185,12 +185,12 @@ public class MassifParser extends AbstractValgrindTextParser {
 		int ix = line.lastIndexOf("("); //$NON-NLS-1$
 		if (ix >= 0) {
 			function = line.substring(line.indexOf(start), ix);
-			if (function != null) {
-				function = function.trim();
-			}
-			else {
-				fail(line);
-			}
+		}
+		else {
+			function = line.substring(line.indexOf(start));
+		}
+		if (function != null) {
+			function = function.trim();
 		}
 		else {
 			fail(line);

@@ -1,3 +1,8 @@
+2009-06-25  Elliott Baron  <ebaron@redhat.com>
+
+	* ValgrindStubProcess.java: Removed unused code.
+	* ValgrindTestLaunchDelegate.java: Likewise.
+
 2009-06-23  Elliott Baron  <ebaron@redhat.com>
 
 	* ValgrindTestExportWizard.java: Removed.

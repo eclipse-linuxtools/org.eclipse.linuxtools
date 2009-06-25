@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.valgrind.tests;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
@@ -51,12 +49,7 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 			process = super.createNewProcess(launch, systemProcess, programName);
 		}
 		else {
-			try {
-				int exitcode = readErrorCode();
-				process = new ValgrindStubProcess(launch, programName, exitcode);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
+			process = new ValgrindStubProcess(launch, programName);
 		}
 		return process;
 	}
@@ -68,49 +61,5 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 			super.setOutputPath(config);
 		}
 	}
-
-	@Override
-	protected void handleValgrindError() throws IOException {
-		if (ValgrindTestsPlugin.GENERATE_FILES) {
-			writeErrorCode();
-		}
-		super.handleValgrindError();
-	}
-		
-	private void writeErrorCode() throws IOException {
-		FileWriter fw = null;
-		try {
-			int exitcode = process.getExitValue();
-			IPath path = verifyOutputPath(config).append(ERROR_CODE_FILE);
-
-			fw = new FileWriter(path.toFile());
-			fw.write(exitcode);
-		} catch (CoreException e) {
-			throw new IOException(e.getLocalizedMessage());
-		} finally {
-			if (fw != null) {
-				fw.close();
-			}
-		}
-	}
 	
-	private int readErrorCode() throws IOException {
-		FileReader fr = null;
-		try {
-			IPath path = verifyOutputPath(config).append(ERROR_CODE_FILE);
-			int exitcode = 0;
-			if (path.toFile().exists()) {
-				fr = new FileReader(path.toFile());
-				exitcode = fr.read();
-			}
-			return exitcode;
-		} catch (CoreException e) {
-			throw new IOException(e.getLocalizedMessage());
-		} finally {
-			if (fr != null) {
-				fr.close();
-			}
-		}
-	}
-
 }
