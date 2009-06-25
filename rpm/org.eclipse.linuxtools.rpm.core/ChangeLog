@@ -1,4 +1,19 @@
 2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix for #179156.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/Command.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/ShellScript.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/StreamReaderThread.java: Removed.
+	* build.properties: Remove reference to non-existing file.
+	* META-INF/MANIFEST.MF: Fix package name.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/Command.java: Fix internal package names.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/ShellScript.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/StreamReaderThread.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java: Likewise.
+	
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Removed.
 	* build.properties: Fix copyright header.

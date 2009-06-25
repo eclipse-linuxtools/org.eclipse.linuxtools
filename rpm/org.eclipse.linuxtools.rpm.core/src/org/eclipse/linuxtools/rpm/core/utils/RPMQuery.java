@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
-import org.eclipse.linuxtools.rpm.core.utils.internal.ShellScript;
+import org.eclipse.linuxtools.rpm.core.internal.utils.ShellScript;
 
 /**
  * Utility class for executing queries on existing binary and 

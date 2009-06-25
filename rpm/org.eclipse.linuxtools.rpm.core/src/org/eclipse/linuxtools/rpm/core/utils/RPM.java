@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.linuxtools.rpm.core.IRPMConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
-import org.eclipse.linuxtools.rpm.core.utils.internal.ShellScript;
+import org.eclipse.linuxtools.rpm.core.internal.utils.ShellScript;
 
 /**
  * A utility class for executing RPM commands.
