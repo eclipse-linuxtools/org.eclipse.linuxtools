@@ -1,18 +1,13 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
-*/
-
-/**
- * @author pmuldoon
- * @version 1.0
- *
- *
- * Plug-in entry point. When the user chooses to import an RPM the plug-in manager in Eclipse
- * will invoke this class. This class extends Wizard and implements IImportWizard.
- */
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
 import org.eclipse.core.runtime.CoreException;
@@ -25,6 +20,8 @@ import org.eclipse.ui.IWorkbench;
 
 
 /**
+ * Plug-in entry point. When the user chooses to import an RPM the plug-in manager in Eclipse
+ * will invoke this class. This class extends Wizard and implements IImportWizard.
  * The main plugin class to be used in the desktop. This is the "entrypoint"
  * for the import rpm plug-in.
  */

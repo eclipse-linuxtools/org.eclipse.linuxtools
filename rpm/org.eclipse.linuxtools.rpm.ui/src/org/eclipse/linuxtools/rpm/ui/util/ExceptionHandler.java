@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2001 Rational Software Corp. and others.
+ * Copyright (c) 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v0.5 
  * which accompanies this distribution, and is available at

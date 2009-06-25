@@ -1,18 +1,13 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
-*/
-
-/**
- * @author pmuldoon
- * @version 1.0
- *
- * RPM GUI import  page. Defines the page the is shown to the user when they choose
- * to export to and RPM. Defines the UI elements shown, and the basic validation (need to add to
- * this)
- */
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
 import java.io.File;
@@ -51,6 +46,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.NewProjectAction;
 
 /**
+ * RPM GUI import  page. Defines the page the is shown to the user when they choose
+ * to export to and RPM. Defines the UI elements shown, and the basic validation (need to add to
+ * this)
  * SRPMImportPage. Called by SRPMImportwizard.  Class can not be subclassed
  * extends WizardPage and implements Listener (for events)
  *

@@ -1,18 +1,13 @@
-/*
- ** (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004, 2005, 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
-*/
-
-/**
- * @author pmuldoon
- * @version 1.0
- *
- * S/RPM  export  Defines the page that is shown to the user when they choose
- * to export to an S/RPM. Defines the UI elements shown, and the basic validation 
- * 
- */
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
 import org.eclipse.core.resources.IProject;
@@ -34,10 +29,10 @@ import org.eclipse.swt.widgets.Listener;
 
 
 /**
- *
+ * S/RPM  export  Defines the page that is shown to the user when they choose
+ * to export to an S/RPM. Defines the UI elements shown, and the basic validation.
  * RPMExportPage. Called by RPMExportWizard.  Class can not be subclassed
- *extends WizardPage for the RPM export wizard, implements Listener
- *
+ * extends WizardPage for the RPM export wizard, implements Listener
  */
 public class RPMExportPage extends WizardPage implements Listener {
 	

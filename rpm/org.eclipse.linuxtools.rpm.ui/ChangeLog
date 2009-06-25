@@ -1,3 +1,28 @@
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add copyright.
+	* src/org/eclipse/linuxtools/rpm/ui/IRPMUIConstants.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/Messages.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ChangelogPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/InstallScriptsPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/Messages.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ProvidesPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/SpecFileHeaderPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/TargetPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMUIPlugin.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportWizard.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/util/ExceptionHandler.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMNewProject.java: New file.
+	* plugin.xml: Add copyright and new wizard for creating rpm project.
+	
+
 2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/logviewer/LogReader.java: Removed.
