@@ -1,3 +1,14 @@
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix copyright header.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/AllTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestsPlugin.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestSuite.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectNatureTest.java: Likewise.
+
 2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java (testImportHelloWorld): Adapt to API changes.
