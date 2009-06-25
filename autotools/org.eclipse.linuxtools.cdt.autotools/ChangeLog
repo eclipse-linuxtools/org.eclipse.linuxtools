@@ -1,5 +1,25 @@
+2009-06-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #281583, #281582
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Don't ask the
+	ManagedBuildManager for the generator as it will default to the GnuMakefileGenerator until we tell
+	it otherwise.  Just get a new Autotools MakeGenerator.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsScannerInfo.java (getCompilationString): Add support
+	for g++, top-level builds, and compilation strings with continuation characters.
+
 2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #280696
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java (showSuccess):
+	Changed to issue a information dialog that does not have a cancel button. 
+	(executeCommand): Changed to create a ProgressMonitorDialog that is issued
+	until the command completes successfully or with failure.
+	(ExecuteProgressDialog): New private internal class that implements IRunnableWithProgress
+	which is used to run the command for a ProgressMonitorDialog.
+
+2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeMessages.properties: 
 	Resolves #280509
 	* META-INF/MANIFEST.MF: Bump version to 1.0.3. 
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsBuilder.java (getBuildFileGenerator): New

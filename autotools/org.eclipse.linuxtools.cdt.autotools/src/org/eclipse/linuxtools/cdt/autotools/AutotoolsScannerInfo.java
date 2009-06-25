@@ -211,22 +211,50 @@ public class AutotoolsScannerInfo implements IScannerInfo {
 			// refer to it this way.
 			String out = buildFile(filePath, makefile, info);
 			try {
-				String regex1 = "^Making.*in.*" + dir.lastSegment(); // $NON-NLS-1$
-				Pattern p = Pattern.compile(regex1, Pattern.MULTILINE);
-				Matcher m = p.matcher(out);
-				if (m.find()) {
-					String substr2 = out.substring(m.end());
-					String regex2 = "^make.*Entering directory.*`(.*)'"; // $NON-NLS-1$
-					Pattern p2 = Pattern.compile(regex2, Pattern.MULTILINE);
-					Matcher m2 = p2.matcher(substr2);
-					if (m2.find()) {
-						dirName = m2.group(1);
-						String substr3 = substr2.substring(m2.start());
-						String regex3 = "^.*gcc.*-I.*" + filePath.lastSegment(); // $NON-NLS-1$
+				boolean topLevel = dir.equals(project.getFullPath());
+				Pattern p = null;
+				Matcher m = null;
+				if (!topLevel) {
+					String regex1 = "^Making.*in.*" + dir.lastSegment(); // $NON-NLS-1$
+					p = Pattern.compile(regex1, Pattern.MULTILINE);
+					m = p.matcher(out);
+				}
+				if (topLevel || m.find()) {
+					Pattern p2 = null;
+					Matcher m2 = null;
+					String substr2 = out;
+					if (!topLevel) {
+						substr2 = out.substring(m.end());
+						String regex2 = "^make.*Entering directory.*`(.*)'"; // $NON-NLS-1$
+						p2 = Pattern.compile(regex2, Pattern.MULTILINE);
+						m2 = p2.matcher(substr2);
+					}
+					if (topLevel || m2.find()) {
+						String substr3 = null;
+						if (!topLevel) {
+							dirName = m2.group(1);
+							substr3 = substr2.substring(m2.start());
+						} else {
+							dirName = "";
+							substr3 = out;
+						}
+						// We need to test for both gcc and g++ compilers.
+						String regex3 = "^.*gcc.*?-I.*?" + filePath.lastSegment(); // $NON-NLS-1$
+						String regex4 = "^.*g[+][+].*?-I.*?" + filePath.lastSegment(); // $NON-NLS-1$
+						// Replace all continuation markers so we don't have to worry about newlines in
+						// the middle of a compilation string.
+						substr3 = substr3.replaceAll("\\\\\\n", "");
 						Pattern p3 = Pattern.compile(regex3, Pattern.MULTILINE);
 						Matcher m3 = p3.matcher(substr3);
 						if (m3.find())
 							compilationString = substr3.substring(m3.start(),m3.end());
+						else {
+							String substr4 = substr3;
+							Pattern p4 = Pattern.compile(regex4, Pattern.MULTILINE);
+							Matcher m4 = p4.matcher(substr4);
+							if (m4.find())
+								compilationString = substr3.substring(m4.start(),m4.end());
+						}
 					}
 				} else if (!out.equals("")) {
 					compilationString = "";
