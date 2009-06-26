@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: STGprof JUnit Test Fragment
-Bundle-SymbolicName: com.st.gprof.test
+Bundle-Name: Gprof JUnit Test Fragment
+Bundle-SymbolicName: org.eclipse.linuxtools.gprof.test
 Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: STMicroelectronics
-Fragment-Host: com.st.stgprof
+Fragment-Host: org.eclipse.linuxtools.gprof
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit4;bundle-version="4.3.1"

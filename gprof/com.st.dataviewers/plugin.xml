@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.core.runtime.contentTypes">
-      <file-association
-            content-type="com.st.dataviewers.file-association"
-            file-extensions="fpxml">
-      </file-association>
-   </extension>
+   
 
 </plugin>

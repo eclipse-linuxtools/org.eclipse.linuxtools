@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: STProfiler Binary Tools Plug-in
-Bundle-SymbolicName: com.st.flexperf.binutils;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.binutils;singleton:=true
 Bundle-Version: 4.0.0.qualifier
-Bundle-Activator: com.st.flexperf.binutils.Activator
+Bundle-Activator: org.eclipse.linuxtools.binutils.Activator
 Bundle-Vendor: STMicroelectronics
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.workbench.texteditor
 Bundle-ActivationPolicy: lazy
-Export-Package: com.st.flexperf.binutils,
- com.st.flexperf.binutils.link2source,
- com.st.flexperf.binutils.utils
+Export-Package: org.eclipse.linuxtools.binutils,
+ org.eclipse.linuxtools.binutils.link2source,
+ org.eclipse.linuxtools.binutils.utils
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

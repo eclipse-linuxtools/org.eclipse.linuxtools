@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Data Viewers Plug-in
-Bundle-SymbolicName: com.st.dataviewers;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.dataviewers;singleton:=true
 Bundle-Version: 4.0.0.qualifier
-Bundle-Activator: com.st.dataviewers.STDataViewersActivator
+Bundle-Activator: org.eclipse.linuxtools.dataviewers.STDataViewersActivator
 Bundle-Vendor: STMicroelectronics
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -12,10 +12,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui.workbench.texteditor
 Eclipse-LazyStart: true
-Export-Package: com.st.dataviewers,
- com.st.dataviewers.abstractview,
- com.st.dataviewers.abstractviewers,
- com.st.dataviewers.actions,
- com.st.dataviewers.dialogs,
- com.st.dataviewers.findreplace,
- com.st.dataviewers.listeners
+Export-Package: org.eclipse.linuxtools.dataviewers,
+ org.eclipse.linuxtools.dataviewers.abstractview,
+ org.eclipse.linuxtools.dataviewers.abstractviewers,
+ org.eclipse.linuxtools.dataviewers.actions,
+ org.eclipse.linuxtools.dataviewers.dialogs,
+ org.eclipse.linuxtools.dataviewers.findreplace,
+ org.eclipse.linuxtools.dataviewers.listeners
