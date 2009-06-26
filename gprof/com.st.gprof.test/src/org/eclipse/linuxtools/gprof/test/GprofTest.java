@@ -27,7 +27,6 @@ import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
 import org.eclipse.linuxtools.gprof.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.gprof.action.SwitchSampleTimeAction;
 import org.eclipse.linuxtools.gprof.parser.GmonDecoder;
-import org.eclipse.linuxtools.gprof.utils.GprofProgramChecker;
 import org.eclipse.linuxtools.gprof.view.CallGraphContentProvider;
 import org.eclipse.linuxtools.gprof.view.FileHistogramContentProvider;
 import org.eclipse.linuxtools.gprof.view.FlatHistogramContentProvider;
