@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.eclipse.jface.text,
  org.eclipse.ui.workbench.texteditor
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.dataviewers,
  org.eclipse.linuxtools.dataviewers.abstractview,
  org.eclipse.linuxtools.dataviewers.abstractviewers,
@@ -19,3 +19,4 @@ Export-Package: org.eclipse.linuxtools.dataviewers,
  org.eclipse.linuxtools.dataviewers.dialogs,
  org.eclipse.linuxtools.dataviewers.findreplace,
  org.eclipse.linuxtools.dataviewers.listeners
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
