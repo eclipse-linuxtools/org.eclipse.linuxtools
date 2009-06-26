@@ -1,3 +1,7 @@
+2009-06-26  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add core.resources to deps.
+
 2009-04-30  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: New deps.
