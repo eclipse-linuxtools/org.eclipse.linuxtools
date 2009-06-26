@@ -1,3 +1,7 @@
+2009-06-26  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Added doc plugin. Recomputed dependencies.
+
 2009-06-04  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Removing birt.chart from deps.

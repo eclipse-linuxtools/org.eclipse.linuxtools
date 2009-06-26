@@ -1,29 +1,29 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="userguide/Valgrind Reference.html" label="Valgrind Reference">
 	<topic href="userguide/Valgrind Reference.html" label="Overview"></topic>
-	<topic href="userguide/Valgrind Reference.html#Installing" label="Installing"></topic>
-	<topic href="userguide/Valgrind Reference.html#General_Usage" label="General Usage">
-		<topic href="userguide/Valgrind Reference.html#Configuring_a_Profile_Run" label="Configuring a Profile Run">
-			<topic href="userguide/Valgrind Reference.html#General_Options" label="General Options"></topic>
-			<topic href="userguide/Valgrind Reference.html#Suppressions" label="Suppressions"></topic>
+	<topic href="userguide/Installing.html" label="Installing"></topic>
+	<topic href="userguide/General-Usage.html" label="General Usage">
+		<topic href="userguide/General-Usage.html#Configuring_a_Profile_Run" label="Configuring a Profile Run">
+			<topic href="userguide/General-Usage.html#General_Options" label="General Options"></topic>
+			<topic href="userguide/General-Usage.html#Suppressions" label="Suppressions"></topic>
 		</topic>
-		<topic href="userguide/Valgrind Reference.html#Exporting_Valgrind_Data" label="Exporting Valgrind Data"></topic>
+		<topic href="userguide/General-Usage.html#Exporting_Valgrind_Data" label="Exporting Valgrind Data"></topic>
 	</topic>
-	<topic href="userguide/Valgrind Reference.html#Using_Memcheck" label="Using Memcheck">
-		<topic href="userguide/Valgrind Reference.html#Analyzing_Memcheck_Profile_Results" label="Analyzing Memcheck Profile Results"></topic>
-		<topic href="userguide/Valgrind Reference.html#Configuring_a_Memcheck_Profile_Run" label="Configuring a Memcheck Profile Run"></topic>
+	<topic href="userguide/Using-Memcheck.html" label="Using Memcheck">
+		<topic href="userguide/Using-Memcheck.html#Analyzing_Memcheck_Profile_Results" label="Analyzing Memcheck Profile Results"></topic>
+		<topic href="userguide/Using-Memcheck.html#Configuring_a_Memcheck_Profile_Run" label="Configuring a Memcheck Profile Run"></topic>
 	</topic>
-	<topic href="userguide/Valgrind Reference.html#Using_Massif" label="Using Massif">
-		<topic href="userguide/Valgrind Reference.html#Analyzing_Massif_Profile_Results" label="Analyzing Massif Profile Results"></topic>
-		<topic href="userguide/Valgrind Reference.html#Configuring_a_Massif_Profile_Run" label="Configuring a Massif Profile Run"></topic>
+	<topic href="userguide/Using-Massif.html" label="Using Massif">
+		<topic href="userguide/Using-Massif.html#Analyzing_Massif_Profile_Results" label="Analyzing Massif Profile Results"></topic>
+		<topic href="userguide/Using-Massif.html#Configuring_a_Massif_Profile_Run" label="Configuring a Massif Profile Run"></topic>
 	</topic>
-	<topic href="userguide/Valgrind Reference.html#Using_Cachegrind" label="Using Cachegrind">
-		<topic href="userguide/Valgrind Reference.html#Analyzing_Cachegrind_Profile_Results" label="Analyzing Cachegrind Profile Results"></topic>
-		<topic href="userguide/Valgrind Reference.html#Configuring_a_Cachegrind_Profile_Run" label="Configuring a Cachegrind Profile Run"></topic>
+	<topic href="userguide/Using-Cachegrind.html" label="Using Cachegrind">
+		<topic href="userguide/Using-Cachegrind.html#Analyzing_Cachegrind_Profile_Results" label="Analyzing Cachegrind Profile Results"></topic>
+		<topic href="userguide/Using-Cachegrind.html#Configuring_a_Cachegrind_Profile_Run" label="Configuring a Cachegrind Profile Run"></topic>
 	</topic>
-	<topic href="userguide/Valgrind Reference.html#Special_Cases" label="Special Cases">
-		<topic href="userguide/Valgrind Reference.html#Encountering_Errors" label="Encountering Errors"></topic>
-		<topic href="userguide/Valgrind Reference.html#Profiling_Child_Processes" label="Profiling Child Processes"></topic>
+	<topic href="userguide/Special-Cases.html" label="Special Cases">
+		<topic href="userguide/Special-Cases.html#Encountering_Errors" label="Encountering Errors"></topic>
+		<topic href="userguide/Special-Cases.html#Profiling_Child_Processes" label="Profiling Child Processes"></topic>
 	</topic>
 	<topic href="userguide/Updating-This-Document.html" label="Updating This Document"></topic>
 </toc>

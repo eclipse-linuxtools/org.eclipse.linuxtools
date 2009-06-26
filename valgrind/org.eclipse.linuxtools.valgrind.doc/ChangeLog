@@ -1,3 +1,17 @@
+2009-06-26  Elliott Baron  <ebaron@redhat.com>
+
+	* userguide/General-Usage.html: New file.
+	* userguide/images/Exportbuttonvalgrindview.gif: New file.
+	* userguide/Installing.html: New file.
+	* userguide/Special-Cases.html: New file.
+	* userguide/Using-Cachegrind.html: New file.
+	* userguide/Using-Massif.html: New file.
+	* userguide/Using-Memcheck.html: New file.
+	* userguide/Updating-This-Document.html: Regenerated documentation.
+	* userguide/Valgrind\ Reference-toc.xml: Likewise.
+	* userguide/Valgrind\ Reference.html: Likewise.
+	* userguide/Valgrind\ Reference.xml: Likewise.
+
 2009-06-18  Elliott Baron  <ebaron@redhat.com>
 
 	* build-helper.xml: Added call to wikitext-to-docbook target.

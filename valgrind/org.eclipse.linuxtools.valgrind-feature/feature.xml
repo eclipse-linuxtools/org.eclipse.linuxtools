@@ -32,6 +32,7 @@
       <import plugin="org.eclipse.core.variables"/>
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
+      <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.birt.chart.device.swt" version="2.3.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.birt.chart.device.extension" version="2.3.1" match="greaterOrEqual"/>
@@ -46,8 +47,10 @@
       <import plugin="org.mozilla.rhino"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.console"/>
       <import feature="org.eclipse.linuxtools.profiling" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.birt.chart.device.svg" version="2.3.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.ui"/>
    </requires>
 
    <plugin
@@ -87,6 +90,13 @@
 
    <plugin
          id="org.eclipse.linuxtools.valgrind.cachegrind"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.valgrind.doc"
          download-size="0"
          install-size="0"
          version="0.0.0"
