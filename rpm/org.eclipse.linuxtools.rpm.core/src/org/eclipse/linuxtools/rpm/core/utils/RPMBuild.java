@@ -35,8 +35,8 @@ public class RPMBuild {
 	 */
     public RPMBuild(IRPMConfiguration config) {
     	IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
-		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, "") + " -v "; //$NON-NLS-1$
-		macroDefines = " --define '_sourcedir " + 
+		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, "") + " -v "; //$NON-NLS-1$ //$NON-NLS-2$
+		macroDefines = " --define '_sourcedir " +  //$NON-NLS-1$
     			config.getSourcesFolder().getLocation().toOSString() + "' "; //$NON-NLS-1$
 		macroDefines += "--define '_srcrpmdir " + //$NON-NLS-1$
 			config.getSrpmsFolder().getLocation().toOSString() + "' "; //$NON-NLS-1$

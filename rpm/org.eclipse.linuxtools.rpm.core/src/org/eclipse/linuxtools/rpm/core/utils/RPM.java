@@ -34,8 +34,8 @@ public class RPM {
 	 */
     public RPM(IRPMConfiguration config) {
     	IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
-		rpmCmd = node.get(IRPMConstants.RPM_CMD, "") + 	" -v "; //$NON-NLS-1$
-		System.out.println("Rpm cmd1:"+rpmCmd);
+		rpmCmd = node.get(IRPMConstants.RPM_CMD, "") + 	" -v "; //$NON-NLS-1$ //$NON-NLS-2$
+		System.out.println("Rpm cmd1:"+rpmCmd); //$NON-NLS-1$
 		macroDefines = " --define '_sourcedir " + //$NON-NLS-1$
 			config.getSourcesFolder().getLocation().toOSString() + "' "; //$NON-NLS-1$
 		macroDefines += "--define '_srcrpmdir " + //$NON-NLS-1$

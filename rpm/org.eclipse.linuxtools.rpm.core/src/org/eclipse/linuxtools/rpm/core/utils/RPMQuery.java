@@ -78,7 +78,7 @@ public class RPMQuery {
 	
 	private static String query(String args, IFile rpmFile) throws CoreException {
 		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
-		String rpmCmd = node.get(IRPMConstants.RPM_CMD, "");
+		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
 		String command = rpmCmd + " " + args + " " + //$NON-NLS-1$ //$NON-NLS-2$
 			rpmFile.getLocation().toOSString();
 		ShellScript script = new ShellScript(command, 0);

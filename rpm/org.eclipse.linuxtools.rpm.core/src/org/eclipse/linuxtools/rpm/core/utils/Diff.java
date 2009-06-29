@@ -37,7 +37,7 @@ public class Diff {
 	public Diff(String baseDir, String oldPath, String newPath, String[] excludes, 
 			String outputFile) {
 		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
-		String pathToDiff = node.get(IRPMConstants.DIFF_CMD, "");
+		String pathToDiff = node.get(IRPMConstants.DIFF_CMD, ""); //$NON-NLS-1$
 		
 		diffCmd = "cd " + baseDir + " && "; //$NON-NLS-1$ //$NON-NLS-2$
 		diffCmd += pathToDiff + " -uNr "; //$NON-NLS-1$
@@ -46,7 +46,7 @@ public class Diff {
 			diffCmd += "--exclude=" + excludes[i] + " "; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		diffCmd += oldPath + " " + newPath + " "; //$NON-NLS-1$ //$NON-NLS-2$
-		diffCmd += "> " + outputFile;
+		diffCmd += "> " + outputFile; //$NON-NLS-1$
 	}
 	
 	/**

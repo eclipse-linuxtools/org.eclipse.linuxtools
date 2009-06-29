@@ -37,7 +37,7 @@ public class StreamReaderThread extends Thread
         }
     catch (Exception e)
         {
-        mOut.append("\nRead error:"+e.getMessage());
+        mOut.append("\nRead error:"+e.getMessage()); //$NON-NLS-1$
         }
     }
 }

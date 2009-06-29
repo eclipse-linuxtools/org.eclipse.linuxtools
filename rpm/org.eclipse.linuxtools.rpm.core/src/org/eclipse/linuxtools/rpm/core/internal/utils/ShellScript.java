@@ -76,8 +76,8 @@ public class ShellScript {
 	 * @throws CoreException if the operation fails
 	 */
 	public String exec() throws CoreException {
-		scriptContents += " >> " + 
-			RPMCorePlugin.getDefault().getExternalLogFile().getAbsolutePath(); //$NON-NLS-1$
+		scriptContents += " >> " +  //$NON-NLS-1$
+			RPMCorePlugin.getDefault().getExternalLogFile().getAbsolutePath();
 		return execNoLog();
 	}
 	

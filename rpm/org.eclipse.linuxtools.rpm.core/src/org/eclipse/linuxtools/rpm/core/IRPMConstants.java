@@ -34,18 +34,6 @@ public interface IRPMConstants {
 	
 	/**
 	 * Contains the name of the preference store key for storing and retrieving
-	 * the author's name.
-	 */
-	public static final String AUTHOR_NAME = "AUTHOR_NAME"; //$NON-NLS-1$
-	
-	/**
-	 * Contains the name of the preference store key for storing and retrieving
-	 * the author's email address.
-	 */
-	public static final String AUTHOR_EMAIL = "AUTHOR_EMAIL"; //$NON-NLS-1$
-	
-	/**
-	 * Contains the name of the preference store key for storing and retrieving
 	 * the name of the RPM log viewer.
 	 */
 	public static final String RPM_DISPLAYED_LOG_NAME = "RPM_DISPLAYED_LOG_NAME"; //$NON-NLS-1$
