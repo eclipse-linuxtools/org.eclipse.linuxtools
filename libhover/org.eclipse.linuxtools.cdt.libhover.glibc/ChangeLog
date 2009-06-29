@@ -1,3 +1,13 @@
+2009-02-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up version to 1.0.1.
+	* plugin.xml: Change to use new libhover library interface which requires
+	the location of a serialized LibHoverInfo instance rather than an xml document.
+
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier to version.
+
 2008-11-03  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Add plugin.properties.
