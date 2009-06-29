@@ -1,3 +1,9 @@
+2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/Messages.java: New messages for missing rpmlint error.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Show error dialog when rpmlint is not found.
+
 2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Add javadoc.

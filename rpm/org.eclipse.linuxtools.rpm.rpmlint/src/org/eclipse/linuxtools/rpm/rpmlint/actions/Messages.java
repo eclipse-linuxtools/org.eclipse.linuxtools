@@ -15,6 +15,8 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.rpmlint.actions.messages"; //$NON-NLS-1$
 	public static String RunRpmlintAction_0;
+	public static String RunRpmlintAction_1;
+	public static String RunRpmlintAction_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -14,7 +14,10 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.rpm.rpmlint.Activator;
@@ -22,6 +25,7 @@ import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -57,15 +61,29 @@ public class RunRpmlintAction implements IObjectActionDelegate {
 				}
 				if (rpmFile != null) {
 					try {
-						String output = Utils.runCommandToString(Activator
-								.getRpmlintPath(), "-i", rpmFile.getLocation() //$NON-NLS-1$
-								.toString());
-						MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
-						MessageConsoleStream out = myConsole.newMessageStream();
-						myConsole.clearConsole();
-						myConsole.activate();
-						out.println(output);
-
+						if (Utils.fileExist(Activator.getRpmlintPath())) {
+							String output = Utils.runCommandToString(Activator
+									.getRpmlintPath(),
+									"-i", rpmFile.getLocation() //$NON-NLS-1$
+											.toString());
+							MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
+							MessageConsoleStream out = myConsole
+									.newMessageStream();
+							myConsole.clearConsole();
+							myConsole.activate();
+							out.println(output);
+						} else {
+							IStatus warning = new Status(
+									IStatus.WARNING,
+									Activator.PLUGIN_ID,
+									1,
+									Messages.RunRpmlintAction_1,
+									null);
+							ErrorDialog.openError(PlatformUI.getWorkbench()
+									.getActiveWorkbenchWindow().getShell(),
+									Messages.RunRpmlintAction_2,
+									null, warning);
+						}
 					} catch (IOException e) {
 						// FIXME: rpmlint is not installed in the default place
 						// -> ask user to open the prefs page.
