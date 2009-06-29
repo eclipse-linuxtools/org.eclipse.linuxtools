@@ -1,3 +1,10 @@
+2009-06-29  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/linuxtools.psf: Add GProf and SystemTapGUI contributions.
+	* maps/linuxtools.map: Likewise.
+	* psfs/linuxtoolsAndAthena.psf: Likewise.  Update basebuilder to 3.5 tag.
+	* build.properties: Use basebuilder 3.5.
+
 2009-06-25  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Update dependencies to Galileo releases.

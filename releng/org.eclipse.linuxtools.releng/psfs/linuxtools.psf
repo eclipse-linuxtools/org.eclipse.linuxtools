@@ -15,6 +15,10 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.glibc,org.eclipse.linuxtools.cdt.libhover.glibc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.library-docs,org.eclipse.linuxtools.cdt.libhover.library-docs"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib,org.eclipse.linuxtools.cdt.libhover.newlib"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.binutils,org.eclipse.linuxtools.binutils"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.dataviewers,org.eclipse.linuxtools.dataviewers"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.gprof,org.eclipse.linuxtools.gprof"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.gprof.test,org.eclipse.linuxtools.gprof.test"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile-feature,org.eclipse.linuxtools.oprofile-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core,org.eclipse.linuxtools.oprofile.core"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.tests,org.eclipse.linuxtools.oprofile.core.tests"/>
@@ -40,6 +44,16 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/trunk/org.eclipse.linuxtools.rpmstubby-feature,org.eclipse.linuxtools.rpmstubby-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.feature,org.eclipse.linuxtools.systemtap.feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.editor,org.eclipse.linuxtools.systemtap.ui.editor"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.consolelog,org.eclipse.linuxtools.systemtapgui.consolelog"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.editor,org.eclipse.linuxtools.systemtapgui.editor"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.feature,org.eclipse.linuxtools.systemtapgui.feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.graphing,org.eclipse.linuxtools.systemtapgui.graphing"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.graphingapi.nonui,org.eclipse.linuxtools.systemtapgui.graphingapi.nonui"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.graphingapi.ui,org.eclipse.linuxtools.systemtapgui.graphingapi.ui"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.ide,org.eclipse.linuxtools.systemtapgui.ide"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.logging,org.eclipse.linuxtools.systemtapgui.logging"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.structures,org.eclipse.linuxtools.systemtapgui.structures"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.systemtapgui,org.eclipse.linuxtools.systemtapgui.systemtapgui"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind-feature,org.eclipse.linuxtools.valgrind-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind,org.eclipse.linuxtools.valgrind.cachegrind"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind.tests,org.eclipse.linuxtools.valgrind.cachegrind.tests"/>
