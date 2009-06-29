@@ -99,6 +99,8 @@ public class DoxygenCPPInfo {
 			Node text = nl.item(x);
 			if (text.getNodeType() == Node.TEXT_NODE)
 				d.append(text.getNodeValue());
+			else
+				d.append(getElementText(text));
 		}
 		return d.toString();
 	}
@@ -157,13 +159,14 @@ public class DoxygenCPPInfo {
 						if (name2.equals("compoundname")) { // $NON-NLS-1$
 							String text = n2.getTextContent();
 							if (text != null && !text.equals("")) {
+								String className = text;
 								text = text.replaceAll("<\\s*", "<"); // $NON-NLS-1$ // $NON-NLS-2$
 								text = text.replaceAll("\\s*>", ">"); // $NON-NLS-1$ // $NON-NLS-2$
 								int index = text.indexOf('<');
 								hashName = text;
 								if (index > 0)
 									hashName = text.substring(0, index);
-								d = new ClassInfo(text, id.getNodeValue(), n);
+								d = new ClassInfo(className, id.getNodeValue(), n);
 								classesById.put(id.getNodeValue(), d);
 								ClassInfo e = cppInfo.classes.get(hashName);
 								if (e != null) { /* We are dealing with a partial specific template...add it to list  */
@@ -177,7 +180,7 @@ public class DoxygenCPPInfo {
 									// other variable (e.g. if _A is used, there is no __A or _AB).  If this proves untrue in
 									// any instance, more refinement of the initial value to replace will be required.
 									for (int k = 0; k < templateParms.length; ++k) {
-										text = text.replaceAll(templateParms[k], "[a-zA-Z0-9_: ]+"); // $NON-NLS-1$
+										text = text.replaceAll(templateParms[k], "[a-zA-Z0-9_: *]+"); // $NON-NLS-1$
 									}
 									d.setClassName(text);
 									e.addTemplate(d);
@@ -185,6 +188,25 @@ public class DoxygenCPPInfo {
 								else
 									cppInfo.classes.put(hashName, d);
 							}
+						} else if (name2.equals("templateparamlist")) {
+							ArrayList<String> templates = new ArrayList<String>();
+							NodeList params = n2.getChildNodes();
+							int paramsLength = params.getLength();
+							for (int j2 = 0; j2 < paramsLength; ++j2) {
+								Node n3 = params.item(j2);
+								if (n3.getNodeName().equals("param")) {
+									NodeList types = n3.getChildNodes();
+									int typesLength = types.getLength();
+									for (int j3 = 0; j3 < typesLength; ++j3) {
+										Node n4 = types.item(j3);
+										if (n4.getNodeName().equals("declname")) {
+											templates.add(getElementText(n4));
+										}
+									}
+								}
+							}
+							String[] templateNames = new String[templates.size()];
+							d.setTemplateParms(templates.toArray(templateNames));
 						} else if (name2.equals("includes")) { // $NON-NLS-1$
 							String include = getElementText(n2);
 							if (d != null)
@@ -197,14 +219,14 @@ public class DoxygenCPPInfo {
 								Node refid = m.getNamedItem("refid"); // $NON-NLS-1$
 								Node prot2 = m.getNamedItem("prot"); // $NON-NLS-1$
 								if (prot2 != null && prot2.getNodeValue().equals("public")) { // $NON-NLS-1$
-								    ClassInfo baseClass = null;
+									ClassInfo baseClass = null;
 									if (refid != null) {
 										// If we have been given the id of the base class, fetch it directly
 										baseClass = classesById.get(refid.getNodeValue());
 									} else {
 										// We probably have a template that needs resolution
 										String baseClassName = n2.getTextContent();
-										System.out.println("base class name is " + baseClassName);
+//										System.out.println("base class name is " + baseClassName);
 										baseClass = getClassInfo(baseClassName);
 									}
 									if (d != null && baseClass != null)
@@ -231,6 +253,7 @@ public class DoxygenCPPInfo {
 													String type = null;
 													String args = null;
 													String desc = null;
+													ArrayList<String> parms = new ArrayList<String>();
 													NodeList nl4 = n3.getChildNodes();
 													int memberLength = nl4.getLength();
 													for (int k = 0; k < memberLength; ++k) {
@@ -238,22 +261,34 @@ public class DoxygenCPPInfo {
 														String n4Name = n4.getNodeName();
 														if (n4Name.equals("type")) { // $NON-NLS-1$
 															NodeList nl5 = n4.getChildNodes();
+															type = new String(""); // $NON-NLS-1$
 															for (int x = 0; x < nl5.getLength(); ++x) {
 																Node n5 = nl5.item(x);
-																type = new String(""); // $NON-NLS-1$
-																if (n5.getNodeName().equals("ref")) { // $NON-NLS-1$
-																	String ref = getElementText(n5);
-																	if (ref.indexOf("::") < 0)
-																		ref = hashName.substring(0, hashName.indexOf("::")) + "::" + ref;
-																	type = ref;
-																	break;
+																if (n5.getNodeType() == Node.TEXT_NODE)
+																	type += n5.getNodeValue();
+																else if (n5.getNodeName().equals("ref")) { // $NON-NLS-1$
+																	NamedNodeMap n5m = n5.getAttributes();
+																	Node n5id = n5m.getNamedItem("refid");
+																	if (n5id != null) {
+																		String refid = n5id.getNodeValue();
+																		ClassInfo refClass = classesById.get(refid);
+																		if (refClass != null)
+																			type += refClass.getClassName();
+																	}
 																}	
 															}
-															type += getElementText(n4);
 														} else if (n4Name.equals("name")) { // $NON-NLS-1$
 															name = n4.getTextContent();
 														} else if (n4Name.equals("argsstring")) { // $NON-NLS-1$
 															args = getElementText(n4);
+														} else if (n4Name.equals("param")) { // $NON-NLS-1$
+															NodeList nl5 = n4.getChildNodes();
+															for (int x = 0; x < nl5.getLength(); ++x) {
+																Node n5 = nl5.item(x);
+																if (n5.getNodeName().equals("type")) { // $NON-NLS-1$
+																	parms.add(getElementText(n5));
+																}
+															}
 														} else if (n4Name.equals("briefdescription")) { // $NON-NLS-1$
 															NodeList nl5 = n4.getChildNodes();
 															for (int x = 0; x < nl5.getLength(); ++x) {
@@ -264,12 +299,38 @@ public class DoxygenCPPInfo {
 																	desc += "<p>" + getElementText(n5) + "</p>"; // $NON-NLS-1$ // $NON-NLS-2$
 																}	
 															}
-															// Description is last so we can now add the member
+														} else if (n4Name.equals("detaileddescription")) { // $NON-NLS-1$
+															NodeList nl5 = n4.getChildNodes();
+															for (int x = 0; x < nl5.getLength(); ++x) {
+																Node n5 = nl5.item(x);
+																if (n5.getNodeName().equals("para")) { // $NON-NLS-1$
+																	if (desc == null)
+																		desc = new String(""); // $NON-NLS-1$
+																	NodeList nl6 = n5.getChildNodes();
+																	Node n6 = nl6.item(0);
+																	if (n6.getNodeType() == Node.TEXT_NODE)
+																		desc += "<p>" + getElementText(n5) + "</p>"; // $NON-NLS-1$ // $NON-NLS-2$
+																	else {
+																		for (int x2 = 0; x2 < nl6.getLength(); ++x2) {
+																			n6 = nl6.item(x2);
+																			if (n6.getNodeName().equals("parameterlist")) { // $NON-NLS-1$
+																				desc += getParameters(n6);
+																			} else if (n6.getNodeName().equals("simplesect")) { // $NON-NLS-1$
+																				desc += getReturn(n6);
+																			}
+																		}
+																	}
+																}	
+															}
+														} else if (n4Name.equals("location")) {
+															// Location is after all descriptions so we can now add the member
 															if (name != null) {
 																MemberInfo member = new MemberInfo(name);
 																member.setReturnType(type);
 																member.setPrototype(args);
 																member.setDescription(desc);
+																String[] argNames = new String[parms.size()];
+																member.setParamTypes(parms.toArray(argNames));
 																d.addMember(member);
 															}
 															break;
@@ -361,6 +422,44 @@ public class DoxygenCPPInfo {
 		}
 	}
 	
+	private String getParameters(Node n6) {
+		String desc = "<br><br><h3>Parameters:</h3>";
+		NodeList nl = n6.getChildNodes();
+		for (int x = 0; x < nl.getLength(); ++x) {
+			Node n = nl.item(x);
+			if (n.getNodeName().equals("parameteritem")) {
+				NodeList nl2 = n.getChildNodes();
+				for (int y = 0; y < nl2.getLength(); ++y) {
+					Node n2 = nl2.item(y);
+					if (n2.getNodeName().equals("parameternamelist")) {
+						NodeList nl3 = n2.getChildNodes();
+						for (int z = 0; z < nl3.getLength(); ++z) {
+							Node n3 = nl3.item(z);
+							if (n3.getNodeName().equals("parametername")) {
+								desc += getElementText(n3) + " - ";
+							}
+						}
+					} else if (n2.getNodeName().equals("parameterdescription")) {
+						desc += getElementText(n2) + "<br>";
+					}
+
+				}
+			}
+		}
+		return desc;
+	
+	}
+
+	private String getReturn(Node n6) {
+		String desc = "";
+		NamedNodeMap m = n6.getAttributes();
+		Node kind = m.getNamedItem("kind");
+		if (kind != null && kind.getNodeValue().equals("return")) {
+			desc += "<br><h3>Returns:</h3>" + getElementText(n6) + "<br>";
+		}
+		return desc;
+	}
+
 	public String[] getTemplateParms(Node classNode) {
 		Node n = null;
 		ArrayList<String> templateArray = new ArrayList<String>();

@@ -1,3 +1,12 @@
+2009-05-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/libhover/libstdcxx/DoxygenCPPInfo.java (getParameters):
+	New method. 
+	(getReturn): Ditto. 
+	(buildDoxygenCPPInfo): Add code to get detailed description and break this up into
+	parameters and return value.  For return type, use refid to find a referenced class. 
+	(getElementText): Fix to be recursive.
+
 2009-02-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* .project: New file.
