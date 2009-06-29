@@ -31,9 +31,11 @@ plugin@org.eclipse.linuxtools.gprof.test=SVN,,http://dev.eclipse.org/svnroot/tec
 !*** libhover
 plugin@org.eclipse.linuxtools.cdt.libhover=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover
 plugin@org.eclipse.linuxtools.cdt.libhover.glibc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.glibc
+plugin@org.eclipse.linuxtools.cdt.libhover.newlib=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib
 plugin@org.eclipse.linuxtools.cdt.libhover.library_docs=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.library-docs
 plugin@org.eclipse.linuxtools.cdt.libhover.libstdcxx=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.libstdcxx
 feature@org.eclipse.linuxtools.cdt.libhover.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.feature
+feature@org.eclipse.linuxtools.cdt.libhover.newlib.feature=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib.feature
 
 !*** systemtap
 plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.editor
