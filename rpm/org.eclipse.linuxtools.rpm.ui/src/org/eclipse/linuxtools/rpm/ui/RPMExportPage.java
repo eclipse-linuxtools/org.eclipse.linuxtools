@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.IRPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
+import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -61,14 +62,14 @@ public class RPMExportPage extends WizardPage implements Listener {
 		return rpmProject;
 	}
 	
-	public int getExportType() {
-		int exportType = 0;
+	public BuildType getExportType() {
+		BuildType exportType = BuildType.NONE;
 		if(exportBinary.getSelection() && exportSource.getSelection()) {
-			exportType = IRPMUIConstants.BUILD_ALL;
+			exportType = BuildType.ALL;
 		} else if(exportBinary.getSelection()) {
-			exportType = IRPMUIConstants.BUILD_BINARY; 
+			exportType = BuildType.BINARY; 
 		} else if(exportSource.getSelection()) {
-			exportType = IRPMUIConstants.BUILD_SOURCE;
+			exportType = BuildType.SOURCE;
 		}
 		return exportType;
 	}

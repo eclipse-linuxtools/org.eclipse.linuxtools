@@ -20,15 +20,16 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.rpm.core.IRPMProject;
+import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.ui.PlatformUI;
 
 public class RPMExportOperation implements IRunnableWithProgress {
 	private IProgressMonitor monitor;
 	private ArrayList<Exception> rpm_errorTable;
 	private IRPMProject rpmProject;
-	private int exportType;
+	private BuildType exportType;
 	
-	public RPMExportOperation(IRPMProject rpmProject, int exportType) {
+	public RPMExportOperation(IRPMProject rpmProject, BuildType exportType) {
 		this.rpmProject = rpmProject;
 		this.exportType = exportType;
 	}
@@ -52,7 +53,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 		monitor.worked(1);
 		
 		switch(exportType) {
-		case IRPMUIConstants.BUILD_ALL:
+		case ALL:
 			try {
 				monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 				rpmProject.buildAll();
@@ -61,7 +62,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 			}
 			break;
 		
-		case IRPMUIConstants.BUILD_BINARY:
+		case BINARY:
 			monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 			try {
 				rpmProject.buildBinaryRPM();
@@ -70,7 +71,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 			}
 			break;
 		
-		case IRPMUIConstants.BUILD_SOURCE:
+		case SOURCE:
 			monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
 			try {
 				rpmProject.buildSourceRPM();

@@ -1,3 +1,12 @@
+2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/rpm/ui/IRPMUIConstants.java: Make build type an enum.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (RPMExportOperation): Likewise.
+	(run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java (getExportType): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMNewProject.java (.execute): Add missing @Override.
+
 2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Add copyright.

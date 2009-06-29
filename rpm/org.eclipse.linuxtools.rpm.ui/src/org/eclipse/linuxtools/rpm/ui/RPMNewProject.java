@@ -41,6 +41,7 @@ public class RPMNewProject extends Wizard implements INewWizard {
 	public boolean performFinish() {
 		try {
 			WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+				@Override
 				protected void execute(IProgressMonitor monitor) {
 					createProject(monitor != null ? monitor
 							: new NullProgressMonitor());

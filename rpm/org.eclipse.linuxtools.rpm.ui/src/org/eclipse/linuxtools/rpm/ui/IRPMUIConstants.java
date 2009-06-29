@@ -15,10 +15,6 @@ public interface IRPMUIConstants {
 
 	public static final String LINE_SEP = System.getProperty("line.separator"); //$NON-NLS-1$
 	
-	public static final int BUILD_ALL = 1;
-	
-	public static final int BUILD_BINARY = 2;
-	
-	public static final int BUILD_SOURCE = 3;
+	public enum BuildType { NONE, ALL, BINARY, SOURCE}
 	
 }
