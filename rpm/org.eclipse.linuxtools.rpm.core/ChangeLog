@@ -1,3 +1,10 @@
+2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: New file.
+	* build.properties: Externalize strings.
+	* META-INF/MANIFEST.MF: Likewise.
+	* plugin.xml: Likewise.
+
 2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix for #281480.
 	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (importSourceRPM): Do not  build on import. 

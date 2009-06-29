@@ -13,7 +13,7 @@
 <plugin>
    <extension
          id="rpmnature"
-         name="RPM Project Nature"
+         name="%extension.name"
          point="org.eclipse.core.resources.natures">
          <runtime>
          	<run class="org.eclipse.linuxtools.rpm.core.RPMProjectNature"></run>
