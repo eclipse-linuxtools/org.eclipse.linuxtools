@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: STProfiler Binary Tools Plug-in
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.binutils;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.binutils.Activator
-Bundle-Vendor: STMicroelectronics
+Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.filesystem,
@@ -20,3 +20,4 @@ Export-Package: org.eclipse.linuxtools.binutils,
  org.eclipse.linuxtools.binutils.link2source,
  org.eclipse.linuxtools.binutils.utils
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin

@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Gprof Plug-in
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.gprof;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.gprof.Activator
-Bundle-Vendor: STMicroelectronics
+Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.variables,
  org.eclipse.ui,
@@ -19,3 +19,4 @@ Export-Package: org.eclipse.linuxtools.gprof,
  org.eclipse.linuxtools.gprof.utils,
  org.eclipse.linuxtools.gprof.view
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Localization: plugin

@@ -8,7 +8,7 @@
             class="org.eclipse.linuxtools.binutils.link2source.STCSourceNotFoundEditor"
             icon="icons/c_file_obj.gif"
             id="org.eclipse.linuxtools.binutils.link2source.STCSourceNotFoundEditor"
-            name="Source Not Found">
+            name="%sourceNotFoundEditorName">
       </editor>
    </extension>
 

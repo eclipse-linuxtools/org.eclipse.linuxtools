@@ -9,7 +9,7 @@
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gprof.editor.single"
             launcher="org.eclipse.linuxtools.gprof.action.OpenGmonAction"
-            name="Gprof Editor">
+            name="%gprofEditor">
       </editor>
    </extension>
    <extension
@@ -20,15 +20,15 @@
             class="org.eclipse.linuxtools.gprof.view.GmonView"
             icon="icons/toggle.gif"
             id="org.eclipse.linuxtools.gprof.view"
-            name="gprof"
+            name="%gprof"
             restorable="false">
          <description>
-            Gprof view displays the profiling information contained in a gmon.out file
+            %gprofDescription
          </description>
       </view>
       <category
             id="org.eclipse.linuxtools.gprof"
-            name="gprof">
+            name="%gprofCategory">
       </category>
    </extension>
 
