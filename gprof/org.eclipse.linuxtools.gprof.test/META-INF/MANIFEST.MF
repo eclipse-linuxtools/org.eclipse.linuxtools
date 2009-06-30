@@ -6,4 +6,4 @@ Bundle-Version: 4.0.0.qualifier
 Bundle-Vendor: STMicroelectronics
 Fragment-Host: org.eclipse.linuxtools.gprof
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.junit4;bundle-version="4.3.1"
+Require-Bundle: org.junit;bundle-version="3.8.2"
