@@ -33,6 +33,7 @@ public class OprofileLaunchPlugin extends AbstractUIPlugin {
 
 	// The launch type ID for profiling
 	public static final String ID_LAUNCH_PROFILE = ID_PLUGIN + ".oprofile"; //$NON-NLS-1$
+	public static final String ID_LAUNCH_PROFILE_MANUAL = ID_PLUGIN + ".oprofile.manual"; //$NON-NLS-1$
 
 
 	/* Launch Configuration attributes */

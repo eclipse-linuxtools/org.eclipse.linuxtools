@@ -27,7 +27,7 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 public class OprofileManualLaunchShortcut extends ProfileLaunchShortcut {
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
-		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
+		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE_MANUAL);
 	}
 
 	/**
@@ -59,5 +59,4 @@ public class OprofileManualLaunchShortcut extends ProfileLaunchShortcut {
 		
 		return config;
 	}
-
 }

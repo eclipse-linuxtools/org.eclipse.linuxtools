@@ -8,6 +8,16 @@
             id="org.eclipse.linuxtools.oprofile.launch.oprofile"
             modes="profile"
             name="%launchconfigurationtype.label"
+            public="true"
+            sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+      </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.oprofile.launch.launching.OprofileManualLaunchConfigurationDelegate"
+            id="org.eclipse.linuxtools.oprofile.launch.oprofile.manual"
+            modes="profile"
+            name="%launchconfigurationtype.manual.label"
+            public="true"
             sourceLocatorId="org.eclipse.cdt.launch.DefaultSourceLocator"
             sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
       </launchConfigurationType>
@@ -19,6 +29,11 @@
             icon="icons/profile_run.png"
             id="org.eclipse.linuxtools.oprofile.launch.oprofileImage">
       </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.oprofile.launch.oprofile.manual"
+            icon="icons/profile_run.png"
+            id="org.eclipse.linuxtools.oprofile.launch.manual.oprofileImage">
+      </launchConfigurationTypeImage>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -26,6 +41,11 @@
             class="org.eclipse.linuxtools.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
             id="org.eclipse.linuxtools.oprofile.launch.launchConfigurationTabGroup"
             type="org.eclipse.linuxtools.oprofile.launch.oprofile">
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
+            id="org.eclipse.linuxtools.oprofile.launch.launchConfigurationTabGroup"
+            type="org.eclipse.linuxtools.oprofile.launch.oprofile.manual">
       </launchConfigurationTabGroup>
    </extension>
    <extension

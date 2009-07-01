@@ -27,11 +27,9 @@ import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 public class LaunchOptions {
 	// The launch options for the daemon
 	private OprofileDaemonOptions _options;
-	private boolean _manualProfile;
 
 	public LaunchOptions() {
 		_options = new OprofileDaemonOptions();
-		_manualProfile = false;
 	}
 	
 	/**
@@ -69,7 +67,6 @@ public class LaunchOptions {
 		try {
 			_options.setKernelImageFile(config.getAttribute(OprofileLaunchPlugin.ATTR_KERNEL_IMAGE_FILE, "")); //$NON-NLS-1$
 			_options.setSeparateProfilesMask(config.getAttribute(OprofileLaunchPlugin.ATTR_SEPARATE_SAMPLES, OprofileDaemonOptions.SEPARATE_NONE));
-			_manualProfile = config.getAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
 		} catch (CoreException e) {
 		}
 	}
@@ -128,21 +125,5 @@ public class LaunchOptions {
 	 */
 	public void setBinaryImage(String _image) {
 		_options.setBinaryImage(_image);
-	}
-
-	/**
-	 * Returns whether or not this is a manual profile.
-	 * @return a boolean indicating manual profiling
-	 */
-	public boolean getManualProfile() {
-		return _manualProfile;
-	}
-
-	/**
-	 * Sets the type of profiling launch, manual or not.
-	 * @param profile true if a manual profile, false if not
-	 */
-	public void setManualProfile(boolean profile) {
-		_manualProfile = profile;
 	}
 }
