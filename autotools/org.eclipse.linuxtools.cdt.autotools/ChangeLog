@@ -1,3 +1,11 @@
+2009-07-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (clean): Don't ask
+	the ManagedBuildManager for the generator as it may default to the GnuMakefileGenerator. 
+	(removeBuildDir): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (regenerateMakefiles): Add
+	MakeTargets when autogen.sh runs configure successfully. 
+
 2009-06-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #281583, #281582

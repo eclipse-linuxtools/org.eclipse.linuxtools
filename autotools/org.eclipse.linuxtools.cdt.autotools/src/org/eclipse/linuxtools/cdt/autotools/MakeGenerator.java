@@ -519,6 +519,10 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 							.append(MAKEFILE).toFile();
 							addMakeTargetsToManager(makefileFile);
 						}
+					} else {
+						File makefileFile = project.getLocation().append(buildDir)
+						.append(MAKEFILE).toFile();
+						addMakeTargetsToManager(makefileFile);						
 					}
 				}
 			}

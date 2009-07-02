@@ -192,7 +192,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			IProject project = getProject();
 			IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 			IConfiguration cfg = info.getDefaultConfiguration();
-			IManagedBuilderMakefileGenerator generator = ManagedBuildManager.getBuildfileGenerator(cfg);
+			IManagedBuilderMakefileGenerator generator = new MakeGenerator();
 			generator.initialize(getProject(), info, monitor);
 
 //			// Hijack the builder itself so that instead of ManagedMake
@@ -228,7 +228,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			IWorkspace workspace = AutotoolsPlugin.getWorkspace();
 			IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 			IConfiguration cfg = info.getDefaultConfiguration();
-			IManagedBuilderMakefileGenerator generator = ManagedBuildManager.getBuildfileGenerator(cfg);
+			IManagedBuilderMakefileGenerator generator = new MakeGenerator();
 			generator.initialize(getProject(), info, monitor);
 			String buildPath = project.getFullPath().append(generator.getBuildWorkingDir()).toOSString();
 			IResource rc = workspace.getRoot().findMember(buildPath);
