@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -32,10 +33,6 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 public class RPMNewProject extends Wizard implements INewWizard {
 	WizardNewProjectCreationPage namePage;
-
-	public RPMNewProject() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public boolean performFinish() {
@@ -59,12 +56,12 @@ public class RPMNewProject extends Wizard implements INewWizard {
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		super.addPages();
-		namePage = new WizardNewProjectCreationPage("New RPM Project");
-		namePage.setTitle("Create a new RPM project");
+		namePage = new WizardNewProjectCreationPage(Messages.getString("RPMNewProject.0")); //$NON-NLS-1$
+		namePage.setTitle(Messages.getString("RPMNewProject.1")); //$NON-NLS-1$
 		namePage
-				.setDescription("Created project will have a standard rpmbuild structure.");
+				.setDescription(Messages.getString("RPMNewProject.2")); //$NON-NLS-1$
 		namePage.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),
-				"/icons/rpm.gif"));
+				"/icons/rpm.gif")); //$NON-NLS-1$
 		addPage(namePage);
 	}
 
@@ -81,13 +78,13 @@ public class RPMNewProject extends Wizard implements INewWizard {
 			project.create(description, monitor);
 			monitor.worked(10);
 			project.open(monitor);
-			project.getFolder("SPECS").create(true, true, monitor);
-			project.getFolder("SOURCES").create(true, true, monitor);
-			IFolder buildFolder = project.getFolder("BUILD");
+			project.getFolder(IRPMConstants.SPECS_FOLDER).create(true, true, monitor);
+			project.getFolder(IRPMConstants.SOURCES_FOLDER).create(true, true, monitor);
+			IFolder buildFolder = project.getFolder(IRPMConstants.BUILD_FOLDER);
 			buildFolder.create(true, true, monitor);
 			buildFolder.setHidden(true);
-			project.getFolder("RPMS").create(true, true, monitor);
-			project.getFolder("SRPMS").create(true, true, monitor);
+			project.getFolder(IRPMConstants.RPMS_FOLDER).create(true, true, monitor);
+			project.getFolder(IRPMConstants.SRPMS_FOLDER).create(true, true, monitor);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

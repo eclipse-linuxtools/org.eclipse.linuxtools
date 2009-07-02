@@ -1,3 +1,12 @@
+2009-07-02  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: Add new strings.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java (performFinish): Run export as Job.
+	(canFinish): Simplify.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMNewProject.java (RPMNewProject): Removed. 
+	(createProject): Use constants.
+	(init): Externalize strings.
+
 2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
