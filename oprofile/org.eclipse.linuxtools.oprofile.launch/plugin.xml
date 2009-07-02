@@ -44,7 +44,7 @@
       </launchConfigurationTabGroup>
       <launchConfigurationTabGroup
             class="org.eclipse.linuxtools.oprofile.launch.configuration.OprofileLaunchConfigurationTabGroup"
-            id="org.eclipse.linuxtools.oprofile.launch.launchConfigurationTabGroup"
+            id="org.eclipse.linuxtools.oprofile.launch.manualLaunchConfigurationTabGroup"
             type="org.eclipse.linuxtools.oprofile.launch.oprofile.manual">
       </launchConfigurationTabGroup>
    </extension>

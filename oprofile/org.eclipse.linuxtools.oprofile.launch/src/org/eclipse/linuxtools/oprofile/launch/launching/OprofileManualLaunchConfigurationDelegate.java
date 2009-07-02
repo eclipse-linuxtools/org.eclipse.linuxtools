@@ -44,7 +44,22 @@ import org.eclipse.ui.PlatformUI;
 public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileLaunchConfigurationDelegate {
 	@Override
 	protected void preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
-		//no pre exec needed
+//		//set up the oprofile daemon
+//		try {
+//			//kill the daemon (it shouldn't be running already, but to be safe)
+//			oprofileShutdown();
+//			
+//			//reset data from the (possibly) existing default session, 
+//			// otherwise multiple runs will combine samples and results
+//			// won't make much sense
+//			oprofileReset();
+//			
+//			//setup the events and other parameters
+//			oprofileSetupDaemon(options.getOprofileDaemonOptions(), daemonEvents);
+//		} catch (OpcontrolException oe) {
+//			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
+//			return;
+//		}
 	}
 
 	@Override
@@ -57,8 +72,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				//TODO: have a initialization dialog to do reset and setupDaemon?
 				// using a progress dialog, can't abort the launch if there's an exception..
 				try {
-					OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
-					OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(fOptions.getOprofileDaemonOptions(), fDaemonEvents);
+					oprofileReset();
+					oprofileSetupDaemon(fOptions.getOprofileDaemonOptions(), fDaemonEvents);
 				} catch (OpcontrolException oe) {
 					OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 					return;		//dont open the dialog
@@ -92,33 +107,33 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				//kill the dialog when the launch is done
 				if (l.equals(launch)) {
 					//must be in the ui thread else thread access errors
-					Display.getDefault().syncExec(new Runnable() {
+					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							dialog.close();
+
+							//progress dialog for ensuring the daemon is shut down
+							IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
+								public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+									monitor.beginTask(OprofileLaunchMessages.getString("oprofiledcontroldialog.post.stopdaemon"), 1); //$NON-NLS-1$
+									try {
+										oprofileShutdown();
+									} catch (OpcontrolException e) {
+//									e.printStackTrace();
+									}
+									monitor.worked(1);
+									monitor.done();
+								}
+							};
+							ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+							try {
+								dialog.run(true, false, refreshRunner);
+							} catch (InvocationTargetException e) {
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 						}
 					});
-					
-					//progress dialog for ensuring the daemon is shut down
-					IRunnableWithProgress refreshRunner = new IRunnableWithProgress() {
-						public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-							monitor.beginTask(OprofileLaunchMessages.getString("oprofiledcontroldialog.post.stopdaemon"), 1); //$NON-NLS-1$
-							try {
-								OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
-							} catch (OpcontrolException e) {
-//									e.printStackTrace();
-							}
-							monitor.worked(1);
-							monitor.done();
-						}
-					};
-					ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
-					try {
-						dialog.run(true, false, refreshRunner);
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 				}
 			}
 		}
@@ -162,7 +177,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				}
 				public void widgetSelected(SelectionEvent e) {
 					try {
-						OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
+						oprofileStartCollection();
 						_startDaemonButton.setEnabled(false);
 						_stopDaemonButton.setEnabled(true);
 						_refreshViewButton.setEnabled(true);
@@ -186,7 +201,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				}
 				public void widgetSelected(SelectionEvent e) {
 					try {
-						OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
+						oprofileShutdown();
 						_startDaemonButton.setEnabled(true);
 						_stopDaemonButton.setEnabled(false);
 					} catch (OpcontrolException oe) {
@@ -221,7 +236,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				}
 				public void widgetSelected(SelectionEvent e) {
 					try {
-						OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
+						oprofileReset();
 					} catch (OpcontrolException oe) {
 						//disable buttons, notify user of error
 						disableAllButtons();
@@ -242,7 +257,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				public void widgetSelected(SelectionEvent e) {
 					addToFeedbackList(OprofileLaunchMessages.getString("oprofiledcontroldialog.feedback.dumpsamples")); //$NON-NLS-1$
 					try {
-						OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
+						oprofileDumpSamples();
 					} catch (OpcontrolException oe) {
 						//no error in this case; the user might refresh when the daemon isnt running
 					}

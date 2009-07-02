@@ -31,7 +31,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
+import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
 import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
 import org.eclipse.linuxtools.oprofile.launch.configuration.OprofileCounter;
@@ -159,5 +162,27 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 			}
 			OprofileUiPlugin.getDefault().getOprofileView().refreshView();
 		}
+	}
+	
+	/* all these functions exist to be overridden by the test class in order to allow launch testing */
+	
+	protected void oprofileShutdown() throws OpcontrolException {
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();	
+	}
+	
+	protected void oprofileReset() throws OpcontrolException {
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();		
+	}
+	
+	protected void oprofileSetupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) throws OpcontrolException {
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(options, events);		
+	}
+
+	protected void oprofileStartCollection() throws OpcontrolException {
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
+	}
+	
+	protected void oprofileDumpSamples() throws OpcontrolException {
+		OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
 	}
 }

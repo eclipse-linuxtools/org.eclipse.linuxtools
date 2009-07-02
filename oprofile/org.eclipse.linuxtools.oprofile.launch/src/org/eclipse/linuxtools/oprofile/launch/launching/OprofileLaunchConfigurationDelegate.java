@@ -27,20 +27,20 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 		//set up and launch the oprofile daemon
 		try {
 			//kill the daemon (it shouldn't be running already, but to be safe)
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
+			oprofileShutdown();
 			
 			//reset data from the (possibly) existing default session, 
 			// otherwise multiple runs will combine samples and results
 			// won't make much sense
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().reset();
+			oprofileReset();
 			
 			//setup the events and other parameters
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().setupDaemon(options.getOprofileDaemonOptions(), daemonEvents);
+			oprofileSetupDaemon(options.getOprofileDaemonOptions(), daemonEvents);
 			
 			//start the daemon & collection of samples 
 			//note: since the daemon is only profiling for the specific image we told 
 			// it to, no matter to start the daemon before the binary itself is run
-			OprofileCorePlugin.getDefault().getOpcontrolProvider().startCollection();
+			oprofileStartCollection();
 		} catch (OpcontrolException oe) {
 			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 			return;
@@ -71,8 +71,8 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 					 * refresh the view (which parses the data/ui model and displays it).
 					 */
 					if (l.equals(launch)) {
-						OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
-						OprofileCorePlugin.getDefault().getOpcontrolProvider().shutdownDaemon();
+						oprofileDumpSamples();
+						oprofileShutdown();
 
 						//need to run this in the ui thread otherwise get SWT Exceptions
 						// based on concurrency issues

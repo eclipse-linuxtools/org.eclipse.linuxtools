@@ -25,3 +25,6 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.oprofile.ui.view,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.ui
+Export-Package: org.eclipse.linuxtools.oprofile.launch,
+ org.eclipse.linuxtools.oprofile.launch.configuration,
+ org.eclipse.linuxtools.oprofile.launch.launching
