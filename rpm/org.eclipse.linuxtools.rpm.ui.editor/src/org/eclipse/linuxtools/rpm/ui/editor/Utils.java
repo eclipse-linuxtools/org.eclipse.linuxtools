@@ -92,30 +92,29 @@ public class Utils {
 				outChannel.close();
 		}
 	}
-	
-	
+		
 	/**
-	 * Resolve defines for a give URL string, if a define is not found or if
+	 * Resolve defines for a give string, if a define is not found or if
 	 * there is some other error, the original string is returned.
 	 * 
-	 * @param string To resolve
-	 * @return resolved URL String
+	 * @param stringToResolve The string to resolve.
+	 * @return resolved string
 	 */
-	public static String resolveDefines(Specfile specfile, String string) {
-		String originalUrlString= string;
+	public static String resolveDefines(Specfile specfile, String stringToResolve) {
+		String originalString = stringToResolve;
 		SpecfileDefine define;
 		try {
-			Pattern variablePattern= Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
-			Matcher variableMatcher= variablePattern.matcher(string);
+			Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
+			Matcher variableMatcher = variablePattern.matcher(stringToResolve);
 			while (variableMatcher.find()) {
-				define= specfile.getDefine(variableMatcher.group(1));
-				string= string.replaceAll(variableMatcher.group(1), define.getStringValue());
+				define = specfile.getDefine(variableMatcher.group(1));
+				stringToResolve = stringToResolve.replaceAll(variableMatcher.group(1), define.getStringValue());
 			}
-			if (!string.equals(originalUrlString))
-				string= string.replaceAll("\\%\\{|\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$
-			return string;
+			if (!stringToResolve.equals(originalString))
+				stringToResolve = stringToResolve.replaceAll("\\%\\{|\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			return stringToResolve;
 		} catch (Exception e) {
-			return originalUrlString;
+			return originalString;
 		}
 	}
 	
@@ -124,7 +123,6 @@ public class Utils {
 	}
 	
 	public static String getPackageDefineId(String defineName, SpecfilePackage rpmPackage){
-		return defineName.toLowerCase()+":"+rpmPackage.getPackageName(); //$NON-NLS-1$
+		return defineName.toLowerCase() + ":" + rpmPackage.getPackageName(); //$NON-NLS-1$
 	}
-	
 }

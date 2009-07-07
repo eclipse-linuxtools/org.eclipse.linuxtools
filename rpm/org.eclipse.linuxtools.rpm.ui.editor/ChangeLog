@@ -1,3 +1,14 @@
+2009-07-07  Alphonse Van Assche  <alcapcom@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java: Removed unused action.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/Messages.java: Remove no more needed messages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java (formatDateLine): Resolve defines on the right place.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (getDefineName): Fix null pointer exception.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Use of Utils.resolveDefines
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java (findWord): Fix hover bug on specfiles that begin with a define.
+	(getHoverRegion): Use better var name.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java: Typo cleanups.
+
 2009-06-16  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmSectionPage.java: New file.

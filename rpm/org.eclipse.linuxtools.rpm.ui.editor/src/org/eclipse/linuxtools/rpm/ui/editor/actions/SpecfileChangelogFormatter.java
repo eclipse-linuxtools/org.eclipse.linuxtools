@@ -28,6 +28,7 @@ import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
@@ -45,12 +46,9 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
         Specfile specfile = getParsedSpecfile();
         SpecfileElement resolveElement = new SpecfileElement();
         resolveElement.setSpecfile(specfile);
-        String epoch = specfile.getEpoch() == -1 ? EMPTY_STRING
-				: (specfile.getEpoch() + ":"); //$NON-NLS-1$
-        String version = specfile.getVersion() == null ? EMPTY_STRING : resolveElement
-                .resolve(specfile.getVersion());
-        String release = specfile.getRelease() == null ? EMPTY_STRING : resolveElement
-                .resolve(specfile.getRelease());
+        String epoch = specfile.getEpoch() == -1 ? EMPTY_STRING : (specfile.getEpoch() + ":"); //$NON-NLS-1$
+        String version = specfile.getVersion() == null ? EMPTY_STRING : specfile.getVersion();
+        String release = specfile.getRelease() == null ? EMPTY_STRING : specfile.getRelease();
         
         // remove the dist macro if it exist in the release string.
         release = release.replaceAll("\\%\\{\\?dist\\}", EMPTY_STRING); //$NON-NLS-1$
@@ -60,10 +58,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
 				authorEmail, epoch, version, release);
 
         String format = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT);
-        if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED))
-        	return dateLine;
-            
-        else if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR))
+        if (format.equals(PreferenceConstants.P_CHANGELOG_ENTRY_FORMAT_VERSIONED_WITH_SEPARATOR))
         	dateLine =  MessageFormat.format("* {0} {1} <{2}> - {3}{4}-{5}", formatTodaysDate(), //$NON-NLS-1$
 					authorName, authorEmail, epoch, version, release);
         
@@ -71,6 +66,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
         	dateLine =  MessageFormat
 					.format("* {0} {1} <{2}>", formatTodaysDate(), authorName, authorEmail); //$NON-NLS-1$
         
+       	dateLine = Utils.resolveDefines(specfile, dateLine);
         return dateLine;
 
     }

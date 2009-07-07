@@ -11,8 +11,7 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 
 public class SpecfileElement {
 	private Specfile specfile;
@@ -78,19 +77,7 @@ public class SpecfileElement {
 		if (specfile == null) {
 			return toResolve;
 		}
-		String resolved = toResolve;
-		Pattern variablePattern = Pattern.compile("%\\{(\\S+?)\\}"); //$NON-NLS-1$
-		Matcher variableMatcher = variablePattern.matcher(toResolve);
-		while (variableMatcher.find()) {
-			SpecfileDefine define = specfile
-					.getDefine(variableMatcher.group(1));
-			if (define != null) {
-				resolved = resolved.replaceAll("%\\{" //$NON-NLS-1$
-						+ variableMatcher.group(1) + "\\}", define //$NON-NLS-1$
-						.getStringValue());
-			}
-		}
-
+		String resolved = Utils.resolveDefines(specfile, toResolve);
 		return resolved;
 	}
 
