@@ -29,7 +29,7 @@
    </requires>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtap.ui.editor"
+         id="org.eclipse.linuxtools.systemtap.backup.ui.editor"
          download-size="0"
          install-size="0"
          version="0.0.0"
