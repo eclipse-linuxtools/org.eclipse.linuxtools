@@ -1,5 +1,0 @@
-2009-01-09  Phil Muldoon  <pmuldoon@redhat.com>
-
-	* SystemtapEditor.java (getCompletionURL): New.
-	(buildCompletionDataLocation): New.
-	(SystemtapEditor): Use buildCompletionDataLocation.

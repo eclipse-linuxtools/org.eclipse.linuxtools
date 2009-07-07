@@ -1,3 +1,25 @@
+2009-07-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/activator/Activator.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/ColorManager.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPColorConstants.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPCompletionProcessor.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPConfiguration.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPDocumentProvider.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPElementScanner.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPMetadataSingleton.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPPartitioner.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPPartitionScanner.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/STPReconcilingStrategy.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/strings.properties: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/SystemtapEditor.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/backup/ui: New file.
+	* .project: 
+	* META-INF/MANIFEST.MF: 
+	* plugin.xml: 
+	* ChangeLog: Refactoring the code to systemtap.backup.ui*. This code
+	has been merged with org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.*
+
 2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.

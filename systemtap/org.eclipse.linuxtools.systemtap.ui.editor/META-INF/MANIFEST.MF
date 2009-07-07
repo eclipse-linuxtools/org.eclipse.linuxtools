@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.editor;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.backup.ui.editor;singleton:=true
 Bundle-Version: 0.1.0
-Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.editor.activator.Activator
+Bundle-Activator: org.eclipse.linuxtools.systemtap.backup.ui.editor.activator.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui.editors
 Eclipse-LazyStart: true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.linuxtools.systemtap.ui.editor;
+Export-Package: org.eclipse.linuxtools.systemtap.backup.ui.editor;
   uses:="org.eclipse.jface.text,
    org.eclipse.jface.text.reconciler,
    org.eclipse.jface.text.source,
