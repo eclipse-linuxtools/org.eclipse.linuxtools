@@ -15,9 +15,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -44,6 +46,10 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.ide.FileStoreEditorInput;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 
 
 
@@ -97,7 +103,23 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected String getFilePath() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-		return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+		String filename = null;
+		if (ed.getEditorInput() instanceof FileStoreEditorInput)
+		{
+			URI uri = ((FileStoreEditorInput)ed.getEditorInput()).getURI();
+			IFileStore location = EFS.getLocalFileSystem().getStore(uri);
+			try {
+				filename = location.toLocalFile(EFS.NONE, null).getAbsolutePath();
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (ed.getEditorInput() instanceof FileEditorInput)
+			filename = ((FileEditorInput)ed.getEditorInput()).getFile().getFullPath().toString();
+		if (ed.getEditorInput() instanceof PathEditorInput)
+			filename = ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+		return filename;
 	}
 	
 	/**
@@ -107,14 +129,31 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected boolean isValid() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-
 		if(isValidFile(ed))
-			if(isValidDirectory(((PathEditorInput)ed.getEditorInput()).getPath().toString()))
+		{ 
+			if (ed.getEditorInput() instanceof FileStoreEditorInput)
+			{
+				URI uri = ((FileStoreEditorInput)ed.getEditorInput()).getURI();
+				IFileStore location = EFS.getLocalFileSystem().getStore(uri);
+				try {
+					fileName = location.toLocalFile(EFS.NONE, null).getAbsolutePath();
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (ed.getEditorInput() instanceof FileEditorInput)
+				fileName = ((FileEditorInput)ed.getEditorInput()).getFile().getFullPath().toString();
+			if (ed.getEditorInput() instanceof PathEditorInput)
+				fileName = ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+		if(isValidDirectory(fileName))
 				return true;
+		}	
 		return true;
 	}
 	
 	private boolean isValidFile(IEditorPart ed) {
+		
 		if(null == ed) {
 			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"), (Object[])null);
 			LogManager.logInfo("Initializing", MessageDialog.class);

@@ -70,9 +70,12 @@ public class IDEPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.linuxtools.systemtap.ui.ide", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 	
 	private IWorkbenchListener workbenchListener;
 	private static IDEPlugin plugin;
+	// The plug-in ID
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.ui.ide";
+
 }

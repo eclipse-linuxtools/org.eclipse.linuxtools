@@ -1,5 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+/* Copyright (c) 2006 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +16,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.linuxtools.systemtap.ui.ide.editors.c.ICColorConstants;
-import org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.ISTPColorConstants;
+import org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPColorConstants;
 import org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 import org.eclipse.swt.graphics.RGB;
@@ -74,13 +73,13 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		}
 
 		//ide.editor.syntaxcoloring
-		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_DEFAULT_COLOR, ISTPColorConstants.DEFAULT);
-		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_KEYWORD_COLOR, ISTPColorConstants.KEYWORD);
-		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_EMBEDDED_C_COLOR, ISTPColorConstants.EMBEDDEDC);
-		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_EMBEDDED_COLOR, ISTPColorConstants.EMBEDDED);
-		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_COMMENT_COLOR, ISTPColorConstants.COMMENT);
-		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_TYPE_COLOR, ISTPColorConstants.TYPE);
-		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_STRING_COLOR, ISTPColorConstants.STRING);
+		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_DEFAULT_COLOR, STPColorConstants.DEFAULT);
+		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_KEYWORD_COLOR, STPColorConstants.KEYWORD);
+		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_EMBEDDED_C_COLOR, STPColorConstants.EMBEDDEDC);
+		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_EMBEDDED_COLOR, STPColorConstants.EMBEDDED);
+		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_COMMENT_COLOR, STPColorConstants.COMMENT);
+		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_TYPE_COLOR, STPColorConstants.TYPE);
+		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_STP_STRING_COLOR, STPColorConstants.STP_STRING);
 
 		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_C_DEFAULT_COLOR, ICColorConstants.DEFAULT);
 		PreferenceConverter.setDefault(store, IDEPreferenceConstants.P_C_KEYWORD_COLOR, ICColorConstants.KEYWORD);

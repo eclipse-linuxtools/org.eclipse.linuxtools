@@ -1,47 +1,94 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2008 Phil Muldoon <pkmuldoon@picobot.org>.
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *    Phil Muldoon <pkmuldoon@picobot.org> - initial API and implementation. 
  *******************************************************************************/
-
 package org.eclipse.linuxtools.systemtap.ui.ide.editors.stp;
 
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.rules.EndOfLineRule;
+import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.IWordDetector;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
+import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-
+import org.eclipse.jface.text.rules.WordRule;
 
 public class STPPartitionScanner extends RuleBasedPartitionScanner {
-	public final static String STP_DEFAULT = "__stp_default";
 	public final static String STP_COMMENT = "__stp_comment";
-	public final static String STP_EMBEDDEDC = "__stp_embeddedc"; 
-	public final static String STP_EMBEDDED = "__stp_embedded";
-	
-	/**
-	 * Sets up the STP Partition Scanner, specifies multi line rules to govern the use of comments and
-	 * embedded C code in the editor.
-	 */
-	public STPPartitionScanner() {
-		LogManager.logDebug("Start STPPartitionScanner:", this);
-		IToken stpComment = new Token(STP_COMMENT);
-		IToken embeddedC = new Token(STP_EMBEDDEDC);
-		IToken embedded = new Token(STP_EMBEDDED);
-		
-		IPredicateRule[] rules = new IPredicateRule[3];
+	public final static String STP_KEYWORD = "__stp_keyword";
+	public final static String STP_STRING = "__stp_string";
+	public final static String STP_CONDITIONAL = "__stp_conditional";
 
-		rules[0] = new MultiLineRule("/*", "*/", stpComment);
-		rules[1] = new MultiLineRule("%{", "%}", embeddedC); 
-		rules[2] = new MultiLineRule("%(", "%)", embedded); 
+	public static String[] STP_PARTITION_TYPES = { IDocument.DEFAULT_CONTENT_TYPE, 
+		STP_COMMENT, STP_KEYWORD, STP_STRING, STP_CONDITIONAL};
+
+	/**
+	 * Detect empty comments
+	 */
+	static class EmptyCommentDetector implements IWordDetector {
+		public boolean isWordStart(char c) {
+			return (c == '/');
+		}
+
+		public boolean isWordPart(char c) {
+			return (c == '*' || c == '/');
+		}
+	}
+
+	/**
+	 * Cope with the empty comment issue.
+	 */
+	static class EmptyCommentRule extends WordRule implements IPredicateRule {
+
+		private IToken fSuccessToken;
+
+		public EmptyCommentRule(IToken successToken) {
+			super(new EmptyCommentDetector());
+			fSuccessToken= successToken;
+			addWord("/**/", fSuccessToken); //$NON-NLS-1$
+		}
+
+		public IToken evaluate(ICharacterScanner scanner, boolean resume) {
+			return evaluate(scanner);
+		}
+
+		public IToken getSuccessToken() {
+			return fSuccessToken;
+		}
+	}
+	
+	public STPPartitionScanner() {
 		
-		setPredicateRules(rules);
-		LogManager.logDebug("End STPPartitionScanner", this);
+		IToken stpComment = new Token(STP_COMMENT);
+		IToken stpString = new Token(STP_STRING);
+		IToken stpConditional = new Token(STP_CONDITIONAL);
+		
+		// Add special case word rule.
+		EmptyCommentRule emptyCommentRule= new EmptyCommentRule(stpComment);
+
+        setPredicateRules(new IPredicateRule[] {
+        		new MultiLineRule("/*", "*/", stpComment),
+        		new EndOfLineRule("/*", stpComment),
+                new EndOfLineRule("#",  stpComment),
+                new EndOfLineRule("//", stpComment),
+	            emptyCommentRule,    
+                new EndOfLineRule("#if", stpConditional),
+                new EndOfLineRule("#else", stpConditional),
+                new EndOfLineRule("#endif", stpConditional),
+                new EndOfLineRule("#define", stpConditional),                
+        		new SingleLineRule("\"", "\"", stpString, '\\'),
+                new SingleLineRule("'", "'", stpString, '\\'),
+             });
+
 	}
 }
