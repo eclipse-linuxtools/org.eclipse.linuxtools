@@ -37,6 +37,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	public static final String PLUGIN_ID = MemcheckPlugin.PLUGIN_ID;
 	
 	// MEMCHECK controls
+	protected Button leakCheckButton;
 	protected Combo leakResCombo;
 	protected Button showReachableButton;
 	protected Spinner freelistSpinner;
@@ -66,6 +67,11 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		GridLayout memcheckLayout = new GridLayout(2, true);
 		top.setLayout(memcheckLayout);
 		top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		leakCheckButton = new Button(top, SWT.CHECK);
+		leakCheckButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		leakCheckButton.setText(Messages.getString("MemcheckToolPage.leak_check")); //$NON-NLS-1$
+		leakCheckButton.addSelectionListener(selectListener);
 		
 		Composite leakResTop = new Composite(top, SWT.NONE);
 		leakResTop.setLayout(new GridLayout(2, false));
@@ -141,6 +147,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		isInitializing = true;
 		try {
+			leakCheckButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKCHECK));
 			leakResCombo.setText(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKRES));
 			showReachableButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_SHOWREACH, MemcheckLaunchConstants.DEFAULT_MEMCHECK_SHOWREACH));
 			freelistSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREELIST, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREELIST));
@@ -161,6 +168,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	}
 	
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, leakCheckButton.getSelection());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, leakResCombo.getText());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_SHOWREACH, showReachableButton.getSelection());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREELIST, freelistSpinner.getSelection());
@@ -214,6 +222,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	}
 	
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKCHECK);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKRES);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_SHOWREACH, MemcheckLaunchConstants.DEFAULT_MEMCHECK_SHOWREACH);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREELIST, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREELIST);
@@ -248,6 +257,11 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	}
 
 
+	public Button getLeakCheckButton() {
+		return leakCheckButton;
+	}
+	
+	
 	public Combo getLeakResCombo() {
 		return leakResCombo;
 	}

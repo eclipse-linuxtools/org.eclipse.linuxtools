@@ -309,6 +309,21 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 		assertFalse(tab.isValid(config));
 	}
 
+	public void testNoLeakCheck() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		dynamicTab.getLeakCheckButton().setSelection(false);
+		ILaunch launch = saveAndLaunch(wc, "testNoLeakCheck"); //$NON-NLS-1$
+		IProcess[] p = launch.getProcesses();
+		if (p.length > 0) {
+			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+			assertEquals(0, p[0].getExitValue());
+			assertTrue(cmd.contains("--leak-check=no")); //$NON-NLS-1$
+		}
+		else {
+			fail();
+		}
+	}
+	
 	public void testShowReachable() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		dynamicTab.getShowReachableButton().setSelection(true);

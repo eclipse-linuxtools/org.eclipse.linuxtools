@@ -1,2 +1,0 @@
-==17249== Use of uninitialised value of size 4
-==17249==    at 0x8048471: main (parent.c:9)

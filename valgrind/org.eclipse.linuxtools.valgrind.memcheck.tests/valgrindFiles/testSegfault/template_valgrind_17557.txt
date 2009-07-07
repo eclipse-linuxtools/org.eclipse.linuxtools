@@ -1,4 +1,0 @@
-==17557== 
-==17557== Process terminating with default action of signal 11 (SIGSEGV)
-==17557==  Bad permissions for mapped region at address 0x8048484
-==17557==    at 0x80483AF: main (main.c:3)

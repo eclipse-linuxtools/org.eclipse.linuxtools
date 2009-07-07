@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.valgrind.memcheck;
 
 public final class MemcheckLaunchConstants {
 	// LaunchConfiguration attributes
+	public static final String ATTR_MEMCHECK_LEAKCHECK = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_LEAKCHECK"; //$NON-NLS-1$
 	public static final String ATTR_MEMCHECK_LEAKRES = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_LEAKRES"; //$NON-NLS-1$
 	public static final String ATTR_MEMCHECK_SHOWREACH = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_SHOWREACH"; //$NON-NLS-1$
 	public static final String ATTR_MEMCHECK_PARTIAL = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_PARTIAL"; //$NON-NLS-1$
@@ -27,6 +28,7 @@ public final class MemcheckLaunchConstants {
 	public static final String LEAK_RES_MED = "med"; //$NON-NLS-1$
 	public static final String LEAK_RES_HIGH = "high"; //$NON-NLS-1$
 	
+	public static final boolean DEFAULT_MEMCHECK_LEAKCHECK = true;
 	public static final String DEFAULT_MEMCHECK_LEAKRES = LEAK_RES_LOW;
 	public static final boolean DEFAULT_MEMCHECK_SHOWREACH = false;
 	public static final boolean DEFAULT_MEMCHECK_PARTIAL = false;

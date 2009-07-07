@@ -28,9 +28,8 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 	
 	public String[] getCommandArray(ILaunchConfiguration config) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
-		//opts.add(CommandLineConstants.OPT_XML + EQUALS + YES);
 		
-		opts.add(MemcheckCommandConstants.OPT_LEAKCHECK + EQUALS + YES);
+		opts.add(MemcheckCommandConstants.OPT_LEAKCHECK + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKCHECK) ? YES : NO));
 		opts.add(MemcheckCommandConstants.OPT_SHOWREACH + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_SHOWREACH, MemcheckLaunchConstants.DEFAULT_MEMCHECK_SHOWREACH) ? YES : NO));
 		opts.add(MemcheckCommandConstants.OPT_LEAKRES + EQUALS + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKRES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKRES));
 		opts.add(MemcheckCommandConstants.OPT_FREELIST + EQUALS + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREELIST, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREELIST));
