@@ -1,5 +1,6 @@
 2009-07-07  Alphonse Van Assche  <alcapcom@fedoraproject.org>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java: Remove unneeded comments (we target 3.5 now).
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java: Removed unused action.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/Messages.java: Remove no more needed messages.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java (formatDateLine): Resolve defines on the right place.

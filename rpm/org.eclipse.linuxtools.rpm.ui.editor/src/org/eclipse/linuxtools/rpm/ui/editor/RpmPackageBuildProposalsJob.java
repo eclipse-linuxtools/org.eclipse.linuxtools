@@ -28,15 +28,6 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
-/**
- * Job to initialize and update the RPM packages proposal list.
- * 
- * FIXME: The job seems to be run twice on 3.3 (in the job progress view) but
- * when break point are strategically placed, the job seems to run only once,
- * these symptoms appear only when the job is trigged from Activator#start
- * method.
- * 
- */
 public class RpmPackageBuildProposalsJob extends Job {
 
 	private RpmPackageBuildProposalsJob(String name) {
