@@ -31,9 +31,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.AbstractTextEditor;
+import org.eclipse.ui.editors.text.TextEditor;
 
-public class SimpleEditor extends AbstractTextEditor {
+public class SimpleEditor extends TextEditor {
 	public SimpleEditor() {
 		super();
 		// make sure we inherit all the text editing commands (delete line etc).

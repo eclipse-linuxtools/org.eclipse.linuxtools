@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
+ * Copyright (c) 2008 Phil Muldoon <pkmuldoon@picobot.org>.
+ * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *    Phil Muldoon <pkmuldoon@picobot.org> - initial API and implementation. 
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.ui.editor;
@@ -19,30 +20,22 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-public class ColorManager { 
-	public ColorManager() {}
+public class ColorManager {
 
-	/**
-	 * Removes each color from fColorTable.
-	 */
+	protected Map<RGB, Color> colorTable = new HashMap<RGB, Color>(10);
+
 	public void dispose() {
-		Iterator<Color> e = fColorTable.values().iterator();
+		Iterator<Color> e = colorTable.values().iterator();
 		while (e.hasNext())
-			 ((Color) e.next()).dispose();
+			e.next().dispose();
 	}
-	
-	/**
-	 * Returns a color value from fColorTable based on the specified RGB value.
-	 * @param rgb color you wish to return
-	 */
+
 	public Color getColor(RGB rgb) {
-		Color color = (Color) fColorTable.get(rgb);
+		Color color = colorTable.get(rgb);
 		if (color == null) {
 			color = new Color(Display.getCurrent(), rgb);
-			fColorTable.put(rgb, color);
+			colorTable.put(rgb, color);
 		}
 		return color;
 	}
-
-	protected Map<RGB, Color> fColorTable = new HashMap<RGB, Color>(10);
 }
