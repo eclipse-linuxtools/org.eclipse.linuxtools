@@ -5,7 +5,7 @@
 		id="application"
 		point="org.eclipse.core.runtime.applications">
 		<application>
-			<run class="org.eclipse.linuxtools.systemtapgui.systemtapgui.Application"/>
+			<run class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.Application"/>
 		</application>
 	</extension>
 
@@ -14,7 +14,7 @@
 		id="systemtapGUI"
 		point="org.eclipse.core.runtime.products">
 		<product
-			application="org.eclipse.linuxtools.systemtapgui.systemtapgui.application"
+			application="org.eclipse.linuxtools.systemtap.ui.systemtapgui.application"
 			name="systemtapgui">
 			<property name="aboutImage" value="aboutImage.gif"/>
 			<property
@@ -41,16 +41,16 @@
 		<page
 			name="%preference.systemTap.name"
 			id="com.qualityeclipse.systemtap.prefs.view"
-			class="org.eclipse.linuxtools.systemtapgui.systemtapgui.preferences.SystemTapPreferencePage"/>
+			class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.SystemTapPreferencePage"/>
 		<page
 			name="%preference.envVars.name"
 			id="com.qualityeclipse.systemtap.prefs.environmentvariables"
-			class="org.eclipse.linuxtools.systemtapgui.systemtapgui.preferences.EnvironmentVariablesPreferencePage"
+			class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentVariablesPreferencePage"
 			category="com.qualityeclipse.systemtap.prefs.view"/>
 	</extension>
 	
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtapgui.systemtapgui.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceInitializer"/>
 	</extension>
 </plugin>

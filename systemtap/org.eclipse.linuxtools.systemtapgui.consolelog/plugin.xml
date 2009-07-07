@@ -7,21 +7,21 @@
 			name="%view.error.name"
 			allowMultiple="false"
 			icon="icons/views/error_obj.gif"
-			class="org.eclipse.linuxtools.systemtapgui.consolelog.views.ErrorView"
-			id="org.eclipse.linuxtools.systemtapgui.consolelog.views.ErrorView"/>
+			class="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"
+			id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"/>
 	</extension>
 	
 	
 	<extension
 		point="org.eclipse.ui.viewActions">
 		<viewContribution
-			id="org.eclipse.linuxtools.systemtapgui.consolelog.consoleview.toolbar"
+			id="org.eclipse.linuxtools.systemtap.ui.consolelog.consoleview.toolbar"
 			targetID="org.eclipse.ui.console.ConsoleView">
 			<action
-				id="org.eclipse.linuxtools.systemtapgui.consolelog.actions.SaveLogAction"
+				id="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.SaveLogAction"
 				label="%action.saveLog.name"
 				tooltip="%action.saveLog.desc"
-				class="org.eclipse.linuxtools.systemtapgui.consolelog.actions.SaveLogAction"
+				class="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.SaveLogAction"
 				icon="icons/actions/save_log.gif"
 				toolbarPath="launchGroup"
 				state="false"
@@ -32,7 +32,7 @@
 	
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtapgui.consolelog.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.PreferenceInitializer"/>
 	</extension>
 	
 	<extension
@@ -40,7 +40,7 @@
 		<page
 			name="%preference.consoleLog.name"
 			id="com.qualityeclipse.systemtap.prefs.consoleLog"
-			class="org.eclipse.linuxtools.systemtapgui.consolelog.preferences.ConsoleLogPreferencePage"
+			class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferencePage"
 			category="com.qualityeclipse.systemtap.prefs.view"/>
 	</extension>
 </plugin>

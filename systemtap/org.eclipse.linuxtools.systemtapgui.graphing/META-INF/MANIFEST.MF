@@ -1,26 +1,26 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Graphing Plug-in
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.graphing;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphing;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.eclipse.linuxtools.systemtapgui.graphing.internal.GraphingPlugin
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphing.internal.GraphingPlugin
 Bundle-Vendor: IBM
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.systemtapgui.graphing,
- org.eclipse.linuxtools.systemtapgui.graphing.structures,
- org.eclipse.linuxtools.systemtapgui.graphing.views
-Require-Bundle: org.eclipse.linuxtools.systemtapgui.graphingapi.ui,
- org.eclipse.linuxtools.systemtapgui.structures,
+Export-Package: org.eclipse.linuxtools.systemtap.ui.graphing,
+ org.eclipse.linuxtools.systemtap.ui.graphing.structures,
+ org.eclipse.linuxtools.systemtap.ui.graphing.views
+Require-Bundle: org.eclipse.linuxtools.systemtap.ui.graphingapi.ui,
+ org.eclipse.linuxtools.systemtap.ui.structures,
  org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtapgui.logging,
+ org.eclipse.linuxtools.systemtap.ui.logging,
  org.eclipse.ui.forms,
- org.eclipse.linuxtools.systemtapgui.systemtapgui,
+ org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.core.resources;bundle-version="3.4.1",
  org.eclipse.ui.editors;bundle-version="3.4.0",
  org.eclipse.ui.console;bundle-version="3.3.0"
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.linuxtools.systemtapgui.consolelog.actions,
- org.eclipse.linuxtools.systemtapgui.consolelog.structures,
- org.eclipse.linuxtools.systemtapgui.editor
+Import-Package: org.eclipse.linuxtools.systemtap.ui.consolelog.actions,
+ org.eclipse.linuxtools.systemtap.ui.consolelog.structures,
+ org.eclipse.linuxtools.systemtap.ui.editor
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.systemtapgui.feature"
+      id="org.eclipse.linuxtools.systemtap.ui.feature"
       label="SystemTap GUI"
       version="1.0.0"
       provider-name="IBM">
@@ -18,63 +18,63 @@
    </license>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.consolelog"
+         id="org.eclipse.linuxtools.systemtap.ui.consolelog"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.editor"
+         id="org.eclipse.linuxtools.systemtap.ui.editor"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.graphingapi.nonui"
+         id="org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.graphingapi.ui"
+         id="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.logging"
+         id="org.eclipse.linuxtools.systemtap.ui.logging"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.structures"
+         id="org.eclipse.linuxtools.systemtap.ui.structures"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.graphing"
+         id="org.eclipse.linuxtools.systemtap.ui.graphing"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.systemtapgui"
+         id="org.eclipse.linuxtools.systemtap.ui.systemtapgui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtapgui.ide"
+         id="org.eclipse.linuxtools.systemtap.ui.ide"
          download-size="0"
          install-size="0"
          version="0.0.0"

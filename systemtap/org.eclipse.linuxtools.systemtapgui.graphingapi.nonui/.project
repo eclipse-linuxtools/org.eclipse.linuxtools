@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.linuxtools.systemtapgui.graphingapi.nonui</name>
+	<name>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui</name>
 	<comment></comment>
 	<projects>
 	</projects>

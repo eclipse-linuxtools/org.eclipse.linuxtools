@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Editor Plug-in
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.editor;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.editor;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.eclipse.linuxtools.systemtapgui.editor.internal.EditorPlugin
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.editor.internal.EditorPlugin
 Bundle-Vendor: IBM
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.systemtapgui.editor,
- org.eclipse.linuxtools.systemtapgui.editor.actions.file
+Export-Package: org.eclipse.linuxtools.systemtap.ui.editor,
+ org.eclipse.linuxtools.systemtap.ui.editor.actions.file
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface.text;visibility:=reexport,
  org.eclipse.ui.editors;visibility:=reexport,

@@ -5,9 +5,9 @@
 		point="org.eclipse.ui.perspectives">
 		<perspective
 			name="%perspective.graphing.name"
-			class="org.eclipse.linuxtools.systemtapgui.graphing.GraphingPerspective"
+			class="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective"
 			icon="icons/perspective_obj.gif"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.GraphingPerspective"/>
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective"/>
 	</extension>
 	
 	<extension
@@ -16,8 +16,8 @@
 			name="%view.graphSelector.name"
 			allowMultiple="false"
 			icon="icons/views/selector_obj.gif"
-			class="org.eclipse.linuxtools.systemtapgui.graphing.views.GraphSelectorView"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.views.GraphSelectorView">
+			class="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView">
 		</view>
 	</extension>
 	
@@ -37,13 +37,13 @@
 		<page
 			name="%preference.graphing.name"
 			id="com.qualityeclipse.systemtap.prefs.graphing"
-			class="org.eclipse.linuxtools.systemtapgui.graphing.preferences.GraphingPreferencePage"
+			class="org.eclipse.linuxtools.systemtap.ui.graphing.preferences.GraphingPreferencePage"
 			category="com.qualityeclipse.systemtap.prefs.view"/>
 	</extension>
 	
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtapgui.graphing.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.graphing.preferences.PreferenceInitializer"/>
 	</extension>
 
 	<extension
@@ -51,38 +51,38 @@
 		<command
 			name="%command.open.name"
 			description="%command.open.desc"
-			categoryId="org.eclipse.linuxtools.systemtapgui.graphing.category.file"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.commands.OpenScriptOutput"/>
+			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.OpenScriptOutput"/>
 		<command
 			name="%command.export.name"
 			description="%command.export.desc"
-			categoryId="org.eclipse.linuxtools.systemtapgui.graphing.category.file"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.commands.ExportDataSet"/>
+			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ExportDataSet"/>
 		<command
 			name="%command.save.name"
 			description="%command.save.desc"
-			categoryId="org.eclipse.linuxtools.systemtapgui.graphing.category.file"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.commands.SaveGraphImage"/>
+			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.SaveGraphImage"/>
 		<command
 			name="%command.import.name"
 			description="%command.import.desc"
-			categoryId="org.eclipse.linuxtools.systemtapgui.graphing.category.file"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.commands.ImportDataSet"/>
+			categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ImportDataSet"/>
 			
 		<category
 			name="%category.file.name"
 			description="%category.file.desc"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.category.file"/>
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"/>
 			 <command
                         name="%command.modifyParsing.name"
                         description="%command.modifyParsing.desc"
-                        categoryId="org.eclipse.linuxtools.systemtapgui.graphing.category.edit"
-                        id="org.eclipse.linuxtools.systemtapgui.graphing.commands.ModifyParsing"/>
+                        categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.edit"
+                        id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ModifyParsing"/>
 
                 <category
                         name="%category.edit.name"
                         description="%category.edit.desc"
-                        id="org.eclipse.linuxtools.systemtapgui.graphing.category.edit"/>
+                        id="org.eclipse.linuxtools.systemtap.ui.graphing.category.edit"/>
 	</extension>
 	
 	
@@ -91,61 +91,61 @@
 		<actionSet
 			label="actionset.graph.name"
 			visible="false"
-			id="org.eclipse.linuxtools.systemtapgui.graphing.GraphingActionSet">
+			id="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingActionSet">
 			<action
 				label="%action.save.name"
 				tooltip="%action.save.desc"
-				id="org.eclipse.linuxtools.systemtapgui.graphing.actions.SaveGraphImage"
+				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.SaveGraphImage"
 				icon="icons/actions/save_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/save.ext"
-				class="org.eclipse.linuxtools.systemtapgui.graphing.actions.SaveGraphImageAction"
-				definitionId="org.eclipse.linuxtools.systemtapgui.graphing.commands.SaveGraphImage"
+				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.SaveGraphImageAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.SaveGraphImage"
 				style="push"
 				state="false"/>
 			<action
 				label="%action.export.name"
 				tooltip="%action.export.desc"
-				id="org.eclipse.linuxtools.systemtapgui.graphing.actions.ExportDataSet"
+				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ExportDataSet"
 				icon="icons/actions/export_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/export.ext"
-				class="org.eclipse.linuxtools.systemtapgui.graphing.actions.ExportDataSetAction"
-				definitionId="org.eclipse.linuxtools.systemtapgui.graphing.commands.ExportDataSet"
+				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ExportDataSetAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ExportDataSet"
 				style="push"
 				state="false"/>
 			<action
 				label="%action.import.name"
 				tooltip="%action.import.desc"
-				id="org.eclipse.linuxtools.systemtapgui.graphing.actions.ImportDataSet"
+				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ImportDataSet"
 				icon="icons/actions/import_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/import.ext"
-				class="org.eclipse.linuxtools.systemtapgui.graphing.actions.ImportDataSetAction"
-				definitionId="org.eclipse.linuxtools.systemtapgui.graphing.commands.ImportDataSet"
+				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ImportDataSetAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ImportDataSet"
 				style="push"
 				state="false"/>
 			<action
 				label="%action.open.name"
 				tooltip="%action.open.desc"
-				id="org.eclipse.linuxtools.systemtapgui.graphing.actions.OpenScriptOutput"
+				id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.OpenScriptOutput"
 				icon="icons/actions/open_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/new.ext"
-				class="org.eclipse.linuxtools.systemtapgui.graphing.actions.OpenScriptOutputAction"
-				definitionId="org.eclipse.linuxtools.systemtapgui.graphing.commands.OpenScriptOutput"
+				class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.OpenScriptOutputAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.OpenScriptOutput"
 				style="push"
 				state="false"/>
 		</actionSet>
 		                <actionSet
                         label="%actionset.modifyParsing.name"
                         visible="false"
-                        id="org.eclipse.linuxtools.systemtapgui.graphing.ParsingActionSet">
+                        id="org.eclipse.linuxtools.systemtap.ui.graphing.ParsingActionSet">
                         <action
                                 label="%action.modifyParsing.name"
                                 tooltip="%action.modifyParsing.name"
-                                id="org.eclipse.linuxtools.systemtapgui.graphing.actions.ModifyParsingAction"
+                                id="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ModifyParsingAction"
                                 icon="icons/actions/regEx.gif"
                                 toolbarPath="org.eclipse.ui.workbench.file/build.ext"
                                 menubarPath="edit/edit.ext"
-                                class="org.eclipse.linuxtools.systemtapgui.graphing.actions.ModifyParsingAction"
-                                definitionId="org.eclipse.linuxtools.systemtapgui.graphing.commands.ModifyParsing"
+                                class="org.eclipse.linuxtools.systemtap.ui.graphing.actions.ModifyParsingAction"
+                                definitionId="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ModifyParsing"
                                 style="push"
                                 state="false"/>
                 </actionSet>
@@ -155,19 +155,19 @@
 	<extension
 		point="org.eclipse.ui.perspectiveExtensions">
 		<perspectiveExtension
-			targetID="org.eclipse.linuxtools.systemtapgui.graphing.GraphingPerspective">
-			<actionSet id="org.eclipse.linuxtools.systemtapgui.graphing.GraphingActionSet"/>
-			<actionSet id="org.eclipse.linuxtools.systemtapgui.graphing.ParsingActionSet"/>
+			targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
+			<actionSet id="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingActionSet"/>
+			<actionSet id="org.eclipse.linuxtools.systemtap.ui.graphing.ParsingActionSet"/>
 		</perspectiveExtension>
 				<perspectiveExtension
-           targetID="org.eclipse.linuxtools.systemtapgui.graphing.GraphingPerspective">
+           targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
          
                         <view
                                 ratio="0.60f"
-                                relative="org.eclipse.linuxtools.systemtapgui.graphing.views.GraphSelectorView"
+                                relative="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
                                 relationship="top"
-                                id="org.eclipse.linuxtools.systemtapgui.graphing.views.GraphSelectorView"/>
-                        <viewShortcut id="org.eclipse.linuxtools.systemtapgui.graphing.views.GraphSelectorView"/>
+                                id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"/>
+                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"/>
                        
          </perspectiveExtension>
 	</extension>

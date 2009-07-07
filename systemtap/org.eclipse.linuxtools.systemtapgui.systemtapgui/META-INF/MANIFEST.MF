@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SystemTapGUI Plug-in
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.systemtapgui;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.systemtapgui;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.eclipse.linuxtools.systemtapgui.systemtapgui.internal.SystemTapGUIPlugin
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.SystemTapGUIPlugin
 Bundle-Vendor: IBM
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.systemtapgui.systemtapgui,
- org.eclipse.linuxtools.systemtapgui.systemtapgui.preferences
+Export-Package: org.eclipse.linuxtools.systemtap.ui.systemtapgui,
+ org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtapgui.logging,
+ org.eclipse.linuxtools.systemtap.ui.logging,
  org.eclipse.help,
  org.eclipse.help.appserver,
  org.eclipse.help.base,

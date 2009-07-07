@@ -1,0 +1,3 @@
+2009-07-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* ChangeLog: Refactoring. Renaming all packages directories from *.systemtapgui.* to *.systemtap.ui.*

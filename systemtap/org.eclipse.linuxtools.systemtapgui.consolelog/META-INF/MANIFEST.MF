@@ -1,24 +1,24 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ConsoleLog Plug-in
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.consolelog;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.consolelog;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.eclipse.linuxtools.systemtapgui.consolelog.internal.ConsoleLogPlugin
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin
 Bundle-Vendor: IBM
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.systemtapgui.consolelog,
- org.eclipse.linuxtools.systemtapgui.consolelog.actions,
- org.eclipse.linuxtools.systemtapgui.consolelog.dialogs,
- org.eclipse.linuxtools.systemtapgui.consolelog.internal,
- org.eclipse.linuxtools.systemtapgui.consolelog.preferences,
- org.eclipse.linuxtools.systemtapgui.consolelog.structures,
- org.eclipse.linuxtools.systemtapgui.consolelog.views
+Export-Package: org.eclipse.linuxtools.systemtap.ui.consolelog,
+ org.eclipse.linuxtools.systemtap.ui.consolelog.actions,
+ org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs,
+ org.eclipse.linuxtools.systemtap.ui.consolelog.internal,
+ org.eclipse.linuxtools.systemtap.ui.consolelog.preferences,
+ org.eclipse.linuxtools.systemtap.ui.consolelog.structures,
+ org.eclipse.linuxtools.systemtap.ui.consolelog.views
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console;visibility:=reexport,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.linuxtools.systemtapgui.editor,
- org.eclipse.linuxtools.systemtapgui.structures,
+ org.eclipse.linuxtools.systemtap.ui.editor,
+ org.eclipse.linuxtools.systemtap.ui.structures,
  com.jcraft.jsch;bundle-version="0.1.37"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

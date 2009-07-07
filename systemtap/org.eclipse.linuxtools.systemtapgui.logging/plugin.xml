@@ -3,7 +3,7 @@
 <plugin>
 	<extension
 		point="org.eclipse.core.runtime.preferences">
-		<initializer class="org.eclipse.linuxtools.systemtapgui.logging.preferences.PreferenceInitializer"/>
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.logging.preferences.PreferenceInitializer"/>
 	</extension>
 	
 	<extension
@@ -11,6 +11,6 @@
 		<page
 			name="%preference.logging.name"
 			id="com.qualityeclipse.generic.prefs.logging"
-			class="org.eclipse.linuxtools.systemtapgui.logging.preferences.LoggingPreferencePage"/>
+			class="org.eclipse.linuxtools.systemtap.ui.logging.preferences.LoggingPreferencePage"/>
 	</extension>
 </plugin>

@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Logging Plug-in
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtapgui.logging;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.logging;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.eclipse.linuxtools.systemtapgui.logging.internal.LoggingPlugin
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.logging.internal.LoggingPlugin
 Bundle-Vendor: IBM
 Bundle-Localization: plugin
-Export-Package: org.eclipse.linuxtools.systemtapgui.logging
+Export-Package: org.eclipse.linuxtools.systemtap.ui.logging
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtapgui.structures
+ org.eclipse.linuxtools.systemtap.ui.structures
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5,
 
