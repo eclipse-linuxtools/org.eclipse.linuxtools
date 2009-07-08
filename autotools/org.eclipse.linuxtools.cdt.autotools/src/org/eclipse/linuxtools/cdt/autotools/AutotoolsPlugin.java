@@ -19,11 +19,16 @@ import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.ICDescriptor;
 import org.eclipse.cdt.core.ICExtensionReference;
 import org.eclipse.cdt.make.core.IMakeTargetManager;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -46,6 +51,12 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.cdt.autotools"; //$NON-NLS-1$
 
 	private AutotoolsMakeTargetManager fTargetManager;
+	private IConfigurationElement generatorElement;
+
+	public static final String EXTENSION_POINT_ID = ManagedBuilderCorePlugin.getUniqueIdentifier() + ".buildDefinitions";		//$NON-NLS-1$
+	public static final String BUILDER = "builder";   //$NON-NLS-1$
+	public static final String ID_ELEMENT_NAME = "id"; // $NON-NLS-1$
+	public static final String AUTOTOOLS_BUILDER_ID = PLUGIN_ID + ".builder"; // $NON-NLS-1$
 	
 	/**
 	 * The constructor.
@@ -171,6 +182,39 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 		return resourceBundle;
 	}
 
+	/**
+	 * Get the configuration element for the Autotools Makefile generator
+	 * @return the generator element
+	 */
+	public IConfigurationElement getGeneratorElement() {
+		if (generatorElement == null) {
+			IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID);
+			if( extensionPoint != null) {
+				IExtension[] extensions = extensionPoint.getExtensions();
+				if (extensions != null) {
+					for (int i = 0; i < extensions.length; ++i) {
+						IExtension extension = extensions[i];
+				
+						IConfigurationElement[] elements = extension.getConfigurationElements();
+						
+						// Get the managedBuildRevsion of the extension.
+						for (int j = 0; j < elements.length; j++) {
+							IConfigurationElement element = elements[j];
+							if (element.getName().equals(BUILDER)) {
+								String id = element.getAttribute(ID_ELEMENT_NAME);
+								if (id.equals(AUTOTOOLS_BUILDER_ID)) {
+									generatorElement = element;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return generatorElement;
+	}
+	
 	/**
 	 * Returns an image descriptor for the image file at the given
 	 * plug-in relative path.

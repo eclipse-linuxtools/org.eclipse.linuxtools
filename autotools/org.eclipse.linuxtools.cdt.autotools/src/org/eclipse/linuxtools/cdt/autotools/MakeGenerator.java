@@ -136,12 +136,12 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
-				try {
-					builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION, 
-							project.getLocation().append(buildDir).toOSString());
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_LOCATION, 
+//							project.getLocation().append(buildDir).toOSString());
+//				} catch (CoreException e) {
+//					e.printStackTrace();
+//				}
 			} else if (id.indexOf("configdir") > 0) {  //$NON-NLS-1$
 				srcDir = (String) options[i].getValue();
 				try {
