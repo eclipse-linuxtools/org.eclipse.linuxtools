@@ -64,9 +64,9 @@ import org.eclipse.swt.widgets.Text;
  * Thic class represents the event configuration tab of the launcher dialog.
  */
 public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
-	private Button _defaultEventCheck;
-	private OprofileCounter[] _counters = OprofileCounter.getCounters(null);
-	private CounterSubTab[] _counterSubTabs;
+	protected Button _defaultEventCheck;
+	protected OprofileCounter[] _counters = OprofileCounter.getCounters(null);
+	protected CounterSubTab[] _counterSubTabs;
 
 	/**
 	 * Essentially the constructor for this tab; creates the 'default event'
@@ -78,7 +78,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		setControl(top);
 		top.setLayout(new GridLayout());
 
-		if (Oprofile.getTimerMode()) {
+		if (getTimerMode()) {
 			Label timerModeLabel = new Label(top, SWT.LEFT);
 			timerModeLabel.setText(OprofileLaunchMessages.getString("tab.event.timermode.no.options")); //$NON-NLS-1$
 		} else {
@@ -121,7 +121,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#initializeFrom(ILaunchConfiguration)
 	 */
 	public void initializeFrom(ILaunchConfiguration config) {
-		if (!Oprofile.getTimerMode()) {
+		if (!getTimerMode()) {
 			try {
 				for (int i = 0; i < _counters.length; i++) {
 					_counters[i].loadConfiguration(config);
@@ -146,7 +146,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#isValid(ILaunchConfiguration)
 	 */
 	public boolean isValid(ILaunchConfiguration config) {
-		if (Oprofile.getTimerMode()) {
+		if (getTimerMode()) {
 			return true;		//no options to check for validity
 		} else {
 			int numEnabledEvents = 0;
@@ -159,7 +159,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 					//This seems like an odd way to validate, but since most of the validation
 					// is done with the OprofileDaemonEvent that the counter wraps, this
 					// is the easiest way.
-					OprofileCounter[] counters = new OprofileCounter[Oprofile.getNumberOfCounters()];
+					OprofileCounter[] counters = new OprofileCounter[getNumberOfCounters()];
 					for (int i = 0; i < counters.length; i++) {
 						counters[i] = new OprofileCounter(i);
 						counters[i].loadConfiguration(config);
@@ -179,10 +179,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 							}
 	
 							// Next ask oprofile if it is valid
-							if (!OprofileLaunchPlugin.getCache().checkEvent(
-										counters[i].getNumber(), 
-										counters[i].getEvent().getNumber(), 
-										counters[i].getEvent().getUnitMask().getMaskValue())) {
+							if (!checkEventSetupValidity(counters[i].getNumber(), counters[i].getEvent().getNumber(), counters[i].getEvent().getUnitMask().getMaskValue())) {
 								valid = false;
 								break;
 							}
@@ -201,7 +198,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * @see ILaunchConfigurationTab#performApply(ILaunchConfigurationWorkingCopy)
 	 */
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
-		if (Oprofile.getTimerMode()) {
+		if (getTimerMode()) {
 			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, true);
 		} else {
 			config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, _defaultEventCheck.getSelection());
@@ -209,6 +206,11 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 			for (CounterSubTab cst : _counterSubTabs) {
 				cst.performApply(config);
 			}
+		}
+		try {
+			config.doSave();
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -227,6 +229,11 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		}
 
 		config.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, useDefault);
+		try {
+			config.doSave();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -263,6 +270,36 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
+	/*
+	 * Extracted methods to be overridden by the test suite.
+	 */
+
+	/**
+	 * Returns whether the event's unit mask is valid
+	 * @param counter counter number
+	 * @param number event number (oprofile internal number)
+	 * @param maskValue unit mask value
+	 * @return true if valid config, false otherwise
+	 */
+	protected boolean checkEventSetupValidity(int counter, int number, int maskValue) {
+		return OprofileLaunchPlugin.getCache().checkEvent(counter, number, maskValue);
+	}
+
+	/**
+	 * Returns whether or not oprofile is operating in timer mode.
+	 * @return true if oprofile is in timer mode, false otherwise
+	 */
+	protected boolean getTimerMode() {
+		return Oprofile.getTimerMode();
+	}
+	
+	/**
+	 * Returns the number of hardware counters the cpu has 
+	 * @return int number of counters
+	 */
+	protected int getNumberOfCounters() {
+		return Oprofile.getNumberOfCounters();
+	}
 	
 	/**
 	 * A sub-tab of the OprofileEventConfigTab launch configuration tab. 
@@ -270,7 +307,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	 * inner class because it requires methods from the parent tab (such as
 	 * updateLaunchConfigurationDialog() when a widget changes state).
 	 */ 
-	class CounterSubTab {
+	protected class CounterSubTab {
 		private Button _enabledCheck;
 		private Button _profileKernelCheck;
 		private Button _profileUserCheck;
@@ -508,6 +545,11 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 */
 		public void performApply(ILaunchConfigurationWorkingCopy config) {
 			_counter.saveConfiguration(config);
+			try {
+				config.doSave();
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
 		}
 
 		/**
@@ -627,7 +669,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		/**
 		 * This class displays event unit masks via check boxes and appropriate labels.
 		 */
-		class UnitMaskViewer {
+		protected class UnitMaskViewer {
 			private Label _unitMaskLabel;
 			private Composite _top;
 			private Composite _maskListComp;
