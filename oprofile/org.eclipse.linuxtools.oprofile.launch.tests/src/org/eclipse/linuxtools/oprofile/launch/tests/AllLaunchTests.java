@@ -18,13 +18,9 @@ public class AllLaunchTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.oprofile.launch.tests"); //$NON-NLS-1$
 		
-		if (LaunchTestsPlugin.RUN_OPROFILE) {
-			suite.addTestSuite(TestLaunching.class);
-			suite.addTestSuite(TestManualLaunching.class);
-			suite.addTestSuite(TestSetup.class);
-		}
-		
-		suite.addTestSuite(TestDummy.class);
+		suite.addTestSuite(TestLaunching.class);
+		suite.addTestSuite(TestManualLaunching.class);
+		suite.addTestSuite(TestSetup.class);
 		
 		return suite;
 	}
