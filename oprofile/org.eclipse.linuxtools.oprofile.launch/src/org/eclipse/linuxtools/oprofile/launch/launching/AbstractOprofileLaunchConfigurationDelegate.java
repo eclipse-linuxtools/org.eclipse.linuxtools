@@ -96,16 +96,16 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 			Process process;
 			process = exec( commandArray, getEnvironment( config ), wd, usePty );
 			DebugPlugin.newProcess( launch, process, renderProcessLabel( commandArray[0] ) );
+
+			postExec(options, daemonEvents, launch, process);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		postExec(options, daemonEvents, launch);
 	}
 	
 	protected abstract void preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);
 
-	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch);
+	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process);
 
 	/**
 	 * This code was adapted from code written by QNX Software Systems and others 
