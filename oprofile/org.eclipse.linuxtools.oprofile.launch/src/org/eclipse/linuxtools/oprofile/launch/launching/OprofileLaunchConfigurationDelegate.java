@@ -48,7 +48,7 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 	}
 
 	@Override
-	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch) {
+	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process) {
 		//add a listener for termination of the launch
 		ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
 		lmgr.addLaunchListener(new LaunchTerminationWatcher(launch));
