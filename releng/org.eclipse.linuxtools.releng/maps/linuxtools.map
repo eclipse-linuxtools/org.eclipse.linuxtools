@@ -67,6 +67,7 @@ fragment@org.eclipse.linuxtools.oprofile.core.linux.ppc=SVN,,http://dev.eclipse.
 fragment@org.eclipse.linuxtools.oprofile.core.linux.x86=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86
 fragment@org.eclipse.linuxtools.oprofile.core.linux.x86_64=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86_64
 plugin@org.eclipse.linuxtools.oprofile.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.launch
+plugin@org.eclipse.linuxtools.oprofile.launch.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.launch.tests
 plugin@org.eclipse.linuxtools.oprofile.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.tests
 plugin@org.eclipse.linuxtools.oprofile.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui
 plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui.tests
