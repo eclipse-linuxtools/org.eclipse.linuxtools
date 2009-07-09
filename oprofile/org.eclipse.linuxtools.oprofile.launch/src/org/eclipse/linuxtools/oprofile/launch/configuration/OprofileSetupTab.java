@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.oprofile.launch.configuration;
 import java.io.File;
 import java.text.MessageFormat;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -40,15 +41,15 @@ import org.eclipse.swt.widgets.Text;
  * This tab is used by the launcher to configure global oprofile run options.
  */
 public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
-	private Text _kernelImageFileText;
+	protected Text _kernelImageFileText;
 	
-	private Button _checkSeparateLibrary;
-	private Button _checkSeparateKernel;
+	protected Button _checkSeparateLibrary;
+	protected Button _checkSeparateKernel;
 	//maybe these later
-//	private Button _checkSeparateThread;
-//	private Button _checkSeparateCpu;
+//	protected Button _checkSeparateThread;
+//	protected Button _checkSeparateCpu;
 
-	private static LaunchOptions _options = null;
+	protected static LaunchOptions _options = null;
 
 	public String getName() {
 		return OprofileLaunchMessages.getString("tab.global.name"); //$NON-NLS-1$
@@ -62,6 +63,11 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		_options.saveConfiguration(config);
+		try {
+			config.doSave();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void initializeFrom(ILaunchConfiguration config) {
@@ -90,6 +96,11 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		_options = new LaunchOptions();
 		_options.saveConfiguration(config);
+		try {
+			config.doSave();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
