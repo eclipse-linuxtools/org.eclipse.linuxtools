@@ -300,7 +300,6 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				mainStackSizeSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
 			ex = e;
 		}
 	}
@@ -375,7 +374,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			// adjust minimum size for ScrolledComposite
 			recomputeSize();
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 	}
 
@@ -452,7 +451,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				checkMainStackEnablement();
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 		getControl().setRedraw(true);
 		isInitializing = false;
@@ -486,6 +485,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 					result = true;
 				}
 			} catch (CoreException e) {
+				// should only occur if there's a cycle in variable substitution
 				e.printStackTrace();
 			}
 		}
@@ -517,7 +517,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, mainStackSizeSpinner.getSelection());
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 		if (dynamicTab != null) {
 			dynamicTab.performApply(configuration);
@@ -546,7 +546,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK);
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 		
 		if (dynamicTab != null) {

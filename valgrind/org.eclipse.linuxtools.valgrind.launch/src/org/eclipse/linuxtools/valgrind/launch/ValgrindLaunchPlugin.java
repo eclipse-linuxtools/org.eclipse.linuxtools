@@ -266,7 +266,7 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	}
 	
 	IPath parseWSPath(String strpath) throws CoreException {
-		strpath = LaunchUtils.getStringVariableManager().performStringSubstitution(strpath);
+		strpath = LaunchUtils.getStringVariableManager().performStringSubstitution(strpath, false);
 		IPath path = new Path(strpath);
 		if (!path.isAbsolute()) {
 			IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(path);

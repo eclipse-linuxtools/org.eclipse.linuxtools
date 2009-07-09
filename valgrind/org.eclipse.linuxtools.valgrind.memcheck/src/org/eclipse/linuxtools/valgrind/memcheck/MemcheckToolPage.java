@@ -50,6 +50,8 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	protected Button trackOriginsButton;
 	
 	protected boolean isInitializing = false;
+	protected CoreException ex = null;
+	
 	protected SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
@@ -119,7 +121,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 				trackOriginsButton.addSelectionListener(selectListener);
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 		
 		gccWorkaroundButton = new Button(top, SWT.CHECK);
@@ -162,7 +164,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 				trackOriginsButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS));
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 		isInitializing = false;
 	}
@@ -184,7 +186,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 				configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, trackOriginsButton.getSelection());
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 	}
 
@@ -216,7 +218,11 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 				}
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
+		}
+		
+		if (ex != null) {
+			setErrorMessage(ex.getLocalizedMessage());
 		}
 		return result;
 	}
@@ -238,7 +244,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 				configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			ex = e;
 		}
 	}
 		
