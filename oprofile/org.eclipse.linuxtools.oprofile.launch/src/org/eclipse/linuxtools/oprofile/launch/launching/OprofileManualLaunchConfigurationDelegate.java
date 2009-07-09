@@ -63,11 +63,11 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 	}
 
 	@Override
-	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch) {
+	protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process) {
 		final LaunchOptions fOptions = options;
 		final OprofileDaemonEvent[] fDaemonEvents = daemonEvents;
 		final ILaunch fLaunch = launch;
-		Display.getDefault().asyncExec(new Runnable() { 
+		Display.getDefault().syncExec(new Runnable() { 
 			public void run() {
 				//TODO: have a initialization dialog to do reset and setupDaemon?
 				// using a progress dialog, can't abort the launch if there's an exception..
@@ -145,13 +145,13 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 	/**
 	 * A custom dialog box to control the oprofile daemon.
 	 */
-	class OprofiledControlDialog extends MessageDialog {
-		Button _startDaemonButton;
-		Button _stopDaemonButton;
-		Button _refreshViewButton;
-		Button _resetSessionButton;
-		Button _saveSessionButton;
-		List _feedbackList;
+	private class OprofiledControlDialog extends MessageDialog {
+		private Button _startDaemonButton;
+		private Button _stopDaemonButton;
+		private Button _refreshViewButton;
+		private Button _resetSessionButton;
+		private Button _saveSessionButton;
+		private List _feedbackList;
 		
 		public OprofiledControlDialog () {
 			super(new Shell(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()), OprofileLaunchMessages.getString("oprofiledcontroldialog.title"), null, null, MessageDialog.NONE, new String[] { IDialogConstants.OK_LABEL }, 0); //$NON-NLS-1$
