@@ -644,25 +644,27 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @return stripped command
 	 */
 	private String stripEnvVars(String command, ArrayList<String> envVars) {
-		Pattern p = Pattern.compile("(\\w+[=]\\w+\\s+)\\w+.*");
+		Pattern p = Pattern.compile("(\\w+[=]([$]?\\w+[:;]?)+\\s+)\\w+.*");
 		Pattern p2 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s+)\\w+.*");
 		Pattern p3 = Pattern.compile("(\\w+[=]'.*?'\\s+)\\w+.*");
 		boolean finished = false;
 		while (!finished) {
 			Matcher m = p.matcher(command);
 			if (m.matches()) {
-				command = command.replaceFirst("\\w+[=]\\w+", "").trim();
+				command = command.replaceFirst("\\w+[=]([$]?\\w+[:;]?)+", "").trim();
 				envVars.add(m.group(1).trim());
 			} else {
 				Matcher m2 = p2.matcher(command);
 				if (m2.matches()) {
 					command = command.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
-					envVars.add(m2.group(1).trim());
+					String s = m2.group(1).trim();
+					envVars.add(s.replaceAll("\\\"", ""));
 				} else {
 					Matcher m3 = p3.matcher(command);
 					if (m3.matches()) {
 						command = command.replaceFirst("\\w+[=]'.*?'", "").trim();
-						envVars.add(m3.group(1).trim());
+						String s = m3.group(1).trim();
+						envVars.add(s.replaceAll("'", ""));
 					} else {
 						finished = true;
 					}
