@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.eclipse.linuxtools.internal.valgrind.ui.editor.SuppressionsEditor"
+            class="org.eclipse.linuxtools.valgrind.ui.editor.SuppressionsEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="false"
             extensions="supp"
@@ -25,24 +25,6 @@
             name="%content-type.name.0"
             priority="high">
       </content-type>
-   </extension>
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            category="org.eclipse.linuxtools.valgrind.ui.editor.wizards.category"
-            class="org.eclipse.linuxtools.internal.valgrind.ui.editor.wizards.NewSuppressionWizard"
-            icon="icons/valgrind-supp-icon.png"
-            id="org.eclipse.linuxtools.valgrind.ui.editor.wizard"
-            name="%wizard.name.0"
-            project="false">
-         <description>
-            %wizard.description.0
-         </description>
-      </wizard>
-      <category
-            id="org.eclipse.linuxtools.valgrind.ui.editor.wizards.category"
-            name="%category.name.0">
-      </category>
    </extension>
 
 </plugin>
