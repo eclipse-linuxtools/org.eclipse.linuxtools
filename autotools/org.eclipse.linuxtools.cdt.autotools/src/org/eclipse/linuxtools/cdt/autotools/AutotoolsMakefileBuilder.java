@@ -265,10 +265,12 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			IBuilder builder = new AutotoolsBuilder(cfg.getEditableBuilder(), project, toolChain);
 			String buildLocation = null;
 			String buildCommand = null;
+			String buildArguments = null;
 			if (makeTargetName != null) {
 				// We have a MakeTarget.  Get the location and command.
 				buildLocation = (String)args.get("org.eclipse.cdt.make.core.build.location"); // $NON-NLS-1$
 				buildCommand = (String)args.get("org.eclipse.cdt.make.core.build.command"); // $NON-NLS-1$
+				buildArguments = (String)args.get("org.eclipse.cdt.make.core.build.arguments"); // $NON-NLS-1$
 			}
 			if (buildLocation == null)
 				builder.setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toString());
@@ -279,6 +281,8 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			}
 			if (buildCommand != null)
 				builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_COMMAND, buildCommand);
+			if (buildArguments != null)
+				builder.setBuildAttribute(IMakeCommonBuildInfo.BUILD_ARGUMENTS, buildArguments);
 			builder.setAutoBuildEnable(true);
 			builder.setCleanBuildEnable(false); // Don't want clean build done ahead of our build.
 			// Following is needed to circumvent the CommonBuilder from using the default

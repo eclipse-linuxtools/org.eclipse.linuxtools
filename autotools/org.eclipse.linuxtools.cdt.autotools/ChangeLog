@@ -1,3 +1,10 @@
+2009-07-13  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #269974
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build):  Look for make target
+	arguments as any arguments added to the build command in a MakeTarget will be stripped off and given as
+	one of the fields in args.  Take any make arguments given and set them for the builder.
+
 2009-07-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (stripEnvVars): Add support for stripping off
