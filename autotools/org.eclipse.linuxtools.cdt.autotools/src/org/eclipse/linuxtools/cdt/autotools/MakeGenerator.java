@@ -322,7 +322,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @return the path to the configuration settings file
 	 */
 	protected IPath getConfigSettingsPath() {
-		IPath path = project.getLocation().append(SETTINGS_FILE_NAME + "." + cfg.getName()); //$NON-NLS-1$
+		IPath path = project.getWorkingLocation(AutotoolsPlugin.PLUGIN_ID).append(SETTINGS_FILE_NAME + "." + cfg.getName()); //$NON-NLS-1$
 		return path;
 	}
 	
