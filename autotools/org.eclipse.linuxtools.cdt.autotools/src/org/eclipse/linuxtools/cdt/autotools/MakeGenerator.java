@@ -326,6 +326,15 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return path;
 	}
 	
+	public void removeConfigSettings() {
+		File f = getConfigSettingsPath().toFile();
+		try {
+			f.delete();
+		} catch (Exception e) {
+			// do nothing
+		}
+	}
+	
 	public MultiStatus regenerateMakefiles() throws CoreException {
 		MultiStatus status;
 		int rc = IStatus.OK;

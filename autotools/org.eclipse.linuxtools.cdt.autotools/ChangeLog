@@ -1,5 +1,14 @@
 2009-07-15  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/ReconfigureAction.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/ReconfigureHandler.java: New file.
+	* plugin.properties: Add messages for new reconfigure action. 
+	* plugin.xml: Add new reconfigure command to Project menu.
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (removeConfigSettings): New
+	method.
+	 
+2009-07-15  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (saveConfigArgs): Use toFile
 	method for config settings path.
 	(regenerateMakefiles): Ditto.

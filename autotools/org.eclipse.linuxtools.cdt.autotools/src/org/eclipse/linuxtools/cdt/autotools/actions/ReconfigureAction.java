@@ -14,6 +14,7 @@ import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceRuleFactory;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -34,9 +35,9 @@ public class ReconfigureAction extends InvokeAction {
 		if (container == null)
 			return;
 
-		// We need to use a workspace root scheduling rule because adding MakeTargets
-		// may end up saving the project description which runs under a workspace root rule.
-		final ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRoot();
+		IProject project = getSelectedContainer().getProject();
+		IResourceRuleFactory ruleFactory= ResourcesPlugin.getWorkspace().getRuleFactory();
+		final ISchedulingRule rule = ruleFactory.modifyRule(project);
 		
 		Job backgroundJob = new Job("Reconfigure Action"){  //$NON-NLS-1$
 			/* (non-Javadoc)
