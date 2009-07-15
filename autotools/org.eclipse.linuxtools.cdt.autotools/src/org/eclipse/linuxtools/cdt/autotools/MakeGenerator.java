@@ -385,7 +385,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 			IFile configStatus = root.getFileForLocation(configfile);
 			IFile makefile = root.getFileForLocation(makefilePath);
 			IPath configSettingsPath = getConfigSettingsPath();
-			IFile configSettings = root.getFileForLocation(configSettingsPath);
+			File configSettings = configSettingsPath.toFile();
 			String[] configArgs = getConfigArgs();
 
 			// We need to figure out if the end-user has changed the configuration
@@ -397,11 +397,9 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				int i = 0;
 				boolean needSaveConfigArgs = false;
 				needFullConfigure = false;
-				IPath settingsPath = getConfigSettingsPath();
 				try {
-					File f = new File(settingsPath.toOSString());
 					DataInputStream settings = new DataInputStream(
-							new BufferedInputStream(new FileInputStream(f)));
+							new BufferedInputStream(new FileInputStream(configSettings)));
 					// Get the first String in the configure settings file.
 					// Newer configure settings file start with the project name.  
 					// If the project name is present and doesn't match the
@@ -716,7 +714,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	private void saveConfigArgs(String[] args) {
 		IPath settingsPath = getConfigSettingsPath();
 		try {
-			File f = new File(settingsPath.toOSString());
+			File f = settingsPath.toFile();
 			DataOutputStream settings = new DataOutputStream(
 					new BufferedOutputStream(new FileOutputStream(f)));
 			// Write the project name in the configure arguments
