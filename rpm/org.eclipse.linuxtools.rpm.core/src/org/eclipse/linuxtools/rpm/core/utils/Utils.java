@@ -32,7 +32,7 @@ public class Utils {
 		try {
 			child.waitFor();
 		} catch (InterruptedException e) {
-			throw new IOException(e);
+			throw new IOException(e.getMessage());
 		}
 		in = new BufferedInputStream(child.getInputStream());
 		return in;
