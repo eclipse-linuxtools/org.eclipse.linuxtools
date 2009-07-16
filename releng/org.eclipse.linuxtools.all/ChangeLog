@@ -1,3 +1,7 @@
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.xml: Add o.e.l.rpm feature.
+
 2009-05-20  Andre Overholt  <overholt@redhat.com>
 
 	* feature.xml: Remove unnecessary ".feature".
