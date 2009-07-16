@@ -1,3 +1,37 @@
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/Command.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/ShellScript.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/StreamReaderThread.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java: New file.
+	* META-INF/MANIFEST.MF: Don't export o.e.l.rpm.core.internal.util.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (buildSourceRPM): Return InputStream.
+	(buildBinaryRPM): Likewise.
+	(buildAll): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (install): Invoke directly instead of creating shell scripts.
+	(RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (buildAll): Likewise.
+	(buildBinary): Likewise.
+	(buildPrep): Likewise.
+	(rebuild): Likewise.
+	(buildSource): Likewise.
+	(RPMBuild): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java (getBuildTime): Likewise.
+	(getHeaderInfo): Likewise.
+	(getArch): Likewise.
+	(query): Likewise.
+	(getPostInstallScript): Likewise.
+	(getPreInstallScript): Likewise.
+	(getPlatform): Likewise.
+	(getBuildHost): Likewise.
+	(getChangelog): Likewise.
+	(getPreUninstallScript): Likewise.
+	(getProvides): Likewise.
+	(getPostUninstallScript): Likewise.
+	(getOS): Likewise.
+
 2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.

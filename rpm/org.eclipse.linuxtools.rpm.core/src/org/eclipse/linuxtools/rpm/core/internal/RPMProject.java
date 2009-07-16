@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -126,10 +127,10 @@ public class RPMProject implements IRPMProject {
 				new Long(checksum).toString());
 	}
 
-	public void buildAll() throws CoreException {
+	public InputStream buildAll() throws CoreException {
 		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildAll(getSpecFile());
+		InputStream result = rpmbuild.buildAll(getSpecFile());
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
@@ -138,29 +139,32 @@ public class RPMProject implements IRPMProject {
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		buildPrep();
+		return result;
 	}
 
-	public void buildBinaryRPM() throws CoreException {
+	public InputStream buildBinaryRPM() throws CoreException {
 		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildBinary(getSpecFile());
+		InputStream result = rpmbuild.buildBinary(getSpecFile());
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getRpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
+		return result;
 	}
 
-	public void buildSourceRPM() throws CoreException {
+	public InputStream buildSourceRPM() throws CoreException {
 		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildSource(getSpecFile());
+		InputStream result = rpmbuild.buildSource(getSpecFile());
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		buildPrep();
+		return result;
 	}
 
 	public void buildPrep() throws CoreException {

@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.rpm.core;
 
 import java.io.File;
+import java.io.InputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -53,7 +54,7 @@ public interface IRPMProject {
 	 * <li>The project is not an RPM project (a source RPM has not been imported)</li>
 	 * </ul>
 	 */
-	public void buildAll() throws CoreException;
+	public InputStream buildAll() throws CoreException;
 	
 	/**
 	 * Builds a binary RPM according to the directives in the project's spec file.
@@ -70,7 +71,7 @@ public interface IRPMProject {
 	 * <li>The project is not an RPM project (a source RPM has not been imported)</li>
 	 * </ul>
 	 */
-	public void buildBinaryRPM() throws CoreException;
+	public InputStream buildBinaryRPM() throws CoreException;
 	
 	/**
 	 * Builds a source RPM according to the directives in the project's spec file.
@@ -87,7 +88,7 @@ public interface IRPMProject {
 	 * <li>The project is not an RPM project (a source RPM has not been imported)</li>
 	 * </ul>
 	 */
-	public void buildSourceRPM() throws CoreException;
+	public InputStream buildSourceRPM() throws CoreException;
 	
 	/**
 	 * Imports an external source RPM into the project and installs project 
