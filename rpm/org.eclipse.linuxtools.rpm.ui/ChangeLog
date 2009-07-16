@@ -1,3 +1,10 @@
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Require o.e.ui.console.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (getStatus): Format.
+	(findConsole): Utility method for retrieving the console to write to.
+	(run): Read the input stream and dump it to the console.
+
 2009-07-02  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: Add new strings.

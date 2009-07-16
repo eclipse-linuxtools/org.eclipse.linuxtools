@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,15 +22,21 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.rpm.core.IRPMProject;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 
 public class RPMExportOperation implements IRunnableWithProgress {
 	private IProgressMonitor monitor;
 	private ArrayList<Exception> rpm_errorTable;
 	private IRPMProject rpmProject;
 	private BuildType exportType;
-	
+
 	public RPMExportOperation(IRPMProject rpmProject, BuildType exportType) {
 		this.rpmProject = rpmProject;
 		this.exportType = exportType;
@@ -36,10 +44,10 @@ public class RPMExportOperation implements IRunnableWithProgress {
 
 	/**
 	 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
-	 *
+	 * 
 	 */
 	public void run(IProgressMonitor progressMonitor)
-		throws InvocationTargetException {
+			throws InvocationTargetException {
 		int totalWork = 2;
 
 		monitor = progressMonitor;
@@ -49,71 +57,93 @@ public class RPMExportOperation implements IRunnableWithProgress {
 
 		// Start progress
 		monitor.beginTask(Messages.getString("RPMExportOperation.Starting"), //$NON-NLS-1$
-		totalWork);
+				totalWork);
 		monitor.worked(1);
-		
-		switch(exportType) {
+		InputStream result = null;
+		switch (exportType) {
 		case ALL:
 			try {
-				monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
-				rpmProject.buildAll();
-			} catch(Exception e) {
+				monitor.setTaskName(Messages
+						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
+				result = rpmProject.buildAll();
+			} catch (Exception e) {
 				rpm_errorTable.add(e);
 			}
 			break;
-		
+
 		case BINARY:
-			monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
+			monitor.setTaskName(Messages
+					.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 			try {
-				rpmProject.buildBinaryRPM();
-			} catch(Exception e) {
+				result = rpmProject.buildBinaryRPM();
+			} catch (Exception e) {
 				rpm_errorTable.add(e);
 			}
 			break;
-		
+
 		case SOURCE:
-			monitor.setTaskName(Messages.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
+			monitor.setTaskName(Messages
+					.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
 			try {
-				rpmProject.buildSourceRPM();
-			} catch(Exception e) {
+				result = rpmProject.buildSourceRPM();
+			} catch (Exception e) {
 				rpm_errorTable.add(e);
 			}
 			break;
 		}
+		MessageConsole myConsole = findConsole("rpmbuild"); //$NON-NLS-1$
+		MessageConsoleStream out = myConsole.newMessageStream();
+		myConsole.clearConsole();
+		myConsole.activate();
+		if (null != result) {
+			try {
+				out.println(Utils.inputStreamToString(result));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		monitor.worked(1);
 	}
-	
+
 	public MultiStatus getStatus() {
 		IStatus[] errors = new IStatus[rpm_errorTable.size()];
 		Iterator<Exception> count = rpm_errorTable.iterator();
 		int iCount = 0;
-		String error_message=Messages.getString("RPMExportOperation.0"); //$NON-NLS-1$
+		String error_message = Messages.getString("RPMExportOperation.0"); //$NON-NLS-1$
 		while (count.hasNext()) {
 
 			Object anonErrorObject = count.next();
 			if (anonErrorObject instanceof Throwable) {
-				Throwable errorObject = (Throwable)  anonErrorObject;
-				error_message=errorObject.getMessage();
-				
+				Throwable errorObject = (Throwable) anonErrorObject;
+				error_message = errorObject.getMessage();
+
+			} else if (anonErrorObject instanceof Status) {
+				Status errorObject = (Status) anonErrorObject;
+				error_message = errorObject.getMessage();
 			}
-			else
-				if (anonErrorObject instanceof Status)
-				{
-					Status errorObject = (Status) anonErrorObject;
-					error_message=errorObject.getMessage();
-				}
-			IStatus error =
-				new Status(
-					IStatus.ERROR,
-					"RPM Plugin",IStatus.OK, //$NON-NLS-1$
-					error_message,
-					null);
+			IStatus error = new Status(IStatus.ERROR, "RPM Plugin", IStatus.OK, //$NON-NLS-1$
+					error_message, null);
 			errors[iCount] = error;
 			iCount++;
 		}
 
-		return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors, Messages.getString("RPMExportOperation.Open_SRPM_Errors"), //$NON-NLS-1$
-		null);
+		return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors,
+				Messages.getString("RPMExportOperation.Open_SRPM_Errors"), //$NON-NLS-1$
+				null);
 	}
-	
+
+	private MessageConsole findConsole(String name) {
+		ConsolePlugin plugin = ConsolePlugin.getDefault();
+		IConsoleManager conMan = plugin.getConsoleManager();
+		IConsole[] existing = conMan.getConsoles();
+		for (int i = 0; i < existing.length; i++)
+			if (name.equals(existing[i].getName()))
+				return (MessageConsole) existing[i];
+		// no console found, so create a new one
+		MessageConsole myConsole = new MessageConsole(name, null);
+		conMan.addConsoles(new IConsole[] { myConsole });
+		return myConsole;
+	}
+
 }
