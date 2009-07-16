@@ -14,7 +14,7 @@ feature@org.eclipse.linuxtools.rpm.ui.editor=SVN,,http://dev.eclipse.org/svnroot
 feature@org.eclipse.linuxtools.rpm=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm-feature
 plugin@org.eclipse.linuxtools.rpm.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.core
 plugin@org.eclipse.linuxtools.rpm.core.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.core.tests
-plugin@org.eclipse.linuxtools.rpm.doc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm..doc
+plugin@org.eclipse.linuxtools.rpm.doc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.doc
 plugin@org.eclipse.linuxtools.rpm.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui
 
 !*** rpmstubby

@@ -1,5 +1,9 @@
 2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* maps/linuxtools.map: Fix typo.
+
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* maps/linuxtools.map: Add o.e.l.rpm building feature and plugins.
 
 2009-06-29  Andrew Overholt  <overholt@redhat.com>
