@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
     Copyright (c) 2009 Red Hat, Inc.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
@@ -8,24 +9,23 @@
     Contributors:
         Red Hat - initial API and implementation
  -->
-
 <feature
       id="org.eclipse.linuxtools.rpm"
       label="%featureName"
       version="0.4.3.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="%provider">
    <install-handler/>
 
-   <description url="[Enter Feature URL here.]">
-      [Enter Feature Description here.]
+   <description url="http://www.eclipse.org/linuxtools/projectPages/specfile/">
+      %description
    </description>
 
-   <copyright url="[Enter Copyright URL here.]">
-      [Enter Copyright Description here.]
+   <copyright>
+      %copyright
    </copyright>
 
-   <license url="[Enter License URL here.]">
-      [Enter License Description here.]
+   <license url="%licenseURL">
+      %license
    </license>
 
    <requires>
@@ -44,20 +44,20 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false" />
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.linuxtools.rpm.doc"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false" />
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.linuxtools.rpm.ui"
          download-size="0"
          install-size="0"
-         version="0.0.0" 
-         unpack="false" />
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
