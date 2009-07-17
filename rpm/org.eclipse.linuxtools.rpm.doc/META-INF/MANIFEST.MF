@@ -1,4 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.doc
 Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Version: 0.4.3.qualifier
+Bundle-ActivationPolicy: lazy

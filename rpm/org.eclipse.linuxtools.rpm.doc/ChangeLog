@@ -1,5 +1,9 @@
 2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* META-INF/MANIFEST.MF: Add missing headers.
+	
+2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* META-INF/MANIFEST.MF: New file.
 	* OSGI-INF/l10n/bundle.properties: New file.
 	* build.properties: Fix bin.includes.
