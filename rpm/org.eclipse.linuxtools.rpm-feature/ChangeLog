@@ -1,3 +1,9 @@
+2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix copyright.
+	* feature.properties: Fix copyright and add Incubation to the name.
+	* feature.xml: Remove plugin versions and fix copyright.
+
 2007-01-29  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Use org.eclipse.linuxtools instead of org.eclipse.cdt.
