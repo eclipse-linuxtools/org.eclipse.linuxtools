@@ -1,5 +1,6 @@
 2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* feature.xml: Add update site.
 	* license.html: New file.
 	* build.properties: Add license.html to bin.includes.
 	
