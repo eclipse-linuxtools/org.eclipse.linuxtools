@@ -3,5 +3,5 @@
 <!-- Defines topics that will be inserted under the RPM Plugin menu-->
 
 <toc id="RPM" label="RPM Plugin User's Guide">
-     <topic label="RPM Plugin" href="rpmguide/RPM_Plugin.htm" />
+     <topic label="RPM Plugin" href="raw/rpmguide/RPM_Plugin.htm" />
 </toc>
