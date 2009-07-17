@@ -14,12 +14,12 @@
    <extension
          point="org.eclipse.ui.exportWizards">
       <wizard
-            name="Source/Binary RPM"
+            name="%wizard.name.0"
             icon="icons/rpm.gif"
             class="org.eclipse.linuxtools.rpm.ui.RPMExportWizard"
             id="org.eclipse.linuxtools.rpm.ui.RPMExportWizard">
          <description>
-            Export an RPM
+            %wizard.description.0
          </description>
          <selection
                class="org.eclipse.core.resources.IResource">
@@ -29,12 +29,12 @@
    <extension
          point="org.eclipse.ui.importWizards">
       <wizard
-            name="Source RPM"
+            name="%wizard.name.1"
             icon="icons/rpm.gif"
             class="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard"
             id="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard">
          <description>
-            Imports a Source RPM to a project
+            %wizard.description.1
          </description>
          <selection
                class="org.eclipse.core.resources.IResource">
@@ -46,31 +46,31 @@
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
             id="rg.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
-            name="Spec File Header"
+            name="%page.name.0"
             nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
-            name="Changelog Entries"
+            name="%page.name.1"
             nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
-            name="Target"
+            name="%page.name.2"
             nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
-            name="Install/Uninstall Scripts"
+            name="%page.name.3"
             nameFilter="*.rpm">
       </page>
       <page
             class="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
             id="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
-            name="Files Package Provides"
+            name="%page.name.4"
             nameFilter="*.rpm">
       </page>
    </extension>
@@ -78,7 +78,7 @@
        point="org.eclipse.ui.newWizards">
        <category
             id="org.eclipse.linuxtools.rpm.ui"
-            name="RPM">
+            name="%category.name.0">
       </category>
       <wizard
       		project="true"
@@ -86,7 +86,7 @@
             class="org.eclipse.linuxtools.rpm.ui.RPMNewProject"
             icon="icons/rpm.gif"
             id="org.eclipse.linuxtools.rpm.ui.RPMNewProject"
-            name="New RPM project">
+            name="%wizard.name.2">
       </wizard>
  </extension>
  <extension

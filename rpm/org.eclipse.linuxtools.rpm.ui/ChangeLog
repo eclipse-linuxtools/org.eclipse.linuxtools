@@ -1,3 +1,10 @@
+2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: New file.
+	* build.properties: Include file containing l10n data.
+	* META-INF/MANIFEST.MF: Externalize strings.
+	* plugin.xml: Likewise.
+
 2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Simplify build.
