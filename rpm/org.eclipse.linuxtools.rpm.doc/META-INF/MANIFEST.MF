@@ -4,6 +4,7 @@ Bundle-SymbolicName: org.eclipse.linuxtools.rpm.doc;singleton:=true
 Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Version: 0.4.3.qualifier
+Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.apache.ant,
  org.eclipse.help
