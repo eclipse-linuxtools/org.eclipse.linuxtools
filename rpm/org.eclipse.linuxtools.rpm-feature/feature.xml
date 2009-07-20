@@ -14,7 +14,6 @@
       label="%featureName"
       version="0.4.3.qualifier"
       provider-name="%provider">
-   <install-handler/>
 
    <description url="http://www.eclipse.org/linuxtools/projectPages/specfile/">
       %description

@@ -1,3 +1,8 @@
+2009-07-20  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .project: This is not a Java project.
+	* feature.xml: No need for install handler.
+
 2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* feature.xml: Add update site.
