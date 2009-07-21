@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
-import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -71,7 +70,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 
 		// Try to create an instance of the build class. 
 		try {
-			RPMProject rpmProject = RPMProjectFactory.getRPMProject(project);
+			RPMProject rpmProject = new RPMProject(project);
 			monitor.worked(1);
 			monitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
 			rpmProject.importSourceRPM(sourceRPM);

@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
-import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -50,7 +49,7 @@ public class RPMExportPage extends WizardPage implements Listener {
 		setDescription(Messages.getString("RPMExportPage.Select_project_export")); //$NON-NLS-1$
 		if (currentSelection.getFirstElement() instanceof IProject) {
 			try {
-				rpmProject = RPMProjectFactory.getRPMProject((IProject) currentSelection.getFirstElement());
+				rpmProject = new RPMProject((IProject) currentSelection.getFirstElement());
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
