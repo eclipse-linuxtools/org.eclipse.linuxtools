@@ -1,5 +1,13 @@
 2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/AllTests.java (suite): Remove nonexisting test.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (testBuildPrepHelloWorld): Create RPMProject directly.
+	(testImportHelloWorld): Likewise.
+	(testBuildSourceRPMHelloWorld): Likewise.
+
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* META-INF/MANIFEST.MF: No need to export packages.
 	
 2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>

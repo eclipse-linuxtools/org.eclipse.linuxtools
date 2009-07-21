@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
-import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
 import org.osgi.framework.FrameworkUtil;
 
@@ -74,7 +73,7 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		RPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
+		RPMProject rpmProject = new RPMProject(testProject);
 
 		// Find the test SRPM and install it
 		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
@@ -131,7 +130,7 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		RPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
+		RPMProject rpmProject = new RPMProject(testProject);
 
 		// Find the test SRPM, install, and build-prep it
 		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
@@ -161,7 +160,7 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		RPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
+		RPMProject rpmProject = new RPMProject(testProject);
 
 		// Find the test SRPM and install it
 		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(

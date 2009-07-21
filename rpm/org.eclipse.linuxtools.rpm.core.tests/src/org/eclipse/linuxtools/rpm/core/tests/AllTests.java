@@ -20,7 +20,6 @@ public class AllTests extends TestSuite{
 		//$JUnit-BEGIN$
 		suite.addTestSuite(RPMProjectTest.class);
 		suite.addTestSuite(RPMProjectNatureTest.class);
-		suite.addTestSuite(RPMProjectFactoryTest.class);
 		//$JUnit-END$
 		return suite;
 	}
