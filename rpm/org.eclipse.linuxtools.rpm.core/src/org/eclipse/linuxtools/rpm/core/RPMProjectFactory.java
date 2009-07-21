@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.rpm.core.internal.Messages;
-import org.eclipse.linuxtools.rpm.core.internal.RPMProject;
 import org.eclipse.linuxtools.rpm.core.internal.SourceRPM;
 
 /**
@@ -45,8 +44,8 @@ public class RPMProjectFactory {
 	 * <li>Reconstructing the existing RPM project model fails</li>
 	 * </ul>
 	 */
-	public static IRPMProject getRPMProject(IProject project) throws CoreException {
-		IRPMProject rpmProject = new RPMProject(project);
+	public static RPMProject getRPMProject(IProject project) throws CoreException {
+		RPMProject rpmProject = new RPMProject(project);
 		
 		if(project.hasNature(RPMProjectNature.RPM_NATURE_ID)) {
 			// Construct the project's source RPM object

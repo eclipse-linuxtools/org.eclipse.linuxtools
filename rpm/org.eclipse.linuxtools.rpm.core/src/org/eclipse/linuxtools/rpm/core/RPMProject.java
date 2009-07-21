@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core.internal;
+package org.eclipse.linuxtools.rpm.core;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,16 +27,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.rpm.core.IRPMConfiguration;
-import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.IRPMProject;
-import org.eclipse.linuxtools.rpm.core.ISourceRPM;
-import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
-import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
+import org.eclipse.linuxtools.rpm.core.internal.Messages;
+import org.eclipse.linuxtools.rpm.core.internal.RPMConfiguration;
+import org.eclipse.linuxtools.rpm.core.internal.SourceRPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
 
-public class RPMProject implements IRPMProject {
+public class RPMProject {
 
 	private IProject project;
 	private ISourceRPM sourceRPM;
