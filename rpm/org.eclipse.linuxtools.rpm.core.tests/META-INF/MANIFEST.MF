@@ -3,12 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.rpm.core.tests;singleton:=true
 Bundle-Version: 0.4.3.qualifier
-Bundle-Activator: org.eclipse.linuxtools.rpm.core.tests.RPMCoreTestsPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.linuxtools.rpm.core,
  org.eclipse.core.resources,
  org.junit

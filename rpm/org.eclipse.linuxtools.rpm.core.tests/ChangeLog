@@ -1,3 +1,15 @@
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/cdt/rpm/core: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestsPlugin.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestSuite.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java: New file.
+	* META-INF/MANIFEST.MF: Remove not needed Require-Bundle and Bundle-Activator.
+	* src/org/eclipse/linuxtools/rpm/core/tests/AllTests.java (suite): Add tests directly.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java (testGetNewProject): Use RPMProject directly.
+
 2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: New file.

@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.linuxtools.rpm.core.IRPMProject;
+import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
 
 public class RPMProjectFactoryTest extends TestCase {
@@ -55,7 +55,7 @@ public class RPMProjectFactoryTest extends TestCase {
         testProject.create(monitor);
         testProject.open(monitor);
 		
-		IRPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
+		RPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
 		assertNotNull(rpmProject);
 		testProject.delete(true, false, monitor);
 	}

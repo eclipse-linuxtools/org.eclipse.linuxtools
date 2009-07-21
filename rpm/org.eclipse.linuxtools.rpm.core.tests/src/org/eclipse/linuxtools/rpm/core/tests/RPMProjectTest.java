@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core.internal.tests;
+package org.eclipse.linuxtools.rpm.core.tests;
 
 import java.io.File;
 import java.net.URL;
@@ -28,11 +28,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.IRPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
+import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
-import org.eclipse.linuxtools.rpm.core.tests.RPMCoreTestsPlugin;
+import org.osgi.framework.FrameworkUtil;
 
 public class RPMProjectTest extends TestCase {
 
@@ -74,11 +74,11 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		IRPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
+		RPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
 
 		// Find the test SRPM and install it
-		URL url = FileLocator.find(RPMCoreTestsPlugin.getDefault().getBundle(),
-				new Path("resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
+		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
+				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
 						"helloworld-2-2.src.rpm"), null);
 		if (url == null) {
 			fail("Unable to find resource" + file_sep + "srpms" + file_sep
@@ -131,11 +131,11 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		IRPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
+		RPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
 
 		// Find the test SRPM, install, and build-prep it
-		URL url = FileLocator.find(RPMCoreTestsPlugin.getDefault().getBundle(),
-				new Path("resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
+		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
+				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
 						"helloworld-2-2.src.rpm"), null);
 		if (url == null) {
 			fail("Unable to find resource" + file_sep + "srpms" + file_sep
@@ -161,11 +161,11 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		IRPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
+		RPMProject rpmProject = RPMProjectFactory.getRPMProject(testProject);
 
 		// Find the test SRPM and install it
-		URL url = FileLocator.find(RPMCoreTestsPlugin.getDefault().getBundle(), 
-				new Path("resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
+		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
+				"resources" + file_sep + "srpms" + file_sep + //$NON-NLS-1$ //$NON-NLS-2$
 						"helloworld-2-2.src.rpm"), null);
 		if (url == null) {
 			fail("Unable to find resource" + file_sep + "srpms" + file_sep
