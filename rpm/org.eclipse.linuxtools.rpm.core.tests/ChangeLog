@@ -1,5 +1,9 @@
 2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* META-INF/MANIFEST.MF: No need to export packages.
+	
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/cdt/rpm/core: Removed.
 	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java: Removed.
