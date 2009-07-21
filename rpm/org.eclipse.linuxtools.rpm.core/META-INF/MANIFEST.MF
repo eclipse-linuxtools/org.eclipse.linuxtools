@@ -13,5 +13,4 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ui
 Export-Package: 
  org.eclipse.linuxtools.rpm.core,
- org.eclipse.linuxtools.rpm.core.internal;x-internal:=true,
  org.eclipse.linuxtools.rpm.core.utils

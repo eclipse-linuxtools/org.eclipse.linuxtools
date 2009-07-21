@@ -8,13 +8,12 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core.internal;
+package org.eclipse.linuxtools.rpm.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.linuxtools.rpm.core.ISourceRPM;
 
-public class SourceRPM implements ISourceRPM {
+public class SourceRPM {
     
 	private IFile sourceRPM;
 	private IFolder sourcesFolder;

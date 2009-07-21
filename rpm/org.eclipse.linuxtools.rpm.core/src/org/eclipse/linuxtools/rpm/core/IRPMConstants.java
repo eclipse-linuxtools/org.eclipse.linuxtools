@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
-import org.eclipse.linuxtools.rpm.core.internal.Messages;
 
 public interface IRPMConstants {
 

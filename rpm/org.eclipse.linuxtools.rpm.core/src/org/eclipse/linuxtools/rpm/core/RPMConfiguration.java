@@ -8,17 +8,14 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpm.core.internal;
+package org.eclipse.linuxtools.rpm.core;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.linuxtools.rpm.core.IRPMConfiguration;
-import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 
-public class RPMConfiguration implements IRPMConfiguration {
+public class RPMConfiguration {
 	
 	private IProject project;
 	

@@ -27,18 +27,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.rpm.core.internal.Messages;
-import org.eclipse.linuxtools.rpm.core.internal.RPMConfiguration;
-import org.eclipse.linuxtools.rpm.core.internal.SourceRPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
 
 public class RPMProject {
 
 	private IProject project;
-	private ISourceRPM sourceRPM;
+	private SourceRPM sourceRPM;
 	private IFile specFile;
-	private IRPMConfiguration rpmConfig;
+	private RPMConfiguration rpmConfig;
 
 	public RPMProject(IProject project) throws CoreException {
 		this.project = project;
@@ -49,11 +46,11 @@ public class RPMProject {
 		return project;
 	}
 
-	public ISourceRPM getSourceRPM() {
+	public SourceRPM getSourceRPM() {
 		return sourceRPM;
 	}
 
-	public void setSourceRPM(ISourceRPM sourceRPM) throws CoreException {
+	public void setSourceRPM(SourceRPM sourceRPM) throws CoreException {
 		this.sourceRPM = sourceRPM;
 		getProject()
 				.setPersistentProperty(
@@ -62,7 +59,7 @@ public class RPMProject {
 						sourceRPM.getFile().getName());
 	}
 
-	public IRPMConfiguration getConfiguration() {
+	public RPMConfiguration getConfiguration() {
 		return rpmConfig;
 	}
 

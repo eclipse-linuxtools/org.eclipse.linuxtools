@@ -22,8 +22,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.linuxtools.rpm.core.IRPMConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
+import org.eclipse.linuxtools.rpm.core.RPMConfiguration;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 
 /**
@@ -44,7 +44,7 @@ public class RPMBuild {
 	 * @param config
 	 *            the RPM configuration to use
 	 */
-	public RPMBuild(IRPMConfiguration config) {
+	public RPMBuild(RPMConfiguration config) {
 		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
 		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
 		String[] tmpMacroDefines = {

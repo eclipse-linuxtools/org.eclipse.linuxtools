@@ -17,8 +17,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.rpm.core.internal.Messages;
-import org.eclipse.linuxtools.rpm.core.internal.SourceRPM;
 
 /**
  * Factory class for obtaining an instance of an RPM project.
@@ -53,7 +51,7 @@ public class RPMProjectFactory {
 				project.getPersistentProperty(new QualifiedName(RPMCorePlugin.ID, IRPMConstants.SRPM_PROPERTY));
 			if(sourceRPMName != null) {
 				IFolder srpmsFolder = rpmProject.getConfiguration().getSrpmsFolder();
-				ISourceRPM sourceRPM = new SourceRPM(srpmsFolder.getFile(sourceRPMName));
+				SourceRPM sourceRPM = new SourceRPM(srpmsFolder.getFile(sourceRPMName));
 				rpmProject.setSourceRPM(sourceRPM);
 			}
 			else {

@@ -1,5 +1,27 @@
 2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/core/internal/Messages.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/rpm_strings.properties: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMConfiguration.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SourceRPM.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConfiguration.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/ISourceRPM.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/rpm_strings.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/core/RPMConfiguration.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/SourceRPM.java: New file.
+	* META-INF/MANIFEST.MF: Remove package export.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConstants.java: Fix imports.
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (getSourceRPM): Use implementations.
+	(setSourceRPM): Likewise.
+	(getConfiguration): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectFactory.java (getRPMProject): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (RPMBuild): Likewise. 
+	
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java: New file.
