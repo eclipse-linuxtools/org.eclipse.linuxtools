@@ -48,7 +48,9 @@ public class RPMConfiguration {
 			project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER));
 		if(sourcesPath == null) {
 			sourcesFolder = project.getFolder(IRPMConstants.SOURCES_FOLDER);
-			sourcesFolder.create(false, true, null);
+			if(!sourcesFolder.exists()) {
+				sourcesFolder.create(false, true, null);
+			}
 			sourcesFolder.setDerived(true);
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER), 
 	                sourcesFolder.getName());
@@ -63,7 +65,9 @@ public class RPMConfiguration {
 			project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SRPMS_FOLDER));
         if(srcRpmPath == null) {
 			srpmsFolder = project.getFolder(IRPMConstants.SRPMS_FOLDER);
-			srpmsFolder.create(false, true, null);
+			if(!srpmsFolder.exists()) {
+				srpmsFolder.create(false, true, null);
+			}
 			srpmsFolder.setDerived(true);
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SRPMS_FOLDER),
 					srpmsFolder.getName());
@@ -78,7 +82,9 @@ public class RPMConfiguration {
 			project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.BUILD_FOLDER));
         if(buildPath == null) {
             buildFolder = project.getFolder(IRPMConstants.BUILD_FOLDER);
-			buildFolder.create(false, true, null);
+            if(!buildFolder.exists()) {
+				buildFolder.create(false, true, null);
+			}
 			buildFolder.setDerived(true);
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.BUILD_FOLDER), 
 					buildFolder.getName());
@@ -93,7 +99,9 @@ public class RPMConfiguration {
 			project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.RPMS_FOLDER));
         if(rpmPath == null) {
 			rpmsFolder = project.getFolder(IRPMConstants.RPMS_FOLDER);
-			rpmsFolder.create(false, true, null);
+			if(!rpmsFolder.exists()) {
+				rpmsFolder.create(false, true, null);
+			}
 			rpmsFolder.setDerived(true);
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.RPMS_FOLDER), 
 	                rpmsFolder.getName());
@@ -108,7 +116,9 @@ public class RPMConfiguration {
 			project.getPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SPECS_FOLDER));
         if(specPath == null) {
             specsFolder = project.getFolder(IRPMConstants.SPECS_FOLDER);
-			specsFolder.create(false, true, null);
+            if(!specsFolder.exists()) {
+				specsFolder.create(false, true, null);
+			}
 			specsFolder.setDerived(true);
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SPECS_FOLDER),
 					specsFolder.getName());
