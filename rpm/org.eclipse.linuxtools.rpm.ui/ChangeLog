@@ -1,3 +1,9 @@
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (RPMExportOperation): Use RPMProject directly.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java (getSelectedRPMProject): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (run): Likewise.
+
 2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: New file.
