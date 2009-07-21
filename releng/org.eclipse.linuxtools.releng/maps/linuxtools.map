@@ -91,6 +91,7 @@ plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,,http://dev.eclipse.org/svnr
 plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.memcheck.tests
 plugin@org.eclipse.linuxtools.valgrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.tests
 plugin@org.eclipse.linuxtools.valgrind.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.ui
+plugin@org.eclipse.linuxtools.valgrind.ui.editor=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.ui.editor
 feature@org.eclipse.linuxtools.valgrind=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind-feature
 feature@org.eclipse.linuxtools.valgrind.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.test-feature
 

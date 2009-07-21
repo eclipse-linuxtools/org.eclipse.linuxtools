@@ -58,6 +58,7 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind,org.eclipse.linuxtools.valgrind.cachegrind"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind.tests,org.eclipse.linuxtools.valgrind.cachegrind.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.core,org.eclipse.linuxtools.valgrind.core"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.doc,org.eclipse.linuxtools.valgrind.doc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.launch,org.eclipse.linuxtools.valgrind.launch"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.massif,org.eclipse.linuxtools.valgrind.massif"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.massif.tests,org.eclipse.linuxtools.valgrind.massif.tests"/>
@@ -66,6 +67,7 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.test-feature,org.eclipse.linuxtools.valgrind.test-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.tests,org.eclipse.linuxtools.valgrind.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.ui,org.eclipse.linuxtools.valgrind.ui"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.ui.editor,org.eclipse.linuxtools.valgrind.ui.editor"/>
 </provider>
 <provider id="org.eclipse.team.cvs.core.cvsnature">
 <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.cdt/all/org.eclipse.cdt.core.tests,org.eclipse.cdt.core.tests,CDT_6_0_0"/>
