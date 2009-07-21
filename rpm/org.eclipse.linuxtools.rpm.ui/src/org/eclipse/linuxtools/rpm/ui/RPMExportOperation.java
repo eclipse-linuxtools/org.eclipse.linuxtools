@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.linuxtools.rpm.core.IRPMProject;
+import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.ui.PlatformUI;
@@ -34,10 +34,10 @@ import org.eclipse.ui.console.MessageConsoleStream;
 public class RPMExportOperation implements IRunnableWithProgress {
 	private IProgressMonitor monitor;
 	private ArrayList<Exception> rpm_errorTable;
-	private IRPMProject rpmProject;
+	private RPMProject rpmProject;
 	private BuildType exportType;
 
-	public RPMExportOperation(IRPMProject rpmProject, BuildType exportType) {
+	public RPMExportOperation(RPMProject rpmProject, BuildType exportType) {
 		this.rpmProject = rpmProject;
 		this.exportType = exportType;
 	}

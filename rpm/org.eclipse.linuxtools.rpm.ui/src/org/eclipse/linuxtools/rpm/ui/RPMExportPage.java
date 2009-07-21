@@ -14,7 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.linuxtools.rpm.core.IRPMProject;
+import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.swt.SWT;
@@ -42,7 +42,7 @@ public class RPMExportPage extends WizardPage implements Listener {
 	private Button exportSource;
 	
 	//The currently selected RPM project
-	private IRPMProject rpmProject;
+	private RPMProject rpmProject;
 	
 	public RPMExportPage(IStructuredSelection currentSelection) {
 		super(Messages.getString("RPMExportPage.Export_SRPM"), //$NON-NLS-1$
@@ -58,7 +58,7 @@ public class RPMExportPage extends WizardPage implements Listener {
 		setPageComplete(true);
 	}
 	
-	public IRPMProject getSelectedRPMProject() {
+	public RPMProject getSelectedRPMProject() {
 		return rpmProject;
 	}
 	
