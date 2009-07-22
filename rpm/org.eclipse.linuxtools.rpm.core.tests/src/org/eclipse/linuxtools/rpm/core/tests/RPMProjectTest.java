@@ -14,7 +14,6 @@ import java.io.File;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -45,6 +44,7 @@ public class RPMProjectTest extends TestCase {
 	/*
 	 * @see TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		IWorkspaceDescription desc;
@@ -60,10 +60,6 @@ public class RPMProjectTest extends TestCase {
 		desc = workspace.getDescription();
 		desc.setAutoBuilding(false);
 		workspace.setDescription(desc);
-	}
-
-	public static TestSuite suite() {
-		return new TestSuite(RPMProjectTest.class);
 	}
 
 	public void testImportHelloWorld() throws Exception {
