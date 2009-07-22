@@ -77,6 +77,7 @@ plugin@org.eclipse.linuxtools.oprofile.tests=SVN,,http://dev.eclipse.org/svnroot
 plugin@org.eclipse.linuxtools.oprofile.ui=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui
 plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui.tests
 feature@org.eclipse.linuxtools.oprofile=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile-feature
+feature@org.eclipse.linuxtools.oprofile.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.test-feature
 
 !*** valgrind
 plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind
