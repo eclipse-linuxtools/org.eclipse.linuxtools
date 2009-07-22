@@ -8,25 +8,15 @@
  * Contributors:
  *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
  *******************************************************************************/
+
 package org.eclipse.linuxtools.oprofile.launch.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
 
-public class AllLaunchTests {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.oprofile.launch.tests"); //$NON-NLS-1$
-		
-		if (LaunchTestsPlugin.RUN_OPROFILE) {
-			suite.addTestSuite(TestLaunching.class);
-			suite.addTestSuite(TestManualLaunching.class);
-			suite.addTestSuite(TestSetup.class);
-		}
-		
-		suite.addTestSuite(TestDummy.class);
-		
-		return suite;
+// Dummy test just so that the launch tests have something
+// running when oprofile does not
+public class TestDummy extends TestCase {
+	public void testPass() {
+		assertTrue(true);
 	}
-
 }

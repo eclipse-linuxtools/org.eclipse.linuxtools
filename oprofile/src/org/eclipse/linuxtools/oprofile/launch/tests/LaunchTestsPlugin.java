@@ -25,6 +25,16 @@ public class LaunchTestsPlugin extends Plugin {
 	private static LaunchTestsPlugin plugin;
 	
 	/**
+	 *  Java system properties.
+	 *  usage: -Dorg.eclipse.linuxtools.oprofile.launch.tests.runOprofile=<yes|no> [default: yes]
+	 *  if yes, will run the launch tests
+	 *     no, will skip the launch tests (they all require oprofile to be set up)
+	 */
+	public static final String SYSTEM_PROPERTY_RUN_OPROFILE = "org.eclipse.linuxtools.oprofile.launch.tests.runOprofile"; //$NON-NLS-1$
+	public static final boolean RUN_OPROFILE = System.getProperty(SYSTEM_PROPERTY_RUN_OPROFILE, "yes").equals("yes"); //$NON-NLS-1$ //$NON-NLS-2$
+
+	
+	/**
 	 * The constructor
 	 */
 	public LaunchTestsPlugin() {
