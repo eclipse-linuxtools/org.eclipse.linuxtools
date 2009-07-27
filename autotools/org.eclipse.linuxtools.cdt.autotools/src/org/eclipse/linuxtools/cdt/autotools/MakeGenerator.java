@@ -650,7 +650,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * @param envVars - ArrayList to add environment variables to
 	 * @return stripped command
 	 */
-	private String stripEnvVars(String command, ArrayList<String> envVars) {
+	public static String stripEnvVars(String command, ArrayList<String> envVars) {
 		Pattern p = Pattern.compile("(\\w+[=]([$]?\\w+[:;]?)+\\s+)\\w+.*");
 		Pattern p2 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s+)\\w+.*");
 		Pattern p3 = Pattern.compile("(\\w+[=]'.*?'\\s+)\\w+.*");

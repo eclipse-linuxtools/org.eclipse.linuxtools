@@ -1,3 +1,26 @@
+2009-07-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/AutotoolsConsole.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/Console.java: New file.
+	* plugin.xml: Add build consoles for Autotools and Build Steps.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAction.java: 
+	(executeConsoleCommand): New method to run commands in the console.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAclocalAction.java (run):  Use
+	executeConsoleCommand. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoconfAction.java (run): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoheaderAction.java (run): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutomakeAction.java (run): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeAutoreconfAction.java (run): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeLibtoolizeAction.java (run): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/actions/InvokeMessages.properties: Add working directory
+	message and special message for invoking tools.
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/CBuildStepsConsole.java (CBuildStepsConsole):
+	Changed to inherit from Console class. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/CConfigureConsole.java (CConfigureConsole): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/internal/ui/ConsoleMessages.properties: Add messages
+	for build steps and autotools console names.
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (stripEnvVars): Make public static. 
+
 2009-07-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #283828

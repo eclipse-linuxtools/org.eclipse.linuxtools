@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.actions;
 
-import java.util.HashMap;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
 import org.eclipse.swt.widgets.Shell;
@@ -25,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 public class InvokeAclocalAction extends InvokeAction {
 
 	private static final String DEFAULT_OPTION = ""; //$NON-NLS-1$
+	private static final String DEFAULT_COMMAND = "aclocal"; //$NON-NLS-1$
 
 	public void run(IAction action) {
 
@@ -33,7 +31,7 @@ public class InvokeAclocalAction extends InvokeAction {
 			return;
 		
 		IPath execDir = getExecDir(container);
-		String cwd = "CWD:" + getCWD(container);
+		String cwd = InvokeMessages.getString("CWD") + getCWD(container); //$NON-NLS-1$
 
 		TwoInputDialog optionDialog = new TwoInputDialog(
 				new Shell(),
@@ -92,31 +90,11 @@ public class InvokeAclocalAction extends InvokeAction {
 			
 			// If unset, use default system path
 			if (aclocalCommand == null)
-				aclocalCommand = "aclocal"; // $NON-NLS-1$
+				aclocalCommand = DEFAULT_COMMAND;
 			
-			HashMap<String, String> result = executeCommand(new Path(aclocalCommand),
-					argumentList, null, execDir);
-
-			String autoconf_error = (String)result.get("stderr"); //$NON-NLS-1$
-			String autoconf_result = (String)result.get("stdout"); //$NON-NLS-1$
-
-			// if the process produced stdout/err, display in dialog
-
-			if (autoconf_error.length() > 0) {
-				showError(InvokeMessages
-						.getString("InvokeAclocalAction.windowTitle.stderr"), //$NON-NLS-1$
-						autoconf_error);
-			} else if (autoconf_result.length() > 0) {
-				showInformation(InvokeMessages
-						.getString("InvokeAclocalAction.windowTitle.stdout"), //$NON-NLS-1$
-						autoconf_result);
-			} else {
-				showSuccess(InvokeMessages
-						.getString("InvokeAclocalAction.command")); //$NON-NLS-1$
-			}
-
+			executeConsoleCommand(DEFAULT_COMMAND, aclocalCommand,
+					argumentList, execDir);
 		}
-
 	}
 
 	public void dispose() {

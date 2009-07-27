@@ -14,14 +14,14 @@ package org.eclipse.linuxtools.cdt.autotools.internal.ui;
 import org.eclipse.cdt.ui.IBuildConsoleManager;
 import org.eclipse.core.resources.IProject;
 
-public class CBuildStepsConsole extends Console {
+public class AutotoolsConsole extends Console {
 	IProject project;
 	IBuildConsoleManager fConsoleManager;
 	
-	private static final String CONTEXT_MENU_ID = "CAutotoolsBuildStepsConsole"; //$NON-NLS-1$
-	private static final String CONSOLE_NAME = ConsoleMessages.getString("BuildStepsConsole.name"); //$NON-NLS-1$
+	private static final String CONTEXT_MENU_ID = "CAutotoolsConsole"; //$NON-NLS-1$
+	private static final String CONSOLE_NAME = ConsoleMessages.getString("AutotoolsConsole.name"); //$NON-NLS-1$
 	
-	public CBuildStepsConsole() {
+	public AutotoolsConsole() {
 		super(CONSOLE_NAME, CONTEXT_MENU_ID);
 	}
 }
