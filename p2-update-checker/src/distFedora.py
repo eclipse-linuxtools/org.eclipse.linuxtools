@@ -9,7 +9,7 @@ import commands
 import config
 
 FAS_USER = "alcapcom"
-FAS_PWD = "fiscodan_xl"
+FAS_PWD = "*********"
 
 class Distrib:
     
