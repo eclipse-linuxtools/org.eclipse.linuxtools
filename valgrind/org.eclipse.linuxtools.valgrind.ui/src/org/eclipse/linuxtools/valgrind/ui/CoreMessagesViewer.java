@@ -10,7 +10,15 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.valgrind.ui;
 
+import org.eclipse.cdt.debug.ui.CDebugUIPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IPersistableSourceLocator;
 import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
+import org.eclipse.debug.core.sourcelookup.ISourceLookupParticipant;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
@@ -103,9 +111,42 @@ public class CoreMessagesViewer extends TreeViewer {
 				Object element = ((TreeSelection) event.getSelection()).getFirstElement();
 				if (element instanceof ValgrindStackFrame) {
 					ValgrindStackFrame frame = (ValgrindStackFrame) element;
-					ISourceLocator locator = frame.getLaunch().getSourceLocator();					
+					ILaunch launch = frame.getLaunch();
+					ISourceLocator locator = launch.getSourceLocator();		
+					if (locator instanceof AbstractSourceLookupDirector) {
+						AbstractSourceLookupDirector director = (AbstractSourceLookupDirector) locator;
+						ISourceLookupParticipant[] participants = director.getParticipants();
+						if (participants.length == 0) {
+							// source locator likely disposed, try recreating it
+							IPersistableSourceLocator sourceLocator;
+							ILaunchConfiguration config = launch.getLaunchConfiguration();
+							if (config != null) {
+								try {
+									String id = config.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_ID, (String) null);
+									if (id == null) {
+										sourceLocator = CDebugUIPlugin.createDefaultSourceLocator();
+										sourceLocator.initializeDefaults(config);
+									} else {
+										sourceLocator = DebugPlugin.getDefault().getLaunchManager().newSourceLocator(id);
+										String memento = config.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_MEMENTO, (String) null);
+										if (memento == null) {
+											sourceLocator.initializeDefaults(config);
+										} else {
+											sourceLocator.initializeFromMemento(memento);
+										}
+									}
+									
+									// replace old source locator
+									locator = sourceLocator;
+									launch.setSourceLocator(sourceLocator);
+								} catch (CoreException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					}
 					ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);				
-					
+
 					try {
 						ProfileUIUtils.openEditorAndSelect(result, frame.getLine());
 					} catch (PartInitException e) {
@@ -125,10 +166,10 @@ public class CoreMessagesViewer extends TreeViewer {
 			}
 		};
 		addDoubleClickListener(doubleClickListener);
-		
+
 		expandAction = new ExpandAction(this);
 		collapseAction = new CollapseAction(this);
-		
+
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -140,12 +181,12 @@ public class CoreMessagesViewer extends TreeViewer {
 				}
 			}			
 		});
-		
+
 		manager.setRemoveAllWhenShown(true);	
 		Menu contextMenu = manager.createContextMenu(getTree());
 		getControl().setMenu(contextMenu);
 	}
-	
+
 	public IDoubleClickListener getDoubleClickListener() {
 		return doubleClickListener;
 	}
