@@ -761,6 +761,25 @@
                label="%Reconfigure.label"
                mnemonic="%Reconfigure.mnemonic"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.projectNature"
+                              value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </and>
+            </visibleWhen>
          </command>
        </menuContribution>
    </extension>
