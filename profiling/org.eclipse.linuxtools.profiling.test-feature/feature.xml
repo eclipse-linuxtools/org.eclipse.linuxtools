@@ -20,6 +20,7 @@
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.junit" version="0.0.0"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.cdt.core.tests"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
@@ -27,7 +28,7 @@
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.junit" version="0.0.0"/>
+      <import plugin="org.eclipse.cdt.managedbuilder.core"/>
    </requires>
 
    <plugin

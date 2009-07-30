@@ -21,8 +21,8 @@ import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
-import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -45,6 +45,8 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.linuxtools.internal.profiling.launch.Messages;
+import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
@@ -83,8 +85,8 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 			candidateConfigs = new ArrayList<ILaunchConfiguration>(configs.length);
 			for (int i = 0; i < configs.length; i++) {
 				ILaunchConfiguration config = configs[i];
-				IPath programPath = AbstractCLaunchDelegate.getProgramPath(config);
-				String projectName = AbstractCLaunchDelegate.getProjectName(config);
+				IPath programPath = CDebugUtils.getProgramPath(config);
+				String projectName = CDebugUtils.getProjectName(config);
 				IPath binPath = bin.getResource().getProjectRelativePath();
 				if (programPath != null && programPath.equals(binPath)) {
 					if (projectName != null && projectName.equals(bin.getCProject().getProject().getName())) {

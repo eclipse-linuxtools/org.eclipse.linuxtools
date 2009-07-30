@@ -1,3 +1,10 @@
+2009-07-30  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/tests/ProfileTestsPlugin.java: Removed.
+	* src/org/eclipse/linuxtools/internal/profiling/tests/ProfileTestsPlugin.java: New file.
+	* .project: Enabled API analysis. 
+	* META-INF/MANIFEST.MF: Export internal package.
+
 2009-06-23  Elliott Baron  <ebaron@redhat.com>
 
 	* AbstractTest.java (createConfiguration): Throw CoreException.
