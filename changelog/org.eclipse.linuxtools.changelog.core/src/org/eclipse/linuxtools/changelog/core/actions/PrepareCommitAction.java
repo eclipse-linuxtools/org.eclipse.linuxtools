@@ -194,16 +194,38 @@ public class PrepareCommitAction extends ChangeLogAction {
 								if (tmp.kind() == RangeDifference.CHANGE) {
 									LineNumberReader l = new LineNumberReader(new InputStreamReader(file.getContents()));
 									int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
+									String line0 = null;
+									String preDiffResult = "";
 									for (int i = 0; i < tmp.rightStart(); ++i) {
+										// We have equivalence at the start.  This could be due to a new entry with the
+										// same date stamp as the subsequent entry.  In this case, we want the diff to
+										// have the date stamp at the top so it forms a complete entry.  So, we cache
+										// those equivalent lines for later usage if needed.
 										try {
-											l.readLine(); 
+											String line = l.readLine();
+											if (line0 == null)
+												line0 = line;
+											preDiffResult += line + "\n"; 
 										} catch (IOException e) {
 											break;
 										}
 									}
 									for (int i = 0; i < rightLength; ++i) {
 										try {
-											diffResult += l.readLine() + "\n"; // $NON-NLS-1$
+											String line = l.readLine();
+											// If the last line of the diff matches the first line of the old file and
+											// there was equivalence at the start of the ChangeLog, then we want to put
+											// the equivalent section at top so as to give the best chance of forming
+											// a ChangeLog entry that can be used as a commit comment.
+											if (i == rightLength - tmp.rightStart()) {
+												if (tmp.rightStart() != 0 && line.equals(line0)) {
+													diffResult = preDiffResult += diffResult;
+													i = rightLength; // stop loop
+												}
+												else
+													diffResult += line + "\n";
+											} else 
+												diffResult += line + "\n"; // $NON-NLS-1$
 										} catch (IOException e) {
 											// do nothing
 										}
