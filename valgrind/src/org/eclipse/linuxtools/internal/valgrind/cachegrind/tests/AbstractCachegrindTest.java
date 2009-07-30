@@ -8,13 +8,13 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.valgrind.cachegrind.tests;
+package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
-import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindPlugin;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.valgrind.tests.AbstractValgrindTest;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindPlugin;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFunction;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
+import org.eclipse.linuxtools.internal.valgrind.tests.AbstractValgrindTest;
 import org.osgi.framework.Bundle;
 
 public abstract class AbstractCachegrindTest extends AbstractValgrindTest {

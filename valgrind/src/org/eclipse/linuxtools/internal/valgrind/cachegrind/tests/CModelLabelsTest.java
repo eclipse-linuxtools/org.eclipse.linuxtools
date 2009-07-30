@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.valgrind.cachegrind.tests;
+package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
 import org.eclipse.cdt.core.model.IFunction;
 import org.eclipse.cdt.core.model.IMethod;
@@ -18,13 +18,13 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindLabelProvider;
-import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindViewPart;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.ICachegrindElement;
-import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindLabelProvider;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindViewPart;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFunction;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.ICachegrindElement;
+import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.swt.widgets.TreeItem;
 
 public class CModelLabelsTest extends AbstractCachegrindTest {

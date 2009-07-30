@@ -8,16 +8,16 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/ 
-package org.eclipse.linuxtools.valgrind.cachegrind.tests;
+package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindViewPart;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.valgrind.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindViewPart;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
+import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 
 public class MultiProcessTest extends AbstractCachegrindTest {
 	ICProject refProj;

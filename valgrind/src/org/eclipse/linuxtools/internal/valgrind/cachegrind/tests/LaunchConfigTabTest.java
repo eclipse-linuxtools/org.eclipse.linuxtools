@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.valgrind.cachegrind.tests;
+package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
 import java.util.Arrays;
 
@@ -18,9 +18,9 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindPlugin;
-import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindToolPage;
-import org.eclipse.linuxtools.valgrind.launch.ValgrindOptionsTab;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindPlugin;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindToolPage;
+import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;

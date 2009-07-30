@@ -8,7 +8,7 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.valgrind.cachegrind.tests;
+package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
 
 import java.io.File;
 
@@ -22,13 +22,13 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.valgrind.cachegrind.CachegrindViewPart;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFile;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindFunction;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindLine;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.valgrind.cachegrind.model.ICachegrindElement;
-import org.eclipse.linuxtools.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindViewPart;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFunction;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindLine;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.ICachegrindElement;
+import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;

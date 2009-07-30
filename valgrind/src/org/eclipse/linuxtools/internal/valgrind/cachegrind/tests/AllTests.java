@@ -8,7 +8,9 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.valgrind.cachegrind.tests;
+package org.eclipse.linuxtools.internal.valgrind.cachegrind.tests;
+
+import org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindPlugin;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -17,7 +19,7 @@ public class AllTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(
-				"Tests for org.eclipse.linuxtools.valgrind.cachegrind.tests"); //$NON-NLS-1$
+				"Tests for " + CachegrindPlugin.PLUGIN_ID); //$NON-NLS-1$
 		//$JUnit-BEGIN$
 		suite.addTestSuite(BasicCachegrindTest.class);
 		suite.addTestSuite(CModelLabelsTest.class);
