@@ -1,3 +1,11 @@
+2009-07-30  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/valgrind/ui: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui: New package.
+	* .project: Added API analysis.
+	* META-INF/MANIFEST.MF: Export internal package.
+	* plugin.xml: Update class references.
+
 2009-07-28  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: New dependencies. 

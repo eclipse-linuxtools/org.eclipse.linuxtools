@@ -248,7 +248,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			@Override
 			public void run() {
 				ChartEditorInput currentInput = getChartInput(pid);
-				String path = getChartSavePath(currentInput.getName() + ".svg"); //$NON-NLS-1$
+				String path = getChartSavePath(currentInput.getName());
 				if (path != null) {
 					ChartSVG renderer = new ChartSVG(currentInput.getChart());
 					renderer.renderSVG(Path.fromOSString(path));

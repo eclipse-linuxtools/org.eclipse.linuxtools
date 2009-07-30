@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.massif;singleton:=true
 Bundle-Version: 0.2.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.valgrind.massif.MassifPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -43,11 +43,13 @@ Import-Package: org.eclipse.birt.chart.device,
  org.eclipse.emf.common.util,
  org.eclipse.emf.ecore,
  org.eclipse.jface.text,
+ org.eclipse.linuxtools.internal.valgrind.core,
+ org.eclipse.linuxtools.internal.valgrind.launch,
+ org.eclipse.linuxtools.internal.valgrind.ui,
  org.eclipse.linuxtools.profiling.ui,
- org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui,
  org.mozilla.javascript
-Export-Package: org.eclipse.linuxtools.valgrind.massif,
- org.eclipse.linuxtools.valgrind.massif.birt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets,org.eclipse.birt.chart.model"
+Export-Package: org.eclipse.linuxtools.internal.valgrind.massif,
+ org.eclipse.linuxtools.internal.valgrind.massif.birt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets,org.eclipse.birt.chart.model"

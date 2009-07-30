@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.massif.tests
 Bundle-Version: 0.2.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.valgrind.massif.tests.MassifTestsPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.massif.tests.MassifTestsPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -24,12 +24,15 @@ Import-Package: org.eclipse.birt.chart.computation,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  org.eclipse.jface.text,
+ org.eclipse.linuxtools.internal.valgrind.core,
+ org.eclipse.linuxtools.internal.valgrind.launch,
+ org.eclipse.linuxtools.internal.valgrind.massif,
+ org.eclipse.linuxtools.internal.valgrind.massif.birt,
+ org.eclipse.linuxtools.internal.valgrind.tests,
+ org.eclipse.linuxtools.internal.valgrind.ui,
  org.eclipse.linuxtools.profiling.tests,
- org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.launch,
- org.eclipse.linuxtools.valgrind.massif,
- org.eclipse.linuxtools.valgrind.massif.birt,
- org.eclipse.linuxtools.valgrind.tests,
  org.eclipse.linuxtools.valgrind.ui,
  org.eclipse.ui,
  org.eclipse.ui.texteditor
+Export-Package: org.eclipse.linuxtools.internal.valgrind.massif.tests

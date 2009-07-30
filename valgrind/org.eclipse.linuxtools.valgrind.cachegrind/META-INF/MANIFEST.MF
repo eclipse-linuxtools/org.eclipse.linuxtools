@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.cachegrind;singleton:=true
 Bundle-Version: 0.2.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.valgrind.cachegrind.CachegrindPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
@@ -20,9 +20,11 @@ Import-Package: org.eclipse.cdt.core.dom.ast,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jface.text,
+ org.eclipse.linuxtools.internal.valgrind.core,
+ org.eclipse.linuxtools.internal.valgrind.launch,
+ org.eclipse.linuxtools.internal.valgrind.ui,
  org.eclipse.linuxtools.profiling.ui,
- org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui
-Export-Package: org.eclipse.linuxtools.valgrind.cachegrind,
- org.eclipse.linuxtools.valgrind.cachegrind.model
+Export-Package: org.eclipse.linuxtools.internal.valgrind.cachegrind,
+ org.eclipse.linuxtools.internal.valgrind.cachegrind.model

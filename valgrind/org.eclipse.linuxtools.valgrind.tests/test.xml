@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
-	<property name="cachegrindClassname" value="org.eclipse.linuxtools.valgrind.cachegrind.tests.AllTests" />
-	<property name="massifClassname" value="org.eclipse.linuxtools.valgrind.massif.tests.AllTests" />
-	<property name="memcheckClassname" value="org.eclipse.linuxtools.valgrind.memcheck.tests.AllTests" />
+	<property name="cachegrindClassname" value="org.eclipse.linuxtools.internal.valgrind.cachegrind.tests.AllTests" />
+	<property name="massifClassname" value="org.eclipse.linuxtools.internal.valgrind.massif.tests.AllTests" />
+	<property name="memcheckClassname" value="org.eclipse.linuxtools.internal.valgrind.memcheck.tests.AllTests" />
 
 	<property name="cachegrind-plugin-name" value="org.eclipse.linuxtools.valgrind.cachegrind.tests" />
 	<property name="massif-plugin-name" value="org.eclipse.linuxtools.valgrind.massif.tests" />

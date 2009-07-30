@@ -1,3 +1,13 @@
+2009-07-30  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/valgrind/cachegrind: Removed.
+	* src/org/eclipse/linuxtools/valgrind/cachegrind/model: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind: New package.
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/model: New package.  
+	* .project: Enabled API analysis.
+	* META-INF/MANIFEST.MF: Export internal packages.
+	* plugin.xml: Update class references.
+
 2009-06-23  Elliott Baron  <ebaron@redhat.com>
 
 	* CachegrindToolPage.java (getD1LineSizeSpinner): Created getter.

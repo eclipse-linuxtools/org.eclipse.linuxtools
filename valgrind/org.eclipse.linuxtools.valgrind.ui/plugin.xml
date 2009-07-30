@@ -7,7 +7,7 @@
       <view
             allowMultiple="false"
             category="org.eclipse.linuxtools.profiling.ui"
-            class="org.eclipse.linuxtools.valgrind.ui.ValgrindViewPart"
+            class="org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart"
             icon="icons/valgrind-icon.png"
             id="org.eclipse.linuxtools.valgrind.ui.valgrindview"
             name="%view.name.0"

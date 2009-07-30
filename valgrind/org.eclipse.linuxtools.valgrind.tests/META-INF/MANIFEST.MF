@@ -6,7 +6,7 @@ Bundle-Version: 0.2.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.eclipse.linuxtools.valgrind.tests.ValgrindTestsPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.tests.ValgrindTestsPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.junit;bundle-version="[0.0.0,4.0.0)"
@@ -18,8 +18,9 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.core,
  org.eclipse.debug.core.model,
  org.eclipse.debug.ui,
+ org.eclipse.linuxtools.internal.valgrind.core,
+ org.eclipse.linuxtools.internal.valgrind.launch,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.profiling.tests,
- org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.launch
-Export-Package: org.eclipse.linuxtools.valgrind.tests
+Export-Package: org.eclipse.linuxtools.internal.valgrind.tests

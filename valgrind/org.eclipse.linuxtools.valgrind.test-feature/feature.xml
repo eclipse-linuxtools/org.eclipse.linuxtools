@@ -22,28 +22,30 @@
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.junit" version="0.0.0"/>
       <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.cdt.core.tests"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
       <import plugin="org.eclipse.cdt.debug.ui"/>
+      <import plugin="org.eclipse.cdt.launch"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.linuxtools.profiling.launch"/>
-      <import plugin="org.eclipse.linuxtools.profiling.tests"/>
       <import plugin="org.eclipse.linuxtools.valgrind.core"/>
       <import plugin="org.eclipse.linuxtools.valgrind.launch"/>
       <import plugin="org.eclipse.linuxtools.valgrind.memcheck"/>
       <import plugin="org.eclipse.linuxtools.valgrind.ui"/>
+      <import plugin="org.eclipse.linuxtools.profiling.launch"/>
+      <import plugin="org.eclipse.linuxtools.profiling.tests"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.linuxtools.valgrind.massif"/>
-      <import plugin="org.eclipse.cdt.core.tests"/>
-      <import plugin="org.eclipse.cdt.launch"/>
       <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.birt.chart.engine"/>
       <import plugin="org.eclipse.birt.core"/>
+      <import plugin="org.eclipse.linuxtools.valgrind.massif"/>
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.linuxtools.valgrind.cachegrind"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.emf.ecore"/>
    </requires>
 
    <plugin

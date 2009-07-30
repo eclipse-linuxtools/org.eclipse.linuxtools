@@ -4,36 +4,27 @@
    <extension
          point="org.eclipse.linuxtools.valgrind.launch.valgrindTools">
       <tool
-            delegate="org.eclipse.linuxtools.valgrind.massif.MassifLaunchDelegate"
+            delegate="org.eclipse.linuxtools.internal.valgrind.massif.MassifLaunchDelegate"
             id="org.eclipse.linuxtools.valgrind.launch.massif"
             name="massif"
-            page="org.eclipse.linuxtools.valgrind.massif.MassifToolPage">
+            page="org.eclipse.linuxtools.internal.valgrind.massif.MassifToolPage">
       </tool>
    </extension>
    <extension
          point="org.eclipse.linuxtools.valgrind.ui.valgrindToolViews">
       <view
-            class="org.eclipse.linuxtools.valgrind.massif.MassifViewPart"
+            class="org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart"
             definitionId="org.eclipse.linuxtools.valgrind.launch.massif">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.eclipse.linuxtools.valgrind.massif.birt.ChartEditor"
+            class="org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditor"
             default="false"
             icon="icons/linecharticon.gif"
             id="org.eclipse.linuxtools.valgrind.massif.chartEditor"
             name="%editor.name.0">
       </editor>
    </extension>
-   <!--
-   <extension
-         point="org.eclipse.linuxtools.valgrind.history.statePersisters">
-      <persister
-            class="org.eclipse.linuxtools.valgrind.massif.MassifLaunchDelegate"
-            tool="org.eclipse.linuxtools.valgrind.launch.massif">
-      </persister>
-   </extension>
-   -->
 </plugin>

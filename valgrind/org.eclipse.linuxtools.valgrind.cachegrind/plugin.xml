@@ -4,16 +4,16 @@
    <extension
          point="org.eclipse.linuxtools.valgrind.launch.valgrindTools">
       <tool
-            delegate="org.eclipse.linuxtools.valgrind.cachegrind.CachegrindLaunchDelegate"
+            delegate="org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindLaunchDelegate"
             id="org.eclipse.linuxtools.valgrind.launch.cachegrind"
             name="cachegrind"
-            page="org.eclipse.linuxtools.valgrind.cachegrind.CachegrindToolPage">
+            page="org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindToolPage">
       </tool>
    </extension>
    <extension
          point="org.eclipse.linuxtools.valgrind.ui.valgrindToolViews">
       <view
-            class="org.eclipse.linuxtools.valgrind.cachegrind.CachegrindViewPart"
+            class="org.eclipse.linuxtools.internal.valgrind.cachegrind.CachegrindViewPart"
             definitionId="org.eclipse.linuxtools.valgrind.launch.cachegrind">
       </view>
    </extension>

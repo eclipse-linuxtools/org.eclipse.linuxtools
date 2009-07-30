@@ -3,13 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.core;singleton:=true
 Bundle-Version: 0.2.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.valgrind.core.ValgrindPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.linuxtools.valgrind.core
+Export-Package: org.eclipse.linuxtools.internal.valgrind.core,
+ org.eclipse.linuxtools.valgrind.core
 Import-Package: org.eclipse.cdt.utils,
  org.eclipse.cdt.utils.pty,
  org.eclipse.cdt.utils.spawner,

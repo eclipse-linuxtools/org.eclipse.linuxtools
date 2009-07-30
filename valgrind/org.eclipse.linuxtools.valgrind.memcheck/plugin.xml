@@ -4,16 +4,16 @@
 	<extension
          point="org.eclipse.linuxtools.valgrind.launch.valgrindTools">
       <tool
-            delegate="org.eclipse.linuxtools.valgrind.memcheck.MemcheckLaunchDelegate"
+            delegate="org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckLaunchDelegate"
             id="org.eclipse.linuxtools.valgrind.launch.memcheck"
             name="memcheck"
-            page="org.eclipse.linuxtools.valgrind.memcheck.MemcheckToolPage">
+            page="org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckToolPage">
       </tool>
    </extension>
    <extension
          point="org.eclipse.linuxtools.valgrind.ui.valgrindToolViews">
       <view
-            class="org.eclipse.linuxtools.valgrind.memcheck.MemcheckViewPart"
+            class="org.eclipse.linuxtools.internal.valgrind.memcheck.MemcheckViewPart"
             definitionId="org.eclipse.linuxtools.valgrind.launch.memcheck">
       </view>
    </extension>
