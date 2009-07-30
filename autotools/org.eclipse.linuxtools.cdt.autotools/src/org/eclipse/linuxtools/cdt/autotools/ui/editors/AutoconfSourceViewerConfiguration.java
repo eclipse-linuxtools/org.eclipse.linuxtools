@@ -24,7 +24,7 @@ import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.linuxtools.cdt.autotools.internal.text.hover.AutoconfTextHover;
+import org.eclipse.linuxtools.internal.cdt.autotools.text.hover.AutoconfTextHover;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
 

@@ -30,6 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -161,6 +162,8 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 						doc = builder.parse(docStream);
 					}
 					catch (SAXParseException saxException) {
+						System.out.println(saxException.getMessage());
+						System.out.println(saxException.getLineNumber());
 						doc = null;
 					}
 					catch (SAXException saxEx) {
@@ -173,11 +176,11 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 						doc = null;
 					}
 				} catch (FileNotFoundException e) {
-					AutotoolsPlugin.log(e);
+					CUIPlugin.log(e);
 				} catch (MalformedURLException e) {
-					AutotoolsPlugin.log(e);
+					CUIPlugin.log(e);
 				} catch (URISyntaxException e) {
-					AutotoolsPlugin.log(e);
+					CUIPlugin.log(e);
 				}
 				ac_document = doc;
 			}
@@ -217,6 +220,8 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 						doc = builder.parse(docStream);
 					}
 					catch (SAXParseException saxException) {
+						System.out.println(saxException.getMessage());
+						System.out.println(saxException.getLineNumber());
 						doc = null;
 					}
 					catch (SAXException saxEx) {
@@ -229,11 +234,11 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 						doc = null;
 					}
 				} catch (FileNotFoundException e) {
-					AutotoolsPlugin.log(e);
+					CUIPlugin.log(e);
 				} catch (MalformedURLException e) {
-					AutotoolsPlugin.log(e);
+					CUIPlugin.log(e);
 				} catch (URISyntaxException e) {
-					AutotoolsPlugin.log(e);
+					CUIPlugin.log(e);
 				}
 				am_document = doc;
 			}

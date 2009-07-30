@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.cdt.autotools.ui.editors.outline;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.linuxtools.cdt.autotools.internal.ui.AutotoolsPluginImages;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfCaseConditionElement;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfCaseElement;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfElement;
@@ -26,6 +25,7 @@ import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfMacroEleme
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfSelectElement;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfUntilElement;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfWhileElement;
+import org.eclipse.linuxtools.internal.cdt.autotools.ui.AutotoolsPluginImages;
 import org.eclipse.swt.graphics.Image;
 
 

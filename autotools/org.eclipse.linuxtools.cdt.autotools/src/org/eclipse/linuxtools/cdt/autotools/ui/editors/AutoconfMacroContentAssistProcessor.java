@@ -21,7 +21,7 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.jface.text.rules.ICharacterScanner;
-import org.eclipse.linuxtools.cdt.autotools.internal.text.hover.AutoconfTextHover;
+import org.eclipse.linuxtools.internal.cdt.autotools.text.hover.AutoconfTextHover;
 
 
 public class AutoconfMacroContentAssistProcessor implements

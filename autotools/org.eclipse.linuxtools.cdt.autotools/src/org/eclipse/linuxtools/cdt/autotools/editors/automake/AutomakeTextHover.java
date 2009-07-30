@@ -20,7 +20,7 @@ import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.TargetRule;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.TargetRule;
 import org.eclipse.swt.graphics.Point;
 
 

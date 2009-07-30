@@ -27,8 +27,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.linuxtools.cdt.autotools.internal.ui.ErrorParserBlock;
-import org.eclipse.linuxtools.cdt.autotools.internal.wizards.ManagedProjectOptionBlock;
+import org.eclipse.linuxtools.internal.cdt.autotools.ui.ErrorParserBlock;
+import org.eclipse.linuxtools.internal.cdt.autotools.wizards.ManagedProjectOptionBlock;
 import org.eclipse.ui.PlatformUI;
 
 

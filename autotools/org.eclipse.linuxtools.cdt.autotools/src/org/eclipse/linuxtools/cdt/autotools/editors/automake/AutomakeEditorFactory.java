@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.cdt.autotools.editors.automake;
 import org.eclipse.cdt.make.ui.IWorkingCopyManager;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IMakefileDocumentProvider;
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.WorkingCopyManager;
-import org.eclipse.linuxtools.cdt.autotools.internal.ui.preferences.ColorManager;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.IMakefileDocumentProvider;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.WorkingCopyManager;
+import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.ColorManager;
 import org.eclipse.swt.graphics.Color;
 
 

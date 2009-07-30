@@ -28,8 +28,8 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ILineRange;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.LineRange;
-import org.eclipse.linuxtools.cdt.autotools.internal.ui.HTMLPrinter;
-import org.eclipse.linuxtools.cdt.autotools.internal.ui.HTMLTextPresenter;
+import org.eclipse.linuxtools.internal.cdt.autotools.ui.HTMLPrinter;
+import org.eclipse.linuxtools.internal.cdt.autotools.ui.HTMLTextPresenter;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 

@@ -31,9 +31,9 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.CompletionProposalComparator;
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.WordPartDetector;
-import org.eclipse.linuxtools.cdt.autotools.internal.ui.MakeUIImages;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.CompletionProposalComparator;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.WordPartDetector;
+import org.eclipse.linuxtools.internal.cdt.autotools.ui.MakeUIImages;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 

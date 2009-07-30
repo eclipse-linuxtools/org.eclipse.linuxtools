@@ -15,7 +15,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.linuxtools.cdt.autotools.AutotoolsPlugin;
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.BadDirective;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.BadDirective;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 import org.eclipse.ui.texteditor.MarkerUtilities;

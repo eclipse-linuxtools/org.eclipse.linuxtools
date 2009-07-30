@@ -1,6 +1,6 @@
 package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.IReconcilingParticipant;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.IReconcilingParticipant;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 

@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.cdt.autotools.editors.automake;
 
 import java.io.IOException;
 import org.eclipse.cdt.make.core.makefile.IDirective;
-import org.eclipse.linuxtools.cdt.autotools.internal.editors.automake.GNUAutomakefile;
+import org.eclipse.linuxtools.internal.cdt.autotools.editors.automake.GNUAutomakefile;
 
 
 public class Automakefile extends GNUAutomakefile {
