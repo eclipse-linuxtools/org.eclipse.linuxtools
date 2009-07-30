@@ -6,7 +6,7 @@
    <extension
          point="org.eclipse.cdt.ui.CHelpProvider">
       <provider
-            class="org.eclipse.linuxtools.cdt.libhover.LibHover"
+            class="org.eclipse.linuxtools.internal.cdt.libhover.LibHover"
             id="org.eclipse.linuxtools.cdt.libhover.provider"/>
    </extension>
 </plugin>
