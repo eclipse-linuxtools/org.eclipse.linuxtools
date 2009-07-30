@@ -1,5 +1,9 @@
 2009-07-30  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* META-INF/MANIFEST.MF: Bump release to 1.0.4. 
+	
+2009-07-30  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Rename all internal classes to adhere to Eclipse naming conventions.  Change all references appropriately.
 	
 	* src/org/eclipse/linuxtools/cdt/autotools/internal/editors/automake/AbstractElementListSelectionDialog.java: Removed.
