@@ -1,5 +1,9 @@
 2009-07-30  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* META-INF/MANIFEST.MF: Bump release to 1.0.3. 
+	
+2009-07-30  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Refactor to hide internal classes in new packages.
 	
 	* src/org/eclipse/linuxtools/cdt/libhover/LibHover.java: Removed.
