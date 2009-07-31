@@ -84,7 +84,6 @@ plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,,http://dev.eclipse.org/sv
 plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.cachegrind.tests
 plugin@org.eclipse.linuxtools.valgrind.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.core
 plugin@org.eclipse.linuxtools.valgrind.doc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.doc
-plugin@org.eclipse.linuxtools.valgrind.history=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.history
 plugin@org.eclipse.linuxtools.valgrind.launch=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.launch
 plugin@org.eclipse.linuxtools.valgrind.massif=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.massif
 plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/valgrind/trunk/org.eclipse.linuxtools.valgrind.massif.tests
