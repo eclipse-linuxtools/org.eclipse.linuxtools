@@ -1,5 +1,10 @@
 2009-07-31  Andrew Overholt  <overholt@redhat.com>
 
+	* category.xml: Add GProf feature.
+	* maps/linuxtools.map: Likewise.
+
+2009-07-31  Andrew Overholt  <overholt@redhat.com>
+
 	* maps/linuxtools.map: Remove valgrind.history.
 
 2009-07-21  Elliott Baron  <ebaron@redhat.com>

@@ -32,6 +32,7 @@ plugin@org.eclipse.linuxtools.binutils=SVN,,http://dev.eclipse.org/svnroot/techn
 plugin@org.eclipse.linuxtools.dataviewers=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.dataviewers
 plugin@org.eclipse.linuxtools.gprof=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.gprof
 plugin@org.eclipse.linuxtools.gprof.test=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.gprof.test
+feature@org.eclipse.linuxtools.gprof=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.gprof-feature
 
 !*** libhover
 plugin@org.eclipse.linuxtools.cdt.libhover=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover
