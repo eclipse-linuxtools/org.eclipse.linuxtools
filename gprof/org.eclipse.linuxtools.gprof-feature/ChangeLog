@@ -1,0 +1,8 @@
+2009-07-31  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #282028
+
+	* feature.properties: Initial commit.
+	* feature.xml: Likewise.
+	* build.properties: Likewise.
+	* epl-v10.html: Likewise.
