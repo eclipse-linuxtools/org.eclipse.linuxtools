@@ -34,7 +34,10 @@
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.linuxtools.profiling.ui"/>
-      <import feature="org.eclipse.linuxtools.profiling" version="0.1.0"/>
+      <import feature="org.eclipse.linuxtools.profiling" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.linuxtools.oprofile.core" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.help"/>
    </requires>
 
    <plugin
@@ -86,5 +89,12 @@
          install-size="0"
          version="0.0.0"
          fragment="true"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.oprofile.doc"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

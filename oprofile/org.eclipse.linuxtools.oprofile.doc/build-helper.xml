@@ -91,6 +91,14 @@ This document is maintained in a collaborative wiki.  If you wish to update or m
 				<fileset dir="tmp" includes="**/*.mediawiki"/>
 				<stylesheet url="book.css"/>
 			</wikitext-to-eclipse-help>
+			
+			<wikitext-to-docbook markupLanguage="org.eclipse.mylyn.wikitext.mediawiki.core.MediaWikiLanguage" 
+				internallinkpattern="@{wiki.url.base}/{0}"
+				validate="true"
+				failonvalidationerror="true"
+				overwrite="true">
+				<fileset dir="tmp" includes="**/*.mediawiki"/>
+			</wikitext-to-docbook>
 
 			<mkdir dir="@{targetFolder}/${imageFolder}"/>
 			<copy todir="@{targetFolder}/${imageFolder}" overwrite="true">
@@ -102,8 +110,9 @@ This document is maintained in a collaborative wiki.  If you wish to update or m
 			<copy todir="@{targetFolder}" overwrite="true">
 				<fileset dir="tmp">
 					<include name="*.html"/>
-					<include name="*toc.xml"/>
+					<include name="*.xml"/>
 					<exclude name="help.doc.html"/>
+					<exclude name="help.doc.xml"/>
 				</fileset>
 			</copy>
 			<antcall target="test"/>
