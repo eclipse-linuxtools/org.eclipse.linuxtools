@@ -68,6 +68,7 @@ feature@org.eclipse.linuxtools.profiling.test=SVN,,http://dev.eclipse.org/svnroo
 
 !*** oprofile
 plugin@org.eclipse.linuxtools.oprofile.core=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core
+plugin@org.eclipse.linuxtools.oprofile.doc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.doc
 plugin@org.eclipse.linuxtools.oprofile.core.tests=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.tests
 fragment@org.eclipse.linuxtools.oprofile.core.linux.ppc=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.ppc
 fragment@org.eclipse.linuxtools.oprofile.core.linux.x86=SVN,,http://dev.eclipse.org/svnroot/technology,,org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86
