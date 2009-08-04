@@ -14,7 +14,7 @@
 				<td style="width: 20%" align="left"></td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="Rpmlint.html" title="Rpmlint">
+					<a href="Installing.html" title="Installing">
 						<img alt="Next" border="0" src="images/images/next.gif"/>
 					</a>
 				</td>
@@ -22,52 +22,21 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top"></td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Rpmlint</td>
+				<td style="width: 20%" align="right" valign="top">Installing</td>
 			</tr>
 		</table><hr/>
 		<h1 id="Overview">Overview</h1>
-		<h2 id="Basic_introduction">Basic introduction</h2>
-		<p>This editor provides a great number of features to make your *.spec files editing better. One of the most valued parts is the rpmlint which assist in finding the most common mistakes made in RPM spec files and also a quick way to fix some of this warnings. It also tries to provide all the nice features you have seen in JDT. Just to name a few:</p>
-		<pre>   * Outline view and quick outline in the editor
-   * Various auto-completions
-   * Highlighting
-   * Hyperlinks - both inside the file and to external resouces
-   * Folding and etc.
-</pre>
-		<h2 id="Start_editing">Start editing</h2>
-		<p>Starting editing should be as simple as double click on any of the spec files in your projects or going through the File/Open File procedure and select your spec file.</p>
-		<p>
-			<b>Note:</b> It is strongly recommended that you always have your spec file in a project inside Eclipse workspace to take the most of the editor. Rpmlint integration, some auto-completion and hyperlink are not available when you are editing external (for the workspace) file.
-			At this stage you should see something nice looking like this:
+		<p>The Specfile Editor Plug-in for Eclipse provides useful features to help developers manage 
+			<i><code>.spec</code></i> files. This plug-in allows users to leverage several Eclipse GUI features in editing 
+			<i><code>.spec</code></i> files, including outline/quick outline view in the editor, auto-completion, highlighting, file hyperlinks, and folding.
 		</p>
-		<p>
-			<img border="0" src="images/ Specfile_generic.png"/>
-		</p>
-		<h2 id="Create_new_spec_file">Create new spec file</h2>
-		<p>Part of the plugin is a wizard for creating new specfile. It can be invoked from the menu File/New/Other which should bring the following dialog where you can select "New specfile based on a template".</p>
-		<p>
-			<img border="0" src="images/ Specfile_new_wizard.png"/>
-		</p>
-		<p>Dialog providing options and interface for filling the data in the spec file should appear at this stage.</p>
-		<p>
-			<img border="0" src="images/ Specfile_new_from_template.png"/>
-		</p>
-		<p>Description of the fields:</p>
-		<pre>   * Project: This is simply the place where generated spec file will be stored and this should be a project in this workspace. For convenience it is auto-filled with the active project when you started the wizard.
-   * Select a template: Template functionality is based on the templates provided by [https://fedorahosted.org/rpmdevtools rpmdevtools]. Check its home page or just try the provided templates to see whether they suits you. The names are clear enough to not need further explanations - perl, ruby, python, etc.
-   * Version: The version of the software the spec file is for.
-   * Summary: One line description of the packaged software.
-   * Group: Drop down menu for selecting the RPM Group this package belongs to. The values in this drop down are filled from the GROUPS file which is part of the RPM documentation package. This file usually resist in a place like /usr/share/doc/rpm-*/GROUPS.
-   * License: The license of the packaged software.
-   * URL: The URL pointing to the home page of the packaged software.
-   * Source0: The name of the source archive the package is builded from.
-</pre><hr/>
+		<p>In addition, the Specfile Editor Plug-in also integrates the <code>rpmlint</code> tool into the Eclipse interface. <code>rpmlint</code> is a command-line tool that helps developers detect common RPM package errors. The richer visualization offered by the Eclipse interface helps developers quickly detect, view, and correct mistakes reported by <code>rpmlint</code>.</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left"></td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
-					<a href="Rpmlint.html" title="Rpmlint">
+					<a href="Installing.html" title="Installing">
 						<img alt="Next" border="0" src="images/images/next.gif"/>
 					</a>
 				</td>
@@ -75,7 +44,7 @@
 			<tr>
 				<td style="width: 20%" align="left" valign="top"></td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Rpmlint</td>
+				<td style="width: 20%" align="right" valign="top">Installing</td>
 			</tr>
 		</table>
 	</body>

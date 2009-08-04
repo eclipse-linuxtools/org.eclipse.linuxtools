@@ -1,30 +1,21 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <toc topic="userguide/SpecfileEditorReference.html" label="SpecfileEditorReference">
-	<topic href="userguide/SpecfileEditorReference.html" label="Overview">
-		<topic href="userguide/SpecfileEditorReference.html#Basic_introduction" label="Basic introduction"></topic>
-		<topic href="userguide/SpecfileEditorReference.html#Start_editing" label="Start editing"></topic>
-		<topic href="userguide/SpecfileEditorReference.html#Create_new_spec_file" label="Create new spec file"></topic>
-	</topic>
-	<topic href="userguide/Rpmlint.html" label="Rpmlint">
-		<topic href="userguide/Rpmlint.html#Enable_rpmlint_warnings" label="Enable rpmlint warnings"></topic>
-		<topic href="userguide/Rpmlint.html#Benefits_from_rpmlint_integrations" label="Benefits from rpmlint integrations">
-			<topic href="userguide/Rpmlint.html#Warnings_for_common_mistakes" label="Warnings for common mistakes"></topic>
-			<topic href="userguide/Rpmlint.html#Fix_the_warnings" label="Fix the warnings"></topic>
+	<topic href="userguide/SpecfileEditorReference.html" label="Overview"></topic>
+	<topic href="userguide/Installing.html" label="Installing"></topic>
+	<topic href="userguide/General-Usage.html" label="General Usage">
+		<topic href="userguide/General-Usage.html#Creating_a_New_Specfile" label="Creating a New Specfile"></topic>
+		<topic href="userguide/General-Usage.html#rpmlint" label="rpmlint">
+			<topic href="userguide/General-Usage.html#Quick_Fixes" label="Quick Fixes"></topic>
 		</topic>
 	</topic>
-	<topic href="userguide/Customizing-Editor-Settings.html" label="Customizing Editor Settings">
-		<topic href="userguide/Customizing-Editor-Settings.html#Changelog_settings" label="Changelog settings"></topic>
-		<topic href="userguide/Customizing-Editor-Settings.html#Rpmlint_settings" label="Rpmlint settings"></topic>
-		<topic href="userguide/Customizing-Editor-Settings.html#Tasks_settings" label="Tasks settings"></topic>
-		<topic href="userguide/Customizing-Editor-Settings.html#Templates_settings" label="Templates settings"></topic>
-		<topic href="userguide/Customizing-Editor-Settings.html#Macros_settings" label="Macros settings">
-			<topic href="userguide/Customizing-Editor-Settings.html#Macros_location" label="Macros location"></topic>
-			<topic href="userguide/Customizing-Editor-Settings.html#Macros_preview" label="Macros preview"></topic>
+	<topic href="userguide/Configuring-Specfile-Editor-Settings.html" label="Configuring Specfile Editor Settings">
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Macro_Completion" label="Macro Completion"></topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#RPM_Completions" label="RPM Completions">
+			<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Package_Information" label="Package Information"></topic>
 		</topic>
-		<topic href="userguide/Customizing-Editor-Settings.html#Packages_settings" label="Packages settings">
-			<topic href="userguide/Customizing-Editor-Settings.html#Generic_Packages_Settings" label="Generic Packages Settings"></topic>
-			<topic href="userguide/Customizing-Editor-Settings.html#Package_details" label="Package details"></topic>
-		</topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Rpmlint" label="Rpmlint"></topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Task_Tags" label="Task Tags"></topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Templates" label="Templates"></topic>
 	</topic>
 	<topic href="userguide/Updating-This-Document.html" label="Updating This Document"></topic>
 </toc>

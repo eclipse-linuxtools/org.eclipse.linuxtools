@@ -1,3 +1,49 @@
+2009-08-04  Alexander Kurtakov  <akurtako@redhat.com>
+	Sync with wiki.
+	* userguide/Customizing-Editor-Settings.html: Removed.
+	* userguide/images/\ Specfile_enable_rpmlint.png: Removed.
+	* userguide/images/\ Specfile_generic.png: Removed.
+	* userguide/images/\ Specfile_macros_content.png: Removed.
+	* userguide/images/\ Specfile_macros_description.png: Removed.
+	* userguide/images/\ Specfile_new_from_template.png: Removed.
+	* userguide/images/\ Specfile_new_wizard.png: Removed.
+	* userguide/images/\ Specfile_problems_rpmlint.png: Removed.
+	* userguide/images/\ Specfile_rpmlint_fix_after.png: Removed.
+	* userguide/images/\ Specfile_rpmlint_fix_before.png: Removed.
+	* userguide/images/\ Specfile_rpmlint_quickfix.png: Removed.
+	* userguide/images/\ Specfile_settings_changelog.png: Removed.
+	* userguide/images/\ Specfile_settings_macros.png: Removed.
+	* userguide/images/\ Specfile_settings_rpmlint.png: Removed.
+	* userguide/images/\ Specfile_settings_tasks.png: Removed.
+	* userguide/images/\ Specfile_settings_templates.png: Removed.
+	* userguide/images/\ Specfile_warnings_rpmlint.png: Removed.
+	* userguide/Rpmlint.html: Removed.
+	* userguide/Configuring-Specfile-Editor-Settings.html: New file.
+	* userguide/General-Usage.html: New file.
+	* userguide/images/Screenshot-edittemplate.png: New file.
+	* userguide/images/Screenshot-taskscreenshot.png: New file.
+	* userguide/images/Specfile_enable_rpmlint.png: New file.
+	* userguide/images/Specfile_generic.png: New file.
+	* userguide/images/Specfile_macros_content.png: New file.
+	* userguide/images/Specfile_macros_description.png: New file.
+	* userguide/images/Specfile_new_from_template.png: New file.
+	* userguide/images/Specfile_new_wizard.png: New file.
+	* userguide/images/Specfile_problems_rpmlint.png: New file.
+	* userguide/images/Specfile_rpmlint_fix_after.png: New file.
+	* userguide/images/Specfile_rpmlint_fix_before.png: New file.
+	* userguide/images/Specfile_rpmlint_quickfix.png: New file.
+	* userguide/images/Specfile_settings_changelog.png: New file.
+	* userguide/images/Specfile_settings_macros.png: New file.
+	* userguide/images/Specfile_settings_rpmlint.png: New file.
+	* userguide/images/Specfile_settings_tasks.png: New file.
+	* userguide/images/Specfile_settings_templates.png: New file.
+	* userguide/Installing.html: New file.
+	* userguide/images/Specfile_settings_rpms_details.png: Updated.
+	* userguide/images/Specfile_settings_rpms_generic.png: Updated.
+	* userguide/SpecfileEditorReference-toc.xml: Updated.
+	* userguide/SpecfileEditorReference.html: Updated.
+	* userguide/Updating-This-Document.html: Updated.
+
 2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build-helper.xml: Add copyright.
