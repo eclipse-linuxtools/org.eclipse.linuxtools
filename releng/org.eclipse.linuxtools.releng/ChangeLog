@@ -2,13 +2,9 @@
 
 	Bug #285616
 
-	* category.xml: Remove.
-
-2009-08-04  Andrew Overholt  <overholt@redhat.com>
-
-	Bug #285616
-
-	* category.xml: Add pack200=true.
+	* category.xml: Add pack200=true.  Remove category for non-user-visible
+	stuff.  Remove profiling feature (it will still be present on the update
+	site).
 
 2009-08-04  Elliott Baron  <ebaron@redhat.com>
 
