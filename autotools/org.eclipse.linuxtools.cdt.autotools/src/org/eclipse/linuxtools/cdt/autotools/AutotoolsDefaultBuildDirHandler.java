@@ -61,6 +61,9 @@ public class AutotoolsDefaultBuildDirHandler extends ManagedOptionValueHandler
 					continue;
 				}
 				ITool tool = config.getToolFromOutputExtension("status");  //$NON-NLS-1$
+				if (tool == null) // can happen if user has purposely mixed autotools and non-autotools cfgs
+					continue;
+				
 				// We now want to get the builddir option for the tool.  If we use
 				// getOptionById(), we must know the full id which in our case has a generated
 				// numeric extension at the end.  Otherwise, the base builddir option id
