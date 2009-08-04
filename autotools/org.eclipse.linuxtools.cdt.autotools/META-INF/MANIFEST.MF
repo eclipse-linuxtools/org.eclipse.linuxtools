@@ -32,5 +32,12 @@ Export-Package: org.eclipse.linuxtools.cdt.autotools;x-friends:="org.eclipse.lin
  org.eclipse.linuxtools.cdt.autotools.popup.actions;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.ui.editors;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
  org.eclipse.linuxtools.cdt.autotools.ui.editors.parser,
- org.eclipse.linuxtools.cdt.autotools.wizards;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests"
+ org.eclipse.linuxtools.cdt.autotools.wizards;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.internal.cdt.autotools;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.internal.cdt.autotools.editors.automake;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.internal.cdt.autotools.text.hover;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.internal.cdt.autotools.ui;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.autoconf;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests",
+ org.eclipse.linuxtools.internal.cdt.autotools.wizards;x-friends:="org.eclipse.linuxtools.cdt.autotools.tests"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -1,5 +1,6 @@
 2009-08-04  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* META-INF/MANIFEST.MF: Make autotools.tests able to see internal classes.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/text/hover/AutoconfTextHover.java (getAMDoc): Remove
 	printlns and log errors with AutotoolsPlugin instead of CUIPlugin.
 	 
