@@ -2,6 +2,12 @@
 
 	Bug #285616
 
+	* category.xml: Remove.
+
+2009-08-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #285616
+
 	* category.xml: Add pack200=true.
 
 2009-08-04  Elliott Baron  <ebaron@redhat.com>
