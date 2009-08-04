@@ -1,6 +1,12 @@
 2009-08-04  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/text/hover/AutoconfTextHover.java (getAMDoc): Remove
+	printlns and log errors with AutotoolsPlugin instead of CUIPlugin.
+	 
+2009-08-04  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves #267197
+	(getACDoc): 
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsDefaultBuildDirHandler.java (handleValue): Continue
 	loop if no tool for config.status is found.
 
