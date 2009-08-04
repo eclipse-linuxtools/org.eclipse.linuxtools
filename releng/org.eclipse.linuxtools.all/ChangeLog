@@ -1,3 +1,7 @@
+2009-08-04  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Remove category.xml until 0.4 builds start.
+
 2009-07-31  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add GProf feature.

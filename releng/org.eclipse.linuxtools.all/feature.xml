@@ -60,9 +60,10 @@
    <includes
          id="org.eclipse.linuxtools.valgrind"
          version="0.0.0"/>
-
+	<!--
    <includes
          id="org.eclipse.linuxtools.gprof"
          version="0.0.0"/>
+      -->
 
 </feature>
