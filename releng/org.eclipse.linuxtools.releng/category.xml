@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site
+<site pack200="true"
       mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/technology/linuxtools/updates-nightly/site.xml&amp;format=xml">
    <description url="http://download.eclipse.org/technology/linuxtools/updates-nightly">
       Nightly builds of Linux Tools project.
