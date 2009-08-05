@@ -1,5 +1,9 @@
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
+	* META-INF/MANIFEST.MF: Add ".qualifier" to ensure it gets updated.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
 	Bug #272028
 
 	* META-INF/MANIFEST.MF: Fix localization.
