@@ -1,3 +1,9 @@
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #285616
+
+	* build.properties: Try to see if using an earlier basebuilder fixes things.
+
 2009-08-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #285616
