@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.systemtap.ui.feature"
-      label="SystemTap GUI"
+      id="org.eclipse.linuxtools.systemtap.ui"
+      label="%description"
       version="1.0.0"
-      provider-name="IBM">
+      provider-name="%featureProvider">
 
    <description>
       %description
