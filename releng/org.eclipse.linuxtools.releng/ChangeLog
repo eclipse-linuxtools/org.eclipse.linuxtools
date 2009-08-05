@@ -1,5 +1,9 @@
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
+	* category.xml: Re-add.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
 	* build.properties: Try entire build with 1.5 JDK instead of 1.6 (IBM 1.6
 	seems to have issues generating metadata with categories). 
 
