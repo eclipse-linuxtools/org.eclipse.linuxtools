@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.feature,org.eclipse.linuxtools.systemtap.feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap-feature,org.eclipse.linuxtools.systemtap-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.editor,org.eclipse.linuxtools.systemtap.ui.editor"/>
 </provider>
 </psf>

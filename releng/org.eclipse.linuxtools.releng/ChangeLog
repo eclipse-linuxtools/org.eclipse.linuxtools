@@ -1,5 +1,13 @@
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
+	* maps/linuxtools.map: Update for renamed features (removing ".feature").
+	* psfs/autotools.psf: Likewise.
+	* psfs/linuxtools.psf: Likewise.
+	* psfs/linuxtoolsAndAthena.psf:  Likewise.
+	* psfs/systemtap.psf:  Likewise.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
 	* category.xml: Fix a few more typos in libhover variable names.
 
 2009-08-05  Andrew Overholt  <overholt@redhat.com>

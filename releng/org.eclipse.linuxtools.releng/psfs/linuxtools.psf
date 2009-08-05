@@ -3,7 +3,7 @@
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools,org.eclipse.linuxtools.cdt.autotools"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools-docs,org.eclipse.linuxtools.cdt.autotools-docs"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.feature,org.eclipse.linuxtools.cdt.autotools.feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools-feature,org.eclipse.linuxtools.cdt.autotools-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.tests,org.eclipse.linuxtools.cdt.autotools.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/trunk/org.eclipse.linuxtools.changelog-feature,org.eclipse.linuxtools.changelog-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/trunk/org.eclipse.linuxtools.changelog.core,org.eclipse.linuxtools.changelog.core"/>
@@ -43,11 +43,11 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor.tests,org.eclipse.linuxtools.rpm.ui.editor.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/trunk/org.eclipse.linuxtools.rpmstubby,org.eclipse.linuxtools.rpmstubby"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/trunk/org.eclipse.linuxtools.rpmstubby-feature,org.eclipse.linuxtools.rpmstubby-feature"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.feature,org.eclipse.linuxtools.systemtap.feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap-feature,org.eclipse.linuxtools.systemtap-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.editor,org.eclipse.linuxtools.systemtap.ui.editor"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.consolelog,org.eclipse.linuxtools.systemtapgui.consolelog"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.editor,org.eclipse.linuxtools.systemtapgui.editor"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.feature,org.eclipse.linuxtools.systemtapgui.feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui-feature,org.eclipse.linuxtools.systemtapgui-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.graphing,org.eclipse.linuxtools.systemtapgui.graphing"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.graphingapi.nonui,org.eclipse.linuxtools.systemtapgui.graphingapi.nonui"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtapgui.graphingapi.ui,org.eclipse.linuxtools.systemtapgui.graphingapi.ui"/>
