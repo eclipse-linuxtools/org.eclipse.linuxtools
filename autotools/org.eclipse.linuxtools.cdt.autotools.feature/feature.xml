@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.cdt.autotools.feature"
+      id="org.eclipse.linuxtools.cdt.autotools"
       label="%featureName"
       version="1.0.4.qualifier"
       provider-name="%provider">
