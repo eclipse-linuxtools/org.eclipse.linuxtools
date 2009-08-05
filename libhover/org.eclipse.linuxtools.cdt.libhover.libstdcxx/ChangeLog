@@ -1,3 +1,7 @@
+2009-08-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.properties: New file to fill in bundlename and provider.
+
 2009-05-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/libhover/libstdcxx/DoxygenCPPInfo.java (getParameters):
