@@ -1,5 +1,10 @@
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
+	* feature.properties: Variable-ize some strings.
+	* feature.xml: 	Use variables.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
 	* feature.xml: Externalize a few strings and update.
 	* feature.properties: Update a few properties. 
 
