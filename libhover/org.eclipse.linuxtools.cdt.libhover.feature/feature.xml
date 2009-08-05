@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.cdt.libhover.feature"
+      id="org.eclipse.linuxtools.cdt.libhover"
       label="%featureName"
       version="0.2.0.qualifier"
       provider-name="%provider">
@@ -22,7 +22,7 @@
    </url>
 
    <includes
-         id="org.eclipse.linuxtools.cdt.libhover.newlib.feature"
+         id="org.eclipse.linuxtools.cdt.libhover.newlib"
          version="0.0.0"
          optional="true"/>
 
