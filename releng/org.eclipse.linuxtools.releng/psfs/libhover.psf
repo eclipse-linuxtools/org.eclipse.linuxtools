@@ -2,9 +2,10 @@
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover,org.eclipse.linuxtools.cdt.libhover"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.feature,org.eclipse.linuxtools.cdt.libhover.feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover-feature,org.eclipse.linuxtools.cdt.libhover-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.glibc,org.eclipse.linuxtools.cdt.libhover.glibc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.library-docs,org.eclipse.linuxtools.cdt.libhover.library-docs"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib,org.eclipse.linuxtools.cdt.libhover.newlib"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib-feature,org.eclipse.linuxtools.cdt.libhover.newlib-feature"/>
 </provider>
 </psf>

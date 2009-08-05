@@ -11,10 +11,11 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/trunk/org.eclipse.linuxtools.changelog.doc,org.eclipse.linuxtools.changelog.doc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/trunk/org.eclipse.linuxtools.changelog.javaparser,org.eclipse.linuxtools.changelog.javaparser"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover,org.eclipse.linuxtools.cdt.libhover"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.feature,org.eclipse.linuxtools.cdt.libhover.feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover-feature,org.eclipse.linuxtools.cdt.libhover-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.glibc,org.eclipse.linuxtools.cdt.libhover.glibc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.library-docs,org.eclipse.linuxtools.cdt.libhover.library-docs"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib,org.eclipse.linuxtools.cdt.libhover.newlib"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib-feature,org.eclipse.linuxtools.cdt.libhover.newlib-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.binutils,org.eclipse.linuxtools.binutils"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.dataviewers,org.eclipse.linuxtools.dataviewers"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.gprof,org.eclipse.linuxtools.gprof"/>
