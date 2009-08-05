@@ -4,7 +4,7 @@
    <description url="http://download.eclipse.org/technology/linuxtools/updates-nightly">
       Nightly builds of Linux Tools project.
    </description>
-   <feature url="features/org.eclipse.linuxtools.cdt.autotools.feature_${org.eclipse.linuxtools.cdt.autotools.feature.version}.jar" id="org.eclipse.linuxtools.cdt.autotools.feature" version="${org.eclipse.linuxtools.cdt.autotools.feature.version}">
+   <feature url="features/org.eclipse.linuxtools.cdt.autotools_${org.eclipse.linuxtools.cdt.autotools.version}.jar" id="org.eclipse.linuxtools.cdt.autotools" version="${org.eclipse.linuxtools.cdt.autotools.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover_${org.eclipse.linuxtools.cdt.libhover.version}.jar" id="org.eclipse.linuxtools.cdt.libhover" version="${org.eclipse.linuxtools.cdt.libhover.version}">
@@ -28,7 +28,7 @@
    <feature url="features/org.eclipse.linuxtools.rpmstubby_${org.eclipse.linuxtools.rpmstubby.version}.jar" id="org.eclipse.linuxtools.rpmstubby" version="${org.eclipse.linuxtools.rpmstubby.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.systemtap.feature_${org.eclipse.linuxtools.systemtap.feature.version}.jar" id="org.eclipse.linuxtools.systemtap.feature" version="${org.eclipse.linuxtools.systemtap.feature.version}">
+   <feature url="features/org.eclipse.linuxtools.systemtap_${org.eclipse.linuxtools.systemtap.version}.jar" id="org.eclipse.linuxtools.systemtap" version="${org.eclipse.linuxtools.systemtap.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.valgrind_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.valgrind" version="${org.eclipse.linuxtools.valgrind.version}">

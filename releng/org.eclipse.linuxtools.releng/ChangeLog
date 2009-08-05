@@ -1,5 +1,9 @@
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
+	* category.xml: Update autotools and systemtap feature IDs.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
 	* maps/linuxtools.map: Update for renamed features (removing ".feature").
 	* psfs/autotools.psf: Likewise.
 	* psfs/linuxtools.psf: Likewise.
