@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.linuxtools.changelog"
-      label="ChangeLog management tools (Incubation)"
+      label="%featureName"
       version="2.6.7.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="%featureProvider">
 
    <description url="http://www.eclipse.org/linuxtools">
-      The Changelog plug-in provides the ability to maintain,
-      and create changelogs from within the Eclipse Environment
+      The Changelog plug-in provides the ability to maintain and create GNU-style ChangeLogs from within Eclipse.
    </description>
 
-   <copyright url="www.redhat.com">
+   <copyright url="http://www.redhat.com">
       Copyright 2004-2008 Red Hat, Inc.
    </copyright>
 

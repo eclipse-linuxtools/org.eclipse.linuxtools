@@ -1,3 +1,8 @@
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Externalize a few strings and update.
+	* feature.properties: Update a few properties. 
+
 2009-05-19  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Change feature provider to Eclipse.
