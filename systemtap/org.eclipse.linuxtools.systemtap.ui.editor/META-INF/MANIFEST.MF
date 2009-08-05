@@ -24,3 +24,4 @@ Export-Package: org.eclipse.linuxtools.systemtap.backup.ui.editor;
    org.eclipse.ui.editors.text"
 Bundle-Vendor: %provider
 Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
