@@ -1,5 +1,9 @@
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
+	* feature.xml: Use newly-renamed autotools and systemtap features.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
 	* feature.xml: Use newly-renamed libhover feature.
 
 2009-08-04  Elliott Baron  <ebaron@redhat.com>
