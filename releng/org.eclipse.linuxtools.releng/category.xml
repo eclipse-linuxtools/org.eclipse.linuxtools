@@ -10,6 +10,9 @@
    <feature url="features/org.eclipse.linuxtools.cdt.libhover_${org.eclipse.linuxtools.cdt.libhover.version}.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="${org.eclipse.linuxtools.cdt.libhover.feature.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib_${org.eclipse.linuxtools.cdt.libhover.newlib.version}.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib.feature" version="${org.eclipse.linuxtools.cdt.libhover.newlib.feature.version}">
+      <category name="Linux Tools Features (Nightly development build)"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_${org.eclipse.linuxtools.changelog.version}.jar" id="org.eclipse.linuxtools.changelog" version="${org.eclipse.linuxtools.changelog.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
@@ -31,12 +34,9 @@
    <feature url="features/org.eclipse.linuxtools.valgrind_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.valgrind" version="${org.eclipse.linuxtools.valgrind.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.gprof_${org.eclipse.linuxtools.gprof.version}.jar" id="org.eclipse.linuxtools.gprof" version="${org.eclipse.linuxtools.gprof.version}">
-      <category name="Linux Tools Features (Nightly development build)"/>
-   </feature>
    <category-def name="Linux Tools Features (Nightly development build)" label="Linux Tools Features (Nightly development build)">
       <description>
-         Nightly development build of end-user features
+         Nightly development build of Linux Tools features
       </description>
    </category-def>
 </site>
