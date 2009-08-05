@@ -1,5 +1,9 @@
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
+	* category.xml: Fix a few more typos in libhover variable names.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
 	* category.xml: Remove GProf feature.  Add newlib feature.
 
 2009-08-05  Andrew Overholt  <overholt@redhat.com>

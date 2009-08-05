@@ -7,10 +7,10 @@
    <feature url="features/org.eclipse.linuxtools.cdt.autotools.feature_${org.eclipse.linuxtools.cdt.autotools.feature.version}.jar" id="org.eclipse.linuxtools.cdt.autotools.feature" version="${org.eclipse.linuxtools.cdt.autotools.feature.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover_${org.eclipse.linuxtools.cdt.libhover.version}.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="${org.eclipse.linuxtools.cdt.libhover.feature.version}">
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover_${org.eclipse.linuxtools.cdt.libhover.version}.jar" id="org.eclipse.linuxtools.cdt.libhover" version="${org.eclipse.linuxtools.cdt.libhover.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib_${org.eclipse.linuxtools.cdt.libhover.newlib.version}.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib.feature" version="${org.eclipse.linuxtools.cdt.libhover.newlib.feature.version}">
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib_${org.eclipse.linuxtools.cdt.libhover.newlib.version}.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib" version="${org.eclipse.linuxtools.cdt.libhover.newlib.version}">
       <category name="Linux Tools Features (Nightly development build)"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_${org.eclipse.linuxtools.changelog.version}.jar" id="org.eclipse.linuxtools.changelog" version="${org.eclipse.linuxtools.changelog.version}">
