@@ -22,6 +22,7 @@ public class EditorTests {
 		suite.addTestSuite(AutomakeColourizationTests.class);
 		suite.addTestSuite(AutomakeTextHoverTest.class);
 		suite.addTestSuite(AutomakeEditorTests.class);
+		suite.addTestSuite(AutoconfTextHoverTest.class);
 		//$JUnit-END$
 		return suite;
 	}
