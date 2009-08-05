@@ -1,3 +1,7 @@
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Use newly-renamed libhover feature.
+
 2009-08-04  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Bump version to 0.3.0.

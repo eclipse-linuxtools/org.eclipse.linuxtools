@@ -22,7 +22,7 @@
    </url>
 
    <includes
-         id="org.eclipse.linuxtools.cdt.libhover.feature"
+         id="org.eclipse.linuxtools.cdt.libhover"
          version="0.0.0"/>
 
    <includes
