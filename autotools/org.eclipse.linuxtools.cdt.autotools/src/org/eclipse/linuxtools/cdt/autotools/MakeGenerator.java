@@ -72,6 +72,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConstants;
 import org.eclipse.linuxtools.internal.cdt.autotools.MarkerGenerator;
@@ -302,7 +303,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		if (!path.isAbsolute()) {
 			IPath absPath = getProjectLocation().addTrailingSeparator().append(
 					path);
-			return absPath.toOSString();
+			return getPathString(absPath);
 		}
 		return dir;
 	}
@@ -1017,6 +1018,17 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		return rc;
 	}
 	
+	// Get the path string.  We add a Win check to handle MingW.
+	// For MingW, we would rather represent C:\a\b as /C/a/b which
+	// doesn't cause Makefile to choke.
+	// TODO: further logic would be needed to handle cygwin if desired
+	private String getPathString(IPath path) {
+		String s = path.toString();
+		if (Platform.getOS().equals(Platform.OS_WIN32))
+			s = s.replaceAll("^([A-Z])(:)", "/$1");
+		return s;
+	}
+	
 	// Run an autotools script (e.g. configure, autogen.sh, config.status).
 	private int runScript(IPath commandPath, IPath runPath, String[] args,
 			String jobDescription, String errMsg, IConsole console, 
@@ -1052,7 +1064,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 			configTargets = new String[args.length+1];
 			System.arraycopy(args, 0, configTargets, 1, args.length);
 		}
-		configTargets[0] = commandPath.toOSString();
+		configTargets[0] = getPathString(commandPath);
 		
 		String[] msgs = new String[2];
 		msgs[0] = commandPath.toString();

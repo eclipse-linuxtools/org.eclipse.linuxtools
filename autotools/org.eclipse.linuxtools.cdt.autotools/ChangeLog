@@ -1,3 +1,12 @@
+2009-08-05  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #267538
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAbsoluteDirectory):
+	Call getPathString to get the directory path instead of calling toOSString. 
+	(getPathString): New method that gets the path string and handles MingW paths.
+	(runScript): Call getPathString to convert the command path instead of
+	using toOSString.
+
 2009-08-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Make autotools.tests able to see internal classes.
