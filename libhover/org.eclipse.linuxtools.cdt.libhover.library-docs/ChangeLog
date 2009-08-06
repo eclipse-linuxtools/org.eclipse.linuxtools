@@ -1,6 +1,6 @@
 2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
 
-	Resolves #285865
+	Resolves #285867
 	* plugin.properties: Change Provider to Eclipse instead of Eclipse.org.
 
 2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
