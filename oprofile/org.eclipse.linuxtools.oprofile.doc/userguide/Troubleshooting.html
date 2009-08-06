@@ -31,7 +31,7 @@
 		</table><hr/>
 		<h1 id="Troubleshooting">Troubleshooting</h1>
 		<p>Various problems and their solutions are described here. If you encounter a problem not described here, please 
-			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=&amp;version=0.2">file a bug</a>.
+			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=">file a bug</a>.
 		</p>
 		<h2 id="Install_Script_Errors">Install Script Errors</h2>
 		<p>This section describes different errors that could occur from running the install scripts (i.e. <code>
@@ -84,7 +84,7 @@ if [ $? -ne 0 ]; then
 fi
 </pre>
 		<p>The <code>
-			<i>install.sh</i></code> script is fixed in SVN, but not in the 0.2.0 release of the OProfile plug-in for Eclipse.
+			<i>install.sh</i></code> script is fixed in the most recent version of the OProfile plug-in for Eclipse, but not in the 0.2.0 release.
 		</p>
 		<h3 id="Error:_cannot_find_opxml_binary.2C_required_plugin_missing">Error: cannot find opxml binary, required plugin missing</h3>
 		<p>This can occur if the native binary <code>
@@ -96,13 +96,14 @@ fi
 			<a href="Troubleshooting.html#Rebuilding_opxml">Rebuilding opxml</a> section for instructions on rebuilding the binary and placing it in the proper directory. Otherwise, re-install the plug-in.
 		</p>
 		<h2 id="No_Samples_From_A_Profile">No Samples From A Profile</h2>
-		<p>It is possible for a profile run of a program to return no samples, resulting in an empty OProfile view. This is not always indicative of a problem with either OProfile or the profiled program. OProfile is a system-wide profiling tool; hence, other active processes running on your system may overshadow your program. This is particularly true if the profiled program is not CPU intensive. </p>
+		<p>It is possible for a profile run of a program to return no samples, resulting in no <code>current</code> session displayed. This is not always indicative of a problem with either OProfile or the profiled program. OProfile is a system-wide profiling tool; hence, other active processes running on your system may overshadow your program. This is particularly true if the profiled program is not CPU intensive. </p>
 		<p>In addition, the 
 			<i>Event</i> you choose (selected through the 
 			<b>
 				<i>Events</i>
 			</b> tab, as described in 
-			<a href="Profiling-Configuration.html#Regular_Mode">Regular Mode</a>) could cause a profile to return no samples. Note that profiling through OProfile is neither deterministic nor consistent; two subsequent runs may output very different results. In some cases, one run can result in no samples, while another run on the same program can result in many samples. The OProfile online documentation has other useful information 
+			<a href="Profiling-Configuration.html#Regular_Mode">Regular Mode</a>) could cause a profile to return no samples; for example the event 
+			<i>BR_CND_MISSP_EXEC</i> will only provide samples if a branch was mispredicted by the processor. Note also that due to the statistical nature of OProfile, profiling is neither deterministic nor consistent; two subsequent runs may output very different results. In some cases, one run can result in no samples, while another run on the same program can result in many samples. The OProfile online documentation has other useful information 
 			<a href="http://oprofile.sourceforge.net/doc/results.html#no-results">here</a>.
 		</p>
 		<p>Solution: The following suggestions could help you generate more samples from a profile run:</p>
@@ -119,7 +120,7 @@ fi
 			<a href="Example-Project.html#Example_Project">Example Project</a> section.
 		</p>
 		<h2 id="Log_Reader_Hangs">Log Reader Hangs</h2>
-		<p>If the Oprofile daemon log file is too large, the log reader may hang and possibly cause the OProfile plug-in to crash. This occurs when the 
+		<p>If the OProfile daemon log file is too large, the log reader may hang and possibly cause the OProfile plug-in to crash. This occurs when the 
 			<i>verbosity</i> option is set to <code>all</code>, which results in several hundred MiB of text in the log over several profile runs. If you do require all this data in the log file, do not launch the log reader. Delete or backup the log file before running the log reader again.
 		</p>
 		<h2 id="Errors_Related_to_opxml">Errors Related to opxml</h2>
@@ -189,7 +190,7 @@ fi
 			<dd><code>opxml: /some/path/libc.so.6: version `GLIBC_2.8' not found (required by opxml)</code></dd>
 		</dl>
 		<p>
-			<b>Warning:</b> this is rarely necessary; in some cases, rebuilding the <code>opxml</code> binary may break an otherwise working Eclipse installation. You should only rebuild the <code>opxml</code> binary if you are sure that doing so is the only remaining option in fixing the OProfile plug-in for Eclipse.
+			<b>Warning:</b> this is rarely necessary; in some cases, rebuilding the <code>opxml</code> binary may break an otherwise working OProfile plug-in installation. You should only rebuild the <code>opxml</code> binary if you are sure that doing so is the only remaining option in fixing the OProfile plug-in for Eclipse.
 		</p>
 		<p>To rebuild the <code>opxml</code> binary, perform the following steps</p>
 		<ol>

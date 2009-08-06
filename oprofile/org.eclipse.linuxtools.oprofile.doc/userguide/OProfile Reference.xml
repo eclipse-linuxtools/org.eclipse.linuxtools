@@ -122,7 +122,7 @@
 			<literallayout>./install.sh
 Eclipse-OProfile plugin install successful.
 </literallayout>
-			<para>Either install script should be run as the root user since both scripts perform some actions that require elevated privileges. 
+			<para>Either install script should be run as the root user since both scripts perform some actions that require elevated privileges: 
 				<emphasis role="italic"><code>install.sh</code></emphasis> places files in 
 				<emphasis role="italic"><code>/etc</code></emphasis> subdirectories, while 
 				<emphasis role="italic"><code>install-noconsolehelper.sh</code></emphasis> runs the command <code>visudo</code>. If you wish to simply run either install script without logging in as root, use:
@@ -149,7 +149,7 @@ Eclipse-OProfile plugin install successful.
 	<chapter id="Launching_A_Profile">
 		<title>Launching A Profile</title>
 		<para>The purpose of the OProfile plug-in is to provide useful profile information in a user-friendly manner. To do this, it first gathers the required information. The plug-in hooks into the Eclipse and CDT's launching facilities; in doing so, profiling becomes as easy as a normal run of your program. </para>
-		<para>During a profile run, the OProfile plug-in will start, stop and perform other OProfile tasks in the background as needed, while the binary being profiled runs as normal. Currently, it is only possible to start profiling when a user binary is run; profiling will stop after the binary has returned. The ability to start/stop profiling at arbitrary times are currently in development.  </para>
+		<para>During a profile run, the OProfile plug-in will start, stop and perform other OProfile tasks in the background as needed, while the binary being profiled runs as normal. Currently, it is possible to start profiling when a user binary is run and stop after the binary has returned as well as the ability to start/stop profiling at arbitrary times.</para>
 		<section id="One-Click_Launch">
 			<title>One-Click Launch</title>
 			<para>Most users are interested in profiling where a program spends the most CPU time during execution. The OProfile plug-in for Eclipse includes a 
@@ -182,6 +182,24 @@ Eclipse-OProfile plugin install successful.
 				<link linkend="Profiling_Configuration">Profiling Configuration</link> section for more information about configuring a profile. 
 			</para>
 			<para>After configuring a profile, click the <u>Profile</u> button to launch the profile.</para>
+		</section>
+		<section id="Manual_Profile">
+			<title>Manual Profile</title>
+			<para>As of the 0.3.0 release, users can profile their applications in two ways: an automatic or manual profile. Automatic is the previously described method whereby the OProfile daemon is started before the binary is launched and stopped after the binary returns. A manual profile configures the daemon with the appropriate settings, but instead a control dialog is available which the user can use to start or stop the OProfile daemon at will. Each mode has their own configuration type and icon, as to disambiguate the type of profile an entry in the profile history. A feedback list in the dialog assures the user that the operations have been received, since at times an operation may take a few seconds to complete. This feature is most useful to profile applications which halt on input, or large applications for which it is undesirable to launch and return several times. It is not recommended to use this feature to only profile when you believe your application is spending time; the statistical nature of OProfile will account for this.</para>
+			<para>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Oprofile_manual_dialog.png"/>
+					</imageobject>
+				</mediaobject>
+			</para>
+			<para>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Oprofile_manual_shortcut.png"/>
+					</imageobject>
+				</mediaobject>
+			</para>
 		</section>
 	</chapter>
 	<chapter id="Profiling_Configuration">
@@ -219,7 +237,7 @@ Eclipse-OProfile plugin install successful.
 							<emphasis role="italic"><code>vmlinux</code></emphasis> file contains debugging information required by OProfile. Note that the compressed 
 							<emphasis role="italic">vmlinux</emphasis> file, often named 
 							<emphasis role="italic"><code>vmlinuz</code></emphasis>, cannot be used for this purpose. 
-							 Note: To use this option, you need to enable the 
+							 Note: For this option to have any effect, you must enable the 
 							<emphasis role="bold">
 								<emphasis role="italic">Include dependent kernel modules</emphasis>
 							</emphasis> option.
@@ -231,7 +249,7 @@ Eclipse-OProfile plugin install successful.
 				<varlistentry>
 					<term>Include dependent shared libraries</term>
 					<listitem>
-						<para>This option will make OProfile keep samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results.</para>
+						<para>This option will make OProfile include samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results.</para>
 					</listitem>
 				</varlistentry>
 			</variablelist>
@@ -239,13 +257,13 @@ Eclipse-OProfile plugin install successful.
 				<varlistentry>
 					<term>Include dependent kernel modules</term>
 					<listitem>
-						<para>This option will make OProfile keep samples related to running in the kernel. If the 
+						<para>This option will make OProfile include samples related to running in the kernel. If the 
 							<emphasis role="italic"><code>vmlinux</code></emphasis> file is specified, the profile will include details of the specific kernel modules in use. Otherwise, kernel samples will be grouped under the name <code>no-vmlinux</code>.
 						</para>
 					</listitem>
 				</varlistentry>
 			</variablelist>
-			<para>The differences between options is illustrated in the following OProfile view screenshot:</para>
+			<para>The differences between the options are illustrated in the following OProfile view screenshot:</para>
 			<para>
 				<mediaobject>
 					<imageobject>
@@ -630,7 +648,7 @@ Eclipse-OProfile plugin install successful.
 	<chapter id="Troubleshooting">
 		<title>Troubleshooting</title>
 		<para>Various problems and their solutions are described here. If you encounter a problem not described here, please 
-			<ulink url="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=&amp;version=0.2">file a bug</ulink>.
+			<ulink url="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=">file a bug</ulink>.
 		</para>
 		<section id="Install_Script_Errors">
 			<title>Install Script Errors</title>
@@ -693,7 +711,7 @@ if [ $? -ne 0 ]; then
 fi
 </literallayout>
 				<para>The <code>
-					<emphasis role="italic">install.sh</emphasis></code> script is fixed in SVN, but not in the 0.2.0 release of the OProfile plug-in for Eclipse.
+					<emphasis role="italic">install.sh</emphasis></code> script is fixed in the most recent version of the OProfile plug-in for Eclipse, but not in the 0.2.0 release.
 				</para>
 			</section>
 			<section id="Error:_cannot_find_opxml_binary.2C_required_plugin_missing">
@@ -710,13 +728,14 @@ fi
 		</section>
 		<section id="No_Samples_From_A_Profile">
 			<title>No Samples From A Profile</title>
-			<para>It is possible for a profile run of a program to return no samples, resulting in an empty OProfile view. This is not always indicative of a problem with either OProfile or the profiled program. OProfile is a system-wide profiling tool; hence, other active processes running on your system may overshadow your program. This is particularly true if the profiled program is not CPU intensive. </para>
+			<para>It is possible for a profile run of a program to return no samples, resulting in no <code>current</code> session displayed. This is not always indicative of a problem with either OProfile or the profiled program. OProfile is a system-wide profiling tool; hence, other active processes running on your system may overshadow your program. This is particularly true if the profiled program is not CPU intensive. </para>
 			<para>In addition, the 
 				<emphasis role="italic">Event</emphasis> you choose (selected through the 
 				<emphasis role="bold">
 					<emphasis role="italic">Events</emphasis>
 				</emphasis> tab, as described in 
-				<link linkend="Regular_Mode">Regular Mode</link>) could cause a profile to return no samples. Note that profiling through OProfile is neither deterministic nor consistent; two subsequent runs may output very different results. In some cases, one run can result in no samples, while another run on the same program can result in many samples. The OProfile online documentation has other useful information 
+				<link linkend="Regular_Mode">Regular Mode</link>) could cause a profile to return no samples; for example the event 
+				<emphasis role="italic">BR_CND_MISSP_EXEC</emphasis> will only provide samples if a branch was mispredicted by the processor. Note also that due to the statistical nature of OProfile, profiling is neither deterministic nor consistent; two subsequent runs may output very different results. In some cases, one run can result in no samples, while another run on the same program can result in many samples. The OProfile online documentation has other useful information 
 				<ulink url="http://oprofile.sourceforge.net/doc/results.html#no-results">here</ulink>.
 			</para>
 			<para>Solution: The following suggestions could help you generate more samples from a profile run:</para>
@@ -743,7 +762,7 @@ fi
 		</section>
 		<section id="Log_Reader_Hangs">
 			<title>Log Reader Hangs</title>
-			<para>If the Oprofile daemon log file is too large, the log reader may hang and possibly cause the OProfile plug-in to crash. This occurs when the 
+			<para>If the OProfile daemon log file is too large, the log reader may hang and possibly cause the OProfile plug-in to crash. This occurs when the 
 				<emphasis role="italic">verbosity</emphasis> option is set to <code>all</code>, which results in several hundred MiB of text in the log over several profile runs. If you do require all this data in the log file, do not launch the log reader. Delete or backup the log file before running the log reader again.
 			</para>
 		</section>
@@ -830,7 +849,7 @@ fi
 				</listitem>
 			</variablelist>
 			<para>
-				<emphasis role="bold">Warning:</emphasis> this is rarely necessary; in some cases, rebuilding the <code>opxml</code> binary may break an otherwise working Eclipse installation. You should only rebuild the <code>opxml</code> binary if you are sure that doing so is the only remaining option in fixing the OProfile plug-in for Eclipse.
+				<emphasis role="bold">Warning:</emphasis> this is rarely necessary; in some cases, rebuilding the <code>opxml</code> binary may break an otherwise working OProfile plug-in installation. You should only rebuild the <code>opxml</code> binary if you are sure that doing so is the only remaining option in fixing the OProfile plug-in for Eclipse.
 			</para>
 			<para>To rebuild the <code>opxml</code> binary, perform the following steps</para>
 			<orderedlist>

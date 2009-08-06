@@ -56,7 +56,7 @@
 				<i><code>vmlinux</code></i> file contains debugging information required by OProfile. Note that the compressed 
 				<i>vmlinux</i> file, often named 
 				<i><code>vmlinuz</code></i>, cannot be used for this purpose. 
-				<br/> Note: To use this option, you need to enable the 
+				<br/> Note: For this option to have any effect, you must enable the 
 				<b>
 					<i>Include dependent kernel modules</i>
 				</b> option.
@@ -64,15 +64,15 @@
 		</dl>
 		<dl>
 			<dt>Include dependent shared libraries</dt>
-			<dd>This option will make OProfile keep samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results.</dd>
+			<dd>This option will make OProfile include samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results.</dd>
 		</dl>
 		<dl>
 			<dt>Include dependent kernel modules</dt>
-			<dd>This option will make OProfile keep samples related to running in the kernel. If the 
+			<dd>This option will make OProfile include samples related to running in the kernel. If the 
 				<i><code>vmlinux</code></i> file is specified, the profile will include details of the specific kernel modules in use. Otherwise, kernel samples will be grouped under the name <code>no-vmlinux</code>.
 			</dd>
 		</dl>
-		<p>The differences between options is illustrated in the following OProfile view screenshot:</p>
+		<p>The differences between the options are illustrated in the following OProfile view screenshot:</p>
 		<p>
 			<img border="0" src="images/Screenshot-oprofile_global_differences.png"/>
 		</p>
