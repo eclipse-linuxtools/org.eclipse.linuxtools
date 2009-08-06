@@ -1,3 +1,8 @@
+2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #285866
+	* META-INF/MANIFEST.MF: Change provider to Eclipse.
+
 2009-02-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/parsers/JavaParser.java: Removed.
