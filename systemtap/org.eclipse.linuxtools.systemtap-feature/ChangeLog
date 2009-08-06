@@ -1,7 +1,13 @@
+2009-08-06  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Remove trailing period.
+	Add copyright.
+	* feature.xml: Add copyright.
+
 2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
-	* feature.properties: changed the description
-	* feature.xml: changed the label.
+	* feature.properties: Change the description.
+	* feature.xml: Change the label.
 
 2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
