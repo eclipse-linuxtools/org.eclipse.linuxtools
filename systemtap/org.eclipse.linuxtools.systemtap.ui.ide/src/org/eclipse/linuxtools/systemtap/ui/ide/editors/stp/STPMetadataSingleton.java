@@ -288,8 +288,8 @@ public class STPMetadataSingleton {
 		System.out.println(System.getProperty("user.pwd"));
 
 		System.out.println(System.getProperties());
-		System.out.println(bundle.containsKey("syscall"));
-		System.out.println(bundle.containsKey("syscall."));
+	//	System.out.println(bundle.containsKey("syscall"));
+	//	System.out.println(bundle.containsKey("syscall."));
 		System.out.println(bundle.getKeys());
 	}
 
