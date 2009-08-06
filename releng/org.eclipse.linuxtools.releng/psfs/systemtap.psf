@@ -13,8 +13,5 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.logging,org.eclipse.linuxtools.systemtap.ui.logging"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.structures,org.eclipse.linuxtools.systemtap.ui.structures"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.systemtapgui,org.eclipse.linuxtools.systemtap.ui.systemtapgui"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.dashboard,org.eclipse.linuxtools.systemtap.ui.dashboard"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.dashboardextension,org.eclipse.linuxtools.systemtap.ui.dashboardextension"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.ui.graphicalrun,org.eclipse.linuxtools.systemtap.ui.graphicalrun"/>
 </provider>
 </psf>

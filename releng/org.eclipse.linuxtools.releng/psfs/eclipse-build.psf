@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk/eclipse-build,eclipse-build"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk/eclipse-build-config,eclipse-build-config"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk/eclipse-build-feature,eclipse-build-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk,eclipse-build"/>
 </provider>
 </psf>
