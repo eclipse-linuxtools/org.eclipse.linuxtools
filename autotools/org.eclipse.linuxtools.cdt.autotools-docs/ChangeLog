@@ -1,3 +1,8 @@
+2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #285865
+	* plugin.properties: Change Provider to Eclipse instead of Eclipse.org.
+
 2009-06-05  Andrew Overholt  <overholt@redhat.com>
 
 	* Fix up after erroneous SVN operation.
