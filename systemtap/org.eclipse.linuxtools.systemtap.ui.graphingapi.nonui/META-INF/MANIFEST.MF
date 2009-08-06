@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GraphingAPI NonUI Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui;singleton:=true
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.internal.GraphingAPINonUIPlugin
-Bundle-Vendor: Eclipse
+Bundle-Vendor: IBM
 Export-Package: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.adapters,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.aggregates,

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-
-<toc label="Tasks" link_to="toc.xml#tasks"> 
-	<topic label="Importing/Exporting Data Sets"  href="documentation/html/tasks/importDataSet.html" /> 
-	<topic label="Making Graphs"  href="documentation/html/tasks/makingGraphs.html" /> 
-	<topic label="Opening Script Output"  href="documentation/html/tasks/openScriptOutput.html" /> 
-	<topic label="Saving Graph Images"  href="documentation/html/tasks/savingGraphImage.html" /> 
-</toc>

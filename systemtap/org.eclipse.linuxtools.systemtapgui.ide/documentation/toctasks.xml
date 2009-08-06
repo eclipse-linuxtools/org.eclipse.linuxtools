@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-
-<toc label="Tasks" link_to="toc.xml#tasks"> 
-	<topic label="Creating systemtap scripts"  href="documentation/html/tasks/creatingSystemtapScripts.html" /> 
-	<topic label="Using the STP Editor" href="documentation/html/tasks/usingTheSTPEditor.html" /> 
-	<topic label="Viewing data charts"  href="documentation/html/tasks/viewingDataCharts.html" /> 
-</toc>

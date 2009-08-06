@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.systemtap.backup"
+      id="org.eclipse.linuxtools.systemtap"
       label="%featureName"
       version="0.1.0.qualifier"
       provider-name="%provider">
