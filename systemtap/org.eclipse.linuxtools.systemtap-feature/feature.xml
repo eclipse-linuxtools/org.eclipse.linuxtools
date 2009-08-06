@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.systemtap.ui"
+      id="org.eclipse.linuxtools.systemtap"
       label="%description"
       version="1.0.0"
       provider-name="%featureProvider">
