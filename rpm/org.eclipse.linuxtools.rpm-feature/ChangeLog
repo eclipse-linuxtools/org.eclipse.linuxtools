@@ -1,3 +1,7 @@
+2009-08-06  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.xml: Remove doc plugin for now.
+
 2009-07-20  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* feature.xml: Remove unpack="false" for the doc plugin.
