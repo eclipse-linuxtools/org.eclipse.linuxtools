@@ -1,3 +1,7 @@
+2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* feature.xml:renaming to systemtap.backup 
+
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Remove .feature from name.
