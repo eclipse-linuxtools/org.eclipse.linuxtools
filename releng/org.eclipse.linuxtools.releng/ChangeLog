@@ -1,3 +1,11 @@
+2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* maps/linuxtools.map: Update with new systemtap package names
+	* psfs/linuxtools.psf: Likewise.
+	* psfs/linuxtoolsAndAthena.psf:  Likewise.
+	* psfs/systemtap.psf:  Likewise.
+
+
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* category.xml: Update autotools and systemtap feature IDs.
