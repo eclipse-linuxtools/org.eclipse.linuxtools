@@ -563,7 +563,7 @@
 		</para>
 		<section id="Analyzing_Cachegrind_Profile_Results">
 			<title>Analyzing Cachegrind Profile Results</title>
-			<para>The results of a Cachegrind profile run are displayed in the Valgrind view. These results show Cachegrind's cache/branch data in different levels of granularity. Double-clicking on any file, function, or line will open the corresponding source file and place the insertion point on the appropriate function (if such a link can be resolved).</para>
+			<para>The results of a Cachegrind profile run are displayed in the Valgrind view. These results show Cachegrind's cache/branch data in different levels of granularity. Double-clicking on any file, function, or line will open the corresponding source file and place the cursor on the appropriate location (if the source can be resolved).</para>
 			<para>
 
 				<mediaobject>
