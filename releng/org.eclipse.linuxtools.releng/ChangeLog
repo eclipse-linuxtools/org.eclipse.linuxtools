@@ -1,5 +1,9 @@
 2009-08-06  Andrew Overholt  <overholt@redhat.com>
 
+	* category.xml: Remove references to nightly update site.
+
+2009-08-06  Andrew Overholt  <overholt@redhat.com>
+
 	Bug #285778
 
 	* category.xml: Add "Additional Library API Hoverhelp" category.
