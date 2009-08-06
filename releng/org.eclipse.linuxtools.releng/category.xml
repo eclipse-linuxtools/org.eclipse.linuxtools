@@ -5,43 +5,43 @@
       Nightly builds of Linux Tools project.
    </description>
    <feature url="features/org.eclipse.linuxtools.cdt.autotools_${org.eclipse.linuxtools.cdt.autotools.version}.jar" id="org.eclipse.linuxtools.cdt.autotools" version="${org.eclipse.linuxtools.cdt.autotools.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover_${org.eclipse.linuxtools.cdt.libhover.version}.jar" id="org.eclipse.linuxtools.cdt.libhover" version="${org.eclipse.linuxtools.cdt.libhover.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib_${org.eclipse.linuxtools.cdt.libhover.newlib.version}.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib" version="${org.eclipse.linuxtools.cdt.libhover.newlib.version}">
-      <category name="Additional Library API Hoverhelp"/>
+      <category name="Linux Tools Additional Library API Hoverhelp"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_${org.eclipse.linuxtools.changelog.version}.jar" id="org.eclipse.linuxtools.changelog" version="${org.eclipse.linuxtools.changelog.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.oprofile_${org.eclipse.linuxtools.oprofile.version}.jar" id="org.eclipse.linuxtools.oprofile" version="${org.eclipse.linuxtools.oprofile.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.rpm_${org.eclipse.linuxtools.rpm.version}.jar" id="org.eclipse.linuxtools.rpm" version="${org.eclipse.linuxtools.rpm.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_${org.eclipse.linuxtools.rpm.ui.editor.version}.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="${org.eclipse.linuxtools.rpm.ui.editor.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.rpmstubby_${org.eclipse.linuxtools.rpmstubby.version}.jar" id="org.eclipse.linuxtools.rpmstubby" version="${org.eclipse.linuxtools.rpmstubby.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.systemtap_${org.eclipse.linuxtools.systemtap.version}.jar" id="org.eclipse.linuxtools.systemtap" version="${org.eclipse.linuxtools.systemtap.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.valgrind_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.valgrind" version="${org.eclipse.linuxtools.valgrind.version}">
-      <category name="Linux Tools Features"/>
+      <category name="Linux Tools"/>
    </feature>
-   <category-def name="Linux Tools Features" label="Linux Tools Features">
+   <category-def name="Linux Tools" label="Linux Tools">
       <description>
-         Eclipse Linux Tools features
+         Eclipse Linux Tools
       </description>
    </category-def>
-      <category-def name="Additional Library API Hoverhelp" label="Additional Library API Hoverhelp">
+      <category-def name="Linux Tools Additional Library API Hoverhelp" label="Linux Tools Additional Library API Hoverhelp">
       <description>
-         Optional library API documentation for use with hover help and completion
+         Optional library API documentation for use with C/C++ hover help and completion
       </description>
    </category-def>
 </site>

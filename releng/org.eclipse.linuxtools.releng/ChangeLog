@@ -1,6 +1,8 @@
 2009-08-06  Andrew Overholt  <overholt@redhat.com>
 
-	Bug #285778
+	* category.xml: Linux Tools Features -> Linux Tools; alphabetize.
+
+2009-08-06  Andrew Overholt  <overholt@redhat.com>
 
 	* category.xml: Add "Additional Library API Hoverhelp" category.
 
