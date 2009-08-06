@@ -1,3 +1,7 @@
+2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* feature.xml:renaming systemtap.ui to systemtap
+
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: use feature.properties variables.
