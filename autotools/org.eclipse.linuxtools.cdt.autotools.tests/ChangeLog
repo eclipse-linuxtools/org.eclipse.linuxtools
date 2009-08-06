@@ -1,3 +1,9 @@
+2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutoconfTextHoverTest.java (testbadFile): Remove
+	warnings. 
+	(testBadHoverInfo): Ditto.
+
 2009-08-05  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #261719

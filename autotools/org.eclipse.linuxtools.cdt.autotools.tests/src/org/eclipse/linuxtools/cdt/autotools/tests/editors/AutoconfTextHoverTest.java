@@ -31,6 +31,7 @@ public class AutoconfTextHoverTest extends TestCase {
 	ProjectTools tools;
 	private IProject project;
 	private IFile configureInFile;
+	@SuppressWarnings("unused")
 	private IFile testbadFile;
 	private AutoconfTextHover textHover;
 	private AutoconfEditor editor;
@@ -90,8 +91,8 @@ public class AutoconfTextHoverTest extends TestCase {
 	public void testBadHoverInfo() {
 		String autoconfVersion = null;
 		String automakeVersion = null;
-		String autoconfDocName = textHover.AUTOCONF_MACROS_DOC_NAME;
-		String automakeDocName = textHover.AUTOMAKE_MACROS_DOC_NAME;
+		String autoconfDocName = AutoconfTextHover.AUTOCONF_MACROS_DOC_NAME;
+		String automakeDocName = AutoconfTextHover.AUTOMAKE_MACROS_DOC_NAME;
 		try {
 			autoconfVersion = project.getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION);
 			automakeVersion = project.getPersistentProperty(AutotoolsPropertyConstants.AUTOMAKE_VERSION);
