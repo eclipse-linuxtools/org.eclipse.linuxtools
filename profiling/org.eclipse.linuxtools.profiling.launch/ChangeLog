@@ -1,3 +1,7 @@
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Change provider from Eclipse.org to Eclipse.
+
 2009-07-30  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/Messages.java: Removed.
