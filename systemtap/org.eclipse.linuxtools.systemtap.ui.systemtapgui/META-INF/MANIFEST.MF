@@ -4,7 +4,7 @@ Bundle-Name: SystemTapGUI Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.systemtapgui;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.systemtapgui.internal.SystemTapGUIPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences
