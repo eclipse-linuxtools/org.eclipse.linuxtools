@@ -1,3 +1,7 @@
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Bundle-Localization.
+
 2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #285866
