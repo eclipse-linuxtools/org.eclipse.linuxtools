@@ -4,7 +4,7 @@ Bundle-Name: ConsoleLog Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.consolelog;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.consolelog,
  org.eclipse.linuxtools.systemtap.ui.consolelog.actions,
