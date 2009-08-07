@@ -4,7 +4,7 @@ Bundle-Name: Logging Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.logging;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.logging.internal.LoggingPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.logging
 Require-Bundle: org.eclipse.ui,
