@@ -1,3 +1,8 @@
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add newlib feature so it gets built (category.xml in our
+	releng project determines where it is visible on the update site).
+
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Use newly-renamed autotools and systemtap features.
