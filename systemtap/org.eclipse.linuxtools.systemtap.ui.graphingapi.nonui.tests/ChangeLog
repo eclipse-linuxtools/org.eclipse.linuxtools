@@ -1,7 +1,3 @@
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
-	* META-INF/MANIFEST.MF: Make version 0.3.0.qualifier.
-
-2009-08-07  Andrew Overholt  <overholt@redhat.com>
-
 	* META-INF/MANIFEST.MF: Change provider from IBM to Eclipse.
