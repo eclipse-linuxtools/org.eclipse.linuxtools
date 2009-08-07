@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.ide.tests
 Bundle-Version: 1.0.0
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.ide.tests.IDEPlugin
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
