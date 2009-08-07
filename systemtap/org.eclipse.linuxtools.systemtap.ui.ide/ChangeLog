@@ -1,3 +1,7 @@
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Change provider from IBM to Eclipse.
+
 2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPMetadataSingleton.java (parse): 

@@ -4,7 +4,7 @@ Bundle-Name: IDE Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.ide;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.ide,
  org.eclipse.linuxtools.systemtap.ui.ide.actions,
