@@ -1,3 +1,7 @@
+2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.properties: Fix provider to be Eclipse not Eclipse.org.
+
 2009-08-06  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* feature.xml: Remove doc plugin for now.
