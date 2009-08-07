@@ -4,7 +4,7 @@ Bundle-Name: GraphingAPI UI Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphingapi.ui;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: 
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.datadisplay,
