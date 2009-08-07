@@ -4,7 +4,7 @@ Bundle-Name: Graphing Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphing;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphing.internal.GraphingPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.graphing,
  org.eclipse.linuxtools.systemtap.ui.graphing.structures,
