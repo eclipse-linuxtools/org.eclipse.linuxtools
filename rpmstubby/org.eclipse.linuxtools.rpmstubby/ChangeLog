@@ -1,3 +1,7 @@
+2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
+
 2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump release to 0.3.
