@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.index.IIndexManager;
-import org.eclipse.cdt.core.index.IndexerSetupParticipant;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.testplugin.CProjectHelper;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
@@ -59,20 +58,7 @@ import org.osgi.framework.Bundle;
 public abstract class AbstractTest extends TestCase {
 	private static final String BIN_DIR = "Debug"; //$NON-NLS-1$
 	protected ICProject proj;
-	protected IndexerSetupParticipant indexerParticipant;
-	
-	public AbstractTest() {
-		indexerParticipant = new IndexerSetupParticipant() {
-			@Override
-			public boolean postponeIndexerSetup(ICProject project) {
-				// Postpone indexing until project is imported
-				return true;
-			}
-		};
 		
-		CCorePlugin.getIndexManager().addIndexerSetupParticipant(indexerParticipant);
-	}
-	
 	protected ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
@@ -155,15 +141,9 @@ public abstract class AbstractTest extends TestCase {
 		if (!status.isOK()) {
 			throw new CoreException(status);
 		}
-
-		// Project should not be indexed yet
-		IIndexManager indexManager = CCorePlugin.getIndexManager();
-		assertTrue(indexManager.isIndexerSetupPostponed(proj));
-		
-		// Re-enable the indexer 
-		indexerParticipant.notifyIndexerSetup(proj);
-		
+	
 		// Index the project
+		IIndexManager indexManager = CCorePlugin.getIndexManager();
 		indexManager.reindex(proj);
 		indexManager.joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
 		
