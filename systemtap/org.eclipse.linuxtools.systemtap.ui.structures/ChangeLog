@@ -1,5 +1,9 @@
 2009-08-10  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
+	* META-INF/MANIFEST.MF: undoing previous commit
+
+2009-08-10  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
 	* plugin.properties: New file.
 	* META-INF/MANIFEST.MF: Externalize Bundle-Name,Bundle-Vendor
 
