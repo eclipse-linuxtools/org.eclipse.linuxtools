@@ -1,3 +1,11 @@
+2009-08-10  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/messages.properties: Added keys.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchConfigurationDelegate.java: Suppression file
+	attribute now contains a list.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindOptionsTab.java: Changed suppression
+	file control to a List and corresponding attributes.
+
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #285861

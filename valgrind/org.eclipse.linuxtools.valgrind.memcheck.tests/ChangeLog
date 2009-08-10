@@ -1,3 +1,11 @@
+2009-08-10  Elliott Baron  <ebaron@redhat.com>
+
+	* resources/basicTest/testsuppfile2.supp: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/DoubleClickTest.java: Add test case
+	for source lookup after launch removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/LaunchConfigTabTest.java: Test case
+	for multiple suppression files.
+
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #285861
