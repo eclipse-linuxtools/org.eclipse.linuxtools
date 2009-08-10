@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: IDE Plug-in
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.ide;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin
-Bundle-Vendor: Eclipse
+Bundle-Vendor: %provider
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.ide,
  org.eclipse.linuxtools.systemtap.ui.ide.actions,
@@ -19,6 +19,8 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.ui.logging,
  org.eclipse.core.resources;bundle-version="3.4.1"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.filesystem,
+ org.eclipse.jface.text.source,
+ org.eclipse.linuxtools.systemtap.ui.editor,
  org.eclipse.linuxtools.systemtap.ui.graphing,
  org.eclipse.linuxtools.systemtap.ui.graphing.views,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets,
