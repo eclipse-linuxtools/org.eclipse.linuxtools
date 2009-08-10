@@ -15,7 +15,6 @@ Export-Package: org.eclipse.linuxtools.internal.profiling.tests,
  org.eclipse.linuxtools.profiling.tests
 Import-Package: org.eclipse.cdt.build.core.scannerconfig,
  org.eclipse.cdt.core,
- org.eclipse.cdt.core.dom,
  org.eclipse.cdt.core.index,
  org.eclipse.cdt.core.model,
  org.eclipse.cdt.core.testplugin,

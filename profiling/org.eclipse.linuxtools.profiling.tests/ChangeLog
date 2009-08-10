@@ -1,3 +1,9 @@
+2009-08-10  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Remove unused package.
+	* src/org/eclipse/linuxtools/profiling/tests/AbstractTest.java: Remove code that
+	turns off indexer and corresponding assertion.
+
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
 	* plugin.properties: Change provider from Eclipse.org to Eclipse.
