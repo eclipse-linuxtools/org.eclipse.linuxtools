@@ -129,7 +129,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testWSSuppresions() throws Exception {		
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		String text = "${workspace_loc:/basicTest/testsuppfile.supp}"; //$NON-NLS-1$
-		tab.getSuppFileText().setText(text);
+		tab.getSuppFileList().add(text);
 		ILaunch launch = saveAndLaunch(wc, "testWSSuppresions"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
@@ -146,7 +146,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testSuppressions() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
-		tab.getSuppFileText().setText(suppPath.toOSString());
+		tab.getSuppFileList().add(suppPath.toOSString());
 		ILaunch launch = saveAndLaunch(wc, "testSuppressions"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
@@ -158,11 +158,30 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			fail();
 		}
 	}
+	
+	public void testSuppressionsMultiple() throws Exception {
+		ILaunchConfigurationWorkingCopy wc = initConfig();
+		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile.supp")).getLocation(); //$NON-NLS-1$
+		IPath suppPath2 = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/testsuppfile2.supp")).getLocation(); //$NON-NLS-1$
+		tab.getSuppFileList().add(suppPath.toOSString());
+		tab.getSuppFileList().add(suppPath2.toOSString());
+		ILaunch launch = saveAndLaunch(wc, "testSuppressionsMultiple"); //$NON-NLS-1$
+		IProcess[] p = launch.getProcesses();
+		if (p.length > 0) {
+			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
+			assertEquals(0, p[0].getExitValue());
+			assertTrue(cmd.contains("--suppressions=" + suppPath.toOSString())); //$NON-NLS-1$
+			assertTrue(cmd.contains("--suppressions=" + suppPath2.toOSString())); //$NON-NLS-1$
+		}
+		else {
+			fail();
+		}
+	}
 
 	public void testSuppressionsSpaces() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
 		IPath suppPath = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path("basicTest/test suppfile.supp")).getLocation(); //$NON-NLS-1$
-		tab.getSuppFileText().setText(suppPath.toOSString());
+		tab.getSuppFileList().add(suppPath.toOSString());
 		ILaunch launch = saveAndLaunch(wc, "testSuppressionsSpaces"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
@@ -496,7 +515,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	public void testValgrindError() throws Exception {
 		String notExistentFile = "DOES NOT EXIST"; //$NON-NLS-1$
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		tab.getSuppFileText().setText(notExistentFile);
+		tab.getSuppFileList().add(notExistentFile);
 		tab.performApply(wc);
 		config = wc.doSave();
 

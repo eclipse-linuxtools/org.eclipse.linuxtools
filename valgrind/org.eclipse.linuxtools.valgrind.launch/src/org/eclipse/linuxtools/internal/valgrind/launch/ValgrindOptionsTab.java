@@ -10,6 +10,8 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.launch;
 
+import java.util.Arrays;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -42,10 +44,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -67,7 +69,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Spinner maxStackFrameSpinner;
 	protected Button mainStackSizeButton;
 	protected Spinner mainStackSizeSpinner;
-	protected Text suppFileText;
+	protected List suppFileList;
 
 	protected String tool;
 	protected String[] tools;
@@ -306,19 +308,26 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	protected void createSuppressionsOption(Composite top) {
-		Composite browseTop = new Composite(top, SWT.NONE);		
-		browseTop.setLayout(new GridLayout(4, false));
-		GridData browseData = new GridData(GridData.FILL_HORIZONTAL);
+		Composite browseTop = new Composite(top, SWT.BORDER);		
+		browseTop.setLayout(new GridLayout(2, false));
+		GridData browseData = new GridData(GridData.FILL_BOTH);
 		browseTop.setLayoutData(browseData);
 
 		Label suppFileLabel = new Label(browseTop, SWT.NONE);
 		suppFileLabel.setText(Messages.getString("ValgrindOptionsTab.suppressions_file")); //$NON-NLS-1$
 		
-		suppFileText = new Text(browseTop, SWT.BORDER);
-		suppFileText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		suppFileText.addModifyListener(modifyListener);
+		createVerticalSpacer(browseTop, 1);
+		
+		suppFileList = new List(browseTop, SWT.BORDER);
+		suppFileList.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		Button workspaceBrowseButton = createPushButton(browseTop, Messages.getString("ValgrindOptionsTab.Workspace"), null);  //$NON-NLS-1$
+		Composite buttonTop = new Composite(browseTop, SWT.NONE);
+		GridLayout buttonLayout = new GridLayout();
+		buttonLayout.marginWidth = buttonLayout.marginHeight = 0;
+		buttonTop.setLayout(buttonLayout);
+		buttonTop.setLayoutData(new GridData(SWT.CENTER, SWT.BEGINNING, false, false));
+		
+		Button workspaceBrowseButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.Workspace"), null);  //$NON-NLS-1$
 		workspaceBrowseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(), new WorkbenchContentProvider());
@@ -330,18 +339,31 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 					IResource resource = (IResource) dialog.getFirstResult();
 					String arg = resource.getFullPath().toString();
 					String fileLoc = VariablesPlugin.getDefault().getStringVariableManager().generateVariableExpression("workspace_loc", arg); //$NON-NLS-1$
-					suppFileText.setText(fileLoc);
+					suppFileList.add(fileLoc);
+					updateLaunchConfigurationDialog();
 				}
 			}
 		});
-		Button fileBrowseButton = createPushButton(browseTop, Messages.getString("ValgrindOptionsTab.File_System"), null); //$NON-NLS-1$
+		Button fileBrowseButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.File_System"), null); //$NON-NLS-1$
 		fileBrowseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				String filePath = suppFileText.getText();
+				String filePath = null;
 				FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
 				filePath = dialog.open();
 				if (filePath != null) {
-					suppFileText.setText(filePath);
+					suppFileList.add(filePath);
+					updateLaunchConfigurationDialog();
+				}
+			}
+		});
+		Button removeButton = createPushButton(buttonTop, Messages.getString("ValgrindOptionsTab.Supp_remove"), null); //$NON-NLS-1$
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int[] selected = suppFileList.getSelectionIndices();
+				if (selected.length > 0) {
+					suppFileList.remove(selected);
+					updateLaunchConfigurationDialog();
 				}
 			}
 		});
@@ -442,7 +464,8 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			errorLimitButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, LaunchConfigurationConstants.DEFAULT_GENERAL_ERRLIMIT));
 			showBelowMainButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN));
 			maxStackFrameSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME));
-			suppFileText.setText(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE));
+			java.util.List<?> suppFiles = configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILES);
+			suppFileList.setItems(suppFiles.toArray(new String[suppFiles.size()]));
 			
 			// 3.4.0 specific
 			Version ver = getPlugin().getValgrindVersion();
@@ -474,26 +497,21 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private boolean isGeneralValid() {
-		String strpath = suppFileText.getText();
-		boolean result = false;
-		if (strpath.equals(EMPTY_STRING)) {
-			result = true;
-		}
-		else {
+		String[] suppFiles = suppFileList.getItems();
+		boolean result = true;
+		for (int i = 0; i < suppFiles.length && result; i++) {
 			try {
-				IPath suppfile = getPlugin().parseWSPath(strpath);
-				if (suppfile.toFile().exists()) {
-					result = true;
+				IPath suppfile = getPlugin().parseWSPath(suppFiles[i]);
+				if (!suppfile.toFile().exists()) {
+					setErrorMessage(NLS.bind(Messages.getString("ValgrindOptionsTab.suppressions_file_doesnt_exist"), suppFiles[i])); //$NON-NLS-1$
+					result = false;
 				}
 			} catch (CoreException e) {
 				// should only occur if there's a cycle in variable substitution
 				e.printStackTrace();
 			}
 		}
-		
-		if (!result) {
-			setErrorMessage(NLS.bind(Messages.getString("ValgrindOptionsTab.suppressions_file_doesnt_exist"), strpath)); //$NON-NLS-1$
-		}
+
 		return result;
 	}
 
@@ -508,7 +526,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, errorLimitButton.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, showBelowMainButton.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, maxStackFrameSpinner.getSelection());
-		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, suppFileText.getText());
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, Arrays.asList(suppFileList.getItems()));
 		
 		// 3.4.0 specific
 		try {
@@ -537,7 +555,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_ERRLIMIT, LaunchConfigurationConstants.DEFAULT_GENERAL_ERRLIMIT);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME);
-		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE);
+		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILES);
 		
 		// 3.4.0 specific
 		try {
@@ -581,7 +599,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	private void checkMainStackEnablement() {
 		mainStackSizeSpinner.setEnabled(mainStackSizeButton.getSelection());
 	}
-
+	
 	public Button getTraceChildrenButton() {
 		return traceChildrenButton;
 	}
@@ -622,8 +640,8 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		return mainStackSizeSpinner;
 	}
 
-	public Text getSuppFileText() {
-		return suppFileText;
+	public List getSuppFileList() {
+		return suppFileList;
 	}
 
 	public Combo getToolsCombo() {

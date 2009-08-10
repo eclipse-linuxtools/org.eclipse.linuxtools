@@ -309,14 +309,13 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			}
 		}
 		
-		String strpath = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILE, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILE);
-		if (!strpath.equals(EMPTY_STRING)) {
-			IPath suppfile = getPlugin().parseWSPath(strpath);
+		List<?> suppFiles = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILES); 
+		for (Object strpath : suppFiles) {
+			IPath suppfile = getPlugin().parseWSPath((String) strpath);
 			if (suppfile != null) {
 				opts.add(CommandLineConstants.OPT_SUPPFILE + EQUALS + suppfile.toOSString());
 			}
 		}
-
 		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config)));		
 
 		String[] ret = new String[opts.size()];

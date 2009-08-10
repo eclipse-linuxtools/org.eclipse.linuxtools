@@ -12,6 +12,8 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
 import java.io.File;
 
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -95,6 +97,35 @@ public class DoubleClickTest extends AbstractMemcheckTest {
 	public void testDoubleClickLine() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
 		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+
+		doDoubleClick();
+		
+		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		if (editor instanceof ITextEditor) {
+			ITextEditor textEditor = (ITextEditor) editor;
+			
+			ISelection selection = textEditor.getSelectionProvider().getSelection();
+			if (selection instanceof TextSelection) {
+				TextSelection textSelection = (TextSelection) selection;
+				int line = textSelection.getStartLine() + 1; // zero-indexed
+				
+				assertEquals(frame.getLine(), line);
+			}
+			else {
+				fail();
+			}
+		}
+		else {
+			fail();
+		}
+	}
+	
+	public void testDoubleClickLaunchRemoved() throws Exception {
+		ILaunchConfiguration config = createConfiguration(proj.getProject());
+		ILaunch launch = doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+		
+		// Remove launch - tests #284919
+		DebugPlugin.getDefault().getLaunchManager().removeLaunch(launch);
 
 		doDoubleClick();
 		
