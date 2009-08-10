@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GraphingAPI NonUI Plug-in (Incubation)
+Bundle-Name: GraphingAPI NonUI Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.internal.GraphingAPINonUIPlugin
