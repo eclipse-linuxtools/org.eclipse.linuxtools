@@ -78,10 +78,16 @@ public class SuppressionsContentAssistProcessor implements
 	private String completionWord(IDocument doc, int offset)
 			throws BadLocationException {
 		String word = null;
-		for (int n = offset - 1; n >= 0 && word == null; n--) {
-			char c = doc.getChar(n);
-			if (!Character.isLetterOrDigit(c)) {
-				word = doc.get(n + 1, offset - n - 1);
+		if (offset > 0) {
+			for (int n = offset - 1; n >= 0 && word == null; n--) {
+				char c = doc.getChar(n);
+				if (!Character.isLetterOrDigit(c)) {
+					word = doc.get(n + 1, offset - n - 1);
+				}
+				else if (n == 0) {
+					// beginning of file
+					word = doc.get(0, offset - n);
+				}
 			}
 		}
 		return word;
@@ -89,9 +95,6 @@ public class SuppressionsContentAssistProcessor implements
 		
 	private String[] getCompletionStrings(String prefix, String toolName) {
 		List<String> words = new ArrayList<String>();
-		if (prefix == null || SuppressionsElementScanner.MEMCHECK.startsWith(prefix)) {
-			words.add(SuppressionsElementScanner.MEMCHECK + ":"); //$NON-NLS-1$
-		}
 		
 		// If the cursor is after "Memcheck:"
 		if (toolName != null && toolName.equals(SuppressionsElementScanner.MEMCHECK)) {			
@@ -101,10 +104,15 @@ public class SuppressionsContentAssistProcessor implements
 				}
 			}
 		}
-		
-		for (String word : SuppressionsElementScanner.CONTEXTS) {
-			if (prefix == null || word.startsWith(prefix)) {
-				words.add(word + ":"); //$NON-NLS-1$
+		else {
+			if (prefix == null || SuppressionsElementScanner.MEMCHECK.startsWith(prefix)) {
+				words.add(SuppressionsElementScanner.MEMCHECK + ":"); //$NON-NLS-1$
+			}
+
+			for (String word : SuppressionsElementScanner.CONTEXTS) {
+				if (prefix == null || word.startsWith(prefix)) {
+					words.add(word + ":"); //$NON-NLS-1$
+				}
 			}
 		}
 		return words.toArray(new String[words.size()]);
@@ -112,13 +120,19 @@ public class SuppressionsContentAssistProcessor implements
 
 	private String getToolName(IDocument doc, int offset) throws BadLocationException {
 		String tool = null;
-		char c = doc.getChar(--offset);
-		// syntax is "toolName:suppressionKind"
-		if (c == ':') {
-			for (int n = offset - 1; n >= 0 && tool == null; n--) {
-				c = doc.getChar(n);
-				if (!Character.isLetter(c)) {
-					tool = doc.get(n + 1, offset - n - 1);
+		if (offset > 0) {
+			char c = doc.getChar(--offset);
+			// syntax is "toolName:suppressionKind"
+			if (c == ':' && offset > 0) {
+				for (int n = offset - 1; n >= 0 && tool == null; n--) {
+					c = doc.getChar(n);
+					if (!Character.isLetter(c)) {
+						tool = doc.get(n + 1, offset - n - 1);
+					}
+					else if (n == 0) {
+						// Beginning of file
+						tool = doc.get(0, offset - n);
+					}
 				}
 			}
 		}

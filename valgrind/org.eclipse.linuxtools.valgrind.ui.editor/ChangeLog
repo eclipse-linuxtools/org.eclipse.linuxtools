@@ -1,3 +1,19 @@
+2009-08-10  Elliott Baron  <ebaron@redhat.com>
+	
+	#285919, #285920
+	* icons/newsupp_wiz.png: New file.
+	* src/org/eclipse/linuxtools/valgrind/ui: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/Messages.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/messages.properties: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/NewSuppressionWizard.java: New file.
+	* META-INF/MANIFEST.MF: New dependencies.
+	* OSGI-INF/l10n/bundle.properties: New keys.
+	* plugin.xml: Extension for new file wizard.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/SuppressionsContentAssistProcessor.java (completionWord): Fixed
+	off-by-one #285920. 
+	(getCompletionStrings): Don't show "Memcheck:" after "Memcheck:". 
+	(getToolName): Fixed off-by-one #285920.
+
 2009-08-05  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Properly spell "qualifier".
