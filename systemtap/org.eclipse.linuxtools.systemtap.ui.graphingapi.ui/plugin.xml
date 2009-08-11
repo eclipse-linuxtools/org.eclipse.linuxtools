@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+		point="org.eclipse.ui.preferencePages">
+		<page
+			name="%preference.graphing.name"
+			id="com.qualityeclipse.generic.prefs.graphingapi"
+			class="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferencePage"/>
+		<page
+			name="%preference.dataTable.name"
+			id="com.qualityeclipse.generic.prefs.graphing.datatable"
+			class="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.DataTablePreferencePage"
+			category="com.qualityeclipse.generic.prefs.graphingapi"/>
+		<page
+			name="%preference.graph.name"
+			id="com.qualityeclipse.generic.prefs.graphing.graph"
+			class="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphPreferencePage"
+			category="com.qualityeclipse.generic.prefs.graphingapi"/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.core.runtime.preferences">
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.PreferenceInitializer"/>
+	</extension>
+</plugin>

@@ -1,0 +1,69 @@
+package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.datasets.table;
+
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataEntry;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableDataSet;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.table.TableParser;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.XMLMemento;
+
+
+import junit.framework.TestCase;
+
+public class TableParserTest extends TestCase {
+	public TableParserTest(String name) {
+		super(name);
+	}
+
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		parser = new TableParser(new String[] {"\\d+", "(\\D+)", "\\d+", "\\D+"}, "\n\n");
+		
+		IMemento m = XMLMemento.createWriteRoot("a");
+		parser.saveXML(m);
+		parser2 = new TableParser(m);
+	}
+	
+	public void testParse() {
+		assertNull(parser.parse(null));
+		assertNull(parser.parse(new StringBuilder("")));
+		assertNull(parser.parse(new StringBuilder("asdf")));
+		assertNull(parser.parse(new StringBuilder("1, ")));
+		assertNull(parser.parse(new StringBuilder("1, 3")));
+		
+		IDataEntry entry = parser.parse(new StringBuilder("1, (2), 3, 4, 5\n\n"));
+		assertNotNull(entry);
+		assertEquals(2, entry.getColCount());
+		assertEquals(2, entry.getRowCount());
+		assertEquals("1", entry.getRow(0)[0]);
+
+		entry = parser2.parse(new StringBuilder("1, 2, 3, 4, 5\n\n"));
+		assertNotNull(entry);
+		assertEquals(2, entry.getColCount());
+		assertEquals(2, entry.getRowCount());
+		assertEquals("1", entry.getRow(0)[0]);
+	}
+	
+	public void testSaveXML() {
+		IMemento m = XMLMemento.createWriteRoot("a");
+		parser.saveXML(m);
+		assertSame(TableDataSet.ID, m.getString("dataset"));
+
+		IMemento[] children = m.getChildren("Series");
+		assertEquals(2, children.length);
+		assertSame("\\d+", children[0].getString("parsingExpression"));
+		assertSame("(\\D+)", children[0].getString("parsingSpacer"));
+		assertSame("\\d+", children[1].getString("parsingExpression"));
+		assertSame("\\D+", children[1].getString("parsingSpacer"));
+		
+		IMemento child = m.getChild("Delimiter");
+		assertSame("\n\n", child.getString("parsingExpression"));
+	}
+	
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+	
+	TableParser parser;
+	TableParser parser2;
+}

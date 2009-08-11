@@ -1,0 +1,16 @@
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Change provider from Eclipse.org to Eclipse.
+
+2009-07-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* .classpath: New file.
+	* .project: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* about.html: New file.
+	* build.properties: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* plugin.properties: New file.
+	* plugin.xml: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/tests/SystemtapGuiMockProcess.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/tests/SystemtapGuiTestsPlugin.java: 

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Editor Plug-in
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.editor;singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.editor.internal.EditorPlugin
+Bundle-Vendor: Eclipse
+Bundle-Localization: plugin
+Export-Package: org.eclipse.linuxtools.systemtap.ui.editor,
+ org.eclipse.linuxtools.systemtap.ui.editor.actions.file
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jface.text;visibility:=reexport,
+ org.eclipse.ui.editors;visibility:=reexport,
+ org.eclipse.ui.workbench.texteditor;visibility:=reexport,
+ org.eclipse.ui;bundle-version="3.4.1"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

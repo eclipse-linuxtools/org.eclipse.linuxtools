@@ -1,0 +1,25 @@
+2009-08-06  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Remove trailing period.
+	Add copyright.
+	* feature.xml: Add copyright.
+
+2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* feature.properties: Change the description.
+	* feature.xml: Change the label.
+
+2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* feature.xml:renaming systemtap.ui to systemtap
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: use feature.properties variables.
+	* feature.properties: Provider:  Eclipse.org -> Eclipse
+
+2009-07-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* ChangeLog: Refactoring. Renaming all packages directories from *.systemtapgui.* to *.systemtap.ui.*
+	* .project: 
+	* feature.xml: 
