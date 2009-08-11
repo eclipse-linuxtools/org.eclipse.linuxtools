@@ -45,8 +45,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 
 public abstract class ChangeLogAction extends Action {
@@ -164,7 +163,7 @@ public abstract class ChangeLogAction extends Action {
 
 		IResource given_resource = myWorkspaceRoot.findMember(editorLoc);
 
-		ChangeLogContainerSelectionDialog dialog = new ChangeLogContainerSelectionDialog(ws
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(ws
 				.getActiveWorkbenchWindow().getShell(), given_resource
 				.getParent(), false, Messages
 				.getString("AddAction.str_ChangeLog_Location")); //$NON-NLS-1$
@@ -282,31 +281,16 @@ public abstract class ChangeLogAction extends Action {
 
 	protected String getDocumentLocation(IEditorPart currentEditor,
 			boolean appendRoot) {
-		
 
-		IFile loc = getDocumentIFile(currentEditor);
-		IEditorInput cc = null;
+		IEditorInput cc;
 		String WorkspaceRoot;
-
 		try {
 		IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
 		WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
-		
-		if (currentEditor instanceof MultiPageEditorPart) {
-			Object ed = ((MultiPageEditorPart) currentEditor).getSelectedPage();
-			if (ed instanceof IEditorPart) 
-				cc = ((IEditorPart) ed).getEditorInput();
-			if (cc instanceof FileEditorInput)
-				return (appendRoot) ? WorkspaceRoot + ((FileEditorInput) cc).getFile().getFullPath().toOSString() :
-					((FileEditorInput) cc).getFile().getFullPath().toOSString();
-		}
-		
-		
 		cc = currentEditor.getEditorInput();
 		} catch(Exception e) {
 			return "";
 		}
-		
 
 		if (cc == null)
 			return "";
@@ -334,8 +318,7 @@ public abstract class ChangeLogAction extends Action {
 			}
 		}
 
-
-		
+		IFile loc = getDocumentIFile(currentEditor);
 		if (appendRoot) {
 			return WorkspaceRoot + loc.getFullPath().toOSString();
 		} else {
