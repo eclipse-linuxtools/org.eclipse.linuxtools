@@ -450,18 +450,26 @@ public class LibHover implements ICHelpProvider {
 		if (info == null)
 			return null;
 		if (methodType != null) {
-			args = resolveArgs(info, methodType.getParameterTypes(), templateTypes);
-			returnType = methodType.getReturnType();
+			try {
+				args = resolveArgs(info, methodType.getParameterTypes());
+				returnType = methodType.getReturnType();
+			} catch (DOMException e) {
+				// TODO Auto-generated catch block
+				return null;
+			}
+//			for (int i = 0; i < args.length; ++i)
+//				System.out.println("args<" + i + "> is " + args[i].toString());
+//			System.out.println("return type is " + returnType.toString());
 			
 		}
 		MemberInfo member = info.getMember(memberName);
 		if (member != null) {
 			MemberInfo m = null;
-			if (!isParmMatch(member, args, templateTypes, info)) {
+			if (!isParmMatch(member, args)) {
 				ArrayList<MemberInfo> members = member.getChildren();
 				for (int i = 0; i < members.size(); ++i) {
 					MemberInfo k = members.get(i);
-					if (isParmMatch(k, args, templateTypes, info)) {
+					if (isParmMatch(k, args)) {
 						m = k;
 						break;
 					}
@@ -505,18 +513,12 @@ public class LibHover implements ICHelpProvider {
 	}
      
  	
-	private boolean isParmMatch(MemberInfo m, String[] args, ArrayList<String> templateTypes, ClassInfo info) {
+	private boolean isParmMatch(MemberInfo m, String[] args) {
 		String[] memberParms = m.getParamTypes();
-		for (int i = 0; i < memberParms.length; ++i) {
-			String[] templateParms = info.getTemplateParms();
-			for (int j = 0; j < templateTypes.size(); ++j) {
-				memberParms[i] = memberParms[i].replaceAll(templateParms[j], templateTypes.get(j));
-			}
-		}
 		return Arrays.equals(memberParms, args);
 	}
 
-	private String[] resolveArgs(ClassInfo info, IType[] parameterTypes, ArrayList<String> templateTypes) {
+	private String[] resolveArgs(ClassInfo info, IType[] parameterTypes) {
 		String[] templateParms = info.getTemplateParms();
 		String[] result = new String[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; ++i) {
@@ -527,11 +529,7 @@ public class LibHover implements ICHelpProvider {
 			while (index >= 0) {
 				// We assume no class has more than 9 template parms.
 				int digit = param.charAt(index + 1) - '0';
-				// where possible, replace template parms with real values
-				if (digit < templateTypes.size())
-					param = param.replaceFirst(param.substring(index, index + 2), templateTypes.get(digit));
-				else
-					param = param.replaceFirst(param.substring(index, index + 2), templateParms[digit]);
+				param = param.replaceFirst(param.substring(index, index + 2), templateParms[digit]);
 				index = param.indexOf("#");
 			}
 			result[i] = param;

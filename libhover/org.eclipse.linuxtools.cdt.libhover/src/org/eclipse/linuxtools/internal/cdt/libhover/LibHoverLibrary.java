@@ -21,12 +21,10 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import org.eclipse.core.filesystem.URIUtil;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.linuxtools.cdt.libhover.ClassInfo;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
 import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
-import org.eclipse.linuxtools.cdt.libhover.LibhoverPlugin;
 import org.eclipse.linuxtools.cdt.libhover.TypedefInfo;
 
 public class LibHoverLibrary {
@@ -100,13 +98,7 @@ public class LibHoverLibrary {
 					URL url = acDoc.toURL();
 					docStream = url.openStream();
 				} else {
-					try {
-						// Try to open the file as local to this plug-in.
-						docStream = FileLocator.openStream(LibhoverPlugin.getDefault().getBundle(), p, false);
-					} catch (IOException e) {
-						// File is not local to plug-in, try file system.
-						docStream = new FileInputStream(p.toFile());
-					}
+					docStream = new FileInputStream(p.toFile());
 				}
 				ObjectInputStream input = new ObjectInputStream(docStream);
 				hoverInfo = (LibHoverInfo)input.readObject();
