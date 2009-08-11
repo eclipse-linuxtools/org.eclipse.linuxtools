@@ -1,3 +1,8 @@
+2009-08-11  Elliott Baron  <ebaron@redhat.com>
+
+	* feature.xml: Remove redundant feature dependencies, set CDT version >= 6.0.0.
+	Bump version to 0.3.0.
+
 2009-05-28  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.properties: Fix featureProvider key.

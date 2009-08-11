@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.profiling.test"
       label="%featureName"
-      version="0.2.0.qualifier"
+      version="0.3.0.qualifier"
       provider-name="%featureProvider">
 
    <description>
@@ -21,6 +21,7 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.junit" version="0.0.0"/>
+      <import plugin="org.eclipse.cdt.managedbuilder.core"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.cdt.core.tests"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
@@ -28,7 +29,6 @@
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.cdt.managedbuilder.core"/>
    </requires>
 
    <plugin
