@@ -1,3 +1,7 @@
+2009-08-11  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.3.0.
+
 2009-08-10  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/launch/messages.properties: Added keys.

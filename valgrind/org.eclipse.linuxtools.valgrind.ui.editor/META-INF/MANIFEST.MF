@@ -21,4 +21,5 @@ Import-Package: org.eclipse.jface.text,
  org.eclipse.ui.editors.text,
  org.eclipse.ui.texteditor,
  org.eclipse.ui.wizards.newresource
-Export-Package: org.eclipse.linuxtools.internal.valgrind.ui.editor
+Export-Package: org.eclipse.linuxtools.internal.valgrind.ui.editor,
+ org.eclipse.linuxtools.internal.valgrind.ui.editor.wizards

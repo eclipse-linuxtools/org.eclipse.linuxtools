@@ -1,3 +1,8 @@
+2009-08-11  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/valgrind/memcheck: Removed.
+	* META-INF/MANIFEST.MF: Bump version to 0.3.0.
+
 2009-08-10  Elliott Baron  <ebaron@redhat.com>
 
 	* resources/basicTest/testsuppfile2.supp: New file.
