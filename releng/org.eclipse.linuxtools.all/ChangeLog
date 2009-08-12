@@ -1,34 +1,3 @@
-2010-05-18  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.properties: Fix provider name.
-
-2010-04-26  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.properties: Match consistent license text (bug #306627).  Update
-	copyright year.
-	* license.html: New file.  HTML version of SUA (bug #306627).
-	* build.properties: Include license.html.
-
-2010-04-12  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.properties: Match consistent license text (bug #306627).
-
-2010-01-18  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.xml: Add gcov feature.
-
-2010-01-17  Francois Chouinard  <fchouinard@gmail.com>
-
-	* feature.xml: Add LTTng/TMF feature.
-
-2009-11-24  Alexander Kurtakov  <akurtakov@redhat.com>
-
-	* feature.xml: Add man viewer feature.
-
-2009-10-08  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.xml: Add GProf feature.
-
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add newlib feature so it gets built (category.xml in our

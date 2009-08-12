@@ -65,28 +65,4 @@
          id="org.eclipse.linuxtools.cdt.libhover.newlib"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.linuxtools.callgraph"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.gprof"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.man"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.lttng"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.tmf"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.gcov"
-         version="0.0.0"/>
-
 </feature>
