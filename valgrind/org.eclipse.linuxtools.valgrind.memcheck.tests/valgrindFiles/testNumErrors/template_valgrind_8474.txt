@@ -1,0 +1,13 @@
+==8474== Use of uninitialised value of size 4
+==8474==    at 0x8048411: main (test.c:19)
+==8474== 
+==8474== Invalid write of size 1
+==8474==    at 0x804842B: main (test.c:20)
+==8474==  Address 0x4025032 is 0 bytes after a block of size 10 alloc'd
+==8474==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==8474==    by 0x8048408: main (test.c:17)
+==8474== 
+==8474== 
+==8474== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==8474==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==8474==    by 0x8048408: main (test.c:17)

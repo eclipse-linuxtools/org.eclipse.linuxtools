@@ -1,0 +1,15 @@
+==9446== Use of uninitialised value of size 4
+==9446==    at 0x8048411: main (test.c:19)
+==9446==  Uninitialised value was created by a stack allocation
+==9446==    at 0x80483FA: main (test.c:16)
+==9446== 
+==9446== Invalid write of size 1
+==9446==    at 0x804842B: main (test.c:20)
+==9446==  Address 0x4025032 is 0 bytes after a block of size 10 alloc'd
+==9446==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==9446==    by 0x8048408: main (test.c:17)
+==9446== 
+==9446== 
+==9446== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==9446==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==9446==    by 0x8048408: main (test.c:17)

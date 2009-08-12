@@ -10,13 +10,10 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.core;
 
-import java.io.IOException;
-
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-public class ValgrindPlugin extends AbstractUIPlugin {
+public class ValgrindPlugin extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = PluginConstants.CORE_PLUGIN_ID;
@@ -55,17 +52,6 @@ public class ValgrindPlugin extends AbstractUIPlugin {
 	 */
 	public static ValgrindPlugin getDefault() {
 		return plugin;
-	}
-	
-	
-	@Override
-	protected void initializeDefaultPreferences(IPreferenceStore store) {
-		ValgrindCommand valCommand = new ValgrindCommand();
-		try {
-			store.setDefault(ValgrindPreferencePage.VALGRIND_PATH, valCommand.whichValgrind());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

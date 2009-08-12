@@ -9,11 +9,14 @@
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
 #include <stdlib.h>
+#include <stdio.h>
+#include <fcntl.h>
 
 #define SIZE 10
 int main() {
 	char *waste = (char *)malloc(sizeof(char) * SIZE);
-	waste[0] = waste[SIZE];
+	int *a;
+	printf("%d\n", *a);
 	waste[SIZE] = 0;
 	return 0;
 }

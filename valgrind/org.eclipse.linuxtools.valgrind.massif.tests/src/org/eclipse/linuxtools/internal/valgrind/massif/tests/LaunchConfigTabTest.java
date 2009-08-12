@@ -21,7 +21,6 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifToolPage;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -103,7 +102,7 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 			assertTrue(cmd.contains("--time-unit=i")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--detailed-freq=10")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--max-snapshots=100")); //$NON-NLS-1$
-			assertFalse(cmd.contains("--alignment=")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--alignment=8")); //$NON-NLS-1$
 		}
 		else {
 			fail();
@@ -323,12 +322,6 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 	
 	public void testAlignment() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		
-		assertFalse(dynamicTab.getAlignmentSpinner().getEnabled());
-		dynamicTab.getAlignmentButton().setSelection(true);
-		dynamicTab.getAlignmentButton().notifyListeners(SWT.Selection, null);
-		assertTrue(dynamicTab.getAlignmentSpinner().getEnabled());
-		
 		dynamicTab.getAlignmentSpinner().setSelection(512);
 		tab.performApply(wc);
 		config = wc.doSave();
@@ -349,12 +342,6 @@ public class LaunchConfigTabTest extends AbstractMassifTest {
 
 	public void testAlignmentBad() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		
-		assertFalse(dynamicTab.getAlignmentSpinner().getEnabled());
-		dynamicTab.getAlignmentButton().setSelection(true);
-		dynamicTab.getAlignmentButton().notifyListeners(SWT.Selection, null);
-		assertTrue(dynamicTab.getAlignmentSpinner().getEnabled());
-		
 		dynamicTab.getAlignmentSpinner().setSelection(63);
 		tab.performApply(wc);
 		config = wc.doSave();

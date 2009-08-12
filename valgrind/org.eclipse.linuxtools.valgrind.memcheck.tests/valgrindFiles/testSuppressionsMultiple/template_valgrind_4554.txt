@@ -1,0 +1,10 @@
+==4554== Invalid write of size 1
+==4554==    at 0x804842B: main (test.c:20)
+==4554==  Address 0x4025032 is 0 bytes after a block of size 10 alloc'd
+==4554==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==4554==    by 0x8048408: main (test.c:17)
+==4554== 
+==4554== 
+==4554== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==4554==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==4554==    by 0x8048408: main (test.c:17)

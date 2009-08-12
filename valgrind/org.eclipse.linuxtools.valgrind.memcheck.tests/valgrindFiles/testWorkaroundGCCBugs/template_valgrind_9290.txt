@@ -1,0 +1,13 @@
+==9290== Use of uninitialised value of size 4
+==9290==    at 0x8048411: main (test.c:19)
+==9290== 
+==9290== Invalid write of size 1
+==9290==    at 0x804842B: main (test.c:20)
+==9290==  Address 0x4025032 is 0 bytes after a block of size 10 alloc'd
+==9290==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==9290==    by 0x8048408: main (test.c:17)
+==9290== 
+==9290== 
+==9290== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==9290==    at 0x4006F3D: malloc (vg_replace_malloc.c:207)
+==9290==    by 0x8048408: main (test.c:17)

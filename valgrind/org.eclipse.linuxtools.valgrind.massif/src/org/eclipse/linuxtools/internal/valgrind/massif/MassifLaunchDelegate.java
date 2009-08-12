@@ -100,9 +100,7 @@ implements IValgrindLaunchDelegate {
 		opts.add(MassifCommandConstants.OPT_TIMEUNIT + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, MassifLaunchConstants.DEFAULT_MASSIF_TIMEUNIT));
 		opts.add(MassifCommandConstants.OPT_DETAILEDFREQ + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, MassifLaunchConstants.DEFAULT_MASSIF_DETAILEDFREQ));
 		opts.add(MassifCommandConstants.OPT_MAXSNAPSHOTS + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS));
-		if (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_BOOL)) {
-			opts.add(MassifCommandConstants.OPT_ALIGNMENT + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL));
-		}
+		opts.add(MassifCommandConstants.OPT_ALIGNMENT + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT));
 
 		return opts.toArray(new String[opts.size()]);
 	}
