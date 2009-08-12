@@ -14,6 +14,9 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.wizards.messages"; //$NON-NLS-1$
+	public static String NoExecutableWizardPage_0;
+	public static String NoExecutableWizardPage_1;
+	public static String NoExecutableWizardPage_2;
 	public static String SpecfileNewWizard_0;
 	public static String SpecfileNewWizard_1;
 	public static String SpecfileNewWizard_2;

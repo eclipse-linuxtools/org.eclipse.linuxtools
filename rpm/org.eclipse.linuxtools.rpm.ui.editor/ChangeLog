@@ -1,3 +1,14 @@
+2009-08-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/NoExecutableWizardPage.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/Messages.java: Aditional string for NoExecutableWizardPage.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java (performFinish): Format.
+	(addPages): Conditionalize pages added.
+	(throwCoreException): Format.
+	(doFinish): Likewise.
+	(.run): Likewise.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.

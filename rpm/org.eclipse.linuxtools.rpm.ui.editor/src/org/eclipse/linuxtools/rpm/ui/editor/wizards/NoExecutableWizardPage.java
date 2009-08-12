@@ -38,7 +38,7 @@ public class NoExecutableWizardPage extends WizardPage {
 		label
 				.setText(Messages.NoExecutableWizardPage_1);
 		// empty label for the last row.
-		new Label(container, SWT.NULL);
+		label = new Label(container, SWT.NULL);
 		setControl(container);
 		this.setTitle(Messages.NoExecutableWizardPage_2);
 	}
