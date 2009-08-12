@@ -13,7 +13,7 @@
       %copyright
    </copyright>
 
-   <license url="%licenseURL">
+   <license url="epl-v10.html">
       %license
    </license>
 
@@ -29,18 +29,6 @@
          id="org.eclipse.linuxtools.oprofile.test"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.linuxtools.callgraph.tests"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.lttng.tests"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.linuxtools.tmf.tests"
-         version="0.0.0"/>
-
    <plugin
          id="org.eclipse.linuxtools.cdt.autotools.tests"
          download-size="0"
@@ -52,20 +40,6 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.gprof.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.gcov.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
 
    <plugin
          id="org.eclipse.test"
@@ -85,12 +59,5 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.cdt.autotools.ui.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
 </feature>
