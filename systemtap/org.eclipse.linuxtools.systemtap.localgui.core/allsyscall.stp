@@ -1,0 +1,16 @@
+global start_time
+global end_time
+
+probe begin {
+	start_time=get_cycles()
+}
+
+probe end {
+	end_time=get_cycles()
+	printf("TIME : %d\n",(end_time - start_time)/10000)
+}
+
+probe syscall.* {
+  if (pid() == target())
+    printf("%d : %s\n", (get_cycles() - start_time)/10000 , name)
+}
