@@ -1,3 +1,12 @@
+2009-08-13  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildPrep): Don't set sources folder.
+	(generateFileCheckSum): Removed.
+	(generateProjectChecksum): Removed.
+	(prepareExport): Do not store checksums.
+	(importSourceRPM): Likewise.
+	(getSpecFile): Return first member of SPECS folder.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
