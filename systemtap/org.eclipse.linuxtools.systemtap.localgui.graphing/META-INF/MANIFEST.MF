@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Graphing Plug-in
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.localgui.graphing; singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: org.eclipse.linuxtools.systemtap.localgui.graphing.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.draw2d
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.eclipse.linuxtools.systemtap.localgui.graphing
+Import-Package: org.eclipse.jface.text,
+ org.eclipse.linuxtools.systemtap.localgui.core,
+ org.eclipse.ui.console,
+ org.eclipse.ui.texteditor,
+ org.eclipse.zest.core.widgets,
+ org.eclipse.zest.layouts,
+ org.eclipse.zest.layouts.algorithms

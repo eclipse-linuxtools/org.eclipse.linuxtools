@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   
+      <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.cdt.ui.views"
+            class="org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView"
+            icon="icons/genericregister_obj.gif"
+            id="org.eclipse.linuxtools.systemtap.localgui.graphing.stapview"
+            name="SystemTapView"
+            restorable="true">
+      </view>
+   </extension>
+   
+      <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.cdt.ui.CPerspective">
+         <view
+               id="org.eclipse.linuxtools.systemtap.localgui.graphing.stapview"
+               minimized="false"
+               relationship="stack">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+
+
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.linuxtools.systemtap.localgui.graphing.actionSet"
+            label="Systemtap Marker Action Set"
+            visible="true">
+         <action
+               class="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.InsertMarkerAction"
+               definitionId="org.eclipse.linuxtools.systemtap.localgui.graphing.command3"
+               id="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.StapAction"
+               label="Insert stap marker function"
+               tooltip="Insert systemtap marker">
+         </action>
+         <action
+               class="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.RemoveMarkerAction"
+               definitionId="org.eclipse.linuxtools.systemtap.localgui.graphing.command4"
+               id="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.StapRemoveAction"
+               label="Remove stap marker function"
+               tooltip="Remove systemtap marker">
+         </action>
+      </actionSet>
+   </extension>
+   
+   	<extension point="org.eclipse.ui.bindings">
+		<key
+        commandId="org.eclipse.linuxtools.systemtap.localgui.graphing.command3"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="Ctrl+5"/>
+  <key
+        commandId="org.eclipse.linuxtools.systemtap.localgui.graphing.command4"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="Ctrl+6">
+  </key>
+	</extension>
+    <extension
+          point="org.eclipse.ui.commands">
+       <command
+             categoryId="org.eclipse.linuxtools.systemtap.localgui.graphing.category2"
+             id="org.eclipse.linuxtools.systemtap.localgui.graphing.command3"
+             name="Insert stap marker function">
+       </command>
+       <category
+             id="org.eclipse.linuxtools.systemtap.localgui.graphing.category2"
+             name="SystemTap">
+       </category>
+       <command
+             categoryId="org.eclipse.linuxtools.systemtap.localgui.graphing.category2"
+             id="org.eclipse.linuxtools.systemtap.localgui.graphing.command4"
+             name="Remove stap marker function">
+       </command>
+    </extension>
+</plugin>
