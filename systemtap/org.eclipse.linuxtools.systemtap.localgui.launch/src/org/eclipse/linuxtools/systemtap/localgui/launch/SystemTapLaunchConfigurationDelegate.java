@@ -336,7 +336,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 						Messages.getString("SystemTapLaunchConfigurationDelegate.0") + //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.7")); //$NON-NLS-1$
 				mess.schedule();
-				IDocument doc = ((TextConsole)Helper.getConsoleByName(config.getName())).getDocument();
+				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
 //				getConsoleByName(config.getName()).clearConsole();
 				File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
 				
