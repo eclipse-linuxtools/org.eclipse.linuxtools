@@ -247,7 +247,7 @@ public class SystemTapView extends ViewPart {
 		// ADD OPTIONS TO THE GRAPH MENU
 		file = new MenuManager(Messages.getString("SystemTapView.0")); //$NON-NLS-1$
 		view = new MenuManager(Messages.getString("SystemTapView.1")); //$NON-NLS-1$
-		errors = new MenuManager("Errors");
+		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
 
 		
@@ -492,14 +492,14 @@ public class SystemTapView extends ViewPart {
 	 */
 	public void createErrorActions() {
 
-		error_errorLog = new Action("Open log") {
+		error_errorLog = new Action(Messages.getString("SystemTapView.OpenLog")) { //$NON-NLS-1$
 			public void run() {
 				boolean error = false;
-				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
+				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
 				BufferedReader buff;
 				try {
 					buff = new BufferedReader(new FileReader(log));
-				String logText = "";
+				String logText = ""; //$NON-NLS-1$
 				String line;
 				
 				while ((line = buff.readLine()) != null) {
@@ -520,10 +520,10 @@ public class SystemTapView extends ViewPart {
 				} finally {
 					if (error) {
 						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-							"ErrorLog reading error",
-							"Error reading error log",
-							"Error log could not be read, most likely this is because" +
-							" the log file could not be found.");
+							Messages.getString("SystemTapView.ErrorMessageName"), //$NON-NLS-1$
+							Messages.getString("SystemTapView.ErrorMessageTitle"), //$NON-NLS-1$
+							Messages.getString("SystemTapView.ErrorMessageBody") + //$NON-NLS-1$
+							Messages.getString("SystemTapView.ErrorMessageBody2")); //$NON-NLS-1$
 						mess.schedule();
 					}
 				}
@@ -532,16 +532,16 @@ public class SystemTapView extends ViewPart {
 		};
 		
 		
-		error_deleteError = new Action("Clear log") {
+		error_deleteError = new Action(Messages.getString("SystemTapView.ClearLog")) { //$NON-NLS-1$
 			public void run() {
 				
 				try {
-					if (!MessageDialog.openConfirm(new Shell(), "Delete logs?", 
-							"This will permanently clear the SystemTap Eclipse error " +
-							"logs. Are you sure you want to ontinue?"))
+					if (!MessageDialog.openConfirm(new Shell(), Messages.getString("SystemTapView.DeleteLogsTitle"),  //$NON-NLS-1$
+							Messages.getString("SystemTapView.DeleteLogsMessage") + //$NON-NLS-1$
+							Messages.getString("SystemTapView.DeleteLogsMessage2"))) //$NON-NLS-1$
 						return;
 					
-					File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
+					File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
 					log.delete();
 					log.createNewFile();
 				} catch (IOException e) {

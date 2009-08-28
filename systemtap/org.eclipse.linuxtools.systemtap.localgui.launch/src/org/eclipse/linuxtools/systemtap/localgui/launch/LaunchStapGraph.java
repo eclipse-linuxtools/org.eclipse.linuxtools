@@ -64,7 +64,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 */
 	
 	private String partialScriptPath;
-	private static final String DELIMITER = " "; 
+	private static final String DELIMITER = " ";  //$NON-NLS-1$
 
 	public void launch(IBinary bin, String mode) {
 		super.Init();		

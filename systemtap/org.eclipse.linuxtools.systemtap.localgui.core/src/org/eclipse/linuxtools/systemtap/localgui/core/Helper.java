@@ -83,11 +83,11 @@ public class Helper {
 	public static String readFile(String absoluteFilePath) {
 		
 		try {
-			String output = "";
-			String tmp = "";
+			String output = ""; //$NON-NLS-1$
+			String tmp = ""; //$NON-NLS-1$
 			BufferedReader bw = new BufferedReader(new FileReader(new File(absoluteFilePath)));
 			while ((tmp = bw.readLine()) != null) {
-				output+=tmp + "\n";
+				output+=tmp + "\n"; //$NON-NLS-1$
 			}
 			bw.close();
 			

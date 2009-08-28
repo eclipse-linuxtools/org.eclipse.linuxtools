@@ -39,7 +39,7 @@ public final class PluginConstants {
 	
 	public static void setWorkspaceLocation(String loc){
 		DEFAULT_OUTPUT = loc;
-		STAP_GRAPH_DEFAULT_IO_PATH = DEFAULT_OUTPUT+"callgraph.out";
+		STAP_GRAPH_DEFAULT_IO_PATH = DEFAULT_OUTPUT+"callgraph.out"; //$NON-NLS-1$
 	}
 	
 	

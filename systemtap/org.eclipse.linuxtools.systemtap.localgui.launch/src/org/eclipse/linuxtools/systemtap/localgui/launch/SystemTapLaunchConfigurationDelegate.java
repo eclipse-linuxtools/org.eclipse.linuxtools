@@ -63,8 +63,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		SubMonitor monitor = SubMonitor.convert(m,
 				"SystemTap runtime monitor", 10); //$NON-NLS-1$
 
-		//System.out.println("SystemTapLaunchConfigurationDelegate: launch"); //$NON-NLS-1$
-
 		// check for cancellation
 		if (monitor.isCanceled()) {
 			return;
@@ -229,21 +227,21 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
-				LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH
-						+ System.currentTimeMillis());
+				LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH);
 		command += "-o " + outputPath; //$NON-NLS-1$
 		try {
 			File tempFile = new File(outputPath);
 			tempFile.createNewFile();
+			//Make sure the output file exists
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+
 
 		// check for cancellation
 		if (monitor.isCanceled()) {
 			return;
 		}
-
 		try {
 			File workDir = getWorkingDirectory(config);
 			if (workDir == null) {
@@ -271,7 +269,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			String[] commandArray = (String[]) cmdLine
 					.toArray(new String[cmdLine.size()]);
 
-			// check for cancellation
+			
+			// Check for cancellation
 			if (monitor.isCanceled()) {
 				return;
 			}

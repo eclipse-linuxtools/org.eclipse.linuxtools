@@ -14,7 +14,7 @@ import org.eclipse.jface.text.IDocument;
 
 public class SystemTapErrorHandler {
 	
-	public static final String errorPropFile = "errors.prop";
+	public static final String errorPropFile = "errors.prop"; //$NON-NLS-1$
 	
 	/**
 	 * Find and output error messages corresponding to the document text.
@@ -22,9 +22,9 @@ public class SystemTapErrorHandler {
 	 * @param doc
 	 */
 	public static void handle (IDocument doc){
-		String errorMessage = "One or more errors were encountered and logged. " +
-				"(Errors -> Open log from the SystemTap View menu). " +
-				"Possible causes: \n\n";
+		String errorMessage = Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.ErrorMessage1") + //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
 		String contents = doc.get();
 		
 		File file = new File(PluginConstants.PLUGIN_LOCATION+errorPropFile);
@@ -51,7 +51,7 @@ public class SystemTapErrorHandler {
 		
 
 		SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-				"Error", "Error", errorMessage);
+				Messages.getString("SystemTapErrorHandler.ErrorMessageName"), Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"), errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
 		mes.schedule();
 		File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
 
@@ -76,11 +76,11 @@ public class SystemTapErrorHandler {
 		//APPEND THE ERROR TO THE LOG
 		Helper
 				.appendToFile(errorLog.getAbsolutePath(),
-						"-----------------------"
+						Messages.getString("SystemTapErrorHandler.ErrorLogDashes") //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE 
-						+ day + "/" + month
-						+ "/" + year + " - " + hour + ":"
-						+ minute + ":" + second
+						+ day + "/" + month //$NON-NLS-1$
+						+ "/" + year + " - " + hour + ":" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						+ minute + ":" + second //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + doc.get()
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
 		

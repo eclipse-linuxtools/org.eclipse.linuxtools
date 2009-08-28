@@ -43,7 +43,7 @@ public final class LaunchConfigurationConstants {
 	public static final String COMMAND_TARGET_PID = PLUGIN_ID + ".TARGET_PID"; //$NON-NLS-1$
 	public static final String ARGUMENTS = PLUGIN_ID + ".ARGUMENTS"; //$NON-NLS-1$
 	public static final String NUMBER_OF_ARGUMENTS = PLUGIN_ID + ".NUMBER_OF_ARGUMENTS"; //$NON-NLS-1$
-	public static final String OUTPUT_PATH = PLUGIN_ID + ".OUTPUT_PATH";  //$NON-NLS-1 //$NON-NLS-1$ //$NON-NLS-1$
+	public static final String OUTPUT_PATH = PLUGIN_ID + ".OUTPUT_PATH";  //$NON-NLS-1 //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
 	public static final String OVERWRITE = PLUGIN_ID + ".OVERWRITE";  //$NON-NLS-1$
 	public static final String BUILD_PROJECT = PLUGIN_ID + ".BUILD_PROJECT"; //$NON-NLS-1$
 	public static final String GRAPHICS_MODE = PLUGIN_ID + ".GRAPHICS_MODE"; //$NON-NLS-1$

@@ -46,7 +46,7 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		PluginConstants.setPluginLocation(getPluginLocation());
-		PluginConstants.setWorkspaceLocation(getDefault().getStateLocation().toString()+"/");
+		PluginConstants.setWorkspaceLocation(getDefault().getStateLocation().toString()+"/"); //$NON-NLS-1$
 	}
 
 	/*
