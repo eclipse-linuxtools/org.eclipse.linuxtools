@@ -85,8 +85,6 @@ public class StapGraphParser extends Job{
 		
 		try {
 			BufferedReader buff = new BufferedReader(new FileReader(filePath));
-			System.out.println(filePath);
-			System.out.println(PluginConstants.DEFAULT_OUTPUT);
 			String tmp;
 			while ((tmp = buff.readLine()) != null) {
 				if (monitor.isCanceled()) {

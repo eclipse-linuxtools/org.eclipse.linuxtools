@@ -71,7 +71,8 @@ public class SystemTapView extends ViewPart {
 
 	private static Action save_callgraph;
 	private static Action open_default;
-	private static Action open_errorLog;
+	private static Action error_errorLog;
+	private static Action error_deleteError;
 	private static Action view_treeview;
 	private static Action view_radialview;
 	private static Action view_aggregateview;
@@ -82,6 +83,7 @@ public class SystemTapView extends ViewPart {
 	
 	private static IMenuManager menu;
 	private static IMenuManager file;
+	private static IMenuManager errors;
 	private static IMenuManager view;
 	private static IMenuManager animation;
 	public static IToolBarManager mgr;
@@ -144,6 +146,10 @@ public class SystemTapView extends ViewPart {
 		mode_collapsednodes.setEnabled(isVisible);
 	}
 	
+/**
+ * @param doMaximize : true && view minimized will maximize the view, 
+ * otherwise it will just 'refresh'
+ */
 	public static void maximizeOrRefresh(boolean doMaximize){
 		IWorkbenchPage page = SystemTapView
 		.getSingleInstance().getViewSite().getWorkbenchWindow().getActivePage();
@@ -161,7 +167,7 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	/**
-	 * If view is not maximized, maximize. Else refresh.
+	 * If view is not maximized it will be maximized
 	 */
 	public static void maximizeIfUnmaximized() {
 		IWorkbenchPage page = SystemTapView
@@ -241,8 +247,10 @@ public class SystemTapView extends ViewPart {
 		// ADD OPTIONS TO THE GRAPH MENU
 		file = new MenuManager(Messages.getString("SystemTapView.0")); //$NON-NLS-1$
 		view = new MenuManager(Messages.getString("SystemTapView.1")); //$NON-NLS-1$
+		errors = new MenuManager("Errors");
 		animation = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
 
+		
 		menu.add(file);
 		menu.add(view);
 		menu.add(animation);
@@ -250,7 +258,8 @@ public class SystemTapView extends ViewPart {
 		file.add(open_callgraph);
 		file.add(open_default);
 		file.add(save_callgraph);
-		file.add(open_errorLog);
+		errors.add(error_errorLog);
+		errors.add(error_deleteError);
 		view.add(view_treeview);
 		view.add(view_radialview);
 		view.add(view_aggregateview);
@@ -258,6 +267,8 @@ public class SystemTapView extends ViewPart {
 		animation.add(animation_slow);
 		animation.add(animation_fast);
 		menu.add(mode_collapsednodes);
+		
+		menu.add(errors);
 		
 		setGraphOptions(false);
 		
@@ -431,7 +442,7 @@ public class SystemTapView extends ViewPart {
 		};
 		
 		
-		open_errorLog = new Action("Error log") {
+		error_errorLog = new Action("Error log") {
 			public void run() {
 				boolean error = false;
 				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
@@ -448,7 +459,7 @@ public class SystemTapView extends ViewPart {
 				Shell sh = new Shell();
 				sh.setLayout(new FillLayout());
 				sh.setSize(400,400);
-				Text txt = new Text(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
+				Text txt = new Text(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
 				
 				txt.setText(logText);
 				sh.open();
@@ -465,6 +476,20 @@ public class SystemTapView extends ViewPart {
 							" the log file could not be found.");
 						mess.schedule();
 					}
+				}
+				
+			}
+		};
+		
+		error_deleteError = new Action("Clear log") {
+			public void run() {
+				
+				try {
+					File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
+					log.delete();
+					log.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 				
 			}
@@ -658,28 +683,6 @@ public class SystemTapView extends ViewPart {
 		disposeGraph.setToolTipText("Dispose of graph area"); //$NON-NLS-1$
 	}
 	
-	
-	
-	/*public void writeToFile(String targetPath) {
-		FileWriter fstream;
-		try {
-			fstream = new FileWriter(targetPath);
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write(Messages.getString("SystemTapView.25")  //$NON-NLS-1$
-					+ parser.graphText + NEW_LINE 
-					+ parser.serialInfo + NEW_LINE 
-					+ parser.timeInfo + NEW_LINE
-					+ parser.cumulativeTimeInfo + NEW_LINE
-					+ parser.markedNodes + NEW_LINE);
-			out.close();
-		} catch (IOException e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
-			err.schedule();
-			e.printStackTrace();
-		}
-	}*/
 	
 	public static void disposeGraph() {
 		if (graphComp != null)
