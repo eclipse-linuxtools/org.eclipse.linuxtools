@@ -291,7 +291,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 						new SystemTapView(), useColour, graphMode, config
 								.getName());
 				stapCmdPar.schedule();
-				
 			}
 
 			monitor.worked(1);
@@ -301,14 +300,15 @@ public class SystemTapLaunchConfigurationDelegate extends
 			Process subProcess = execute(commandArray, getEnvironment(config),
 					workDir, true);
 			
-			if (subProcess == null){
-				//TODO: FIgure out what the console error message is so we can catch it in errorlog
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Error", "SystemTap Error", 
-				"SystemTap could not execute for some reason. This could be due to some missing " +
-				"packages that are necessary to the running of SystemTap");
-				mess.schedule();
-				return;
-			}
+//			if (subProcess == null){
+//				//TODO: FIgure out what the console error message is so we can catch it in errorlog
+//				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Error", "SystemTap Error", 
+//				"SystemTap could not execute for some reason. This could be due to some missing " +
+//				"packages that are necessary to the running of SystemTap");
+//				mess.schedule();
+//				return;
+//			}
+			
 			IProcess process = createNewProcess(launch, subProcess,
 					commandArray[0]);
 			// set the command line used

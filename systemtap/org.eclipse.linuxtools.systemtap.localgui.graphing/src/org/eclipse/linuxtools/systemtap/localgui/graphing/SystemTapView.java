@@ -27,6 +27,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.systemtap.localgui.core.Helper;
 import org.eclipse.linuxtools.systemtap.localgui.core.Messages;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -549,20 +550,12 @@ public class SystemTapView extends ViewPart {
 		
 		error_deleteError = new Action(Messages.getString("SystemTapView.ClearLog")) { //$NON-NLS-1$
 			public void run() {
-				
-				try {
 					if (!MessageDialog.openConfirm(new Shell(), Messages.getString("SystemTapView.DeleteLogsTitle"),  //$NON-NLS-1$
 							Messages.getString("SystemTapView.DeleteLogsMessage") + //$NON-NLS-1$
 							Messages.getString("SystemTapView.DeleteLogsMessage2"))) //$NON-NLS-1$
 						return;
 					
-					File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
-					log.delete();
-					log.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
+					SystemTapErrorHandler.delete();
 			}
 		};
 		
@@ -673,7 +666,7 @@ public class SystemTapView extends ViewPart {
 			}
 		};
 		
-		markers_previous = new Action("(n)ext") {
+		markers_previous = new Action("(p)revious") {
 			public void run() {
 				graph.draw(graph.getPreviousMarkedNode(), 0, 0);
 			}

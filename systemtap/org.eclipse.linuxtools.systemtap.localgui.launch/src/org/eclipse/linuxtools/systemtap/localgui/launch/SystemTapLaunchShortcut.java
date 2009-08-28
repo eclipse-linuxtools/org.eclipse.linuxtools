@@ -365,7 +365,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	}
 
 	public ILaunchConfiguration getConfig() {
-		return config;
+		return config; 
 	}
 
 	public String getScriptPath() {

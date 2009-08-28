@@ -21,6 +21,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.localgui.core.ShellOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -50,6 +51,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 	
 	private Shell sh;
 	private Composite fileComp;
+	private boolean completed;
 	/*
 	 * The following protected parameters are provided by SystemTapLaunchShortcut:
 	 *
@@ -106,9 +108,10 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 	@Override
 	public void launch(ISelection selection, String mode) {
 		super.Init();
+		completed = false;
 		promptForInputs();
 		
-		this.mode = mode;
+		this.mode = mode; 
 		
 //		finishLaunch(scriptPath + ": " + binName, mode); //$NON-NLS-1$
 	}
@@ -123,10 +126,10 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		id.open();
 		
 		if (id.getReturnCode() == InputDialog.CANCEL){			
-			name = id.getValue();
 			return;
 		}
 		
+		name = id.getValue();
 		
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
@@ -230,63 +233,36 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 					scriptPath = scriptLocation.getText();
 					binaryPath = binaryLocation.getText();
 					arguments = argumentsLocation.getText();
+					int index = binaryPath.lastIndexOf("/");
+					if (index > 0 && index < binaryPath.length())
+						name+= " - " + binaryPath.substring(index, binaryPath.length());
 					name = getLaunchManager().generateUniqueLaunchConfigurationNameFrom(name);
 					config = createConfiguration(null, name);
 
 					finishLaunch(scriptPath + ": " + binName, mode); //$NON-NLS-1$
+					completed = true;
 					sh.dispose();
 				}
 				
 		});
-		sh.open();
 		
-
+		ShellOpener so = new ShellOpener("Wizard Opener", sh);
+		so.schedule();
 		
-//		Shell sh = new Shell();
-//		
+//		while (!so.isDisposed()) {
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
+		
+		completed = true;
 
-//		
-//		//Get script
-//		MessageDialog.openInformation(sh, Messages.getString("LaunchWizard.5"),   //$NON-NLS-1$
-//				Messages.getString("LaunchWizard.6") + name + "\n" +    //$NON-NLS-1$//$NON-NLS-2$
-//				Messages.getString("LaunchWizard.7"));   //$NON-NLS-1$
-//		FileDialog fd = new FileDialog(sh);
-//		scriptPath = fd.open();
-//		
-//		if (scriptPath == null){
-//			scriptPath = ""; //$NON-NLS-1$
-//			return;
-//		}
-//
-//		MessageDialog.openInformation(sh, Messages.getString("LaunchWizard.8"),   //$NON-NLS-1$
-//			Messages.getString("LaunchWizard.9") + name + Messages.getString("LaunchWizard.10") + "   " + scriptPath + "\n" +      //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-//			Messages.getString("LaunchWizard.11") +  //$NON-NLS-1$
-//			Messages.getString("LaunchWizard.12"));  //$NON-NLS-1$
-//		
-//		binaryPath = fd.open();
-//		if (binaryPath == null) {
-//			binaryPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
-//		}
-//		
-//		//Get arguments
-//		InputDialog inputDialog = new InputDialog(
-//				sh,
-//				"Specify Arguments", //$NON-NLS-1$
-//				Messages.getString("LaunchWizard.13") + name + Messages.getString("LaunchWizard.14") + "   " + scriptPath + "\n" +      //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-//				Messages.getString("LaunchWizard.15") + ((binaryPath == LaunchConfigurationConstants.DEFAULT_BINARY_PATH) ?  //$NON-NLS-1$
-//						Messages.getString("LaunchWizard.16") : binaryPath) +   //$NON-NLS-1$
-//				Messages.getString("LaunchWizard.17") +  //$NON-NLS-1$
-//				Messages.getString("LaunchWizard.18"),   //$NON-NLS-1$
-//				"", null); //$NON-NLS-1$
-//		inputDialog.open();
-//		arguments = inputDialog.getValue();
-//		inputDialog.close();
-//
-//		if (arguments == null || arguments.equals("")){ //$NON-NLS-1$
-//			arguments = ""; //$NON-NLS-1$
-//		}
-//		
-//		sh.dispose();
+	}
+	
+	public boolean isCompleted() {
+		return completed;
 	}
 	
 }

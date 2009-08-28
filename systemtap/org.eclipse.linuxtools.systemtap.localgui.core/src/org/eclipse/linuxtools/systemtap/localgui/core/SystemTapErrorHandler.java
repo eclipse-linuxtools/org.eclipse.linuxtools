@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
+
 package org.eclipse.linuxtools.systemtap.localgui.core;
 
 import java.io.BufferedReader;
@@ -15,6 +26,22 @@ import org.eclipse.jface.text.IDocument;
 public class SystemTapErrorHandler {
 	
 	public static final String errorPropFile = "errors.prop"; //$NON-NLS-1$
+	public static final String errorLogFile = "Error.log";
+	public static final int MAX_LOG_SIZE = 50000;
+	
+	/**
+	 * Delete the log file and create an empty one
+	 */
+	public static void delete(){
+		File log = new File(PluginConstants.DEFAULT_OUTPUT + errorLogFile); //$NON-NLS-1$
+		log.delete();
+		try {
+			log.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	/**
 	 * Find and output error messages corresponding to the document text.
@@ -22,11 +49,13 @@ public class SystemTapErrorHandler {
 	 * @param doc
 	 */
 	public static void handle (IDocument doc){
+		
 		String errorMessage = Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
 				Messages.getString("SystemTapErrorHandler.ErrorMessage1") + //$NON-NLS-1$
 				Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
 		String contents = doc.get();
 		
+		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
 		File file = new File(PluginConstants.PLUGIN_LOCATION+errorPropFile);
 		try {
 			BufferedReader buff = new BufferedReader (new FileReader(file));
@@ -49,22 +78,23 @@ public class SystemTapErrorHandler {
 			e.printStackTrace();
 		}
 		
-
 		SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-				Messages.getString("SystemTapErrorHandler.ErrorMessageName"), Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"), errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapErrorHandler.ErrorMessageName"), 
+				Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"), 
+				errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
 		mes.schedule();
 		File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
 
+		
 		try {
 			//CREATE THE ERROR LOG IF IT DOES NOT EXIST
 			//CLEAR THE ERROR LOG AFTER A FIXED SIZE(BYTES)
 			if (!errorLog.exists()
-					|| errorLog.length() > PluginConstants.MAX_LOG_SIZE) {
+					|| errorLog.length() > MAX_LOG_SIZE) {
 				errorLog.delete();
 				errorLog.createNewFile();
 			}
 	
-
 		Calendar cal = Calendar.getInstance(TimeZone.getDefault());
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH);

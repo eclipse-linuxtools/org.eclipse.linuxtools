@@ -21,7 +21,6 @@ public final class PluginConstants {
 	
 	public static final String STAP_PATH = "stap"; //$NON-NLS-1$
 	public static String STAP_GRAPH_DEFAULT_IO_PATH = ""; //$NON-NLS-1$
-	public static final int MAX_LOG_SIZE = 50000;
 	
 	/**
 	 * Sets the absolute path of the Plugin folder and updates

@@ -98,7 +98,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			bw.write(scriptContents);
 			bw.close();
 
-			
+			 
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
 			outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
