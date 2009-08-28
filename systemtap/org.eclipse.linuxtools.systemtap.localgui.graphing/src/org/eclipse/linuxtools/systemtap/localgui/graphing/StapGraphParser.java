@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 
@@ -306,11 +307,11 @@ public class StapGraphParser extends Job{
 		int amt = 0;
 		for (int a : blah.keySet()) {
 			amt++;
-			System.out.print(a + " ::> "); //$NON-NLS-1$
+			MP.print(a + " ::> "); //$NON-NLS-1$
 			for (int c : blah.get(a)) {
 					System.out.print(c + " ");					 //$NON-NLS-1$
 			}
-			System.out.println();
+			MP.println("");
 		}
 	}
 	
@@ -319,7 +320,7 @@ public class StapGraphParser extends Job{
 		int amt = 0;
 		for (Object a : blah.keySet()) {
 			amt++;
-			System.out.println(a + " ::> "+blah.get(a)); //$NON-NLS-1$
+			MP.println(a + " ::> "+blah.get(a)); //$NON-NLS-1$
 		}
 	}
 

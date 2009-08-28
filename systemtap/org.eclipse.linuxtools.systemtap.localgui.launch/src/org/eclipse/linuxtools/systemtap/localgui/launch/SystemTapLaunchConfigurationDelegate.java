@@ -17,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.eclipse.ui.console.TextConsole;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
@@ -189,8 +190,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			needsArguments = true;
 		}
 
-		// UNCOMMENT if we decide to go with a SystemTap Binary selector instead
-		// of using the one in Main tab
+
 		if (!config.getAttribute(LaunchConfigurationConstants.BINARY_PATH,
 				LaunchConfigurationConstants.DEFAULT_BINARY_PATH).equals(
 				LaunchConfigurationConstants.DEFAULT_BINARY_PATH)) {
@@ -300,14 +300,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 			Process subProcess = execute(commandArray, getEnvironment(config),
 					workDir, true);
 			
-//			if (subProcess == null){
-//				//TODO: FIgure out what the console error message is so we can catch it in errorlog
-//				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Error", "SystemTap Error", 
-//				"SystemTap could not execute for some reason. This could be due to some missing " +
-//				"packages that are necessary to the running of SystemTap");
-//				mess.schedule();
-//				return;
-//			}
+			if (subProcess == null){
+				//TODO: FIgure out what the console error message is so we can catch it in errorlog
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Error", "SystemTap Error", 
+				"SystemTap could not execute for some reason. This could be due to some missing " +
+				"packages that are necessary to the running of SystemTap");
+				mess.schedule();
+				return;
+			}
 			
 			IProcess process = createNewProcess(launch, subProcess,
 					commandArray[0]);
@@ -315,6 +315,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			process.setAttribute(IProcess.ATTR_CMDLINE,
 					cmd);
 			monitor.worked(1);
+			
+			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
 			
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
@@ -327,16 +329,23 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 			Thread.sleep(100);
 			
+			//SIGNAL THE PROCESS TO FINISH
+			if (stapCmdPar != null)
+				stapCmdPar.setProcessFinished(true);
 
 			if (process.getExitValue() != 0) {
 				//SystemTap terminated with errors, parse console to figure out which error 
 				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
-				SystemTapErrorHandler.handle(doc);
+				//Sometimes the console has not been printed to yet, wait for a little while longer
+				if (doc.get().length() < 1)
+					Thread.sleep(300);
+				doc = Helper.getConsoleDocumentByName(config.getName());
+				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
+				errorHandler.handle(doc.get());
+				errorHandler.finishHandling();
 				return;
 			}
 					
-			if (stapCmdPar != null)
-				stapCmdPar.setProcessFinished(true);
 
 			if (graphMode) {
 				stapCmdPar = new SystemTapCommandParser(

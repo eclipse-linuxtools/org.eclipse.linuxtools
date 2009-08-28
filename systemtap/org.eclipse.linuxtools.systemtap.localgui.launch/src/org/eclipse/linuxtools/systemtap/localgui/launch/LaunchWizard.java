@@ -19,6 +19,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.ShellOpener;
@@ -52,6 +53,9 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 	private Shell sh;
 	private Composite fileComp;
 	private boolean completed;
+	
+	private static final int WIDTH = 670;
+	private static final int HEIGHT = 630;
 	/*
 	 * The following protected parameters are provided by SystemTapLaunchShortcut:
 	 *
@@ -122,7 +126,8 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 				Messages.getString("LaunchWizard.1") +  //$NON-NLS-1$
 				Messages.getString("LaunchWizard.2") +  //$NON-NLS-1$
 				Messages.getString("LaunchWizard.3"),   //$NON-NLS-1$
-				Messages.getString("LaunchWizard.4"), null);  //$NON-NLS-1$
+				getLaunchManager().generateUniqueLaunchConfigurationNameFrom(
+						Messages.getString("LaunchWizard.4")), null);  //$NON-NLS-1$
 		id.open();
 		
 		if (id.getReturnCode() == InputDialog.CANCEL){			
@@ -137,7 +142,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		workspacePath = location.toString();
 		
 		sh = new Shell();
-		sh.setSize(670,650);
+		sh.setSize(WIDTH,HEIGHT);
 		sh.setLayout(new GridLayout(1, false));
 		sh.setText(name);
 		
@@ -151,16 +156,25 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		imageCmp.setBackgroundImage(img);
 		
 		fileComp = new Composite(sh, SWT.NONE);
-		fileComp.setLayout(new GridLayout(3, false));
+		fileComp.setLayout(new GridLayout(2, false));
 		fileComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		
+		GridDataFactory labelData = GridDataFactory.fillDefaults().grab(true, false)
+									.span(2,1);
 		
 		Label scriptLabel = new Label(fileComp, SWT.HORIZONTAL);
 		scriptLabel.setText(Messages.getString("LaunchWizard.19")); //$NON-NLS-1$
-		scriptLabel.setLayoutData(new GridData());
-		scriptLocation = new Text(fileComp, SWT.SINGLE);
-		scriptLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		labelData.applyTo(scriptLabel);
+		
+		GridDataFactory textData = GridDataFactory.fillDefaults().grab( true, false )
+								  .hint(WIDTH, SWT.DEFAULT);
+		
+		scriptLocation = new Text(fileComp, SWT.SINGLE | SWT.BORDER);
+		textData.applyTo(scriptLocation);
 		Button scriptButton = new Button(fileComp, SWT.PUSH);
 		scriptButton.setText(Messages.getString("SystemTapOptionsTab.BrowseFiles")); //$NON-NLS-1$
+		scriptButton.setLayoutData(new GridData());
 		scriptButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				String filePath = scriptLocation.getText();
@@ -171,14 +185,16 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 				}
 			}
 		});
+
 		
-		
+		GridData gd2 = new GridData();
+		gd2.horizontalSpan = 3;
 		Label binaryLabel= new Label(fileComp, SWT.HORIZONTAL);
 		binaryLabel.setText(Messages.getString("LaunchWizard.20")); //$NON-NLS-1$
-		scriptLabel.setLayoutData(new GridData());
+		labelData.applyTo(binaryLabel);
 		
-		binaryLocation = new Text(fileComp, SWT.SINGLE);
-		binaryLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		binaryLocation = new Text(fileComp, SWT.SINGLE | SWT.BORDER);
+		textData.applyTo(binaryLocation);
 		Button binaryButton = new Button(fileComp, SWT.PUSH);
 		binaryButton.setText(Messages.getString("SystemTapOptionsTab.WorkspaceButton2")); //$NON-NLS-1$
 		binaryButton.addSelectionListener(new SelectionAdapter() {
@@ -198,17 +214,16 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 
 		Composite argumentsComp = new Composite(sh, SWT.BORDER_DASH);
 		argumentsComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		argumentsComp.setLayout(new GridLayout(3, false));
+		argumentsComp.setLayout(new GridLayout(2, false));
 		
 		Label argumentsLabel= new Label(argumentsComp, SWT.HORIZONTAL);
 		argumentsLabel.setText(Messages.getString("LaunchWizard.21")); //$NON-NLS-1$
+		labelData.applyTo(argumentsLabel);
 		
-		argumentsLocation = new Text(argumentsComp, SWT.MULTI | SWT.WRAP);
-//		argumentsLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-//		gd.grabExcessVerticalSpace=true;
-		gd.heightHint=300;
-		argumentsLocation.setLayoutData(gd);
+		argumentsLocation = new Text(argumentsComp, SWT.MULTI | SWT.WRAP | SWT.BORDER);
+		GridData gd3 = new GridData(GridData.FILL_HORIZONTAL);
+		gd3.heightHint=200;
+		argumentsLocation.setLayoutData(gd3);
 		Button argumentsButton = new Button(argumentsComp, SWT.PUSH);
 		argumentsButton.setText(Messages.getString("LaunchWizard.22")); //$NON-NLS-1$
 		argumentsButton.addSelectionListener(new SelectionAdapter() {
@@ -221,11 +236,11 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		
 		
 		//TODO: Don't use blank labels to move button to the right column :P
-		Label blankLabel = new Label(argumentsComp, SWT.HORIZONTAL);
-		blankLabel.setText(" "); //$NON-NLS-1$
+		Label blankLabel2 = new Label(argumentsComp, SWT.HORIZONTAL);
+		blankLabel2.setText(""); //$NON-NLS-1$
 		
 		
-		Button launch = new Button(argumentsComp, SWT.PUSH);
+		Button launch = new Button(sh, SWT.PUSH);
 		launch.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, false));
 		launch.setText(Messages.getString("LaunchWizard.24")); //$NON-NLS-1$
 		launch.addSelectionListener(new SelectionAdapter() {
@@ -233,12 +248,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 					scriptPath = scriptLocation.getText();
 					binaryPath = binaryLocation.getText();
 					arguments = argumentsLocation.getText();
-					int index = binaryPath.lastIndexOf("/");
-					if (index > 0 && index < binaryPath.length())
-						name+= " - " + binaryPath.substring(index, binaryPath.length());
-					name = getLaunchManager().generateUniqueLaunchConfigurationNameFrom(name);
 					config = createConfiguration(null, name);
-
 					finishLaunch(scriptPath + ": " + binName, mode); //$NON-NLS-1$
 					completed = true;
 					sh.dispose();

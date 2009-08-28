@@ -12,7 +12,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.linuxtools.systemtap.localgui.graphing
 Import-Package: org.eclipse.jface.text,
  org.eclipse.linuxtools.systemtap.localgui.core,
- org.eclipse.ui.console,
  org.eclipse.ui.texteditor,
  org.eclipse.zest.core.widgets,
  org.eclipse.zest.layouts,

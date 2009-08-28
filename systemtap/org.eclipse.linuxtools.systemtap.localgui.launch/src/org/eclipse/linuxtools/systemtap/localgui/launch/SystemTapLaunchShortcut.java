@@ -139,7 +139,6 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			return;
 		}  
 			
-		//System.out.println("SystemTapLaunchShortcut: finishLaunch"); //$NON-NLS-1$
 		
 		ILaunchConfigurationWorkingCopy wc = null;
 		if (config != null) {
@@ -165,8 +164,10 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			}
 			
 			checkForExistingConfiguration();
+			
 			DebugUITools.launch(config, mode);
-		}
+		} 
+		
 	}
 	
 	

@@ -26,7 +26,10 @@ public class MP {
 	public static void println(String val) {
 		if (!mute) System.out.println(val);
 	}
-
+	
+	public static void print(String val){
+		if (!mute) System.out.print(val);
+	}
 	
 	public static void setMute(boolean val) {
 		mute = val;

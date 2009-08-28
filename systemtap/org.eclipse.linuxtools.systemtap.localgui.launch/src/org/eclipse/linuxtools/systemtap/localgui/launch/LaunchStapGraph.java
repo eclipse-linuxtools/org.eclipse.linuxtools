@@ -105,6 +105,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			
 			
 			ILaunchConfigurationWorkingCopy wc;
+			
 			wc = config.getWorkingCopy();
 			wc.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, true);
 			wc.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
@@ -112,6 +113,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, scriptContents);
 			wc.doSave();
 			
+
 			finishLaunch(name, mode);
 
 		} catch (IOException e) {

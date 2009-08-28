@@ -23,17 +23,24 @@ import java.util.regex.Pattern;
 
 import org.eclipse.jface.text.IDocument;
 
+/**
+ * Helper class parses the given string for recognizable error messages 
+ *
+ */
 public class SystemTapErrorHandler {
 	
-	public static final String errorPropFile = "errors.prop"; //$NON-NLS-1$
-	public static final String errorLogFile = "Error.log";
+	public static final String FILE_PROP = "errors.prop"; //$NON-NLS-1$
+	public static final String FILE_ERROR_LOG = "Error.log";
 	public static final int MAX_LOG_SIZE = 50000;
+	private boolean errorRecognized;
+	private String errorMessage = "";
+	private String logContents;
 	
 	/**
 	 * Delete the log file and create an empty one
 	 */
 	public static void delete(){
-		File log = new File(PluginConstants.DEFAULT_OUTPUT + errorLogFile); //$NON-NLS-1$
+		File log = new File(PluginConstants.DEFAULT_OUTPUT + FILE_ERROR_LOG); //$NON-NLS-1$
 		log.delete();
 		try {
 			log.createNewFile();
@@ -42,21 +49,32 @@ public class SystemTapErrorHandler {
 		}
 	}
 	
+ 
+	public SystemTapErrorHandler() {
+		errorRecognized = false;
+		errorMessage = "";
+		logContents = "";
+	}
+	
+	
 	
 	/**
-	 * Find and output error messages corresponding to the document text.
+	 * Search given string for recognizable error messages. Can append the contents of 
+	 * the string to the error log if writeToLog() or finishHandling() are called.
+	 * A call to finishHandling() will also open a popup window with user-friendly messages
+	 * corresponding to the recognizable errors.
 	 * 
 	 * @param doc
 	 */
-	public static void handle (IDocument doc){
-		
-		String errorMessage = Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
-				Messages.getString("SystemTapErrorHandler.ErrorMessage1") + //$NON-NLS-1$
-				Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
-		String contents = doc.get();
+	public void handle (String message){		
+		if (errorMessage.length() < 1) {
+			errorMessage = 
+				Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.ErrorMessage1"); //$NON-NLS-1$
+		}
 		
 		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
-		File file = new File(PluginConstants.PLUGIN_LOCATION+errorPropFile);
+		File file = new File(PluginConstants.PLUGIN_LOCATION+FILE_PROP);
 		try {
 			BufferedReader buff = new BufferedReader (new FileReader(file));
 			String line;
@@ -64,18 +82,37 @@ public class SystemTapErrorHandler {
 			while ((line = buff.readLine()) != null){
 				index = line.indexOf('=');
 				String matchString = line.substring(0, index);
-				Matcher matcher = Pattern.compile(matchString, Pattern.DOTALL).matcher(contents);
+				Matcher matcher = Pattern.compile(matchString, Pattern.DOTALL).matcher(message);
 
 				if (matcher.matches()) {
+					if (!isErrorRecognized()) {
+						errorMessage+=Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
+						setErrorRecognized(true);
+					}
+						
 					errorMessage+=line.substring(index+1) 
 					+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
 				}
 			}
 			
+			logContents += message;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * Run this method when there are no more error messages to handle. 
+	 * Creates the error pop-up message and writes to log.
+	 * 
+	 */
+	public void finishHandling() {
+		if (!isErrorRecognized()) {
+			errorMessage+="No recognizable errors detected. " +
+					"Please consult error log for more information.";
 		}
 		
 		SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
@@ -83,16 +120,25 @@ public class SystemTapErrorHandler {
 				Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"), 
 				errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
 		mes.schedule();
+		
+		
+		writeToLog();
+	}
+	
+	
+	/**
+	 * Writes the contents of logContents to the error log, along with date and time.
+	 */
+	public void writeToLog() {
 		File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
 
-		
 		try {
 			//CREATE THE ERROR LOG IF IT DOES NOT EXIST
 			//CLEAR THE ERROR LOG AFTER A FIXED SIZE(BYTES)
 			if (!errorLog.exists()
 					|| errorLog.length() > MAX_LOG_SIZE) {
 				errorLog.delete();
-				errorLog.createNewFile();
+					errorLog.createNewFile();
 			}
 	
 		Calendar cal = Calendar.getInstance(TimeZone.getDefault());
@@ -111,13 +157,30 @@ public class SystemTapErrorHandler {
 						+ day + "/" + month //$NON-NLS-1$
 						+ "/" + year + " - " + hour + ":" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						+ minute + ":" + second //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE + doc.get()
+						+ PluginConstants.NEW_LINE + logContents
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		logContents = "";
+	}
+
+	/**
+	 * Returns true if an error matches one of the regex's in error.prop
+	 * @return
+	 */
+	public boolean isErrorRecognized() {
+		return errorRecognized;
+	}
+
+
+	/**
+	 * Convenience method to change the error recognition value.
+	 * @param errorsRecognized
+	 */
+	private void setErrorRecognized(boolean errorsRecognized) {
+		errorRecognized = errorsRecognized;
 	}
 
 }
