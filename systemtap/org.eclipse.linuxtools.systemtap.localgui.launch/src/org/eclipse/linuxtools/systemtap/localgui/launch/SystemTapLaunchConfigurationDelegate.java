@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
@@ -38,6 +40,7 @@ import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
+import org.eclipse.ui.console.TextConsole;
 
 /**
  * Delegate for Stap scripts. The Delegate generates part of the command string
@@ -333,14 +336,28 @@ public class SystemTapLaunchConfigurationDelegate extends
 						Messages.getString("SystemTapLaunchConfigurationDelegate.0") + //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.7")); //$NON-NLS-1$
 				mess.schedule();
-				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
+				IDocument doc = ((TextConsole)Helper.getConsoleByName(config.getName())).getDocument();
 //				getConsoleByName(config.getName()).clearConsole();
 				File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
-
-				if (!errorLog.exists()){
+				
+				if (!errorLog.exists() || errorLog.length() > PluginConstants.MAX_LOG_SIZE){
+					errorLog.delete();
 					errorLog.createNewFile();
 				}
-				Helper.appendToFile(errorLog.getAbsolutePath(), PluginConstants.NEW_LINE+doc.get());
+				
+				Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+				int year = cal.get(Calendar.YEAR);
+				int month =  cal.get(Calendar.MONTH);
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				int hour = cal.get(Calendar.HOUR_OF_DAY);
+				int minute = cal.get(Calendar.MINUTE);
+				int second = cal.get(Calendar.SECOND);
+				
+				Helper.appendToFile(errorLog.getAbsolutePath(), 
+						PluginConstants.NEW_LINE+day+"/"+month+"/"+year
+						+" - "+hour+":"+minute+":"+second+PluginConstants.NEW_LINE
+						+doc.get());
+				
 				return;
 			}
 					
@@ -367,18 +384,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		}
 
 	}
-	
-	/*private static void writeToFile(File target, String str) {
-		try {
-			BufferedWriter buff = new BufferedWriter(new FileWriter(target));
-			buff.write(str);
-			buff.flush();
-			buff.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}*/
 	
 
 	public String getCommand() {
