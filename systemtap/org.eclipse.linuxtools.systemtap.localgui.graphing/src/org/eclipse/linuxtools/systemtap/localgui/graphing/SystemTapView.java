@@ -440,6 +440,7 @@ public class SystemTapView extends ViewPart {
 			}
 		};
 		
+		
 		//Save callgraph.out
 		save_callgraph = new Action(Messages.getString("SystemTapView.8")){ //$NON-NLS-1$
 			public void run(){
@@ -491,7 +492,7 @@ public class SystemTapView extends ViewPart {
 	 */
 	public void createErrorActions() {
 
-		error_errorLog = new Action("Error log") {
+		error_errorLog = new Action("Open log") {
 			public void run() {
 				boolean error = false;
 				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
@@ -529,6 +530,7 @@ public class SystemTapView extends ViewPart {
 				
 			}
 		};
+		
 		
 		error_deleteError = new Action("Clear log") {
 			public void run() {

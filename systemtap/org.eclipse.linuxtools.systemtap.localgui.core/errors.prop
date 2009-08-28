@@ -1,0 +1,5 @@
+.*no match while resolving probe point.*=One or more of the functions you specified could not be found.
+.*___STAP_MARKER___.*=No ___STAP_MARKER___ functions were found in the target binary. Please insert some, or try again without marking mode.
+.*libdwfl failure.*=Some debug info could not be found. On Fedora, try 'yum install systemtap kernel-devel yum-utils' and 'debuginfo-install kernel', as root.
+.*MAXACTION exceeded.*=SystemTap attempted to execute too many actions, please change the MAXACTIONS directive in the options tab of SystemTap Profile Configurations.
+.*uprobes.*=Probes were not compiled on your system. Try 'make -C /usr/local/share/systemtap/runtime/uprobes' as root

@@ -16,8 +16,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
@@ -35,9 +33,8 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.localgui.core.Helper;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.MP;
-import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
-import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
 
@@ -314,53 +311,17 @@ public class SystemTapLaunchConfigurationDelegate extends
 					process.terminate();
 					return;
 				}
-				
 			}
-			
 			Thread.sleep(100);
+			
+
 			if (process.getExitValue() != 0) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages
-						(Messages.getString("SystemTapLaunchConfigurationDelegate.1"), //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.2"),  //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.3") + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + 
-						PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.4") + //$NON-NLS-1$
-						PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.5") + //$NON-NLS-1$
-						PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.6") +  //$NON-NLS-1$
-						PluginConstants.NEW_LINE +
-						PluginConstants.NEW_LINE + 
-						Messages.getString("SystemTapLaunchConfigurationDelegate.0") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.7")); //$NON-NLS-1$
-				mess.schedule();
+				//SystemTap terminated with errors, parse console to figure out which error 
 				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
-//				getConsoleByName(config.getName()).clearConsole();
-				File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
-				
-				if (!errorLog.exists() || errorLog.length() > PluginConstants.MAX_LOG_SIZE){
-					errorLog.delete();
-					errorLog.createNewFile();
-				}
-				
-				Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-				int year = cal.get(Calendar.YEAR);
-				int month =  cal.get(Calendar.MONTH);
-				int day = cal.get(Calendar.DAY_OF_MONTH);
-				int hour = cal.get(Calendar.HOUR_OF_DAY);
-				int minute = cal.get(Calendar.MINUTE);
-				int second = cal.get(Calendar.SECOND);
-				
-				Helper.appendToFile(errorLog.getAbsolutePath(), 
-						PluginConstants.NEW_LINE+day+"/"+month+"/"+year
-						+" - "+hour+":"+minute+":"+second+PluginConstants.NEW_LINE
-						+doc.get());
-				
+				SystemTapErrorHandler.handle(doc);
 				return;
 			}
 					
-
 			if (stapCmdPar != null)
 				stapCmdPar.setProcessFinished(true);
 
