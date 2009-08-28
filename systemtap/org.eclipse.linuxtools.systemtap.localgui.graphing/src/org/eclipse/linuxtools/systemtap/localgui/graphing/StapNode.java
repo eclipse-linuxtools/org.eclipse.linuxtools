@@ -53,25 +53,20 @@ public class StapNode extends GraphNode{
 		hasButtons = false;
 		buttons = new ArrayList<Integer>();
 		
-//		if (graphModel.isCollapseMode()) {
-//		if (!data.noCaller) {
-			if (graphModel.getNode(data.caller) != null) {
-				this.connection = new GraphConnection( graphModel, style, 
-						this, graphModel.getNode(data.caller));
-				if (graphModel.isCollapseMode())
-					connection.setText("" + data.called); //$NON-NLS-1$
-			}
-			
-			if (graphModel.getNode(data.collapsedCaller) != null) {
-				this.connection = new GraphConnection( graphModel, style, 
-						this, graphModel.getNode(data.collapsedCaller));
-				if (graphModel.isCollapseMode())
-					connection.setText("" + data.called); //$NON-NLS-1$
-			}
-//		}
-		
-//		}
 
+		if (graphModel.getNode(data.caller) != null) {
+			this.connection = new GraphConnection( graphModel, style, 
+					this, graphModel.getNode(data.caller));
+			if (graphModel.isCollapseMode())
+				connection.setText("" + data.called); //$NON-NLS-1$
+		}
+		
+		if (graphModel.getNode(data.collapsedCaller) != null) {
+			this.connection = new GraphConnection( graphModel, style, 
+					this, graphModel.getNode(data.collapsedCaller));
+			if (graphModel.isCollapseMode())
+				connection.setText("" + data.called); //$NON-NLS-1$
+		}
 	}
 
 	

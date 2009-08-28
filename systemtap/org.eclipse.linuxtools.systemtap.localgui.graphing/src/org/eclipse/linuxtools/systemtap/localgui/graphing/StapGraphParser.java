@@ -75,7 +75,7 @@ public class StapGraphParser extends Job{
 	}
 	
 	public IStatus executeParsing(){
-		//CLEAR THE MAPS THEY WILL GET NEW VALUES
+		//Clear maps (in case a previous execution left values hanging)
 		isValidFile = false;
 		outNeighbours.clear();
 		timeMap.clear();
@@ -107,15 +107,12 @@ public class StapGraphParser extends Job{
 			return Status.CANCEL_STATUS;
 		}
 		
-		//IF PROBE_BEGIN IS NOT FOUND THE FILE IS INVALID
-		if (isValidFile){
-//			System.out.println(graphText);			
-			
+		if (isValidFile){			
 			for (int i = 0; i < graphText.length(); i++){
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
-				//RECORD VALID BRACKET NESTING
+				//Check for valid nesting
 				if (graphText.charAt(i) == '<'){
 					validator++;
 				}else if(graphText.charAt(i) == '>'){
@@ -123,8 +120,7 @@ public class StapGraphParser extends Job{
 				}
 			}
 			
-			//MATCHING BRACKETS
-			//IF BRACKETS DO NOT MATCH THEN PERHAPS THE BINARY USED 'exit(int)'
+			//If brackets don't match, check for potential exit call
 			if (validator != 0){	
 				while (validator >= 0){
 					if (monitor.isCanceled()) {
@@ -135,15 +131,13 @@ public class StapGraphParser extends Job{
 				}
 			}
 			
-			
-			
-			//GENERATE THE MAPS FROM THE PARSED TEXT
-			if (timeInfo != null)
-				this.generateMaps();
-			else
+			if (timeInfo == null)
 				return Status.CANCEL_STATUS;
 			
-			//Create a UIJob
+			//Generate maps
+			this.generateMaps();
+			
+			//Create a UIJob to handle the rest
 			GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
 			uijob.schedule(); 
 		}else{
@@ -171,32 +165,17 @@ public class StapGraphParser extends Job{
 	public IStatus generateMaps(){
 			
 			createMap(outNeighbours);
-//			printArrayListMap(outNeighbours);
-//			MP.println();
 			
 			if (generalParser(timeMap, timeInfo, "il") == Status.CANCEL_STATUS) //$NON-NLS-1$
 				return Status.CANCEL_STATUS;
-//			printMap(timeMap);
-//			System.out.println();
 			
 			if (generalParser(serialMap, serialInfo, "is")== Status.CANCEL_STATUS) //$NON-NLS-1$
 				return Status.CANCEL_STATUS;
-//			printMap(serialMap);
-//			System.out.println();
-			
 			
 			if (generalParser(cumulativeTimeMap, cumulativeTimeInfo, "sl")== Status.CANCEL_STATUS) //$NON-NLS-1$
 				return Status.CANCEL_STATUS;
-//			printMap(cumulativeTimeMap);
-//			System.out.println();
 			
 			calculateAggregateStats();
-			
-//			if (generalParser(countMap, countInfo, "si")== Status.CANCEL_STATUS)
-//				return Status.CANCEL_STATUS;
-//			printMap(countMap);
-			
-			
 			
 			if (generalParser(markedMap, markedNodes, "is")== Status.CANCEL_STATUS) //$NON-NLS-1$
 				return Status.CANCEL_STATUS;
@@ -219,7 +198,7 @@ public class StapGraphParser extends Job{
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
 			}
-			//READING THE SERIALpublic StapGraph getGraph() {
+			//Read serial
 			
 			while (text.charAt(pos) != ':'){
 				curr_serial += text.charAt(pos);
@@ -228,9 +207,8 @@ public class StapGraphParser extends Job{
 			
 			pos++;
 			
-			//READING DATA OF SERIAL
+			//Read serial data
 			while (text.charAt(pos) != ';'){
-				//END OF THIS DATA ENTRY
 				tmp_val +=  text.charAt(pos);
 				pos++;
 			}
@@ -239,7 +217,7 @@ public class StapGraphParser extends Job{
 				map.put(Integer.valueOf(curr_serial),Long.valueOf(tmp_val));				
 			}else if (mode.equals("is")){ //$NON-NLS-1$
 				map.put(Integer.valueOf(curr_serial),tmp_val);
-			}else if(mode.equals("si")){				 //$NON-NLS-1$
+			}else if(mode.equals("si")){ //$NON-NLS-1$
 				map.put(curr_serial,Integer.valueOf(tmp_val));
 			}else if (mode.equals("sl")){ //$NON-NLS-1$
 				map.put(curr_serial,Long.valueOf(tmp_val));

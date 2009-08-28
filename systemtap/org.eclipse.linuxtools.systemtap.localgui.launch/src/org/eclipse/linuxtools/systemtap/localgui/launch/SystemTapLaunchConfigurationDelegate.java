@@ -32,7 +32,6 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.localgui.core.Helper;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
@@ -85,7 +84,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		if (config.getAttribute(LaunchConfigurationConstants.USE_COLOUR,
 				LaunchConfigurationConstants.DEFAULT_USE_COLOUR))
 			useColour = true;
-
+ 
 		if (config.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,
 				LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE)) {
 			command += "-v "; //$NON-NLS-1$
@@ -278,7 +277,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 				return;
 			}
 
-			MP.println(cmd);
 			monitor.worked(1);
 			
 			boolean graphMode = config.getAttribute(
@@ -311,14 +309,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 				mess.schedule();
 				return;
 			}
-			
 			IProcess process = createNewProcess(launch, subProcess,
 					commandArray[0]);
-
 			// set the command line used
 			process.setAttribute(IProcess.ATTR_CMDLINE,
 					cmd);
-			
 			monitor.worked(1);
 			
 			while (!process.isTerminated()) {
@@ -389,7 +384,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 				process.destroy();
 			}
 			return null;
-//			throw e;
 		}
 		return process;
 	}

@@ -36,6 +36,8 @@ public class StapGraphKeyListener implements KeyListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void keyReleased(KeyEvent e) {
+
+		//TODO: Use accelerator in menu actions instead of this hard-coded stuff
 		if (e.character == 'r') {
 			graph.reset();
 		}else if (e.character == '1') {
@@ -49,11 +51,9 @@ public class StapGraphKeyListener implements KeyListener {
 			graph.dispose();
 			sh.close();
 		}else if (e.character == 'n') {
-			if (graph.getNextMarkedNode() != -1);
 			graph.draw(graph.getNextMarkedNode(), 0, 0);
-		}else if (e.character == 'm') {
-			if (graph.getNextMarkedCollapsedNode() != -1);
-			graph.draw(graph.getNextMarkedCollapsedNode(), 0, 0);
+		}else if (e.character == 'p') {
+			graph.draw(graph.getPreviousMarkedNode(), 0, 0);
 		}else if (e.character == 'd') {
 			graph.deleteAll(-1);
 		}else if (e.character == 't') {

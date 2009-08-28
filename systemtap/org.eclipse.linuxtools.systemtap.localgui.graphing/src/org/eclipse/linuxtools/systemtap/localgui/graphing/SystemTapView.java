@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
@@ -77,15 +78,18 @@ public class SystemTapView extends ViewPart {
 	private static Action view_radialview;
 	private static Action view_aggregateview;
 	private static Action view_boxview;	
-	public static Action animation_slow;
-	public static Action animation_fast;
-	public static Action mode_collapsednodes;
+	private static Action animation_slow;
+	private static Action animation_fast;
+	private static Action mode_collapsednodes;
+	private static Action markers_next; 
+	private static Action markers_previous;
 	
 	private static IMenuManager menu;
 	private static IMenuManager file;
 	private static IMenuManager errors;
 	private static IMenuManager view;
 	private static IMenuManager animation;
+	private static IMenuManager markers;
 	public static IToolBarManager mgr;
 	
 	public static Composite masterComposite;
@@ -94,6 +98,7 @@ public class SystemTapView extends ViewPart {
 	
 	private static StapGraphParser parser;
 	private static StapGraph graph;
+	
 
 	/**
 	 * The constructor.
@@ -249,6 +254,7 @@ public class SystemTapView extends ViewPart {
 		view = new MenuManager(Messages.getString("SystemTapView.1")); //$NON-NLS-1$
 		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
+		markers = new MenuManager("Markers");
 
 		
 		menu.add(file);
@@ -264,9 +270,13 @@ public class SystemTapView extends ViewPart {
 		view.add(view_radialview);
 		view.add(view_aggregateview);
 		view.add(view_boxview);
+		
+		markers.add(markers_next);
+		markers.add(markers_previous);
 		animation.add(animation_slow);
 		animation.add(animation_fast);
 		menu.add(mode_collapsednodes);
+		menu.add(markers);
 		
 		menu.add(errors);
 		
@@ -512,7 +522,12 @@ public class SystemTapView extends ViewPart {
 				Text txt = new Text(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
 				
 				txt.setText(logText);
+
 				sh.open();
+				
+				ScrollBar bar = txt.getVerticalBar();
+				bar.setSelection(bar.getMaximum() + bar.getThumb());
+				
 				} catch (FileNotFoundException e) {
 					error = true;
 				} catch (IOException e) {
@@ -597,8 +612,6 @@ public class SystemTapView extends ViewPart {
 	 * Populates Animate menu.
 	 */
 	public void createAnimateActions() {
-
-		
 		//Set animation mode to slow
 		animation_slow = new Action(Messages.getString("SystemTapView.20"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
 			public void run(){
@@ -608,6 +621,7 @@ public class SystemTapView extends ViewPart {
 				animation_fast.setChecked(false);
 			}
 		};
+		
 		animation_slow.setChecked(true);
 		
 		//Set animation mode to fast
@@ -633,6 +647,7 @@ public class SystemTapView extends ViewPart {
 				}
 			}
 		};
+
 	}
 	
 /**
@@ -647,9 +662,24 @@ public class SystemTapView extends ViewPart {
 		mode_collapsednodes.setChecked(true);
 		
 		createButtonActions();
-		
+		createMarkerActions();		
 		
 	}
+	
+	public void createMarkerActions() {
+		markers_next = new Action("(n)ext") {
+			public void run() {
+				graph.draw(graph.getNextMarkedNode(), 0, 0);
+			}
+		};
+		
+		markers_previous = new Action("(n)ext") {
+			public void run() {
+				graph.draw(graph.getPreviousMarkedNode(), 0, 0);
+			}
+		};
+	}
+	
 	
 	/**
 	 * Creates actions that appear on the SystemTap View taskbar
@@ -742,6 +772,38 @@ public class SystemTapView extends ViewPart {
 		
 		//Force a redraw (.redraw() .update() not working)
 		SystemTapView.maximizeOrRefresh(false);
+	}
+
+	public static Action getAnimation_slow() {
+		return animation_slow;
+	}
+
+	public static void setAnimation_slow(Action animation_slow) {
+		SystemTapView.animation_slow = animation_slow;
+	}
+
+	public static Action getAnimation_fast() {
+		return animation_fast;
+	}
+
+	public static void setAnimation_fast(Action animation_fast) {
+		SystemTapView.animation_fast = animation_fast;
+	}
+
+	public static IMenuManager getAnimation() {
+		return animation;
+	}
+
+	public static void setAnimation(IMenuManager animation) {
+		SystemTapView.animation = animation;
+	}
+
+	public static Action getMode_collapsednodes() {
+		return mode_collapsednodes;
+	}
+
+	public static void setMode_collapsednodes(Action mode_collapsednodes) {
+		SystemTapView.mode_collapsednodes = mode_collapsednodes;
 	}
 }
 	

@@ -96,7 +96,6 @@ public class StapGraph extends Graph {
 	
 	//Buttons
 	private HashMap<Integer, StapButton> buttons; 			//NodeID of each button
-//	private int lastButtonID;								//TODO: lastButtonID may overflow
 	
 	//Special cases
 	private boolean killInvalidFunctions;					//Toggle hiding of invalid functions					
@@ -110,7 +109,6 @@ public class StapGraph extends Graph {
 	
 	//For cycling through marked nodes
 	private int nextMarkedNode;
-	private int nextMarkedCollapsedNode;
 	
 
 	//Zooming factor for Box View
@@ -140,8 +138,7 @@ public class StapGraph extends Graph {
 		collapse_mode = false;
 		killInvalidFunctions = true;
 		treeViewer = myTreeView;
-		nextMarkedNode = 0;
-		nextMarkedCollapsedNode = 0;		
+		nextMarkedNode = -1;
 		scale = 1;
 		
 		
@@ -744,6 +741,18 @@ public class StapGraph extends Graph {
 	public void draw(int id, int x, int y) {
 		draw(draw_mode, animation_mode, id, x, y);
 	}
+	
+	/**
+	 * Convenience method to draw with current draw parameters. Equivalent to
+	 * draw(graph.draw_mode, animation, id, x, y)
+	 * @param id
+	 * @param x
+	 * @param y
+	 */
+	public void draw(int animation, int id, int x, int y) {
+		draw(draw_mode, animation, id, x, y);
+	}
+	
 
 	/**
 	 * Draws with the given modes. (int x, y) do not function in all draw modes.
@@ -852,7 +861,8 @@ public class StapGraph extends Graph {
 		}
 		
 		//THIS CAUSED A NULL POINTER GOING INTO AGGREGATE VIEW
-//		getNode(id).unhighlight();
+		if (getNode(id) != null)
+			getNode(id).unhighlight();
 		clearSelection();
 	}
 	
@@ -939,7 +949,7 @@ public class StapGraph extends Graph {
 	public boolean recursivelyCollapseAllChildrenOfNode(int id) {
 		//-------------Initialize
 		//If all nodes have been collapsed, don't do anything
-		collapse_mode = true;
+		setCollapseMode(true);
 
 		if (nodeDataMap.get(id).hasCollapsedChildren
 				|| nodeDataMap.get(id).callees.size() == 0)
@@ -1188,17 +1198,18 @@ public class StapGraph extends Graph {
 	public void setAnimationMode(int mode) {
 		animation_mode = mode;
 		if (mode == CONSTANT_ANIMATION_SLOW){
-			SystemTapView.animation_slow.setChecked(true);
-			SystemTapView.animation_fast.setChecked(false);
+			SystemTapView.getAnimation_slow().setChecked(true);
+			SystemTapView.getAnimation_fast().setChecked(false);
 		}else if (mode == CONSTANT_ANIMATION_FASTEST){
-			SystemTapView.animation_slow.setChecked(false);
-			SystemTapView.animation_fast.setChecked(true);			
+			SystemTapView.getAnimation_slow().setChecked(false);
+			SystemTapView.getAnimation_fast().setChecked(true);			
 		}
 	}
 	
 	public void setCollapseMode(boolean value) {
 		collapse_mode = value;
-		SystemTapView.mode_collapsednodes.setChecked(value);
+		nextMarkedNode = -1;
+		SystemTapView.getMode_collapsednodes().setChecked(value);
 	}
 
 	/**
@@ -1276,6 +1287,7 @@ public class StapGraph extends Graph {
 		treeViewer.collapseAll();
 		treeViewer.expandToLevel(2);
 		scale = 1;
+		nextMarkedNode = -1;
 	}
 	
 	
@@ -1364,44 +1376,72 @@ public class StapGraph extends Graph {
 	
 
 	/**
-	 * Returns the id of the next marked non-collapsed node. 
+	 * Returns the id of the next marked node in current collapse mode. 
 	 * Wraps back to the first marked node.
 	 * 
-	 * @return Node id of next marked non-collapsed node 
+	 * @return Node id of next marked node.
 	 */
 	public int getNextMarkedNode() {
-		if (markedNodes.size() == 0)
+		List<Integer> list = markedNodes;
+		if (collapse_mode)
+			list = markedCollapsedNodes;
+		
+		if (list.size() == 0)
 			return -1;
 		
 		
-		if (nextMarkedNode >= markedNodes.size())
-			nextMarkedNode = 0;
-		int index = nextMarkedNode;
 		nextMarkedNode++;
+		if (nextMarkedNode >= list.size())
+			nextMarkedNode = 0;
 		
 		
-		return markedNodes.get(index);
+		return list.get(nextMarkedNode);
 	}
 	
+	
 	/**
-	 * Returns the id of the next marked collapsed node.
- 	 * Wraps back to the first marked node.
-	 *
-	 * @return Node id of next marked collapsed node.
+	 * Returns the id of the next marked node in current collapse mode. 
+	 * Wraps back to the first marked node.
+	 * 
+	 * @return Node id of next marked node.
 	 */
-	public int getNextMarkedCollapsedNode() {
-		if (markedCollapsedNodes.size() == 0)
+	public int getPreviousMarkedNode() {
+		List<Integer> list = markedNodes;
+		if (collapse_mode)
+			list = markedCollapsedNodes;
+		
+		if (list.size() == 0)
 			return -1;
 		
-		
-		if (nextMarkedCollapsedNode >= markedCollapsedNodes.size())
-			nextMarkedCollapsedNode = 0;
-		int index = nextMarkedCollapsedNode;
-		nextMarkedCollapsedNode++;
+		nextMarkedNode--;
+		if (nextMarkedNode < 0)
+			nextMarkedNode = list.size() - 1;
 		
 		
-		return markedCollapsedNodes.get(index);
+		return list.get(nextMarkedNode);
 	}
+	
+	
+//	
+//	/**
+//	 * Returns the id of the next marked collapsed node.
+// 	 * Wraps back to the first marked node.
+//	 *
+//	 * @return Node id of next marked collapsed node.
+//	 */
+//	public int getNextMarkedCollapsedNode() {
+//		if (markedCollapsedNodes.size() == 0)
+//			return -1;
+//		
+//		
+//		if (nextMarkedCollapsedNode >= markedCollapsedNodes.size())
+//			nextMarkedCollapsedNode = 0;
+//		int index = nextMarkedCollapsedNode;
+//		nextMarkedCollapsedNode++;
+//		
+//		
+//		return markedCollapsedNodes.get(index);
+//	}
 //	
 //	/**
 //	 * Activated when mouse is pressed. Used for panning.
