@@ -37,7 +37,7 @@ public class StapTreeLabelProvider implements ILabelProvider {
 	}
 
 	
-	//TODO: Check for leaks?
+	//TODO: Check for memory leaks
 	@Override
 	public void dispose() {
 	}

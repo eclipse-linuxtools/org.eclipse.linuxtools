@@ -40,7 +40,6 @@ import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
-import org.eclipse.ui.console.TextConsole;
 
 /**
  * Delegate for Stap scripts. The Delegate generates part of the command string

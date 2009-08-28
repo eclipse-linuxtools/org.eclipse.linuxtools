@@ -170,7 +170,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	}
 	
 	
-	//TODO: can actually merge these two functions - we only use
+	//TODO: Should merge finishWith and Without binary - we only use
 	//the IBinary to find the name, in any case.
 	/**
 	 * This function is identical to the function above, except it does not

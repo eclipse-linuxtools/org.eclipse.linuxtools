@@ -1,7 +1,12 @@
 package org.eclipse.linuxtools.systemtap.localgui.core;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -75,5 +80,24 @@ public class Helper {
 		}
 	}
 
+	public static String readFile(String absoluteFilePath) {
+		
+		try {
+			String output = "";
+			String tmp = "";
+			BufferedReader bw = new BufferedReader(new FileReader(new File(absoluteFilePath)));
+			while ((tmp = bw.readLine()) != null) {
+				output+=tmp + "\n";
+			}
+			bw.close();
+			
+			return output;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
 }
  

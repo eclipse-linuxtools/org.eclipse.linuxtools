@@ -86,8 +86,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			scriptFile.createNewFile();
 
 
-
-			//TODO: Just generate the scriptContents and write at the end
 			scriptContents += writeGlobalVariables();
 			scriptContents += writeStapMarkers();
 			String funcs = writeFunctionListToScript();

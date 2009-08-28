@@ -414,11 +414,10 @@ public class SystemTapView extends ViewPart {
 		return viewer.getText();
 	}
 	
-/**
- * Create a bunch of actions
- */
-	public void createActions() {
-		
+	/**
+	 * Populates the file menu
+	 */
+	public void createFileActions() {
 		//Opens from some location in your program
 		open_callgraph = new Action(Messages.getString("SystemTapView.7")){ //$NON-NLS-1$
 			public void run(){
@@ -438,60 +437,6 @@ public class SystemTapView extends ViewPart {
 						StapGraphParser(Messages.getString("SystemTapView.12"),  //$NON-NLS-1$
 										PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH);
 				new_parser.schedule();					
-			}
-		};
-		
-		
-		error_errorLog = new Action("Error log") {
-			public void run() {
-				boolean error = false;
-				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
-				BufferedReader buff;
-				try {
-					buff = new BufferedReader(new FileReader(log));
-				String logText = "";
-				String line;
-				
-				while ((line = buff.readLine()) != null) {
-					logText+=line + PluginConstants.NEW_LINE;
-				}
-				
-				Shell sh = new Shell();
-				sh.setLayout(new FillLayout());
-				sh.setSize(400,400);
-				Text txt = new Text(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
-				
-				txt.setText(logText);
-				sh.open();
-				} catch (FileNotFoundException e) {
-					error = true;
-				} catch (IOException e) {
-					error = true;
-				} finally {
-					if (error) {
-						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-							"ErrorLog reading error",
-							"Error reading error log",
-							"Error log could not be read, most likely this is because" +
-							" the log file could not be found.");
-						mess.schedule();
-					}
-				}
-				
-			}
-		};
-		
-		error_deleteError = new Action("Clear log") {
-			public void run() {
-				
-				try {
-					File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
-					log.delete();
-					log.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
 			}
 		};
 		
@@ -539,9 +484,76 @@ public class SystemTapView extends ViewPart {
 			}
 		};
 		
+	}
+	
+	/**
+	 * Populates the Errors menu
+	 */
+	public void createErrorActions() {
+
+		error_errorLog = new Action("Error log") {
+			public void run() {
+				boolean error = false;
+				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
+				BufferedReader buff;
+				try {
+					buff = new BufferedReader(new FileReader(log));
+				String logText = "";
+				String line;
+				
+				while ((line = buff.readLine()) != null) {
+					logText+=line + PluginConstants.NEW_LINE;
+				}
+				
+				Shell sh = new Shell();
+				sh.setLayout(new FillLayout());
+				sh.setSize(400,400);
+				Text txt = new Text(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
+				
+				txt.setText(logText);
+				sh.open();
+				} catch (FileNotFoundException e) {
+					error = true;
+				} catch (IOException e) {
+					error = true;
+				} finally {
+					if (error) {
+						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+							"ErrorLog reading error",
+							"Error reading error log",
+							"Error log could not be read, most likely this is because" +
+							" the log file could not be found.");
+						mess.schedule();
+					}
+				}
+				
+			}
+		};
+		
+		error_deleteError = new Action("Clear log") {
+			public void run() {
+				
+				try {
+					if (!MessageDialog.openConfirm(new Shell(), "Delete logs?", 
+							"This will permanently clear the SystemTap Eclipse error " +
+							"logs. Are you sure you want to ontinue?"))
+						return;
+					
+					File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log");
+					log.delete();
+					log.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		};
 		
 		
-		
+	}
+	
+	public void createViewActions() {
+
 		//Set drawmode to tree view
 		view_treeview = new Action(Messages.getString("SystemTapView.16")){ //$NON-NLS-1$
 			public void run() {
@@ -552,7 +564,6 @@ public class SystemTapView extends ViewPart {
 						graph.getRootVisibleNode()).getLocation().y);
 			}
 		};
-		
 		
 		//Set drawmode to radial view
 		view_radialview = new Action(Messages.getString("SystemTapView.17")){ //$NON-NLS-1$
@@ -577,6 +588,14 @@ public class SystemTapView extends ViewPart {
 						graph.getRootVisibleNode(), 0, 0);
 			}
 		};
+		
+	}
+	
+	/**
+	 * Populates Animate menu.
+	 */
+	public void createAnimateActions() {
+
 		
 		//Set animation mode to slow
 		animation_slow = new Action(Messages.getString("SystemTapView.20"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
@@ -612,8 +631,28 @@ public class SystemTapView extends ViewPart {
 				}
 			}
 		};
+	}
+	
+/**
+ * Creates actions by calling the relevant functions
+ */
+	public void createActions() {
+		createFileActions();
+		createErrorActions();
+		createViewActions();
+		createAnimateActions();
+
 		mode_collapsednodes.setChecked(true);
 		
+		createButtonActions();
+		
+		
+	}
+	
+	/**
+	 * Creates actions that appear on the SystemTap View taskbar
+	 */
+	public void createButtonActions(){
     	
     	/*
     	 * Execute a kill command on all running processes containing 'stap' 
@@ -682,7 +721,6 @@ public class SystemTapView extends ViewPart {
 		};
 		disposeGraph.setToolTipText("Dispose of graph area"); //$NON-NLS-1$
 	}
-	
 	
 	public static void disposeGraph() {
 		if (graphComp != null)

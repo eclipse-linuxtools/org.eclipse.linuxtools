@@ -31,4 +31,12 @@ public class MP {
 	public static void setMute(boolean val) {
 		mute = val;
 	}
+	
+	public static void mute() {
+		mute = true;
+	}
+	
+	public static void unmute() {
+		mute = false;
+	}
 }

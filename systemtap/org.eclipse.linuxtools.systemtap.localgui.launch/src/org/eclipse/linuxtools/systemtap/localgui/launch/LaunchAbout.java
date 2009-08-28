@@ -86,22 +86,22 @@ public class LaunchAbout extends SystemTapLaunchShortcut {
 				 Messages.getString("LaunchAbout.7") + //$NON-NLS-1$
 				 
 				 Messages.getString("LaunchAbout.8") + //$NON-NLS-1$
-				 
-				 Messages.getString("LaunchAbout.9") + //$NON-NLS-1$
-				 Messages.getString("LaunchAbout.10") + //$NON-NLS-1$
+//				 
+//				 Messages.getString("LaunchAbout.9") + //$NON-NLS-1$
+//				 Messages.getString("LaunchAbout.10") + //$NON-NLS-1$
 				 
 				 Messages.getString("LaunchAbout.11") + //$NON-NLS-1$
 				 Messages.getString("LaunchAbout.12") + //$NON-NLS-1$
 				 Messages.getString("LaunchAbout.13") + //$NON-NLS-1$
 				 
-				 Messages.getString("LaunchAbout.14") + //$NON-NLS-1$
-				 Messages.getString("LaunchAbout.15") + //$NON-NLS-1$
-				 Messages.getString("LaunchAbout.16") + //$NON-NLS-1$
+//				 Messages.getString("LaunchAbout.14") + //$NON-NLS-1$
+//				 Messages.getString("LaunchAbout.15") + //$NON-NLS-1$
+//				 Messages.getString("LaunchAbout.16") + //$NON-NLS-1$
 				 
 				 Messages.getString("LaunchAbout.17") + //$NON-NLS-1$
 				 
-				 Messages.getString("LaunchAbout.18") + //$NON-NLS-1$
-				 Messages.getString("LaunchAbout.19") + //$NON-NLS-1$
+//				 Messages.getString("LaunchAbout.18") + //$NON-NLS-1$
+//				 Messages.getString("LaunchAbout.19") + //$NON-NLS-1$
 				 
 				 Messages.getString("LaunchAbout.20") + //$NON-NLS-1$
 				 Messages.getString("LaunchAbout.21") //$NON-NLS-1$

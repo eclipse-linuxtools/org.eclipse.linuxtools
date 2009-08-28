@@ -291,6 +291,10 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		
 		createGeneratedScriptOption(generatedScriptTop);
 		generatedScriptTab.setControl(generatedScriptTop);
+		
+		/*
+		 * SystemTap help - contains the stap man page
+		 */
 	}
 	
 
@@ -503,10 +507,8 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		browseTop.setLayoutData(browseData);
 
 		Label suppFileLabel = new Label(browseTop, SWT.NONE);
-		//TODO: Fix to allow running a binary and some other commands
 		suppFileLabel.setText(Messages.getString("SystemTapOptionsTab.CommandsLabel1") + //$NON-NLS-1$
-				Messages.getString("SystemTapOptionsTab.CommandsLabel2") + //$NON-NLS-1$
-				Messages.getString("SystemTapOptionsTab.CommandsLabel3")); //$NON-NLS-1$
+				Messages.getString("SystemTapOptionsTab.CommandsLabel2")); //$NON-NLS-1$
 		
 		commandFile = new Text(browseTop, SWT.BORDER);
 		commandFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -520,68 +522,100 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		GridData buttonsData = new GridData(SWT.CENTER, SWT.BEGINNING, true, true);
 		buttonsData.heightHint = 400;
 		buttonsTop.setLayoutData(buttonsData);
+
 		
-
-
 		button_v = new Button(buttonsTop, SWT.CHECK);
 		button_v.setText(Messages.getString("SystemTapOptionsTab.18")); //$NON-NLS-1$
 		button_v.addSelectionListener(selectListener);
 		button_v.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_v.setToolTipText("Increase verbosity for all passes.  Produce a larger  volume  of" +
+								" informative (?) output each time option repeated.");
 		
 		button_k = new Button(buttonsTop, SWT.CHECK);
 		button_k.setText(Messages.getString("SystemTapOptionsTab.20")); //$NON-NLS-1$
 		button_k.addSelectionListener(selectListener);
 		button_k.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_k.setToolTipText(
+				"Keep the temporary directory after all processing.  This may  be " +
+				"useful in order to examine the generated C code, or to reuse the " +
+				"compiled kernel object.");
+		
 		
 		button_g = new Button(buttonsTop, SWT.CHECK);
 		button_g.setText(Messages.getString("SystemTapOptionsTab.21")); //$NON-NLS-1$
 		button_g.addSelectionListener(selectListener);
 		button_g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_g.setToolTipText(
+				"Guru mode.  Enable parsing  of  unsafe  expert-level  constructs " +
+				"like embedded C.");
 
 		button_P = new Button(buttonsTop, SWT.CHECK);
 		button_P.setText(Messages.getString("SystemTapOptionsTab.22")); //$NON-NLS-1$
 		button_P.addSelectionListener(selectListener);
 		button_P.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_P.setToolTipText(
+				"Prologue-searching  mode.  Activate  heuristics to work around " +
+			    "incorrect debugging information for $target variables.");
 
 		button_u = new Button(buttonsTop, SWT.CHECK);
 		button_u.setText(Messages.getString("SystemTapOptionsTab.23")); //$NON-NLS-1$
 		button_u.addSelectionListener(selectListener);
 		button_u.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_u.setToolTipText(
+				"Unoptimized mode.  Disable unused code elision during elaboration.");
 		
 		button_w = new Button(buttonsTop, SWT.CHECK);
 		button_w.setText(Messages.getString("SystemTapOptionsTab.24")); //$NON-NLS-1$
 		button_w.addSelectionListener(selectListener);
 		button_w.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_w.setToolTipText(
+				"Suppressed  warnings  mode.  Disable warning messages for elided "+
+				"code in user script.");
 
 		button_b = new Button(buttonsTop, SWT.CHECK);
 		button_b.setText(Messages.getString("SystemTapOptionsTab.25")); //$NON-NLS-1$
 		button_b.addSelectionListener(selectListener);
 		button_b.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_b.setToolTipText(
+				" Use bulk mode (percpu files) for kernel-to-user data transfer.");
 		
 		button_t = new Button(buttonsTop, SWT.CHECK);
 		button_t.setText(Messages.getString("SystemTapOptionsTab.26")); //$NON-NLS-1$
 		button_t.addSelectionListener(selectListener);
 		button_t.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_t.setToolTipText(
+				"Collect timing information on the number of times probe executes " +
+			    "and average amount of time spent in each probe.");
 
 		button_F = new Button(buttonsTop, SWT.CHECK);
 		button_F.setText(Messages.getString("SystemTapOptionsTab.LeaveProbesRunning")); //$NON-NLS-1$
 		button_F.addSelectionListener(selectListener);
 		button_F.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_F.setToolTipText(
+				"Without -o option, load module and  start probes, then detach " +
+				"from the module leaving the probes running.  With -o option, run " +
+				"staprun in background as a daemon and show its pid.");
 		
 		button_skip_badvars = new Button(buttonsTop, SWT.CHECK);
 		button_skip_badvars.setText(Messages.getString("SystemTapOptionsTab.IgnoreBadVars")); //$NON-NLS-1$
 		button_skip_badvars.addSelectionListener(selectListener);
 		button_skip_badvars.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_skip_badvars.setToolTipText(
+				"Ignore out of context variables and substitute with literal 0.");
 		
 		button_ignore_dwarf = new Button(buttonsTop, SWT.CHECK);
 		button_ignore_dwarf.setText(Messages.getString("SystemTapOptionsTab.ForTesting")); //$NON-NLS-1$
 		button_ignore_dwarf.addSelectionListener(selectListener);
 		button_ignore_dwarf.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_ignore_dwarf.setToolTipText(
+				"For testing, act as though vmlinux and  modules  lack  debugging " +
+				"information.");
 		
 		button_q = new Button(buttonsTop, SWT.CHECK);
 		button_q.setText(Messages.getString("SystemTapOptionsTab.Button_qInfo")); //$NON-NLS-1$
 		button_q.addSelectionListener(selectListener);
 		button_q.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_q.setToolTipText("Generate information on tapset coverage");
 		
 		Composite button_p_Spinner_Top = new Composite(buttonsTop, SWT.NONE);
 		button_p_Spinner_Top.setLayout(new GridLayout(3, false));
@@ -591,6 +625,10 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		button_p_Spinner.setMaximum(Integer.MAX_VALUE);
 		button_p_Spinner.addModifyListener(modifyListener);	
 		button_p_Spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_p_Spinner_Label.setToolTipText(
+				"Stop after specified pass. The passes are numbered 1-5: parse, elaborate" +
+				",  translate,	 compile, run.	See the PROCESSING section for " +
+				"details.");
 		
 		Composite button_s_Spinner_Top = new Composite(buttonsTop, SWT.NONE);
 		button_s_Spinner_Top.setLayout(new GridLayout(2, false));
@@ -600,6 +638,9 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		button_s_Spinner.setMaximum(Integer.MAX_VALUE);
 		button_s_Spinner.addModifyListener(modifyListener);	
 		button_s_Spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_s_Spinner_Label.setToolTipText(
+				"Use NUM megabyte buffers for kernel-to-user data transfer.  On a " +
+				"multiprocessor in bulk mode, this is a per-processor amount.");
 		
 		Composite button_x_Spinner_Top = new Composite(buttonsTop, SWT.NONE);
 		button_x_Spinner_Top.setLayout(new GridLayout(2, false));
@@ -609,22 +650,30 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		button_x_Spinner.setMaximum(Integer.MAX_VALUE);
 		button_x_Spinner.addModifyListener(modifyListener);	
 		button_x_Spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_x_Spinner_Label.setToolTipText(
+				"Sets target() to PID. This allows scripts	 to  be	 written  that " +
+				"filter on a specific process.");
 		
 		button_graphicsMode = new Button(buttonsTop, SWT.CHECK);
 		button_graphicsMode.setText(Messages.getString("SystemTapOptionsTab.3")); //$NON-NLS-1$
 		button_graphicsMode.addSelectionListener(graphicsModeListener);
 		button_graphicsMode.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_graphicsMode.setToolTipText(
+				"Graph the output. Enable only if using a generated StapGraph script.");
 		
 		Label button_D_label = new Label(buttonsTop, SWT.NONE);
 		button_D_label.setText(Messages.getString("SystemTapOptionsTab.PreprocessorDirective")); //$NON-NLS-1$
 		button_D_text = new Text(buttonsTop, SWT.BORDER);
 		button_D_text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		button_D_text.addModifyListener(modifyListener);
+		button_D_label.setToolTipText(
+					  "Add the given C preprocessor directive to the module Makefile.  " +
+					  "These can be used to override limit parameters.");
 		
 		
 		
 	}
-	
+
 	
 	@Override
 	public String getName() {
@@ -807,5 +856,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 
 		return valid;
 	}
+	
+
 
 }
