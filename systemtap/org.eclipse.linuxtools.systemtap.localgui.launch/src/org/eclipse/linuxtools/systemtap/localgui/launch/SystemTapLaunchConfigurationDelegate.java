@@ -35,6 +35,7 @@ import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstan
 import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapErrorHandler;
+import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
 
@@ -61,7 +62,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 			m = new NullProgressMonitor();
 		}
 		SubMonitor monitor = SubMonitor.convert(m,
-				"SystemTap runtime monitor", 10); //$NON-NLS-1$
+				"SystemTap runtime monitor", 5); //$NON-NLS-1$
+
+		//System.out.println("SystemTapLaunchConfigurationDelegate: launch"); //$NON-NLS-1$
 
 		// check for cancellation
 		if (monitor.isCanceled()) {
@@ -275,8 +278,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 				return;
 			}
 
-			
 			MP.println(cmd);
+			monitor.worked(1);
+			
 			boolean graphMode = config.getAttribute(
 					LaunchConfigurationConstants.GRAPHICS_MODE,
 					LaunchConfigurationConstants.DEFAULT_GRAPHICS_MODE);
@@ -293,14 +297,29 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 
 			monitor.worked(1);
+			
+			/* THIS NEEDS TO BE CHANGED BUT NEED TO TEST FIRST TO KNOW WHAT HAPPENS WHEN
+			 * AN EXECUTION FAILS*/
 			Process subProcess = execute(commandArray, getEnvironment(config),
 					workDir, true);
+			
+			if (subProcess == null){
+				//TODO: FIgure out what the console error message is so we can catch it in errorlog
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Error", "SystemTap Error", 
+				"SystemTap could not execute for some reason. This could be due to some missing " +
+				"packages that are necessary to the running of SystemTap");
+				mess.schedule();
+				return;
+			}
+			
 			IProcess process = createNewProcess(launch, subProcess,
 					commandArray[0]);
 
 			// set the command line used
 			process.setAttribute(IProcess.ATTR_CMDLINE,
 					cmd);
+			
+			monitor.worked(1);
 			
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
@@ -331,6 +350,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 						config.getName());
 				stapCmdPar.schedule();
 			}
+			
+			monitor.worked(1);
 
 		} catch (IOException e) {
 			abort("Could not start process", e, //$NON-NLS-1$
@@ -343,7 +364,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		}
 
 	}
-	
 
 	public String getCommand() {
 		return cmdGenerator.getExecuteCommand();
@@ -368,9 +388,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 			if (process != null) {
 				process.destroy();
 			}
-			throw e;
+			return null;
+//			throw e;
 		}
-
 		return process;
 	}
 	

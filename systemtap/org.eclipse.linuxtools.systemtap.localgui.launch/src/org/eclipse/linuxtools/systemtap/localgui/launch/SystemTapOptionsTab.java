@@ -717,7 +717,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			needToGenerateScriptButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE));
 			
 			useColourButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR));
-			//button_build.setSelection(configuration.getAttribute(LaunchConfigurationConstants.BUILD_PROJECT, LaunchConfigurationConstants.DEFAULT_BUILD_PROJECT));
 			
 		} catch (CoreException e) {
 			e.printStackTrace();
