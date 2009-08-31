@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.localgui.launch;
 
-import java.util.ArrayList;
-
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ICElementVisitor;
 import org.eclipse.core.runtime.CoreException;

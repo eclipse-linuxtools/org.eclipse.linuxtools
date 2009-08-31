@@ -198,7 +198,7 @@ public class StapGraphParser extends Job{
 //						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
-							parsingError();
+							parsingError("Encountered '>' without matching '<' for function " + name);
 							return Status.CANCEL_STATUS;
 						}
 						
@@ -207,7 +207,7 @@ public class StapGraphParser extends Job{
 						
 						
 						if (timeMap.get(id) == null) {
-							parsingError();
+							parsingError("No start time could be found for function " + name);
 							return Status.CANCEL_STATUS;
 						}		
 						time =  Long.parseLong(args[1]) - timeMap.get(id);
@@ -226,12 +226,13 @@ public class StapGraphParser extends Job{
 //						cumulativeTimeMap.put(name, cumulativeTime);
 						break;
 					default : 
-						parsingError();
+						parsingError("Unexpected symbol when parsing: '" + s.charAt(0) +
+								"' encountered, while expecting < or >." );
 						return Status.CANCEL_STATUS;
 					
-				}
+				} 
 				
-			}
+			} 
 			
 			//CHECK FOR EXIT() CALL
 			if (idList.size() != 0){
@@ -246,6 +247,7 @@ public class StapGraphParser extends Job{
 				}
 			}
 			
+			
 			} catch (NumberFormatException e) {
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Unexpected Number", 
 						"Unexpected symbol", "Unexpected symbol encountered while trying to " +
@@ -254,14 +256,16 @@ public class StapGraphParser extends Job{
 				
 				return Status.CANCEL_STATUS;
 			}
+		} else {
+			parsingError("Could not find data in target file. Ensure target file contains data and try again.");
+			return Status.CANCEL_STATUS;
 		}
 		
-
 		//Create a UIJob to handle the rest
 		GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
 		uijob.schedule(); 
-			
 		return Status.OK_STATUS;
+			
 	}
 	
 	/**
@@ -274,9 +278,9 @@ public class StapGraphParser extends Job{
 		
 	}
 	
-	private void parsingError() {
+	private void parsingError(String message) {
 		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-				"ParseError", "Unexpected symbol", "Unexpected symbol when parsing.");
+				"ParseError", "Unexpected symbol", message);
 		mess.schedule();
 	}
 	

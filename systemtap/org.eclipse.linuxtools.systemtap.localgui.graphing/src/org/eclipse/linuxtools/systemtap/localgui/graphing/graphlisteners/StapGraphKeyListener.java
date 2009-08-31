@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraph;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapNode;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Shell;
@@ -36,36 +37,39 @@ public class StapGraphKeyListener implements KeyListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void keyReleased(KeyEvent e) {
-
+		if (e.stateMask != SWT.SHIFT) {
+			return;
+		}
+		
 		//TODO: Use accelerator in menu actions instead of this hard-coded stuff
-		if (e.character == 'r') {
+		if (e.character == 'R') {
 			graph.reset();
-		}else if (e.character == '1') {
-			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
-		}else if (e.character == '2') {
-			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTER);
-		}else if (e.character == '3') {
-			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
-		}else if (e.character == 'k') {
-			Shell sh = graph.getShell();
-			graph.dispose();
-			sh.close();
-		}else if (e.character == 'n') {
-			int id = graph.getNextMarkedNode();
-			graph.draw(id, 0, 0);
-			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
-		}else if (e.character == 'p') {
-			int id = graph.getPreviousMarkedNode();
-			graph.draw(id, 0, 0);
-			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
-		}else if (e.character == 'd') {
-			graph.deleteAll(-1);
-		}else if (e.character == 't') {
-			graph.deleteAll(graph.getRootVisibleNode());
-			graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, StapGraph.CONSTANT_ANIMATION_SLOW, 
-					graph.getRootVisibleNode());
-			graph.currentPositionInLevel.clear();
-		}else if (e.character == 'c') {
+//		}else if (e.character == '1') {
+//			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
+//		}else if (e.character == '2') {
+//			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTER);
+//		}else if (e.character == '3') {
+//			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
+//		}else if (e.character == 'k') {
+//			Shell sh = graph.getShell();
+//			graph.dispose();
+//			sh.close();
+//		}else if (e.character == 'n') {
+//			int id = graph.getNextMarkedNode();
+//			graph.draw(id, 0, 0);
+//			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
+//		}else if (e.character == 'p') {
+//			int id = graph.getPreviousMarkedNode();
+//			graph.draw(id, 0, 0);
+//			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
+//		}else if (e.character == 'd') {
+//			graph.deleteAll(-1);
+//		}else if (e.character == 'T') {
+//			graph.deleteAll(graph.getRootVisibleNode());
+//			graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(), 
+//					graph.getRootVisibleNode());
+//			graph.currentPositionInLevel.clear();
+		}else if (e.character == 'C') {
 			if (graph.isCollapseMode()) {
 				graph.setCollapseMode(false);
 			} else {
@@ -86,7 +90,7 @@ public class StapGraphKeyListener implements KeyListener {
 					id = stapNodeList.remove(0).id;
 				}
 
-				graph.draw(id,0,0);
+				graph.draw(id);
 				graph.getNode(id).unhighlight();
 				graph.setSelection(null);
 			}

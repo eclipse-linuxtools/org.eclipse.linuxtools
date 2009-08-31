@@ -48,13 +48,12 @@ public class StapGraphMouseMoveListener implements MouseMoveListener {
 		//For some reason getting rid of some of the /scale's in drawTree
 		//Will fix panning, but at the cost of making the drawTree zoom look weird
 
-		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE)
-			if (graph.scale < 0.63) {
+		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE) {
+//			if (graph.scale < 0.63) {
 				if (showMessage) {
 					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 							"PanError", "Panning disabled",
-							"We're sorry, but panning has been disabled at this scale " +
-							"and drawmode.");
+							"We're sorry, but panning is disabled in tree mode.");
 					mess.schedule();
 					showMessage = false;
 				}

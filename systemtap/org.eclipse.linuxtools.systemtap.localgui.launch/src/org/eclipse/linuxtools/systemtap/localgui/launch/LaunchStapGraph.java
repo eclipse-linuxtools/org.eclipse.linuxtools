@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;

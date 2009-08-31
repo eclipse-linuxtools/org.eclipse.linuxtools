@@ -47,10 +47,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -714,37 +712,15 @@ public class SystemTapView extends ViewPart {
 				sh.setText("SystemTap Error Log");
 				sh.setLayout(new FillLayout());
 				sh.setSize(400,400);
-				Text txt = new Text(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
+				StyledText txt = new StyledText(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
 				
 				txt.setText(logText);
 
-				sh.open();
 				sh.setText("Error Log");
 				
-				ScrollBar bar = txt.getVerticalBar();
-				bar.setSelection(bar.getMaximum());
 				sh.open();
+				txt.setTopIndex(txt.getLineCount());
 
-//				
-//				txt.addKeyListener(new KeyListener() {
-//
-//					@Override
-//					public void keyPressed(KeyEvent e) {
-//if (e.character == 'f') 
-//	System.out.println("Selection: " + bar.getSelection());
-//System.out.println("Selection max: " + bar.getMaximum());
-//System.out.println("Selection tjh: " + bar.getThumb());
-//bar.setSelection(bar.getMaximum());
-//					}
-//
-//					@Override
-//					public void keyReleased(KeyEvent e) {
-//						// TODO Auto-generated method stub
-//						
-//					}
-//					
-//				});
-//				
 				
 				} catch (FileNotFoundException e) {
 					error = true;

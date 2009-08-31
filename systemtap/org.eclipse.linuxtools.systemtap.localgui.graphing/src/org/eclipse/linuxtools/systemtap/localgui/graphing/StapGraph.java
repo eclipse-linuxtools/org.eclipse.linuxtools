@@ -24,6 +24,7 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.systemtap.localgui.core.MP;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphKeyListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphMouseListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphMouseWheelListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeContentProvider;
@@ -163,8 +164,9 @@ public class StapGraph extends Graph {
 		
 		//-------------Add listeners
 		this.addMouseListener(new StapGraphMouseListener(this));		
-//		this.addKeyListener(new StapGraphKeyListener(this));
+		this.addKeyListener(new StapGraphKeyListener(this));
 		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
+
 	}
 
 	
@@ -412,7 +414,7 @@ public class StapGraph extends Graph {
 				aggregateNodes.add(n);
 				
 				percentage_time = ((float) ent.getValue() / this
-						.getTotalTime());
+						.getTotalTime() * 100);
 				n.setText(ent.getKey() + "\n"  //$NON-NLS-1$
 						+ num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$
 						+ aggregateCount.get(ent.getKey()) + "\n") ; //$NON-NLS-1$
@@ -885,7 +887,6 @@ public class StapGraph extends Graph {
 				setLevelLimits(id);
 				rootVisibleNode = id;
 				drawTree(id, this.getBounds().width / 2, 20);
-//				moveAllNodesTo(this.getBounds().width / 2, 20);
 				currentPositionInLevel.clear();
 
 				this.update();

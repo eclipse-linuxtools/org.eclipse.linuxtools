@@ -38,7 +38,7 @@ public class StapNode extends GraphNode{
 			this.setText(StapGraph.CONSTANT_TOP_NODE_NAME);
 		else  {
 				this.setText(data.name + ": " +  //$NON-NLS-1$
-					numberFormat.format((float) data.time/graphModel.getTotalTime()) 
+					numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
 					+ "%"); //$NON-NLS-1$
 		}
 		
