@@ -7,7 +7,8 @@ Bundle-Activator: org.eclipse.linuxtools.systemtap.localgui.launch.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.ui,
- org.eclipse.draw2d
+ org.eclipse.draw2d,
+ org.eclipse.cdt.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.cdt.core.model,

@@ -17,8 +17,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.cdt.core.model.ICContainer;
+import org.eclipse.cdt.core.model.ICElement;
+import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -27,6 +32,7 @@ import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstan
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
 
 public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	/*
@@ -64,35 +70,30 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 */
 	
 	private String partialScriptPath;
+	private String resourceToSearchFor = "";
+	private boolean searchForResource = false;
 	private static final String DELIMITER = " ";  //$NON-NLS-1$
 
+	
+	public void launch(IEditorPart ed, String mode) {
+		super.Init();
+		resourceToSearchFor = ed.getTitle();
+		searchForResource = true;
+		Object[] list = new Object[] {ed.getEditorInput()}; 
+		searchAndLaunch(list, mode);
+	}
+	
 	public void launch(IBinary bin, String mode) {
 		super.Init();		
 		name = Messages.getString("LaunchStapGraph.0"); //$NON-NLS-1$
 		binName = getName(bin);
-
-		
 		partialScriptPath = PluginConstants.getPluginLocation()
 				+ "parse_function_partial.stp"; //$NON-NLS-1$
 
 		scriptPath = PluginConstants.DEFAULT_OUTPUT 
 				+ "callgraphGen.stp"; //$NON-NLS-1$
 
-//		try {
-//			for (ICElement b : bin.getChildren()) {
-//				if (b.getElementName().contains(":"))
-//					continue;
-//				System.out.println("name: " + b.getElementName());
-//				System.out.println("Type: " + b.getElementType());
-//				//				for (ICElement c: b.get) {
-////					System.out.println("Subname: " + c.getElementName());
-////				}
-////					
-//			}
-//		} catch (CModelException e2) {
-//			e2.printStackTrace();
-//		}
-//		return;
+		
 		try {
 			String scriptContents = ""; //$NON-NLS-1$
 			File scriptFile = new File(scriptPath);
@@ -101,8 +102,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 
 			scriptContents += writeGlobalVariables();
-			scriptContents += writeStapMarkers();
-			String funcs = writeFunctionListToScript();
+//			scriptContents += writeStapMarkers();
+			//TODO: Don't translate from arraylist to string, just have visitor return a single string
+			String funcs = writeFunctionListToScript(bin);
 			if (funcs == null)
 				return;
 			scriptContents += funcs;
@@ -169,29 +171,41 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 * @throws IOException
 	 */
-	private String writeFunctionListToScript() throws IOException {
+	private String writeFunctionListToScript(IBinary bin) throws IOException {
 		String toWrite = ""; //$NON-NLS-1$
-		
-		InputDialog id = new InputDialog(
-				new Shell(),
-				Messages.getString("LaunchStapGraph.FunctionsToProbeTitle"), //$NON-NLS-1$
-				Messages.getString("LaunchStapGraph.FunctionsToProbeMessage") //$NON-NLS-1$
-						+ Messages.getString("LaunchStapGraph.FunctionsToProbeMessage2"), //$NON-NLS-1$
-				"*", null); //$NON-NLS-1$
-		id.open();
-		
-		if (id.getReturnCode() == InputDialog.CANCEL)
-			return null;
-		String functions = id.getValue();
 
-		if (functions == null) {
-			failedToLaunch(Messages.getString("LaunchStapGraph.InvalidFunctionsReason")); //$NON-NLS-1$
-			throw new IOException();
-		} else if (functions.length() < 1) {
+
+		ArrayList<String> funcs = new ArrayList<String>();
+		/*
+		 * Find all relevant function names
+		 */
+		try {
+			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
+				ICContainer c = (ICContainer) b;
+				for (ITranslationUnit ast : c.getTranslationUnits()) {
+					if (searchForResource && ast.getElementName().equals(resourceToSearchFor)) {
+						TranslationUnitVisitor v = new TranslationUnitVisitor();
+						ast.accept(v);
+						funcs.addAll(v.getFunctions());
+					} else {
+						TranslationUnitVisitor v = new TranslationUnitVisitor();
+						ast.accept(v);
+						funcs.addAll(v.getFunctions());
+					}
+			}
+			}
+		} catch (CModelException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		
+		
+		if (funcs.size() < 1) {
 			failedToLaunch(Messages.getString("LaunchStapGraph.InvalidFunctionsReason")); //$NON-NLS-1$
 			throw new IOException();
 		}
-		String[] funcs = functions.split(DELIMITER);
+		
 		for (String func : funcs) {
 			toWrite += generateProbe(func);
 		}
@@ -221,38 +235,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		return toWrite;
 	}
 	
-	
-	/**
-	 * Determines whether or not the user wants StapMarkers and inserts them. To
-	 * disable StapMarkers, simply stop calling this function. This should be called
-	 * before writeFromPartialScript.
-	 * 
-	 * @param bw
-	 * @return
-	 * @throws IOException
-	 */
-	private String writeStapMarkers() throws IOException {
-		String toWrite = Messages.getString("LaunchStapGraph.26"); //$NON-NLS-1$
-		if (MessageDialog.openQuestion(new Shell(),
-				Messages.getString("LaunchStapGraph.27"), //$NON-NLS-1$
-				Messages.getString("LaunchStapGraph.28") //$NON-NLS-1$
-						+ Messages.getString("LaunchStapGraph.29"))) { //$NON-NLS-1$
-			toWrite = Messages.getString("LaunchStapGraph.30") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.31") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.32") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.33") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.34") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.35") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.36") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.37") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.38") //$NON-NLS-1$
-					+ Messages.getString("LaunchStapGraph.39") + Messages.getString("LaunchStapGraph.40"); //$NON-NLS-1$ //$NON-NLS-2$
-			partialScriptPath = PluginConstants.getPluginLocation()
-					+ Messages.getString("LaunchStapGraph.41"); //$NON-NLS-1$
-		}
-		
-		return toWrite;
-	}
+
 	
 	/**
 	 * Writes global variables for the StapGraph script to the BufferedWriter.
@@ -276,4 +259,36 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	}
 	
 	
+	
+//	/**
+//	 * Determines whether or not the user wants StapMarkers and inserts them. To
+//	 * disable StapMarkers, simply stop calling this function. This should be called
+//	 * before writeFromPartialScript.
+//	 * 
+//	 * @param bw
+//	 * @return
+//	 * @throws IOException
+//	 */
+//	private String writeStapMarkers() throws IOException {
+//		String toWrite = Messages.getString("LaunchStapGraph.26"); //$NON-NLS-1$
+//		if (MessageDialog.openQuestion(new Shell(),
+//				Messages.getString("LaunchStapGraph.27"), //$NON-NLS-1$
+//				Messages.getString("LaunchStapGraph.28") //$NON-NLS-1$
+//						+ Messages.getString("LaunchStapGraph.29"))) { //$NON-NLS-1$
+//			toWrite = Messages.getString("LaunchStapGraph.30") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.31") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.32") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.33") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.34") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.35") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.36") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.37") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.38") //$NON-NLS-1$
+//					+ Messages.getString("LaunchStapGraph.39") + Messages.getString("LaunchStapGraph.40"); //$NON-NLS-1$ //$NON-NLS-2$
+//			partialScriptPath = PluginConstants.getPluginLocation()
+//					+ Messages.getString("LaunchStapGraph.41"); //$NON-NLS-1$
+//		}
+//		
+//		return toWrite;
+//	}
 }

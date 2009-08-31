@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.localgui.launch;
 
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.cdt.core.model.CModelException;
+import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.cdt.core.model.ICContainer;
+import org.eclipse.cdt.core.model.ICElement;
+import org.eclipse.cdt.core.model.ITranslationUnit;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -33,14 +38,51 @@ public class LaunchAbout extends SystemTapLaunchShortcut {
 	 * 
 	 * We're having it extend SystemTapLaunchShortcut for simplicity's sake.
 	 */
-	@Override
-	public void launch(ISelection selection, String mode) {
-		launchMessage();
+	
+	public void launch(IBinary bin, String mode) {
 		
+		try {
+			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
+				ICContainer c = (ICContainer) b;
+				for (ITranslationUnit ast : c.getTranslationUnits()) {
+					System.out.println(ast.getElementName());
+					TranslationUnitVisitor v = new TranslationUnitVisitor();
+					ast.accept(v);
+					for (String s : v.getFunctions())
+						System.out.println("Function " + s);
+			}
+			}
+		} catch (CModelException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		
+		
+//		try {
+//		for (ICElement b : bin.getChildren() ) {
+//			if (!b.getElementName().contains(":")) {
+//				System.out.println(b.getResource().getFullPath());
+//				CDOM d = CDOM.getInstance();
+//				
+//				IASTTranslationUnit ast = d.getTranslationUnit( (IFile)b.getResource());
+//				TranslationUnitVisitor v = new TranslationUnitVisitor();
+//				ast.accept(v);
+//			}
+//		}
+//		} catch (UnsupportedDialectException e) {
+//			e.printStackTrace();
+//		} catch (CModelException e) {
+//			e.printStackTrace();
+//		}
+
+//		System.out.println("Bin");
 	}
 	
 	public void launch(IEditorPart ed, String mode) {
-		launchMessage();
+		
+		searchAndLaunch(new Object[] { editor.getEditorInput() }, mode);
+//		launchMessage();
 	}
 	
 	public void launchMessage() {

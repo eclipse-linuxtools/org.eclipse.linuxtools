@@ -12,16 +12,29 @@
 package org.eclipse.linuxtools.systemtap.localgui.launch;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.cdt.core.model.CModelException;
+import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.linuxtools.profiling.launch.Messages;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
@@ -44,6 +57,16 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected boolean needToGenerate;
 	protected boolean overwrite;
 	protected boolean useColours;
+	
+	/**
+	 * Provides access to the Profiling Frameworks' launch method
+	 * 
+	 * @param editor
+	 * @param mode
+	 */
+	public void reLaunch(IEditorPart editor, String mode) {
+		launch(editor, mode);
+	}
 	
 	public void Init() {
 		name = ""; //$NON-NLS-1$
@@ -383,6 +406,80 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	
 	public String getBinaryPath() {
 		return binaryPath;
+	}
+
+	/**
+	 * Copied over from ProfileLaunchShortcut to provide public access
+	 * 
+	 * @param elements
+	 * @param mode
+	 */
+	public void searchAndLaunch(final Object[] elements, String mode) {
+		if (elements != null && elements.length > 0) {
+			IBinary bin = null;
+			if (elements.length == 1 && elements[0] instanceof IBinary) {
+				bin = (IBinary) elements[0];
+			} else {
+				final List<IBinary> results = new ArrayList<IBinary>();
+				ProgressMonitorDialog dialog = new ProgressMonitorDialog(getActiveWorkbenchShell());
+				IRunnableWithProgress runnable = new IRunnableWithProgress() {
+					public void run(IProgressMonitor pm) throws InterruptedException {
+						int nElements = elements.length;
+						pm.beginTask(Messages.getString("ProfileLaunchShortcut.Looking_for_executables"), nElements); //$NON-NLS-1$
+						try {
+							IProgressMonitor sub = new SubProgressMonitor(pm, 1);
+							for (int i = 0; i < nElements; i++) {
+								if (elements[i] instanceof IAdaptable) {
+									IResource r = (IResource) ((IAdaptable) elements[i]).getAdapter(IResource.class);
+									if (r != null) {
+										ICProject cproject = CoreModel.getDefault().create(r.getProject());
+										if (cproject != null) {
+											try {
+												IBinary[] bins = cproject.getBinaryContainer().getBinaries();
+	
+												for (int j = 0; j < bins.length; j++) {
+													if (bins[j].isExecutable()) {
+														results.add(bins[j]);
+													}
+												}
+											} catch (CModelException e) {
+											}
+										}
+									}
+								}
+								if (pm.isCanceled()) {
+									throw new InterruptedException();
+								}
+								sub.done();
+							}
+						} finally {
+							pm.done();
+						}
+					}
+				};
+				try {
+					dialog.run(true, true, runnable);
+				} catch (InterruptedException e) {
+					return;
+				} catch (InvocationTargetException e) {
+					handleFail(e.getMessage());
+					return;
+				}
+				int count = results.size();
+				if (count == 0) {					
+					handleFail(Messages.getString("ProfileLaunchShortcut.Binary_not_found")); //$NON-NLS-1$
+				} else if (count > 1) {
+					bin = chooseBinary(results, mode);
+				} else {
+					bin = (IBinary)results.get(0);
+				}
+			}
+			if (bin != null) {
+				launch(bin, mode);
+			}
+		} else {
+			handleFail(Messages.getString("ProfileLaunchShortcut.no_project_selected")); //$NON-NLS-1$
+		}
 	}
 
 }
