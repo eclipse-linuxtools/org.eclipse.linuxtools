@@ -1,0 +1,7 @@
+probe begin {
+	printf("PROBE BEGIN : %d\n", gettimeofday_s())
+}
+
+probe end{
+	printf("PROBE END $d\n", gettimeofday_s())
+}

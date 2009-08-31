@@ -1,0 +1,40 @@
+global serial
+global startTime
+global finalTime
+
+
+probe process(@1).function("*"){
+	callFunction(probefunc())
+}
+
+probe process(@1).function("*").return{
+	returnFunction(probefunc())
+}
+
+probe begin{
+	printf("\nPROBE_BEGIN\n")
+	serial=1
+	startTime = 0;
+}
+
+function callFunction(probefunc) {
+	if (startTime == 0) {
+		startTime = gettimeofday_ns()
+		printf("<%s,,%d,,%d;", probefunc, serial, startTime)
+	} else
+	    printf("<%s,,%d,,%d;", probefunc, serial, gettimeofday_ns())
+	serial++
+}
+
+
+function returnFunction(probefunc) {
+	finalTime = gettimeofday_ns()
+	printf(">%s,,%d;", probefunc, finalTime)
+	
+}
+
+probe end {	
+	printf("\n%d",finalTime);
+	printf("\n%d",finalTime - startTime);
+    exit()
+}
