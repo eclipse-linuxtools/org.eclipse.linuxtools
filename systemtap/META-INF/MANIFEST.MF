@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests Plug-in
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.localgui.tests
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.linuxtools.systemtap.localgui.tests.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.linuxtools.systemtap.localgui.core;bundle-version="0.0.1",
+ org.eclipse.linuxtools.systemtap.localgui.launch;bundle-version="0.0.1",
+ org.eclipse.debug.ui;bundle-version="3.4.1"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: junit.framework,
+ org.eclipse.cdt.core.model,
+ org.eclipse.cdt.internal.core.model,
+ org.eclipse.cdt.launch,
+ org.eclipse.core.resources,
+ org.eclipse.debug.core,
+ org.eclipse.linuxtools.profiling.launch,
+ org.eclipse.linuxtools.systemtap.localgui.core,
+ org.eclipse.linuxtools.systemtap.localgui.graphing
