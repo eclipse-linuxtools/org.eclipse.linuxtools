@@ -94,7 +94,7 @@ public class GraphUIJob extends UIJob{
 	    g.aggregateTime = parser.cumulativeTimeMap;
 
 	    //Set total time
-	    g.setTotalTime(parser.totalTime);
+	    g.setTotalTime(parser.totalTime/100);
 	    
 	    //-------------Finish initializations
 	    //Generate data for collapsed nodes

@@ -94,7 +94,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 			scriptContents += writeGlobalVariables();
 //			scriptContents += writeStapMarkers();
-			//TODO: Don't translate from arraylist to string, just have visitor return a single string
 			String funcs = writeFunctionListToScript(bin, resourceToSearchFor);
 			if (funcs == null)
 				return;
@@ -167,19 +166,20 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @throws IOException
 	 */
 	private String writeFunctionListToScript(IBinary bin, String resourceToSearchFor) throws IOException {
-		String toWrite = ""; 
-		ArrayList<String> funcs = getFunctionsFromBinary(bin, resourceToSearchFor);
+		String toWrite = getFunctionsFromBinary(bin, resourceToSearchFor);
 		
-		if (funcs == null || funcs.size() < 1) {
-			failedToLaunch("Invalid functions."); 
-			throw new IOException();
+		if (toWrite == null || toWrite.length() < 1) {
+			return null;
 		}
 		
-		for (String func : funcs) {
-			toWrite += generateProbe(func);
+		String output = "";
+		
+		for (String func : toWrite.split(" ")) {
+			if (func.length() > 0)
+				output += generateProbe(func);
 		}
 
-		return toWrite;
+		return output;
 	}
 
 	/**

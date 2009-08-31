@@ -96,15 +96,10 @@ public class Activator extends AbstractUIPlugin {
 ////this will execute every time!
 //String firstRun = getPluginLocation() + "FirstRun";
 //File firstFile = new File(firstRun);
-//System.out.println(firstRun);
 //if (firstFile.exists()) {
-//	System.out.println("File exists in Launch");
 //	Shell sh = new Shell();
 //	String command = "./" + getPluginLocation() + "install.sh " + firstRun;
 //	InputDialog id = new InputDialog(sh, "First time startup", "Hi there! Looks like this is your first time running the SystemTap Eclipse plugin. In order for this plugin to work, you will first need to install SystemTap. Then please open a terminal and execute the following command. ", command, null);
 //	id.open();
-//}
-//else {
-//	System.out.println("File does not exist in Launch");
 //}
 //}

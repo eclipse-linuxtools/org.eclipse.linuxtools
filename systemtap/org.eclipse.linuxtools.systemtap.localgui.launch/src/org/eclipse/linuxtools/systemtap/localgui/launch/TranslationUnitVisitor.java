@@ -17,29 +17,30 @@ import org.eclipse.cdt.core.model.ICElementVisitor;
 import org.eclipse.core.runtime.CoreException;
 
 public class TranslationUnitVisitor implements ICElementVisitor{
-	private ArrayList<String> functions;
+	private String functions;
 
 	public TranslationUnitVisitor() {
 		super();
-		functions = new ArrayList<String>();
+		functions = "";
 	}
 	private long time;
 	@Override
 	public boolean visit(ICElement arg0) throws CoreException {
 		if (arg0.getElementType() == ICElement.C_FUNCTION) {
-			functions.add(arg0.getElementName());
+			functions+=arg0.getElementName() + " ";
 			return false;
 		}	
 		return true;
 	}
 	
 	
-	public ArrayList<String> getFunctions() {
+	public String getFunctions() {
 		return functions;
 	}
 	
 	public int getNumberOfFunctions() {
-		return functions.size();
+		//TODO: Off-by-one?
+		return (functions.split(" ").length);
 	}
 
 	

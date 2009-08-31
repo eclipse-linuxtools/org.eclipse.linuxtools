@@ -712,8 +712,10 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			outputFile.setText(configuration.getAttribute(LaunchConfigurationConstants.OUTPUT_PATH, LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH));
 			arguments.setText(configuration.getAttribute(LaunchConfigurationConstants.ARGUMENTS, LaunchConfigurationConstants.DEFAULT_ARGUMENTS));
 			
-			generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
-			needToGenerateScriptButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE));			
+			if (generatedScript != null){
+				generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
+				needToGenerateScriptButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE));							
+			}
 			useColourButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR));
 			
 //			commandFile.setText(ConfigurationOptionsSetter.setOptions(configuration));
@@ -754,9 +756,10 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH, outputFile.getText());
 //		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_LIST, commandFile.getText());
 		
-
-		configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, generatedScript.getText());
-		configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerateScriptButton.getSelection());
+		if (generatedScript != null){
+			configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, generatedScript.getText());
+			configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerateScriptButton.getSelection());
+		}
 		
 		configuration.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColourButton.getSelection());
 		

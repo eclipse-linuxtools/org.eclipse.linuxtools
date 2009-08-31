@@ -36,8 +36,6 @@ import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
  * also starts the job responsible for taking the parsed data and rendering it.
  */
 public class StapGraphParser extends Job{
-	//TODO: Test that cancelling works properly
-	
 	private IProgressMonitor monitor;
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
@@ -52,7 +50,6 @@ public class StapGraphParser extends Job{
 	//public String markedNodes;
 	public int validator;
 	private String filePath;
-	private boolean isValidFile;
 	public Long endingTimeInNS;
 	public long totalTime;
 	
@@ -84,7 +81,8 @@ public class StapGraphParser extends Job{
 		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(
 				Messages.getString("StapGraphParser.0"), //$NON-NLS-1$
 				Messages.getString("StapGraphParser.1"), //$NON-NLS-1$
-		Messages.getString("StapGraphParser.2")+filePath+Messages.getString("StapGraphParser.3")); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("StapGraphParser.2")+filePath+ //$NON-NLS-1$
+				Messages.getString("StapGraphParser.3")); //$NON-NLS-1$ 
 		err.schedule();
 	}
 	
@@ -92,7 +90,6 @@ public class StapGraphParser extends Job{
 	
 	public IStatus executeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
-		isValidFile = false;
 		outNeighbours.clear();
 		timeMap.clear();
 		serialMap.clear();
@@ -109,10 +106,9 @@ public class StapGraphParser extends Job{
 				}
 				
 				if (tmp.equals("PROBE_BEGIN")){ //$NON-NLS-1$
-					isValidFile = true;
 					text = buff.readLine();
 					endingTimeInNS = Long.parseLong(buff.readLine());
-					totalTime = Long.parseLong(buff.readLine())/100;
+					totalTime = Long.parseLong(buff.readLine());
 				}
 			}
 			buff.close();
@@ -147,16 +143,15 @@ public class StapGraphParser extends Job{
 						id = Integer.parseInt(args[1]);
 						time = Long.parseLong(args[2]);
 						name = args[0];
-						name = cleanName(name);
+						if (!isNameClean(name))
+							break;
+//						name = cleanName(name);
 						serialMap.put(id, name);
 						timeMap.put(id, time);
 						
 						if (cumulativeTimeMap.get(name) == null){
 							cumulativeTimeMap.put(name, (long) 0);
 						}
-						//Use - for start times
-//						cumulativeTime = cumulativeTimeMap.get(name) - time;
-//						cumulativeTimeMap.put(name, cumulativeTime);
 
 						//IF THERE ARE PREVIOUS FUNCTIONS WITH THE SAME NAME
 						//WE ARE IN ONE OF THEM SO DO NOT ADD TO CUMULATIVE TIME
@@ -184,10 +179,12 @@ public class StapGraphParser extends Job{
 						//args[1] = time of event
 						args = s.substring(1, s.length()).split(":");
 						name = args[0];
-						name = cleanName(name);
+						if (!isNameClean(name))
+							break;
+//						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
-							parseError();
+							parsingError();
 							return Status.CANCEL_STATUS;
 						}
 						
@@ -201,7 +198,7 @@ public class StapGraphParser extends Job{
 						}
 						
 						if (timeMap.get(id) == null) {
-							parseError();
+							parsingError();
 							return Status.CANCEL_STATUS;
 						}		
 						time =  Long.parseLong(args[1]) - timeMap.get(id);
@@ -220,8 +217,8 @@ public class StapGraphParser extends Job{
 //						cumulativeTimeMap.put(name, cumulativeTime);
 						break;
 					default : 
-						parseError();
-						break;
+						parsingError();
+						return Status.CANCEL_STATUS;
 					
 				}
 				
@@ -242,45 +239,10 @@ public class StapGraphParser extends Job{
 			
 		}
 		
-		
-		
-//		if (isValidFile){			
-//			for (int i = 0; i < graphText.length(); i++){
-//				if (monitor.isCanceled()) {
-//					return Status.CANCEL_STATUS;
-//				}
-//				//Check for valid nesting
-//				if (graphText.charAt(i) == '<'){
-//					validator++;
-//				}else if(graphText.charAt(i) == '>'){
-//					validator--;
-//				}
-//			}
-//			
-//			//If brackets don't match, check for potential exit call
-//			if (validator != 0){	
-//				while (validator >= 0){
-//					if (monitor.isCanceled()) {
-//						return Status.CANCEL_STATUS;
-//					}
-//					graphText+='>';
-//					validator--;
-//				}
-//			}
-//			
-//			if (timeInfo == null)
-//				return Status.CANCEL_STATUS;
-//			
-//			//Generate maps
-//			this.generateMaps();
-//			
-//			//Create a UIJob to handle the rest
-			GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
-			uijob.schedule(); 
-//		}else{
-//			launchFileDialogError();
-//			return Status.CANCEL_STATUS;
-//		}
+
+		//Create a UIJob to handle the rest
+		GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
+		uijob.schedule(); 
 			
 		return Status.OK_STATUS;
 	}
@@ -289,14 +251,15 @@ public class StapGraphParser extends Job{
 	 * Cleans names of form 'name").return', returning just the name
 	 * @param name
 	 */
+	@SuppressWarnings("unused")
 	private String cleanName(String name) {
 		return name.split("\"")[0];
 		
 	}
 	
-	private void parseError() {
+	private void parsingError() {
 		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-				"ParseError", "Unrecognized symbol", "Unrecognized symbol when parsing.");
+				"ParseError", "Unexpected symbol", "Unexpected symbol when parsing.");
 		mess.schedule();
 	}
 	
@@ -484,6 +447,12 @@ public class StapGraphParser extends Job{
 		return ret;
 	}*/
  
+	private boolean isNameClean(String name) {
+		if (name.contains("\"") || name.contains(")"))
+			return false;
+		return true;
+	}
+	
 	@SuppressWarnings("unused")
 	private void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
 		int amt = 0;

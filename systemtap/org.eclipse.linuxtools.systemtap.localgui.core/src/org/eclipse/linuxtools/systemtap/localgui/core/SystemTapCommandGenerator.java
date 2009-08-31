@@ -75,7 +75,6 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		cmd = cmd + script[script.length-1];
 
 		this.executeCommand = cmd;
-		System.out.println(cmd);
 		return cmd;
 	}
 	

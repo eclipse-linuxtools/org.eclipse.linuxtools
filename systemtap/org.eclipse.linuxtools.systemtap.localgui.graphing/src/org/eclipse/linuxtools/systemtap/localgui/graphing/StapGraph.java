@@ -24,7 +24,6 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.systemtap.localgui.core.MP;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphKeyListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphMouseListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphMouseWheelListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeContentProvider;

@@ -43,7 +43,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Layout;
@@ -101,6 +100,7 @@ public class SystemTapView extends ViewPart {
 	private static IMenuManager animation;
 	private static IMenuManager markers; //Unused
 	private static IMenuManager help;
+	@SuppressWarnings("unused")
 	private static Action help_about;
 	private static Action help_version;
 	public static IToolBarManager mgr;
@@ -909,7 +909,6 @@ public class SystemTapView extends ViewPart {
 					public void widgetSelected(SelectionEvent e) {
 						if (limit.getSelection() > 0)
 							graph.setLevelBuffer(limit.getSelection());
-						System.out.println("Run! " + graph.getLevelBuffer());
 						sh.dispose();
 					}
 					

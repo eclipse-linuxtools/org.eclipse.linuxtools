@@ -45,11 +45,8 @@ public class LaunchAbout extends SystemTapLaunchShortcut {
 			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
 				ICContainer c = (ICContainer) b;
 				for (ITranslationUnit ast : c.getTranslationUnits()) {
-					System.out.println(ast.getElementName());
 					TranslationUnitVisitor v = new TranslationUnitVisitor();
 					ast.accept(v);
-					for (String s : v.getFunctions())
-						System.out.println("Function " + s);
 			}
 			}
 		} catch (CModelException e) {
@@ -76,7 +73,6 @@ public class LaunchAbout extends SystemTapLaunchShortcut {
 //			e.printStackTrace();
 //		}
 
-//		System.out.println("Bin");
 	}
 	
 	public void launch(IEditorPart ed, String mode) {

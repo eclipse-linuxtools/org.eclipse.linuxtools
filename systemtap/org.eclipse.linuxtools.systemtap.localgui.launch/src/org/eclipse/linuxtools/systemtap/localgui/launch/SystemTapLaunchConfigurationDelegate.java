@@ -211,7 +211,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			if (subProcess == null){
 				//TODO: FIgure out what the console error message is so we can catch it in errorlog
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Error", "SystemTap Error", 
-				"SystemTap could not execute for some reason. This could be due to some missing " +
+				"SystemTap could not execute. This could be due to missing " +
 				"packages that are necessary to the running of SystemTap");
 				mess.schedule();
 				return;

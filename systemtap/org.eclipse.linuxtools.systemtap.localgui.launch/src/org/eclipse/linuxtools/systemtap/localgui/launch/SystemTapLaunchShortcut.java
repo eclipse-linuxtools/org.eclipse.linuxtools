@@ -13,9 +13,9 @@ package org.eclipse.linuxtools.systemtap.localgui.launch;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICContainer;
@@ -30,16 +30,17 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.profiling.launch.Messages;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.dialogs.ElementListSelectionDialog;
+import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 
 public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
@@ -105,7 +106,6 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			ILaunchConfiguration[] configs = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations(configType);
 			
 			for (int i = 0; i < configs.length; i++) {
-				//TODO: Find out if we are guaranteed the order in which configs are added.
 				if (configs[i].exists() && configs[i]!=null && !config.equals(configs[i])) {
 					if(checkIfAttributesAreEqual(config, configs[i])) {
 						config.delete();
@@ -263,7 +263,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			binName = bin.getPath().toString();
 		} else {
 			binName = ""; //$NON-NLS-1$
-			//TODO: Uncomment me when done JUnit testing
 //			SystemTapUIErrorMessages error = new SystemTapUIErrorMessages(
 //					"Null_Binary",
 //					"Invalid executable",
@@ -386,7 +385,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * 
 	 */
 	public ILaunchConfigurationType outsideGetLaunchConfigType() {
-		//TODO: Just make getLaunchType() public :)
 		return getLaunchConfigType();
 	}
 
@@ -421,10 +419,10 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * @param bin
 	 * @return
 	 */
-	protected ArrayList<String> getFunctionsFromBinary(IBinary bin, String targetResource) {
-		ArrayList<String> funcs = new ArrayList<String>();
+	protected String getFunctionsFromBinary(IBinary bin, String targetResource) {
+		String funcs = "";
 		try {			
-			ArrayList<ITranslationUnit> list = new ArrayList<ITranslationUnit>();
+			ArrayList<ICContainer> list = new ArrayList<ICContainer>();
 			TranslationUnitVisitor v = new TranslationUnitVisitor();
 //			ASTTranslationUnitVisitor v  = new ASTTranslationUnitVisitor();
 			
@@ -434,12 +432,14 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				for (ITranslationUnit tu : c .getTranslationUnits()) {
 					if (searchForResource && tu.getElementName().contains(targetResource)) {
 						tu.accept(v);
-						funcs.addAll(v.getFunctions());
+						funcs+=v.getFunctions();
 						return funcs;
 					} else {
-						if (!tu.getElementName().contains(".h")) {
-							list.add(tu);
-						}
+						if (!list.contains(c))
+							list.add(c);
+//						if (!tu.getElementName().contains(".h")) {
+//							list.add(tu);
+//						}
 					}
 				}
 				
@@ -451,12 +451,14 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 						for (ITranslationUnit tu : e.getTranslationUnits()) {
 							if (searchForResource && tu.getElementName().contains(targetResource)) {
 								tu.accept(v);
-								funcs.addAll(v.getFunctions());
+								funcs+=(v.getFunctions());
 								return funcs;
 							} else {
-								if (!tu.getElementName().contains(".h")) {
-									list.add(tu);
-								}
+								if (!list.contains(c))
+									list.add(c);
+//								if (!tu.getElementName().contains(".h")) {
+//									list.add(tu);
+//								}
 							}
 						}
 					}
@@ -464,45 +466,40 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				}
 			}
 			
-			if (list.size() == 1) {
-				ITranslationUnit tu = (ITranslationUnit) list.get(0);
-				tu.accept(v);
-				funcs.addAll(v.getFunctions());
-			}
-			
-			if (list.size() > 1) {
-				funcs.clear();
-				funcs.add("*");
-//				Object[] unitList = chooseUnit(list); 
+			int numberOfFiles = numberOfValidFiles(list.toArray());
+			if (numberOfFiles == 1) {
+				for (ICContainer c : list) {
+					for (ITranslationUnit e : c.getTranslationUnits()) {
+						if (e.getElementName().endsWith(".c") || 
+								e.getElementName().endsWith(".cpp")) {
+							e.accept(v);
+							funcs+=v.getFunctions();
+						}
+					}
+				}
+			} else {
+//				funcs.clear();
+//				funcs.add("*");
+				Object[] unitList = chooseUnit(list, numberOfFiles); 
 //				if (unitList.length >= list.size()) {
+//					//User selected all items, just add * instead of searching
 //					funcs.clear();
 //					funcs.add("*");
 //				} else {
-//				for (Object obj : unitList) {
-//					if (obj instanceof ITranslationUnit) {
-//						ITranslationUnit tu = (ITranslationUnit) obj;
-//						tu.accept(v);
-//						funcs.addAll(v.getFunctions());
-//					}
-//				}
-//				}
-				
-//				for (ITranslationUnit tu : list) {
-////					System.out.println(tu.getElementName());
-//					try {
-//						long snapshot = System.currentTimeMillis();
-//					IASTTranslationUnit ast = tu.getAST();
-//					System.out.println("Creating AST: " + (System.currentTimeMillis() - snapshot));
-//					if (ast == null) continue;
-//					v.setFileName(tu.getElementName());
-//					snapshot = System.currentTimeMillis();
-//					ast.accept(v);
-//					System.out.println("Visiting AST: " + (System.currentTimeMillis() - snapshot));
-//					funcs.addAll(v.getFunctions());
-//					} catch (Exception e) {
-//						continue;
-//					}
-//				}
+				if (unitList == null || unitList.length == 0) {
+					return null;
+				}
+				for (Object obj : unitList) {
+					if (obj instanceof ITranslationUnit) {
+						ITranslationUnit tu = (ITranslationUnit) obj;
+						tu.accept(v);
+						funcs+=(v.getFunctions());
+					} else {
+						//Non-Translation unit object added to list, just probe *
+						funcs = "*";
+						return funcs;
+					}
+				}
 					
 			}
 			
@@ -524,19 +521,17 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * @param list
 	 * @return
 	 */
-	protected Object[] chooseUnit(List<ITranslationUnit> list) {
-		ILabelProvider programLabelProvider = new LabelProvider() {
-			public String getText(Object element) {
-				if (element instanceof ITranslationUnit) {
-					String name = ((ITranslationUnit) element).getElementName();
-					//Only select names that are not .h files
-					return name;
-				}
-				return super.getText(element);
-			}
-		};
-	
-//		//TODO: implement twopanel with second panel listing all functions 
+	protected Object[] chooseUnit(List<ICContainer> list, int numberOfValidFiles) {
+//		ILabelProvider programLabelProvider = new LabelProvider() {
+//			public String getText(Object element) {
+//				if (element instanceof ITranslationUnit) {
+//					String name = ((ITranslationUnit) element).getElementName();
+//					return name;
+//				}
+//				return super.getText(element);
+//			}
+//		};
+//	
 //		//Currently we end up visiting the translation unit twice, could be
 //		//expensive for larger programs
 //		ILabelProvider qualifierLabelProvider = new LabelProvider() {
@@ -555,20 +550,124 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 //			}
 //		};
 //	
-		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
-				getActiveWorkbenchShell(), programLabelProvider);
+//		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
+//				getActiveWorkbenchShell(), programLabelProvider);
 //		TwoPaneElementSelector dialog = new TwoPaneElementSelector(
 //				getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
-		dialog.setElements(list.toArray());
-		dialog.setTitle("Choose files"); //$NON-NLS-1$
-		dialog.setMessage("Probe functions declared in selected files."); //$NON-NLS-1$
-//		dialog.setUpperListLabel("Detected files"); //$NON-NLS-1$
-//		dialog.setLowerListLabel("Number of functions"); //$NON-NLS-1$
-		dialog.setMultipleSelection(true);
-		dialog.setInitialElementSelections(list);
+//		dialog.setElements(list.toArray());
+//		dialog.setTitle("Choose files"); //$NON-NLS-1$
+//		dialog.setMessage("Probe functions declared in selected files."); //$NON-NLS-1$
+////		dialog.setUpperListLabel("Detected files"); //$NON-NLS-1$
+////		dialog.setLowerListLabel("Number of functions"); //$NON-NLS-1$
+//		dialog.setMultipleSelection(true);
+//		dialog.setInitialElementSelections(list);
+//		
+		
+		ListTreeContentProvider prov = new ListTreeContentProvider();
+		
+	    CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(getActiveWorkbenchShell(), 
+	    		new WorkbenchLabelProvider(), prov);
+	    
+	    dialog.setTitle("Tree Selection");
+	    dialog.setMessage("Select .c/.cpp files to probe. Leave selection blank to select all.");
+	    dialog.setInput(list);
+		
 		if (dialog.open() == Window.OK) {
-			return (Object[]) dialog.getResult();
+			Object[] result = dialog.getResult();
+			if (result == null)
+				return null;
+			
+			ArrayList<Object> output = new ArrayList<Object>();
+			try {
+				for (Object obj : result) {
+					if (obj instanceof ICContainer){
+						List<ITranslationUnit> units =
+							Arrays.asList(((ICContainer) obj).getTranslationUnits()); 
+						for (ITranslationUnit c : units) {
+							if (!(c.getElementName().endsWith(".c") ||
+									c.getElementName().endsWith(".cpp")))
+								continue;
+							if (!output.contains(c))
+								output.add(c);
+						}
+					}
+					else if (obj instanceof ICElement) {
+						ICElement parent = ((ICElement) obj).getParent();
+						if (parent instanceof ICContainer){
+							String name =((ICElement) obj).getElementName(); 
+							if (name.endsWith(".c") || name.endsWith(".cpp")) {
+							ITranslationUnit b = ((ICContainer) parent).getTranslationUnit(name);
+							if (!output.contains(b)) {
+								output.add(b);
+							}
+							}
+						}
+					}
+				}
+			
+				int totalValidFiles = numberOfValidFiles;
+				if ( output.size() >= totalValidFiles) {
+					output.clear();
+					output.add(new Object());
+				} else if (output.size() > 10 && totalValidFiles > 300) {
+					if (confirmProbeAll(output.size())) {
+						output.clear();
+						output.add(new Object());
+					}
+				}
+			} catch (CModelException e) {
+				e.printStackTrace();
+			}
+	
+//			
+//			if ( output.size() == 0) {
+//				output.clear();
+//				output.add(new Object());
+//			} else if (output.size() > 1) {
+//				if (confirmProbeAll(output.size())) {
+//					output.clear();
+//					output.add(new Object());
+//				}
+//			}
+			
+			return output.toArray();
 		}
 		return null;
+	}
+
+	
+	private boolean confirmProbeAll(int num) {
+		
+		return !MessageDialog.openConfirm(new Shell(), "Fetch list of functions?", 
+				"Currently attempting to fetch functions from " + num + " files. This could " +
+				"Currently attempting to fetch functions from " + num + "files. This could " +
+				"take up to " + 2*num + " seconds to complete. Press OK to continue fetching or" +
+				" press Cancel to probe all functions without fetching (much faster). In the future," +
+				" you can simply leave the file selection dialog blank to profile all functions.");		
+	}
+	
+	
+	private int numberOfValidFiles(Object[] list) throws CModelException {
+		int output = 0;
+		for (Object parent : list) {
+			if (parent instanceof ICContainer) {
+				ICContainer cont = (ICContainer) parent;
+					for (ICElement ele : cont.getChildren()) {
+					if (ele instanceof ICContainer) {
+						output += numberOfValidFiles(((ICContainer) ele).getChildren());
+					}
+					if (ele instanceof ICElement) {
+						if (ele.getElementName().endsWith(".c") ||
+							ele.getElementName().endsWith(".cpp"))
+							output++;
+					}
+				}
+			} else if (parent instanceof ICElement) {
+				if (((ICElement) parent).getElementName().endsWith(".c") ||
+						((ICElement) parent).getElementName().endsWith(".cpp"))
+						output++;
+			}
+		}
+		return output;
 	}
 }

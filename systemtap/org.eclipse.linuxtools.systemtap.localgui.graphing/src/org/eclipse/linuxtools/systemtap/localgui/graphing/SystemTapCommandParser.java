@@ -35,7 +35,6 @@ public class SystemTapCommandParser extends Job {
 	public boolean useColours;
 	private boolean graphingMode;
 	private boolean processFinished;
-	private String configName;
 
 
 	public boolean isProcessFinished() {
@@ -58,7 +57,6 @@ public class SystemTapCommandParser extends Job {
 		this.useColours = useColours;
 		this.graphingMode = scheduleGraph;
 		this.processFinished=false;
-		this.configName = configName;
 	}
 	
 
