@@ -25,6 +25,16 @@ import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 
+
+/**
+ * This class is used only in the case that we are rendering a graph
+ * using GEF (specifically Zest).  
+ *
+ * After a stap command is sent to be executed, and after data is stored
+ * into some temporary file, the data must be parsed to be used. This class
+ * handles all of the parsing. All data is stored into Maps and this class
+ * also starts the job responsible for taking the parsed data and rendering it.
+ */
 public class StapGraphParser extends Job{
 	//TODO: Test that cancelling works properly
 	
@@ -183,11 +193,20 @@ public class StapGraphParser extends Job{
 
 			return Status.OK_STATUS;
 
-
 	}
 	
 	
-	//TODO : 'pass by value' nightmare if map or text are sufficiently large
+	/**
+	 * Will parse string data of form :
+	 * "a_1:b_1;a_2:b_2;a_3:b_3; ... a_n:b_n;"
+	 * where all a_i, are of type (int || long || string)
+	 * and all b_i as well.
+	 * 
+	 * @param map a map that will contain the parsed data
+	 * @param text one line of data to be parsed
+	 * @param mode 'typeof key''type of value', 'i'=int, 's'=string, 'l'=long
+	 * @return IStatus indicating whether the action was cancelled or not
+	 */
 	@SuppressWarnings("unchecked")
 	private IStatus generalParser(Map map, String text, String mode){
 		String curr_serial = ""; //$NON-NLS-1$
@@ -236,7 +255,18 @@ public class StapGraphParser extends Job{
 	}
 	
 	
-	//TODO : increase efficiency by using StringBuffer only if too slow
+	/**
+	 * Will parse string data of form :
+	 * "0<1<2<3<>>>4<>5<>>"
+	 * which can be thought of as an S-Expression. This can be represented
+	 * as a Tree data structure. The Map stores a node as a key and a List
+	 * of its immediate children as values. If a node has no children
+	 * (ie. a leaf), it has a child of '-1'.
+	 * 
+	 * This method is used only to get the call structure of a 
+	 * 
+	 * @param map map a map that will contain the parsed data
+	 */
 	private void createMap(HashMap<Integer,ArrayList<Integer>> map){
 		String str_parent = ""; //$NON-NLS-1$
 		int parent = 0;
@@ -268,6 +298,19 @@ public class StapGraphParser extends Job{
 		
 	}
 	
+	/**
+	 * Helper method for createMap, to get the children of some node.
+	 * The case of no children is handled by createMap.
+	 * 
+	 * Eg. Given, "0<1<2<>3<>>>", to get the children of node 0, we would 
+	 * call : getChildren(1), and would get a list with just a value of 1.
+	 * To get the children of node 1, we would call : getChildren(3), and
+	 * we would get a list with 2, and 3.
+	 * 
+	 * @param pos position of the '<' that is to the immediate left of the
+	 * first child
+	 * @return A List of the children
+	 */
 	private ArrayList<Integer> getChildren(int pos){
 		int nested = 0;
 		String func = ""; //$NON-NLS-1$

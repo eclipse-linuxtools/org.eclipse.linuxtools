@@ -203,8 +203,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			monitor.worked(1);
 			
-			/* THIS NEEDS TO BE CHANGED BUT NEED TO TEST FIRST TO KNOW WHAT HAPPENS WHEN
-			 * AN EXECUTION FAILS*/
 			Process subProcess = execute(commandArray, getEnvironment(config),
 					workDir, true);
 			

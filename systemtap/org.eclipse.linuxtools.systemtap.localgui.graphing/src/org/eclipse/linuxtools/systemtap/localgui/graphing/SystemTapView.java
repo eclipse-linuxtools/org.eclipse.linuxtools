@@ -58,9 +58,9 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.part.ViewPart;
 
 /**
- *	The SystemTap View for displaying output of the 'stap' command
- *	Any buttons/controls necessary to the smooth running of SystemTap
- *	could be places here.
+ *	The SystemTap View for displaying output of the 'stap' command, and acts
+ *	as a container for any graph to be rendered. Any buttons/controls/actions
+ *	necessary to the smooth running of SystemTap could be placed here.
  */
 public class SystemTapView extends ViewPart {
 	private static final String NEW_LINE = Messages.getString("SystemTapView.3"); //$NON-NLS-1$
@@ -204,9 +204,11 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	public static Composite makeGraphComp(int screenWidth, int treeSize, int screenHeight) {
-		if (graphComp != null && !graphComp.isDisposed()) {
-			return graphComp;
-		}
+//		if (graphComp != null && !graphComp.isDisposed()) {
+//			return graphComp;
+//		}
+		if (graphComp != null)
+			graphComp.dispose();
 		Composite graphComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
 		GridData graphGridData = new GridData(screenWidth - treeSize - 100, screenHeight);
 		graphComp.setLayout(new FillLayout());
@@ -280,7 +282,7 @@ public class SystemTapView extends ViewPart {
 
 		
 		//MAXIMIZE THE SYSTEMTAP VIEW WHEN RENDERING A GRAPH
-		SystemTapView.maximizeOrRefresh(true);
+		SystemTapView.maximizeOrRefresh(false);
         graph.reset();
                 
 	}
@@ -352,7 +354,7 @@ public class SystemTapView extends ViewPart {
 		view.add(mode_collapsednodes);
 		view.add(limits);
 		
-		help.add(help_about);
+//		help.add(help_about);
 		help.add(help_version);
 		
 		markers.add(markers_next);
@@ -489,15 +491,19 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	public void println(String text) {	
-		viewer.append(text);
-		viewer.setTopIndex(viewer.getLineCount() - 1);
-		viewer.update();
+		if (viewer != null && !viewer.isDisposed()) {
+			viewer.append(text);
+			viewer.setTopIndex(viewer.getLineCount() - 1);
+			viewer.update();
+		}
 	}
 
 	public void clearAll() {
-		previousEnd = 0;
-		viewer.setText(""); //$NON-NLS-1$
-		viewer.update();
+		if (viewer != null && !viewer.isDisposed()) {
+			previousEnd = 0;
+			viewer.setText(""); //$NON-NLS-1$
+			viewer.update();
+		}
 	}
 	
 	/**
@@ -509,14 +515,6 @@ public class SystemTapView extends ViewPart {
 		return viewer.getText();
 	}
 	
-	private static void destroy() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		try {
-			window.getActivePage().showView("org.eclipse.linuxtools.systemtap.localgui.graphing.stapview").dispose();  //$NON-NLS-1$
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * Populates the file menu

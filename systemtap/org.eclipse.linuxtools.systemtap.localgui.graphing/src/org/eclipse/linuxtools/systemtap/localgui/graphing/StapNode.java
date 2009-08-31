@@ -23,7 +23,7 @@ import org.eclipse.zest.core.widgets.GraphNode;
 public class StapNode extends GraphNode{
 	public int id;
 	public GraphConnection connection;		//Each node should have only one connection (to its caller)
-	private boolean hasButtons;				//Has buttosn already attached
+	private boolean hasButtons;				//Has buttons already attached
 	public List<Integer> buttons;
 	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
 

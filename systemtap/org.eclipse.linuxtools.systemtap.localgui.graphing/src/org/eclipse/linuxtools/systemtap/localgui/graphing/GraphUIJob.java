@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.UIJob;
 
 /**
- * Initializes and runs a StapGraph and TreeViewer
+ * Initializes and runs a StapGraph and TreeViewer within the SystemTap View
  * 
  * @author chwang
  *
@@ -51,12 +51,11 @@ public class GraphUIJob extends UIJob{
 //		System.out.println("Running in UI Thread");
 		Display d = Display.getCurrent();
 		int screenWidth = d.getPrimaryMonitor().getBounds().width;
-		int screenHeight = d.getPrimaryMonitor().getBounds().height - 100;
+		int screenHeight = d.getPrimaryMonitor().getBounds().height - 180;
 		treeSize = screenWidth/6;
 
 		
 		//OPEN UP THE SYSTEMTAPVIEW IF IT IS NOT ALREADY OPEN
-		//GIVE IT THE FOCUS
 		SystemTapView.forceDisplay();
 		
 		Composite treeComp = SystemTapView.makeTreeComp(treeSize, screenHeight);

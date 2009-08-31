@@ -53,8 +53,7 @@ public class SystemTapErrorHandler {
 		errorMessage = "";
 		logContents = "";
 	}
-	
-	
+
 	
 	/**
 	 * Search given string for recognizable error messages. Can append the contents of 

@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Label;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphKeyListener;
@@ -110,6 +111,7 @@ public class StapGraph extends Graph {
 	private static TreeViewer treeViewer;
 	private Composite treeComp;
 	public HashMap<Integer, Integer> currentPositionInLevel;
+	private static IDoubleClickListener treeDoubleListener;
 	//(level, next horizontal position to place a node)
 	
 	
@@ -147,6 +149,7 @@ public class StapGraph extends Graph {
 		
 		this.treeComp = treeComp;
 		if (treeViewer == null) {
+			//Only create once
 			treeViewer = new TreeViewer(this.treeComp);
 			StapTreeListener stl = new StapTreeListener(treeViewer.getTree().getHorizontalBar());
 			treeViewer.addTreeListener(stl);
@@ -173,12 +176,19 @@ public class StapGraph extends Graph {
 		
 		((StapTreeContentProvider) treeViewer.getContentProvider()).setGraph(this);
 		
+		if (treeViewer.getLabelProvider() != null)
+			treeViewer.getLabelProvider().dispose();
 		StapTreeLabelProvider prov = new StapTreeLabelProvider();
 		treeViewer.setLabelProvider(prov);
 
-
-		treeViewer.addDoubleClickListener(new StapTreeDoubleClickListener(treeViewer, this));
+		if (treeDoubleListener != null) {
+			treeViewer.removeDoubleClickListener(treeDoubleListener);
+		}
+		treeDoubleListener = new StapTreeDoubleClickListener(treeViewer, this);
+		treeViewer.addDoubleClickListener(treeDoubleListener);
+		
 		treeViewer.setInput(getData(getTopNode()));
+		treeViewer.refresh();
 	}
 	
 

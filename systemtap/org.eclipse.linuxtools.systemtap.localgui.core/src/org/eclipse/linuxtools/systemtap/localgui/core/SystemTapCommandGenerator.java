@@ -80,8 +80,8 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 	
 
 	/**
-	 * Called by the constructor of this class
-	 * @return An array of strings to be executed by the shell
+	 * Parses the data created from generateCommand
+	 * @return An array of strings to be joined and executed by the shell
 	 */
 	protected String[] buildScript() {
 		//TODO: Take care of this in the next release. For now only the guru mode is sent

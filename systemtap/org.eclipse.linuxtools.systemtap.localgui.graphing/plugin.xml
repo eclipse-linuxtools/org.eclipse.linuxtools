@@ -10,7 +10,7 @@
             class="org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView"
             icon="icons/genericregister_obj.gif"
             id="org.eclipse.linuxtools.systemtap.localgui.graphing.stapview"
-            name="SystemTapView"
+            name="SystemTap"
             restorable="true">
       </view>
    </extension>

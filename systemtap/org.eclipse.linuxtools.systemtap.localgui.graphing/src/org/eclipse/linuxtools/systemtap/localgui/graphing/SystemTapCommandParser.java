@@ -97,17 +97,16 @@ public class SystemTapCommandParser extends Job {
 				StapGraphParser p = new StapGraphParser(Messages.getString("SystemTapCommandParser.0"), filePath); //$NON-NLS-1$
 				p.schedule();
 				
-				String text = Helper.getMainConsoleTextByName(configName);
-				returnText = "       " + configName+"\n"; //$NON-NLS-1$ //$NON-NLS-2$
-				returnText += dashes() + "\n\n"; //$NON-NLS-1$
-				setText(text);
-
-				
-				SystemTapUIJob uijob = new SystemTapUIJob("SystemTapUIJob", this, this.useColours); //$NON-NLS-1$
-				uijob.schedule();
+//				String text = Helper.getMainConsoleTextByName(configName);
+//				returnText = "       " + configName+"\n"; //$NON-NLS-1$ //$NON-NLS-2$
+//				returnText += dashes() + "\n\n"; //$NON-NLS-1$
+//				setText(text);
+//
+//				
+//				SystemTapUIJob uijob = new SystemTapUIJob("SystemTapUIJob", this, this.useColours); //$NON-NLS-1$
+//				uijob.schedule();
 			
 				return Status.OK_STATUS;
-				
 			}
 			
 			printIsDone = true;				//Used to synchronize UIjobs and avoid 
