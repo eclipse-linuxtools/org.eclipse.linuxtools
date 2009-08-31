@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
@@ -174,10 +175,7 @@ public class SystemTapView extends ViewPart {
 					.getSingleInstance().getViewSite().getWorkbenchWindow());
 			action.run();
 		}else{
-			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(SystemTapView
-					.getSingleInstance().getViewSite().getWorkbenchWindow());
-			action.run();
-			action.run();
+		    SystemTapView.layout();
 		}
 	}
 	
@@ -211,6 +209,10 @@ public class SystemTapView extends ViewPart {
 		graphComp.setLayout(new FillLayout());
 		graphComp.setLayoutData(graphgd);
 		return graphComp;
+	}
+	
+	public static void layout() {
+		masterComposite.layout();
 	}
 	
 	/**
@@ -524,7 +526,7 @@ public class SystemTapView extends ViewPart {
 		//Opens from some location in your program
 		open_callgraph = new Action(Messages.getString("SystemTapView.7")){ //$NON-NLS-1$
 			public void run(){
-				FileDialog dialog = new FileDialog(new Shell(), SWT.NONE);
+				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
 				String filePath =  dialog.open();
 				if (filePath != null){
 					StapGraphParser new_parser = new StapGraphParser(Messages.getString("SystemTapView.10"), filePath); //$NON-NLS-1$
@@ -556,8 +558,9 @@ public class SystemTapView extends ViewPart {
 					String content = Messages.getString("SystemTapView.25") //$NON-NLS-1$
 					+ parser.text
 					+ NEW_LINE
-					+ parser.endingTimeInNS;
-//					+ parser.markedNodes + NEW_LINE;
+					+ parser.endingTimeInNS
+					+ NEW_LINE
+					+ parser.totalTime;
 					try {
 						// WAS THE FILE CREATED OR DOES IT ALREADY EXIST
 						if (file.createNewFile()) {
@@ -833,7 +836,7 @@ public class SystemTapView extends ViewPart {
 		view_boxview.setImageDescriptor(boxImage);
 		
 		
-		view_refresh = new Action("Refresh"){
+		view_refresh = new Action("Reset"){
 			public void run(){
 				graph.reset();
 			}
@@ -893,26 +896,61 @@ public class SystemTapView extends ViewPart {
 		
 		limits = new Action("Set limits", Action.AS_PUSH_BUTTON) {
 			private Spinner limit;
+			private Spinner buffer;
 			private Shell sh;
 			public void run() {
 				sh = new Shell();
 				sh.setLayout(new GridLayout());
-				sh.setSize(150, 100);
+				sh.setSize(150, 200);
+				Label limitLabel = new Label(sh, SWT.NONE);
+				limitLabel.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
+				limitLabel.setText("Max nodes: ");
 				limit = new Spinner(sh, SWT.BORDER);
-				limit.setSelection(graph.getLevelBuffer());
+				limit.setMaximum(5000);
+				limit.setSelection(graph.getMaxNodes());
 				limit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
 				
+				Label bufferLabel = new Label(sh, SWT.NONE);
+				bufferLabel.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
+				bufferLabel.setText("Max depth: ");
+				buffer = new Spinner(sh, SWT.BORDER);
+				buffer.setMaximum(5000);
+				buffer.setSelection(graph.getLevelBuffer());
+				buffer.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
+				
 				Button set_limit = new Button(sh, SWT.PUSH);
-				set_limit.setText("Set new limit");
+				set_limit.setText("Set values");
 				set_limit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
 				set_limit.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {
-						if (limit.getSelection() > 0)
-							graph.setLevelBuffer(limit.getSelection());
+						boolean redraw = false;
+						if (limit.getSelection() > 0 && buffer.getSelection() > 0) {
+							graph.setMaxNodes(limit.getSelection());
+							graph.setLevelBuffer(buffer.getSelection());
+							
+							if (graph.changeLevelLimits(graph.getLevelOfNode(graph.getRootVisibleNode()))) {
+								SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+										"LevelBuffer too high", "LevelBuffer too high", 
+										"Unfortunately the requested setting for level buffer " +
+										"could not be processed due to the maximum number of nodes. " +
+										"Setting levelBuffer to the maximum number of levels possible " +
+										"without hitting the max nodes(" + graph.getLevelBuffer() +
+										")." + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +  
+										"If you really want to see more levels, increment max nodes. " +
+										"This may cause lag on some systems.");
+								mess.schedule();
+							}
+							
+							redraw = true;
+						}
 						sh.dispose();
+						
+						if (redraw)
+							graph.draw();
 					}
 					
 				});
+
 				
 				sh.open();
 			}

@@ -103,8 +103,20 @@ public class StapGraphParser extends Job{
 				
 				if (tmp.equals("PROBE_BEGIN")){ //$NON-NLS-1$
 					text = buff.readLine();
-					endingTimeInNS = Long.parseLong(buff.readLine());
-					totalTime = Long.parseLong(buff.readLine());
+					tmp = buff.readLine();
+					if (tmp != null && tmp.length() > 0)
+						endingTimeInNS = Long.parseLong(tmp);
+					else {
+						launchFileDialogError();
+						return Status.CANCEL_STATUS;
+					}
+					tmp = buff.readLine();
+					if (tmp != null && tmp.length() > 0)
+						totalTime = Long.parseLong(tmp);
+					else {
+						launchFileDialogError();
+						return Status.CANCEL_STATUS;
+					}
 				}
 			}
 			buff.close();
@@ -127,7 +139,7 @@ public class StapGraphParser extends Job{
 			long time;
 			long cumulativeTime;
 			int parentID;
-			
+			try {
 			for (String s : callsAndReturns) {
 				switch (s.charAt(0)) {
 					case '<' :
@@ -169,6 +181,12 @@ public class StapGraphParser extends Job{
 						if (outNeighbours.get(id) == null){
 							outNeighbours.put(id, new ArrayList<Integer>());
 						}
+						
+						if (idList.size() > 1) {
+							parentID = idList.get(idList.size() - 2);
+							outNeighbours.get(parentID).add(id);
+						}
+						
 						break;
 					case '>' :
 						//args[0] = name
@@ -187,11 +205,6 @@ public class StapGraphParser extends Job{
 						nameList.remove(lastOccurance);
 						id = idList.remove(lastOccurance);
 						
-						//Get the last function that was called but never returned
-						if (idList.size() > 0) {
-							parentID = idList.get(idList.size() - 1);
-							outNeighbours.get(parentID).add(id);
-						}
 						
 						if (timeMap.get(id) == null) {
 							parsingError();
@@ -233,6 +246,14 @@ public class StapGraphParser extends Job{
 				}
 			}
 			
+			} catch (NumberFormatException e) {
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Unexpected Number", 
+						"Unexpected symbol", "Unexpected symbol encountered while trying to " +
+						"process id/time values.");
+				mess.schedule();
+				
+				return Status.CANCEL_STATUS;
+			}
 		}
 		
 

@@ -66,7 +66,8 @@ public class StapGraph extends Graph {
 	private int topLevelToDraw;
 	private int bottomLevelToDraw;
 	private int topLevelOnScreen;
-	private int levelBuffer = 30;
+	private static int levelBuffer = 30;
+	private static int maxNodes = 300;
 
 
 	private int lowestLevelOfNodesAdded;
@@ -121,6 +122,9 @@ public class StapGraph extends Graph {
 
 	//Zooming factor
 	public double scale;
+
+	
+	private int counter; 		//All purpose counting variable
 
 
 	public StapGraph(Composite parent, int style, Composite treeComp) {
@@ -559,7 +563,7 @@ public class StapGraph extends Graph {
 		int count;
 		
 		
-		for (int i = topLevelToDraw; i <= getBottomLevelToDraw(); i++) {
+		for (int i = topLevelToDraw; i <= bottomLevelToDraw; i++) {
 			count = 0;
 			levels.get(i).add(0, count);
 			int size = levels.get(i).size();
@@ -583,7 +587,7 @@ public class StapGraph extends Graph {
 		}
 
 		MaxLevelPixelWidth = (int)(MaxLevelPixelWidth/scale);
-		
+		counter = 0;
 		nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
 		drawFromBottomToTop(bottomLevelToDraw, y
 				+ ((bottomLevelToDraw  - topLevelToDraw ) * 3 * (int)(CONSTANT_VERTICAL_INCREMENT/scale)),
@@ -592,7 +596,6 @@ public class StapGraph extends Graph {
 		
 		checkRefresh();
 	}
-	
 	
 	public void drawFromBottomToTop(int level, int height,
 			int MaxLevelPixelWidth) {
@@ -623,12 +626,19 @@ public class StapGraph extends Graph {
 			
 			n.setVisible(true);
 			n.setSize(n.getSize().width/scale, n.getSize().height/scale);
-			//HEART OF THE ALGORITHM
-			if (getAnimationMode() == CONSTANT_ANIMATION_SLOW){				
-				Animation.markBegin();
+			//Placement algorithm
+			if (getAnimationMode() == CONSTANT_ANIMATION_SLOW){	
+				
+				if (counter <= ANIMATION_TIME*3)
+					Animation.markBegin();
 				n.setLocation(nodeMap.get(getRootVisibleNode()).getLocation().x,nodeMap.get(getRootVisibleNode()).getLocation().y);
 				n.setLocation(MaxLevelPixelWidth / (total + 1) * count,height);
-				Animation.run(ANIMATION_TIME/nodeMap.size());
+
+				if (counter <= ANIMATION_TIME*3) {
+					Animation.run(ANIMATION_TIME/nodeMap.size());
+					counter+=ANIMATION_TIME/nodeMap.size();
+				}
+					
 			}else{
 				n.setLocation(MaxLevelPixelWidth / (total + 1) * count,height);				
 			}
@@ -763,7 +773,11 @@ public class StapGraph extends Graph {
 	 */
 	public void setLevelLimits(int id) {
 		
+		
+		
 		int new_topLevelToDraw = getLevelOfNode(id);
+		changeLevelLimits(new_topLevelToDraw);
+		
 		
 		int new_bottomLevelToDraw = new_topLevelToDraw + levelBuffer;
 		if (new_bottomLevelToDraw > lowestLevelOfNodesAdded)
@@ -774,6 +788,33 @@ public class StapGraph extends Graph {
 
 		topLevelToDraw = new_topLevelToDraw;
 		bottomLevelToDraw = new_bottomLevelToDraw;
+	}
+	
+	public boolean changeLevelLimits(int lvl) {
+		int numberOfNodes = 0;
+		List<Integer> list;
+		
+		int maxLevel = min(lvl + levelBuffer, lowestLevelOfNodesAdded);
+		
+		for (int level = lvl; level < maxLevel; level++) {
+			for (int id : levels.get(level)) {
+				if (isCollapseMode())
+					list = getData(id).collapsedCallees;
+				else
+					list = getData(id).callees;
+				
+				numberOfNodes += list.size();
+				
+				if (numberOfNodes > maxNodes) {
+					levelBuffer = max(0,level-1);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+
+		
 	}
 	
 	/**
@@ -844,7 +885,7 @@ public class StapGraph extends Graph {
 				setLevelLimits(id);
 				rootVisibleNode = id;
 				drawTree(id, this.getBounds().width / 2, 20);
-				moveAllNodesTo(this.getBounds().width / 2, 20);
+//				moveAllNodesTo(this.getBounds().width / 2, 20);
 				currentPositionInLevel.clear();
 
 				this.update();
@@ -927,6 +968,8 @@ public class StapGraph extends Graph {
 			getNode(id).unhighlight();
 		clearSelection();
 	}
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	/**
@@ -1544,8 +1587,29 @@ public class StapGraph extends Graph {
 	}
 
 
-	public void setLevelBuffer(int levelBuffer) {
-		this.levelBuffer = levelBuffer;
+	public void setLevelBuffer(int val) {
+		levelBuffer = val;
+	}
+	
+	public int min(int a, int b) {
+		if (a < b) return a;
+		return b;
 	}
 
+	public int max(int a, int b) {
+		if (a > b) return a;
+		return b;
+	}
+
+
+
+	public int getMaxNodes() {
+		return maxNodes;
+	}
+
+
+
+	public void setMaxNodes(int val) {
+		maxNodes = val;
+	}
 }

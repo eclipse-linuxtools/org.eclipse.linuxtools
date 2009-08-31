@@ -53,6 +53,8 @@ public class GraphUIJob extends UIJob{
 		Composite treeComp = SystemTapView.makeTreeComp(treeSize);
 		Composite graphComp = SystemTapView.makeGraphComp();
 		
+		
+		
 		g = new StapGraph(graphComp, SWT.NONE, treeComp);
 
 		
@@ -114,6 +116,7 @@ public class GraphUIJob extends UIJob{
 	    
 	    SystemTapView.setValues(graphComp, treeComp, g, parser);
 	    SystemTapView.createPartControl();
+	    SystemTapView.layout();
 	    
 		return Status.OK_STATUS;
 	}
