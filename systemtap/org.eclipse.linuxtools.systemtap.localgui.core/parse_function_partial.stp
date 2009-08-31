@@ -7,16 +7,16 @@ probe begin{
 function callFunction(probefunc) {
 	if (startTime == 0) {
 		startTime = gettimeofday_ns()
-		printf("<%s:%d:%d;", probefunc, serial, startTime)
+		printf("<%s,,%d,,%d;", probefunc, serial, startTime)
 	} else
-	    printf("<%s:%d:%d;", probefunc, serial, gettimeofday_ns())
+	    printf("<%s,,%d,,%d;", probefunc, serial, gettimeofday_ns())
 	serial++
 }
 
 
 function returnFunction(probefunc) {
 	finalTime = gettimeofday_ns()
-	printf(">%s:%d;", probefunc, finalTime)
+	printf(">%s,,%d;", probefunc, finalTime)
 	
 }
 

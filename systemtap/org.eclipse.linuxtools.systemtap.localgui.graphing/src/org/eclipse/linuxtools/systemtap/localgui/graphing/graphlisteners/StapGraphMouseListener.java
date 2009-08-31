@@ -136,7 +136,8 @@ public class StapGraphMouseListener implements MouseListener {
 //					+ ", " + graph.getNode(id).getLocation().y); //$NON-NLS-1$
 
 			// ------------Highlighting
-			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE) {
+			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE 
+					|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
 				for (StapNode n : (List<StapNode>) graph.getNodes()) {
 					unhighlightall(n);
 				}
@@ -156,7 +157,7 @@ public class StapGraphMouseListener implements MouseListener {
 				if (graph.getParentNode(id) != null) {
 					graph.getParentNode(id).highlight();
 				}
-				graph.setSelection(null);
+//				graph.setSelection(null);
 				graph.getNode(id).highlight();
 
 				return;
@@ -172,12 +173,12 @@ public class StapGraphMouseListener implements MouseListener {
 		}
 
 		else {
-			for (StapNode n : list) {
-				unhighlightall(n);
-			}
+//			for (StapNode n : list) {
+//				unhighlightall(n);
+//			}
 		}
 
-		graph.setSelection(null);
+//		graph.setSelection(null);
 	}
 
 	private void unhighlightall(StapNode n) {

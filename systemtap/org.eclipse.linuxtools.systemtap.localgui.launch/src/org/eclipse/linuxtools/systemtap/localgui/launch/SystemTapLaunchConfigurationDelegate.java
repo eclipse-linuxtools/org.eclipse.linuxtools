@@ -82,6 +82,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		// binary selection
 		boolean needsArguments = false;
 		boolean useColour = false;
+		String binaryArguments = "";
 		
 		
 		String command = ConfigurationOptionsSetter.setOptions(config);  
@@ -108,6 +109,16 @@ public class SystemTapLaunchConfigurationDelegate extends
 					LaunchConfigurationConstants.DEFAULT_BINARY_PATH);
 			needsBinary = true;
 		}
+		
+		if (!config.getAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS,
+				LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS).equals(
+				LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS)) {
+			binaryArguments = config.getAttribute(
+					LaunchConfigurationConstants.BINARY_ARGUMENTS,
+					LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS);
+		}
+		
+		
 
 		if (!config.getAttribute(LaunchConfigurationConstants.SCRIPT_PATH,
 				LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH).equals(
@@ -166,7 +177,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			// Generate the command
 			cmdGenerator = new SystemTapCommandGenerator();
 			String cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
-					command, needsBinary, needsArguments, arguments);
+					command, needsBinary, needsArguments, arguments, binaryArguments);
 
 
 			MP.println(cmd);
@@ -180,7 +191,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 			String[] commandArray = (String[]) cmdLine
 					.toArray(new String[cmdLine.size()]);
-
 			
 			// Check for cancellation
 			if (monitor.isCanceled()) {

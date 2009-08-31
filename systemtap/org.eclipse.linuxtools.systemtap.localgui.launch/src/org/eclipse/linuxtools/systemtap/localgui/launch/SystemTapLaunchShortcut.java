@@ -567,7 +567,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		
 	    CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(getActiveWorkbenchShell(), 
 	    		new WorkbenchLabelProvider(), prov);
-	    
+
 	    dialog.setTitle("Tree Selection");
 	    dialog.setMessage("Select .c/.cpp files to probe. Leave selection blank to select all.");
 	    dialog.setInput(list);

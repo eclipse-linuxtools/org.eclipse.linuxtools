@@ -66,6 +66,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected TabFolder fileFolder;
 	protected TabFolder commandFolder;
 	protected TabFolder argumentsFolder;
+	protected TabFolder binaryArgumentsFolder;
 	protected TabFolder generatedScriptFolder;
 	
 	//Controls
@@ -74,7 +75,8 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected Text arguments;
 	protected Text generatedScript;
 	protected Text outputFile;
-	protected Text button_D_text;	
+	protected Text button_D_text;
+	protected Text binaryArguments;
 //	protected Text commandFile;
 	
 	protected Button fileBrowseButton;
@@ -275,6 +277,23 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		createArgumentsOption(argumentsTop);
 		argumentsTab.setControl(argumentsTop);
 		
+		
+		/*
+		 * Binary Argument folder - tab for supplying arguments for a binary
+		 */
+		binaryArgumentsFolder = new TabFolder(top, SWT.BORDER);
+		binaryArgumentsFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+		
+		TabItem binaryArgumentsTab = new TabItem(fileFolder, SWT.NONE);
+		binaryArgumentsTab.setText("Binary Arguments");
+		
+		Composite binaryArgumentsTop = new Composite(fileFolder, SWT.NONE);
+		binaryArgumentsTop.setLayout(new GridLayout());
+		binaryArgumentsTop.setLayoutData(new GridData(GridData.FILL_BOTH));
+		
+		createBinaryArgumentsOption(binaryArgumentsTop);
+		binaryArgumentsTab.setControl(binaryArgumentsTop);
+		
 
 //		/*
 //		 * Generated Script folder - tab for selecting script generatedScript
@@ -297,6 +316,22 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		 */
 	}
 	
+
+	private void createBinaryArgumentsOption(Composite binaryArgumentsTop) {
+		Composite browseTop = new Composite(binaryArgumentsTop, SWT.NONE);		
+		browseTop.setLayout(new GridLayout(1, false));
+		GridData browseData = new GridData(GridData.FILL_HORIZONTAL);
+		browseTop.setLayoutData(browseData);
+		
+		Label suppFileLabel = new Label(browseTop, SWT.NONE);
+		suppFileLabel.setText("Please input the desired arguments, separated by spaces to be given to your binary.");
+		
+		binaryArguments = new Text(browseTop,SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.heightHint = 200;
+		binaryArguments.setLayoutData(gd);
+		binaryArguments.addModifyListener(modifyListener);
+	}
 
 	protected void createGeneratedScriptOption(Composite generatedScriptTop) {
 		Composite browseTop = new Composite(generatedScriptTop, SWT.NONE);		
@@ -397,6 +432,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		binaryFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		binaryFile.addModifyListener(modifyListener);
 		
+		
 		Button workspaceBrowseButton2 = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.WorkspaceButton2"), null);  //$NON-NLS-1$
 		workspaceBrowseButton2.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -412,6 +448,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				}
 			}
 		});
+		
 		
 		Button fileBrowseButton2 = createPushButton(browseTop, Messages.getString("SystemTapOptionsTab.BrowseFiles"), null); //$NON-NLS-1$
 		fileBrowseButton2.addSelectionListener(new SelectionAdapter() {
@@ -431,6 +468,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				}
 			}
 		});
+		
 		
 		Label outputFileLabel = new Label(browseTop, SWT.NONE);
 		outputFileLabel.setText(Messages.getString("SystemTapOptionsTab.SelectOutput")); //$NON-NLS-1$
@@ -711,6 +749,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			scriptFile.setText(configuration.getAttribute(LaunchConfigurationConstants.SCRIPT_PATH, LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH));
 			outputFile.setText(configuration.getAttribute(LaunchConfigurationConstants.OUTPUT_PATH, LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH));
 			arguments.setText(configuration.getAttribute(LaunchConfigurationConstants.ARGUMENTS, LaunchConfigurationConstants.DEFAULT_ARGUMENTS));
+			binaryArguments.setText(configuration.getAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS, LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS));
 			
 			if (generatedScript != null){
 				generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
@@ -753,6 +792,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.BINARY_PATH, binaryFile.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH, scriptFile.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.ARGUMENTS, arguments.getText());
+		configuration.setAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS, binaryArguments.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH, outputFile.getText());
 //		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_LIST, commandFile.getText());
 		
@@ -811,6 +851,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH); 
 		configuration.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH); 
 		configuration.setAttribute(LaunchConfigurationConstants.ARGUMENTS,LaunchConfigurationConstants.DEFAULT_ARGUMENTS);
+		configuration.setAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS,LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS);
 
 		configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT);
 		configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE);

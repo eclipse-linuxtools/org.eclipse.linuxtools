@@ -144,7 +144,7 @@ public class StapGraphParser extends Job{
 				switch (s.charAt(0)) {
 					case '<' :
 						
-						args = s.substring(1, s.length()).split(":");
+						args = s.substring(1, s.length()).split(",,");
 						// args[0] = name
 						// args[1] = id
 						// arsg[2] = time of event
@@ -191,7 +191,7 @@ public class StapGraphParser extends Job{
 					case '>' :
 						//args[0] = name
 						//args[1] = time of event
-						args = s.substring(1, s.length()).split(":");
+						args = s.substring(1, s.length()).split(",,");
 						name = args[0];
 						if (!isNameClean(name))
 							break;
@@ -221,6 +221,11 @@ public class StapGraphParser extends Job{
 							cumulativeTimeMap.put(name, cumulativeTime);
 						}
 						
+						
+						//TODO: Don't do this? Decide whether or not we want to correct for C directives
+						if (name.equals("main")) {
+							totalTime = timeMap.get(id);
+						}
 						//Use + for end times
 //						cumulativeTime = cumulativeTimeMap.get(name) + Long.parseLong(args[1]);
 //						cumulativeTimeMap.put(name, cumulativeTime);

@@ -13,6 +13,7 @@ Export-Package: org.eclipse.linuxtools.systemtap.localgui.graphing
 Import-Package: org.eclipse.jface.text,
  org.eclipse.linuxtools.systemtap.localgui.core,
  org.eclipse.ui.texteditor,
+ org.eclipse.zest.core.viewers,
  org.eclipse.zest.core.widgets,
  org.eclipse.zest.layouts,
  org.eclipse.zest.layouts.algorithms

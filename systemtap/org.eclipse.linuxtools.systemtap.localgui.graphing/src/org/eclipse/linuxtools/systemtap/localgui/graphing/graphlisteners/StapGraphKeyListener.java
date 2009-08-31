@@ -17,7 +17,6 @@ import org.eclipse.linuxtools.systemtap.localgui.graphing.StapNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * StapGraph key listener
@@ -106,6 +105,7 @@ public class StapGraphKeyListener implements KeyListener {
 			}
 			
 			else {
+				//Tree mode
 				int id;
 				// Default to the current center node if more than one node
 				// is selected or if no nodes are selected

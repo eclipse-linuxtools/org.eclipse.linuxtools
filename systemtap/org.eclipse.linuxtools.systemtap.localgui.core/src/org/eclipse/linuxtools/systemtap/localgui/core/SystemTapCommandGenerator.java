@@ -36,6 +36,7 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 	protected IWorkbenchWindow actionWindow = null;
 	private IAction act;
 	private String executeCommand;
+	private String binaryArguments;
 
 	
 	public SystemTapCommandGenerator() {		
@@ -58,7 +59,7 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		System.out.println("Calling run() without parameters not implemented"); //$NON-NLS-1$
 	}
 	
-	public String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg) {
+	public String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, String binArguments) {
 		needsToSendCommand = needBinary;
 		needsArguments = needsArgs;
 		binaryPath = binPath;
@@ -66,6 +67,7 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		isGuru = false;
 		arguments = arg;
 		commands = cmds;
+		binaryArguments = binArguments;
 		
 		String[] script = buildScript();
 		
@@ -94,8 +96,13 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		}
 		
 		//Execute a binary
-		if (needsToSendCommand)
-			cmdList.add("-c '" + binaryPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (needsToSendCommand){
+			if (binaryArguments.length() < 1){	
+				cmdList.add("-c '" + binaryPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+			}else{				
+				cmdList.add("-c '" + binaryPath + " " + binaryArguments +"'"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
 		
 		
 		if (needsArguments) {

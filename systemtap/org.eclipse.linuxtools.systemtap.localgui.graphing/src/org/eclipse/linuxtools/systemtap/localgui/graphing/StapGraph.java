@@ -68,7 +68,7 @@ public class StapGraph extends Graph {
 	private int bottomLevelToDraw;
 	private int topLevelOnScreen;
 	private static int levelBuffer = 30;
-	private static int maxNodes = 300;
+	private static int maxNodes = 150;
 
 
 	private int lowestLevelOfNodesAdded;
@@ -127,7 +127,6 @@ public class StapGraph extends Graph {
 	
 	private int counter; 		//All purpose counting variable
 
-
 	public StapGraph(Composite parent, int style, Composite treeComp) {
 		super(parent, style);
 
@@ -160,13 +159,11 @@ public class StapGraph extends Graph {
 			treeViewer.addTreeListener(stl);
 		}
 		
-		
-		
+				
 		//-------------Add listeners
 		this.addMouseListener(new StapGraphMouseListener(this));		
 		this.addKeyListener(new StapGraphKeyListener(this));
 		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
-
 	}
 
 	
@@ -590,11 +587,15 @@ public class StapGraph extends Graph {
 
 		MaxLevelPixelWidth = (int)(MaxLevelPixelWidth/scale);
 		counter = 0;
-		nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
+		if (id == getFirstUsefulNode())
+			nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
+		
 		drawFromBottomToTop(bottomLevelToDraw, y
 				+ ((bottomLevelToDraw  - topLevelToDraw ) * 3 * (int)(CONSTANT_VERTICAL_INCREMENT/scale)),
 				MaxLevelPixelWidth);
-		nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
+		
+		if (id == getFirstUsefulNode())
+			nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
 		
 		checkRefresh();
 	}
@@ -614,6 +615,7 @@ public class StapGraph extends Graph {
 		//CREATE THE NODES
 		for (int i = 0; i < levels.get(level).size(); i ++) {
 			int id = levels.get(level).get(i);
+			
 			if (collapse_mode && nodeDataMap.get(id).isPartOfCollapsedNode()) {
 				continue;
 			}

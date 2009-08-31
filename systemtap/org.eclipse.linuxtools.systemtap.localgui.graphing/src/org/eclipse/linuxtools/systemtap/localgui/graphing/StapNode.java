@@ -21,6 +21,8 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 public class StapNode extends GraphNode{
+	
+	private static final int nodeSize = 20;
 	public int id;
 	public GraphConnection connection;		//Each node should have only one connection (to its caller)
 	private boolean hasButtons;				//Has buttons already attached
@@ -37,13 +39,18 @@ public class StapNode extends GraphNode{
 		if (data.name == StapGraph.CONSTANT_TOP_NODE_NAME)
 			this.setText(StapGraph.CONSTANT_TOP_NODE_NAME);
 		else  {
-				this.setText(data.name + ": " +  //$NON-NLS-1$
-					numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
-					+ "%"); //$NON-NLS-1$
+			String shortName = data.name;
+			if (data.name.length() > nodeSize)
+				 shortName = data.name.substring(0, nodeSize);  
+			this.setText(shortName + ": " +  //$NON-NLS-1$
+				numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+				+ "%"); //$NON-NLS-1$
 		}
 		
 		if (data.markedMessage.length() != 0) {
-			Label tooltip = new Label(this.getText() + "\n  " + data.markedMessage); //$NON-NLS-1$
+			Label tooltip = new Label(data.name + ": " +  //$NON-NLS-1$
+					numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+					+ "%" + "\n  " + data.markedMessage); //$NON-NLS-1$
 			this.setTooltip(tooltip);
 		}
 		

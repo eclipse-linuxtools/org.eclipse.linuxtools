@@ -279,7 +279,7 @@ public class SystemTapView extends ViewPart {
 		//MAXIMIZE THE SYSTEMTAP VIEW WHEN RENDERING A GRAPH
 		firstTimeRefresh();
         graph.reset();
-                
+        SystemTapView.layout();
 	}
 	
 	

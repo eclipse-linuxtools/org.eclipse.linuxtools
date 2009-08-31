@@ -32,9 +32,14 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 	@Override
 	public void mouseScrolled(MouseEvent e) {
 		
+		
 		if (e.stateMask != SWT.CTRL)
 			return;
 		
+//		int x = graph.getNode(graph.getRootVisibleNode()).getLocation().x;
+//		int y = graph.getNode(graph.getRootVisibleNode()).getLocation().y;
+//		System.out.println("BEFORE: " + x + ", " +y); 
+//		
 		if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_BOX && 
 				graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE)
 			return;
@@ -59,8 +64,12 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 		graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST,
 				graph.getRootVisibleNode());
 		graph.setAnimationMode(currentAnimationMode);
+//		x = graph.getNode(graph.getRootVisibleNode()).getLocation().x - x;
+//		y = graph.getNode(graph.getRootVisibleNode()).getLocation().y - y;
+//		graph.scrollBy(x/3, y);
 //		graph.moveAllNodesBy(graph.getBounds().width/2 - e.x, graph.getBounds().height/2 - e.y);
-		
+//		System.out.println("AFTER: " + graph.getNode(graph.getRootVisibleNode()).getLocation().x + ", " +graph.getNode(graph.getRootVisibleNode()).getLocation().y + "\n\n") ; 
+
 //		// Don't scroll for circle mode
 //		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_CIRCLE)
 //			return;
