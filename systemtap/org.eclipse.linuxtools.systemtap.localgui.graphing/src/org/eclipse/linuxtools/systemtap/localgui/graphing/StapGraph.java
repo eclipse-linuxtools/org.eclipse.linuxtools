@@ -301,12 +301,14 @@ public class StapGraph extends Graph {
 		// Draw caller node right beside this one, in a different color
 		int callerID = nodeDataMap.get(id).caller;
 		if (callerID != -1) {
-			if (nodeMap.get(callerID) == null) {
+			if (getNode(callerID) == null) {
 				nodeMap.put(callerID, getNodeData(callerID).makeNode(this));
-
 			}
-			nodeMap.get(callerID).setBackgroundColor(CONSTANT_HAS_PARENT);
-			nodeMap.get(callerID).setLocation(x + radius / 5, y - radius / 5);
+			getNode(callerID).setBackgroundColor(CONSTANT_HAS_PARENT);
+			getNode(callerID).setLocation(x + radius / 5, y - radius / 5);
+			if (getNode(id).connection == null) {
+				getNode(id).makeConnection(SWT.NONE, getNode(callerID), getData(id).called);
+			}
 			
 			if (getData(callerID).isMarked())
 				nodeMap.get(callerID).setBackgroundColor(CONSTANT_MARKED);

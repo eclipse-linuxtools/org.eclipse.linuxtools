@@ -19,11 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.cdt.core.model.ICContainer;
-import org.eclipse.cdt.core.model.ICElement;
-import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
@@ -68,12 +64,14 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	
 	private String partialScriptPath;
 
-
 	
 	public void launch(IEditorPart ed, String mode) {
 		super.Init();
 		resourceToSearchFor = ed.getTitle();
 		searchForResource = true;
+		
+		//Note: This launch will eventually end up calling 
+		//launch(IBinary bin, String mode) below 
 		super.launch(ed, mode);
 	}
 	
@@ -167,48 +165,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 */
 	private String writeFunctionListToScript(IBinary bin) throws IOException {
 		String toWrite = ""; //$NON-NLS-1$
-
-
-		ArrayList<String> funcs = new ArrayList<String>();
-		/*
-		 * Find all relevant function names
-		 */
-		try {
-			
-			ArrayList<ITranslationUnit> list = new ArrayList<ITranslationUnit>();
-			
-			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
-				ICContainer c = (ICContainer) b;
-				for (ITranslationUnit ast : c.getTranslationUnits()) {
-					if (searchForResource && ast.getElementName().equals(resourceToSearchFor)) {
-						TranslationUnitVisitor v = new TranslationUnitVisitor();
-						ast.accept(v);
-						funcs.addAll(v.getFunctions());
-					} else {
-						list.add(ast);
-					}
-				}
-			}
-			
-			if (list.size() > 0) {
-				for (Object obj : chooseUnit(list)) {
-					if (obj instanceof ITranslationUnit) {
-						ITranslationUnit ast = (ITranslationUnit) obj;
-						TranslationUnitVisitor v = new TranslationUnitVisitor();
-						ast.accept(v);
-						funcs.addAll(v.getFunctions());
-					}
-				}
-			}
-			
-		} catch (CModelException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		ArrayList<String> funcs = getFunctionsFromBinary(bin);
 		
-		
-		if (funcs.size() < 1) {
+		if (funcs == null || funcs.size() < 1) {
 			failedToLaunch(Messages.getString("LaunchStapGraph.InvalidFunctionsReason")); //$NON-NLS-1$
 			throw new IOException();
 		}

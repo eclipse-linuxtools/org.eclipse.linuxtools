@@ -12,9 +12,13 @@
 package org.eclipse.linuxtools.systemtap.localgui.launch;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.cdt.core.model.ICContainer;
+import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IResource;
@@ -407,7 +411,72 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		return binaryPath;
 	}
 
+	/**
+	 * Retrieves the names of all functions referenced by the binary. If searchForResource
+	 * is true, this function will return all function names belonging to an element with name
+	 * matching the String held by resourceToSearchFor. Otherwise it will create a dialog
+	 * prompting the user to select from a list of files to profile, or select the only 
+	 * available file if only one file is available.
+	 * 
+	 * 
+	 * @param bin
+	 * @return
+	 */
+	protected ArrayList<String> getFunctionsFromBinary(IBinary bin) {
+		ArrayList<String> funcs = new ArrayList<String>();
+		try {
+			
+			ArrayList<ITranslationUnit> list = new ArrayList<ITranslationUnit>();
+			
+			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
+				ICContainer c = (ICContainer) b;
+				for (ITranslationUnit ast : c.getTranslationUnits()) {
+					if (searchForResource && ast.getElementName().equals(resourceToSearchFor)) {
+						TranslationUnitVisitor v = new TranslationUnitVisitor();
+						ast.accept(v);
+						funcs.addAll(v.getFunctions());
+					} else {
+						list.add(ast);
+					}
+				}
+			}
+			
+			if (list.size() == 1) {
+				ITranslationUnit ast = (ITranslationUnit) list.get(0);
+				TranslationUnitVisitor v = new TranslationUnitVisitor();
+				ast.accept(v);
+				funcs.addAll(v.getFunctions());
+			}
+			
+			if (list.size() > 1) {
+				for (Object obj : chooseUnit(list)) {
+					if (obj instanceof ITranslationUnit) {
+						ITranslationUnit ast = (ITranslationUnit) obj;
+						TranslationUnitVisitor v = new TranslationUnitVisitor();
+						ast.accept(v);
+						funcs.addAll(v.getFunctions());
+					}
+				}
+			}
+			
+			return funcs;
+			
+		} catch (CModelException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
+	/**
+	 * Creates a dialog that prompts the user to select from the given list
+	 * of translation units.
+	 * 
+	 * @param list
+	 * @return
+	 */
 	protected Object[] chooseUnit(List<ITranslationUnit> list) {
 		ILabelProvider programLabelProvider = new LabelProvider() {
 			public String getText(Object element) {
@@ -442,6 +511,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		dialog.setUpperListLabel("Detected files"); //$NON-NLS-1$
 		dialog.setLowerListLabel("Number of functions"); //$NON-NLS-1$
 		dialog.setMultipleSelection(true);
+		dialog.setInitialElementSelections(list);
 		if (dialog.open() == Window.OK) {
 			return (Object[]) dialog.getResult();
 		}

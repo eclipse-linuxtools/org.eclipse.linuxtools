@@ -24,6 +24,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.systemtap.localgui.core.Helper;
 import org.eclipse.linuxtools.systemtap.localgui.core.Messages;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
@@ -132,21 +133,8 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	public static void setValues(Composite graphC, Composite treeC, StapGraph g, StapGraphParser p){
-		if (graph != null) {
-			graph.dispose();
-		}
-		
-//		if (graphComp != null) {
-//			graphComp.dispose();
-//		}
-//		
-//		if (treeComp != null) {
-//			treeComp.dispose();
-//		}
-//		
+		treeComp = treeC;
 		graphComp = graphC;
-		if (treeComp != null)
-			treeComp = treeC;
 		graph = g;
 		parser = p;
 	}
@@ -304,7 +292,7 @@ public class SystemTapView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		masterComposite = parent;
 		this.display = parent.getDisplay();
-		Layout layout = new GridLayout(3, false);
+		Layout layout = new GridLayout(2, false);
 		GridData gd = new GridData(100, 100);
 
 		parent.setLayout(layout);
@@ -319,10 +307,8 @@ public class SystemTapView extends ViewPart {
 		
 		//MENU FOR SYSTEMTAP BUTTONS
 		mgr = getViewSite().getActionBars().getToolBarManager();
-//		mgr.add(killSystemTapScript);
-//		mgr.add(disposeGraph);
-//		mgr.add(checkSystemTapVersion);
-//		
+		
+		
 		//MENU FOR SYSTEMTAP GRAPH OPTIONS
 		menu = getViewSite().getActionBars().getMenuManager();
 		
@@ -353,6 +339,8 @@ public class SystemTapView extends ViewPart {
 		view.add(view_boxview);
 		view.add(mode_collapsednodes);
 		view.add(limits);
+		
+		mgr.add(view_treeview);
 		
 //		help.add(help_about);
 		help.add(help_version);
@@ -793,6 +781,11 @@ public class SystemTapView extends ViewPart {
 			}
 		};
 		
+		ImageDescriptor d = ImageDescriptor.createFromImage(
+				new Image(Display.getCurrent(), 
+						PluginConstants.PLUGIN_LOCATION + "/icons/public_co.gif"));
+		view_treeview.setImageDescriptor(d);
+		
 		//Set drawmode to radial view
 		view_radialview = new Action(Messages.getString("SystemTapView.17")){ //$NON-NLS-1$
 			public void run(){
@@ -890,6 +883,13 @@ public class SystemTapView extends ViewPart {
 			}
 		};
 
+	}
+	
+	
+	
+	
+	public void createViewButtons() {
+		
 	}
 	
 /**

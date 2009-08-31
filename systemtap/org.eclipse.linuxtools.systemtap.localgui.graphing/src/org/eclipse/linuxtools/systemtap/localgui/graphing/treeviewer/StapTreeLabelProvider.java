@@ -23,7 +23,9 @@ public class StapTreeLabelProvider implements ILabelProvider {
 	public Image getImage(Object element) {
 		Image im = null;
 		if ( ((StapData) element).isMarked())
-			im = new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "/icons/checkmark.png"); //$NON-NLS-1$
+			im = new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "/icons/public_co.gif"); //$NON-NLS-1$
+		else
+			im = new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "/icons/compare_method.gif"); //$NON-NLS-1$
 		return im;
 	}
 
