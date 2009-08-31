@@ -16,10 +16,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.core.dom.ast.IBinding;
+import org.eclipse.cdt.core.dom.ast.IFunction;
+import org.eclipse.cdt.core.index.IIndex;
+import org.eclipse.cdt.core.index.IIndexFile;
+import org.eclipse.cdt.core.index.IIndexFileLocation;
+import org.eclipse.cdt.core.index.IIndexManager;
+import org.eclipse.cdt.core.index.IIndexName;
+import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICContainer;
 import org.eclipse.cdt.core.model.ICElement;
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IResource;
@@ -669,4 +679,46 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		}
 		return output;
 	}
+	
+	
+	/**
+	 * @param project : C Project Type
+	 * @param functionName : name of a function 
+	 * @return an ArrayList of String paths (relative to current workspace) of
+	 * files with specified function name
+	 */
+	public static ArrayList<String> findFunctionInSource(ICProject project, 
+			String functionName)  {
+		  ArrayList<String> files = new ArrayList<String>() ;
+		  IIndexManager manager = CCorePlugin.getIndexManager();
+		  IIndex index = null;
+		    try {
+				index = manager.getIndex(project);
+				index.acquireReadLock();
+				IBinding[] bindings = index.findBindings(functionName.toCharArray(), IndexFilter.ALL, null);
+				for (IBinding bind : bindings) {
+					if (bind instanceof IFunction) {
+						IFunction ifunction = (IFunction) bind;
+						IIndexName[] names = index.findNames(ifunction,
+								IIndex.FIND_DEFINITIONS);
+						for (IIndexName iname : names) {
+							IIndexFile file = iname.getFile();
+							if (file != null) {
+								IIndexFileLocation filelocation = file.getLocation();
+								files.add(filelocation.getFullPath());
+							}
+						}
+					}
+				}
+				
+			} catch (CoreException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+		   index.releaseReadLock();
+		   return files;
+		}
+
 }
