@@ -49,7 +49,6 @@ public class StapGraph extends Graph {
 	public static final int CONSTANT_ANIMATION_FASTEST = 3;
 	public static final int CONSTANT_MAX_NUMBER_OF_SIBLINGS = 3;
 	public static final int CONSTANT_MAX_NUMBER_OF_RADIAL_SIBLINGS = 15;
-	public static final int CONSTANT_LEVEL_BUFFER = 30;
 	public static final int CONSTANT_VERTICAL_INCREMENT = 50;
 	public static final int CONSTANT_HORIZONTAL_SPACING_FOR_BOX = 150;
 	public static final Color CONSTANT_HAS_PARENT = new Color(Display.getCurrent(), 240, 200,
@@ -62,6 +61,7 @@ public class StapGraph extends Graph {
 	private int topLevelToDraw;
 	private int bottomLevelToDraw;
 	private int topLevelOnScreen;
+	private int levelBuffer = 30;
 
 
 	private int lowestLevelOfNodesAdded;
@@ -718,7 +718,7 @@ public class StapGraph extends Graph {
 		
 		int new_topLevelToDraw = getLevelOfNode(id);
 		
-		int new_bottomLevelToDraw = new_topLevelToDraw + CONSTANT_LEVEL_BUFFER;
+		int new_bottomLevelToDraw = new_topLevelToDraw + levelBuffer;
 		if (new_bottomLevelToDraw > lowestLevelOfNodesAdded)
 			new_bottomLevelToDraw = lowestLevelOfNodesAdded;
 
@@ -1463,6 +1463,16 @@ public class StapGraph extends Graph {
 	
 	public int getAnimationMode() {
 		return animation_mode;
+	}
+
+
+	public int getLevelBuffer() {
+		return levelBuffer;
+	}
+
+
+	public void setLevelBuffer(int levelBuffer) {
+		this.levelBuffer = levelBuffer;
 	}
 
 }

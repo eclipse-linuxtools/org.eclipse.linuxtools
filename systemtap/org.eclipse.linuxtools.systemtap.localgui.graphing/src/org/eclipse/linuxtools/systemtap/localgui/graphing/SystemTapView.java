@@ -32,17 +32,23 @@ import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -84,6 +90,7 @@ public class SystemTapView extends ViewPart {
 	private static Action mode_collapsednodes;
 	private static Action markers_next; 
 	private static Action markers_previous;
+	private static Action limits; 
 	
 	private static IMenuManager menu;
 	private static IMenuManager file;
@@ -147,6 +154,9 @@ public class SystemTapView extends ViewPart {
 		view_radialview.setEnabled(isVisible);
 		view_aggregateview.setEnabled(isVisible);
 		view_boxview.setEnabled(isVisible);
+		limits.setEnabled(isVisible);
+		markers_next.setEnabled(isVisible);
+		markers_previous.setEnabled(isVisible);
 		animation_slow.setEnabled(isVisible);
 		animation_fast.setEnabled(isVisible);
 		mode_collapsednodes.setEnabled(isVisible);
@@ -256,11 +266,13 @@ public class SystemTapView extends ViewPart {
 		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
 		markers = new MenuManager("Markers");
+		
 
 		
 		menu.add(file);
 		menu.add(view);
 		menu.add(animation);
+		
 		
 		file.add(open_callgraph);
 		file.add(open_default);
@@ -272,11 +284,13 @@ public class SystemTapView extends ViewPart {
 		view.add(view_aggregateview);
 		view.add(view_boxview);
 		
+		view.add(mode_collapsednodes);
+		view.add(limits);
+		
 		markers.add(markers_next);
 		markers.add(markers_previous);
 		animation.add(animation_slow);
 		animation.add(animation_fast);
-		menu.add(mode_collapsednodes);
 		menu.add(markers);
 		
 		menu.add(errors);
@@ -662,6 +676,34 @@ public class SystemTapView extends ViewPart {
 					graph.setCollapseMode(true);
 					graph.draw(graph.getRootVisibleNode(), 0, 0);
 				}
+			}
+		};
+		
+		limits = new Action("Set limits", Action.AS_PUSH_BUTTON) {
+			private Spinner limit;
+			private Shell sh;
+			public void run() {
+				sh = new Shell();
+				sh.setLayout(new GridLayout());
+				sh.setSize(150, 100);
+				limit = new Spinner(sh, SWT.BORDER);
+				limit.setSelection(graph.getLevelBuffer());
+				limit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
+				
+				Button set_limit = new Button(sh, SWT.PUSH);
+				set_limit.setText("Set new limit");
+				set_limit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
+				set_limit.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {
+						if (limit.getSelection() > 0)
+							graph.setLevelBuffer(limit.getSelection());
+						System.out.println("Run! " + graph.getLevelBuffer());
+						sh.dispose();
+					}
+					
+				});
+				
+				sh.open();
 			}
 		};
 
