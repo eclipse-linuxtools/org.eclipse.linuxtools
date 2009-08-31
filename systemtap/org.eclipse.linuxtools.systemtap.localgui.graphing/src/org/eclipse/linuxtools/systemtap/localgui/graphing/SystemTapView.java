@@ -340,7 +340,11 @@ public class SystemTapView extends ViewPart {
 		view.add(mode_collapsednodes);
 		view.add(limits);
 		
+		mgr.add(view_radialview);
 		mgr.add(view_treeview);
+		mgr.add(view_boxview);
+		mgr.add(view_aggregateview);
+		mgr.add(mode_collapsednodes);
 		
 //		help.add(help_about);
 		help.add(help_version);
@@ -769,7 +773,6 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	public void createViewActions() {
-
 		//Set drawmode to tree view
 		view_treeview = new Action(Messages.getString("SystemTapView.16")){ //$NON-NLS-1$
 			public void run() {
@@ -780,11 +783,10 @@ public class SystemTapView extends ViewPart {
 						graph.getRootVisibleNode()).getLocation().y);
 			}
 		};
+		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
+				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/tree_explorer.gif"));
+		view_treeview.setImageDescriptor(treeImage);
 		
-		ImageDescriptor d = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/public_co.gif"));
-		view_treeview.setImageDescriptor(d);
 		
 		//Set drawmode to radial view
 		view_radialview = new Action(Messages.getString("SystemTapView.17")){ //$NON-NLS-1$
@@ -794,6 +796,11 @@ public class SystemTapView extends ViewPart {
 
 			}
 		};
+		ImageDescriptor d = ImageDescriptor.createFromImage(
+				new Image(Display.getCurrent(), 
+						PluginConstants.PLUGIN_LOCATION + "/icons/radial_view.gif"));
+		view_radialview.setImageDescriptor(d);
+
 		
 		//Set drawmode to aggregate view
 		view_aggregateview = new Action(Messages.getString("SystemTapView.18")){ //$NON-NLS-1$
@@ -803,6 +810,11 @@ public class SystemTapView extends ViewPart {
 
 			}
 		};
+		ImageDescriptor aggregateImage = ImageDescriptor.createFromImage(
+				new Image(Display.getCurrent(), 
+						PluginConstants.PLUGIN_LOCATION + "/icons/radial_view.gif"));
+		view_aggregateview.setImageDescriptor(aggregateImage);
+		
 		
 		//Set drawmode to box view
 		view_boxview = new Action(Messages.getString("SystemTapView.19")){ //$NON-NLS-1$
@@ -811,6 +823,11 @@ public class SystemTapView extends ViewPart {
 						graph.getRootVisibleNode(), 0, 0);
 			}
 		};
+		ImageDescriptor boxImage = ImageDescriptor.createFromImage(
+				new Image(Display.getCurrent(), 
+						PluginConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif"));
+		view_boxview.setImageDescriptor(boxImage);
+		
 		
 	}
 	
@@ -855,6 +872,10 @@ public class SystemTapView extends ViewPart {
 			}
 		};
 		
+		ImageDescriptor newImage = ImageDescriptor.createFromImage(
+				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/mode_collapsednodes.gif"));
+		mode_collapsednodes.setImageDescriptor(newImage);
+		
 		limits = new Action("Set limits", Action.AS_PUSH_BUTTON) {
 			private Spinner limit;
 			private Shell sh;
@@ -884,14 +905,7 @@ public class SystemTapView extends ViewPart {
 		};
 
 	}
-	
-	
-	
-	
-	public void createViewButtons() {
-		
-	}
-	
+
 /**
  * Creates actions by calling the relevant functions
  */

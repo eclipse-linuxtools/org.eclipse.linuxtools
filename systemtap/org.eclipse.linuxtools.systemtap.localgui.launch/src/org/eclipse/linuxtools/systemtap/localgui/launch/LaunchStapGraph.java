@@ -66,7 +66,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 	
 	public void launch(IEditorPart ed, String mode) {
-		super.Init();
 		resourceToSearchFor = ed.getTitle();
 		searchForResource = true;
 		
@@ -76,7 +75,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	}
 	
 	public void launch(IBinary bin, String mode) {
-		super.Init();		
+		super.Init();
 		name = Messages.getString("LaunchStapGraph.0"); //$NON-NLS-1$
 		binName = getName(bin);
 		partialScriptPath = PluginConstants.getPluginLocation()
@@ -96,7 +95,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			scriptContents += writeGlobalVariables();
 //			scriptContents += writeStapMarkers();
 			//TODO: Don't translate from arraylist to string, just have visitor return a single string
-			String funcs = writeFunctionListToScript(bin);
+			String funcs = writeFunctionListToScript(bin, resourceToSearchFor);
 			if (funcs == null)
 				return;
 			scriptContents += funcs;
@@ -134,9 +133,12 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			e.printStackTrace();
 		} catch (CoreException e1) {
 			e1.printStackTrace();
+		} finally {
+			resourceToSearchFor = "";
+			searchForResource = false;
 		}
 		
-
+		
 	}
 	
 	/**
@@ -163,9 +165,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 * @throws IOException
 	 */
-	private String writeFunctionListToScript(IBinary bin) throws IOException {
+	private String writeFunctionListToScript(IBinary bin, String resourceToSearchFor) throws IOException {
 		String toWrite = ""; //$NON-NLS-1$
-		ArrayList<String> funcs = getFunctionsFromBinary(bin);
+		ArrayList<String> funcs = getFunctionsFromBinary(bin, resourceToSearchFor);
 		
 		if (funcs == null || funcs.size() < 1) {
 			failedToLaunch(Messages.getString("LaunchStapGraph.InvalidFunctionsReason")); //$NON-NLS-1$

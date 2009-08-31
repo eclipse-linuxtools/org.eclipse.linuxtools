@@ -38,7 +38,7 @@ import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstan
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.dialogs.TwoPaneElementSelector;
+import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 
 public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
@@ -80,8 +80,6 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
 		needToGenerate = false;
 		useColours = false;
-		searchForResource=false;
-		resourceToSearchFor="";
 	}
 
 	@Override
@@ -422,20 +420,21 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * @param bin
 	 * @return
 	 */
-	protected ArrayList<String> getFunctionsFromBinary(IBinary bin) {
+	protected ArrayList<String> getFunctionsFromBinary(IBinary bin, String targetResource) {
 		ArrayList<String> funcs = new ArrayList<String>();
-		try {
-			
+		try {			
 			ArrayList<ITranslationUnit> list = new ArrayList<ITranslationUnit>();
 			
 			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
 				ICContainer c = (ICContainer) b;
 				for (ITranslationUnit ast : c.getTranslationUnits()) {
-					if (searchForResource && ast.getElementName().equals(resourceToSearchFor)) {
+					if (searchForResource && ast.getElementName().contains(targetResource)) {
 						TranslationUnitVisitor v = new TranslationUnitVisitor();
 						ast.accept(v);
 						funcs.addAll(v.getFunctions());
+						return funcs;
 					} else {
+						if (!ast.getElementName().contains(".h"))
 						list.add(ast);
 					}
 				}
@@ -449,9 +448,11 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			}
 			
 			if (list.size() > 1) {
-				for (Object obj : chooseUnit(list)) {
+				Object[] unitList = chooseUnit(list); 
+				for (Object obj : unitList) {
 					if (obj instanceof ITranslationUnit) {
 						ITranslationUnit ast = (ITranslationUnit) obj;
+						System.out.println(ast.getElementName());
 						TranslationUnitVisitor v = new TranslationUnitVisitor();
 						ast.accept(v);
 						funcs.addAll(v.getFunctions());
@@ -481,7 +482,9 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		ILabelProvider programLabelProvider = new LabelProvider() {
 			public String getText(Object element) {
 				if (element instanceof ITranslationUnit) {
-					return ((ITranslationUnit) element).getElementName();
+					String name = ((ITranslationUnit) element).getElementName();
+					//Only select names that are not .h files
+					return name;
 				}
 				return super.getText(element);
 			}
@@ -493,8 +496,9 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			public String getText(Object element) {
 				try {
 					if (element instanceof ITranslationUnit) {
+						//Only select names that are not .h files
 						TranslationUnitVisitor v = new TranslationUnitVisitor();
-							((ITranslationUnit) element).accept(v);
+						((ITranslationUnit) element).accept(v);
 						return "Functions: " + v.getNumberOfFunctions();
 					}
 				} catch (CoreException e) {
@@ -504,12 +508,15 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			}
 		};
 	
-		TwoPaneElementSelector dialog = new TwoPaneElementSelector(getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
+		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
+				getActiveWorkbenchShell(), programLabelProvider);
+//		TwoPaneElementSelector dialog = new TwoPaneElementSelector(
+//				getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
 		dialog.setElements(list.toArray());
 		dialog.setTitle("Choose files"); //$NON-NLS-1$
-		dialog.setMessage("Profile all functions in selected files."); //$NON-NLS-1$
-		dialog.setUpperListLabel("Detected files"); //$NON-NLS-1$
-		dialog.setLowerListLabel("Number of functions"); //$NON-NLS-1$
+		dialog.setMessage("Probe functions declared in selected files."); //$NON-NLS-1$
+//		dialog.setUpperListLabel("Detected files"); //$NON-NLS-1$
+//		dialog.setLowerListLabel("Number of functions"); //$NON-NLS-1$
 		dialog.setMultipleSelection(true);
 		dialog.setInitialElementSelections(list);
 		if (dialog.open() == Window.OK) {

@@ -1417,7 +1417,7 @@ public class StapGraph extends Graph {
 	
 
 	public void setTreeViewer(TreeViewer treeview) {
-		this.treeViewer = treeview;
+		StapGraph.treeViewer = treeview;
 	}
 
 

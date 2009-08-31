@@ -382,7 +382,7 @@
    
    
    
-
+<!--
 	<extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
