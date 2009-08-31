@@ -41,9 +41,10 @@ public class StapTreeDoubleClickListener implements IDoubleClickListener {
 		//Expand the current node in the tree viewer and on the graph
         for (Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
         	StapData data = (StapData) iterator.next();
+        	viewer.collapseToLevel(data, 1);
         	viewer.expandToLevel(data, 1);
         	graph.setCollapseMode(true);
-        	graph.draw(data.id, graph.getBounds().width/2, 0);
+        	graph.draw(data.id);
         	graph.getNode(data.id).unhighlight();
         }
         

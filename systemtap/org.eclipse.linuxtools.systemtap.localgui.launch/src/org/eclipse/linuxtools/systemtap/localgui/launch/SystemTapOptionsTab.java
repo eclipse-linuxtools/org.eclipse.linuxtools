@@ -1,4 +1,4 @@
-/*******************************************************************************
+m/*******************************************************************************
  * Copyright (c) 2009 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -823,40 +823,32 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		// Check that the major options are sane
 		boolean valid = true;
-		String sPath = LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH;
-		@SuppressWarnings("unused")
-		String bPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
 
-		try {
-			if (!launchConfig.getAttribute(LaunchConfigurationConstants.OVERWRITE, LaunchConfigurationConstants.DEFAULT_OVERWRITE)) {
+//		try {
+//			if (!launchConfig.getAttribute(LaunchConfigurationConstants.OVERWRITE, LaunchConfigurationConstants.DEFAULT_OVERWRITE)) {
+//				valid = false;
+//			}
+//		} catch (CoreException e1) {
+//			e1.printStackTrace();
+//		}
+//		
+//		
+		try {	
+			String sPath = launchConfig.getAttribute(
+					LaunchConfigurationConstants.SCRIPT_PATH, 
+					LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH);
+			
+			File script = new File(sPath);
+			
+			if (sPath.equals(LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH) || !script.exists()) {
+				//No script path specified or no such script exists 
 				valid = false;
 			}
-		} catch (CoreException e1) {
-			e1.printStackTrace();
-		}
-		
-		
-		try {	
-			sPath = launchConfig.getAttribute(LaunchConfigurationConstants.SCRIPT_PATH, LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH);
+			
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		
-		
-		File script = new File(sPath);
-				
-		if (sPath.equals(LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH) || !script.exists()) {
-			//No script path specified or no such script exists 
-			valid = false;
-		}
-		
-		try {
-			bPath = launchConfig.getAttribute(LaunchConfigurationConstants.BINARY_PATH, LaunchConfigurationConstants.DEFAULT_BINARY_PATH);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		
-
 		return valid;
 	}
 }

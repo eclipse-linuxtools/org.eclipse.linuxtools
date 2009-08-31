@@ -91,6 +91,7 @@ public class StapGraph extends Graph {
 	private int draw_mode;
 	private int animation_mode;
 	private boolean needsToRefresh;
+	private StapGraph me;
 	
 
 	//Time
@@ -111,8 +112,8 @@ public class StapGraph extends Graph {
 	//Tree viewer
 	private static TreeViewer treeViewer;
 	private Composite treeComp;
-	public HashMap<Integer, Integer> currentPositionInLevel;
 	private static IDoubleClickListener treeDoubleListener;
+	public HashMap<Integer, Integer> currentPositionInLevel;
 	//(level, next horizontal position to place a node)
 	
 	
@@ -120,8 +121,7 @@ public class StapGraph extends Graph {
 	private int nextMarkedNode;
 	
 
-	//Zooming factor for Box View
-	//Modified in StapGraphMouseWheelListener
+	//Zooming factor
 	public double scale;
 
 
@@ -161,7 +161,7 @@ public class StapGraph extends Graph {
 		
 		//-------------Add listeners
 		this.addMouseListener(new StapGraphMouseListener(this));		
-		this.addKeyListener(new StapGraphKeyListener(this));
+//		this.addKeyListener(new StapGraphKeyListener(this));
 		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
 	}
 
@@ -779,37 +779,38 @@ public class StapGraph extends Graph {
 	}
 	
 	/**
-	 * Convenience method to draw with current draw parameters. Equivalent to
-	 * draw(graph.draw_mode, graph.animation_mode, id, x, y)
-	 * @param id
-	 * @param x
-	 * @param y
+	 * Convenience method to redraw everything.
 	 */
-	public void draw(int id, int x, int y) {
-		draw(draw_mode, animation_mode, id, x, y);
+	public void draw() {
+		draw(getFirstUsefulNode());
 	}
 	
 	/**
 	 * Convenience method to draw with current draw parameters. Equivalent to
-	 * draw(graph.draw_mode, animation, id, x, y)
+	 * draw(graph.draw_mode, graph.animation_mode, id)
 	 * @param id
-	 * @param x
-	 * @param y
 	 */
-	public void draw(int animation, int id, int x, int y) {
-		draw(draw_mode, animation, id, x, y);
+	public void draw(int id) {
+		draw(draw_mode, animation_mode, id);
+	}
+	
+	/**
+	 * Convenience method to draw with current draw parameters. Equivalent to
+	 * draw(graph.draw_mode, animation, id)
+	 * @param id
+	 */
+	public void draw(int animation, int id) {
+		draw(draw_mode, animation, id);
 	}
 	
 
 	/**
-	 * Draws with the given modes. (int x, y) do not function in all draw modes.
+	 * Draws with the given modes.
 	 * @param drawMode
 	 * @param animationMode
 	 * @param id
-	 * @param x
-	 * @param y
 	 */
-	public void draw(int drawMode, int animationMode, int id, int x, int y) {
+	public void draw(int drawMode, int animationMode, int id) {
 		setDrawMode(drawMode);
 		setAnimationMode(animationMode);
 		this.clearSelection();
@@ -819,6 +820,8 @@ public class StapGraph extends Graph {
 			gd.exclude = false;
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(true);
+			treeViewer.collapseToLevel(getData(id), 1);
+			treeViewer.expandToLevel(getData(id), 1);
 		}else{
 			GridData gd = (GridData) treeComp.getLayoutData();
 			gd.exclude = true;
@@ -1350,8 +1353,7 @@ public class StapGraph extends Graph {
 	public void reset() {
 		setSelection(null);
 		
-		draw(draw_mode, animation_mode, getFirstUsefulNode(),
-				getBounds().width/2, 0);
+		draw(draw_mode, animation_mode, getFirstUsefulNode());
 		getNode(getFirstUsefulNode()).unhighlight();
 		if (treeViewer!=null) {
 			treeViewer.collapseAll();

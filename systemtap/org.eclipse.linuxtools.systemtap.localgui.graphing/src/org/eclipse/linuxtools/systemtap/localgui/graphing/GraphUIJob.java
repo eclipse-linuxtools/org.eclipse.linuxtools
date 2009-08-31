@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.UIJob;
 
 /**
@@ -45,18 +44,14 @@ public class GraphUIJob extends UIJob{
 	public IStatus runInUIThread(IProgressMonitor monitor) {
 		
 		//-------------Initialize shell, menu
-//		System.out.println("Running in UI Thread");
-		Display d = Display.getCurrent();
-		int screenWidth = d.getPrimaryMonitor().getBounds().width;
-		int screenHeight = d.getPrimaryMonitor().getBounds().height - 180;
-		treeSize = screenWidth/6;
+		treeSize = 200;
 
 		
 		//OPEN UP THE SYSTEMTAPVIEW IF IT IS NOT ALREADY OPEN
 		SystemTapView.forceDisplay();
 		
-		Composite treeComp = SystemTapView.makeTreeComp(treeSize, screenHeight);
-		Composite graphComp = SystemTapView.makeGraphComp(screenWidth, treeSize, screenHeight);
+		Composite treeComp = SystemTapView.makeTreeComp(treeSize);
+		Composite graphComp = SystemTapView.makeGraphComp();
 		
 		g = new StapGraph(graphComp, SWT.NONE, treeComp);
 
@@ -114,8 +109,8 @@ public class GraphUIJob extends UIJob{
 	    g.initializeTree();
 	    
 
-	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode(),
-	    		g.getBounds().width/2, 1);
+	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
+	    		g.getFirstUsefulNode());
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}

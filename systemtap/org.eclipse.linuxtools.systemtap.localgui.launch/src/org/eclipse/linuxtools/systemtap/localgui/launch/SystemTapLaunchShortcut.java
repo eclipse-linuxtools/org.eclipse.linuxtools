@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.systemtap.localgui.launch;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICContainer;
@@ -74,7 +75,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 		dirPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		binaryPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
 		arguments = LaunchConfigurationConstants.DEFAULT_ARGUMENTS;
-		outputPath = LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH + System.currentTimeMillis();
+		outputPath = PluginConstants.DEFAULT_OUTPUT + System.currentTimeMillis();
 		overwrite = true;
 		scriptPath = null; 	//Every shortcut MUST declare its own script path.
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
@@ -424,26 +425,48 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		ArrayList<String> funcs = new ArrayList<String>();
 		try {			
 			ArrayList<ITranslationUnit> list = new ArrayList<ITranslationUnit>();
+			TranslationUnitVisitor v = new TranslationUnitVisitor();
+//			ASTTranslationUnitVisitor v  = new ASTTranslationUnitVisitor();
 			
 			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
 				ICContainer c = (ICContainer) b;
-				for (ITranslationUnit ast : c.getTranslationUnits()) {
-					if (searchForResource && ast.getElementName().contains(targetResource)) {
-						TranslationUnitVisitor v = new TranslationUnitVisitor();
-						ast.accept(v);
+				
+				for (ITranslationUnit tu : c .getTranslationUnits()) {
+					if (searchForResource && tu.getElementName().contains(targetResource)) {
+						tu.accept(v);
 						funcs.addAll(v.getFunctions());
 						return funcs;
 					} else {
-						if (!ast.getElementName().contains(".h"))
-						list.add(ast);
+						if (!tu.getElementName().contains(".h")) {
+							list.add(tu);
+						}
 					}
+				}
+				
+				//Iterate down to all children, checking for more C_Containers
+				while (c.getChildrenOfType(ICElement.C_CCONTAINER).size() > 0) {
+					ICContainer e = null;
+					for (ICElement d : c.getChildrenOfType(ICElement.C_CCONTAINER)) {
+						e = (ICContainer) d;
+						for (ITranslationUnit tu : e.getTranslationUnits()) {
+							if (searchForResource && tu.getElementName().contains(targetResource)) {
+								tu.accept(v);
+								funcs.addAll(v.getFunctions());
+								return funcs;
+							} else {
+								if (!tu.getElementName().contains(".h")) {
+									list.add(tu);
+								}
+							}
+						}
+					}
+					c = e;
 				}
 			}
 			
 			if (list.size() == 1) {
-				ITranslationUnit ast = (ITranslationUnit) list.get(0);
-				TranslationUnitVisitor v = new TranslationUnitVisitor();
-				ast.accept(v);
+				ITranslationUnit tu = (ITranslationUnit) list.get(0);
+				tu.accept(v);
 				funcs.addAll(v.getFunctions());
 			}
 			
@@ -451,13 +474,30 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				Object[] unitList = chooseUnit(list); 
 				for (Object obj : unitList) {
 					if (obj instanceof ITranslationUnit) {
-						ITranslationUnit ast = (ITranslationUnit) obj;
-						System.out.println(ast.getElementName());
-						TranslationUnitVisitor v = new TranslationUnitVisitor();
-						ast.accept(v);
+						ITranslationUnit tu = (ITranslationUnit) obj;
+						tu.accept(v);
+
 						funcs.addAll(v.getFunctions());
 					}
 				}
+				
+//				for (ITranslationUnit tu : list) {
+////					System.out.println(tu.getElementName());
+//					try {
+//						long snapshot = System.currentTimeMillis();
+//					IASTTranslationUnit ast = tu.getAST();
+//					System.out.println("Creating AST: " + (System.currentTimeMillis() - snapshot));
+//					if (ast == null) continue;
+//					v.setFileName(tu.getElementName());
+//					snapshot = System.currentTimeMillis();
+//					ast.accept(v);
+//					System.out.println("Visiting AST: " + (System.currentTimeMillis() - snapshot));
+//					funcs.addAll(v.getFunctions());
+//					} catch (Exception e) {
+//						continue;
+//					}
+//				}
+					
 			}
 			
 			return funcs;
@@ -490,24 +530,25 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			}
 		};
 	
-		//TODO: Currently we end up visiting the translation unit twice, could be
-		//expensive for larger programs
-		ILabelProvider qualifierLabelProvider = new LabelProvider() {
-			public String getText(Object element) {
-				try {
-					if (element instanceof ITranslationUnit) {
-						//Only select names that are not .h files
-						TranslationUnitVisitor v = new TranslationUnitVisitor();
-						((ITranslationUnit) element).accept(v);
-						return "Functions: " + v.getNumberOfFunctions();
-					}
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
-				return super.getText(element);
-			}
-		};
-	
+//		//TODO: implement twopanel with second panel listing all functions 
+//		//Currently we end up visiting the translation unit twice, could be
+//		//expensive for larger programs
+//		ILabelProvider qualifierLabelProvider = new LabelProvider() {
+//			public String getText(Object element) {
+//				try {
+//					if (element instanceof ITranslationUnit) {
+//						//Only select names that are not .h files
+//						TranslationUnitVisitor v = new TranslationUnitVisitor();
+//						((ITranslationUnit) element).accept(v);
+//						return "Functions: " + v.getNumberOfFunctions();
+//					}
+//				} catch (CoreException e) {
+//					e.printStackTrace();
+//				}
+//				return super.getText(element);
+//			}
+//		};
+//	
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
 				getActiveWorkbenchShell(), programLabelProvider);
 //		TwoPaneElementSelector dialog = new TwoPaneElementSelector(

@@ -75,7 +75,7 @@ public final class LaunchConfigurationConstants {
 	public static final int DEFAULT_COMMAND_BUFFER_BYTES = 0;
 	public static final int DEFAULT_COMMAND_TARGET_PID = 0;
 	public static final String DEFAULT_ARGUMENTS = INVALID;
-	public static final String DEFAULT_OUTPUT_PATH = PluginConstants.DEFAULT_OUTPUT; 
+	public static final String DEFAULT_OUTPUT_PATH = INVALID; 
 	public static final boolean DEFAULT_OVERWRITE = false;
 	public static final int DEFAULT_NUMBER_OF_ARGUMENTS = 0;
 	public static final boolean DEFAULT_BUILD_PROJECT = true; //$NON-NLS-1$

@@ -137,7 +137,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
-				LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH);
+				PluginConstants.DEFAULT_OUTPUT + System.currentTimeMillis());
 		command += "-o " + outputPath; //$NON-NLS-1$
 		try {
 			File tempFile = new File(outputPath);

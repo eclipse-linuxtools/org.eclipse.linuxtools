@@ -63,7 +63,7 @@ public class StapGraphKeyListener implements KeyListener {
 		}else if (e.character == 't') {
 			graph.deleteAll(graph.getRootVisibleNode());
 			graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, StapGraph.CONSTANT_ANIMATION_SLOW, 
-					graph.getRootVisibleNode(), 500, 20);
+					graph.getRootVisibleNode());
 			graph.currentPositionInLevel.clear();
 		}else if (e.character == 'c') {
 			if (graph.isCollapseMode()) {
@@ -94,7 +94,7 @@ public class StapGraphKeyListener implements KeyListener {
 			else if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
 				//In box mode we can only collapse everything
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_BOX, graph.getAnimationMode(), 
-						graph.getRootVisibleNode(), 0, 0);
+						graph.getRootVisibleNode());
 			}
 			
 			else if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
@@ -111,8 +111,8 @@ public class StapGraphKeyListener implements KeyListener {
 				} else {
 					id = stapNodeList.remove(0).id;
 				}
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(),						
-						id, graph.getBounds().width/2, 20);
+				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, 
+						graph.getAnimationMode(), id);
 			}
 			
 		}

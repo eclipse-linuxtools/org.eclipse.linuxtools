@@ -43,6 +43,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Layout;
@@ -85,6 +86,7 @@ public class SystemTapView extends ViewPart {
 	private static Action view_radialview;
 	private static Action view_aggregateview;
 	private static Action view_boxview;	
+	private static Action view_refresh;	
 	private static Action animation_slow;
 	private static Action animation_fast;
 	private static Action mode_collapsednodes;
@@ -150,6 +152,7 @@ public class SystemTapView extends ViewPart {
 		view_radialview.setEnabled(isVisible);
 		view_aggregateview.setEnabled(isVisible);
 		view_boxview.setEnabled(isVisible);
+		view_refresh.setEnabled(isVisible);
 		limits.setEnabled(isVisible);
 		markers_next.setEnabled(isVisible);
 		markers_previous.setEnabled(isVisible);
@@ -179,30 +182,35 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	
-	public static Composite makeTreeComp(int treeSize, int screenHeight) {
+	public static void firstTimeRefresh(){
+		graphComp.setSize(masterComposite.getSize().x ,masterComposite.getSize().y);
+	}
+	
+	
+	public static Composite makeTreeComp(int treeSize) {
 		if (treeComp != null && !treeComp.isDisposed()) {
 			return treeComp;
 		}
 		
 		Composite treeComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
-		GridData gd = new GridData(treeSize, screenHeight);
+		GridData treegd = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
+		treegd.widthHint = treeSize;
 		treeComp.setLayout(new FillLayout());
-		treeComp.setLayoutData(gd);
+		treeComp.setLayoutData(treegd);
 		return treeComp; 
 	}
 	
-	public static Composite makeGraphComp(int screenWidth, int treeSize, int screenHeight) {
+	public static Composite makeGraphComp() {
 //		if (graphComp != null && !graphComp.isDisposed()) {
 //			return graphComp;
 //		}
 		if (graphComp != null)
 			graphComp.dispose();
 		Composite graphComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
-		GridData graphGridData = new GridData(screenWidth - 100, screenHeight);
+		GridData graphgd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		graphComp.setLayout(new FillLayout());
-		graphComp.setLayoutData(graphGridData);
+		graphComp.setLayoutData(graphgd);
 		return graphComp;
-
 	}
 	
 	/**
@@ -267,10 +275,9 @@ public class SystemTapView extends ViewPart {
 			viewer.setText(text);
 			viewer.setStyleRanges(sr);
 		}
-
 		
 		//MAXIMIZE THE SYSTEMTAP VIEW WHEN RENDERING A GRAPH
-		SystemTapView.maximizeOrRefresh(false);
+		firstTimeRefresh();
         graph.reset();
                 
 	}
@@ -337,6 +344,7 @@ public class SystemTapView extends ViewPart {
 		view.add(view_radialview);
 		view.add(view_aggregateview);
 		view.add(view_boxview);
+		view.add(view_refresh);
 		view.add(mode_collapsednodes);
 		view.add(limits);
 		
@@ -344,6 +352,7 @@ public class SystemTapView extends ViewPart {
 		mgr.add(view_treeview);
 		mgr.add(view_boxview);
 		mgr.add(view_aggregateview);
+		mgr.add(view_refresh);
 		mgr.add(mode_collapsednodes);
 		
 //		help.add(help_about);
@@ -776,15 +785,15 @@ public class SystemTapView extends ViewPart {
 		//Set drawmode to tree view
 		view_treeview = new Action(Messages.getString("SystemTapView.16")){ //$NON-NLS-1$
 			public void run() {
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(), graph
-						.getRootVisibleNode(), graph.getBounds().width / 2, 0);
+				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(), 
+						graph.getRootVisibleNode());
 				graph.scrollTo(graph.getNode(graph.getRootVisibleNode()).getLocation().x
 						- graph.getBounds().width / 2, graph.getNode(
 						graph.getRootVisibleNode()).getLocation().y);
 			}
 		};
 		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/tree_explorer.gif"));
+				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/tree_view.gif"));
 		view_treeview.setImageDescriptor(treeImage);
 		
 		
@@ -792,7 +801,7 @@ public class SystemTapView extends ViewPart {
 		view_radialview = new Action(Messages.getString("SystemTapView.17")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, graph.getAnimationMode(),
-						graph.getRootVisibleNode(), 0, 0);
+						graph.getRootVisibleNode());
 
 			}
 		};
@@ -806,13 +815,13 @@ public class SystemTapView extends ViewPart {
 		view_aggregateview = new Action(Messages.getString("SystemTapView.18")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, graph.getAnimationMode(), 
-						graph.getRootVisibleNode(), 0, 0);
+						graph.getRootVisibleNode());
 
 			}
 		};
 		ImageDescriptor aggregateImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/radial_view.gif"));
+						PluginConstants.PLUGIN_LOCATION + "/icons/view_aggregateview.gif"));
 		view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
@@ -820,13 +829,24 @@ public class SystemTapView extends ViewPart {
 		view_boxview = new Action(Messages.getString("SystemTapView.19")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_BOX, graph.getAnimationMode(), 
-						graph.getRootVisibleNode(), 0, 0);
+						graph.getRootVisibleNode());
 			}
 		};
 		ImageDescriptor boxImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
 						PluginConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif"));
 		view_boxview.setImageDescriptor(boxImage);
+		
+		
+		view_refresh = new Action("Refresh"){
+			public void run(){
+				graph.reset();
+			}
+		};
+		ImageDescriptor refreshImage = ImageDescriptor.createFromImage(
+				new Image(Display.getCurrent(), 
+						PluginConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif"));
+		view_refresh.setImageDescriptor(refreshImage);
 		
 		
 	}
@@ -863,11 +883,11 @@ public class SystemTapView extends ViewPart {
 				
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
-					graph.draw(graph.getRootVisibleNode(), 0, 0);
+					graph.draw(graph.getRootVisibleNode());
 				}
 				else {
 					graph.setCollapseMode(true);
-					graph.draw(graph.getRootVisibleNode(), 0, 0);
+					graph.draw(graph.getRootVisibleNode());
 				}
 			}
 		};

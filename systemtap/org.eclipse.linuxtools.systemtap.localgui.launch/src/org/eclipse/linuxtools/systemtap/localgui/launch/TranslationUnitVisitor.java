@@ -11,13 +11,15 @@ public class TranslationUnitVisitor implements ICElementVisitor{
 
 	public TranslationUnitVisitor() {
 		super();
-		functions = new ArrayList<String>(); 
+		functions = new ArrayList<String>();
 	}
-	
+	private long time;
 	@Override
 	public boolean visit(ICElement arg0) throws CoreException {
-		if (arg0.getElementType() == ICElement.C_FUNCTION)
+		if (arg0.getElementType() == ICElement.C_FUNCTION) {
 			functions.add(arg0.getElementName());
+			return false;
+		}	
 		return true;
 	}
 	
@@ -30,6 +32,10 @@ public class TranslationUnitVisitor implements ICElementVisitor{
 		return functions.size();
 	}
 
+	
+	public double getTime() {
+		return time;
+	}
 
 }
 
