@@ -223,7 +223,7 @@ public class StapGraphParser extends Job{
 						
 						
 						//TODO: Don't do this? Decide whether or not we want to correct for C directives
-						if (name.equals("main")) {
+						if (name.contains("main")) {
 							totalTime = timeMap.get(id);
 						}
 						//Use + for end times
@@ -248,6 +248,11 @@ public class StapGraphParser extends Job{
 					if (shouldGetEndingTimeForID.contains(val)){
 						cumulativeTime = cumulativeTimeMap.get(name) + endingTimeInNS;
 						cumulativeTimeMap.put(name, cumulativeTime);
+					}
+					
+					//TODO: Don't do this? Decide whether or not we want to correct for C directives
+					if (name.equals("main")) {
+						totalTime = time;
 					}
 				}
 			}

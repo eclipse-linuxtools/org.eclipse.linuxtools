@@ -64,6 +64,13 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 		graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST,
 				graph.getRootVisibleNode());
 		graph.setAnimationMode(currentAnimationMode);
+		
+		int realeX = 3 * (int)(e.x / graph.scale);
+		int realeY = 3 * (int)(e.y / graph.scale);
+		int xDiff = (realeX - graph.getSize().x);
+		int yDiff = (realeY - graph.getSize().y);
+		
+		graph.scrollTo(realeX + xDiff, realeY - yDiff);
 //		x = graph.getNode(graph.getRootVisibleNode()).getLocation().x - x;
 //		y = graph.getNode(graph.getRootVisibleNode()).getLocation().y - y;
 //		graph.scrollBy(x/3, y);

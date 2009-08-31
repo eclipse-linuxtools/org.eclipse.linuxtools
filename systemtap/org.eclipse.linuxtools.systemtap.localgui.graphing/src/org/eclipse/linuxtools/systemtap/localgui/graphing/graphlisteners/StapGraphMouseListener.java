@@ -20,6 +20,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 @SuppressWarnings("unused")
@@ -104,26 +105,35 @@ public class StapGraphMouseListener implements MouseListener {
 //				+ graph.toDisplay(e.x, e.y).y);
 //		MP.println("Bounds: " + graph.getBounds().width + ", " //$NON-NLS-1$ //$NON-NLS-2$
 //				+ graph.getBounds().height);
-
-		listener.setPoint(e.x, e.y);
-		listener.setStop(false);
-		graph.addMouseMoveListener(listener);
-		graph.addListener(SWT.MouseExit, exitListener);
+		List<?> list = graph.getSelection();
+		if (list.size() < 1) {		
+			listener.setPoint(e.x, e.y);
+			listener.setStop(false);
+			graph.addMouseMoveListener(listener);
+			graph.addListener(SWT.MouseExit, exitListener);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void mouseUp(MouseEvent e) {
+		
 		listener.setStop(true);
 		graph.removeMouseMoveListener(listener);
 		graph.removeListener(SWT.MouseExit, exitListener);
-
 
 		List<StapNode> list = graph.getSelection();
 
 		// ------------Debug information
 		if (list.size() == 1) {
-			int id = list.get(0).id;
+			int id;
+			if (list.get(0) instanceof StapNode)
+				id = list.get(0).id;
+			else {
+				graph.setSelection(null);
+				return;
+			}
+			graph.setSelection(null);
 //			MP.println("Clicked node " + graph.getData(id).name + " with id " //$NON-NLS-1$ //$NON-NLS-2$
 //					+ id);
 //			MP.println("    level: " + graph.getData(id).levelOfRecursion); //$NON-NLS-1$
@@ -172,11 +182,11 @@ public class StapGraphMouseListener implements MouseListener {
 
 		}
 
-		else {
+//		else {
 //			for (StapNode n : list) {
 //				unhighlightall(n);
 //			}
-		}
+//		}
 
 //		graph.setSelection(null);
 	}

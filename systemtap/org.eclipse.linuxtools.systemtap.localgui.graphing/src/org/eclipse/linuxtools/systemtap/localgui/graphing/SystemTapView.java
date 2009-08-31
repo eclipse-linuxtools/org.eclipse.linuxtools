@@ -151,7 +151,7 @@ public class SystemTapView extends ViewPart {
 		view_radialview.setEnabled(isVisible);
 		view_aggregateview.setEnabled(isVisible);
 		view_boxview.setEnabled(isVisible);
-		view_refresh.setEnabled(isVisible);
+		getView_refresh().setEnabled(isVisible);
 		limits.setEnabled(isVisible);
 		markers_next.setEnabled(isVisible);
 		markers_previous.setEnabled(isVisible);
@@ -344,7 +344,7 @@ public class SystemTapView extends ViewPart {
 		view.add(view_radialview);
 		view.add(view_aggregateview);
 		view.add(view_boxview);
-		view.add(view_refresh);
+		view.add(getView_refresh());
 		view.add(mode_collapsednodes);
 		view.add(limits);
 		
@@ -352,7 +352,7 @@ public class SystemTapView extends ViewPart {
 		mgr.add(view_treeview);
 		mgr.add(view_boxview);
 		mgr.add(view_aggregateview);
-		mgr.add(view_refresh);
+		mgr.add(getView_refresh());
 		mgr.add(mode_collapsednodes);
 		
 //		help.add(help_about);
@@ -812,15 +812,15 @@ public class SystemTapView extends ViewPart {
 		view_boxview.setImageDescriptor(boxImage);
 		
 		
-		view_refresh = new Action("Reset"){
+		setView_refresh(new Action("Reset"){
 			public void run(){
 				graph.reset();
 			}
-		};
+		});
 		ImageDescriptor refreshImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
 						PluginConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif"));
-		view_refresh.setImageDescriptor(refreshImage);
+		getView_refresh().setImageDescriptor(refreshImage);
 		
 		
 	}
@@ -1091,6 +1091,14 @@ public class SystemTapView extends ViewPart {
 
 	public static void setMode_collapsednodes(Action mode_collapsednodes) {
 		SystemTapView.mode_collapsednodes = mode_collapsednodes;
+	}
+
+	public static void setView_refresh(Action view_refresh) {
+		SystemTapView.view_refresh = view_refresh;
+	}
+
+	public static Action getView_refresh() {
+		return view_refresh;
 	}
 }
 	

@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners;
 
-import java.util.List;
-
-import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraph;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.StapNode;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -22,10 +19,10 @@ import org.eclipse.swt.events.KeyListener;
  * StapGraph key listener
  */
 public class StapGraphKeyListener implements KeyListener {
-	private StapGraph graph;
+//	private StapGraph graph;
 	
-	public StapGraphKeyListener(StapGraph g) {
-		graph = g;
+	public StapGraphKeyListener() {
+//		graph = g;
 	}
 	
 	@Override
@@ -33,7 +30,6 @@ public class StapGraphKeyListener implements KeyListener {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.stateMask != SWT.SHIFT) {
@@ -42,7 +38,7 @@ public class StapGraphKeyListener implements KeyListener {
 		
 		//TODO: Use accelerator in menu actions instead of this hard-coded stuff
 		if (e.character == 'R') {
-			graph.reset();
+			SystemTapView.getView_refresh().run();
 //		}else if (e.character == '1') {
 //			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
 //		}else if (e.character == '2') {
@@ -69,56 +65,7 @@ public class StapGraphKeyListener implements KeyListener {
 //					graph.getRootVisibleNode());
 //			graph.currentPositionInLevel.clear();
 		}else if (e.character == 'C') {
-			if (graph.isCollapseMode()) {
-				graph.setCollapseMode(false);
-			} else {
-				graph.setCollapseMode(true);
-			}
-			
-			
-			//Redraw
-			List<StapNode> stapNodeList = graph.getSelection();
-			if (graph.getDrawMode() ==StapGraph.CONSTANT_DRAWMODE_RADIAL) {
-				int id;
-				// Default to the current center node if more than one node
-				// is selected or if no nodes are selected
-				if (stapNodeList.size() != 1) {
-					graph.setSelection(null);
-					id = graph.getRootVisibleNode();
-				} else {
-					id = stapNodeList.remove(0).id;
-				}
-
-				graph.draw(id);
-				graph.getNode(id).unhighlight();
-				graph.setSelection(null);
-			}
-			
-			else if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
-				//In box mode we can only collapse everything
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_BOX, graph.getAnimationMode(), 
-						graph.getRootVisibleNode());
-			}
-			
-			else if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
-				//Do nothing
-			}
-			
-			else {
-				//Tree mode
-				int id;
-				// Default to the current center node if more than one node
-				// is selected or if no nodes are selected
-				if (stapNodeList.size() != 1) {
-					graph.setSelection(null);
-					id = graph.getRootVisibleNode();
-				} else {
-					id = stapNodeList.remove(0).id;
-				}
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, 
-						graph.getAnimationMode(), id);
-			}
-			
+			SystemTapView.getMode_collapsednodes().run();
 		}
 	}
 };

@@ -91,23 +91,18 @@ public class StapGraph extends Graph {
 	private boolean collapse_mode;
 	private int draw_mode;
 	private int animation_mode;
-	private boolean needsToRefresh;
-	
 
 	//Time
 	private long totalTime;
-	
 
 	//The current center/top of the nodes list
 	private int rootVisibleNode;
-	
 	
 	//Buttons
 	private HashMap<Integer, StapButton> buttons; 			//NodeID of each button
 	
 	//Special cases
 	private boolean killInvalidFunctions;					//Toggle hiding of invalid functions					
-	
 	
 	//Tree viewer
 	private static TreeViewer treeViewer;
@@ -116,14 +111,11 @@ public class StapGraph extends Graph {
 	public HashMap<Integer, Integer> currentPositionInLevel;
 	//(level, next horizontal position to place a node)
 	
-	
 	//For cycling through marked nodes
 	private int nextMarkedNode;
-	
 
 	//Zooming factor
 	public double scale;
-
 	
 	private int counter; 		//All purpose counting variable
 
@@ -149,7 +141,6 @@ public class StapGraph extends Graph {
 		killInvalidFunctions = true;
 		nextMarkedNode = -1;
 		scale = 1;
-		needsToRefresh = false;
 		
 		this.treeComp = treeComp;
 		if (treeViewer == null || treeViewer.getControl().isDisposed()) {
@@ -158,11 +149,10 @@ public class StapGraph extends Graph {
 			StapTreeListener stl = new StapTreeListener(treeViewer.getTree().getHorizontalBar());
 			treeViewer.addTreeListener(stl);
 		}
-		
 				
 		//-------------Add listeners
 		this.addMouseListener(new StapGraphMouseListener(this));		
-		this.addKeyListener(new StapGraphKeyListener(this));
+		this.addKeyListener(new StapGraphKeyListener());
 		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
 	}
 
@@ -256,14 +246,13 @@ public class StapGraph extends Graph {
 
 		// Draw node in center
 		StapNode n = nodeMap.get(centerNode);
-		int x = this.getParent().getBounds().width / 2 - n.getSize().width/2;
-		int y = this.getParent().getBounds().height / 2 - n.getSize().height;
+		int x = this.getBounds().width / 2 - n.getSize().width/2;
+		int y = this.getBounds().height / 2 - n.getSize().height;
 		n.setLocation(x, y);
 		
 		if (getData(centerNode).isMarked())
 			nodeMap.get(centerNode).setBackgroundColor(CONSTANT_MARKED);
 		radialHelper(centerNode, x, y, radius, 0);
-		needsToRefresh = true;
 	}
 
 	/**
@@ -442,8 +431,8 @@ public class StapGraph extends Graph {
 		
 		//Set layout to gridlayout
 		this.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), true);
-		
-		checkRefresh();
+
+		SystemTapView.maximizeOrRefresh(false);
 	}
 
 
@@ -525,7 +514,7 @@ public class StapGraph extends Graph {
 			
 		}
 		
-		checkRefresh();
+		SystemTapView.maximizeOrRefresh(false);
 	}
 	
 	
@@ -597,7 +586,7 @@ public class StapGraph extends Graph {
 		if (id == getFirstUsefulNode())
 			nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
 		
-		checkRefresh();
+		SystemTapView.maximizeOrRefresh(false);
 	}
 	
 	public void drawFromBottomToTop(int level, int height,
@@ -926,6 +915,7 @@ public class StapGraph extends Graph {
 						this.getBounds().height / 2);
 				drawRadial(id); 
 				Animation.run(ANIMATION_TIME);
+				SystemTapView.maximizeOrRefresh(false);
 			}
 	
 			else {	
@@ -1021,14 +1011,6 @@ public class StapGraph extends Graph {
 			list = nodeDataMap.get(id).callees;
 		for (int i = 0; i < list.size(); i++) {
 			moveRecursive(list.get(i), xTarget, yTarget);
-		}
-	}
-	
-	
-	private void checkRefresh() {
-		if (needsToRefresh){
-			SystemTapView.maximizeOrRefresh(false);
-			needsToRefresh = false;
 		}
 	}
 	
@@ -1398,7 +1380,9 @@ public class StapGraph extends Graph {
 		setSelection(null);
 		
 		draw(draw_mode, animation_mode, getFirstUsefulNode());
-		getNode(getFirstUsefulNode()).unhighlight();
+		if (! (draw_mode == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)){
+			getNode(getFirstUsefulNode()).unhighlight();			
+		}
 		if (treeViewer!=null) {
 			treeViewer.collapseAll();
 			treeViewer.expandToLevel(2);
@@ -1604,13 +1588,9 @@ public class StapGraph extends Graph {
 		return b;
 	}
 
-
-
 	public int getMaxNodes() {
 		return maxNodes;
 	}
-
-
 
 	public void setMaxNodes(int val) {
 		maxNodes = val;
