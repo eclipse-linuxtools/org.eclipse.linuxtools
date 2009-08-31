@@ -81,7 +81,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			
 			for (int i = 0; i < configs.length; i++) {
 				//TODO: Find out if we are guaranteed the order in which configs are added.
-				if (configs[i].exists() && !config.equals(configs[i])) {
+				if (configs[i].exists() && configs[i]!=null && !config.equals(configs[i])) {
 					if(checkIfAttributesAreEqual(config, configs[i])) {
 						config.delete();
 						config = configs[i];

@@ -47,6 +47,7 @@ public final class LaunchConfigurationConstants {
 	public static final String OVERWRITE = PLUGIN_ID + ".OVERWRITE";  //$NON-NLS-1$
 	public static final String BUILD_PROJECT = PLUGIN_ID + ".BUILD_PROJECT"; //$NON-NLS-1$
 	public static final String GRAPHICS_MODE = PLUGIN_ID + ".GRAPHICS_MODE"; //$NON-NLS-1$
+	public static final String COMMAND_LIST = PLUGIN_ID + ".COMMAND_LIST";
 
 
 	public static final String GENERATED_SCRIPT = PLUGIN_ID + ".GENERATED_SCRIPT"; //$NON-NLS-1$
@@ -78,6 +79,7 @@ public final class LaunchConfigurationConstants {
 	public static final boolean DEFAULT_OVERWRITE = false;
 	public static final int DEFAULT_NUMBER_OF_ARGUMENTS = 0;
 	public static final boolean DEFAULT_BUILD_PROJECT = true; //$NON-NLS-1$
+	public static final String DEFAULT_COMMAND_LIST = INVALID;
 	
 	public static final String DEFAULT_GENERATED_SCRIPT = INVALID;
 	public static final boolean DEFAULT_NEED_TO_GENERATE = false;

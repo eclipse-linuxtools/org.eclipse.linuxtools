@@ -259,14 +259,6 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		ShellOpener so = new ShellOpener("Wizard Opener", sh);
 		so.schedule();
 		
-//		while (!so.isDisposed()) {
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e1) {
-//				e1.printStackTrace();
-//			}
-//		}
-		
 		completed = true;
 
 	}

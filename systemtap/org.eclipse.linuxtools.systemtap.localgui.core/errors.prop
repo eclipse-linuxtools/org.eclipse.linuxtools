@@ -5,3 +5,4 @@
 .*MAXACTION exceeded.*=SystemTap attempted to execute too many actions, please change the MAXACTIONS directive in the options tab of SystemTap Profile Configurations.
 .*uprobes.*=Probes were not compiled on your system. Try 'make -C /usr/local/share/systemtap/runtime/uprobes' as root
 .*Unable to find full path for "stap".*=SystemTap is necessary for the running of this command. If it is installed please make sure it is on the standard path.
+.*parse error.*=There may be an error in the arguments you sent or in the stap script, consult the log for more details.

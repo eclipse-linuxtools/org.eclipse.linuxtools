@@ -70,7 +70,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		super.Init();		
 		name = Messages.getString("LaunchStapGraph.0"); //$NON-NLS-1$
 		binName = getName(bin);
-		config = createConfiguration(bin, name);
 
 		
 		partialScriptPath = PluginConstants.getPluginLocation()
@@ -99,6 +98,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			bw.close();
 
 			 
+			config = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
 			outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;

@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -76,7 +75,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected Text generatedScript;
 	protected Text outputFile;
 	protected Text button_D_text;	
-	protected Text commandFile;
+//	protected Text commandFile;
 	
 	protected Button fileBrowseButton;
 	protected Button workspaceBrowseButton;
@@ -156,7 +155,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	
 	protected ModifyListener modifyListener = new ModifyListener() {
 		public void modifyText(ModifyEvent e) {
-			updateLaunchConfigurationDialog();	
+			updateLaunchConfigurationDialog();
 		}			
 	};
 	
@@ -506,14 +505,14 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		GridData browseData = new GridData(GridData.FILL_HORIZONTAL);
 		browseTop.setLayoutData(browseData);
 
-		Label suppFileLabel = new Label(browseTop, SWT.NONE);
-		suppFileLabel.setText(Messages.getString("SystemTapOptionsTab.CommandsLabel1") + //$NON-NLS-1$
-				Messages.getString("SystemTapOptionsTab.CommandsLabel2")); //$NON-NLS-1$
-		
-		commandFile = new Text(browseTop, SWT.BORDER);
-		commandFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		commandFile.addModifyListener(modifyListener);
-		
+//		Label suppFileLabel = new Label(browseTop, SWT.NONE);
+//		suppFileLabel.setText(Messages.getString("SystemTapOptionsTab.CommandsLabel1") + //$NON-NLS-1$
+//				Messages.getString("SystemTapOptionsTab.CommandsLabel2")); //$NON-NLS-1$
+//		
+//		commandFile = new Text(browseTop, SWT.BORDER);
+//		commandFile.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		commandFile.addModifyListener(modifyListener);
+//		
 		
 		Composite buttonsTop = new Composite(top, SWT.NONE);
 		GridLayout gl = new GridLayout(2, false);
@@ -714,9 +713,10 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			arguments.setText(configuration.getAttribute(LaunchConfigurationConstants.ARGUMENTS, LaunchConfigurationConstants.DEFAULT_ARGUMENTS));
 			
 			generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
-			needToGenerateScriptButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE));
-			
+			needToGenerateScriptButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE));			
 			useColourButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR));
+			
+//			commandFile.setText(ConfigurationOptionsSetter.setOptions(configuration));
 			
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -727,6 +727,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		
 		getControl().setRedraw(false);
 
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE, button_v.getSelection());
@@ -751,6 +752,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH, scriptFile.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.ARGUMENTS, arguments.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH, outputFile.getText());
+//		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_LIST, commandFile.getText());
 		
 
 		configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, generatedScript.getText());
@@ -806,12 +808,14 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH); 
 		configuration.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH); 
 		configuration.setAttribute(LaunchConfigurationConstants.ARGUMENTS,LaunchConfigurationConstants.DEFAULT_ARGUMENTS);
-		
+
 		configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT);
 		configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE);
 		
 		configuration.setAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR);
-		//configuration.setAttribute(LaunchConfigurationConstants.BUILD_PROJECT,LaunchConfigurationConstants.DEFAULT_BUILD_PROJECT); 
+	
+		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_LIST, ConfigurationOptionsSetter.setOptions(configuration));
+	
 	}
 	
 
@@ -855,7 +859,4 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 
 		return valid;
 	}
-	
-
-
 }

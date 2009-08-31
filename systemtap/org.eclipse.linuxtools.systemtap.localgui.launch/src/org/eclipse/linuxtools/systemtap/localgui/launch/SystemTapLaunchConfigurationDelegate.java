@@ -33,6 +33,7 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.localgui.core.Helper;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
@@ -72,7 +73,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		}
 
 		File temporaryScript = null;
-		String command = ""; //$NON-NLS-1$
 		String arguments = ""; //$NON-NLS-1$
 		String scriptPath = ""; //$NON-NLS-1$
 		String binaryPath = ""; //$NON-NLS-1$
@@ -81,105 +81,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 		// binary selection
 		boolean needsArguments = false;
 		boolean useColour = false;
-
+		
+		
+		String command = ConfigurationOptionsSetter.setOptions(config);  
+		
 		if (config.getAttribute(LaunchConfigurationConstants.USE_COLOUR,
 				LaunchConfigurationConstants.DEFAULT_USE_COLOUR))
-			useColour = true;
- 
-		if (config.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE)) {
-			command += "-v "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(LaunchConfigurationConstants.COMMAND_PASS,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_PASS) > 0) {
-			command += "-p" + config.getAttribute(LaunchConfigurationConstants.COMMAND_PASS, LaunchConfigurationConstants.DEFAULT_COMMAND_PASS) + " "; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_KEEP_TEMPORARY,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_KEEP_TEMPORARY)) {
-			command += "-k "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(LaunchConfigurationConstants.COMMAND_GURU,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_GURU)) {
-			command += "-g "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_PROLOGUE_SEARCH,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_PROLOGUE_SEARCH)) {
-			command += "-P "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_NO_CODE_ELISION,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_NO_CODE_ELISION)) {
-			command += "-u "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_DISABLE_WARNINGS,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_DISABLE_WARNINGS)) {
-			command += "-w "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(LaunchConfigurationConstants.COMMAND_BULK_MODE,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_BULK_MODE)) {
-			command += "-b "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_TIMING_INFO,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_TIMING_INFO)) {
-			command += "-t "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_BUFFER_BYTES,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_BUFFER_BYTES) > 0) {
-			command += "-s" + config.getAttribute(LaunchConfigurationConstants.COMMAND_BUFFER_BYTES, LaunchConfigurationConstants.DEFAULT_COMMAND_BUFFER_BYTES) + " "; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_TARGET_PID,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_TARGET_PID) > 0) {
-			command += "-x" + config.getAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, LaunchConfigurationConstants.DEFAULT_COMMAND_TARGET_PID) + " "; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_C_DIRECTIVES) != LaunchConfigurationConstants.DEFAULT_COMMAND_C_DIRECTIVES) {
-			command += config.getAttribute(
-					LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
-					LaunchConfigurationConstants.DEFAULT_COMMAND_C_DIRECTIVES)
-					+ " "; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_LEAVE_RUNNING,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_LEAVE_RUNNING)) {
-			command += "-F "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_SKIP_BADVARS,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_SKIP_BADVARS)) {
-			command += "--skip-badvars "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_IGNORE_DWARF,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_IGNORE_DWARF)) {
-			command += "--ignore-dwarf "; //$NON-NLS-1$
-		}
-
-		if (config.getAttribute(
-				LaunchConfigurationConstants.COMMAND_TAPSET_COVERAGE,
-				LaunchConfigurationConstants.DEFAULT_COMMAND_TAPSET_COVERAGE)) {
-			command += "-q "; //$NON-NLS-1$
-		}
+			useColour = true; 
 
 		if (!config.getAttribute(LaunchConfigurationConstants.ARGUMENTS,
 				LaunchConfigurationConstants.DEFAULT_ARGUMENTS).equals(
@@ -341,7 +249,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 					Thread.sleep(300);
 				doc = Helper.getConsoleDocumentByName(config.getName());
 				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-				errorHandler.handle(doc.get());
+				errorHandler.handle(config.getName() + " stap command: " 
+						+ PluginConstants.NEW_LINE + cmd
+						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
+						+ doc.get());				
 				errorHandler.finishHandling();
 				return;
 			}
