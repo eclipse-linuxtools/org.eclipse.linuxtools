@@ -32,7 +32,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.linuxtools.profiling.launch.Messages;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
