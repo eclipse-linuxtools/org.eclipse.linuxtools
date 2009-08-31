@@ -18,13 +18,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.ui.console.TextConsole;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -82,7 +85,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		// binary selection
 		boolean needsArguments = false;
 		boolean useColour = false;
-		String binaryArguments = "";
+		String binaryArguments = ""; //$NON-NLS-1$
 		
 		
 		String command = ConfigurationOptionsSetter.setOptions(config);  
@@ -214,15 +217,16 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 
 			monitor.worked(1);
+
 			
 			Process subProcess = execute(commandArray, getEnvironment(config),
 					workDir, true);
 			
 			if (subProcess == null){
 				//TODO: FIgure out what the console error message is so we can catch it in errorlog
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Error", "SystemTap Error", 
-				"SystemTap could not execute. This could be due to missing " +
-				"packages that are necessary to the running of SystemTap");
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1") + //$NON-NLS-1$
+				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage2")); //$NON-NLS-1$
 				mess.schedule();
 				return;
 			}
@@ -235,6 +239,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 			monitor.worked(1);
 			
 			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
+			
+			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
+					((TextConsole)Helper.getConsoleByName(config.getName())), config.getName(),
+					binaryArguments);
+			dw.schedule();
+			
+			dw.join();
 			
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
@@ -259,7 +270,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					Thread.sleep(300);
 				doc = Helper.getConsoleDocumentByName(config.getName());
 				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-				errorHandler.handle(config.getName() + " stap command: " 
+				errorHandler.handle(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
 						+ doc.get());				
@@ -334,4 +345,45 @@ public class SystemTapLaunchConfigurationDelegate extends
 		return ret.toString().trim();
 	}
 
+	
+	private class DocWriter extends UIJob {
+		private TextConsole console;
+		private String configName;
+		private String binaryCommand;
+
+		public DocWriter(String name, TextConsole console, String cName,
+				String binaryCommand) {
+			super(name);
+			this.console = console;
+			this.configName = cName;
+			this.binaryCommand = binaryCommand;
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			IDocument doc = console.getDocument();
+			
+			if (binaryCommand.length() > 0)
+				doc.set( Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+					+ configName + PluginConstants.NEW_LINE +
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
+					 + binaryCommand + PluginConstants.NEW_LINE +
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
+					 + PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
+					 + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
+					 doc.get()); 
+			else
+				doc.set( Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+						+ configName + PluginConstants.NEW_LINE +
+						 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
+						 PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
+						 PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
+						 doc.get()); //$NON-NLS-1$				
+			
+			return Status.OK_STATUS;
+		}
+		
+	}
 }
