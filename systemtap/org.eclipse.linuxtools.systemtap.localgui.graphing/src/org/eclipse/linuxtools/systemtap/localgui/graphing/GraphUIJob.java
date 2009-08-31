@@ -72,13 +72,13 @@ public class GraphUIJob extends UIJob{
 				msg = ""; //$NON-NLS-1$
 				if (id_child != -1) {
 					
-					if (parser.markedMap.keySet() != null) {
-						if (parser.markedMap.keySet().contains(id_child)) {
-							msg = parser.markedMap.get(id_child);							
-							parser.markedMap.keySet().remove((Integer)id_child);
-							marked = true;
-						}
-					}
+//					if (parser.markedMap.keySet() != null) {
+//						if (parser.markedMap.keySet().contains(id_child)) {
+//							msg = parser.markedMap.get(id_child);							
+//							parser.markedMap.keySet().remove((Integer)id_child);
+//							marked = true;
+//						}
+//					}
 					
 					if (parser.timeMap.get(id_child) == null){						
 						g.loadData(SWT.NONE, id_child, parser.serialMap

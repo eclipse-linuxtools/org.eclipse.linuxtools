@@ -561,8 +561,8 @@ public class SystemTapView extends ViewPart {
 					+ parser.timeInfo
 					+ NEW_LINE
 					+ parser.cumulativeTimeInfo
-					+ NEW_LINE
-					+ parser.markedNodes + NEW_LINE;
+					+ NEW_LINE;
+//					+ parser.markedNodes + NEW_LINE;
 					try {
 						// WAS THE FILE CREATED OR DOES IT ALREADY EXIST
 						if (file.createNewFile()) {

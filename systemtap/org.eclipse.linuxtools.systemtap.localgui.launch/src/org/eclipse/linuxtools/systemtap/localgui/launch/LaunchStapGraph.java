@@ -214,14 +214,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @throws IOException
 	 */
 	private String writeGlobalVariables() throws IOException {
-		String toWrite = Messages.getString("LaunchStapGraph.42") //$NON-NLS-1$
-			+ Messages.getString("LaunchStapGraph.43") //$NON-NLS-1$
-			+ Messages.getString("LaunchStapGraph.44") //$NON-NLS-1$
-			+ Messages.getString("LaunchStapGraph.45") //$NON-NLS-1$
-			+ Messages.getString("LaunchStapGraph.46") //$NON-NLS-1$
-			+ Messages.getString("LaunchStapGraph.47") //$NON-NLS-1$
-			+ Messages.getString("LaunchStapGraph.48") + Messages.getString("LaunchStapGraph.49") //$NON-NLS-1$ //$NON-NLS-2$
-			+ Messages.getString("LaunchStapGraph.50"); //$NON-NLS-1$
+		String toWrite = "global serial\n";
 		
 		return toWrite;
 	}

@@ -44,12 +44,12 @@ public class StapGraphParser extends Job{
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
 	public  HashMap<String, Long> cumulativeTimeMap;
 	public  HashMap<String, Integer> countMap;
-	public  HashMap<Integer, String> markedMap;
+	//public  HashMap<Integer, String> markedMap;
 	public String graphText;
 	public String timeInfo;
 	public String cumulativeTimeInfo;
 	public String serialInfo;
-	public String markedNodes;
+	//public String markedNodes;
 	public int validator;
 	private String filePath;
 	private boolean isValidFile;
@@ -69,7 +69,7 @@ public class StapGraphParser extends Job{
 		serialMap = new TreeMap<Integer, String>();
 		cumulativeTimeMap = new HashMap<String, Long>();
 		countMap = new HashMap<String, Integer>();
-		markedMap = new HashMap<Integer, String>();
+		//markedMap = new HashMap<Integer, String>();
 	}
 	
 	public void setFile(String filePath) {
@@ -85,6 +85,8 @@ public class StapGraphParser extends Job{
 		err.schedule();
 	}
 	
+	private String text;
+	
 	public IStatus executeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
 		isValidFile = false;
@@ -93,6 +95,7 @@ public class StapGraphParser extends Job{
 		serialMap.clear();
 		cumulativeTimeMap.clear();
 		countMap.clear();
+		text = "";
 		
 		try {
 			BufferedReader buff = new BufferedReader(new FileReader(filePath));
@@ -104,11 +107,8 @@ public class StapGraphParser extends Job{
 				
 				if (tmp.equals("PROBE_BEGIN")){ //$NON-NLS-1$
 					isValidFile = true;
-					graphText = buff.readLine();
-					serialInfo = buff.readLine();
-					timeInfo = buff.readLine();
-					cumulativeTimeInfo = buff.readLine();
-					markedNodes = buff.readLine();
+					text = buff.readLine();
+					System.out.println(text);
 				}
 			}
 			buff.close();
@@ -118,48 +118,148 @@ public class StapGraphParser extends Job{
 			return Status.CANCEL_STATUS;
 		}
 		
-		if (isValidFile){			
-			for (int i = 0; i < graphText.length(); i++){
-				if (monitor.isCanceled()) {
-					return Status.CANCEL_STATUS;
+		
+		if (text.length() > 0) {
+			
+			String[] callsAndReturns = text.split(";");
+			String[] args;
+			ArrayList<Integer> position = new ArrayList<Integer>();
+			ArrayList<String> nameList = new ArrayList<String>();
+			ArrayList<Integer> idList = new ArrayList<Integer>();
+			String name;
+			int id;
+			long time;
+			long cumulativeTime;
+			int parentID;
+			
+			for (String s : callsAndReturns) {
+				switch (s.charAt(0)) {
+					case '<' :
+						
+						args = s.substring(1, s.length()).split(":");
+						// args[0] = name
+						// args[1] = id
+						// arsg[2] = time of event
+						id = Integer.parseInt(args[1]);
+						time = Long.parseLong(args[2]);
+						name = args[0];
+						serialMap.put(id, args[0]);
+						timeMap.put(id, time);
+						
+						if (cumulativeTimeMap.get(name) == null)
+							cumulativeTimeMap.put(name, (long) 0);
+						//Use - for start times
+						cumulativeTime = cumulativeTimeMap.get(name) - time;
+						cumulativeTimeMap.put(name, cumulativeTime);
+						
+						if (countMap.get(name) == null)
+							countMap.put(name, 0);
+						countMap.put(name, countMap.get(name) + 1);
+						
+						nameList.add(name);
+						idList.add(id);
+						
+						if (outNeighbours.get(id) == null)
+							outNeighbours.put(id, new ArrayList<Integer>());
+						
+						
+						break;
+					case '>' :
+						//args[0] = name
+						//args[1] = time of event
+						args = s.substring(1, s.length()).split(":");
+						name = args[0];
+						int lastOccurance = nameList.lastIndexOf(name);
+						if (lastOccurance < 0) {
+							parseError();
+							break;
+						}
+						
+						nameList.remove(lastOccurance);
+						id = idList.remove(lastOccurance);
+						
+						//Get the last function that was called but never returned
+						if (idList.size() > 0) {
+							parentID = idList.get(idList.size() - 1);
+							outNeighbours.get(parentID).add(id);
+						}
+						
+						if (timeMap.get(id) == null) {
+							parseError();
+							break;
+						}		
+						time =  Long.parseLong(args[1]) - timeMap.get(id);
+						timeMap.put(id, time);
+						
+						//Use + for end times
+						cumulativeTime = cumulativeTimeMap.get(name) + time;
+						cumulativeTimeMap.put(name, cumulativeTime);
+						break;
+					default : 
+						parseError();
+						break;
+					
 				}
-				//Check for valid nesting
-				if (graphText.charAt(i) == '<'){
-					validator++;
-				}else if(graphText.charAt(i) == '>'){
-					validator--;
-				}
+				
+			
 			}
 			
-			//If brackets don't match, check for potential exit call
-			if (validator != 0){	
-				while (validator >= 0){
-					if (monitor.isCanceled()) {
-						return Status.CANCEL_STATUS;
-					}
-					graphText+='>';
-					validator--;
-				}
-			}
 			
-			if (timeInfo == null)
-				return Status.CANCEL_STATUS;
 			
-			//Generate maps
-			this.generateMaps();
 			
-			//Create a UIJob to handle the rest
+			
+			
+			
+			
+		}
+//		if (isValidFile){			
+//			for (int i = 0; i < graphText.length(); i++){
+//				if (monitor.isCanceled()) {
+//					return Status.CANCEL_STATUS;
+//				}
+//				//Check for valid nesting
+//				if (graphText.charAt(i) == '<'){
+//					validator++;
+//				}else if(graphText.charAt(i) == '>'){
+//					validator--;
+//				}
+//			}
+//			
+//			//If brackets don't match, check for potential exit call
+//			if (validator != 0){	
+//				while (validator >= 0){
+//					if (monitor.isCanceled()) {
+//						return Status.CANCEL_STATUS;
+//					}
+//					graphText+='>';
+//					validator--;
+//				}
+//			}
+//			
+//			if (timeInfo == null)
+//				return Status.CANCEL_STATUS;
+//			
+//			//Generate maps
+//			this.generateMaps();
+//			
+//			//Create a UIJob to handle the rest
 			GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
 			uijob.schedule(); 
-		}else{
-			launchFileDialogError();
-			return Status.CANCEL_STATUS;
-		}
+//		}else{
+//			launchFileDialogError();
+//			return Status.CANCEL_STATUS;
+//		}
 
 		
 		return Status.OK_STATUS;
 	}
 	
+	
+	private void parseError() {
+		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+				"ParseError", "Unrecognized symbol", "Unrecognized symbol when parsing.");
+		mess.schedule();
+	}
 	
 	public void calculateAggregateStats(){
 		//CALCULATE COUNTMAP
@@ -188,8 +288,8 @@ public class StapGraphParser extends Job{
 			
 			calculateAggregateStats();
 			
-			if (generalParser(markedMap, markedNodes, "is")== Status.CANCEL_STATUS) //$NON-NLS-1$
-				return Status.CANCEL_STATUS;
+//			if (generalParser(markedMap, markedNodes, "is")== Status.CANCEL_STATUS) //$NON-NLS-1$
+//				return Status.CANCEL_STATUS;
 
 			return Status.OK_STATUS;
 
