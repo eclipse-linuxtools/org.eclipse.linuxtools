@@ -18,6 +18,8 @@ import org.eclipse.linuxtools.systemtap.localgui.graphing.StapNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 @SuppressWarnings("unused")
@@ -27,11 +29,13 @@ public class StapGraphMouseListener implements MouseListener {
 	private StapGraph graph;
 	private StapGraphMouseMoveListener listener;
 	private StapGraphFocusListener focus;
+	private StapGraphMouseExitListener exitListener;
 
 	public StapGraphMouseListener(StapGraph g) {
 		this.graph = g;
 		listener = new StapGraphMouseMoveListener(graph);
 		focus = new StapGraphFocusListener(listener);
+		exitListener = new StapGraphMouseExitListener(listener);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -44,32 +48,6 @@ public class StapGraphMouseListener implements MouseListener {
 				return;
 			}
 
-			/*
-			 * Check if the button is a StapButton (if not it must a StapNode).
-			 * Then perform button action
-			 */
-			// StapButton tempButton = new StapButton (graph, SWT.NONE, -100,
-			// -100, -100);
-			//
-			// if (tempButton.getClass() == stapNodeList.get(0).getClass()) {
-			// StapButton button = (StapButton) stapNodeList.remove(0);
-			// System.out.println("StapButton detected");
-			// if (button.actionID == StapButton.CYCLE_RIGHT) {
-			// if (graph.getNode(button.targetID) == null) {
-			// button.unhighlight();
-			// graph.setSelection(null);
-			// return;
-			// }
-			//					
-			// graph.deleteAll(button.targetID);
-			// int x = graph.getNode(button.targetID).getLocation().x;
-			// int y = graph.getNode(button.targetID).getLocation().y;
-			// graph.drawRadial(button.targetID);
-			// }
-			//				
-			// }
-			//			
-			// tempButton.dispose();
 			StapNode node = null;
 			if (stapNodeList.get(0) instanceof StapNode) {
 				node = (StapNode) stapNodeList.remove(0);
@@ -77,8 +55,9 @@ public class StapGraphMouseListener implements MouseListener {
 				graph.setSelection(null);
 				return;
 			}
+			
+			graph.getTreeViewer().collapseToLevel(node.getData(), 0);
 			graph.getTreeViewer().expandToLevel(node.getData(), 0);
-			// TODO: Scroll
 
 			int id = node.getData().id;
 
@@ -118,18 +97,18 @@ public class StapGraphMouseListener implements MouseListener {
 
 	@Override
 	public void mouseDown(MouseEvent e) {
-		MP.println("You clicked: " + e.x + ", " + e.y); //$NON-NLS-1$ //$NON-NLS-2$
-		MP.println("Convert to control: " + graph.toControl(e.x, e.y).x + ", " //$NON-NLS-1$ //$NON-NLS-2$
-				+ graph.toControl(e.x, e.y).y);
-		MP.println("Convert to display: " + graph.toDisplay(e.x, e.y).x + ", " //$NON-NLS-1$ //$NON-NLS-2$
-				+ graph.toDisplay(e.x, e.y).y);
-		MP.println("Bounds: " + graph.getBounds().width + ", " //$NON-NLS-1$ //$NON-NLS-2$
-				+ graph.getBounds().height);
+//		MP.println("You clicked: " + e.x + ", " + e.y); //$NON-NLS-1$ //$NON-NLS-2$
+//		MP.println("Convert to control: " + graph.toControl(e.x, e.y).x + ", " //$NON-NLS-1$ //$NON-NLS-2$
+//				+ graph.toControl(e.x, e.y).y);
+//		MP.println("Convert to display: " + graph.toDisplay(e.x, e.y).x + ", " //$NON-NLS-1$ //$NON-NLS-2$
+//				+ graph.toDisplay(e.x, e.y).y);
+//		MP.println("Bounds: " + graph.getBounds().width + ", " //$NON-NLS-1$ //$NON-NLS-2$
+//				+ graph.getBounds().height);
 
 		listener.setPoint(e.x, e.y);
 		listener.setStop(false);
 		graph.addMouseMoveListener(listener);
-		graph.addFocusListener(focus);
+		graph.addListener(SWT.MouseExit, exitListener);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -137,7 +116,7 @@ public class StapGraphMouseListener implements MouseListener {
 	public void mouseUp(MouseEvent e) {
 		listener.setStop(true);
 		graph.removeMouseMoveListener(listener);
-		graph.removeFocusListener(focus);
+		graph.removeListener(SWT.MouseExit, exitListener);
 
 
 		List<StapNode> list = graph.getSelection();
@@ -145,16 +124,16 @@ public class StapGraphMouseListener implements MouseListener {
 		// ------------Debug information
 		if (list.size() == 1) {
 			int id = list.get(0).id;
-			MP.println("Clicked node " + graph.getData(id).name + " with id " //$NON-NLS-1$ //$NON-NLS-2$
-					+ id);
-			MP.println("    level: " + graph.getData(id).levelOfRecursion); //$NON-NLS-1$
-			MP.println("    called: " + graph.getData(id).called); //$NON-NLS-1$
-			MP.println("    caller: " + graph.getData(id).caller); //$NON-NLS-1$
-			MP.println("    copllapsedCaller: " //$NON-NLS-1$
-					+ graph.getData(id).collapsedCaller);
-			MP.println("    callees: " + graph.getData(id).callees.size()); //$NON-NLS-1$
-			MP.println("    position: " + graph.getNode(id).getLocation().x //$NON-NLS-1$
-					+ ", " + graph.getNode(id).getLocation().y); //$NON-NLS-1$
+//			MP.println("Clicked node " + graph.getData(id).name + " with id " //$NON-NLS-1$ //$NON-NLS-2$
+//					+ id);
+//			MP.println("    level: " + graph.getData(id).levelOfRecursion); //$NON-NLS-1$
+//			MP.println("    called: " + graph.getData(id).called); //$NON-NLS-1$
+//			MP.println("    caller: " + graph.getData(id).caller); //$NON-NLS-1$
+//			MP.println("    copllapsedCaller: " //$NON-NLS-1$
+//					+ graph.getData(id).collapsedCaller);
+//			MP.println("    callees: " + graph.getData(id).callees.size()); //$NON-NLS-1$
+//			MP.println("    position: " + graph.getNode(id).getLocation().x //$NON-NLS-1$
+//					+ ", " + graph.getNode(id).getLocation().y); //$NON-NLS-1$
 
 			// ------------Highlighting
 			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE) {

@@ -51,9 +51,13 @@ public class StapGraphKeyListener implements KeyListener {
 			graph.dispose();
 			sh.close();
 		}else if (e.character == 'n') {
-			graph.draw(graph.getNextMarkedNode(), 0, 0);
+			int id = graph.getNextMarkedNode();
+			graph.draw(id, 0, 0);
+			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
 		}else if (e.character == 'p') {
-			graph.draw(graph.getPreviousMarkedNode(), 0, 0);
+			int id = graph.getPreviousMarkedNode();
+			graph.draw(id, 0, 0);
+			graph.getTreeViewer().expandToLevel(graph.getData(id), 0);
 		}else if (e.character == 'd') {
 			graph.deleteAll(-1);
 		}else if (e.character == 't') {

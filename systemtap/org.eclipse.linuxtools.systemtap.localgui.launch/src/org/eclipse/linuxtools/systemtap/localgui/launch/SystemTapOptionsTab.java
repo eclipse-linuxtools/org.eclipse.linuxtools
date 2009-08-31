@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -347,7 +348,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				arguments.setText(arguments.getText() + " process(\"" + binaryFile.getText() + "\").function(\"\")"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});
-		
 	}
 
 	protected void createFileOption(Composite top) {

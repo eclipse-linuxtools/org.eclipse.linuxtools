@@ -39,8 +39,9 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 
 	@Override
 	public Object getParent(Object element) {
-		if (element instanceof StapData)
-			return graph.getData(((StapData) element).caller);
+		if (element instanceof StapData) {
+			return graph.getData(((StapData) element).collapsedCaller);
+		}
 		return null;
 	}
 

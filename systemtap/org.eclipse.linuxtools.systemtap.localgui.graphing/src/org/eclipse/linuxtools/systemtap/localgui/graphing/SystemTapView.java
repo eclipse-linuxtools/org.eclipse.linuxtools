@@ -518,17 +518,38 @@ public class SystemTapView extends ViewPart {
 				}
 				
 				Shell sh = new Shell();
+				sh.setText("SystemTap Error Log");
 				sh.setLayout(new FillLayout());
 				sh.setSize(400,400);
 				Text txt = new Text(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
 				
 				txt.setText(logText);
 
-				sh.open();
-				sh.setText("Error Log");
-				
+
 				ScrollBar bar = txt.getVerticalBar();
-				bar.setSelection(bar.getMaximum() + bar.getThumb());
+				bar.setSelection(bar.getMaximum());
+				sh.open();
+
+//				
+//				txt.addKeyListener(new KeyListener() {
+//
+//					@Override
+//					public void keyPressed(KeyEvent e) {
+//if (e.character == 'f') 
+//	System.out.println("Selection: " + bar.getSelection());
+//System.out.println("Selection max: " + bar.getMaximum());
+//System.out.println("Selection tjh: " + bar.getThumb());
+//bar.setSelection(bar.getMaximum());
+//					}
+//
+//					@Override
+//					public void keyReleased(KeyEvent e) {
+//						// TODO Auto-generated method stub
+//						
+//					}
+//					
+//				});
+//				
 				
 				} catch (FileNotFoundException e) {
 					error = true;

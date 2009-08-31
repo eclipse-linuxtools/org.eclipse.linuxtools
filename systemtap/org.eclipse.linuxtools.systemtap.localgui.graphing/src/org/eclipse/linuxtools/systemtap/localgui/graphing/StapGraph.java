@@ -116,7 +116,6 @@ public class StapGraph extends Graph {
 	public double scale;
 
 
-
 	public StapGraph(Composite parent, int style, TreeViewer myTreeView) {
 		super(parent, style);
 
@@ -145,8 +144,7 @@ public class StapGraph extends Graph {
 		//-------------Add listeners
 		this.addMouseListener(new StapGraphMouseListener(this));		
 		this.addKeyListener(new StapGraphKeyListener(this));
-		StapGraphMouseWheelListener mwListener = new StapGraphMouseWheelListener(this);
-		this.addMouseWheelListener(mwListener);
+		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
 	}
 
 
@@ -456,7 +454,7 @@ public class StapGraph extends Graph {
 			
 			//Initialise the offset to roughly centre the nodes 
 			if (currentPositionInLevel.get(getLevelOfNode(childID)) == null) {
-				int tmp = (int) (CONSTANT_HORIZONTAL_SPACING/scale*(usefulSize-1) * -1);
+				int tmp = (int) (CONSTANT_HORIZONTAL_SPACING*(usefulSize-1) * -1/scale);
 				currentPositionInLevel.put(childLevel, getNode(rootVisibleNode)
 						.getLocation().x + tmp);
 			}
@@ -473,7 +471,7 @@ public class StapGraph extends Graph {
 				
 				//Leave a small blank space between nodes for aesthetic purposes
 				if (i == callees.size() - 1)
-					newSize += CONSTANT_HORIZONTAL_SPACING/scale/3;
+					newSize += CONSTANT_HORIZONTAL_SPACING/3;
 				currentPositionInLevel.put(getLevelOfNode(childID), newSize);
 			}
 			
@@ -1420,86 +1418,6 @@ public class StapGraph extends Graph {
 		
 		return list.get(nextMarkedNode);
 	}
-	
-	
-//	
-//	/**
-//	 * Returns the id of the next marked collapsed node.
-// 	 * Wraps back to the first marked node.
-//	 *
-//	 * @return Node id of next marked collapsed node.
-//	 */
-//	public int getNextMarkedCollapsedNode() {
-//		if (markedCollapsedNodes.size() == 0)
-//			return -1;
-//		
-//		
-//		if (nextMarkedCollapsedNode >= markedCollapsedNodes.size())
-//			nextMarkedCollapsedNode = 0;
-//		int index = nextMarkedCollapsedNode;
-//		nextMarkedCollapsedNode++;
-//		
-//		
-//		return markedCollapsedNodes.get(index);
-//	}
-//	
-//	/**
-//	 * Activated when mouse is pressed. Used for panning.
-//	 * 
-//	 * @return
-//	 */
-//	public boolean isMouseDown() {
-//		return mouseDown;
-//	}
-//
-//
-//	/**
-//	 * Set mouseDown flag, used for panning.
-//	 * 
-//	 * @return
-//	 */
-//	public void setMouseDown(boolean mouseDown) {
-//		this.mouseDown = mouseDown;
-//	}
-//
-//	
-//	/**
-//	 * X coordinate used for panning
-//	 * 
-//	 * @return
-//	 */
-//	public int getMouseDownX() {
-//		return mouseDownX;
-//	}
-//
-//	/**
-//	 * Y coordinate used for panning
-//	 * 
-//	 * @return
-//	 */
-//	public int getMouseDownY() {
-//		return mouseDownY;
-//	}
-//
-//
-//	/**
-//	 * X coordinate used for panning
-//	 * 
-//	 * @return
-//	 */
-//	public void setMouseDownX(int mouseDownX) {
-//		this.mouseDownX = mouseDownX;
-//	}
-//
-//	
-//	/**
-//	 * Y coordinate used for panning
-//	 * 
-//	 * @return
-//	 */
-//	public void setMouseDownY(int mouseDownY) {
-//		this.mouseDownY = mouseDownY;
-//	}
 
 	
 	
@@ -1524,7 +1442,7 @@ public class StapGraph extends Graph {
     
     
     /**
-     * Increments the scrollbars by x, y
+     * Smoothly increments the scrollbars by x, y
      * 
      * @param x
      * @param y

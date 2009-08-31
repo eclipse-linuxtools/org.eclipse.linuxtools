@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners;
 
+import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraph;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -22,11 +23,13 @@ public class StapGraphMouseMoveListener implements MouseMoveListener {
 	private int prevY;
 	private static final int INIT = -20000;
 	private boolean stop;
+	private boolean showMessage;
 	
 	public StapGraphMouseMoveListener(StapGraph graph) {
 		this.graph = graph;
 		prevX = INIT;
 		prevY = INIT;
+		showMessage = true;
 	}
 	
 	public void setPoint(int x, int y) {
@@ -41,13 +44,38 @@ public class StapGraphMouseMoveListener implements MouseMoveListener {
 	@Override
 	public void mouseMove(MouseEvent e) {
 		//-------------Panning
-			
-		if (!stop) {	
+		//TODO: Implement panning at this zoom and mode
+		//For some reason getting rid of some of the /scale's in drawTree
+		//Will fix panning, but at the cost of making the drawTree zoom look weird
+
+		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE)
+			if (graph.scale < 0.63) {
+				if (showMessage) {
+					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+							"PanError", "Panning disabled",
+							"We're sorry, but panning has been disabled at this scale " +
+							"and drawmode.");
+					mess.schedule();
+					showMessage = false;
+				}
+				return;
+			}
+		
+		//Initialize
+		if (prevX == INIT && prevY == INIT) {
+			prevX = e.x;
+			prevY = e.y;
+			return;
+		}
+		
+		if (!stop) {				
 			int yDiff, xDiff;
 			xDiff = prevX - e.x;
 			yDiff = prevY - e.y;
-			
-			graph.scrollSmoothBy(xDiff, yDiff);
+			if (graph.scale > 1)
+				graph.scrollSmoothBy((int) (xDiff/graph.scale), (int) (yDiff/graph.scale));
+			else
+				graph.scrollSmoothBy((int) (xDiff), (int) (yDiff));
 	
 			prevX = e.x;
 			prevY = e.y;
