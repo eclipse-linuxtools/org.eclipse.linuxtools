@@ -525,6 +525,7 @@ public class SystemTapView extends ViewPart {
 				txt.setText(logText);
 
 				sh.open();
+				sh.setText("Error Log");
 				
 				ScrollBar bar = txt.getVerticalBar();
 				bar.setSelection(bar.getMaximum() + bar.getThumb());

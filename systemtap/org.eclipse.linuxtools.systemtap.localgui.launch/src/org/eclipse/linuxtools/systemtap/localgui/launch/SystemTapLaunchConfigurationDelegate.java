@@ -257,7 +257,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			// Generate the command
 			cmdGenerator = new SystemTapCommandGenerator();
 			String cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
-					command, needsBinary, needsArguments, arguments, useColour);
+					command, needsBinary, needsArguments, arguments);
 
 
 			// Prepare cmd for execution - we need a command array of strings,

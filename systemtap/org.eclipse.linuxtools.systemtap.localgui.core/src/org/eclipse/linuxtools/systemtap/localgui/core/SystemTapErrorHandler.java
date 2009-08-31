@@ -21,8 +21,6 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.jface.text.IDocument;
-
 /**
  * Helper class parses the given string for recognizable error messages 
  *

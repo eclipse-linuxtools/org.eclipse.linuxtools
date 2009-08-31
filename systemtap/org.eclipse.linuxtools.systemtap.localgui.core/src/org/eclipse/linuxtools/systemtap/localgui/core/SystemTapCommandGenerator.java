@@ -54,35 +54,11 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		System.out.println("Not implemented"); //$NON-NLS-1$
 	}
 
-
 	public void run() {
 		System.out.println("Calling run() without parameters not implemented"); //$NON-NLS-1$
 	}
 	
-	/**
-	 * The launch point of this class. Executes the script using the given parameters.
-	 * Call this from another class to execute scripts. 
-	 * 
-	 * The only mandatory String is scrPath, all other Strings could be null. Be
-	 * sure to match the need____ boolean to its corresponding String. I.E. if 
-	 * binPath is blank, set needBinary to false.
-	 * 
-	 */
-	
-	/*public void run(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, boolean useColour) {
-		needsToSendCommand = needBinary;
-		needsArguments = needsArgs;
-		binaryPath = binPath;
-		scriptPath = scrPath;
-		isGuru = false;
-		arguments = arg;
-		commands = cmds;
-		this.useColour = useColour;
-		
-		completeRun();
-	}*/
-	
-	public String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, boolean useColour) {
+	public String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg) {
 		needsToSendCommand = needBinary;
 		needsArguments = needsArgs;
 		binaryPath = binPath;
@@ -101,30 +77,6 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		this.executeCommand = cmd;
 		return cmd;
 	}
-	
-	
-	
-	/**
-	 * Finish the run process. Separated from run(lots of arguments) in case any future
-	 * implementations of run are created. Needs the protected variables to be set.
-	 */
-	/*public void completeRun() {
-		//System.out.println("Running from completeRun() in RunSystemTapAction"); //$NON-NLS-1$
-				
-		String[] script = buildScript();
-		
-				
-		String cmd = ""; //$NON-NLS-1$
-		for (int i = 0; i < script.length-1; i++)
-			cmd = cmd + script[i] + " "; //$NON-NLS-1$
-		cmd = cmd + script[script.length-1];
-
-		// RUN THE COMMAND
-		this.executeCommand = cmd;
-		SystemTapCommandParser stapcmd = new SystemTapCommandParser(Messages.getString("RunSystemTapAction.0"), cmd, stapview, useColour, false); //$NON-NLS-1$
-		stapcmd.schedule();
-		
-	}*/
 	
 
 	/**
@@ -155,76 +107,16 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 			script[script.length-1] = scriptPath;
 		}
 		
-		//TODO: Make this based on the install.sh file
 		script[0] = PluginConstants.STAP_PATH; //$NON-NLS-1$
 
 		for(int i=0; i< cmdList.size(); i++) {
 			if (cmdList.get(i) != null)
 				script[i +1] = cmdList.get(i).toString();
 			else script[i + 1] = ""; //$NON-NLS-1$
-				
 		}
 		return script;
 		
 	}
-	
-	/**
-	 * The command line argument generation method used by <code>RunScriptAction</code>. This generates
-	 * a stap command line that includes the tapsets specified in user preferences, a guru mode flag
-	 * if necessary, and the path to the script on disk.
-	 * @return The command to invoke to start the script running in stap.
-	 */
-	/*protected String[] buildStandardScript() {
-	//TODO: Take care of this in the next release. For now only the guru mode is sent
-		ArrayList<String> cmdList = new ArrayList<String>();
-		String[] script;
-
-		//getImportedTapsets(cmdList);
-		if (commands.length() > 0){
-			cmdList.add(commands);	
-		}
-		
-		//Execute a binary
-		if (needsToSendCommand)
-			cmdList.add("-c '" + binaryPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		script = finalizeScript(cmdList);
-		
-		return script;
-	}*/
-
-	/**
-	 * Produces a <code>String[]</code> from the <code>ArrayList</code> passed in with stap inserted
-	 * as the first entry, and the filename as the last entry. Used to convert the arguments generated
-	 * earlier in <code>buildStandardScript</code> such as tapset locations and guru mode into an actual
-	 * command line argument array that can be passed to <code>Runtime.exec</code>.
-	 * @param cmdList The list of arguments for stap for this scriptprest
-	 * @return An array suitable to pass to <code>Runtime.exec</code> to start stap on this file.
-	 */
-	/*protected String[] finalizeScript(ArrayList<String> cmdList) {
-		String[] script;
-
-		if (needsArguments) {
-			script = new String[cmdList.size() + 3];
-			script[script.length-2] = scriptPath;
-			script[script.length-1] = arguments; 
-		} 
-		else {
-			script = new String[cmdList.size() + 2];
-			script[script.length-1] = scriptPath;
-		}
-		
-		//TODO: Make this based on the install.sh file
-		script[0] = PluginConstants.STAP_PATH; //$NON-NLS-1$
-
-		for(int i=0; i< cmdList.size(); i++) {
-			if (cmdList.get(i) != null)
-				script[i +1] = cmdList.get(i).toString();
-			else script[i + 1] = ""; //$NON-NLS-1$
-				
-		}
-		return script;
-	}*/
 
 	
 	public void selectionChanged(IAction act, ISelection select) {
@@ -250,15 +142,6 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 	}
 	
 }
-
-
-/**
- * Returns the path of the current editor in the window this action is associated with.
- * @return The string representation of the path of the current file.
- */
-//protected String getFilePath() {
-//	return ((IPathEditorInput)ed.getEditorInput()).getPath().toString();
-//}
 
 
 /**
