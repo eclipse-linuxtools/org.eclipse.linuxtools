@@ -328,7 +328,7 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
-   </extension>-->
+   </extension>
    
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
@@ -431,6 +431,6 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
-   </extension>
+   </extension>-->
 
 </plugin>

@@ -78,6 +78,21 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		scriptPath = PluginConstants.DEFAULT_OUTPUT 
 				+ "callgraphGen.stp"; //$NON-NLS-1$
 
+//		try {
+//			for (ICElement b : bin.getChildren()) {
+//				if (b.getElementName().contains(":"))
+//					continue;
+//				System.out.println("name: " + b.getElementName());
+//				System.out.println("Type: " + b.getElementType());
+//				//				for (ICElement c: b.get) {
+////					System.out.println("Subname: " + c.getElementName());
+////				}
+////					
+//			}
+//		} catch (CModelException e2) {
+//			e2.printStackTrace();
+//		}
+//		return;
 		try {
 			String scriptContents = ""; //$NON-NLS-1$
 			File scriptFile = new File(scriptPath);

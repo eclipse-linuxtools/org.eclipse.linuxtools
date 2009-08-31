@@ -26,8 +26,13 @@ import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphKeyListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphMouseListener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners.StapGraphMouseWheelListener;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeContentProvider;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeDoubleClickListener;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeLabelProvider;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.Graph;
@@ -102,7 +107,8 @@ public class StapGraph extends Graph {
 	
 	
 	//Tree viewer
-	private TreeViewer treeViewer;
+	private static TreeViewer treeViewer;
+	private Composite treeComp;
 	public HashMap<Integer, Integer> currentPositionInLevel;
 	//(level, next horizontal position to place a node)
 	
@@ -116,7 +122,7 @@ public class StapGraph extends Graph {
 	public double scale;
 
 
-	public StapGraph(Composite parent, int style, TreeViewer myTreeView) {
+	public StapGraph(Composite parent, int style, Composite treeComp) {
 		super(parent, style);
 
 		//-------------Initialize variables
@@ -136,9 +142,16 @@ public class StapGraph extends Graph {
 		totalTime = 0;
 		collapse_mode = false;
 		killInvalidFunctions = true;
-		treeViewer = myTreeView;
 		nextMarkedNode = -1;
 		scale = 1;
+		
+		this.treeComp = treeComp;
+		if (treeViewer == null) {
+			treeViewer = new TreeViewer(this.treeComp);
+			StapTreeListener stl = new StapTreeListener(treeViewer.getTree().getHorizontalBar());
+			treeViewer.addTreeListener(stl);
+		}
+		
 		
 		
 		//-------------Add listeners
@@ -147,6 +160,27 @@ public class StapGraph extends Graph {
 		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
 	}
 
+	
+	
+	/**
+	 * Initialize the treeviewer with data from the graph
+	 */
+	public void initializeTree() {
+		if (treeViewer.getContentProvider() == null) {
+			StapTreeContentProvider scp = new StapTreeContentProvider();
+			treeViewer.setContentProvider(scp);
+		} 
+		
+		((StapTreeContentProvider) treeViewer.getContentProvider()).setGraph(this);
+		
+		StapTreeLabelProvider prov = new StapTreeLabelProvider();
+		treeViewer.setLabelProvider(prov);
+
+
+		treeViewer.addDoubleClickListener(new StapTreeDoubleClickListener(treeViewer, this));
+		treeViewer.setInput(getData(getTopNode()));
+	}
+	
 
 	/**
 	 * Create a new StapData object with the given parameters
@@ -258,8 +292,6 @@ public class StapGraph extends Graph {
 				nodeMap.put(callerID, getNodeData(callerID).makeNode(this));
 
 			}
-			nodeMap.get(id).makeConnection(SWT.NONE, nodeMap.get(callerID),
-					getNodeData(id).called);
 			nodeMap.get(callerID).setBackgroundColor(CONSTANT_HAS_PARENT);
 			nodeMap.get(callerID).setLocation(x + radius / 5, y - radius / 5);
 			
@@ -318,7 +350,6 @@ public class StapGraph extends Graph {
 				subN.makeConnection(SWT.NONE, nodeMap.get(id), nodeDataMap
 						.get(subID).called);
 			}
-			subN.connection.setText("" + nodeDataMap.get(subID).called); //$NON-NLS-1$
 			
 			if (getData(subID).isMarked())
 				subN.setBackgroundColor(CONSTANT_MARKED);
@@ -765,8 +796,25 @@ public class StapGraph extends Graph {
 		setAnimationMode(animationMode);
 		this.clearSelection();
 		
+		if (draw_mode != CONSTANT_DRAWMODE_RADIAL) {
+			GridData gd = (GridData) treeComp.getLayoutData();
+			gd.exclude = true;
+			treeComp.setLayoutData(gd);
+			treeComp.setVisible(false);
+//			SystemTapView.maximizeOrRefresh(false);
+		}
+		
+		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
+			GridData gd = (GridData) treeComp.getLayoutData();
+			gd.exclude = false;
+			treeComp.setLayoutData(gd);
+			treeComp.setVisible(true);
+//			SystemTapView.maximizeOrRefresh(false);
+		}
+		
 		//-------------Draw tree
 		if (draw_mode == CONSTANT_DRAWMODE_TREE) {
+			
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
 				if (nodeMap.get(id) == null)
 					nodeMap.put(id, getData(id).makeNode(this));
@@ -1282,8 +1330,10 @@ public class StapGraph extends Graph {
 		draw(draw_mode, animation_mode, getFirstUsefulNode(),
 				getBounds().width/2, 0);
 		getNode(getFirstUsefulNode()).unhighlight();
-		treeViewer.collapseAll();
-		treeViewer.expandToLevel(2);
+		if (treeViewer!=null) {
+			treeViewer.collapseAll();
+			treeViewer.expandToLevel(2);
+		}
 		scale = 1;
 		nextMarkedNode = -1;
 	}

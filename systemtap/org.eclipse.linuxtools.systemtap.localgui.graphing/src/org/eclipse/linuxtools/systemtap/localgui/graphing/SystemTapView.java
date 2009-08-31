@@ -36,6 +36,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,8 +45,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
@@ -97,7 +96,10 @@ public class SystemTapView extends ViewPart {
 	private static IMenuManager errors;
 	private static IMenuManager view;
 	private static IMenuManager animation;
-	private static IMenuManager markers;
+	private static IMenuManager markers; //Unused
+	private static IMenuManager help;
+	private static Action help_about;
+	private static Action help_version;
 	public static IToolBarManager mgr;
 	
 	public static Composite masterComposite;
@@ -124,21 +126,27 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	
+	public static void testFunction() {
+		if (masterComposite != null && !masterComposite.isDisposed())
+			masterComposite.dispose();
+	}
+	
 	public static void setValues(Composite graphC, Composite treeC, StapGraph g, StapGraphParser p){
 		if (graph != null) {
 			graph.dispose();
 		}
 		
-		if (graphComp != null) {
-			graphComp.dispose();
-		}
-		
-		if (treeComp != null) {
-			treeComp.dispose();
-		}
-		
+//		if (graphComp != null) {
+//			graphComp.dispose();
+//		}
+//		
+//		if (treeComp != null) {
+//			treeComp.dispose();
+//		}
+//		
 		graphComp = graphC;
-		treeComp = treeC;
+		if (treeComp != null)
+			treeComp = treeC;
 		graph = g;
 		parser = p;
 	}
@@ -182,6 +190,32 @@ public class SystemTapView extends ViewPart {
 		}
 	}
 	
+	
+	public static Composite makeTreeComp(int treeSize, int screenHeight) {
+		if (treeComp != null && !treeComp.isDisposed()) {
+			return treeComp;
+		}
+		
+		Composite treeComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
+		GridData gd = new GridData(treeSize, screenHeight);
+		treeComp.setLayout(new FillLayout());
+		treeComp.setLayoutData(gd);
+		return treeComp; 
+	}
+	
+	public static Composite makeGraphComp(int screenWidth, int treeSize, int screenHeight) {
+		if (graphComp != null && !graphComp.isDisposed()) {
+			return graphComp;
+		}
+		Composite graphComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
+		GridData graphGridData = new GridData(screenWidth - treeSize - 100, screenHeight);
+		graphComp.setLayout(new FillLayout());
+		graphComp.setLayoutData(graphGridData);
+		return graphComp;
+
+
+	}
+	
 	/**
 	 * If view is not maximized it will be maximized
 	 */
@@ -197,23 +231,52 @@ public class SystemTapView extends ViewPart {
 		
 	}
 	
-	
+//	
+//	public static void disposeAll() {
+//		if (graphComp != null) {
+//			graphComp.setVisible(false);
+//			GridData gd = (GridData) graphComp.getLayoutData();
+//			gd.exclude = true;
+//			graphComp.setLayoutData(gd);
+//			graphComp.dispose();
+//		}
+//		if (treeComp != null) {
+//			treeComp.setVisible(false);
+//			GridData gd = (GridData) treeComp.getLayoutData();
+//			gd.exclude = true;
+//			treeComp.setLayoutData(gd);
+//			treeComp.dispose();
+//		}
+//	}
+
 	/**
 	 * This must be executed before a Graph is displayed
 	 */
 	public static void createPartControl(){
 		
-		setGraphOptions(true);
-		String text = viewer.getText();
-		StyleRange[] sr = viewer.getStyleRanges();
-		viewer.dispose();
-		graphComp.setParent(masterComposite);
-		treeComp.setParent(masterComposite);
-
 		
-		createViewer(masterComposite);
-		viewer.setText(text);
-		viewer.setStyleRanges(sr);
+		setGraphOptions(true);
+		String text = "";
+		StyleRange[] sr = null;
+		
+		
+		if (viewer != null && !viewer.isDisposed()) {
+			text = viewer.getText();
+			sr = viewer.getStyleRanges();
+			viewer.dispose();
+		}
+		
+		
+		graphComp.setParent(masterComposite);
+		
+		if (treeComp != null)
+			treeComp.setParent(masterComposite);
+
+		if (graph == null) {
+			createViewer(masterComposite);
+			viewer.setText(text);
+			viewer.setStyleRanges(sr);
+		}
 
 		
 		//MAXIMIZE THE SYSTEMTAP VIEW WHEN RENDERING A GRAPH
@@ -246,17 +309,18 @@ public class SystemTapView extends ViewPart {
 		parent.setLayoutData(gd);
 
 		//CREATE THE TEXT VIEWER
-		createViewer(parent);
+		if (graph == null)
+			createViewer(parent);
 
 		// LOAD ALL ACTIONS
 		createActions();
 		
 		//MENU FOR SYSTEMTAP BUTTONS
 		mgr = getViewSite().getActionBars().getToolBarManager();
-		mgr.add(killSystemTapScript);
-		mgr.add(disposeGraph);
-		mgr.add(checkSystemTapVersion);
-		
+//		mgr.add(killSystemTapScript);
+//		mgr.add(disposeGraph);
+//		mgr.add(checkSystemTapVersion);
+//		
 		//MENU FOR SYSTEMTAP GRAPH OPTIONS
 		menu = getViewSite().getActionBars().getMenuManager();
 		
@@ -265,6 +329,7 @@ public class SystemTapView extends ViewPart {
 		view = new MenuManager(Messages.getString("SystemTapView.1")); //$NON-NLS-1$
 		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
+		help = new MenuManager("Help");
 		markers = new MenuManager("Markers");
 		
 
@@ -272,6 +337,7 @@ public class SystemTapView extends ViewPart {
 		menu.add(file);
 		menu.add(view);
 		menu.add(animation);
+		
 		
 		
 		file.add(open_callgraph);
@@ -283,17 +349,20 @@ public class SystemTapView extends ViewPart {
 		view.add(view_radialview);
 		view.add(view_aggregateview);
 		view.add(view_boxview);
-		
 		view.add(mode_collapsednodes);
 		view.add(limits);
+		
+		help.add(help_about);
+		help.add(help_version);
 		
 		markers.add(markers_next);
 		markers.add(markers_previous);
 		animation.add(animation_slow);
 		animation.add(animation_fast);
-		menu.add(markers);
+//		menu.add(markers);
 		
 		menu.add(errors);
+		menu.add(help);
 		
 		setGraphOptions(false);
 		
@@ -306,7 +375,8 @@ public class SystemTapView extends ViewPart {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.setFocus();
+		if (viewer != null && !viewer.isDisposed())
+			viewer.setFocus();
 	}
 	
 	/**
@@ -439,6 +509,15 @@ public class SystemTapView extends ViewPart {
 		return viewer.getText();
 	}
 	
+	private static void destroy() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		try {
+			window.getActivePage().showView("org.eclipse.linuxtools.systemtap.localgui.graphing.stapview").dispose();  //$NON-NLS-1$
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Populates the file menu
 	 */
@@ -510,6 +589,109 @@ public class SystemTapView extends ViewPart {
 			}
 		};
 		
+	}
+	
+	public void createHelpActions() {
+		help_version = new Action("Version") { 
+			public void run() {
+			Runtime rt = Runtime.getRuntime();
+			try {
+				Process pr = rt.exec("stap -V"); //$NON-NLS-1$
+				BufferedReader buf = new BufferedReader(new InputStreamReader(pr
+						.getErrorStream()));
+				String line = ""; //$NON-NLS-1$
+				String message = ""; //$NON-NLS-1$
+				
+				while ((line = buf.readLine()) != null) {
+					message += line + NEW_LINE; //$NON-NLS-1$
+				}
+				
+				try {
+					pr.waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				
+				Shell sh = new Shell();
+				
+				MessageDialog.openInformation(sh, Messages.getString("SystemTapView.SystemTapVersionBox"), message); //$NON-NLS-1$
+					
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		};
+		
+		help_about = new Action("About") {
+			public void run() {
+				Display disp = Display.getCurrent();
+				if (disp == null){
+					disp = Display.getDefault();
+				}
+
+				
+				Shell sh = new Shell(disp, SWT.MIN | SWT.MAX);
+				sh.setSize(425, 540);
+				GridLayout gl = new GridLayout(1, true);
+				sh.setLayout(gl);
+
+				sh.setText(Messages.getString("LaunchAbout.0")); //$NON-NLS-1$
+				
+				Image img = new Image(disp, PluginConstants.PLUGIN_LOCATION+"systemtap.png"); //$NON-NLS-1$
+				Composite cmp = new Composite(sh, sh.getStyle());
+				cmp.setLayout(gl);
+				GridData data = new GridData(415,100);
+				cmp.setLayoutData(data);
+				cmp.setBackgroundImage(img);
+
+				Composite c = new Composite(sh, sh.getStyle());
+				c.setLayout(gl);
+				GridData gd = new GridData(415,400);
+				c.setLayoutData(gd);
+				c.setLocation(0,300);
+				StyledText viewer = new StyledText(c, SWT.READ_ONLY | SWT.MULTI
+						| SWT.V_SCROLL | SWT.WRAP | SWT.BORDER);		
+				
+				GridData viewerGD = new GridData(SWT.FILL, SWT.FILL, true, true);
+				viewer.setLayoutData(viewerGD);
+				Font font = new Font(sh.getDisplay(), "Monospace", 11, SWT.NORMAL); //$NON-NLS-1$
+				viewer.setFont(font);
+				viewer.setText(
+						 Messages.getString("LaunchAbout.2") + //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.3") + //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.4") + //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.5") +  //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.6") + //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.7") + //$NON-NLS-1$
+						 
+						 Messages.getString("LaunchAbout.8") + //$NON-NLS-1$
+//						 
+//						 Messages.getString("LaunchAbout.9") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.10") + //$NON-NLS-1$
+						 
+						 Messages.getString("LaunchAbout.11") + //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.12") + //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.13") + //$NON-NLS-1$
+						 
+//						 Messages.getString("LaunchAbout.14") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.15") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.16") + //$NON-NLS-1$
+						 
+						 Messages.getString("LaunchAbout.17") + //$NON-NLS-1$
+						 
+//						 Messages.getString("LaunchAbout.18") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.19") + //$NON-NLS-1$
+						 
+						 Messages.getString("LaunchAbout.20") + //$NON-NLS-1$
+						 Messages.getString("LaunchAbout.21") //$NON-NLS-1$
+						);
+
+
+				
+				sh.open();		
+			}
+		};
 	}
 	
 	/**
@@ -714,13 +896,14 @@ public class SystemTapView extends ViewPart {
  */
 	public void createActions() {
 		createFileActions();
+		createHelpActions();
 		createErrorActions();
 		createViewActions();
 		createAnimateActions();
 
 		mode_collapsednodes.setChecked(true);
 		
-		createButtonActions();
+//		createButtonActions();
 		createMarkerActions();		
 		
 	}
@@ -742,7 +925,9 @@ public class SystemTapView extends ViewPart {
 	
 	/**
 	 * Creates actions that appear on the SystemTap View taskbar
+	 * Do not use.
 	 */
+	@Deprecated
 	public void createButtonActions(){
     	
     	/*
@@ -814,11 +999,11 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	public static void disposeGraph() {
-		if (graphComp != null)
+		if (graphComp != null && !graphComp.isDisposed())
 			graphComp.dispose();
-		if (treeComp != null)
+		if (treeComp != null && !treeComp.isDisposed())
 			treeComp.dispose();
-		if (viewer!= null) {
+		if (viewer!= null && !viewer.isDisposed()) {
 			String tmp = viewer.getText();
 			StyleRange[] tempRange = viewer.getStyleRanges();
 			viewer.dispose();

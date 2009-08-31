@@ -15,10 +15,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeContentProvider;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeDoubleClickListener;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeLabelProvider;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -35,9 +31,7 @@ import org.eclipse.ui.progress.UIJob;
 public class GraphUIJob extends UIJob{
 	private StapGraph g;
 	private StapGraphParser parser;
-	private TreeViewer treeview;
 	private static int treeSize = 200;
-	private static int textSize = 300;
 
 
 	public StapGraph getGraph() {
@@ -57,32 +51,18 @@ public class GraphUIJob extends UIJob{
 //		System.out.println("Running in UI Thread");
 		Display d = Display.getCurrent();
 		int screenWidth = d.getPrimaryMonitor().getBounds().width;
-		int screenHeight = d.getPrimaryMonitor().getBounds().height - 280;
+		int screenHeight = d.getPrimaryMonitor().getBounds().height - 100;
 		treeSize = screenWidth/6;
-		textSize = screenWidth/4;
 
 		
 		//OPEN UP THE SYSTEMTAPVIEW IF IT IS NOT ALREADY OPEN
 		//GIVE IT THE FOCUS
 		SystemTapView.forceDisplay();
 		
-		Composite treeComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
+		Composite treeComp = SystemTapView.makeTreeComp(treeSize, screenHeight);
+		Composite graphComp = SystemTapView.makeGraphComp(screenWidth, treeSize, screenHeight);
 		
-		GridData gd = new GridData(treeSize, screenHeight);
-		treeComp.setLayout(new FillLayout());
-		treeComp.setLayoutData(gd); 
-		treeview = new TreeViewer(treeComp);
-		StapTreeListener stl = new StapTreeListener(treeview.getTree().getHorizontalBar());
-		treeview.addTreeListener(stl);
-		
-		
-		Composite graphComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
-		GridData graphGridData = new GridData(screenWidth - treeSize - textSize, screenHeight);
-		graphComp.setLayout(new FillLayout());
-		graphComp.setLayoutData(graphGridData);
-
-		
-		g = new StapGraph(graphComp, SWT.NONE, treeview);
+		g = new StapGraph(graphComp, SWT.NONE, treeComp);
 
 		
 		//-------------Load graph data
@@ -135,7 +115,7 @@ public class GraphUIJob extends UIJob{
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
-	    initializeTree();
+	    g.initializeTree();
 	    
 
 	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode(),
@@ -151,20 +131,7 @@ public class GraphUIJob extends UIJob{
 		return Status.OK_STATUS;
 	}
 	
-	
-	/**
-	 * Initialize the treeviewer with data from the graph
-	 */
-	public void initializeTree() {
-		StapTreeContentProvider scp = new StapTreeContentProvider();
-		scp.setGraph(g);
-		treeview.setContentProvider(scp);
-		StapTreeLabelProvider prov = new StapTreeLabelProvider();
-	    treeview.setLabelProvider(prov);
-	    treeview.setInput(g.getData(g.getTopNode()));
-	    treeview.addDoubleClickListener(new StapTreeDoubleClickListener(treeview, g));
-	}
-	
+
 	/**
 	 * Returns number of StapData objects created 
 	 * @return
