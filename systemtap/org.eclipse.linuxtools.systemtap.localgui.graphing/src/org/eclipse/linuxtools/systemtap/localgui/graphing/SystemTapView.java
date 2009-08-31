@@ -210,11 +210,10 @@ public class SystemTapView extends ViewPart {
 		if (graphComp != null)
 			graphComp.dispose();
 		Composite graphComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
-		GridData graphGridData = new GridData(screenWidth - treeSize - 100, screenHeight);
+		GridData graphGridData = new GridData(screenWidth - 100, screenHeight);
 		graphComp.setLayout(new FillLayout());
 		graphComp.setLayoutData(graphGridData);
 		return graphComp;
-
 
 	}
 	
@@ -232,6 +231,7 @@ public class SystemTapView extends ViewPart {
 		}
 		
 	}
+	
 	
 //	
 //	public static void disposeAll() {
@@ -798,6 +798,7 @@ public class SystemTapView extends ViewPart {
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, graph.getAnimationMode(),
 						graph.getRootVisibleNode(), 0, 0);
+
 			}
 		};
 		
@@ -806,6 +807,7 @@ public class SystemTapView extends ViewPart {
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, graph.getAnimationMode(), 
 						graph.getRootVisibleNode(), 0, 0);
+
 			}
 		};
 		
@@ -819,6 +821,7 @@ public class SystemTapView extends ViewPart {
 		
 	}
 	
+
 	/**
 	 * Populates Animate menu.
 	 */

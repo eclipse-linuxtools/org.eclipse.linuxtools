@@ -90,6 +90,7 @@ public class StapGraph extends Graph {
 	private boolean collapse_mode;
 	private int draw_mode;
 	private int animation_mode;
+	private boolean needsToRefresh;
 	
 
 	//Time
@@ -146,9 +147,10 @@ public class StapGraph extends Graph {
 		killInvalidFunctions = true;
 		nextMarkedNode = -1;
 		scale = 1;
+		needsToRefresh = false;
 		
 		this.treeComp = treeComp;
-		if (treeViewer == null) {
+		if (treeViewer == null || treeViewer.getControl().isDisposed()) {
 			//Only create once
 			treeViewer = new TreeViewer(this.treeComp);
 			StapTreeListener stl = new StapTreeListener(treeViewer.getTree().getHorizontalBar());
@@ -260,6 +262,7 @@ public class StapGraph extends Graph {
 		if (getData(centerNode).isMarked())
 			nodeMap.get(centerNode).setBackgroundColor(CONSTANT_MARKED);
 		radialHelper(centerNode, x, y, radius, 0);
+		needsToRefresh = true;
 	}
 
 	/**
@@ -436,11 +439,12 @@ public class StapGraph extends Graph {
 		
 		//Set layout to gridlayout
 		this.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), true);
+		
+		checkRefresh();
 	}
 
-	
 
-	
+
 	/**
 	 * Draws a tree starting with node id, putting node id at location x,y
 	 * @param id
@@ -518,6 +522,7 @@ public class StapGraph extends Graph {
 			
 		}
 		
+		checkRefresh();
 	}
 	
 	
@@ -583,8 +588,9 @@ public class StapGraph extends Graph {
 		drawFromBottomToTop(bottomLevelToDraw, y
 				+ ((bottomLevelToDraw  - topLevelToDraw ) * 3 * (int)(CONSTANT_VERTICAL_INCREMENT/scale)),
 				MaxLevelPixelWidth);
-		nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);	
-
+		nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
+		
+		checkRefresh();
 	}
 	
 	
@@ -806,21 +812,18 @@ public class StapGraph extends Graph {
 		setAnimationMode(animationMode);
 		this.clearSelection();
 		
-		if (draw_mode != CONSTANT_DRAWMODE_RADIAL) {
-			GridData gd = (GridData) treeComp.getLayoutData();
-			gd.exclude = true;
-			treeComp.setLayoutData(gd);
-			treeComp.setVisible(false);
-//			SystemTapView.maximizeOrRefresh(false);
-		}
-		
 		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
 			GridData gd = (GridData) treeComp.getLayoutData();
 			gd.exclude = false;
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(true);
-//			SystemTapView.maximizeOrRefresh(false);
+		}else{
+			GridData gd = (GridData) treeComp.getLayoutData();
+			gd.exclude = true;
+			treeComp.setLayoutData(gd);
+			treeComp.setVisible(false);
 		}
+		
 		
 		//-------------Draw tree
 		if (draw_mode == CONSTANT_DRAWMODE_TREE) {
@@ -969,6 +972,14 @@ public class StapGraph extends Graph {
 			list = nodeDataMap.get(id).callees;
 		for (int i = 0; i < list.size(); i++) {
 			moveRecursive(list.get(i), xTarget, yTarget);
+		}
+	}
+	
+	
+	private void checkRefresh() {
+		if (needsToRefresh){
+			SystemTapView.maximizeOrRefresh(false);
+			needsToRefresh = false;
 		}
 	}
 	

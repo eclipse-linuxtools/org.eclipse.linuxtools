@@ -26,12 +26,9 @@ import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 
 public class LaunchStapGraph extends SystemTapLaunchShortcut {
@@ -70,17 +67,14 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 */
 	
 	private String partialScriptPath;
-	private String resourceToSearchFor = "";
-	private boolean searchForResource = false;
-	private static final String DELIMITER = " ";  //$NON-NLS-1$
+
 
 	
 	public void launch(IEditorPart ed, String mode) {
 		super.Init();
 		resourceToSearchFor = ed.getTitle();
 		searchForResource = true;
-		Object[] list = new Object[] {ed.getEditorInput()}; 
-		searchAndLaunch(list, mode);
+		super.launch(ed, mode);
 	}
 	
 	public void launch(IBinary bin, String mode) {
@@ -180,6 +174,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		 * Find all relevant function names
 		 */
 		try {
+			
+			ArrayList<ITranslationUnit> list = new ArrayList<ITranslationUnit>();
+			
 			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
 				ICContainer c = (ICContainer) b;
 				for (ITranslationUnit ast : c.getTranslationUnits()) {
@@ -188,12 +185,22 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 						ast.accept(v);
 						funcs.addAll(v.getFunctions());
 					} else {
+						list.add(ast);
+					}
+				}
+			}
+			
+			if (list.size() > 0) {
+				for (Object obj : chooseUnit(list)) {
+					if (obj instanceof ITranslationUnit) {
+						ITranslationUnit ast = (ITranslationUnit) obj;
 						TranslationUnitVisitor v = new TranslationUnitVisitor();
 						ast.accept(v);
 						funcs.addAll(v.getFunctions());
 					}
+				}
 			}
-			}
+			
 		} catch (CModelException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {

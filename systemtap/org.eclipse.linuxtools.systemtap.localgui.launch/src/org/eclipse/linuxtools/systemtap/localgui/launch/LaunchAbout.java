@@ -81,7 +81,7 @@ public class LaunchAbout extends SystemTapLaunchShortcut {
 	
 	public void launch(IEditorPart ed, String mode) {
 		
-		searchAndLaunch(new Object[] { editor.getEditorInput() }, mode);
+		super.launch(ed, mode);
 //		launchMessage();
 	}
 	
