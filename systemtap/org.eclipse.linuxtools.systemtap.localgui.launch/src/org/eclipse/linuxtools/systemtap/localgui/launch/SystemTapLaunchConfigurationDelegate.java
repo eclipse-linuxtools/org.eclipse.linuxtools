@@ -33,6 +33,7 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.localgui.core.Helper;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapErrorHandler;
@@ -168,6 +169,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					command, needsBinary, needsArguments, arguments);
 
 
+			MP.println(cmd);
 			// Prepare cmd for execution - we need a command array of strings,
 			// no string can contain a space character. (One of the process'
 			// requirements)

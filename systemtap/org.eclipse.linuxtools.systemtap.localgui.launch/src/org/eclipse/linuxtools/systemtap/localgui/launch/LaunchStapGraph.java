@@ -102,6 +102,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			scriptContents += writeFromPartialScript();
 			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
+//			bw.write("probe begin { printf(\"HELLO\") }");
 			bw.write(scriptContents);
 			bw.close();
 
@@ -116,8 +117,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			
 			wc = config.getWorkingCopy();
 			wc.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, true);
-			wc.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
-					"-DMAXACTION=1000 -DSTP_NO_OVERLOAD -DMAXMAPENTRIES=10000"); 
+//			wc.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
+//					"-DMAXACTION=1000 -DSTP_NO_OVERLOAD -DMAXMAPENTRIES=10000"); 
 			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, scriptContents);
 			wc.doSave();
 			
@@ -214,7 +215,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @throws IOException
 	 */
 	private String writeGlobalVariables() throws IOException {
-		String toWrite = "global serial\n";
+		String toWrite = "global serial\n" +
+						 "global startTime\n " +
+						 "global finalTime\n";
 		
 		return toWrite;
 	}

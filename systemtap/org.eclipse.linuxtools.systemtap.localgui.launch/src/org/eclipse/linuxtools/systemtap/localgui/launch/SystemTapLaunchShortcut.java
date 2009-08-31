@@ -471,15 +471,21 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			}
 			
 			if (list.size() > 1) {
-				Object[] unitList = chooseUnit(list); 
-				for (Object obj : unitList) {
-					if (obj instanceof ITranslationUnit) {
-						ITranslationUnit tu = (ITranslationUnit) obj;
-						tu.accept(v);
-
-						funcs.addAll(v.getFunctions());
-					}
-				}
+				funcs.clear();
+				funcs.add("*");
+//				Object[] unitList = chooseUnit(list); 
+//				if (unitList.length >= list.size()) {
+//					funcs.clear();
+//					funcs.add("*");
+//				} else {
+//				for (Object obj : unitList) {
+//					if (obj instanceof ITranslationUnit) {
+//						ITranslationUnit tu = (ITranslationUnit) obj;
+//						tu.accept(v);
+//						funcs.addAll(v.getFunctions());
+//					}
+//				}
+//				}
 				
 //				for (ITranslationUnit tu : list) {
 ////					System.out.println(tu.getElementName());
@@ -563,7 +569,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		if (dialog.open() == Window.OK) {
 			return (Object[]) dialog.getResult();
 		}
-	
 		return null;
 	}
 }

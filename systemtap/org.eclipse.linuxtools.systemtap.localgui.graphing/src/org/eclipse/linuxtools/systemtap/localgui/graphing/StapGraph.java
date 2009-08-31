@@ -91,7 +91,6 @@ public class StapGraph extends Graph {
 	private int draw_mode;
 	private int animation_mode;
 	private boolean needsToRefresh;
-	private StapGraph me;
 	
 
 	//Time
@@ -1312,10 +1311,10 @@ public class StapGraph extends Graph {
 	 * Sets total time spent running tapped program
 	 * @param totalTime - Time in milliseconds
 	 */
-	public void setTotalTime() {
+	public void setTotalTime(long val) {
 		//Divide by 100 to save us the trouble of 
 		//multiplying by 100 to get percentages
-		this.totalTime = nodeDataMap.get(getFirstUsefulNode()).time/100;
+		this.totalTime = val;
 	}
 
 	/**

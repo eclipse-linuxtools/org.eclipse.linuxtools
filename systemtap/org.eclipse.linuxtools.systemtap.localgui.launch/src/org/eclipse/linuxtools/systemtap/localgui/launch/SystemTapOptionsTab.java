@@ -276,21 +276,21 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		argumentsTab.setControl(argumentsTop);
 		
 
-		/*
-		 * Generated Script folder - tab for selecting script generatedScript
-		 */
-		generatedScriptFolder = new TabFolder(top, SWT.BORDER);
-		generatedScriptFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
-		TabItem generatedScriptTab = new TabItem(fileFolder, SWT.NONE);
-		generatedScriptTab.setText(Messages.getString("SystemTapOptionsTab.GeneratedScriptsTab"));  //$NON-NLS-1$
-		
-		Composite generatedScriptTop = new Composite(fileFolder, SWT.NONE);
-		generatedScriptTop.setLayout(new GridLayout());
-		generatedScriptTop.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
-		createGeneratedScriptOption(generatedScriptTop);
-		generatedScriptTab.setControl(generatedScriptTop);
+//		/*
+//		 * Generated Script folder - tab for selecting script generatedScript
+//		 */
+//		generatedScriptFolder = new TabFolder(top, SWT.BORDER);
+//		generatedScriptFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		
+//		TabItem generatedScriptTab = new TabItem(fileFolder, SWT.NONE);
+//		generatedScriptTab.setText(Messages.getString("SystemTapOptionsTab.GeneratedScriptsTab"));  //$NON-NLS-1$
+//		
+//		Composite generatedScriptTop = new Composite(fileFolder, SWT.NONE);
+//		generatedScriptTop.setLayout(new GridLayout());
+//		generatedScriptTop.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		
+//		createGeneratedScriptOption(generatedScriptTop);
+//		generatedScriptTab.setControl(generatedScriptTop);
 		
 		/*
 		 * SystemTap help - contains the stap man page

@@ -554,14 +554,9 @@ public class SystemTapView extends ViewPart {
 				if (filePath != null) {
 					File file = new File(filePath);
 					String content = Messages.getString("SystemTapView.25") //$NON-NLS-1$
-					+ parser.graphText
+					+ parser.text
 					+ NEW_LINE
-					+ parser.serialInfo
-					+ NEW_LINE
-					+ parser.timeInfo
-					+ NEW_LINE
-					+ parser.cumulativeTimeInfo
-					+ NEW_LINE;
+					+ parser.endingTimeInNS;
 //					+ parser.markedNodes + NEW_LINE;
 					try {
 						// WAS THE FILE CREATED OR DOES IT ALREADY EXIST

@@ -1,15 +1,25 @@
 probe begin{
 	printf("\nPROBE_BEGIN\n")
 	serial=1
+	startTime = 0;
 }
 
 function callFunction(probefunc) {
+	if (startTime == 0)
+		startTime = gettimeofday_ns()
 	printf("<%s:%d:%d;", probefunc, serial, gettimeofday_ns())
 	serial++
 }
 
 
 function returnFunction(probefunc) {
-	printf(">%s:%d;", probefunc, gettimeofday_ns())
+	finalTime = gettimeofday_ns()
+	printf(">%s:%d;", probefunc, finalTime)
+	
 }
 
+probe end {	
+	printf("\n%d",finalTime);
+	printf("\n%d",finalTime- startTime);
+    exit()
+}

@@ -45,14 +45,16 @@ public class StapGraphParser extends Job{
 	public  HashMap<String, Long> cumulativeTimeMap;
 	public  HashMap<String, Integer> countMap;
 	//public  HashMap<Integer, String> markedMap;
-	public String graphText;
-	public String timeInfo;
-	public String cumulativeTimeInfo;
-	public String serialInfo;
+//	public String graphText;
+//	public String timeInfo;
+//	public String cumulativeTimeInfo;
+//	public String serialInfo;
 	//public String markedNodes;
 	public int validator;
 	private String filePath;
 	private boolean isValidFile;
+	public Long endingTimeInNS;
+	public long totalTime;
 	
 	public StapGraphParser(String name, String filePath) {
 		super(name);
@@ -69,6 +71,7 @@ public class StapGraphParser extends Job{
 		serialMap = new TreeMap<Integer, String>();
 		cumulativeTimeMap = new HashMap<String, Long>();
 		countMap = new HashMap<String, Integer>();
+		endingTimeInNS = 0l;
 		//markedMap = new HashMap<Integer, String>();
 	}
 	
@@ -85,7 +88,7 @@ public class StapGraphParser extends Job{
 		err.schedule();
 	}
 	
-	private String text;
+	public String text;
 	
 	public IStatus executeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
@@ -108,6 +111,8 @@ public class StapGraphParser extends Job{
 				if (tmp.equals("PROBE_BEGIN")){ //$NON-NLS-1$
 					isValidFile = true;
 					text = buff.readLine();
+					endingTimeInNS = Long.parseLong(buff.readLine());
+					totalTime = Long.parseLong(buff.readLine())/100;
 				}
 			}
 			buff.close();
@@ -120,9 +125,9 @@ public class StapGraphParser extends Job{
 		
 		if (text.length() > 0) {
 			
+			ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
 			String[] callsAndReturns = text.split(";");
 			String[] args;
-			ArrayList<Integer> position = new ArrayList<Integer>();
 			ArrayList<String> nameList = new ArrayList<String>();
 			ArrayList<Integer> idList = new ArrayList<Integer>();
 			String name;
@@ -142,42 +147,52 @@ public class StapGraphParser extends Job{
 						id = Integer.parseInt(args[1]);
 						time = Long.parseLong(args[2]);
 						name = args[0];
-						System.out.println(name + ", id :" + id);
-						serialMap.put(id, args[0]);
+						name = cleanName(name);
+						serialMap.put(id, name);
 						timeMap.put(id, time);
 						
-						if (cumulativeTimeMap.get(name) == null)
+						if (cumulativeTimeMap.get(name) == null){
 							cumulativeTimeMap.put(name, (long) 0);
+						}
 						//Use - for start times
-						cumulativeTime = cumulativeTimeMap.get(name) - time;
-						cumulativeTimeMap.put(name, cumulativeTime);
+//						cumulativeTime = cumulativeTimeMap.get(name) - time;
+//						cumulativeTimeMap.put(name, cumulativeTime);
+
+						//IF THERE ARE PREVIOUS FUNCTIONS WITH THE SAME NAME
+						//WE ARE IN ONE OF THEM SO DO NOT ADD TO CUMULATIVE TIME
+						if (nameList.indexOf(name) == -1) {
+							cumulativeTime = cumulativeTimeMap.get(name) - time;
+							cumulativeTimeMap.put(name, cumulativeTime);
+							shouldGetEndingTimeForID.add(id);
+						}
 						
-						if (countMap.get(name) == null)
+						
+						if (countMap.get(name) == null){
 							countMap.put(name, 0);
+						}
 						countMap.put(name, countMap.get(name) + 1);
 						
 						nameList.add(name);
 						idList.add(id);
 						
-						if (outNeighbours.get(id) == null)
+						if (outNeighbours.get(id) == null){
 							outNeighbours.put(id, new ArrayList<Integer>());
-						
-						
+						}
 						break;
 					case '>' :
 						//args[0] = name
 						//args[1] = time of event
 						args = s.substring(1, s.length()).split(":");
 						name = args[0];
+						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
 							parseError();
-							break;
+							return Status.CANCEL_STATUS;
 						}
 						
 						nameList.remove(lastOccurance);
 						id = idList.remove(lastOccurance);
-						System.out.println(name + ", id :" + id);
 						
 						//Get the last function that was called but never returned
 						if (idList.size() > 0) {
@@ -187,14 +202,22 @@ public class StapGraphParser extends Job{
 						
 						if (timeMap.get(id) == null) {
 							parseError();
-							break;
+							return Status.CANCEL_STATUS;
 						}		
 						time =  Long.parseLong(args[1]) - timeMap.get(id);
 						timeMap.put(id, time);
 						
+						
+						//IF AN ID IS IN THIS ARRAY IT IS BECAUSE WE NEED THE ENDING TIME
+						// TO BE ADDED TO THE CUMULATIVE TIME FOR FUNCTIONS OF THIS NAME
+						if (shouldGetEndingTimeForID.contains(id)){
+							cumulativeTime = cumulativeTimeMap.get(name) + Long.parseLong(args[1]);
+							cumulativeTimeMap.put(name, cumulativeTime);
+						}
+						
 						//Use + for end times
-						cumulativeTime = cumulativeTimeMap.get(name) + Long.parseLong(args[1]);
-						cumulativeTimeMap.put(name, cumulativeTime);
+//						cumulativeTime = cumulativeTimeMap.get(name) + Long.parseLong(args[1]);
+//						cumulativeTimeMap.put(name, cumulativeTime);
 						break;
 					default : 
 						parseError();
@@ -202,17 +225,25 @@ public class StapGraphParser extends Job{
 					
 				}
 				
-			
 			}
 			
-			
-			
-			
-			
-			
-			
+			//CHECK FOR EXIT() CALL
+			if (idList.size() != 0){
+				for (int val : idList){
+					name = serialMap.get(val);
+					time =  endingTimeInNS - timeMap.get(val);
+					timeMap.put(val, time);
+					if (shouldGetEndingTimeForID.contains(val)){
+						cumulativeTime = cumulativeTimeMap.get(name) + endingTimeInNS;
+						cumulativeTimeMap.put(name, cumulativeTime);
+					}
+				}
+			}
 			
 		}
+		
+		
+		
 //		if (isValidFile){			
 //			for (int i = 0; i < graphText.length(); i++){
 //				if (monitor.isCanceled()) {
@@ -250,11 +281,18 @@ public class StapGraphParser extends Job{
 //			launchFileDialogError();
 //			return Status.CANCEL_STATUS;
 //		}
-
-		
+			
 		return Status.OK_STATUS;
 	}
 	
+	/**
+	 * Cleans names of form 'name").return', returning just the name
+	 * @param name
+	 */
+	private String cleanName(String name) {
+		return name.split("\"")[0];
+		
+	}
 	
 	private void parseError() {
 		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
@@ -262,7 +300,7 @@ public class StapGraphParser extends Job{
 		mess.schedule();
 	}
 	
-	public void calculateAggregateStats(){
+/*	public void calculateAggregateStats(){
 		//CALCULATE COUNTMAP
 		for (String funcName :  serialMap.values()){
 			if (countMap.get(funcName) == null){
@@ -271,10 +309,10 @@ public class StapGraphParser extends Job{
 				countMap.put(funcName, countMap.get(funcName)+1);
 			}
 		}
-	}
+	}*/
 	
 	
-	public IStatus generateMaps(){
+/*	public IStatus generateMaps(){
 			
 			createMap(outNeighbours);
 			
@@ -294,7 +332,7 @@ public class StapGraphParser extends Job{
 
 			return Status.OK_STATUS;
 
-	}
+	}*/
 	
 	
 	/**
@@ -308,7 +346,7 @@ public class StapGraphParser extends Job{
 	 * @param mode 'typeof key''type of value', 'i'=int, 's'=string, 'l'=long
 	 * @return IStatus indicating whether the action was cancelled or not
 	 */
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	private IStatus generalParser(Map map, String text, String mode){
 		String curr_serial = ""; //$NON-NLS-1$
 		int pos = 0;
@@ -353,7 +391,7 @@ public class StapGraphParser extends Job{
 		}
 		
 		return Status.OK_STATUS;
-	}
+	}*/
 	
 	
 	/**
@@ -368,7 +406,7 @@ public class StapGraphParser extends Job{
 	 * 
 	 * @param map map a map that will contain the parsed data
 	 */
-	private void createMap(HashMap<Integer,ArrayList<Integer>> map){
+/*	private void createMap(HashMap<Integer,ArrayList<Integer>> map){
 		String str_parent = ""; //$NON-NLS-1$
 		int parent = 0;
 		char val;
@@ -397,7 +435,7 @@ public class StapGraphParser extends Job{
 			}
 		}
 		
-	}
+	}*/
 	
 	/**
 	 * Helper method for createMap, to get the children of some node.
@@ -412,7 +450,7 @@ public class StapGraphParser extends Job{
 	 * first child
 	 * @return A List of the children
 	 */
-	private ArrayList<Integer> getChildren(int pos){
+	/*private ArrayList<Integer> getChildren(int pos){
 		int nested = 0;
 		String func = ""; //$NON-NLS-1$
 		ArrayList<Integer> ret = new ArrayList<Integer>();
@@ -444,7 +482,7 @@ public class StapGraphParser extends Job{
 		}
 		
 		return ret;
-	}
+	}*/
  
 	@SuppressWarnings("unused")
 	private void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {

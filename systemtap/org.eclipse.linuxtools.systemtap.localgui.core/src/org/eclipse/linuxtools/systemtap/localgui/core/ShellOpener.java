@@ -11,8 +11,6 @@
 
 package org.eclipse.linuxtools.systemtap.localgui.core;
 
-import java.util.ArrayList;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
