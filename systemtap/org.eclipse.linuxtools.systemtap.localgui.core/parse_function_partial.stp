@@ -1,6 +1,6 @@
 probe begin{
 	printf("\nPROBE_BEGIN\n")
-	serial=0
+	serial=1
 }
 
 function callFunction(probefunc) {

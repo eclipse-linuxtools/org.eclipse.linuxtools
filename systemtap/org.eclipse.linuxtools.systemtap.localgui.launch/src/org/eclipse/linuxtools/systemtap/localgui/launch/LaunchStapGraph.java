@@ -76,17 +76,17 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	
 	public void launch(IBinary bin, String mode) {
 		super.Init();
-		name = Messages.getString("LaunchStapGraph.0"); //$NON-NLS-1$
+		name = "SystemTapGraph"; 
 		binName = getName(bin);
 		partialScriptPath = PluginConstants.getPluginLocation()
-				+ "parse_function_partial.stp"; //$NON-NLS-1$
+				+ "parse_function_partial.stp"; 
 
 		scriptPath = PluginConstants.DEFAULT_OUTPUT 
-				+ "callgraphGen.stp"; //$NON-NLS-1$
+				+ "callgraphGen.stp"; 
 
 		
 		try {
-			String scriptContents = ""; //$NON-NLS-1$
+			String scriptContents = ""; 
 			File scriptFile = new File(scriptPath);
 			scriptFile.delete();
 			scriptFile.createNewFile();
@@ -117,7 +117,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			wc = config.getWorkingCopy();
 			wc.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, true);
 			wc.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
-					"-DMAXACTION=1000 -DSTP_NO_OVERLOAD -DMAXMAPENTRIES=10000"); //$NON-NLS-1$
+					"-DMAXACTION=1000 -DSTP_NO_OVERLOAD -DMAXMAPENTRIES=10000"); 
 			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, scriptContents);
 			wc.doSave();
 			
@@ -126,9 +126,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 		} catch (IOException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-					Messages.getString("LaunchStapGraph.GenerationError"), //$NON-NLS-1$
-					Messages.getString("LaunchStapGraph.GenerationErrorTitle"), //$NON-NLS-1$ 
-					Messages.getString("LaunchStapGraph.GenerationErrorMessage")); //$NON-NLS-1$
+					"LaunchShortcutScriptGen", 
+					"Error generating script",  
+					"The path to the temporary script could not be opened."); 
 			mess.schedule();
 			e.printStackTrace();
 		} catch (CoreException e1) {
@@ -147,14 +147,14 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" + //$NON-NLS-1$
-				        function + "\").call{\n" + //$NON-NLS-1$
-				        "\tcallFunction(probefunc())\n" + //$NON-NLS-1$
-						"}\n" + //$NON-NLS-1$
-						"probe process(@1).function(\"" + //$NON-NLS-1$
-				        function + "\").return{\n" + //$NON-NLS-1$
-				        "\treturnFunction(probefunc())\n" + //$NON-NLS-1$
-						"}\n\n"; //$NON-NLS-1$
+		String output = "probe process(@1).function(\"" + 
+				        function + "\").call{\n" + 
+				        "\tcallFunction(probefunc())\n" + 
+						"}\n" + 
+						"probe process(@1).function(\"" + 
+				        function + "\").return{\n" + 
+				        "\treturnFunction(probefunc())\n" + 
+						"}\n\n"; 
 		return output;
 	}
 	
@@ -166,11 +166,11 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @throws IOException
 	 */
 	private String writeFunctionListToScript(IBinary bin, String resourceToSearchFor) throws IOException {
-		String toWrite = ""; //$NON-NLS-1$
+		String toWrite = ""; 
 		ArrayList<String> funcs = getFunctionsFromBinary(bin, resourceToSearchFor);
 		
 		if (funcs == null || funcs.size() < 1) {
-			failedToLaunch(Messages.getString("LaunchStapGraph.InvalidFunctionsReason")); //$NON-NLS-1$
+			failedToLaunch("Invalid functions."); 
 			throw new IOException();
 		}
 		
@@ -190,13 +190,13 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @throws IOException
 	 */
 	private String writeFromPartialScript() throws IOException {
-		String toWrite = Messages.getString("LaunchStapGraph.23"); //$NON-NLS-1$
-		String temp = Messages.getString("LaunchStapGraph.24"); //$NON-NLS-1$
+		String toWrite = ""; 
+		String temp = ""; 
 		File partialScript = new File(partialScriptPath);
 		BufferedReader scriptReader = new BufferedReader(new FileReader(
 				partialScript));
 		while ((temp = scriptReader.readLine()) != null) {
-			toWrite += temp + Messages.getString("LaunchStapGraph.25"); //$NON-NLS-1$
+			toWrite += temp + "\n"; 
 		}
 		scriptReader.close();
 

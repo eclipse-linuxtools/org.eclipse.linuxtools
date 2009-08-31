@@ -64,7 +64,7 @@ public class StapGraphMouseListener implements MouseListener {
 			graph.scale = 1;
 			// Redraw in the current mode with the new id as the center
 			// The x,y parameters to draw() are irrelevant for radial mode
-			graph.draw(id, 0, 0);
+			graph.draw(id);
 
 			// Unhighlight the center node and give it a normal colour
 			node = graph.getNode(id);
@@ -89,7 +89,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 			// Draw in current modes with 'id' at the top
 			int id = node.getData().id;
-			graph.draw(id, graph.getBounds().x / 2, 20);
+			graph.draw(id);
 		}
 
 		graph.setSelection(null);

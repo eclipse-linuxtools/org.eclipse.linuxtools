@@ -946,13 +946,13 @@ public class SystemTapView extends ViewPart {
 	public void createMarkerActions() {
 		markers_next = new Action("(n)ext") {
 			public void run() {
-				graph.draw(graph.getNextMarkedNode(), 0, 0);
+				graph.draw(graph.getNextMarkedNode());
 			}
 		};
 		
 		markers_previous = new Action("(p)revious") {
 			public void run() {
-				graph.draw(graph.getPreviousMarkedNode(), 0, 0);
+				graph.draw(graph.getPreviousMarkedNode());
 			}
 		};
 	}

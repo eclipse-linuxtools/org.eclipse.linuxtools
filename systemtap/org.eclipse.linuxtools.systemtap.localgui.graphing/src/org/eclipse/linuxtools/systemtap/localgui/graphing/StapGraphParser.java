@@ -108,7 +108,6 @@ public class StapGraphParser extends Job{
 				if (tmp.equals("PROBE_BEGIN")){ //$NON-NLS-1$
 					isValidFile = true;
 					text = buff.readLine();
-					System.out.println(text);
 				}
 			}
 			buff.close();
@@ -143,6 +142,7 @@ public class StapGraphParser extends Job{
 						id = Integer.parseInt(args[1]);
 						time = Long.parseLong(args[2]);
 						name = args[0];
+						System.out.println(name + ", id :" + id);
 						serialMap.put(id, args[0]);
 						timeMap.put(id, time);
 						
@@ -177,6 +177,7 @@ public class StapGraphParser extends Job{
 						
 						nameList.remove(lastOccurance);
 						id = idList.remove(lastOccurance);
+						System.out.println(name + ", id :" + id);
 						
 						//Get the last function that was called but never returned
 						if (idList.size() > 0) {
@@ -192,7 +193,7 @@ public class StapGraphParser extends Job{
 						timeMap.put(id, time);
 						
 						//Use + for end times
-						cumulativeTime = cumulativeTimeMap.get(name) + time;
+						cumulativeTime = cumulativeTimeMap.get(name) + Long.parseLong(args[1]);
 						cumulativeTimeMap.put(name, cumulativeTime);
 						break;
 					default : 
