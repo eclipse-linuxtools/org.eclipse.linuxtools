@@ -9,3 +9,4 @@
 .*MAXMAPENTRIES exceeded.*=The maximum number of entries for a map has been exceeded, please change the MAXMAPENTRIES directive in the options tap of SystemTap Profile Configurations.
 .*stapdev.*=Please add yourself to the 'stapdev' or 'stapusr' group in order to run stap.
 .*Error inserting module.*File exists=A previous run of systemtap did not finish execution properly. In commandline, try ps aux | grep stap, kill any running stap processes and try again. 
+.*syntax error near unexpected token `('.*=Your workspace name may contain ( symbols -- please switch to a workspace that does not use ('s and try again.
