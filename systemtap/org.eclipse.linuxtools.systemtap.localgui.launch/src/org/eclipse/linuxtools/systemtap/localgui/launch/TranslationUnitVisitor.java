@@ -37,7 +37,6 @@ public class TranslationUnitVisitor implements ICElementVisitor{
 	}
 	
 	public int getNumberOfFunctions() {
-		//TODO: Off-by-one?
 		return (functions.split(" ").length);
 	}
 
