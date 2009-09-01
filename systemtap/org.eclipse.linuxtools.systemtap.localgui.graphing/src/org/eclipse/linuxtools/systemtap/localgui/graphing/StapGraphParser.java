@@ -49,6 +49,7 @@ public class StapGraphParser extends Job{
 	private String filePath;
 	public Long endingTimeInNS;
 	public long totalTime;
+	public int lastFunctionCalled;
 	
 	public StapGraphParser(String name, String filePath) {
 		super(name);
@@ -68,6 +69,7 @@ public class StapGraphParser extends Job{
 		endingTimeInNS = 0l;
 		callOrderList = new ArrayList<Integer>();
 		markedMap = new HashMap<Integer, String>();
+		lastFunctionCalled = 0;
 	}
 	
 	public void setFile(String filePath) {
@@ -200,6 +202,8 @@ public class StapGraphParser extends Job{
 						}
 						
 						callOrderList.add(id);
+						lastFunctionCalled = id;
+
 						break;
 					case '>' :
 						//args[0] = name
@@ -239,13 +243,10 @@ public class StapGraphParser extends Job{
 						}
 						
 						
-						//TODO: Don't do this? Decide whether or not we want to correct for C directives
-						if (name.contains("main")) {
-							totalTime = timeMap.get(id);
-						}
 						//Use + for end times
 //						cumulativeTime = cumulativeTimeMap.get(name) + Long.parseLong(args[1]);
 //						cumulativeTimeMap.put(name, cumulativeTime);
+						
 						break;
 					default : 
 						parsingError("Unexpected symbol when parsing: '" + s.charAt(0) +
@@ -258,7 +259,6 @@ public class StapGraphParser extends Job{
 			
 			//CHECK FOR EXIT() CALL
 			if (idList.size() != 0){
-				int lastFunctionCalledBeforeExit = -1;
 				for (int val : idList){
 					name = serialMap.get(val);
 					time =  endingTimeInNS - timeMap.get(val);
@@ -271,9 +271,9 @@ public class StapGraphParser extends Job{
 //					if (name.equals("main")) {
 //						totalTime = time;
 //					}
-					lastFunctionCalledBeforeExit = val;
+					lastFunctionCalled = val;
 				}
-				markedMap.put(lastFunctionCalledBeforeExit, "Program terminated here");
+				markedMap.put(lastFunctionCalled, "Program terminated here");
 			}
 			
 			

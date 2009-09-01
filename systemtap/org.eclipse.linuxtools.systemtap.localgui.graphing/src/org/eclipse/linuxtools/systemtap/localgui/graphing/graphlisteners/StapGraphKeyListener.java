@@ -71,6 +71,8 @@ public class StapGraphKeyListener implements KeyListener {
 			SystemTapView.getGoto_next().run();
 		} else if (e.character == 'P') {
 			SystemTapView.getGoto_previous().run();
+		} else if (e.character == 'L') {
+			SystemTapView.getGoto_last().run();
 		}
 	}
 };

@@ -115,6 +115,7 @@ public class GraphUIJob extends UIJob{
 			return Status.CANCEL_STATUS;
 		}
 	    g.initializeTree();
+	    g.setLastFunctionCalled(parser.lastFunctionCalled);
 	    
 
 	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,

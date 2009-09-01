@@ -121,6 +121,7 @@ public class StapGraph extends Graph {
 
 	
 	private ArrayList<Integer> callOrderList;
+	private int lastFunctionCalled;
 	
 	public StapGraph(Composite parent, int style, Composite treeComp) {
 		super(parent, style);
@@ -1657,5 +1658,17 @@ public class StapGraph extends Graph {
 
 	public void setCallOrderList(ArrayList<Integer> callOrderList) {
 		this.callOrderList = callOrderList;
+	}
+
+
+
+	public int getLastFunctionCalled() {
+		return lastFunctionCalled;
+	}
+
+
+
+	public void setLastFunctionCalled(int lastFunctionCalled) {
+		this.lastFunctionCalled = lastFunctionCalled;
 	}
 }

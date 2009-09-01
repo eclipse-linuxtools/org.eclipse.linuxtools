@@ -17,10 +17,10 @@ function callFunction(probefunc) {
 function returnFunction(probefunc) {
 	finalTime = gettimeofday_ns()
 	printf(">%s,,%d;", probefunc, finalTime)
-	
 }
 
 probe end {	
+	finalTime = gettimeofday_ns()
 	printf("\n%d",finalTime);
 	printf("\n%d",finalTime - startTime);
     exit()

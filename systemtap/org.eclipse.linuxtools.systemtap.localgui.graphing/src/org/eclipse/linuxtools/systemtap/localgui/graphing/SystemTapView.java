@@ -93,6 +93,7 @@ public class SystemTapView extends ViewPart {
 	private static Action limits; 
 	private static Action goto_next;
 	private static Action goto_previous;
+	private static Action goto_last;
 	
 	private static IMenuManager menu;
 	private static IMenuManager gotoMenu;
@@ -146,21 +147,27 @@ public class SystemTapView extends ViewPart {
 	
 	/**
 	 * Enable or Disable the graph options
-	 * @param isVisible
+	 * @param visible
 	 */
-	public static void setGraphOptions (boolean isVisible){
-		save_callgraph.setEnabled(isVisible);
-		view_treeview.setEnabled(isVisible);
-		view_radialview.setEnabled(isVisible);
-		view_aggregateview.setEnabled(isVisible);
-		view_boxview.setEnabled(isVisible);
-		getView_refresh().setEnabled(isVisible);
-		limits.setEnabled(isVisible);
-		markers_next.setEnabled(isVisible);
-		markers_previous.setEnabled(isVisible);
-		animation_slow.setEnabled(isVisible);
-		animation_fast.setEnabled(isVisible);
-		mode_collapsednodes.setEnabled(isVisible);
+	public static void setGraphOptions (boolean visible){
+		save_callgraph.setEnabled(visible);
+		view_treeview.setEnabled(visible);
+		view_radialview.setEnabled(visible);
+		view_aggregateview.setEnabled(visible);
+		view_boxview.setEnabled(visible);
+		view_refresh.setEnabled(visible);
+		limits.setEnabled(visible);
+		
+		markers_next.setEnabled(visible);
+		markers_previous.setEnabled(visible);
+		
+		animation_slow.setEnabled(visible);
+		animation_fast.setEnabled(visible);
+		mode_collapsednodes.setEnabled(visible);
+		
+		goto_next.setEnabled(visible);
+		goto_previous.setEnabled(visible);
+		goto_last.setEnabled(visible);
 	}
 	
 /**
@@ -361,6 +368,7 @@ public class SystemTapView extends ViewPart {
 		
 		gotoMenu.add(goto_previous);
 		gotoMenu.add(goto_next);
+		gotoMenu.add(goto_last);
 		
 		
 		mgr.add(view_radialview);
@@ -986,6 +994,14 @@ public class SystemTapView extends ViewPart {
 					graph.draw(toDraw);
 			}
 		};
+		
+		goto_last = new Action("(L)ast") {
+			public void run() {
+				if (graph.isCollapseMode())
+					graph.setCollapseMode(false);
+				graph.draw(graph.getLastFunctionCalled());
+			}
+		};
 	}
 	
 	public void createMarkerActions() {
@@ -1150,6 +1166,14 @@ public class SystemTapView extends ViewPart {
 
 	public static void setGoto_parent(Action gotoParent) {
 		goto_previous = gotoParent;
+	}
+
+	public static Action getGoto_last() {
+		return goto_last;
+	}
+
+	public static void setGoto_last(Action gotoLast) {
+		goto_last = gotoLast;
 	}
 }
 	
