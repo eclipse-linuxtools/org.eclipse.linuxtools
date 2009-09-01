@@ -96,7 +96,7 @@ public class StapGraph extends Graph {
 	private long totalTime;
 
 	//The current center/top of the nodes list
-	private int rootVisibleNode;
+	private int rootVisibleNodeNumber;
 	
 	//Buttons
 	private HashMap<Integer, StapButton> buttons; 			//NodeID of each button
@@ -119,6 +119,9 @@ public class StapGraph extends Graph {
 	
 	private int counter; 		//All purpose counting variable
 
+	
+	private ArrayList<Integer> callOrderList;
+	
 	public StapGraph(Composite parent, int style, Composite treeComp) {
 		super(parent, style);
 
@@ -135,7 +138,7 @@ public class StapGraph extends Graph {
 		markedCollapsedNodes = new ArrayList<Integer>();
 		animation_mode = 1;
 		idOfLastNode = 0;
-		rootVisibleNode=0;
+		rootVisibleNodeNumber=0;
 		totalTime = 0;
 		collapse_mode = false;
 		killInvalidFunctions = true;
@@ -152,7 +155,7 @@ public class StapGraph extends Graph {
 				
 		//-------------Add listeners
 		this.addMouseListener(new StapGraphMouseListener(this));		
-		this.addKeyListener(new StapGraphKeyListener());
+		this.addKeyListener(new StapGraphKeyListener(this));
 		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
 	}
 
@@ -239,7 +242,7 @@ public class StapGraph extends Graph {
 				this.getBounds().height)
 				/ 2 - CONSTANT_VERTICAL_INCREMENT;
 
-		rootVisibleNode = centerNode;
+		rootVisibleNodeNumber = centerNode;
 		if (nodeMap.get(centerNode) == null) {
 			nodeMap.put(centerNode, getNodeData(centerNode).makeNode(this));
 		}
@@ -261,7 +264,7 @@ public class StapGraph extends Graph {
 	 * @param centerNode
 	 */
 	public void preDrawRadial(int centerNode) {
-		rootVisibleNode = centerNode;
+		rootVisibleNodeNumber = centerNode;
 		
 		if (nodeMap.get(centerNode) == null) {
 			nodeMap.put(centerNode, getNodeData(centerNode).makeNode(this));
@@ -492,7 +495,7 @@ public class StapGraph extends Graph {
 			//Initialise the offset to roughly centre the nodes 
 			if (currentPositionInLevel.get(getLevelOfNode(childID)) == null) {
 				int tmp = (int) (CONSTANT_HORIZONTAL_SPACING*(usefulSize-1) * -1/scale);
-				currentPositionInLevel.put(childLevel, getNode(rootVisibleNode)
+				currentPositionInLevel.put(childLevel, getNode(rootVisibleNodeNumber)
 						.getLocation().x + tmp);
 			}
 			
@@ -624,7 +627,7 @@ public class StapGraph extends Graph {
 				
 				if (counter <= ANIMATION_TIME*3)
 					Animation.markBegin();
-				n.setLocation(nodeMap.get(getRootVisibleNode()).getLocation().x,nodeMap.get(getRootVisibleNode()).getLocation().y);
+				n.setLocation(nodeMap.get(getRootVisibleNodeNumber()).getLocation().x,nodeMap.get(getRootVisibleNodeNumber()).getLocation().y);
 				n.setLocation(MaxLevelPixelWidth / (total + 1) * count,height);
 
 				if (counter <= ANIMATION_TIME*3) {
@@ -876,7 +879,7 @@ public class StapGraph extends Graph {
 				
 				deleteAll(id);
 				setLevelLimits(id);
-				rootVisibleNode = id;
+				rootVisibleNodeNumber = id;
 				drawTree(id, this.getBounds().width / 2, 20);
 				currentPositionInLevel.clear();
 
@@ -890,7 +893,7 @@ public class StapGraph extends Graph {
 			} else {
 				deleteAll(id);
 				setLevelLimits(id);
-				rootVisibleNode = id;
+				rootVisibleNodeNumber = id;
 				drawTree(id, this.getBounds().width / 2, 20);
 				getNode(id).unhighlight();
 				currentPositionInLevel.clear();
@@ -902,7 +905,7 @@ public class StapGraph extends Graph {
 		else if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
 			
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
-				rootVisibleNode = id;
+				rootVisibleNodeNumber = id;
 				deleteAll(id);
 
 				preDrawRadial(id);
@@ -926,7 +929,7 @@ public class StapGraph extends Graph {
 		
 		//-------------Draw box
 		else if (draw_mode == CONSTANT_DRAWMODE_BOX) {
-			rootVisibleNode = id;
+			rootVisibleNodeNumber = id;
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
 				if (nodeMap.get(id) == null)
 					nodeMap.put(id, getData(id).makeNode(this));
@@ -951,7 +954,7 @@ public class StapGraph extends Graph {
 		
 		//-------------Draw aggregate
 		else if (draw_mode == CONSTANT_DRAWMODE_AGGREGATE) {
-			rootVisibleNode = getFirstUsefulNode();
+			rootVisibleNodeNumber = getFirstUsefulNode();
 			deleteAll(-1);
 			drawAggregateView();
 		}
@@ -1314,16 +1317,16 @@ public class StapGraph extends Graph {
 	 * Gets id of root visible node
 	 * @return rootVisibleNode - ID of centre node
 	 */
-	public int getRootVisibleNode() {
-		return rootVisibleNode;
+	public int getRootVisibleNodeNumber() {
+		return rootVisibleNodeNumber;
 	}
 
 	/**
 	 * Sets id of root visible node
 	 * @param id - ID of centre node
 	 */
-	public void setRootVisibleNode(int id) {
-		this.rootVisibleNode = id;
+	public void setRootVisibleNodeNumber(int id) {
+		this.rootVisibleNodeNumber = id;
 	}
 
 	/**
@@ -1475,6 +1478,50 @@ public class StapGraph extends Graph {
 		return nodeDataMap.get(nodeDataMap.get(id).caller);
 	}
 	
+	/**
+	 * Returns the id of the next node that was called. This is necessarily either a
+	 * child of the current root node or of one of its ancestors' children.
+	 * 
+	 * @param id
+	 * @return Id of next node that was called.
+	 */
+	public int getNextCalledNode(int id) {
+		int returnID = -1;
+		
+		for (int count = callOrderList.indexOf((Integer)id) + 1;
+			count < callOrderList.size(); count++) {
+			if (!getData(id).isCollapsed) {
+				returnID = callOrderList.get(count);
+				return returnID;
+			}
+		}
+		
+		
+		return returnID;
+	}
+	
+	/**
+	 * Returns the id of the previous node that was called.
+	 * 
+	 * @param id
+	 * @return Id of previous node that was called.
+	 */
+	public int getPreviousCalledNode(int id) {
+		int returnID = -1;
+		
+		for (int count = callOrderList.indexOf((Integer)id) - 1;
+			count > 0; count--) {
+			if (!getData(id).isCollapsed) {
+				returnID = callOrderList.get(count);
+				return returnID;
+			}
+		}
+		
+		
+		return returnID;
+	}
+	
+	
 
 	/**
 	 * Returns the id of the next marked node in current collapse mode. 
@@ -1594,5 +1641,17 @@ public class StapGraph extends Graph {
 
 	public void setMaxNodes(int val) {
 		maxNodes = val;
+	}
+
+
+
+	public ArrayList<Integer> getCallOrderList() {
+		return callOrderList;
+	}
+
+
+
+	public void setCallOrderList(ArrayList<Integer> callOrderList) {
+		this.callOrderList = callOrderList;
 	}
 }

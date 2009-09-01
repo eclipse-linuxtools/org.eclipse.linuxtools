@@ -113,6 +113,7 @@ public class GraphUIJob extends UIJob{
 			return Status.CANCEL_STATUS;
 		}
 	    g.setFocus();
+	    g.setCallOrderList(parser.callOrderList);
 	    
 	    SystemTapView.setValues(graphComp, treeComp, g, parser);
 	    SystemTapView.createPartControl();

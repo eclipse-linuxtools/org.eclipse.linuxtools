@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners;
 
+import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraph;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -21,7 +22,7 @@ import org.eclipse.swt.events.KeyListener;
 public class StapGraphKeyListener implements KeyListener {
 //	private StapGraph graph;
 	
-	public StapGraphKeyListener() {
+	public StapGraphKeyListener(StapGraph g) {
 //		graph = g;
 	}
 	
@@ -66,6 +67,10 @@ public class StapGraphKeyListener implements KeyListener {
 //			graph.currentPositionInLevel.clear();
 		}else if (e.character == 'C') {
 			SystemTapView.getMode_collapsednodes().run();
+		} else if (e.character == 'N') {
+			SystemTapView.getGoto_next().run();
+		} else if (e.character == 'P') {
+			SystemTapView.getGoto_previous().run();
 		}
 	}
 };

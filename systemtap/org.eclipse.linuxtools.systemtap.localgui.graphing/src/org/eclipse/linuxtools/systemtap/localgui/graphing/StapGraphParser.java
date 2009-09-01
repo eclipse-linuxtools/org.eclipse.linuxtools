@@ -42,6 +42,7 @@ public class StapGraphParser extends Job{
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
 	public  HashMap<String, Long> cumulativeTimeMap;
 	public  HashMap<String, Integer> countMap;
+	public  ArrayList<Integer> callOrderList;
 	//public  HashMap<Integer, String> markedMap;
 	//public String markedNodes;
 	public int validator;
@@ -65,6 +66,7 @@ public class StapGraphParser extends Job{
 		cumulativeTimeMap = new HashMap<String, Long>();
 		countMap = new HashMap<String, Integer>();
 		endingTimeInNS = 0l;
+		callOrderList = new ArrayList<Integer>();
 		//markedMap = new HashMap<Integer, String>();
 	}
 	
@@ -92,6 +94,7 @@ public class StapGraphParser extends Job{
 		cumulativeTimeMap.clear();
 		countMap.clear();
 		text = "";
+		callOrderList.clear();
 		
 		try {
 			BufferedReader buff = new BufferedReader(new FileReader(filePath));
@@ -187,6 +190,7 @@ public class StapGraphParser extends Job{
 							outNeighbours.get(parentID).add(id);
 						}
 						
+						callOrderList.add(id);
 						break;
 					case '>' :
 						//args[0] = name

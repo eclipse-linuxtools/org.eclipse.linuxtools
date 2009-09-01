@@ -91,8 +91,11 @@ public class SystemTapView extends ViewPart {
 	private static Action markers_next; 
 	private static Action markers_previous;
 	private static Action limits; 
+	private static Action goto_next;
+	private static Action goto_previous;
 	
 	private static IMenuManager menu;
+	private static IMenuManager gotoMenu;
 	private static IMenuManager file;
 	private static IMenuManager errors;
 	private static IMenuManager view;
@@ -326,20 +329,27 @@ public class SystemTapView extends ViewPart {
 		animation = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
 		help = new MenuManager("Help");
 		markers = new MenuManager("Markers");
+		gotoMenu = new MenuManager("Goto");
 		
 
 		
 		menu.add(file);
 		menu.add(view);
 		menu.add(animation);
-		
+		menu.add(gotoMenu);
+		menu.add(errors);
+		menu.add(help);
 		
 		
 		file.add(open_callgraph);
 		file.add(open_default);
 		file.add(save_callgraph);
+		
+		
 		errors.add(error_errorLog);
 		errors.add(error_deleteError);
+		
+		
 		view.add(view_treeview);
 		view.add(view_radialview);
 		view.add(view_aggregateview);
@@ -347,6 +357,11 @@ public class SystemTapView extends ViewPart {
 		view.add(getView_refresh());
 		view.add(mode_collapsednodes);
 		view.add(limits);
+		
+		
+		gotoMenu.add(goto_previous);
+		gotoMenu.add(goto_next);
+		
 		
 		mgr.add(view_radialview);
 		mgr.add(view_treeview);
@@ -360,13 +375,11 @@ public class SystemTapView extends ViewPart {
 		
 		markers.add(markers_next);
 		markers.add(markers_previous);
+		
 		animation.add(animation_slow);
 		animation.add(animation_fast);
 //		menu.add(markers);
-		
-		menu.add(errors);
-		menu.add(help);
-		
+
 		setGraphOptions(false);
 		
 		// Colouring helper variable
@@ -760,10 +773,10 @@ public class SystemTapView extends ViewPart {
 		view_treeview = new Action(Messages.getString("SystemTapView.16")){ //$NON-NLS-1$
 			public void run() {
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(), 
-						graph.getRootVisibleNode());
-				graph.scrollTo(graph.getNode(graph.getRootVisibleNode()).getLocation().x
+						graph.getRootVisibleNodeNumber());
+				graph.scrollTo(graph.getNode(graph.getRootVisibleNodeNumber()).getLocation().x
 						- graph.getBounds().width / 2, graph.getNode(
-						graph.getRootVisibleNode()).getLocation().y);
+						graph.getRootVisibleNodeNumber()).getLocation().y);
 			}
 		};
 		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
@@ -775,7 +788,7 @@ public class SystemTapView extends ViewPart {
 		view_radialview = new Action(Messages.getString("SystemTapView.17")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, graph.getAnimationMode(),
-						graph.getRootVisibleNode());
+						graph.getRootVisibleNodeNumber());
 
 			}
 		};
@@ -789,7 +802,7 @@ public class SystemTapView extends ViewPart {
 		view_aggregateview = new Action(Messages.getString("SystemTapView.18")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, graph.getAnimationMode(), 
-						graph.getRootVisibleNode());
+						graph.getRootVisibleNodeNumber());
 
 			}
 		};
@@ -803,7 +816,7 @@ public class SystemTapView extends ViewPart {
 		view_boxview = new Action(Messages.getString("SystemTapView.19")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_BOX, graph.getAnimationMode(), 
-						graph.getRootVisibleNode());
+						graph.getRootVisibleNodeNumber());
 			}
 		};
 		ImageDescriptor boxImage = ImageDescriptor.createFromImage(
@@ -857,11 +870,11 @@ public class SystemTapView extends ViewPart {
 				
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
-					graph.draw(graph.getRootVisibleNode());
+					graph.draw(graph.getRootVisibleNodeNumber());
 				}
 				else {
 					graph.setCollapseMode(true);
-					graph.draw(graph.getRootVisibleNode());
+					graph.draw(graph.getRootVisibleNodeNumber());
 				}
 			}
 		};
@@ -904,7 +917,7 @@ public class SystemTapView extends ViewPart {
 							graph.setMaxNodes(limit.getSelection());
 							graph.setLevelBuffer(buffer.getSelection());
 							
-							if (graph.changeLevelLimits(graph.getLevelOfNode(graph.getRootVisibleNode()))) {
+							if (graph.changeLevelLimits(graph.getLevelOfNode(graph.getRootVisibleNodeNumber()))) {
 								SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 										"LevelBuffer too high", "LevelBuffer too high", 
 										"Unfortunately the requested setting for level buffer " +
@@ -943,12 +956,34 @@ public class SystemTapView extends ViewPart {
 		createErrorActions();
 		createViewActions();
 		createAnimateActions();
+		createMarkerActions();		
+		createMovementActions();
+//		createButtonActions();
 
 		mode_collapsednodes.setChecked(true);
 		
-//		createButtonActions();
-		createMarkerActions();		
+	}
+	
+	public void createMovementActions() {
+		goto_next = new Action("(N)ext") {
+			public void run() {
+				if (graph.isCollapseMode()) {
+					graph.setCollapseMode(false);
+					graph.draw();
+				}
+				graph.draw(graph.getNextCalledNode(graph.getRootVisibleNodeNumber()));
+			}
+		};
 		
+		goto_previous = new Action("(P)revious") {
+			public void run() {
+				if (graph.isCollapseMode()) {
+					graph.setCollapseMode(false);
+					graph.draw();
+				}
+				graph.draw(graph.getPreviousCalledNode(graph.getRootVisibleNodeNumber()));
+			}
+		};
 	}
 	
 	public void createMarkerActions() {
@@ -1055,8 +1090,6 @@ public class SystemTapView extends ViewPart {
 			viewer.setStyleRanges(tempRange);
 		}
 		SystemTapView.setGraphOptions(false);
-		
-		
 		//Force a redraw (.redraw() .update() not working)
 		SystemTapView.maximizeOrRefresh(false);
 	}
@@ -1099,6 +1132,22 @@ public class SystemTapView extends ViewPart {
 
 	public static Action getView_refresh() {
 		return view_refresh;
+	}
+
+	public static Action getGoto_next() {
+		return goto_next;
+	}
+
+	public static void setGoto_next(Action gotoNext) {
+		goto_next = gotoNext;
+	}
+
+	public static Action getGoto_previous() {
+		return goto_previous;
+	}
+
+	public static void setGoto_parent(Action gotoParent) {
+		goto_previous = gotoParent;
 	}
 }
 	
