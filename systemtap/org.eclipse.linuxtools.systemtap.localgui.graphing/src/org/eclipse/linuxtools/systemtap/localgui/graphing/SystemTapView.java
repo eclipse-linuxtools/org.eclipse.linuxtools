@@ -969,7 +969,6 @@ public class SystemTapView extends ViewPart {
 			public void run() {
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
-					graph.draw();
 				}
 				graph.draw(graph.getNextCalledNode(graph.getRootVisibleNodeNumber()));
 			}
@@ -979,7 +978,6 @@ public class SystemTapView extends ViewPart {
 			public void run() {
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
-					graph.draw();
 				}
 				graph.draw(graph.getPreviousCalledNode(graph.getRootVisibleNodeNumber()));
 			}

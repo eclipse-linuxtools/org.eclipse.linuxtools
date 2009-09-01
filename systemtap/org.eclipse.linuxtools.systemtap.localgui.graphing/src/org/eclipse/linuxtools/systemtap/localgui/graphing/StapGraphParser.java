@@ -43,7 +43,7 @@ public class StapGraphParser extends Job{
 	public  HashMap<String, Long> cumulativeTimeMap;
 	public  HashMap<String, Integer> countMap;
 	public  ArrayList<Integer> callOrderList;
-	//public  HashMap<Integer, String> markedMap;
+	public  HashMap<Integer, String> markedMap;
 	//public String markedNodes;
 	public int validator;
 	private String filePath;
@@ -67,7 +67,7 @@ public class StapGraphParser extends Job{
 		countMap = new HashMap<String, Integer>();
 		endingTimeInNS = 0l;
 		callOrderList = new ArrayList<Integer>();
-		//markedMap = new HashMap<Integer, String>();
+		markedMap = new HashMap<Integer, String>();
 	}
 	
 	public void setFile(String filePath) {
@@ -132,6 +132,8 @@ public class StapGraphParser extends Job{
 		
 		if (text.length() > 0) {
 			
+			boolean encounteredMain = false;
+			
 			ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
 			String[] callsAndReturns = text.split(";");
 			String[] args;
@@ -154,9 +156,16 @@ public class StapGraphParser extends Job{
 						id = Integer.parseInt(args[1]);
 						time = Long.parseLong(args[2]);
 						name = args[0];
-						if (!isNameClean(name))
+						
+						//If we haven't encountered a main function yet and the name isn't clean,
+						//and the name contains "__", then this is probably a C directive
+						if (!encounteredMain && !isNameClean(name) && name.contains("__"))
 							break;
-//						name = cleanName(name);
+						name = cleanName(name);
+						if (name.equals("main"))
+							encounteredMain = true;
+						
+						
 						serialMap.put(id, name);
 						timeMap.put(id, time);
 						
@@ -197,9 +206,13 @@ public class StapGraphParser extends Job{
 						//args[1] = time of event
 						args = s.substring(1, s.length()).split(",,");
 						name = args[0];
-						if (!isNameClean(name))
+//						if (!isNameClean(name))
+//							break;
+						//If we haven't encountered a main function yet and the name isn't clean,
+						//and the name contains "__", then this is probably a C directive
+						if (!encounteredMain && !isNameClean(name) && name.contains("__"))
 							break;
-//						name = cleanName(name);
+						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
 							parsingError("Encountered '>' without matching '<' for function " + name);
@@ -254,10 +267,9 @@ public class StapGraphParser extends Job{
 						cumulativeTimeMap.put(name, cumulativeTime);
 					}
 					
-					//TODO: Don't do this? Decide whether or not we want to correct for C directives
-					if (name.equals("main")) {
-						totalTime = time;
-					}
+//					if (name.equals("main")) {
+//						totalTime = time;
+//					}
 				}
 			}
 			
