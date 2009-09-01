@@ -61,21 +61,31 @@ public class GraphUIJob extends UIJob{
 		//-------------Load graph data
 		g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$
 		boolean marked = false;
-		String msg;
+		String msg = "";
 		
 		
 	    for (int id_parent : parser.serialMap.keySet()) {
-	    	if (g.getData(id_parent) == null)
+	    	if (g.getData(id_parent) == null) {
+				if (parser.markedMap.get(id_parent) != null) {
+					marked = true;
+					msg = parser.markedMap.get(id_parent);
+				}
 	    		g.loadData(SWT.NONE, id_parent, parser.serialMap.get(id_parent), parser.timeMap.get(id_parent),
-	    				1, 0, false, "");
+	    				1, 0, marked, msg);
+	    	}
 	    	
 			for (int id_child : parser.outNeighbours.get(id_parent)) {
 				
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
+				
 				marked = false;
 				msg = ""; //$NON-NLS-1$
+				if (parser.markedMap.get(id_child) != null) {
+					marked = true;
+					msg = parser.markedMap.get(id_child);
+				}
 				if (id_child != -1) {
 					if (parser.timeMap.get(id_child) == null){						
 						g.loadData(SWT.NONE, id_child, parser.serialMap

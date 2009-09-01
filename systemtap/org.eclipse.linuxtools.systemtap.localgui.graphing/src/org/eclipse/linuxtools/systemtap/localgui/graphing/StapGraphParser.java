@@ -44,7 +44,7 @@ public class StapGraphParser extends Job{
 	public  HashMap<String, Integer> countMap;
 	public  ArrayList<Integer> callOrderList;
 	public  HashMap<Integer, String> markedMap;
-	//public String markedNodes;
+	public String markedNodes;
 	public int validator;
 	private String filePath;
 	public Long endingTimeInNS;
@@ -258,6 +258,7 @@ public class StapGraphParser extends Job{
 			
 			//CHECK FOR EXIT() CALL
 			if (idList.size() != 0){
+				int lastFunctionCalledBeforeExit = -1;
 				for (int val : idList){
 					name = serialMap.get(val);
 					time =  endingTimeInNS - timeMap.get(val);
@@ -270,7 +271,9 @@ public class StapGraphParser extends Job{
 //					if (name.equals("main")) {
 //						totalTime = time;
 //					}
+					lastFunctionCalledBeforeExit = val;
 				}
+				markedMap.put(lastFunctionCalledBeforeExit, "Program terminated here");
 			}
 			
 			

@@ -1490,7 +1490,9 @@ public class StapGraph extends Graph {
 		
 		for (int count = callOrderList.indexOf((Integer)id) + 1;
 			count < callOrderList.size(); count++) {
-			if (!getData(id).isCollapsed) {
+			if (getData(id) == null)
+				continue;
+			if (!getData(id).isCollapsed || getData(id).isOnlyChildWithThisName()) {
 				returnID = callOrderList.get(count);
 				return returnID;
 			}
@@ -1510,8 +1512,10 @@ public class StapGraph extends Graph {
 		int returnID = -1;
 		
 		for (int count = callOrderList.indexOf((Integer)id) - 1;
-			count > 0; count--) {
-			if (!getData(id).isCollapsed) {
+			count > -1; count--) {
+			if (getData(id) == null)
+				continue;
+			if (!getData(id).isCollapsed || getData(id).isOnlyChildWithThisName()) {
 				returnID = callOrderList.get(count);
 				return returnID;
 			}

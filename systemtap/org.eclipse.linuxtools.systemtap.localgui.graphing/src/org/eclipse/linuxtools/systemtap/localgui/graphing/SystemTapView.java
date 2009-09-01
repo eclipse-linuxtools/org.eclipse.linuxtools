@@ -970,7 +970,9 @@ public class SystemTapView extends ViewPart {
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
 				}
-				graph.draw(graph.getNextCalledNode(graph.getRootVisibleNodeNumber()));
+				int toDraw = graph.getNextCalledNode(graph.getRootVisibleNodeNumber());
+				if (toDraw != -1)
+					graph.draw(toDraw);
 			}
 		};
 		
@@ -979,7 +981,9 @@ public class SystemTapView extends ViewPart {
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
 				}
-				graph.draw(graph.getPreviousCalledNode(graph.getRootVisibleNodeNumber()));
+				int toDraw = graph.getPreviousCalledNode(graph.getRootVisibleNodeNumber());
+				if (toDraw != -1)
+					graph.draw(toDraw);
 			}
 		};
 	}

@@ -211,4 +211,18 @@ public class StapData {
 	public boolean isMarked() {
 		return marked;
 	}
+
+
+
+
+	public boolean isOnlyChildWithThisName() {
+		return onlyChildWithThisName;
+	}
+
+
+
+
+	public void setOnlyChildWithThisName(boolean onlyChildWithThisName) {
+		this.onlyChildWithThisName = onlyChildWithThisName;
+	}
 }
