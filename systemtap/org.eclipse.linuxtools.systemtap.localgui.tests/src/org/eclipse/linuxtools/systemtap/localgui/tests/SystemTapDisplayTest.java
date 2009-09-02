@@ -38,9 +38,6 @@ public class SystemTapDisplayTest extends TestCase{
 		
 		stapView.clearAll();
 		assertEquals(stapView.getText(), "");
-		
-		
-
 	}
 	
 	
@@ -48,12 +45,14 @@ public class SystemTapDisplayTest extends TestCase{
 		Shell sh = new Shell();
 		Composite cmp = new Composite(sh, SWT.NONE);
 		
-		SystemTapLaunchShortcut meh = new SystemTapLaunchShortcut();
+		SystemTapLaunchShortcut shortCut = new SystemTapLaunchShortcut();
 		SystemTapOptionsTab stp = new SystemTapOptionsTab();
 		stp.createControl(cmp);
 		ILaunchConfiguration configuration;
 		try {
-			configuration = meh.outsideGetLaunchConfigType().newInstance(null, (DebugPlugin.getDefault().getLaunchManager()).generateUniqueLaunchConfigurationNameFrom("invalid"));
+			configuration = shortCut.outsideGetLaunchConfigType().
+			newInstance(null, (DebugPlugin.getDefault().getLaunchManager()).
+					generateUniqueLaunchConfigurationNameFrom("invalid"));
 			ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
 			stp.setDefaults(wc);
 			stp.performApply(wc);

@@ -87,7 +87,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		boolean useColour = false;
 		String binaryArguments = ""; //$NON-NLS-1$
 		
-		
+			
 		String command = ConfigurationOptionsSetter.setOptions(config);  
 		
 		if (config.getAttribute(LaunchConfigurationConstants.USE_COLOUR,

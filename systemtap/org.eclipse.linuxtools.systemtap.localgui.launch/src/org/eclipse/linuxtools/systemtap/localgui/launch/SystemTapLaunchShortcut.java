@@ -85,7 +85,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 		dirPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		binaryPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
 		arguments = LaunchConfigurationConstants.DEFAULT_ARGUMENTS;
-		outputPath = PluginConstants.DEFAULT_OUTPUT + System.currentTimeMillis();
+		outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		overwrite = true;
 		scriptPath = null; 	//Every shortcut MUST declare its own script path.
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
@@ -190,7 +190,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerate);
 			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
 			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
-
+			System.out.println("FInishing launch");
 			try {
 				config = wc.doSave();
 			} catch (CoreException e) {
@@ -430,11 +430,13 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 */
 	protected String getFunctionsFromBinary(IBinary bin, String targetResource) {
 		String funcs = "";
+		if (bin == null)
+			return funcs;
 		try {			
 			ArrayList<ICContainer> list = new ArrayList<ICContainer>();
 			TranslationUnitVisitor v = new TranslationUnitVisitor();
 //			ASTTranslationUnitVisitor v  = new ASTTranslationUnitVisitor();
-			
+
 			for (ICElement b : bin.getCProject().getChildrenOfType(ICElement.C_CCONTAINER)) {
 				ICContainer c = (ICContainer) b;
 				
@@ -496,7 +498,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 //					funcs.add("*");
 //				} else {
 				if (unitList == null || unitList.length == 0) {
-					return null;
+					return "";
 				}
 				for (Object obj : unitList) {
 					if (obj instanceof ITranslationUnit) {
@@ -719,6 +721,19 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			
 		   index.releaseReadLock();
 		   return files;
-		}
+	}
 
+	/**
+	 * Convenience method for creating a new configuration
+	 * @return a new configuration
+	 * @throws CoreException 
+	 */
+	public ILaunchConfiguration getNewConfiguration() throws CoreException {
+		ILaunchConfigurationType configType = getLaunchConfigType();
+		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, 
+				getLaunchManager().generateUniqueLaunchConfigurationNameFrom("TestingConfiguration"));
+
+		return wc.doSave();
+		
+	}
 }

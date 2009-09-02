@@ -15,17 +15,18 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
+import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
-import org.eclipse.linuxtools.systemtap.localgui.launch.LaunchWizard;
+import org.eclipse.linuxtools.systemtap.localgui.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
 
 
 public class LaunchShortcutsTest extends TestCase{
 	SystemTapLaunchShortcut shcut = new SystemTapLaunchShortcut();
+	private IBinary bin = null;
 	private String mode = "profile";
 
 	/**
@@ -36,7 +37,7 @@ public class LaunchShortcutsTest extends TestCase{
 //	
 //	public void testCallGraph() {
 //		
-//		LaunchCallGraph launch = new LaunchCallGraph();
+//		LaunchStapGraph launch = new LaunchStapGraph();
 //		launch.launch(bin, mode);
 //		
 //		checkScript(launch);
@@ -45,9 +46,9 @@ public class LaunchShortcutsTest extends TestCase{
 //		//Since we're passing in a null argument, the names of files 
 //		//tried by the launch shortcut 
 //		
-//		checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" +
-//								dirPath + "' " + dirPath + "Callgraph.stp",
-//								launch);
+//		checkLaunchConfiguration(PluginConstants.STAP_PATH + " -o " +
+//								PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH,
+//								launch.getConfig());
 //
 //		killStap();
 //		
@@ -55,7 +56,7 @@ public class LaunchShortcutsTest extends TestCase{
 //		//SECOND LAUNCH FOR A SLIGHTLY DIFFERENT TEST
 //		//ONLY TO INCREASE CODE COVERAGE
 //		//FIRST TIME USE 0MS, then USE VALUE >0MS
-//		launch = new LaunchCallGraph();
+//		launch = new LaunchStapGraph();
 //		
 //		launch.launch(bin, mode);
 //		
@@ -67,7 +68,7 @@ public class LaunchShortcutsTest extends TestCase{
 //		
 //		checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" +
 //								dirPath + "' " + dirPath + "Callgraph.stp",
-//								launch);
+//								launch.getConfig());
 //
 //		killStap();
 //
@@ -111,62 +112,62 @@ public class LaunchShortcutsTest extends TestCase{
 //		killStap();
 //	}
 //	
-	
-	public void testWizard() {
-				
-		ISelection sel = null;
-		LaunchWizard launch = new LaunchWizard();
-		launch.launch(sel, mode);
-		
-		while(!launch.isCompleted()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		checkScript(launch);
-		
-		
-		if (launch.getArguments().length() > 0)
-			checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" + 
-					launch.getBinaryPath() + "' " + launch.getScriptPath() + " " + launch.getArguments(),
-					launch);
-		
-		else 
-			checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" + 
-					launch.getBinaryPath() + "' " + launch.getScriptPath(),
-					launch);
-		
-		killStap();
-	}
-	
-	public void checkScript(SystemTapLaunchShortcut launch) {
-		//Check that script was created
-		File f = new File (launch.getScriptPath());
-		if (!f.exists())
-			fail();
-	}
-	
-	public void checkLaunchConfiguration(String checkString, SystemTapLaunchShortcut launch) {
-		//Check that the configuration was properly set
-		ILaunchConfiguration config = launch.getConfig();
-		SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
-		try {
-			del.launch(config, "profile", null, null);
-			assertEquals(del.getCommand(), checkString);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void killStap() {
-		Runtime run = Runtime.getRuntime();
-		try {
-			run.exec("kill stap");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	
+//	public void testWizard() {
+//				
+//		ISelection sel = null;
+//		LaunchWizard launch = new LaunchWizard();
+//		launch.launch(sel, mode);
+//		
+//		while(!launch.isCompleted()) {
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		checkScript(launch);
+//		
+//		
+//		if (launch.getArguments().length() > 0)
+//			checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" + 
+//					launch.getBinaryPath() + "' " + launch.getScriptPath() + " " + launch.getArguments(),
+//					launch);
+//		
+//		else 
+//			checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" + 
+//					launch.getBinaryPath() + "' " + launch.getScriptPath(),
+//					launch);
+//		
+//		killStap();
+//	}
+//	
+//	public void checkScript(SystemTapLaunchShortcut launch) {
+//		//Check that script was created
+//		File f = new File (launch.getScriptPath());
+//		if (!f.exists())
+//			fail();
+//	}
+//	
+//	public void checkLaunchConfiguration(String checkString, ILaunchConfiguration config) {
+//		//Check that the configuration was properly set
+//		
+//		try {
+//			SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
+//			del.launch(config, "profile", null, null);
+//			assertEquals(checkString, del.getCommand());
+//		} catch (CoreException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public void killStap() {
+//		Runtime run = Runtime.getRuntime();
+//		try {
+//			run.exec("kill stap");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
