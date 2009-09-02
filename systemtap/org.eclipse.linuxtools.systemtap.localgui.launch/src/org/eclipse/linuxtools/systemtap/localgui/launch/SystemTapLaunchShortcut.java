@@ -14,12 +14,14 @@ package org.eclipse.linuxtools.systemtap.localgui.launch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.dom.ast.IFunction;
 import org.eclipse.cdt.core.index.IIndex;
+import org.eclipse.cdt.core.index.IIndexBinding;
 import org.eclipse.cdt.core.index.IIndexFile;
 import org.eclipse.cdt.core.index.IIndexFileLocation;
 import org.eclipse.cdt.core.index.IIndexManager;
@@ -44,6 +46,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.widgets.Shell;
@@ -492,15 +495,14 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 //				funcs.clear();
 //				funcs.add("*");
 				Object[] unitList = chooseUnit(list, numberOfFiles); 
-//				if (unitList.length >= list.size()) {
-//					//User selected all items, just add * instead of searching
-//					funcs.clear();
-//					funcs.add("*");
-//				} else {
+				if (unitList.length >= list.size()) {
+					//User selected all items, just add * instead of searching
+					funcs ="*";
+				} 
 				if (unitList == null || unitList.length == 0) {
 					return "";
 				}
-				for (Object obj : unitList) {
+				/*for (Object obj : unitList) {
 					if (obj instanceof ITranslationUnit) {
 						ITranslationUnit tu = (ITranslationUnit) obj;
 						tu.accept(v);
@@ -509,6 +511,12 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 						//Non-Translation unit object added to list, just probe *
 						funcs = "*";
 						return funcs;
+					}
+				}*/
+				
+				for (ArrayList<String> val : getAllFunctions(bin.getCProject(), unitList).values()){
+					for (String item : val){
+						funcs+= item + " ";						
 					}
 				}
 					
@@ -736,4 +744,70 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		return wc.doSave();
 		
 	}
+	
+	
+	/**
+	 * @param project : C Project Type
+	 * @return A String list of all functions contained within the specified
+	 * C Project 
+	 */
+	public static HashMap<String, ArrayList<String>> getAllFunctions(ICProject project, Object [] listOfFiles){
+		long time = System.currentTimeMillis();
+		ArrayList<String> functionList;
+		HashMap<String, ArrayList<String>> filesToFunctionsMap = new HashMap<String, ArrayList<String>>();
+		IIndexManager manager = CCorePlugin.getIndexManager();
+		IIndex index = null;
+		
+		try {
+			index = manager.getIndex(project);
+			index.acquireReadLock();
+			
+			IIndexFile[] blah = index.getAllFiles();
+			for (IIndexFile file : blah) {
+				String fullFilePath = file.getLocation().getFullPath();
+				if (fullFilePath == null || !specialContains(listOfFiles, fullFilePath)) {
+					continue;
+				}
+
+				IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
+				functionList = new ArrayList<String>();
+				for (IIndexName name : indexNamesArray) {
+					if (name.isDeclaration() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
+						IIndexBinding binder = index.findBinding(name);
+						if (binder instanceof IFunction && !filesToFunctionsMap.containsValue(binder.getName()) && !functionList.contains(binder.getName())) {
+								functionList.add(binder.getName());					
+						}
+					}
+				}
+				filesToFunctionsMap.put(fullFilePath, functionList);
+			}
+			
+		} catch (CoreException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		index.releaseReadLock();
+		System.out.println(System.currentTimeMillis() - time);
+		
+		int num = 0;
+		for (String key : filesToFunctionsMap.keySet()){
+			num += filesToFunctionsMap.get(key).size();
+		}
+		
+		MP.println("FILES : "+ filesToFunctionsMap.keySet().size());
+		MP.println("FUNCTIONS : "+ num);
+		return filesToFunctionsMap;
+	}
+	
+	private static boolean specialContains (Object [] list, String input){
+		for (Object val : list){
+			if (val instanceof ITranslationUnit && ((ITranslationUnit)val).getLocation().toString().contains(input)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

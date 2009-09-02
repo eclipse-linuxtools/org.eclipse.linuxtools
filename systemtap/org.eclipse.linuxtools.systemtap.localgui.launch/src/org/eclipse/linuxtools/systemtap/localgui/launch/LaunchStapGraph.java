@@ -90,7 +90,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			scriptFile.delete();
 			scriptFile.createNewFile();
 
-
 			scriptContents += writeGlobalVariables();
 //			scriptContents += writeStapMarkers();
 			String funcs = writeFunctionListToScript(bin, resourceToSearchFor);
@@ -171,14 +170,14 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			return null;
 		}
 		
-		String output = "";
+		StringBuffer output = new StringBuffer();
 		
 		for (String func : toWrite.split(" ")) {
 			if (func.length() > 0)
-				output += generateProbe(func);
+				output.append(generateProbe(func));
 		}
 
-		return output;
+		return output.toString();
 	}
 
 	/**
