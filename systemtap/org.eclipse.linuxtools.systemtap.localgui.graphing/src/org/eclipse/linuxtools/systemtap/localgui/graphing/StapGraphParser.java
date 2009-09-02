@@ -288,7 +288,7 @@ public class StapGraphParser extends Job{
 				
 			//timecheck is true if the total execution time is less than 10ms
 			//and the first function is more than 1% off from the total time.
-			boolean timeCheck = totalTime < 10000000 && 
+			boolean timeCheck = totalTime < 50000000 && 
 								(((float)timeMap.get(firstNode)/totalTime) > 1.01 ||
 								((float)timeMap.get(firstNode)/totalTime) < 0.99);
 			
@@ -303,7 +303,7 @@ public class StapGraphParser extends Job{
 				if (skippedDirectives)
 					markedMessage += "\n:::SystemTap detected functions that appeared to be C directives.";
 				if (timeCheck)
-					markedMessage += "\n:::Program terminated in less than 10ms and first function is not ~100%.";
+					markedMessage += "\n:::Program terminated in less than 50ms and first function is not ~100%.";
 				
 				markedMessage += "\n:::Total time for this run has been set to the total time taken by this node.";
 				
