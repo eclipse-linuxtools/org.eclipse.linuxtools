@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.systemtap.localgui_feature"
-      label="SystemTap Eclipse GUI Plugin"
-      version="0.0.1">
+      id="org.eclipse.linuxtools.systemtap.localgui_feature_test"
+      label="SystemTap Eclipse GUI Plugin Test"
+      version="0.0.2">
 
    <description>
       Allow developers to launch SystemTap scripts on their C/C++ projects directly from Eclipse. Provides a launch wizard for easy launches, as well as a few prebuilt scripts. The included graphical viewing program generates a program graph displaying time information for function calls. Also comes with the ability to annotate functions, allowing the user to mark graph nodes and displaying user-specified, function-specific information on the graph.
@@ -217,44 +217,23 @@ litigation.
    </license>
 
    <requires>
-      <import plugin="org.eclipse.draw2d"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.draw2d"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
       <import plugin="org.eclipse.cdt.launch"/>
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.debug.core"/>
-      <import plugin="org.eclipse.debug.ui"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.zest.core"/>
       <import plugin="org.eclipse.zest.layouts"/>
    </requires>
-
-   <plugin
-         id="org.eclipse.linuxtools.systemtap.callgraph"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.systemtap.fileiomonitor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.systemtap.syscall"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.linuxtools.systemtap.localgui.core"
@@ -272,6 +251,13 @@ litigation.
 
    <plugin
          id="org.eclipse.linuxtools.systemtap.localgui.graphing"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.profiling.launch"
          download-size="0"
          install-size="0"
          version="0.0.0"
