@@ -141,11 +141,14 @@ public class StapGraphParser extends Job{
 			String[] args;
 			ArrayList<String> nameList = new ArrayList<String>();
 			ArrayList<Integer> idList = new ArrayList<Integer>();
+			boolean skippedDirectives = false; 
+			
 			String name;
 			int id;
 			long time;
 			long cumulativeTime;
 			int parentID;
+			int firstNode = -1;
 			try {
 			for (String s : callsAndReturns) {
 				switch (s.charAt(0)) {
@@ -161,12 +164,17 @@ public class StapGraphParser extends Job{
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isNameClean(name) && name.contains("__"))
+
+						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
+							skippedDirectives = true;
 							break;
+						}
 						name = cleanName(name);
 						if (name.equals("main"))
 							encounteredMain = true;
-						
+						if (firstNode == -1) {
+							firstNode = id;
+						}
 						
 						serialMap.put(id, name);
 						timeMap.put(id, time);
@@ -214,8 +222,11 @@ public class StapGraphParser extends Job{
 //							break;
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isNameClean(name) && name.contains("__"))
+						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
+							//Subtract the amount of time taken for this forbidden function
+							skippedDirectives = true;							
 							break;
+						}
 						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
@@ -257,6 +268,7 @@ public class StapGraphParser extends Job{
 				
 			} 
 			
+			
 			//CHECK FOR EXIT() CALL
 			if (idList.size() != 0){
 				for (int val : idList){
@@ -273,9 +285,20 @@ public class StapGraphParser extends Job{
 //					}
 					lastFunctionCalled = val;
 				}
-				markedMap.put(lastFunctionCalled, "Program terminated here");
+				markedMap.put(lastFunctionCalled, ":::Program terminated here");
 			}
 			
+			if (skippedDirectives) {
+				totalTime = timeMap.get(firstNode);
+				String markedMessage = "";
+				if (markedMap.containsKey(firstNode)) {
+					markedMessage = markedMap.get(firstNode) + "\n";
+				}
+				
+				markedMessage += ":::SystemTap detected functions that appeared to be C directives. \n:::Total time for this run has been set to the total time taken by this node.";
+				
+				markedMap.put(firstNode, markedMessage);
+			}
 			
 			} catch (NumberFormatException e) {
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Unexpected Number", 
@@ -301,7 +324,6 @@ public class StapGraphParser extends Job{
 	 * Cleans names of form 'name").return', returning just the name
 	 * @param name
 	 */
-	@SuppressWarnings("unused")
 	private String cleanName(String name) {
 		return name.split("\"")[0];
 		
