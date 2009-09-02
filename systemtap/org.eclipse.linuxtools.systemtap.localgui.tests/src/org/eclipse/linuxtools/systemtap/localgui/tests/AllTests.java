@@ -41,7 +41,7 @@ public class AllTests {
 				"Test for org.eclipse.linuxtools.systemtap.tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(SystemTapCommandTest.class);
-//		suite.addTestSuite(ConfigurationTest.class);
+		suite.addTestSuite(ConfigurationTest.class);
 //		suite.addTestSuite(SystemTapDisplayTest.class);
 		suite.addTestSuite(RunSystemTapActionTest.class);
 		suite.addTestSuite(SystemTapCommandLineTest.class);

@@ -164,7 +164,6 @@ public class StapGraphParser extends Job{
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-
 						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
 							skippedDirectives = true;
 							break;
@@ -214,23 +213,22 @@ public class StapGraphParser extends Job{
 
 						break;
 					case '>' :
+						args = s.substring(1, s.length()).split(",,");
 						//args[0] = name
 						//args[1] = time of event
-						args = s.substring(1, s.length()).split(",,");
 						name = args[0];
-//						if (!isNameClean(name))
-//							break;
+						
+						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
 						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
-							//Subtract the amount of time taken for this forbidden function
 							skippedDirectives = true;							
 							break;
 						}
 						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
-							parsingError("Encountered '>' without matching '<' for function " + name);
+							parsingError("Encountered return without matching call for function " + name);
 							return Status.CANCEL_STATUS;
 						}
 						

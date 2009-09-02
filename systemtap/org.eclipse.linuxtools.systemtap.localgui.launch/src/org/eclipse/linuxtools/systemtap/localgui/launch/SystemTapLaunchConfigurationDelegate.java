@@ -52,7 +52,7 @@ import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
 public class SystemTapLaunchConfigurationDelegate extends
 		AbstractCLaunchDelegate {
 
-	private SystemTapCommandGenerator cmdGenerator;
+	private String cmd;
 
 	@Override
 	protected String getPluginID() {
@@ -173,17 +173,15 @@ public class SystemTapLaunchConfigurationDelegate extends
 				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-			// Not sure if this line is necessary
-			// set the default source locator if required
-			setDefaultSourceLocator(launch, config);
+
 
 			// Generate the command
-			cmdGenerator = new SystemTapCommandGenerator();
-			String cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
+			SystemTapCommandGenerator cmdGenerator = new SystemTapCommandGenerator();
+			cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
 					command, needsBinary, needsArguments, arguments, binaryArguments);
 
 
-			MP.println(cmd);
+//			MP.println(cmd);
 			// Prepare cmd for execution - we need a command array of strings,
 			// no string can contain a space character. (One of the process'
 			// requirements)
@@ -201,6 +199,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 
 			monitor.worked(1);
+			
+			if (launch == null) {
+				return;
+			}
+			// Not sure if this line is necessary
+			// set the default source locator if required
+			setDefaultSourceLocator(launch, config);
 			
 			boolean graphMode = config.getAttribute(
 					LaunchConfigurationConstants.GRAPHICS_MODE,
@@ -302,7 +307,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 	}
 
 	public String getCommand() {
-		return cmdGenerator.getExecuteCommand();
+		if (cmd.length() > 0)
+			return cmd;
+		else
+			return "SystemTapLaunchConfigurationDelegate does not have a command yet";
 	}
 
 	public Process execute(String[] commandArray, String[] env, File wd,

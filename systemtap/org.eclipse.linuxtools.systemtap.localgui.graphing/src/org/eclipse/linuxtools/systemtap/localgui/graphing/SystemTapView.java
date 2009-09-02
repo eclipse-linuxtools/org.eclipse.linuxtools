@@ -729,10 +729,12 @@ public class SystemTapView extends ViewPart {
 					logText+=line + PluginConstants.NEW_LINE;
 				}
 				
-				Shell sh = new Shell();
+				Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
+				
 				sh.setText("SystemTap Error Log");
 				sh.setLayout(new FillLayout());
-				sh.setSize(400,400);
+				sh.setSize(600,600);
+				
 				StyledText txt = new StyledText(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
 				
 				txt.setText(logText);

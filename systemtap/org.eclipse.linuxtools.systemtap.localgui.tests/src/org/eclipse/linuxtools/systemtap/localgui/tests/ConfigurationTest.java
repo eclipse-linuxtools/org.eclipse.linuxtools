@@ -35,7 +35,7 @@ public class ConfigurationTest extends TestCase{
 		SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
 		
 		try {
-			String testCDirectives = "Randomjunk";
+			String testCDirectives = "-DRandomjunk -DMoreJunk";
 			String testOutputPath = "/tmp/ThisFileDoesNothingDeleteIt";
 			String testBinaryPath = "More random junk";
 			String testScriptPath = "/tmp/NotAScriptFile.stp";
@@ -79,8 +79,9 @@ public class ConfigurationTest extends TestCase{
 			System.out.println(del.getCommand());
 			 
 			assertEquals("stap -v -p" + testPass + " -k -g -P -u -w -b -t -s" 
-						+ testBuffer + " -x" + testPid + " -D" 
-						+ testCDirectives + " -F --skip-badvars --ignore-dwarf -q  -c '" 
+						+ testBuffer + " -x" + testPid + " " 
+						+ testCDirectives + " -F --skip-badvars --ignore-dwarf -q " + "-o " 
+						+ testOutputPath + " -c '" 
 						+ testBinaryPath + "' " + testScriptPath + " " + testArguments, del.getCommand());
 		} catch (CoreException e) {
 			e.printStackTrace();

@@ -1,0 +1,3 @@
+global map
+global num
+probe begin {for (num=0; num<5; num++){map[num]=num}exit()}probe end {foreach (tmp in map){printf("%d",map[tmp])}}
