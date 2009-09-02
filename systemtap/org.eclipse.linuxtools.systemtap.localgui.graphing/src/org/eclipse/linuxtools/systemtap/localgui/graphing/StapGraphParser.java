@@ -285,13 +285,15 @@ public class StapGraphParser extends Job{
 				}
 				markedMap.put(lastFunctionCalled, ":::Program terminated here");
 			}
-			
+				
 			//timecheck is true if the total execution time is less than 10ms
 			//and the first function is more than 1% off from the total time.
 			boolean timeCheck = totalTime < 10000000 && 
-								(timeMap.get(firstNode)/totalTime) > 1.01 &&
-								(timeMap.get(firstNode)/totalTime) < 0.99;
+								(((float)timeMap.get(firstNode)/totalTime) > 1.01 ||
+								((float)timeMap.get(firstNode)/totalTime) < 0.99);
 			
+			
+								
 			if (skippedDirectives || timeCheck) {
 				totalTime = timeMap.get(firstNode);
 				String markedMessage = "";
@@ -299,11 +301,11 @@ public class StapGraphParser extends Job{
 					markedMessage = markedMap.get(firstNode) + "\n";
 				}
 				if (skippedDirectives)
-					markedMessage += ":::SystemTap detected functions that appeared to be C directives.\n";
+					markedMessage += "\n:::SystemTap detected functions that appeared to be C directives.";
 				if (timeCheck)
-					markedMessage += ":::Program terminated in less than 10ms and first function is not ~100%.\n";
+					markedMessage += "\n:::Program terminated in less than 10ms and first function is not ~100%.";
 				
-				markedMessage += ":::Total time for this run has been set to the total time taken by this node.\n";
+				markedMessage += "\n:::Total time for this run has been set to the total time taken by this node.";
 				
 				markedMap.put(firstNode, markedMessage);
 			}
