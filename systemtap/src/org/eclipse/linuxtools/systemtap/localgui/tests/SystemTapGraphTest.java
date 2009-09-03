@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraphParser;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
@@ -27,12 +26,13 @@ import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchConfigura
 import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 
 public class SystemTapGraphTest extends TestCase {	
 	
@@ -44,6 +44,8 @@ public class SystemTapGraphTest extends TestCase {
 		launch.launch(bin, mode);
 		checkScript(launch);
 	}*/
+	private boolean allTasksSuccessful = true;
+	private  ArrayList<Button> list = new ArrayList<Button>();
 	
 	public void testGraphLoading() {
 		System.out.println("Testing graph loading");
@@ -56,7 +58,7 @@ public class SystemTapGraphTest extends TestCase {
 		
 		//TODO: Figure out how to make the graph display at the same time as the dialog
 		SystemTapUIErrorMessages testRadial = new SystemTapUIErrorMessages("Test graph", "Opening graph", 
-				"Now checking graph for correctness. Please press OK, then maximize the SystemTap view.");
+				"Now checking graph for correctness. Press OK, then consult task list.");
 		testRadial.schedule();
 
 		
@@ -79,30 +81,56 @@ public class SystemTapGraphTest extends TestCase {
 		tasks.add("Collapse an arrow in the TreeViewer");
 		
 		
-		Shell sh = new Shell(SWT.ON_TOP | SWT.BORDER );
-		sh.setSize(500,800);
-		sh.setLayout(new FillLayout());
+		final Shell sh = new Shell(SWT.SHELL_TRIM);
+		sh.setSize(450,tasks.size()*38);
+		sh.setText("Tasklist - press Finished when finished.");
+		sh.setLayout(new GridLayout(1, false));
+		sh.setAlpha(150);
 		
 		ScrolledComposite testComp = new ScrolledComposite(sh, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+	
 		
 		Composite buttons = new Composite(testComp, SWT.NONE);
 		testComp.setContent(buttons);
-		buttons.setLayout(new GridLayout(2, false));
+		buttons.setLayout(new GridLayout(1, false));
 	    testComp.setExpandHorizontal(true);
 	    testComp.setExpandVertical(true);
+
 	    
-
-
 		for (String task : tasks) {
 			Button checkBox = new Button(buttons, SWT.CHECK);
+			list.add(checkBox);
 			checkBox.setText(task);
 		}
-		sh.open();
 		
-		assertEquals(true, MessageDialog.openConfirm(new Shell(), "Check Graph", 
-				"Press OK when tasks are completed."));
+//		Button selectAll = new Button(buttons, SWT.PUSH);
+//		selectAll.setText("Check all");
+//		selectAll.addSelectionListener(new SelectionListener() {
+//			
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				
+//			}
+//			
+//			@Override
+//			public void widgetDefaultSelected(SelectionEvent e) {
+//				for (Button b : list) { 
+//					b.setSelection(true);
+//				}
+//			}
+//		});
+//		
+//		sh.open();
+		
+		
+		boolean doneTasks =MessageDialog.openConfirm(new Shell(), "Check Graph", 
+							"Press OK when tasks are completed."); 
+		assertEquals(true, doneTasks);
 
-		
+		for (Button b : list) {
+			System.out.println("Testing button " + b.getText());
+			assertEquals(true,b.getSelection());
+		}
 		
 		
 		
