@@ -17,8 +17,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.ui.console.TextConsole;
-import org.eclipse.ui.progress.UIJob;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
@@ -36,13 +34,14 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.localgui.core.Helper;
 import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.systemtap.localgui.core.MP;
 import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
+import org.eclipse.ui.console.TextConsole;
+import org.eclipse.ui.progress.UIJob;
 
 /**
  * Delegate for Stap scripts. The Delegate generates part of the command string
