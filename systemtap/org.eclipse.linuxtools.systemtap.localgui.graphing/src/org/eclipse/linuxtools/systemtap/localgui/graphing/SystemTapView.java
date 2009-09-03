@@ -73,9 +73,9 @@ public class SystemTapView extends ViewPart {
 	
 	private Action killSystemTapScript;
 	private Action checkSystemTapVersion;
-	private Action open_callgraph;
 	private Action disposeGraph;
 
+	private static Action open_callgraph;
 	private static Action save_callgraph;
 	private static Action open_default;
 	private static Action error_errorLog;
@@ -1178,11 +1178,11 @@ public class SystemTapView extends ViewPart {
 		goto_last = gotoLast;
 	}
 
-	public Action getOpen_callgraph() {
+	public static Action getOpen_callgraph() {
 		return open_callgraph;
 	}
 
-	public void setOpen_callgraph(Action openCallgraph) {
+	public static void setOpen_callgraph(Action openCallgraph) {
 		open_callgraph = openCallgraph;
 	}
 
