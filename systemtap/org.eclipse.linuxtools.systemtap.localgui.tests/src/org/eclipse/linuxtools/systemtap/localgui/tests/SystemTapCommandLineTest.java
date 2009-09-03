@@ -71,6 +71,7 @@ public class SystemTapCommandLineTest extends TestCase {
 			
 			//EXECUTE THE COMMAND
 			Process pr = null;
+			rt.exec("kill stap");
 			if (needsBinary){
 				pr = rt.exec("stap -c '"+binaryPath+ "' "+ scriptPath + " " + binaryPath);
 			}else{
