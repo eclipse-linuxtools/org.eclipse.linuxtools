@@ -26,16 +26,10 @@ import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchConfigura
 import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 public class SystemTapGraphTest extends TestCase {	
 	
@@ -47,7 +41,6 @@ public class SystemTapGraphTest extends TestCase {
 		launch.launch(bin, mode);
 		checkScript(launch);
 	}*/
-	private boolean allTasksSuccessful = false;
 	private  ArrayList<Button> list = new ArrayList<Button>();
 	
 	public void testGraphLoading() throws InterruptedException {

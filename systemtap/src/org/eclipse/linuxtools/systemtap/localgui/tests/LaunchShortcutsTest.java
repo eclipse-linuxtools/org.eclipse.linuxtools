@@ -10,24 +10,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.localgui.tests;
 
-import java.io.File;
-import java.io.IOException;
-
 import junit.framework.TestCase;
 
-import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
-import org.eclipse.linuxtools.systemtap.localgui.launch.LaunchStapGraph;
-import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
 
 
 public class LaunchShortcutsTest extends TestCase{
 	SystemTapLaunchShortcut shcut = new SystemTapLaunchShortcut();
-	private IBinary bin = null;
-	private String mode = "profile";
+//	private IBinary bin = null;
+//	private String mode = "profile";
 
 	/**
 	 * Checks that the scripts are correct/exist and that the expected 
