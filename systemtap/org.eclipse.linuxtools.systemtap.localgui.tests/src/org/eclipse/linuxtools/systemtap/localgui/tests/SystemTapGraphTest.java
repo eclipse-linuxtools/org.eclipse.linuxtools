@@ -28,11 +28,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 public class SystemTapGraphTest extends TestCase {	
 	
@@ -44,10 +47,10 @@ public class SystemTapGraphTest extends TestCase {
 		launch.launch(bin, mode);
 		checkScript(launch);
 	}*/
-	private boolean allTasksSuccessful = true;
+	private boolean allTasksSuccessful = false;
 	private  ArrayList<Button> list = new ArrayList<Button>();
 	
-	public void testGraphLoading() {
+	public void testGraphLoading() throws InterruptedException {
 		System.out.println("Testing graph loading");
 
 		StapGraphParser parse = new StapGraphParser("Test StapParser", Activator.PLUGIN_LOCATION+"graph_data_output.graph");
@@ -103,9 +106,9 @@ public class SystemTapGraphTest extends TestCase {
 			checkBox.setText(task);
 		}
 		
-//		Button selectAll = new Button(buttons, SWT.PUSH);
-//		selectAll.setText("Check all");
-//		selectAll.addSelectionListener(new SelectionListener() {
+//		Button finish = new Button(buttons, SWT.PUSH);
+//		finish.setText("Finish");
+//		finish.addSelectionListener(new SelectionListener() {
 //			
 //			@Override
 //			public void widgetSelected(SelectionEvent e) {
@@ -114,16 +117,14 @@ public class SystemTapGraphTest extends TestCase {
 //			
 //			@Override
 //			public void widgetDefaultSelected(SelectionEvent e) {
-//				for (Button b : list) { 
-//					b.setSelection(true);
-//				}
+//				sh.dispose();
 //			}
 //		});
 //		
-//		sh.open();
+		sh.open();
 		
 		
-		boolean doneTasks =MessageDialog.openConfirm(new Shell(), "Check Graph", 
+		boolean doneTasks =MessageDialog.openConfirm(new Shell(SWT.ON_TOP), "Check Graph", 
 							"Press OK when tasks are completed."); 
 		assertEquals(true, doneTasks);
 
