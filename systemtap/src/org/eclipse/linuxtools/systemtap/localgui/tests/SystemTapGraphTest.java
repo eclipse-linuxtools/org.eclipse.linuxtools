@@ -93,9 +93,9 @@ public class SystemTapGraphTest extends TestCase {
 		tasks.add("Tree View");
 		tasks.add("Aggregate View");
 		tasks.add("Box View");
-		tasks.add("Collapse");
-		tasks.add("Uncollapse.");
 		tasks.add("Animation->Fast");
+		tasks.add("Collapse");
+		tasks.add("Uncollapse");
 		tasks.add("Radial View");
 		tasks.add("Collapse.");
 		tasks.add("(Manually) Double-click node with no children in TreeViewer");
@@ -161,11 +161,11 @@ public class SystemTapGraphTest extends TestCase {
 				act = SystemTapView.getView_boxview();
 				break;
 			case 6:
-			case 7:
-				act = SystemTapView.getMode_collapsednodes();
-				break;
-			case 8:
 				act = SystemTapView.getAnimation_fast();
+				break;
+			case 7:
+			case 8:
+				act = SystemTapView.getMode_collapsednodes();
 				break;
 			case 9:
 				act = SystemTapView.getView_radialview();
@@ -209,12 +209,15 @@ public class SystemTapGraphTest extends TestCase {
 		
 		
 		boolean doneTasks =MessageDialog.openConfirm(new Shell(SWT.ON_TOP), "Check Graph", 
-							"Press OK if all "+ tasks.size() + " boxes in the checklist have been checked.\n Hit Cancel if any test fails."); 
+							"Press OK if all "+ tasks.size() + " boxes in the checklist have been checked.\n" +
+									"Hit Cancel if any test fails."); 
 		assertEquals(true, doneTasks);
 
 		for (Button b : list) {
-			System.out.println("Testing button " + b.getText());
-			assertEquals(true,b.getSelection());
+			if (!b.getSelection()) {
+				fail("Task failed: " + b.getText());
+			}
+			assertEquals(true, b.getSelection());
 		}
 		
 		
