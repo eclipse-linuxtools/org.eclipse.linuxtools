@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.localgui.tests;
 
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -47,5 +49,31 @@ public class StapGraphParserTest extends TestCase {
 			assertTrue(grph.totalTime >= grph.cumulativeTimeMap.get(fname));
 		}
 	}
+	
+	
+	public static void assertConnectedness (StapGraphParser grph){
+		grph.printArrayListMap(grph.outNeighbours);
+		boolean hasParent;
+		//ALL NODES MUST HAVE A PARENT EXCEPT THE ROOT
+		for (int key : grph.serialMap.keySet()){
+			hasParent = false;
+			for (ArrayList<Integer> list : grph.outNeighbours.values()){
+				if (list.contains(key)){
+					hasParent = true;
+					break;
+				}
+			}
+			
+			if (!hasParent){
+				for (int other : grph.serialMap.keySet()){
+					if (key > other){
+						fail(key + " " + grph.serialMap.get(key) + " had no parent");						
+					}
+				}
+			}
+		}
+		
+	}
+	
 
 }
