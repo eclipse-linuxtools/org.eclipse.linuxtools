@@ -353,7 +353,6 @@ public class StapGraphParser extends Job{
 		return true;
 	}
 	
-	@SuppressWarnings("unused")
 	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
 		int amt = 0;
 		for (int a : blah.keySet()) {
