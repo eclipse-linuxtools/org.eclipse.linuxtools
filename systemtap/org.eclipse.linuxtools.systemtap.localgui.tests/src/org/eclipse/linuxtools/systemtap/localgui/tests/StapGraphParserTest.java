@@ -52,7 +52,6 @@ public class StapGraphParserTest extends TestCase {
 	
 	
 	public static void assertConnectedness (StapGraphParser grph){
-		grph.printArrayListMap(grph.outNeighbours);
 		boolean hasParent;
 		//ALL NODES MUST HAVE A PARENT EXCEPT THE ROOT
 		for (int key : grph.serialMap.keySet()){

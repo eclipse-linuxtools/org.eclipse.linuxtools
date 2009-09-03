@@ -160,6 +160,12 @@ public class SystemTapCommandLineTest extends TestCase {
 		executeGraphTests();
 	}
 	
+	public void testManyFuncs(){
+		binaryPath = currentPath+"/eag";
+		executeGraphTests();
+	}
+	
+	
 	public void initializeFiles(){
 		File scriptFile = new File(scriptPath);
 		File graphDataFile = new File(graphDataPath);
