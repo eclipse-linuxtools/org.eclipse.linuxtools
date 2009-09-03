@@ -354,7 +354,7 @@ public class StapGraphParser extends Job{
 	}
 	
 	@SuppressWarnings("unused")
-	private void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
+	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
 		int amt = 0;
 		for (int a : blah.keySet()) {
 			amt++;

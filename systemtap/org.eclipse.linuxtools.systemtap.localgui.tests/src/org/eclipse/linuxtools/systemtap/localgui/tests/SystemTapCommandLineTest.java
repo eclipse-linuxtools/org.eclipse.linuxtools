@@ -52,6 +52,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		StapGraphParser grph = StapGraphParserTest.initializeGraph(graphDataPath);
 		StapGraphParserTest.assertSanity(grph);
 		StapGraphParserTest.assertTimes(grph);
+		StapGraphParserTest.assertConnectedness(grph);
 	}
 	
 	
