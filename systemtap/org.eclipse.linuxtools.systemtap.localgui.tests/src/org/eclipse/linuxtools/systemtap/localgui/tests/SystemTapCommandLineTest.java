@@ -21,6 +21,13 @@ import java.io.InputStreamReader;
 import junit.framework.TestCase;
 
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraphParser;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
 
 public class SystemTapCommandLineTest extends TestCase {
 	File tmpfile = new File("");
@@ -164,6 +171,29 @@ public class SystemTapCommandLineTest extends TestCase {
 	public void testManyFuncs(){
 		binaryPath = currentPath+"/eag";
 		executeGraphTests();
+	}
+	
+	//THIS TEST DOES NOT REALLY WORK
+	public void BtestFailure(){
+		try {
+			SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
+			ILaunchConfiguration config = shortcut.outsideGetLaunchConfigType().newInstance(null, "Temp Name");
+			ILaunchConfigurationWorkingCopy wc = config.copy("Temp Name");
+			
+			wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,currentPath + "/basic");
+			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,scriptPath);
+			wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS,"-this_will_fail");
+			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,graphDataPath);
+			config = wc.doSave();
+			ILaunch launch = config.launch("profile", null);
+			
+			SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
+			del.launch(config, "profile", launch, null);
+			launch.terminate();
+			
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
