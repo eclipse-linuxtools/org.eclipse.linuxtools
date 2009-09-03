@@ -1,9 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
-#include <stdio.h>
 
 
-using namespace std;
 int callThisOnce(int);
 int callThisTwice(int);
 int callThisThirtyTimes(int);
@@ -16,7 +14,6 @@ void abcdefghijklmnopqrstuvwxyz(void);
 
 
 int main() {
-	printf("Starting first\n");
 	int i = 0;
 	callThisOnce(i);
 	callThisTwice(i);
@@ -26,7 +23,6 @@ int main() {
 	hasOneChild(i);
 	hasTwoDifferentChildren(i);
 	chainOfFifty(0);
-	printf("done first\n");
 	abcdefghijklmnopqrstuvwxyz();
 	finalCall();
 	return i;
