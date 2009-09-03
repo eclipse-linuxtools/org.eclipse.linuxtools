@@ -1177,6 +1177,82 @@ public class SystemTapView extends ViewPart {
 	public static void setGoto_last(Action gotoLast) {
 		goto_last = gotoLast;
 	}
+
+	public Action getOpen_callgraph() {
+		return open_callgraph;
+	}
+
+	public void setOpen_callgraph(Action openCallgraph) {
+		open_callgraph = openCallgraph;
+	}
+
+	public static Action getSave_callgraph() {
+		return save_callgraph;
+	}
+
+	public static void setSave_callgraph(Action saveCallgraph) {
+		save_callgraph = saveCallgraph;
+	}
+
+	public static Action getError_errorLog() {
+		return error_errorLog;
+	}
+
+	public static void setError_errorLog(Action errorErrorLog) {
+		error_errorLog = errorErrorLog;
+	}
+
+	public static Action getError_deleteError() {
+		return error_deleteError;
+	}
+
+	public static void setError_deleteError(Action errorDeleteError) {
+		error_deleteError = errorDeleteError;
+	}
+
+	public static Action getView_treeview() {
+		return view_treeview;
+	}
+
+	public static void setView_treeview(Action viewTreeview) {
+		view_treeview = viewTreeview;
+	}
+
+	public static Action getView_radialview() {
+		return view_radialview;
+	}
+
+	public static void setView_radialview(Action viewRadialview) {
+		view_radialview = viewRadialview;
+	}
+
+	public static Action getView_aggregateview() {
+		return view_aggregateview;
+	}
+
+	public static void setView_aggregateview(Action viewAggregateview) {
+		view_aggregateview = viewAggregateview;
+	}
+
+	public static Action getView_boxview() {
+		return view_boxview;
+	}
+
+	public static void setView_boxview(Action viewBoxview) {
+		view_boxview = viewBoxview;
+	}
+
+	public static Action getHelp_version() {
+		return help_version;
+	}
+
+	public static void setHelp_version(Action helpVersion) {
+		help_version = helpVersion;
+	}
+
+	public static void setGoto_previous(Action gotoPrevious) {
+		goto_previous = gotoPrevious;
+	}
 }
 	
 /**
