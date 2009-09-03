@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraphParser;
@@ -26,6 +27,8 @@ import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchConfigura
 import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -43,6 +46,26 @@ public class SystemTapGraphTest extends TestCase {
 	}*/
 	private  ArrayList<Button> list = new ArrayList<Button>();
 	
+	private class ButtonSelectionListener implements SelectionListener {
+		private Action action;
+
+		public ButtonSelectionListener(Action action) {
+			this.action = action;
+		}
+		
+		@Override
+		public void widgetDefaultSelected(SelectionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			action.run();
+		}
+		
+	}
+	
 	public void testGraphLoading() throws InterruptedException {
 		System.out.println("Testing graph loading");
 
@@ -54,27 +77,32 @@ public class SystemTapGraphTest extends TestCase {
 		
 		//TODO: Figure out how to make the graph display at the same time as the dialog
 		SystemTapUIErrorMessages testRadial = new SystemTapUIErrorMessages("Test graph", "Opening graph", 
-				"Now checking graph for correctness. Press OK, then consult task list.");
+				"Testing Graph. Press OK, then go through the list of tasks.");
 		testRadial.schedule();
 
 		
 		
 		
 		
+
 		ArrayList<String> tasks = new ArrayList<String>();
 		
-		tasks.add("Maximize the window and click refresh icon.");
-		tasks.add("Select Tree View icon");
-		tasks.add("Select Aggregate View icon");
-		tasks.add("Select Box View from icon.");
-		tasks.add("Select Collapse icon.");
-		tasks.add("Select Animation->Fast from the drop-down menu");
-		tasks.add("Go to Radial View");
-		tasks.add("Select Collapse icon again.");
-		tasks.add("Double-click a node with no children in the TreeViewer");
-		tasks.add("Double-click a node with children in the TreeViewer");
-		tasks.add("Expand an arrow in the TreeViewer");
-		tasks.add("Collapse an arrow in the TreeViewer");
+
+		tasks.add("(Manually) Maximize SystemTapView");
+		tasks.add("Refresh");
+		tasks.add("Tree View");
+		tasks.add("Aggregate View");
+		tasks.add("Box View");
+		tasks.add("Collapse");
+		tasks.add("Uncollapse.");
+		tasks.add("Animation->Fast");
+		tasks.add("Radial View");
+		tasks.add("Collapse.");
+		tasks.add("(Manually) Double-click node with no children in TreeViewer");
+		tasks.add("(Manually) Expand an arrow in the TreeViewer");
+		tasks.add("(Manually) Collapse an arrow in the TreeViewer");
+		tasks.add("Save file");
+		tasks.add("Reload file");
 		
 		
 		final Shell sh = new Shell(SWT.SHELL_TRIM);
@@ -92,11 +120,74 @@ public class SystemTapGraphTest extends TestCase {
 	    testComp.setExpandHorizontal(true);
 	    testComp.setExpandVertical(true);
 
-	    
+	    int taskNumber = 0;
 		for (String task : tasks) {
+			taskNumber++;
+
+			
 			Button checkBox = new Button(buttons, SWT.CHECK);
 			list.add(checkBox);
 			checkBox.setText(task);
+			Action act = null;
+			switch (taskNumber) {
+			case 1:
+				break;
+			case 2:
+				act = SystemTapView.getView_refresh();
+				break;
+			case 3:
+				act = SystemTapView.getView_treeview();
+				break;
+				
+//				tasks.add("(Manually) Maximize SystemTapView");
+//				tasks.add("Refresh");
+//				tasks.add("Tree View");
+//				tasks.add("Aggregate View");
+//				tasks.add("Box View");
+//				tasks.add("Collapse");
+//				tasks.add("Uncollapse.");
+//				tasks.add("Animation->Fast");
+//				tasks.add("Radial View");
+//				tasks.add("Collapse.");
+//				tasks.add("(Manually) Double-click node with no children in TreeViewer");
+//				tasks.add("(Manually) Expand an arrow in the TreeViewer");
+//				tasks.add("(Manually) Collapse an arrow in the TreeViewer");
+//				tasks.add("Save file");
+//				tasks.add("Reload file");
+			case 4:
+				act = SystemTapView.getView_aggregateview();
+				break;
+			case 5:
+				act = SystemTapView.getView_boxview();
+				break;
+			case 6:
+			case 7:
+				act = SystemTapView.getMode_collapsednodes();
+				break;
+			case 8:
+				act = SystemTapView.getAnimation_fast();
+				break;
+			case 9:
+				act = SystemTapView.getView_radialview();
+				break;
+			case 10:
+				act = SystemTapView.getMode_collapsednodes();
+				break;
+			case 14:
+				act = SystemTapView.getSave_callgraph();
+				break;
+			case 15:
+				act = SystemTapView.getOpen_callgraph();
+				break;
+			default:
+				break;
+			}
+			if (act != null) {
+				ButtonSelectionListener bl = new ButtonSelectionListener(act);
+				checkBox.addSelectionListener(bl);
+			}
+			
+			
 		}
 		
 //		Button finish = new Button(buttons, SWT.PUSH);
@@ -118,7 +209,7 @@ public class SystemTapGraphTest extends TestCase {
 		
 		
 		boolean doneTasks =MessageDialog.openConfirm(new Shell(SWT.ON_TOP), "Check Graph", 
-							"Press OK when tasks are completed."); 
+							"Press OK if all "+ tasks.size() + " boxes in the checklist have been checked.\n Hit Cancel if any test fails."); 
 		assertEquals(true, doneTasks);
 
 		for (Button b : list) {
