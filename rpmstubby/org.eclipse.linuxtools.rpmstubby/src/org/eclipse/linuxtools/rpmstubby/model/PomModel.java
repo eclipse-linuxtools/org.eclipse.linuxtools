@@ -107,12 +107,16 @@ public class PomModel {
 	}
 
 	/**
-	 * Returns the URL (xpath:/project/organization/url).
+	 * Returns the URL (xpath:/project/url) or (xpath:/project/organization/url).
 	 *
 	 * @return The project url.
 	 */
 	public String getURL() {
-		return xpathEval("/project/organization/url");
+		String url = xpathEval("/project/url");
+		if (url.equals("")) {
+			url = xpathEval("/project/organization/url");
+		}
+		return url;
 	}
 
 	/**
@@ -125,11 +129,15 @@ public class PomModel {
 		return xpathEval("/project/description");
 	}
 
+	/**
+	 * Returns the dependencies.
+	 * @return All the dependencies.
+	 */
 	public List<String> getDependencies() {
 		List<String> dependencies = new ArrayList<String>();
 		NodeList nodes = xpathEvalNodes("/project/dependencies/dependency/artifactId");
-		for (int i=0; i<nodes.getLength(); i++){
-			Node node =nodes.item(i);
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);
 			dependencies.add(node.getTextContent());
 		}
 		return dependencies;
@@ -149,7 +157,8 @@ public class PomModel {
 	private NodeList xpathEvalNodes(String path) {
 		NodeList result = null;
 		try {
-			result = (NodeList) xpath.evaluate(path, docroot, XPathConstants.NODESET);
+			result = (NodeList) xpath.evaluate(path, docroot,
+					XPathConstants.NODESET);
 		} catch (XPathExpressionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

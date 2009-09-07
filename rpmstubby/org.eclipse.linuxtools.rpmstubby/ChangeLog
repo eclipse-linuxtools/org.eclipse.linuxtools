@@ -1,5 +1,11 @@
 2009-09-07  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpmstubby/model/PomModel.java (xpathEvalNodes): Format.
+	(getDependencies): Add javadoc.
+	(getURL): Check for another possible xpath for url.
+
+2009-09-07  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpmstubby/model/PomModel.java: New file.
 	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyFeatureAction.java: New file.
 	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyPomAction.java: New file.
