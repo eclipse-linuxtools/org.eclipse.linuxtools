@@ -1,3 +1,24 @@
+2009-09-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/model/PomModel.java: New file.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyFeatureAction.java: New file.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyPomAction.java: New file.
+	* src/org/eclipse/linuxtools/rpmstubby/SpecfilePomWriter.java: New file.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java: New file.
+	* plugin.properties: Externalize strings.
+	* plugin.xml: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java (run): Make it abstract class.
+	(setActivePart): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/StubbyPreferencePage.java (init): Add javadoc.
+	(createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): Format and javadoc added.
+	(getPackageName): Likewise
+	(writeContent): Likewise.
+	(throwCoreException): Likewise.
+	(StubbyGenerator): Likewise.
+	(generateSpecfile): Likewise.
+	(generateFetchScript): Likewise.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
@@ -12,7 +33,7 @@
 
 2009-02-18  Alexander Kurtakov  <akurtako@redhat.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): Put Fixme in commented block so it get annotated. 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): Put Fixme in commented block so it get annotated.
 	(generateSpecfile): Likewise.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java (getDescription): Proper constant name.
 	(getLicense): Likewise
@@ -30,31 +51,31 @@
 
 2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): When generating our fetch script run %setup -c to match the tarball created. 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generatePrepSection): When generating our fetch script run %setup -c to match the tarball created.
 	* src/org/eclipse/linuxtools/rpmstubby/FeatureVisitor.java (getFeatures): Add javadoc.
 	(visit): Extract constant.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java (resolveFeatureProperties): Fix NPE when model returns null.
 
 2009-01-21  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260887.
-	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java 
+	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java
 	(getDocFilesRoot): New method.
 	(setDocFilesRoot): Likewise.
 	(setDocFiles): Likewise.
 	(getDocFiles): Likewise.
-	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java 
+	* src/org/eclipse/linuxtools/rpmstubby/SpecfileWriter.java
 	(write): Add javadoc and populate docs data.
 	(SpecfileWriter): Add javadoc.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateFilesSections): Generate %doc in the %files section.
 	(generateSpecfile): Move %files related generation to generateFilesSections.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(populateDocFiles): New method.
 	(StubbyPackageModel): Store featureDir for later usage.
 
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(getDepsOrReqs): Use StringBuilder.
 	(getPackageFiles): Likewise.
 	(generateSpecfile): Likewise.
@@ -67,31 +88,31 @@
 
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260884.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(getProvidesBundlesString): Add \ for multiline.
 	(generateFetchScript): Fix escaping.
 
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260879.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generatePrepSection): Add comment for FIXME in %setup call.
-	 
+
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260875.
 	* build.properties: Add license header.
 	* plugin.properties: Fix copyright year.
 	* plugin.xml: Add license header.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateSpecfile): Add comment for the Source0 generation.
 	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Fix copyright year.
-	
+
 
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 	Fix #260871.
 	* .settings/org.eclipse.jdt.core.prefs: Warn about missing javadoc.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java: Format and javadoc.
 	(getProvidesBundlesString): Handle properly *-feature named features.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(getMissingFeaturesAsString): Add javadoc.
 	(getIncudedFeatures): Likewise.
 	(isAllIncludedFeatureFound): Likewise.
@@ -100,16 +121,16 @@
 	(populatePackagePreambleData): Add javadoc.
 	(StubbyPackageModel): Add javadoc.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPlugin.java (PLUGIN_ID): Add javadoc.
-	
-	
+
+
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable warnings for missing javadoc tags.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java
 	(createStatus): Fix javadoc.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPlugin.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPlugin.java
 	(getActiveWorkbenchShell): Likewise.
-	 
+
 2009-01-20  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Remove unneeded <or>.
@@ -117,7 +138,7 @@
 2009-01-15  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable javadoc validity warnings.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyLog.java
 	(logInfo): Fix javadoc.
 	(logError): Likewise.
 	(log): Likewise.
@@ -142,39 +163,39 @@
 
 2008-12-04  Alexander Kurtakov  <akurtakov@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(getLicense): Add support for recognizing CPL.
 
 2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java 
+	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java
 	(toString): Use StringBuilder instead of StringBuffer.
-	* src/org/eclipse/linuxtools/rpmstubby/model/PackageItem.java 
+	* src/org/eclipse/linuxtools/rpmstubby/model/PackageItem.java
 	(toString): Likewise.
-	* src/org/eclipse/linuxtools/rpmstubby/model/SubPackage.java 
+	* src/org/eclipse/linuxtools/rpmstubby/model/SubPackage.java
 	(toString): Likewise.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generatePrepSection): Likewise.
 	(generateBuildSection): Likewise.
 	(generateSpecfile): Likewise.
 	(generateFetchScript): Likewise.
-	
+
 2008-11-28  Alexander Kurtakov  <akurtakov@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateSpecfile): Fix hardcoded eclipse version to require 3.4.0 for the dropins support.
 
 2008-11-20  Alexander Kurtakov  <akurtakov@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateSpecfile): Make it install in %{_datadir}/eclipse/dropins/feature_name.
-		
+
 2008-11-20  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
 	* src/org/eclipse/linuxtools/rpmstubby/model/IPackage.java: Switch to Lists from arrays.
 	* src/org/eclipse/linuxtools/rpmstubby/model/IPackagePreamble.java: Likewise.
-	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java 
+	* src/org/eclipse/linuxtools/rpmstubby/model/MainPackage.java
 	(getSources): Likewise.
 	(setPaches): Likewise.
 	(toString): Likewise
@@ -182,20 +203,20 @@
 	(getBuildRequires): Likewise
 	(setBuildRequires): Likewise
 	(getPaches): Likewise.
-	* src/org/eclipse/linuxtools/rpmstubby/model/SubPackage.java 
+	* src/org/eclipse/linuxtools/rpmstubby/model/SubPackage.java
 	(setProvides): Likewise.
 	(toString): Likewise.
 	(getProvides): Likewise.
 	(setRequires): Likewise.
 	(getRequires): Likewise.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(getPackageName): Do not use feature as the name of the feature.
 	(getDepsOrReqs): Switch to Lists from arrays.
 	(getPackageFiles): Likewise.
 	(getProvidesBundles): Likewise.
 	(generateSpecfile): Fix %eclipse_base value.
 	(getProvidesBundlesString): Switch to Lists from arrays.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(getDescription): Switch to Lists from arrays.
 	(getLicense): Likewise.
 	(StubbyPackageModel): Likewise.
@@ -211,11 +232,11 @@
 
 2008-11-19  Alexander Kurtakov  <akurtakov@gmail.com>
 
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPackageModel.java
 	(getBundleValue): Remove org.eclipse.core.internal classes usage.
-	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java 
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java
 	(run): Fix generics warning.
-	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java 
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java
 	(generateSpecfile): Don't generate Provides for every plugin.
 
 2008-11-03  Andrew Overholt  <overholt@redhat.com>

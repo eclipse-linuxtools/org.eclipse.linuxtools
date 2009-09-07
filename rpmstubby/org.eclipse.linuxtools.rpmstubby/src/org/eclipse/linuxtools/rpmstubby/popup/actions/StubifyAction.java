@@ -10,66 +10,44 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.popup.actions;
 
-import java.util.Iterator;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.linuxtools.rpmstubby.SpecfileWriter;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-public class StubifyAction implements IObjectActionDelegate {
+/**
+ * Base class for the different stubify actions.
+ *
+ */
+public abstract class StubifyAction implements IObjectActionDelegate {
 
-	private ISelection selection;
-	private IFile featureFile = null;
+	protected ISelection selection;
 
 	/**
-	 * Constructor for StubifyAction.
+	 * @see IActionDelegate#run(IAction)
 	 */
-	public StubifyAction() {
-		super();
-	}
+	public abstract void run(IAction action);
 
 	/**
 	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 		IStructuredSelection structuredSelection = null;
-		ISelectionProvider provider= targetPart.getSite().getSelectionProvider();
+		ISelectionProvider provider = targetPart.getSite()
+				.getSelectionProvider();
 		if (provider != null) {
-			ISelection selection= provider.getSelection();
+			ISelection selection = provider.getSelection();
 			if (selection instanceof IStructuredSelection)
-				structuredSelection = (IStructuredSelection)selection;
+				structuredSelection = (IStructuredSelection) selection;
 		}
 		structuredSelection = StructuredSelection.EMPTY;
 		this.selection = (ISelection) structuredSelection.getFirstElement();
 	}
 
-	/**
-	 * @see IActionDelegate#run(IAction)
-	 */
-	public void run(IAction action) {
-		StructuredSelection structuredSelection = (StructuredSelection) selection;
-		for (Iterator<?> selectionIter = structuredSelection.iterator(); selectionIter.hasNext();) {
-			Object selected = selectionIter.next();
-			if (selected instanceof IProject) {
-				featureFile = ((IProject) selected).getFile(new Path("/feature.xml"));
-			} else if (selected instanceof IFile) {
-				featureFile = (IFile) selected;
-			} else {
-				// FIXME:  error
-			}
-		}
-		SpecfileWriter specfileWriter = new SpecfileWriter();
-		specfileWriter.write(featureFile);
-	}
 
 	/**
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)

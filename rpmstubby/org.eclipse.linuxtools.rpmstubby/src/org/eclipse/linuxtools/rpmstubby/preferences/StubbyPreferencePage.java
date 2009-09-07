@@ -16,6 +16,10 @@ import org.eclipse.linuxtools.rpmstubby.StubbyPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+/**
+ * Preference page for controlling spec files stub creation.
+ *
+ */
 public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
 
@@ -27,10 +31,9 @@ public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(StubbyPlugin.getDefault().getPreferenceStore());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
+	/**
+	 * @see
+	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
 	 */
 	@Override
 	public void createFieldEditors() {
@@ -47,13 +50,11 @@ public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 				"Use the pdebuild script for building", getFieldEditorParent()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+	/**
+	 * @see
+	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
-
 	}
 
 }
