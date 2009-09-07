@@ -106,11 +106,6 @@ public class RPMProjectTest extends TestCase {
 				new QualifiedName(RPMCorePlugin.ID,
 						IRPMConstants.SPEC_FILE_PROPERTY)));
 
-		// Make sure the checksum was stored
-		assertNotNull(rpmProject.getProject().getPersistentProperty(
-				new QualifiedName(RPMCorePlugin.ID,
-						IRPMConstants.CHECKSUM_PROPERTY)));
-
 		// Make sure the RPM nature was added
 		assertTrue(rpmProject.getProject().hasNature(
 				RPMProjectNature.RPM_NATURE_ID));

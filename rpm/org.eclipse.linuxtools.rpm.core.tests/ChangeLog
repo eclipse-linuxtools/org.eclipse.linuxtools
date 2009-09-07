@@ -1,3 +1,7 @@
+2009-09-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (testImportHelloWorld): Drop checks not needed.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: Fix provider to be Eclipse not Eclipse.org.
@@ -7,7 +11,7 @@
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
 	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectNatureTest.java (setUp): Add missing @Override.
 	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (setUp): Likewise.
-	(suite): Removed as it is not needed. 
+	(suite): Removed as it is not needed.
 
 2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
 
@@ -20,7 +24,7 @@
 2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: No need to export packages.
-	
+
 2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/cdt/rpm/core: Removed.
@@ -63,7 +67,7 @@
 	* .classpath: J2SE-1.5.
 	* build.properties: Likewise.
 	* META-INF/MANIFEST.MF: Likewise.
-	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java (suite): Remove test not present anymore. 
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java (suite): Remove test not present anymore.
 	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java (testIsChangedHelloWorld1): Remove code testing old implementation.
 	(setUp): Likewise.
 	(testBuildPrepHelloWorld): Likewise.
@@ -115,7 +119,7 @@
 	* src/org/eclipse/cdt/rpm/core/internal/RPMProjectTest.java: New.
 	* src/org/eclipse/cdt/rpm/core/internal/SpecFileParserTest.java: New.
 
-	* src/org/eclipse/cdt/rpm/core/AllTests.java 
+	* src/org/eclipse/cdt/rpm/core/AllTests.java
 	(suite): Add RPMCoreInternalTestSuite.
 	* src/org/eclipse/cdt/rpm/core/CProjectHelper.java: Remove.
 	* src/org/eclipse/cdt/rpm/core/RPMCoreTestSuite.java
@@ -132,7 +136,7 @@
 	* src/org/eclipse/cdt/rpm/tests/AllTests.java: Move ...
 	* src/org/eclipse/cdt/rpm/core/tests/AllTests.java: ... to here.
 	* src/org/eclipse/cdt/rpm/core/tests/CProjectHelper.java: New file.
-	* src/org/eclipse/cdt/rpm/core/tests/RPMExportTests.java: Don't catch 
+	* src/org/eclipse/cdt/rpm/core/tests/RPMExportTests.java: Don't catch
 	exceptions; let the test harness handle them.
 	* src/org/eclipse/cdt/rpm/core/tests/SRPMExportTests.java: Ditto.
 	* src/org/eclipse/cdt/rpm/core/tests/SRPMImportTests.java: Ditto.
