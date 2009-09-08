@@ -173,23 +173,19 @@ public class SystemTapCommandLineTest extends TestCase {
 		executeGraphTests();
 	}
 	
-	//THIS TEST DOES NOT REALLY WORK
-	public void BtestFailure(){
+	public void testFailure(){
 		try {
 			SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
 			ILaunchConfiguration config = shortcut.outsideGetLaunchConfigType().newInstance(null, "Temp Name");
 			ILaunchConfigurationWorkingCopy wc = config.copy("Temp Name");
+			ILaunch launch;
 			
 			wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,currentPath + "/basic");
 			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,scriptPath);
-			wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS,"-this_will_fail");
+			wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS,"-e'()'");
 			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,graphDataPath);
 			config = wc.doSave();
-			ILaunch launch = config.launch("profile", null);
-			
-			SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
-			del.launch(config, "profile", launch, null);
-			launch.terminate();
+			launch = config.launch("profile", null);
 			
 		} catch (CoreException e) {
 			e.printStackTrace();
