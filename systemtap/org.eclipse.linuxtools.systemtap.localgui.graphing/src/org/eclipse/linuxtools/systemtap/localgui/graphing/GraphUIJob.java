@@ -56,17 +56,17 @@ public class GraphUIJob extends UIJob{
 		
 		Composite treeComp = SystemTapView.makeTreeComp(treeSize);
 		Composite graphComp = SystemTapView.makeGraphComp();
-		Canvas thumbCanvas = new Canvas(graphComp, SWT.NONE);
+		Canvas thumbCanvas = new Canvas(graphComp, SWT.BORDER);
 		
 		
 		
 		
-		g = new StapGraph(graphComp, SWT.NONE, treeComp, thumbCanvas);
+		g = new StapGraph(graphComp, SWT.BORDER, treeComp, thumbCanvas);
 		g.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		GridData thumbGD = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
-		thumbGD.heightHint=150;
 		thumbGD.widthHint=150;
+		
 //		thumbCanvas.setBackground(g.getBackground());
 		thumbCanvas.setLayoutData(thumbGD);
 		LightweightSystem lws = new LightweightSystem(thumbCanvas);
@@ -135,8 +135,6 @@ public class GraphUIJob extends UIJob{
 	    g.setLastFunctionCalled(parser.lastFunctionCalled);
 	    
 
-	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
-	    		g.getFirstUsefulNode());
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
@@ -145,6 +143,8 @@ public class GraphUIJob extends UIJob{
 	    
 	    SystemTapView.setValues(graphComp, treeComp, g, parser);
 	    SystemTapView.createPartControl();
+	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
+	    		g.getFirstUsefulNode());
 	    
 		return Status.OK_STATUS;
 	}

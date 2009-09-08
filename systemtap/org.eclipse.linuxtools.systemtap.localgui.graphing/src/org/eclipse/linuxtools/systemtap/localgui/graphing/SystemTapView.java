@@ -189,6 +189,7 @@ public class SystemTapView extends ViewPart {
 	
 	
 	public static void firstTimeRefresh(){
+
 		graphComp.setSize(masterComposite.getSize().x ,masterComposite.getSize().y);
 	}
 	
@@ -292,8 +293,6 @@ public class SystemTapView extends ViewPart {
 		
 		//MAXIMIZE THE SYSTEMTAP VIEW WHEN RENDERING A GRAPH
 		firstTimeRefresh();
-        graph.reset();
-        SystemTapView.layout();
 	}
 	
 	
@@ -313,7 +312,8 @@ public class SystemTapView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		masterComposite = parent;
 		this.display = parent.getDisplay();
-		Layout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(2, false);
+		layout.horizontalSpacing=0;
 		GridData gd = new GridData(100, 100);
 
 		parent.setLayout(layout);

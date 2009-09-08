@@ -439,8 +439,6 @@ public class StapGraph extends Graph {
 		
 		//Set layout to gridlayout
 		this.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), true);
-
-		SystemTapView.maximizeOrRefresh(false);
 	}
 
 
@@ -521,8 +519,6 @@ public class StapGraph extends Graph {
 			}
 			
 		}
-		
-		SystemTapView.maximizeOrRefresh(false);
 	}
 	
 	
@@ -593,8 +589,6 @@ public class StapGraph extends Graph {
 		
 		if (id == getFirstUsefulNode())
 			nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
-		
-		SystemTapView.maximizeOrRefresh(false);
 	}
 	
 	public void drawFromBottomToTop(int level, int height,
@@ -855,20 +849,24 @@ public class StapGraph extends Graph {
 		setAnimationMode(animationMode);
 		this.clearSelection();
 		
+		this.setRedraw(false);
 		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
+			//Remove thumbnail
+			GridData gd = (GridData) thumbCanvas.getLayoutData();
+			gd.exclude = true;
+			thumbCanvas.setLayoutData(gd);
+			thumbCanvas.setVisible(false);
+			SystemTapView.layout();
+			
+			
 			//Add treeComp
-			GridData gd = (GridData) treeComp.getLayoutData();
+			gd = (GridData) treeComp.getLayoutData();
 			gd.exclude = false;
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(true);
 			treeViewer.collapseToLevel(getData(id), 1);
 			treeViewer.expandToLevel(getData(id), 1);
 			
-			//Remove thumbnail
-			gd = (GridData) thumbCanvas.getLayoutData();
-			gd.exclude = true;
-			thumbCanvas.setLayoutData(gd);
-			thumbCanvas.setVisible(false);
 			
 		} else if (draw_mode == CONSTANT_DRAWMODE_AGGREGATE){
 			//Remove treeComp
@@ -877,6 +875,7 @@ public class StapGraph extends Graph {
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(false);
 			
+			SystemTapView.layout();
 			//Remove thumbnail
 			gd = (GridData) thumbCanvas.getLayoutData();
 			gd.exclude = true;
@@ -889,14 +888,21 @@ public class StapGraph extends Graph {
 			gd.exclude = true;
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(false);
-		
+
+			SystemTapView.layout();
+
 			//Add thumbnail
 			gd = (GridData) thumbCanvas.getLayoutData();
 			gd.exclude = false;
 			thumbCanvas.setLayoutData(gd);
 			thumbCanvas.setVisible(true);
+			thumbCanvas.setBackground(this.getBackground());
+			
+			
 		}
-		
+			//Remove treeComp
+		this.setRedraw(true);
+
 		
 		//-------------Draw tree
 		if (draw_mode == CONSTANT_DRAWMODE_TREE) {
@@ -996,6 +1002,7 @@ public class StapGraph extends Graph {
 		if (getNode(id) != null)
 			getNode(id).unhighlight();
 		clearSelection();
+		
 	}
 	
 	
