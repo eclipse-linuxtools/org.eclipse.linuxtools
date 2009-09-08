@@ -17,13 +17,6 @@ timestamp=$(date +"%Y-%M-%d %H:%M:%S")
 
 cd ${updateSite}
 
-if [ ! -e site.xml ]; then
-  svn export http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.updatesite/updates-nightly/site.xml
-fi
-if [ ! -e associateSites.xml ]; then
-  svn export http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/trunk/org.eclipse.linuxtools.updatesite/updates-nightly/associateSites.xml
-fi
-
 # 20 is for 2009, 2010, etc.
 latest=$(ls -1 ${downloadsDir} | grep ^[NS]20 | cut -c2- | sort | tail -n 1)
 
@@ -32,9 +25,10 @@ if [ -e ${downloadsDir}/*${latest}/linuxtools-Update*.zip ]; then
 # Clean out old
 #rm -f old.tar.bz2
 #tar jcf old.tar.bz2 *
-rm -rf features plugins pack.properties *.xml
+rm -rf features plugins pack.properties *.xml *.jar
 
 unzip -q -n ${downloadsDir}/*${latest}/linuxtools-Update*.zip
 chown -R aoverholt:linuxtoolsadmin *
 chmod -R 755 *
+
 fi
