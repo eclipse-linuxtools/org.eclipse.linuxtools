@@ -514,11 +514,9 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 					}
 				}*/
 				
-				for (ArrayList<String> val : getAllFunctions(bin.getCProject(), unitList).values()){
-					for (String item : val){
-						funcs+= item + " ";						
+					for (String item : getAllFunctions(bin.getCProject(), unitList)){
+						funcs+= item + " ";				
 					}
-				}
 					
 			}
 			
@@ -751,10 +749,9 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * @return A String list of all functions contained within the specified
 	 * C Project 
 	 */
-	public static HashMap<String, ArrayList<String>> getAllFunctions(ICProject project, Object [] listOfFiles){
+	public static ArrayList<String> getAllFunctions(ICProject project, Object [] listOfFiles){
 		long time = System.currentTimeMillis();
-		ArrayList<String> functionList;
-		HashMap<String, ArrayList<String>> filesToFunctionsMap = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> functionList = new ArrayList<String>();
 		IIndexManager manager = CCorePlugin.getIndexManager();
 		IIndex index = null;
 		
@@ -770,16 +767,15 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				}
 
 				IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
-				functionList = new ArrayList<String>();
 				for (IIndexName name : indexNamesArray) {
 					if (name.isDeclaration() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
 						IIndexBinding binder = index.findBinding(name);
-						if (binder instanceof IFunction && !filesToFunctionsMap.containsValue(binder.getName()) && !functionList.contains(binder.getName())) {
+						if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
 								functionList.add(binder.getName());					
 						}
 					}
 				}
-				filesToFunctionsMap.put(fullFilePath, functionList);
+				
 			}
 			
 		} catch (CoreException e) {
@@ -791,14 +787,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		index.releaseReadLock();
 		System.out.println(System.currentTimeMillis() - time);
 		
-		int num = 0;
-		for (String key : filesToFunctionsMap.keySet()){
-			num += filesToFunctionsMap.get(key).size();
-		}
-		
-		MP.println("FILES : "+ filesToFunctionsMap.keySet().size());
-		MP.println("FUNCTIONS : "+ num);
-		return filesToFunctionsMap;
+		MP.println("FUNCTIONS : "+ functionList.size());
+		return functionList;
 	}
 	
 	private static boolean specialContains (Object [] list, String input){
