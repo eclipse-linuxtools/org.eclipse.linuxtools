@@ -59,8 +59,6 @@ public class GraphUIJob extends UIJob{
 		Canvas thumbCanvas = new Canvas(graphComp, SWT.BORDER);
 		
 		
-		
-		
 		g = new StapGraph(graphComp, SWT.BORDER, treeComp, thumbCanvas);
 		g.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		

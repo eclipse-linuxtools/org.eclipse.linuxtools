@@ -198,7 +198,6 @@ public class StapGraph extends Graph {
 	 * 
 	 * @param style
 	 * @param id
-	 * 
 	 * @param txt
 	 * @param time
 	 * @param called
@@ -861,8 +860,60 @@ public class StapGraph extends Graph {
 		setAnimationMode(animationMode);
 		this.clearSelection();
 		
-		adjustCanvas(id);
-		
+		this.setRedraw(false);
+		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
+			//Remove thumbnail
+			GridData gd = (GridData) thumbCanvas.getLayoutData();
+			gd.exclude = true;
+			thumbCanvas.setLayoutData(gd);
+			thumbCanvas.setVisible(false);
+			SystemTapView.layout();
+			
+			
+			//Add treeComp
+			gd = (GridData) treeComp.getLayoutData();
+			gd.exclude = false;
+			treeComp.setLayoutData(gd);
+			treeComp.setVisible(true);
+			treeViewer.collapseToLevel(getData(id), 1);
+			treeViewer.expandToLevel(getData(id), 1);
+			
+			
+		} else if (draw_mode == CONSTANT_DRAWMODE_AGGREGATE){
+			//Remove treeComp
+			GridData gd = (GridData) treeComp.getLayoutData();
+			gd.exclude = true;
+			treeComp.setLayoutData(gd);
+			treeComp.setVisible(false);
+			
+			SystemTapView.layout();
+			//Remove thumbnail
+			gd = (GridData) thumbCanvas.getLayoutData();
+			gd.exclude = true;
+			thumbCanvas.setLayoutData(gd);
+			thumbCanvas.setVisible(false);					
+		}
+		else{
+			//Remove treeComp
+			GridData gd = (GridData) treeComp.getLayoutData();
+			gd.exclude = true;
+			treeComp.setLayoutData(gd);
+			treeComp.setVisible(false);
+
+			SystemTapView.layout();
+
+			//Add thumbnail
+			gd = (GridData) thumbCanvas.getLayoutData();
+			gd.exclude = true;
+			thumbCanvas.setLayoutData(gd);
+			thumbCanvas.setVisible(true);
+			thumbCanvas.setBackground(this.getBackground());
+			
+			
+		}
+			//Remove treeComp
+		this.setRedraw(true);
+
 		
 		//-------------Draw tree
 		if (draw_mode == CONSTANT_DRAWMODE_TREE) {
@@ -965,57 +1016,6 @@ public class StapGraph extends Graph {
 		
 	}
 	
-	
-	private void adjustCanvas(int id) {
-		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
-			//Remove thumbnail
-			GridData gd = (GridData) thumbCanvas.getLayoutData();
-			gd.exclude = true;
-			thumbCanvas.setLayoutData(gd);
-			thumbCanvas.setVisible(false);
-			SystemTapView.layout();
-			
-			
-			//Add treeComp
-			gd = (GridData) treeComp.getLayoutData();
-			gd.exclude = false;
-			treeComp.setLayoutData(gd);
-			treeComp.setVisible(true);
-			treeViewer.collapseToLevel(getData(id), 1);
-			treeViewer.expandToLevel(getData(id), 1);
-			
-			
-		} else if (draw_mode == CONSTANT_DRAWMODE_AGGREGATE){
-			//Remove treeComp
-			GridData gd = (GridData) treeComp.getLayoutData();
-			gd.exclude = true;
-			treeComp.setLayoutData(gd);
-			treeComp.setVisible(false);
-			
-			SystemTapView.layout();
-			//Remove thumbnail
-			gd = (GridData) thumbCanvas.getLayoutData();
-			gd.exclude = true;
-			thumbCanvas.setLayoutData(gd);
-			thumbCanvas.setVisible(false);					
-		}
-		else{
-			//Remove treeComp
-			GridData gd = (GridData) treeComp.getLayoutData();
-			gd.exclude = true;
-			treeComp.setLayoutData(gd);
-			treeComp.setVisible(false);
-
-			SystemTapView.layout();
-
-			//Add thumbnail
-			gd = (GridData) thumbCanvas.getLayoutData();
-			gd.exclude = false;
-			thumbCanvas.setLayoutData(gd);
-			thumbCanvas.setVisible(true);
-			thumbCanvas.setBackground(this.getBackground());
-		}
-	}
 	
 	
 	@SuppressWarnings("unchecked")
