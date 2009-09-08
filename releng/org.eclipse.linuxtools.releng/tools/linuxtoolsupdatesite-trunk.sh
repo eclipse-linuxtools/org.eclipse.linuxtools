@@ -1,8 +1,12 @@
 #!/bin/sh
 
-# This script unpacks the latest build against Ganymede deps into our updates-nightly update site.
+# This script unpacks the latest nightly build into our updates-nightly update site.
 # It is in aoverholt's crontab as the following entry:
 # 0 * * * * /home/data/users/aoverholt/.bin/linuxtoolsupdatesite-trunk.sh
+#
+# To clean up old builds, this is in aoverholt's crontab:
+# # Clean up old N builds
+# 0 4 1 * * find /home/data/users/aoverholt/downloads/technology/linuxtools -maxdepth 1 -type d -name "N200*" -mtime +14 -exec rm -rf {} \;
 
 dropLocation=/opt/users/hudsonbuild/.hudson/jobs/cbi-linuxtools-Galileo/lastSuccessful/archive/build/
 downloadsDir=/home/data/users/aoverholt/downloads/technology/linuxtools
