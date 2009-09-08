@@ -494,13 +494,14 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 //				funcs.clear();
 //				funcs.add("*");
 				Object[] unitList = chooseUnit(list, numberOfFiles); 
+				if (unitList == null || unitList.length == 0) {
+					return "";
+				}
+			
 				if (unitList.length >= list.size()) {
 					//User selected all items, just add * instead of searching
 					funcs ="*";
 				} 
-				if (unitList == null || unitList.length == 0) {
-					return "";
-				}
 				/*for (Object obj : unitList) {
 					if (obj instanceof ITranslationUnit) {
 						ITranslationUnit tu = (ITranslationUnit) obj;
