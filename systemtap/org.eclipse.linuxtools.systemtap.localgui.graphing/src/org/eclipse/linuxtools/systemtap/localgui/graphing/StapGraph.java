@@ -586,14 +586,14 @@ public class StapGraph extends Graph {
 		MaxLevelPixelWidth = (int)(MaxLevelPixelWidth/scale);
 		counter = 0;
 		if (id == getFirstUsefulNode())
-			nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
+			nodeMap.get(id).setLocation(150 + (MaxLevelPixelWidth/2),y);
 		
 		drawFromBottomToTop(bottomLevelToDraw, y
 				+ ((bottomLevelToDraw  - topLevelToDraw ) * 3 * (int)(CONSTANT_VERTICAL_INCREMENT/scale)),
 				MaxLevelPixelWidth);
 		
 		if (id == getFirstUsefulNode())
-			nodeMap.get(id).setLocation(MaxLevelPixelWidth/2,y);
+			nodeMap.get(id).setLocation(150 + (MaxLevelPixelWidth/2),y);
 	}
 	
 	public void drawFromBottomToTop(int level, int height,
@@ -631,8 +631,8 @@ public class StapGraph extends Graph {
 				
 				if (counter <= ANIMATION_TIME*3)
 					Animation.markBegin();
-				n.setLocation(nodeMap.get(getRootVisibleNodeNumber()).getLocation().x,nodeMap.get(getRootVisibleNodeNumber()).getLocation().y);
-				n.setLocation(MaxLevelPixelWidth / (total + 1) * count,height);
+				n.setLocation(150 + (nodeMap.get(getRootVisibleNodeNumber()).getLocation().x),nodeMap.get(getRootVisibleNodeNumber()).getLocation().y);
+				n.setLocation(150 + (MaxLevelPixelWidth / (total + 1) * count),height);
 
 				if (counter <= ANIMATION_TIME*3) {
 					Animation.run(ANIMATION_TIME/nodeMap.size());
@@ -640,7 +640,12 @@ public class StapGraph extends Graph {
 				}
 					
 			}else{
-				n.setLocation(MaxLevelPixelWidth / (total + 1) * count,height);				
+				n.setLocation(150 + (MaxLevelPixelWidth / (total + 1) * count),height);				
+			}
+			
+			//IF WE CANNOT DISPLAY ALL NODES COLOUR NODES ON BOTTOM THAT STILL HAVE CHILDREN
+			if (level == bottomLevelToDraw && nodeDataMap.get(id).callees.size() != 0){
+				n.setBackgroundColor(CONSTANT_HAS_CHILDREN);
 			}
 			
 			
