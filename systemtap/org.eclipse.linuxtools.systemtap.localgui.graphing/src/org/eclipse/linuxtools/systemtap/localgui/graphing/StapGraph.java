@@ -357,7 +357,6 @@ public class StapGraph extends Graph {
 
 			if (hasChildren(subID))
 				subN.setBackgroundColor(CONSTANT_HAS_CHILDREN);
-			int sizeOffset = 0;
 			subN.setLocation(x + xOffset, y + yOffset);
 			if (subN.connection == null) {
 				subN.makeConnection(SWT.NONE, nodeMap.get(id), nodeDataMap
@@ -459,6 +458,12 @@ public class StapGraph extends Graph {
 		StapNode n = getNode(id);
 		n.setLocation(x,y);
 		n.setSize(n.getSize().width/scale, n.getSize().height/scale);
+
+		//This is the lowest level of nodes to draw, and it still has kids
+		if (getLevelOfNode(id) == bottomLevelToDraw &&
+				getData(id).callees.size() > 0)
+			n.setBackgroundColor(CONSTANT_HAS_CHILDREN);
+		
 		if (getData(id).isMarked())
 			n.setBackgroundColor(CONSTANT_MARKED);
 		
