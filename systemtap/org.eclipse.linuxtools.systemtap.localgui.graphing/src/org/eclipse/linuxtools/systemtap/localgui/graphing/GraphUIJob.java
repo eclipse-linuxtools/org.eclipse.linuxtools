@@ -14,7 +14,11 @@ package org.eclipse.linuxtools.systemtap.localgui.graphing;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.progress.UIJob;
 
@@ -52,11 +56,24 @@ public class GraphUIJob extends UIJob{
 		
 		Composite treeComp = SystemTapView.makeTreeComp(treeSize);
 		Composite graphComp = SystemTapView.makeGraphComp();
+		Canvas thumbCanvas = new Canvas(graphComp, SWT.NONE);
 		
 		
 		
-		g = new StapGraph(graphComp, SWT.NONE, treeComp);
-
+		
+		g = new StapGraph(graphComp, SWT.NONE, treeComp, thumbCanvas);
+		g.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		GridData thumbGD = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
+		thumbGD.heightHint=150;
+		thumbGD.widthHint=150;
+//		thumbCanvas.setBackground(g.getBackground());
+		thumbCanvas.setLayoutData(thumbGD);
+		LightweightSystem lws = new LightweightSystem(thumbCanvas);
+		ScrollableThumbnail thumb = new ScrollableThumbnail(g.getViewport());
+		thumb.setSource(g.getContents());
+		lws.setContents(thumb);
+		
 		
 		//-------------Load graph data
 		g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$

@@ -17,12 +17,13 @@ import java.util.Locale;
 
 import org.eclipse.draw2d.Label;
 import org.eclipse.linuxtools.systemtap.localgui.core.MP;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 public class StapNode extends GraphNode{
 	
-	private static final int nodeSize = 20;
+	private static int nodeSize = 20;
 	public int id;
 	public GraphConnection connection;		//Each node should have only one connection (to its caller)
 	private boolean hasButtons;				//Has buttons already attached
@@ -30,9 +31,12 @@ public class StapNode extends GraphNode{
 	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
 
 	public StapNode(StapGraph graphModel, int style, StapData data) {
+		
 		super(graphModel, style, Messages.getString("StapNode.0")); //$NON-NLS-1$
 		numberFormat.setMaximumFractionDigits(2);
 		numberFormat.setMinimumFractionDigits(2);
+		if (Display.getCurrent().getPrimaryMonitor().getBounds().width < 1000)
+			nodeSize = 10;
 		
 		
 		
@@ -121,6 +125,16 @@ public class StapNode extends GraphNode{
 	 */
 	public GraphConnection getConnection() {
 		return connection;
+	}
+
+
+	public static int getNodeSize() {
+		return nodeSize;
+	}
+
+
+	public static void setNodeSize(int nodeSize) {
+		StapNode.nodeSize = nodeSize;
 	}
 
 

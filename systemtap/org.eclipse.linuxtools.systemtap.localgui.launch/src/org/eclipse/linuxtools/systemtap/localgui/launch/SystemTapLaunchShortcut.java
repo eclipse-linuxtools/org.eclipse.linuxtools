@@ -193,7 +193,6 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerate);
 			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
 			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
-			System.out.println("FInishing launch");
 			try {
 				config = wc.doSave();
 			} catch (CoreException e) {

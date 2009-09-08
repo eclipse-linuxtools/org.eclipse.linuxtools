@@ -214,7 +214,11 @@ public class SystemTapView extends ViewPart {
 			graphComp.dispose();
 		Composite graphComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
 		GridData graphgd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		graphComp.setLayout(new FillLayout());
+		GridLayout gl = new GridLayout(2, false);
+		gl.horizontalSpacing=0;
+		gl.verticalSpacing=0;
+		
+		graphComp.setLayout(gl);
 		graphComp.setLayoutData(graphgd);
 		return graphComp;
 	}

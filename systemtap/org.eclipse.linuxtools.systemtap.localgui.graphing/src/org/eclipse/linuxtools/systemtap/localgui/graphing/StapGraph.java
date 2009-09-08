@@ -34,6 +34,7 @@ import org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer.StapTreeLis
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.Graph;
@@ -122,11 +123,13 @@ public class StapGraph extends Graph {
 	
 	private ArrayList<Integer> callOrderList;
 	private int lastFunctionCalled;
+	private Canvas thumbCanvas;
 	
-	public StapGraph(Composite parent, int style, Composite treeComp) {
+	public StapGraph(Composite parent, int style, Composite treeComp, Canvas tCanvas) {
 		super(parent, style);
 
 		//-------------Initialize variables
+		thumbCanvas = tCanvas;
 		nodeMap = new HashMap<Integer, StapNode>();
 		levels = new HashMap<Integer, List<Integer>>();
 		nodeDataMap = new HashMap<Integer, StapData>();
@@ -341,20 +344,21 @@ public class StapGraph extends Graph {
 			int subID = nodeList.get(i);
 			int yOffset = 0;
 			int xOffset = 0;
-			if (radius != 0) {
-				yOffset = (int) (radius * Math.cos(angle * i));
-				xOffset = (int) (radius * Math.sin(angle * i));
-			}
-
 			if (nodeMap.get(subID) == null) {
 				nodeMap.put(subID, getNodeData(subID).makeNode(this));
 			}
-
+			
 			StapNode subN = nodeMap.get(subID);
+			if (radius != 0) {
+				yOffset = (int) (radius * Math.cos(angle * i));
+				xOffset = (int) (radius * Math.sin(angle * i) + StapNode.getNodeSize()*Math.sin(angle*i)*3);
+			}
+
 
 			if (hasChildren(subID))
 				subN.setBackgroundColor(CONSTANT_HAS_CHILDREN);
-			subN.setLocation(x + xOffset - getNode(subID).getSize().width/3.5, y + yOffset);
+			int sizeOffset = 0;
+			subN.setLocation(x + xOffset, y + yOffset);
 			if (subN.connection == null) {
 				subN.makeConnection(SWT.NONE, nodeMap.get(id), nodeDataMap
 						.get(subID).called);
@@ -852,17 +856,45 @@ public class StapGraph extends Graph {
 		this.clearSelection();
 		
 		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
+			//Add treeComp
 			GridData gd = (GridData) treeComp.getLayoutData();
 			gd.exclude = false;
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(true);
 			treeViewer.collapseToLevel(getData(id), 1);
 			treeViewer.expandToLevel(getData(id), 1);
-		}else{
+			
+			//Remove thumbnail
+			gd = (GridData) thumbCanvas.getLayoutData();
+			gd.exclude = true;
+			thumbCanvas.setLayoutData(gd);
+			thumbCanvas.setVisible(false);
+			
+		} else if (draw_mode == CONSTANT_DRAWMODE_AGGREGATE){
+			//Remove treeComp
 			GridData gd = (GridData) treeComp.getLayoutData();
 			gd.exclude = true;
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(false);
+			
+			//Remove thumbnail
+			gd = (GridData) thumbCanvas.getLayoutData();
+			gd.exclude = true;
+			thumbCanvas.setLayoutData(gd);
+			thumbCanvas.setVisible(false);					
+		}
+		else{
+			//Remove treeComp
+			GridData gd = (GridData) treeComp.getLayoutData();
+			gd.exclude = true;
+			treeComp.setLayoutData(gd);
+			treeComp.setVisible(false);
+		
+			//Add thumbnail
+			gd = (GridData) thumbCanvas.getLayoutData();
+			gd.exclude = false;
+			thumbCanvas.setLayoutData(gd);
+			thumbCanvas.setVisible(true);
 		}
 		
 		
