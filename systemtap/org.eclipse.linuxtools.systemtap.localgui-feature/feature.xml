@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.systemtap.localgui_feature"
-      label="SystemTap Eclipse GUI Plugin"
+      id="org.eclipse.linuxtools.systemtap.local_feature"
+      label="SystemTap C/C++ Visualization Tool"
       version="0.0.1">
 
    <description>
@@ -236,28 +236,28 @@ litigation.
    </requires>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtap.localgui.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.systemtap.localgui.launch"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.linuxtools.systemtap.localgui.graphing"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.linuxtools.profiling.launch"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.systemtap.local.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.systemtap.local.graphing"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.systemtap.local.launch"
          download-size="0"
          install-size="0"
          version="0.0.0"
