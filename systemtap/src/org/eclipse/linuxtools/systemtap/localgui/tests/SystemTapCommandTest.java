@@ -18,7 +18,7 @@ import java.io.PrintStream;
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
+import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView;
 
 public class SystemTapCommandTest extends TestCase{
 	

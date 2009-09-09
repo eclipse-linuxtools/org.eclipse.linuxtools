@@ -19,4 +19,4 @@ Import-Package: junit.framework,
  org.eclipse.debug.core,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.systemtap.local.core,
- org.eclipse.linuxtools.systemtap.localgui.graphing
+ org.eclipse.linuxtools.systemtap.local.graphing
