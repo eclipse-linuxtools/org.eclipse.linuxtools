@@ -65,7 +65,6 @@ public class GraphUIJob extends UIJob{
 		GridData thumbGD = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
 		thumbGD.widthHint=150;
 		
-//		thumbCanvas.setBackground(g.getBackground());
 		thumbCanvas.setLayoutData(thumbGD);
 		LightweightSystem lws = new LightweightSystem(thumbCanvas);
 		ScrollableThumbnail thumb = new ScrollableThumbnail(g.getViewport());

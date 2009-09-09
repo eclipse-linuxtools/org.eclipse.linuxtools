@@ -9,8 +9,8 @@
             category="org.eclipse.cdt.ui.views"
             class="org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView"
             icon="icons/genericregister_obj.gif"
-            id="org.eclipse.linuxtools.systemtap.localgui.graphing.stapview"
-            name="SystemTap"
+            id="org.eclipse.linuxtools.systemtap.local.graphing.callgraphview"
+            name="Call graph"
             restorable="true">
       </view>
    </extension>

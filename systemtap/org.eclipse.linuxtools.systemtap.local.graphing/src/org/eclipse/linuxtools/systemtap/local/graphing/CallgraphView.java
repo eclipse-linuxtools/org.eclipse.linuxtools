@@ -409,7 +409,7 @@ public class CallgraphView extends ViewPart {
 	public static void forceDisplay(){
 		try {
 			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			window.getActivePage().showView("org.eclipse.linuxtools.systemtap.local.graphing.stapview").setFocus(); //$NON-NLS-1$
+			window.getActivePage().showView("org.eclipse.linuxtools.systemtap.local.graphing.callgraphview").setFocus(); //$NON-NLS-1$
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
 		}
