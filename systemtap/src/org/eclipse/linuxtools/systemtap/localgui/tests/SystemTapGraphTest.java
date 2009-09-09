@@ -22,7 +22,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.graphing.StapGraphParser;
-import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView;
+import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 import org.eclipse.swt.SWT;
@@ -72,7 +72,7 @@ public class SystemTapGraphTest extends TestCase {
 		StapGraphParser parse = new StapGraphParser("Test StapParser", Activator.PLUGIN_LOCATION+"graph_data_output.graph");
 		parse.testRun(new NullProgressMonitor());
 		
-		SystemTapView.forceDisplay();
+		CallgraphView.forceDisplay();
 		 
 		
 		//TODO: Figure out how to make the graph display at the same time as the dialog
@@ -88,7 +88,7 @@ public class SystemTapGraphTest extends TestCase {
 		ArrayList<String> tasks = new ArrayList<String>();
 		
 
-		tasks.add("(Manually) Maximize SystemTapView");
+		tasks.add("(Manually) Maximize CallgraphView");
 		tasks.add("Refresh");
 		tasks.add("Tree View");
 		tasks.add("Aggregate View");
@@ -135,13 +135,13 @@ public class SystemTapGraphTest extends TestCase {
 			case 1:
 				break;
 			case 2:
-				act = SystemTapView.getView_refresh();
+				act = CallgraphView.getView_refresh();
 				break;
 			case 3:
-				act = SystemTapView.getView_treeview();
+				act = CallgraphView.getView_treeview();
 				break;
 				
-//				tasks.add("(Manually) Maximize SystemTapView");
+//				tasks.add("(Manually) Maximize CallgraphView");
 //				tasks.add("Refresh");
 //				tasks.add("Tree View");
 //				tasks.add("Aggregate View");
@@ -157,35 +157,35 @@ public class SystemTapGraphTest extends TestCase {
 //				tasks.add("Save file");
 //				tasks.add("Reload file");
 			case 4:
-				act = SystemTapView.getView_aggregateview();
+				act = CallgraphView.getView_aggregateview();
 				break;
 			case 5:
-				act = SystemTapView.getView_boxview();
+				act = CallgraphView.getView_boxview();
 				break;
 			case 6:
-				act = SystemTapView.getAnimation_fast();
+				act = CallgraphView.getAnimation_fast();
 				break;
 			case 7:
 			case 8:
-				act = SystemTapView.getMode_collapsednodes();
+				act = CallgraphView.getMode_collapsednodes();
 				break;
 			case 9:
-				act = SystemTapView.getView_radialview();
+				act = CallgraphView.getView_radialview();
 				break;
 			case 10:
-				act = SystemTapView.getMode_collapsednodes();
+				act = CallgraphView.getMode_collapsednodes();
 				break;
 			case 14:
-				act = SystemTapView.getSave_callgraph();
+				act = CallgraphView.getSave_callgraph();
 				break;
 			case 15:
-				act = SystemTapView.getOpen_callgraph();
+				act = CallgraphView.getOpen_callgraph();
 				break;
 			case 16:
-				act = SystemTapView.getError_errorLog();
+				act = CallgraphView.getError_errorLog();
 				break;
 			case 17:
-				act = SystemTapView.getHelp_version();
+				act = CallgraphView.getHelp_version();
 				break;
 			default:
 				break;
