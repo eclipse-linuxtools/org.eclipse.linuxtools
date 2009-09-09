@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.localgui.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtap.localgui.core;bundle-version="0.0.1",
+ org.eclipse.linuxtools.systemtap.local.core;bundle-version="0.0.1",
  org.eclipse.linuxtools.systemtap.localgui.launch;bundle-version="0.0.1",
  org.eclipse.debug.ui;bundle-version="3.4.1"
 Bundle-ActivationPolicy: lazy
