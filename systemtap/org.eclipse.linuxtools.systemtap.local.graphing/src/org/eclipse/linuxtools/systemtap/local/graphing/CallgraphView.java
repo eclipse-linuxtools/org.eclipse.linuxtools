@@ -264,7 +264,7 @@ public class CallgraphView extends ViewPart {
 		
 		
 		setGraphOptions(true);
-		String text = "";
+		String text = ""; //$NON-NLS-1$
 		StyleRange[] sr = null;
 		
 		
@@ -333,15 +333,15 @@ public class CallgraphView extends ViewPart {
 		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
 		errors = new MenuManager(Messages.getString("CallgraphView.Errors")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
-		help = new MenuManager("Help");
-		markers = new MenuManager("Markers");
-		gotoMenu = new MenuManager("Goto");
+		help = new MenuManager(Messages.getString("CallgraphView.5")); //$NON-NLS-1$
+		markers = new MenuManager(Messages.getString("CallgraphView.6")); //$NON-NLS-1$
+		gotoMenu = new MenuManager(Messages.getString("CallgraphView.9")); //$NON-NLS-1$
 		
 
 		
 		menu.add(file);
 		menu.add(view);
-		menu.add(animation);
+//		menu.add(animation);
 		menu.add(gotoMenu);
 		menu.add(errors);
 		menu.add(help);
@@ -607,7 +607,7 @@ public class CallgraphView extends ViewPart {
 	}
 	
 	public void createHelpActions() {
-		help_version = new Action("Version") { 
+		help_version = new Action(Messages.getString("CallgraphView.13")) {  //$NON-NLS-1$
 			public void run() {
 			Runtime rt = Runtime.getRuntime();
 			try {
@@ -638,7 +638,7 @@ public class CallgraphView extends ViewPart {
 		}
 		};
 		
-		help_about = new Action("About") {
+		help_about = new Action(Messages.getString("CallgraphView.4")) { //$NON-NLS-1$
 			public void run() {
 				Display disp = Display.getCurrent();
 				if (disp == null){
@@ -651,7 +651,7 @@ public class CallgraphView extends ViewPart {
 				GridLayout gl = new GridLayout(1, true);
 				sh.setLayout(gl);
 
-				sh.setText(Messages.getString("LaunchAbout.0")); //$NON-NLS-1$
+				sh.setText(""); //$NON-NLS-1$
 				
 				Image img = new Image(disp, PluginConstants.PLUGIN_LOCATION+"systemtap.png"); //$NON-NLS-1$
 				Composite cmp = new Composite(sh, sh.getStyle());
@@ -673,33 +673,33 @@ public class CallgraphView extends ViewPart {
 				Font font = new Font(sh.getDisplay(), "Monospace", 11, SWT.NORMAL); //$NON-NLS-1$
 				viewer.setFont(font);
 				viewer.setText(
-						 Messages.getString("LaunchAbout.2") + //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.3") + //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.4") + //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.5") +  //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.6") + //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.7") + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" +  //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
 						 
-						 Messages.getString("LaunchAbout.8") + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
 //						 
 //						 Messages.getString("LaunchAbout.9") + //$NON-NLS-1$
 //						 Messages.getString("LaunchAbout.10") + //$NON-NLS-1$
 						 
-						 Messages.getString("LaunchAbout.11") + //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.12") + //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.13") + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
 						 
 //						 Messages.getString("LaunchAbout.14") + //$NON-NLS-1$
 //						 Messages.getString("LaunchAbout.15") + //$NON-NLS-1$
 //						 Messages.getString("LaunchAbout.16") + //$NON-NLS-1$
 						 
-						 Messages.getString("LaunchAbout.17") + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
 						 
 //						 Messages.getString("LaunchAbout.18") + //$NON-NLS-1$
 //						 Messages.getString("LaunchAbout.19") + //$NON-NLS-1$
 						 
-						 Messages.getString("LaunchAbout.20") + //$NON-NLS-1$
-						 Messages.getString("LaunchAbout.21") //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" //$NON-NLS-1$
 						);
 
 
@@ -730,7 +730,7 @@ public class CallgraphView extends ViewPart {
 				
 				Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
 				
-				sh.setText("SystemTap Error Log");
+				sh.setText(Messages.getString("CallgraphView.15")); //$NON-NLS-1$
 				sh.setLayout(new FillLayout());
 				sh.setSize(600,600);
 				
@@ -738,7 +738,7 @@ public class CallgraphView extends ViewPart {
 				
 				txt.setText(logText);
 
-				sh.setText("Error Log");
+				sh.setText(Messages.getString("CallgraphView.21")); //$NON-NLS-1$
 				
 				sh.open();
 				txt.setTopIndex(txt.getLineCount());
@@ -789,7 +789,7 @@ public class CallgraphView extends ViewPart {
 			}
 		};
 		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/tree_view.gif"));
+				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/tree_view.gif")); //$NON-NLS-1$
 		view_treeview.setImageDescriptor(treeImage);
 		
 		
@@ -803,7 +803,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor d = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/radial_view.gif"));
+						PluginConstants.PLUGIN_LOCATION + "/icons/radial_view.gif")); //$NON-NLS-1$
 		view_radialview.setImageDescriptor(d);
 
 		
@@ -817,7 +817,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor aggregateImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/view_aggregateview.gif"));
+						PluginConstants.PLUGIN_LOCATION + "/icons/view_aggregateview.gif")); //$NON-NLS-1$
 		view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
@@ -830,18 +830,18 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor boxImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif"));
+						PluginConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif")); //$NON-NLS-1$
 		view_boxview.setImageDescriptor(boxImage);
 		
 		
-		setView_refresh(new Action("(R)eset"){
+		setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
 			public void run(){
 				graph.reset();
 			}
 		});
 		ImageDescriptor refreshImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif"));
+						PluginConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif")); //$NON-NLS-1$
 		getView_refresh().setImageDescriptor(refreshImage);
 		
 		
@@ -889,10 +889,10 @@ public class CallgraphView extends ViewPart {
 		};
 		
 		ImageDescriptor newImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/mode_collapsednodes.gif"));
+				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/mode_collapsednodes.gif")); //$NON-NLS-1$
 		mode_collapsednodes.setImageDescriptor(newImage);
 		
-		limits = new Action("Set limits", Action.AS_PUSH_BUTTON) {
+		limits = new Action(Messages.getString("CallgraphView.SetLimits"), Action.AS_PUSH_BUTTON) { //$NON-NLS-1$
 			private Spinner limit;
 			private Spinner buffer;
 			private Shell sh;
@@ -902,7 +902,7 @@ public class CallgraphView extends ViewPart {
 				sh.setSize(150, 200);
 				Label limitLabel = new Label(sh, SWT.NONE);
 				limitLabel.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
-				limitLabel.setText("Max nodes: ");
+				limitLabel.setText(Messages.getString("CallgraphView.MaxNodes")); //$NON-NLS-1$
 				limit = new Spinner(sh, SWT.BORDER);
 				limit.setMaximum(5000);
 				limit.setSelection(graph.getMaxNodes());
@@ -910,14 +910,14 @@ public class CallgraphView extends ViewPart {
 				
 				Label bufferLabel = new Label(sh, SWT.NONE);
 				bufferLabel.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
-				bufferLabel.setText("Max depth: ");
+				bufferLabel.setText(Messages.getString("CallgraphView.MaxDepth")); //$NON-NLS-1$
 				buffer = new Spinner(sh, SWT.BORDER);
 				buffer.setMaximum(5000);
 				buffer.setSelection(graph.getLevelBuffer());
 				buffer.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
 				
 				Button set_limit = new Button(sh, SWT.PUSH);
-				set_limit.setText("Set values");
+				set_limit.setText(Messages.getString("CallgraphView.SetValues")); //$NON-NLS-1$
 				set_limit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
 				set_limit.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {
@@ -928,14 +928,14 @@ public class CallgraphView extends ViewPart {
 							
 							if (graph.changeLevelLimits(graph.getLevelOfNode(graph.getRootVisibleNodeNumber()))) {
 								SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-										"LevelBuffer too high", "LevelBuffer too high", 
-										"Unfortunately the requested setting for level buffer " +
-										"could not be processed due to the maximum number of nodes. " +
-										"Setting levelBuffer to the maximum number of levels possible " +
-										"without hitting the max nodes(" + graph.getLevelBuffer() +
-										")." + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +  
-										"If you really want to see more levels, increment max nodes. " +
-										"This may cause lag on some systems.");
+										Messages.getString("CallgraphView.BufferTooHigh"), Messages.getString("CallgraphView.BufferTooHigh"),  //$NON-NLS-1$ //$NON-NLS-2$
+										Messages.getString("CallgraphView.BufferMessage1") + //$NON-NLS-1$
+										Messages.getString("CallgraphView.BufferMessage2") + //$NON-NLS-1$
+										Messages.getString("CallgraphView.BufferMessage3") + //$NON-NLS-1$
+										Messages.getString("CallgraphView.BufferMessage4") + graph.getLevelBuffer() + //$NON-NLS-1$
+										Messages.getString("CallgraphView.BufferMessage5") + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +   //$NON-NLS-1$
+										Messages.getString("CallgraphView.BufferMessage6") + //$NON-NLS-1$
+										Messages.getString("CallgraphView.BufferMessage7")); //$NON-NLS-1$
 								mess.schedule();
 							}
 							
@@ -974,7 +974,7 @@ public class CallgraphView extends ViewPart {
 	}
 	
 	public void createMovementActions() {
-		goto_next = new Action("(N)ext") {
+		goto_next = new Action(Messages.getString("CallgraphView.Next")) { //$NON-NLS-1$
 			public void run() {
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
@@ -985,7 +985,7 @@ public class CallgraphView extends ViewPart {
 			}
 		};
 		
-		goto_previous = new Action("(P)revious") {
+		goto_previous = new Action(Messages.getString("CallgraphView.Previous")) { //$NON-NLS-1$
 			public void run() {
 				if (graph.isCollapseMode()) {
 					graph.setCollapseMode(false);
@@ -996,7 +996,7 @@ public class CallgraphView extends ViewPart {
 			}
 		};
 		
-		goto_last = new Action("(L)ast") {
+		goto_last = new Action(Messages.getString("CallgraphView.Last")) { //$NON-NLS-1$
 			public void run() {
 				if (graph.isCollapseMode())
 					graph.setCollapseMode(false);
@@ -1006,13 +1006,13 @@ public class CallgraphView extends ViewPart {
 	}
 	
 	public void createMarkerActions() {
-		markers_next = new Action("(n)ext") {
+		markers_next = new Action(Messages.getString("CallgraphView.nextMarker")) { //$NON-NLS-1$
 			public void run() {
 				graph.draw(graph.getNextMarkedNode());
 			}
 		};
 		
-		markers_previous = new Action("(p)revious") {
+		markers_previous = new Action(Messages.getString("CallgraphView.previousMarker")) { //$NON-NLS-1$
 			public void run() {
 				graph.draw(graph.getPreviousMarkedNode());
 			}
