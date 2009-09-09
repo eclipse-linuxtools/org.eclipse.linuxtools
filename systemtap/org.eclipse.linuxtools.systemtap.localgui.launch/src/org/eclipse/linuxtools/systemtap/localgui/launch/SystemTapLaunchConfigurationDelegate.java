@@ -17,12 +17,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -44,7 +42,6 @@ import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser
 import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.progress.UIJob;
-import org.eclipse.core.resources.IProject;
 
 
 /**

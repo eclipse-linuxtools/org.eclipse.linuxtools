@@ -1,7 +1,6 @@
 package org.eclipse.linuxtools.systemtap.localgui.graphing;
 
 import java.io.File;
-import org.eclipse.core.resources.ResourcesPlugin;
 import java.util.ArrayList;
 
 import org.eclipse.cdt.core.CCorePlugin;
