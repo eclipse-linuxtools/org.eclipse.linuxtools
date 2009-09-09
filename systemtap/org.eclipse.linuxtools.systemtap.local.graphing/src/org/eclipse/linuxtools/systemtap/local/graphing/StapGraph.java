@@ -633,13 +633,13 @@ public class StapGraph extends Graph {
 			//Placement algorithm
 			if (getAnimationMode() == CONSTANT_ANIMATION_SLOW){	
 				
-				if (counter <= ANIMATION_TIME*3)
+				if (counter <= ANIMATION_TIME)
 					Animation.markBegin();
 				n.setLocation(150 + (nodeMap.get(getRootVisibleNodeNumber()).getLocation().x),nodeMap.get(getRootVisibleNodeNumber()).getLocation().y);
 				n.setLocation(150 + (MaxLevelPixelWidth / (total + 1) * count),height);
 
-				if (counter <= ANIMATION_TIME*3) {
-					Animation.run(ANIMATION_TIME/nodeMap.size());
+				if (counter <= ANIMATION_TIME) {
+					Animation.run(ANIMATION_TIME/nodeMap.size()/3);
 					counter+=ANIMATION_TIME/nodeMap.size();
 				}
 					
