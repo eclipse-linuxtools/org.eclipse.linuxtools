@@ -20,7 +20,7 @@
       <perspectiveExtension
             targetID="org.eclipse.cdt.ui.CPerspective">
          <view
-               id="org.eclipse.linuxtools.systemtap.localgui.graphing.stapview"
+               id="org.eclipse.linuxtools.systemtap.local.graphing.callgraphview"
                minimized="false"
                relationship="stack">
          </view>
