@@ -133,4 +133,18 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {		
 	}
 
+	
+	public Object[] findElements(Object inputElement) {
+		ArrayList<Object> output = new ArrayList<Object>();
+
+		if (inputElement instanceof List) {
+			for (Object element : (List) inputElement) {
+				Object[] list = (getChildren(element));
+				for (Object o : list) {
+					output.add(o);
+				}
+			}
+		}
+		return output.toArray();
+	} 
 }

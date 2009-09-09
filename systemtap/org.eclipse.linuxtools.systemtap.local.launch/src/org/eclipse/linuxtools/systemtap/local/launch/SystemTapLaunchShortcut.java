@@ -38,6 +38,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
@@ -517,9 +518,11 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	    		new WorkbenchLabelProvider(), prov);
 
 	    dialog.setTitle("Tree Selection");
-	    dialog.setMessage("Select .c/.cpp files to probe. Leave selection blank to select all.");
+	    dialog.setMessage("Select .c/.cpp files to probe.");
 	    dialog.setInput(list);
-		
+	    dialog.setInitialSelections(prov.findElements(list));
+	    
+	    
 		if (dialog.open() == Window.OK) {
 			Object[] result = dialog.getResult();
 			if (result == null)
