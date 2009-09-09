@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SystemTap Local Launch
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.launch;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.launch.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -22,6 +22,7 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.jface.text,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.systemtap.local.core,
+ org.eclipse.linuxtools.systemtap.localgui.graphing,
  org.eclipse.ui,
  org.eclipse.ui.console,
  org.eclipse.ui.model,

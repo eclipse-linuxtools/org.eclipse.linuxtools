@@ -19,13 +19,13 @@ public class TranslationUnitVisitor implements ICElementVisitor{
 
 	public TranslationUnitVisitor() {
 		super();
-		functions = ""; //$NON-NLS-1$
+		functions = "";
 	}
 	private long time;
 	@Override
 	public boolean visit(ICElement arg0) throws CoreException {
 		if (arg0.getElementType() == ICElement.C_FUNCTION) {
-			functions+=arg0.getElementName() + " "; //$NON-NLS-1$
+			functions+=arg0.getElementName() + " ";
 			return false;
 		}	
 		return true;
@@ -37,7 +37,7 @@ public class TranslationUnitVisitor implements ICElementVisitor{
 	}
 	
 	public int getNumberOfFunctions() {
-		return (functions.split(" ").length); //$NON-NLS-1$
+		return (functions.split(" ").length);
 	}
 
 	

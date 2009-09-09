@@ -36,7 +36,7 @@ public class ASTTranslationUnitVisitor extends ASTVisitor{
 			 return PROCESS_SKIP;
 		 if (s instanceof IASTFunctionDefinition) {
 			 String name =((IASTFunctionDefinition) s).getDeclarator().getName().toString();
-			 if (!name.substring(0, 2).equals("__")) { //$NON-NLS-1$
+			 if (!name.substring(0, 2).equals("__")) {
 				 funcs.add(name);
 			 }
 		 }

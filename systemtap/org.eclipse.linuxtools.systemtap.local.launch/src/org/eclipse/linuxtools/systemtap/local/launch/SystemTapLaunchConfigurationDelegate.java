@@ -13,38 +13,33 @@ package org.eclipse.linuxtools.systemtap.local.launch;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.IStreamMonitor;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.local.core.Helper;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapErrorHandler;
-import org.eclipse.linuxtools.systemtap.local.core.SystemTapParser;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.progress.UIJob;
 
@@ -57,20 +52,7 @@ import org.eclipse.ui.progress.UIJob;
 public class SystemTapLaunchConfigurationDelegate extends
 		AbstractCLaunchDelegate {
 
-	private static final String TEMP_ERROR_OUTPUT =
-		PluginConstants.PLUGIN_LOCATION + "stapTempError.error"; //$NON-NLS-1$
 	private String cmd;
-	private File temporaryScript = null;
-	private String arguments = ""; //$NON-NLS-1$
-	private String scriptPath = ""; //$NON-NLS-1$
-	private String binaryPath = ""; //$NON-NLS-1$
-	private String outputPath = ""; //$NON-NLS-1$
-	private boolean needsBinary = false; // Set to false if we want to use SystemTap
-	private boolean needsArguments = false;
-	@SuppressWarnings("unused")
-	private boolean useColour = false;
-	private String binaryArguments = ""; //$NON-NLS-1$
-	
 
 	@Override
 	protected String getPluginID() {
@@ -94,7 +76,17 @@ public class SystemTapLaunchConfigurationDelegate extends
 			return;
 		}
 
-
+		File temporaryScript = null;
+		String arguments = ""; //$NON-NLS-1$
+		String scriptPath = ""; //$NON-NLS-1$
+		String binaryPath = ""; //$NON-NLS-1$
+		String outputPath = ""; //$NON-NLS-1$
+		boolean needsBinary = false; // Set to false if we want to use SystemTap
+		// binary selection
+		boolean needsArguments = false;
+		boolean useColour = false;
+		String binaryArguments = ""; //$NON-NLS-1$
+		
 			
 		String command = ConfigurationOptionsSetter.setOptions(config);  
 		
@@ -160,7 +152,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
-				PluginConstants.DEFAULT_OUTPUT);
+				PluginConstants.DEFAULT_OUTPUT + System.currentTimeMillis());
 		command += "-o " + outputPath; //$NON-NLS-1$
 		try {
 			File tempFile = new File(outputPath);
@@ -175,15 +167,151 @@ public class SystemTapLaunchConfigurationDelegate extends
 		if (monitor.isCanceled()) {
 			return;
 		}
+		try {
+			File workDir = getWorkingDirectory(config);
+			if (workDir == null) {
+				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 
-		finishLaunch(launch, config, command, m, true);
+
+
+			// Generate the command
+			SystemTapCommandGenerator cmdGenerator = new SystemTapCommandGenerator();
+			cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
+					command, needsBinary, needsArguments, arguments, binaryArguments);
+
+
+//			MP.println(cmd);
+			// Prepare cmd for execution - we need a command array of strings,
+			// no string can contain a space character. (One of the process'
+			// requirements)
+			String tmp[] = cmd.split(" "); //$NON-NLS-1$
+			ArrayList<String> cmdLine = new ArrayList<String>();
+			for (String str : tmp) {
+				cmdLine.add(str);
+			}
+			String[] commandArray = (String[]) cmdLine
+					.toArray(new String[cmdLine.size()]);
+			
+			// Check for cancellation
+			if (monitor.isCanceled()) {
+				return;
+			}
+
+			monitor.worked(1);
+			
+			if (launch == null) {
+				return;
+			}
+			// Not sure if this line is necessary
+			// set the default source locator if required
+			setDefaultSourceLocator(launch, config);
+			
+			boolean graphMode = config.getAttribute(
+					LaunchConfigurationConstants.GRAPHICS_MODE,
+					LaunchConfigurationConstants.DEFAULT_GRAPHICS_MODE);
+			// Prepare a parser object - parser will read and update from the
+			// output file continuously
+			SystemTapCommandParser stapCmdPar = null;
+			if (!graphMode) {
+				stapCmdPar = new SystemTapCommandParser(Messages
+						.getString("RunSystemTapAction.0"), outputPath, //$NON-NLS-1$
+						new SystemTapView(), useColour, graphMode, config
+								.getName());
+				stapCmdPar.schedule();
+			}
+
+			monitor.worked(1);
+
+			
+			Process subProcess = execute(commandArray, getEnvironment(config),
+					workDir, true);
+			
+			if (subProcess == null){
+				//TODO: FIgure out what the console error message is so we can catch it in errorlog
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1") + //$NON-NLS-1$
+				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage2")); //$NON-NLS-1$
+				mess.schedule();
+				return;
+			}
+			
+			IProcess process = createNewProcess(launch, subProcess,
+					commandArray[0]);
+			// set the command line used
+			process.setAttribute(IProcess.ATTR_CMDLINE,
+					cmd);
+			monitor.worked(1);
+			
+			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
+			
+			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
+					((TextConsole)Helper.getConsoleByName(config.getName())), config.getName(),
+					binaryArguments);
+			dw.schedule();
+			//TODO: join never finishes when this method is run as a test case
+			//make sure that removing it won't cause any corruption/timing issues
+//			dw.join();
+			
+			while (!process.isTerminated()) {
+				Thread.sleep(100);
+				if (monitor.isCanceled()) {
+					Runtime run = Runtime.getRuntime();
+					run.exec("kill stap"); //$NON-NLS-1$
+					process.terminate();
+					return;
+				}
+			}
+			Thread.sleep(100);
+			
+			//SIGNAL THE PROCESS TO FINISH
+			if (stapCmdPar != null)
+				stapCmdPar.setProcessFinished(true);
+
+			if (process.getExitValue() != 0) {
+				//SystemTap terminated with errors, parse console to figure out which error 
+				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
+				//Sometimes the console has not been printed to yet, wait for a little while longer
+				if (doc.get().length() < 1)
+					Thread.sleep(300);
+				doc = Helper.getConsoleDocumentByName(config.getName());
+				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
+				errorHandler.handle(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
+						+ PluginConstants.NEW_LINE + cmd
+						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
+						+ doc.get());				
+				errorHandler.finishHandling();
+				return;
+			}
+					
+
+			if (graphMode) {
+				stapCmdPar = new SystemTapCommandParser(
+						Messages.getString("RunSystemTapAction.0"), //$NON-NLS-1$
+						outputPath, new SystemTapView(), useColour, graphMode,
+						config.getName());
+					stapCmdPar.schedule();
+			}
+			
+			monitor.worked(1);
+
+		} catch (IOException e) {
+			abort("Could not start process", e, //$NON-NLS-1$
+					ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			m.done();
+		}
+
 	}
 
 	public String getCommand() {
 		if (cmd.length() > 0)
 			return cmd;
 		else
-			return Messages.getString("SystemTapLaunchConfigurationDelegate.0"); //$NON-NLS-1$
+			return "SystemTapLaunchConfigurationDelegate does not have a command yet";
 	}
 
 	public Process execute(String[] commandArray, String[] env, File wd,
@@ -242,232 +370,29 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			
-			if (console == null)
-				return Status.CANCEL_STATUS;
-			
 			IDocument doc = console.getDocument();
 			
 			if (binaryCommand.length() > 0)
-				try {
-					doc.replace(doc.getLength(), 0, 
-						PluginConstants.NEW_LINE 
-						+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE 
-						+ Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
-						+ configName + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
-						+ binaryCommand + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
-						);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
+				doc.set( Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+					+ configName + PluginConstants.NEW_LINE +
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
+					 + binaryCommand + PluginConstants.NEW_LINE +
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
+					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
+					 + PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
+					 + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
+					 doc.get()); 
 			else
-				try {
-					doc.replace(doc.getLength(), 0,
-						PluginConstants.NEW_LINE +
-						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + 
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+				doc.set( Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
 						+ configName + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
+						 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
+						 PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
+						 PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
+						 doc.get()); //$NON-NLS-1$				
 			
 			return Status.OK_STATUS;
 		}
 		
-	}
-	
-	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
-			IProgressMonitor monitor, boolean retry) {
-		try {
-			File workDir = getWorkingDirectory(config);
-			if (workDir == null) {
-				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
-
-
-			// Generate the command
-			SystemTapCommandGenerator cmdGenerator = new SystemTapCommandGenerator();
-			cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
-					command, needsBinary, needsArguments, arguments, binaryArguments);
-
-
-//			MP.println(cmd);
-			// Prepare cmd for execution - we need a command array of strings,
-			// no string can contain a space character. (One of the process'
-			// requirements)
-			String tmp[] = cmd.split(" "); //$NON-NLS-1$
-			ArrayList<String> cmdLine = new ArrayList<String>();
-			for (String str : tmp) {
-				cmdLine.add(str);
-			}
-			String[] commandArray = (String[]) cmdLine
-					.toArray(new String[cmdLine.size()]);
-			
-			// Check for cancellation
-			if (monitor.isCanceled()) {
-				return;
-			}
-
-			monitor.worked(1);
-			
-			if (launch == null) {
-				return;
-			}
-			// Not sure if this line is necessary
-			// set the default source locator if required
-			setDefaultSourceLocator(launch, config);
-			
-			String parserClass = config.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, 
-					LaunchConfigurationConstants.DEFAULT_PARSER_CLASS);
-			IExtensionRegistry reg = Platform.getExtensionRegistry();
-			IConfigurationElement[] extensions = reg
-					.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE, 
-							PluginConstants.PARSER_NAME, 
-							parserClass);
-			
-			
-			if (extensions == null || extensions.length < 1) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Invalid parser", "invalid parser",
-						"The selected parser is not valid. Please select a different parser. \n\n" +
-						"Invalid id: " + parserClass);
-				mess.schedule();
-				return;
-			}
-			
-			IConfigurationElement element = extensions[0];
-
-			SystemTapParser parser = 
-				(SystemTapParser) element.createExecutableExtension("class"); 
-			
-			
-			if (element.getAttribute("realtime") == "true") {
-				parser.schedule();
-			}
-
-			monitor.worked(1);
-
-			
-			Process subProcess = execute(commandArray, getEnvironment(config),
-					workDir, true);
-			
-			if (subProcess == null){
-				//TODO: FIgure out what the console error message is so we can catch it in errorlog
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
-				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1") + //$NON-NLS-1$
-				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage2")); //$NON-NLS-1$
-				mess.schedule();
-				return;
-			}
-			
-			IProcess process = createNewProcess(launch, subProcess,
-					commandArray[0]);
-			// set the command line used
-			process.setAttribute(IProcess.ATTR_CMDLINE,
-					cmd);
-			monitor.worked(1);
-			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
-			
-			StreamListener s = new StreamListener();
-			process.getStreamsProxy().getErrorStreamMonitor().addListener(s);
-			
-
-
-			while (!process.isTerminated()) {
-				Thread.sleep(100);
-				if (monitor.isCanceled()) {
-					Runtime run = Runtime.getRuntime();
-					run.exec("kill stap"); //$NON-NLS-1$
-					process.terminate();
-					return;
-				}
-			}
-			Thread.sleep(100);
-			s.close();
-
-			if (process.getExitValue() != 0) {
-				//SystemTap terminated with errors, parse console to figure out which error 
-				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
-				//Sometimes the console has not been printed to yet, wait for a little while longer
-				if (doc.get().length() < 1)
-					Thread.sleep(300);
-				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-				errorHandler.handle(monitor, config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE + cmd
-						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
-				if (monitor != null && monitor.isCanceled())
-					return;
-				
-				
-				if (errorHandler.hasMismatchedProbePoints() && retry) {
-					errorHandler.finishHandling(monitor, s.getNumberOfErrors());
-					if (monitor != null && monitor.isCanceled())
-						return;
-					finishLaunch(launch, config, command, monitor, false);
-					return;
-				}
-				errorHandler.finishHandling(monitor, s.getNumberOfErrors());
-					
-				return;
-			}
-			
-			if (element.getAttribute("realtime") != "true") {
-				parser.schedule();
-			}
-						
-			
-			monitor.worked(1);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		} finally {
-			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
-					((TextConsole)Helper.getConsoleByName(config.getName())), config.getName(),
-					binaryArguments);
-			dw.schedule();
-			monitor.done();
-		}
-	}
-		
-	private class StreamListener implements IStreamListener{
-		private Helper h;
-		private int counter;
-		public StreamListener() throws IOException {
-			h = new Helper();
-			counter = 0;
-			h.setBufferedWriter(TEMP_ERROR_OUTPUT); //$NON-NLS-1$
-		}
-		@Override
-		public void streamAppended(String text, IStreamMonitor monitor) {
-			try {
-				counter++;
-				if (counter < PluginConstants.MAX_ERRORS)
-					h.appendToExistingFile(text);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-		}
-
-		public void close() throws IOException {
-			h.closeBufferedWriter();
-		}
-		
-		public int getNumberOfErrors() {
-			return counter;
-		}
 	}
 }

@@ -12,7 +12,6 @@
 package org.eclipse.linuxtools.systemtap.local.launch;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,22 +32,20 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 
@@ -56,7 +53,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected IEditorPart editor;
 	protected ILaunchConfiguration config;
 	
-	private static final String USER_SELECTED_ALL = "ALL"; //$NON-NLS-1$
+	private static final String USER_SELECTED_ALL = "ALL";
 
 	protected String name;
 	protected String binaryPath;
@@ -66,18 +63,11 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected String binName;
 	protected String dirPath;
 	protected String generatedScript;
-	protected String parserID;
 	protected boolean needToGenerate;
 	protected boolean overwrite;
 	protected boolean useColours;
 	protected String resourceToSearchFor;
 	protected boolean searchForResource;
-	protected IBinary bin;
-	
-	
-	private Button OKButton;
-	private boolean testMode = false;
-	
 	
 	/**
 	 * Provides access to the Profiling Frameworks' launch method
@@ -100,7 +90,6 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
 		needToGenerate = false;
 		useColours = false;
-		parserID = null;
 	}
 
 	@Override
@@ -173,11 +162,8 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
  * @param name: Used to generate the name of the new configuration
  * @param bin:	Affiliated executable
  * @param mode:	Mode setting
- * @throws Exception 
  */
-	protected void finishLaunch(String name, String mode) throws Exception {
-		if (parserID == null)
-			throw new Exception();
+	protected void finishLaunch(String name, String mode) {
 		
 		if (scriptPath.length() < 1) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchShortcut.ErrorMessageName"),  //$NON-NLS-1$
@@ -203,9 +189,6 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerate);
 			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
 			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
-			wc.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parserID);
-			
-			
 			try {
 				config = wc.doSave();
 			} catch (CoreException e) {
@@ -214,11 +197,11 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			
 			checkForExistingConfiguration();
 			
-			if (!testMode)
-				DebugUITools.launch(config, mode);
+			DebugUITools.launch(config, mode);
 		} 
 		
 	}
+	
 	
 	//TODO: Should merge finishWith and Without binary - we only use
 	//the IBinary to find the name, in any case.
@@ -271,7 +254,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			}
 			checkForExistingConfiguration();
 
-			if (!testMode)
 			DebugUITools.launch(config, mode);
 		}
 	}
@@ -438,7 +420,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * @return
 	 */
 	protected String getFunctionsFromBinary(IBinary bin, String targetResource) {
-		String funcs = ""; //$NON-NLS-1$
+		String funcs = "";
 		if (bin == null)
 			return funcs;
 		try {			
@@ -484,8 +466,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			if (numberOfFiles == 1) {
 				for (ICContainer c : list) {
 					for (ITranslationUnit e : c.getTranslationUnits()) {
-						if (e.getElementName().endsWith(".c") ||  //$NON-NLS-1$
-								e.getElementName().endsWith(".cpp")) { //$NON-NLS-1$
+						if (e.getElementName().endsWith(".c") || 
+								e.getElementName().endsWith(".cpp")) {
 							e.accept(v);
 							funcs+=v.getFunctions();
 						}
@@ -495,16 +477,16 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 
 				Object[] unitList = chooseUnit(list, numberOfFiles); 
 				if (unitList == null || unitList.length == 0) {
-					return null; //$NON-NLS-1$
+					return "";
 				} else if (unitList.length == 1 && unitList[0].toString().equals(USER_SELECTED_ALL)) {
-					funcs = "*"; //$NON-NLS-1$
+					funcs = "*";
 					return funcs;					
 				}
 				
 					StringBuffer tmpFunc = new StringBuffer();
 					for (String item : getAllFunctions(bin.getCProject(), unitList)){
 						tmpFunc.append(item);
-						tmpFunc.append(" "); //$NON-NLS-1$
+						tmpFunc.append(" ");
 					}
 					funcs = tmpFunc.toString();
 					
@@ -531,42 +513,37 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	protected Object[] chooseUnit(List<ICContainer> list, int numberOfValidFiles) {		
 		ListTreeContentProvider prov = new ListTreeContentProvider();
 		
-	    RuledTreeSelectionDialog dialog = new RuledTreeSelectionDialog(getActiveWorkbenchShell(), 
+	    CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(getActiveWorkbenchShell(), 
 	    		new WorkbenchLabelProvider(), prov);
 
-	    dialog.setTitle(Messages.getString("SystemTapLaunchShortcut.8")); //$NON-NLS-1$
-	    dialog.setMessage(Messages.getString("SystemTapLaunchShortcut.9")); //$NON-NLS-1$
+	    dialog.setTitle("Tree Selection");
+	    dialog.setMessage("Select .c/.cpp files to probe. Leave selection blank to select all.");
 	    dialog.setInput(list);
-	    dialog.setHelpAvailable(false);
-	    dialog.setStatusLineAboveButtons(false);
-	    dialog.setEmptyListMessage(Messages.getString("SystemTapLaunchShortcut.10")); //$NON-NLS-1$
-	    dialog.setContainerMode(true);
-
-	    Object[] topLevel = prov.findElements(list);
-	    dialog.setInitialSelections(topLevel);	    
-	    dialog.setSize(cap(topLevel.length*10, 30, 55), 
-	    		cap((int) (topLevel.length*1.5), 3, 13));
-
-	    dialog.create();
-	    OKButton = dialog.getOkButton();
-	    
-	    Object[] result = null;
-	    
-	    
-	    if (testMode) {
-	    	OKButton.setSelection(true);
-	    	result = list.toArray();
+		
+		if (dialog.open() == Window.OK) {
+			Object[] result = dialog.getResult();
+			if (result == null)
+				return null;
+			
 			ArrayList<Object> output = new ArrayList<Object>();
 			try {
 				for (Object obj : result) {
 					if (obj instanceof ICContainer){
 						ICElement[] array = ((ICContainer) obj).getChildren();
 						for (ICElement c : array) {
-							if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
-									c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
+							if (!(c.getElementName().endsWith(".c") ||
+									c.getElementName().endsWith(".cpp")))
 								continue;
-							if (c.getElementName().contains("main") && !output.contains(c)) //$NON-NLS-1$
+							if (!output.contains(c))
 								output.add(c);
+						}
+					}
+					else if (obj instanceof ICElement) {
+						if (((ICElement) obj).getElementName().endsWith(".c") 
+								|| ((ICElement) obj).getElementName().endsWith(".cpp")) {
+							if (!output.contains(obj)) {
+								output.add(obj);
+							}
 						}
 					}
 				}
@@ -574,54 +551,30 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				if ( output.size() >= numberOfValidFiles) {
 					output.clear();
 					output.add(USER_SELECTED_ALL);
+				} else if (output.size() > 10 && numberOfValidFiles > 300) {
+					if (confirmProbeAll(output.size())) {
+						output.clear();
+						output.add(USER_SELECTED_ALL);
+					}
 				}
 			} catch (CModelException e) {
 				e.printStackTrace();
 			}
 			
-			result = output.toArray();
-	    }
-	    else {
-	    	if (dialog.open() == Window.CANCEL)
-	    		return null;
-	    	result = dialog.getResult();
-	    }
-
-		if (result == null)
-			return null;
-		
-		ArrayList<Object> output = new ArrayList<Object>();
-		try {
-			for (Object obj : result) {
-				if (obj instanceof ICContainer){
-					ICElement[] array = ((ICContainer) obj).getChildren();
-					for (ICElement c : array) {
-						if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
-								c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
-							continue;
-						if (!output.contains(c))
-							output.add(c);
-					}
-				}
-				else if (obj instanceof ICElement) {
-					if (((ICElement) obj).getElementName().endsWith(".c")  //$NON-NLS-1$
-							|| ((ICElement) obj).getElementName().endsWith(".cpp")) { //$NON-NLS-1$
-						if (!output.contains(obj)) {
-							output.add(obj);
-						}
-					}
-				}
-			}
-		
-			if ( output.size() >= numberOfValidFiles) {
-				output.clear();
-				output.add(USER_SELECTED_ALL);
-			}
-		} catch (CModelException e) {
-			e.printStackTrace();
+			return output.toArray();
 		}
+		return null;
+	}
+
+	
+	private boolean confirmProbeAll(int num) {
 		
-		return output.toArray();
+		return !MessageDialog.openConfirm(new Shell(), "Fetch list of functions?", 
+				"Currently attempting to fetch functions from " + num + " files. This could " +
+				"Currently attempting to fetch functions from " + num + "files. This could " +
+				"take up to " + 2*num + " seconds to complete. Press OK to continue fetching or" +
+				" press Cancel to probe all functions without fetching (much faster). In the future," +
+				" you can simply leave the file selection dialog blank to profile all functions.");		
 	}
 	
 	
@@ -635,14 +588,14 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 						output += numberOfValidFiles(((ICContainer) ele).getChildren());
 					}
 					if (ele instanceof ICElement) {
-						if (ele.getElementName().endsWith(".c") || //$NON-NLS-1$
-							ele.getElementName().endsWith(".cpp")) //$NON-NLS-1$
+						if (ele.getElementName().endsWith(".c") ||
+							ele.getElementName().endsWith(".cpp"))
 							output++;
 					}
 				}
 			} else if (parent instanceof ICElement) {
-				if (((ICElement) parent).getElementName().endsWith(".c") || //$NON-NLS-1$
-						((ICElement) parent).getElementName().endsWith(".cpp")) //$NON-NLS-1$
+				if (((ICElement) parent).getElementName().endsWith(".c") ||
+						((ICElement) parent).getElementName().endsWith(".cpp"))
 						output++;
 			}
 		}
@@ -658,7 +611,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	public ILaunchConfiguration getNewConfiguration() throws CoreException {
 		ILaunchConfigurationType configType = getLaunchConfigType();
 		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, 
-				getLaunchManager().generateUniqueLaunchConfigurationNameFrom("TestingConfiguration")); //$NON-NLS-1$
+				getLaunchManager().generateUniqueLaunchConfigurationNameFrom("TestingConfiguration"));
 
 		return wc.doSave();
 		
@@ -671,17 +624,44 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * C Project 
 	 */
 	public static ArrayList<String> getAllFunctions(ICProject project, Object [] listOfFiles){
+		long val = System.currentTimeMillis();
+		ArrayList<String> functionList = new ArrayList<String>();
+		IIndexManager manager = CCorePlugin.getIndexManager();
+		IIndex index = null;
+		
 		try {
-			GetFunctionsJob j = new GetFunctionsJob(project.getHandleIdentifier(), project, listOfFiles);
-			j.schedule();
-			j.join();
-			ArrayList<String> functionList = j.getFunctionList();
+			index = manager.getIndex(project);
+			index.acquireReadLock();
 			
-			return functionList;
+			IIndexFile[] blah = index.getAllFiles();
+			for (IIndexFile file : blah) {
+				String fullFilePath = file.getLocation().getFullPath();
+				if (fullFilePath == null || !specialContains(listOfFiles, fullFilePath)) {
+					continue;
+				}
+
+				IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
+				for (IIndexName name : indexNamesArray) {
+					if (name.isDefinition() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
+							IIndexBinding binder = index.findBinding(name);
+							if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
+									functionList.add(binder.getName());					
+							}
+					}
+				}
+				
+			}
+			
+		} catch (CoreException e) {
+			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		return null;
+		
+		index.releaseReadLock();
+		System.out.println("TOTAL FUNCTIONS : "+ functionList.size());
+		System.out.println("TIME : "+(System.currentTimeMillis() - val));
+		return functionList;
 	}
 	
 	private static boolean specialContains (Object [] list, String input){
@@ -696,98 +676,4 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		return false;
 	}
 	
-	
-	
-	private int cap (int number, int low, int high) {
-		if (number > high)
-			return high;
-		if (number < low)
-			return low;
-		return number;
-	}
-	
-	/**
-	 * Function for generating scripts. Should be overriden by interested classes
-	 * @throws IOException 
-	 */
-	public String generateScript() throws IOException {
-		return null;
-	}
-	
-	public void setScriptPath(String val) {
-		this.scriptPath = val;
-	}
-
-	public void setBinary(IBinary val) {
-		this.bin = val;
-	}
-	
-	
-	private static class GetFunctionsJob extends Job {
-		private ArrayList<String> functionList;
-		private ICProject project;
-		private Object[] listOfFiles;
-
-		public GetFunctionsJob(String name, ICProject p, Object[] o) {
-			super(name);
-			functionList = new ArrayList<String>();
-			listOfFiles = o;
-			project = p;
-		}
-
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			IIndexManager manager = CCorePlugin.getIndexManager();
-			IIndex index = null;
-			
-			try {
-				index = manager.getIndex(project);
-				index.acquireReadLock();
-				
-				IIndexFile[] blah = index.getAllFiles();
-				for (IIndexFile file : blah) {
-					String fullFilePath = file.getLocation().getFullPath();
-					if (fullFilePath == null || !specialContains(listOfFiles, fullFilePath)) {
-						continue;
-					}
-
-					IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
-					for (IIndexName name : indexNamesArray) {
-						if (name.isDefinition() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
-								IIndexBinding binder = index.findBinding(name);
-								if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
-										functionList.add(binder.getName());					
-								}
-						}
-					}
-					
-				}
-				
-			} catch (CoreException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			index.releaseReadLock();
-			return Status.OK_STATUS;
-		}
-		
-		public ArrayList<String> getFunctionList() {
-			return functionList;
-		}
-	}
-	
-	
-	public String getScript() {
-		return generatedScript;
-	}
-	
-	public Button getButton() {
-		return OKButton;
-	}
-	
-	public void setTestMode(boolean val) {
-		testMode = val;
-	}
 }

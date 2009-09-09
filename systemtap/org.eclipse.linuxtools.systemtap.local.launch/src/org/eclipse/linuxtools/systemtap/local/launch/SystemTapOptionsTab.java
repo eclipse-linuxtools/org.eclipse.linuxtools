@@ -18,18 +18,12 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.swt.SWT;
@@ -41,7 +35,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -54,7 +47,6 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -75,7 +67,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected TabFolder commandFolder;
 	protected TabFolder argumentsFolder;
 	protected TabFolder binaryArgumentsFolder;
-	protected TabFolder parserFolder;
 	protected TabFolder generatedScriptFolder;
 	
 	//Controls
@@ -86,12 +77,10 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected Text outputFile;
 	protected Text button_D_text;
 	protected Text binaryArguments;
-	protected Text parser;
 //	protected Text commandFile;
 	
 	protected Button fileBrowseButton;
 	protected Button workspaceBrowseButton;
-	protected Button parserButton;
 
 	protected Button button_v;
 	protected Button button_k;
@@ -296,7 +285,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		binaryArgumentsFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		TabItem binaryArgumentsTab = new TabItem(fileFolder, SWT.NONE);
-		binaryArgumentsTab.setText(Messages.getString("SystemTapOptionsTab.44")); //$NON-NLS-1$
+		binaryArgumentsTab.setText("Binary Arguments");
 		
 		Composite binaryArgumentsTop = new Composite(fileFolder, SWT.NONE);
 		binaryArgumentsTop.setLayout(new GridLayout());
@@ -305,22 +294,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		createBinaryArgumentsOption(binaryArgumentsTop);
 		binaryArgumentsTab.setControl(binaryArgumentsTop);
 		
-		
-		/*
-		 * Parser folder -- Tab for selecting a parser to use
-		 */
-		parserFolder = new TabFolder(top, SWT.BORDER);
-		parserFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
-		TabItem parserTab = new TabItem(fileFolder, SWT.NONE);
-		parserTab.setText("Parser"); //$NON-NLS-1$
-		
-		Composite parserTop = new Composite(fileFolder, SWT.NONE);
-		parserTop.setLayout(new GridLayout());
-		parserTop.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
-		createParserOption(parserTop);
-		parserTab.setControl(parserTop);
 
 //		/*
 //		 * Generated Script folder - tab for selecting script generatedScript
@@ -351,48 +324,13 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		browseTop.setLayoutData(browseData);
 		
 		Label suppFileLabel = new Label(browseTop, SWT.NONE);
-		suppFileLabel.setText(Messages.getString("SystemTapOptionsTab.45")); //$NON-NLS-1$
+		suppFileLabel.setText("Please input the desired arguments, separated by spaces to be given to your binary.");
 		
 		binaryArguments = new Text(browseTop,SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.heightHint = 200;
 		binaryArguments.setLayoutData(gd);
 		binaryArguments.addModifyListener(modifyListener);
-	}
-	
-	private void createParserOption(Composite parserTop) {
-		Composite browseTop = new Composite(parserTop, SWT.NONE);		
-		browseTop.setLayout(new GridLayout(1, false));
-		GridData browseData = new GridData(GridData.FILL_HORIZONTAL);
-		browseTop.setLayoutData(browseData);
-		
-		Label suppFileLabel = new Label(browseTop, SWT.NONE);
-		suppFileLabel.setText("Parser");
-		
-		parser = new Text(browseTop, SWT.BORDER);
-		parser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		parser.addModifyListener(modifyListener);
-
-		parserButton = createPushButton(browseTop, 
-				"Find parsers", null);  //$NON-NLS-1$
-		parserButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), 
-						new ListLabelProvider());
-				dialog.setTitle("Select parser");  //$NON-NLS-1$
-				dialog.setMessage("Select parser to use.");  //$NON-NLS-1$
-				IExtensionRegistry reg = Platform.getExtensionRegistry();
-				IConfigurationElement[] extensions = reg
-						.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE, 
-								PluginConstants.PARSER_NAME);
-				
-				dialog.setElements(extensions);
-				if (dialog.open() == IDialogConstants.OK_ID) {
-					String arg = getUsefulLabel(dialog.getFirstResult());
-					parser.setText(arg);
-				}
-			}
-		});
 	}
 
 	protected void createGeneratedScriptOption(Composite generatedScriptTop) {
@@ -520,7 +458,13 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				filePath = dialog.open();
 				if (filePath != null) {
 					File file = new File(filePath);
-					if (file.exists()) binaryFile.setText(filePath);
+					if (file.exists()) {
+						//System.out.println("Exists"); //$NON-NLS-1$
+						binaryFile.setText(filePath);
+					}
+					else{
+						//System.out.println("BAGADG"); //$NON-NLS-1$
+					}
 				}
 			}
 		});
@@ -798,6 +742,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			button_s_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_BUFFER_BYTES, LaunchConfigurationConstants.DEFAULT_COMMAND_BUFFER_BYTES));
 			button_x_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, LaunchConfigurationConstants.DEFAULT_COMMAND_TARGET_PID));
 			button_p_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_PASS, LaunchConfigurationConstants.DEFAULT_COMMAND_PASS));
+			button_graphicsMode.setSelection(configuration.getAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, LaunchConfigurationConstants.DEFAULT_GRAPHICS_MODE));
 			
 			button_D_text.setText(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES, LaunchConfigurationConstants.DEFAULT_COMMAND_C_DIRECTIVES));
 			binaryFile.setText(configuration.getAttribute(LaunchConfigurationConstants.BINARY_PATH, LaunchConfigurationConstants.DEFAULT_BINARY_PATH));
@@ -805,8 +750,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			outputFile.setText(configuration.getAttribute(LaunchConfigurationConstants.OUTPUT_PATH, LaunchConfigurationConstants.DEFAULT_OUTPUT_PATH));
 			arguments.setText(configuration.getAttribute(LaunchConfigurationConstants.ARGUMENTS, LaunchConfigurationConstants.DEFAULT_ARGUMENTS));
 			binaryArguments.setText(configuration.getAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS, LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS));
-			
-			parser.setText(configuration.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS));
 			
 			if (generatedScript != null){
 				generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
@@ -843,8 +786,8 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_PASS, button_p_Spinner.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_BUFFER_BYTES, button_s_Spinner.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, button_x_Spinner.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, button_graphicsMode.getSelection());
 		
-		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parser.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES, button_D_text.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.BINARY_PATH, binaryFile.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH, scriptFile.getText());
@@ -901,6 +844,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_PASS,LaunchConfigurationConstants.DEFAULT_COMMAND_PASS); 
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_BUFFER_BYTES,LaunchConfigurationConstants.DEFAULT_COMMAND_BUFFER_BYTES);
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID,LaunchConfigurationConstants.DEFAULT_COMMAND_TARGET_PID);
+		configuration.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE,LaunchConfigurationConstants.DEFAULT_GRAPHICS_MODE);
 		
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,LaunchConfigurationConstants.DEFAULT_COMMAND_C_DIRECTIVES);
 		configuration.setAttribute(LaunchConfigurationConstants.BINARY_PATH,LaunchConfigurationConstants.DEFAULT_BINARY_PATH); 
@@ -911,8 +855,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 
 		configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT);
 		configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE);
-		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS);
-
 		
 		configuration.setAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR);
 	
@@ -952,60 +894,5 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		}
 		
 		return valid;
-	}
-	
-	private String getUsefulLabel(Object element) {
-		if (element instanceof IConfigurationElement) {
-			Object o = ((IConfigurationElement) element).getParent();
-			if (o instanceof IExtension) {
-				IExtension e = (IExtension) ((IConfigurationElement) element).getParent();
-				return e.getUniqueIdentifier();
-			}							
-	}
-	return "Invalid";
-
-	}
-	
-	private class ListLabelProvider implements ILabelProvider {
-
-		@Override
-		public Image getImage(Object element) {
-			return null;
-		}
-
-		@Override
-		public String getText(Object element) {
-			if (element instanceof IConfigurationElement) {
-				Object o = ((IConfigurationElement) element).getParent();
-				if (o instanceof IExtension) {
-					IExtension e = (IExtension) ((IConfigurationElement) element).getParent();
-					return e.getLabel();
-				}
-				else if (o instanceof IConfigurationElement) {
-					IConfigurationElement e = (IConfigurationElement) ((IConfigurationElement) element).getParent();
-					return e.getName();
-				}
-								
-		}
-		return "No name -- set name attribute of extension";		}
-
-		@Override
-		public void addListener(ILabelProviderListener listener) {
-			
-		}
-
-		@Override
-		public void dispose() {
-		}
-
-		@Override
-		public boolean isLabelProperty(Object element, String property) {
-			return false;
-		}
-
-		@Override
-		public void removeListener(ILabelProviderListener listener) {
-		}
-		
 	}
 }
