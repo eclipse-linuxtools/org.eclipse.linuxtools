@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraphParser;
-import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
 
 public class SystemTapCommandLineTest extends TestCase {
 	File tmpfile = new File("");

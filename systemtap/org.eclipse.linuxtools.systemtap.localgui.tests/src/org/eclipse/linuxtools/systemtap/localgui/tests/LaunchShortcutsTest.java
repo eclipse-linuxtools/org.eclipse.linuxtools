@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.systemtap.localgui.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
+import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 
 
 public class LaunchShortcutsTest extends TestCase{

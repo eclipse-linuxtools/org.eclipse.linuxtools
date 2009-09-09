@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.systemtap.localgui.launch.SystemTapLaunchShortcut;
+import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 
 
 public class ConfigurationTest extends TestCase{
