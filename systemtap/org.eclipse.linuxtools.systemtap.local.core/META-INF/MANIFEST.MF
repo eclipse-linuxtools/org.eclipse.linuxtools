@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SystemTap Local Core Project
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.localgui.core;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.core;singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.core.Activator
 Require-Bundle: org.eclipse.ui,
