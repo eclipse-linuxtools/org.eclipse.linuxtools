@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.graphing.treeviewer;
+package org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer;
 
 import java.util.Iterator;
 
@@ -16,9 +16,9 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.systemtap.local.graphing.StapData;
-import org.eclipse.linuxtools.systemtap.local.graphing.StapGraph;
-import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.StapData;
+import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
 
 public class StapTreeDoubleClickListener implements IDoubleClickListener {
 

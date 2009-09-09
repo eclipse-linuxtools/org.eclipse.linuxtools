@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapOptionsTab;
 import org.eclipse.swt.SWT;

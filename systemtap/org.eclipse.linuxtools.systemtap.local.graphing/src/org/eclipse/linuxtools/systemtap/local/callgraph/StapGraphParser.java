@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.graphing;
+package org.eclipse.linuxtools.systemtap.local.callgraph;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

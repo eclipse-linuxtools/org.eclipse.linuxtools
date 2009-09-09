@@ -7,9 +7,9 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView"
+            class="org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView"
             icon="icons/genericregister_obj.gif"
-            id="org.eclipse.linuxtools.systemtap.local.graphing.callgraphview"
+            id="org.eclipse.linuxtools.systemtap.local.callgraph.callgraphview"
             name="Call Graph"
             restorable="true">
       </view>
@@ -20,7 +20,7 @@
       <perspectiveExtension
             targetID="org.eclipse.cdt.ui.CPerspective">
          <view
-               id="org.eclipse.linuxtools.systemtap.local.graphing.callgraphview"
+               id="org.eclipse.linuxtools.systemtap.local.callgraph.callgraphview"
                minimized="false"
                relationship="stack">
          </view>
@@ -32,20 +32,20 @@
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            id="org.eclipse.linuxtools.systemtap.localgui.graphing.actionSet"
+            id="org.eclipse.linuxtools.systemtap.local.callgraph.actionSet"
             label="Systemtap Marker Action Set"
             visible="true">
          <action
-               class="org.eclipse.linuxtools.systemtap.local.graphing.actions.InsertMarkerAction"
-               definitionId="org.eclipse.linuxtools.systemtap.localgui.graphing.command3"
-               id="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.StapAction"
+               class="org.eclipse.linuxtools.systemtap.local.callgraph.actions.InsertMarkerAction"
+               definitionId="org.eclipse.linuxtools.systemtap.local.callgraph.command3"
+               id="org.eclipse.linuxtools.systemtap.local.callgraph.actions.StapAction"
                label="Insert stap marker function"
                tooltip="Insert systemtap marker">
          </action>
          <action
-               class="org.eclipse.linuxtools.systemtap.local.graphing.actions.RemoveMarkerAction"
-               definitionId="org.eclipse.linuxtools.systemtap.localgui.graphing.command4"
-               id="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.StapRemoveAction"
+               class="org.eclipse.linuxtools.systemtap.local.callgraph.actions.RemoveMarkerAction"
+               definitionId="org.eclipse.linuxtools.systemtap.local.callgraph.command4"
+               id="org.eclipse.linuxtools.systemtap.local.callgraph.actions.StapRemoveAction"
                label="Remove stap marker function"
                tooltip="Remove systemtap marker">
          </action>
@@ -54,11 +54,11 @@
    
    	<extension point="org.eclipse.ui.bindings">
 		<key
-        commandId="org.eclipse.linuxtools.systemtap.localgui.graphing.command3"
+        commandId="org.eclipse.linuxtools.systemtap.local.callgraph.command3"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="Ctrl+5"/>
   <key
-        commandId="org.eclipse.linuxtools.systemtap.localgui.graphing.command4"
+        commandId="org.eclipse.linuxtools.systemtap.local.callgraph.command4"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
         sequence="Ctrl+6">
   </key>
@@ -66,17 +66,17 @@
     <extension
           point="org.eclipse.ui.commands">
        <command
-             categoryId="org.eclipse.linuxtools.systemtap.localgui.graphing.category2"
-             id="org.eclipse.linuxtools.systemtap.localgui.graphing.command3"
+             categoryId="org.eclipse.linuxtools.systemtap.local.callgraph.category2"
+             id="org.eclipse.linuxtools.systemtap.local.callgraph.command3"
              name="Insert stap marker function">
        </command>
        <category
-             id="org.eclipse.linuxtools.systemtap.localgui.graphing.category2"
+             id="org.eclipse.linuxtools.systemtap.local.callgraph.category2"
              name="SystemTap">
        </category>
        <command
-             categoryId="org.eclipse.linuxtools.systemtap.localgui.graphing.category2"
-             id="org.eclipse.linuxtools.systemtap.localgui.graphing.command4"
+             categoryId="org.eclipse.linuxtools.systemtap.local.callgraph.category2"
+             id="org.eclipse.linuxtools.systemtap.local.callgraph.command4"
              name="Remove stap marker function">
        </command>
     </extension>

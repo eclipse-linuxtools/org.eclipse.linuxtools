@@ -9,10 +9,10 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners;
+package org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners;
 
+import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
-import org.eclipse.linuxtools.systemtap.local.graphing.StapGraph;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 

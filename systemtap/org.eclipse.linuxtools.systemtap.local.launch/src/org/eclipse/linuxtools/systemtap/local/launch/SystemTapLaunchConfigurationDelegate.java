@@ -32,14 +32,14 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.SystemTapCommandParser;
 import org.eclipse.linuxtools.systemtap.local.core.Helper;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
-import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapCommandParser;
-import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.progress.UIJob;
 

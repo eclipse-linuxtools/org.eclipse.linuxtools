@@ -8,10 +8,10 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners;
+package org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners;
 
-import org.eclipse.linuxtools.systemtap.local.graphing.StapGraph;
-import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;

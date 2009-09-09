@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.graphing;
+package org.eclipse.linuxtools.systemtap.local.callgraph;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -24,14 +24,14 @@ import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphKeyListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseWheelListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeContentProvider;
+import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeDoubleClickListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeLabelProvider;
+import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeListener;
 import org.eclipse.linuxtools.systemtap.local.core.MP;
-import org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners.StapGraphKeyListener;
-import org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners.StapGraphMouseListener;
-import org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners.StapGraphMouseWheelListener;
-import org.eclipse.linuxtools.systemtap.local.graphing.treeviewer.StapTreeContentProvider;
-import org.eclipse.linuxtools.systemtap.local.graphing.treeviewer.StapTreeDoubleClickListener;
-import org.eclipse.linuxtools.systemtap.local.graphing.treeviewer.StapTreeLabelProvider;
-import org.eclipse.linuxtools.systemtap.local.graphing.treeviewer.StapTreeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
