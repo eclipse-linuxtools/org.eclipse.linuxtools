@@ -23,8 +23,8 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.systemtap.local.graphing.StapGraphParser;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 
 public class SystemTapCommandLineTest extends TestCase {

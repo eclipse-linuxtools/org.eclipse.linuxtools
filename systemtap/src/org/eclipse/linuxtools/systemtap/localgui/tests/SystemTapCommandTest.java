@@ -18,7 +18,7 @@ import java.io.PrintStream;
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
 
 public class SystemTapCommandTest extends TestCase{
 	
