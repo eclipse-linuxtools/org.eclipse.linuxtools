@@ -686,47 +686,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		return output;
 	}
 	
-	
-	/**
-	 * @param project : C Project Type
-	 * @param functionName : name of a function 
-	 * @return an ArrayList of String paths (relative to current workspace) of
-	 * files with specified function name
-	 */
-	public static ArrayList<String> findFunctionInSource(ICProject project, 
-			String functionName)  {
-		  ArrayList<String> files = new ArrayList<String>() ;
-		  IIndexManager manager = CCorePlugin.getIndexManager();
-		  IIndex index = null;
-		    try {
-				index = manager.getIndex(project);
-
-				index.acquireReadLock();
-				IBinding[] bindings = index.findBindings(functionName.toCharArray(), IndexFilter.ALL, null);
-				for (IBinding bind : bindings) {
-					if (bind instanceof IFunction) {
-						IFunction ifunction = (IFunction) bind;
-						IIndexName[] names = index.findNames(ifunction,
-								IIndex.FIND_DEFINITIONS);
-						for (IIndexName iname : names) {
-							IIndexFile file = iname.getFile();
-							if (file != null) {
-								IIndexFileLocation filelocation = file.getLocation();
-								files.add(filelocation.getFullPath());
-							}
-						}
-					}
-				}
-				
-			} catch (CoreException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-		   index.releaseReadLock();
-		   return files;
-	}
 
 	/**
 	 * Convenience method for creating a new configuration
