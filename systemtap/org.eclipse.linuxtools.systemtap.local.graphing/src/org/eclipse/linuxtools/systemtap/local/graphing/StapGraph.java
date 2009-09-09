@@ -1016,7 +1016,9 @@ public class StapGraph extends Graph {
 		if (getNode(id) != null)
 			getNode(id).unhighlight();
 		clearSelection();
-		
+	
+		//AFTER FIRST LOADING LET THE GRAPH EXPAND TO FILL THE VIEW
+		this.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
 	}
 	
 	

@@ -60,7 +60,7 @@ public class GraphUIJob extends UIJob{
 		
 		
 		g = new StapGraph(graphComp, SWT.BORDER, treeComp, thumbCanvas);
-		g.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		g.setLayoutData(new GridData(this.getDisplay().getPrimaryMonitor().getBounds().width - 200,this.getDisplay().getPrimaryMonitor().getBounds().height - 200));
 		
 		GridData thumbGD = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
 		thumbGD.widthHint=150;
