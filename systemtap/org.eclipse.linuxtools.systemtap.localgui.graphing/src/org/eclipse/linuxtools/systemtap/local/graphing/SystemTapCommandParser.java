@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.localgui.graphing;
+package org.eclipse.linuxtools.systemtap.local.graphing;
 
 import java.io.BufferedReader;
 import java.io.File;

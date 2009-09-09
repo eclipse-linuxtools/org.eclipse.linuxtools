@@ -7,7 +7,7 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView"
+            class="org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView"
             icon="icons/genericregister_obj.gif"
             id="org.eclipse.linuxtools.systemtap.localgui.graphing.stapview"
             name="SystemTap"
@@ -36,14 +36,14 @@
             label="Systemtap Marker Action Set"
             visible="true">
          <action
-               class="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.InsertMarkerAction"
+               class="org.eclipse.linuxtools.systemtap.local.graphing.actions.InsertMarkerAction"
                definitionId="org.eclipse.linuxtools.systemtap.localgui.graphing.command3"
                id="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.StapAction"
                label="Insert stap marker function"
                tooltip="Insert systemtap marker">
          </action>
          <action
-               class="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.RemoveMarkerAction"
+               class="org.eclipse.linuxtools.systemtap.local.graphing.actions.RemoveMarkerAction"
                definitionId="org.eclipse.linuxtools.systemtap.localgui.graphing.command4"
                id="org.eclipse.linuxtools.systemtap.localgui.graphing.actions.StapRemoveAction"
                label="Remove stap marker function"

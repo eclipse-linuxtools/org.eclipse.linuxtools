@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.graphing;
+package org.eclipse.linuxtools.systemtap.local.graphing;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -20,7 +20,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.localgui.graphing"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.local.graphing"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

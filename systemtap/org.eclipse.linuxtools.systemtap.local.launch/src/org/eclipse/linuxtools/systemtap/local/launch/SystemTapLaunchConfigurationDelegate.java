@@ -38,8 +38,8 @@ import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapCommandParser;
-import org.eclipse.linuxtools.systemtap.localgui.graphing.SystemTapView;
+import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapCommandParser;
+import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.progress.UIJob;
 

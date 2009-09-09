@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.graphing;
+package org.eclipse.linuxtools.systemtap.local.graphing;
 
 import java.util.ArrayList;
 import java.util.List;

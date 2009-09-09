@@ -8,9 +8,9 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners;
+package org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners;
 
-import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraph;
+import org.eclipse.linuxtools.systemtap.local.graphing.StapGraph;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;

@@ -8,20 +8,30 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners;
+package org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners;
 
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 
-public class StapGraphMouseExitListener implements Listener{
+/**
+ * Set mouseDown flag to false when focus is lost (prevents the graph from
+ * sticking to the mouse cursor when focus is regained)
+ * 
+ *
+ */
+public class StapGraphFocusListener implements FocusListener{
 	private StapGraphMouseMoveListener listener;
+
+	public StapGraphFocusListener(StapGraphMouseMoveListener listener) {
+		this.listener = listener;
+	}
 	
-	public StapGraphMouseExitListener(StapGraphMouseMoveListener l) {
-		this.listener = l;
+	@Override
+	public void focusGained(FocusEvent e) {		
 	}
 
 	@Override
-	public void handleEvent(Event event) {
+	public void focusLost(FocusEvent e) {			
 		listener.setStop(true);
 	}
 

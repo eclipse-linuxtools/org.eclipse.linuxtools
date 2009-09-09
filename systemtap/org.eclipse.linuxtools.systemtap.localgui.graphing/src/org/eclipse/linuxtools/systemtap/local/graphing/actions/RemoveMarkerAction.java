@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.localgui.graphing.actions;
+package org.eclipse.linuxtools.systemtap.local.graphing.actions;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;

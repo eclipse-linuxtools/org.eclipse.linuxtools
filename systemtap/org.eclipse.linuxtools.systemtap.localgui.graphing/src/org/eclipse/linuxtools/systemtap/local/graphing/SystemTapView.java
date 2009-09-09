@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.localgui.graphing;
+package org.eclipse.linuxtools.systemtap.local.graphing;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -409,7 +409,7 @@ public class SystemTapView extends ViewPart {
 	public static void forceDisplay(){
 		try {
 			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			window.getActivePage().showView("org.eclipse.linuxtools.systemtap.localgui.graphing.stapview").setFocus(); //$NON-NLS-1$
+			window.getActivePage().showView("org.eclipse.linuxtools.systemtap.local.graphing.stapview").setFocus(); //$NON-NLS-1$
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
 		}
