@@ -25,7 +25,6 @@ import org.eclipse.ui.progress.UIJob;
  */
 public class SystemTapUIErrorMessages extends UIJob {
 	private String title, message;
-	private static boolean active = true;
 
 	public SystemTapUIErrorMessages(String name, String title, String message) {
 		super(name);
@@ -35,8 +34,7 @@ public class SystemTapUIErrorMessages extends UIJob {
 
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
-		if (!active)
-			return Status.CANCEL_STATUS;
+		
 		//Test that this job is running in the UI thread 
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		
@@ -51,12 +49,4 @@ public class SystemTapUIErrorMessages extends UIJob {
 		return Status.OK_STATUS;
 	}
 
-	
-	public static boolean isActive() {
-		return active;
-	}
-	
-	public static void setActive(boolean val) {
-		active = val;
-	}
 }

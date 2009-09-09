@@ -100,7 +100,7 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 			if (binaryArguments.length() < 1){	
 				cmdList.add("-c '" + binaryPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 			}else{				
-				cmdList.add("-c '" + binaryPath + " " + binaryArguments +"'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				cmdList.add("-c '" + binaryPath + " " + binaryArguments +"'"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		

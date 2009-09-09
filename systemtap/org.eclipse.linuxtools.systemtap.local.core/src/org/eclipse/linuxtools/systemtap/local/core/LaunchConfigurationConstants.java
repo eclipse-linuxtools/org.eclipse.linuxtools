@@ -43,12 +43,12 @@ public final class LaunchConfigurationConstants {
 	public static final String COMMAND_TARGET_PID = PLUGIN_ID + ".TARGET_PID"; //$NON-NLS-1$
 	public static final String ARGUMENTS = PLUGIN_ID + ".ARGUMENTS"; //$NON-NLS-1$
 	public static final String NUMBER_OF_ARGUMENTS = PLUGIN_ID + ".NUMBER_OF_ARGUMENTS"; //$NON-NLS-1$
-	public static final String OUTPUT_PATH = PLUGIN_ID + ".OUTPUT_PATH";  //$NON-NLS-1$
+	public static final String OUTPUT_PATH = PLUGIN_ID + ".OUTPUT_PATH";  //$NON-NLS-1 //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
 	public static final String OVERWRITE = PLUGIN_ID + ".OVERWRITE";  //$NON-NLS-1$
 	public static final String BUILD_PROJECT = PLUGIN_ID + ".BUILD_PROJECT"; //$NON-NLS-1$
-	public static final String COMMAND_LIST = PLUGIN_ID + ".COMMAND_LIST"; //$NON-NLS-1$
-	public static final String BINARY_ARGUMENTS = PLUGIN_ID + ".BINARY_ARGUMENTS"; //$NON-NLS-1$
-	public static final String PARSER_CLASS = PLUGIN_ID + ".PARSER_CLASS";
+	public static final String GRAPHICS_MODE = PLUGIN_ID + ".GRAPHICS_MODE"; //$NON-NLS-1$
+	public static final String COMMAND_LIST = PLUGIN_ID + ".COMMAND_LIST";
+	public static final String BINARY_ARGUMENTS = PLUGIN_ID + ".BINARY_ARGUMENTS";
 
 
 	public static final String GENERATED_SCRIPT = PLUGIN_ID + ".GENERATED_SCRIPT"; //$NON-NLS-1$
@@ -79,14 +79,13 @@ public final class LaunchConfigurationConstants {
 	public static final String DEFAULT_OUTPUT_PATH = INVALID; 
 	public static final boolean DEFAULT_OVERWRITE = false;
 	public static final int DEFAULT_NUMBER_OF_ARGUMENTS = 0;
-	public static final boolean DEFAULT_BUILD_PROJECT = true; 
+	public static final boolean DEFAULT_BUILD_PROJECT = true; //$NON-NLS-1$
 	public static final String DEFAULT_COMMAND_LIST = INVALID;
 	public static final String DEFAULT_BINARY_ARGUMENTS = INVALID;
 	
 	public static final String DEFAULT_GENERATED_SCRIPT = INVALID;
 	public static final boolean DEFAULT_NEED_TO_GENERATE = false;
 	public static final boolean DEFAULT_USE_COLOUR = false;
-	
-	public static final String DEFAULT_PARSER_CLASS = INVALID;
+	public static final boolean DEFAULT_GRAPHICS_MODE = false;
 
 }
