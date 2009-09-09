@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.localgui.launch;
+package org.eclipse.linuxtools.systemtap.local.launch;
 
 import java.io.BufferedWriter;
 import java.io.File;

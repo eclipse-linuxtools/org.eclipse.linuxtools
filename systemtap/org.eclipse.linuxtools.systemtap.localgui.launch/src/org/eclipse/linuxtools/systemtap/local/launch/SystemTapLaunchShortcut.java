@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.localgui.launch;
+package org.eclipse.linuxtools.systemtap.local.launch;
 
 
 import java.util.ArrayList;
@@ -643,12 +643,10 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
 				for (IIndexName name : indexNamesArray) {
 					if (name.isDefinition() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
-//						if (name.isDefinition()) {
 							IIndexBinding binder = index.findBinding(name);
 							if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
 									functionList.add(binder.getName());					
 							}
-//						}
 					}
 				}
 				
