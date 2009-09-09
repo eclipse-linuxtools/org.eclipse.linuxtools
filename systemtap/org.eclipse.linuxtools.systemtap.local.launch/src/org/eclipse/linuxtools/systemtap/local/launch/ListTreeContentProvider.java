@@ -134,6 +134,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public Object[] findElements(Object inputElement) {
 		ArrayList<Object> output = new ArrayList<Object>();
 
