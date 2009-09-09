@@ -111,16 +111,18 @@ public class StapGraphParser extends Job{
 				}
 				
 				if (tmp.equals("PROBE_BEGIN")){ //$NON-NLS-1$
-					text = buff.readLine();
 					tmp = buff.readLine();
 					
-					if (tmp != null && tmp.length() > 0)
+					if (tmp != null && tmp.length() > 0) {
 						project = CoreModel.getDefault().getCModel().getCProject(tmp);
+					}
 					else {
 						launchFileDialogError();
 						return Status.CANCEL_STATUS;
 					}
-						
+					
+					text = buff.readLine();
+					
 					tmp = buff.readLine();
 					if (tmp != null && tmp.length() > 0)
 						endingTimeInNS = Long.parseLong(tmp);

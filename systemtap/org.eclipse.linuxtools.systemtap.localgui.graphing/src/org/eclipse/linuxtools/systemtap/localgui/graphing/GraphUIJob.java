@@ -139,6 +139,8 @@ public class GraphUIJob extends UIJob{
 	    g.setFocus();
 	    g.setCallOrderList(parser.callOrderList);
 	    
+	    g.setProject(parser.project);
+	    
 	    SystemTapView.setValues(graphComp, treeComp, g, parser);
 	    SystemTapView.createPartControl();
 	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,

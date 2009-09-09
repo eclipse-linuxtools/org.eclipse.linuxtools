@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -125,6 +126,8 @@ public class StapGraph extends Graph {
 	private int lastFunctionCalled;
 	private Canvas thumbCanvas;
 	
+	
+	private ICProject project;
 	
 	public StapGraph(Composite parent, int style, Composite treeComp, Canvas tCanvas) {
 		super(parent, style);
@@ -1720,5 +1723,17 @@ public class StapGraph extends Graph {
 
 	public void setLastFunctionCalled(int lastFunctionCalled) {
 		this.lastFunctionCalled = lastFunctionCalled;
+	}
+
+
+
+	public ICProject getProject() {
+		return project;
+	}
+
+
+
+	public void setProject(ICProject myProject) {
+		this.project = myProject;
 	}
 }

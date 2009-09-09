@@ -12,15 +12,12 @@ package org.eclipse.linuxtools.systemtap.localgui.graphing.graphlisteners;
 
 import java.util.List;
 
-import org.eclipse.linuxtools.systemtap.localgui.core.MP;
+import org.eclipse.linuxtools.systemtap.localgui.graphing.FileFinderOpener;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapGraph;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 @SuppressWarnings("unused")
@@ -39,31 +36,24 @@ public class StapGraphMouseListener implements MouseListener {
 		exitListener = new StapGraphMouseExitListener(listener);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		
 		if (e.stateMask == SWT.CONTROL) {
+			StapNode node = getNodeFromSelection();
+			if (node == null)
+				return;
+			FileFinderOpener.findAndOpen(graph.getProject(), node.getData().name);
 			
-			
+			graph.setSelection(null);
 			return;
 		}
 		
 		
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_RADIAL) {
-			List<GraphNode> stapNodeList = graph.getSelection();
-			if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
-				graph.setSelection(null);
+			StapNode node = getNodeFromSelection();
+			if (node == null)
 				return;
-			}
-
-			StapNode node = null;
-			if (stapNodeList.get(0) instanceof StapNode) {
-				node = (StapNode) stapNodeList.remove(0);
-			} else {
-				graph.setSelection(null);
-				return;
-			}
 			
 			graph.getTreeViewer().collapseToLevel(node.getData(), 0);
 			graph.getTreeViewer().expandToLevel(node.getData(), 0);
@@ -85,13 +75,10 @@ public class StapGraphMouseListener implements MouseListener {
 			return;
 		} else {
 
-			List<StapNode> stapNodeList = graph.getSelection();
-			if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
-				graph.setSelection(null);
+			StapNode node = getNodeFromSelection();
+			if (node == null)
 				return;
-			}
-
-			StapNode node = stapNodeList.remove(0);
+			
 			unhighlightall(node);
 			graph.setSelection(null);
 			graph.getTreeViewer().expandToLevel(node.getData(), 0);
@@ -218,6 +205,24 @@ public class StapGraphMouseListener implements MouseListener {
 		n.unhighlight();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	private StapNode getNodeFromSelection() {
+		List<GraphNode> stapNodeList = graph.getSelection();
+		if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
+			graph.setSelection(null);
+			return null;
+		}
+
+		StapNode node = null;
+		if (stapNodeList.get(0) instanceof StapNode) {
+			node = (StapNode) stapNodeList.remove(0);
+		} else {
+			graph.setSelection(null);
+			return null;
+		}
+		return node;
+	}
 	
 	
 };
