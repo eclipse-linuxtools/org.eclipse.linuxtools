@@ -439,9 +439,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 					} else {
 						if (!list.contains(c))
 							list.add(c);
-//						if (!tu.getElementName().contains(".h")) {
-//							list.add(tu);
-//						}
 					}
 				}
 				
@@ -458,9 +455,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 							} else {
 								if (!list.contains(c))
 									list.add(c);
-//								if (!tu.getElementName().contains(".h")) {
-//									list.add(tu);
-//								}
 							}
 						}
 					}
@@ -648,11 +642,13 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 
 				IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
 				for (IIndexName name : indexNamesArray) {
-					if (name.isDeclaration() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
-						IIndexBinding binder = index.findBinding(name);
-						if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
-								functionList.add(binder.getName());					
-						}
+					if (name.isDefinition() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
+//						if (name.isDefinition()) {
+							IIndexBinding binder = index.findBinding(name);
+							if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
+									functionList.add(binder.getName());					
+							}
+//						}
 					}
 				}
 				
@@ -672,8 +668,11 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	
 	private static boolean specialContains (Object [] list, String input){
 		for (Object val : list){
-			if (val instanceof ITranslationUnit && ((ITranslationUnit)val).getLocation().toString().contains(input)){
-				return true;
+			if (val instanceof ICElement) {
+				ICElement el = (ICElement) val;
+				if (el.getPath().toString().contains(input)){
+					return true;
+				}
 			}
 		}
 		return false;
