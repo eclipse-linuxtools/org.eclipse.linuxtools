@@ -11,12 +11,6 @@
 
 package org.eclipse.linuxtools.systemtap.local.graphing;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -29,7 +23,6 @@ public class SystemTapCommandParser extends Job {
 	private String filePath;
 	private String returnText;
 	private boolean printIsDone;
-	private boolean testMode;
 	public SystemTapView stapview;
 	private String testOutput;
 	public boolean useColours;
@@ -53,15 +46,11 @@ public class SystemTapCommandParser extends Job {
 		super(name);
 		this.filePath = filePath;
 		this.stapview = sview;
-		this.testMode = false;			//By default, do not operate in testing mode
 		this.useColours = useColours;
 		this.graphingMode = scheduleGraph;
 		this.processFinished=false;
 	}
 
-	public void setTestingMode() {
-		testMode = true;
-	}
 	
 	public String getCommand() {
 		return filePath;
@@ -75,14 +64,6 @@ public class SystemTapCommandParser extends Job {
 	 */
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
-	}
-
-
-	private String dashes() {
-		String dash = ""; //$NON-NLS-1$if (b)
-		for (int i = 0; i < 20; i++)
-			dash += "-"; //$NON-NLS-1$
-		return dash;
 	}
 
 	@Override
@@ -104,8 +85,6 @@ public class SystemTapCommandParser extends Job {
 			
 				return Status.OK_STATUS;
 			}
-
-			
 
 		return Status.OK_STATUS;
 	}
