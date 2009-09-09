@@ -489,9 +489,12 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 					return funcs;					
 				}
 				
-				for (String item : getAllFunctions(bin.getCProject(), unitList)){
-					funcs+= item + " ";				
-				}
+					StringBuffer tmpFunc = new StringBuffer();
+					for (String item : getAllFunctions(bin.getCProject(), unitList)){
+						tmpFunc.append(item);
+						tmpFunc.append(" ");
+					}
+					funcs = tmpFunc.toString();
 					
 			}
 			
@@ -627,6 +630,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * C Project 
 	 */
 	public static ArrayList<String> getAllFunctions(ICProject project, Object [] listOfFiles){
+		long val = System.currentTimeMillis();
 		ArrayList<String> functionList = new ArrayList<String>();
 		IIndexManager manager = CCorePlugin.getIndexManager();
 		IIndex index = null;
@@ -661,7 +665,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		}
 		
 		index.releaseReadLock();
-		
+		System.out.println("TOTAL FUNCTIONS : "+ functionList.size());
+		System.out.println("TIME : "+(System.currentTimeMillis() - val));
 		return functionList;
 	}
 	

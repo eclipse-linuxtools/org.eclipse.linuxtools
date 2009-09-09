@@ -69,10 +69,7 @@ public class SystemTapView extends ViewPart {
 	private Display display;
 	private static StyledText viewer;
 	private int previousEnd;
-	
-	private Action killSystemTapScript;
-	private Action checkSystemTapVersion;
-	private Action disposeGraph;
+
 
 	private static Action open_callgraph;
 	private static Action save_callgraph;
