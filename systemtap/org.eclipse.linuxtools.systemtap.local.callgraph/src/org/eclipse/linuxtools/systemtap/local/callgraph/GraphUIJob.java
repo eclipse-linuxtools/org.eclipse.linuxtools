@@ -16,15 +16,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
-import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.AutoScrollSelectionListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.UIJob;
 
 /**
@@ -52,11 +47,6 @@ public class GraphUIJob extends UIJob{
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
 		
-		Display disp = Display.getCurrent();
-		if (disp == null)
-			disp = Display.getDefault();
-		
-		
 		//-------------Initialize shell, menu
 		treeSize = 200;
 
@@ -66,69 +56,26 @@ public class GraphUIJob extends UIJob{
 		
 		Composite treeComp = CallgraphView.makeTreeComp(treeSize);
 		Composite graphComp = CallgraphView.makeGraphComp();
-		graphComp.setBackgroundMode(SWT.INHERIT_FORCE);
+		Canvas thumbCanvas = new Canvas(graphComp, SWT.BORDER);
 		
 		
-		//Create papa canvas
-		Canvas papaCanvas = new Canvas(graphComp, SWT.BORDER);
-		GridLayout papaLayout = new GridLayout(1, true);
-		papaLayout.horizontalSpacing=0;
-		papaLayout.verticalSpacing=0;
-		papaLayout.marginHeight=0;
-		papaLayout.marginWidth=0;
-		papaCanvas.setLayout(papaLayout);
-		GridData papaGD = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
-		papaGD.widthHint=160;
-		papaCanvas.setLayoutData(papaGD);
-		
-		
-		//Add first button
-		Image image = new Image(disp, CallGraphConstants.PLUGIN_LOCATION+"icons/up.gif"); //$NON-NLS-1$
-		Button up = new Button(papaCanvas, SWT.PUSH);
-		GridData buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
-		buttonData.widthHint = 150;
-		buttonData.heightHint = 20;
-		up.setData(buttonData);
-		up.setImage(image);
-		
-		
-		//Add thumb canvas
-		Canvas thumbCanvas = new Canvas(papaCanvas, SWT.NONE);
-		
-		
-		//Add second button
-		image = new Image(disp, CallGraphConstants.PLUGIN_LOCATION+"icons/down.gif"); //$NON-NLS-1$
-		Button down = new Button(papaCanvas, SWT.PUSH);
-		buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
-		buttonData.widthHint = 150;
-		buttonData.heightHint = 0;
-		down.setData(buttonData);
-		down.setImage(image);
-
-		
-		//Initialize graph
-		g = new StapGraph(graphComp, SWT.BORDER, treeComp, papaCanvas);
+		g = new StapGraph(graphComp, SWT.BORDER, treeComp, thumbCanvas);
 		g.setLayoutData(new GridData(this.getDisplay().getPrimaryMonitor().getBounds().width - 200,this.getDisplay().getPrimaryMonitor().getBounds().height - 200));
-
-		up.addSelectionListener(new AutoScrollSelectionListener(
-				AutoScrollSelectionListener.AutoScroll_up, g));
-		down.addSelectionListener(new AutoScrollSelectionListener(
-				AutoScrollSelectionListener.AutoScroll_down, g));
 		
-		
-		//Initialize thumbnail
 		GridData thumbGD = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false);
-		thumbGD.widthHint=160;
+		thumbGD.widthHint=150;
+		
 		thumbCanvas.setLayoutData(thumbGD);
 		LightweightSystem lws = new LightweightSystem(thumbCanvas);
 		ScrollableThumbnail thumb = new ScrollableThumbnail(g.getViewport());
 		thumb.setSource(g.getContents());
 		lws.setContents(thumb);
-
+		
+		
 		//-------------Load graph data
 		g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$
 		boolean marked = false;
-		String msg = ""; //$NON-NLS-1$
+		String msg = "";
 		
 		
 	    for (int id_parent : parser.serialMap.keySet()) {
@@ -223,4 +170,3 @@ public class GraphUIJob extends UIJob{
 	
 	
 }
-

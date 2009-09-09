@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners;
 
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 
@@ -50,10 +51,10 @@ public class StapGraphMouseMoveListener implements MouseMoveListener {
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE) {
 //			if (graph.scale < 0.63) {
 				if (showMessage) {
-//					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-//							Messages.StapGraphMouseMoveListener_0, Messages.StapGraphMouseMoveListener_1,
-//							Messages.StapGraphMouseMoveListener_2);
-//					mess.schedule();
+					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+							"PanError", "Panning disabled",
+							"We're sorry, but panning is disabled in tree mode.");
+					mess.schedule();
 					showMessage = false;
 				}
 				return;

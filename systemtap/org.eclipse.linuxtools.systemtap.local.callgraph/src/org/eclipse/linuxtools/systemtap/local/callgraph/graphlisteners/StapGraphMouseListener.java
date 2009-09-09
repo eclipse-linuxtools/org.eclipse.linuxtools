@@ -12,8 +12,7 @@ package org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners;
 
 import java.util.List;
 
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.linuxtools.systemtap.local.core.FileFinderOpener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.FileFinderOpener;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapNode;
 import org.eclipse.swt.SWT;
@@ -39,8 +38,15 @@ public class StapGraphMouseListener implements MouseListener {
 
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
+		
 		if (e.stateMask == SWT.CONTROL) {
-			controlDoubleClick();
+			StapNode node = getNodeFromSelection();
+			if (node == null)
+				return;
+			FileFinderOpener.findAndOpen(graph.getProject(), node.getData().name);
+			
+			graph.setSelection(null);
+			return;
 		}
 		
 		
@@ -51,7 +57,6 @@ public class StapGraphMouseListener implements MouseListener {
 			
 			graph.getTreeViewer().collapseToLevel(node.getData(), 0);
 			graph.getTreeViewer().expandToLevel(node.getData(), 0);
-			graph.getTreeViewer().setSelection(new StructuredSelection(node.getData()));
 
 			int id = node.getData().id;
 
@@ -77,7 +82,7 @@ public class StapGraphMouseListener implements MouseListener {
 			unhighlightall(node);
 			graph.setSelection(null);
 			graph.getTreeViewer().expandToLevel(node.getData(), 0);
-			graph.getTreeViewer().setSelection(new StructuredSelection(node.getData()));
+
 			// Draw in current modes with 'id' at the top
 			int id = node.getData().id;
 			graph.draw(id);
@@ -85,7 +90,6 @@ public class StapGraphMouseListener implements MouseListener {
 
 		graph.setSelection(null);
 	}
-
 
 	@Override
 	public void mouseDown(MouseEvent e) {
@@ -96,113 +100,19 @@ public class StapGraphMouseListener implements MouseListener {
 //				+ graph.toDisplay(e.x, e.y).y);
 //		MP.println("Bounds: " + graph.getBounds().width + ", " //$NON-NLS-1$ //$NON-NLS-2$
 //				+ graph.getBounds().height);
-		mouseDownEvent(e.x, e.y);
-	}
-
-	@Override
-	public void mouseUp(MouseEvent e) {
-			mouseUpEvent();
-	}
-
-	private void unhighlightall(StapNode n) {
-		int id = n.id;
-		List<Integer> callees = null;
-
-		if (graph.isCollapseMode())
-			callees = graph.getData(id).collapsedCallees;
-		else
-			callees = graph.getData(id).callees;
-		for (int subID : callees) {
-			if (graph.getNode(subID) != null)
-				graph.getNode(subID).unhighlight();
-		}
-
-		if (graph.getParentNode(id) != null) {
-			graph.getParentNode(id).unhighlight();
-		}
-		n.unhighlight();
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	private StapNode getNodeFromSelection() {
-		List<GraphNode> stapNodeList = graph.getSelection();
-		if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
-			graph.setSelection(null);
-			return null;
-		}
-
-		StapNode node = null;
-		if (stapNodeList.get(0) instanceof StapNode) {
-			node = (StapNode) stapNodeList.remove(0);
-		} else {
-			graph.setSelection(null);
-			return null;
-		}
-		return node;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private GraphNode getAggregateNodeFromSelection() {
-		List<GraphNode> graphNodeList = graph.getSelection();
-		if (graphNodeList.isEmpty() || graphNodeList.size() != 1) {
-			graph.setSelection(null);
-			return null;
-		}
-
-		GraphNode node = null;
-		if (graphNodeList.get(0) instanceof GraphNode) {
-			node = (GraphNode) graphNodeList.remove(0);
-		} else {
-			graph.setSelection(null);
-			return null;
-		}
-		return node;
-	}
-	
-	public String controlDoubleClick() {
-		String output = null;
-		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
-			GraphNode node = getAggregateNodeFromSelection();
-			
-			if (node == null)
-				return null;
-			
-			String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
-			output= FileFinderOpener.findAndOpen(graph.getProject(), functionName);
-		} else {
-			StapNode node = getNodeFromSelection();
-			
-			if (node == null)
-				return null;
-
-			int caller = node.getData().caller;
-
-			if (caller < graph.getFirstUsefulNode()) {
-				// The only node that satisfies this condition should be
-				// main
-				caller = graph.getFirstUsefulNode();
-			}
-			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
-		}
-
-		graph.setSelection(null);
-		return output;
-	}
-	
-	public void mouseDownEvent(int x, int y) {
 		List<?> list = graph.getSelection();
 		if (list.size() < 1) {		
-			listener.setPoint(x, y);
+			listener.setPoint(e.x, e.y);
 			listener.setStop(false);
 			graph.addMouseMoveListener(listener);
 			graph.addListener(SWT.MouseExit, exitListener);
 		}
 	}
-	
-	@SuppressWarnings("unchecked")
-	public void mouseUpEvent() {
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void mouseUp(MouseEvent e) {
+		
 		listener.setStop(true);
 		graph.removeMouseMoveListener(listener);
 		graph.removeListener(SWT.MouseExit, exitListener);
@@ -260,7 +170,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 		}
 
-		else if (list.size() == 0 && ! (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)) {
+		else if (list.size() == 0) {
 			for (StapNode n : (List<StapNode>) graph.getNodes()) {
 				unhighlightall(n);
 			}
@@ -275,4 +185,44 @@ public class StapGraphMouseListener implements MouseListener {
 
 //		graph.setSelection(null);
 	}
+
+	private void unhighlightall(StapNode n) {
+		int id = n.id;
+		List<Integer> callees = null;
+
+		if (graph.isCollapseMode())
+			callees = graph.getData(id).collapsedCallees;
+		else
+			callees = graph.getData(id).callees;
+		for (int subID : callees) {
+			if (graph.getNode(subID) != null)
+				graph.getNode(subID).unhighlight();
+		}
+
+		if (graph.getParentNode(id) != null) {
+			graph.getParentNode(id).unhighlight();
+		}
+		n.unhighlight();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	private StapNode getNodeFromSelection() {
+		List<GraphNode> stapNodeList = graph.getSelection();
+		if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
+			graph.setSelection(null);
+			return null;
+		}
+
+		StapNode node = null;
+		if (stapNodeList.get(0) instanceof StapNode) {
+			node = (StapNode) stapNodeList.remove(0);
+		} else {
+			graph.setSelection(null);
+			return null;
+		}
+		return node;
+	}
+	
+	
 };

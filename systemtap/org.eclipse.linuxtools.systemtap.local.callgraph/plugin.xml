@@ -80,13 +80,4 @@
              name="Remove stap marker function">
        </command>
     </extension>
-    <extension
-          id="org.eclipse.linuxtools.systemtap.local.callgraph.graphparser"
-          name="GraphParser"
-          point="org.eclipse.linuxtools.systemtap.local.core.parser">
-       <parser
-             class="org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser"
-             realtime="false">
-       </parser>
-    </extension>
 </plugin>

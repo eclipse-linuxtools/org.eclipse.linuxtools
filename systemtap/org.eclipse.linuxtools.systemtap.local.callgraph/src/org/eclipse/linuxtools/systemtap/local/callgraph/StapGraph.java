@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
 
 public class StapGraph extends Graph {
@@ -68,7 +69,7 @@ public class StapGraph extends Graph {
 	private int topLevelToDraw;
 	private int bottomLevelToDraw;
 	private int topLevelOnScreen;
-	public static int levelBuffer = 30;
+	private static int levelBuffer = 30;
 	private static int maxNodes = 150;
 
 
@@ -99,6 +100,9 @@ public class StapGraph extends Graph {
 	//The current center/top of the nodes list
 	private int rootVisibleNodeNumber;
 	
+	//Buttons
+	private HashMap<Integer, StapButton> buttons; 			//NodeID of each button
+	
 	//Special cases
 	private boolean killInvalidFunctions;					//Toggle hiding of invalid functions					
 	
@@ -125,29 +129,6 @@ public class StapGraph extends Graph {
 	
 	private ICProject project;
 	
-	private int treeLevelFromRoot;
-	public StapGraphMouseListener getMouseListener() {
-		return mListener;
-	}
-
-
-
-	public StapGraphMouseWheelListener getMouseWheelListener() {
-		return mwListener;
-	}
-
-
-
-	public StapGraphKeyListener getKeyListener() {
-		return kListener;
-	}
-
-
-
-	private StapGraphMouseListener mListener;
-	private StapGraphMouseWheelListener mwListener;
-	private StapGraphKeyListener kListener;
-	
 	public StapGraph(Composite parent, int style, Composite treeComp, Canvas tCanvas) {
 		super(parent, style);
 
@@ -156,6 +137,7 @@ public class StapGraph extends Graph {
 		nodeMap = new HashMap<Integer, StapNode>();
 		levels = new HashMap<Integer, List<Integer>>();
 		nodeDataMap = new HashMap<Integer, StapData>();
+		buttons = new HashMap<Integer,StapButton>();
 		aggregateTime = new HashMap<String, Long>();
 		aggregateCount = new HashMap<String, Integer>();
 		currentPositionInLevel = new HashMap<Integer, Integer>();
@@ -170,7 +152,6 @@ public class StapGraph extends Graph {
 		killInvalidFunctions = true;
 		nextMarkedNode = -1;
 		scale = 1;
-		treeLevelFromRoot = 0;
 		
 		this.treeComp = treeComp;
 		if (treeViewer == null || treeViewer.getControl().isDisposed()) {
@@ -181,13 +162,9 @@ public class StapGraph extends Graph {
 		}
 				
 		//-------------Add listeners
-		mListener = new StapGraphMouseListener(this);
-		kListener = new StapGraphKeyListener(this);
-		mwListener = new StapGraphMouseWheelListener(this);
-		this.addMouseListener(mListener);		
-		this.addKeyListener(kListener);
-		this.addMouseWheelListener(mwListener);
-	
+		this.addMouseListener(new StapGraphMouseListener(this));		
+		this.addKeyListener(new StapGraphKeyListener(this));
+		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
 	}
 
 	
@@ -415,8 +392,6 @@ public class StapGraph extends Graph {
 		
 		//-------------Format numbers
 		float percentage_time;
-		float percentage_count;
-		int maxTimesCalled = 0;
 		final int colorLevels = 15;
 		final int colorLevelDifference = 12;
 		int primary;
@@ -426,30 +401,24 @@ public class StapGraph extends Graph {
 		num.setMinimumFractionDigits(2);
 		num.setMaximumFractionDigits(2);
 
-		//FIND THE MOST TIMES A FUNCTION IS CALLED
-		for (int val : aggregateCount.values()){
-			if ( val > maxTimesCalled){
-				maxTimesCalled = val;
-			}
-		}
+		
 		
 		//-------------Draw nodes
 		for (Entry<String, Long> ent : sortedValues) {
+			if (!ent.getKey().equals("init")) { //$NON-NLS-1$
 
 				GraphNode n = new GraphNode(this.getGraphModel(),SWT.NONE);
 				aggregateNodes.add(n);
 				
-				percentage_count = (float)aggregateCount.get(ent.getKey()) / (float)maxTimesCalled;
 				percentage_time = ((float) ent.getValue() / this
 						.getTotalTime() * 100);
 				n.setText(ent.getKey() + "\n"  //$NON-NLS-1$
 						+ num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$
 						+ aggregateCount.get(ent.getKey()) + "\n") ; //$NON-NLS-1$
-				n.setData("AGGREGATE_NAME", ent.getKey()); //$NON-NLS-1$
 				
 				
-				primary = (int)(percentage_count * colorLevels * colorLevelDifference);
-				secondary = (colorLevels * colorLevelDifference) - (int)(percentage_count * colorLevels * colorLevelDifference);
+				primary = (int)(percentage_time / 100 * colorLevels * colorLevelDifference);
+				secondary = (colorLevels * colorLevelDifference) - (int)(percentage_time / 100 * colorLevels * colorLevelDifference);
 				
 				primary = Math.max(0, primary);
 				secondary = Math.max(0, secondary);
@@ -468,10 +437,11 @@ public class StapGraph extends Graph {
 						+ Messages.getString("StapGraph.1") + aggregateCount.get(ent.getKey())		 //$NON-NLS-1$
 				));
 				n.setBorderWidth(2);
+			}
 		}
 		
 		//Set layout to gridlayout
-		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width), true);
+		this.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), true);
 	}
 
 
@@ -500,6 +470,8 @@ public class StapGraph extends Graph {
 		
 		if (getData(id).isMarked())
 			n.setBackgroundColor(CONSTANT_MARKED);
+		
+		
 		
 		
 		//-------------Get appropriate list of children
@@ -558,66 +530,7 @@ public class StapGraph extends Graph {
 		}
 	}
 	
-	/**
-	 * Extend the tree downwards
-	 */
-	public void extendTree() {
-		if (bottomLevelToDraw >= lowestLevelOfNodesAdded) 
-			return;
-		
-		
-		StapData data = getData(rootVisibleNodeNumber);
-		if (data.callees != null) {
-			if (data.callees.size() < 1) {
-				return;
-			}
-		}
-		
-		List<Integer> list = data.callees;
-		if (isCollapseMode())
-			list = data.collapsedCallees;
-		
-		if (list.size() == 1) {
-			//Special case - only one child of the root node
-			//Therefore change root node to this new root node
-			int aMode = animation_mode;
-			draw(CONSTANT_DRAWMODE_TREE, CONSTANT_ANIMATION_FASTEST, list.get(0));
-			setAnimationMode(aMode);
-			return;
-		}
-		
-		
-		List<Integer> bottomList = levels.get(bottomLevelToDraw);
-		bottomLevelToDraw++;
-		
-		for (int i : bottomList) {
-			if (getNode(i) != null) {
-				getNode(i).setBackgroundColor(DEFAULT_NODE_COLOR);
-				getParentNode(i).setBackgroundColor(DEFAULT_NODE_COLOR);
-				drawTree(i, getNode(i).getLocation().x, getNode(i).getLocation().y);
-			}
-		}
-		
-		treeLevelFromRoot++;		
-	}
 	
-	/**
-	 * Removes nodes from the bottom of the tree
-	 */
-	public void shrinkTree() {
-		if (treeLevelFromRoot < 1) 
-			return;
-		
-		
-		bottomLevelToDraw--;
-		deleteAll(rootVisibleNodeNumber);
-		
-		int i = rootVisibleNodeNumber;
-		currentPositionInLevel.clear();
-		drawTree(i, getNode(i).getLocation().x, getNode(i).getLocation().y);
-		
-		treeLevelFromRoot--;		
-	}
 	
 	/**
 	 * Moves all nodes to the point x,y
@@ -800,6 +713,11 @@ public class StapGraph extends Graph {
 			if (node == null)
 				continue;
 			
+			for (int j: node.buttons) {
+				buttons.get(j).dispose();
+				buttons.remove(j);
+			}
+			
 			node.unhighlight();
 			node.dispose();
 		}
@@ -860,24 +778,15 @@ public class StapGraph extends Graph {
 	 * limit + CONSTANT_LEVEL_BUFFER.
 	 * Deletes extraneous levels, changes topLevelToDraw, bottomLevelToDraw
 	 * 
-	 * Convenience method: Calls setLevelLimitsToLevel(levelOfNode(id))
-	 * 
 	 * @param id - node to recenter with
 	 */
 	public void setLevelLimits(int id) {
-		setTopLevelTo(getLevelOfNode(id));
-	}
-	
-	/**
-	 * Sets top level limit to the given level, bottom level limit to top level
-	 * limit + CONSTANT_LEVEL_BUFFER.
-	 * Deletes extraneous levels, changes topLevelToDraw, bottomLevelToDraw
-	 * 
-	 * @param id - node to recenter with
-	 */
-	
-	public void setTopLevelTo(int new_topLevelToDraw) {
+		
+		
+		
+		int new_topLevelToDraw = getLevelOfNode(id);
 		changeLevelLimits(new_topLevelToDraw);
+		
 		
 		int new_bottomLevelToDraw = new_topLevelToDraw + levelBuffer;
 		if (new_bottomLevelToDraw > lowestLevelOfNodesAdded)
@@ -889,7 +798,6 @@ public class StapGraph extends Graph {
 		topLevelToDraw = new_topLevelToDraw;
 		bottomLevelToDraw = new_bottomLevelToDraw;
 	}
-
 	
 	public boolean changeLevelLimits(int lvl) {
 		int numberOfNodes = 0;
@@ -954,8 +862,6 @@ public class StapGraph extends Graph {
 		setDrawMode(drawMode);
 		setAnimationMode(animationMode);
 		this.clearSelection();
-		treeLevelFromRoot = 0;
-		currentPositionInLevel.clear();
 		
 		this.setRedraw(false);
 		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
@@ -1013,7 +919,8 @@ public class StapGraph extends Graph {
 
 		
 		//-------------Draw tree
-		if (draw_mode == CONSTANT_DRAWMODE_TREE) {			
+		if (draw_mode == CONSTANT_DRAWMODE_TREE) {
+			
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
 				if (nodeMap.get(id) == null)
 					nodeMap.put(id, getData(id).makeNode(this));
@@ -1035,12 +942,14 @@ public class StapGraph extends Graph {
 
 				Animation.run(ANIMATION_TIME);
 				getNode(id).unhighlight();
+				currentPositionInLevel.clear();
 			} else {
 				deleteAll(id);
 				setLevelLimits(id);
 				rootVisibleNodeNumber = id;
 				drawTree(id, this.getBounds().width / 2, 20);
 				getNode(id).unhighlight();
+				currentPositionInLevel.clear();
 			}
 		}
 		

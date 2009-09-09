@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.linuxtools.systemtap.local.core.Messages;
 
 
 public class SystemTapCommandParser extends Job {
@@ -70,8 +71,7 @@ public class SystemTapCommandParser extends Job {
 		
 			if (graphingMode) {
 				//Delegate to graphing parser instead of this one
-				StapGraphParser p = new StapGraphParser();
-				p.setFile(filePath);
+				StapGraphParser p = new StapGraphParser(Messages.getString("SystemTapCommandParser.0"), filePath); //$NON-NLS-1$
 				p.schedule();
 				
 //				String text = Helper.getMainConsoleTextByName(configName);

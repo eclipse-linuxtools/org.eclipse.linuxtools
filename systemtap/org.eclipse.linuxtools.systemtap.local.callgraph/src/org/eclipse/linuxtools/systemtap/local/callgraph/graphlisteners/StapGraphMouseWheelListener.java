@@ -33,18 +33,13 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 	public void mouseScrolled(MouseEvent e) {
 		
 		
-		if (e.stateMask != SWT.CTRL) {
-			// Scrolling
-			if (e.count > 0) {
-				AutoScrollHelper.scrollUp(graph);
-			}
-	
-			else {
-				AutoScrollHelper.scrollDown(graph);
-			}
+		if (e.stateMask != SWT.CTRL)
 			return;
-		}
 		
+//		int x = graph.getNode(graph.getRootVisibleNode()).getLocation().x;
+//		int y = graph.getNode(graph.getRootVisibleNode()).getLocation().y;
+//		System.out.println("BEFORE: " + x + ", " +y); 
+//		
 		if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_BOX && 
 				graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE)
 			return;

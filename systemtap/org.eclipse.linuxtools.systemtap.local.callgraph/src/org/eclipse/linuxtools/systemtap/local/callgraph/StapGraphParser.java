@@ -10,22 +10,22 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.callgraph;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.linuxtools.systemtap.local.core.Helper;
-import org.eclipse.linuxtools.systemtap.local.core.SystemTapParser;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.linuxtools.systemtap.local.core.MP;
+import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
-import org.eclipse.swt.widgets.Shell;
 
 
 /**
@@ -37,9 +37,8 @@ import org.eclipse.swt.widgets.Shell;
  * handles all of the parsing. All data is stored into Maps and this class
  * also starts the job responsible for taking the parsed data and rendering it.
  */
-public class StapGraphParser extends SystemTapParser {
-	
-	private static final String NEW_LINE = "\n";
+public class StapGraphParser extends Job{
+	private IProgressMonitor monitor;
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
@@ -49,16 +48,21 @@ public class StapGraphParser extends SystemTapParser {
 	public  HashMap<Integer, String> markedMap;
 	public String markedNodes;
 	public int validator;
+	private String filePath;
 	public Long endingTimeInNS;
 	public long totalTime;
 	public int lastFunctionCalled;
 	public ICProject project;
-
 	
-	public String text;
-	
-	@Override
-	protected void initialize() {
+	public StapGraphParser(String name, String filePath) {
+		super(name);
+		
+		//BY DEFAULT READ/WRITE FROM HERE
+		if (filePath != null)
+			this.filePath = filePath;
+		else
+			filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		
 		//INITIALIZE MAPS
 		outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
 		timeMap = new HashMap<Integer, Long>();
@@ -69,9 +73,24 @@ public class StapGraphParser extends SystemTapParser {
 		callOrderList = new ArrayList<Integer>();
 		markedMap = new HashMap<Integer, String>();
 		lastFunctionCalled = 0;
-		project = null;		
+		project = null;
 	}
-
+	
+	public void setFile(String filePath) {
+		this.filePath = filePath;
+	}
+	
+	
+	public void launchFileDialogError(){
+		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(
+				Messages.getString("StapGraphParser.0"), //$NON-NLS-1$
+				Messages.getString("StapGraphParser.1"), //$NON-NLS-1$
+				Messages.getString("StapGraphParser.2")+filePath+ //$NON-NLS-1$
+				Messages.getString("StapGraphParser.3")); //$NON-NLS-1$ 
+		err.schedule();
+	}
+	
+	public String text;
 	
 	public IStatus executeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
@@ -80,7 +99,7 @@ public class StapGraphParser extends SystemTapParser {
 		serialMap.clear();
 		cumulativeTimeMap.clear();
 		countMap.clear();
-		text = ""; //$NON-NLS-1$
+		text = "";
 		callOrderList.clear();
 		
 		try {
@@ -134,7 +153,7 @@ public class StapGraphParser extends SystemTapParser {
 			boolean encounteredMain = false;
 			
 			ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
-			String[] callsAndReturns = text.split(";"); //$NON-NLS-1$
+			String[] callsAndReturns = text.split(";");
 			String[] args;
 			ArrayList<String> nameList = new ArrayList<String>();
 			ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -151,7 +170,7 @@ public class StapGraphParser extends SystemTapParser {
 				switch (s.charAt(0)) {
 					case '<' :
 						
-						args = s.substring(1, s.length()).split(",,"); //$NON-NLS-1$
+						args = s.substring(1, s.length()).split(",,");
 						// args[0] = name
 						// args[1] = id
 						// arsg[2] = time of event
@@ -161,12 +180,12 @@ public class StapGraphParser extends SystemTapParser {
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
+						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
 							skippedDirectives = true;
 							break;
 						}
-						name = cleanFunctionName(name);
-						if (name.equals("main")) //$NON-NLS-1$
+						name = cleanName(name);
+						if (name.equals("main"))
 							encounteredMain = true;
 						if (firstNode == -1) {
 							firstNode = id;
@@ -210,7 +229,7 @@ public class StapGraphParser extends SystemTapParser {
 
 						break;
 					case '>' :
-						args = s.substring(1, s.length()).split(",,"); //$NON-NLS-1$
+						args = s.substring(1, s.length()).split(",,");
 						//args[0] = name
 						//args[1] = time of event
 						name = args[0];
@@ -218,14 +237,14 @@ public class StapGraphParser extends SystemTapParser {
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
+						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
 							skippedDirectives = true;							
 							break;
 						}
-						name = cleanFunctionName(name);
+						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
-							parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
+							parsingError("Encountered return without matching call for function " + name);
 							return Status.CANCEL_STATUS;
 						}
 						
@@ -234,7 +253,7 @@ public class StapGraphParser extends SystemTapParser {
 						
 						
 						if (timeMap.get(id) == null) {
-							parsingError(Messages.getString("StapGraphParser.13") + name); //$NON-NLS-1$
+							parsingError("No start time could be found for function " + name);
 							return Status.CANCEL_STATUS;
 						}		
 						time =  Long.parseLong(args[1]) - timeMap.get(id);
@@ -255,8 +274,8 @@ public class StapGraphParser extends SystemTapParser {
 						
 						break;
 					default : 
-						parsingError(Messages.getString("StapGraphParser.14") + s.charAt(0) + //$NON-NLS-1$
-								Messages.getString("StapGraphParser.15") ); //$NON-NLS-1$
+						parsingError("Unexpected symbol when parsing: '" + s.charAt(0) +
+								"' encountered, while expecting < or >." );
 						return Status.CANCEL_STATUS;
 					
 				} 
@@ -280,7 +299,7 @@ public class StapGraphParser extends SystemTapParser {
 //					}
 					lastFunctionCalled = val;
 				}
-				markedMap.put(lastFunctionCalled, Messages.getString("StapGraphParser.16")); //$NON-NLS-1$
+				markedMap.put(lastFunctionCalled, ":::Program terminated here");
 			}
 				
 			//timecheck is true if the total execution time is less than 10ms
@@ -293,31 +312,31 @@ public class StapGraphParser extends SystemTapParser {
 								
 			if (skippedDirectives || timeCheck) {
 				totalTime = timeMap.get(firstNode);
-				String markedMessage = ""; //$NON-NLS-1$
+				String markedMessage = "";
 				if (markedMap.containsKey(firstNode)) {
-					markedMessage = markedMap.get(firstNode) + "\n"; //$NON-NLS-1$
+					markedMessage = markedMap.get(firstNode) + "\n";
 				}
 				if (skippedDirectives)
-					markedMessage += Messages.getString("StapGraphParser.19"); //$NON-NLS-1$
+					markedMessage += "\n:::SystemTap detected functions that appeared to be C directives.";
 				if (timeCheck)
-					markedMessage += Messages.getString("StapGraphParser.20"); //$NON-NLS-1$
+					markedMessage += "\n:::Program terminated in less than 50ms and first function is not ~100%.";
 				
-				markedMessage += Messages.getString("StapGraphParser.21"); //$NON-NLS-1$
+				markedMessage += "\n:::Total time for this run has been set to the total time taken by this node.";
 				
 				markedMap.put(firstNode, markedMessage);
 			}
 			
 			
 			} catch (NumberFormatException e) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("StapGraphParser.22"),  //$NON-NLS-1$
-						Messages.getString("StapGraphParser.23"), Messages.getString("StapGraphParser.24") + //$NON-NLS-1$ //$NON-NLS-2$
-						Messages.getString("StapGraphParser.25")); //$NON-NLS-1$
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Unexpected Number", 
+						"Unexpected symbol", "Unexpected symbol encountered while trying to " +
+						"process id/time values.");
 				mess.schedule();
 				
 				return Status.CANCEL_STATUS;
 			}
 		} else {
-			parsingError(Messages.getString("StapGraphParser.26")); //$NON-NLS-1$
+			parsingError("Could not find data in target file. Ensure target file contains data and try again.");
 			return Status.CANCEL_STATUS;
 		}
 		
@@ -327,42 +346,75 @@ public class StapGraphParser extends SystemTapParser {
 		return Status.OK_STATUS;
 			
 	}
-
-
-	@Override
-	public void saveData(String filePath) {
-		File file = new File(filePath);
-		String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$
-		+ project.getElementName()
-		+ NEW_LINE
-		+ text
-		+ NEW_LINE
-		+ endingTimeInNS
-		+ NEW_LINE
-		+ totalTime;
-		try {
-			// WAS THE FILE CREATED OR DOES IT ALREADY EXIST
-			if (file.createNewFile()) {
-				Helper.writeToFile(filePath, content);
-			} else {
-				if (MessageDialog
-						.openConfirm(
-								new Shell(),
-								Messages
-										.getString("CallgraphView.FileExistsTitle"), //$NON-NLS-1$
-								Messages
-										.getString("CallgraphView.FileExistsMessage"))) { //$NON-NLS-1$
-					file.delete();
-					file.createNewFile();
-					Helper.writeToFile(filePath, content);
-				}
+	
+	/**
+	 * Cleans names of form 'name").return', returning just the name
+	 * @param name
+	 */
+	private String cleanName(String name) {
+		return name.split("\"")[0];
+		
+	}
+	
+	private void parsingError(String message) {
+		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+				"ParseError", "Unexpected symbol", message);
+		mess.schedule();
+	}
+	
+ 
+	private boolean isNameClean(String name) {
+		if (name.contains("\"") || name.contains(")"))
+			return false;
+		return true;
+	}
+	
+	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
+		int amt = 0;
+		for (int a : blah.keySet()) {
+			amt++;
+			MP.print(a + " ::> "); //$NON-NLS-1$
+			for (int c : blah.get(a)) {
+					System.out.print(c + " ");					 //$NON-NLS-1$
 			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}		
+			MP.println("");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void printMap(Map blah) {
+		int amt = 0;
+		for (Object a : blah.keySet()) {
+			amt++;
+			MP.println(a + " ::> "+blah.get(a)); //$NON-NLS-1$
+		}
 	}
 
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		this.monitor = monitor;
+		return executeParsing();
+		
+	}
+	
+	
+	public String getFile() {
+		return filePath;
+	}
+	
 
+	public IProgressMonitor getMonitor() {
+		return monitor;
+	}
 
+	/**
+	 * For easier JUnit testing only. Allows public access to run method without scheduling an extra job.
+	 *  
+	 * @param m
+	 * @return
+	 */
+	public IStatus testRun(IProgressMonitor m) {
+		return run(m);
+	}
 	
 }

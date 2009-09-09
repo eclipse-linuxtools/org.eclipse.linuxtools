@@ -25,6 +25,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.systemtap.local.core.Helper;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
@@ -304,8 +305,6 @@ public class CallgraphView extends ViewPart {
 	 * initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		if (masterComposite != null)
-			masterComposite.dispose();
 		masterComposite = parent;
 		this.display = parent.getDisplay();
 		GridLayout layout = new GridLayout(2, false);
@@ -548,8 +547,7 @@ public class CallgraphView extends ViewPart {
 				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
 				String filePath =  dialog.open();
 				if (filePath != null){
-					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setFile(filePath);
+					StapGraphParser new_parser = new StapGraphParser(Messages.getString("CallgraphView.10"), filePath); //$NON-NLS-1$
 					new_parser.schedule();					
 				}
 			}
@@ -558,7 +556,9 @@ public class CallgraphView extends ViewPart {
 		//Opens from the default location
 		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
 			public void run(){
-				StapGraphParser new_parser = new StapGraphParser();
+				StapGraphParser new_parser = new 
+						StapGraphParser(Messages.getString("CallgraphView.12"),  //$NON-NLS-1$
+										PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH);
 				new_parser.schedule();					
 			}
 		};
@@ -572,7 +572,34 @@ public class CallgraphView extends ViewPart {
 				String filePath = dialog.open();
 				
 				if (filePath != null) {
-					parser.saveData(filePath);
+					File file = new File(filePath);
+					String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$
+					+ parser.text
+					+ NEW_LINE
+					+ parser.endingTimeInNS
+					+ NEW_LINE
+					+ parser.totalTime;
+					try {
+						// WAS THE FILE CREATED OR DOES IT ALREADY EXIST
+						if (file.createNewFile()) {
+							Helper.writeToFile(filePath, content);
+						} else {
+							if (MessageDialog
+									.openConfirm(
+											sh,
+											Messages
+													.getString("CallgraphView.FileExistsTitle"), //$NON-NLS-1$
+											Messages
+													.getString("CallgraphView.FileExistsMessage"))) { //$NON-NLS-1$
+								file.delete();
+								file.createNewFile();
+								Helper.writeToFile(filePath, content);
+							}
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+
 				}
 			}
 		};
@@ -762,7 +789,7 @@ public class CallgraphView extends ViewPart {
 			}
 		};
 		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "icons/tree_view.gif")); //$NON-NLS-1$
+				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/tree_view.gif")); //$NON-NLS-1$
 		view_treeview.setImageDescriptor(treeImage);
 		
 		
@@ -776,7 +803,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor d = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						CallGraphConstants.PLUGIN_LOCATION + "/icons/radial_view.gif")); //$NON-NLS-1$
+						PluginConstants.PLUGIN_LOCATION + "/icons/radial_view.gif")); //$NON-NLS-1$
 		view_radialview.setImageDescriptor(d);
 
 		
@@ -790,7 +817,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor aggregateImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						CallGraphConstants.PLUGIN_LOCATION + "/icons/view_aggregateview.gif")); //$NON-NLS-1$
+						PluginConstants.PLUGIN_LOCATION + "/icons/view_aggregateview.gif")); //$NON-NLS-1$
 		view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
@@ -803,7 +830,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor boxImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						CallGraphConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif")); //$NON-NLS-1$
+						PluginConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif")); //$NON-NLS-1$
 		view_boxview.setImageDescriptor(boxImage);
 		
 		
@@ -814,7 +841,7 @@ public class CallgraphView extends ViewPart {
 		});
 		ImageDescriptor refreshImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						CallGraphConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif")); //$NON-NLS-1$
+						PluginConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif")); //$NON-NLS-1$
 		getView_refresh().setImageDescriptor(refreshImage);
 		
 		
@@ -862,7 +889,7 @@ public class CallgraphView extends ViewPart {
 		};
 		
 		ImageDescriptor newImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "icons/mode_collapsednodes.gif")); //$NON-NLS-1$
+				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/mode_collapsednodes.gif")); //$NON-NLS-1$
 		mode_collapsednodes.setImageDescriptor(newImage);
 		
 		limits = new Action(Messages.getString("CallgraphView.SetLimits"), Action.AS_PUSH_BUTTON) { //$NON-NLS-1$
@@ -1149,10 +1176,6 @@ public class CallgraphView extends ViewPart {
 
 	public static void setGoto_previous(Action gotoPrevious) {
 		goto_previous = gotoPrevious;
-	}
-	
-	public static StapGraph getGraph() {
-		return graph;
 	}
 }
 	
