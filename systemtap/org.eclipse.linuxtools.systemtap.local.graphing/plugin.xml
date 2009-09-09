@@ -10,7 +10,7 @@
             class="org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView"
             icon="icons/genericregister_obj.gif"
             id="org.eclipse.linuxtools.systemtap.local.graphing.callgraphview"
-            name="Call graph"
+            name="Call Graph"
             restorable="true">
       </view>
    </extension>
