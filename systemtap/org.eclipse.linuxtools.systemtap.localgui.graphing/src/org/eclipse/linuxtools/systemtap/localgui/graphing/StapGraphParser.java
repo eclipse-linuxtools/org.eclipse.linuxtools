@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.eclipse.cdt.core.model.CoreModel;
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -50,6 +52,7 @@ public class StapGraphParser extends Job{
 	public Long endingTimeInNS;
 	public long totalTime;
 	public int lastFunctionCalled;
+	public ICProject project;
 	
 	public StapGraphParser(String name, String filePath) {
 		super(name);
@@ -70,6 +73,7 @@ public class StapGraphParser extends Job{
 		callOrderList = new ArrayList<Integer>();
 		markedMap = new HashMap<Integer, String>();
 		lastFunctionCalled = 0;
+		project = null;
 	}
 	
 	public void setFile(String filePath) {
@@ -109,12 +113,22 @@ public class StapGraphParser extends Job{
 				if (tmp.equals("PROBE_BEGIN")){ //$NON-NLS-1$
 					text = buff.readLine();
 					tmp = buff.readLine();
+					
+					if (tmp != null && tmp.length() > 0)
+						project = CoreModel.getDefault().getCModel().getCProject(tmp);
+					else {
+						launchFileDialogError();
+						return Status.CANCEL_STATUS;
+					}
+						
+					tmp = buff.readLine();
 					if (tmp != null && tmp.length() > 0)
 						endingTimeInNS = Long.parseLong(tmp);
 					else {
 						launchFileDialogError();
 						return Status.CANCEL_STATUS;
 					}
+					
 					tmp = buff.readLine();
 					if (tmp != null && tmp.length() > 0)
 						totalTime = Long.parseLong(tmp);

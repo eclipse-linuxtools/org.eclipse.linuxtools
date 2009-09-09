@@ -702,6 +702,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		  IIndex index = null;
 		    try {
 				index = manager.getIndex(project);
+
 				index.acquireReadLock();
 				IBinding[] bindings = index.findBindings(functionName.toCharArray(), IndexFilter.ALL, null);
 				for (IBinding bind : bindings) {

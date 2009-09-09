@@ -1,9 +1,3 @@
-probe begin{
-	printf("\nPROBE_BEGIN\n")
-	serial=1
-	startTime = 0;
-}
-
 function callFunction(probefunc) {
 	if (startTime == 0) {
 		startTime = gettimeofday_ns()

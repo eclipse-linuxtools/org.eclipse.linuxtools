@@ -96,7 +96,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			if (funcs == null)
 				return;
 			scriptContents += funcs;
-			scriptContents += writeFromPartialScript();
+			scriptContents += writeFromPartialScript(bin.getCProject().getElementName());
 			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
 //			bw.write("probe begin { printf(\"HELLO\") }");
@@ -188,10 +188,16 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 * @throws IOException
 	 */
-	private String writeFromPartialScript() throws IOException {
+	private String writeFromPartialScript(String projectName) throws IOException {
 		String toWrite = ""; 
-		String temp = ""; 
-		File partialScript = new File(partialScriptPath);
+		String temp = "";
+		toWrite += "probe begin{\n" +
+					"printf(\"\\nPROBE_BEGIN\\n\")\n" + 
+					"serial=1\n" + 
+					"startTime = 0;\n" +
+					"printf(\"" + projectName + "\\n\")\n" +
+					"}";
+ 		File partialScript = new File(partialScriptPath);
 		BufferedReader scriptReader = new BufferedReader(new FileReader(
 				partialScript));
 		while ((temp = scriptReader.readLine()) != null) {

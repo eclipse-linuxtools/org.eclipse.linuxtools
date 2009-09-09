@@ -42,6 +42,14 @@ public class StapGraphMouseListener implements MouseListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
+		
+		if (e.stateMask == SWT.CONTROL) {
+			
+			
+			return;
+		}
+		
+		
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_RADIAL) {
 			List<GraphNode> stapNodeList = graph.getSelection();
 			if (stapNodeList.isEmpty() || stapNodeList.size() != 1) {
@@ -209,4 +217,7 @@ public class StapGraphMouseListener implements MouseListener {
 		}
 		n.unhighlight();
 	}
+	
+	
+	
 };

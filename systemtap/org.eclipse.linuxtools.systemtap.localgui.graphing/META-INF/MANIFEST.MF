@@ -10,7 +10,11 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.linuxtools.systemtap.localgui.graphing
-Import-Package: org.eclipse.jface.text,
+Import-Package: org.eclipse.cdt.core,
+ org.eclipse.cdt.core.dom.ast,
+ org.eclipse.cdt.core.index,
+ org.eclipse.cdt.core.model,
+ org.eclipse.jface.text,
  org.eclipse.linuxtools.systemtap.localgui.core,
  org.eclipse.ui.texteditor,
  org.eclipse.zest.core.viewers,
