@@ -834,7 +834,7 @@ public class CallgraphView extends ViewPart {
 		view_boxview.setImageDescriptor(boxImage);
 		
 		
-		setView_refresh(new Action("Reset"){
+		setView_refresh(new Action("(R)eset"){
 			public void run(){
 				graph.reset();
 			}
