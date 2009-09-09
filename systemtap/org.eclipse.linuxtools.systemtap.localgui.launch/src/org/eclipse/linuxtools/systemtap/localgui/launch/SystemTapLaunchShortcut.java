@@ -13,19 +13,15 @@ package org.eclipse.linuxtools.systemtap.localgui.launch;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.dom.ast.IFunction;
 import org.eclipse.cdt.core.index.IIndex;
 import org.eclipse.cdt.core.index.IIndexBinding;
 import org.eclipse.cdt.core.index.IIndexFile;
-import org.eclipse.cdt.core.index.IIndexFileLocation;
 import org.eclipse.cdt.core.index.IIndexManager;
 import org.eclipse.cdt.core.index.IIndexName;
-import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICContainer;
@@ -56,6 +52,8 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected IEditorPart editor;
 	protected ILaunchConfiguration config;
+	
+	private static final String USER_SELECTED_ALL = "ALL";
 
 	protected String name;
 	protected String binaryPath;
@@ -362,14 +360,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				e.printStackTrace();
 				return null;
 			}
-			//An error has occured!
 		return config;
-
-//			SystemTapUIErrorMessages error = new SystemTapUIErrorMessages(
-//					"Could not create configuration",
-//					"Could not create configuration",
-//					"An error has occured: the code has reached an impossible location.");
-//			error.schedule();
 	}
 	
 	/**
@@ -489,32 +480,18 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 					}
 				}
 			} else {
-//				funcs.clear();
-//				funcs.add("*");
+
 				Object[] unitList = chooseUnit(list, numberOfFiles); 
 				if (unitList == null || unitList.length == 0) {
 					return "";
+				} else if (unitList.length == 1 && unitList[0].toString().equals(USER_SELECTED_ALL)) {
+					funcs = "*";
+					return funcs;					
 				}
-			
-				if (unitList.length >= list.size()) {
-					//User selected all items, just add * instead of searching
-					funcs ="*";
-				} 
-				/*for (Object obj : unitList) {
-					if (obj instanceof ITranslationUnit) {
-						ITranslationUnit tu = (ITranslationUnit) obj;
-						tu.accept(v);
-						funcs+=(v.getFunctions());
-					} else {
-						//Non-Translation unit object added to list, just probe *
-						funcs = "*";
-						return funcs;
-					}
-				}*/
 				
-					for (String item : getAllFunctions(bin.getCProject(), unitList)){
-						funcs+= item + " ";				
-					}
+				for (String item : getAllFunctions(bin.getCProject(), unitList)){
+					funcs+= item + " ";				
+				}
 					
 			}
 			
@@ -531,53 +508,12 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	
 	/**
 	 * Creates a dialog that prompts the user to select from the given list
-	 * of translation units.
+	 * of ICElements
 	 * 
-	 * @param list
+	 * @param list: list of ICElements
 	 * @return
 	 */
-	protected Object[] chooseUnit(List<ICContainer> list, int numberOfValidFiles) {
-//		ILabelProvider programLabelProvider = new LabelProvider() {
-//			public String getText(Object element) {
-//				if (element instanceof ITranslationUnit) {
-//					String name = ((ITranslationUnit) element).getElementName();
-//					return name;
-//				}
-//				return super.getText(element);
-//			}
-//		};
-//	
-//		//Currently we end up visiting the translation unit twice, could be
-//		//expensive for larger programs
-//		ILabelProvider qualifierLabelProvider = new LabelProvider() {
-//			public String getText(Object element) {
-//				try {
-//					if (element instanceof ITranslationUnit) {
-//						//Only select names that are not .h files
-//						TranslationUnitVisitor v = new TranslationUnitVisitor();
-//						((ITranslationUnit) element).accept(v);
-//						return "Functions: " + v.getNumberOfFunctions();
-//					}
-//				} catch (CoreException e) {
-//					e.printStackTrace();
-//				}
-//				return super.getText(element);
-//			}
-//		};
-//	
-//		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
-//				getActiveWorkbenchShell(), programLabelProvider);
-//		TwoPaneElementSelector dialog = new TwoPaneElementSelector(
-//				getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
-//		dialog.setElements(list.toArray());
-//		dialog.setTitle("Choose files"); //$NON-NLS-1$
-//		dialog.setMessage("Probe functions declared in selected files."); //$NON-NLS-1$
-////		dialog.setUpperListLabel("Detected files"); //$NON-NLS-1$
-////		dialog.setLowerListLabel("Number of functions"); //$NON-NLS-1$
-//		dialog.setMultipleSelection(true);
-//		dialog.setInitialElementSelections(list);
-//		
-		
+	protected Object[] chooseUnit(List<ICContainer> list, int numberOfValidFiles) {		
 		ListTreeContentProvider prov = new ListTreeContentProvider();
 		
 	    CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(getActiveWorkbenchShell(), 
@@ -596,9 +532,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			try {
 				for (Object obj : result) {
 					if (obj instanceof ICContainer){
-						List<ITranslationUnit> units =
-							Arrays.asList(((ICContainer) obj).getTranslationUnits()); 
-						for (ITranslationUnit c : units) {
+						ICElement[] array = ((ICContainer) obj).getChildren();
+						for (ICElement c : array) {
 							if (!(c.getElementName().endsWith(".c") ||
 									c.getElementName().endsWith(".cpp")))
 								continue;
@@ -607,43 +542,27 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 						}
 					}
 					else if (obj instanceof ICElement) {
-						ICElement parent = ((ICElement) obj).getParent();
-						if (parent instanceof ICContainer){
-							String name =((ICElement) obj).getElementName(); 
-							if (name.endsWith(".c") || name.endsWith(".cpp")) {
-							ITranslationUnit b = ((ICContainer) parent).getTranslationUnit(name);
-							if (!output.contains(b)) {
-								output.add(b);
-							}
+						if (((ICElement) obj).getElementName().endsWith(".c") 
+								|| ((ICElement) obj).getElementName().endsWith(".cpp")) {
+							if (!output.contains(obj)) {
+								output.add(obj);
 							}
 						}
 					}
 				}
 			
-				int totalValidFiles = numberOfValidFiles;
-				if ( output.size() >= totalValidFiles) {
+				if ( output.size() >= numberOfValidFiles) {
 					output.clear();
-					output.add(new Object());
-				} else if (output.size() > 10 && totalValidFiles > 300) {
+					output.add(USER_SELECTED_ALL);
+				} else if (output.size() > 10 && numberOfValidFiles > 300) {
 					if (confirmProbeAll(output.size())) {
 						output.clear();
-						output.add(new Object());
+						output.add(USER_SELECTED_ALL);
 					}
 				}
 			} catch (CModelException e) {
 				e.printStackTrace();
 			}
-	
-//			
-//			if ( output.size() == 0) {
-//				output.clear();
-//				output.add(new Object());
-//			} else if (output.size() > 1) {
-//				if (confirmProbeAll(output.size())) {
-//					output.clear();
-//					output.add(new Object());
-//				}
-//			}
 			
 			return output.toArray();
 		}
