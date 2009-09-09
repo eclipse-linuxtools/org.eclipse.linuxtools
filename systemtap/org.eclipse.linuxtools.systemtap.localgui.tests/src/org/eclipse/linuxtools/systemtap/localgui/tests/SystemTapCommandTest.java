@@ -18,7 +18,7 @@ import java.io.PrintStream;
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView;
+import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
 
 public class SystemTapCommandTest extends TestCase{
 	
@@ -34,10 +34,10 @@ public class SystemTapCommandTest extends TestCase{
 		String testText = "CORRECT";
 		String tempLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()
 								+ "/DeleteThisScript.stp";		
-//		SystemTapView junk = new SystemTapView();
+//		CallgraphView junk = new CallgraphView();
 		
-		//Initialize SystemTapView
-		SystemTapView.forceDisplay();
+		//Initialize CallgraphView
+		CallgraphView.forceDisplay();
 			
 		//Create temporary file containing the test script
 		File temporaryScript = new File(tempLocation);
@@ -52,7 +52,7 @@ public class SystemTapCommandTest extends TestCase{
 		
 
 //		//Execute and assert
-//		SystemTapCommandParser cmd = new SystemTapCommandParser("SystemTapView", "stap " 
+//		SystemTapCommandParser cmd = new SystemTapCommandParser("CallgraphView", "stap " 
 //				+ tempLocation, junk,false, false, "");
 //		cmd.setTestingMode();
 //		assertEquals(cmd.testRun(new NullProgressMonitor()), Status.OK_STATUS);

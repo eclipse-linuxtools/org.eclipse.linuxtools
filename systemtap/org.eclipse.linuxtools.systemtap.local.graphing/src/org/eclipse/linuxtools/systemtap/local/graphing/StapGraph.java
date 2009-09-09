@@ -870,7 +870,7 @@ public class StapGraph extends Graph {
 			gd.exclude = true;
 			thumbCanvas.setLayoutData(gd);
 			thumbCanvas.setVisible(false);
-			SystemTapView.layout();
+			CallgraphView.layout();
 			
 			
 			//Add treeComp
@@ -889,7 +889,7 @@ public class StapGraph extends Graph {
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(false);
 			
-			SystemTapView.layout();
+			CallgraphView.layout();
 			//Remove thumbnail
 			gd = (GridData) thumbCanvas.getLayoutData();
 			gd.exclude = true;
@@ -903,7 +903,7 @@ public class StapGraph extends Graph {
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(false);
 
-			SystemTapView.layout();
+			CallgraphView.layout();
 
 			//Add thumbnail
 			gd = (GridData) thumbCanvas.getLayoutData();
@@ -971,7 +971,7 @@ public class StapGraph extends Graph {
 						this.getBounds().height / 2);
 				drawRadial(id); 
 				Animation.run(ANIMATION_TIME);
-				SystemTapView.maximizeOrRefresh(false);
+				CallgraphView.maximizeOrRefresh(false);
 			}
 	
 			else {	
@@ -1353,18 +1353,18 @@ public class StapGraph extends Graph {
 	public void setAnimationMode(int mode) {
 		animation_mode = mode;
 		if (mode == CONSTANT_ANIMATION_SLOW){
-			SystemTapView.getAnimation_slow().setChecked(true);
-			SystemTapView.getAnimation_fast().setChecked(false);
+			CallgraphView.getAnimation_slow().setChecked(true);
+			CallgraphView.getAnimation_fast().setChecked(false);
 		}else if (mode == CONSTANT_ANIMATION_FASTEST){
-			SystemTapView.getAnimation_slow().setChecked(false);
-			SystemTapView.getAnimation_fast().setChecked(true);			
+			CallgraphView.getAnimation_slow().setChecked(false);
+			CallgraphView.getAnimation_fast().setChecked(true);			
 		}
 	}
 	
 	public void setCollapseMode(boolean value) {
 		collapse_mode = value;
 		nextMarkedNode = -1;
-		SystemTapView.getMode_collapsednodes().setChecked(value);
+		CallgraphView.getMode_collapsednodes().setChecked(value);
 	}
 
 	/**

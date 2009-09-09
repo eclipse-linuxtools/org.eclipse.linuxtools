@@ -7,7 +7,7 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView"
+            class="org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView"
             icon="icons/genericregister_obj.gif"
             id="org.eclipse.linuxtools.systemtap.localgui.graphing.stapview"
             name="SystemTap"

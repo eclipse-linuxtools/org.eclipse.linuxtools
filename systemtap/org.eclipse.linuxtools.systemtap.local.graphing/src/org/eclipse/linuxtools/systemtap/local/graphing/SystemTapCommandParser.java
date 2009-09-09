@@ -23,7 +23,7 @@ public class SystemTapCommandParser extends Job {
 	private String filePath;
 	private String returnText;
 	private boolean printIsDone;
-	public SystemTapView stapview;
+	public CallgraphView stapview;
 	private String testOutput;
 	public boolean useColours;
 	private boolean graphingMode;
@@ -40,7 +40,7 @@ public class SystemTapCommandParser extends Job {
 	}
 
 
-	public SystemTapCommandParser(String name, String filePath, SystemTapView sview, 
+	public SystemTapCommandParser(String name, String filePath, CallgraphView sview, 
 			boolean useColours,
 			boolean scheduleGraph, String configName) {
 		super(name);

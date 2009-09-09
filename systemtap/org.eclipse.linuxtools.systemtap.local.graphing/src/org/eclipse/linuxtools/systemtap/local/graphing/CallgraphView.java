@@ -61,9 +61,9 @@ import org.eclipse.ui.part.ViewPart;
  *	as a container for any graph to be rendered. Any buttons/controls/actions
  *	necessary to the smooth running of SystemTap could be placed here.
  */
-public class SystemTapView extends ViewPart {
-	private static final String NEW_LINE = Messages.getString("SystemTapView.3"); //$NON-NLS-1$
-	private static SystemTapView stapview;
+public class CallgraphView extends ViewPart {
+	private static final String NEW_LINE = Messages.getString("CallgraphView.3"); //$NON-NLS-1$
+	private static CallgraphView stapview;
 	private static boolean isInitialized = false;
 	
 	private Display display;
@@ -116,11 +116,11 @@ public class SystemTapView extends ViewPart {
 	 * The constructor.
 	 * @return 
 	 */
-	public SystemTapView() {
+	public CallgraphView() {
 		isInitialized = true;
 	}
 	
-	public static SystemTapView getSingleInstance(){
+	public static CallgraphView getSingleInstance(){
 		if (isInitialized){
 			return stapview;			
 		}
@@ -171,15 +171,15 @@ public class SystemTapView extends ViewPart {
  * otherwise it will just 'refresh'
  */
 	public static void maximizeOrRefresh(boolean doMaximize){
-		IWorkbenchPage page = SystemTapView
+		IWorkbenchPage page = CallgraphView
 		.getSingleInstance().getViewSite().getWorkbenchWindow().getActivePage();
 		
 		if (doMaximize && page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED){
-			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(SystemTapView
+			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(CallgraphView
 					.getSingleInstance().getViewSite().getWorkbenchWindow());
 			action.run();
 		}else{
-		    SystemTapView.layout();
+		    CallgraphView.layout();
 		}
 	}
 	
@@ -195,7 +195,7 @@ public class SystemTapView extends ViewPart {
 			return treeComp;
 		}
 		
-		Composite treeComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
+		Composite treeComp = new Composite(CallgraphView.masterComposite, SWT.NONE);
 		GridData treegd = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
 		treegd.widthHint = treeSize;
 		treeComp.setLayout(new FillLayout());
@@ -209,7 +209,7 @@ public class SystemTapView extends ViewPart {
 //		}
 		if (graphComp != null)
 			graphComp.dispose();
-		Composite graphComp = new Composite(SystemTapView.masterComposite, SWT.NONE);
+		Composite graphComp = new Composite(CallgraphView.masterComposite, SWT.NONE);
 		GridData graphgd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		GridLayout gl = new GridLayout(2, false);
 		gl.horizontalSpacing=0;
@@ -228,11 +228,11 @@ public class SystemTapView extends ViewPart {
 	 * If view is not maximized it will be maximized
 	 */
 	public static void maximizeIfUnmaximized() {
-		IWorkbenchPage page = SystemTapView
+		IWorkbenchPage page = CallgraphView
 		.getSingleInstance().getViewSite().getWorkbenchWindow().getActivePage();
 		
 		if (page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED){
-			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(SystemTapView
+			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(CallgraphView
 					.getSingleInstance().getViewSite().getWorkbenchWindow());
 			action.run();
 		}
@@ -330,10 +330,10 @@ public class SystemTapView extends ViewPart {
 		menu = getViewSite().getActionBars().getMenuManager();
 		
 		// ADD OPTIONS TO THE GRAPH MENU
-		file = new MenuManager(Messages.getString("SystemTapView.0")); //$NON-NLS-1$
-		view = new MenuManager(Messages.getString("SystemTapView.1")); //$NON-NLS-1$
-		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); //$NON-NLS-1$
-		animation = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
+		file = new MenuManager(Messages.getString("CallgraphView.0")); //$NON-NLS-1$
+		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
+		errors = new MenuManager(Messages.getString("CallgraphView.Errors")); //$NON-NLS-1$
+		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
 		help = new MenuManager("Help");
 		markers = new MenuManager("Markers");
 		gotoMenu = new MenuManager("Goto");
@@ -404,7 +404,7 @@ public class SystemTapView extends ViewPart {
 	}
 	
 	/**
-	 * Force the SystemTapView to initialize
+	 * Force the CallgraphView to initialize
 	 */
 	public static void forceDisplay(){
 		try {
@@ -543,22 +543,22 @@ public class SystemTapView extends ViewPart {
 	 */
 	public void createFileActions() {
 		//Opens from some location in your program
-		open_callgraph = new Action(Messages.getString("SystemTapView.7")){ //$NON-NLS-1$
+		open_callgraph = new Action(Messages.getString("CallgraphView.7")){ //$NON-NLS-1$
 			public void run(){
 				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
 				String filePath =  dialog.open();
 				if (filePath != null){
-					StapGraphParser new_parser = new StapGraphParser(Messages.getString("SystemTapView.10"), filePath); //$NON-NLS-1$
+					StapGraphParser new_parser = new StapGraphParser(Messages.getString("CallgraphView.10"), filePath); //$NON-NLS-1$
 					new_parser.schedule();					
 				}
 			}
 		};
 		
 		//Opens from the default location
-		open_default = new Action(Messages.getString("SystemTapView.11")){ //$NON-NLS-1$
+		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
 			public void run(){
 				StapGraphParser new_parser = new 
-						StapGraphParser(Messages.getString("SystemTapView.12"),  //$NON-NLS-1$
+						StapGraphParser(Messages.getString("CallgraphView.12"),  //$NON-NLS-1$
 										PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH);
 				new_parser.schedule();					
 			}
@@ -566,7 +566,7 @@ public class SystemTapView extends ViewPart {
 		
 		
 		//Save callgraph.out
-		save_callgraph = new Action(Messages.getString("SystemTapView.8")){ //$NON-NLS-1$
+		save_callgraph = new Action(Messages.getString("CallgraphView.8")){ //$NON-NLS-1$
 			public void run(){
 				Shell sh = new Shell();
 				FileDialog dialog = new FileDialog(sh, SWT.SAVE);
@@ -574,7 +574,7 @@ public class SystemTapView extends ViewPart {
 				
 				if (filePath != null) {
 					File file = new File(filePath);
-					String content = Messages.getString("SystemTapView.25") //$NON-NLS-1$
+					String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$
 					+ parser.text
 					+ NEW_LINE
 					+ parser.endingTimeInNS
@@ -589,9 +589,9 @@ public class SystemTapView extends ViewPart {
 									.openConfirm(
 											sh,
 											Messages
-													.getString("SystemTapView.FileExistsTitle"), //$NON-NLS-1$
+													.getString("CallgraphView.FileExistsTitle"), //$NON-NLS-1$
 											Messages
-													.getString("SystemTapView.FileExistsMessage"))) { //$NON-NLS-1$
+													.getString("CallgraphView.FileExistsMessage"))) { //$NON-NLS-1$
 								file.delete();
 								file.createNewFile();
 								Helper.writeToFile(filePath, content);
@@ -631,7 +631,7 @@ public class SystemTapView extends ViewPart {
 				
 				Shell sh = new Shell();
 				
-				MessageDialog.openInformation(sh, Messages.getString("SystemTapView.SystemTapVersionBox"), message); //$NON-NLS-1$
+				MessageDialog.openInformation(sh, Messages.getString("CallgraphView.SystemTapVersionBox"), message); //$NON-NLS-1$
 					
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -715,7 +715,7 @@ public class SystemTapView extends ViewPart {
 	 */
 	public void createErrorActions() {
 
-		error_errorLog = new Action(Messages.getString("SystemTapView.OpenLog")) { //$NON-NLS-1$
+		error_errorLog = new Action(Messages.getString("CallgraphView.OpenLog")) { //$NON-NLS-1$
 			public void run() {
 				boolean error = false;
 				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
@@ -752,10 +752,10 @@ public class SystemTapView extends ViewPart {
 				} finally {
 					if (error) {
 						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-							Messages.getString("SystemTapView.ErrorMessageName"), //$NON-NLS-1$
-							Messages.getString("SystemTapView.ErrorMessageTitle"), //$NON-NLS-1$
-							Messages.getString("SystemTapView.ErrorMessageBody") + //$NON-NLS-1$
-							Messages.getString("SystemTapView.ErrorMessageBody2")); //$NON-NLS-1$
+							Messages.getString("CallgraphView.ErrorMessageName"), //$NON-NLS-1$
+							Messages.getString("CallgraphView.ErrorMessageTitle"), //$NON-NLS-1$
+							Messages.getString("CallgraphView.ErrorMessageBody") + //$NON-NLS-1$
+							Messages.getString("CallgraphView.ErrorMessageBody2")); //$NON-NLS-1$
 						mess.schedule();
 					}
 				}
@@ -764,11 +764,11 @@ public class SystemTapView extends ViewPart {
 		};
 		
 		
-		error_deleteError = new Action(Messages.getString("SystemTapView.ClearLog")) { //$NON-NLS-1$
+		error_deleteError = new Action(Messages.getString("CallgraphView.ClearLog")) { //$NON-NLS-1$
 			public void run() {
-					if (!MessageDialog.openConfirm(new Shell(), Messages.getString("SystemTapView.DeleteLogsTitle"),  //$NON-NLS-1$
-							Messages.getString("SystemTapView.DeleteLogsMessage") + //$NON-NLS-1$
-							Messages.getString("SystemTapView.DeleteLogsMessage2"))) //$NON-NLS-1$
+					if (!MessageDialog.openConfirm(new Shell(), Messages.getString("CallgraphView.DeleteLogsTitle"),  //$NON-NLS-1$
+							Messages.getString("CallgraphView.DeleteLogsMessage") + //$NON-NLS-1$
+							Messages.getString("CallgraphView.DeleteLogsMessage2"))) //$NON-NLS-1$
 						return;
 					
 					SystemTapErrorHandler.delete();
@@ -780,7 +780,7 @@ public class SystemTapView extends ViewPart {
 	
 	public void createViewActions() {
 		//Set drawmode to tree view
-		view_treeview = new Action(Messages.getString("SystemTapView.16")){ //$NON-NLS-1$
+		view_treeview = new Action(Messages.getString("CallgraphView.16")){ //$NON-NLS-1$
 			public void run() {
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(), 
 						graph.getRootVisibleNodeNumber());
@@ -795,7 +795,7 @@ public class SystemTapView extends ViewPart {
 		
 		
 		//Set drawmode to radial view
-		view_radialview = new Action(Messages.getString("SystemTapView.17")){ //$NON-NLS-1$
+		view_radialview = new Action(Messages.getString("CallgraphView.17")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, graph.getAnimationMode(),
 						graph.getRootVisibleNodeNumber());
@@ -809,7 +809,7 @@ public class SystemTapView extends ViewPart {
 
 		
 		//Set drawmode to aggregate view
-		view_aggregateview = new Action(Messages.getString("SystemTapView.18")){ //$NON-NLS-1$
+		view_aggregateview = new Action(Messages.getString("CallgraphView.18")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, graph.getAnimationMode(), 
 						graph.getRootVisibleNodeNumber());
@@ -823,7 +823,7 @@ public class SystemTapView extends ViewPart {
 		
 		
 		//Set drawmode to box view
-		view_boxview = new Action(Messages.getString("SystemTapView.19")){ //$NON-NLS-1$
+		view_boxview = new Action(Messages.getString("CallgraphView.19")){ //$NON-NLS-1$
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_BOX, graph.getAnimationMode(), 
 						graph.getRootVisibleNodeNumber());
@@ -854,7 +854,7 @@ public class SystemTapView extends ViewPart {
 	 */
 	public void createAnimateActions() {
 		//Set animation mode to slow
-		animation_slow = new Action(Messages.getString("SystemTapView.20"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
+		animation_slow = new Action(Messages.getString("CallgraphView.20"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
 			public void run(){
 				graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
 				this.setChecked(true);
@@ -866,7 +866,7 @@ public class SystemTapView extends ViewPart {
 		animation_slow.setChecked(true);
 		
 		//Set animation mode to fast
-		animation_fast = new Action(Messages.getString("SystemTapView.22"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
+		animation_fast = new Action(Messages.getString("CallgraphView.22"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
 			public void run(){
 				graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
 				animation_slow.setChecked(false);
@@ -875,7 +875,7 @@ public class SystemTapView extends ViewPart {
 		};
 		
 		//Toggle collapse mode
-		mode_collapsednodes = new Action(Messages.getString("SystemTapView.24"), Action.AS_CHECK_BOX){ //$NON-NLS-1$
+		mode_collapsednodes = new Action(Messages.getString("CallgraphView.24"), Action.AS_CHECK_BOX){ //$NON-NLS-1$
 			public void run(){
 				
 				if (graph.isCollapseMode()) {
@@ -1034,9 +1034,9 @@ public class SystemTapView extends ViewPart {
 			viewer.setText(tmp);
 			viewer.setStyleRanges(tempRange);
 		}
-		SystemTapView.setGraphOptions(false);
+		CallgraphView.setGraphOptions(false);
 		//Force a redraw (.redraw() .update() not working)
-		SystemTapView.maximizeOrRefresh(false);
+		CallgraphView.maximizeOrRefresh(false);
 	}
 
 	public static Action getAnimation_slow() {
@@ -1044,7 +1044,7 @@ public class SystemTapView extends ViewPart {
 	}
 
 	public static void setAnimation_slow(Action animation_slow) {
-		SystemTapView.animation_slow = animation_slow;
+		CallgraphView.animation_slow = animation_slow;
 	}
 
 	public static Action getAnimation_fast() {
@@ -1052,7 +1052,7 @@ public class SystemTapView extends ViewPart {
 	}
 
 	public static void setAnimation_fast(Action animation_fast) {
-		SystemTapView.animation_fast = animation_fast;
+		CallgraphView.animation_fast = animation_fast;
 	}
 
 	public static IMenuManager getAnimation() {
@@ -1060,7 +1060,7 @@ public class SystemTapView extends ViewPart {
 	}
 
 	public static void setAnimation(IMenuManager animation) {
-		SystemTapView.animation = animation;
+		CallgraphView.animation = animation;
 	}
 
 	public static Action getMode_collapsednodes() {
@@ -1068,11 +1068,11 @@ public class SystemTapView extends ViewPart {
 	}
 
 	public static void setMode_collapsednodes(Action mode_collapsednodes) {
-		SystemTapView.mode_collapsednodes = mode_collapsednodes;
+		CallgraphView.mode_collapsednodes = mode_collapsednodes;
 	}
 
 	public static void setView_refresh(Action view_refresh) {
-		SystemTapView.view_refresh = view_refresh;
+		CallgraphView.view_refresh = view_refresh;
 	}
 
 	public static Action getView_refresh() {

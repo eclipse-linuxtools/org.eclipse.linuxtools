@@ -52,10 +52,10 @@ public class GraphUIJob extends UIJob{
 
 		
 		//OPEN UP THE SYSTEMTAPVIEW IF IT IS NOT ALREADY OPEN
-		SystemTapView.forceDisplay();
+		CallgraphView.forceDisplay();
 		
-		Composite treeComp = SystemTapView.makeTreeComp(treeSize);
-		Composite graphComp = SystemTapView.makeGraphComp();
+		Composite treeComp = CallgraphView.makeTreeComp(treeSize);
+		Composite graphComp = CallgraphView.makeGraphComp();
 		Canvas thumbCanvas = new Canvas(graphComp, SWT.BORDER);
 		
 		
@@ -141,8 +141,8 @@ public class GraphUIJob extends UIJob{
 	    
 	    g.setProject(parser.project);
 	    
-	    SystemTapView.setValues(graphComp, treeComp, g, parser);
-	    SystemTapView.createPartControl();
+	    CallgraphView.setValues(graphComp, treeComp, g, parser);
+	    CallgraphView.createPartControl();
 	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
 	    		g.getFirstUsefulNode());
 	    

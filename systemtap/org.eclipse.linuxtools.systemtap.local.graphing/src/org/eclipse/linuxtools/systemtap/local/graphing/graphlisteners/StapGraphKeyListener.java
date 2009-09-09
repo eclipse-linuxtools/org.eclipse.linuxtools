@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.systemtap.local.graphing.graphlisteners;
 
 import org.eclipse.linuxtools.systemtap.local.graphing.StapGraph;
-import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView;
+import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -39,7 +39,7 @@ public class StapGraphKeyListener implements KeyListener {
 		
 		//TODO: Use accelerator in menu actions instead of this hard-coded stuff
 		if (e.character == 'R') {
-			SystemTapView.getView_refresh().run();
+			CallgraphView.getView_refresh().run();
 //		}else if (e.character == '1') {
 //			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
 //		}else if (e.character == '2') {
@@ -66,13 +66,13 @@ public class StapGraphKeyListener implements KeyListener {
 //					graph.getRootVisibleNode());
 //			graph.currentPositionInLevel.clear();
 		}else if (e.character == 'C') {
-			SystemTapView.getMode_collapsednodes().run();
+			CallgraphView.getMode_collapsednodes().run();
 		} else if (e.character == 'N') {
-			SystemTapView.getGoto_next().run();
+			CallgraphView.getGoto_next().run();
 		} else if (e.character == 'P') {
-			SystemTapView.getGoto_previous().run();
+			CallgraphView.getGoto_previous().run();
 		} else if (e.character == 'L') {
-			SystemTapView.getGoto_last().run();
+			CallgraphView.getGoto_last().run();
 		}
 	}
 };

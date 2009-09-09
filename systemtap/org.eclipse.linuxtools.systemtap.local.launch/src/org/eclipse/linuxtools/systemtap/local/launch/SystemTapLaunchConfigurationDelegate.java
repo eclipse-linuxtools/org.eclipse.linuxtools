@@ -39,7 +39,7 @@ import org.eclipse.linuxtools.systemtap.local.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapCommandParser;
-import org.eclipse.linuxtools.systemtap.local.graphing.SystemTapView;
+import org.eclipse.linuxtools.systemtap.local.graphing.CallgraphView;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.progress.UIJob;
 
@@ -216,7 +216,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			if (!graphMode) {
 				stapCmdPar = new SystemTapCommandParser(Messages
 						.getString("RunSystemTapAction.0"), outputPath, //$NON-NLS-1$
-						new SystemTapView(), useColour, graphMode, config
+						new CallgraphView(), useColour, graphMode, config
 								.getName());
 				stapCmdPar.schedule();
 			}
@@ -288,7 +288,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			if (graphMode) {
 				stapCmdPar = new SystemTapCommandParser(
 						Messages.getString("RunSystemTapAction.0"), //$NON-NLS-1$
-						outputPath, new SystemTapView(), useColour, graphMode,
+						outputPath, new CallgraphView(), useColour, graphMode,
 						config.getName());
 					stapCmdPar.schedule();
 			}
