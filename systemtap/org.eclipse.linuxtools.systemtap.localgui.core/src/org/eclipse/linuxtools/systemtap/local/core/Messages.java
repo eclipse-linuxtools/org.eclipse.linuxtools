@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.core;
+package org.eclipse.linuxtools.systemtap.local.core;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  *
  */
 public class Messages {
-	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.localgui.core.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.systemtap.local.core.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
 			.getBundle(BUNDLE_NAME);

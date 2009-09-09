@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.systemtap.localgui.graphing.treeviewer;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.localgui.graphing.StapData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;

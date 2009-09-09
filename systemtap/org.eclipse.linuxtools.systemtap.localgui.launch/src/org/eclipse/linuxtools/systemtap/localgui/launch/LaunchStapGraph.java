@@ -21,9 +21,9 @@ import java.io.IOException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
-import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
 
 public class LaunchStapGraph extends SystemTapLaunchShortcut {

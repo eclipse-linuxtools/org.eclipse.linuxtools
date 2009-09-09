@@ -23,9 +23,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.linuxtools.systemtap.localgui.core.MP;
-import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
-import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.systemtap.local.core.MP;
+import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 
 
 /**

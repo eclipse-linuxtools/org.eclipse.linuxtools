@@ -16,7 +16,7 @@ import org.eclipse.cdt.core.model.ICContainer;
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.linuxtools.systemtap.localgui.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Font;

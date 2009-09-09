@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.localgui.launch;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.systemtap.localgui.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 
 public class ConfigurationOptionsSetter {
 

@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.localgui.tests;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.linuxtools.systemtap.localgui.core.SystemTapCommandGenerator;
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapCommandGenerator;
 
 import junit.framework.TestCase;
 
