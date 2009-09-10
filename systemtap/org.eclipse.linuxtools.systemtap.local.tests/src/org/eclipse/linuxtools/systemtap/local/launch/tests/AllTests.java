@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.tests;
+package org.eclipse.linuxtools.systemtap.local.launch.tests;
 
 //import org.eclipse.jface.dialogs.MessageDialog;
 //import org.eclipse.swt.widgets.Shell;

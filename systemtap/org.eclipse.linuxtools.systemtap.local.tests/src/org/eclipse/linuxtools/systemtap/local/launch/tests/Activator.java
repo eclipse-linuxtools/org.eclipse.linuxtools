@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.tests;
+package org.eclipse.linuxtools.systemtap.local.launch.tests;
 
 import java.io.IOException;
 import java.net.URL;
