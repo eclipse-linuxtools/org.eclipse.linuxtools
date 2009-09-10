@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.tests;
+package org.eclipse.linuxtools.systemtap.local.tests;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +18,6 @@ import java.io.PrintStream;
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
 
 public class SystemTapCommandTest extends TestCase{
 	
@@ -34,10 +33,6 @@ public class SystemTapCommandTest extends TestCase{
 		String testText = "CORRECT";
 		String tempLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()
 								+ "/DeleteThisScript.stp";		
-//		CallgraphView junk = new CallgraphView();
-		
-		//Initialize CallgraphView
-		CallgraphView.forceDisplay();
 			
 		//Create temporary file containing the test script
 		File temporaryScript = new File(tempLocation);

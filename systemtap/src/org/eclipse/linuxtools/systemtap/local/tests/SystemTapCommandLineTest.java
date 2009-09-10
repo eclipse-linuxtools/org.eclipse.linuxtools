@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.tests;
+package org.eclipse.linuxtools.systemtap.local.tests;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 
@@ -36,29 +35,6 @@ public class SystemTapCommandLineTest extends TestCase {
 	public String binaryPath = "";
 	public final String graphDataPath = currentPath+"/graph_data_output.graph";
 	public final String parseFunctionPath = currentPath+"/parse_function_nomark.stp";
-	
-	
-	//FOR TESTING THE GRAPH PARSING
-	public void executeGraphTests(){
-		initializeFiles();
-		Runtime rt = Runtime.getRuntime();
-		try {
-			//EXECUTE THE COMMAND
-			Process pr = null;
-			pr = rt.exec("stap -c '"+binaryPath+ "' "+"-o "+graphDataPath+" "+ parseFunctionPath + " " + binaryPath);
-			pr.waitFor();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		StapGraphParser grph = StapGraphParserTest.initializeGraph(graphDataPath);
-		StapGraphParserTest.assertSanity(grph);
-		StapGraphParserTest.assertTimes(grph);
-		StapGraphParserTest.assertConnectedness(grph);
-	}
 	
 	
 	//FOR TESTING RAW STAP SCRIPT OUTPUT
@@ -155,22 +131,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		assertEquals(expected, actual);
 		
 	}
-	
-	public void testCallGraphRunBasic(){
-		binaryPath = currentPath+"/basic";
-		executeGraphTests();
-	}
-	
-	public void testCallGraphRunRecursive(){
-		binaryPath = currentPath+"/catlan";
-		executeGraphTests();
-	}
-	
-	public void testManyFuncs(){
-		binaryPath = currentPath+"/eag";
-		executeGraphTests();
-	}
-	
+
 	public void testFailure(){
 		try {
 			SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
