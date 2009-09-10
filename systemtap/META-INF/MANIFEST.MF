@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.localgui.tests
 Bundle-Version: 1.0.0
-Bundle-Activator: org.eclipse.linuxtools.systemtap.local.tests.Activator
+Bundle-Activator: org.eclipse.linuxtools.systemtap.local.launch.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.linuxtools.systemtap.local.core;bundle-version="0.0.1",
