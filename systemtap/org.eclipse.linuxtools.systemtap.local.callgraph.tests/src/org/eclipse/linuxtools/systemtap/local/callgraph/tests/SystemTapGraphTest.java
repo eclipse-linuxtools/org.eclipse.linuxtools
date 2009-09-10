@@ -10,20 +10,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
@@ -139,22 +135,6 @@ public class SystemTapGraphTest extends TestCase {
 			case 3:
 				act = CallgraphView.getView_treeview();
 				break;
-				
-//				tasks.add("(Manually) Maximize CallgraphView");
-//				tasks.add("Refresh");
-//				tasks.add("Tree View");
-//				tasks.add("Aggregate View");
-//				tasks.add("Box View");
-//				tasks.add("Collapse");
-//				tasks.add("Uncollapse.");
-//				tasks.add("Animation->Fast");
-//				tasks.add("Radial View");
-//				tasks.add("Collapse.");
-//				tasks.add("(Manually) Double-click node with no children in TreeViewer");
-//				tasks.add("(Manually) Expand an arrow in the TreeViewer");
-//				tasks.add("(Manually) Collapse an arrow in the TreeViewer");
-//				tasks.add("Save file");
-//				tasks.add("Reload file");
 			case 4:
 				act = CallgraphView.getView_aggregateview();
 				break;
