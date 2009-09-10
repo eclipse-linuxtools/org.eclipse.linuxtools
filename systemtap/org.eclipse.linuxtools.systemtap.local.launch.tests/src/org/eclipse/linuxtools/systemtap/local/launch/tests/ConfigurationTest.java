@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.launch.tests;
 
+import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
@@ -21,9 +22,8 @@ import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 
+
 public class ConfigurationTest extends TestCase{
-	
-	
 	/**
 	 * This test checks if the commands sent by SystemTap match exactly the options
 	 * that are set. Uses the delegate.launch() function.
@@ -99,6 +99,27 @@ public class ConfigurationTest extends TestCase{
 			e.printStackTrace();
 		}
 	}
-
+	
+	
+	public void checkScript(SystemTapLaunchShortcut launch) {
+		//Check that script is set properly
+		File f = new File (launch.getScriptPath());
+		if (!f.exists())
+			fail();
+	}
+	
+	public void checkLaunchConfiguration(String checkString, SystemTapLaunchShortcut launch) {
+		//Check that the configuration was properly set
+		ILaunchConfiguration config = launch.getConfig();
+		SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
+		try {
+			del.launch(config, "profile", null, null);
+			assertEquals(del.getCommand(), checkString);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 }
