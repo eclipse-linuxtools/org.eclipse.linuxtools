@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests Plug-in
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.localgui.tests
+Bundle-Name: Launch and Core Test
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.launch.tests
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.launch.tests.Activator
 Require-Bundle: org.eclipse.ui,
