@@ -524,9 +524,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	    
 	    Object[] topLevel = prov.findElements(list);
 	    dialog.setInitialSelections(topLevel);	    
-	    dialog.setSize(cap(topLevel.length*10, 30, 60), 
+	    dialog.setSize(cap(topLevel.length*10, 30, 55), 
 	    		cap((int) (topLevel.length*1.5), 3, 13));
-	    System.out.println(cap(topLevel.length*10, 30, 60) + ", " + cap((int) (topLevel.length*1.5), 3, 12) );
 	    
 	    
 		if (dialog.open() == Window.OK) {
