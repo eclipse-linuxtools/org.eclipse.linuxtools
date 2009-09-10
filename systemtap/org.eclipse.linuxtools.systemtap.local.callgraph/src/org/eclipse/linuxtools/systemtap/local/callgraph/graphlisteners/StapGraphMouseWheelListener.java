@@ -33,13 +33,46 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 	public void mouseScrolled(MouseEvent e) {
 		
 		
-		if (e.stateMask != SWT.CTRL)
+		if (e.stateMask != SWT.CTRL) {
+			// Scrolling
+			if (e.count > 0) {
+	
+				if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX
+						|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE) {
+					int parent = graph.getNodeData(graph.getRootVisibleNodeNumber()).caller;
+					if (graph.isCollapseMode())
+						parent = graph.getNodeData(graph.getRootVisibleNodeNumber()).collapsedCaller;
+					
+					if (graph.getNodeData(parent).levelOfRecursion > 0 ) {
+						int animMode = graph.getAnimationMode();
+						graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST, parent);
+						graph.setAnimationMode(animMode);
+					}
+				}
+			}
+	
+			else {
+				if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
+					if (graph.getTopLevel() + StapGraph.levelBuffer < 
+							graph.getLowestLevelOfNodesAdded()) {
+						int newLevel = graph.getTopLevel() + 1;
+						if (graph.levels.get(newLevel).get(0) == null)
+							return;
+						
+						graph.setTopLevelTo(newLevel);
+						int animMode = graph.getAnimationMode();
+						graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
+						graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST, 
+								graph.levels.get(newLevel).get(0));
+						System.out.println("DRW");
+						graph.setAnimationMode(animMode);
+					}
+				}
+
+			}
 			return;
+		}
 		
-//		int x = graph.getNode(graph.getRootVisibleNode()).getLocation().x;
-//		int y = graph.getNode(graph.getRootVisibleNode()).getLocation().y;
-//		System.out.println("BEFORE: " + x + ", " +y); 
-//		
 		if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_BOX && 
 				graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE)
 			return;

@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 
 
 public class StapGraph extends Graph {
@@ -69,7 +68,7 @@ public class StapGraph extends Graph {
 	private int topLevelToDraw;
 	private int bottomLevelToDraw;
 	private int topLevelOnScreen;
-	private static int levelBuffer = 30;
+	public static int levelBuffer = 30;
 	private static int maxNodes = 150;
 
 
@@ -165,6 +164,7 @@ public class StapGraph extends Graph {
 		this.addMouseListener(new StapGraphMouseListener(this));		
 		this.addKeyListener(new StapGraphKeyListener(this));
 		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
+	
 	}
 
 	
@@ -786,15 +786,24 @@ public class StapGraph extends Graph {
 	 * limit + CONSTANT_LEVEL_BUFFER.
 	 * Deletes extraneous levels, changes topLevelToDraw, bottomLevelToDraw
 	 * 
+	 * Convenience method: Calls setLevelLimitsToLevel(levelOfNode(id))
+	 * 
 	 * @param id - node to recenter with
 	 */
 	public void setLevelLimits(int id) {
-		
-		
-		
-		int new_topLevelToDraw = getLevelOfNode(id);
+		setTopLevelTo(getLevelOfNode(id));
+	}
+	
+	/**
+	 * Sets top level limit to the given level, bottom level limit to top level
+	 * limit + CONSTANT_LEVEL_BUFFER.
+	 * Deletes extraneous levels, changes topLevelToDraw, bottomLevelToDraw
+	 * 
+	 * @param id - node to recenter with
+	 */
+	
+	public void setTopLevelTo(int new_topLevelToDraw) {
 		changeLevelLimits(new_topLevelToDraw);
-		
 		
 		int new_bottomLevelToDraw = new_topLevelToDraw + levelBuffer;
 		if (new_bottomLevelToDraw > lowestLevelOfNodesAdded)
@@ -806,6 +815,7 @@ public class StapGraph extends Graph {
 		topLevelToDraw = new_topLevelToDraw;
 		bottomLevelToDraw = new_bottomLevelToDraw;
 	}
+
 	
 	public boolean changeLevelLimits(int lvl) {
 		int numberOfNodes = 0;

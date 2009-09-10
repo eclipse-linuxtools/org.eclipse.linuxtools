@@ -38,7 +38,6 @@ public class StapGraphMouseListener implements MouseListener {
 
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		
 		if (e.stateMask == SWT.CONTROL) {
 			StapNode node = getNodeFromSelection();
 			if (node == null)
