@@ -17,7 +17,7 @@ import org.eclipse.linuxtools.systemtap.local.core.SystemTapCommandGenerator;
 
 import junit.framework.TestCase;
 
-public class RunSystemTapActionTest extends TestCase{ 
+public class SystemTapCommandGeneratorTest extends TestCase{ 
 	
 	//HACK TO GET THE PATH TO THE TESTING PROJECT
 	File file = new File("");
@@ -26,7 +26,7 @@ public class RunSystemTapActionTest extends TestCase{
 	
 	public void testExecutionWithScriptAndBinaryAndArgument(){
 		
-		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
+		System.out.println("\n\nLaunching SystemTapCommandGeneratorTest\n");
 		String binaryFilePath = location + "factorial";
 		String scriptPath = location + "function_count.stp";
 		

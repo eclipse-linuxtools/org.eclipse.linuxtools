@@ -42,7 +42,7 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(SystemTapCommandTest.class);
 		suite.addTestSuite(ConfigurationTest.class);
-		suite.addTestSuite(RunSystemTapActionTest.class);
+		suite.addTestSuite(SystemTapCommandGeneratorTest.class);
 		suite.addTestSuite(SystemTapCommandLineTest.class);
 		suite.addTestSuite(SystemTapTabTest.class);
 		//$JUnit-END$
