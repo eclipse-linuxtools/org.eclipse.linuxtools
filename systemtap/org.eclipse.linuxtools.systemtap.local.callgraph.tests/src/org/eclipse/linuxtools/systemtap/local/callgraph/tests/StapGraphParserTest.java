@@ -29,7 +29,6 @@ public class StapGraphParserTest extends TestCase {
 	}
 	
 	public static void assertSanity(StapGraphParser grph){
-		assertEquals(grph.serialMap.get(0),null);
 		//SAME NUMBER OF NODES ENTRIES
 		assertEquals(grph.serialMap.size(),grph.timeMap.size());
 		assertEquals(grph.serialMap.size(),grph.outNeighbours.size());

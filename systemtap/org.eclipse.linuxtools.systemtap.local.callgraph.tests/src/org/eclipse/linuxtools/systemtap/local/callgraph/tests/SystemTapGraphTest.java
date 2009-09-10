@@ -98,7 +98,6 @@ public class SystemTapGraphTest extends TestCase {
 		tasks.add("(Manually) Collapse an arrow in the TreeViewer");
 		tasks.add("Save file");
 		tasks.add("Reload file");
-		tasks.add("Error Log");
 		tasks.add("Check Version");
 		
 		
@@ -161,9 +160,6 @@ public class SystemTapGraphTest extends TestCase {
 				act = CallgraphView.getOpen_callgraph();
 				break;
 			case 16:
-				act = CallgraphView.getError_errorLog();
-				break;
-			case 17:
 				act = CallgraphView.getHelp_version();
 				break;
 			default:

@@ -574,6 +574,8 @@ public class CallgraphView extends ViewPart {
 				if (filePath != null) {
 					File file = new File(filePath);
 					String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$
+					+ parser.project.getElementName()
+					+ NEW_LINE
 					+ parser.text
 					+ NEW_LINE
 					+ parser.endingTimeInNS
