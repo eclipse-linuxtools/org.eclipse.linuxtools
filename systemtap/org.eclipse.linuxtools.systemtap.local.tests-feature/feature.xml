@@ -17,6 +17,23 @@
       %license
    </license>
 
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.linuxtools.systemtap.local.graphing" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="org.junit4"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.linuxtools.systemtap.local.core"/>
+      <import plugin="org.eclipse.linuxtools.systemtap.local.launch"/>
+      <import plugin="org.eclipse.linuxtools.systemtap.local.core" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.linuxtools.systemtap.local.launch" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.debug.ui" version="3.4.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.cdt.core"/>
+      <import plugin="org.eclipse.cdt.launch"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.linuxtools.profiling.launch"/>
+   </requires>
+
    <plugin
          id="org.eclipse.linuxtools.systemtap.local.callgraph.tests"
          download-size="0"
