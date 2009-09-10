@@ -45,7 +45,6 @@ import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 
@@ -513,19 +512,22 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	protected Object[] chooseUnit(List<ICContainer> list, int numberOfValidFiles) {		
 		ListTreeContentProvider prov = new ListTreeContentProvider();
 		
-	    CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(getActiveWorkbenchShell(), 
+	    RuledTreeDialogSelectionDialog dialog = new RuledTreeDialogSelectionDialog(getActiveWorkbenchShell(), 
 	    		new WorkbenchLabelProvider(), prov);
 
 	    dialog.setTitle("Tree Selection");
 	    dialog.setMessage("Select .c/.cpp files to probe.");
 	    dialog.setInput(list);
 	    dialog.setHelpAvailable(false);
-	    dialog.setStatusLineAboveButtons(false);
-	    
+	    dialog.setStatusLineAboveButtons(true);
+	    dialog.setEmptyListMessage("No files found.");
+	    dialog.setContainerMode(true);
+
 	    Object[] topLevel = prov.findElements(list);
 	    dialog.setInitialSelections(topLevel);	    
 	    dialog.setSize(cap(topLevel.length*10, 30, 55), 
 	    		cap((int) (topLevel.length*1.5), 3, 13));
+
 	    
 	    
 		if (dialog.open() == Window.OK) {
