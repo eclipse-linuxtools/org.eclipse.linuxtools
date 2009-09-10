@@ -40,13 +40,13 @@ public class AllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.systemtap.tests");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(SystemTapCommandTest.class);
-		suite.addTestSuite(ConfigurationTest.class);
-		suite.addTestSuite(SystemTapDisplayTest.class);
-		suite.addTestSuite(RunSystemTapActionTest.class);
-		suite.addTestSuite(SystemTapCommandLineTest.class);
+//		suite.addTestSuite(SystemTapCommandTest.class);
+//		suite.addTestSuite(ConfigurationTest.class);
+//		suite.addTestSuite(SystemTapDisplayTest.class);
+//		suite.addTestSuite(RunSystemTapActionTest.class);
+//		suite.addTestSuite(SystemTapCommandLineTest.class);
 //		suite.addTestSuite(LaunchShortcutsTest.class);
-		suite.addTestSuite(SystemTapGraphTest.class);
+//		suite.addTestSuite(SystemTapGraphTest.class);
 		//$JUnit-END$
 		return suite;
 	}
