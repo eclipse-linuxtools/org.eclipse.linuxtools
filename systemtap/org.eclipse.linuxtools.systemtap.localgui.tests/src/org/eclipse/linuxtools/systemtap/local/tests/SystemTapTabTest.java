@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.tests;
+package org.eclipse.linuxtools.systemtap.local.tests;
 
 import junit.framework.TestCase;
 
@@ -16,30 +16,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapOptionsTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-public class SystemTapDisplayTest extends TestCase{
-	private CallgraphView stapView = new CallgraphView();
-	private String testText = "blah";
-	
+public class SystemTapTabTest extends TestCase{
 
-	public void test() {
-		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
-
-		CallgraphView.forceDisplay();
-		
-		stapView.println(testText);
-		assertEquals(stapView.getText(), testText);
-		
-		stapView.clearAll();
-		assertEquals(stapView.getText(), "");
-	}
-	
 	
 	public void testTabs(){
 		Shell sh = new Shell();

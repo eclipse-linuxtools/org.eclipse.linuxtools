@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.localgui.tests;
+package org.eclipse.linuxtools.systemtap.local.tests;
 
 //import org.eclipse.jface.dialogs.MessageDialog;
 //import org.eclipse.swt.widgets.Shell;
@@ -40,13 +40,11 @@ public class AllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.systemtap.tests");
 		//$JUnit-BEGIN$
-//		suite.addTestSuite(SystemTapCommandTest.class);
-//		suite.addTestSuite(ConfigurationTest.class);
-//		suite.addTestSuite(SystemTapDisplayTest.class);
-//		suite.addTestSuite(RunSystemTapActionTest.class);
-//		suite.addTestSuite(SystemTapCommandLineTest.class);
-//		suite.addTestSuite(LaunchShortcutsTest.class);
-//		suite.addTestSuite(SystemTapGraphTest.class);
+		suite.addTestSuite(SystemTapCommandTest.class);
+		suite.addTestSuite(ConfigurationTest.class);
+		suite.addTestSuite(RunSystemTapActionTest.class);
+		suite.addTestSuite(SystemTapCommandLineTest.class);
+		suite.addTestSuite(SystemTapTabTest.class);
 		//$JUnit-END$
 		return suite;
 	}
