@@ -128,6 +128,8 @@ public class StapGraph extends Graph {
 	
 	private ICProject project;
 	
+	private int treeLevelFromRoot;
+	
 	public StapGraph(Composite parent, int style, Composite treeComp, Canvas tCanvas) {
 		super(parent, style);
 
@@ -151,6 +153,7 @@ public class StapGraph extends Graph {
 		killInvalidFunctions = true;
 		nextMarkedNode = -1;
 		scale = 1;
+		treeLevelFromRoot = 0;
 		
 		this.treeComp = treeComp;
 		if (treeViewer == null || treeViewer.getControl().isDisposed()) {
@@ -480,8 +483,6 @@ public class StapGraph extends Graph {
 			n.setBackgroundColor(CONSTANT_MARKED);
 		
 		
-		
-		
 		//-------------Get appropriate list of children
 		List<Integer> callees = null;
 		int usefulSize = 0;
@@ -538,7 +539,36 @@ public class StapGraph extends Graph {
 		}
 	}
 	
-	
+	/**
+	 * Extend the tree downwards
+	 */
+	public void extendTree() {
+		if (bottomLevelToDraw >= lowestLevelOfNodesAdded) 
+			return;
+		
+		
+		StapData data = getData(rootVisibleNodeNumber);
+		if (data.callees != null) {
+			if (data.callees.size() < 1) {
+				return;
+			}
+		}
+		
+		
+		List<Integer> bottomList = levels.get(bottomLevelToDraw);
+		int newTop = data.levelOfRecursion + treeLevelFromRoot;
+		bottomLevelToDraw++;
+		
+		for (int i : bottomList) {
+			if (getNode(i) != null) {
+				getNode(i).setBackgroundColor(DEFAULT_NODE_COLOR);
+				getParentNode(i).setBackgroundColor(DEFAULT_NODE_COLOR);
+				drawTree(i, getNode(i).getLocation().x, getNode(i).getLocation().y);
+			}
+		}
+		
+		treeLevelFromRoot++;		
+	}
 	
 	/**
 	 * Moves all nodes to the point x,y
@@ -880,6 +910,8 @@ public class StapGraph extends Graph {
 		setDrawMode(drawMode);
 		setAnimationMode(animationMode);
 		this.clearSelection();
+		treeLevelFromRoot = 0;
+		currentPositionInLevel.clear();
 		
 		this.setRedraw(false);
 		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
@@ -937,8 +969,7 @@ public class StapGraph extends Graph {
 
 		
 		//-------------Draw tree
-		if (draw_mode == CONSTANT_DRAWMODE_TREE) {
-			
+		if (draw_mode == CONSTANT_DRAWMODE_TREE) {			
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
 				if (nodeMap.get(id) == null)
 					nodeMap.put(id, getData(id).makeNode(this));
@@ -960,14 +991,12 @@ public class StapGraph extends Graph {
 
 				Animation.run(ANIMATION_TIME);
 				getNode(id).unhighlight();
-				currentPositionInLevel.clear();
 			} else {
 				deleteAll(id);
 				setLevelLimits(id);
 				rootVisibleNodeNumber = id;
 				drawTree(id, this.getBounds().width / 2, 20);
 				getNode(id).unhighlight();
-				currentPositionInLevel.clear();
 			}
 		}
 		

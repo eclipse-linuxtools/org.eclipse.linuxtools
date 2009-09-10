@@ -64,9 +64,10 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 						graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
 						graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST, 
 								graph.levels.get(newLevel).get(0));
-						System.out.println("DRW");
 						graph.setAnimationMode(animMode);
 					}
+				} else if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE) {
+					graph.extendTree();	
 				}
 
 			}
