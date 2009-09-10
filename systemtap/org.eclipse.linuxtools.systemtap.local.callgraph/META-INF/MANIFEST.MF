@@ -6,7 +6,8 @@ Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.callgraph.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.draw2d
+ org.eclipse.draw2d,
+ org.eclipse.zest.layouts
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.linuxtools.systemtap.local.callgraph

@@ -392,6 +392,8 @@ public class StapGraph extends Graph {
 		
 		//-------------Format numbers
 		float percentage_time;
+		float percentage_count;
+		int maxTimesCalled = 0;
 		final int colorLevels = 15;
 		final int colorLevelDifference = 12;
 		int primary;
@@ -401,7 +403,12 @@ public class StapGraph extends Graph {
 		num.setMinimumFractionDigits(2);
 		num.setMaximumFractionDigits(2);
 
-		
+		//FIND THE MOST TIMES A FUNCTION IS CALLED
+		for (int val : aggregateCount.values()){
+			if ( val > maxTimesCalled){
+				maxTimesCalled = val;
+			}
+		}
 		
 		//-------------Draw nodes
 		for (Entry<String, Long> ent : sortedValues) {
@@ -410,6 +417,7 @@ public class StapGraph extends Graph {
 				GraphNode n = new GraphNode(this.getGraphModel(),SWT.NONE);
 				aggregateNodes.add(n);
 				
+				percentage_count = (float)aggregateCount.get(ent.getKey()) / (float)maxTimesCalled;
 				percentage_time = ((float) ent.getValue() / this
 						.getTotalTime() * 100);
 				n.setText(ent.getKey() + "\n"  //$NON-NLS-1$
@@ -417,8 +425,8 @@ public class StapGraph extends Graph {
 						+ aggregateCount.get(ent.getKey()) + "\n") ; //$NON-NLS-1$
 				
 				
-				primary = (int)(percentage_time / 100 * colorLevels * colorLevelDifference);
-				secondary = (colorLevels * colorLevelDifference) - (int)(percentage_time / 100 * colorLevels * colorLevelDifference);
+				primary = (int)(percentage_count * colorLevels * colorLevelDifference);
+				secondary = (colorLevels * colorLevelDifference) - (int)(percentage_count * colorLevels * colorLevelDifference);
 				
 				primary = Math.max(0, primary);
 				secondary = Math.max(0, secondary);
@@ -441,7 +449,7 @@ public class StapGraph extends Graph {
 		}
 		
 		//Set layout to gridlayout
-		this.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), true);
+		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width), true);
 	}
 
 
