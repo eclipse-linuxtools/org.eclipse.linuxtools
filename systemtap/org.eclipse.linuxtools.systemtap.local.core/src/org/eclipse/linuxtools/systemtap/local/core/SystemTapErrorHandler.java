@@ -28,10 +28,10 @@ import java.util.regex.Pattern;
 public class SystemTapErrorHandler {
 	
 	public static final String FILE_PROP = "errors.prop"; //$NON-NLS-1$
-	public static final String FILE_ERROR_LOG = "Error.log";
+	public static final String FILE_ERROR_LOG = "Error.log"; //$NON-NLS-1$
 	public static final int MAX_LOG_SIZE = 50000;
 	private boolean errorRecognized;
-	private String errorMessage = "";
+	private String errorMessage = ""; //$NON-NLS-1$
 	private String logContents;
 	
 	/**
@@ -50,8 +50,8 @@ public class SystemTapErrorHandler {
  
 	public SystemTapErrorHandler() {
 		errorRecognized = false;
-		errorMessage = "";
-		logContents = "";
+		errorMessage = ""; //$NON-NLS-1$
+		logContents = ""; //$NON-NLS-1$
 	}
 
 	
@@ -108,13 +108,13 @@ public class SystemTapErrorHandler {
 	 */
 	public void finishHandling() {
 		if (!isErrorRecognized()) {
-			errorMessage+="No recognizable errors detected. " +
-					"Please consult error log for more information.";
+			errorMessage+=Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
+					Messages.getString("SystemTapErrorHandler.5"); //$NON-NLS-1$
 		}
 		
 		SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-				Messages.getString("SystemTapErrorHandler.ErrorMessageName"), 
-				Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"), 
+				Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
 				errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
 		mes.schedule();
 		
@@ -160,7 +160,7 @@ public class SystemTapErrorHandler {
 			e.printStackTrace();
 		}
 		
-		logContents = "";
+		logContents = ""; //$NON-NLS-1$
 	}
 
 	/**

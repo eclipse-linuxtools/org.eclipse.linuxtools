@@ -285,7 +285,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		binaryArgumentsFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
 		TabItem binaryArgumentsTab = new TabItem(fileFolder, SWT.NONE);
-		binaryArgumentsTab.setText("Binary Arguments");
+		binaryArgumentsTab.setText(Messages.getString("SystemTapOptionsTab.44")); //$NON-NLS-1$
 		
 		Composite binaryArgumentsTop = new Composite(fileFolder, SWT.NONE);
 		binaryArgumentsTop.setLayout(new GridLayout());
@@ -324,7 +324,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		browseTop.setLayoutData(browseData);
 		
 		Label suppFileLabel = new Label(browseTop, SWT.NONE);
-		suppFileLabel.setText("Please input the desired arguments, separated by spaces to be given to your binary.");
+		suppFileLabel.setText(Messages.getString("SystemTapOptionsTab.45")); //$NON-NLS-1$
 		
 		binaryArguments = new Text(browseTop,SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);

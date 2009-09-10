@@ -52,7 +52,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected IEditorPart editor;
 	protected ILaunchConfiguration config;
 	
-	private static final String USER_SELECTED_ALL = "ALL";
+	private static final String USER_SELECTED_ALL = "ALL"; //$NON-NLS-1$
 
 	protected String name;
 	protected String binaryPath;
@@ -419,7 +419,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * @return
 	 */
 	protected String getFunctionsFromBinary(IBinary bin, String targetResource) {
-		String funcs = "";
+		String funcs = ""; //$NON-NLS-1$
 		if (bin == null)
 			return funcs;
 		try {			
@@ -465,8 +465,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			if (numberOfFiles == 1) {
 				for (ICContainer c : list) {
 					for (ITranslationUnit e : c.getTranslationUnits()) {
-						if (e.getElementName().endsWith(".c") || 
-								e.getElementName().endsWith(".cpp")) {
+						if (e.getElementName().endsWith(".c") ||  //$NON-NLS-1$
+								e.getElementName().endsWith(".cpp")) { //$NON-NLS-1$
 							e.accept(v);
 							funcs+=v.getFunctions();
 						}
@@ -476,16 +476,16 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 
 				Object[] unitList = chooseUnit(list, numberOfFiles); 
 				if (unitList == null || unitList.length == 0) {
-					return "";
+					return ""; //$NON-NLS-1$
 				} else if (unitList.length == 1 && unitList[0].toString().equals(USER_SELECTED_ALL)) {
-					funcs = "*";
+					funcs = "*"; //$NON-NLS-1$
 					return funcs;					
 				}
 				
 					StringBuffer tmpFunc = new StringBuffer();
 					for (String item : getAllFunctions(bin.getCProject(), unitList)){
 						tmpFunc.append(item);
-						tmpFunc.append(" ");
+						tmpFunc.append(" "); //$NON-NLS-1$
 					}
 					funcs = tmpFunc.toString();
 					
@@ -515,12 +515,12 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	    RuledTreeDialogSelectionDialog dialog = new RuledTreeDialogSelectionDialog(getActiveWorkbenchShell(), 
 	    		new WorkbenchLabelProvider(), prov);
 
-	    dialog.setTitle("Tree Selection");
-	    dialog.setMessage("Select .c/.cpp files to probe.");
+	    dialog.setTitle(Messages.getString("SystemTapLaunchShortcut.8")); //$NON-NLS-1$
+	    dialog.setMessage(Messages.getString("SystemTapLaunchShortcut.9")); //$NON-NLS-1$
 	    dialog.setInput(list);
 	    dialog.setHelpAvailable(false);
 	    dialog.setStatusLineAboveButtons(true);
-	    dialog.setEmptyListMessage("No files found.");
+	    dialog.setEmptyListMessage(Messages.getString("SystemTapLaunchShortcut.10")); //$NON-NLS-1$
 	    dialog.setContainerMode(true);
 
 	    Object[] topLevel = prov.findElements(list);
@@ -541,16 +541,16 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 					if (obj instanceof ICContainer){
 						ICElement[] array = ((ICContainer) obj).getChildren();
 						for (ICElement c : array) {
-							if (!(c.getElementName().endsWith(".c") ||
-									c.getElementName().endsWith(".cpp")))
+							if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
+									c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
 								continue;
 							if (!output.contains(c))
 								output.add(c);
 						}
 					}
 					else if (obj instanceof ICElement) {
-						if (((ICElement) obj).getElementName().endsWith(".c") 
-								|| ((ICElement) obj).getElementName().endsWith(".cpp")) {
+						if (((ICElement) obj).getElementName().endsWith(".c")  //$NON-NLS-1$
+								|| ((ICElement) obj).getElementName().endsWith(".cpp")) { //$NON-NLS-1$
 							if (!output.contains(obj)) {
 								output.add(obj);
 							}
@@ -579,12 +579,12 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	
 	private boolean confirmProbeAll(int num) {
 		
-		return !MessageDialog.openConfirm(new Shell(), "Fetch list of functions?", 
-				"Currently attempting to fetch functions from " + num + " files. This could " +
-				"Currently attempting to fetch functions from " + num + "files. This could " +
-				"take up to " + 2*num + " seconds to complete. Press OK to continue fetching or" +
-				" press Cancel to probe all functions without fetching (much faster). In the future," +
-				" you can simply leave the file selection dialog blank to profile all functions.");		
+		return !MessageDialog.openConfirm(new Shell(), Messages.getString("SystemTapLaunchShortcut.15"),  //$NON-NLS-1$
+				Messages.getString("SystemTapLaunchShortcut.16") + num + Messages.getString("SystemTapLaunchShortcut.17") + //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapLaunchShortcut.18") + num + Messages.getString("SystemTapLaunchShortcut.19") + //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapLaunchShortcut.20") + 2*num + Messages.getString("SystemTapLaunchShortcut.21") + //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapLaunchShortcut.22") + //$NON-NLS-1$
+				Messages.getString("SystemTapLaunchShortcut.23"));		 //$NON-NLS-1$
 	}
 	
 	
@@ -598,14 +598,14 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 						output += numberOfValidFiles(((ICContainer) ele).getChildren());
 					}
 					if (ele instanceof ICElement) {
-						if (ele.getElementName().endsWith(".c") ||
-							ele.getElementName().endsWith(".cpp"))
+						if (ele.getElementName().endsWith(".c") || //$NON-NLS-1$
+							ele.getElementName().endsWith(".cpp")) //$NON-NLS-1$
 							output++;
 					}
 				}
 			} else if (parent instanceof ICElement) {
-				if (((ICElement) parent).getElementName().endsWith(".c") ||
-						((ICElement) parent).getElementName().endsWith(".cpp"))
+				if (((ICElement) parent).getElementName().endsWith(".c") || //$NON-NLS-1$
+						((ICElement) parent).getElementName().endsWith(".cpp")) //$NON-NLS-1$
 						output++;
 			}
 		}
@@ -621,7 +621,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	public ILaunchConfiguration getNewConfiguration() throws CoreException {
 		ILaunchConfigurationType configType = getLaunchConfigType();
 		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, 
-				getLaunchManager().generateUniqueLaunchConfigurationNameFrom("TestingConfiguration"));
+				getLaunchManager().generateUniqueLaunchConfigurationNameFrom("TestingConfiguration")); //$NON-NLS-1$
 
 		return wc.doSave();
 		
@@ -669,8 +669,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		}
 		
 		index.releaseReadLock();
-		System.out.println("TOTAL FUNCTIONS : "+ functionList.size());
-		System.out.println("TIME : "+(System.currentTimeMillis() - val));
+		System.out.println("TOTAL FUNCTIONS : "+ functionList.size()); //$NON-NLS-1$
+		System.out.println("TIME : "+(System.currentTimeMillis() - val)); //$NON-NLS-1$
 		return functionList;
 	}
 	

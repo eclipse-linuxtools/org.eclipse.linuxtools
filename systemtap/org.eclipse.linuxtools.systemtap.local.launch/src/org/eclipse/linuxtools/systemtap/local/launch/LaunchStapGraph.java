@@ -75,17 +75,17 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	
 	public void launch(IBinary bin, String mode) {
 		super.Init();
-		name = "SystemTapGraph"; 
+		name = "SystemTapGraph";  //$NON-NLS-1$
 		binName = getName(bin);
 		partialScriptPath = PluginConstants.getPluginLocation()
-				+ "parse_function_partial.stp"; 
+				+ "parse_function_partial.stp";  //$NON-NLS-1$
 
 		scriptPath = PluginConstants.DEFAULT_OUTPUT 
-				+ "callgraphGen.stp"; 
+				+ "callgraphGen.stp";  //$NON-NLS-1$
 
 		
 		try {
-			String scriptContents = ""; 
+			String scriptContents = "";  //$NON-NLS-1$
 			File scriptFile = new File(scriptPath);
 			scriptFile.delete();
 			scriptFile.createNewFile();
@@ -124,15 +124,15 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 		} catch (IOException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-					"LaunchShortcutScriptGen", 
-					"Error generating script",  
-					"The path to the temporary script could not be opened."); 
+					"LaunchShortcutScriptGen",  //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.0"),   //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.6"));  //$NON-NLS-1$
 			mess.schedule();
 			e.printStackTrace();
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		} finally {
-			resourceToSearchFor = "";
+			resourceToSearchFor = ""; //$NON-NLS-1$
 			searchForResource = false;
 		}
 		
@@ -145,14 +145,14 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" + 
-				        function + "\").call{\n" + 
-				        "\tcallFunction(probefunc())\n" + 
-						"}\n" + 
-						"probe process(@1).function(\"" + 
-				        function + "\").return{\n" + 
-				        "\treturnFunction(probefunc())\n" + 
-						"}\n\n"; 
+		String output = "probe process(@1).function(\"" +  //$NON-NLS-1$
+				        function + "\").call{\n" +  //$NON-NLS-1$
+				        "\tcallFunction(probefunc())\n" +  //$NON-NLS-1$
+						"}\n" +  //$NON-NLS-1$
+						"probe process(@1).function(\"" +  //$NON-NLS-1$
+				        function + "\").return{\n" +  //$NON-NLS-1$
+				        "\treturnFunction(probefunc())\n" +  //$NON-NLS-1$
+						"}\n\n";  //$NON-NLS-1$
 		return output;
 	}
 	
@@ -172,7 +172,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 		StringBuffer output = new StringBuffer();
 		
-		for (String func : toWrite.split(" ")) {
+		for (String func : toWrite.split(" ")) { //$NON-NLS-1$
 			if (func.length() > 0)
 				output.append(generateProbe(func));
 		}
@@ -189,19 +189,19 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @throws IOException
 	 */
 	private String writeFromPartialScript(String projectName) throws IOException {
-		String toWrite = ""; 
-		String temp = "";
-		toWrite += "probe begin{\n" +
-					"printf(\"\\nPROBE_BEGIN\\n\")\n" + 
-					"serial=1\n" + 
-					"startTime = 0;\n" +
-					"printf(\"" + projectName + "\\n\")\n" +
-					"}";
+		String toWrite = "";  //$NON-NLS-1$
+		String temp = ""; //$NON-NLS-1$
+		toWrite += "probe begin{\n" + //$NON-NLS-1$
+					"printf(\"\\nPROBE_BEGIN\\n\")\n" +  //$NON-NLS-1$
+					"serial=1\n" +  //$NON-NLS-1$
+					"startTime = 0;\n" + //$NON-NLS-1$
+					"printf(\"" + projectName + "\\n\")\n" + //$NON-NLS-1$ //$NON-NLS-2$
+					"}"; //$NON-NLS-1$
  		File partialScript = new File(partialScriptPath);
 		BufferedReader scriptReader = new BufferedReader(new FileReader(
 				partialScript));
 		while ((temp = scriptReader.readLine()) != null) {
-			toWrite += temp + "\n"; 
+			toWrite += temp + "\n";  //$NON-NLS-1$
 		}
 		scriptReader.close();
 
@@ -219,9 +219,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @throws IOException
 	 */
 	private String writeGlobalVariables() throws IOException {
-		String toWrite = "global serial\n" +
-						 "global startTime\n " +
-						 "global finalTime\n";
+		String toWrite = "global serial\n" + //$NON-NLS-1$
+						 "global startTime\n " + //$NON-NLS-1$
+						 "global finalTime\n"; //$NON-NLS-1$
 		
 		return toWrite;
 	}

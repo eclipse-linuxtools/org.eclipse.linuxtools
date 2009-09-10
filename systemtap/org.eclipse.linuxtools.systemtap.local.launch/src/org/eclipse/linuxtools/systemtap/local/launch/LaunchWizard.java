@@ -256,7 +256,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 				
 		});
 		
-		ShellOpener so = new ShellOpener("Wizard Opener", sh);
+		ShellOpener so = new ShellOpener(Messages.getString("LaunchWizard.23"), sh); //$NON-NLS-1$
 		so.schedule();
 		
 		completed = true;

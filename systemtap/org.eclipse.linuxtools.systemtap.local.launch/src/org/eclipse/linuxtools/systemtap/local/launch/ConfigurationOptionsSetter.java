@@ -18,7 +18,7 @@ import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 public class ConfigurationOptionsSetter {
 
 	public static String setOptions(ILaunchConfiguration config) {
-		String options = "";
+		String options = ""; //$NON-NLS-1$
 		try {
 			if (config.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,
 					LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE)) {
@@ -125,7 +125,7 @@ public class ConfigurationOptionsSetter {
 	}
 	
 	public static String setOptions(ILaunchConfigurationWorkingCopy config) {
-		String options = "";
+		String options = ""; //$NON-NLS-1$
 		try {
 			if (config.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,
 					LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE)) {

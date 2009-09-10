@@ -311,7 +311,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		if (cmd.length() > 0)
 			return cmd;
 		else
-			return "SystemTapLaunchConfigurationDelegate does not have a command yet";
+			return Messages.getString("SystemTapLaunchConfigurationDelegate.0"); //$NON-NLS-1$
 	}
 
 	public Process execute(String[] commandArray, String[] env, File wd,
