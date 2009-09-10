@@ -519,7 +519,14 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	    dialog.setTitle("Tree Selection");
 	    dialog.setMessage("Select .c/.cpp files to probe.");
 	    dialog.setInput(list);
-	    dialog.setInitialSelections(prov.findElements(list));
+	    dialog.setHelpAvailable(false);
+	    dialog.setStatusLineAboveButtons(false);
+	    
+	    Object[] topLevel = prov.findElements(list);
+	    dialog.setInitialSelections(topLevel);	    
+	    dialog.setSize(cap(topLevel.length*10, 30, 60), 
+	    		cap((int) (topLevel.length*1.5), 3, 13));
+	    System.out.println(cap(topLevel.length*10, 30, 60) + ", " + cap((int) (topLevel.length*1.5), 3, 12) );
 	    
 	    
 		if (dialog.open() == Window.OK) {
@@ -678,4 +685,13 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		return false;
 	}
 	
+	
+	
+	private int cap (int number, int low, int high) {
+		if (number > high)
+			return high;
+		if (number < low)
+			return low;
+		return number;
+	}
 }
