@@ -15,13 +15,15 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
-import org.eclipse.linuxtools.systemtap.local.callgraph.GraphUIJob;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,7 +44,6 @@ public class SystemTapGraphTest extends TestCase {
 		checkScript(launch);
 	}*/
 	private  ArrayList<Button> list = new ArrayList<Button>();
-	private boolean manual = false;
 	
 	private class ButtonSelectionListener implements SelectionListener {
 		private Action action;
@@ -65,103 +66,23 @@ public class SystemTapGraphTest extends TestCase {
 	}
 	
 	public void testGraphLoading() throws InterruptedException {
+		System.out.println("Testing graph loading");
 
-		StapGraphParser parse = new StapGraphParser();
-		parse.setFile(Activator.PLUGIN_LOCATION+"eag.graph");
-//		parse.setTestMode(true);
+		StapGraphParser parse = new StapGraphParser("Test StapParser", Activator.PLUGIN_LOCATION+"graph_data_output.graph");
 		parse.testRun(new NullProgressMonitor());
 		
 		CallgraphView.forceDisplay();
-		
-		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse);
-		j.runInUIThread(new NullProgressMonitor());
 		 
-		if (!manual) {
-			ArrayList<String> tasks = new ArrayList<String>();
-			
-
-			tasks.add("(Manually) Maximize CallgraphView");
-			tasks.add("Refresh");
-			tasks.add("Tree View");
-			tasks.add("Aggregate View");
-			tasks.add("Box View");
-			tasks.add("Animation->Fast");
-			tasks.add("Collapse");
-			tasks.add("Uncollapse");
-			tasks.add("Radial View");
-			tasks.add("Collapse.");
-			tasks.add("(Manually) Double-click node with no children in TreeViewer");
-			tasks.add("(Manually) Expand an arrow in the TreeViewer");
-			tasks.add("(Manually) Collapse an arrow in the TreeViewer");
-			tasks.add("Save file");
-			tasks.add("Reload file");
-			tasks.add("Maximize");
-			
-
-		    int taskNumber = 0;
-			for (String task : tasks) {
-				taskNumber++;
-				System.out.println(task);
-				Action act = null;
-				switch (taskNumber) {
-				case 1:
-					break;
-				case 2:
-					act = CallgraphView.getView_refresh();
-					break;
-				case 3:
-					act = CallgraphView.getView_treeview();
-					break;
-				case 4:
-					act = CallgraphView.getView_aggregateview();
-					break;
-				case 5:
-					act = CallgraphView.getView_boxview();
-					break;
-				case 6:
-					act = CallgraphView.getAnimation_fast();
-					break;
-				case 7:
-				case 8:
-					act = CallgraphView.getMode_collapsednodes();
-					break;
-				case 9:
-					act = CallgraphView.getView_radialview();
-					break;
-				case 10:
-					act = CallgraphView.getMode_collapsednodes();
-					break;
-				case 14:
-					String tempLocation = Activator.PLUGIN_LOCATION+"eag.graph2"; 
-					File temp = new File(tempLocation);
-					temp.delete();
-					parse.saveData(tempLocation);
-					temp.delete();
-					break;
-				case 15:
-					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setFile(Activator.PLUGIN_LOCATION+"eag.graph");
-					new_parser.testRun(new NullProgressMonitor());	
-					break;
-				case 16:
-					CallgraphView.maximizeIfUnmaximized();
-					break;
-				default:
-					break;
-				}
-				if (act != null) {
-					act.run();
-				}
-			}
-			return;
-		}
-			
+		
 		//TODO: Figure out how to make the graph display at the same time as the dialog
 		SystemTapUIErrorMessages testRadial = new SystemTapUIErrorMessages("Test graph", "Opening graph", 
 				"Testing Graph. Press OK, then go through the list of tasks.");
 		testRadial.schedule();
 
-		testRadial.cancel();
+		
+		
+		
+		
 
 		ArrayList<String> tasks = new ArrayList<String>();
 		
@@ -181,6 +102,7 @@ public class SystemTapGraphTest extends TestCase {
 		tasks.add("(Manually) Collapse an arrow in the TreeViewer");
 		tasks.add("Save file");
 		tasks.add("Reload file");
+		tasks.add("Error Log");
 		tasks.add("Check Version");
 		
 		
@@ -217,6 +139,22 @@ public class SystemTapGraphTest extends TestCase {
 			case 3:
 				act = CallgraphView.getView_treeview();
 				break;
+				
+//				tasks.add("(Manually) Maximize CallgraphView");
+//				tasks.add("Refresh");
+//				tasks.add("Tree View");
+//				tasks.add("Aggregate View");
+//				tasks.add("Box View");
+//				tasks.add("Collapse");
+//				tasks.add("Uncollapse.");
+//				tasks.add("Animation->Fast");
+//				tasks.add("Radial View");
+//				tasks.add("Collapse.");
+//				tasks.add("(Manually) Double-click node with no children in TreeViewer");
+//				tasks.add("(Manually) Expand an arrow in the TreeViewer");
+//				tasks.add("(Manually) Collapse an arrow in the TreeViewer");
+//				tasks.add("Save file");
+//				tasks.add("Reload file");
 			case 4:
 				act = CallgraphView.getView_aggregateview();
 				break;
@@ -243,6 +181,9 @@ public class SystemTapGraphTest extends TestCase {
 				act = CallgraphView.getOpen_callgraph();
 				break;
 			case 16:
+				act = CallgraphView.getError_errorLog();
+				break;
+			case 17:
 				act = CallgraphView.getHelp_version();
 				break;
 			default:
@@ -271,7 +212,6 @@ public class SystemTapGraphTest extends TestCase {
 //			}
 //		});
 //		
-		
 		sh.open();
 		
 		
@@ -317,5 +257,6 @@ public class SystemTapGraphTest extends TestCase {
 //		assertEquals(true, MessageDialog.openConfirm(new Shell(), "Check Graph", 
 //		"Press OK, then Select Box View from the drop-down menu. Does the Box View look correct? Press OK to continue."));
 	}
+	
 	
 }

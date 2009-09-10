@@ -11,8 +11,11 @@
 package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
 import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
 
@@ -20,13 +23,13 @@ public class StapGraphParserTest extends TestCase {
 	
 	//RENDER THE GRAPH
 	public  static StapGraphParser initializeGraph(String filePath){
-		StapGraphParser grph = new StapGraphParser();
-		grph.setFile(filePath);
+		StapGraphParser grph = new StapGraphParser("basic test", filePath);
 		grph.testRun(new NullProgressMonitor());
 		return grph;
 	}
 	
 	public static void assertSanity(StapGraphParser grph){
+		assertEquals(grph.serialMap.get(0),null);
 		//SAME NUMBER OF NODES ENTRIES
 		assertEquals(grph.serialMap.size(),grph.timeMap.size());
 		assertEquals(grph.serialMap.size(),grph.outNeighbours.size());
@@ -76,10 +79,30 @@ public class StapGraphParserTest extends TestCase {
 	
 	File tmpfile = new File("");
 	public final String currentPath = tmpfile.getAbsolutePath();
-	public String graphDataPath= "";
+	
+	public String stapCommand;
+	public final String scriptPath = currentPath+"/stapscript";
+	public String binaryPath = "";
+	public final String graphDataPath = currentPath+"/graph_data_output.graph";
+	public final String parseFunctionPath = currentPath+"/parse_function_nomark.stp";
+	
 	
 	//FOR TESTING THE GRAPH PARSING
 	public void executeGraphTests(){
+		initializeFiles();
+		Runtime rt = Runtime.getRuntime();
+		try {
+			//EXECUTE THE COMMAND
+			Process pr = null;
+			pr = rt.exec("stap -c '"+binaryPath+ "' "+"-o "+graphDataPath+" "+ parseFunctionPath + " " + binaryPath);
+			pr.waitFor();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		StapGraphParser grph = StapGraphParserTest.initializeGraph(graphDataPath);
 		StapGraphParserTest.assertSanity(grph);
 		StapGraphParserTest.assertTimes(grph);
@@ -88,18 +111,31 @@ public class StapGraphParserTest extends TestCase {
 	
 
 	public void testCallGraphRunBasic(){
-		graphDataPath = currentPath+"/basic.graph";
+		binaryPath = currentPath+"/basic";
 		executeGraphTests();
 	}
 	
 	public void testCallGraphRunRecursive(){
-		graphDataPath = currentPath+"/catlan.graph";
+		binaryPath = currentPath+"/catlan";
 		executeGraphTests();
 	}
 	
 	public void testManyFuncs(){
-		graphDataPath = currentPath+"/eag.graph";
+		binaryPath = currentPath+"/eag";
 		executeGraphTests();
+	}
+	
+	
+	public void initializeFiles(){
+		File scriptFile = new File(scriptPath);
+		File graphDataFile = new File(graphDataPath);
+		
+		try {
+			scriptFile.createNewFile();
+			graphDataFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
