@@ -45,7 +45,7 @@ public class RuledTreeDialogSelectionDialog extends CheckedTreeSelectionDialog {
     protected Control createDialogArea(Composite parent) {
     	Composite composite = (Composite) super.createDialogArea(parent);
     	
-    	System.out.println("Bag");
+    	System.out.println("Bag"); //$NON-NLS-1$
         Label line = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL
                 | SWT.BOLD);
         GridData gridData = new GridData(GridData.FILL_HORIZONTAL);

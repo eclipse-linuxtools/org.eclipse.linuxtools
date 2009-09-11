@@ -99,7 +99,7 @@ public class StapGraphParser extends Job{
 		serialMap.clear();
 		cumulativeTimeMap.clear();
 		countMap.clear();
-		text = "";
+		text = ""; //$NON-NLS-1$
 		callOrderList.clear();
 		
 		try {
@@ -153,7 +153,7 @@ public class StapGraphParser extends Job{
 			boolean encounteredMain = false;
 			
 			ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
-			String[] callsAndReturns = text.split(";");
+			String[] callsAndReturns = text.split(";"); //$NON-NLS-1$
 			String[] args;
 			ArrayList<String> nameList = new ArrayList<String>();
 			ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -170,7 +170,7 @@ public class StapGraphParser extends Job{
 				switch (s.charAt(0)) {
 					case '<' :
 						
-						args = s.substring(1, s.length()).split(",,");
+						args = s.substring(1, s.length()).split(",,"); //$NON-NLS-1$
 						// args[0] = name
 						// args[1] = id
 						// arsg[2] = time of event
@@ -180,12 +180,12 @@ public class StapGraphParser extends Job{
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
+						if (!encounteredMain && !isNameClean(name) && name.contains("__")) { //$NON-NLS-1$
 							skippedDirectives = true;
 							break;
 						}
 						name = cleanName(name);
-						if (name.equals("main"))
+						if (name.equals("main")) //$NON-NLS-1$
 							encounteredMain = true;
 						if (firstNode == -1) {
 							firstNode = id;
@@ -229,7 +229,7 @@ public class StapGraphParser extends Job{
 
 						break;
 					case '>' :
-						args = s.substring(1, s.length()).split(",,");
+						args = s.substring(1, s.length()).split(",,"); //$NON-NLS-1$
 						//args[0] = name
 						//args[1] = time of event
 						name = args[0];
@@ -237,14 +237,14 @@ public class StapGraphParser extends Job{
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isNameClean(name) && name.contains("__")) {
+						if (!encounteredMain && !isNameClean(name) && name.contains("__")) { //$NON-NLS-1$
 							skippedDirectives = true;							
 							break;
 						}
 						name = cleanName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
-							parsingError("Encountered return without matching call for function " + name);
+							parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
 							return Status.CANCEL_STATUS;
 						}
 						
@@ -253,7 +253,7 @@ public class StapGraphParser extends Job{
 						
 						
 						if (timeMap.get(id) == null) {
-							parsingError("No start time could be found for function " + name);
+							parsingError(Messages.getString("StapGraphParser.13") + name); //$NON-NLS-1$
 							return Status.CANCEL_STATUS;
 						}		
 						time =  Long.parseLong(args[1]) - timeMap.get(id);
@@ -274,8 +274,8 @@ public class StapGraphParser extends Job{
 						
 						break;
 					default : 
-						parsingError("Unexpected symbol when parsing: '" + s.charAt(0) +
-								"' encountered, while expecting < or >." );
+						parsingError(Messages.getString("StapGraphParser.14") + s.charAt(0) + //$NON-NLS-1$
+								Messages.getString("StapGraphParser.15") ); //$NON-NLS-1$
 						return Status.CANCEL_STATUS;
 					
 				} 
@@ -299,7 +299,7 @@ public class StapGraphParser extends Job{
 //					}
 					lastFunctionCalled = val;
 				}
-				markedMap.put(lastFunctionCalled, ":::Program terminated here");
+				markedMap.put(lastFunctionCalled, Messages.getString("StapGraphParser.16")); //$NON-NLS-1$
 			}
 				
 			//timecheck is true if the total execution time is less than 10ms
@@ -312,31 +312,31 @@ public class StapGraphParser extends Job{
 								
 			if (skippedDirectives || timeCheck) {
 				totalTime = timeMap.get(firstNode);
-				String markedMessage = "";
+				String markedMessage = ""; //$NON-NLS-1$
 				if (markedMap.containsKey(firstNode)) {
-					markedMessage = markedMap.get(firstNode) + "\n";
+					markedMessage = markedMap.get(firstNode) + "\n"; //$NON-NLS-1$
 				}
 				if (skippedDirectives)
-					markedMessage += "\n:::SystemTap detected functions that appeared to be C directives.";
+					markedMessage += Messages.getString("StapGraphParser.19"); //$NON-NLS-1$
 				if (timeCheck)
-					markedMessage += "\n:::Program terminated in less than 50ms and first function is not ~100%.";
+					markedMessage += Messages.getString("StapGraphParser.20"); //$NON-NLS-1$
 				
-				markedMessage += "\n:::Total time for this run has been set to the total time taken by this node.";
+				markedMessage += Messages.getString("StapGraphParser.21"); //$NON-NLS-1$
 				
 				markedMap.put(firstNode, markedMessage);
 			}
 			
 			
 			} catch (NumberFormatException e) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Unexpected Number", 
-						"Unexpected symbol", "Unexpected symbol encountered while trying to " +
-						"process id/time values.");
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("StapGraphParser.22"),  //$NON-NLS-1$
+						Messages.getString("StapGraphParser.23"), Messages.getString("StapGraphParser.24") + //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("StapGraphParser.25")); //$NON-NLS-1$
 				mess.schedule();
 				
 				return Status.CANCEL_STATUS;
 			}
 		} else {
-			parsingError("Could not find data in target file. Ensure target file contains data and try again.");
+			parsingError(Messages.getString("StapGraphParser.26")); //$NON-NLS-1$
 			return Status.CANCEL_STATUS;
 		}
 		
@@ -352,19 +352,19 @@ public class StapGraphParser extends Job{
 	 * @param name
 	 */
 	private String cleanName(String name) {
-		return name.split("\"")[0];
+		return name.split("\"")[0]; //$NON-NLS-1$
 		
 	}
 	
 	private void parsingError(String message) {
 		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-				"ParseError", "Unexpected symbol", message);
+				Messages.getString("StapGraphParser.28"), Messages.getString("StapGraphParser.29"), message); //$NON-NLS-1$ //$NON-NLS-2$
 		mess.schedule();
 	}
 	
  
 	private boolean isNameClean(String name) {
-		if (name.contains("\"") || name.contains(")"))
+		if (name.contains("\"") || name.contains(")")) //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		return true;
 	}
@@ -377,7 +377,7 @@ public class StapGraphParser extends Job{
 			for (int c : blah.get(a)) {
 					System.out.print(c + " ");					 //$NON-NLS-1$
 			}
-			MP.println("");
+			MP.println(""); //$NON-NLS-1$
 		}
 	}
 	

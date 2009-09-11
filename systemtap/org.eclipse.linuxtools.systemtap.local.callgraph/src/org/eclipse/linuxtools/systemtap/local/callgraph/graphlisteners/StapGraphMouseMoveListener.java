@@ -52,8 +52,8 @@ public class StapGraphMouseMoveListener implements MouseMoveListener {
 //			if (graph.scale < 0.63) {
 				if (showMessage) {
 					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-							"PanError", "Panning disabled",
-							"We're sorry, but panning is disabled in tree mode.");
+							Messages.StapGraphMouseMoveListener_0, Messages.StapGraphMouseMoveListener_1,
+							Messages.StapGraphMouseMoveListener_2);
 					mess.schedule();
 					showMessage = false;
 				}

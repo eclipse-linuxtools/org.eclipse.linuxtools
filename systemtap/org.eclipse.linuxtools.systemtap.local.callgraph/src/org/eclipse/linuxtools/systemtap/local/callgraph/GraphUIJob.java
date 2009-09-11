@@ -76,7 +76,7 @@ public class GraphUIJob extends UIJob{
 		//-------------Load graph data
 		g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$
 		boolean marked = false;
-		String msg = "";
+		String msg = ""; //$NON-NLS-1$
 		
 		
 	    for (int id_parent : parser.serialMap.keySet()) {

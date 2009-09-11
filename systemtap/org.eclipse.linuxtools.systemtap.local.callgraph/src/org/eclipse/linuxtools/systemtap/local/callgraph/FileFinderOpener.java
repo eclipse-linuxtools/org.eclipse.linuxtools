@@ -95,9 +95,9 @@ public class FileFinderOpener {
 		} else {
 			ElementListSelectionDialog d = new ElementListSelectionDialog(
 					new Shell(), new LabelProvider());
-			d.setTitle("Multiple files found");
-			d.setMessage("Multiple files found which define a function '" + functionName + "'. " +
-					"Please select a file or files to open");
+			d.setTitle(Messages.getString("FileFinderOpener.0")); //$NON-NLS-1$
+			d.setMessage(Messages.getString("FileFinderOpener.1") + functionName + "'. " + //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("FileFinderOpener.3")); //$NON-NLS-1$
 			d.setElements(files.toArray());
 			d.open();
 			for (Object o : d.getResult()) {
@@ -124,8 +124,8 @@ public class FileFinderOpener {
 		    } catch ( PartInitException e ) {
 		    }
 		} else {
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("File not found",
-					"File not found", "Could not find file to open:\n\n" + path);
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("FileFinderOpener.4"), //$NON-NLS-1$
+					Messages.getString("FileFinderOpener.5"), Messages.getString("FileFinderOpener.6") + path); //$NON-NLS-1$ //$NON-NLS-2$
 			mess.schedule();
 		}
 	}
