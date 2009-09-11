@@ -554,9 +554,21 @@ public class StapGraph extends Graph {
 			}
 		}
 		
+		List<Integer> list = data.callees;
+		if (isCollapseMode())
+			list = data.collapsedCallees;
+		
+		if (list.size() == 1) {
+			//Special case - only one child of the root node
+			//Therefore change root node to this new root node
+			int aMode = animation_mode;
+			draw(CONSTANT_DRAWMODE_TREE, CONSTANT_ANIMATION_FASTEST, list.get(0));
+			setAnimationMode(aMode);
+			return;
+		}
+		
 		
 		List<Integer> bottomList = levels.get(bottomLevelToDraw);
-		int newTop = data.levelOfRecursion + treeLevelFromRoot;
 		bottomLevelToDraw++;
 		
 		for (int i : bottomList) {
