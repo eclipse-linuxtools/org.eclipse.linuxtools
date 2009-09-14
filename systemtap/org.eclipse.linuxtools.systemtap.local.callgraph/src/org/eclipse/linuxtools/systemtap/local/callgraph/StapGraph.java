@@ -583,6 +583,24 @@ public class StapGraph extends Graph {
 	}
 	
 	/**
+	 * Removes nodes from the bottom of the tree
+	 */
+	public void shrinkTree() {
+		if (treeLevelFromRoot < 1) 
+			return;
+		
+		
+		bottomLevelToDraw--;
+		deleteAll(rootVisibleNodeNumber);
+		
+		int i = rootVisibleNodeNumber;
+		currentPositionInLevel.clear();
+		drawTree(i, getNode(i).getLocation().x, getNode(i).getLocation().y);
+		
+		treeLevelFromRoot--;		
+	}
+	
+	/**
 	 * Moves all nodes to the point x,y
 	 * @param x
 	 * @param y
