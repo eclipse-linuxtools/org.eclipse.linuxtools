@@ -108,9 +108,11 @@ public class FileFinderOpener {
 					Messages.getString("FileFinderOpener.3")); //$NON-NLS-1$
 			d.setElements(files.toArray());
 			d.open();
-			for (Object o : d.getResult()) {
-				if (o instanceof String)
-					open((String)o, offset.get((String) o));
+			if (d.getResult() != null){				
+				for (Object o : d.getResult()) {
+					if (o instanceof String)
+						open((String)o, offset.get((String) o));
+				}
 			}
 		}	
 		

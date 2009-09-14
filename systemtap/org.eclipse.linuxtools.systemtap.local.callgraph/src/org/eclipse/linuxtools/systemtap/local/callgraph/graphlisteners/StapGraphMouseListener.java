@@ -39,17 +39,30 @@ public class StapGraphMouseListener implements MouseListener {
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		if (e.stateMask == SWT.CONTROL) {
-			StapNode node = getNodeFromSelection();
-			if (node == null)
-				return;
-			int caller = node.getData().caller;
-			
-			if (caller < graph.getFirstUsefulNode()) {
-				//The only node that satisfies this condition should be main
-				caller = graph.getFirstUsefulNode();
+			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
+				GraphNode node = getAggregateNodeFromSelection();
+				
+				if (node == null)
+					return;
+				
+				String functionName = (String) node.getData("AGGREGATE_NAME");
+				FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+			} else {
+				StapNode node = getNodeFromSelection();
+				
+				if (node == null)
+					return;
+
+				int caller = node.getData().caller;
+
+				if (caller < graph.getFirstUsefulNode()) {
+					// The only node that satisfies this condition should be
+					// main
+					caller = graph.getFirstUsefulNode();
+				}
+				FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
 			}
-			FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
-			
+
 			graph.setSelection(null);
 			return;
 		}
@@ -95,6 +108,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 		graph.setSelection(null);
 	}
+
 
 	@Override
 	public void mouseDown(MouseEvent e) {
@@ -175,7 +189,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 		}
 
-		else if (list.size() == 0) {
+		else if (list.size() == 0 && ! (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)) {
 			for (StapNode n : (List<StapNode>) graph.getNodes()) {
 				unhighlightall(n);
 			}
@@ -222,6 +236,24 @@ public class StapGraphMouseListener implements MouseListener {
 		StapNode node = null;
 		if (stapNodeList.get(0) instanceof StapNode) {
 			node = (StapNode) stapNodeList.remove(0);
+		} else {
+			graph.setSelection(null);
+			return null;
+		}
+		return node;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private GraphNode getAggregateNodeFromSelection() {
+		List<GraphNode> graphNodeList = graph.getSelection();
+		if (graphNodeList.isEmpty() || graphNodeList.size() != 1) {
+			graph.setSelection(null);
+			return null;
+		}
+
+		GraphNode node = null;
+		if (graphNodeList.get(0) instanceof GraphNode) {
+			node = (GraphNode) graphNodeList.remove(0);
 		} else {
 			graph.setSelection(null);
 			return null;
