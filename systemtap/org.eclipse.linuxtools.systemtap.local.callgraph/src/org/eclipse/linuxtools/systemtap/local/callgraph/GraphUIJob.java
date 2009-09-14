@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.AutoScrollSelectionListener;
-import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
