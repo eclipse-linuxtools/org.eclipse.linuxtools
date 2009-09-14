@@ -84,7 +84,7 @@ public class GraphUIJob extends UIJob{
 		
 		
 		//Add first button
-		Image image = new Image(disp, PluginConstants.PLUGIN_LOCATION+"icons/up.gif"); //$NON-NLS-1$
+		Image image = new Image(disp, CallGraphConstants.PLUGIN_LOCATION+"icons/up.gif"); //$NON-NLS-1$
 		Button up = new Button(papaCanvas, SWT.PUSH);
 		GridData buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;
@@ -98,7 +98,7 @@ public class GraphUIJob extends UIJob{
 		
 		
 		//Add second button
-		image = new Image(disp, PluginConstants.PLUGIN_LOCATION+"icons/down.gif"); //$NON-NLS-1$
+		image = new Image(disp, CallGraphConstants.PLUGIN_LOCATION+"icons/down.gif"); //$NON-NLS-1$
 		Button down = new Button(papaCanvas, SWT.PUSH);
 		buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;

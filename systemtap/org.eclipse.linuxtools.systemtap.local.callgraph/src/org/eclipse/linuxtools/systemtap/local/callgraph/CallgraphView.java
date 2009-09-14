@@ -891,7 +891,7 @@ public class CallgraphView extends ViewPart {
 		};
 		
 		ImageDescriptor newImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/mode_collapsednodes.gif")); //$NON-NLS-1$
+				new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "icons/mode_collapsednodes.gif")); //$NON-NLS-1$
 		mode_collapsednodes.setImageDescriptor(newImage);
 		
 		limits = new Action(Messages.getString("CallgraphView.SetLimits"), Action.AS_PUSH_BUTTON) { //$NON-NLS-1$
