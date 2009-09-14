@@ -791,7 +791,7 @@ public class CallgraphView extends ViewPart {
 			}
 		};
 		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "icons/tree_view.gif")); //$NON-NLS-1$
+				new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "icons/tree_view.gif")); //$NON-NLS-1$
 		view_treeview.setImageDescriptor(treeImage);
 		
 		
@@ -805,7 +805,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor d = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/radial_view.gif")); //$NON-NLS-1$
+						CallGraphConstants.PLUGIN_LOCATION + "/icons/radial_view.gif")); //$NON-NLS-1$
 		view_radialview.setImageDescriptor(d);
 
 		
@@ -819,7 +819,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor aggregateImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/view_aggregateview.gif")); //$NON-NLS-1$
+						CallGraphConstants.PLUGIN_LOCATION + "/icons/view_aggregateview.gif")); //$NON-NLS-1$
 		view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
@@ -832,7 +832,7 @@ public class CallgraphView extends ViewPart {
 		};
 		ImageDescriptor boxImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif")); //$NON-NLS-1$
+						CallGraphConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif")); //$NON-NLS-1$
 		view_boxview.setImageDescriptor(boxImage);
 		
 		
@@ -843,7 +843,7 @@ public class CallgraphView extends ViewPart {
 		});
 		ImageDescriptor refreshImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
-						PluginConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif")); //$NON-NLS-1$
+						CallGraphConstants.PLUGIN_LOCATION + "/icons/nav_refresh.gif")); //$NON-NLS-1$
 		getView_refresh().setImageDescriptor(refreshImage);
 		
 		

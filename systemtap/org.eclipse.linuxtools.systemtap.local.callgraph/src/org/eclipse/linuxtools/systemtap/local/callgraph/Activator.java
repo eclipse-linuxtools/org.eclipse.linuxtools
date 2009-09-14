@@ -10,8 +10,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.callgraph;
 
+import java.io.IOException;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -38,6 +45,9 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
+		//TODO: Is this too slow?
+		CallGraphConstants.setPluginLocation(getPluginLocation());
 	}
 
 	/*
@@ -68,4 +78,19 @@ public class Activator extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
+	
+	public String getPluginLocation() {
+		Bundle bundle = getBundle();
+
+		URL locationUrl = FileLocator.find(bundle,new Path("/"), null); //$NON-NLS-1$
+		URL fileUrl = null;
+		try {
+			fileUrl = FileLocator.toFileURL(locationUrl);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return fileUrl.getFile();
+		
+	}
+
 }
