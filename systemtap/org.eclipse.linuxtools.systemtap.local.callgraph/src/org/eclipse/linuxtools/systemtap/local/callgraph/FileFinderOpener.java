@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.systemtap.local.callgraph;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.dom.ast.IBinding;
@@ -29,11 +30,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * Helper class that finds and opens files. Finds based on function names,
  * opens based on path and in the current default editor. 
@@ -41,6 +44,7 @@ import org.eclipse.ui.ide.IDE;
  */
 public class FileFinderOpener {
 	
+	private static HashMap<String, Integer> offset = new HashMap<String, Integer>();
 	
 	/**
 	 * @param project : C Project Type
@@ -67,7 +71,9 @@ public class FileFinderOpener {
 							IIndexFile file = iname.getFile();
 							if (file != null) {
 								IIndexFileLocation filelocation = file.getLocation();
-								files.add(filelocation.getURI().getPath());
+								String loc = filelocation.getURI().getPath();
+								files.add(loc);
+								offset.put(loc, iname.getNodeOffset());
 							}
 						}
 					}
@@ -85,13 +91,15 @@ public class FileFinderOpener {
 	
 	
 	public static void findAndOpen(ICProject project, String functionName) {
+		offset.clear();
+
 		ArrayList<String> files = findFunctionsInProject(project, functionName);
 		
 		if (files == null || files.size() < 1)
 			return;
 		
 		if (files.size() == 1) {
-			open(files.get(0));
+			open(files.get(0), offset.get(files.get(0)));
 		} else {
 			ElementListSelectionDialog d = new ElementListSelectionDialog(
 					new Shell(), new LabelProvider());
@@ -102,7 +110,7 @@ public class FileFinderOpener {
 			d.open();
 			for (Object o : d.getResult()) {
 				if (o instanceof String)
-					open((String)o);
+					open((String)o, offset.get((String) o));
 			}
 		}	
 		
@@ -110,7 +118,7 @@ public class FileFinderOpener {
 	}
 	
 	
-	public static void open(String path) {
+	public static void open(String path, int offset) {
 		if (path == null)
 			return;
 		File fileToOpen = new File(path);
@@ -120,7 +128,11 @@ public class FileFinderOpener {
 		    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		 
 		    try {
-		        IDE.openEditorOnFileStore( page, fileStore );
+		        IEditorPart ed = IDE.openEditorOnFileStore( page, fileStore );
+		        if (ed instanceof ITextEditor && offset > 0) {
+		        	ITextEditor text = (ITextEditor) ed;
+		        	text.selectAndReveal(offset, 0);
+		        }
 		    } catch ( PartInitException e ) {
 		    }
 		} else {
