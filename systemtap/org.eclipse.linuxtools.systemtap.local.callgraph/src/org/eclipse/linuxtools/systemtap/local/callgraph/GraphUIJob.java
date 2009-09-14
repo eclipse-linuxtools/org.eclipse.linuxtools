@@ -20,7 +20,6 @@ import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.AutoScrol
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;

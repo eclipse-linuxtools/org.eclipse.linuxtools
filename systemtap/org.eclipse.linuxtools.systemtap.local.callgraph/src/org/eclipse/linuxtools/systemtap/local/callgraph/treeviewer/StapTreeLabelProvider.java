@@ -12,8 +12,8 @@ package org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapData;
-import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
@@ -23,9 +23,9 @@ public class StapTreeLabelProvider implements ILabelProvider {
 	public Image getImage(Object element) {
 		Image im = null;
 		if ( ((StapData) element).isMarked())
-			im = new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "/icons/public_co.gif"); //$NON-NLS-1$
+			im = new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "/icons/public_co.gif"); //$NON-NLS-1$
 		else
-			im = new Image(Display.getCurrent(), PluginConstants.PLUGIN_LOCATION + "/icons/compare_method.gif"); //$NON-NLS-1$
+			im = new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "/icons/compare_method.gif"); //$NON-NLS-1$
 		return im;
 	}
 
