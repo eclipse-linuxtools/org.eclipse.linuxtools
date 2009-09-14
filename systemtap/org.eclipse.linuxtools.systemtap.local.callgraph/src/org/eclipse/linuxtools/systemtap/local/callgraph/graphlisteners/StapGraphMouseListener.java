@@ -42,7 +42,13 @@ public class StapGraphMouseListener implements MouseListener {
 			StapNode node = getNodeFromSelection();
 			if (node == null)
 				return;
-			FileFinderOpener.findAndOpen(graph.getProject(), node.getData().name);
+			int caller = node.getData().caller;
+			
+			if (caller < graph.getFirstUsefulNode()) {
+				//The only node that satisfies this condition should be main
+				caller = graph.getFirstUsefulNode();
+			}
+			FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
 			
 			graph.setSelection(null);
 			return;
