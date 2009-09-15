@@ -99,9 +99,6 @@ public class StapGraph extends Graph {
 	//The current center/top of the nodes list
 	private int rootVisibleNodeNumber;
 	
-	//Buttons
-	private HashMap<Integer, StapButton> buttons; 			//NodeID of each button
-	
 	//Special cases
 	private boolean killInvalidFunctions;					//Toggle hiding of invalid functions					
 	
@@ -138,7 +135,6 @@ public class StapGraph extends Graph {
 		nodeMap = new HashMap<Integer, StapNode>();
 		levels = new HashMap<Integer, List<Integer>>();
 		nodeDataMap = new HashMap<Integer, StapData>();
-		buttons = new HashMap<Integer,StapButton>();
 		aggregateTime = new HashMap<String, Long>();
 		aggregateCount = new HashMap<String, Integer>();
 		currentPositionInLevel = new HashMap<Integer, Integer>();
@@ -779,11 +775,6 @@ public class StapGraph extends Graph {
 			StapNode node = nodeMap.get(i);
 			if (node == null)
 				continue;
-			
-			for (int j: node.buttons) {
-				buttons.get(j).dispose();
-				buttons.remove(j);
-			}
 			
 			node.unhighlight();
 			node.dispose();
