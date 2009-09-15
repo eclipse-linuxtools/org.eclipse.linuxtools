@@ -45,6 +45,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public class FileFinderOpener {
 	
 	private static HashMap<String, Integer> offset = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> length = new HashMap<String, Integer>();
+
 	
 	/**
 	 * @param project : C Project Type
@@ -74,6 +76,7 @@ public class FileFinderOpener {
 								String loc = filelocation.getURI().getPath();
 								files.add(loc);
 								offset.put(loc, iname.getNodeOffset());
+								length.put(loc, iname.getNodeLength());
 							}
 						}
 					}
@@ -92,6 +95,7 @@ public class FileFinderOpener {
 	
 	public static void findAndOpen(ICProject project, String functionName) {
 		offset.clear();
+		length.clear();
 
 		ArrayList<String> files = findFunctionsInProject(project, functionName);
 		
@@ -99,7 +103,7 @@ public class FileFinderOpener {
 			return;
 		
 		if (files.size() == 1) {
-			open(files.get(0), offset.get(files.get(0)));
+			open(files.get(0), offset.get(files.get(0)), length.get(files.get(0)));
 		} else {
 			ElementListSelectionDialog d = new ElementListSelectionDialog(
 					new Shell(), new LabelProvider());
@@ -108,10 +112,10 @@ public class FileFinderOpener {
 					Messages.getString("FileFinderOpener.3")); //$NON-NLS-1$
 			d.setElements(files.toArray());
 			d.open();
-			if (d.getResult() != null){				
-				for (Object o : d.getResult()) {
-					if (o instanceof String)
-						open((String)o, offset.get((String) o));
+			for (Object o : d.getResult()) {
+				if (o instanceof String) {
+					String s = (String) o;
+					open(s, offset.get(s), length.get(s));
 				}
 			}
 		}	
@@ -120,7 +124,7 @@ public class FileFinderOpener {
 	}
 	
 	
-	public static void open(String path, int offset) {
+	public static void open(String path, int offset, int length) {
 		if (path == null)
 			return;
 		File fileToOpen = new File(path);
@@ -133,10 +137,21 @@ public class FileFinderOpener {
 		        IEditorPart ed = IDE.openEditorOnFileStore( page, fileStore );
 		        if (ed instanceof ITextEditor && offset > 0) {
 		        	ITextEditor text = (ITextEditor) ed;
-		        	text.selectAndReveal(offset, 0);
+		        	text.selectAndReveal(offset, length);
+//		        	IDocument doc = text.getDocumentProvider().getDocument(text.getEditorInput());
+//		        	int line = doc.getLineOfOffset(offset);
+//		        	while (line < doc.getNumberOfLines()) {
+//		        		String contents =doc.get(doc.getLineOffset(line), doc.getLineLength(line)); 
+//		        		if (contents.contains(targetFunction)) {
+//		        	
+//		        		}
+//
+//		        		line++;
+//		        	}
 		        }
 		    } catch ( PartInitException e ) {
-		    }
+//			} catch (BadLocationException e) {
+			}
 		} else {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("FileFinderOpener.4"), //$NON-NLS-1$
 					Messages.getString("FileFinderOpener.5"), Messages.getString("FileFinderOpener.6") + path); //$NON-NLS-1$ //$NON-NLS-2$
