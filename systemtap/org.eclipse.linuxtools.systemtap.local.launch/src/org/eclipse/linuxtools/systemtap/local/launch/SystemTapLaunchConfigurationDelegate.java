@@ -17,7 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
@@ -25,6 +26,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
@@ -54,6 +56,16 @@ public class SystemTapLaunchConfigurationDelegate extends
 		AbstractCLaunchDelegate {
 
 	private String cmd;
+	private File temporaryScript = null;
+	private String arguments = ""; //$NON-NLS-1$
+	private String scriptPath = ""; //$NON-NLS-1$
+	private String binaryPath = ""; //$NON-NLS-1$
+	private String outputPath = ""; //$NON-NLS-1$
+	private boolean needsBinary = false; // Set to false if we want to use SystemTap
+	private boolean needsArguments = false;
+	private boolean useColour = false;
+	private String binaryArguments = ""; //$NON-NLS-1$
+	
 
 	@Override
 	protected String getPluginID() {
@@ -77,17 +89,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			return;
 		}
 
-		File temporaryScript = null;
-		String arguments = ""; //$NON-NLS-1$
-		String scriptPath = ""; //$NON-NLS-1$
-		String binaryPath = ""; //$NON-NLS-1$
-		String outputPath = ""; //$NON-NLS-1$
-		boolean needsBinary = false; // Set to false if we want to use SystemTap
-		// binary selection
-		boolean needsArguments = false;
-		boolean useColour = false;
-		String binaryArguments = ""; //$NON-NLS-1$
-		
+
 			
 		String command = ConfigurationOptionsSetter.setOptions(config);  
 		
@@ -168,6 +170,113 @@ public class SystemTapLaunchConfigurationDelegate extends
 		if (monitor.isCanceled()) {
 			return;
 		}
+
+		finishLaunch(launch, config, command, m, true);
+	}
+
+	public String getCommand() {
+		if (cmd.length() > 0)
+			return cmd;
+		else
+			return Messages.getString("SystemTapLaunchConfigurationDelegate.0"); //$NON-NLS-1$
+	}
+
+	public Process execute(String[] commandArray, String[] env, File wd,
+			boolean usePty) throws IOException {
+		Process process = null;
+		try {
+			if (wd == null) {
+				process = ProcessFactory.getFactory().exec(commandArray, env);
+			} else {
+				if (PTY.isSupported() && usePty) {
+					process = ProcessFactory.getFactory().exec(commandArray,
+							env, wd, new PTY());
+				} else {
+					process = ProcessFactory.getFactory().exec(commandArray,
+							env, wd);
+				}
+			}
+		} catch (IOException e) {
+			if (process != null) {
+				process.destroy();
+			}
+			return null;
+		}
+		return process;
+	}
+	
+	
+
+	protected IProcess createNewProcess(ILaunch launch, Process systemProcess,
+			String programName) {
+		return DebugPlugin.newProcess(launch, systemProcess,
+				renderProcessLabel(programName));
+	}
+
+	public String getCommandLine(String[] args) {
+		StringBuffer ret = new StringBuffer();
+		for (String arg : args) {
+			ret.append(arg + " "); //$NON-NLS-1$
+		}
+		return ret.toString().trim();
+	}
+
+	
+	private class DocWriter extends UIJob {
+		private TextConsole console;
+		private String configName;
+		private String binaryCommand;
+
+		public DocWriter(String name, TextConsole console, String cName,
+				String binaryCommand) {
+			super(name);
+			this.console = console;
+			this.configName = cName;
+			this.binaryCommand = binaryCommand;
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			IDocument doc = console.getDocument();
+			
+			if (binaryCommand.length() > 0)
+				try {
+					doc.replace(doc.getLength(), 0, 
+						PluginConstants.NEW_LINE 
+						+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
+						+ PluginConstants.NEW_LINE 
+						+ Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+						+ configName + PluginConstants.NEW_LINE +
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
+						+ binaryCommand + PluginConstants.NEW_LINE +
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
+						);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			else
+				try {
+					doc.replace(doc.getLength(), 0,
+						PluginConstants.NEW_LINE +
+						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
+						PluginConstants.NEW_LINE + 
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+						+ configName + PluginConstants.NEW_LINE +
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
+						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			
+			return Status.OK_STATUS;
+		}
+		
+	}
+	
+	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
+			IProgressMonitor monitor, boolean retry) {
 		try {
 			File workDir = getWorkingDirectory(config);
 			if (workDir == null) {
@@ -272,8 +381,18 @@ public class SystemTapLaunchConfigurationDelegate extends
 				errorHandler.handle(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
-						+ doc.get());				
+						+ doc.get());
+				if (errorHandler.hasMismatchedProbePoints() && retry) {
+					File f = new File(binaryPath);
+					ArrayList<String> excludedFunctions = errorHandler.getFunctions();
+					//TODO: Delete 5 lines every time you encounter one of the excluded functions
+					
+					
+					finishLaunch(launch, config, command, monitor, false);
+					return;
+				}
 				errorHandler.finishHandling();
+					
 				return;
 			}
 					
@@ -289,119 +408,17 @@ public class SystemTapLaunchConfigurationDelegate extends
 			monitor.worked(1);
 
 		} catch (IOException e) {
-			abort("Could not start process", e, //$NON-NLS-1$
-					ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR); //$NON-NLS-1$
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		} finally {
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
 					((TextConsole)Helper.getConsoleByName(config.getName())), config.getName(),
 					binaryArguments);
 			dw.schedule();
-			m.done();
+			monitor.done();
 		}
-
-	}
-
-	public String getCommand() {
-		if (cmd.length() > 0)
-			return cmd;
-		else
-			return Messages.getString("SystemTapLaunchConfigurationDelegate.0"); //$NON-NLS-1$
-	}
-
-	public Process execute(String[] commandArray, String[] env, File wd,
-			boolean usePty) throws IOException {
-		Process process = null;
-		try {
-			if (wd == null) {
-				process = ProcessFactory.getFactory().exec(commandArray, env);
-			} else {
-				if (PTY.isSupported() && usePty) {
-					process = ProcessFactory.getFactory().exec(commandArray,
-							env, wd, new PTY());
-				} else {
-					process = ProcessFactory.getFactory().exec(commandArray,
-							env, wd);
-				}
-			}
-		} catch (IOException e) {
-			if (process != null) {
-				process.destroy();
-			}
-			return null;
-		}
-		return process;
-	}
-	
-	
-
-	protected IProcess createNewProcess(ILaunch launch, Process systemProcess,
-			String programName) {
-		return DebugPlugin.newProcess(launch, systemProcess,
-				renderProcessLabel(programName));
-	}
-
-	public String getCommandLine(String[] args) {
-		StringBuffer ret = new StringBuffer();
-		for (String arg : args) {
-			ret.append(arg + " "); //$NON-NLS-1$
-		}
-		return ret.toString().trim();
-	}
-
-	
-	private class DocWriter extends UIJob {
-		private TextConsole console;
-		private String configName;
-		private String binaryCommand;
-
-		public DocWriter(String name, TextConsole console, String cName,
-				String binaryCommand) {
-			super(name);
-			this.console = console;
-			this.configName = cName;
-			this.binaryCommand = binaryCommand;
-		}
-
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			IDocument doc = console.getDocument();
-			
-			if (binaryCommand.length() > 0)
-				try {
-					doc.replace(doc.getLength(), 0, 
-						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE
-						+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE 
-						+ Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
-						+ configName + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
-						+ binaryCommand + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
-						);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-			else
-				try {
-					doc.replace(doc.getLength(), 0,
-						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
-						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + 
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
-						+ configName + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-			
-			return Status.OK_STATUS;
-		}
-		
 	}
 }
