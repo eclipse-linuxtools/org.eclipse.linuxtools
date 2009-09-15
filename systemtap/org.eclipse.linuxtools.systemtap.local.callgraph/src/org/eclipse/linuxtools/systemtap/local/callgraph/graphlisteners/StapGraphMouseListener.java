@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners;
 
 import java.util.List;
 
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.systemtap.local.core.FileFinderOpener;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapNode;
@@ -75,6 +76,7 @@ public class StapGraphMouseListener implements MouseListener {
 			
 			graph.getTreeViewer().collapseToLevel(node.getData(), 0);
 			graph.getTreeViewer().expandToLevel(node.getData(), 0);
+			graph.getTreeViewer().setSelection(new StructuredSelection(node.getData()));
 
 			int id = node.getData().id;
 
@@ -100,7 +102,7 @@ public class StapGraphMouseListener implements MouseListener {
 			unhighlightall(node);
 			graph.setSelection(null);
 			graph.getTreeViewer().expandToLevel(node.getData(), 0);
-
+			graph.getTreeViewer().setSelection(new StructuredSelection(node.getData()));
 			// Draw in current modes with 'id' at the top
 			int id = node.getData().id;
 			graph.draw(id);
