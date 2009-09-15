@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.systemtap.local.launch;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +68,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected boolean useColours;
 	protected String resourceToSearchFor;
 	protected boolean searchForResource;
+	protected IBinary bin;
 	
 	/**
 	 * Provides access to the Profiling Frameworks' launch method
@@ -692,5 +694,21 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		if (number < low)
 			return low;
 		return number;
+	}
+	
+	/**
+	 * Function for generating scripts. Should be overriden by interested classes
+	 * @throws IOException 
+	 */
+	public String generateScript(ArrayList<String> exclusions) throws IOException {
+		return null;
+	}
+	
+	public void setScriptPath(String val) {
+		this.scriptPath = val;
+	}
+
+	public void setBinary(IBinary val) {
+		this.bin = val;
 	}
 }

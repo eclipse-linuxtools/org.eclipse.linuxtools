@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
@@ -75,6 +76,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	
 	public void launch(IBinary bin, String mode) {
 		super.Init();
+		this.bin = bin;
 		name = "SystemTapGraph";  //$NON-NLS-1$
 		binName = getName(bin);
 		partialScriptPath = PluginConstants.getPluginLocation()
@@ -85,24 +87,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 		
 		try {
-			String scriptContents = "";  //$NON-NLS-1$
-			File scriptFile = new File(scriptPath);
-			scriptFile.delete();
-			scriptFile.createNewFile();
-
-			scriptContents += writeGlobalVariables();
-//			scriptContents += writeStapMarkers();
-			String funcs = writeFunctionListToScript(bin, resourceToSearchFor);
-			if (funcs == null)
-				return;
-			scriptContents += funcs;
-			scriptContents += writeFromPartialScript(bin.getCProject().getElementName());
-			
-			BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
-//			bw.write("probe begin { printf(\"HELLO\") }");
-			bw.write(scriptContents);
-			bw.close();
-
+			String scriptContents = generateScript(null);
 			 
 			config = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
@@ -163,7 +148,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 * @throws IOException
 	 */
-	private String writeFunctionListToScript(IBinary bin, String resourceToSearchFor) throws IOException {
+	private String writeFunctionListToScript(String resourceToSearchFor, ArrayList<String> exclusions) throws IOException {
 		String toWrite = getFunctionsFromBinary(bin, resourceToSearchFor);
 		
 		if (toWrite == null || toWrite.length() < 1) {
@@ -173,8 +158,15 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		StringBuffer output = new StringBuffer();
 		
 		for (String func : toWrite.split(" ")) { //$NON-NLS-1$
-			if (func.length() > 0)
-				output.append(generateProbe(func));
+			if (func.length() > 0) {
+				if (exclusions != null) {
+					if (!exclusions.contains(func))
+						output.append(generateProbe(func));
+				}
+				else
+					output.append(generateProbe(func));
+						
+			}
 		}
 
 		return output.toString();
@@ -226,7 +218,32 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		return toWrite;
 	}
 	
-	
+	@Override
+	public String generateScript(ArrayList<String> exclusions) throws IOException {
+		boolean exclude = false;
+		if (exclusions != null)
+			if (exclusions.size() > 0)
+				exclude = true;
+		
+		String scriptContents = "";  //$NON-NLS-1$
+		File scriptFile = new File(scriptPath);
+		scriptFile.delete();
+		scriptFile.createNewFile();
+
+		scriptContents += writeGlobalVariables();
+//		scriptContents += writeStapMarkers();
+		String funcs = writeFunctionListToScript(resourceToSearchFor, exclusions);
+		if (funcs == null)
+			return null;
+		scriptContents += funcs;
+		scriptContents += writeFromPartialScript(bin.getCProject().getElementName());
+		
+		BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
+//		bw.write("probe begin { printf(\"HELLO\") }");
+		bw.write(scriptContents);
+		bw.close();
+		return scriptContents;
+	}
 	
 //	/**
 //	 * Determines whether or not the user wants StapMarkers and inserts them. To
