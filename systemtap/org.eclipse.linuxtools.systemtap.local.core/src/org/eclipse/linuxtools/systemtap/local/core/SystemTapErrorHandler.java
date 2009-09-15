@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -33,6 +34,8 @@ public class SystemTapErrorHandler {
 	private boolean errorRecognized;
 	private String errorMessage = ""; //$NON-NLS-1$
 	private String logContents;
+	private boolean mismatchedProbePoints;
+	ArrayList<String> functions = new ArrayList<String>();
 	
 	/**
 	 * Delete the log file and create an empty one
@@ -64,6 +67,7 @@ public class SystemTapErrorHandler {
 	 * @param doc
 	 */
 	public void handle (String message){		
+		mismatchedProbePoints = false;
 		if (errorMessage.length() < 1) {
 			errorMessage = 
 				Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
@@ -76,11 +80,14 @@ public class SystemTapErrorHandler {
 			BufferedReader buff = new BufferedReader (new FileReader(file));
 			String line;
 			int index;
+			boolean firstLine = true; //Keep the error about mismatched probe points first
 			while ((line = buff.readLine()) != null){
 				index = line.indexOf('=');
 				String matchString = line.substring(0, index);
-				Matcher matcher = Pattern.compile(matchString, Pattern.DOTALL).matcher(message);
+				Pattern pat = Pattern.compile(matchString, Pattern.DOTALL);
+				Matcher matcher = pat.matcher(message);
 
+				
 				if (matcher.matches()) {
 					if (!isErrorRecognized()) {
 						errorMessage+=Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
@@ -89,7 +96,14 @@ public class SystemTapErrorHandler {
 						
 					errorMessage+=line.substring(index+1) 
 					+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
+				
+					if (firstLine) {
+						functions.clear();
+						findFunctions(message, pat);
+						mismatchedProbePoints = true;
+					}
 				}
+				firstLine = false;
 			}
 			
 			logContents += message;
@@ -178,6 +192,35 @@ public class SystemTapErrorHandler {
 	 */
 	private void setErrorRecognized(boolean errorsRecognized) {
 		errorRecognized = errorsRecognized;
+	}
+
+
+	public boolean hasMismatchedProbePoints() {
+		return mismatchedProbePoints;
+	}
+
+
+	public void setMismatchedProbePoints(boolean mismatchedProbePoints) {
+		this.mismatchedProbePoints = mismatchedProbePoints;
+	}
+	
+	
+	public void findFunctions(String message, Pattern pat) {
+		String[] list = message.split("\n");
+		for (String s : list) {
+			if (pat.matcher(s).matches()) {
+				int lastQuote = s.lastIndexOf('"');
+				int secondLastQuote = s.lastIndexOf('"', lastQuote - 1);
+				System.out.println(s.substring(secondLastQuote, lastQuote));
+				if (!functions.contains(s))
+					functions.add(s);
+			}
+		}
+	}
+
+
+	public ArrayList<String> getFunctions() {
+		return functions;
 	}
 
 }
