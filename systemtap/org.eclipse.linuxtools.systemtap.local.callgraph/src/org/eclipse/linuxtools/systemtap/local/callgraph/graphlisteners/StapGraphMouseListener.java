@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners;
 
 import java.util.List;
 
-import org.eclipse.linuxtools.systemtap.local.callgraph.FileFinderOpener;
+import org.eclipse.linuxtools.systemtap.local.core.FileFinderOpener;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
 import org.eclipse.linuxtools.systemtap.local.callgraph.StapNode;
 import org.eclipse.swt.SWT;

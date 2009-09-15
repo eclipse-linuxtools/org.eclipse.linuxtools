@@ -93,41 +93,40 @@ public class FileFinderOpener {
 	}
 	
 	
-	public static String findAndOpen(ICProject project, String functionName) {
+	public static void findAndOpen(ICProject project, String functionName) {
 		offset.clear();
 		length.clear();
 
 		ArrayList<String> files = findFunctionsInProject(project, functionName);
 		
 		if (files == null || files.size() < 1)
-			return null;
-		StringBuilder output = new StringBuilder();
-
+			return;
+		
 		if (files.size() == 1) {
 			open(files.get(0), offset.get(files.get(0)), length.get(files.get(0)));
 		} else {
 			ElementListSelectionDialog d = new ElementListSelectionDialog(
 					new Shell(), new LabelProvider());
-			d.setTitle(Messages.getString("FileFinderOpener.MultipleFilesDialog"));  //$NON-NLS-1$
-			d.setMessage(Messages.getString("FileFinderOpener.MultFilesDialogM1") + functionName + Messages.getString("FileFinderOpener.MultFilesDialogM2") +   //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getString("FileFinderOpener.MultFilesDialogM3"));  //$NON-NLS-1$
+			d.setTitle("Multiple files found"); 
+			d.setMessage("Multiple files found which define a function '" + functionName + "'. " +  
+					"Please select a file or files to open"); 
 			d.setElements(files.toArray());
 			d.open();
 			for (Object o : d.getResult()) {
 				if (o instanceof String) {
 					String s = (String) o;
-					output.append(open(s, offset.get(s), length.get(s)));
+					open(s, offset.get(s), length.get(s));
 				}
 			}
 		}	
 		
-		return output.toString();
+		return;
 	}
 	
 	
-	public static String open(String path, int offset, int length) {
+	public static void open(String path, int offset, int length) {
 		if (path == null)
-			return null;
+			return;
 		File fileToOpen = new File(path);
 		 
 		if (fileToOpen.exists() && fileToOpen.isFile()) {
@@ -139,15 +138,25 @@ public class FileFinderOpener {
 		        if (ed instanceof ITextEditor && offset > 0) {
 		        	ITextEditor text = (ITextEditor) ed;
 		        	text.selectAndReveal(offset, length);
-		        	return text.getTitle();
+//		        	IDocument doc = text.getDocumentProvider().getDocument(text.getEditorInput());
+//		        	int line = doc.getLineOfOffset(offset);
+//		        	while (line < doc.getNumberOfLines()) {
+//		        		String contents =doc.get(doc.getLineOffset(line), doc.getLineLength(line)); 
+//		        		if (contents.contains(targetFunction)) {
+//		        	
+//		        		}
+//
+//		        		line++;
+//		        	}
 		        }
 		    } catch ( PartInitException e ) {
+//			} catch (BadLocationException e) {
 			}
 		} else {
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("FileFinderOpener.FileNotFound"),  //$NON-NLS-1$
-					Messages.getString("FileFinderOpener.FileNotFound1"), Messages.getString("FileFinderOpener.FileNotFound2") + path);   //$NON-NLS-1$ //$NON-NLS-2$
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("File not found", 
+					"File not found", "Could not find file to open:\n\n" + path);  
 			mess.schedule();
 		}
-		return null;
 	}
+	
 }
