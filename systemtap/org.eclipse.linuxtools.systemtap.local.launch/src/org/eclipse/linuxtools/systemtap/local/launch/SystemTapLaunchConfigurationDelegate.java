@@ -31,6 +31,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
 import org.eclipse.linuxtools.systemtap.local.callgraph.SystemTapCommandParser;
@@ -369,23 +370,35 @@ public class SystemTapLaunchConfigurationDelegate extends
 			IDocument doc = console.getDocument();
 			
 			if (binaryCommand.length() > 0)
-				doc.set( Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
-					+ configName + PluginConstants.NEW_LINE +
-					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
-					 + binaryCommand + PluginConstants.NEW_LINE +
-					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
-					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
-					 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
-					 + PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
-					 + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
-					 doc.get()); 
-			else
-				doc.set( Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+				try {
+					doc.replace(doc.getLength(), 0, 
+						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE
+						+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
+						+ PluginConstants.NEW_LINE 
+						+ Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
 						+ configName + PluginConstants.NEW_LINE +
-						 Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
-						 PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
-						 PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
-						 doc.get()); //$NON-NLS-1$				
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
+						+ binaryCommand + PluginConstants.NEW_LINE +
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
+						);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			else
+				try {
+					doc.replace(doc.getLength(), 0,
+						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +
+						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
+						PluginConstants.NEW_LINE + 
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
+						+ configName + PluginConstants.NEW_LINE +
+						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
+						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
 			
 			return Status.OK_STATUS;
 		}
