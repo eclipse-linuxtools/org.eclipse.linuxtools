@@ -245,10 +245,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
 			
-			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
-					((TextConsole)Helper.getConsoleByName(config.getName())), config.getName(),
-					binaryArguments);
-			dw.schedule();
+
 			//TODO: join never finishes when this method is run as a test case
 			//make sure that removing it won't cause any corruption/timing issues
 //			dw.join();
@@ -263,7 +260,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 				}
 			}
 			Thread.sleep(100);
-			
+			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
+					((TextConsole)Helper.getConsoleByName(config.getName())), config.getName(),
+					binaryArguments);
+			dw.schedule();
 			//SIGNAL THE PROCESS TO FINISH
 			if (stapCmdPar != null)
 				stapCmdPar.setProcessFinished(true);
