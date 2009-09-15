@@ -101,25 +101,5 @@ public class ConfigurationTest extends TestCase{
 	}
 	
 	
-	public void checkScript(SystemTapLaunchShortcut launch) {
-		//Check that script is set properly
-		File f = new File (launch.getScriptPath());
-		if (!f.exists())
-			fail();
-	}
-	
-	public void checkLaunchConfiguration(String checkString, SystemTapLaunchShortcut launch) {
-		//Check that the configuration was properly set
-		ILaunchConfiguration config = launch.getConfig();
-		SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
-		try {
-			del.launch(config, "profile", null, null);
-			assertEquals(del.getCommand(), checkString);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	
 }
