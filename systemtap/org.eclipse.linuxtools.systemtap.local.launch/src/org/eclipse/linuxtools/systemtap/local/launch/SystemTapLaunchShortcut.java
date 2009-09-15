@@ -579,12 +579,10 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	
 	private boolean confirmProbeAll(int num) {
 		
-		return !MessageDialog.openConfirm(new Shell(), Messages.getString("SystemTapLaunchShortcut.15"),  //$NON-NLS-1$
-				Messages.getString("SystemTapLaunchShortcut.16") + num + Messages.getString("SystemTapLaunchShortcut.17") + //$NON-NLS-1$ //$NON-NLS-2$
-				Messages.getString("SystemTapLaunchShortcut.18") + num + Messages.getString("SystemTapLaunchShortcut.19") + //$NON-NLS-1$ //$NON-NLS-2$
-				Messages.getString("SystemTapLaunchShortcut.20") + 2*num + Messages.getString("SystemTapLaunchShortcut.21") + //$NON-NLS-1$ //$NON-NLS-2$
-				Messages.getString("SystemTapLaunchShortcut.22") + //$NON-NLS-1$
-				Messages.getString("SystemTapLaunchShortcut.23"));		 //$NON-NLS-1$
+		return !MessageDialog
+				.openConfirm(new Shell(),
+						Messages.getString("SystemTapLaunchShortcut.15"), //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchShortcut.1") + num + Messages.getString("SystemTapLaunchShortcut.2")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	
