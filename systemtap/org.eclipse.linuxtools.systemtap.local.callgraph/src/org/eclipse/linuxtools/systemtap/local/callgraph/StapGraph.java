@@ -415,7 +415,6 @@ public class StapGraph extends Graph {
 		
 		//-------------Draw nodes
 		for (Entry<String, Long> ent : sortedValues) {
-			if (!ent.getKey().equals("init")) { //$NON-NLS-1$
 
 				GraphNode n = new GraphNode(this.getGraphModel(),SWT.NONE);
 				aggregateNodes.add(n);
@@ -449,7 +448,6 @@ public class StapGraph extends Graph {
 						+ Messages.getString("StapGraph.1") + aggregateCount.get(ent.getKey())		 //$NON-NLS-1$
 				));
 				n.setBorderWidth(2);
-			}
 		}
 		
 		//Set layout to gridlayout
