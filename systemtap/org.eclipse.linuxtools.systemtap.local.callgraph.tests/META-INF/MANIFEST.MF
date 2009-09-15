@@ -11,5 +11,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: junit.framework,
  org.eclipse.debug.core,
- org.eclipse.linuxtools.systemtap.local.core,
- org.eclipse.linuxtools.systemtap.local.launch
+ org.eclipse.linuxtools.systemtap.local.core
