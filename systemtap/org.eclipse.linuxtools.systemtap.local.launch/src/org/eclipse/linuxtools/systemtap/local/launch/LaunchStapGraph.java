@@ -88,6 +88,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 		try {
 			String scriptContents = generateScript(null);
+			if (scriptContents == null || scriptContents.length() < 0)
+				return;
 			 
 			config = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
@@ -233,7 +235,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		scriptContents += writeGlobalVariables();
 //		scriptContents += writeStapMarkers();
 		String funcs = writeFunctionListToScript(resourceToSearchFor, exclusions);
-		if (funcs == null)
+		if (funcs == null || funcs.length() < 0)
 			return null;
 		scriptContents += funcs;
 		scriptContents += writeFromPartialScript(bin.getCProject().getElementName());

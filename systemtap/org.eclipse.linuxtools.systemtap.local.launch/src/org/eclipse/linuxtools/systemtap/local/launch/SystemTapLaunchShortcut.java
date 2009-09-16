@@ -478,7 +478,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 
 				Object[] unitList = chooseUnit(list, numberOfFiles); 
 				if (unitList == null || unitList.length == 0) {
-					return ""; //$NON-NLS-1$
+					return null; //$NON-NLS-1$
 				} else if (unitList.length == 1 && unitList[0].toString().equals(USER_SELECTED_ALL)) {
 					funcs = "*"; //$NON-NLS-1$
 					return funcs;					
@@ -521,7 +521,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	    dialog.setMessage(Messages.getString("SystemTapLaunchShortcut.9")); //$NON-NLS-1$
 	    dialog.setInput(list);
 	    dialog.setHelpAvailable(false);
-	    dialog.setStatusLineAboveButtons(true);
+	    dialog.setStatusLineAboveButtons(false);
 	    dialog.setEmptyListMessage(Messages.getString("SystemTapLaunchShortcut.10")); //$NON-NLS-1$
 	    dialog.setContainerMode(true);
 

@@ -15,15 +15,19 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.launch;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
+import org.eclipse.ui.internal.MessageLine;
 
 /**
  * A class to select elements out of a tree structure.
@@ -50,6 +54,35 @@ public class RuledTreeDialogSelectionDialog extends CheckedTreeSelectionDialog {
         GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
         gridData.horizontalSpan = 2;
         line.setLayoutData(gridData);
+
+        return composite;
+    }
+    
+
+    /*
+     * @see Dialog#createButtonBar(Composite)
+     */
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        Font font = parent.getFont();
+        Composite composite = new Composite(parent, SWT.NULL);
+        GridLayout layout = new GridLayout();
+
+        layout.marginHeight = 0;
+        layout.marginLeft = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
+        layout.marginWidth = 0;
+        composite.setLayout(layout);
+        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        composite.setFont(font);
+
+		/*
+		 * Create the rest of the button bar, but tell it not to
+		 * create a help button (we've already created it).
+		 */
+		boolean helpAvailable = isHelpAvailable();
+		setHelpAvailable(false);
+		super.createButtonBar(composite);
+		setHelpAvailable(helpAvailable);
         return composite;
     }
 }
