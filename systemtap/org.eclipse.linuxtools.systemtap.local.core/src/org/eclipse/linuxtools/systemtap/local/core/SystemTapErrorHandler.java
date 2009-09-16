@@ -35,7 +35,7 @@ public class SystemTapErrorHandler {
 	public static final int MAX_LOG_SIZE = 50000;
 	private boolean errorRecognized;
 	private String errorMessage = ""; //$NON-NLS-1$
-	private String logContents;
+	private StringBuilder logContents;
 	private boolean mismatchedProbePoints;
 	ArrayList<String> functions = new ArrayList<String>();
 	
@@ -54,9 +54,15 @@ public class SystemTapErrorHandler {
 	
  
 	public SystemTapErrorHandler() {
+		mismatchedProbePoints = false;
 		errorRecognized = false;
-		errorMessage = ""; //$NON-NLS-1$
-		logContents = ""; //$NON-NLS-1$
+		if (errorMessage.length() < 1) {
+			errorMessage = 
+				Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.ErrorMessage1"); //$NON-NLS-1$
+		}
+		
+		logContents = new StringBuilder(); //$NON-NLS-1$
 	}
 
 	
@@ -68,53 +74,72 @@ public class SystemTapErrorHandler {
 	 * 
 	 * @param doc
 	 */
-	public void handle (String message){		
-		mismatchedProbePoints = false;
-		if (errorMessage.length() < 1) {
-			errorMessage = 
-				Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
-				Messages.getString("SystemTapErrorHandler.ErrorMessage1"); //$NON-NLS-1$
-		}
-		
+	public void handle (String errors){	
+		String[] blah = errors.split("ASDFG");
+
 		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
 		File file = new File(PluginConstants.PLUGIN_LOCATION+FILE_PROP);
 		try {
 			BufferedReader buff = new BufferedReader (new FileReader(file));
 			String line;
 			int index;
-			boolean firstLine = true; //Keep the error about mismatched probe points first
-			while ((line = buff.readLine()) != null){
-				index = line.indexOf('=');
-				String matchString = line.substring(0, index);
-				Pattern pat = Pattern.compile(matchString, Pattern.DOTALL);
-				Matcher matcher = pat.matcher(message);
-
-				
-				if (matcher.matches()) {
-					if (!isErrorRecognized()) {
-						errorMessage+=Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
-						setErrorRecognized(true);
+			
+			for (String message : blah) {
+				boolean firstLine = true; //Keep the error about mismatched probe points first
+				buff = new BufferedReader (new FileReader(file));
+				while ((line = buff.readLine()) != null){
+					index = line.indexOf('=');
+					String matchString = line.substring(0, index);
+					Pattern pat = Pattern.compile(matchString, Pattern.DOTALL);
+					Matcher matcher = pat.matcher(message);
+	
+					
+					if (matcher.matches()) {
+						if (!isErrorRecognized()) {
+							errorMessage+=Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
+							setErrorRecognized(true);
+						}
+							
+						errorMessage+=line.substring(index+1) 
+						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
+					
+						if (firstLine) {
+							findFunctions(message, pat);
+							mismatchedProbePoints = true;
+						}
+						break;
 					}
-						
-					errorMessage+=line.substring(index+1) 
-					+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
-				
-					if (firstLine) {
-						functions.clear();
-						findFunctions(message, pat);
-						mismatchedProbePoints = true;
-					}
+					firstLine = false;
 				}
-				firstLine = false;
+				buff.close();
 			}
 			
-			logContents += message;
+			logContents.append(errors);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	public void handle (FileReader f) throws IOException {
+		BufferedReader br = new BufferedReader (f);
+		
+		String line;
+		StringBuilder builder = new StringBuilder();
+		int counter = 0;
+		while ( (line = br.readLine()) != null) {
+			counter++;
+			builder.append(line);
+			builder.append("ASDFG");
+			if (counter == 300) {
+				handle(builder.toString());
+				builder = new StringBuilder();
+				counter = 0;
+			}
+		}
 	}
 
 	/**
@@ -135,6 +160,7 @@ public class SystemTapErrorHandler {
 			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp";
 			String line;
 			boolean skip = false;
+			int counter = 0;
 			File file = new File(fileLocation);
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
@@ -142,6 +168,8 @@ public class SystemTapErrorHandler {
 					skip =  false;
 					for (String func : functions){
 						if (line.contains("function(\"" + func + "\").call")){
+							counter++;
+							System.out.println("Fixed " + counter);
 							skip = true;
 							buff.readLine();
 							buff.readLine();
@@ -219,7 +247,7 @@ public class SystemTapErrorHandler {
 			e.printStackTrace();
 		}
 		
-		logContents = ""; //$NON-NLS-1$
+		logContents = new StringBuilder(); //$NON-NLS-1$
 	}
 
 	/**
@@ -257,7 +285,6 @@ public class SystemTapErrorHandler {
 			if (pat.matcher(s).matches()) {
 				int lastQuote = s.lastIndexOf('"');
 				int secondLastQuote = s.lastIndexOf('"', lastQuote - 1);
-//				System.out.println(s.substring(secondLastQuote+1, lastQuote));
 				result = s.substring(secondLastQuote+1, lastQuote);
 				if (!functions.contains(result))
 					functions.add(result);

@@ -109,5 +109,34 @@ public class Helper {
 		} 
 		return null;
 	}
+	
+	private static BufferedWriter bw;
+	
+	public static void setBufferedWriter(String absoluteFilePath) {
+		try {
+			File f = new File(absoluteFilePath);
+			f.delete();
+			f.createNewFile();
+			FileWriter fstream;
+			fstream = new FileWriter(absoluteFilePath, true);
+			bw = new BufferedWriter(fstream);
+		} catch (Exception e) {
+			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
+			err.schedule();
+			e.printStackTrace();
+		}
+	}
+	
+	public static void appendToExistingFile(String content) throws IOException {
+		bw.append(content);
+	}
+	
+	public static void closeBufferedWriter() throws IOException {
+		bw.close();
+	}
+	
+	
 }
  
