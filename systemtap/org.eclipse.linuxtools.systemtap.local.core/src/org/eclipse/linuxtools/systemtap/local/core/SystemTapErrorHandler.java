@@ -140,27 +140,27 @@ public class SystemTapErrorHandler {
 			StringBuffer resultFileContent = new StringBuffer();
 			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp";
 			String line;
-			boolean isBadFunction = false;
-			
+			boolean skip = false;
 			File file = new File(fileLocation);
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
 				while ((line = buff.readLine()) != null){
-					isBadFunction = false;
-					
+					skip =  false;
 					for (String func : functions){
-						if (line.contains(func)){
-							isBadFunction = true;
+						if (line.contains("function(\"" + func + "\").call")){
+							skip = true;
 							buff.readLine();
 							buff.readLine();
+							buff.readLine();
+							buff.readLine();
+							buff.readLine();
+							break;
 						}
 					}
 					
-					if (!isBadFunction){
-						if (!line.equals("\n")){							
-							resultFileContent.append(line);
-							resultFileContent.append("\n");
-						}
+					if (!skip && !line.equals("\n")){							
+						resultFileContent.append(line);
+						resultFileContent.append("\n");
 					}
 				}
 				
