@@ -563,11 +563,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 				if ( output.size() >= numberOfValidFiles) {
 					output.clear();
 					output.add(USER_SELECTED_ALL);
-				} else if (output.size() > 10 && numberOfValidFiles > 300) {
-					if (confirmProbeAll(output.size())) {
-						output.clear();
-						output.add(USER_SELECTED_ALL);
-					}
 				}
 			} catch (CModelException e) {
 				e.printStackTrace();
@@ -576,15 +571,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			return output.toArray();
 		}
 		return null;
-	}
-
-	
-	private boolean confirmProbeAll(int num) {
-		
-		return !MessageDialog
-				.openConfirm(new Shell(),
-						Messages.getString("SystemTapLaunchShortcut.15"), //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchShortcut.1") + num + Messages.getString("SystemTapLaunchShortcut.2")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	
