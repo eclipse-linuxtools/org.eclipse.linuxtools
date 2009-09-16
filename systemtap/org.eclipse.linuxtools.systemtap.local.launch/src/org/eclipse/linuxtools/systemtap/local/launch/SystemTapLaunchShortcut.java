@@ -514,7 +514,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	protected Object[] chooseUnit(List<ICContainer> list, int numberOfValidFiles) {		
 		ListTreeContentProvider prov = new ListTreeContentProvider();
 		
-	    RuledTreeDialogSelectionDialog dialog = new RuledTreeDialogSelectionDialog(getActiveWorkbenchShell(), 
+	    RuledTreeSelectionDialog dialog = new RuledTreeSelectionDialog(getActiveWorkbenchShell(), 
 	    		new WorkbenchLabelProvider(), prov);
 
 	    dialog.setTitle(Messages.getString("SystemTapLaunchShortcut.8")); //$NON-NLS-1$

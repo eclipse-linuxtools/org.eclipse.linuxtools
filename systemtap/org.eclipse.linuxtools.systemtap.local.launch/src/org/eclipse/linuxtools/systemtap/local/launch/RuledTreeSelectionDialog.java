@@ -92,18 +92,4 @@ public class RuledTreeSelectionDialog extends CheckedTreeSelectionDialog {
 		setHelpAvailable(helpAvailable);
         return composite;
     }
-    
-    @Override
-	protected Label createMessageArea(Composite composite) {
-		Label label = new Label(composite, SWT.NONE);
-		if (this.getMessage() != null) {
-			label.setText(this.getMessage());
-		}
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.verticalIndent=10;
-		label.setLayoutData(gd);
-		
-		label.setFont(composite.getFont());
-		return label;
-	}
 }
