@@ -12,9 +12,11 @@
 package org.eclipse.linuxtools.systemtap.local.core;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -132,8 +134,51 @@ public class SystemTapErrorHandler {
 				errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
 		mes.schedule();
 		
-		
 		writeToLog();
+		
+		if (mismatchedProbePoints){
+			StringBuffer resultFileContent = new StringBuffer();
+			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp";
+			String line;
+			boolean isBadFunction = false;
+			
+			File file = new File(fileLocation);
+			try {
+				BufferedReader buff = new BufferedReader(new FileReader(file));
+				while ((line = buff.readLine()) != null){
+					isBadFunction = false;
+					
+					for (String func : functions){
+						if (line.contains(func)){
+							isBadFunction = true;
+							buff.readLine();
+							buff.readLine();
+						}
+					}
+					
+					if (!isBadFunction){
+						if (!line.equals("\n")){							
+							resultFileContent.append(line);
+							resultFileContent.append("\n");
+						}
+					}
+				}
+				
+				buff.close();
+				
+				BufferedWriter wbuff= new BufferedWriter(new FileWriter(file));
+				wbuff.write(resultFileContent.toString());
+				wbuff.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
 	}
 	
 	
@@ -207,13 +252,15 @@ public class SystemTapErrorHandler {
 	
 	public void findFunctions(String message, Pattern pat) {
 		String[] list = message.split("\n");
+		String result;
 		for (String s : list) {
 			if (pat.matcher(s).matches()) {
 				int lastQuote = s.lastIndexOf('"');
 				int secondLastQuote = s.lastIndexOf('"', lastQuote - 1);
-				System.out.println(s.substring(secondLastQuote, lastQuote));
-				if (!functions.contains(s))
-					functions.add(s);
+//				System.out.println(s.substring(secondLastQuote+1, lastQuote));
+				result = s.substring(secondLastQuote+1, lastQuote);
+				if (!functions.contains(result))
+					functions.add(result);
 			}
 		}
 	}

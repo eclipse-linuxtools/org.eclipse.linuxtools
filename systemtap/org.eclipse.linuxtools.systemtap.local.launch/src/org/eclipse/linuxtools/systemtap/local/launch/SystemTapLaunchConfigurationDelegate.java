@@ -384,11 +384,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 					ArrayList<String> excludedFunctions = errorHandler.getFunctions();
 					//TODO: Delete 5 lines every time you encounter one of the excluded functions
 					
-					
+					errorHandler.finishHandling();
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
-				errorHandler.finishHandling();
 					
 				return;
 			}
