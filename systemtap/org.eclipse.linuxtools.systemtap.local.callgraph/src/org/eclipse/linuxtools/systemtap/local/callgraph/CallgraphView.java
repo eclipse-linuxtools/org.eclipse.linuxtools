@@ -305,6 +305,8 @@ public class CallgraphView extends ViewPart {
 	 * initialize it.
 	 */
 	public void createPartControl(Composite parent) {
+		if (masterComposite != null)
+			masterComposite.dispose();
 		masterComposite = parent;
 		this.display = parent.getDisplay();
 		GridLayout layout = new GridLayout(2, false);
