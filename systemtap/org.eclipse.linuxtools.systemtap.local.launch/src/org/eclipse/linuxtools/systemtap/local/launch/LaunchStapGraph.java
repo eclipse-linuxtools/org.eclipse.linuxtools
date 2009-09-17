@@ -63,6 +63,20 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 */
 	
 	private String partialScriptPath;
+	private String funcs;
+	private ArrayList<String> exclusions;
+	private String projectName;
+	
+	public void setProjectName(String val) {
+		projectName = val;
+	}
+	
+	public LaunchStapGraph() {
+		funcs = null;
+		exclusions = new ArrayList<String>();
+		projectName = null;
+	}
+	
 
 	
 	public void launch(IEditorPart ed, String mode) {
@@ -86,27 +100,35 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 				+ "callgraphGen.stp";  //$NON-NLS-1$
 
 		
+		if (projectName == null || projectName.length() < 1)
+			projectName = bin.getCProject().getElementName();
+		
 		try {
-			String scriptContents = generateScript(null);
-			if (scriptContents == null || scriptContents.length() < 0)
-				return;
 			 
 			config = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
 			outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 			
-			
+			if (funcs == null || funcs.length() < 1) {
+				funcs = writeFunctionListToScript(resourceToSearchFor);
+				if (funcs == null || funcs.length() < 0)
+					return;
+			}
+			String scriptContents = generateScript();
+			if (scriptContents == null || scriptContents.length() < 0)
+				return;
 			ILaunchConfigurationWorkingCopy wc;
 			
 			wc = config.getWorkingCopy();
+			wc.setAttribute("MOREDATA_LOL", funcs);
+			wc.setAttribute("PROJECT_NAME_LOL", bin.getCProject().getElementName());
 			wc.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, true);
 //			wc.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
 //					"-DMAXACTION=1000 -DSTP_NO_OVERLOAD -DMAXMAPENTRIES=10000"); 
 			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, scriptContents);
 			wc.doSave();
 			
-
 			finishLaunch(name, mode);
 
 		} catch (IOException e) {
@@ -124,6 +146,10 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		}
 		
 		
+	}
+	
+	public void setFuncs(String val) {
+		funcs = val;
 	}
 	
 	/**
@@ -150,7 +176,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 * @throws IOException
 	 */
-	private String writeFunctionListToScript(String resourceToSearchFor, ArrayList<String> exclusions) throws IOException {
+	private String writeFunctionListToScript(String resourceToSearchFor) throws IOException {
 		String toWrite = getFunctionsFromBinary(bin, resourceToSearchFor);
 		
 		if (toWrite == null || toWrite.length() < 1) {
@@ -161,13 +187,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 		for (String func : toWrite.split(" ")) { //$NON-NLS-1$
 			if (func.length() > 0) {
-				if (exclusions != null) {
-					if (!exclusions.contains(func))
-						output.append(generateProbe(func));
-				}
-				else
+				if (exclusions == null || exclusions.size() < 1 || exclusions.contains(func) ) {					
 					output.append(generateProbe(func));
-						
+				}		
 			}
 		}
 
@@ -202,6 +224,10 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		return toWrite;
 	}
 	
+	
+	public void setExclusions(ArrayList<String> e) {
+		exclusions = e;
+	}
 
 	
 	/**
@@ -221,11 +247,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	}
 	
 	@Override
-	public String generateScript(ArrayList<String> exclusions) throws IOException {
-		boolean exclude = false;
-		if (exclusions != null)
-			if (exclusions.size() > 0)
-				exclude = true;
+	public String generateScript() throws IOException {
 		
 		String scriptContents = "";  //$NON-NLS-1$
 		File scriptFile = new File(scriptPath);
@@ -234,17 +256,20 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 		scriptContents += writeGlobalVariables();
 //		scriptContents += writeStapMarkers();
-		String funcs = writeFunctionListToScript(resourceToSearchFor, exclusions);
-		if (funcs == null || funcs.length() < 0)
-			return null;
+
 		scriptContents += funcs;
-		scriptContents += writeFromPartialScript(bin.getCProject().getElementName());
+		
+		scriptContents += writeFromPartialScript(projectName);
 		
 		BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
 //		bw.write("probe begin { printf(\"HELLO\") }");
 		bw.write(scriptContents);
 		bw.close();
 		return scriptContents;
+	}
+
+	public void setPartialScriptPath(String val) {
+		partialScriptPath = val;
 	}
 	
 //	/**

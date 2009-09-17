@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.systemtap.local.launch;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +30,9 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
@@ -349,9 +352,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 			process.setAttribute(IProcess.ATTR_CMDLINE,
 					cmd);
 			monitor.worked(1);
-			
 			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
 			
+			stringBuff = new StringBuffer();
+			process.getStreamsProxy().getErrorStreamMonitor().addListener(new StreamListener());
+
 
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
@@ -373,14 +378,29 @@ public class SystemTapLaunchConfigurationDelegate extends
 				//Sometimes the console has not been printed to yet, wait for a little while longer
 				if (doc.get().length() < 1)
 					Thread.sleep(300);
-				doc = Helper.getConsoleDocumentByName(config.getName());
 				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
 				errorHandler.handle(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
-						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
-						+ doc.get());
+						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
+				System.out.println("Handling errors");
+				errorHandler.handle(new FileReader(outputPath + "ERROR"));
+				
+				
 				if (errorHandler.hasMismatchedProbePoints() && retry) {
-					errorHandler.finishHandling();
+//					errorHandler.finishHandling();
+					ArrayList<String> exclusions = errorHandler.getFunctions();
+					
+					
+					LaunchStapGraph l = new LaunchStapGraph();
+					l.setExclusions(exclusions);
+					l.scriptPath = config.getAttribute(LaunchConfigurationConstants.SCRIPT_PATH, LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH);
+					l.setFuncs(config.getAttribute("MOREDATA_LOL", ""));
+					l.setProjectName(config.getAttribute("PROJECT_NAME_LOL", ""));
+					l.setPartialScriptPath(PluginConstants.getPluginLocation()
+				+ "parse_function_partial.stp");
+					l.generateScript();
+					
+					
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
@@ -413,5 +433,23 @@ public class SystemTapLaunchConfigurationDelegate extends
 			dw.schedule();
 			monitor.done();
 		}
+	}
+	
+	private StringBuffer stringBuff;
+	
+	private class StreamListener implements IStreamListener{
+		public StreamListener() throws IOException {
+			Helper.setBufferedWriter(outputPath + "ERROR");
+		}
+		@Override
+		public void streamAppended(String text, IStreamMonitor monitor) {
+			try {
+				Helper.appendToExistingFile(text);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
 	}
 }

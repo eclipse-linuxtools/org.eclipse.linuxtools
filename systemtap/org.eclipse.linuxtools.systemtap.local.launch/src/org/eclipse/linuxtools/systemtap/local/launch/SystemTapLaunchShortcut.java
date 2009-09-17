@@ -686,7 +686,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * Function for generating scripts. Should be overriden by interested classes
 	 * @throws IOException 
 	 */
-	public String generateScript(ArrayList<String> exclusions) throws IOException {
+	public String generateScript() throws IOException {
 		return null;
 	}
 	
