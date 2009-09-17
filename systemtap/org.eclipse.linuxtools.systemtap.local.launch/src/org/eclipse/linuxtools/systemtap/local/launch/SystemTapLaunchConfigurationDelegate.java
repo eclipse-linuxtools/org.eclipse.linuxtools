@@ -387,12 +387,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
 				errorHandler.handle(new FileReader(outputPath + "ERROR"));
 				
+				
+				
 				if (errorHandler.hasMismatchedProbePoints() && retry) {
-					errorHandler.finishHandling();
+					errorHandler.finishHandling(s.getNumberOfErrors());
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
-				errorHandler.finishHandling();
+				errorHandler.finishHandling(s.getNumberOfErrors());
 					
 				return;
 			}
@@ -426,15 +428,19 @@ public class SystemTapLaunchConfigurationDelegate extends
 	private StringBuffer stringBuff;
 	
 	private class StreamListener implements IStreamListener{
-		Helper h;
+		private Helper h;
+		private int counter;
 		public StreamListener() throws IOException {
 			h = new Helper();
+			counter = 0;
 			h.setBufferedWriter(outputPath + "ERROR");
 		}
 		@Override
 		public void streamAppended(String text, IStreamMonitor monitor) {
 			try {
-				h.appendToExistingFile(text);
+				counter++;
+				if (counter < 300)
+					h.appendToExistingFile(text);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -443,6 +449,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		public void close() throws IOException {
 			h.closeBufferedWriter();
+		}
+		
+		public int getNumberOfErrors() {
+			return counter;
 		}
 	}
 }

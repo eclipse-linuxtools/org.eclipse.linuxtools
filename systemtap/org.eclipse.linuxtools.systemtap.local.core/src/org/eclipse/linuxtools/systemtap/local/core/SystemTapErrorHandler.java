@@ -149,7 +149,7 @@ public class SystemTapErrorHandler {
 	 * Creates the error pop-up message and writes to log.
 	 * 
 	 */
-	public void finishHandling() {
+	public void finishHandling(int numberOfErrors) {
 		if (!isErrorRecognized()) {
 			errorMessage+=Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
 					Messages.getString("SystemTapErrorHandler.5"); //$NON-NLS-1$
@@ -158,6 +158,12 @@ public class SystemTapErrorHandler {
 		writeToLog();
 		
 		if (mismatchedProbePoints){
+			if (numberOfErrors > 300) {
+				errorMessage+=PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
+				+ "WARNING: Detected " + numberOfErrors +" errors. Attempting to relaunch, but this " +
+				"may be quite slow. Try relaunching with a different selection of files.";
+			}
+			
 			StringBuffer resultFileContent = new StringBuffer();
 			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp";
 			String line;

@@ -33,18 +33,20 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
@@ -621,43 +623,21 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 */
 	public static ArrayList<String> getAllFunctions(ICProject project, Object [] listOfFiles){
 		long val = System.currentTimeMillis();
-		ArrayList<String> functionList = new ArrayList<String>();
-		IIndexManager manager = CCorePlugin.getIndexManager();
-		IIndex index = null;
 		
 		try {
-			index = manager.getIndex(project);
-			index.acquireReadLock();
+			GetFunctionsJob j = new GetFunctionsJob("SEEKING", project, listOfFiles);
+			j.schedule();
+			j.join();
+			ArrayList<String> functionList = j.getFunctionList();
 			
-			IIndexFile[] blah = index.getAllFiles();
-			for (IIndexFile file : blah) {
-				String fullFilePath = file.getLocation().getFullPath();
-				if (fullFilePath == null || !specialContains(listOfFiles, fullFilePath)) {
-					continue;
-				}
-
-				IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
-				for (IIndexName name : indexNamesArray) {
-					if (name.isDefinition() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
-							IIndexBinding binder = index.findBinding(name);
-							if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
-									functionList.add(binder.getName());					
-							}
-					}
-				}
-				
-			}
-			
-		} catch (CoreException e) {
-			e.printStackTrace();
+			System.out.println("TOTAL FUNCTIONS : "+ functionList.size()); //$NON-NLS-1$
+			System.out.println("TIME : "+(System.currentTimeMillis() - val)); //$NON-NLS-1$
+			return functionList;
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		index.releaseReadLock();
-		System.out.println("TOTAL FUNCTIONS : "+ functionList.size()); //$NON-NLS-1$
-		System.out.println("TIME : "+(System.currentTimeMillis() - val)); //$NON-NLS-1$
-		return functionList;
+		return null;
 	}
 	
 	private static boolean specialContains (Object [] list, String input){
@@ -696,5 +676,61 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 
 	public void setBinary(IBinary val) {
 		this.bin = val;
+	}
+	
+	
+	private static class GetFunctionsJob extends Job {
+		private ArrayList<String> functionList;
+		private ICProject project;
+		private Object[] listOfFiles;
+
+		public GetFunctionsJob(String name, ICProject p, Object[] o) {
+			super(name);
+			functionList = new ArrayList<String>();
+			listOfFiles = o;
+			project = p;
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			IIndexManager manager = CCorePlugin.getIndexManager();
+			IIndex index = null;
+			
+			try {
+				index = manager.getIndex(project);
+				index.acquireReadLock();
+				
+				IIndexFile[] blah = index.getAllFiles();
+				for (IIndexFile file : blah) {
+					String fullFilePath = file.getLocation().getFullPath();
+					if (fullFilePath == null || !specialContains(listOfFiles, fullFilePath)) {
+						continue;
+					}
+
+					IIndexName[] indexNamesArray = file.findNames(0, Integer.MAX_VALUE);
+					for (IIndexName name : indexNamesArray) {
+						if (name.isDefinition() && specialContains(listOfFiles, name.getFile().getLocation().getFullPath())) {
+								IIndexBinding binder = index.findBinding(name);
+								if (binder instanceof IFunction && !functionList.contains(binder.getName())) {
+										functionList.add(binder.getName());					
+								}
+						}
+					}
+					
+				}
+				
+			} catch (CoreException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			index.releaseReadLock();
+			return Status.OK_STATUS;
+		}
+		
+		public ArrayList<String> getFunctionList() {
+			return functionList;
+		}
 	}
 }
