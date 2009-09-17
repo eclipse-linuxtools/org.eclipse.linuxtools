@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,svn+ssh://cwang@dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.local-feature,org.eclipse.linuxtools.systemtap.local-feature"/>
+<project reference="0.9.3,svn+ssh://cwang@dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.local.callgraph,org.eclipse.linuxtools.systemtap.local.callgraph"/>
+<project reference="0.9.3,svn+ssh://cwang@dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.local.callgraph.tests,org.eclipse.linuxtools.systemtap.local.callgraph.tests"/>
+<project reference="0.9.3,svn+ssh://cwang@dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.local.core,org.eclipse.linuxtools.systemtap.local.core"/>
+<project reference="0.9.3,svn+ssh://cwang@dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.local.launch,org.eclipse.linuxtools.systemtap.local.launch"/>
+<project reference="0.9.3,svn+ssh://cwang@dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.local.launch.tests,org.eclipse.linuxtools.systemtap.local.launch.tests"/>
+<project reference="0.9.3,svn+ssh://cwang@dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/trunk/org.eclipse.linuxtools.systemtap.local.tests-feature,org.eclipse.linuxtools.systemtap.local.tests-feature"/>
+</provider>
+</psf>
