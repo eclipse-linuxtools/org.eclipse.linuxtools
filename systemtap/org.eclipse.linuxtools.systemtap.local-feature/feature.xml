@@ -2,7 +2,8 @@
 <feature
       id="org.eclipse.linuxtools.systemtap.local"
       label="%featureName"
-      version="0.0.1.qualifier">
+      version="0.0.1.qualifier"
+      provider-name="%featureProvider">
 
    <description>
       %description
