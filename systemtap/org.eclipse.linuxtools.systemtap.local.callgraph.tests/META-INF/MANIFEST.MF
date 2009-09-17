@@ -6,9 +6,9 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.callgraph.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtap.local.graphing;bundle-version="0.0.1"
+ org.eclipse.linuxtools.systemtap.local.graphing;bundle-version="0.0.1",
+ org.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: junit.framework,
- org.eclipse.debug.core,
+Import-Package: org.eclipse.debug.core,
  org.eclipse.linuxtools.systemtap.local.core
