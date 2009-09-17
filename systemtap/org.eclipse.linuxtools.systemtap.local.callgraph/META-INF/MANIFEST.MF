@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Graphing Plug-in
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.graphing;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.callgraph;singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.callgraph.Activator
 Require-Bundle: org.eclipse.ui,

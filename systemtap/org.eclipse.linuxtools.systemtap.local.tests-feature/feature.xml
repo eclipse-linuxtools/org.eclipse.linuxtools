@@ -20,7 +20,7 @@
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.linuxtools.systemtap.local.graphing" version="0.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.linuxtools.systemtap.local.callgraph" version="0.0.1" match="greaterOrEqual"/>
       <import plugin="org.junit4"/>
       <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.linuxtools.systemtap.local.core"/>
