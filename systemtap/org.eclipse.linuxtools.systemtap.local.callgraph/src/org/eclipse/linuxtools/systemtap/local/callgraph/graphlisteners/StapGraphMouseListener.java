@@ -46,7 +46,7 @@ public class StapGraphMouseListener implements MouseListener {
 				if (node == null)
 					return;
 				
-				String functionName = (String) node.getData("AGGREGATE_NAME");
+				String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
 				FileFinderOpener.findAndOpen(graph.getProject(), functionName);
 			} else {
 				StapNode node = getNodeFromSelection();

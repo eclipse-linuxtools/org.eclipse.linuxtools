@@ -421,7 +421,7 @@ public class StapGraph extends Graph {
 				n.setText(ent.getKey() + "\n"  //$NON-NLS-1$
 						+ num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$
 						+ aggregateCount.get(ent.getKey()) + "\n") ; //$NON-NLS-1$
-				n.setData("AGGREGATE_NAME", ent.getKey());
+				n.setData("AGGREGATE_NAME", ent.getKey()); //$NON-NLS-1$
 				
 				
 				primary = (int)(percentage_count * colorLevels * colorLevelDifference);
