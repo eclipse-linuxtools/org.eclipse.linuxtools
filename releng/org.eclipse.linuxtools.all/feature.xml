@@ -65,4 +65,8 @@
          id="org.eclipse.linuxtools.cdt.libhover.newlib"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.linuxtools.systemtap.local"
+         version="0.0.0"/>
+
 </feature>
