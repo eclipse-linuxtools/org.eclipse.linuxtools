@@ -169,13 +169,15 @@ public class SystemTapErrorHandler {
 				+ Messages.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors +Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
 				Messages.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
 				Messages.getString("SystemTapErrorHandler.TooManyErrors4"); //$NON-NLS-1$
+				SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
+						Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
+						Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
+						errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
+				mes.schedule();
+				m.setCanceled(true);
+				return;
 			}
 			
-			SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-					Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
-					Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
-					errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
-			mes.schedule();
 			
 			StringBuffer resultFileContent = new StringBuffer();
 			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp"; //$NON-NLS-1$
