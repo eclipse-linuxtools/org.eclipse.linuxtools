@@ -164,7 +164,7 @@ public class SystemTapErrorHandler {
 		writeToLog();
 		
 		if (mismatchedProbePoints){
-			if (numberOfErrors > 300) {
+			if (numberOfErrors > PluginConstants.MAX_ERRORS) {
 				errorMessage = PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
 				+ Messages.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors +Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
 				Messages.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$

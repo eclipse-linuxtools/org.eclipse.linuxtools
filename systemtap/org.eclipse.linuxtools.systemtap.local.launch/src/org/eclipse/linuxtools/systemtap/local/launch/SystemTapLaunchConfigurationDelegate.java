@@ -439,7 +439,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		public void streamAppended(String text, IStreamMonitor monitor) {
 			try {
 				counter++;
-				if (counter < 300)
+				if (counter < PluginConstants.MAX_ERRORS)
 					h.appendToExistingFile(text);
 			} catch (IOException e) {
 				e.printStackTrace();
