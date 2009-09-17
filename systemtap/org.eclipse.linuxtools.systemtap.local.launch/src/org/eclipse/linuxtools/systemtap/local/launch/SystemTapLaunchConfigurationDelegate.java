@@ -354,7 +354,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 			monitor.worked(1);
 			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
 			
-			stringBuff = new StringBuffer();
 			StreamListener s = new StreamListener();
 			process.getStreamsProxy().getErrorStreamMonitor().addListener(s);
 			
@@ -382,19 +381,22 @@ public class SystemTapLaunchConfigurationDelegate extends
 				if (doc.get().length() < 1)
 					Thread.sleep(300);
 				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-				errorHandler.handle(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
+				errorHandler.handle(monitor, config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				errorHandler.handle(new FileReader(outputPath + "ERROR"));
-				
+				errorHandler.handle(monitor, new FileReader(outputPath + "ERROR"));
+				if (monitor != null && monitor.isCanceled())
+					return;
 				
 				
 				if (errorHandler.hasMismatchedProbePoints() && retry) {
-					errorHandler.finishHandling(s.getNumberOfErrors());
+					errorHandler.finishHandling(monitor, s.getNumberOfErrors());
+					if (monitor != null && monitor.isCanceled())
+						return;
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
-				errorHandler.finishHandling(s.getNumberOfErrors());
+				errorHandler.finishHandling(monitor, s.getNumberOfErrors());
 					
 				return;
 			}
@@ -424,9 +426,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			monitor.done();
 		}
 	}
-	
-	private StringBuffer stringBuff;
-	
+		
 	private class StreamListener implements IStreamListener{
 		private Helper h;
 		private int counter;

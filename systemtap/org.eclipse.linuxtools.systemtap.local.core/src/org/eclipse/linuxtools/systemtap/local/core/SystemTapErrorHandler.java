@@ -24,6 +24,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 /**
  * Helper class parses the given string for recognizable error messages 
  *
@@ -74,7 +76,7 @@ public class SystemTapErrorHandler {
 	 * 
 	 * @param doc
 	 */
-	public void handle (String errors){	
+	public void handle (IProgressMonitor m, String errors){	
 		String[] blah = errors.split("\n");
 
 		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
@@ -88,6 +90,8 @@ public class SystemTapErrorHandler {
 				boolean firstLine = true; //Keep the error about mismatched probe points first
 				buff = new BufferedReader (new FileReader(file));
 				while ((line = buff.readLine()) != null){
+					if (m != null && m.isCanceled())
+						return;
 					index = line.indexOf('=');
 					String matchString = line.substring(0, index);
 					Pattern pat = Pattern.compile(matchString, Pattern.DOTALL);
@@ -104,7 +108,7 @@ public class SystemTapErrorHandler {
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
 					
 						if (firstLine) {
-							findFunctions(message, pat);
+							findFunctions(m, message, pat);
 							mismatchedProbePoints = true;
 						}
 						break;
@@ -124,7 +128,7 @@ public class SystemTapErrorHandler {
 	}
 	
 	
-	public void handle (FileReader f) throws IOException {
+	public void handle (IProgressMonitor m, FileReader f) throws IOException {
 		BufferedReader br = new BufferedReader (f);
 		
 		String line;
@@ -134,13 +138,15 @@ public class SystemTapErrorHandler {
 			counter++;
 			builder.append(line);
 			builder.append("\n");
+			if (m != null && m.isCanceled())
+				return;
 			if (counter == 300) {
-				handle(builder.toString());
+				handle(m, builder.toString());
 				builder = new StringBuilder();
 				counter = 0;
 			}
 		}
-		handle(builder.toString());
+		handle(m, builder.toString());
 
 	}
 
@@ -149,7 +155,7 @@ public class SystemTapErrorHandler {
 	 * Creates the error pop-up message and writes to log.
 	 * 
 	 */
-	public void finishHandling(int numberOfErrors) {
+	public void finishHandling(IProgressMonitor m, int numberOfErrors) {
 		if (!isErrorRecognized()) {
 			errorMessage+=Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
 					Messages.getString("SystemTapErrorHandler.5"); //$NON-NLS-1$
@@ -172,6 +178,8 @@ public class SystemTapErrorHandler {
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
 				while ((line = buff.readLine()) != null){
+					if (m != null && m.isCanceled())
+						return;
 					skip =  false;
 					for (String func : functions){
 						if (line.contains("function(\"" + func + "\").call")){
@@ -278,10 +286,12 @@ public class SystemTapErrorHandler {
 	}
 	
 	
-	public void findFunctions(String message, Pattern pat) {
+	public void findFunctions(IProgressMonitor m, String message, Pattern pat) {
 		String[] list = message.split("\n");
 		String result;
 		for (String s : list) {
+			if (m.isCanceled())
+				return;
 			if (pat.matcher(s).matches()) {
 				int lastQuote = s.lastIndexOf('"');
 				int secondLastQuote = s.lastIndexOf('"', lastQuote - 1);
