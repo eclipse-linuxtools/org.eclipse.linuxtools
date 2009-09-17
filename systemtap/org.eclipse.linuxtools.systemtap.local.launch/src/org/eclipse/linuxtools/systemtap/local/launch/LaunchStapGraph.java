@@ -159,13 +159,13 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 */
 	private String generateProbe(String function) {
 		String output = "probe process(@1).function(\"" +  //$NON-NLS-1$
-				        function + "\").call{\n" +  //$NON-NLS-1$
-				        "\tcallFunction(probefunc())\n" +  //$NON-NLS-1$
-						"}\n" +  //$NON-NLS-1$
+				        function + "\").call{" +  //$NON-NLS-1$
+				        "\tcallFunction(probefunc())\t" +  //$NON-NLS-1$
+						"}\t" +  //$NON-NLS-1$
 						"probe process(@1).function(\"" +  //$NON-NLS-1$
-				        function + "\").return{\n" +  //$NON-NLS-1$
-				        "\treturnFunction(probefunc())\n" +  //$NON-NLS-1$
-						"}\n\n";  //$NON-NLS-1$
+				        function + "\").return{\t" +  //$NON-NLS-1$
+				        "\treturnFunction(probefunc())\t" +  //$NON-NLS-1$
+						"}\n";  //$NON-NLS-1$
 		return output;
 	}
 	

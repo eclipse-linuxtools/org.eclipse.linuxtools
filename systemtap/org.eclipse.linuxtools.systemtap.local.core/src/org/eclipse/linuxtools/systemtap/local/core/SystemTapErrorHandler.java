@@ -171,11 +171,6 @@ public class SystemTapErrorHandler {
 							counter++;
 							System.out.println("Fixed " + counter);
 							skip = true;
-							buff.readLine();
-							buff.readLine();
-							buff.readLine();
-							buff.readLine();
-							buff.readLine();
 							break;
 						}
 					}
