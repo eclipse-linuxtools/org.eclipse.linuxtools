@@ -165,10 +165,17 @@ public class SystemTapErrorHandler {
 		
 		if (mismatchedProbePoints){
 			if (numberOfErrors > 300) {
-				errorMessage+=PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
-				+ "WARNING: Detected " + numberOfErrors +" errors. Attempting to relaunch, but this " +
-				"may be quite slow. Try relaunching with a different selection of files.";
+				errorMessage = PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
+				+ "***WARNING***: Detected " + numberOfErrors +" errors. Attempting to relaunch, but this " +
+				"may be quite slow. Please note that probing all available files is usually faste, as " +
+				"it does not require Eclipse to search for functions.";
 			}
+			
+			SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
+					Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
+					Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
+					errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
+			mes.schedule();
 			
 			StringBuffer resultFileContent = new StringBuffer();
 			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp";

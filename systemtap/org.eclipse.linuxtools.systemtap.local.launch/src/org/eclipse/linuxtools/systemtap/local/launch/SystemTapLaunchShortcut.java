@@ -622,16 +622,12 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	 * C Project 
 	 */
 	public static ArrayList<String> getAllFunctions(ICProject project, Object [] listOfFiles){
-		long val = System.currentTimeMillis();
-		
 		try {
-			GetFunctionsJob j = new GetFunctionsJob("SEEKING", project, listOfFiles);
+			GetFunctionsJob j = new GetFunctionsJob(project.getHandleIdentifier(), project, listOfFiles);
 			j.schedule();
 			j.join();
 			ArrayList<String> functionList = j.getFunctionList();
 			
-			System.out.println("TOTAL FUNCTIONS : "+ functionList.size()); //$NON-NLS-1$
-			System.out.println("TIME : "+(System.currentTimeMillis() - val)); //$NON-NLS-1$
 			return functionList;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
