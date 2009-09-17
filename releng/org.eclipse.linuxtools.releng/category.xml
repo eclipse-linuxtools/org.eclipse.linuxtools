@@ -31,6 +31,9 @@
    <feature url="features/org.eclipse.linuxtools.systemtap_${org.eclipse.linuxtools.systemtap.version}.jar" id="org.eclipse.linuxtools.systemtap" version="${org.eclipse.linuxtools.systemtap.version}">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.systemtap.local_${org.eclipse.linuxtools.systemtap.local.version}.jar" id="org.eclipse.linuxtools.systemtap.local" version="${org.eclipse.linuxtools.systemtapl.local.version}">
+      <category name="Linux Tools"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.valgrind_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.valgrind" version="${org.eclipse.linuxtools.valgrind.version}">
       <category name="Linux Tools"/>
    </feature>
@@ -39,7 +42,7 @@
          Eclipse Linux Tools
       </description>
    </category-def>
-      <category-def name="Linux Tools Additional Library API Hoverhelp" label="Linux Tools Additional Library API Hoverhelp">
+   <category-def name="Linux Tools Additional Library API Hoverhelp" label="Linux Tools Additional Library API Hoverhelp">
       <description>
          Optional library API documentation for use with C/C++ hover help and completion
       </description>
