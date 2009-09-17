@@ -77,7 +77,7 @@ public class SystemTapErrorHandler {
 	 * @param doc
 	 */
 	public void handle (IProgressMonitor m, String errors){	
-		String[] blah = errors.split("\n");
+		String[] blah = errors.split("\n"); //$NON-NLS-1$
 
 		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
 		File file = new File(PluginConstants.PLUGIN_LOCATION+FILE_PROP);
@@ -137,7 +137,7 @@ public class SystemTapErrorHandler {
 		while ( (line = br.readLine()) != null) {
 			counter++;
 			builder.append(line);
-			builder.append("\n");
+			builder.append("\n"); //$NON-NLS-1$
 			if (m != null && m.isCanceled())
 				return;
 			if (counter == 300) {
@@ -166,9 +166,9 @@ public class SystemTapErrorHandler {
 		if (mismatchedProbePoints){
 			if (numberOfErrors > 300) {
 				errorMessage = PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
-				+ "***WARNING***: Detected " + numberOfErrors +" errors. Attempting to relaunch, but this " +
-				"may be quite slow. Please note that probing all available files is usually faste, as " +
-				"it does not require Eclipse to search for functions.";
+				+ Messages.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors +Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.TooManyErrors4"); //$NON-NLS-1$
 			}
 			
 			SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
@@ -178,7 +178,7 @@ public class SystemTapErrorHandler {
 			mes.schedule();
 			
 			StringBuffer resultFileContent = new StringBuffer();
-			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp";
+			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp"; //$NON-NLS-1$
 			String line;
 			boolean skip = false;
 			File file = new File(fileLocation);
@@ -189,15 +189,15 @@ public class SystemTapErrorHandler {
 						return;
 					skip =  false;
 					for (String func : functions){
-						if (line.contains("function(\"" + func + "\").call")){
+						if (line.contains("function(\"" + func + "\").call")){ //$NON-NLS-1$ //$NON-NLS-2$
 							skip = true;
 							break;
 						}
 					}
 					
-					if (!skip && !line.equals("\n")){							
+					if (!skip && !line.equals("\n")){							 //$NON-NLS-1$
 						resultFileContent.append(line);
-						resultFileContent.append("\n");
+						resultFileContent.append("\n"); //$NON-NLS-1$
 					}
 				}
 				
@@ -294,7 +294,7 @@ public class SystemTapErrorHandler {
 	
 	
 	public void findFunctions(IProgressMonitor m, String message, Pattern pat) {
-		String[] list = message.split("\n");
+		String[] list = message.split("\n"); //$NON-NLS-1$
 		String result;
 		for (String s : list) {
 			if (m.isCanceled())

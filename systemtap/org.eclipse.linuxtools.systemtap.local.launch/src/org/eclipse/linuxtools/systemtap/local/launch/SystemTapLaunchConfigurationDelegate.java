@@ -384,7 +384,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				errorHandler.handle(monitor, config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				errorHandler.handle(monitor, new FileReader(outputPath + "ERROR"));
+				errorHandler.handle(monitor, new FileReader(outputPath + "ERROR")); //$NON-NLS-1$
 				if (monitor != null && monitor.isCanceled())
 					return;
 				
@@ -433,7 +433,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		public StreamListener() throws IOException {
 			h = new Helper();
 			counter = 0;
-			h.setBufferedWriter(outputPath + "ERROR");
+			h.setBufferedWriter(outputPath + "ERROR"); //$NON-NLS-1$
 		}
 		@Override
 		public void streamAppended(String text, IStreamMonitor monitor) {
