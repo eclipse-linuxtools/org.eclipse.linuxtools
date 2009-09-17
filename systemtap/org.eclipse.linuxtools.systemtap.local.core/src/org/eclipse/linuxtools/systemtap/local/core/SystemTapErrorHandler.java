@@ -75,7 +75,7 @@ public class SystemTapErrorHandler {
 	 * @param doc
 	 */
 	public void handle (String errors){	
-		String[] blah = errors.split("ASDFG");
+		String[] blah = errors.split("\n");
 
 		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
 		File file = new File(PluginConstants.PLUGIN_LOCATION+FILE_PROP);
@@ -133,13 +133,15 @@ public class SystemTapErrorHandler {
 		while ( (line = br.readLine()) != null) {
 			counter++;
 			builder.append(line);
-			builder.append("ASDFG");
+			builder.append("\n");
 			if (counter == 300) {
 				handle(builder.toString());
 				builder = new StringBuilder();
 				counter = 0;
 			}
 		}
+		handle(builder.toString());
+
 	}
 
 	/**
@@ -160,7 +162,6 @@ public class SystemTapErrorHandler {
 			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp";
 			String line;
 			boolean skip = false;
-			int counter = 0;
 			File file = new File(fileLocation);
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
@@ -168,8 +169,6 @@ public class SystemTapErrorHandler {
 					skip =  false;
 					for (String func : functions){
 						if (line.contains("function(\"" + func + "\").call")){
-							counter++;
-							System.out.println("Fixed " + counter);
 							skip = true;
 							break;
 						}

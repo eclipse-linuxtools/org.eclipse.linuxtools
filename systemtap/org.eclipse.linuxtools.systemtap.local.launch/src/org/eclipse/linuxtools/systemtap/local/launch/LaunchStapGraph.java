@@ -110,23 +110,19 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			arguments = binaryPath;
 			outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 			
-			if (funcs == null || funcs.length() < 1) {
-				funcs = writeFunctionListToScript(resourceToSearchFor);
+			funcs = writeFunctionListToScript(resourceToSearchFor);
 				if (funcs == null || funcs.length() < 0)
 					return;
-			}
 			String scriptContents = generateScript();
 			if (scriptContents == null || scriptContents.length() < 0)
 				return;
 			ILaunchConfigurationWorkingCopy wc;
 			
+			needToGenerate = true;
+			generatedScript = scriptContents;
+			
 			wc = config.getWorkingCopy();
-			wc.setAttribute("MOREDATA_LOL", funcs);
-			wc.setAttribute("PROJECT_NAME_LOL", bin.getCProject().getElementName());
 			wc.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, true);
-//			wc.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES,
-//					"-DMAXACTION=1000 -DSTP_NO_OVERLOAD -DMAXMAPENTRIES=10000"); 
-			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, scriptContents);
 			wc.doSave();
 			
 			finishLaunch(name, mode);
@@ -261,10 +257,10 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 		scriptContents += writeFromPartialScript(projectName);
 		
-		BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
-//		bw.write("probe begin { printf(\"HELLO\") }");
-		bw.write(scriptContents);
-		bw.close();
+//		BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
+////		bw.write("probe begin { printf(\"HELLO\") }");
+//		bw.write(scriptContents);
+//		bw.close();
 		return scriptContents;
 	}
 

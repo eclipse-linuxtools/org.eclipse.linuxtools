@@ -155,7 +155,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
-				PluginConstants.DEFAULT_OUTPUT + System.currentTimeMillis());
+				PluginConstants.DEFAULT_OUTPUT);
 		command += "-o " + outputPath; //$NON-NLS-1$
 		try {
 			File tempFile = new File(outputPath);
@@ -355,7 +355,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
 			
 			stringBuff = new StringBuffer();
-			process.getStreamsProxy().getErrorStreamMonitor().addListener(new StreamListener());
+			StreamListener s = new StreamListener();
+			process.getStreamsProxy().getErrorStreamMonitor().addListener(s);
+			
 
 
 			while (!process.isTerminated()) {
@@ -368,6 +370,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				}
 			}
 			Thread.sleep(100);
+			s.close();
 			//SIGNAL THE PROCESS TO FINISH
 			if (stapCmdPar != null)
 				stapCmdPar.setProcessFinished(true);
@@ -382,25 +385,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 				errorHandler.handle(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				System.out.println("Handling errors");
 				errorHandler.handle(new FileReader(outputPath + "ERROR"));
 				
-				
 				if (errorHandler.hasMismatchedProbePoints() && retry) {
-//					errorHandler.finishHandling();
-					ArrayList<String> exclusions = errorHandler.getFunctions();
-					
-					
-					LaunchStapGraph l = new LaunchStapGraph();
-					l.setExclusions(exclusions);
-					l.scriptPath = config.getAttribute(LaunchConfigurationConstants.SCRIPT_PATH, LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH);
-					l.setFuncs(config.getAttribute("MOREDATA_LOL", ""));
-					l.setProjectName(config.getAttribute("PROJECT_NAME_LOL", ""));
-					l.setPartialScriptPath(PluginConstants.getPluginLocation()
-				+ "parse_function_partial.stp");
-					l.generateScript();
-					
-					
+					errorHandler.finishHandling();
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
@@ -438,18 +426,23 @@ public class SystemTapLaunchConfigurationDelegate extends
 	private StringBuffer stringBuff;
 	
 	private class StreamListener implements IStreamListener{
+		Helper h;
 		public StreamListener() throws IOException {
-			Helper.setBufferedWriter(outputPath + "ERROR");
+			h = new Helper();
+			h.setBufferedWriter(outputPath + "ERROR");
 		}
 		@Override
 		public void streamAppended(String text, IStreamMonitor monitor) {
 			try {
-				Helper.appendToExistingFile(text);
+				h.appendToExistingFile(text);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 		}
-		
+
+		public void close() throws IOException {
+			h.closeBufferedWriter();
+		}
 	}
 }

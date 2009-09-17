@@ -112,7 +112,7 @@ public class Helper {
 	
 	private static BufferedWriter bw;
 	
-	public static void setBufferedWriter(String absoluteFilePath) {
+	public void setBufferedWriter(String absoluteFilePath) {
 		try {
 			File f = new File(absoluteFilePath);
 			f.delete();
@@ -129,11 +129,11 @@ public class Helper {
 		}
 	}
 	
-	public static void appendToExistingFile(String content) throws IOException {
+	public void appendToExistingFile(String content) throws IOException {
 		bw.append(content);
 	}
 	
-	public static void closeBufferedWriter() throws IOException {
+	public void closeBufferedWriter() throws IOException {
 		bw.close();
 	}
 	
