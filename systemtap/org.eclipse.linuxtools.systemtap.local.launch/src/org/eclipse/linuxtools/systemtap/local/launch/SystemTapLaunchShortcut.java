@@ -634,7 +634,6 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			System.out.println("TIME : "+(System.currentTimeMillis() - val)); //$NON-NLS-1$
 			return functionList;
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
