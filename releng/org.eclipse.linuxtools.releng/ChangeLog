@@ -1,5 +1,9 @@
 2009-09-18  Andrew Overholt  <overholt@redhat.com>
 
+	* category.xml: Fix typo  in systemtap.local version variable.
+
+2009-09-18  Andrew Overholt  <overholt@redhat.com>
+
 	* build.properties: Move to GEF-ALL since new SystemTap stuff needs Zest.
 
 2009-09-08  Andrew Overholt  <overholt@redhat.com>

@@ -31,7 +31,7 @@
    <feature url="features/org.eclipse.linuxtools.systemtap_${org.eclipse.linuxtools.systemtap.version}.jar" id="org.eclipse.linuxtools.systemtap" version="${org.eclipse.linuxtools.systemtap.version}">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.systemtap.local_${org.eclipse.linuxtools.systemtap.local.version}.jar" id="org.eclipse.linuxtools.systemtap.local" version="${org.eclipse.linuxtools.systemtapl.local.version}">
+   <feature url="features/org.eclipse.linuxtools.systemtap.local_${org.eclipse.linuxtools.systemtap.local.version}.jar" id="org.eclipse.linuxtools.systemtap.local" version="${org.eclipse.linuxtools.systemtap.local.version}">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.valgrind_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.valgrind" version="${org.eclipse.linuxtools.valgrind.version}">
