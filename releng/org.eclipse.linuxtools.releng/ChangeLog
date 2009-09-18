@@ -1,3 +1,7 @@
+2009-09-18  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Move to GEF-ALL since new SystemTap stuff needs Zest.
+
 2009-09-08  Andrew Overholt  <overholt@redhat.com>
 
 	* tools/linuxtoolsupdatesite-trunk.sh: Don't worry about *.xml; use *.jar instead.
