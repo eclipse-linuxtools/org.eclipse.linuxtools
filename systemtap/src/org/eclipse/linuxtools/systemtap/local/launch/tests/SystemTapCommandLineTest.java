@@ -99,7 +99,7 @@ public class SystemTapCommandLineTest extends TestCase {
 	
 	
 	
-	public void testFunctionProbes(){
+	/*public void testFunctionProbes(){
 		binaryPath = currentPath+"/basic";
 		final String expected = "mainfoo";
 		
@@ -108,7 +108,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		
 		assertEquals(expected, actual);
 		
-	}
+	}*/
 
 	public void testBasicOperations(){
 		final String expected = "01234";
@@ -132,7 +132,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		
 	}
 
-	public void testFailure(){
+	/*public void testFailure(){
 		try {
 			SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
 			ILaunchConfiguration config = shortcut.outsideGetLaunchConfigType().newInstance(null, "Temp Name");
@@ -148,7 +148,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	
 	public void initializeFiles(){
