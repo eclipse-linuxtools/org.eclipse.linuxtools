@@ -18,6 +18,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
+
 import junit.framework.TestCase;
 
 public class SystemTapCommandLineTest extends TestCase {
@@ -97,7 +103,7 @@ public class SystemTapCommandLineTest extends TestCase {
 	
 	
 	
-	/*public void testFunctionProbes(){
+	public void testFunctionProbes(){
 		binaryPath = currentPath+"/basic";
 		final String expected = "mainfoo";
 		
@@ -106,7 +112,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		
 		assertEquals(expected, actual);
 		
-	}*/
+	}
 
 	public void testBasicOperations(){
 		if (!TestConstants.canRunStap)
@@ -132,7 +138,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		
 	}
 
-	/*public void testFailure(){
+	public void testFailure(){
 		try {
 			SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
 			ILaunchConfiguration config = shortcut.outsideGetLaunchConfigType().newInstance(null, "Temp Name");
@@ -148,7 +154,7 @@ public class SystemTapCommandLineTest extends TestCase {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	
 	public void initializeFiles(){
