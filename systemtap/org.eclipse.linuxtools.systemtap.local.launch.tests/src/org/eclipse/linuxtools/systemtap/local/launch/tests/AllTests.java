@@ -45,6 +45,7 @@ public class AllTests {
 		suite.addTestSuite(SystemTapCommandGeneratorTest.class);
 		suite.addTestSuite(SystemTapCommandLineTest.class);
 		suite.addTestSuite(SystemTapTabTest.class);
+		suite.addTestSuite(LaunchShortcutsTest.class);
 		//$JUnit-END$
 		return suite;
 	}

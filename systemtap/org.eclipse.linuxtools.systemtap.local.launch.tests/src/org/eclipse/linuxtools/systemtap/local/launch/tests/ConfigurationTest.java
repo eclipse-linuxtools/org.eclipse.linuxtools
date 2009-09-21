@@ -21,8 +21,9 @@ import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
 
-
 public class ConfigurationTest extends TestCase{
+	
+	
 	/**
 	 * This test checks if the commands sent by SystemTap match exactly the options
 	 * that are set. Uses the delegate.launch() function.
@@ -98,7 +99,6 @@ public class ConfigurationTest extends TestCase{
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	
 }

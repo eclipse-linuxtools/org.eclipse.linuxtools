@@ -170,7 +170,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 * @throws IOException
 	 */
-	private String writeFunctionListToScript(String resourceToSearchFor) throws IOException {
+	public String writeFunctionListToScript(String resourceToSearchFor) throws IOException {
 		String toWrite = getFunctionsFromBinary(bin, resourceToSearchFor);
 		
 		if (toWrite == null || toWrite.length() < 1) {
