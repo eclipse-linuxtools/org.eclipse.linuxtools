@@ -47,6 +47,7 @@ import org.eclipse.linuxtools.profiling.launch.ProfileLaunchShortcut;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
@@ -54,7 +55,6 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected IEditorPart editor;
 	protected ILaunchConfiguration config;
-	private boolean stop = false;
 	
 	private static final String USER_SELECTED_ALL = "ALL"; //$NON-NLS-1$
 
@@ -72,6 +72,10 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected String resourceToSearchFor;
 	protected boolean searchForResource;
 	protected IBinary bin;
+	
+	private Button OKButton;
+	private boolean testMode = false;
+	
 	
 	/**
 	 * Provides access to the Profiling Frameworks' launch method
@@ -201,7 +205,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			
 			checkForExistingConfiguration();
 			
-			if (!stop)
+			if (!testMode)
 				DebugUITools.launch(config, mode);
 		} 
 		
@@ -258,6 +262,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 			}
 			checkForExistingConfiguration();
 
+			if (!testMode)
 			DebugUITools.launch(config, mode);
 		}
 	}
@@ -533,47 +538,57 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	    dialog.setSize(cap(topLevel.length*10, 30, 55), 
 	    		cap((int) (topLevel.length*1.5), 3, 13));
 
+	    dialog.create();
+	    OKButton = dialog.getOkButton();
+	    
+	    Object[] result = null;
 	    
 	    
-		if (dialog.open() == Window.OK) {
-			Object[] result = dialog.getResult();
-			if (result == null)
-				return null;
-			
-			ArrayList<Object> output = new ArrayList<Object>();
-			try {
-				for (Object obj : result) {
-					if (obj instanceof ICContainer){
-						ICElement[] array = ((ICContainer) obj).getChildren();
-						for (ICElement c : array) {
-							if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
-									c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
-								continue;
-							if (!output.contains(c))
-								output.add(c);
-						}
+	    if (testMode) {
+	    	OKButton.setSelection(true);
+	    	result = list.toArray();
+	    }
+	    else {
+	    	if (dialog.open() == Window.CANCEL)
+	    		return null;
+	    	result = dialog.getResult();
+	    }
+
+		if (result == null)
+			return null;
+		
+		ArrayList<Object> output = new ArrayList<Object>();
+		try {
+			for (Object obj : result) {
+				if (obj instanceof ICContainer){
+					ICElement[] array = ((ICContainer) obj).getChildren();
+					for (ICElement c : array) {
+						if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
+								c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
+							continue;
+						if (!output.contains(c))
+							output.add(c);
 					}
-					else if (obj instanceof ICElement) {
-						if (((ICElement) obj).getElementName().endsWith(".c")  //$NON-NLS-1$
-								|| ((ICElement) obj).getElementName().endsWith(".cpp")) { //$NON-NLS-1$
-							if (!output.contains(obj)) {
-								output.add(obj);
-							}
+				}
+				else if (obj instanceof ICElement) {
+					if (((ICElement) obj).getElementName().endsWith(".c")  //$NON-NLS-1$
+							|| ((ICElement) obj).getElementName().endsWith(".cpp")) { //$NON-NLS-1$
+						if (!output.contains(obj)) {
+							output.add(obj);
 						}
 					}
 				}
-			
-				if ( output.size() >= numberOfValidFiles) {
-					output.clear();
-					output.add(USER_SELECTED_ALL);
-				}
-			} catch (CModelException e) {
-				e.printStackTrace();
 			}
-			
-			return output.toArray();
+		
+			if ( output.size() >= numberOfValidFiles) {
+				output.clear();
+				output.add(USER_SELECTED_ALL);
+			}
+		} catch (CModelException e) {
+			e.printStackTrace();
 		}
-		return null;
+		
+		return output.toArray();
 	}
 	
 	
@@ -731,15 +746,15 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	}
 	
 	
-	public void setStop(boolean val) {
-		stop = val;
-	}
-	
-	public boolean getStop() {
-		return stop;
-	}
-	
 	public String getScript() {
 		return generatedScript;
+	}
+	
+	public Button getButton() {
+		return OKButton;
+	}
+	
+	public void setTestMode(boolean val) {
+		testMode = val;
 	}
 }

@@ -49,31 +49,6 @@ public abstract class AbstractStapTest extends AbstractTest {
 
 	protected abstract Bundle getBundle();
 
-	protected ILaunch doLaunch(ILaunchConfiguration config, String testName) throws Exception {
-		ILaunch launch;
-		IPath pathToFiles = getPathToFiles(testName);
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH, pathToFiles.toOSString() +"testName.o");
-		wc.doSave();
-
-		SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
-		launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
-		launches.add(launch);
-
-		DebugPlugin.getDefault().getLaunchManager().addLaunch(launch);
-		del.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-
-		return launch;
-	}
-	
-	protected IPath getPathToFiles(String testName) throws URISyntaxException,
-	IOException {
-		URL location = FileLocator.find(getBundle(), new Path(""), null); //$NON-NLS-1$
-		File file = new File(FileLocator.toFileURL(location).toURI());
-		IPath pathToFiles = new Path(file.getCanonicalPath()).append(testName);
-		return pathToFiles;
-	}
-	
 	private List<ILaunch> launches;
 
 	@Override
