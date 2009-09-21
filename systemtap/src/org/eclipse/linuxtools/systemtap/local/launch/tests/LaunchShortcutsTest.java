@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
@@ -49,44 +50,33 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 	
 	public void testLaunchCallGraph() {
 		try {
-			System.out.println("Launching LaunchShortcutsTest");
+			SystemTapUIErrorMessages.setActive(false);
+			
 			LaunchStapGraph launch = new LaunchStapGraph();
 			
 			//Need to set funcs, scriptPath, projectName, partialScriptPath
 			launch.setProjectName(testName);
 			launch.writeFunctionListToScript(null);
-			System.out.println("Writing function list");
 				
 			String scriptPath = getPathToFiles(testName).toOSString() + testName + "Script.gen-stp";
 			launch.setScriptPath(scriptPath);
 			System.out.println(scriptPath);
 			launch.setPartialScriptPath(PluginConstants.PLUGIN_LOCATION + "parse_function_partial.stp");
 			launch.generateScript();
-			System.out.println("Generated Script");
 			
 			checkScript(launch);
 			
-			ILaunchConfiguration config = createConfiguration(proj.getProject());
-			
-			
-			System.out.println("Launching");
-			doLaunch(config, "testLaunchCallGraph"); //$NON-NLS-1$
-			
-			String outputPath =config.getAttribute(LaunchConfigurationConstants.OUTPUT_PATH, "COULDN'T FIND"); 
-			System.out.println(outputPath);
-			
-			File f= new File(outputPath);
-			f.delete();
-	
-			f = new File(scriptPath);
-			f.delete();
-			
+//			
+//			File f= new File(outputPath);
+//			f.delete();
+//	
+//			f = new File(scriptPath);
+//			f.delete();
+//			
 			killStap();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			} catch (CoreException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();

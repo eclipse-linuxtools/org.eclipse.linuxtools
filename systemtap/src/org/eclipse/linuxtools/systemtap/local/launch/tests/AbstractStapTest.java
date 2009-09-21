@@ -62,7 +62,6 @@ public abstract class AbstractStapTest extends AbstractTest {
 
 		DebugPlugin.getDefault().getLaunchManager().addLaunch(launch);
 		del.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-		System.out.println(del.getCommand());
 
 		return launch;
 	}
