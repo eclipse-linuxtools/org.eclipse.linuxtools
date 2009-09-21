@@ -14,6 +14,7 @@ public final class PluginConstants {
 	
 	public static String DEFAULT_OUTPUT = ""; //$NON-NLS-1$
 	public static final String CONFIGURATION_TYPE_ID = "org.eclipse.linuxtools.systemtap.localgui.launch.systemtapLaunch";	 //$NON-NLS-1$
+	
 	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	
 	public static final int MAX_ERRORS = 500;	//Maximum number of errors to tolerate

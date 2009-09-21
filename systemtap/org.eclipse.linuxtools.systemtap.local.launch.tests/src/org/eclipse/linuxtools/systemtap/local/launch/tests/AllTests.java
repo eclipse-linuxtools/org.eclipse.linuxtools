@@ -13,12 +13,10 @@ package org.eclipse.linuxtools.systemtap.local.launch.tests;
 //import org.eclipse.jface.dialogs.MessageDialog;
 //import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
-//import org.eclipse.swt.widgets.Display;
-//import org.eclipse.swt.widgets.Shell;
-//import org.eclipse.ui.PlatformUI;
 
 public class AllTests {
 
@@ -31,6 +29,7 @@ public class AllTests {
 //				"some of its internal classes, and the plugin is just letting you\n" +
 //				"know that it is being tricked. \nJust click OK on all dialogs.");
 		
+		SystemTapUIErrorMessages.setActive(false);
 		
 //		Shell eclipseShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 //		int width = Display.getCurrent().getBounds().width;
