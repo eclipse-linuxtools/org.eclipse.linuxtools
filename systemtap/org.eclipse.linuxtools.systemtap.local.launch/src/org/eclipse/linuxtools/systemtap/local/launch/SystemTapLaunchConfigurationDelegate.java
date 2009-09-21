@@ -55,6 +55,8 @@ import org.eclipse.ui.progress.UIJob;
 public class SystemTapLaunchConfigurationDelegate extends
 		AbstractCLaunchDelegate {
 
+	private static final String TEMP_ERROR_OUTPUT =
+		PluginConstants.PLUGIN_LOCATION + "stapTempError.error";
 	private String cmd;
 	private File temporaryScript = null;
 	private String arguments = ""; //$NON-NLS-1$
@@ -384,7 +386,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				errorHandler.handle(monitor, config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				errorHandler.handle(monitor, new FileReader(outputPath + "ERROR")); //$NON-NLS-1$
+				errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
 				if (monitor != null && monitor.isCanceled())
 					return;
 				
@@ -433,7 +435,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		public StreamListener() throws IOException {
 			h = new Helper();
 			counter = 0;
-			h.setBufferedWriter(outputPath + "ERROR"); //$NON-NLS-1$
+			h.setBufferedWriter(TEMP_ERROR_OUTPUT); //$NON-NLS-1$
 		}
 		@Override
 		public void streamAppended(String text, IStreamMonitor monitor) {
