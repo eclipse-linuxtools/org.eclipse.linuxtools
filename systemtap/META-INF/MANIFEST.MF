@@ -6,8 +6,6 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.launch.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.linuxtools.systemtap.local.core;bundle-version="0.0.1",
- org.eclipse.linuxtools.systemtap.local.launch;bundle-version="0.0.1",
  org.eclipse.debug.ui;bundle-version="3.4.1",
  org.junit;bundle-version="[0.0.0,4.0.0)"
 Bundle-ActivationPolicy: lazy
@@ -19,4 +17,5 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.debug.core,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.profiling.tests,
- org.eclipse.linuxtools.systemtap.local.core
+ org.eclipse.linuxtools.systemtap.local.core,
+ org.eclipse.linuxtools.systemtap.local.launch
