@@ -53,7 +53,6 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 			
 			LaunchStapGraph launch = new LaunchStapGraph();
 			
-			//Need to set funcs, scriptPath, projectName, partialScriptPath
 			launch.setProjectName(testName);
 			IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 			launch.setBinary(bin);

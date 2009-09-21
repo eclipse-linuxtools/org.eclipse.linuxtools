@@ -20,12 +20,6 @@ import java.io.InputStreamReader;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
-
 public class SystemTapCommandLineTest extends TestCase {
 	File tmpfile = new File("");
 	public final String currentPath = tmpfile.getAbsolutePath();
@@ -35,6 +29,8 @@ public class SystemTapCommandLineTest extends TestCase {
 	public String binaryPath = "";
 	public final String graphDataPath = currentPath+"/graph_data_output.graph";
 	public final String parseFunctionPath = currentPath+"/parse_function_nomark.stp";
+	
+	
 	
 	
 	//FOR TESTING RAW STAP SCRIPT OUTPUT

@@ -22,7 +22,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 	//HACK TO GET THE PATH TO THE TESTING PROJECT
 	File file = new File("");
 	private String location = file.getAbsolutePath() + "/";
-	SystemTapCommandGenerator stapact = new SystemTapCommandGenerator();
+	SystemTapCommandGenerator stapgen = new SystemTapCommandGenerator();
 	
 	public void testExecutionWithScriptAndBinaryAndArgument(){
 		
@@ -31,7 +31,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		String scriptPath = location + "function_count.stp";
 		
 		//RUN
-		stapact
+		stapgen
 				.generateCommand(
 						scriptPath,
 						binaryFilePath,
@@ -42,7 +42,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		
 		assertEquals(
 				"stap -c '"+binaryFilePath+"' "+scriptPath+ " " +binaryFilePath,
-				stapact.getExecuteCommand());
+				stapgen.getExecuteCommand());
 		killStap();
 		//END
 		}
@@ -52,7 +52,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		String scriptPath = location + "simple.stp";
 		
 		//RUN
-		stapact
+		stapgen
 		.generateCommand(
 				scriptPath,
 				"",
@@ -63,7 +63,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		
 		assertEquals(
 				"stap "+scriptPath,
-				stapact.getExecuteCommand());
+				stapgen.getExecuteCommand());
 		//END
 	}
 
@@ -73,9 +73,9 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		String binaryFilePath = location + "factorial";
 		String scriptPath = location + "allsyscall.stp";
 
-		stapact.generateCommand(scriptPath, binaryFilePath, "", true, false, "", "");
+		stapgen.generateCommand(scriptPath, binaryFilePath, "", true, false, "", "");
 
-		assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath, stapact
+		assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath, stapgen
 				.getExecuteCommand());
 		// END
 		
