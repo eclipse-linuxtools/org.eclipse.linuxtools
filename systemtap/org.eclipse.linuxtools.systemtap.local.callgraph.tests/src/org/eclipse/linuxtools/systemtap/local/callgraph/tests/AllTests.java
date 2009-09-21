@@ -11,12 +11,15 @@
 
 package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
 
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 public class AllTests {
 
 	public static Test suite() {
+		SystemTapUIErrorMessages.setActive(false);
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.systemtap.local.callgraph.tests");
 		//$JUnit-BEGIN$
