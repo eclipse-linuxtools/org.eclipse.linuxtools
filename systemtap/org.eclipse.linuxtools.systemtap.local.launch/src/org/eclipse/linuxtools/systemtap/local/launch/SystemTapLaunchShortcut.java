@@ -547,6 +547,30 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 	    if (testMode) {
 	    	OKButton.setSelection(true);
 	    	result = list.toArray();
+			ArrayList<Object> output = new ArrayList<Object>();
+			try {
+				for (Object obj : result) {
+					if (obj instanceof ICContainer){
+						ICElement[] array = ((ICContainer) obj).getChildren();
+						for (ICElement c : array) {
+							if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
+									c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
+								continue;
+							if (c.getElementName().contains("main") && !output.contains(c))
+								output.add(c);
+						}
+					}
+				}
+			
+				if ( output.size() >= numberOfValidFiles) {
+					output.clear();
+					output.add(USER_SELECTED_ALL);
+				}
+			} catch (CModelException e) {
+				e.printStackTrace();
+			}
+			
+			result = output.toArray();
 	    }
 	    else {
 	    	if (dialog.open() == Window.CANCEL)
