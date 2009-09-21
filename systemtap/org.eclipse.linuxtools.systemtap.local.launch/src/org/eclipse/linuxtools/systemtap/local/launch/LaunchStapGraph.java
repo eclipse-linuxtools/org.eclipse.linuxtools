@@ -111,13 +111,12 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			funcs = writeFunctionListToScript(resourceToSearchFor);
 				if (funcs == null || funcs.length() < 0)
 					return;
-			String scriptContents = generateScript();
-			if (scriptContents == null || scriptContents.length() < 0)
+			generatedScript = generateScript();
+			if (generatedScript == null || generatedScript.length() < 0)
 				return;
 			ILaunchConfigurationWorkingCopy wc;
 			
 			needToGenerate = true;
-			generatedScript = scriptContents;
 			
 			wc = config.getWorkingCopy();
 			wc.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, true);
@@ -244,9 +243,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	public String generateScript() throws IOException {
 		
 		String scriptContents = "";  //$NON-NLS-1$
-		File scriptFile = new File(scriptPath);
-		scriptFile.delete();
-		scriptFile.createNewFile();
+
 
 		scriptContents += writeGlobalVariables();
 //		scriptContents += writeStapMarkers();
