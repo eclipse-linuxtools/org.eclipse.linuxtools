@@ -22,7 +22,7 @@ public class TranslationUnitVisitor implements ICElementVisitor{
 		functions = ""; //$NON-NLS-1$
 	}
 	private long time;
-	@Override
+//	@Override
 	public boolean visit(ICElement arg0) throws CoreException {
 		if (arg0.getElementType() == ICElement.C_FUNCTION) {
 			functions+=arg0.getElementName() + " "; //$NON-NLS-1$

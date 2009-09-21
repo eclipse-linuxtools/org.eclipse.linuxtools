@@ -48,13 +48,13 @@ public class SystemTapGraphTest extends TestCase {
 			this.action = action;
 		}
 		
-		@Override
+//		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
 
-		@Override
+//		@Override
 		public void widgetSelected(SelectionEvent e) {
 			action.run();
 		}

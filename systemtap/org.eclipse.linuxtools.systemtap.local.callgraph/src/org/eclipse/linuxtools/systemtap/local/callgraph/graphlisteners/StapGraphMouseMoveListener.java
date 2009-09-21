@@ -40,7 +40,7 @@ public class StapGraphMouseMoveListener implements MouseMoveListener {
 		stop = val;
 	}
 	
-	@Override
+//	@Override
 	public void mouseMove(MouseEvent e) {
 		//-------------Panning
 		//TODO: Implement panning at this zoom and mode

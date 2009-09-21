@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class StapTreeLabelProvider implements ILabelProvider {
 
-	@Override
+//	@Override
 	public Image getImage(Object element) {
 		Image im = null;
 		if ( ((StapData) element).isMarked())
@@ -29,26 +29,26 @@ public class StapTreeLabelProvider implements ILabelProvider {
 		return im;
 	}
 
-	@Override
+//	@Override
 	public String getText(Object element) {
 		return ((StapData) element).called + ": " + ((StapData) element).name; //$NON-NLS-1$
 	}
 
-	@Override
+//	@Override
 	public void addListener(ILabelProviderListener listener) {
 	}
 
 	
-	@Override
+//	@Override
 	public void dispose() {
 	}
 
-	@Override
+//	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		return false;
 	}
 
-	@Override
+//	@Override
 	public void removeListener(ILabelProviderListener listener) {		
 	}
 

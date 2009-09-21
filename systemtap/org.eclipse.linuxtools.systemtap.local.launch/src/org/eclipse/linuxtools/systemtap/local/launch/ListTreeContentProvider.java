@@ -21,7 +21,7 @@ import org.eclipse.jface.viewers.Viewer;
 
 public class ListTreeContentProvider implements ITreeContentProvider {
 
-	@Override
+//	@Override
 	public Object[] getChildren(Object parentElement) {
 		
 		ArrayList<Object> output = new ArrayList<Object>();
@@ -76,14 +76,14 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 		
 	}
 	
-	@Override
+//	@Override
 	public Object getParent(Object element) {
 		if (element instanceof ICElement)
 			return ((ICElement)element).getAncestor(ICElement.C_CCONTAINER);
 		return null;
 	}
 
-	@Override
+//	@Override
 	public boolean hasChildren(Object element) {
 		if (element instanceof ICContainer) {
 			try {
@@ -97,7 +97,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+//	@Override
 	public Object[] getElements(Object inputElement) {
 		if (inputElement instanceof List) {
 			for (Object element : (List) inputElement)
@@ -124,12 +124,12 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 		return null;
 	}
 
-	@Override
+//	@Override
 	public void dispose() {
 		
 	}
 
-	@Override
+//	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {		
 	}
 

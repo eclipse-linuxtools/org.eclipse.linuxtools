@@ -26,12 +26,12 @@ public class StapGraphKeyListener implements KeyListener {
 //		graph = g;
 	}
 	
-	@Override
+//	@Override
 	public void keyPressed(KeyEvent e) {
 
 	}
 
-	@Override
+//	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.stateMask != SWT.SHIFT) {
 			return;

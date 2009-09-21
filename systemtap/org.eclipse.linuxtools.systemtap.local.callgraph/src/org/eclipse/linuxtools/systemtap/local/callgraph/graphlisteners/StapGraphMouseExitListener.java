@@ -20,7 +20,7 @@ public class StapGraphMouseExitListener implements Listener{
 		this.listener = l;
 	}
 
-	@Override
+//	@Override
 	public void handleEvent(Event event) {
 		listener.setStop(true);
 	}

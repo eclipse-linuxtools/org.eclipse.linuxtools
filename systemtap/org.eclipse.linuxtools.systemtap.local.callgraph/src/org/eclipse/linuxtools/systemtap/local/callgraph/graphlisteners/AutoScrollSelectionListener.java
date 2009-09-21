@@ -16,12 +16,12 @@ public class AutoScrollSelectionListener implements SelectionListener{
 		this.graph = g;
 	}
 
-	@Override
+//	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
 
 	}
 
-	@Override
+//	@Override
 	public void widgetSelected(SelectionEvent e) {
 		if (type == AutoScroll_up)
 			AutoScrollHelper.scrollUp(graph);
