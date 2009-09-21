@@ -20,6 +20,7 @@ import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
+import org.eclipse.swt.SWT;
 import org.osgi.framework.Bundle;
 
 
@@ -50,11 +51,10 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 			SystemTapUIErrorMessages.setActive(false);
 			
 			LaunchStapGraph launch = new LaunchStapGraph();
-			launch.setStop(true);
+			launch.setTestMode(true);
 			
 			IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 			launch.launch(bin, "profile");
-			
 			String script = launch.getScript();
 			
 			assert(script.contains("probe process(@1).function(\"calledOnce\").call{	callFunction(probefunc())	}	probe process(@1).function(\"calledOnce\").return{		returnFunction(probefunc())	}"));
@@ -67,104 +67,6 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 				e.printStackTrace();
 			}
 	}
-//	
-//	public void testFunctionCount() {
-//		LaunchFunctionCount launch = new LaunchFunctionCount();
-//		launch.launch(bin, mode);
-//		
-//		checkScript(launch);
-//		
-//		String dirPath = launch.getDirPath();
-//		checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" +
-//				dirPath + "' " + launch.getScriptPath() + " " + dirPath, 
-//				launch);
-//
-//		killStap();
-//	}
-//	
-//	public void testSyscallAll() {
-//		LaunchSyscallAll launch = new LaunchSyscallAll();
-//		launch.launch(bin, mode);
-//		
-//		checkScript(launch);
-//		checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" + 
-//				launch.getDirPath() + "' " + launch.getScriptPath(), 
-//				launch);
-//		
-//		killStap();
-//	}
-	
-//	
-//	public void testFileIOMonitor() {
-//		LaunchFileIOMonitor launch = new LaunchFileIOMonitor();
-//		launch.launchIOTrace(mode);
-//		
-//		checkScript(launch);
-//		checkLaunchConfiguration(PluginConstants.STAP_PATH + " " + launch.getScriptPath()
-//				+ " " + launch.getArguments(), launch);
-//		
-//		killStap();
-//	}
-//	
-//	
-//	public void testWizard() {
-//				
-//		ISelection sel = null;
-//		LaunchWizard launch = new LaunchWizard();
-//		launch.launch(sel, mode);
-//		
-//		while(!launch.isCompleted()) {
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		checkScript(launch);
-//		
-//		
-//		if (launch.getArguments().length() > 0)
-//			checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" + 
-//					launch.getBinaryPath() + "' " + launch.getScriptPath() + " " + launch.getArguments(),
-//					launch);
-//		
-//		else 
-//			checkLaunchConfiguration(PluginConstants.STAP_PATH + " -c '" + 
-//					launch.getBinaryPath() + "' " + launch.getScriptPath(),
-//					launch);
-//		
-//		killStap();
-//	}
-//	
-	public void checkScript(SystemTapLaunchShortcut launch) {
-		//Check that script was created
-		File f = new File (launch.getScriptPath());
-		if (!f.exists())
-			fail();
-	}
-	
-	public void checkLaunchConfiguration(String checkString, ILaunchConfiguration config) {
-		//Check that the configuration was properly set
-		
-		try {
-			SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
-			del.launch(config, "profile", null, null);
-			assertEquals(checkString, del.getCommand());
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void killStap() {
-		Runtime run = Runtime.getRuntime();
-		try {
-			run.exec("kill stap");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 
 	@Override
 	protected Bundle getBundle() {
