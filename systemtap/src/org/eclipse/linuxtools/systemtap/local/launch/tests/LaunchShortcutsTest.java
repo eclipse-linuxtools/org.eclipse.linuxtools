@@ -10,17 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.launch.tests;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.launch.LaunchStapGraph;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
-import org.eclipse.swt.SWT;
 import org.osgi.framework.Bundle;
 
 
@@ -56,6 +48,7 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 			IBinary bin = proj.getBinaryContainer().getBinaries()[0];
 			launch.launch(bin, "profile");
 			String script = launch.getScript();
+			System.out.println(script);
 			
 			assert(script.contains("probe process(@1).function(\"calledOnce\").call{	callFunction(probefunc())	}	probe process(@1).function(\"calledOnce\").return{		returnFunction(probefunc())	}"));
 			assert(script.contains("probe process(@1).function(\"calledTwice\").call{	callFunction(probefunc())	}	probe process(@1).function(\"calledTwice\").return{		returnFunction(probefunc())	}"));
