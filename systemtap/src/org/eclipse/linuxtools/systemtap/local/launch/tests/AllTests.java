@@ -16,9 +16,9 @@ package org.eclipse.linuxtools.systemtap.local.launch.tests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
+//import org.eclipse.swt.widgets.Display;
+//import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.ui.PlatformUI;
 
 public class AllTests {
 
@@ -32,13 +32,13 @@ public class AllTests {
 //				"know that it is being tricked. \nJust click OK on all dialogs.");
 		
 		
-		Shell eclipseShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-		int width = Display.getCurrent().getBounds().width;
-		int height = Display.getCurrent().getBounds().height;
-		eclipseShell.setBounds(0, 0, width, height);
+//		Shell eclipseShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+//		int width = Display.getCurrent().getBounds().width;
+//		int height = Display.getCurrent().getBounds().height;
+//		eclipseShell.setBounds(0, 0, width, height);
 		
 		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.systemtap.tests");
+				"Test for org.eclipse.linuxtools.systemtap.local.launch.tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(SystemTapCommandTest.class);
 		suite.addTestSuite(ConfigurationTest.class);
