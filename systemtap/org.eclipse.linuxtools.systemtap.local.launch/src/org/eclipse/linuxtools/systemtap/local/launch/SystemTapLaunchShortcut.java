@@ -54,6 +54,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected IEditorPart editor;
 	protected ILaunchConfiguration config;
+	private boolean stop = false;
 	
 	private static final String USER_SELECTED_ALL = "ALL"; //$NON-NLS-1$
 
@@ -200,11 +201,11 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			
 			checkForExistingConfiguration();
 			
-			DebugUITools.launch(config, mode);
+			if (!stop)
+				DebugUITools.launch(config, mode);
 		} 
 		
 	}
-	
 	
 	//TODO: Should merge finishWith and Without binary - we only use
 	//the IBinary to find the name, in any case.
@@ -727,5 +728,18 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 		public ArrayList<String> getFunctionList() {
 			return functionList;
 		}
+	}
+	
+	
+	public void setStop(boolean val) {
+		stop = val;
+	}
+	
+	public boolean getStop() {
+		return stop;
+	}
+	
+	public String getScript() {
+		return generatedScript;
 	}
 }

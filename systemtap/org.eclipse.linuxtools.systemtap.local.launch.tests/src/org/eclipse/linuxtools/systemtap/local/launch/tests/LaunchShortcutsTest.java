@@ -52,16 +52,12 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 			SystemTapUIErrorMessages.setActive(false);
 			
 			LaunchStapGraph launch = new LaunchStapGraph();
+			launch.setStop(true);
 			
-			launch.setProjectName(testName);
 			IBinary bin = proj.getBinaryContainer().getBinaries()[0];
-			launch.setBinary(bin);
-			launch.writeFunctionListToScript(null);
-				
-			launch.setPartialScriptPath(PluginConstants.PLUGIN_LOCATION + "parse_function_partial.stp");
+			launch.launch(bin, "profile");
 			
-			String script = launch.generateScript();
-			System.out.println(script);
+			String script = launch.getScript();
 			
 			assert(script.contains("probe process(@1).function(\"calledOnce\").call{	callFunction(probefunc())	}	probe process(@1).function(\"calledOnce\").return{		returnFunction(probefunc())	}"));
 			assert(script.contains("probe process(@1).function(\"calledTwice\").call{	callFunction(probefunc())	}	probe process(@1).function(\"calledTwice\").return{		returnFunction(probefunc())	}"));
@@ -69,8 +65,6 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 
 			
 			
-			} catch (IOException e) {
-				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
