@@ -29,7 +29,7 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 	
 	
 
-//	@Override
+	@Override
 	public void mouseScrolled(MouseEvent e) {
 		
 		

@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.linuxtools.systemtap.local.core.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.linuxtools.systemtap.local.core
 Import-Package: org.eclipse.cdt.core,
  org.eclipse.cdt.core.dom.ast,

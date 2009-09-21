@@ -32,7 +32,7 @@ public class StapTreeListener implements ITreeViewerListener{
 	 * Autoscroll the horizontal scrollbar when there is a collapse event.
 	 * 
 	 */
-//	@Override
+	@Override
 	public void treeCollapsed(TreeExpansionEvent event) {
 		StapData data = (StapData) event.getElement();
 		if (highestLevelNodes.get(highestLevelOfExpansion) != null) {
@@ -51,7 +51,7 @@ public class StapTreeListener implements ITreeViewerListener{
 	 * Autoscroll the horizontal scrollbar when there is an expand event.
 	 * 
 	 */
-//	@Override
+	@Override
 	public void treeExpanded(TreeExpansionEvent event) {
 		StapData d = ((StapData) event.getElement());
 		if (d.levelOfRecursion > highestLevelOfExpansion) {

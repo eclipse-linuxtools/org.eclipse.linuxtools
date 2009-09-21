@@ -435,7 +435,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			counter = 0;
 			h.setBufferedWriter(outputPath + "ERROR"); //$NON-NLS-1$
 		}
-//		@Override
+		@Override
 		public void streamAppended(String text, IStreamMonitor monitor) {
 			try {
 				counter++;

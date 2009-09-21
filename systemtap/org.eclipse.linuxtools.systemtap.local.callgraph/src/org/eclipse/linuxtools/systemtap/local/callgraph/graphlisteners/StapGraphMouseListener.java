@@ -37,7 +37,7 @@ public class StapGraphMouseListener implements MouseListener {
 		exitListener = new StapGraphMouseExitListener(listener);
 	}
 
-//	@Override
+	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		if (e.stateMask == SWT.CONTROL) {
 			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
@@ -112,7 +112,7 @@ public class StapGraphMouseListener implements MouseListener {
 	}
 
 
-//	@Override
+	@Override
 	public void mouseDown(MouseEvent e) {
 //		MP.println("You clicked: " + e.x + ", " + e.y); //$NON-NLS-1$ //$NON-NLS-2$
 //		MP.println("Convert to control: " + graph.toControl(e.x, e.y).x + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -131,7 +131,7 @@ public class StapGraphMouseListener implements MouseListener {
 	}
 
 	@SuppressWarnings("unchecked")
-//	@Override
+	@Override
 	public void mouseUp(MouseEvent e) {
 		
 		listener.setStop(true);

@@ -22,7 +22,7 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 
 	private StapGraph graph;
 	
-//	@Override
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		List<StapData> EMPTY = new ArrayList<StapData>();
 		if (parentElement instanceof StapData) {
@@ -37,7 +37,7 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 		return EMPTY.toArray();
 	}
 
-//	@Override
+	@Override
 	public Object getParent(Object element) {
 		if (element instanceof StapData) {
 			return graph.getData(((StapData) element).collapsedCaller);
@@ -45,7 +45,7 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 		return null;
 	}
 
-//	@Override
+	@Override
 	public boolean hasChildren(Object element) {
 		if (element instanceof StapData)
 			return element == null ? false : 
@@ -53,17 +53,17 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 		return false;
 	}
 
-//	@Override
+	@Override
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
 	}
 
-//	@Override
+	@Override
 	public void dispose() {	
 		
 	}
 
-//	@Override
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 	}
 	

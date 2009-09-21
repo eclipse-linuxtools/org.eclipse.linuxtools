@@ -170,12 +170,12 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 
 	protected FocusListener focusListener = new FocusListener() {
 
-//		@Override
+		@Override
 		public void focusGained(FocusEvent e) {
 			//Do nothing
 		}
 
-//		@Override
+		@Override
 		public void focusLost(FocusEvent e) {
 			if (output_file_has_changed) {
 				checkOverwrite();
@@ -213,7 +213,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	 * tabs and calls and sets the other create*Option
 	 * functions to create buttons, text fields and spinners.
 	 */
-//	@Override
+	@Override
 	public void createControl(Composite parent) {
 		scrollTop = new ScrolledComposite(parent,	SWT.H_SCROLL | SWT.V_SCROLL);
 		scrollTop.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -712,12 +712,12 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	}
 
 	
-//	@Override
+	@Override
 	public String getName() {
 		return Messages.getString("SystemTapOptionsTab.MainTabName"); //$NON-NLS-1$
 	}
 
-//	@Override
+	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		
 		
@@ -766,7 +766,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		
 	}
 
-//	@Override
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		
 		getControl().setRedraw(false);
@@ -827,7 +827,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		getControl().setRedraw(true);
 	}
 
-//	@Override
+	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE); 
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_KEEP_TEMPORARY,LaunchConfigurationConstants.DEFAULT_COMMAND_KEEP_TEMPORARY); 

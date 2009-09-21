@@ -26,11 +26,11 @@ public class StapGraphFocusListener implements FocusListener{
 		this.listener = listener;
 	}
 	
-//	@Override
+	@Override
 	public void focusGained(FocusEvent e) {		
 	}
 
-//	@Override
+	@Override
 	public void focusLost(FocusEvent e) {			
 		listener.setStop(true);
 	}
