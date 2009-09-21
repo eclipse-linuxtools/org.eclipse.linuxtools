@@ -79,6 +79,8 @@ public class SystemTapCommandLineTest extends TestCase {
 	
 	
 	public void testBasicStapScript() {
+		if (!TestConstants.canRunStap)
+			return;
 		final String expected = "probe_beginprobe_end";
 		
 		String command = "probe begin { " +
@@ -107,6 +109,8 @@ public class SystemTapCommandLineTest extends TestCase {
 	}*/
 
 	public void testBasicOperations(){
+		if (!TestConstants.canRunStap)
+			return;
 		final String expected = "01234";
 		
 		String command = "global map\n" +
