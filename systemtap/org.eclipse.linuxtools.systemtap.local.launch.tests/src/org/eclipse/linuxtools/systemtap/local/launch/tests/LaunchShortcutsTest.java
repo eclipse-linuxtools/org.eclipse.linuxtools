@@ -16,7 +16,6 @@ import java.io.IOException;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
@@ -27,7 +26,6 @@ import org.osgi.framework.Bundle;
 
 
 public class LaunchShortcutsTest extends AbstractStapTest{
-	private String testName = "basicTest";
 
 	/**
 	 * Checks that the scripts are correct/exist and that the expected 
