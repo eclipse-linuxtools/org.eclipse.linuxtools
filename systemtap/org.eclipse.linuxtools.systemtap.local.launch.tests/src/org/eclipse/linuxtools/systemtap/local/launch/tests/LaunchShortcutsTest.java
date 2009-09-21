@@ -12,11 +12,10 @@ package org.eclipse.linuxtools.systemtap.local.launch.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
+import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.launch.LaunchStapGraph;
@@ -56,27 +55,22 @@ public class LaunchShortcutsTest extends AbstractStapTest{
 			
 			//Need to set funcs, scriptPath, projectName, partialScriptPath
 			launch.setProjectName(testName);
+			IBinary bin = proj.getBinaryContainer().getBinaries()[0];
+			launch.setBinary(bin);
 			launch.writeFunctionListToScript(null);
 				
-			String scriptPath = getPathToFiles(testName).toOSString() + testName + "Script.gen-stp";
-			launch.setScriptPath(scriptPath);
-			System.out.println(scriptPath);
 			launch.setPartialScriptPath(PluginConstants.PLUGIN_LOCATION + "parse_function_partial.stp");
-			launch.generateScript();
 			
-			checkScript(launch);
+			String script = launch.generateScript();
+			System.out.println(script);
 			
-//			
-//			File f= new File(outputPath);
-//			f.delete();
-//	
-//			f = new File(scriptPath);
-//			f.delete();
-//			
-			killStap();
+			assert(script.contains("probe process(@1).function(\"calledOnce\").call{	callFunction(probefunc())	}	probe process(@1).function(\"calledOnce\").return{		returnFunction(probefunc())	}"));
+			assert(script.contains("probe process(@1).function(\"calledTwice\").call{	callFunction(probefunc())	}	probe process(@1).function(\"calledTwice\").return{		returnFunction(probefunc())	}"));
+			assert(script.contains("probe process(@1).function(\"main\").call{	callFunction(probefunc())	}	probe process(@1).function(\"main\").return{		returnFunction(probefunc())	}"));
+
+			
+			
 			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
