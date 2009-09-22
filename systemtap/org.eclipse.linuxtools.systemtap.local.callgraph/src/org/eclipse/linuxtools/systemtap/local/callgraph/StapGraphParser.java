@@ -33,7 +33,7 @@ import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
  * handles all of the parsing. All data is stored into Maps and this class
  * also starts the job responsible for taking the parsed data and rendering it.
  */
-public class StapGraphParser extends SystemTapParser{
+public class StapGraphParser extends SystemTapParser {
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
@@ -47,10 +47,12 @@ public class StapGraphParser extends SystemTapParser{
 	public long totalTime;
 	public int lastFunctionCalled;
 	public ICProject project;
+
 	
-	public StapGraphParser(String name, String filePath) {
-		super(name, filePath);
-		
+	public String text;
+	
+	@Override
+	protected void initialize() {
 		//INITIALIZE MAPS
 		outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
 		timeMap = new HashMap<Integer, Long>();
@@ -61,10 +63,9 @@ public class StapGraphParser extends SystemTapParser{
 		callOrderList = new ArrayList<Integer>();
 		markedMap = new HashMap<Integer, String>();
 		lastFunctionCalled = 0;
-		project = null;
+		project = null;		
 	}
-	
-	public String text;
+
 	
 	public IStatus executeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
@@ -320,6 +321,7 @@ public class StapGraphParser extends SystemTapParser{
 		return Status.OK_STATUS;
 			
 	}
+
 
 
 	

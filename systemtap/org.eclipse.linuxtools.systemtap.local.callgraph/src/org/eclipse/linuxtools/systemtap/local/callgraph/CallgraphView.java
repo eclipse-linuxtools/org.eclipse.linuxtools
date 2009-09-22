@@ -549,7 +549,8 @@ public class CallgraphView extends ViewPart {
 				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
 				String filePath =  dialog.open();
 				if (filePath != null){
-					StapGraphParser new_parser = new StapGraphParser(Messages.getString("CallgraphView.10"), filePath); //$NON-NLS-1$
+					StapGraphParser new_parser = new StapGraphParser();
+					new_parser.setFile(filePath);
 					new_parser.schedule();					
 				}
 			}
@@ -558,9 +559,7 @@ public class CallgraphView extends ViewPart {
 		//Opens from the default location
 		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
 			public void run(){
-				StapGraphParser new_parser = new 
-						StapGraphParser(Messages.getString("CallgraphView.12"),  //$NON-NLS-1$
-										PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH);
+				StapGraphParser new_parser = new StapGraphParser();
 				new_parser.schedule();					
 			}
 		};

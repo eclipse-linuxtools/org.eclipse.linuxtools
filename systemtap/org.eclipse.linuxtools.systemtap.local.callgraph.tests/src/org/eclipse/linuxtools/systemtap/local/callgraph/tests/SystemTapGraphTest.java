@@ -64,7 +64,8 @@ public class SystemTapGraphTest extends TestCase {
 	public void testGraphLoading() throws InterruptedException {
 		System.out.println("Testing graph loading");
 
-		StapGraphParser parse = new StapGraphParser("Test StapParser", Activator.PLUGIN_LOCATION+"graph_data_output.graph");
+		StapGraphParser parse = new StapGraphParser();
+		parse.setFile(Activator.PLUGIN_LOCATION+"graph_data_output.graph");
 		parse.testRun(new NullProgressMonitor());
 		
 		CallgraphView.forceDisplay();

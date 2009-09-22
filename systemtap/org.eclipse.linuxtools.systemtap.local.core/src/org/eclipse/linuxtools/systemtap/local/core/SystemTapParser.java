@@ -12,13 +12,38 @@ public abstract class SystemTapParser extends Job {
 	protected IProgressMonitor monitor;
 	protected String filePath;
 	
+	public SystemTapParser() {
+		super("New_Job");
+		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		initialize();
+	}
+	
+	/**
+	 * Initialize will be called in the constructors for this class.
+	 * Use this method to initialize variables.
+	 */
+	protected abstract void initialize();
+	
+	
+	/**
+	 * Implement this method to execute parsing. The return from
+	 * executeParsing() will be the return value of the run command.
+	 * 
+	 * SystemTapParser will call executeParsing() within its run method.
+	 * (i.e. will execute in a separate, non-UI thread)
+	 * @return
+	 */
+	public abstract IStatus executeParsing();
+	
+	
     public SystemTapParser(String name, String filePath) {
 		super(name);
 		//BY DEFAULT READ/WRITE FROM HERE
 		if (filePath != null)
 			this.filePath = filePath;
 		else
-			filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+			this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		initialize();
 	}
 
 	/**
@@ -59,18 +84,6 @@ public abstract class SystemTapParser extends Job {
 		return executeParsing();
 		
 	}
-	
-	
-	/**
-	 * Implement this method to execute parsing. The return from
-	 * executeParsing() will be the return value of the run command.
-	 * 
-	 * SystemTapParser will call executeParsing() within its run method.
-	 * (i.e. will execute in a separate, non-UI thread)
-	 * @return
-	 */
-	public abstract IStatus executeParsing();
-
 
 	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
 		int amt = 0;
