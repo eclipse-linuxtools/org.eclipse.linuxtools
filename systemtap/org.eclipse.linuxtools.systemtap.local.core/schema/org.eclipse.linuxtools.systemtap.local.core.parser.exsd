@@ -27,7 +27,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="id" type="string">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   
@@ -57,6 +57,13 @@
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.systemtap.local.core.ISystemTapParser"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="realtime" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

@@ -14,6 +14,9 @@ public final class PluginConstants {
 	
 	public static String DEFAULT_OUTPUT = ""; //$NON-NLS-1$
 	public static final String CONFIGURATION_TYPE_ID = "org.eclipse.linuxtools.systemtap.localgui.launch.systemtapLaunch";	 //$NON-NLS-1$
+	public static final String PARSER_CLASS = "org.eclipse.linuxtools.systemtap.local.core.parser";
+	public static final String PARSER_RESOURCE = "org.eclipse.linuxtools.systemtap.local.core";
+	public static final String PARSER_NAME = "parser"; 
 	
 	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	
