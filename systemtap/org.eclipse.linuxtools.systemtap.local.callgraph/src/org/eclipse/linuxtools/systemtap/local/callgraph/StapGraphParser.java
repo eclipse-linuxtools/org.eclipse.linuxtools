@@ -14,17 +14,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.linuxtools.systemtap.local.core.MP;
-import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapParser;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 
 
@@ -37,8 +33,7 @@ import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
  * handles all of the parsing. All data is stored into Maps and this class
  * also starts the job responsible for taking the parsed data and rendering it.
  */
-public class StapGraphParser extends Job{
-	private IProgressMonitor monitor;
+public class StapGraphParser extends SystemTapParser{
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
@@ -48,20 +43,13 @@ public class StapGraphParser extends Job{
 	public  HashMap<Integer, String> markedMap;
 	public String markedNodes;
 	public int validator;
-	private String filePath;
 	public Long endingTimeInNS;
 	public long totalTime;
 	public int lastFunctionCalled;
 	public ICProject project;
 	
 	public StapGraphParser(String name, String filePath) {
-		super(name);
-		
-		//BY DEFAULT READ/WRITE FROM HERE
-		if (filePath != null)
-			this.filePath = filePath;
-		else
-			filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		super(name, filePath);
 		
 		//INITIALIZE MAPS
 		outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
@@ -74,20 +62,6 @@ public class StapGraphParser extends Job{
 		markedMap = new HashMap<Integer, String>();
 		lastFunctionCalled = 0;
 		project = null;
-	}
-	
-	public void setFile(String filePath) {
-		this.filePath = filePath;
-	}
-	
-	
-	public void launchFileDialogError(){
-		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(
-				Messages.getString("StapGraphParser.0"), //$NON-NLS-1$
-				Messages.getString("StapGraphParser.1"), //$NON-NLS-1$
-				Messages.getString("StapGraphParser.2")+filePath+ //$NON-NLS-1$
-				Messages.getString("StapGraphParser.3")); //$NON-NLS-1$ 
-		err.schedule();
 	}
 	
 	public String text;
@@ -180,11 +154,11 @@ public class StapGraphParser extends Job{
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isNameClean(name) && name.contains("__")) { //$NON-NLS-1$
+						if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
 							skippedDirectives = true;
 							break;
 						}
-						name = cleanName(name);
+						name = cleanFunctionName(name);
 						if (name.equals("main")) //$NON-NLS-1$
 							encounteredMain = true;
 						if (firstNode == -1) {
@@ -237,11 +211,11 @@ public class StapGraphParser extends Job{
 						
 						//If we haven't encountered a main function yet and the name isn't clean,
 						//and the name contains "__", then this is probably a C directive
-						if (!encounteredMain && !isNameClean(name) && name.contains("__")) { //$NON-NLS-1$
+						if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
 							skippedDirectives = true;							
 							break;
 						}
-						name = cleanName(name);
+						name = cleanFunctionName(name);
 						int lastOccurance = nameList.lastIndexOf(name);
 						if (lastOccurance < 0) {
 							parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
@@ -346,75 +320,7 @@ public class StapGraphParser extends Job{
 		return Status.OK_STATUS;
 			
 	}
-	
-	/**
-	 * Cleans names of form 'name").return', returning just the name
-	 * @param name
-	 */
-	private String cleanName(String name) {
-		return name.split("\"")[0]; //$NON-NLS-1$
-		
-	}
-	
-	private void parsingError(String message) {
-		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-				Messages.getString("StapGraphParser.28"), Messages.getString("StapGraphParser.29"), message); //$NON-NLS-1$ //$NON-NLS-2$
-		mess.schedule();
-	}
-	
- 
-	private boolean isNameClean(String name) {
-		if (name.contains("\"") || name.contains(")")) //$NON-NLS-1$ //$NON-NLS-2$
-			return false;
-		return true;
-	}
-	
-	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
-		int amt = 0;
-		for (int a : blah.keySet()) {
-			amt++;
-			MP.print(a + " ::> "); //$NON-NLS-1$
-			for (int c : blah.get(a)) {
-					System.out.print(c + " ");					 //$NON-NLS-1$
-			}
-			MP.println(""); //$NON-NLS-1$
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void printMap(Map blah) {
-		int amt = 0;
-		for (Object a : blah.keySet()) {
-			amt++;
-			MP.println(a + " ::> "+blah.get(a)); //$NON-NLS-1$
-		}
-	}
 
-	@Override
-	protected IStatus run(IProgressMonitor monitor) {
-		this.monitor = monitor;
-		return executeParsing();
-		
-	}
-	
-	
-	public String getFile() {
-		return filePath;
-	}
-	
 
-	public IProgressMonitor getMonitor() {
-		return monitor;
-	}
-
-	/**
-	 * For easier JUnit testing only. Allows public access to run method without scheduling an extra job.
-	 *  
-	 * @param m
-	 * @return
-	 */
-	public IStatus testRun(IProgressMonitor m) {
-		return run(m);
-	}
 	
 }
