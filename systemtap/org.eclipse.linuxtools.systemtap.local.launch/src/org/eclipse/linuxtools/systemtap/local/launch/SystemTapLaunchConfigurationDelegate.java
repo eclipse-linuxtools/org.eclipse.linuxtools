@@ -38,8 +38,6 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
-import org.eclipse.linuxtools.systemtap.local.callgraph.SystemTapCommandParser;
 import org.eclipse.linuxtools.systemtap.local.core.Helper;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
@@ -69,6 +67,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	private String outputPath = ""; //$NON-NLS-1$
 	private boolean needsBinary = false; // Set to false if we want to use SystemTap
 	private boolean needsArguments = false;
+	@SuppressWarnings("unused")
 	private boolean useColour = false;
 	private String binaryArguments = ""; //$NON-NLS-1$
 	
@@ -243,6 +242,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
+			
+			if (console == null)
+				return Status.CANCEL_STATUS;
+			
 			IDocument doc = console.getDocument();
 			
 			if (binaryCommand.length() > 0)
@@ -323,20 +326,22 @@ public class SystemTapLaunchConfigurationDelegate extends
 			// set the default source locator if required
 			setDefaultSourceLocator(launch, config);
 			
-			boolean graphMode = config.getAttribute(
-					LaunchConfigurationConstants.GRAPHICS_MODE,
-					LaunchConfigurationConstants.DEFAULT_GRAPHICS_MODE);
-			
+			String parserClass = config.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, 
+					LaunchConfigurationConstants.DEFAULT_PARSER_CLASS);
 			IExtensionRegistry reg = Platform.getExtensionRegistry();
 			IConfigurationElement[] extensions = reg
 					.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE, 
 							PluginConstants.PARSER_NAME, 
-							config.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, 
-									LaunchConfigurationConstants.DEFAULT_PARSER_CLASS));
+							parserClass);
 			
 			
-			if (extensions == null || extensions.length < 1)
+			if (extensions == null || extensions.length < 1) {
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Invalid parser", "invalid parser",
+						"The selected parser is not valid. Please select a different parser. \n\n" +
+						"Invalid id: " + parserClass);
+				mess.schedule();
 				return;
+			}
 			
 			IConfigurationElement element = extensions[0];
 

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
@@ -117,13 +116,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			generatedScript = generateScript();
 			if (generatedScript == null || generatedScript.length() < 0)
 				return;
-			ILaunchConfigurationWorkingCopy wc;
 			
 			needToGenerate = true;
-			
-			wc = config.getWorkingCopy();
-			wc.setAttribute(LaunchConfigurationConstants.GRAPHICS_MODE, true);
-			wc.doSave();
 			
 			finishLaunch(name, mode);
 
