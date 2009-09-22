@@ -556,7 +556,7 @@ protected void finishLaunchWithoutBinary(String name, String mode) {
 							if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
 									c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
 								continue;
-							if (c.getElementName().contains("main") && !output.contains(c))
+							if (c.getElementName().contains("main") && !output.contains(c)) //$NON-NLS-1$
 								output.add(c);
 						}
 					}

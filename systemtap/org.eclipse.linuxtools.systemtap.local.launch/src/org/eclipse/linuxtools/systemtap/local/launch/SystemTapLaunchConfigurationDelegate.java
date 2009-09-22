@@ -56,7 +56,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		AbstractCLaunchDelegate {
 
 	private static final String TEMP_ERROR_OUTPUT =
-		PluginConstants.PLUGIN_LOCATION + "stapTempError.error";
+		PluginConstants.PLUGIN_LOCATION + "stapTempError.error"; //$NON-NLS-1$
 	private String cmd;
 	private File temporaryScript = null;
 	private String arguments = ""; //$NON-NLS-1$

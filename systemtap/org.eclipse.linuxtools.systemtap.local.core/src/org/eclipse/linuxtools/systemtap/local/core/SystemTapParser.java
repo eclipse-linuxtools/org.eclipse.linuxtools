@@ -47,7 +47,7 @@ public abstract class SystemTapParser extends Job {
 	 */
 	protected void parsingError(String message) {
 		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-				"ParseError", "Unexpected symbol", message);  
+				Messages.getString("SystemTapParser.0"), Messages.getString("SystemTapParser.1"), message);   //$NON-NLS-1$ //$NON-NLS-2$
 		mess.schedule();
 	}
 	
@@ -117,10 +117,10 @@ public abstract class SystemTapParser extends Job {
 	
 	public void launchFileDialogError(){
 		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(
-				"Invalid File Error", 
-				"File Specified Invalid", 
-				"The file : "+filePath+ 
-				" could not be rendered. Please make sure the file exists and is valid.");  
+				Messages.getString("SystemTapParser.2"),  //$NON-NLS-1$
+				Messages.getString("SystemTapParser.3"),  //$NON-NLS-1$
+				Messages.getString("SystemTapParser.4")+filePath+  //$NON-NLS-1$
+				Messages.getString("SystemTapParser.5"));   //$NON-NLS-1$
 		err.schedule();
 	}
 	
