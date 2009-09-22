@@ -13,7 +13,7 @@ public class AutoScrollHelper {
 			if (graph.isCollapseMode())
 				parent = graph.getNodeData(graph.getRootVisibleNodeNumber()).collapsedCaller;
 			
-			if (graph.getNodeData(parent).levelOfRecursion > 0 ) {
+			if (graph.getNodeData(parent) != null && graph.getNodeData(parent).levelOfRecursion > 0 ) {
 				int animMode = graph.getAnimationMode();
 				graph.draw(graph.getDrawMode(), StapGraph.CONSTANT_ANIMATION_FASTEST, parent);
 				graph.setAnimationMode(animMode);
