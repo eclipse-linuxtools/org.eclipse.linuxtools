@@ -22,9 +22,12 @@ import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
@@ -42,6 +45,7 @@ import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapErrorHandler;
+import org.eclipse.linuxtools.systemtap.local.core.SystemTapParser;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.progress.UIJob;
@@ -322,15 +326,26 @@ public class SystemTapLaunchConfigurationDelegate extends
 			boolean graphMode = config.getAttribute(
 					LaunchConfigurationConstants.GRAPHICS_MODE,
 					LaunchConfigurationConstants.DEFAULT_GRAPHICS_MODE);
-			// Prepare a parser object - parser will read and update from the
-			// output file continuously
-			SystemTapCommandParser stapCmdPar = null;
-			if (!graphMode) {
-				stapCmdPar = new SystemTapCommandParser(Messages
-						.getString("RunSystemTapAction.0"), outputPath, //$NON-NLS-1$
-						new CallgraphView(), useColour, graphMode, config
-								.getName());
-				stapCmdPar.schedule();
+			
+			IExtensionRegistry reg = Platform.getExtensionRegistry();
+			IConfigurationElement[] extensions = reg
+					.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE, 
+							PluginConstants.PARSER_NAME, 
+							config.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, 
+									LaunchConfigurationConstants.DEFAULT_PARSER_CLASS));
+			
+			
+			if (extensions == null || extensions.length < 1)
+				return;
+			
+			IConfigurationElement element = extensions[0];
+
+			SystemTapParser parser = 
+				(SystemTapParser) element.createExecutableExtension("class"); 
+			
+			
+			if (element.getAttribute("realtime") == "true") {
+				parser.schedule();
 			}
 
 			monitor.worked(1);
@@ -372,9 +387,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 			Thread.sleep(100);
 			s.close();
-			//SIGNAL THE PROCESS TO FINISH
-			if (stapCmdPar != null)
-				stapCmdPar.setProcessFinished(true);
 
 			if (process.getExitValue() != 0) {
 				//SystemTap terminated with errors, parse console to figure out which error 
@@ -402,15 +414,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 					
 				return;
 			}
-					
-
-			if (graphMode) {
-				stapCmdPar = new SystemTapCommandParser(
-						Messages.getString("RunSystemTapAction.0"), //$NON-NLS-1$
-						outputPath, new CallgraphView(), useColour, graphMode,
-						config.getName());
-					stapCmdPar.schedule();
+			
+			if (element.getAttribute("realtime") != "true") {
+				parser.schedule();
 			}
+						
 			
 			monitor.worked(1);
 

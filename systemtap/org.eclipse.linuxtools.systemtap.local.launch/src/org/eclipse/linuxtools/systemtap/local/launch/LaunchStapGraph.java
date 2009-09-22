@@ -96,6 +96,9 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 		scriptPath = PluginConstants.DEFAULT_OUTPUT 
 				+ "callgraphGen.stp";  //$NON-NLS-1$
+		
+		parserID = "org.eclipse.linuxtools.systemtap.local.callgraph.graphparser";
+		
 
 		
 		if (projectName == null || projectName.length() < 1)
@@ -133,6 +136,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			e.printStackTrace();
 		} catch (CoreException e1) {
 			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			resourceToSearchFor = ""; //$NON-NLS-1$
 			searchForResource = false;

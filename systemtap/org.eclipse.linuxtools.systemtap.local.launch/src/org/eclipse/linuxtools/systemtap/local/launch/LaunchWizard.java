@@ -249,7 +249,11 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 					binaryPath = binaryLocation.getText();
 					arguments = argumentsLocation.getText();
 					config = createConfiguration(null, name);
-					finishLaunch(scriptPath + ": " + binName, mode); //$NON-NLS-1$
+					try {
+						finishLaunch(scriptPath + ": " + binName, mode);//$NON-NLS-1$
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					} 
 					completed = true;
 					sh.dispose();
 				}

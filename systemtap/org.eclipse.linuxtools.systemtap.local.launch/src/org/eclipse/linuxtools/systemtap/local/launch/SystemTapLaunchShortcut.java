@@ -66,12 +66,14 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected String binName;
 	protected String dirPath;
 	protected String generatedScript;
+	protected String parserID;
 	protected boolean needToGenerate;
 	protected boolean overwrite;
 	protected boolean useColours;
 	protected String resourceToSearchFor;
 	protected boolean searchForResource;
 	protected IBinary bin;
+	
 	
 	private Button OKButton;
 	private boolean testMode = false;
@@ -98,6 +100,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
 		needToGenerate = false;
 		useColours = false;
+		parserID = null;
 	}
 
 	@Override
@@ -170,8 +173,11 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
  * @param name: Used to generate the name of the new configuration
  * @param bin:	Affiliated executable
  * @param mode:	Mode setting
+ * @throws Exception 
  */
-	protected void finishLaunch(String name, String mode) {
+	protected void finishLaunch(String name, String mode) throws Exception {
+		if (parserID == null)
+			throw new Exception();
 		
 		if (scriptPath.length() < 1) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchShortcut.ErrorMessageName"),  //$NON-NLS-1$
@@ -197,6 +203,9 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerate);
 			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
 			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
+			wc.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parserID);
+			
+			
 			try {
 				config = wc.doSave();
 			} catch (CoreException e) {
