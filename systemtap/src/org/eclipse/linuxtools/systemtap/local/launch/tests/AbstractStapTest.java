@@ -1,29 +1,17 @@
 package org.eclipse.linuxtools.systemtap.local.launch.tests;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.Launch;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapOptionsTab;
 import org.osgi.framework.Bundle;
 

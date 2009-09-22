@@ -21,20 +21,8 @@ import junit.framework.TestSuite;
 public class AllTests {
 
 	public static Test suite() {
-//		Shell sh = new Shell();
-//		MessageDialog.openInformation(sh, "Launching JUnit tests", 
-//				"Commencing JUnit tests of the SystemTap Eclipse plugin. You should\n" +
-//				"see several error dialogs pop up - these are a normal part of the\n" +
-//				"test. The testing framework must 'trick' the plugin into launching\n" +
-//				"some of its internal classes, and the plugin is just letting you\n" +
-//				"know that it is being tricked. \nJust click OK on all dialogs.");
 		
 		SystemTapUIErrorMessages.setActive(false);
-		
-//		Shell eclipseShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-//		int width = Display.getCurrent().getBounds().width;
-//		int height = Display.getCurrent().getBounds().height;
-//		eclipseShell.setBounds(0, 0, width, height);
 		
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.systemtap.local.launch.tests");
