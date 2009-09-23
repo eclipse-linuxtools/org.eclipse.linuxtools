@@ -93,15 +93,16 @@ public class FileFinderOpener {
 	}
 	
 	
-	public static void findAndOpen(ICProject project, String functionName) {
+	public static String findAndOpen(ICProject project, String functionName) {
 		offset.clear();
 		length.clear();
 
 		ArrayList<String> files = findFunctionsInProject(project, functionName);
 		
 		if (files == null || files.size() < 1)
-			return;
-		
+			return null;
+		StringBuilder output = new StringBuilder();
+
 		if (files.size() == 1) {
 			open(files.get(0), offset.get(files.get(0)), length.get(files.get(0)));
 		} else {
@@ -115,18 +116,18 @@ public class FileFinderOpener {
 			for (Object o : d.getResult()) {
 				if (o instanceof String) {
 					String s = (String) o;
-					open(s, offset.get(s), length.get(s));
+					output.append(open(s, offset.get(s), length.get(s)));
 				}
 			}
 		}	
 		
-		return;
+		return output.toString();
 	}
 	
 	
-	public static void open(String path, int offset, int length) {
+	public static String open(String path, int offset, int length) {
 		if (path == null)
-			return;
+			return null;
 		File fileToOpen = new File(path);
 		 
 		if (fileToOpen.exists() && fileToOpen.isFile()) {
@@ -138,25 +139,15 @@ public class FileFinderOpener {
 		        if (ed instanceof ITextEditor && offset > 0) {
 		        	ITextEditor text = (ITextEditor) ed;
 		        	text.selectAndReveal(offset, length);
-//		        	IDocument doc = text.getDocumentProvider().getDocument(text.getEditorInput());
-//		        	int line = doc.getLineOfOffset(offset);
-//		        	while (line < doc.getNumberOfLines()) {
-//		        		String contents =doc.get(doc.getLineOffset(line), doc.getLineLength(line)); 
-//		        		if (contents.contains(targetFunction)) {
-//		        	
-//		        		}
-//
-//		        		line++;
-//		        	}
+		        	return text.getTitle();
 		        }
 		    } catch ( PartInitException e ) {
-//			} catch (BadLocationException e) {
 			}
 		} else {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("FileFinderOpener.FileNotFound"),  //$NON-NLS-1$
 					Messages.getString("FileFinderOpener.FileNotFound1"), Messages.getString("FileFinderOpener.FileNotFound2") + path);   //$NON-NLS-1$ //$NON-NLS-2$
 			mess.schedule();
 		}
+		return null;
 	}
-	
 }

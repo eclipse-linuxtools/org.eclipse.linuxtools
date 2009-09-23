@@ -25,7 +25,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.systemtap.local.core.Helper;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
@@ -1150,6 +1149,10 @@ public class CallgraphView extends ViewPart {
 
 	public static void setGoto_previous(Action gotoPrevious) {
 		goto_previous = gotoPrevious;
+	}
+	
+	public static StapGraph getGraph() {
+		return graph;
 	}
 }
 	

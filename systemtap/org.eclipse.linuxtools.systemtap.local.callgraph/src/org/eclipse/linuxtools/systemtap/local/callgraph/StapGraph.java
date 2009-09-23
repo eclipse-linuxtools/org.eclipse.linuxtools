@@ -126,6 +126,27 @@ public class StapGraph extends Graph {
 	private ICProject project;
 	
 	private int treeLevelFromRoot;
+	public StapGraphMouseListener getMouseListener() {
+		return mListener;
+	}
+
+
+
+	public StapGraphMouseWheelListener getMouseWheelListener() {
+		return mwListener;
+	}
+
+
+
+	public StapGraphKeyListener getKeyListener() {
+		return kListener;
+	}
+
+
+
+	private StapGraphMouseListener mListener;
+	private StapGraphMouseWheelListener mwListener;
+	private StapGraphKeyListener kListener;
 	
 	public StapGraph(Composite parent, int style, Composite treeComp, Canvas tCanvas) {
 		super(parent, style);
@@ -160,9 +181,12 @@ public class StapGraph extends Graph {
 		}
 				
 		//-------------Add listeners
-		this.addMouseListener(new StapGraphMouseListener(this));		
-		this.addKeyListener(new StapGraphKeyListener(this));
-		this.addMouseWheelListener(new StapGraphMouseWheelListener(this));
+		mListener = new StapGraphMouseListener(this);
+		kListener = new StapGraphKeyListener(this);
+		mwListener = new StapGraphMouseWheelListener(this);
+		this.addMouseListener(mListener);		
+		this.addKeyListener(kListener);
+		this.addMouseWheelListener(mwListener);
 	
 	}
 

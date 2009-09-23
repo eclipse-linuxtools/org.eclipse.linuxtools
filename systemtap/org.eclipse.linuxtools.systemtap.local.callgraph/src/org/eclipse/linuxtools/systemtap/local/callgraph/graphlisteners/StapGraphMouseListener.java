@@ -40,32 +40,7 @@ public class StapGraphMouseListener implements MouseListener {
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		if (e.stateMask == SWT.CONTROL) {
-			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
-				GraphNode node = getAggregateNodeFromSelection();
-				
-				if (node == null)
-					return;
-				
-				String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
-				FileFinderOpener.findAndOpen(graph.getProject(), functionName);
-			} else {
-				StapNode node = getNodeFromSelection();
-				
-				if (node == null)
-					return;
-
-				int caller = node.getData().caller;
-
-				if (caller < graph.getFirstUsefulNode()) {
-					// The only node that satisfies this condition should be
-					// main
-					caller = graph.getFirstUsefulNode();
-				}
-				FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
-			}
-
-			graph.setSelection(null);
-			return;
+			controlDoubleClick();
 		}
 		
 		
@@ -263,5 +238,33 @@ public class StapGraphMouseListener implements MouseListener {
 		return node;
 	}
 	
-	
+	public String controlDoubleClick() {
+		String output = null;
+		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
+			GraphNode node = getAggregateNodeFromSelection();
+			
+			if (node == null)
+				return null;
+			
+			String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
+			output= FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+		} else {
+			StapNode node = getNodeFromSelection();
+			
+			if (node == null)
+				return null;
+
+			int caller = node.getData().caller;
+
+			if (caller < graph.getFirstUsefulNode()) {
+				// The only node that satisfies this condition should be
+				// main
+				caller = graph.getFirstUsefulNode();
+			}
+			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
+		}
+
+		graph.setSelection(null);
+		return output;
+	}
 };

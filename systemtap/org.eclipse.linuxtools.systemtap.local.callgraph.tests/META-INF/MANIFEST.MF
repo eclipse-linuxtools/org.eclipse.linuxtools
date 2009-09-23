@@ -6,8 +6,12 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.local.callgraph.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.draw2d,
  org.eclipse.linuxtools.systemtap.local.callgraph;bundle-version="0.0.1",
  org.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.linuxtools.systemtap.local.core
+Import-Package: org.eclipse.linuxtools.systemtap.local.core,
+ org.eclipse.zest.core.widgets,
+ org.eclipse.zest.layouts,
+ org.eclipse.zest.layouts.algorithms
