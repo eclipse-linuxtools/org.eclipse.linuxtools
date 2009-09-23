@@ -29,6 +29,7 @@ public class LibhoverPlugin extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public LibhoverPlugin() {
+		plugin = this;
 	}
 
 	/*

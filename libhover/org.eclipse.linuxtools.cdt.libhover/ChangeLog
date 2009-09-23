@@ -1,3 +1,16 @@
+2009-09-23  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Load plugin if any of its classes are used.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibhoverPlugin.java (LibhoverPlugin): Set
+	plugin in constructor. 
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (resolveArgs): Change
+	to resolve template parms to actual types where known. 
+	(isParmMatch): Resolve the member prototype using template types so we are comparing
+	apples to apples.
+	(getMemberSummary): Change calls to isParmMatch and resolveArgs. 
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLibrary.java (getHoverInfo): Add
+	code to try accessing a path locally within the plugin, then try the file system. 
+
 2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #285867
