@@ -99,7 +99,6 @@ public class StapGraphMouseListener implements MouseListener {
 		mouseDownEvent(e.x, e.y);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void mouseUp(MouseEvent e) {
 			mouseUpEvent();

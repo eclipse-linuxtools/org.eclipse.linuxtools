@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
