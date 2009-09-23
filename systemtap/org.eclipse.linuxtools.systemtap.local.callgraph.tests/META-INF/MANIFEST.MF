@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.linuxtools.systemtap.local.core,
+Import-Package: org.eclipse.cdt.core.model,
+ org.eclipse.linuxtools.systemtap.local.core,
  org.eclipse.zest.core.widgets,
  org.eclipse.zest.layouts,
  org.eclipse.zest.layouts.algorithms
