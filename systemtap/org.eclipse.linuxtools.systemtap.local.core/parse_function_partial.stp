@@ -13,11 +13,6 @@ function returnFunction(probefunc) {
 	printf(">%s,,%d;", probefunc, finalTime)
 }
 
-probe syscall.exit {
-	if (pid() == target()) {
-		finalTime = gettimeofday_ns()
-	}
-}
 
 probe end {
 	printf("\n%d",finalTime);

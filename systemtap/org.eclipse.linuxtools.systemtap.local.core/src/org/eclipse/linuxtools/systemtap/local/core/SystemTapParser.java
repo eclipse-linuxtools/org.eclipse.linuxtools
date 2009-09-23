@@ -45,6 +45,8 @@ public abstract class SystemTapParser extends Job {
 	 */
 	public abstract IStatus executeParsing();
 	
+	public abstract void saveData(String filePath);
+	
 	
     public SystemTapParser(String name, String filePath) {
 		super(name);

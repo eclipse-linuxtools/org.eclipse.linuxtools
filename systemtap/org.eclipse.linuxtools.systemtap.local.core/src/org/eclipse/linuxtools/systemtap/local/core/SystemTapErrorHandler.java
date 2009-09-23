@@ -303,7 +303,11 @@ public class SystemTapErrorHandler {
 				return;
 			if (pat.matcher(s).matches()) {
 				int lastQuote = s.lastIndexOf('"');
+				if (lastQuote < 0)
+					return;
 				int secondLastQuote = s.lastIndexOf('"', lastQuote - 1);
+				if (secondLastQuote < 0)
+					return;
 				result = s.substring(secondLastQuote+1, lastQuote);
 				if (!functions.contains(result))
 					functions.add(result);

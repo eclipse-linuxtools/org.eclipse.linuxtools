@@ -116,7 +116,12 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			generatedScript = generateScript();
 			if (generatedScript == null || generatedScript.length() < 0)
 				return;
-			
+
+			generatedScript+= "probe syscall.exit {\n" +
+								"if (pid() == target()) {\n" + 
+								"finalTime = gettimeofday_ns()\n" +
+								"}\n" + 
+								"}\n";
 			needToGenerate = true;
 			
 			finishLaunch(name, mode);

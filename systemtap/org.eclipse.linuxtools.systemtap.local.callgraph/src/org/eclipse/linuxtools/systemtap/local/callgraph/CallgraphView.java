@@ -573,36 +573,7 @@ public class CallgraphView extends ViewPart {
 				String filePath = dialog.open();
 				
 				if (filePath != null) {
-					File file = new File(filePath);
-					String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$
-					+ parser.project.getElementName()
-					+ NEW_LINE
-					+ parser.text
-					+ NEW_LINE
-					+ parser.endingTimeInNS
-					+ NEW_LINE
-					+ parser.totalTime;
-					try {
-						// WAS THE FILE CREATED OR DOES IT ALREADY EXIST
-						if (file.createNewFile()) {
-							Helper.writeToFile(filePath, content);
-						} else {
-							if (MessageDialog
-									.openConfirm(
-											sh,
-											Messages
-													.getString("CallgraphView.FileExistsTitle"), //$NON-NLS-1$
-											Messages
-													.getString("CallgraphView.FileExistsMessage"))) { //$NON-NLS-1$
-								file.delete();
-								file.createNewFile();
-								Helper.writeToFile(filePath, content);
-							}
-						}
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-
+					parser.saveData(filePath);
 				}
 			}
 		};

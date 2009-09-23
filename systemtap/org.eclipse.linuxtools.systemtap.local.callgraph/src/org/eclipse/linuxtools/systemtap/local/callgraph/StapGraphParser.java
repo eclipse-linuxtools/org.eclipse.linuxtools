@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.callgraph;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,8 +21,11 @@ import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.systemtap.local.core.Helper;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapParser;
 import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+import org.eclipse.swt.widgets.Shell;
 
 
 /**
@@ -34,6 +38,8 @@ import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
  * also starts the job responsible for taking the parsed data and rendering it.
  */
 public class StapGraphParser extends SystemTapParser {
+	
+	private static final String NEW_LINE = "\n";
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
@@ -320,6 +326,40 @@ public class StapGraphParser extends SystemTapParser {
 		uijob.schedule(); 
 		return Status.OK_STATUS;
 			
+	}
+
+
+	@Override
+	public void saveData(String filePath) {
+		File file = new File(filePath);
+		String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$
+		+ project.getElementName()
+		+ NEW_LINE
+		+ text
+		+ NEW_LINE
+		+ endingTimeInNS
+		+ NEW_LINE
+		+ totalTime;
+		try {
+			// WAS THE FILE CREATED OR DOES IT ALREADY EXIST
+			if (file.createNewFile()) {
+				Helper.writeToFile(filePath, content);
+			} else {
+				if (MessageDialog
+						.openConfirm(
+								new Shell(),
+								Messages
+										.getString("CallgraphView.FileExistsTitle"), //$NON-NLS-1$
+								Messages
+										.getString("CallgraphView.FileExistsMessage"))) { //$NON-NLS-1$
+					file.delete();
+					file.createNewFile();
+					Helper.writeToFile(filePath, content);
+				}
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}		
 	}
 
 

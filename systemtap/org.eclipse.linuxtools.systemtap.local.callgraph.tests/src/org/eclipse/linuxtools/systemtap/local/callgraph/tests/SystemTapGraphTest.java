@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
@@ -94,7 +96,6 @@ public class SystemTapGraphTest extends TestCase {
 			tasks.add("(Manually) Collapse an arrow in the TreeViewer");
 			tasks.add("Save file");
 			tasks.add("Reload file");
-			tasks.add("Check Version");
 			
 
 		    int taskNumber = 0;
@@ -131,13 +132,16 @@ public class SystemTapGraphTest extends TestCase {
 					act = CallgraphView.getMode_collapsednodes();
 					break;
 				case 14:
-//					act = CallgraphView.getSave_callgraph();
+					String tempLocation = Activator.PLUGIN_LOCATION+"eag.graph2"; 
+					File temp = new File(tempLocation);
+					temp.delete();
+					parse.saveData(tempLocation);
+					temp.delete();
 					break;
 				case 15:
-//					act = CallgraphView.getOpen_callgraph();
-					break;
-				case 16:
-					act = CallgraphView.getHelp_version();
+					StapGraphParser new_parser = new StapGraphParser();
+					new_parser.setFile(Activator.PLUGIN_LOCATION+"eag.graph");
+					new_parser.testRun(new NullProgressMonitor());	
 					break;
 				default:
 					break;
