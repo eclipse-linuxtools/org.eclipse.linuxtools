@@ -96,90 +96,13 @@ public class StapGraphMouseListener implements MouseListener {
 //				+ graph.toDisplay(e.x, e.y).y);
 //		MP.println("Bounds: " + graph.getBounds().width + ", " //$NON-NLS-1$ //$NON-NLS-2$
 //				+ graph.getBounds().height);
-		List<?> list = graph.getSelection();
-		if (list.size() < 1) {		
-			listener.setPoint(e.x, e.y);
-			listener.setStop(false);
-			graph.addMouseMoveListener(listener);
-			graph.addListener(SWT.MouseExit, exitListener);
-		}
+		mouseDownEvent(e.x, e.y);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void mouseUp(MouseEvent e) {
-		
-		listener.setStop(true);
-		graph.removeMouseMoveListener(listener);
-		graph.removeListener(SWT.MouseExit, exitListener);
-
-		List<StapNode> list = graph.getSelection();
-
-		// ------------Debug information
-		if (list.size() == 1) {
-			int id;
-			if (list.get(0) instanceof StapNode)
-				id = list.get(0).id;
-			else {
-				graph.setSelection(null);
-				return;
-			}
-			graph.setSelection(null);
-//			MP.println("Clicked node " + graph.getData(id).name + " with id " //$NON-NLS-1$ //$NON-NLS-2$
-//					+ id);
-//			MP.println("    level: " + graph.getData(id).levelOfRecursion); //$NON-NLS-1$
-//			MP.println("    called: " + graph.getData(id).called); //$NON-NLS-1$
-//			MP.println("    caller: " + graph.getData(id).caller); //$NON-NLS-1$
-//			MP.println("    copllapsedCaller: " //$NON-NLS-1$
-//					+ graph.getData(id).collapsedCaller);
-//			MP.println("    callees: " + graph.getData(id).callees.size()); //$NON-NLS-1$
-//			MP.println("    position: " + graph.getNode(id).getLocation().x //$NON-NLS-1$
-//					+ ", " + graph.getNode(id).getLocation().y); //$NON-NLS-1$
-
-			// ------------Highlighting
-			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE 
-					|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
-				for (StapNode n : (List<StapNode>) graph.getNodes()) {
-					unhighlightall(n);
-				}
-
-				List<Integer> callees = null;
-
-				if (graph.isCollapseMode())
-					callees = graph.getData(id).collapsedCallees;
-				else
-					callees = graph.getData(id).callees;
-
-				for (int subID : callees) {
-					if (graph.getNode(subID) != null)
-						graph.getNode(subID).highlight();
-				}
-
-				if (graph.getParentNode(id) != null) {
-					graph.getParentNode(id).highlight();
-				}
-//				graph.setSelection(null);
-				graph.getNode(id).highlight();
-
-				return;
-			}
-
-		}
-
-		else if (list.size() == 0 && ! (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)) {
-			for (StapNode n : (List<StapNode>) graph.getNodes()) {
-				unhighlightall(n);
-			}
-
-		}
-
-//		else {
-//			for (StapNode n : list) {
-//				unhighlightall(n);
-//			}
-//		}
-
-//		graph.setSelection(null);
+			mouseUpEvent();
 	}
 
 	private void unhighlightall(StapNode n) {
@@ -266,5 +189,91 @@ public class StapGraphMouseListener implements MouseListener {
 
 		graph.setSelection(null);
 		return output;
+	}
+	
+	public void mouseDownEvent(int x, int y) {
+		List<?> list = graph.getSelection();
+		if (list.size() < 1) {		
+			listener.setPoint(x, y);
+			listener.setStop(false);
+			graph.addMouseMoveListener(listener);
+			graph.addListener(SWT.MouseExit, exitListener);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void mouseUpEvent() {
+
+		listener.setStop(true);
+		graph.removeMouseMoveListener(listener);
+		graph.removeListener(SWT.MouseExit, exitListener);
+
+		List<StapNode> list = graph.getSelection();
+
+		// ------------Debug information
+		if (list.size() == 1) {
+			int id;
+			if (list.get(0) instanceof StapNode)
+				id = list.get(0).id;
+			else {
+				graph.setSelection(null);
+				return;
+			}
+			graph.setSelection(null);
+//			MP.println("Clicked node " + graph.getData(id).name + " with id " //$NON-NLS-1$ //$NON-NLS-2$
+//					+ id);
+//			MP.println("    level: " + graph.getData(id).levelOfRecursion); //$NON-NLS-1$
+//			MP.println("    called: " + graph.getData(id).called); //$NON-NLS-1$
+//			MP.println("    caller: " + graph.getData(id).caller); //$NON-NLS-1$
+//			MP.println("    copllapsedCaller: " //$NON-NLS-1$
+//					+ graph.getData(id).collapsedCaller);
+//			MP.println("    callees: " + graph.getData(id).callees.size()); //$NON-NLS-1$
+//			MP.println("    position: " + graph.getNode(id).getLocation().x //$NON-NLS-1$
+//					+ ", " + graph.getNode(id).getLocation().y); //$NON-NLS-1$
+
+			// ------------Highlighting
+			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE 
+					|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
+				for (StapNode n : (List<StapNode>) graph.getNodes()) {
+					unhighlightall(n);
+				}
+
+				List<Integer> callees = null;
+
+				if (graph.isCollapseMode())
+					callees = graph.getData(id).collapsedCallees;
+				else
+					callees = graph.getData(id).callees;
+
+				for (int subID : callees) {
+					if (graph.getNode(subID) != null)
+						graph.getNode(subID).highlight();
+				}
+
+				if (graph.getParentNode(id) != null) {
+					graph.getParentNode(id).highlight();
+				}
+//				graph.setSelection(null);
+				graph.getNode(id).highlight();
+
+				return;
+			}
+
+		}
+
+		else if (list.size() == 0 && ! (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)) {
+			for (StapNode n : (List<StapNode>) graph.getNodes()) {
+				unhighlightall(n);
+			}
+
+		}
+
+//		else {
+//			for (StapNode n : list) {
+//				unhighlightall(n);
+//			}
+//		}
+
+//		graph.setSelection(null);
 	}
 };
