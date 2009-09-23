@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
@@ -96,6 +95,7 @@ public class SystemTapGraphTest extends TestCase {
 			tasks.add("(Manually) Collapse an arrow in the TreeViewer");
 			tasks.add("Save file");
 			tasks.add("Reload file");
+			tasks.add("Maximize");
 			
 
 		    int taskNumber = 0;
@@ -142,6 +142,9 @@ public class SystemTapGraphTest extends TestCase {
 					StapGraphParser new_parser = new StapGraphParser();
 					new_parser.setFile(Activator.PLUGIN_LOCATION+"eag.graph");
 					new_parser.testRun(new NullProgressMonitor());	
+					break;
+				case 16:
+					CallgraphView.maximizeIfUnmaximized();
 					break;
 				default:
 					break;
