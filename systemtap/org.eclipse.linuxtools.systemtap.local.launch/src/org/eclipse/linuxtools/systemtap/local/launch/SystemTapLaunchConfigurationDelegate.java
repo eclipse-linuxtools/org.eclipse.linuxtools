@@ -38,6 +38,7 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.systemtap.local.core.DocWriter;
 import org.eclipse.linuxtools.systemtap.local.core.Helper;
 import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
@@ -227,63 +228,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	}
 
 	
-	private class DocWriter extends UIJob {
-		private TextConsole console;
-		private String configName;
-		private String binaryCommand;
 
-		public DocWriter(String name, TextConsole console, String cName,
-				String binaryCommand) {
-			super(name);
-			this.console = console;
-			this.configName = cName;
-			this.binaryCommand = binaryCommand;
-		}
-
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			
-			if (console == null)
-				return Status.CANCEL_STATUS;
-			
-			IDocument doc = console.getDocument();
-			
-			if (binaryCommand.length() > 0)
-				try {
-					doc.replace(doc.getLength(), 0, 
-						PluginConstants.NEW_LINE 
-						+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE 
-						+ Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
-						+ configName + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage2")//$NON-NLS-1$ 
-						+ binaryCommand + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage3") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage4") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage5")//$NON-NLS-1$
-						);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-			else
-				try {
-					doc.replace(doc.getLength(), 0,
-						PluginConstants.NEW_LINE +
-						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + 
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterMessage1")//$NON-NLS-1$ 
-						+ configName + PluginConstants.NEW_LINE +
-						Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterNoBinarySpecified") + //$NON-NLS-1$
-						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-			
-			return Status.OK_STATUS;
-		}
-		
-	}
-	
 	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
 			IProgressMonitor monitor, boolean retry) {
 		try {
@@ -336,9 +281,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			
 			if (extensions == null || extensions.length < 1) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Invalid parser", "invalid parser",
-						"The selected parser is not valid. Please select a different parser. \n\n" +
-						"Invalid id: " + parserClass);
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"), Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2"), //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser3") + //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser4") + parserClass); //$NON-NLS-1$
 				mess.schedule();
 				return;
 			}
@@ -346,10 +291,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 			IConfigurationElement element = extensions[0];
 
 			SystemTapParser parser = 
-				(SystemTapParser) element.createExecutableExtension("class"); 
+				(SystemTapParser) element.createExecutableExtension("class");  //$NON-NLS-1$
 			
 			
-			if (element.getAttribute("realtime") == "true") {
+			if (element.getAttribute("realtime") == "true") { //$NON-NLS-1$ //$NON-NLS-2$
 				parser.schedule();
 			}
 
@@ -420,7 +365,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				return;
 			}
 			
-			if (element.getAttribute("realtime") != "true") {
+			if (element.getAttribute(Messages.getString("SystemTapLaunchConfigurationDelegate.8")) != Messages.getString("SystemTapLaunchConfigurationDelegate.9")) { //$NON-NLS-1$ //$NON-NLS-2$
 				parser.schedule();
 			}
 						
