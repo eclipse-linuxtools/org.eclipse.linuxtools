@@ -103,9 +103,12 @@ public class SystemTapErrorHandler {
 							errorMessage+=Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
 							setErrorRecognized(true);
 						}
-							
+						
+						//TODO: Rough hack, very slow
+						if (!errorMessage.contains(line.substring(index+1))) {
 						errorMessage+=line.substring(index+1) 
-						+ PluginConstants.NEW_LINE;
+							+ PluginConstants.NEW_LINE;
+						}
 					
 						if (firstLine) {
 							findFunctions(m, message, pat);
