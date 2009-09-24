@@ -13,7 +13,7 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationDelegate"
-            id="org.eclipse.linuxtools.callgraph.launch.systemtapLaunch"
+            id="org.eclipse.linuxtools.systemtap.localgui.launch.systemtapLaunch"
             modes="profile"
             name="%launchConfigurationType.name.0"
             public="true"
@@ -30,8 +30,8 @@
       <launchConfigurationTabGroup
             class="org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationTabGroup"
             description="%launchConfigurationTabGroup.description.0"
-            id="org.eclipse.linuxtools.callgraph.launch.systemtapTabGroup"
-            type="org.eclipse.linuxtools.callgraph.launch.systemtapLaunch">
+            id="org.eclipse.linuxtools.systemtap.localgui.launch.systemtapTabGroup"
+            type="org.eclipse.linuxtools.systemtap.localgui.launch.systemtapLaunch">
       </launchConfigurationTabGroup>
    </extension>
    

@@ -95,7 +95,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		scriptPath = PluginConstants.DEFAULT_OUTPUT 
 				+ "callgraphGen.stp";  //$NON-NLS-1$
 		
-		parserID = "org.eclipse.linuxtools.callgraph.graphparser";
+		parserID = "org.eclipse.linuxtools.systemtap.local.callgraph.graphparser";
 		
 
 		
