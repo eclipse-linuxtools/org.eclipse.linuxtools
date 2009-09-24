@@ -8,11 +8,11 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.launch.tests;
+package org.eclipse.linuxtools.callgraph.launch.tests;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
-import org.eclipse.linuxtools.systemtap.local.launch.LaunchStapGraph;
+import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
 import org.osgi.framework.Bundle;
 
 

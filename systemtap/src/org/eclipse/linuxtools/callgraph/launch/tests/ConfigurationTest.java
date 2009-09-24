@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.launch.tests;
+package org.eclipse.linuxtools.callgraph.launch.tests;
 
 import java.io.IOException;
 
@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapLaunchShortcut;
+import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchShortcut;
 
 public class ConfigurationTest extends TestCase{
 	

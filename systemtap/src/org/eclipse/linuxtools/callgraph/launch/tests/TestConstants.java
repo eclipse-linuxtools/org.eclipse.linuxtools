@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.launch.tests;
+package org.eclipse.linuxtools.callgraph.launch.tests;
 
 public class TestConstants {
 	public static boolean canRunStap = false;

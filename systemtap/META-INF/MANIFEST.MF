@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Launch and Core Test
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.launch.tests
+Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.launch.tests
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: org.eclipse.linuxtools.systemtap.local.launch.tests.Activator
+Bundle-Activator: org.eclipse.linuxtools.callgraph.launch.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.debug.ui;bundle-version="3.4.1",
@@ -18,4 +18,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.callgraph.core,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.profiling.tests,
- org.eclipse.linuxtools.systemtap.local.launch
+ org.eclipse.linuxtools.callgraph.launch
