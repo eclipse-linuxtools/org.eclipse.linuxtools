@@ -13,11 +13,13 @@ package org.eclipse.linuxtools.callgraph.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.linuxtools.callgraph.CallgraphView;
-import org.eclipse.linuxtools.callgraph.GraphUIJob;
-import org.eclipse.linuxtools.callgraph.StapGraph;
-import org.eclipse.linuxtools.callgraph.StapGraphParser;
-import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
+import org.eclipse.linuxtools.systemtap.local.callgraph.GraphUIJob;
+import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
+import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
+import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphKeyListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseListener;
+import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseWheelListener;
 import org.eclipse.zest.core.widgets.GraphItem;
 
 
@@ -35,8 +37,8 @@ public class MouseListenerTest extends TestCase{
 		
 		
 		StapGraphMouseListener mListener = CallgraphView.getGraph().getMouseListener();
-//		StapGraphKeyListener kListener = CallgraphView.getGraph().getKeyListener();
-//		StapGraphMouseWheelListener mwListener = CallgraphView.getGraph().getMouseWheelListener();
+		StapGraphKeyListener kListener = CallgraphView.getGraph().getKeyListener();
+		StapGraphMouseWheelListener mwListener = CallgraphView.getGraph().getMouseWheelListener();
 		
 		StapGraph g = (StapGraph) CallgraphView.getGraph();
 		g.setProject(parse.project);
