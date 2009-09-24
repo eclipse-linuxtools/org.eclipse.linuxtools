@@ -7,7 +7,7 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.callgraphView"
+            class="org.eclipse.linuxtools.callgraph.CallgraphView"
             icon="icons/genericregister_obj.gif"
             id="org.eclipse.linuxtools.callgraph.callgraphview"
             name="Call Graph"
