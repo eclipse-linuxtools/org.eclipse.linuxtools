@@ -81,11 +81,11 @@
        </command>
     </extension>
     <extension
-          id="org.eclipse.linuxtools.systemtap.local.callgraph.graphparser"
+          id="org.eclipse.linuxtools.callgraph.StapGraphParser"
           name="GraphParser"
           point="org.eclipse.linuxtools.callgraph.core.parser">
        <parser
-             class="org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser"
+             class="org.eclipse.linuxtools.callgraph.StapGraphParser"
              realtime="false">
        </parser>
     </extension>
