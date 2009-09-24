@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import junit.framework.TestCase;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
+import org.eclipse.linuxtools.callgraph.StapGraphParser;
 
 public class StapGraphParserTest extends TestCase {
 	

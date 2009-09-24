@@ -13,13 +13,13 @@ package org.eclipse.linuxtools.callgraph.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.linuxtools.systemtap.local.callgraph.CallgraphView;
-import org.eclipse.linuxtools.systemtap.local.callgraph.GraphUIJob;
-import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraph;
-import org.eclipse.linuxtools.systemtap.local.callgraph.StapGraphParser;
-import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphKeyListener;
-import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseListener;
-import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseWheelListener;
+import org.eclipse.linuxtools.callgraph.CallgraphView;
+import org.eclipse.linuxtools.callgraph.GraphUIJob;
+import org.eclipse.linuxtools.callgraph.StapGraph;
+import org.eclipse.linuxtools.callgraph.StapGraphParser;
+import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphKeyListener;
+import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
+import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseWheelListener;
 import org.eclipse.zest.core.widgets.GraphItem;
 
 
