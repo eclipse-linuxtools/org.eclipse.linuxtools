@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.launch.tests;
+package org.eclipse.linuxtools.callgraph.launch.tests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.linuxtools.systemtap.local.launch.SystemTapOptionsTab;
+import org.eclipse.linuxtools.callgraph.launch.SystemTapOptionsTab;
 import org.osgi.framework.Bundle;
 
 public abstract class AbstractStapTest extends AbstractTest {

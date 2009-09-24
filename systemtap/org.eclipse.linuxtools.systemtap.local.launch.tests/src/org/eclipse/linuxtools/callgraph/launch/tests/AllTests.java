@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.launch.tests;
+package org.eclipse.linuxtools.callgraph.launch.tests;
 
 //import org.eclipse.jface.dialogs.MessageDialog;
 //import org.eclipse.swt.widgets.Shell;
@@ -25,7 +25,7 @@ public class AllTests {
 		SystemTapUIErrorMessages.setActive(false);
 		
 		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.systemtap.local.launch.tests");
+				"Test for org.eclipse.linuxtools.callgraph.launch.tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(SystemTapCommandTest.class);
 		suite.addTestSuite(ConfigurationTest.class);
