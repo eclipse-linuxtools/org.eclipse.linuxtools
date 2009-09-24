@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.systemtap.local"
+      id="org.eclipse.linuxtools.callgraph"
       label="%featureName"
       version="0.0.1.qualifier"
       provider-name="%featureProvider">
@@ -45,21 +45,21 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtap.local.core"
+         id="org.eclipse.linuxtools.callgraph.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtap.local.callgraph"
+         id="org.eclipse.linuxtools.callgraph"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.systemtap.local.launch"
+         id="org.eclipse.linuxtools.callgraph.launch"
          download-size="0"
          install-size="0"
          version="0.0.0"
