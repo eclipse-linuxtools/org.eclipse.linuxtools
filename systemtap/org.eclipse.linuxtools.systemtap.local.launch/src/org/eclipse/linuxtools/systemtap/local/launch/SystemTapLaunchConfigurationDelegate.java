@@ -231,6 +231,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
 			IProgressMonitor monitor, boolean retry) {
+		String errorMessage = "";
+
 		try {
 			File workDir = getWorkingDirectory(config);
 			if (workDir == null) {
@@ -337,6 +339,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 			Thread.sleep(100);
 			s.close();
+			
 
 			if (process.getExitValue() != 0) {
 				//SystemTap terminated with errors, parse console to figure out which error 
@@ -348,7 +351,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				errorHandler.handle(monitor, config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-				errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
+				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
 				if (monitor != null && monitor.isCanceled())
 					return;
 				
@@ -379,13 +382,47 @@ public class SystemTapLaunchConfigurationDelegate extends
 		} catch (CoreException e) {
 			e.printStackTrace();
 		} finally {
+			errorMessage = generateErrorMessage(config.getName(), command) + errorMessage;
+			
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
-					((TextConsole)Helper.getConsoleByName(config.getName())), config.getName(),
-					binaryArguments);
+					((TextConsole)Helper.getConsoleByName(config.getName())), errorMessage);
 			dw.schedule();
 			monitor.done();
 		}
 	}
+	
+	
+	private String generateErrorMessage(String configName, String binaryCommand) {
+		String output = "";
+		
+		if (binaryCommand == null || binaryCommand.length() < 0) {
+			output = PluginConstants.NEW_LINE +
+						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
+						PluginConstants.NEW_LINE + 
+						"Configuration name:   "//$NON-NLS-1$ 
+						+ configName + PluginConstants.NEW_LINE +
+						"No binary commands specified. To specify commands, " +
+						"check under the Binary Arguments tab for this " +
+						"configuration in Profile As --> Profile Configurations." + //$NON-NLS-1$
+						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
+		}
+		else {
+			output = PluginConstants.NEW_LINE 
+					+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
+					+ PluginConstants.NEW_LINE 
+					+ "Configuration name:   "//$NON-NLS-1$ 
+					+ configName + PluginConstants.NEW_LINE +
+					"Binary arguments  :   "//$NON-NLS-1$ 
+					+ binaryCommand + PluginConstants.NEW_LINE +
+					"To change this command, check under the Binary " + //$NON-NLS-1$
+					"Arguments tab for this configuration in " + //$NON-NLS-1$
+					"Profile As --> Profile Configurations." + //$NON-NLS-1$
+					PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
+		}
+			
+		return output;
+	}
+	
 		
 	private class StreamListener implements IStreamListener{
 		private Helper h;

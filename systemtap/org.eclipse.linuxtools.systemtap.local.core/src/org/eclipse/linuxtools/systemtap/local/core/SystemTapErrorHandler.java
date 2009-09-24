@@ -78,7 +78,7 @@ public class SystemTapErrorHandler {
 	 */
 	public void handle (IProgressMonitor m, String errors){	
 		String[] blah = errors.split("\n"); //$NON-NLS-1$
-
+		
 		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
 		File file = new File(PluginConstants.PLUGIN_LOCATION+FILE_PROP);
 		try {
@@ -105,7 +105,7 @@ public class SystemTapErrorHandler {
 						}
 							
 						errorMessage+=line.substring(index+1) 
-						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
+						+ PluginConstants.NEW_LINE;
 					
 						if (firstLine) {
 							findFunctions(m, message, pat);
@@ -128,7 +128,7 @@ public class SystemTapErrorHandler {
 	}
 	
 	
-	public void handle (IProgressMonitor m, FileReader f) throws IOException {
+	public String handle (IProgressMonitor m, FileReader f) throws IOException {
 		BufferedReader br = new BufferedReader (f);
 		
 		String line;
@@ -139,7 +139,7 @@ public class SystemTapErrorHandler {
 			builder.append(line);
 			builder.append("\n"); //$NON-NLS-1$
 			if (m != null && m.isCanceled())
-				return;
+				return "";
 			if (counter == 300) {
 				handle(m, builder.toString());
 				builder = new StringBuilder();
@@ -147,7 +147,7 @@ public class SystemTapErrorHandler {
 			}
 		}
 		handle(m, builder.toString());
-
+		return errorMessage;
 	}
 
 	/**
@@ -165,15 +165,15 @@ public class SystemTapErrorHandler {
 		
 		if (mismatchedProbePoints){
 			if (numberOfErrors > PluginConstants.MAX_ERRORS) {
-				errorMessage = PluginConstants.NEW_LINE + PluginConstants.NEW_LINE 
+				errorMessage = PluginConstants.NEW_LINE
 				+ Messages.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors +Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
 				Messages.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
 				Messages.getString("SystemTapErrorHandler.TooManyErrors4"); //$NON-NLS-1$
-				SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-						Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
-						Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
-						errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
-				mes.schedule();
+//				SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
+//						Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
+//						Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
+//						errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
+//				mes.schedule();
 				m.setCanceled(true);
 				return;
 			}
@@ -216,11 +216,11 @@ public class SystemTapErrorHandler {
 			}
 			
 		}else{
-			SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-					Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
-					Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
-					errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
-			mes.schedule();
+//			SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
+//					Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
+//					Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
+//					errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
+//			mes.schedule();
 		}
 		
 		

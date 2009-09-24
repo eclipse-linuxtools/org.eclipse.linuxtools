@@ -10,15 +10,22 @@ import org.eclipse.ui.progress.UIJob;
 
 public class DocWriter extends UIJob {
 	private TextConsole console;
-	private String configName;
-	private String binaryCommand;
+	private String message;
 
-	public DocWriter(String name, TextConsole console, String cName,
-			String binaryCommand) {
+	/**
+	 * Initiate DocWriter class. DocWriter will append the given message
+	 * to the given console in a separate UI job. 
+	 * 
+	 * 
+	 * @param name
+	 * @param console
+	 * @param message
+	 */
+	public DocWriter(String name, TextConsole console, String message) {
+		
 		super(name);
 		this.console = console;
-		this.configName = cName;
-		this.binaryCommand = binaryCommand;
+		this.message = message;
 	}
 
 	@Override
@@ -29,38 +36,27 @@ public class DocWriter extends UIJob {
 		
 		IDocument doc = console.getDocument();
 		
-		if (binaryCommand.length() > 0)
-			try {
-				doc.replace(doc.getLength(), 0, 
-					PluginConstants.NEW_LINE 
-					+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
-					+ PluginConstants.NEW_LINE 
-					+ "Configuration name:   "//$NON-NLS-1$ 
-					+ configName + PluginConstants.NEW_LINE +
-					"Binary arguments  :   "//$NON-NLS-1$ 
-					+ binaryCommand + PluginConstants.NEW_LINE +
-					"To change this command, check under the Binary " + //$NON-NLS-1$
-					"Arguments tab for this configuration in " + //$NON-NLS-1$
-					"Profile As --> Profile Configurations."//$NON-NLS-1$
-					);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		else
-			try {
-				doc.replace(doc.getLength(), 0,
-					PluginConstants.NEW_LINE +
-					PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
-					PluginConstants.NEW_LINE + 
-					"Configuration name:   "//$NON-NLS-1$ 
-					+ configName + PluginConstants.NEW_LINE +
-					"No binary commands specified. To specify commands, check under the Binary Arguments tab for this configuration in Profile As --> Profile Configurations." + //$NON-NLS-1$
-					PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
+		
+		try {
+			doc.replace(doc.getLength(), 0, message);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+//					try {
+//				doc.replace(doc.getLength(), 0,
+//					PluginConstants.NEW_LINE +
+//					PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
+//					PluginConstants.NEW_LINE + 
+//					"Configuration name:   "//$NON-NLS-1$ 
+//					+ configName + PluginConstants.NEW_LINE +
+//					"No binary commands specified. To specify commands, check under the Binary Arguments tab for this configuration in Profile As --> Profile Configurations." + //$NON-NLS-1$
+//					PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
+//			} catch (BadLocationException e) {
+//				e.printStackTrace();
+//			}
 		
 		return Status.OK_STATUS;
 	}
 	
 }
+	
