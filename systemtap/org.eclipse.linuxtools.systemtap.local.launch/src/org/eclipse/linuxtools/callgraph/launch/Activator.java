@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.systemtap.local.launch;
+package org.eclipse.linuxtools.callgraph.launch;
 
 
 import org.eclipse.jface.resource.ImageDescriptor;
