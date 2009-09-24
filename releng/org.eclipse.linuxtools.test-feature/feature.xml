@@ -30,7 +30,7 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.linuxtools.systemtap.local.tests"
+         id="org.eclipse.linuxtools.callgraph.tests"
          version="0.0.0"/>
 
    <plugin
