@@ -1,3 +1,7 @@
+2009-09-24  Roland Grunberg  <rgrunber@redhat.com>
+
+	* psfs/systemtap.local.psf: Remove username from svn path.
+
 2009-09-21  Roland Grunberg  <rgrunber@redhat.com>
 
 	* build.properties: Change JAVA_HOME to JAVA60_HOME.
