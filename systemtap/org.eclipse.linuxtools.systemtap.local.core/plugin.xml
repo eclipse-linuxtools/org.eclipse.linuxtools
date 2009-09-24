@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-   <extension-point id="org.eclipse.linuxtools.callgraph.core.parser" name="SystemTapParserPoint" schema="schema/org.eclipse.linuxtools.callgraph.core.parser.exsd"/>
-
-</plugin>

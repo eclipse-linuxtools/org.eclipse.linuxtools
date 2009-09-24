@@ -21,7 +21,7 @@ public final class LaunchConfigurationConstants {
 	
 	//Configuration type variables
 	private static final String INVALID = ""; //$NON-NLS-1$
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.callgraph.launch"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.localgui.launch"; //$NON-NLS-1$
 
 	public static final String COMMAND_VERBOSE = PLUGIN_ID + ".COMMAND_VERBOSE"; //$NON-NLS-1$
 	public static final String COMMAND_PASS = PLUGIN_ID + ".PASS"; //$NON-NLS-1$
