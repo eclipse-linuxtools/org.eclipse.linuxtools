@@ -14,7 +14,7 @@ Export-Package: org.eclipse.linuxtools.systemtap.local.callgraph,
  org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners
 Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.jface.text,
- org.eclipse.linuxtools.systemtap.local.core,
+ org.eclipse.linuxtools.callgraph.core,
  org.eclipse.ui.texteditor,
  org.eclipse.zest.core.widgets,
  org.eclipse.zest.layouts,

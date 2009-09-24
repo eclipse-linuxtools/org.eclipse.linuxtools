@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.systemtap.local.launch.tests;
 //import org.eclipse.jface.dialogs.MessageDialog;
 //import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

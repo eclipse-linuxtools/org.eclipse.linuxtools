@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.local.core;
+package org.eclipse.linuxtools.callgraph.core;
 
 import java.io.IOException;
 import java.net.URL;

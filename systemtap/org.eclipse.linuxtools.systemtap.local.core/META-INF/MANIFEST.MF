@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SystemTap Local Core Project
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.core;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.core;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: org.eclipse.linuxtools.systemtap.local.core.Activator
+Bundle-Activator: org.eclipse.linuxtools.callgraph.core.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.eclipse.linuxtools.systemtap.local.core
+Export-Package: org.eclipse.linuxtools.callgraph.core
 Import-Package: org.eclipse.cdt.core,
  org.eclipse.cdt.core.dom.ast,
  org.eclipse.cdt.core.index,

@@ -24,6 +24,7 @@ import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.linuxtools.callgraph.core.MP;
 import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphKeyListener;
 import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseListener;
 import org.eclipse.linuxtools.systemtap.local.callgraph.graphlisteners.StapGraphMouseWheelListener;
@@ -31,7 +32,6 @@ import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeConte
 import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeDoubleClickListener;
 import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeLabelProvider;
 import org.eclipse.linuxtools.systemtap.local.callgraph.treeviewer.StapTreeListener;
-import org.eclipse.linuxtools.systemtap.local.core.MP;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;

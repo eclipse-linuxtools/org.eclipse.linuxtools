@@ -22,9 +22,9 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.linuxtools.systemtap.local.core.Helper;
-import org.eclipse.linuxtools.systemtap.local.core.SystemTapParser;
-import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.callgraph.core.Helper;
+import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
+import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.widgets.Shell;
 
 

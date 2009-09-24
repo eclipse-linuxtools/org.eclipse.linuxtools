@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.local.core;
+package org.eclipse.linuxtools.callgraph.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

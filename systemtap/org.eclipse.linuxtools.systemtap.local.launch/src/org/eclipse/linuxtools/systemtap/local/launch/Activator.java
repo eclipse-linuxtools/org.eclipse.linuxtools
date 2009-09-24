@@ -12,7 +12,7 @@ package org.eclipse.linuxtools.systemtap.local.launch;
 
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.systemtap.local.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
