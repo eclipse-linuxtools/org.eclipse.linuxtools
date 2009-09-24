@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
+package org.eclipse.linuxtools.callgraph.tests;
 
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 
@@ -21,7 +21,7 @@ public class AllTests {
 	public static Test suite() {
 		SystemTapUIErrorMessages.setActive(false);
 		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.systemtap.local.callgraph.tests");
+				"Test for org.eclipse.linuxtools.callgraph.tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(StapGraphParserTest.class);
 		suite.addTestSuite(SystemTapGraphViewTest.class);

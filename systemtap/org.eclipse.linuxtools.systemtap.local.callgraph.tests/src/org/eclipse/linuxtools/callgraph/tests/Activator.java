@@ -1,4 +1,4 @@
-package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
+package org.eclipse.linuxtools.callgraph.tests;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +16,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.systemtap.local.callgraph.tests";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.callgraph.tests";
 	public static String PLUGIN_LOCATION = "NULL";
 	
 	

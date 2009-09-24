@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.local.callgraph.tests; singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.tests;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: org.eclipse.linuxtools.systemtap.local.callgraph.tests.Activator
+Bundle-Activator: org.eclipse.linuxtools.callgraph.tests.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.draw2d,

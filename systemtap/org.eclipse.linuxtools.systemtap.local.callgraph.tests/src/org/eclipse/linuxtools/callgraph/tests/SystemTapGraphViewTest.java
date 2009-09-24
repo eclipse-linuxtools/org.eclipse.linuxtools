@@ -9,7 +9,7 @@
  *     Red Hat - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.systemtap.local.callgraph.tests;
+package org.eclipse.linuxtools.callgraph.tests;
 
 import junit.framework.TestCase;
 
