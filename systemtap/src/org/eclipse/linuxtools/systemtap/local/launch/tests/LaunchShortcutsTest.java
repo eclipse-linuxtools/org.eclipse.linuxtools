@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.systemtap.local.launch.tests;
 
 import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.linuxtools.systemtap.local.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.systemtap.local.launch.LaunchStapGraph;
 import org.osgi.framework.Bundle;
 

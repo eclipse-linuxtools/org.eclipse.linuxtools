@@ -20,8 +20,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
-import org.eclipse.linuxtools.systemtap.local.core.PluginConstants;
 import org.eclipse.linuxtools.systemtap.local.launch.SystemTapOptionsTab;
 import org.osgi.framework.Bundle;
 
