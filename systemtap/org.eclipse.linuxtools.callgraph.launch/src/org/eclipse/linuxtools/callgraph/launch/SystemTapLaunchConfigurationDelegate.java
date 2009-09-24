@@ -227,7 +227,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
 			IProgressMonitor monitor, boolean retry) {
-		String errorMessage = "";
+		String errorMessage = ""; //$NON-NLS-1$
 
 		try {
 			File workDir = getWorkingDirectory(config);
@@ -303,10 +303,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 					workDir, true);
 			
 			if (subProcess == null){
-				//TODO: FIgure out what the console error message is so we can catch it in errorlog
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
-				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1") + //$NON-NLS-1$
-				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage2")); //$NON-NLS-1$
+				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1")); //$NON-NLS-1$
 				mess.schedule();
 				return;
 			}
@@ -359,8 +357,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"), Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3") + //$NON-NLS-1$ //$NON-NLS-2$
+								Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch4") + //$NON-NLS-1$
+								Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch5") + //$NON-NLS-1$
+								Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch6")); //$NON-NLS-1$
+				mess.schedule();
 				errorHandler.finishHandling(monitor, s.getNumberOfErrors());
-					
 				return;
 			}
 			
@@ -370,6 +373,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 						
 			
 			monitor.worked(1);
+			errorMessage = generateErrorMessage(config.getName(), command) + errorMessage;
+			
+			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
+					((TextConsole)Helper.getConsoleByName(config.getName())), errorMessage);
+			dw.schedule();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -378,18 +386,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 		} catch (CoreException e) {
 			e.printStackTrace();
 		} finally {
-			errorMessage = generateErrorMessage(config.getName(), command) + errorMessage;
-			
-			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
-					((TextConsole)Helper.getConsoleByName(config.getName())), errorMessage);
-			dw.schedule();
 			monitor.done();
 		}
 	}
 	
 	
 	private String generateErrorMessage(String configName, String binaryCommand) {
-		String output = "";
+		String output = Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch7"); //$NON-NLS-1$
 		
 		if (binaryCommand == null || binaryCommand.length() < 0) {
 			output = PluginConstants.NEW_LINE +
@@ -397,8 +400,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 						PluginConstants.NEW_LINE + 
 						"Configuration name:   "//$NON-NLS-1$ 
 						+ configName + PluginConstants.NEW_LINE +
-						"No binary commands specified. To specify commands, " +
-						"check under the Binary Arguments tab for this " +
+						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch8") + //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch9") + //$NON-NLS-1$
 						"configuration in Profile As --> Profile Configurations." + //$NON-NLS-1$
 						PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
 		}
