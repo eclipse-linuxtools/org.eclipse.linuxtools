@@ -73,7 +73,11 @@ public class Helper {
 		}
 	}
 
-
+	/**
+	 * Append a String to a file
+	 * @param absoluteFilePath : The absolute path to the file to which we will append.
+	 * @param content : The contents to append.
+	 */
 	public static void appendToFile(String absoluteFilePath, String content) {
 		try {
 			FileWriter fstream;
@@ -90,6 +94,11 @@ public class Helper {
 		}
 	}
 
+	/**
+	 * Read the contents of a file
+	 * @param absoluteFilePath : The absolute path of the file from which to read.
+	 * @return : The contents of the file as a String.
+	 */
 	public static String readFile(String absoluteFilePath) {
 		
 		try {

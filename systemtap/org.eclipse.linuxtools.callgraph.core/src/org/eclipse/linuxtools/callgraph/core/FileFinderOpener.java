@@ -124,7 +124,13 @@ public class FileFinderOpener {
 		return output.toString();
 	}
 	
-	
+	/**
+	 * Open a file in the Editor
+	 * @param path : Absolute path pointing to the file which will be opened.
+	 * @param offset : Offset of the function to be highlighted.
+	 * @param length : Length of the function to be highlighted.
+	 * @return The title of the workbench.
+	 */
 	public static String open(String path, int offset, int length) {
 		if (path == null)
 			return null;

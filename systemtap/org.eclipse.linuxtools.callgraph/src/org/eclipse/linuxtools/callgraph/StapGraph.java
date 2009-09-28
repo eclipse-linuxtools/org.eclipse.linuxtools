@@ -1103,7 +1103,6 @@ public class StapGraph extends Graph {
 			drawAggregateView();
 		}
 		
-		//THIS CAUSED A NULL POINTER GOING INTO AGGREGATE VIEW
 		if (getNode(id) != null)
 			getNode(id).unhighlight();
 		clearSelection();
@@ -1489,8 +1488,6 @@ public class StapGraph extends Graph {
 	 * @param totalTime - Time in milliseconds
 	 */
 	public void setTotalTime(long val) {
-		//Divide by 100 to save us the trouble of 
-		//multiplying by 100 to get percentages
 		this.totalTime = val;
 	}
 

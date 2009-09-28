@@ -940,7 +940,6 @@ public class CallgraphView extends ViewPart {
 		createAnimateActions();
 		createMarkerActions();		
 		createMovementActions();
-//		createButtonActions();
 
 		mode_collapsednodes.setChecked(true);
 		
@@ -1011,6 +1010,7 @@ public class CallgraphView extends ViewPart {
 		CallgraphView.maximizeOrRefresh(false);
 	}
 
+	//METHODS USED MOSTLY IN TESTING
 	public static Action getAnimation_slow() {
 		return animation_slow;
 	}
@@ -1155,18 +1155,3 @@ public class CallgraphView extends ViewPart {
 		return graph;
 	}
 }
-	
-/**
- * The code graveyard: Where snippets go to die
- */
-//StyleRange[] existingRange = viewer.getStyleRanges();
-//
-//StyleRange[] s = new StyleRange[styles.size()];
-//StyleRange[] s2 = new StyleRange[styles.size() + existingRange.length];
-//styles.copyInto(s);
-//
-//for (int i = 0; i < existingRange.length; i++)
-//	s2[i] = existingRange[i];
-//
-//for (int i = 0; i < styles.size(); i ++)
-//	s2[i+existingRange.length] = s[i];
