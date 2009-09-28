@@ -289,10 +289,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 			IConfigurationElement element = extensions[0];
 
 			SystemTapParser parser = 
-				(SystemTapParser) element.createExecutableExtension("class");  //$NON-NLS-1$
+				(SystemTapParser) element.createExecutableExtension(PluginConstants.ATTR_CLASS);
 			
 			
-			if (element.getAttribute("realtime") == "true") { //$NON-NLS-1$ //$NON-NLS-2$
+			if (element.getAttribute(PluginConstants.ATTR_REALTIME) == PluginConstants.VAL_TRUE) {
 				parser.schedule();
 			}
 
@@ -357,6 +357,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
+				
+				
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"), Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3") + //$NON-NLS-1$ //$NON-NLS-2$
 								Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch4") + //$NON-NLS-1$
@@ -398,7 +400,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			output = PluginConstants.NEW_LINE +
 						PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
 						PluginConstants.NEW_LINE + 
-						"Configuration name:   "//$NON-NLS-1$ 
+						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch10") //$NON-NLS-1$
 						+ configName + PluginConstants.NEW_LINE +
 						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch8") + //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch9") + //$NON-NLS-1$
@@ -409,13 +411,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 			output = PluginConstants.NEW_LINE 
 					+ PluginConstants.NEW_LINE +"-------------" //$NON-NLS-1$
 					+ PluginConstants.NEW_LINE 
-					+ "Configuration name:   "//$NON-NLS-1$ 
+					+ Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage1")  //$NON-NLS-1$
 					+ configName + PluginConstants.NEW_LINE +
-					"Binary arguments  :   "//$NON-NLS-1$ 
+					Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage2") //$NON-NLS-1$
 					+ binaryCommand + PluginConstants.NEW_LINE +
-					"To change this command, check under the Binary " + //$NON-NLS-1$
-					"Arguments tab for this configuration in " + //$NON-NLS-1$
-					"Profile As --> Profile Configurations." + //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage3") +  //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage4") +  //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchConfigurationDelegate.EndMessage5") +  //$NON-NLS-1$
 					PluginConstants.NEW_LINE + PluginConstants.NEW_LINE;
 		}
 			

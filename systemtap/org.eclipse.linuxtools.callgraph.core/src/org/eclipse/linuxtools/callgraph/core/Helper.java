@@ -93,7 +93,12 @@ public class Helper {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Read the contents of a file
+	 * @param absoluteFilePath : The absolute path of the file from which to read.
+	 * @return : The contents of the file as a String.
+	 */
 	/**
 	 * Read the contents of a file
 	 * @param absoluteFilePath : The absolute path of the file from which to read.

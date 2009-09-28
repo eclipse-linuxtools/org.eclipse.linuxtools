@@ -62,6 +62,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	private String funcs;
 	private ArrayList<String> exclusions;
 	private String projectName;
+	protected static final String ATTR_PARSER = "org.eclipse.linuxtools.callgraph.graphparser"; //$NON-NLS-1$
+	
 	
 	public void setProjectName(String val) {
 		projectName = val;
@@ -95,7 +97,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		scriptPath = PluginConstants.DEFAULT_OUTPUT 
 				+ "callgraphGen.stp";  //$NON-NLS-1$
 		
-		parserID = "org.eclipse.linuxtools.callgraph.graphparser";
+		parserID = ATTR_PARSER;
 		
 
 		
