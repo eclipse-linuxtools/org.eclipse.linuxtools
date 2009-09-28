@@ -258,10 +258,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 		scriptContents += writeFromPartialScript(projectName);
 		
-//		BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
-////		bw.write("probe begin { printf(\"HELLO\") }");
-//		bw.write(scriptContents);
-//		bw.close();
 		return scriptContents;
 	}
 
