@@ -19,7 +19,8 @@ public final class MemcheckLaunchConstants {
 	public static final String ATTR_MEMCHECK_UNDEF = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_UNDEF"; //$NON-NLS-1$
 	public static final String ATTR_MEMCHECK_FREELIST = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_FREELIST"; //$NON-NLS-1$
 	public static final String ATTR_MEMCHECK_GCCWORK = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_GCCWORK"; //$NON-NLS-1$
-	public static final String ATTR_MEMCHECK_ALIGNMENT = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_ALIGNMENT"; //$NON-NLS-1$
+	public static final String ATTR_MEMCHECK_ALIGNMENT_BOOL = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_ALIGNMENT_BOOL"; //$NON-NLS-1$
+	public static final String ATTR_MEMCHECK_ALIGNMENT_VAL = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_ALIGNMENT_VAL"; //$NON-NLS-1$
 	
 	// VG >= 3.4.0
 	public static final String ATTR_MEMCHECK_TRACKORIGINS = MemcheckPlugin.PLUGIN_ID + ".MEMCHECK_TRACKORIGINS"; //$NON-NLS-1$
@@ -35,7 +36,8 @@ public final class MemcheckLaunchConstants {
 	public static final boolean DEFAULT_MEMCHECK_UNDEF = true;
 	public static final int DEFAULT_MEMCHECK_FREELIST = 10000000;
 	public static final boolean DEFAULT_MEMCHECK_GCCWORK = false;
-	public static final int DEFAULT_MEMCHECK_ALIGNMENT = 8;
+	public static final boolean DEFAULT_MEMCHECK_ALIGNMENT_BOOL = false;
+	public static final int DEFAULT_MEMCHECK_ALIGNMENT_VAL = 0;
 	
 	// VG >= 3.4.0
 	public static final boolean DEFAULT_MEMCHECK_TRACKORIGINS = false;

@@ -98,9 +98,9 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			assertTrue(cmd.contains("--num-callers=12")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--error-limit=yes")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--show-below-main=no")); //$NON-NLS-1$
-			assertFalse(cmd.contains("--suppressions")); //$NON-NLS-1$
+			assertFalse(cmd.contains("--suppressions=")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--max-stackframe=2000000")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--alignment=8")); //$NON-NLS-1$
+			assertFalse(cmd.contains("--alignment=")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--run-libc-freeres=yes")); //$NON-NLS-1$
 
 			assertTrue(cmd.contains("--leak-check=yes")); //$NON-NLS-1$
@@ -301,6 +301,12 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 	public void testAlignment() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
+		
+		assertFalse(dynamicTab.getAlignmentSpinner().getEnabled());
+		dynamicTab.getAlignmentButton().setSelection(true);
+		dynamicTab.getAlignmentButton().notifyListeners(SWT.Selection, null);
+		assertTrue(dynamicTab.getAlignmentSpinner().getEnabled());
+		
 		dynamicTab.getAlignmentSpinner().setSelection(512);
 		tab.performApply(wc);
 		config = wc.doSave();
@@ -321,6 +327,12 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 	public void testAlignmentBad() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
+		
+		assertFalse(dynamicTab.getAlignmentSpinner().getEnabled());
+		dynamicTab.getAlignmentButton().setSelection(true);
+		dynamicTab.getAlignmentButton().notifyListeners(SWT.Selection, null);
+		assertTrue(dynamicTab.getAlignmentSpinner().getEnabled());
+		
 		dynamicTab.getAlignmentSpinner().setSelection(63);
 		tab.performApply(wc);
 		config = wc.doSave();

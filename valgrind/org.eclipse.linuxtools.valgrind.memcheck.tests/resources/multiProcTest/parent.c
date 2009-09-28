@@ -5,8 +5,7 @@
 #define SIZE 10
 int main() {
 	if (fork()) {
-		int *a;
-		printf("%d\n", *a);
+		char *waste = (char *)malloc(sizeof(char) * SIZE);
 	}
 	else {
 		execv("../basicTest/Debug/basicTest", NULL);

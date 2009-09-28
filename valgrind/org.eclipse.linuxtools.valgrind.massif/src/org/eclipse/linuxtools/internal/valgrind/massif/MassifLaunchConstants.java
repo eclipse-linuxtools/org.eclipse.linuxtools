@@ -26,7 +26,8 @@ public final class MassifLaunchConstants {
 	public static final String ATTR_MASSIF_TIMEUNIT = MassifPlugin.PLUGIN_ID + ".MASSIF_TIMEUNIT"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_DETAILEDFREQ = MassifPlugin.PLUGIN_ID + ".MASSIF_DETAILEDFREQ"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_MAXSNAPSHOTS = MassifPlugin.PLUGIN_ID + ".MASSIF_MAXSNAPSHOTS"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_ALIGNMENT = MassifPlugin.PLUGIN_ID + ".MASSIF_ALIGNMENT"; //$NON-NLS-1$
+	public static final String ATTR_MASSIF_ALIGNMENT_BOOL = MassifPlugin.PLUGIN_ID + ".MASSIF_ALIGNMENT_BOOL"; //$NON-NLS-1$
+	public static final String ATTR_MASSIF_ALIGNMENT_VAL = MassifPlugin.PLUGIN_ID + ".MASSIF_ALIGNMENT_VAL"; //$NON-NLS-1$
 	
 	public static final String TIME_I = "i"; //$NON-NLS-1$
 	public static final String TIME_MS = "ms"; //$NON-NLS-1$
@@ -42,5 +43,6 @@ public final class MassifLaunchConstants {
 	public static final String DEFAULT_MASSIF_TIMEUNIT = TIME_I;
 	public static final int DEFAULT_MASSIF_DETAILEDFREQ = 10;
 	public static final int DEFAULT_MASSIF_MAXSNAPSHOTS = 100;
-	public static final int DEFAULT_MASSIF_ALIGNMENT = 8;
+	public static final boolean DEFAULT_MASSIF_ALIGNMENT_BOOL = false;
+	public static final int DEFAULT_MASSIF_ALIGNMENT_VAL = 0;
 }

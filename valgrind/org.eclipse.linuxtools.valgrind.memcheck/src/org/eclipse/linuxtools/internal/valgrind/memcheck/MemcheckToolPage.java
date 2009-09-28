@@ -44,6 +44,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	protected Button partialLoadsButton;
 	protected Button undefValueButton;
 	protected Button gccWorkaroundButton;
+	protected Button alignmentButton;
 	protected Spinner alignmentSpinner;
 	
 	// VG >= 3.4.0
@@ -130,17 +131,29 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		gccWorkaroundButton.addSelectionListener(selectListener);
 				
 		Composite alignmentTop = new Composite(top, SWT.NONE);
-		alignmentTop.setLayout(new GridLayout(2, false));
+		GridLayout alignmentLayout = new GridLayout(2, false);
+		alignmentLayout.marginWidth = alignmentLayout.marginHeight = 0;
+		alignmentTop.setLayout(alignmentLayout);
 		alignmentTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		Label alignmentLabel = new Label(alignmentTop, SWT.NONE);
-		alignmentLabel.setText(Messages.getString("MemcheckToolPage.minimum_heap_block")); //$NON-NLS-1$		
+		alignmentButton = new Button(alignmentTop, SWT.CHECK);
+		alignmentButton.setText(Messages.getString("MemcheckToolPage.minimum_heap_block")); //$NON-NLS-1$
+		alignmentButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkAlignmentEnablement();
+				updateLaunchConfigurationDialog();
+			}
+		});
 		alignmentSpinner = new Spinner(alignmentTop, SWT.BORDER);
-		alignmentSpinner.setMinimum(8);
+		alignmentSpinner.setMinimum(0);
 		alignmentSpinner.setMaximum(4096);
 		alignmentSpinner.addModifyListener(modifyListener);
 	}
 
+	private void checkAlignmentEnablement() {
+		alignmentSpinner.setEnabled(alignmentButton.getSelection());
+	}
 	
 	public String getName() {
 		return Messages.getString("MemcheckToolPage.Memcheck_Options"); //$NON-NLS-1$
@@ -156,7 +169,9 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 			partialLoadsButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_PARTIAL));
 			undefValueButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, MemcheckLaunchConstants.DEFAULT_MEMCHECK_UNDEF));
 			gccWorkaroundButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_GCCWORK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_GCCWORK));
-			alignmentSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT));
+			alignmentButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_BOOL));
+			checkAlignmentEnablement();
+			alignmentSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL));
 			
 			// 3.4.0 specific
 			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
@@ -177,7 +192,8 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, partialLoadsButton.getSelection());		
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, undefValueButton.getSelection());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_GCCWORK, gccWorkaroundButton.getSelection());
-		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, alignmentSpinner.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, alignmentButton.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, alignmentSpinner.getSelection());
 		
 		// 3.4.0 specific
 		try {
@@ -197,7 +213,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		boolean result = false;
 		try {
 			// check alignment
-			int alignment = launchConfig.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT);
+			int alignment = launchConfig.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL);
 			result = (alignment & (alignment - 1)) == 0; // is power of two?			
 			if (!result) {
 				setErrorMessage(Messages.getString("MemcheckToolPage.Alignment_must_be_power_2")); //$NON-NLS-1$
@@ -235,7 +251,8 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_PARTIAL);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, MemcheckLaunchConstants.DEFAULT_MEMCHECK_UNDEF);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_GCCWORK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_GCCWORK);
-		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_BOOL);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL);
 		
 		// 3.4.0 specific
 		try {
@@ -297,7 +314,12 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		return gccWorkaroundButton;
 	}
 
+	
+	public Button getAlignmentButton() {
+		return alignmentButton;
+	}
 
+	
 	public Spinner getAlignmentSpinner() {
 		return alignmentSpinner;
 	}

@@ -55,6 +55,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	protected Combo timeUnitCombo;
 	protected Spinner detailedFreqSpinner;
 	protected Spinner maxSnapshotsSpinner;
+	protected Button alignmentButton;
 	protected Spinner alignmentSpinner;
 	
 	protected boolean isInitializing = false;
@@ -171,13 +172,20 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		maxSnapshotsSpinner.addModifyListener(modifyListener);
 		
 		Composite alignmentTop = new Composite(top, SWT.NONE);
-		alignmentTop.setLayout(new GridLayout(2, false));
-		
-		Label alignmentLabel = new Label(alignmentTop, SWT.NONE);
-		alignmentLabel.setText(Messages.getString("MassifToolPage.minimum_heap_block")); //$NON-NLS-1$
-		
+		GridLayout alignmentLayout = new GridLayout(2, false);
+		alignmentLayout.marginWidth = alignmentLayout.marginHeight = 0;
+		alignmentTop.setLayout(alignmentLayout);	
+		alignmentButton = new Button(alignmentTop, SWT.CHECK);
+		alignmentButton.setText(Messages.getString("MassifToolPage.minimum_heap_block")); //$NON-NLS-1$
+		alignmentButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkAlignmentEnablement();
+				updateLaunchConfigurationDialog();
+			}
+		});
 		alignmentSpinner = new Spinner(alignmentTop, SWT.BORDER);
-		alignmentSpinner.setMinimum(8);
+		alignmentSpinner.setMinimum(0);
 		alignmentSpinner.setMaximum(4096);
 		alignmentSpinner.addModifyListener(modifyListener);
 		
@@ -190,6 +198,10 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		allocFnLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
 				
 		createAllocFnControls(allocFnTop);
+	}
+	
+	private void checkAlignmentEnablement() {
+		alignmentSpinner.setEnabled(alignmentButton.getSelection());
 	}
 
 	private void createAllocFnControls(Composite top) {
@@ -268,7 +280,9 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 			}
 			detailedFreqSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, MassifLaunchConstants.DEFAULT_MASSIF_DETAILEDFREQ));
 			maxSnapshotsSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS));
-			int alignment = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT);
+			alignmentButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_BOOL));
+			checkAlignmentEnablement();
+			int alignment = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL);
 			alignmentSpinner.setSelection(alignment);
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -298,7 +312,8 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, value);
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, detailedFreqSpinner.getSelection());
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, maxSnapshotsSpinner.getSelection());
-		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, alignmentSpinner.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, alignmentButton.getSelection());
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, alignmentSpinner.getSelection());
 	}
 
 	@Override
@@ -307,7 +322,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		
 		boolean result = false;
 		try {
-			int alignment = launchConfig.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT);
+			int alignment = launchConfig.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL);
 			result = (alignment & (alignment - 1)) == 0; // is power of two?
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -330,7 +345,8 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, MassifLaunchConstants.DEFAULT_MASSIF_TIMEUNIT);
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, MassifLaunchConstants.DEFAULT_MASSIF_DETAILEDFREQ);
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS);
-		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_BOOL);
+		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL);
 	}
 	
 	protected void createHorizontalSpacer(Composite comp, int numlines) {
@@ -387,6 +403,10 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		return maxSnapshotsSpinner;
 	}
 
+	public Button getAlignmentButton() {
+		return alignmentButton;
+	}
+	
 	public Spinner getAlignmentSpinner() {
 		return alignmentSpinner;
 	}

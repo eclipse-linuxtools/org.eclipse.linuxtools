@@ -1,2 +1,0 @@
-==9763== Use of uninitialised value of size 4
-==9763==    at 0x804846A: main (parent.c:9)

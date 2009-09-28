@@ -1,3 +1,15 @@
+2009-09-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* valgrindFiles: Regenerated.
+	* resources/basicTest/test.c (main): More reliable cross-platform.
+	* resources/linkedTest/src/test.c (main): Likewise.
+	* resources/multiProcTest/parent.c (main): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/LaunchConfigTabTest.java (testAlignmentBad): Alignment option changes. 
+	(testAlignment): Likewise.
+	(testDefaults): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/LinkedResourceMarkerTest.java (testLinkedMarkers): Change number of expected markers. 
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/MarkerTest.java (testMarkers): Likewise.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/valgrind/memcheck: Removed.

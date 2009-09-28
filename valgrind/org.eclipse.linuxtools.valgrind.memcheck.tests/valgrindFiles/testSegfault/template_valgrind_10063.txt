@@ -1,4 +1,0 @@
-==10063== 
-==10063== Process terminating with default action of signal 11 (SIGSEGV)
-==10063==  Bad permissions for mapped region at address 0x8048474
-==10063==    at 0x80483A4: main (main.c:3)

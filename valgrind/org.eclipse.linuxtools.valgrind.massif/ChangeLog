@@ -1,3 +1,10 @@
+2009-09-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	#290597
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifLaunchConstants.java: Changed alignment option.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifLaunchDelegate.java (getCommandArray): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifToolPage.java: Likewise.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/valgrind/massif: Removed.

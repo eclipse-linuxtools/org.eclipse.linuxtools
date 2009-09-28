@@ -36,7 +36,9 @@ public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate 
 		opts.add(MemcheckCommandConstants.OPT_GCCWORK + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_GCCWORK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_GCCWORK) ? YES : NO));
 		opts.add(MemcheckCommandConstants.OPT_PARTIAL + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_PARTIAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_PARTIAL) ? YES : NO));
 		opts.add(MemcheckCommandConstants.OPT_UNDEF + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_UNDEF, MemcheckLaunchConstants.DEFAULT_MEMCHECK_UNDEF) ? YES : NO));
-		opts.add(MemcheckCommandConstants.OPT_ALIGNMENT + EQUALS + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT));
+		if (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_BOOL)) {
+			opts.add(MemcheckCommandConstants.OPT_ALIGNMENT + EQUALS + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL));
+		}
 		
 		// 3.4.0 specific
 		try {
