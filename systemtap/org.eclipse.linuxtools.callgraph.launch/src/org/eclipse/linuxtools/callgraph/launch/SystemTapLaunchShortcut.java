@@ -51,7 +51,32 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-
+/**
+ * Launch method for a generated script that executes on a binary
+ * 
+ * MUST specify (String) scriptPath and call config =
+ * createConfiguration(bin)!
+ * 
+ * Noteworthy defaults: name defaults to "", but please set it (for
+ * usability) overwrite defaults to true
+ * 
+ * To create new launches: 
+ * - Extend the shortcut extension in Eclipse (recommend copying code from the
+ *  existing launch in the plugin.xml) 
+ * - Create a class that extends SystemTapLaunchShortcut with a function 
+ *  launch(IBinary bin, String mode) that calls super.Init(). 
+ * - Set name
+ * - If the script is to be launched with a binary, call binName = getName(bin) 
+ * - Call config=createConfiguration(bin, name) or config=createConfiguration(name)
+ * - Specify whichever of the optional parameters you need 
+ * - Extend the parser extension defined in org.eclipse.linuxtools.callgraph
+ *  .core. Build a basic parsing class.
+ * - Set parserID to the id of your extension
+ * - Set scriptPath
+ * - If you wish to generate a script on-the-fly, override generateScript() and 
+ *  set needToGenerate to true
+ * - Call finishLaunch or finishLaunchWithoutBinary
+ */
 public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected IEditorPart editor;
 	protected ILaunchConfiguration config;
