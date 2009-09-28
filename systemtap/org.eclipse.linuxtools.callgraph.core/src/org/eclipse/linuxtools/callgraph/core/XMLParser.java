@@ -1,12 +1,15 @@
 package org.eclipse.linuxtools.callgraph.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class XMLParser {
 	
 	private HashMap<Integer, HashMap<String,String>> keyValues;
-	private HashMap<Integer, ArrayList<Integer>> connections;
 	private ArrayList<Integer> idList;
 	private int id;
 	private int currentlyIn;
@@ -22,16 +25,15 @@ public class XMLParser {
 		if (idList != null)
 			idList.clear();
 		idList = new ArrayList<Integer>();
-		
-		if (connections != null)
-			connections.clear();
-		connections = new HashMap<Integer, ArrayList<Integer>>();
+	}
+	
+	public void parse(File file) {
+		parse(getContents(file));
 	}
 	
 	public void parse(String message) {
 		String tabstrip = message.replaceAll("\t", "");
 		String[] lines = tabstrip.split("\n");
-		ArrayList<Integer> children = null;
 		
 		for (String line : lines) {
 			if (line.length() < 1)
@@ -43,18 +45,13 @@ public class XMLParser {
 					//Closing tag -- assume properly formed
 					idList.remove((Integer) currentlyIn);
 					currentlyIn = -1;
-					if (idList.size() > 0) {
+					if (idList.size() > 0)
 						currentlyIn = idList.get(idList.size()-1);
-					}
-					children = connections.get(currentlyIn);
+
 				} else if (line.substring(line.length()-2, line.length() - 1) == "/>") {
 					//This tag opens and closes in one line
-					if (children != null)
-						children.add(id);
 					id++;
 					String[] tokens = line.split(" ");
-					
-					//Add name variable
 					HashMap<String,String> map = new HashMap<String,String>();
 					map.put(ATTR_NAME, tokens[0]);
 					keyValues.put(id,map);
@@ -63,8 +60,6 @@ public class XMLParser {
 					
 				} else {
 					//Open tag
-					if (children != null)
-						children.add(id);
 					idList.add(id);
 					id++;
 					currentlyIn = id;
@@ -77,7 +72,6 @@ public class XMLParser {
 					keyValues.put(id,map);
 					
 					addAttributes(tokens, 1);
-					children = connections.get(currentlyIn);
 				}
 			} else {
 				//Attribute addition
@@ -112,8 +106,29 @@ public class XMLParser {
 		return keyValues;
 	}
 	
-	public HashMap<Integer, ArrayList<Integer>> getConnections() {
-		return connections;
-	}
 	
+
+	  static public String getContents(File file) {
+		    StringBuilder contents = new StringBuilder();
+		    
+		    try {
+		      BufferedReader input =  new BufferedReader(new FileReader(file));
+		      try {
+		        String line = null;
+		        while (( line = input.readLine()) != null){
+		          contents.append(line);
+		          contents.append("\n");
+		        }
+		      }
+		      finally {
+		        input.close();
+		      }
+		    }
+		    catch (IOException ex){
+		      ex.printStackTrace();
+		    }
+		    
+		    return contents.toString();
+		  }
+
 }
