@@ -320,16 +320,16 @@ public class StapGraphParser extends SystemTapParser {
 			parsingError(Messages.getString("StapGraphParser.26")); //$NON-NLS-1$
 			return Status.CANCEL_STATUS;
 		}
-		
-		//Create a UIJob to handle the rest
-		GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
-		uijob.schedule(); 
 		return Status.OK_STATUS;
-			
 	}
 
+	
+	public void postProcessing() {
+		//Create a UIJob to handle the rest
+		GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
+		uijob.schedule();	
+	}
 
-	@Override
 	public void saveData(String filePath) {
 		File file = new File(filePath);
 		String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$

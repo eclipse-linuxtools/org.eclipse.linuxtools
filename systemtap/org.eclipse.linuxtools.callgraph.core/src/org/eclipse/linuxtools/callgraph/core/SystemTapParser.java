@@ -88,13 +88,18 @@ public abstract class SystemTapParser extends Job {
 		mess.schedule();
 	}
 	
+	/**
+	 * Specify what to do after executeParsing is run
+	 */
+	protected abstract void postProcessing();
 	
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		this.monitor = monitor;
-		return executeParsing();
-		
+		IStatus returnStatus = executeParsing();
+		postProcessing();
+		return returnStatus;
 	}
 
 	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
