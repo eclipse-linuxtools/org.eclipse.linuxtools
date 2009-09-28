@@ -71,7 +71,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * </li>   
  * <li>
  * Create a class that extends SystemTapLaunchShortcut with a function 
- *   launch(IBinary bin, String mode) that calls super.Init().
+ *  public void launch(IBinary bin, String mode) that calls super.Init().
  * </li>
  * <li>    
  * Set name
