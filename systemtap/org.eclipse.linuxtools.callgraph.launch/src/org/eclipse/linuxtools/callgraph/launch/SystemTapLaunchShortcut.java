@@ -179,6 +179,12 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 		if (parserID == null)
 			throw new Exception();
 		
+		if (needToGenerate) {
+			generatedScript = generateScript();
+			if (generatedScript == null || generatedScript.length() < 0)
+				return;
+		}
+		
 		if (scriptPath.length() < 1) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchShortcut.ErrorMessageName"),  //$NON-NLS-1$
 					Messages.getString("SystemTapLaunchShortcut.ErrorMessageTitle"), Messages.getString("SystemTapLaunchShortcut.ErrorMessage") + name); //$NON-NLS-1$ //$NON-NLS-2$

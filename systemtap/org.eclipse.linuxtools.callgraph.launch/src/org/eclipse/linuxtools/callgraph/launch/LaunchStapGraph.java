@@ -23,6 +23,32 @@ import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
 
+/**
+ * Launch method for a generated script that executes on a binary
+ * 
+ * MUST specify (String) scriptPath and call config =
+ * createConfiguration(bin)!
+ * 
+ * Noteworthy defaults: name defaults to "", but please set it (for
+ * usability) overwrite defaults to true
+ * 
+ * To create new launches: 
+ * - Extend the shortcut extension in Eclipse (recommend copying code from the
+ *  existing launch in the plugin.xml) 
+ * - Create a class that extends SystemTapLaunchShortcut with a function 
+ *  launch(IBinary bin, String mode) that calls super.Init(). 
+ * - Set name
+ * - If the script is to be launched with a binary, call binName = getName(bin) 
+ * - Call config=createConfiguration(bin, name) or config=createConfiguration(name)
+ * - Specify whichever of the optional parameters you need 
+ * - Extend the parser extension defined in org.eclipse.linuxtools.callgraph
+ *  .core. Build a basic parsing class.
+ * - Set parserID to the id of your extension
+ * - Set scriptPath
+ * - If you wish to generate a script on-the-fly, override generateScript() and 
+ *  set needToGenerate to true
+ * - Call finishLaunch or finishLaunchWithoutBinary
+ */
 public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	/*
 	 * The following protected parameters are provided by
@@ -37,26 +63,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * config;
 	 */
 
-	/**
-	 * Launch method for a generated script that executes on a binary
-	 * 
-	 * MUST specify (String) scriptPath and call config =
-	 * createConfiguration(bin)!
-	 * 
-	 * Noteworthy defaults: name defaults to "", but please set it (for
-	 * usability) overwrite defaults to true - don't change it unless you really
-	 * have to.
-	 * 
-	 * To create new launches: -Copy shortcut code in xml, changing class name
-	 * and label accordingly -Create a class that extends
-	 * SystemTapLaunchShortcut with a function launch(IBinary bin, String mode)
-	 * -Call super.Init() -Set name (this is shortcut-specific) -If a binary is
-	 * used, call binName = getName(bin) -Call createConfiguration(bin, name)
-	 * 
-	 * -Specify whichever of the optional parameters you need -Set scriptPath
-	 * -Set an ILaunchConfiguration -Call finishLaunch or
-	 * finishLaunchWithoutBinary
-	 */
 	
 	private String partialScriptPath;
 	private String funcs;
@@ -114,17 +120,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			writeFunctionListToScript(resourceToSearchFor);
 			if (funcs == null || funcs.length() < 0)
 				return;
-			generatedScript = generateScript();
-			if (generatedScript == null || generatedScript.length() < 0)
-				return;
 
-			generatedScript+= "probe syscall.exit {\n" +
-								"if (pid() == target()) {\n" + 
-								"finalTime = gettimeofday_ns()\n" +
-								"}\n" + 
-								"}\n";
 			needToGenerate = true;
-			
 			finishLaunch(name, mode);
 
 		} catch (IOException e) {
@@ -257,6 +254,12 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		scriptContents += funcs;
 		
 		scriptContents += writeFromPartialScript(projectName);
+		
+		scriptContents += "probe syscall.exit {\n" +
+							"if (pid() == target()) {\n" + 
+							"finalTime = gettimeofday_ns()\n" +
+							"}\n" + 
+							"}\n";
 		
 		return scriptContents;
 	}
