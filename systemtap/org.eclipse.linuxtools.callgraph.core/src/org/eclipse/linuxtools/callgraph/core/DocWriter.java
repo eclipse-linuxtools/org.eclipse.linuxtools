@@ -36,24 +36,11 @@ public class DocWriter extends UIJob {
 		
 		IDocument doc = console.getDocument();
 		
-		
 		try {
 			doc.replace(doc.getLength(), 0, message);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-//					try {
-//				doc.replace(doc.getLength(), 0,
-//					PluginConstants.NEW_LINE +
-//					PluginConstants.NEW_LINE + "-------------" + //$NON-NLS-1$
-//					PluginConstants.NEW_LINE + 
-//					"Configuration name:   "//$NON-NLS-1$ 
-//					+ configName + PluginConstants.NEW_LINE +
-//					"No binary commands specified. To specify commands, check under the Binary Arguments tab for this configuration in Profile As --> Profile Configurations." + //$NON-NLS-1$
-//					PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-//			} catch (BadLocationException e) {
-//				e.printStackTrace();
-//			}
 		
 		return Status.OK_STATUS;
 	}

@@ -218,14 +218,7 @@ public class SystemTapErrorHandler {
 				e.printStackTrace();
 			}
 			
-		}else{
-//			SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-//					Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
-//					Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
-//					errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
-//			mes.schedule();
 		}
-		
 		
 	}
 	
