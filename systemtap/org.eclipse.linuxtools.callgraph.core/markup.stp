@@ -22,11 +22,30 @@ function openclosetag(s:string) {
 	var--
 }
 
-function addattr:long(s:string) {
+function addlong:long(s:string, l:long) {
 	if (var < 1)
 		return -1
 	indent()
-	printf("%s", s)
+	printf("%s=%d", s,l);
+	
+}
+
+function addstr:long(s:string, s1:string) {
+	if (var < 1)
+		return -1
+	indent()
+	printf("%s=%s", s, s1)
+}
+
+function addtext:long(s:string) {
+	if (stillopen == 1) {
+		printf(">")
+	}
+	stillopen = 0
+	if (var < 1)
+		return -1
+	indent()
+	printf("%s", s)	
 }
 
 function indent() {

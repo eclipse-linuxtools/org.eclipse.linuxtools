@@ -13,7 +13,10 @@ public class XMLParser {
 	private ArrayList<Integer> idList;
 	private int id;
 	private int currentlyIn;
-	private static String ATTR_NAME = "name"; 
+	private static final String ATTR_NAME = "name";
+	private static final String ATTR_TEXT = "text"; 
+	private boolean textMode;
+	private int counter;
 	
 	XMLParser() {
 		id = 0;
@@ -25,6 +28,9 @@ public class XMLParser {
 		if (idList != null)
 			idList.clear();
 		idList = new ArrayList<Integer>();
+		
+		textMode = false;
+		counter = 0;
 	}
 	
 	public void parse(File file) {
@@ -47,6 +53,7 @@ public class XMLParser {
 					currentlyIn = -1;
 					if (idList.size() > 0)
 						currentlyIn = idList.get(idList.size()-1);
+					setTextMode(true);
 
 				} else if (line.substring(line.length()-2, line.length() - 1) == "/>") {
 					//This tag opens and closes in one line
@@ -55,7 +62,7 @@ public class XMLParser {
 					HashMap<String,String> map = new HashMap<String,String>();
 					map.put(ATTR_NAME, tokens[0]);
 					keyValues.put(id,map);
-					
+					textMode = false;
 					addAttributes(tokens, 1);
 					
 				} else {
@@ -77,6 +84,13 @@ public class XMLParser {
 				//Attribute addition
 				if (currentlyIn < 0 )
 					continue;
+				
+				if (textMode) {
+					HashMap<String,String> map = keyValues.get(currentlyIn);
+					map.put(ATTR_TEXT, line);
+					counter++;
+				}
+				
 				String[] tokens = line.split(" ");
 				addAttributes(tokens, 0);
 			}
@@ -87,16 +101,35 @@ public class XMLParser {
 	public void addAttributes(String[] tokens, int start) {
 		HashMap<String,String> map = keyValues.get(currentlyIn);
 		int nameless = 0;
+		
 
 		for (int j = start; j < tokens.length; j++) {
 			String[] kvPair = tokens[j].split("=");
+			String value = "";
+			String key = "";
+			if (kvPair.length < 1)
+				continue;
+			
 			if (kvPair.length < 2) {
-				map.put(noName + nameless, kvPair[0].replaceAll(">", ""));
+				value = kvPair[0];
+				if (value.charAt(value.length() - 1) == '>') {
+					
+					setTextMode(true);
+					value = value.substring(0, value.length()-1);
+				}
+				map.put(noName + nameless, value);
 				nameless++;
 				continue;
 			}
-
-			map.put(kvPair[0], kvPair[1].replaceAll(">", ""));
+			
+			value = kvPair[0];
+			key = kvPair[1];
+			if (value.charAt(value.length() - 1) == '>') {
+				setTextMode(true);
+				value = value.substring(0, value.length()-1);
+			}
+			
+			map.put(key, value);
 		}
 		
 		keyValues.put(currentlyIn, map);
@@ -131,4 +164,8 @@ public class XMLParser {
 		    return contents.toString();
 		  }
 
+	  public void setTextMode(boolean val) {
+		  counter = 0;
+		  textMode = val;
+	  }
 }
