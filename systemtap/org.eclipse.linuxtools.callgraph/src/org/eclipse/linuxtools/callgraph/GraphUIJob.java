@@ -35,9 +35,10 @@ public class GraphUIJob extends UIJob{
 
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
-		if (!CallgraphView.setParser(parser))
+		CallgraphView view = new CallgraphView();
+		if (!view.setParser(parser))
 			return Status.CANCEL_STATUS;
-		CallgraphView.initialize(this.getDisplay(), monitor);
+		view.initialize(this.getDisplay(), monitor);
 	    
 		return Status.OK_STATUS;
 	}	
