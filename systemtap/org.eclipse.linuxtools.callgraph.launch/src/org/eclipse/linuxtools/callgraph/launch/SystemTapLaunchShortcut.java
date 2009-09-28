@@ -53,29 +53,56 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 /**
  * Launch method for a generated script that executes on a binary
- * 
+ * <br>
  * MUST specify (String) scriptPath and call config =
  * createConfiguration(bin)!
- * 
- * Noteworthy defaults: name defaults to "", but please set it (for
- * usability) overwrite defaults to true
- * 
- * To create new launches: 
- * - Extend the shortcut extension in Eclipse (recommend copying code from the
- *  existing launch in the plugin.xml) 
- * - Create a class that extends SystemTapLaunchShortcut with a function 
- *  launch(IBinary bin, String mode) that calls super.Init(). 
- * - Set name
- * - If the script is to be launched with a binary, call binName = getName(bin) 
- * - Call config=createConfiguration(bin, name) or config=createConfiguration(name)
- * - Specify whichever of the optional parameters you need 
- * - Extend the parser extension defined in org.eclipse.linuxtools.callgraph
- *  .core. Build a basic parsing class.
- * - Set parserID to the id of your extension
- * - Set scriptPath
- * - If you wish to generate a script on-the-fly, override generateScript() and 
- *  set needToGenerate to true
- * - Call finishLaunch or finishLaunchWithoutBinary
+ * <br>
+ * Noteworthy defaults: 
+ * <ul>
+ * <li> 'name' defaults to ""</li>
+ * <li> 'overwrite' defaults to true</li>
+ * </ul>
+ * To create new launches:
+ * <br> 
+ * <ul>
+ * <li>
+ * Extend the shortcut extension in Eclipse (recommend copying code from the
+ *   existing launch in the plugin.xml)
+ * </li>   
+ * <li>
+ * Create a class that extends SystemTapLaunchShortcut with a function 
+ *   launch(IBinary bin, String mode) that calls super.Init().
+ * </li>
+ * <li>    
+ * Set name
+ * </li>
+ * <li>
+ * If the script is to be launched with a binary, call binName = getName(bin)
+ * </li>
+ * <li> 
+ * Call config=createConfiguration(bin, name) or config=createConfiguration(name)
+ * </li>
+ * <li>
+ * Specify whichever of the optional parameters you need
+ * </li>
+ * <li> 
+ * Extend the parser extension defined in org.eclipse.linuxtools.callgraph
+ *   .core. Build a basic parsing class.
+ *   </li>
+ * <li>
+ * Set parserID to the id of your extension
+ * </li>
+ * <li>
+ * Set scriptPath
+ * </li>
+ * <li>
+ * If you wish to generate a script on-the-fly, override generateScript() and 
+ *   set needToGenerate to true
+ *   </li>
+ * <li>
+ * Call finishLaunch or finishLaunchWithoutBinary
+ * </li>
+ * </ul>
  */
 public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected IEditorPart editor;
