@@ -63,7 +63,7 @@ public class StapGraphMouseListener implements MouseListener {
 			// Unhighlight the center node and give it a normal colour
 			node = graph.getNode(id);
 			node.unhighlight();
-			if (graph.getData(id).isMarked())
+			if (graph.getNodeData(id).isMarked())
 				node.setBackgroundColor(StapGraph.CONSTANT_MARKED);
 			else
 				node.setBackgroundColor(graph.DEFAULT_NODE_COLOR);
@@ -109,9 +109,9 @@ public class StapGraphMouseListener implements MouseListener {
 		List<Integer> callees = null;
 
 		if (graph.isCollapseMode())
-			callees = graph.getData(id).collapsedCallees;
+			callees = graph.getNodeData(id).collapsedCallees;
 		else
-			callees = graph.getData(id).callees;
+			callees = graph.getNodeData(id).callees;
 		for (int subID : callees) {
 			if (graph.getNode(subID) != null)
 				graph.getNode(subID).unhighlight();
@@ -183,7 +183,7 @@ public class StapGraphMouseListener implements MouseListener {
 				// main
 				caller = graph.getFirstUsefulNode();
 			}
-			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
+			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getNodeData(caller).name);
 		}
 
 		graph.setSelection(null);
@@ -240,9 +240,9 @@ public class StapGraphMouseListener implements MouseListener {
 				List<Integer> callees = null;
 
 				if (graph.isCollapseMode())
-					callees = graph.getData(id).collapsedCallees;
+					callees = graph.getNodeData(id).collapsedCallees;
 				else
-					callees = graph.getData(id).callees;
+					callees = graph.getNodeData(id).callees;
 
 				for (int subID : callees) {
 					if (graph.getNode(subID) != null)

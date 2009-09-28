@@ -132,7 +132,7 @@ public class GraphUIJob extends UIJob{
 		
 		
 	    for (int id_parent : parser.serialMap.keySet()) {
-	    	if (g.getData(id_parent) == null) {
+	    	if (g.getNodeData(id_parent) == null) {
 				if (parser.markedMap.get(id_parent) != null) {
 					marked = true;
 					msg = parser.markedMap.get(id_parent);
@@ -207,7 +207,7 @@ public class GraphUIJob extends UIJob{
 	 * @return
 	 */
 	public int getNumberOfDataNodes() {
-		return g.getDataMapSize();
+		return g.getNodeDataMapSize();
 	}
 	
 	

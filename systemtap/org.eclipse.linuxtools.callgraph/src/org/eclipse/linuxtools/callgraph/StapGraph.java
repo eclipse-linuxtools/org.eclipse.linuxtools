@@ -214,7 +214,7 @@ public class StapGraph extends Graph {
 		treeDoubleListener = new StapTreeDoubleClickListener(treeViewer, this);
 		treeViewer.addDoubleClickListener(treeDoubleListener);
 		
-		treeViewer.setInput(getData(getTopNode()));
+		treeViewer.setInput(getNodeData(getTopNode()));
 		treeViewer.refresh();
 	}
 	
@@ -284,7 +284,7 @@ public class StapGraph extends Graph {
 		int y = this.getBounds().height / 2 - n.getSize().height;
 		n.setLocation(x, y);
 		
-		if (getData(centerNode).isMarked())
+		if (getNodeData(centerNode).isMarked())
 			nodeMap.get(centerNode).setBackgroundColor(CONSTANT_MARKED);
 		radialHelper(centerNode, x, y, radius, 0);
 	}
@@ -331,10 +331,10 @@ public class StapGraph extends Graph {
 			getNode(callerID).setBackgroundColor(CONSTANT_HAS_PARENT);
 			getNode(callerID).setLocation(x + radius / 5, y - radius / 5);
 			if (getNode(id).connection == null) {
-				getNode(id).makeConnection(SWT.NONE, getNode(callerID), getData(id).called);
+				getNode(id).makeConnection(SWT.NONE, getNode(callerID), getNodeData(id).called);
 			}
 			
-			if (getData(callerID).isMarked())
+			if (getNodeData(callerID).isMarked())
 				nodeMap.get(callerID).setBackgroundColor(CONSTANT_MARKED);
 		}
 		
@@ -390,7 +390,7 @@ public class StapGraph extends Graph {
 						.get(subID).called);
 			}
 			
-			if (getData(subID).isMarked())
+			if (getNodeData(subID).isMarked())
 				subN.setBackgroundColor(CONSTANT_MARKED);
 		}
 	}
@@ -487,7 +487,7 @@ public class StapGraph extends Graph {
 		//-------------Create node id
 		// Create and set
 		if (nodeMap.get(id) == null) {
-			nodeMap.put(id, getData(id).makeNode(this));
+			nodeMap.put(id, getNodeData(id).makeNode(this));
 		}
 		StapNode n = getNode(id);
 		n.setLocation(x,y);
@@ -495,10 +495,10 @@ public class StapGraph extends Graph {
 
 		//This is the lowest level of nodes to draw, and it still has kids
 		if (getLevelOfNode(id) == bottomLevelToDraw &&
-				getData(id).callees.size() > 0)
+				getNodeData(id).callees.size() > 0)
 			n.setBackgroundColor(CONSTANT_HAS_CHILDREN);
 		
-		if (getData(id).isMarked())
+		if (getNodeData(id).isMarked())
 			n.setBackgroundColor(CONSTANT_MARKED);
 		
 		
@@ -508,9 +508,9 @@ public class StapGraph extends Graph {
 		
 		// Determine which list of callees to use
 		if (!collapse_mode)
-			callees = getData(id).callees;
+			callees = getNodeData(id).callees;
 		else
-			callees = getData(id).collapsedCallees;
+			callees = getNodeData(id).collapsedCallees;
 		if (callees == null)
 			return;
 		
@@ -566,7 +566,7 @@ public class StapGraph extends Graph {
 			return;
 		
 		
-		StapData data = getData(rootVisibleNodeNumber);
+		StapData data = getNodeData(rootVisibleNodeNumber);
 		if (data.callees != null) {
 			if (data.callees.size() < 1) {
 				return;
@@ -741,7 +741,7 @@ public class StapGraph extends Graph {
 			
 			
 			
-			if (getData(n.id).isMarked())
+			if (getNodeData(n.id).isMarked())
 				n.setBackgroundColor(CONSTANT_MARKED);
 			
 			
@@ -807,7 +807,7 @@ public class StapGraph extends Graph {
 
 		//-------------Recreate exception
 		if (x != -1 && y != -1) {
-			StapNode n =getData(exception).makeNode(this);
+			StapNode n =getNodeData(exception).makeNode(this);
 			n.setLocation(x,y);
 			n.highlight();
 			nodeMap.put(exception, n);
@@ -900,9 +900,9 @@ public class StapGraph extends Graph {
 		for (int level = lvl; level < maxLevel; level++) {
 			for (int id : levels.get(level)) {
 				if (isCollapseMode())
-					list = getData(id).collapsedCallees;
+					list = getNodeData(id).collapsedCallees;
 				else
-					list = getData(id).callees;
+					list = getNodeData(id).callees;
 				
 				numberOfNodes += list.size();
 				
@@ -972,8 +972,8 @@ public class StapGraph extends Graph {
 			gd.exclude = false;
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(true);
-			treeViewer.collapseToLevel(getData(id), 1);
-			treeViewer.expandToLevel(getData(id), 1);
+			treeViewer.collapseToLevel(getNodeData(id), 1);
+			treeViewer.expandToLevel(getNodeData(id), 1);
 			
 			
 		} else if (draw_mode == CONSTANT_DRAWMODE_AGGREGATE){
@@ -1016,7 +1016,7 @@ public class StapGraph extends Graph {
 		if (draw_mode == CONSTANT_DRAWMODE_TREE) {			
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
 				if (nodeMap.get(id) == null)
-					nodeMap.put(id, getData(id).makeNode(this));
+					nodeMap.put(id, getNodeData(id).makeNode(this));
 				int tempX = nodeMap.get(id).getLocation().x;
 				int tempY = nodeMap.get(id).getLocation().y;
 				Animation.markBegin();
@@ -1076,7 +1076,7 @@ public class StapGraph extends Graph {
 			rootVisibleNodeNumber = id;
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
 				if (nodeMap.get(id) == null)
-					nodeMap.put(id, getData(id).makeNode(this));
+					nodeMap.put(id, getNodeData(id).makeNode(this));
 				
 				Animation.markBegin();
 				moveAllNodesTo(nodeMap.get(id).getLocation().x, nodeMap.get(id).getLocation().y);
@@ -1088,7 +1088,7 @@ public class StapGraph extends Graph {
 				
 			} else {
 				if (nodeMap.get(id) == null)
-					nodeMap.put(id, getData(id).makeNode(this));
+					nodeMap.put(id, getNodeData(id).makeNode(this));
 				deleteAll(id);
 				drawBox(id, 0, 0);
 
@@ -1237,7 +1237,7 @@ public class StapGraph extends Graph {
 							.get(childID).time, nodeDataMap.get(childID).called,
 							id, nodeDataMap.get(childID).isMarked(), ""); //$NON-NLS-1$
 					
-					if (getData(aggregateID).isMarked()) {
+					if (getNodeData(aggregateID).isMarked()) {
 						markedCollapsedNodes.add(aggregateID);
 						markedNodes.remove((Integer) aggregateID);
 					}
@@ -1302,7 +1302,7 @@ public class StapGraph extends Graph {
 			newNodeMap.remove(nodeDataMap.get(childID).name);
 			nodeDataMap.get(childID).collapsedCaller = id;
 			
-			if (getData(childID).isMarked())
+			if (getNodeData(childID).isMarked())
 				markedCollapsedNodes.add(childID);
 		}
 
@@ -1579,20 +1579,6 @@ public class StapGraph extends Graph {
 	}
 
 	
-	
-	/**
-	 * Returns the StapData object with id == val.
-	 * @param val
-	 * @return
-	 */
-	public StapData getData(int val) {
-		if (val > -1)
-			return nodeDataMap.get(val);
-		else
-			return null;
-	}
-	
-
 	public void setTreeViewer(TreeViewer treeview) {
 		StapGraph.treeViewer = treeview;
 	}
@@ -1634,9 +1620,9 @@ public class StapGraph extends Graph {
 		
 		for (int count = callOrderList.indexOf((Integer)id) + 1;
 			count < callOrderList.size(); count++) {
-			if (getData(id) == null)
+			if (getNodeData(id) == null)
 				continue;
-			if (!getData(id).isCollapsed || getData(id).isOnlyChildWithThisName()) {
+			if (!getNodeData(id).isCollapsed || getNodeData(id).isOnlyChildWithThisName()) {
 				returnID = callOrderList.get(count);
 				return returnID;
 			}
@@ -1657,9 +1643,9 @@ public class StapGraph extends Graph {
 		
 		for (int count = callOrderList.indexOf((Integer)id) - 1;
 			count > -1; count--) {
-			if (getData(id) == null)
+			if (getNodeData(id) == null)
 				continue;
-			if (!getData(id).isCollapsed || getData(id).isOnlyChildWithThisName()) {
+			if (!getNodeData(id).isCollapsed || getNodeData(id).isOnlyChildWithThisName()) {
 				returnID = callOrderList.get(count);
 				return returnID;
 			}
@@ -1754,7 +1740,7 @@ public class StapGraph extends Graph {
      * Retruns the number of StapData objects placed in the nodeDataMap.
      * @return
      */
-    public int getDataMapSize() {
+    public int getNodeDataMapSize() {
     	return nodeDataMap.size();
     }
     

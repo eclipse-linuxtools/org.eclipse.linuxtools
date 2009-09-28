@@ -29,8 +29,8 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 			StapData parent = ((StapData) parentElement);
 			List<Integer> childrenIDs = parent.collapsedCallees;
 			for (int val : childrenIDs) {
-				if (graph.getData(val) != null) {
-					EMPTY.add(graph.getData(val));
+				if (graph.getNodeData(val) != null) {
+					EMPTY.add(graph.getNodeData(val));
 				}
 			}
 		}
@@ -40,7 +40,7 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 	@Override
 	public Object getParent(Object element) {
 		if (element instanceof StapData) {
-			return graph.getData(((StapData) element).collapsedCaller);
+			return graph.getNodeData(((StapData) element).collapsedCaller);
 		}
 		return null;
 	}

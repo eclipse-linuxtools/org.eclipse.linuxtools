@@ -83,9 +83,9 @@ public class StapData {
         
     	//Add this data to the caller's list of IDs
 		if (this.caller != -1) {
-			if (graphModel.getData(this.caller) != null) {
-				graphModel.getData(this.caller).addCallee(this.id, this.time);
-				this.levelOfRecursion = graphModel.getData(this.caller).levelOfRecursion + 1;
+			if (graphModel.getNodeData(this.caller) != null) {
+				graphModel.getNodeData(this.caller).addCallee(this.id, this.time);
+				this.levelOfRecursion = graphModel.getNodeData(this.caller).levelOfRecursion + 1;
 			}
 		}
         
@@ -138,12 +138,12 @@ public class StapData {
      * @return location in callees 
      */
     private int search(long time) {
-    	if (time > graph.getData(callees.get(0)).time)
+    	if (time > graph.getNodeData(callees.get(0)).time)
     		return 0;
 
     	for (int i = 1; i < callees.size(); i++) {
-    		if (time < graph.getData(callees.get(i -1)).time && 
-    				time > graph.getData(callees.get(i)).time)
+    		if (time < graph.getNodeData(callees.get(i -1)).time && 
+    				time > graph.getNodeData(callees.get(i)).time)
     				return i;
     	}
     	
@@ -169,11 +169,11 @@ public class StapData {
     	//INDEX ALL THE STAPDATA INTO AN ARRAY AT THE CALCULATED INDEX
     	//SCATTERED INDICES : 0,1,...,5,..,10
     	for (int val : collapsedCallees){
-    		if (tempList.get(graph.getData(val).time) == null){
-    			tempList.put(graph.getData(val).time, new ArrayList<StapData>());
+    		if (tempList.get(graph.getNodeData(val).time) == null){
+    			tempList.put(graph.getNodeData(val).time, new ArrayList<StapData>());
     		}
     		
-    		tempList.get(graph.getData(val).time).add(graph.getData(val));
+    		tempList.get(graph.getNodeData(val).time).add(graph.getNodeData(val));
     	}
 
     	collapsedCallees.clear();
