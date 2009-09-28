@@ -176,22 +176,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
  * @throws Exception 
  */
 	protected void finishLaunch(String name, String mode) throws Exception {
-		if (parserID == null)
-			throw new Exception();
-		
-		if (needToGenerate) {
-			generatedScript = generateScript();
-			if (generatedScript == null || generatedScript.length() < 0)
-				return;
-		}
-		
-		if (scriptPath.length() < 1) {
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchShortcut.ErrorMessageName"),  //$NON-NLS-1$
-					Messages.getString("SystemTapLaunchShortcut.ErrorMessageTitle"), Messages.getString("SystemTapLaunchShortcut.ErrorMessage") + name); //$NON-NLS-1$ //$NON-NLS-2$
-			mess.schedule();
-			return;
-		}  
-			
+		finishLaunchHelper();
 		
 		ILaunchConfigurationWorkingCopy wc = null;
 		if (config != null) {
@@ -226,8 +211,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 		
 	}
 	
-	//TODO: Should merge finishWith and Without binary - we only use
-	//the IBinary to find the name, in any case.
+	//TODO: See if finishLaunch and finishLaunchWithoutBinary are now identical
 	/**
 	 * This function is identical to the function above, except it does not
 	 * require a binary.
@@ -242,46 +226,63 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	 * @param name: Used to generate the name of the new configuration
 	 * @param bin:	Affiliated executable
 	 * @param mode:	Mode setting
+	 * @throws IOException 
 	 */
-protected void finishLaunchWithoutBinary(String name, String mode) {
+protected void finishLaunchWithoutBinary(String name, String mode) throws Exception {
 		
-	
-		if (scriptPath.length() < 1) {
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchShortcut.ErrorMessagename"),  //$NON-NLS-1$
-					Messages.getString("SystemTapLaunchShortcut.ErrorMessageTitle"), Messages.getString("SystemTapLaunchShortcut.ErrorMessage") + name); //$NON-NLS-1$ //$NON-NLS-2$
-			mess.schedule();
-			return;
-		}
-	
-		ILaunchConfigurationWorkingCopy wc = null;
-		if (config != null) {
-			try {
-				wc = config.getWorkingCopy(); 
-			} catch (CoreException e1) {
-				e1.printStackTrace();
-			}
-			
-			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH, scriptPath);
-			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH, outputPath);
-			wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS, arguments);
-			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, generatedScript);
-			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerate);
-			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
-			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
+	finishLaunchHelper();
 
-			
-			try {
-				config = wc.doSave();
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-			checkForExistingConfiguration();
-
-			if (!testMode)
-			DebugUITools.launch(config, mode);
+	ILaunchConfigurationWorkingCopy wc = null;
+	if (config != null) {
+		try {
+			wc = config.getWorkingCopy(); 
+		} catch (CoreException e1) {
+			e1.printStackTrace();
 		}
+		
+		wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH, scriptPath);
+		wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH, outputPath);
+		wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS, arguments);
+		wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, generatedScript);
+		wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerate);
+		wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
+		wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
+
+		
+		try {
+			config = wc.doSave();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		checkForExistingConfiguration();
+
+		if (!testMode)
+		DebugUITools.launch(config, mode);
+	} else throw new Exception();
+}
+
+/**
+ * Helper function for methods common to both types of finishLaunch.
+ * @throws Exception
+ */
+private void finishLaunchHelper() throws Exception {
+	if (parserID == null)
+		throw new Exception();
+	
+	if (scriptPath == null || scriptPath.length() < 1) {
+		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchShortcut.ErrorMessageName"),  //$NON-NLS-1$
+				Messages.getString("SystemTapLaunchShortcut.ErrorMessageTitle"), Messages.getString("SystemTapLaunchShortcut.ErrorMessage") + name); //$NON-NLS-1$ //$NON-NLS-2$
+		mess.schedule();
+		return;
 	}
-
+	
+	if (needToGenerate) {
+		generatedScript = generateScript();
+		if (generatedScript == null || generatedScript.length() < 0)
+			return;
+	}
+	
+}
 
 /**
  * Returns bin.getPath().toString()
