@@ -142,7 +142,7 @@ public class SystemTapErrorHandler {
 			builder.append(line);
 			builder.append("\n"); //$NON-NLS-1$
 			if (m != null && m.isCanceled())
-				return "";
+				return ""; //$NON-NLS-1$
 			if (counter == 300) {
 				handle(m, builder.toString());
 				builder = new StringBuilder();

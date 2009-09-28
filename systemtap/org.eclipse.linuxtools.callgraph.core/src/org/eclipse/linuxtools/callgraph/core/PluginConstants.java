@@ -14,12 +14,12 @@ public final class PluginConstants {
 	
 	public static String DEFAULT_OUTPUT = ""; //$NON-NLS-1$
 	public static final String CONFIGURATION_TYPE_ID = "org.eclipse.linuxtools.callgraph.launch.systemtapLaunch";	 //$NON-NLS-1$
-	public static final String PARSER_CLASS = "org.eclipse.linuxtools.callgraph.core.parser";
-	public static final String PARSER_RESOURCE = "org.eclipse.linuxtools.callgraph.core";
-	public static final String PARSER_NAME = "parser"; 
-	public static final String ATTR_CLASS = "class";
-	public static final String ATTR_REALTIME = "realtime";
-	public static final String VAL_TRUE = "true";
+	public static final String PARSER_CLASS = "org.eclipse.linuxtools.callgraph.core.parser"; //$NON-NLS-1$
+	public static final String PARSER_RESOURCE = "org.eclipse.linuxtools.callgraph.core"; //$NON-NLS-1$
+	public static final String PARSER_NAME = "parser";  //$NON-NLS-1$
+	public static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+	public static final String ATTR_REALTIME = "realtime"; //$NON-NLS-1$
+	public static final String VAL_TRUE = "true"; //$NON-NLS-1$
 	
 	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	

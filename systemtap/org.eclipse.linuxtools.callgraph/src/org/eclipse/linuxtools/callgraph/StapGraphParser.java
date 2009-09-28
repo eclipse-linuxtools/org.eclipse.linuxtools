@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class StapGraphParser extends SystemTapParser {
 	
-	private static final String NEW_LINE = "\n";
+	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;

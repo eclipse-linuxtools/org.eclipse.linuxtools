@@ -23,7 +23,7 @@ public abstract class SystemTapParser extends Job {
 	protected String filePath;
 	
 	public SystemTapParser() {
-		super("New_Job");
+		super("New_Job"); //$NON-NLS-1$
 		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		initialize();
 	}

@@ -367,7 +367,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		browseTop.setLayoutData(browseData);
 		
 		Label suppFileLabel = new Label(browseTop, SWT.NONE);
-		suppFileLabel.setText("Parser");
+		suppFileLabel.setText("Parser"); //$NON-NLS-1$
 		
 		parser = new Text(browseTop, SWT.BORDER);
 		parser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -962,7 +962,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				return e.getUniqueIdentifier();
 			}							
 	}
-	return "Invalid";
+	return Messages.getString("SystemTapOptionsTab.1"); //$NON-NLS-1$
 
 	}
 	
@@ -987,7 +987,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				}
 								
 		}
-		return "No name -- set name attribute of extension";		}
+		return Messages.getString("SystemTapOptionsTab.46");		} //$NON-NLS-1$
 
 		@Override
 		public void addListener(ILabelProviderListener listener) {

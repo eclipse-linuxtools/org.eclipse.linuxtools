@@ -48,7 +48,7 @@ public final class LaunchConfigurationConstants {
 	public static final String BUILD_PROJECT = PLUGIN_ID + ".BUILD_PROJECT"; //$NON-NLS-1$
 	public static final String COMMAND_LIST = PLUGIN_ID + ".COMMAND_LIST"; //$NON-NLS-1$
 	public static final String BINARY_ARGUMENTS = PLUGIN_ID + ".BINARY_ARGUMENTS"; //$NON-NLS-1$
-	public static final String PARSER_CLASS = PLUGIN_ID + ".PARSER_CLASS";
+	public static final String PARSER_CLASS = PLUGIN_ID + ".PARSER_CLASS"; //$NON-NLS-1$
 
 
 	public static final String GENERATED_SCRIPT = PLUGIN_ID + ".GENERATED_SCRIPT"; //$NON-NLS-1$

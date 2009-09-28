@@ -255,11 +255,11 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 		scriptContents += writeFromPartialScript(projectName);
 		
-		scriptContents += "probe syscall.exit {\n" +
-							"if (pid() == target()) {\n" + 
-							"finalTime = gettimeofday_ns()\n" +
-							"}\n" + 
-							"}\n";
+		scriptContents += "probe syscall.exit {\n" + //$NON-NLS-1$
+							"if (pid() == target()) {\n" +  //$NON-NLS-1$
+							"finalTime = gettimeofday_ns()\n" + //$NON-NLS-1$
+							"}\n" +  //$NON-NLS-1$
+							"}\n"; //$NON-NLS-1$
 		
 		return scriptContents;
 	}
