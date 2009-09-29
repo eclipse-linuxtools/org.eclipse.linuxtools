@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +27,10 @@ public abstract class SystemTapParser extends Job {
 	protected String filePath;
 	protected String viewID;
 	protected SystemTapView view;
-	protected boolean realTime = false;
+	protected boolean realTime = true;
+	
+	public boolean isDone = false;
+	public StringBuffer text;
 	 
 
 	public SystemTapParser() {
@@ -148,6 +155,27 @@ public abstract class SystemTapParser extends Job {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		this.monitor = monitor;
+		
+		if (realTime){		
+			String line;
+			text = new StringBuffer();
+			File file = new File(PluginConstants.DEFAULT_OUTPUT+"callgraph.out");
+			try {
+				BufferedReader buff = new BufferedReader(new FileReader(file));
+				while (!isDone){
+					if ((line = buff.readLine()) != null){
+						text.append(line);
+					}
+					System.out.println(text.toString());
+				}
+				//TODO: how does 'text' get sent to the systemtapview
+				//or should some class that created the parser access it from here.
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		IStatus returnStatus = executeParsing();
 		postProcessing();
 		return returnStatus;
