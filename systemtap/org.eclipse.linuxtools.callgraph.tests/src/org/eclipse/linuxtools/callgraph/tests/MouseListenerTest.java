@@ -53,7 +53,5 @@ public class MouseListenerTest extends TestCase{
 				g.getFirstUsefulNode());
 		mListener.mouseUpEvent();
 		
-		System.out.println("TEST");
-		
 	}
 }
