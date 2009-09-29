@@ -366,7 +366,6 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		setGraphOptions(true);
-		cleanViewer();
 		
 		
 		
@@ -375,9 +374,6 @@ public class CallgraphView extends SystemTapView {
 		if (treeComp != null)
 			treeComp.setParent(masterComposite);
 
-		if (graph == null) {
-			createViewer(masterComposite);
-		}
 		
 		//MAXIMIZE THE SYSTEMTAP VIEW WHEN RENDERING A GRAPH
 		firstTimeRefresh();
@@ -399,10 +395,6 @@ public class CallgraphView extends SystemTapView {
 
 		parent.setLayout(layout);
 		parent.setLayoutData(gd);
-
-		//CREATE THE TEXT VIEWER
-		if (graph == null)
-			createViewer(parent);
 
 		// LOAD ALL ACTIONS
 		createActions();
@@ -505,7 +497,7 @@ public class CallgraphView extends SystemTapView {
 				String filePath =  dialog.open();
 				if (filePath != null){
 					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setFile(filePath);
+					new_parser.setFilePath(filePath);
 					new_parser.setViewID(CallGraphConstants.viewID);
 					new_parser.schedule();					
 				}
@@ -954,7 +946,6 @@ public class CallgraphView extends SystemTapView {
 			graphComp.dispose();
 		if (treeComp != null && !treeComp.isDisposed())
 			treeComp.dispose();
-		disposeView();
 		CallgraphView.setGraphOptions(false);
 		//Force a redraw (.redraw() .update() not working)
 		CallgraphView.maximizeOrRefresh(false);
@@ -1111,6 +1102,13 @@ public class CallgraphView extends SystemTapView {
 			return true;
 		}
 		return false;
+		
+	}
+
+
+	@Override
+	public void setFocus() {
+		// TODO Auto-generated method stub
 		
 	}
 

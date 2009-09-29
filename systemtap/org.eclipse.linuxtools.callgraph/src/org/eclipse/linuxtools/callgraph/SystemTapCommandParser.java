@@ -71,7 +71,7 @@ public class SystemTapCommandParser extends Job {
 			if (graphingMode) {
 				//Delegate to graphing parser instead of this one
 				StapGraphParser p = new StapGraphParser();
-				p.setFile(filePath);
+				p.setFilePath(filePath);
 				p.schedule();
 				
 //				String text = Helper.getMainConsoleTextByName(configName);
