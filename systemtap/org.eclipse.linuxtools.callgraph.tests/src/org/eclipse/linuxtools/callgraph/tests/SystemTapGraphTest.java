@@ -72,10 +72,10 @@ public class SystemTapGraphTest extends TestCase {
 //		parse.setTestMode(true);
 		parse.testRun(new NullProgressMonitor());
 		
-		CallgraphView.forceDisplay();
 		
 		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
+		CallgraphView.forceDisplay();
 		 
 		if (!manual) {
 			ArrayList<String> tasks = new ArrayList<String>();
