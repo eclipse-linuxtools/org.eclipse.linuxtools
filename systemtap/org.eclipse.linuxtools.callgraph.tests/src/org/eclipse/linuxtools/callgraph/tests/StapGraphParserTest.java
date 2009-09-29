@@ -21,7 +21,7 @@ public class StapGraphParserTest extends TestCase {
 	//RENDER THE GRAPH
 	public  static StapGraphParser initializeGraph(String filePath){
 		StapGraphParser grph = new StapGraphParser();
-		grph.setFile(filePath);
+		grph.setFilePath(filePath);
 		grph.testRun(new NullProgressMonitor());
 		return grph;
 	}
