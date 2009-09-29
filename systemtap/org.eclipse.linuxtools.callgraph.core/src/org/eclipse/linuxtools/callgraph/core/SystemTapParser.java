@@ -42,7 +42,9 @@ public abstract class SystemTapParser extends Job {
 	 * This method should be of the form viewID = view_id_string, where view_id_string is
 	 * some constant defined by your parser. 
 	 */
-	public abstract void setViewID(String value);
+	public void setViewID(String value) {
+		viewID = value;
+	}
 
 	/**
 	 * Implement this method to execute parsing. The return from

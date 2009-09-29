@@ -357,13 +357,4 @@ public class StapGraphParser extends SystemTapParser {
 		}		
 	}
 
-
-	@Override
-	public void setViewID(String viewID) {
-		this.viewID = viewID;
-	}
-
-
-
-	
 }
