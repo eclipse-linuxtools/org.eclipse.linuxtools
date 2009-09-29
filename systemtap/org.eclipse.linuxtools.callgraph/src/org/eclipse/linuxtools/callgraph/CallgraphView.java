@@ -506,6 +506,7 @@ public class CallgraphView extends SystemTapView {
 				if (filePath != null){
 					StapGraphParser new_parser = new StapGraphParser();
 					new_parser.setFile(filePath);
+					new_parser.setViewID(CallGraphConstants.viewID);
 					new_parser.schedule();					
 				}
 			}
@@ -515,6 +516,7 @@ public class CallgraphView extends SystemTapView {
 		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
 			public void run(){
 				StapGraphParser new_parser = new StapGraphParser();
+				new_parser.setViewID(CallGraphConstants.viewID);
 				new_parser.schedule();					
 			}
 		};
