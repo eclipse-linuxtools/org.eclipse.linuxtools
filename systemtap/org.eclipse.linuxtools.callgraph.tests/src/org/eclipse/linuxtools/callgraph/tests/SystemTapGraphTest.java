@@ -18,9 +18,10 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.callgraph.CallgraphView;
-import org.eclipse.linuxtools.callgraph.GraphUIJob;
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
+import org.eclipse.linuxtools.callgraph.core.GraphUIJob;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -73,7 +74,7 @@ public class SystemTapGraphTest extends TestCase {
 		
 		CallgraphView.forceDisplay();
 		
-		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse);
+		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
 		 
 		if (!manual) {

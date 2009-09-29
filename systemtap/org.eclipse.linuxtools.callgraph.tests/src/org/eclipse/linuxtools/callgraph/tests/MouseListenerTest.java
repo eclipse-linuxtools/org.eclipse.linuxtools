@@ -13,10 +13,11 @@ package org.eclipse.linuxtools.callgraph.tests;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.linuxtools.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.callgraph.CallgraphView;
-import org.eclipse.linuxtools.callgraph.GraphUIJob;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
+import org.eclipse.linuxtools.callgraph.core.GraphUIJob;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
 import org.eclipse.zest.core.widgets.GraphItem;
 
@@ -30,7 +31,7 @@ public class MouseListenerTest extends TestCase{
 
 		CallgraphView.forceDisplay();
 
-		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse);
+		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
 		
 		
