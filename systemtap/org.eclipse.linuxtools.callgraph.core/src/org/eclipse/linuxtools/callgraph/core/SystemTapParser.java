@@ -156,17 +156,16 @@ public abstract class SystemTapParser extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		this.monitor = monitor;
 		
+		String line;
+		text = new StringBuffer();
+		File file = new File(PluginConstants.DEFAULT_OUTPUT+"callgraph.out");
 		if (realTime){		
-			String line;
-			text = new StringBuffer();
-			File file = new File(PluginConstants.DEFAULT_OUTPUT+"callgraph.out");
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
 				while (!isDone){
 					if ((line = buff.readLine()) != null){
 						text.append(line);
 					}
-					System.out.println(text.toString());
 				}
 				//TODO: how does 'text' get sent to the systemtapview
 				//or should some class that created the parser access it from here.
@@ -174,7 +173,21 @@ public abstract class SystemTapParser extends Job {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}/*else{
+			try {
+				BufferedReader buff = new BufferedReader(new FileReader(file));
+				while ((line = buff.readLine()) != null){
+						text.append(line);
+				}
+				//TODO: how does 'text' get sent to the systemtapview
+				//or should some class that created the parser access it from here.
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}*/
+		
+		System.out.println(text.toString());
 		
 		IStatus returnStatus = executeParsing();
 		postProcessing();

@@ -295,7 +295,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			parser.setFilePath(outputPath);
 
 			
-			if (element.getAttribute(PluginConstants.ATTR_REALTIME) == PluginConstants.VAL_TRUE) {
+			if (element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
 				parser.setRealTime(true);
 				parser.schedule();
 			}
@@ -373,7 +373,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				return;
 			}
 			
-			if (element.getAttribute(Messages.getString("SystemTapLaunchConfigurationDelegate.8")) != Messages.getString("SystemTapLaunchConfigurationDelegate.9")) { //$NON-NLS-1$ //$NON-NLS-2$
+			if (! element.getAttribute(Messages.getString("SystemTapLaunchConfigurationDelegate.8")).equals(Messages.getString("SystemTapLaunchConfigurationDelegate.9"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				parser.schedule();
 			}
 						
