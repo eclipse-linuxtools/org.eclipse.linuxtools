@@ -44,6 +44,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	private ArrayList<String> exclusions;
 	private String projectName;
 	protected static final String ATTR_PARSER = "org.eclipse.linuxtools.callgraph.graphparser"; //$NON-NLS-1$
+	protected static final String ATTR_VIEWER = "org.eclipse.linuxtools.callgraph.callgraphview";  //$NON-NLS-1$
 	
 	
 	public void setProjectName(String val) {
@@ -79,6 +80,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 				+ "callgraphGen.stp";  //$NON-NLS-1$
 		
 		parserID = ATTR_PARSER;
+		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";
 		
 
 		

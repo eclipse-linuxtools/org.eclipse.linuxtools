@@ -290,7 +290,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			SystemTapParser parser = 
 				(SystemTapParser) element.createExecutableExtension(PluginConstants.ATTR_CLASS);
-			
+			parser.setViewID(config.getAttribute(LaunchConfigurationConstants.VIEW_CLASS,
+					LaunchConfigurationConstants.VIEW_CLASS));
 			
 			if (element.getAttribute(PluginConstants.ATTR_REALTIME) == PluginConstants.VAL_TRUE) {
 				parser.schedule();

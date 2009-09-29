@@ -28,7 +28,6 @@ public abstract class SystemTapParser extends Job {
 		super("New_Job"); //$NON-NLS-1$
 		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		initialize();
-		setViewID();
 	}
 
 	/**
@@ -43,7 +42,7 @@ public abstract class SystemTapParser extends Job {
 	 * This method should be of the form viewID = view_id_string, where view_id_string is
 	 * some constant defined by your parser. 
 	 */
-	protected abstract void setViewID();
+	public abstract void setViewID(String value);
 
 	/**
 	 * Implement this method to execute parsing. The return from
@@ -66,7 +65,6 @@ public abstract class SystemTapParser extends Job {
 		else
 			this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		initialize();
-		setViewID();
 	}
 
 	/**

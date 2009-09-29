@@ -359,8 +359,8 @@ public class StapGraphParser extends SystemTapParser {
 
 
 	@Override
-	protected void setViewID() {
-		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";
+	public void setViewID(String viewID) {
+		this.viewID = viewID;
 	}
 
 
