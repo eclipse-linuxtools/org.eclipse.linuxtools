@@ -119,6 +119,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 	protected String dirPath;
 	protected String generatedScript;
 	protected String parserID;
+	protected String viewID;
 	protected boolean needToGenerate;
 	protected boolean overwrite;
 	protected boolean useColours;
@@ -247,6 +248,7 @@ public class SystemTapLaunchShortcut extends ProfileLaunchShortcut{
 			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
 			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
 			wc.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parserID);
+			wc.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewID);
 			
 			
 			try {

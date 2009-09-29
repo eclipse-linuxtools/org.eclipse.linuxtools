@@ -87,11 +87,14 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected Text button_D_text;
 	protected Text binaryArguments;
 	protected Text parser;
+	protected Text viewer;
 //	protected Text commandFile;
 	
 	protected Button fileBrowseButton;
 	protected Button workspaceBrowseButton;
 	protected Button parserButton;
+	protected Button viewerButton;
+
 
 	protected Button button_v;
 	protected Button button_k;
@@ -307,7 +310,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		
 		
 		/*
-		 * Parser folder -- Tab for selecting a parser to use
+		 * Parser folder -- Tab for selecting a parser and viewer to use
 		 */
 		parserFolder = new TabFolder(top, SWT.BORDER);
 		parserFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -393,6 +396,33 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				}
 			}
 		});
+		
+		
+		viewer = new Text(browseTop, SWT.BORDER);
+		viewer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		viewer.addModifyListener(modifyListener);
+
+		viewerButton = createPushButton(browseTop, 
+				"Find viewers", null);  //$NON-NLS-1$
+		viewerButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), 
+						new ListLabelProvider());
+				dialog.setTitle("Select viewer");  //$NON-NLS-1$
+				dialog.setMessage("Select viewer to use.");  //$NON-NLS-1$
+				IExtensionRegistry reg = Platform.getExtensionRegistry();
+				IConfigurationElement[] extensions = reg
+						.getConfigurationElementsFor(PluginConstants.VIEW_RESOURCE, 
+								PluginConstants.VIEW_NAME);
+				
+				dialog.setElements(extensions);
+				if (dialog.open() == IDialogConstants.OK_ID) {
+					String arg = getUsefulLabel(dialog.getFirstResult());
+					viewer.setText(arg);
+				}
+			}
+		});
+		
 	}
 
 	protected void createGeneratedScriptOption(Composite generatedScriptTop) {
@@ -807,6 +837,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			binaryArguments.setText(configuration.getAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS, LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS));
 			
 			parser.setText(configuration.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS));
+			parser.setText(configuration.getAttribute(LaunchConfigurationConstants.VIEW_CLASS, LaunchConfigurationConstants.DEFAULT_VIEW_CLASS));
 			
 			if (generatedScript != null){
 				generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
@@ -845,6 +876,8 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, button_x_Spinner.getSelection());
 		
 		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parser.getText());
+		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, viewer.getText());
+
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES, button_D_text.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.BINARY_PATH, binaryFile.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH, scriptFile.getText());
@@ -912,6 +945,8 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT);
 		configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE);
 		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS);
+		configuration.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, LaunchConfigurationConstants.DEFAULT_VIEW_CLASS);
+
 
 		
 		configuration.setAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR);
