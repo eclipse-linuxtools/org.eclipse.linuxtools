@@ -25,7 +25,7 @@ public abstract class SystemTapParser extends Job {
 	 
 
 	public SystemTapParser() {
-		super("New_Job"); //$NON-NLS-1$
+		super("New_SystemTapParser_Job"); //$NON-NLS-1$
 		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		initialize();
 	}
@@ -178,7 +178,7 @@ public abstract class SystemTapParser extends Job {
 	 * 
 	 * @param filePath
 	 */
-	public void setFile(String filePath) {
+	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
 
