@@ -50,19 +50,16 @@ import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.ITool;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
-import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
 import org.eclipse.cdt.managedbuilder.macros.BuildMacroException;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator2;
 import org.eclipse.cdt.newmake.core.IMakeCommonBuildInfo;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceStatus;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -246,40 +243,17 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 	 * 
 	 * @param string @return IPath
 	 */
-	private IPath createDirectory(String dirName) throws CoreException {
+	private boolean createDirectory(String dirName) throws CoreException {
 		// Create or get the handle for the build directory
-		if (dirName.length() == 0 || dirName.equals("."))
-			return project.getFullPath();
-		IFolder folder = project.getFolder(dirName);
-		if (!folder.exists()) {
-			// Make sure that parent folders exist
-			IPath parentPath = (new Path(dirName)).removeLastSegments(1);
-			// Assume that the parent exists if the path is empty
-			if (!parentPath.isEmpty()) {
-				IFolder parent = project.getFolder(parentPath);
-				if (!parent.exists()) {
-					createDirectory(parentPath.toString());
-				}
-			}
+		boolean rc = true;
+		IPath path = new Path(dirName);
+		if (dirName.length() == 0 || dirName.startsWith(".") || !dirName.startsWith("/"))
+			path = project.getLocation().append(dirName);
+		File f = path.toFile();
+		if (!f.exists())
+			rc = f.mkdirs();
 
-			// Now make the requested folder
-			try {
-				folder.create(true, true, null);
-			} catch (CoreException e) {
-				if (e.getStatus().getCode() == IResourceStatus.PATH_OCCUPIED)
-					folder.refreshLocal(IResource.DEPTH_ZERO, null);
-				else
-					throw e;
-			}
-
-			// Make sure the folder is marked as derived so it is not added to
-			// CM
-			if (!folder.isDerived()) {
-				folder.setDerived(true);
-			}
-		}
-
-		return folder.getFullPath();
+		return rc;
 	}
 
 	/*
@@ -346,7 +320,14 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		checkCancel();
 
 		// Create the top-level directory for the build output
-		createDirectory(buildDir);
+		if (!createDirectory(buildDir)) {
+			rc = IStatus.ERROR;
+			errMsg = AutotoolsPlugin.getFormattedString("MakeGenerator.createdir.error", //$NON-NLS-1$
+					new String[] {buildDir});
+			return new MultiStatus(AutotoolsPlugin.getUniqueIdentifier(), 
+					rc, errMsg, null);
+		}
+
 		checkCancel();
 
 		// // How did we do
@@ -378,22 +359,19 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 		IConsole console = CCorePlugin.getDefault().getConsole("org.eclipse.linuxtools.cdt.autotools.configureConsole"); //$NON-NLS-1$
 
 		// Get the project and make sure there's a monitor to cancel the build
-		IProject currentProject = project;
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
 
 		try {
-			IWorkspace workspace = currentProject.getWorkspace();
-			IWorkspaceRoot root = workspace.getRoot();
 			// If a config.status file exists in the build directory, we call it
 			// to
 			// regenerate the makefile
 			IPath configfile = getProjectLocation().append(buildDir).append(
 					CONFIG_STATUS);
 			IPath makefilePath = getProjectLocation().append(buildDir).append(MAKEFILE);
-			IFile configStatus = root.getFileForLocation(configfile);
-			IFile makefile = root.getFileForLocation(makefilePath);
+			File configStatus = configfile.toFile();
+			File makefile = makefilePath.toFile();
 			IPath configSettingsPath = getConfigSettingsPath();
 			File configSettings = configSettingsPath.toFile();
 			String[] configArgs = getConfigArgs();
@@ -449,7 +427,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 					// and the Makefile might not detect a rebuild is required.  In
 					// addition, the build directory itself could have been changed and
 					// we should remove the previous build.
-					IResource r = root.findMember(project.getFullPath().append(buildDir));
+					File r = project.getLocation().append(buildDir).toFile();
 					if (r != null && r.exists()) {
 						// See what type of cleaning the user has set up in the
 						// build properties dialog.
@@ -460,8 +438,15 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 							// do nothing
 						}
 						
-						if (cleanDelete != null && cleanDelete.equals(AutotoolsPropertyConstants.TRUE))
-							r.delete(true, new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN));
+						if (cleanDelete != null && cleanDelete.equals(AutotoolsPropertyConstants.TRUE)) {
+							SubProgressMonitor sub = new SubProgressMonitor(monitor, IProgressMonitor.UNKNOWN);
+							sub.beginTask(AutotoolsPlugin.getResourceString("MakeGenerator.clean.builddir"), IProgressMonitor.UNKNOWN);
+							try {
+								r.delete();
+							} finally {
+								sub.done();
+							}
+						}
 						else {
 							// There is a make target for cleaning.
 							if (makefile != null && makefile.exists()) {
@@ -545,7 +530,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				// Remove the existing config.status file since we use it
 				// to figure out if configure was run.
 				if (configStatus.exists())
-					configStatus.delete(true, null);
+					configStatus.delete();
 				// Get any user-specified arguments for autogen.
 				String[] autogenArgs = getAutogenArgs();
 				rc = runScript(autogenPath,
@@ -553,7 +538,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 						AutotoolsPlugin.getResourceString("MakeGenerator.autogen.sh"), //$NON-NLS-1$
 						errMsg, console, autogenEnvs, true);
 				if (rc != IStatus.ERROR) {
-					configStatus = root.getFileForLocation(configfile);
+					configStatus =configfile.toFile();
 					// Check for config.status.  If it is created, then
 					// autogen.sh ran configure and we should not run it
 					// ourselves.
@@ -613,7 +598,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 								project.getLocation().append(buildDir),
 								configArgs, 
 								AutotoolsPlugin.getResourceString("MakeGenerator.gen.makefile"), //$NON-NLS-1$
-								errMsg, console, configureEnvs, true);
+								errMsg, console, configureEnvs, false);
 						if (rc != IStatus.ERROR) {
 							File makefileFile = project.getLocation().append(buildDir)
 							.append(MAKEFILE).toFile();
@@ -637,7 +622,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 			rc = IStatus.ERROR;
 		} finally {
 			// getGenerationProblems().clear();
-			status = new MultiStatus(ManagedBuilderCorePlugin
+			status = new MultiStatus(AutotoolsPlugin
 						.getUniqueIdentifier(), rc, errMsg, null);
 		}
 		return status;

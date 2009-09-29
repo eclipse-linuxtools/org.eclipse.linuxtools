@@ -1,3 +1,18 @@
+2009-09-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #289819
+	* plugin.properties: Change convert message to match the same format as CDT's
+	convertor.
+	
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (createDirectory): Changed
+	to use Java File and mkdirs method.
+	(regenerateMakefiles): Use Java File for existence checking and do not use Workspace
+	root because file may be external.  As well, share console if autoreconf required
+	prior to configuration.
+	* src/org/eclipse/linuxtools/cdt/autotools/Resources.properties: Add create dir error
+	message.
+	
+
 2009-08-13  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #286543
