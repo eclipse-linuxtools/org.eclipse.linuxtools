@@ -79,5 +79,6 @@ public abstract class SystemTapView extends ViewPart {
 	}
 
 	public abstract boolean setParser(SystemTapParser parser);
+	
 
 }

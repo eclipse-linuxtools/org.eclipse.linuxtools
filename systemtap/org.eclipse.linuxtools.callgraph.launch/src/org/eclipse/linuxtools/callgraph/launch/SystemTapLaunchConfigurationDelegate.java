@@ -296,6 +296,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			
 			if (element.getAttribute(PluginConstants.ATTR_REALTIME) == PluginConstants.VAL_TRUE) {
+				parser.setRealTime(true);
 				parser.schedule();
 			}
 

@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.UIJob;
 
 public class SystemTapTextView extends SystemTapView{
 	private static StyledText viewer;
@@ -236,8 +237,21 @@ public class SystemTapTextView extends SystemTapView{
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
 		}
-		
 	}
+	
+	protected class RunTimeJob extends UIJob{
+
+		public RunTimeJob(String name) {
+			super(name);
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			return null;
+		} 
+	}
+	
+	
 
 	
 }

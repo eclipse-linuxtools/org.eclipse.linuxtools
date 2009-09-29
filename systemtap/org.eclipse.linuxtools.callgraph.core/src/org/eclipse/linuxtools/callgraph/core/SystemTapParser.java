@@ -22,12 +22,31 @@ public abstract class SystemTapParser extends Job {
 	protected IProgressMonitor monitor;
 	protected String filePath;
 	protected String viewID;
+	protected SystemTapView view;
+	protected boolean realTime = false;
 	 
 
 	public SystemTapParser() {
 		super("New_SystemTapParser_Job"); //$NON-NLS-1$
 		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		this.viewID = null;
 		initialize();
+	}
+	/**
+	 * Set whether or not this parser runs in real time.
+	 * If viewID has already been set, this will also attempt to open the view.
+	 * @throws InterruptedException 
+	 */
+	public void setRealTime(boolean val) throws InterruptedException {
+		realTime = val;
+		if (realTime && viewID != null) {
+			if (realTime) {
+				GraphUIJob job = new GraphUIJob("RealTimeUIJob", this, this.viewID);
+				job.schedule();
+				job.join();
+				view = job.getViewer();
+			}
+		}
 	}
 
 	/**
@@ -38,9 +57,19 @@ public abstract class SystemTapParser extends Job {
 	
 	/**
 	 * Set the viewID to use for this parser -- see the callgraph.core view extension point.
+	 * If realTime is set to true, this will also attempt to open the view.
+	 * @throws InterruptedException 
 	 */
-	public void setViewID(String value) {
+	public void setViewID(String value) throws InterruptedException {
 		viewID = value;
+		if (realTime && viewID != null) {
+			if (realTime) {
+				GraphUIJob job = new GraphUIJob("RealTimeUIJob", this, this.viewID);
+				job.schedule();
+				job.join();
+				view = job.getViewer();
+			}
+		}
 	}
 
 	/**
@@ -69,6 +98,7 @@ public abstract class SystemTapParser extends Job {
 			this.filePath = filePath;
 		else
 			this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		this.viewID = null;
 		initialize();
 	}
 
@@ -190,5 +220,6 @@ public abstract class SystemTapParser extends Job {
 	public String getFile() {
 		return filePath;
 	}
+	
 
 }

@@ -33,6 +33,7 @@ import org.eclipse.ui.progress.UIJob;
 public class GraphUIJob extends UIJob {
 	private SystemTapParser parser;
 	private String viewID;
+	private SystemTapView viewer;
 
 	public GraphUIJob(String name, SystemTapParser parser, String viewID) {
 		super(name);
@@ -63,10 +64,11 @@ public class GraphUIJob extends UIJob {
 		try {
 			view = (SystemTapView) element
 					.createExecutableExtension(PluginConstants.ATTR_CLASS);
-
+			viewer = view;
 			if (!view.setParser(parser))
 				return Status.CANCEL_STATUS;
 			view.initialize(this.getDisplay(), monitor);
+			
 			 
 			return Status.OK_STATUS;
 		} catch (CoreException e) {
@@ -87,4 +89,7 @@ public class GraphUIJob extends UIJob {
 		return runInUIThread(m);
 	}
 
+	public SystemTapView getViewer() {
+		return viewer;
+	}
 }
