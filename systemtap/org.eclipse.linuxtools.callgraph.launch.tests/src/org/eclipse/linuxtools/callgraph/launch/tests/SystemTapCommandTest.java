@@ -45,14 +45,6 @@ public class SystemTapCommandTest extends TestCase{
 			e1.printStackTrace();
 		}
 		
-
-//		//Execute and assert
-//		SystemTapCommandParser cmd = new SystemTapCommandParser("CallgraphView", "stap " 
-//				+ tempLocation, junk,false, false, "");
-//		cmd.setTestingMode();
-//		assertEquals(cmd.testRun(new NullProgressMonitor()), Status.OK_STATUS);
-//		assertEquals(testText, cmd.getTestOutput());
-		
 		//Cleanup
 		temporaryScript.delete();
 	}
