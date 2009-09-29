@@ -13,22 +13,22 @@ package org.eclipse.linuxtools.callgraph.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.linuxtools.callgraph.CallgraphView;
+import org.eclipse.linuxtools.callgraph.core.SystemTapTextView;
 
 public class SystemTapGraphViewTest extends TestCase {
-	private CallgraphView stapView = new CallgraphView();
+	private SystemTapTextView stapView = new SystemTapTextView();
 	private String testText = "blah";
 	
 	public void test() {
-//		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
-//
-//		CallgraphView.forceDisplay();
-//		
-//		stapView.println(testText);
-//		assertEquals(stapView.getText(), testText);
-//		
-//		stapView.clearAll();
-//		assertEquals(stapView.getText(), "");
+		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
+
+		SystemTapTextView.forceDisplay();
+		
+		stapView.println(testText);
+		assertEquals(stapView.getText(), testText);
+		
+		stapView.clearAll();
+		assertEquals(stapView.getText(), "");
 	}
 	
 }
