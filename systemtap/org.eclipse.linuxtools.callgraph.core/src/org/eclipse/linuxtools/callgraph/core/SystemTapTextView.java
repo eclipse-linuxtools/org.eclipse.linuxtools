@@ -62,6 +62,7 @@ public class SystemTapTextView extends SystemTapView{
 		viewer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		Font font = new Font(parent.getDisplay(), "Monospace", 11, SWT.NORMAL); //$NON-NLS-1$
 		viewer.setFont(font);
+		masterComposite = parent;
 		display = masterComposite.getDisplay();
 	}
 
