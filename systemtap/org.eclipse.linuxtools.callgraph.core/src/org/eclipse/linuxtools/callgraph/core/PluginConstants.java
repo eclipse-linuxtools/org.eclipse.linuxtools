@@ -17,9 +17,13 @@ public final class PluginConstants {
 	public static final String PARSER_CLASS = "org.eclipse.linuxtools.callgraph.core.parser"; //$NON-NLS-1$
 	public static final String PARSER_RESOURCE = "org.eclipse.linuxtools.callgraph.core"; //$NON-NLS-1$
 	public static final String PARSER_NAME = "parser";  //$NON-NLS-1$
+	public static final String VIEW_CLASS = "org.eclipse.linuxtools.callgraph.core.view"; //$NON-NLS-1$
+	public static final String VIEW_RESOURCE = "org.eclipse.linuxtools.callgraph.core"; //$NON-NLS-1$
+	public static final String VIEW_NAME = "view";  //$NON-NLS-1$
 	public static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 	public static final String ATTR_REALTIME = "realtime"; //$NON-NLS-1$
 	public static final String VAL_TRUE = "true"; //$NON-NLS-1$
+	public static final String DEFAULT_VIEW_ID = "org.eclipse.linuxtools.callgraph.core.SystemTapView";
 	
 	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	

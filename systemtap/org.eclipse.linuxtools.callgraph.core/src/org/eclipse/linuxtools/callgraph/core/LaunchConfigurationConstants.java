@@ -49,6 +49,7 @@ public final class LaunchConfigurationConstants {
 	public static final String COMMAND_LIST = PLUGIN_ID + ".COMMAND_LIST"; //$NON-NLS-1$
 	public static final String BINARY_ARGUMENTS = PLUGIN_ID + ".BINARY_ARGUMENTS"; //$NON-NLS-1$
 	public static final String PARSER_CLASS = PLUGIN_ID + ".PARSER_CLASS"; //$NON-NLS-1$
+	public static final String VIEW_CLASS = PLUGIN_ID + ".VIEW_CLASS";   //$NON-NLS-1$
 
 
 	public static final String GENERATED_SCRIPT = PLUGIN_ID + ".GENERATED_SCRIPT"; //$NON-NLS-1$
@@ -88,5 +89,6 @@ public final class LaunchConfigurationConstants {
 	public static final boolean DEFAULT_USE_COLOUR = false;
 	
 	public static final String DEFAULT_PARSER_CLASS = INVALID;
+	public static final String DEFAULT_VIEW_CLASS = INVALID;
 
 }
