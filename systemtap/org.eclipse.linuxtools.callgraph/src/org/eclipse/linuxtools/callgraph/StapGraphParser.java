@@ -69,7 +69,7 @@ public class StapGraphParser extends SystemTapParser {
 		callOrderList = new ArrayList<Integer>();
 		markedMap = new HashMap<Integer, String>();
 		lastFunctionCalled = 0;
-		project = null;		
+		project = null;
 	}
 
 	
@@ -324,11 +324,6 @@ public class StapGraphParser extends SystemTapParser {
 	}
 
 	
-	public void postProcessing() {
-		//Create a UIJob to handle the rest
-		GraphUIJob uijob = new GraphUIJob(Messages.getString("StapGraphParser.5"), this); //$NON-NLS-1$
-		uijob.schedule();	
-	}
 
 	public void saveData(String filePath) {
 		File file = new File(filePath);
@@ -360,6 +355,12 @@ public class StapGraphParser extends SystemTapParser {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}		
+	}
+
+
+	@Override
+	protected void setViewID() {
+		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";
 	}
 
 

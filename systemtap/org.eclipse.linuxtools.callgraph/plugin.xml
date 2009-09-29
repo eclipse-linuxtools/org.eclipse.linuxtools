@@ -89,4 +89,12 @@
              realtime="false">
        </parser>
     </extension>
+    <extension
+          id="org.eclipse.linuxtools.callgraph.callgraphview"
+          name="CallgraphView"
+          point="org.eclipse.linuxtools.callgraph.core.view">
+       <view
+             class="org.eclipse.linuxtools.callgraph.CallgraphView">
+       </view>
+    </extension>
 </plugin>
