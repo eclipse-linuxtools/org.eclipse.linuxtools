@@ -27,7 +27,7 @@ public abstract class SystemTapParser extends Job {
 	protected String filePath;
 	protected String viewID;
 	protected SystemTapView view;
-	protected boolean realTime = true;
+	protected boolean realTime = false;
 	
 	public boolean isDone = false;
 	public StringBuffer text;
