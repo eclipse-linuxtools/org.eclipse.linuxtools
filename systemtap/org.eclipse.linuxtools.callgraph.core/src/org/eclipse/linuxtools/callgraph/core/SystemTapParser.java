@@ -38,9 +38,6 @@ public abstract class SystemTapParser extends Job {
 	
 	/**
 	 * Set the viewID to use for this parser -- see the callgraph.core view extension point.
-	 * <br>
-	 * This method should be of the form viewID = view_id_string, where view_id_string is
-	 * some constant defined by your parser. 
 	 */
 	public void setViewID(String value) {
 		viewID = value;
@@ -57,7 +54,13 @@ public abstract class SystemTapParser extends Job {
 	 */
 	public abstract IStatus executeParsing();
 
-	public abstract void saveData(String filePath);
+	/**
+	 * Implement this method to save data in whichever format your program needs.
+	 * Keep in mind that the filePath variable should contain the filePath of the
+	 * most recently opened file.
+	 * @param filePath
+	 */
+	public abstract void saveData(String targetFile);
 
 	public SystemTapParser(String name, String filePath) {
 		super(name);
