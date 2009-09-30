@@ -68,6 +68,9 @@ public class GraphUIJob extends UIJob {
 			if (!view.setParser(parser))
 				return Status.CANCEL_STATUS;
 			view.initialize(this.getDisplay(), monitor);
+			if (!parser.realTime) {
+				view.update();
+			}
 			
 			 
 			return Status.OK_STATUS;

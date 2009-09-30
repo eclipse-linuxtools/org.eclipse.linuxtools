@@ -78,7 +78,18 @@ public abstract class SystemTapView extends ViewPart {
 		stapview = view;
 	}
 
+	/**
+	 * Method for setting the parser object of the view. Make this method return true if 
+	 * the parser is of the expected class, false if it is null or unexpected.
+	 * @param parser
+	 * @return
+	 */
 	public abstract boolean setParser(SystemTapParser parser);
-	
+
+	/**
+	 * Perform whatever actions are necessary to 'update' this viewer. It is recommended that 
+	 * the update function be called after the setParser method is called.
+	 */
+	public abstract void update();
 
 }

@@ -26,6 +26,7 @@ public abstract class SystemTapParser extends Job {
 	protected String viewID;
 	protected SystemTapView view;
 	protected boolean realTime = false;
+	protected Object finalData;
 
 	public boolean isDone = false;
 	public StringBuffer text;
@@ -161,6 +162,7 @@ public abstract class SystemTapParser extends Job {
 		}
 
 		IStatus returnStatus = executeParsing();
+		setFinalData();
 		postProcessing();
 		return returnStatus;
 	}
@@ -272,5 +274,29 @@ public abstract class SystemTapParser extends Job {
 
 	public void setDone(boolean val) {
 		isDone = val;
+	}
+	
+	/**
+	 * Return the finalData object.
+	 * @return
+	 */
+	public Object getFinalData() {
+		return finalData;
+	}
+	
+	/**
+	 * Called at the end of a non-realtime run. 
+	 * Implement this method if using non-realtime functions.
+	 * The setFinalData method will be called after executeParsing() is run. The getFinalData() method
+	 * will be used by the SystemTapView to get the final data associated with this parser.
+	 * <br><br>
+	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
+	 * its data structures that way. 
+	 */
+	protected abstract void setFinalData();
+	
+	
+	public void setMonitor(IProgressMonitor m) {
+		this.monitor = m;
 	}
 }

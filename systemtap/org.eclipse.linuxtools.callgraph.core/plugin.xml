@@ -14,6 +14,7 @@
    
          <extension
                id="org.eclipse.linuxtools.callgraph.core.systemtaptextview"
+               name="SystemTapTextView"
                point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"

@@ -1116,8 +1116,11 @@ public class CallgraphView extends SystemTapView {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-		
+	}
+
+
+	@Override
+	public void update() {		
 	}
 
 }

@@ -250,6 +250,15 @@ public class SystemTapTextView extends SystemTapView{
 			return null;
 		} 
 	}
+
+	@Override
+	public void update() {
+		if (!parser.realTime) {
+			if (parser.getFinalData() instanceof String) {
+				prettyPrintln((String)parser.getFinalData());
+			}
+		}
+	}
 	
 	
 

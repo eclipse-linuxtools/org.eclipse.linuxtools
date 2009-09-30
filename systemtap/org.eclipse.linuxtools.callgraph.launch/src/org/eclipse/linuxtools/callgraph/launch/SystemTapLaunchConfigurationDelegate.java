@@ -293,6 +293,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			parser.setViewID(config.getAttribute(LaunchConfigurationConstants.VIEW_CLASS,
 					LaunchConfigurationConstants.VIEW_CLASS));
 			parser.setFilePath(outputPath);
+			parser.setMonitor(SubMonitor.convert(monitor));
 
 			
 			if (element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
