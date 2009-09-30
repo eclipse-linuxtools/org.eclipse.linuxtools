@@ -239,9 +239,9 @@ public abstract class SystemTapParser extends Job {
 	 * will form the body of a run method executed in a separate UIJob. If you
 	 * do not wish your parser to ever execute in realtime, set this function
 	 * to return Status.CANCEL_STATUS.
-	 * <br>
-	 * WARNING: If executing in real-time make sure that the isDone flag is
-	 * eventually set, or the program will wait forever.
+	 * <br> <br>
+	 * After the isDone flag is set to true, the realTimeParsing() method will 
+	 * be run one more time to catch any stragglers.
 	 */
 	public abstract IStatus realTimeParsing();
 	
@@ -258,13 +258,19 @@ public abstract class SystemTapParser extends Job {
 				returnStatus = realTimeParsing();
 				if (returnStatus == Status.CANCEL_STATUS) {
 					launchFileErrorDialog();
-					break;
+					return returnStatus;
 				}
 			}
+			
+			//Final call: make sure we catch all data
+			returnStatus = realTimeParsing();
 			
 			return returnStatus;
 		}
 		
 	}
 
+	public void setDone(boolean val) {
+		isDone = val;
+	}
 }

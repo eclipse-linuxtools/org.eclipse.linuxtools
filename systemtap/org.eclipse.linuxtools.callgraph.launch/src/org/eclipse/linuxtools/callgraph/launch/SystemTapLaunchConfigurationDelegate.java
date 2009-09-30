@@ -373,8 +373,12 @@ public class SystemTapLaunchConfigurationDelegate extends
 				return;
 			}
 			
-			if (! element.getAttribute(Messages.getString("SystemTapLaunchConfigurationDelegate.8")).equals(Messages.getString("SystemTapLaunchConfigurationDelegate.9"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			if (! element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) { //$NON-NLS-1$ //$NON-NLS-2$
 				parser.schedule();
+			} else {
+				//Parser already scheduled, but double-check
+				if (parser != null)
+					parser.setDone(true);
 			}
 						
 			
