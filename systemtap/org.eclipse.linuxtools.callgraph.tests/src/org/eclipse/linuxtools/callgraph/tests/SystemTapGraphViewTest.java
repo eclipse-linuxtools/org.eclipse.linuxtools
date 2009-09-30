@@ -19,6 +19,7 @@ public class SystemTapGraphViewTest extends TestCase {
 	private SystemTapTextView stapView = new SystemTapTextView();
 	private String testText = "blah";
 	
+	//TODO: write some better tests here
 	public void test() {
 //		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
 //
