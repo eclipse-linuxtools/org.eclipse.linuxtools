@@ -363,9 +363,4 @@ public class StapGraphParser extends SystemTapParser {
 		return Status.CANCEL_STATUS;
 	}
 
-
-	@Override
-	protected void setData() {
-	}
-
 }

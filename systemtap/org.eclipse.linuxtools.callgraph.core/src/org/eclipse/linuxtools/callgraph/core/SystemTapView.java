@@ -75,9 +75,15 @@ public abstract class SystemTapView extends ViewPart {
 		}
 	}
 	
+	ViewUIUpdater updater;
+	
 	public void update() {
-		ViewUIUpdater updater = new ViewUIUpdater("UIUpdater");
+		updater = new ViewUIUpdater("UIUpdater");
 		updater.schedule();
+	}
+	
+	public void join() throws InterruptedException {
+		updater.join();
 	}
 	
 	private class ViewUIUpdater extends UIJob {

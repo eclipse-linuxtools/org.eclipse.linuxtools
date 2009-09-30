@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.ui.progress.UIJob;
 
 public abstract class SystemTapParser extends Job {
 	protected IProgressMonitor monitor;
@@ -70,16 +69,6 @@ public abstract class SystemTapParser extends Job {
 	 */
 	protected abstract void initialize();
 	
-	/**
-	 * Called at the end of a non-realtime run. 
-	 * Implement this method if using non-realtime functions.
-	 * The setFinalData method will be called after executeParsing() is run. The getFinalData() method
-	 * will be used by the SystemTapView to get the final data associated with this parser.
-	 * <br><br>
-	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
-	 * its data structures that way. 
-	 */
-	protected abstract void setData();
 
 	/**
 	 * Implement this method to execute parsing. The return from
@@ -179,7 +168,7 @@ public abstract class SystemTapParser extends Job {
 		}
 
 		IStatus returnStatus = executeParsing();
-		setData();
+		setData(this);
 		postProcessing();
 		return returnStatus;
 	}
@@ -327,5 +316,19 @@ public abstract class SystemTapParser extends Job {
 	public void setViewID(String value) throws InterruptedException {
 		viewID = value;
 	}
+	
+	/**
+	 * Called at the end of a non-realtime run. 
+	 * Feel free to override this method if using non-realtime functions.
+	 * The setData method will be called after executeParsing() is run. The getData() method
+	 * will be used by the SystemTapView to get the data associated with this parser.
+	 * <br><br>
+	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
+	 * its data structures that way. 
+	 */
+	protected void setData(Object obj) {
+		data = obj;
+	}
+
 
 }
