@@ -211,6 +211,8 @@ public class SystemTapTextView extends SystemTapView {
 	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
 		previousEnd = 0;
 		forceDisplay();
+		viewer.setText("");
+		viewer.update();
 		return Status.OK_STATUS;
 	}
 
@@ -229,6 +231,7 @@ public class SystemTapTextView extends SystemTapView {
 			public void run() {
 				Runtime run = Runtime.getRuntime();
 				try {
+					parser.setDone(true);
 					run.exec("kill stap");
 				} catch (IOException e) {
 					e.printStackTrace();
