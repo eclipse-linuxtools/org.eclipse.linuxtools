@@ -1,5 +1,12 @@
 2009-09-30  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #289557
+	* plugin.xml: Add ApplicabilityCalculator for includes and symbols for
+	configure tool to prevent values from being added to the command line in the
+	Tool Settings tab.
+	
+2009-09-30  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves #289558
 	* plugin.xml: Put GNU C++ Project Wizard under C/C++ project category.
 	

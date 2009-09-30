@@ -397,6 +397,7 @@
                tip="%Option.configure.user.tip"
                valueType="string"/>
          <option
+               applicabilityCalculator="org.eclipse.linuxtools.cdt.autotools.AutotoolsDefaultBuildDirHandler"
                category="org.eclipse.linuxtools.cdt.autotools.optionCategory.configure.general"
                id="org.eclipse.linuxtools.cdt.autotools.option.configure.includes"
                isAbstract="false"
@@ -407,6 +408,7 @@
          </enablement>
          </option>
          <option
+               applicabilityCalculator="org.eclipse.linuxtools.cdt.autotools.AutotoolsDefaultBuildDirHandler"
                category="org.eclipse.linuxtools.cdt.autotools.optionCategory.configure.general"
                id="org.eclipse.linuxtools.cdt.autotools.option.configure.symbols"
                isAbstract="false"
