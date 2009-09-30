@@ -160,6 +160,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		try {
 			//Make sure the output file exists
 			File tempFile = new File(outputPath);
+			tempFile.delete();
 			tempFile.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
