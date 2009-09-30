@@ -367,6 +367,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 				
 				
 				if (errorHandler.hasMismatchedProbePoints() && retry) {
+					
+					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"), Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3") + //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch4") + //$NON-NLS-1$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch5") + //$NON-NLS-1$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch6")); //$NON-NLS-1$
+					mess.schedule();
+					
 					errorHandler.finishHandling(monitor, s.getNumberOfErrors());
 					if (monitor != null && monitor.isCanceled())
 						return;
@@ -374,13 +382,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 					return;
 				}
 				
-				
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"), Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3") + //$NON-NLS-1$ //$NON-NLS-2$
-								Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch4") + //$NON-NLS-1$
-								Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch5") + //$NON-NLS-1$
-								Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch6")); //$NON-NLS-1$
-				mess.schedule();
 				errorHandler.finishHandling(monitor, s.getNumberOfErrors());
 				return;
 			}
