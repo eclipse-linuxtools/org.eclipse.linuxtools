@@ -37,34 +37,37 @@ public abstract class SystemTapParser extends Job {
 		this.viewID = null;
 		initialize();
 	}
+	
 
-	/**
-	 * Set whether or not this parser runs in real time. If viewID has already
-	 * been set, this will also attempt to open the view.
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void setRealTime(boolean val) throws InterruptedException {
-		realTime = val;
-
+	public SystemTapParser(String name, String filePath) {
+		super(name);
+		// BY DEFAULT READ/WRITE FROM HERE
+		if (filePath != null)
+			this.filePath = filePath;
+		else
+			this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		this.viewID = null;
+		initialize();
 	}
+
+
 
 	/**
 	 * Initialize will be called in the constructors for this class. Use this
 	 * method to initialize variables.
 	 */
 	protected abstract void initialize();
-
+	
 	/**
-	 * Set the viewID to use for this parser -- see the callgraph.core view
-	 * extension point. If realTime is set to true, this will also attempt to
-	 * open the view.
-	 * 
-	 * @throws InterruptedException
+	 * Called at the end of a non-realtime run. 
+	 * Implement this method if using non-realtime functions.
+	 * The setFinalData method will be called after executeParsing() is run. The getFinalData() method
+	 * will be used by the SystemTapView to get the final data associated with this parser.
+	 * <br><br>
+	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
+	 * its data structures that way. 
 	 */
-	public void setViewID(String value) throws InterruptedException {
-		viewID = value;
-	}
+	protected abstract void setFinalData();
 
 	/**
 	 * Implement this method to execute parsing. The return from
@@ -85,17 +88,20 @@ public abstract class SystemTapParser extends Job {
 	 * @param filePath
 	 */
 	public abstract void saveData(String targetFile);
-
-	public SystemTapParser(String name, String filePath) {
-		super(name);
-		// BY DEFAULT READ/WRITE FROM HERE
-		if (filePath != null)
-			this.filePath = filePath;
-		else
-			this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
-		this.viewID = null;
-		initialize();
-	}
+	
+	
+	
+	/**
+	 * Implement this method if your parser is to execute in realtime. This
+	 * will form the body of a run method executed in a separate UIJob. If you
+	 * do not wish your parser to ever execute in realtime, set this function
+	 * to return Status.CANCEL_STATUS.
+	 * <br> <br>
+	 * After the isDone flag is set to true, the realTimeParsing() method will 
+	 * be run one more time to catch any stragglers.
+	 */
+	public abstract IStatus realTimeParsing();
+	
 
 	/**
 	 * Cleans names of form 'name").return', returning just the name
@@ -166,7 +172,7 @@ public abstract class SystemTapParser extends Job {
 		postProcessing();
 		return returnStatus;
 	}
-
+	
 	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
 		int amt = 0;
 		for (int a : blah.keySet()) {
@@ -188,14 +194,6 @@ public abstract class SystemTapParser extends Job {
 		}
 	}
 
-	/**
-	 * Returns the monitor
-	 * 
-	 * @return
-	 */
-	public IProgressMonitor getMonitor() {
-		return monitor;
-	}
 
 	/**
 	 * For easier JUnit testing only. Allows public access to run method without
@@ -216,37 +214,9 @@ public abstract class SystemTapParser extends Job {
 						Messages.getString("SystemTapParser.5")); //$NON-NLS-1$
 		err.schedule();
 	}
-	
-	/**
-	 * Sets the file to read from
-	 * 
-	 * @param filePath
-	 */
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
 
-	/**
-	 * Gets the file to read from
-	 * 
-	 * @return
-	 */
-	public String getFile() {
-		return filePath;
-	}
-	
-	
-	/**
-	 * Implement this method if your parser is to execute in realtime. This
-	 * will form the body of a run method executed in a separate UIJob. If you
-	 * do not wish your parser to ever execute in realtime, set this function
-	 * to return Status.CANCEL_STATUS.
-	 * <br> <br>
-	 * After the isDone flag is set to true, the realTimeParsing() method will 
-	 * be run one more time to catch any stragglers.
-	 */
-	public abstract IStatus realTimeParsing();
-	
+
+
 	
 	private class RunTimeJob extends UIJob {
 		public RunTimeJob(String name) {
@@ -271,10 +241,6 @@ public abstract class SystemTapParser extends Job {
 		}
 		
 	}
-
-	public void setDone(boolean val) {
-		isDone = val;
-	}
 	
 	/**
 	 * Return the finalData object.
@@ -284,19 +250,66 @@ public abstract class SystemTapParser extends Job {
 		return finalData;
 	}
 	
+
 	/**
-	 * Called at the end of a non-realtime run. 
-	 * Implement this method if using non-realtime functions.
-	 * The setFinalData method will be called after executeParsing() is run. The getFinalData() method
-	 * will be used by the SystemTapView to get the final data associated with this parser.
-	 * <br><br>
-	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
-	 * its data structures that way. 
+	 * Returns the monitor
+	 * 
+	 * @return
 	 */
-	protected abstract void setFinalData();
+	public IProgressMonitor getMonitor() {
+		return monitor;
+	}
 	
+	
+	/**
+	 * Gets the file to read from
+	 * 
+	 * @return
+	 */
+	public String getFile() {
+		return filePath;
+	}
+	
+	
+	/**
+	 * Sets the file to read from
+	 * 
+	 * @param filePath
+	 */
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	
+
+	public void setDone(boolean val) {
+		isDone = val;
+	}
+
 	
 	public void setMonitor(IProgressMonitor m) {
 		this.monitor = m;
 	}
+	
+	/**
+	 * Set whether or not this parser runs in real time. If viewID has already
+	 * been set, this will also attempt to open the view.
+	 * 
+	 * @throws InterruptedException
+	 */
+	public void setRealTime(boolean val) throws InterruptedException {
+		realTime = val;
+
+	}
+	
+	/**
+	 * Set the viewID to use for this parser -- see the callgraph.core view
+	 * extension point. If realTime is set to true, this will also attempt to
+	 * open the view.
+	 * 
+	 * @throws InterruptedException
+	 */
+	public void setViewID(String value) throws InterruptedException {
+		viewID = value;
+	}
+
 }
