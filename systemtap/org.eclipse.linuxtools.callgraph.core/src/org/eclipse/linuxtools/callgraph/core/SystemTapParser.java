@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +31,7 @@ public abstract class SystemTapParser extends Job {
 	protected SystemTapView view;
 	protected boolean realTime = false;
 	protected Object data;
+	protected Object internalData;
 
 	public boolean isDone;
 	public StringBuffer text;
@@ -225,9 +230,26 @@ public abstract class SystemTapParser extends Job {
 
 		@Override
 		public IStatus run(IProgressMonitor monitor) {
-			return realTimeParsing();
+			IStatus returnStatus = Status.CANCEL_STATUS;       
+	        text = new StringBuffer();
+	        File file = new File(filePath);
+	        try {
+				internalData = new BufferedReader(new FileReader(file));
+				
+	            while (!isDone){
+	            	returnStatus = realTimeParsing();
+	            	
+	            	
+	            	if (monitor.isCanceled())
+	            		return Status.CANCEL_STATUS;
+	            	if (returnStatus == Status.CANCEL_STATUS)
+	            		return returnStatus;
+	            }
+		    } catch (FileNotFoundException e) {
+		       	e.printStackTrace();
+	        }
+			return returnStatus;
 		}
-		
 	}
 	
 	/**
