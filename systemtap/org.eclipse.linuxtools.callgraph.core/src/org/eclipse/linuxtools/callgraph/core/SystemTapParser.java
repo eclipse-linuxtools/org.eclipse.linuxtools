@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.progress.UIJob;
@@ -42,6 +43,11 @@ public abstract class SystemTapParser extends Job {
 		this.viewID = null;
 		initialize();
 		isDone = false;
+		
+		//PURELY FOR TESTING
+		if (monitor == null){
+			monitor = new NullProgressMonitor();
+		}
 	}
 	
 
