@@ -211,6 +211,7 @@ public class SystemTapTextView extends SystemTapView {
 	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
 		previousEnd = 0;
 		forceDisplay();
+		layout();
 		return Status.OK_STATUS;
 	}
 
