@@ -10,17 +10,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.core;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.ui.progress.UIJob;
 
 public abstract class SystemTapParser extends Job {
 	protected IProgressMonitor monitor;
@@ -28,10 +26,9 @@ public abstract class SystemTapParser extends Job {
 	protected String viewID;
 	protected SystemTapView view;
 	protected boolean realTime = false;
-	
+
 	public boolean isDone = false;
 	public StringBuffer text;
-	 
 
 	public SystemTapParser() {
 		super("New_SystemTapParser_Job"); //$NON-NLS-1$
@@ -39,21 +36,16 @@ public abstract class SystemTapParser extends Job {
 		this.viewID = null;
 		initialize();
 	}
+
 	/**
-	 * Set whether or not this parser runs in real time.
-	 * If viewID has already been set, this will also attempt to open the view.
-	 * @throws InterruptedException 
+	 * Set whether or not this parser runs in real time. If viewID has already
+	 * been set, this will also attempt to open the view.
+	 * 
+	 * @throws InterruptedException
 	 */
 	public void setRealTime(boolean val) throws InterruptedException {
 		realTime = val;
-		if (realTime && viewID != null) {
-			if (realTime) {
-				GraphUIJob job = new GraphUIJob("RealTimeUIJob", this, this.viewID);
-				job.schedule();
-				job.join();
-				view = job.getViewer();
-			}
-		}
+
 	}
 
 	/**
@@ -61,22 +53,16 @@ public abstract class SystemTapParser extends Job {
 	 * method to initialize variables.
 	 */
 	protected abstract void initialize();
-	
+
 	/**
-	 * Set the viewID to use for this parser -- see the callgraph.core view extension point.
-	 * If realTime is set to true, this will also attempt to open the view.
-	 * @throws InterruptedException 
+	 * Set the viewID to use for this parser -- see the callgraph.core view
+	 * extension point. If realTime is set to true, this will also attempt to
+	 * open the view.
+	 * 
+	 * @throws InterruptedException
 	 */
 	public void setViewID(String value) throws InterruptedException {
 		viewID = value;
-		if (realTime && viewID != null) {
-			if (realTime) {
-				GraphUIJob job = new GraphUIJob("RealTimeUIJob", this, this.viewID);
-				job.schedule();
-				job.join();
-				view = job.getViewer();
-			}
-		}
 	}
 
 	/**
@@ -91,9 +77,10 @@ public abstract class SystemTapParser extends Job {
 	public abstract IStatus executeParsing();
 
 	/**
-	 * Implement this method to save data in whichever format your program needs.
-	 * Keep in mind that the filePath variable should contain the filePath of the
-	 * most recently opened file.
+	 * Implement this method to save data in whichever format your program
+	 * needs. Keep in mind that the filePath variable should contain the
+	 * filePath of the most recently opened file.
+	 * 
 	 * @param filePath
 	 */
 	public abstract void saveData(String targetFile);
@@ -154,41 +141,25 @@ public abstract class SystemTapParser extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		this.monitor = monitor;
-		
-		String line;
-		text = new StringBuffer();
-		File file = new File(PluginConstants.DEFAULT_OUTPUT+"callgraph.out");
-		if (realTime){		
+		// Generate real-time job
+		if (realTime && viewID != null) {
 			try {
-				BufferedReader buff = new BufferedReader(new FileReader(file));
-				while (!isDone){
-					if ((line = buff.readLine()) != null){
-						text.append(line);
-					}
+				if (realTime) {
+					GraphUIJob job = new GraphUIJob("RealTimeUIJob", this,
+							this.viewID);
+					job.schedule();
+					job.join();
+					view = job.getViewer();
 				}
-				//TODO: how does 'text' get sent to the systemtapview
-				//or should some class that created the parser access it from here.
+				RunTimeJob job = new RunTimeJob("RealTimeParser");
+				job.schedule();
 				
-			} catch (IOException e) {
+				return Status.OK_STATUS;
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}/*else{
-			try {
-				BufferedReader buff = new BufferedReader(new FileReader(file));
-				while ((line = buff.readLine()) != null){
-						text.append(line);
-				}
-				//TODO: how does 'text' get sent to the systemtapview
-				//or should some class that created the parser access it from here.
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}*/
-		
-		System.out.println(text.toString());
-		
+		}
+
 		IStatus returnStatus = executeParsing();
 		postProcessing();
 		return returnStatus;
@@ -235,7 +206,7 @@ public abstract class SystemTapParser extends Job {
 		return run(m);
 	}
 
-	public void launchFileDialogError() {
+	public void launchFileErrorDialog() {
 		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages
 				.getString("SystemTapParser.2"), //$NON-NLS-1$
 				Messages.getString("SystemTapParser.3"), //$NON-NLS-1$
@@ -243,7 +214,7 @@ public abstract class SystemTapParser extends Job {
 						Messages.getString("SystemTapParser.5")); //$NON-NLS-1$
 		err.schedule();
 	}
-
+	
 	/**
 	 * Sets the file to read from
 	 * 
@@ -262,5 +233,38 @@ public abstract class SystemTapParser extends Job {
 		return filePath;
 	}
 	
+	
+	/**
+	 * Implement this method if your parser is to execute in realtime. This
+	 * will form the body of a run method executed in a separate UIJob. If you
+	 * do not wish your parser to ever execute in realtime, set this function
+	 * to return Status.CANCEL_STATUS.
+	 * <br>
+	 * WARNING: If executing in real-time make sure that the isDone flag is
+	 * eventually set, or the program will wait forever.
+	 */
+	public abstract IStatus realTimeParsing();
+	
+	
+	private class RunTimeJob extends UIJob {
+		public RunTimeJob(String name) {
+			super(name);
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			IStatus returnStatus = Status.CANCEL_STATUS;
+			while (!isDone) {
+				returnStatus = realTimeParsing();
+				if (returnStatus == Status.CANCEL_STATUS) {
+					launchFileErrorDialog();
+					break;
+				}
+			}
+			
+			return returnStatus;
+		}
+		
+	}
 
 }
