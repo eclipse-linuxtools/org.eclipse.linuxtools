@@ -23,7 +23,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.linuxtools.callgraph.tests");
 		//$JUnit-BEGIN$
-//		suite.addTestSuite(StapGraphParserTest.class);
+		suite.addTestSuite(StapGraphParserTest.class);
 		suite.addTestSuite(SystemTapGraphViewTest.class);
 //		suite.addTestSuite(SystemTapGraphTest.class);
 //		suite.addTestSuite(MouseListenerTest.class);

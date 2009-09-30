@@ -209,7 +209,11 @@ public abstract class SystemTapParser extends Job {
 	 * @return
 	 */
 	public IStatus testRun(IProgressMonitor m) {
-		return run(m);
+		GraphUIJob uijob = new GraphUIJob(Messages
+				.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
+		uijob.schedule();
+		view = uijob.getViewer();
+		return Status.OK_STATUS;
 	}
 
 	public void launchFileErrorDialog() {
