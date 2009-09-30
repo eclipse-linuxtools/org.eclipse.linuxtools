@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.linuxtools.callgraph.core" id="org.eclipse.linuxtools.callgraph.core.parser" name="StapParserPoint"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         Extension point for SystemTap data parsers. Parsers have a bit of flexibility: You can create a parser that just generates data structures for a SystemTapView object to render, or a parser that continuously and actively updates the view.
       </documentation>
    </annotation>
 
@@ -83,7 +83,7 @@
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         [Enter extension point usage example here.]
+         See org.eclipse.linuxtools.callgraph family of plugins
       </documentation>
    </annotation>
 
@@ -92,7 +92,7 @@
          <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-         [Enter API information here.]
+         See built-in JavaDocs.
       </documentation>
    </annotation>
 
@@ -105,5 +105,23 @@
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         /*******************************************************************************
+ * Copyright (c) 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
+
+      </documentation>
+   </annotation>
 
 </schema>
