@@ -256,7 +256,9 @@ public class SystemTapTextView extends SystemTapView {
 	@Override
 	public void updateMethod() {
 		if (parser.getData() instanceof String) {
-			prettyPrintln((String) parser.getData());
+			String data = (String) parser.getData();
+			if (data.length() > 0)
+				prettyPrintln((String) parser.getData());
 		}
 	}
 
