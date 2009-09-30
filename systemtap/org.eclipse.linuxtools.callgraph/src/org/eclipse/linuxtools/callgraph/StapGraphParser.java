@@ -98,7 +98,7 @@ public class StapGraphParser extends SystemTapParser {
 						project = CoreModel.getDefault().getCModel().getCProject(tmp);
 					}
 					else {
-						launchFileDialogError();
+						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
 					}
 					
@@ -108,7 +108,7 @@ public class StapGraphParser extends SystemTapParser {
 					if (tmp != null && tmp.length() > 0)
 						endingTimeInNS = Long.parseLong(tmp);
 					else {
-						launchFileDialogError();
+						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
 					}
 					
@@ -116,7 +116,7 @@ public class StapGraphParser extends SystemTapParser {
 					if (tmp != null && tmp.length() > 0)
 						totalTime = Long.parseLong(tmp);
 					else {
-						launchFileDialogError();
+						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
 					}
 				}
@@ -124,7 +124,7 @@ public class StapGraphParser extends SystemTapParser {
 			buff.close();
 					
 		} catch (IOException e) {
-			launchFileDialogError();
+			launchFileErrorDialog();
 			return Status.CANCEL_STATUS;
 		}
 		
@@ -355,6 +355,12 @@ public class StapGraphParser extends SystemTapParser {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}		
+	}
+
+
+	@Override
+	public IStatus realTimeParsing() {
+		return Status.CANCEL_STATUS;
 	}
 
 }
