@@ -75,16 +75,17 @@ public abstract class SystemTapView extends ViewPart {
 		}
 	}
 	
-	ViewUIUpdater updater;
-	
-	public void update() {
-		updater = new ViewUIUpdater("UIUpdater");
+	/**
+	 * Schedules the updateMethod job in a UI Thread. Does not return until
+	 * updateMethod is complete.
+	 * @throws InterruptedException
+	 */
+	public void update() throws InterruptedException {
+		ViewUIUpdater updater = new ViewUIUpdater("UIUpdater");
 		updater.schedule();
-	}
-	
-	public void join() throws InterruptedException {
 		updater.join();
 	}
+	
 	
 	private class ViewUIUpdater extends UIJob {
 
