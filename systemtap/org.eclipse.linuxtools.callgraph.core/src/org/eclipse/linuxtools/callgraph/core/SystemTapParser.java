@@ -141,9 +141,15 @@ public abstract class SystemTapParser extends Job {
 	 */
 	protected void postProcessing() {
 		// Create a UIJob to handle the rest
+		try {
 		GraphUIJob uijob = new GraphUIJob(Messages
 				.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
 		uijob.schedule();
+		uijob.join();
+		view = uijob.getViewer();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

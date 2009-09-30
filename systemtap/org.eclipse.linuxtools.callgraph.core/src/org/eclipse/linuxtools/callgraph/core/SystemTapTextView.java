@@ -16,23 +16,20 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
 public class SystemTapTextView extends SystemTapView {
-	private static StyledText viewer;
+	private StyledText viewer;
 
-	private static String text;
-	private static StyleRange[] sr;
+	private String text;
+	private StyleRange[] sr;
 
-	private static Display display;
-	private static int previousEnd;
+	private Display display;
+	private int previousEnd;
 
-	public static SystemTapParser parser;
+	public SystemTapParser parser;
 
-	protected static void cleanViewer() {
+	protected void cleanViewer() {
 		if (viewer != null && !viewer.isDisposed()) {
 			text = viewer.getText();
 			sr = viewer.getStyleRanges();
@@ -42,7 +39,7 @@ public class SystemTapTextView extends SystemTapView {
 
 	}
 
-	protected static void restoreViewerContents() {
+	protected void restoreViewerContents() {
 		if (text != null) {
 			viewer.setText(text);
 			viewer.setStyleRanges(sr);
@@ -58,7 +55,7 @@ public class SystemTapTextView extends SystemTapView {
 			viewer.setFocus();
 	}
 
-	public static void createViewer(Composite parent) {
+	public void createViewer(Composite parent) {
 		viewer = new StyledText(parent, SWT.READ_ONLY | SWT.MULTI
 				| SWT.V_SCROLL | SWT.WRAP);
 
@@ -199,7 +196,7 @@ public class SystemTapTextView extends SystemTapView {
 		return viewer.getText();
 	}
 
-	public static void disposeView() {
+	public void disposeView() {
 		if (viewer != null && !viewer.isDisposed()) {
 			String tmp = viewer.getText();
 			StyleRange[] tempRange = viewer.getStyleRanges();
@@ -214,7 +211,6 @@ public class SystemTapTextView extends SystemTapView {
 	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
 		previousEnd = 0;
 		forceDisplay();
-		layout();
 		return Status.OK_STATUS;
 	}
 
@@ -242,22 +238,6 @@ public class SystemTapTextView extends SystemTapView {
 		mgr.add(kill);
 	}
 
-	/**
-	 * Force the CallgraphView to initialize
-	 */
-	public static void forceDisplay() {
-		try {
-			IWorkbenchWindow window = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow();
-			window
-					.getActivePage()
-					.showView(
-							"org.eclipse.linuxtools.callgraph.core.staptextview").setFocus(); //$NON-NLS-1$
-		} catch (PartInitException e2) {
-			e2.printStackTrace();
-		}
-	}
-
 	protected class RunTimeJob extends UIJob {
 
 		public RunTimeJob(String name) {
@@ -277,6 +257,11 @@ public class SystemTapTextView extends SystemTapView {
 			if (data.length() > 0)
 				prettyPrintln((String) parser.getData());
 		}
+	}
+
+	@Override
+	public void setViewID() {
+		viewID = "org.eclipse.linuxtools.callgraph.core.staptextview";		
 	}
 
 }

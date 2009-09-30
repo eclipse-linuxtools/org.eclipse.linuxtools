@@ -148,7 +148,10 @@ public class StapGraph extends Graph {
 	private StapGraphMouseWheelListener mwListener;
 	private StapGraphKeyListener kListener;
 	
-	public StapGraph(Composite parent, int style, Composite treeComp, Canvas tCanvas) {
+	private CallgraphView callgraphView;
+	
+	public StapGraph(Composite parent, int style, Composite treeComp, Canvas tCanvas,
+			CallgraphView callgraphView) {
 		super(parent, style);
 
 		//-------------Initialize variables
@@ -171,6 +174,7 @@ public class StapGraph extends Graph {
 		nextMarkedNode = -1;
 		scale = 1;
 		treeLevelFromRoot = 0;
+		this.callgraphView = callgraphView;
 		
 		this.treeComp = treeComp;
 		if (treeViewer == null || treeViewer.getControl().isDisposed()) {
@@ -964,7 +968,7 @@ public class StapGraph extends Graph {
 			gd.exclude = true;
 			thumbCanvas.setLayoutData(gd);
 			thumbCanvas.setVisible(false);
-			CallgraphView.layout();
+			callgraphView.layout();
 			
 			
 			//Add treeComp
@@ -983,7 +987,7 @@ public class StapGraph extends Graph {
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(false);
 			
-			CallgraphView.layout();
+			callgraphView.layout();
 			//Remove thumbnail
 			gd = (GridData) thumbCanvas.getLayoutData();
 			gd.exclude = true;
@@ -997,7 +1001,7 @@ public class StapGraph extends Graph {
 			treeComp.setLayoutData(gd);
 			treeComp.setVisible(false);
 
-			CallgraphView.layout();
+			callgraphView.layout();
 
 			//Add thumbnail
 			gd = (GridData) thumbCanvas.getLayoutData();
@@ -1062,7 +1066,7 @@ public class StapGraph extends Graph {
 						this.getBounds().height / 2);
 				drawRadial(id); 
 				Animation.run(ANIMATION_TIME);
-				CallgraphView.maximizeOrRefresh(false);
+				callgraphView.maximizeOrRefresh(false);
 			}
 	
 			else {	
@@ -1445,18 +1449,18 @@ public class StapGraph extends Graph {
 	public void setAnimationMode(int mode) {
 		animation_mode = mode;
 		if (mode == CONSTANT_ANIMATION_SLOW){
-			CallgraphView.getAnimation_slow().setChecked(true);
-			CallgraphView.getAnimation_fast().setChecked(false);
+			callgraphView.getAnimation_slow().setChecked(true);
+			callgraphView.getAnimation_fast().setChecked(false);
 		}else if (mode == CONSTANT_ANIMATION_FASTEST){
-			CallgraphView.getAnimation_slow().setChecked(false);
-			CallgraphView.getAnimation_fast().setChecked(true);			
+			callgraphView.getAnimation_slow().setChecked(false);
+			callgraphView.getAnimation_fast().setChecked(true);			
 		}
 	}
 	
 	public void setCollapseMode(boolean value) {
 		collapse_mode = value;
 		nextMarkedNode = -1;
-		CallgraphView.getMode_collapsednodes().setChecked(value);
+		callgraphView.getMode_collapsednodes().setChecked(value);
 	}
 
 	/**
@@ -1811,5 +1815,9 @@ public class StapGraph extends Graph {
 
 	public void setProject(ICProject myProject) {
 		this.project = myProject;
+	}
+	
+	public CallgraphView getCallgraphView() {
+		return callgraphView;
 	}
 }

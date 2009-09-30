@@ -20,10 +20,10 @@ import org.eclipse.swt.events.KeyListener;
  * StapGraph key listener
  */
 public class StapGraphKeyListener implements KeyListener {
-//	private StapGraph graph;
+	private CallgraphView callgraphView;
 	
 	public StapGraphKeyListener(StapGraph g) {
-//		graph = g;
+		callgraphView = g.getCallgraphView();
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class StapGraphKeyListener implements KeyListener {
 		
 		//TODO: Use accelerator in menu actions instead of this hard-coded stuff
 		if (e.character == 'R') {
-			CallgraphView.getView_refresh().run();
+			callgraphView.getView_refresh().run();
 //		}else if (e.character == '1') {
 //			graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
 //		}else if (e.character == '2') {
@@ -66,13 +66,13 @@ public class StapGraphKeyListener implements KeyListener {
 //					graph.getRootVisibleNode());
 //			graph.currentPositionInLevel.clear();
 		}else if (e.character == 'C') {
-			CallgraphView.getMode_collapsednodes().run();
+			callgraphView.getMode_collapsednodes().run();
 		} else if (e.character == 'N') {
-			CallgraphView.getGoto_next().run();
+			callgraphView.getGoto_next().run();
 		} else if (e.character == 'P') {
-			CallgraphView.getGoto_previous().run();
+			callgraphView.getGoto_previous().run();
 		} else if (e.character == 'L') {
-			CallgraphView.getGoto_last().run();
+			callgraphView.getGoto_last().run();
 		}
 	}
 };

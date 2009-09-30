@@ -12,46 +12,53 @@ package org.eclipse.linuxtools.callgraph.tests;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.callgraph.CallgraphView;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.callgraph.core.GraphUIJob;
+import org.eclipse.linuxtools.callgraph.core.PluginConstants;
+import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.callgraph.core.SystemTapView;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.GraphItem;
 
-
-public class MouseListenerTest extends TestCase{
+public class MouseListenerTest extends TestCase {
 
 	public void test() {
 		StapGraphParser parse = new StapGraphParser();
 		parse.setFilePath(Activator.PLUGIN_LOCATION + "eag.graph");
 		parse.testRun(new NullProgressMonitor());
 
-		CallgraphView.forceDisplay();
+		CallgraphView cView = TestHelper.makeView();
 
-		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
+		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse,
+				CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
-		
-		
-		StapGraphMouseListener mListener = CallgraphView.getGraph().getMouseListener();
-//		StapGraphKeyListener kListener = CallgraphView.getGraph().getKeyListener();
-//		StapGraphMouseWheelListener mwListener = CallgraphView.getGraph().getMouseWheelListener();
-		
-		StapGraph g = (StapGraph) CallgraphView.getGraph();
+
+		StapGraphMouseListener mListener = cView.getGraph().getMouseListener();
+		// StapGraphKeyListener kListener =
+		// CallgraphView.getGraph().getKeyListener();
+		// StapGraphMouseWheelListener mwListener =
+		// CallgraphView.getGraph().getMouseWheelListener();
+
+		StapGraph g = (StapGraph) cView.getGraph();
 		g.setProject(parse.project);
-		
-		
-		GraphItem[] nodes = {g.getNode(g.getFirstUsefulNode())}; 
+
+		GraphItem[] nodes = { g.getNode(g.getFirstUsefulNode()) };
 		g.setSelection(nodes);
-		
-		
+
 		System.out.println(mListener.controlDoubleClick());
 		mListener.mouseDownEvent(0, 0);
-		g.draw(StapGraph.CONSTANT_DRAWMODE_TREE, StapGraph.CONSTANT_ANIMATION_FASTEST,
-				g.getFirstUsefulNode());
+		g.draw(StapGraph.CONSTANT_DRAWMODE_TREE,
+				StapGraph.CONSTANT_ANIMATION_FASTEST, g.getFirstUsefulNode());
 		mListener.mouseUpEvent();
-		
+
 	}
 }

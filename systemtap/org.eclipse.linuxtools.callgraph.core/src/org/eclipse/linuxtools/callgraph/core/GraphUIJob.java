@@ -64,14 +64,14 @@ public class GraphUIJob extends UIJob {
 		try {
 			view = (SystemTapView) element
 					.createExecutableExtension(PluginConstants.ATTR_CLASS);
-			viewer = view;
-			if (!view.setParser(parser))
+			view.forceDisplay();
+			viewer = view.getSingleInstance();
+			if (!viewer.setParser(parser))
 				return Status.CANCEL_STATUS;
-			view.initialize(this.getDisplay(), monitor);
+			viewer.initialize(this.getDisplay(), monitor);
 			if (!parser.realTime) {
-				view.updateMethod();
+				viewer.updateMethod();
 			}
-			
 			 
 			return Status.OK_STATUS;
 		} catch (CoreException e) {

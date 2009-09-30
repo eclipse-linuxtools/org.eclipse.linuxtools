@@ -75,7 +75,7 @@ public class SystemTapGraphTest extends TestCase {
 		
 		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
-		CallgraphView.forceDisplay();
+		CallgraphView cView = TestHelper.makeView();
 		 
 		if (!manual) {
 			ArrayList<String> tasks = new ArrayList<String>();
@@ -108,29 +108,29 @@ public class SystemTapGraphTest extends TestCase {
 				case 1:
 					break;
 				case 2:
-					act = CallgraphView.getView_refresh();
+					act = cView.getView_refresh();
 					break;
 				case 3:
-					act = CallgraphView.getView_treeview();
+					act = cView.getView_treeview();
 					break;
 				case 4:
-					act = CallgraphView.getView_aggregateview();
+					act = cView.getView_aggregateview();
 					break;
 				case 5:
-					act = CallgraphView.getView_boxview();
+					act = cView.getView_boxview();
 					break;
 				case 6:
-					act = CallgraphView.getAnimation_fast();
+					act = cView.getAnimation_fast();
 					break;
 				case 7:
 				case 8:
-					act = CallgraphView.getMode_collapsednodes();
+					act = cView.getMode_collapsednodes();
 					break;
 				case 9:
-					act = CallgraphView.getView_radialview();
+					act = cView.getView_radialview();
 					break;
 				case 10:
-					act = CallgraphView.getMode_collapsednodes();
+					act = cView.getMode_collapsednodes();
 					break;
 				case 14:
 					String tempLocation = Activator.PLUGIN_LOCATION+"eag.graph2"; 
@@ -145,7 +145,7 @@ public class SystemTapGraphTest extends TestCase {
 					new_parser.testRun(new NullProgressMonitor());	
 					break;
 				case 16:
-					CallgraphView.maximizeIfUnmaximized();
+					cView.maximizeIfUnmaximized();
 					break;
 				default:
 					break;
@@ -213,38 +213,38 @@ public class SystemTapGraphTest extends TestCase {
 			case 1:
 				break;
 			case 2:
-				act = CallgraphView.getView_refresh();
+				act = cView.getView_refresh();
 				break;
 			case 3:
-				act = CallgraphView.getView_treeview();
+				act = cView.getView_treeview();
 				break;
 			case 4:
-				act = CallgraphView.getView_aggregateview();
+				act = cView.getView_aggregateview();
 				break;
 			case 5:
-				act = CallgraphView.getView_boxview();
+				act = cView.getView_boxview();
 				break;
 			case 6:
-				act = CallgraphView.getAnimation_fast();
+				act = cView.getAnimation_fast();
 				break;
 			case 7:
 			case 8:
-				act = CallgraphView.getMode_collapsednodes();
+				act = cView.getMode_collapsednodes();
 				break;
 			case 9:
-				act = CallgraphView.getView_radialview();
+				act = cView.getView_radialview();
 				break;
 			case 10:
-				act = CallgraphView.getMode_collapsednodes();
+				act = cView.getMode_collapsednodes();
 				break;
 			case 14:
-				act = CallgraphView.getSave_callgraph();
+				act = cView.getSave_callgraph();
 				break;
 			case 15:
-				act = CallgraphView.getOpen_callgraph();
+				act = cView.getOpen_callgraph();
 				break;
 			case 16:
-				act = CallgraphView.getHelp_version();
+				act = cView.getHelp_version();
 				break;
 			default:
 				break;
