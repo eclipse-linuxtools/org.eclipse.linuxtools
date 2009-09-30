@@ -90,15 +90,15 @@ public class SystemTapLaunchConfigurationDelegate extends
 		if (monitor.isCanceled()) {
 			return;
 		}
-
-
 			
-		String command = ConfigurationOptionsSetter.setOptions(config);  
 		
+		
+		/*
+		 * Set variables
+		 */
 		if (config.getAttribute(LaunchConfigurationConstants.USE_COLOUR,
 				LaunchConfigurationConstants.DEFAULT_USE_COLOUR))
 			useColour = true; 
-
 		if (!config.getAttribute(LaunchConfigurationConstants.ARGUMENTS,
 				LaunchConfigurationConstants.DEFAULT_ARGUMENTS).equals(
 				LaunchConfigurationConstants.DEFAULT_ARGUMENTS)) {
@@ -107,8 +107,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 					LaunchConfigurationConstants.DEFAULT_ARGUMENTS);
 			needsArguments = true;
 		}
-
-
 		if (!config.getAttribute(LaunchConfigurationConstants.BINARY_PATH,
 				LaunchConfigurationConstants.DEFAULT_BINARY_PATH).equals(
 				LaunchConfigurationConstants.DEFAULT_BINARY_PATH)) {
@@ -117,7 +115,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 					LaunchConfigurationConstants.DEFAULT_BINARY_PATH);
 			needsBinary = true;
 		}
-		
 		if (!config.getAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS,
 				LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS).equals(
 				LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS)) {
@@ -125,9 +122,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 					LaunchConfigurationConstants.BINARY_ARGUMENTS,
 					LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS);
 		}
-		
-		
-
 		if (!config.getAttribute(LaunchConfigurationConstants.SCRIPT_PATH,
 				LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH).equals(
 				LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH)) {
@@ -135,13 +129,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 					LaunchConfigurationConstants.SCRIPT_PATH,
 					LaunchConfigurationConstants.DEFAULT_SCRIPT_PATH);
 		}
-
 		// Generate script if needed
 		if (config.getAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE,
 				LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE)) {
 			temporaryScript = new File(scriptPath);
 			temporaryScript.delete();
-
 			try {
 				temporaryScript.createNewFile();
 				FileWriter fstream = new FileWriter(temporaryScript);
@@ -155,14 +147,20 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 		}
 
+		/**
+		 * Generate partial command
+		 */
+		String partialCommand = ConfigurationOptionsSetter.setOptions(config);  
+
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
 				PluginConstants.DEFAULT_OUTPUT);
-		command += "-o " + outputPath; //$NON-NLS-1$
+		partialCommand += "-o " + outputPath; //$NON-NLS-1$
+		
 		try {
+			//Make sure the output file exists
 			File tempFile = new File(outputPath);
 			tempFile.createNewFile();
-			//Make sure the output file exists
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -173,7 +171,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			return;
 		}
 
-		finishLaunch(launch, config, command, m, true);
+		finishLaunch(launch, config, partialCommand, m, true);
 	}
 
 	public String getCommand() {
@@ -324,9 +322,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			StreamListener s = new StreamListener();
 			process.getStreamsProxy().getErrorStreamMonitor().addListener(s);
+
 			
-
-
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
 				if (monitor.isCanceled()) {

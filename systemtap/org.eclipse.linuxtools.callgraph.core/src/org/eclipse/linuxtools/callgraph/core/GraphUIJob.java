@@ -69,7 +69,7 @@ public class GraphUIJob extends UIJob {
 				return Status.CANCEL_STATUS;
 			view.initialize(this.getDisplay(), monitor);
 			if (!parser.realTime) {
-				view.update();
+				view.updateMethod();
 			}
 			
 			 

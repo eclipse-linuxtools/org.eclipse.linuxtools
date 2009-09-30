@@ -365,7 +365,7 @@ public class StapGraphParser extends SystemTapParser {
 
 
 	@Override
-	protected void setFinalData() {
+	protected void setData() {
 	}
 
 }

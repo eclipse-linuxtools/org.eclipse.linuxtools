@@ -2,12 +2,14 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 
 public abstract class SystemTapView extends ViewPart {
 	public static Composite masterComposite;
@@ -71,8 +73,26 @@ public abstract class SystemTapView extends ViewPart {
 							.getWorkbenchWindow());
 			action.run();
 		}
-
 	}
+	
+	public void update() {
+		ViewUIUpdater updater = new ViewUIUpdater("UIUpdater");
+		updater.schedule();
+	}
+	
+	private class ViewUIUpdater extends UIJob {
+
+		public ViewUIUpdater(String name) {
+			super(name);
+		}
+
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			updateMethod();
+			return Status.OK_STATUS;
+		}
+		
+	};
 
 	protected void setView(SystemTapView view) {
 		stapview = view;
@@ -90,6 +110,7 @@ public abstract class SystemTapView extends ViewPart {
 	 * Perform whatever actions are necessary to 'update' this viewer. It is recommended that 
 	 * the update function be called after the setParser method is called.
 	 */
-	public abstract void update();
+	public abstract void updateMethod();
+	
 
 }

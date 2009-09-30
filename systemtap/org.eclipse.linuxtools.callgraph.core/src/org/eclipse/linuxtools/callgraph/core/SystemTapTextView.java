@@ -18,7 +18,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
-public class SystemTapTextView extends SystemTapView{
+public class SystemTapTextView extends SystemTapView {
 	private static StyledText viewer;
 
 	private static String text;
@@ -26,9 +26,8 @@ public class SystemTapTextView extends SystemTapView{
 
 	private static Display display;
 	private static int previousEnd;
-	
-	public static SystemTapParser parser;
 
+	public static SystemTapParser parser;
 
 	protected static void cleanViewer() {
 		if (viewer != null && !viewer.isDisposed()) {
@@ -225,21 +224,24 @@ public class SystemTapTextView extends SystemTapView{
 	public void createPartControl(Composite parent) {
 		createViewer(parent);
 	}
-	
 
 	/**
 	 * Force the CallgraphView to initialize
 	 */
-	public static void forceDisplay(){
+	public static void forceDisplay() {
 		try {
-			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			window.getActivePage().showView("org.eclipse.linuxtools.callgraph.core.staptextview").setFocus(); //$NON-NLS-1$
+			IWorkbenchWindow window = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow();
+			window
+					.getActivePage()
+					.showView(
+							"org.eclipse.linuxtools.callgraph.core.staptextview").setFocus(); //$NON-NLS-1$
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
 		}
 	}
-	
-	protected class RunTimeJob extends UIJob{
+
+	protected class RunTimeJob extends UIJob {
 
 		public RunTimeJob(String name) {
 			super(name);
@@ -247,20 +249,15 @@ public class SystemTapTextView extends SystemTapView{
 
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			return null;
-		} 
+			return Status.CANCEL_STATUS;
+		}
 	}
 
 	@Override
-	public void update() {
-		if (!parser.realTime) {
-			if (parser.getFinalData() instanceof String) {
-				prettyPrintln((String)parser.getFinalData());
-			}
+	public void updateMethod() {
+		if (parser.getData() instanceof String) {
+			prettyPrintln((String) parser.getData());
 		}
 	}
-	
-	
 
-	
 }

@@ -26,9 +26,9 @@ public abstract class SystemTapParser extends Job {
 	protected String viewID;
 	protected SystemTapView view;
 	protected boolean realTime = false;
-	protected Object finalData;
+	protected Object data;
 
-	public boolean isDone = false;
+	public boolean isDone;
 	public StringBuffer text;
 
 	public SystemTapParser() {
@@ -36,6 +36,7 @@ public abstract class SystemTapParser extends Job {
 		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		this.viewID = null;
 		initialize();
+		isDone = false;
 	}
 	
 
@@ -67,7 +68,7 @@ public abstract class SystemTapParser extends Job {
 	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
 	 * its data structures that way. 
 	 */
-	protected abstract void setFinalData();
+	protected abstract void setData();
 
 	/**
 	 * Implement this method to execute parsing. The return from
@@ -93,9 +94,8 @@ public abstract class SystemTapParser extends Job {
 	
 	/**
 	 * Implement this method if your parser is to execute in realtime. This
-	 * will form the body of a run method executed in a separate UIJob. If you
-	 * do not wish your parser to ever execute in realtime, set this function
-	 * to return Status.CANCEL_STATUS.
+	 * will form the body of a run method executed in a separate UIJob. To stop
+	 * real time parsing, return Status.CANCEL_STATUS.
 	 * <br> <br>
 	 * After the isDone flag is set to true, the realTimeParsing() method will 
 	 * be run one more time to catch any stragglers.
@@ -161,14 +161,14 @@ public abstract class SystemTapParser extends Job {
 				RunTimeJob job = new RunTimeJob("RealTimeParser");
 				job.schedule();
 				
-				return Status.OK_STATUS;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			return Status.OK_STATUS;
 		}
 
 		IStatus returnStatus = executeParsing();
-		setFinalData();
+		setData();
 		postProcessing();
 		return returnStatus;
 	}
@@ -218,36 +218,24 @@ public abstract class SystemTapParser extends Job {
 
 
 	
-	private class RunTimeJob extends UIJob {
+	private class RunTimeJob extends Job {
 		public RunTimeJob(String name) {
 			super(name);
 		}
 
 		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			IStatus returnStatus = Status.CANCEL_STATUS;
-			while (!isDone) {
-				returnStatus = realTimeParsing();
-				if (returnStatus == Status.CANCEL_STATUS) {
-					launchFileErrorDialog();
-					return returnStatus;
-				}
-			}
-			
-			//Final call: make sure we catch all data
-			returnStatus = realTimeParsing();
-			
-			return returnStatus;
+		public IStatus run(IProgressMonitor monitor) {
+			return realTimeParsing();
 		}
 		
 	}
 	
 	/**
-	 * Return the finalData object.
+	 * Return the Data object.
 	 * @return
 	 */
-	public Object getFinalData() {
-		return finalData;
+	public Object getData() {
+		return data;
 	}
 	
 

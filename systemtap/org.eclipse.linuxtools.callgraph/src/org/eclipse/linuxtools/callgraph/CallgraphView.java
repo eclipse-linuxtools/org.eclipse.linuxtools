@@ -1120,7 +1120,7 @@ public class CallgraphView extends SystemTapView {
 
 
 	@Override
-	public void update() {		
+	public void updateMethod() {		
 	}
 
 }
