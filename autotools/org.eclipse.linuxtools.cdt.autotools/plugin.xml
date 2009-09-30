@@ -484,8 +484,10 @@
                name="%Configuration.build.name">
             <toolChain
                   archList="all"
+                  convertToId="org.eclipse.linuxtools.cdt.autotools.toolChain.new"
                   id="org.eclipse.linuxtools.cdt.autotools.toolChain"
                   name="%Autotools.gnu.toolchain.name"
+                  unusedChildren="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc;org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
                   scannerConfigDiscoveryProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile"
                   targetTool="org.eclipse.linuxtools.cdt.autotools.tool.configure">
                <tool
@@ -498,6 +500,14 @@
                      isAbstract="false"
                      natureFilter="both"
                      superClass="org.eclipse.linuxtools.cdt.autotools.tool.autogen">
+               </tool>
+               <tool
+                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc"
+                     isAbstract="false">
+               </tool>
+               <tool
+                     id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
+                     isAbstract="false">
                </tool>
                <builder
                      id="org.eclipse.linuxtools.cdt.autotools.toolchain.builder"
@@ -1136,5 +1146,16 @@
             </with>
          </enabledWhen>
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.managedbuilder.core.projectConverter">
+      <converter
+            class="org.eclipse.linuxtools.cdt.autotools.Converter1"
+            fromId="org.eclipse.linuxtools.cdt.autotools.converter1"
+            id="org.eclipse.linuxtools.cdt.autotools.converter1"
+            mbsVersion="4.0.0"
+            name="name"
+            toId="org.eclipse.linuxtools.cdt.autotools.converter1">
+      </converter>
    </extension>
  </plugin>

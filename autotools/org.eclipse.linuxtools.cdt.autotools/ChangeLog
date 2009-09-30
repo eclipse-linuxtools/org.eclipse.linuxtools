@@ -1,3 +1,12 @@
+2009-09-30  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #289555
+	* plugin.xml: Add back org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc and
+	org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp to Autotools toolchain to
+	prevent older projects from getting NPEs.  Do not tie these tools to the real
+	CDT core gcc and gpp tools and make them unused children of the toolchain so new
+	projects won't put them in the Settings UI nor the .cproject.
+
 2009-09-29  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #289819
