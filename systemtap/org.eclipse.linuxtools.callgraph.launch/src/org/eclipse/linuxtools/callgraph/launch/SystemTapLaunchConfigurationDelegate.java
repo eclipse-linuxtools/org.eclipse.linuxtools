@@ -74,17 +74,28 @@ public class SystemTapLaunchConfigurationDelegate extends
 		return null;
 	}
 
+	private void initialize() {
+		 temporaryScript = null;
+		 arguments = ""; //$NON-NLS-1$
+		 scriptPath = ""; //$NON-NLS-1$
+		 binaryPath = ""; //$NON-NLS-1$
+		 outputPath = ""; //$NON-NLS-1$
+		 needsBinary = false; // Set to false if we want to use SystemTap
+		 needsArguments = false;
+		 useColour = false;
+		 binaryArguments = ""; //$NON-NLS-1$
+	}
+	
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor m) throws CoreException {
-
+		
 		if (m == null) {
 			m = new NullProgressMonitor();
 		}
 		SubMonitor monitor = SubMonitor.convert(m,
 				"SystemTap runtime monitor", 5); //$NON-NLS-1$
-
-		//System.out.println("SystemTapLaunchConfigurationDelegate: launch"); //$NON-NLS-1$
+		initialize();
 
 		// check for cancellation
 		if (monitor.isCanceled()) {
@@ -293,6 +304,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					LaunchConfigurationConstants.VIEW_CLASS));
 			parser.setFilePath(outputPath);
 			parser.setMonitor(SubMonitor.convert(monitor));
+			parser.setDone(false);
 
 			
 			if (element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
@@ -305,6 +317,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			Process subProcess = execute(commandArray, getEnvironment(config),
 					workDir, true);
+			System.out.println(cmd);
 			
 			if (subProcess == null){
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$

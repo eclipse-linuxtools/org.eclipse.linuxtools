@@ -301,7 +301,8 @@ protected void finishLaunchWithoutBinary(String name, String mode) throws Except
 		wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, needToGenerate);
 		wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
 		wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR, useColours);
-
+		wc.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parserID);
+		wc.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewID);
 		
 		try {
 			config = wc.doSave();
