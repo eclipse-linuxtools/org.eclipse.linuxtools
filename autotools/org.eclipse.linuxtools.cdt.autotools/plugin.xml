@@ -32,7 +32,7 @@
          </selection>
       </wizard>
       <wizard
-            category="org.eclipse.cdt.ui.newCCWizards"
+            category="org.eclipse.cdt.ui.newCWizards"
             class="org.eclipse.linuxtools.cdt.autotools.wizards.NewAutotoolsCCProjectWizard"
             finalPerspective="org.eclipse.cdt.ui.CPerspective"
             icon="icons/elcl16/newcc_app.gif"

@@ -1,5 +1,10 @@
 2009-09-30  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #289558
+	* plugin.xml: Put GNU C++ Project Wizard under C/C++ project category.
+	
+2009-09-30  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves #289555
 	* plugin.xml: Add back org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc and
 	org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp to Autotools toolchain to
