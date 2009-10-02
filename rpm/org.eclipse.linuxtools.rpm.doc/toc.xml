@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
-<!-- Defines topics that will be inserted under the RPM Plugin menu-->
-
-<toc id="RPM" label="RPM Plugin User's Guide">
-     <topic label="RPM Plugin" href="raw/rpmguide/RPM_Plugin.htm" />
-</toc>
