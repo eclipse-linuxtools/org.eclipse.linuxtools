@@ -11,10 +11,6 @@
 
 package org.eclipse.linuxtools.callgraph;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -24,7 +20,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
@@ -32,10 +27,8 @@ import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.callgraph.core.SystemTapView;
 import org.eclipse.linuxtools.callgraph.graphlisteners.AutoScrollSelectionListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -55,8 +48,6 @@ import org.eclipse.swt.widgets.Spinner;
  *	necessary to the smooth running of SystemTap could be placed here.
  */
 public class CallgraphView extends SystemTapView {
-	private final String NEW_LINE = Messages.getString("CallgraphView.3"); //$NON-NLS-1$
-
 
 	private StapGraphParser parser;
 
@@ -85,7 +76,6 @@ public class CallgraphView extends SystemTapView {
 	private  IMenuManager view;
 	private  IMenuManager animation;
 	private  IMenuManager markers; //Unused
-	private  IMenuManager help;
 	@SuppressWarnings("unused")
 	private  Action help_about;
 	private  Action help_version;
@@ -391,7 +381,6 @@ public class CallgraphView extends SystemTapView {
 		file = new MenuManager(Messages.getString("CallgraphView.0")); //$NON-NLS-1$
 		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
-		help = new MenuManager(Messages.getString("CallgraphView.5")); //$NON-NLS-1$
 		markers = new MenuManager(Messages.getString("CallgraphView.6")); //$NON-NLS-1$
 		gotoMenu = new MenuManager(Messages.getString("CallgraphView.9")); //$NON-NLS-1$
 		
@@ -401,7 +390,6 @@ public class CallgraphView extends SystemTapView {
 		menu.add(view);
 //		menu.add(animation);
 		menu.add(gotoMenu);
-		menu.add(help);
 		addErrorMenu();
 
 		
@@ -432,7 +420,6 @@ public class CallgraphView extends SystemTapView {
 		mgr.add(mode_collapsednodes);
 		
 //		help.add(help_about);
-		help.add(help_version);
 		
 		markers.add(markers_next);
 		markers.add(markers_previous);
@@ -498,110 +485,6 @@ public class CallgraphView extends SystemTapView {
 		};
 		
 	}
-	
-	public void createHelpActions() {
-		help_version = new Action(Messages.getString("CallgraphView.13")) {  //$NON-NLS-1$
-			public void run() {
-			Runtime rt = Runtime.getRuntime();
-			try {
-				Process pr = rt.exec("stap -V"); //$NON-NLS-1$
-				BufferedReader buf = new BufferedReader(new InputStreamReader(pr
-						.getErrorStream()));
-				String line = ""; //$NON-NLS-1$
-				String message = ""; //$NON-NLS-1$
-				
-				while ((line = buf.readLine()) != null) {
-					message += line + NEW_LINE; //$NON-NLS-1$
-				}
-				
-				try {
-					pr.waitFor();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
-				
-				Shell sh = new Shell();
-				
-				MessageDialog.openInformation(sh, Messages.getString("CallgraphView.SystemTapVersionBox"), message); //$NON-NLS-1$
-					
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		};
-		
-		help_about = new Action(Messages.getString("CallgraphView.4")) { //$NON-NLS-1$
-			public void run() {
-				Display disp = Display.getCurrent();
-				if (disp == null){
-					disp = Display.getDefault();
-				}
-
-				
-				Shell sh = new Shell(disp, SWT.MIN | SWT.MAX);
-				sh.setSize(425, 540);
-				GridLayout gl = new GridLayout(1, true);
-				sh.setLayout(gl);
-
-				sh.setText(""); //$NON-NLS-1$
-				
-				Image img = new Image(disp, PluginConstants.PLUGIN_LOCATION+"systemtap.png"); //$NON-NLS-1$
-				Composite cmp = new Composite(sh, sh.getStyle());
-				cmp.setLayout(gl);
-				GridData data = new GridData(415,100);
-				cmp.setLayoutData(data);
-				cmp.setBackgroundImage(img);
-
-				Composite c = new Composite(sh, sh.getStyle());
-				c.setLayout(gl);
-				GridData gd = new GridData(415,400);
-				c.setLayoutData(gd);
-				c.setLocation(0,300);
-				StyledText viewer = new StyledText(c, SWT.READ_ONLY | SWT.MULTI
-						| SWT.V_SCROLL | SWT.WRAP | SWT.BORDER);		
-				
-				GridData viewerGD = new GridData(SWT.FILL, SWT.FILL, true, true);
-				viewer.setLayoutData(viewerGD);
-				Font font = new Font(sh.getDisplay(), "Monospace", 11, SWT.NORMAL); //$NON-NLS-1$
-				viewer.setFont(font);
-				viewer.setText(
-						 "" + //$NON-NLS-1$
-						 "" + //$NON-NLS-1$
-						 "" + //$NON-NLS-1$
-						 "" +  //$NON-NLS-1$
-						 "" + //$NON-NLS-1$
-						 "" + //$NON-NLS-1$
-						 
-						 "" + //$NON-NLS-1$
-//						 
-//						 Messages.getString("LaunchAbout.9") + //$NON-NLS-1$
-//						 Messages.getString("LaunchAbout.10") + //$NON-NLS-1$
-						 
-						 "" + //$NON-NLS-1$
-						 "" + //$NON-NLS-1$
-						 "" + //$NON-NLS-1$
-						 
-//						 Messages.getString("LaunchAbout.14") + //$NON-NLS-1$
-//						 Messages.getString("LaunchAbout.15") + //$NON-NLS-1$
-//						 Messages.getString("LaunchAbout.16") + //$NON-NLS-1$
-						 
-						 "" + //$NON-NLS-1$
-						 
-//						 Messages.getString("LaunchAbout.18") + //$NON-NLS-1$
-//						 Messages.getString("LaunchAbout.19") + //$NON-NLS-1$
-						 
-						 "" + //$NON-NLS-1$
-						 "" //$NON-NLS-1$
-						);
-
-
-				
-				sh.open();		
-			}
-		};
-	}
-	
 
 	
 	public void createViewActions() {
@@ -787,7 +670,6 @@ public class CallgraphView extends SystemTapView {
  */
 	public void createActions() {
 		createFileActions();
-		createHelpActions();
 		createErrorActions();
 		createViewActions();
 		createAnimateActions();

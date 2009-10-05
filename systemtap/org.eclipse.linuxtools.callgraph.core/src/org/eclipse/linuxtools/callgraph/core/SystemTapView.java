@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -17,8 +18,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -32,16 +36,23 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
 public abstract class SystemTapView extends ViewPart {
+	
+	private final String NEW_LINE = Messages.getString("SystemTapView.1"); //$NON-NLS-1$
+	
 	public Composite masterComposite;
 	private SystemTapView stapview;
 	private Action error_errorLog;
 	private Action error_deleteError;
 	private IMenuManager errors;
+	private IMenuManager help;
 	private Action kill;
 	public SystemTapParser parser;
 
 	private boolean isInitialized;
 	protected String viewID;
+	@SuppressWarnings("unused")
+	private Action help_about;
+	private Action help_version;
 
 	/**
 	 * The constructor.
@@ -174,14 +185,123 @@ public abstract class SystemTapView extends ViewPart {
 	 */
 	public void addErrorMenu() {
 		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
-		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); //$NON-NLS-1$
+		errors = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
+		help = new MenuManager(Messages.getString("SystemTapView.3")); //$NON-NLS-1$
 		menu.add(errors);
+		menu.add(help);
 		createErrorActions();
-
+		createHelpActions();
+		
+		help.add(help_version);
 		errors.add(error_errorLog);
 		errors.add(error_deleteError);
 	}
 
+	
+	public void createHelpActions() {
+		help_version = new Action(Messages.getString("SystemTapView.4")) { //$NON-NLS-1$
+			public void run() {
+				Runtime rt = Runtime.getRuntime();
+				try {
+					Process pr = rt.exec("stap -V"); //$NON-NLS-1$
+					BufferedReader buf = new BufferedReader(
+							new InputStreamReader(pr.getErrorStream()));
+					String line = ""; //$NON-NLS-1$
+					String message = ""; //$NON-NLS-1$
+
+					while ((line = buf.readLine()) != null) {
+						message += line + NEW_LINE; //$NON-NLS-1$
+					}
+
+					try {
+						pr.waitFor();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					Shell sh = new Shell();
+
+					MessageDialog.openInformation(sh, Messages
+							.getString("SystemTapView.5"), message); //$NON-NLS-1$
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		help_about = new Action(Messages.getString("SystemTapView.6")) { //$NON-NLS-1$
+			public void run() {
+				Display disp = Display.getCurrent();
+				if (disp == null){
+					disp = Display.getDefault();
+				}
+
+				
+				Shell sh = new Shell(disp, SWT.MIN | SWT.MAX);
+				sh.setSize(425, 540);
+				GridLayout gl = new GridLayout(1, true);
+				sh.setLayout(gl);
+
+				sh.setText(""); //$NON-NLS-1$
+				
+				Image img = new Image(disp, PluginConstants.PLUGIN_LOCATION+"systemtap.png"); //$NON-NLS-1$
+				Composite cmp = new Composite(sh, sh.getStyle());
+				cmp.setLayout(gl);
+				GridData data = new GridData(415,100);
+				cmp.setLayoutData(data);
+				cmp.setBackgroundImage(img);
+
+				Composite c = new Composite(sh, sh.getStyle());
+				c.setLayout(gl);
+				GridData gd = new GridData(415,400);
+				c.setLayoutData(gd);
+				c.setLocation(0,300);
+				StyledText viewer = new StyledText(c, SWT.READ_ONLY | SWT.MULTI
+						| SWT.V_SCROLL | SWT.WRAP | SWT.BORDER);		
+				
+				GridData viewerGD = new GridData(SWT.FILL, SWT.FILL, true, true);
+				viewer.setLayoutData(viewerGD);
+				Font font = new Font(sh.getDisplay(), "Monospace", 11, SWT.NORMAL); //$NON-NLS-1$
+				viewer.setFont(font);
+				viewer.setText(
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" +  //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 
+						 "" + //$NON-NLS-1$
+//						 
+//						 Messages.getString("LaunchAbout.9") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.10") + //$NON-NLS-1$
+						 
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 "" + //$NON-NLS-1$
+						 
+//						 Messages.getString("LaunchAbout.14") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.15") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.16") + //$NON-NLS-1$
+						 
+						 "" + //$NON-NLS-1$
+						 
+//						 Messages.getString("LaunchAbout.18") + //$NON-NLS-1$
+//						 Messages.getString("LaunchAbout.19") + //$NON-NLS-1$
+						 
+						 "" + //$NON-NLS-1$
+						 "" //$NON-NLS-1$
+						);
+
+
+				
+				sh.open();		
+			}
+		};
+	}
+	
+	
 	/**
 	 * Populates the Errors menu
 	 */
