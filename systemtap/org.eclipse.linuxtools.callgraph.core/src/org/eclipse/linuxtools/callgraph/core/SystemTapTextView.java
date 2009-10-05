@@ -239,6 +239,8 @@ public class SystemTapTextView extends SystemTapView {
 			}
 		};		
 		mgr.add(kill);
+		
+		addErrorMenu();
 	}
 
 	protected class RunTimeJob extends UIJob {

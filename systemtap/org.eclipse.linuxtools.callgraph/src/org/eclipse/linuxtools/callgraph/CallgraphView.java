@@ -12,9 +12,6 @@
 package org.eclipse.linuxtools.callgraph;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -30,7 +27,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
-import org.eclipse.linuxtools.callgraph.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.callgraph.core.SystemTapView;
@@ -68,8 +64,6 @@ public class CallgraphView extends SystemTapView {
 	private Action open_callgraph;
 	private Action save_callgraph;
 	private Action open_default;
-	private Action error_errorLog;
-	private Action error_deleteError;
 	private Action view_treeview;
 	private Action view_radialview;
 	private  Action view_aggregateview;
@@ -88,7 +82,6 @@ public class CallgraphView extends SystemTapView {
 	private  IMenuManager menu;
 	private  IMenuManager gotoMenu;
 	private  IMenuManager file;
-	private  IMenuManager errors;
 	private  IMenuManager view;
 	private  IMenuManager animation;
 	private  IMenuManager markers; //Unused
@@ -250,7 +243,7 @@ public class CallgraphView extends SystemTapView {
 	    g.setProject(parser.project);
 	    
 	    this.setValues(graphComp, treeComp, g, parser);
-	    this.createPartControl();
+	    this.initializePartControl();
 	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
 		g.getFirstUsefulNode());
 		return Status.OK_STATUS;
@@ -355,13 +348,8 @@ public class CallgraphView extends SystemTapView {
 	/**
 	 * This must be executed before a Graph is displayed
 	 */
-	public  void createPartControl(){
-		
-		
+	private void initializePartControl(){
 		setGraphOptions(true);
-		
-		
-		
 		graphComp.setParent(masterComposite);
 		
 		if (treeComp != null)
@@ -402,7 +390,6 @@ public class CallgraphView extends SystemTapView {
 		// ADD OPTIONS TO THE GRAPH MENU
 		file = new MenuManager(Messages.getString("CallgraphView.0")); //$NON-NLS-1$
 		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
-		errors = new MenuManager(Messages.getString("CallgraphView.Errors")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
 		help = new MenuManager(Messages.getString("CallgraphView.5")); //$NON-NLS-1$
 		markers = new MenuManager(Messages.getString("CallgraphView.6")); //$NON-NLS-1$
@@ -414,18 +401,14 @@ public class CallgraphView extends SystemTapView {
 		menu.add(view);
 //		menu.add(animation);
 		menu.add(gotoMenu);
-		menu.add(errors);
 		menu.add(help);
-		
+		addErrorMenu();
+
 		
 		file.add(open_callgraph);
 		file.add(open_default);
 		file.add(save_callgraph);
-		
-		
-		errors.add(error_errorLog);
-		errors.add(error_deleteError);
-		
+
 		
 		view.add(view_treeview);
 		view.add(view_radialview);
@@ -619,73 +602,7 @@ public class CallgraphView extends SystemTapView {
 		};
 	}
 	
-	/**
-	 * Populates the Errors menu
-	 */
-	public void createErrorActions() {
 
-		error_errorLog = new Action(Messages.getString("CallgraphView.OpenLog")) { //$NON-NLS-1$
-			public void run() {
-				boolean error = false;
-				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
-				BufferedReader buff;
-				try {
-					buff = new BufferedReader(new FileReader(log));
-				String logText = ""; //$NON-NLS-1$
-				String line;
-				
-				while ((line = buff.readLine()) != null) {
-					logText+=line + PluginConstants.NEW_LINE;
-				}
-				
-				Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
-				
-				sh.setText(Messages.getString("CallgraphView.15")); //$NON-NLS-1$
-				sh.setLayout(new FillLayout());
-				sh.setSize(600,600);
-				
-				StyledText txt = new StyledText(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
-				
-				txt.setText(logText);
-
-				sh.setText(Messages.getString("CallgraphView.21")); //$NON-NLS-1$
-				
-				sh.open();
-				txt.setTopIndex(txt.getLineCount());
-
-				
-				} catch (FileNotFoundException e) {
-					error = true;
-				} catch (IOException e) {
-					error = true;
-				} finally {
-					if (error) {
-						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-							Messages.getString("CallgraphView.ErrorMessageName"), //$NON-NLS-1$
-							Messages.getString("CallgraphView.ErrorMessageTitle"), //$NON-NLS-1$
-							Messages.getString("CallgraphView.ErrorMessageBody") + //$NON-NLS-1$
-							Messages.getString("CallgraphView.ErrorMessageBody2")); //$NON-NLS-1$
-						mess.schedule();
-					}
-				}
-				
-			}
-		};
-		
-		
-		error_deleteError = new Action(Messages.getString("CallgraphView.ClearLog")) { //$NON-NLS-1$
-			public void run() {
-					if (!MessageDialog.openConfirm(new Shell(), Messages.getString("CallgraphView.DeleteLogsTitle"),  //$NON-NLS-1$
-							Messages.getString("CallgraphView.DeleteLogsMessage") + //$NON-NLS-1$
-							Messages.getString("CallgraphView.DeleteLogsMessage2"))) //$NON-NLS-1$
-						return;
-					
-					SystemTapErrorHandler.delete();
-			}
-		};
-		
-		
-	}
 	
 	public void createViewActions() {
 		//Set drawmode to tree view
@@ -1017,22 +934,6 @@ public class CallgraphView extends SystemTapView {
 
 	public  void setSave_callgraph(Action saveCallgraph) {
 		save_callgraph = saveCallgraph;
-	}
-
-	public  Action getError_errorLog() {
-		return error_errorLog;
-	}
-
-	public  void setError_errorLog(Action errorErrorLog) {
-		error_errorLog = errorErrorLog;
-	}
-
-	public  Action getError_deleteError() {
-		return error_deleteError;
-	}
-
-	public  void setError_deleteError(Action errorDeleteError) {
-		error_deleteError = errorDeleteError;
 	}
 
 	public  Action getView_treeview() {

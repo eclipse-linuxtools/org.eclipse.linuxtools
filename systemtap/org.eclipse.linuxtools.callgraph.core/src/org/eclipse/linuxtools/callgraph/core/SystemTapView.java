@@ -1,10 +1,24 @@
 package org.eclipse.linuxtools.callgraph.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -17,6 +31,10 @@ import org.eclipse.ui.progress.UIJob;
 public abstract class SystemTapView extends ViewPart {
 	public Composite masterComposite;
 	private SystemTapView stapview;
+	private Action error_errorLog;
+	private Action error_deleteError;
+	private  IMenuManager errors;
+
 	private boolean isInitialized;
 	protected String viewID;
 
@@ -118,7 +136,7 @@ public abstract class SystemTapView extends ViewPart {
 					.getActivePage()
 					.showView(
 							viewID);
-			stapview.setFocus(); //$NON-NLS-1$
+			stapview.setFocus(); 
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
 		}
@@ -147,5 +165,101 @@ public abstract class SystemTapView extends ViewPart {
 	 * extends SystemTapView and uses the core.systemtapview extension point.
 	 */
 	public abstract void setViewID();
+
+	/**
+	 * Appends the error menu, containing options for opening and clearing the error log.
+	 */
+	public void addErrorMenu() {
+		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); 
+		menu.add(errors);
+		createErrorActions();
+
+		errors.add(error_errorLog);
+		errors.add(error_deleteError);
+	}
+	
+	/**
+	 * Populates the Errors menu
+	 */
+	public void createErrorActions() {
+
+		error_errorLog = new Action("Open Log") { 
+			public void run() {
+				boolean error = false;
+				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); 
+				BufferedReader buff;
+				try {
+					buff = new BufferedReader(new FileReader(log));
+				String logText = ""; 
+				String line;
+				
+				while ((line = buff.readLine()) != null) {
+					logText+=line + PluginConstants.NEW_LINE;
+				}
+				
+				Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
+				
+				sh.setText(Messages.getString("SystemTapView.15")); 
+				sh.setLayout(new FillLayout());
+				sh.setSize(600,600);
+				
+				StyledText txt = new StyledText(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
+				
+				txt.setText(logText);
+
+				sh.setText(Messages.getString("SystemTapView.21")); 
+				
+				sh.open();
+				txt.setTopIndex(txt.getLineCount());
+
+				
+				} catch (FileNotFoundException e) {
+					error = true;
+				} catch (IOException e) {
+					error = true;
+				} finally {
+					if (error) {
+						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+							Messages.getString("SystemTapView.ErrorMessageName"), 
+							Messages.getString("SystemTapView.ErrorMessageTitle"), 
+							Messages.getString("SystemTapView.ErrorMessageBody") + 
+							Messages.getString("SystemTapView.ErrorMessageBody2")); 
+						mess.schedule();
+					}
+				}
+				
+			}
+		};
+		
+		
+		error_deleteError = new Action(Messages.getString("SystemTapView.ClearLog")) { 
+			public void run() {
+					if (!MessageDialog.openConfirm(new Shell(), Messages.getString("SystemTapView.DeleteLogsTitle"),  
+							Messages.getString("SystemTapView.DeleteLogsMessage") + 
+							Messages.getString("SystemTapView.DeleteLogsMessage2"))) 
+						return;
+					
+					SystemTapErrorHandler.delete();
+			}
+		};
+	}
+	
+
+	public  Action getError_errorLog() {
+		return error_errorLog;
+	}
+
+	public  void setError_errorLog(Action errorErrorLog) {
+		error_errorLog = errorErrorLog;
+	}
+
+	public  Action getError_deleteError() {
+		return error_deleteError;
+	}
+
+	public  void setError_deleteError(Action errorDeleteError) {
+		error_deleteError = errorDeleteError;
+	}
 
 }
