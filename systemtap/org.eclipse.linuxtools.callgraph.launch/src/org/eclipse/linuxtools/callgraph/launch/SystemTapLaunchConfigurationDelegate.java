@@ -226,7 +226,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	}
 
 	public String getCommandLine(String[] args) {
-		StringBuffer ret = new StringBuffer();
+		StringBuilder ret = new StringBuilder();
 		for (String arg : args) {
 			ret.append(arg + " "); //$NON-NLS-1$
 		}

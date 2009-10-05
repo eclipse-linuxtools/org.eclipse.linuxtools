@@ -36,7 +36,7 @@ public class SystemTapErrorHandler {
 	public static final String FILE_ERROR_LOG = "Error.log"; //$NON-NLS-1$
 	public static final int MAX_LOG_SIZE = 50000;
 	private boolean errorRecognized;
-	private StringBuffer errorMessage = new StringBuffer (""); //$NON-NLS-1$
+	private StringBuilder errorMessage = new StringBuilder (""); //$NON-NLS-1$
 	private StringBuilder logContents;
 	private boolean mismatchedProbePoints;
 	ArrayList<String> functions = new ArrayList<String>();
@@ -184,7 +184,7 @@ public class SystemTapErrorHandler {
 			}
 			
 			
-			StringBuffer resultFileContent = new StringBuffer();
+			StringBuilder resultFileContent = new StringBuilder();
 			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp"; //$NON-NLS-1$
 			String line;
 			boolean skip = false;

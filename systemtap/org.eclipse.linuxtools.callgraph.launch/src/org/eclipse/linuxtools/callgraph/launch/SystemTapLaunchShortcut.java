@@ -563,7 +563,7 @@ private void finishLaunchHelper() throws Exception {
 					return funcs;					
 				}
 				
-					StringBuffer tmpFunc = new StringBuffer();
+					StringBuilder tmpFunc = new StringBuilder();
 					for (String item : getAllFunctions(bin.getCProject(), unitList)){
 						tmpFunc.append(item);
 						tmpFunc.append(" "); //$NON-NLS-1$
