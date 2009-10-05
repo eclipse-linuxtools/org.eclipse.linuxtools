@@ -35,6 +35,8 @@ public abstract class SystemTapParser extends Job {
 
 	public boolean isDone;
 	public StringBuffer text;
+	
+	private RunTimeJob job;
 
 	public SystemTapParser() {
 		super("New_SystemTapParser_Job"); //$NON-NLS-1$
@@ -164,8 +166,12 @@ public abstract class SystemTapParser extends Job {
 					job.join();
 					view = job.getViewer();
 				}
-				RunTimeJob job = new RunTimeJob("RealTimeParser");
-				job.schedule();
+				
+				if (job == null || job.getResult()==null) {
+					job = new RunTimeJob("RealTimeParser");
+					job.schedule();
+				}
+				
 				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -245,10 +251,9 @@ public abstract class SystemTapParser extends Job {
 	            	returnStatus = realTimeParsing();
 	            	
 	            	
-	            	if (monitor.isCanceled())
+	            	if (monitor.isCanceled() || returnStatus == Status.CANCEL_STATUS) {
 	            		return Status.CANCEL_STATUS;
-	            	if (returnStatus == Status.CANCEL_STATUS)
-	            		return returnStatus;
+	            	}
 	            }
 		    } catch (FileNotFoundException e) {
 		       	e.printStackTrace();
@@ -283,6 +288,11 @@ public abstract class SystemTapParser extends Job {
 	 */
 	public String getFile() {
 		return filePath;
+	}
+	
+	
+	public Job getJob() {
+		return job;
 	}
 	
 	

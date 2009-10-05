@@ -340,7 +340,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
-				if (monitor.isCanceled()) {
+				if (monitor.isCanceled() || process.isTerminated()) {
+					if (parser != null) {
+						parser.getJob().cancel();
+					}
 					Runtime run = Runtime.getRuntime();
 					run.exec("kill stap"); //$NON-NLS-1$
 					process.terminate();
@@ -362,22 +365,31 @@ public class SystemTapLaunchConfigurationDelegate extends
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
 				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
-				if (monitor != null && monitor.isCanceled())
+				if (monitor != null && monitor.isCanceled()) {
+					if (parser != null) {
+						parser.getJob().cancel();
+					}
 					return;
+				}
 				
 				
 				if (errorHandler.hasMismatchedProbePoints() && retry) {
 					
 					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
-							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"), Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3") + //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"), 
+							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3") + //$NON-NLS-1$ //$NON-NLS-2$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch4") + //$NON-NLS-1$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch5") + //$NON-NLS-1$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch6")); //$NON-NLS-1$
 					mess.schedule();
 					
 					errorHandler.finishHandling(monitor, s.getNumberOfErrors());
-					if (monitor != null && monitor.isCanceled())
+					if (monitor != null && monitor.isCanceled()) {
+						if (parser != null) {
+							parser.getJob().cancel();
+						}
 						return;
+					}
 					finishLaunch(launch, config, command, monitor, false);
 					return;
 				}
@@ -396,12 +408,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 						
 			
 			monitor.worked(1);
+			
 			errorMessage = generateErrorMessage(config.getName(), command) + errorMessage;
 			
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
 					((TextConsole)Helper.getConsoleByName(config.getName())), errorMessage);
 			dw.schedule();
 
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -410,6 +424,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			e.printStackTrace();
 		} finally {
 			monitor.done();
+			
 		}
 	}
 	
