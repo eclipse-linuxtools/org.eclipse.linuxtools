@@ -34,7 +34,6 @@ public abstract class SystemTapParser extends Job {
 	protected Object internalData;
 
 	public boolean isDone;
-	public StringBuffer text;
 	
 	private RunTimeJob job;
 
@@ -95,9 +94,10 @@ public abstract class SystemTapParser extends Job {
 	
 	
 	/**
-	 * Implement this method if your parser is to execute in realtime. This
-	 * will form the body of a run method executed in a separate UIJob. To stop
-	 * real time parsing, return Status.CANCEL_STATUS.
+	 * Implement this method if your parser is to execute in realtime. This method 
+	 * will be called as part of a while loop in a separate Job. Use the setInternalData
+	 * method to initialize some data object for use in realTimeParsing. The default
+	 * setInternalMethod method will set internalData to a BufferedReader
 	 * <br> <br>
 	 * After the isDone flag is set to true, the realTimeParsing() method will 
 	 * be run one more time to catch any stragglers.
@@ -242,11 +242,8 @@ public abstract class SystemTapParser extends Job {
 		@Override
 		public IStatus run(IProgressMonitor monitor) {
 			IStatus returnStatus = Status.CANCEL_STATUS;       
-	        text = new StringBuffer();
-	        File file = new File(filePath);
 	        try {
-				internalData = new BufferedReader(new FileReader(file));
-				
+	        	setInternalData();
 	            while (!isDone){
 	            	returnStatus = realTimeParsing();
 	            	
@@ -255,7 +252,7 @@ public abstract class SystemTapParser extends Job {
 	            		return Status.CANCEL_STATUS;
 	            	}
 	            }
-		    } catch (FileNotFoundException e) {
+		    } catch (Exception e) {
 		       	e.printStackTrace();
 	        }
 			return returnStatus;
@@ -270,6 +267,19 @@ public abstract class SystemTapParser extends Job {
 		return data;
 	}
 	
+	
+	/**
+	 * Generic method for setting the internalData object. This will be called
+	 * by a real-time-parser immediately before its main polling loop. By default,
+	 * this method will attempt to create a bufferedReader around File(filePath)
+	 * 
+	 * @throws Exception
+	 */
+	protected void setInternalData() throws Exception {
+		File file = new File(filePath);
+		internalData = new BufferedReader(new FileReader(file));				
+	}
+
 
 	/**
 	 * Returns the monitor
@@ -348,6 +358,11 @@ public abstract class SystemTapParser extends Job {
 	 */
 	protected void setData(Object obj) {
 		data = obj;
+	}
+	
+	public void cancelJob() {
+		if (job != null)
+			job.cancel();
 	}
 
 

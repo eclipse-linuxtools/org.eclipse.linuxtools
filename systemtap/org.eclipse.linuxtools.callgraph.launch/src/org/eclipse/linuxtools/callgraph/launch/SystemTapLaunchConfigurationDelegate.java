@@ -342,7 +342,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				Thread.sleep(100);
 				if (monitor.isCanceled() || process.isTerminated()) {
 					if (parser != null) {
-						parser.getJob().cancel();
+						parser.cancelJob();
 					}
 					Runtime run = Runtime.getRuntime();
 					run.exec("kill stap"); //$NON-NLS-1$
@@ -367,7 +367,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
 				if (monitor != null && monitor.isCanceled()) {
 					if (parser != null) {
-						parser.getJob().cancel();
+						parser.cancelJob();
 					}
 					return;
 				}
@@ -386,7 +386,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					errorHandler.finishHandling(monitor, s.getNumberOfErrors());
 					if (monitor != null && monitor.isCanceled()) {
 						if (parser != null) {
-							parser.getJob().cancel();
+							parser.cancelJob();
 						}
 						return;
 					}
