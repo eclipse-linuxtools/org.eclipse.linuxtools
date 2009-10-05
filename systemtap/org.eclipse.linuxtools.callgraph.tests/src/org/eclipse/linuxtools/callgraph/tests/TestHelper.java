@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Display;
 public class TestHelper {
 
 	public static SystemTapView makeView(String viewID) {
-		CallgraphView cView = null;
+		SystemTapView cView = null;
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IConfigurationElement[] extensions = reg.getConfigurationElementsFor(
 				PluginConstants.VIEW_RESOURCE, PluginConstants.VIEW_NAME,
@@ -36,7 +36,7 @@ public class TestHelper {
 			view = (SystemTapView) element
 					.createExecutableExtension(PluginConstants.ATTR_CLASS);
 			view.forceDisplay();
-			cView = (CallgraphView) view.getSingleInstance();
+			cView = view.getSingleInstance();
 			cView.initialize(Display.getCurrent(), new NullProgressMonitor());
 
 		} catch (CoreException e) {
