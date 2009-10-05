@@ -75,7 +75,7 @@ public class SystemTapGraphTest extends TestCase {
 		
 		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
-		CallgraphView cView = TestHelper.makeView();
+		CallgraphView cView = (CallgraphView) TestHelper.makeView("org.eclipse.linuxtools.callgraph.callgraphview");
 		 
 		if (!manual) {
 			ArrayList<String> tasks = new ArrayList<String>();

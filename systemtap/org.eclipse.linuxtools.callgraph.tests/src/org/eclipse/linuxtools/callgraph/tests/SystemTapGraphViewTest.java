@@ -21,15 +21,16 @@ public class SystemTapGraphViewTest extends TestCase {
 	
 	//TODO: write some better tests here
 	public void test() {
-//		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
-//
-//		SystemTapTextView.forceDisplay();
-//		
-//		stapView.println(testText);
-//		assertEquals(stapView.getText(), testText);
-//		
-//		stapView.clearAll();
-//		assertEquals(stapView.getText(), "");
+		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
+
+		
+		stapView = (SystemTapTextView) TestHelper.makeView("org.eclipse.linuxtools.systemtap.callgraph.core.textview");
+		
+		stapView.println(testText);
+		assertEquals(stapView.getText(), testText);
+		
+		stapView.clearAll();
+		assertEquals(stapView.getText(), "");
 	}
 	
 }

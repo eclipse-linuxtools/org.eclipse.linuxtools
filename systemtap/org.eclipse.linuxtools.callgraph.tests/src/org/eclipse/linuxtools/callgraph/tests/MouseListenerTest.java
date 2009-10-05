@@ -28,7 +28,7 @@ public class MouseListenerTest extends TestCase {
 		parse.setFilePath(Activator.PLUGIN_LOCATION + "eag.graph");
 		parse.testRun(new NullProgressMonitor());
 
-		CallgraphView cView = TestHelper.makeView();
+		CallgraphView cView = (CallgraphView) TestHelper.makeView("org.eclipse.linuxtools.callgraph.callgraphview");
 
 		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse,
 				CallGraphConstants.viewID);

@@ -13,9 +13,8 @@ import org.eclipse.swt.widgets.Display;
 
 public class TestHelper {
 
-	public static CallgraphView makeView() {
+	public static SystemTapView makeView(String viewID) {
 		CallgraphView cView = null;
-		String viewID = "org.eclipse.linuxtools.callgraph.callgraphview";
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IConfigurationElement[] extensions = reg.getConfigurationElementsFor(
 				PluginConstants.VIEW_RESOURCE, PluginConstants.VIEW_NAME,
