@@ -36,7 +36,7 @@ public class SystemTapErrorHandler {
 	public static final String FILE_ERROR_LOG = "Error.log"; //$NON-NLS-1$
 	public static final int MAX_LOG_SIZE = 50000;
 	private boolean errorRecognized;
-	private String errorMessage = ""; //$NON-NLS-1$
+	private StringBuffer errorMessage = new StringBuffer (""); //$NON-NLS-1$
 	private StringBuilder logContents;
 	private boolean mismatchedProbePoints;
 	ArrayList<String> functions = new ArrayList<String>();
@@ -59,9 +59,9 @@ public class SystemTapErrorHandler {
 		mismatchedProbePoints = false;
 		errorRecognized = false;
 		if (errorMessage.length() < 1) {
-			errorMessage = 
+			errorMessage.append( 
 				Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
-				Messages.getString("SystemTapErrorHandler.ErrorMessage1"); //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.ErrorMessage1")); //$NON-NLS-1$
 		}
 		
 		logContents = new StringBuilder(); //$NON-NLS-1$
@@ -100,14 +100,15 @@ public class SystemTapErrorHandler {
 					
 					if (matcher.matches()) {
 						if (!isErrorRecognized()) {
-							errorMessage+=Messages.getString("SystemTapErrorHandler.ErrorMessage2"); //$NON-NLS-1$
+							errorMessage.append(Messages.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
 							setErrorRecognized(true);
 						}
 						
 						//TODO: Rough hack, very slow
-						if (!errorMessage.contains(line.substring(index+1))) {
-						errorMessage+=line.substring(index+1) 
-							+ PluginConstants.NEW_LINE;
+						//this can be removed pending stap removal of duplicate error posting
+						if (!errorMessage.toString().contains(line.substring(index+1))) {
+						errorMessage.append(line.substring(index+1) 
+							+ PluginConstants.NEW_LINE);
 						}
 					
 						if (firstLine) {
@@ -150,7 +151,7 @@ public class SystemTapErrorHandler {
 			}
 		}
 		handle(m, builder.toString());
-		return errorMessage;
+		return errorMessage.toString();
 	}
 
 	/**
@@ -160,22 +161,23 @@ public class SystemTapErrorHandler {
 	 */
 	public void finishHandling(IProgressMonitor m, int numberOfErrors) {
 		if (!isErrorRecognized()) {
-			errorMessage+=Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
-					Messages.getString("SystemTapErrorHandler.5"); //$NON-NLS-1$
+			errorMessage.append(Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
+					Messages.getString("SystemTapErrorHandler.5")); //$NON-NLS-1$
 		}
 		
 		writeToLog();
 		
 		if (mismatchedProbePoints){
 			if (numberOfErrors > PluginConstants.MAX_ERRORS) {
-				errorMessage = PluginConstants.NEW_LINE
+				errorMessage.setLength(0);
+				errorMessage.append(PluginConstants.NEW_LINE
 				+ Messages.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors +Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
 				Messages.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
-				Messages.getString("SystemTapErrorHandler.TooManyErrors4"); //$NON-NLS-1$
+				Messages.getString("SystemTapErrorHandler.TooManyErrors4")); //$NON-NLS-1$
 				SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
 						Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
 						Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
-						errorMessage); //$NON-NLS-1$ //$NON-NLS-2$
+						errorMessage.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				mes.schedule();
 				m.setCanceled(true);
 				return;
