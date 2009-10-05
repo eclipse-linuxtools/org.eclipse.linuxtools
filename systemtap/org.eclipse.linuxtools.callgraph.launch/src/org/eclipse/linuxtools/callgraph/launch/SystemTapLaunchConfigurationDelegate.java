@@ -340,10 +340,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
-				if (monitor.isCanceled()) {
-					if (parser != null) {
-						parser.cancelJob();
-					}
+				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
+					parser.cancelJob();
 					Runtime run = Runtime.getRuntime();
 					run.exec("kill stap"); //$NON-NLS-1$
 					process.terminate();
@@ -365,10 +363,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 						+ PluginConstants.NEW_LINE + cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
 				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
-				if (monitor != null && monitor.isCanceled()) {
-					if (parser != null) {
-						parser.cancelJob();
-					}
+				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
+					monitor.setCanceled(true);
+					parser.cancelJob();
 					return;
 				}
 				
@@ -384,10 +381,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 					mess.schedule();
 					
 					errorHandler.finishHandling(monitor, s.getNumberOfErrors());
-					if (monitor != null && monitor.isCanceled()) {
-						if (parser != null) {
-							parser.cancelJob();
-						}
+					if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
+						monitor.setCanceled(true);
+						parser.cancelJob();
 						return;
 					}
 					finishLaunch(launch, config, command, monitor, false);

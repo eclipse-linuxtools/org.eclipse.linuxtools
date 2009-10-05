@@ -360,11 +360,24 @@ public abstract class SystemTapParser extends Job {
 	}
 	
 	/**
-	 * Cancels the RunTimeJob affiliated with this parser.
+	 * Cancels the RunTimeJob affiliated with this parser. Returns the result
+	 * of job.cancel() if job is not null, or false if job is null.
 	 */
-	public void cancelJob() {
+	public boolean cancelJob() {
 		if (job != null)
 			job.cancel();
+		return false;
+	}
+	
+	/**
+	 * Returns true if job is not null and the job's last result was CANCEL_STATUS.
+	 *  False otherwise.
+	 */
+	public boolean isJobCancelled() {
+		if (job != null && job.getResult() == Status.CANCEL_STATUS) {
+			return true;
+		}
+		return false;
 	}
 
 
