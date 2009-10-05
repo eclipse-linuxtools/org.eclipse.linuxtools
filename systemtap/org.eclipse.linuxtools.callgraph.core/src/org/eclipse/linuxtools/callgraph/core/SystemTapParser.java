@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -360,6 +359,9 @@ public abstract class SystemTapParser extends Job {
 		data = obj;
 	}
 	
+	/**
+	 * Cancels the RunTimeJob affiliated with this parser.
+	 */
 	public void cancelJob() {
 		if (job != null)
 			job.cancel();
