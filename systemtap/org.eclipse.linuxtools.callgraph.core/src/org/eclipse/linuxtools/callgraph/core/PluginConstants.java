@@ -18,8 +18,8 @@ public final class PluginConstants {
 	public static final String PARSER_RESOURCE = "org.eclipse.linuxtools.callgraph.core"; //$NON-NLS-1$
 	public static final String PARSER_NAME = "parser";  //$NON-NLS-1$
 	public static final String VIEW_CLASS = "org.eclipse.linuxtools.callgraph.core.view"; //$NON-NLS-1$
-	public static final String VIEW_RESOURCE = "org.eclipse.linuxtools.callgraph.core"; //$NON-NLS-1$
-	public static final String VIEW_NAME = "view";  //$NON-NLS-1$
+	public static final String VIEW_RESOURCE = "org.eclipse.ui"; //$NON-NLS-1$
+	public static final String VIEW_NAME = "views";  //$NON-NLS-1$
 	public static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 	public static final String ATTR_REALTIME = "realtime"; //$NON-NLS-1$
 	public static final String VAL_TRUE = "true"; //$NON-NLS-1$

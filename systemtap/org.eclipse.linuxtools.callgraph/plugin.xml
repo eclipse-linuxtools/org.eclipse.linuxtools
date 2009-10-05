@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-
-   
-      <extension
-         point="org.eclipse.ui.views">
-      <view
-            category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.callgraph.CallgraphView"
-            icon="icons/genericregister_obj.gif"
-            id="org.eclipse.linuxtools.callgraph.callgraphview"
-            name="Call Graph"
-            restorable="true">
-      </view>
-   </extension>
    
       <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -25,6 +12,21 @@
                relationship="stack">
          </view>
       </perspectiveExtension>
+   </extension>
+
+   
+      <extension
+            id="org.eclipse.linuxtools.callgraph.callgraphview"
+            name="Callgraph View"
+            point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.cdt.ui.views"
+            class="org.eclipse.linuxtools.callgraph.CallgraphView"
+            icon="icons/genericregister_obj.gif"
+            id="org.eclipse.linuxtools.callgraph.callgraphview"
+            name="Call Graph"
+            restorable="true">
+      </view>
    </extension>
 
 
@@ -88,13 +90,5 @@
              class="org.eclipse.linuxtools.callgraph.StapGraphParser"
              realtime="false">
        </parser>
-    </extension>
-    <extension
-          id="org.eclipse.linuxtools.callgraph.callgraphview"
-          name="CallgraphView"
-          point="org.eclipse.linuxtools.callgraph.core.view">
-       <view
-             class="org.eclipse.linuxtools.callgraph.CallgraphView">
-       </view>
     </extension>
 </plugin>
