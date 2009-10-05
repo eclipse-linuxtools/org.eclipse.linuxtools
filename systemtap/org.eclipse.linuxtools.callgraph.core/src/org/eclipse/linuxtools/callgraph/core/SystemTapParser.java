@@ -79,7 +79,7 @@ public abstract class SystemTapParser extends Job {
 	 * 
 	 * @return
 	 */
-	public abstract IStatus executeParsing();
+	public abstract IStatus nonRealTimeParsing();
 
 	/**
 	 * Implement this method to save data in whichever format your program
@@ -178,7 +178,7 @@ public abstract class SystemTapParser extends Job {
 			return Status.OK_STATUS;
 		}
 
-		IStatus returnStatus = executeParsing();
+		IStatus returnStatus = nonRealTimeParsing();
 		setData(this);
 		postProcessing();
 		return returnStatus;

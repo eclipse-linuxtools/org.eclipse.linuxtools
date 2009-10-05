@@ -73,7 +73,7 @@ public class StapGraphParser extends SystemTapParser {
 	}
 
 	
-	public IStatus executeParsing(){
+	public IStatus nonRealTimeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
 		outNeighbours.clear();
 		timeMap.clear();
