@@ -11,10 +11,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -33,11 +36,12 @@ public abstract class SystemTapView extends ViewPart {
 	private SystemTapView stapview;
 	private Action error_errorLog;
 	private Action error_deleteError;
-	private  IMenuManager errors;
+	private IMenuManager errors;
+	private Action kill;
+	public SystemTapParser parser;
 
 	private boolean isInitialized;
 	protected String viewID;
-
 
 	/**
 	 * The constructor.
@@ -69,9 +73,8 @@ public abstract class SystemTapView extends ViewPart {
 
 		if (doMaximize
 				&& page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED) {
-			IWorkbenchAction action = ActionFactory.MAXIMIZE
-					.create(this.getSingleInstance().getViewSite()
-							.getWorkbenchWindow());
+			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(this
+					.getSingleInstance().getViewSite().getWorkbenchWindow());
 			action.run();
 		} else {
 			this.layout();
@@ -90,16 +93,16 @@ public abstract class SystemTapView extends ViewPart {
 				.getWorkbenchWindow().getActivePage();
 
 		if (page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED) {
-			IWorkbenchAction action = ActionFactory.MAXIMIZE
-					.create(this.getSingleInstance().getViewSite()
-							.getWorkbenchWindow());
+			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(this
+					.getSingleInstance().getViewSite().getWorkbenchWindow());
 			action.run();
 		}
 	}
-	
+
 	/**
 	 * Schedules the updateMethod job in a UI Thread. Does not return until
 	 * updateMethod is complete.
+	 * 
 	 * @throws InterruptedException
 	 */
 	public void update() throws InterruptedException {
@@ -107,8 +110,7 @@ public abstract class SystemTapView extends ViewPart {
 		updater.schedule();
 		updater.join();
 	}
-	
-	
+
 	private class ViewUIUpdater extends UIJob {
 
 		public ViewUIUpdater(String name) {
@@ -120,9 +122,8 @@ public abstract class SystemTapView extends ViewPart {
 			updateMethod();
 			return Status.OK_STATUS;
 		}
-		
+
 	};
-	
 
 	/**
 	 * Force the view to initialize
@@ -132,11 +133,8 @@ public abstract class SystemTapView extends ViewPart {
 		try {
 			IWorkbenchWindow window = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow();
-			stapview = (SystemTapView) window
-					.getActivePage()
-					.showView(
-							viewID);
-			stapview.setFocus(); 
+			stapview = (SystemTapView) window.getActivePage().showView(viewID);
+			stapview.setFocus();
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
 		}
@@ -147,73 +145,79 @@ public abstract class SystemTapView extends ViewPart {
 	}
 
 	/**
-	 * Method for setting the parser object of the view. Make this method return true if 
-	 * the parser is of the expected class, false if it is null or unexpected.
+	 * Method for setting the parser object of the view. Make this method return
+	 * true if the parser is of the expected class, false if it is null or
+	 * unexpected.
+	 * 
 	 * @param parser
 	 * @return
 	 */
 	public abstract boolean setParser(SystemTapParser parser);
 
 	/**
-	 * Perform whatever actions are necessary to 'update' this viewer. It is recommended that 
-	 * the update function be called after the setParser method is called.
+	 * Perform whatever actions are necessary to 'update' this viewer. It is
+	 * recommended that the update function be called after the setParser method
+	 * is called.
 	 */
 	public abstract void updateMethod();
 
 	/**
-	 * Implement this method to set the viewID variable to the id of the view that
-	 * extends SystemTapView and uses the core.systemtapview extension point.
+	 * Implement this method to set the viewID variable to the id of the view
+	 * that extends SystemTapView and uses the core.systemtapview extension
+	 * point.
 	 */
 	public abstract void setViewID();
 
 	/**
-	 * Appends the error menu, containing options for opening and clearing the error log.
+	 * Appends the error menu, containing options for opening and clearing the
+	 * error log.
 	 */
 	public void addErrorMenu() {
 		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
-		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); 
+		errors = new MenuManager(Messages.getString("SystemTapView.Errors"));
 		menu.add(errors);
 		createErrorActions();
 
 		errors.add(error_errorLog);
 		errors.add(error_deleteError);
 	}
-	
+
 	/**
 	 * Populates the Errors menu
 	 */
 	public void createErrorActions() {
 
-		error_errorLog = new Action("Open Log") { 
+		error_errorLog = new Action("Open Log") {
 			public void run() {
 				boolean error = false;
-				File log = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); 
+				File log = new File(PluginConstants.DEFAULT_OUTPUT
+						+ "Error.log");
 				BufferedReader buff;
 				try {
 					buff = new BufferedReader(new FileReader(log));
-				String logText = ""; 
-				String line;
-				
-				while ((line = buff.readLine()) != null) {
-					logText+=line + PluginConstants.NEW_LINE;
-				}
-				
-				Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
-				
-				sh.setText(Messages.getString("SystemTapView.15")); 
-				sh.setLayout(new FillLayout());
-				sh.setSize(600,600);
-				
-				StyledText txt = new StyledText(sh, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
-				
-				txt.setText(logText);
+					String logText = "";
+					String line;
 
-				sh.setText(Messages.getString("SystemTapView.21")); 
-				
-				sh.open();
-				txt.setTopIndex(txt.getLineCount());
+					while ((line = buff.readLine()) != null) {
+						logText += line + PluginConstants.NEW_LINE;
+					}
 
-				
+					Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
+
+					sh.setText(Messages.getString("SystemTapView.15"));
+					sh.setLayout(new FillLayout());
+					sh.setSize(600, 600);
+
+					StyledText txt = new StyledText(sh, SWT.MULTI
+							| SWT.V_SCROLL | SWT.WRAP | SWT.READ_ONLY);
+
+					txt.setText(logText);
+
+					sh.setText(Messages.getString("SystemTapView.21"));
+
+					sh.open();
+					txt.setTopIndex(txt.getLineCount());
+
 				} catch (FileNotFoundException e) {
 					error = true;
 				} catch (IOException e) {
@@ -221,44 +225,78 @@ public abstract class SystemTapView extends ViewPart {
 				} finally {
 					if (error) {
 						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-							Messages.getString("SystemTapView.ErrorMessageName"), 
-							Messages.getString("SystemTapView.ErrorMessageTitle"), 
-							Messages.getString("SystemTapView.ErrorMessageBody") + 
-							Messages.getString("SystemTapView.ErrorMessageBody2")); 
+								Messages
+										.getString("SystemTapView.ErrorMessageName"),
+								Messages
+										.getString("SystemTapView.ErrorMessageTitle"),
+								Messages
+										.getString("SystemTapView.ErrorMessageBody")
+										+ Messages
+												.getString("SystemTapView.ErrorMessageBody2"));
 						mess.schedule();
 					}
 				}
-				
+
 			}
 		};
-		
-		
-		error_deleteError = new Action(Messages.getString("SystemTapView.ClearLog")) { 
+
+		error_deleteError = new Action(Messages
+				.getString("SystemTapView.ClearLog")) {
 			public void run() {
-					if (!MessageDialog.openConfirm(new Shell(), Messages.getString("SystemTapView.DeleteLogsTitle"),  
-							Messages.getString("SystemTapView.DeleteLogsMessage") + 
-							Messages.getString("SystemTapView.DeleteLogsMessage2"))) 
-						return;
-					
-					SystemTapErrorHandler.delete();
+				if (!MessageDialog.openConfirm(new Shell(), Messages
+						.getString("SystemTapView.DeleteLogsTitle"), Messages
+						.getString("SystemTapView.DeleteLogsMessage")
+						+ Messages
+								.getString("SystemTapView.DeleteLogsMessage2")))
+					return;
+
+				SystemTapErrorHandler.delete();
 			}
 		};
 	}
-	
 
-	public  Action getError_errorLog() {
+	protected void addKillButton() {
+		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+		kill = new Action("Stop Script", ImageDescriptor
+				.createFromImage(new Image(Display.getCurrent(),
+						PluginConstants.PLUGIN_LOCATION
+								+ "icons/progress_stop.gif"))) {
+			public void run() {
+				Runtime run = Runtime.getRuntime();
+				try {
+					parser.setDone(true);
+					run.exec("kill stap");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		mgr.add(kill);
+	}
+	
+	public void setKillButtonEnabled(boolean val) {
+		if (kill != null)
+			kill.setEnabled(val);
+	}
+	
+	
+	public Action getKillButton() {
+		return kill;
+	}
+	
+	public Action getError_errorLog() {
 		return error_errorLog;
 	}
 
-	public  void setError_errorLog(Action errorErrorLog) {
+	public void setError_errorLog(Action errorErrorLog) {
 		error_errorLog = errorErrorLog;
 	}
 
-	public  Action getError_deleteError() {
+	public Action getError_deleteError() {
 		return error_deleteError;
 	}
 
-	public  void setError_deleteError(Action errorDeleteError) {
+	public void setError_deleteError(Action errorDeleteError) {
 		error_deleteError = errorDeleteError;
 	}
 

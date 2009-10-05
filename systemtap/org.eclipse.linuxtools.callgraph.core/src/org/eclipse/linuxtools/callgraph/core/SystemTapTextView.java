@@ -1,13 +1,10 @@
 package org.eclipse.linuxtools.callgraph.core;
 
-import java.io.IOException;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -27,7 +24,6 @@ public class SystemTapTextView extends SystemTapView {
 	private Display display;
 	private int previousEnd;
 
-	public SystemTapParser parser;
 
 	protected void cleanViewer() {
 		if (viewer != null && !viewer.isDisposed()) {
@@ -226,20 +222,7 @@ public class SystemTapTextView extends SystemTapView {
 	public void createPartControl(Composite parent) {
 		createViewer(parent);
 	
-		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-		Action kill = new Action("Stop Script") { //$NON-NLS-1$
-			public void run() {
-				Runtime run = Runtime.getRuntime();
-				try {
-					parser.setDone(true);
-					run.exec("kill stap");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}	
-			}
-		};		
-		mgr.add(kill);
-		
+		addKillButton();
 		addErrorMenu();
 	}
 
@@ -268,5 +251,7 @@ public class SystemTapTextView extends SystemTapView {
 	public void setViewID() {
 		viewID = "org.eclipse.linuxtools.callgraph.core.staptextview";		
 	}
+	
+	
 
 }

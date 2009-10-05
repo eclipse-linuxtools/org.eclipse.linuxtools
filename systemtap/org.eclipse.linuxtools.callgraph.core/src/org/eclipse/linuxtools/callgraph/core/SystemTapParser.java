@@ -380,5 +380,11 @@ public abstract class SystemTapParser extends Job {
 		return false;
 	}
 
+	
+	public void setKillButtonEnabled(boolean val) {
+		if (view != null) 
+			view.setKillButtonEnabled(val);
+		
+	}
 
 }

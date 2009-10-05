@@ -72,6 +72,7 @@ public class GraphUIJob extends UIJob {
 			if (!parser.realTime) {
 				viewer.updateMethod();
 			}
+			viewer.setKillButtonEnabled(true);
 			 
 			return Status.OK_STATUS;
 		} catch (CoreException e) {

@@ -306,7 +306,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			parser.setMonitor(SubMonitor.convert(monitor));
 			parser.setDone(false);
 
-			
+			parser.setKillButtonEnabled(true);
+						
 			if (element.getAttribute(PluginConstants.ATTR_REALTIME).equals(PluginConstants.VAL_TRUE)) {
 				parser.setRealTime(true);
 				parser.schedule();
@@ -350,6 +351,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 			Thread.sleep(100);
 			s.close();
+			parser.setKillButtonEnabled(false);
 			
 
 			if (process.getExitValue() != 0) {
