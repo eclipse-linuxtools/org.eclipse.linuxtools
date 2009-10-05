@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.callgraph;
 public class CallGraphConstants {
 	
 	public static String PLUGIN_LOCATION = ""; //$NON-NLS-1$
-	public static final String viewID = "org.eclipse.linuxtools.callgraph.callgraphview";
+	public static final String viewID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
 	
 	public static void setPluginLocation(String val) {
 		PLUGIN_LOCATION = val;

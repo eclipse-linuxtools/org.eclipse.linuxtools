@@ -207,7 +207,7 @@ public class SystemTapTextView extends SystemTapView {
 	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
 		previousEnd = 0;
 		forceDisplay();
-		viewer.setText("");
+		viewer.setText(""); //$NON-NLS-1$
 		viewer.update();
 		return Status.OK_STATUS;
 	}
@@ -249,7 +249,7 @@ public class SystemTapTextView extends SystemTapView {
 
 	@Override
 	public void setViewID() {
-		viewID = "org.eclipse.linuxtools.callgraph.core.staptextview";		
+		viewID = "org.eclipse.linuxtools.callgraph.core.staptextview";		 //$NON-NLS-1$
 	}
 	
 	

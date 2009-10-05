@@ -106,7 +106,7 @@ public abstract class SystemTapView extends ViewPart {
 	 * @throws InterruptedException
 	 */
 	public void update() throws InterruptedException {
-		ViewUIUpdater updater = new ViewUIUpdater("UIUpdater");
+		ViewUIUpdater updater = new ViewUIUpdater("UIUpdater"); //$NON-NLS-1$
 		updater.schedule();
 		updater.join();
 	}
@@ -174,7 +174,7 @@ public abstract class SystemTapView extends ViewPart {
 	 */
 	public void addErrorMenu() {
 		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
-		errors = new MenuManager(Messages.getString("SystemTapView.Errors"));
+		errors = new MenuManager(Messages.getString("SystemTapView.Errors")); //$NON-NLS-1$
 		menu.add(errors);
 		createErrorActions();
 
@@ -187,15 +187,15 @@ public abstract class SystemTapView extends ViewPart {
 	 */
 	public void createErrorActions() {
 
-		error_errorLog = new Action("Open Log") {
+		error_errorLog = new Action(Messages.getString("SystemTapView.0")) { //$NON-NLS-1$
 			public void run() {
 				boolean error = false;
 				File log = new File(PluginConstants.DEFAULT_OUTPUT
-						+ "Error.log");
+						+ "Error.log"); //$NON-NLS-1$
 				BufferedReader buff;
 				try {
 					buff = new BufferedReader(new FileReader(log));
-					String logText = "";
+					String logText = ""; //$NON-NLS-1$
 					String line;
 
 					while ((line = buff.readLine()) != null) {
@@ -204,7 +204,7 @@ public abstract class SystemTapView extends ViewPart {
 
 					Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
 
-					sh.setText(Messages.getString("SystemTapView.15"));
+					sh.setText(Messages.getString("SystemTapView.15")); //$NON-NLS-1$
 					sh.setLayout(new FillLayout());
 					sh.setSize(600, 600);
 
@@ -213,7 +213,7 @@ public abstract class SystemTapView extends ViewPart {
 
 					txt.setText(logText);
 
-					sh.setText(Messages.getString("SystemTapView.21"));
+					sh.setText(Messages.getString("SystemTapView.21")); //$NON-NLS-1$
 
 					sh.open();
 					txt.setTopIndex(txt.getLineCount());
@@ -226,13 +226,13 @@ public abstract class SystemTapView extends ViewPart {
 					if (error) {
 						SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 								Messages
-										.getString("SystemTapView.ErrorMessageName"),
+										.getString("SystemTapView.ErrorMessageName"), //$NON-NLS-1$
 								Messages
-										.getString("SystemTapView.ErrorMessageTitle"),
+										.getString("SystemTapView.ErrorMessageTitle"), //$NON-NLS-1$
 								Messages
-										.getString("SystemTapView.ErrorMessageBody")
+										.getString("SystemTapView.ErrorMessageBody") //$NON-NLS-1$
 										+ Messages
-												.getString("SystemTapView.ErrorMessageBody2"));
+												.getString("SystemTapView.ErrorMessageBody2")); //$NON-NLS-1$
 						mess.schedule();
 					}
 				}
@@ -241,13 +241,13 @@ public abstract class SystemTapView extends ViewPart {
 		};
 
 		error_deleteError = new Action(Messages
-				.getString("SystemTapView.ClearLog")) {
+				.getString("SystemTapView.ClearLog")) { //$NON-NLS-1$
 			public void run() {
 				if (!MessageDialog.openConfirm(new Shell(), Messages
-						.getString("SystemTapView.DeleteLogsTitle"), Messages
-						.getString("SystemTapView.DeleteLogsMessage")
+						.getString("SystemTapView.DeleteLogsTitle"), Messages //$NON-NLS-1$
+						.getString("SystemTapView.DeleteLogsMessage") //$NON-NLS-1$
 						+ Messages
-								.getString("SystemTapView.DeleteLogsMessage2")))
+								.getString("SystemTapView.DeleteLogsMessage2"))) //$NON-NLS-1$
 					return;
 
 				SystemTapErrorHandler.delete();
@@ -257,15 +257,15 @@ public abstract class SystemTapView extends ViewPart {
 
 	protected void addKillButton() {
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-		kill = new Action("Stop Script", ImageDescriptor
+		kill = new Action(Messages.getString("SystemTapView.16"), ImageDescriptor //$NON-NLS-1$
 				.createFromImage(new Image(Display.getCurrent(),
 						PluginConstants.PLUGIN_LOCATION
-								+ "icons/progress_stop.gif"))) {
+								+ "icons/progress_stop.gif"))) { //$NON-NLS-1$
 			public void run() {
 				Runtime run = Runtime.getRuntime();
 				try {
 					parser.setDone(true);
-					run.exec("kill stap");
+					run.exec("kill stap"); //$NON-NLS-1$
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

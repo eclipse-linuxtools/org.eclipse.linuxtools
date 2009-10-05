@@ -1005,7 +1005,7 @@ public class CallgraphView extends SystemTapView {
 
 	@Override
 	public void setViewID() {
-		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";		
+		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";		 //$NON-NLS-1$
 	}
 
 }

@@ -52,7 +52,7 @@ public class GraphUIJob extends UIJob {
 
 		if (extensions == null || extensions.length < 1) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-					"Couldn't load view", "Could not load view",
+					Messages.getString("GraphUIJob.0"), Messages.getString("GraphUIJob.1"), //$NON-NLS-1$ //$NON-NLS-2$
 					"Could not load view with id: " + viewID); //$NON-NLS-1$
 			mess.schedule();
 			return Status.CANCEL_STATUS;

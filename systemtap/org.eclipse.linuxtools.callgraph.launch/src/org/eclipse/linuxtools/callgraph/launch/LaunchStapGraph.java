@@ -80,7 +80,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 				+ "callgraphGen.stp";  //$NON-NLS-1$
 		
 		parserID = ATTR_PARSER;
-		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";
+		viewID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
 		
 
 		

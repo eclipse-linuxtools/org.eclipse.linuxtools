@@ -159,7 +159,7 @@ public abstract class SystemTapParser extends Job {
 		if (realTime && viewID != null) {
 			try {
 				if (realTime) {
-					GraphUIJob job = new GraphUIJob("RealTimeUIJob", this,
+					GraphUIJob job = new GraphUIJob("RealTimeUIJob", this, //$NON-NLS-1$
 							this.viewID);
 					job.schedule();
 					job.join();
@@ -167,7 +167,7 @@ public abstract class SystemTapParser extends Job {
 				}
 				
 				if (job == null || job.getResult()==null) {
-					job = new RunTimeJob("RealTimeParser");
+					job = new RunTimeJob("RealTimeParser"); //$NON-NLS-1$
 					job.schedule();
 				}
 				
