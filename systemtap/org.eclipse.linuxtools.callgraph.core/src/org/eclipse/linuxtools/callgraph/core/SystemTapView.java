@@ -26,6 +26,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -144,13 +145,19 @@ public abstract class SystemTapView extends ViewPart {
 		try {
 			IWorkbenchWindow window = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow();
-			stapview = (SystemTapView) window.getActivePage().showView(viewID);
+			IViewPart view = window.getActivePage().showView(viewID);
+			if (!(view instanceof SystemTapView))
+				throw new Exception(); 
+			stapview = (SystemTapView) view; 
 			stapview.setFocus();
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("attempted to launch: " + viewID + ", but could not cast.");
+			e.printStackTrace();
 		}
 	}
-
+	
 	protected void setView(SystemTapView view) {
 		stapview = view;
 	}

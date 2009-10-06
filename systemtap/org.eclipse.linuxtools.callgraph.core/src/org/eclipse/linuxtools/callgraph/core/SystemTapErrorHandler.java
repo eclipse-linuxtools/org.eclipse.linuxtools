@@ -192,7 +192,7 @@ public class SystemTapErrorHandler {
 								.getString("SystemTapErrorHandler.ErrorMessageName"), //$NON-NLS-1$
 						Messages
 								.getString("SystemTapErrorHandler.ErrorMessageTitle"), //$NON-NLS-1$
-						errorMessage.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+						errorMessage.toString());
 				mes.schedule();
 				m.setCanceled(true);
 				return false;
@@ -204,27 +204,28 @@ public class SystemTapErrorHandler {
 			String line;
 			boolean skip = false;
 			File file = new File(fileLocation);
+			int counter = 0;
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
 				while ((line = buff.readLine()) != null) {
 					if (m != null && m.isCanceled())
 						return false;
 					skip = false;
-					int counter = 0;
 					for (String func : functions) {
 						if (line.contains("function(\"" + func + "\").call")) { //$NON-NLS-1$ //$NON-NLS-2$
 							skip = true;
 							counter++;
+							if (counter == functions.size()) {
+								buff.close();
+								return false;
+							}
 							break;
 						}
 					}
 					
-					if (counter == functions.size()) {
-						buff.close();
-						return false;
-					}
 
 					if (!skip && !line.equals("\n")) { //$NON-NLS-1$
+						//This works because call and return are on the same line.
 						resultFileContent.append(line);
 						resultFileContent.append("\n"); //$NON-NLS-1$
 					}
