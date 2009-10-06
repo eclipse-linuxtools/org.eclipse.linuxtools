@@ -27,24 +27,24 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
- * Helper class parses the given string for recognizable error messages 
- *
+ * Helper class parses the given string for recognizable error messages
+ * 
  */
 public class SystemTapErrorHandler {
-	
+
 	public static final String FILE_PROP = "errors.prop"; //$NON-NLS-1$
 	public static final String FILE_ERROR_LOG = "Error.log"; //$NON-NLS-1$
 	public static final int MAX_LOG_SIZE = 50000;
 	private boolean errorRecognized;
-	private StringBuilder errorMessage = new StringBuilder (""); //$NON-NLS-1$
+	private StringBuilder errorMessage = new StringBuilder(""); //$NON-NLS-1$
 	private StringBuilder logContents;
 	private boolean mismatchedProbePoints;
 	ArrayList<String> functions = new ArrayList<String>();
-	
+
 	/**
 	 * Delete the log file and create an empty one
 	 */
-	public static void delete(){
+	public static void delete() {
 		File log = new File(PluginConstants.DEFAULT_OUTPUT + FILE_ERROR_LOG); //$NON-NLS-1$
 		log.delete();
 		try {
@@ -53,64 +53,65 @@ public class SystemTapErrorHandler {
 			e.printStackTrace();
 		}
 	}
-	
- 
+
 	public SystemTapErrorHandler() {
 		mismatchedProbePoints = false;
 		errorRecognized = false;
 		if (errorMessage.length() < 1) {
-			errorMessage.append( 
-				Messages.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
-				Messages.getString("SystemTapErrorHandler.ErrorMessage1")); //$NON-NLS-1$
+			errorMessage.append(Messages
+					.getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
+					Messages.getString("SystemTapErrorHandler.ErrorMessage1")); //$NON-NLS-1$
 		}
-		
+
 		logContents = new StringBuilder(); //$NON-NLS-1$
 	}
 
-	
 	/**
-	 * Search given string for recognizable error messages. Can append the contents of 
-	 * the string to the error log if writeToLog() or finishHandling() are called.
-	 * A call to finishHandling() will also open a popup window with user-friendly messages
-	 * corresponding to the recognizable errors.
+	 * Search given string for recognizable error messages. Can append the
+	 * contents of the string to the error log if writeToLog() or
+	 * finishHandling() are called. A call to finishHandling() will also open a
+	 * popup window with user-friendly messages corresponding to the
+	 * recognizable errors.
 	 * 
 	 * @param doc
 	 */
-	public void handle (IProgressMonitor m, String errors){	
+	public void handle(IProgressMonitor m, String errors) {
 		String[] blah = errors.split("\n"); //$NON-NLS-1$
-		
-		//READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
-		File file = new File(PluginConstants.PLUGIN_LOCATION+FILE_PROP);
+
+		// READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
+		File file = new File(PluginConstants.PLUGIN_LOCATION + FILE_PROP);
 		try {
-			BufferedReader buff = new BufferedReader (new FileReader(file));
+			BufferedReader buff = new BufferedReader(new FileReader(file));
 			String line;
 			int index;
-			
+
 			for (String message : blah) {
-				boolean firstLine = true; //Keep the error about mismatched probe points first
-				buff = new BufferedReader (new FileReader(file));
-				while ((line = buff.readLine()) != null){
+				boolean firstLine = true; // Keep the error about mismatched
+											// probe points first
+				buff = new BufferedReader(new FileReader(file));
+				while ((line = buff.readLine()) != null) {
 					if (m != null && m.isCanceled())
 						return;
 					index = line.indexOf('=');
-					String matchString = line.substring(0, index);
-					Pattern pat = Pattern.compile(matchString, Pattern.DOTALL);
+					Pattern pat = Pattern.compile(line.substring(0, index),
+							Pattern.DOTALL);
 					Matcher matcher = pat.matcher(message);
-	
-					
+
 					if (matcher.matches()) {
 						if (!isErrorRecognized()) {
-							errorMessage.append(Messages.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
+							errorMessage
+									.append(Messages
+											.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
 							setErrorRecognized(true);
 						}
-						
-						//TODO: Rough hack, very slow
-						//this can be removed pending stap removal of duplicate error posting
-						if (!errorMessage.toString().contains(line.substring(index+1))) {
-						errorMessage.append(line.substring(index+1) 
-							+ PluginConstants.NEW_LINE);
+						String tmp = line.substring(index+1);
+
+						if (!errorMessage.toString().contains(
+								tmp)) {
+							errorMessage.append(tmp
+									+ PluginConstants.NEW_LINE);
 						}
-					
+
 						if (firstLine) {
 							findFunctions(m, message, pat);
 							mismatchedProbePoints = true;
@@ -121,24 +122,31 @@ public class SystemTapErrorHandler {
 				}
 				buff.close();
 			}
-			
+
 			logContents.append(errors);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
-	public String handle (IProgressMonitor m, FileReader f) throws IOException {
-		BufferedReader br = new BufferedReader (f);
-		
+
+	/**
+	 * Handle the error. Intended to work with a FileReader for a temporary error file.
+	 * 
+	 * @param m
+	 * @param f
+	 * @return
+	 * @throws IOException
+	 */
+	public String handle(IProgressMonitor m, FileReader f) throws IOException {
+		BufferedReader br = new BufferedReader(f);
+
 		String line;
 		StringBuilder builder = new StringBuilder();
 		int counter = 0;
-		while ( (line = br.readLine()) != null) {
+		while ((line = br.readLine()) != null) {
 			counter++;
 			builder.append(line);
 			builder.append("\n"); //$NON-NLS-1$
@@ -155,8 +163,8 @@ public class SystemTapErrorHandler {
 	}
 
 	/**
-	 * Run this method when there are no more error messages to handle. 
-	 * Creates the error pop-up message and writes to log.
+	 * Run this method when there are no more error messages to handle. Creates
+	 * the error pop-up message and writes to log.
 	 * 
 	 */
 	public void finishHandling(IProgressMonitor m, int numberOfErrors) {
@@ -164,135 +172,140 @@ public class SystemTapErrorHandler {
 			errorMessage.append(Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
 					Messages.getString("SystemTapErrorHandler.5")); //$NON-NLS-1$
 		}
-		
+
 		writeToLog();
-		
-		if (mismatchedProbePoints){
+
+		if (mismatchedProbePoints) {
 			if (numberOfErrors > PluginConstants.MAX_ERRORS) {
 				errorMessage.setLength(0);
-				errorMessage.append(PluginConstants.NEW_LINE
-				+ Messages.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors +Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
-				Messages.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
-				Messages.getString("SystemTapErrorHandler.TooManyErrors4")); //$NON-NLS-1$
+				errorMessage
+						.append(PluginConstants.NEW_LINE
+								+ Messages
+										.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors + Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
+								Messages
+										.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
+								Messages
+										.getString("SystemTapErrorHandler.TooManyErrors4")); //$NON-NLS-1$
 				SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-						Messages.getString("SystemTapErrorHandler.ErrorMessageName"),  //$NON-NLS-1$
-						Messages.getString("SystemTapErrorHandler.ErrorMessageTitle"),  //$NON-NLS-1$
+						Messages
+								.getString("SystemTapErrorHandler.ErrorMessageName"), //$NON-NLS-1$
+						Messages
+								.getString("SystemTapErrorHandler.ErrorMessageTitle"), //$NON-NLS-1$
 						errorMessage.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				mes.schedule();
 				m.setCanceled(true);
 				return;
 			}
-			
-			
+
 			StringBuilder resultFileContent = new StringBuilder();
-			String fileLocation = PluginConstants.DEFAULT_OUTPUT + "callgraphGen.stp"; //$NON-NLS-1$
+			String fileLocation = PluginConstants.DEFAULT_OUTPUT
+					+ "callgraphGen.stp"; //$NON-NLS-1$
 			String line;
 			boolean skip = false;
 			File file = new File(fileLocation);
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
-				while ((line = buff.readLine()) != null){
+				while ((line = buff.readLine()) != null) {
 					if (m != null && m.isCanceled())
 						return;
-					skip =  false;
-					for (String func : functions){
-						if (line.contains("function(\"" + func + "\").call")){ //$NON-NLS-1$ //$NON-NLS-2$
+					skip = false;
+					for (String func : functions) {
+						if (line.contains("function(\"" + func + "\").call")) { //$NON-NLS-1$ //$NON-NLS-2$
 							skip = true;
 							break;
 						}
 					}
-					
-					if (!skip && !line.equals("\n")){							 //$NON-NLS-1$
+
+					if (!skip && !line.equals("\n")) { //$NON-NLS-1$
 						resultFileContent.append(line);
 						resultFileContent.append("\n"); //$NON-NLS-1$
 					}
 				}
-				
+
 				buff.close();
-				
-				BufferedWriter wbuff= new BufferedWriter(new FileWriter(file));
+
+				BufferedWriter wbuff = new BufferedWriter(new FileWriter(file));
 				wbuff.write(resultFileContent.toString());
 				wbuff.close();
-				
+
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 	}
-	
-	
+
 	/**
-	 * Writes the contents of logContents to the error log, along with date and time.
+	 * Writes the contents of logContents to the error log, along with date and
+	 * time.
 	 */
 	public void writeToLog() {
 		File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
 
 		try {
-			//CREATE THE ERROR LOG IF IT DOES NOT EXIST
-			//CLEAR THE ERROR LOG AFTER A FIXED SIZE(BYTES)
-			if (!errorLog.exists()
-					|| errorLog.length() > MAX_LOG_SIZE) {
+			// CREATE THE ERROR LOG IF IT DOES NOT EXIST
+			// CLEAR THE ERROR LOG AFTER A FIXED SIZE(BYTES)
+			if (!errorLog.exists() || errorLog.length() > MAX_LOG_SIZE) {
 				errorLog.delete();
-					errorLog.createNewFile();
+				errorLog.createNewFile();
 			}
-	
-		Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH);
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		int hour = cal.get(Calendar.HOUR_OF_DAY);
-		int minute = cal.get(Calendar.MINUTE);
-		int second = cal.get(Calendar.SECOND);
 
-		//APPEND THE ERROR TO THE LOG
-		Helper
-				.appendToFile(errorLog.getAbsolutePath(),
-						Messages.getString("SystemTapErrorHandler.ErrorLogDashes") //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE 
-						+ day + "/" + month //$NON-NLS-1$
-						+ "/" + year + " - " + hour + ":" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						+ minute + ":" + second //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE + logContents
-						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
+			Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH);
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			int hour = cal.get(Calendar.HOUR_OF_DAY);
+			int minute = cal.get(Calendar.MINUTE);
+			int second = cal.get(Calendar.SECOND);
+
+			// APPEND THE ERROR TO THE LOG
+			Helper.appendToFile(errorLog.getAbsolutePath(), Messages
+					.getString("SystemTapErrorHandler.ErrorLogDashes") //$NON-NLS-1$
+					+ PluginConstants.NEW_LINE
+					+ day
+					+ "/" + month //$NON-NLS-1$
+					+ "/" + year + " - " + hour + ":" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ minute
+					+ ":" + second //$NON-NLS-1$
+					+ PluginConstants.NEW_LINE
+					+ logContents
+					+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		logContents = new StringBuilder(); //$NON-NLS-1$
 	}
 
 	/**
 	 * Returns true if an error matches one of the regex's in error.prop
+	 * 
 	 * @return
 	 */
 	public boolean isErrorRecognized() {
 		return errorRecognized;
 	}
 
-
 	/**
 	 * Convenience method to change the error recognition value.
+	 * 
 	 * @param errorsRecognized
 	 */
 	private void setErrorRecognized(boolean errorsRecognized) {
 		errorRecognized = errorsRecognized;
 	}
 
-
 	public boolean hasMismatchedProbePoints() {
 		return mismatchedProbePoints;
 	}
 
-
 	public void setMismatchedProbePoints(boolean mismatchedProbePoints) {
 		this.mismatchedProbePoints = mismatchedProbePoints;
 	}
-	
-	
+
 	public void findFunctions(IProgressMonitor m, String message, Pattern pat) {
 		String[] list = message.split("\n"); //$NON-NLS-1$
 		String result;
@@ -306,13 +319,12 @@ public class SystemTapErrorHandler {
 				int secondLastQuote = s.lastIndexOf('"', lastQuote - 1);
 				if (secondLastQuote < 0)
 					return;
-				result = s.substring(secondLastQuote+1, lastQuote);
+				result = s.substring(secondLastQuote + 1, lastQuote);
 				if (!functions.contains(result))
 					functions.add(result);
 			}
 		}
 	}
-
 
 	public ArrayList<String> getFunctions() {
 		return functions;

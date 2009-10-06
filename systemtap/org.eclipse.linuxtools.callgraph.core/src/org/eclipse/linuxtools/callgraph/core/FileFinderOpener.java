@@ -28,7 +28,6 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -49,6 +48,9 @@ public class FileFinderOpener {
 
 	
 	/**
+	 * Returns a list of files locations for all files that contain the selected
+	 * function name.
+	 * 
 	 * @param project : C Project Type
 	 * @param functionName : name of a function 
 	 * @return an ArrayList of String paths (relative to current workspace) of
@@ -93,6 +95,15 @@ public class FileFinderOpener {
 	}
 	
 	
+	/**
+	 * Seeks all functions in the given proejct that contains the given function name.
+	 * Farms off the work of generating the list to the findFunctionsInProject function. 
+	 * Opens a selection dialog if more than one file is found.
+	 * 
+	 * @param project
+	 * @param functionName
+	 * @return
+	 */
 	public static String findAndOpen(ICProject project, String functionName) {
 		offset.clear();
 		length.clear();
@@ -125,7 +136,8 @@ public class FileFinderOpener {
 	}
 	
 	/**
-	 * Open a file in the Editor
+	 * Open a file in the Editor at the specified offset, highlighting the given length
+	 * 
 	 * @param path : Absolute path pointing to the file which will be opened.
 	 * @param offset : Offset of the function to be highlighted.
 	 * @param length : Length of the function to be highlighted.

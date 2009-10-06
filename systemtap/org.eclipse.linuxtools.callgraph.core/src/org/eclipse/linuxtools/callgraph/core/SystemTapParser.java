@@ -143,7 +143,7 @@ public abstract class SystemTapParser extends Job {
 	protected void postProcessing() {
 		// Create a UIJob to handle the rest
 		try {
-		GraphUIJob uijob = new GraphUIJob(Messages
+		StapUIJob uijob = new StapUIJob(Messages
 				.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
 		uijob.schedule();
 		uijob.join();
@@ -159,7 +159,7 @@ public abstract class SystemTapParser extends Job {
 		if (realTime && viewID != null) {
 			try {
 				if (realTime) {
-					GraphUIJob job = new GraphUIJob("RealTimeUIJob", this, //$NON-NLS-1$
+					StapUIJob job = new StapUIJob("RealTimeUIJob", this, //$NON-NLS-1$
 							this.viewID);
 					job.schedule();
 					job.join();
@@ -214,7 +214,7 @@ public abstract class SystemTapParser extends Job {
 	 * @return
 	 */
 	public IStatus testRun(IProgressMonitor m) {
-		GraphUIJob uijob = new GraphUIJob(Messages
+		StapUIJob uijob = new StapUIJob(Messages
 				.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
 		uijob.schedule();
 		view = uijob.getViewer();

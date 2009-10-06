@@ -30,12 +30,12 @@ import org.eclipse.ui.progress.UIJob;
  * @author chwang
  * 
  */
-public class GraphUIJob extends UIJob {
+public class StapUIJob extends UIJob {
 	private SystemTapParser parser;
 	private String viewID;
 	private SystemTapView viewer;
 
-	public GraphUIJob(String name, SystemTapParser parser, String viewID) {
+	public StapUIJob(String name, SystemTapParser parser, String viewID) {
 		super(name);
 		// CREATE THE SHELL
 		this.parser = parser;
@@ -93,6 +93,11 @@ public class GraphUIJob extends UIJob {
 		return runInUIThread(m);
 	}
 
+	/**
+	 * Returns the viewer object. Viewer is initialized within the run method, and
+	 * is not guaranteed to be non-null until the job has terminated.
+	 * @return
+	 */
 	public SystemTapView getViewer() {
 		return viewer;
 	}
