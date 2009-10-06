@@ -125,6 +125,7 @@ public class CallgraphView extends SystemTapView {
 		buttonData.heightHint = 20;
 		up.setData(buttonData);
 		up.setImage(image);
+		up.setToolTipText(Messages.getString("CallgraphView.ThumbNailUp")); //$NON-NLS-1$
 		
 		
 		//Add thumb canvas
@@ -139,6 +140,7 @@ public class CallgraphView extends SystemTapView {
 		buttonData.heightHint = 0;
 		down.setData(buttonData);
 		down.setImage(image);
+		down.setToolTipText(Messages.getString("CallgraphView.ThumbNailDown")); //$NON-NLS-1$
 
 		
 		//Initialize graph
