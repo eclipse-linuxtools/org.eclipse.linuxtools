@@ -58,7 +58,7 @@ public class CallgraphView extends SystemTapView {
 	private Action view_treeview;
 	private Action view_radialview;
 	private  Action view_aggregateview;
-	private  Action view_boxview;	
+	private  Action view_levelview;	
 	private  Action view_refresh;	
 	private  Action animation_slow;
 	private  Action animation_fast;
@@ -76,9 +76,6 @@ public class CallgraphView extends SystemTapView {
 	private  IMenuManager view;
 	private  IMenuManager animation;
 	private  IMenuManager markers; //Unused
-	@SuppressWarnings("unused")
-	private  Action help_about;
-	private  Action help_version;
 	public  IToolBarManager mgr;
 	
 	private  Composite graphComp;
@@ -262,7 +259,7 @@ public class CallgraphView extends SystemTapView {
 		view_treeview.setEnabled(visible);
 		view_radialview.setEnabled(visible);
 		view_aggregateview.setEnabled(visible);
-		view_boxview.setEnabled(visible);
+		view_levelview.setEnabled(visible);
 		view_refresh.setEnabled(visible);
 		limits.setEnabled(visible);
 		
@@ -401,7 +398,7 @@ public class CallgraphView extends SystemTapView {
 		view.add(view_treeview);
 		view.add(view_radialview);
 		view.add(view_aggregateview);
-		view.add(view_boxview);
+		view.add(view_levelview);
 		view.add(getView_refresh());
 		view.add(mode_collapsednodes);
 		view.add(limits);
@@ -414,7 +411,7 @@ public class CallgraphView extends SystemTapView {
 		
 		mgr.add(view_radialview);
 		mgr.add(view_treeview);
-		mgr.add(view_boxview);
+		mgr.add(view_levelview);
 		mgr.add(view_aggregateview);
 		mgr.add(getView_refresh());
 		mgr.add(mode_collapsednodes);
@@ -531,17 +528,17 @@ public class CallgraphView extends SystemTapView {
 		view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
-		//Set drawmode to box view
-		view_boxview = new Action(Messages.getString("CallgraphView.19")){ //$NON-NLS-1$
+		//Set drawmode to level view
+		view_levelview = new Action(Messages.getString("CallgraphView.19")){ //$NON-NLS-1$
 			public void run(){
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_BOX, graph.getAnimationMode(), 
+				graph.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, graph.getAnimationMode(), 
 						graph.getRootVisibleNodeNumber());
 			}
 		};
-		ImageDescriptor boxImage = ImageDescriptor.createFromImage(
+		ImageDescriptor levelImage = ImageDescriptor.createFromImage(
 				new Image(Display.getCurrent(), 
 						CallGraphConstants.PLUGIN_LOCATION + "/icons/showchild_mode.gif")); //$NON-NLS-1$
-		view_boxview.setImageDescriptor(boxImage);
+		view_levelview.setImageDescriptor(levelImage);
 		
 		
 		setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
@@ -842,20 +839,12 @@ public class CallgraphView extends SystemTapView {
 		view_aggregateview = viewAggregateview;
 	}
 
-	public  Action getView_boxview() {
-		return view_boxview;
+	public  Action getView_levelview() {
+		return view_levelview;
 	}
 
-	public  void setView_boxview(Action viewBoxview) {
-		view_boxview = viewBoxview;
-	}
-
-	public  Action getHelp_version() {
-		return help_version;
-	}
-
-	public  void setHelp_version(Action helpVersion) {
-		help_version = helpVersion;
+	public  void setView_levelview(Action viewlevelview) {
+		view_levelview = viewlevelview;
 	}
 
 	public  void setGoto_previous(Action gotoPrevious) {

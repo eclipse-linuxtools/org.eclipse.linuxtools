@@ -232,7 +232,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 			// ------------Highlighting
 			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE 
-					|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
+					|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_LEVEL) {
 				for (StapNode n : (List<StapNode>) graph.getNodes()) {
 					unhighlightall(n);
 				}

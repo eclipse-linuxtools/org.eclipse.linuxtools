@@ -37,7 +37,7 @@ public abstract class SystemTapParser extends Job {
 	private RunTimeJob job;
 
 	public SystemTapParser() {
-		super("New_SystemTapParser_Job"); //$NON-NLS-1$
+		super("Parsing data");
 		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		this.viewID = null;
 		initialize();

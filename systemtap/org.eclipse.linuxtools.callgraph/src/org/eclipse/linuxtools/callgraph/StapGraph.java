@@ -47,7 +47,7 @@ public class StapGraph extends Graph {
 
 	public static final String CONSTANT_TOP_NODE_NAME = Messages.getString("StapGraph.0"); //$NON-NLS-1$
 	public static final int CONSTANT_HORIZONTAL_SPACING = 50; 
-	public static final int CONSTANT_DRAWMODE_BOX = 0;
+	public static final int CONSTANT_DRAWMODE_LEVEL = 0;
 	public static final int CONSTANT_DRAWMODE_RADIAL = 1;
 	public static final int CONSTANT_DRAWMODE_TREE = 2;
 	public static final int CONSTANT_DRAWMODE_AGGREGATE = 3;
@@ -57,7 +57,7 @@ public class StapGraph extends Graph {
 	public static final int CONSTANT_MAX_NUMBER_OF_SIBLINGS = 3;
 	public static final int CONSTANT_MAX_NUMBER_OF_RADIAL_SIBLINGS = 15;
 	public static final int CONSTANT_VERTICAL_INCREMENT = 50;
-	public static final int CONSTANT_HORIZONTAL_SPACING_FOR_BOX = 150;
+	public static final int CONSTANT_HORIZONTAL_SPACING_FOR_LEVEL = 150;
 	public static final Color CONSTANT_HAS_PARENT = new Color(Display.getCurrent(), 240, 200,
 			200);
 	public static final Color CONSTANT_HAS_CHILDREN = new Color(Display.getCurrent(), 200,
@@ -667,7 +667,7 @@ public class StapGraph extends Graph {
 				if (!collapse_mode && nodeDataMap.get(val).isCollapsed)
 					continue;
 				
-				currPixelWidth += nodeDataMap.get(val).name.length() * 10 + StapGraph.CONSTANT_HORIZONTAL_SPACING_FOR_BOX;
+				currPixelWidth += nodeDataMap.get(val).name.length() * 10 + StapGraph.CONSTANT_HORIZONTAL_SPACING_FOR_LEVEL;
 				if (MaxLevelPixelWidth < currPixelWidth) {
 					MaxLevelPixelWidth = currPixelWidth;
 				}
@@ -1075,8 +1075,8 @@ public class StapGraph extends Graph {
 			}
 		}
 		
-		//-------------Draw box
-		else if (draw_mode == CONSTANT_DRAWMODE_BOX) {
+		//-------------Draw level
+		else if (draw_mode == CONSTANT_DRAWMODE_LEVEL) {
 			rootVisibleNodeNumber = id;
 			if (animation_mode == CONSTANT_ANIMATION_SLOW) {
 				if (nodeMap.get(id) == null)

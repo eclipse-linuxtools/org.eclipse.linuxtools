@@ -420,4 +420,13 @@ public abstract class SystemTapView extends ViewPart {
 		error_deleteError = errorDeleteError;
 	}
 
+	public  Action getHelp_version() {
+		return help_version;
+	}
+
+	public  void setHelp_version(Action helpVersion) {
+		help_version = helpVersion;
+	}
+
+
 }

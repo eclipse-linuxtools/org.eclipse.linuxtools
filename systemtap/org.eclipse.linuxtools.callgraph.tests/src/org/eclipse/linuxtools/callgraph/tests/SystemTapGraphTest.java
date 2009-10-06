@@ -117,7 +117,7 @@ public class SystemTapGraphTest extends TestCase {
 					act = cView.getView_aggregateview();
 					break;
 				case 5:
-					act = cView.getView_boxview();
+					act = cView.getView_levelview();
 					break;
 				case 6:
 					act = cView.getAnimation_fast();
@@ -222,7 +222,7 @@ public class SystemTapGraphTest extends TestCase {
 				act = cView.getView_aggregateview();
 				break;
 			case 5:
-				act = cView.getView_boxview();
+				act = cView.getView_levelview();
 				break;
 			case 6:
 				act = cView.getAnimation_fast();
