@@ -891,7 +891,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, button_x_Spinner.getSelection());
 		
 		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parser.getText());
-		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, viewer.getText());
+		configuration.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewer.getText());
 
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES, button_D_text.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.BINARY_PATH, binaryFile.getText());
