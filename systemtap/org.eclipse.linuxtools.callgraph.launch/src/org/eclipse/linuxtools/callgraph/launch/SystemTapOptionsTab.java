@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.callgraph.launch;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -32,6 +33,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
+import org.eclipse.linuxtools.callgraph.core.SystemTapView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusEvent;
@@ -414,8 +416,21 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				IConfigurationElement[] extensions = reg
 						.getConfigurationElementsFor(PluginConstants.VIEW_RESOURCE, 
 								PluginConstants.VIEW_NAME);
+				ArrayList<IConfigurationElement> ext = new ArrayList<IConfigurationElement>();
+				for (IConfigurationElement el : extensions) {
+					if (!el.getNamespaceIdentifier().contains("org.eclipse.linuxtools"))
+						continue;
+					//TODO: Rough hack to get all the objects. We restrict to id's containing org.eclipse.linuxtools, then see if the class extends SystemTapView
+					try {
+						if (el.createExecutableExtension(PluginConstants.ATTR_CLASS) 
+								instanceof SystemTapView) {
+							ext.add(el);
+						}
+					} catch (CoreException e1) {
+					}
+				}
 				
-				dialog.setElements(extensions);
+				dialog.setElements(ext.toArray());
 				if (dialog.open() == IDialogConstants.OK_ID) {
 					String arg = getUsefulLabel(dialog.getFirstResult());
 					viewer.setText(arg);
@@ -837,7 +852,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			binaryArguments.setText(configuration.getAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS, LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS));
 			
 			parser.setText(configuration.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS));
-			parser.setText(configuration.getAttribute(LaunchConfigurationConstants.VIEW_CLASS, LaunchConfigurationConstants.DEFAULT_VIEW_CLASS));
+			viewer.setText(configuration.getAttribute(LaunchConfigurationConstants.VIEW_CLASS, LaunchConfigurationConstants.DEFAULT_VIEW_CLASS));
 			
 			if (generatedScript != null){
 				generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
