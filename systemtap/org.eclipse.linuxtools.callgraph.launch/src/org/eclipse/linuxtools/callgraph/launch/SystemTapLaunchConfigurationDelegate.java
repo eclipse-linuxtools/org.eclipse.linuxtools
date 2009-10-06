@@ -361,8 +361,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 				if (doc.get().length() < 1)
 					Thread.sleep(300);
 				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-				errorHandler.handle(monitor, config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
-						+ PluginConstants.NEW_LINE + cmd
+				errorHandler.handle(monitor, config.getName() 
+						+ Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
+						+ cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
 				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
 				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
@@ -376,13 +377,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 					
 					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"),  //$NON-NLS-1$
-							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3") + //$NON-NLS-1$ //$NON-NLS-2$
-							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch4") + //$NON-NLS-1$
-							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch5") + //$NON-NLS-1$
-							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch6")); //$NON-NLS-1$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3")); //$NON-NLS-1$
 					mess.schedule();
 					
-					errorHandler.finishHandling(monitor, s.getNumberOfErrors());
+					if (!errorHandler.finishHandling(monitor, s.getNumberOfErrors())) {
+						//Check if we should attempt a relaunch or not
+						return;
+					}
+					
 					if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
 						monitor.setCanceled(true);
 						parser.cancelJob();

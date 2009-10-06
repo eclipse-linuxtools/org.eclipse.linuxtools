@@ -164,10 +164,11 @@ public class SystemTapErrorHandler {
 
 	/**
 	 * Run this method when there are no more error messages to handle. Creates
-	 * the error pop-up message and writes to log.
+	 * the error pop-up message and writes to log. Returns true if a relaunch should
+	 * be attempted. Currently relaunch only works for the callgraph script.
 	 * 
 	 */
-	public void finishHandling(IProgressMonitor m, int numberOfErrors) {
+	public boolean finishHandling(IProgressMonitor m, int numberOfErrors) {
 		if (!isErrorRecognized()) {
 			errorMessage.append(Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
 					Messages.getString("SystemTapErrorHandler.5")); //$NON-NLS-1$
@@ -194,7 +195,7 @@ public class SystemTapErrorHandler {
 						errorMessage.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				mes.schedule();
 				m.setCanceled(true);
-				return;
+				return false;
 			}
 
 			StringBuilder resultFileContent = new StringBuilder();
@@ -207,13 +208,20 @@ public class SystemTapErrorHandler {
 				BufferedReader buff = new BufferedReader(new FileReader(file));
 				while ((line = buff.readLine()) != null) {
 					if (m != null && m.isCanceled())
-						return;
+						return false;
 					skip = false;
+					int counter = 0;
 					for (String func : functions) {
 						if (line.contains("function(\"" + func + "\").call")) { //$NON-NLS-1$ //$NON-NLS-2$
 							skip = true;
+							counter++;
 							break;
 						}
+					}
+					
+					if (counter == functions.size()) {
+						buff.close();
+						return false;
 					}
 
 					if (!skip && !line.equals("\n")) { //$NON-NLS-1$
@@ -227,6 +235,8 @@ public class SystemTapErrorHandler {
 				BufferedWriter wbuff = new BufferedWriter(new FileWriter(file));
 				wbuff.write(resultFileContent.toString());
 				wbuff.close();
+				
+				return true;
 
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -235,6 +245,7 @@ public class SystemTapErrorHandler {
 			}
 
 		}
+		return false;
 
 	}
 
