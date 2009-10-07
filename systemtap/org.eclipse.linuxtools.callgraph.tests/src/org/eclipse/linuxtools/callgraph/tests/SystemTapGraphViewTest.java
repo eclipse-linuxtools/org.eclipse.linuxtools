@@ -26,7 +26,12 @@ public class SystemTapGraphViewTest extends TestCase {
 		
 		stapView = (SystemTapTextView) TestHelper.makeView("org.eclipse.linuxtools.callgraph.core.systemtaptextview");
 		if (stapView == null)
-			return;
+			try {
+				throw new Exception("The SystemTapView is null");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
 		
 		stapView.println(testText);
 		assertEquals(stapView.getText(), testText);
