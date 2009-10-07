@@ -11,7 +11,7 @@ import org.eclipse.linuxtools.callgraph.core.SystemTapView;
 
 public class TestHelper {
 
-	public static SystemTapView makeView(String viewID) {
+	public static SystemTapView makeView(String viewID){
 		SystemTapView cView = null;
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		IConfigurationElement[] extensions = reg.getConfigurationElementsFor(
@@ -38,16 +38,22 @@ public class TestHelper {
 		try {
 			SystemTapView view;
 
-			view = (SystemTapView) element
-					.createExecutableExtension(PluginConstants.ATTR_CLASS);
+			Object o = element.createExecutableExtension(PluginConstants.ATTR_CLASS);
+			if (! (o instanceof SystemTapView)){
+				throw new Exception("The Returned Object was not of type SystemTapView");
+			}
+			
+			view = (SystemTapView)o;				
 			view.forceCreate();
 			 
 			cView = view.getSingleInstance();
-			if (cView == null)
-				return null;
+			if (! (cView instanceof SystemTapView))
+				throw new Exception("SystemTapView is null.");
 //			cView.initialize(null, new NullProgressMonitor());
 
 		} catch (CoreException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return cView;
