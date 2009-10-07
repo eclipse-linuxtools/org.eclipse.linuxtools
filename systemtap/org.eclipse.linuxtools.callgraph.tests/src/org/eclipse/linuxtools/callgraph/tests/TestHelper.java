@@ -8,7 +8,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.linuxtools.callgraph.core.SystemTapView;
-import org.eclipse.swt.widgets.Display;
 
 public class TestHelper {
 
@@ -36,10 +35,15 @@ public class TestHelper {
 			view = (SystemTapView) element
 					.createExecutableExtension(PluginConstants.ATTR_CLASS);
 			view.forceDisplay();
+			 
 			cView = view.getSingleInstance();
-			cView.initialize(Display.getCurrent(), new NullProgressMonitor());
+			if (cView == null)
+				throw new Exception("Null view returned");
+			cView.initialize(null, new NullProgressMonitor());
 
 		} catch (CoreException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return cView;

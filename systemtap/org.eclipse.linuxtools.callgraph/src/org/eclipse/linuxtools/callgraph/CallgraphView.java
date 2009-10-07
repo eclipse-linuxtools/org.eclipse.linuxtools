@@ -91,9 +91,12 @@ public class CallgraphView extends SystemTapView {
 	
 	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
 
-		Display disp = Display.getCurrent();
+		Display disp = targetDisplay;
+		if (disp == null)
+			disp = Display.getCurrent();
 		if (disp == null)
 			disp = Display.getDefault();
+		
 		
 		
 		//-------------Initialize shell, menu
@@ -145,8 +148,8 @@ public class CallgraphView extends SystemTapView {
 		
 		//Initialize graph
 		g = new StapGraph(graphComp, SWT.BORDER, treeComp, papaCanvas, this);
-		g.setLayoutData(new GridData(targetDisplay.getPrimaryMonitor().getBounds().width - 200,
-					targetDisplay.getPrimaryMonitor().getBounds().height - 200));
+		g.setLayoutData(new GridData(disp.getPrimaryMonitor().getBounds().width - 200,
+					disp.getPrimaryMonitor().getBounds().height - 200));
 
 		up.addSelectionListener(new AutoScrollSelectionListener(
 				AutoScrollSelectionListener.AutoScroll_up, g));

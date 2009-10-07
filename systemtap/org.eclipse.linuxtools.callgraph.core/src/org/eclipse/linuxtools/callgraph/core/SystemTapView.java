@@ -49,7 +49,6 @@ public abstract class SystemTapView extends ViewPart {
 	private Action kill;
 	public SystemTapParser parser;
 
-	private boolean isInitialized;
 	protected String viewID;
 	@SuppressWarnings("unused")
 	private Action help_about;
@@ -61,17 +60,13 @@ public abstract class SystemTapView extends ViewPart {
 	 * @return
 	 */
 	public SystemTapView() {
-		isInitialized = true;
 	}
 
 	public abstract IStatus initialize(Display targetDisplay,
 			IProgressMonitor monitor);
 
 	public SystemTapView getSingleInstance() {
-		if (isInitialized) {
-			return stapview;
-		}
-		return null;
+		return stapview;
 	}
 
 	/**
@@ -147,13 +142,12 @@ public abstract class SystemTapView extends ViewPart {
 					.getActiveWorkbenchWindow();
 			IViewPart view = window.getActivePage().showView(viewID);
 			if (!(view instanceof SystemTapView))
-				throw new Exception(); 
-			stapview = (SystemTapView) view; 
+				throw new Exception("Miscast type: " + view.getClass().toString()); 
+			setView((SystemTapView) view); 
 			stapview.setFocus();
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("attempted to launch: " + viewID + ", but could not cast.");
 			e.printStackTrace();
 		}
 	}
