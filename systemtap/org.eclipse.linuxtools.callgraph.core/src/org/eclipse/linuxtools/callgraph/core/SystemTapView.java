@@ -161,13 +161,11 @@ public abstract class SystemTapView extends ViewPart {
 				.getActiveWorkbenchWindow().getActivePage().showView(viewID, null, 
 						IWorkbenchPage.VIEW_CREATE);
 			if (!(view instanceof SystemTapView))
-				throw new Exception("Miscast type: " + view.getClass().toString()); 
+				return; 
 			setView((SystemTapView) view); 
 			stapview.setFocus();
 		} catch (PartInitException e2) {
 			e2.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		
 	}
