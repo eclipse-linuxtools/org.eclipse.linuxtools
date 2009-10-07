@@ -34,12 +34,12 @@ public class TestHelper {
 
 			view = (SystemTapView) element
 					.createExecutableExtension(PluginConstants.ATTR_CLASS);
-			view.forceDisplay();
+			view.forceCreate();
 			 
 			cView = view.getSingleInstance();
 			if (cView == null)
 				throw new Exception("Null view returned");
-			cView.initialize(null, new NullProgressMonitor());
+//			cView.initialize(null, new NullProgressMonitor());
 
 		} catch (CoreException e) {
 			e.printStackTrace();

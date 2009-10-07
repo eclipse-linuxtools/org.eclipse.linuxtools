@@ -138,9 +138,8 @@ public abstract class SystemTapView extends ViewPart {
 	public void forceDisplay() {
 		this.setViewID();
 		try {
-			IWorkbenchWindow window = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow();
-			IViewPart view = window.getActivePage().showView(viewID);
+			IViewPart view = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().showView(viewID);
 			if (!(view instanceof SystemTapView))
 				throw new Exception("Miscast type: " + view.getClass().toString()); 
 			setView((SystemTapView) view); 
@@ -150,6 +149,27 @@ public abstract class SystemTapView extends ViewPart {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Force the view to be created, but will not necessarily display the view.
+	 */
+	public void forceCreate() {
+		this.setViewID();
+		try {
+			IViewPart view = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().showView(viewID, null, 
+						IWorkbenchPage.VIEW_CREATE);
+			if (!(view instanceof SystemTapView))
+				throw new Exception("Miscast type: " + view.getClass().toString()); 
+			setView((SystemTapView) view); 
+			stapview.setFocus();
+		} catch (PartInitException e2) {
+			e2.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	protected void setView(SystemTapView view) {
