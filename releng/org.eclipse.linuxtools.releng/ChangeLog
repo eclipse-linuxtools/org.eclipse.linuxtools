@@ -1,3 +1,7 @@
+2009-10-07  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/eclipse-build.psf: Add -config and -feature.
+
 2009-10-06  Andrew Overholt  <overholt@redhat.com>
 
 	* maps/linuxtools.map: Update to new map syntax.
@@ -13,7 +17,7 @@
 
 2009-09-18  Roland Grunberg  <rgrunber@redhat.com>
 
-	* testing.properties: Add local.launch to test plugins to run. 
+	* testing.properties: Add local.launch to test plugins to run.
 
 2009-09-18  Andrew Overholt  <overholt@redhat.com>
 
