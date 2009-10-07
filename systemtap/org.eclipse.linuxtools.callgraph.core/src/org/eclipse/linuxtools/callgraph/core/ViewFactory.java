@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.callgraph.core;
 
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -22,14 +23,14 @@ public class ViewFactory {
 	
 	/**
 	 * Create a view of type designated by the viewID argument
-	 * @param viewID : A string corresonding to a type of View
+	 * @param viewID : A string corresponding to a type of View
 	 * @return : The view object that corresponds to the viewID
 	 */
 	public static IViewPart createView(String viewID) {
 		try {
 			IViewPart view = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage()
-					.showView(viewID);
+					.showView(viewID, null, IWorkbenchPage.VIEW_CREATE);
 			return view;
 		} catch (PartInitException e) {
 			e.printStackTrace();
