@@ -26,8 +26,14 @@ public class TestHelper {
 			return null;
 		}
 
-		IConfigurationElement element = extensions[0];
-		System.out.println(element.getName());
+		IConfigurationElement element = null;
+		for (IConfigurationElement el : extensions) {
+			System.out.println(el.getName());
+			if (el.getName().equals("view")) {
+				element = el;
+				break;
+			}
+		}		
 
 		try {
 			SystemTapView view;
@@ -38,12 +44,10 @@ public class TestHelper {
 			 
 			cView = view.getSingleInstance();
 			if (cView == null)
-				throw new Exception("Null view returned");
+				return null;
 //			cView.initialize(null, new NullProgressMonitor());
 
 		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return cView;
