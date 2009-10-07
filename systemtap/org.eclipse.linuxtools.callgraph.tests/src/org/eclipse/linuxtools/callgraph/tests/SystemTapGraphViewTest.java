@@ -24,7 +24,7 @@ public class SystemTapGraphViewTest extends TestCase {
 		System.out.println("\n\nLaunching RunSystemTapActionTest\n");
 
 		
-		stapView = (SystemTapTextView) TestHelper.makeView("org.eclipse.linuxtools.callgraph.core.systemtaptextview");
+		stapView = (SystemTapTextView) TestHelper.makeView("org.eclipse.linuxtools.callgraph.core.staptextview");
 		if (stapView == null)
 			try {
 				throw new Exception("The SystemTapView is null");
