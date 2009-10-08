@@ -1,3 +1,7 @@
+2009-10-08  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add GProf feature.
+
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add newlib feature so it gets built (category.xml in our
