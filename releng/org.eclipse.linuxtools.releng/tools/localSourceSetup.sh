@@ -22,7 +22,7 @@ mkdir -p "$checkoutDir"
 
 echo "Symlinking plugins and fragments"
 mkdir -p "$checkoutDir/plugins"
-for plugin in `grep -E '^(plugin|fragment).*SVN' $mapfile | awk -F/ '{ print $NF }'`
+for plugin in `grep -E '^(plugin|fragment).*SVN' $mapfile | awk -F, '{ print $NF }'`
 do
   if [[ -d "$workspace/$plugin" ]]; then
     ln -sfT "$workspace/$plugin" "$checkoutDir/plugins/$plugin"
@@ -33,7 +33,7 @@ done
 
 echo "Symlinking features"
 mkdir -p "$checkoutDir/features"
-for feature in `grep '^feature.*SVN' $mapfile | awk -F/ '{ print $NF }'`
+for feature in `grep '^feature.*SVN' $mapfile | awk -F, '{ print $NF }'`
 do
   if [[ -d "$workspace/$feature" ]]; then
     hasFeatureInName=`echo $feature | grep -c -E 'feature$'`
