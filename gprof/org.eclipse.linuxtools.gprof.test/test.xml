@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
-	<property name="classname" value="org.eclipse.linuxtools.gprof.test.AllGProfTests" />
+	<property name="classname" value="org.eclipse.linuxtools.gprof.test.AllGprofTests" />
 	<property name="plugin-name" value="org.eclipse.linuxtools.gprof.test" />
 
 	<!-- The property ${eclipse-home} should be passed into this script -->
 	<!-- Set a meaningful default value for when it is not. -->
 	<property name="eclipse-home" value="${basedir}/../../eclipse/" />
-	
+
 	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 
 	<!-- This target holds all initialization code that needs to be done for -->
@@ -47,7 +47,7 @@
 			<property name="output-file" value="${plugin-name}.xml" />
 		</ant>
 	</target>
-	
+
     <target name="all" depends="run" description="Dummy target to run all tests">
     </target>
 
