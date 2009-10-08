@@ -220,7 +220,8 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * @throws Exception
 	 */
 	protected void finishLaunch(String name, String mode) throws Exception {
-		finishLaunchHelper();
+		if (!finishLaunchHelper())
+			return;
 
 		ILaunchConfigurationWorkingCopy wc = null;
 		if (config != null) {
@@ -230,13 +231,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				e1.printStackTrace();
 			}
 
-			if (scriptPath == null || scriptPath.length() < 1)
-				scriptPath = setScriptPath();
+			
+			
+
 			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,
 					scriptPath);
 			
-			if (binaryPath != null && !binaryPath
-					.equals(LaunchConfigurationConstants.DEFAULT_BINARY_PATH))
+			if (!invalid(binaryPath))
 				wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,
 						binaryPath);
 
@@ -271,38 +272,74 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 	}
 
+	
+	
+	/**
+	 * returns true if str == null || str.length() < 1. Convenience method. 
+	 * @param str
+	 * @return
+	 */
+	private static boolean invalid(String str) {
+		return (str == null || str.length() < 1);
+	}
+	
 	/**
 	 * Helper function for methods common to both types of finishLaunch.
 	 * 
 	 * @throws Exception
 	 */
-	private void finishLaunchHelper() throws Exception {
-		if (parserID == null)
-			throw new Exception();
-		scriptPath = setScriptPath(); // Every shortcut MUST declare its own
-		parserID = setParserID();
-		viewID = setViewID();
-		
-		
-		if (scriptPath == null || scriptPath.length() < 1) {
+	private boolean finishLaunchHelper() throws Exception {
+		if (invalid(scriptPath))
 			scriptPath = setScriptPath();
-			if (scriptPath == null || scriptPath.length() < 1) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-						Messages
-								.getString("SystemTapLaunchShortcut.ErrorMessageName"), //$NON-NLS-1$
-						Messages
-								.getString("SystemTapLaunchShortcut.ErrorMessageTitle"), Messages.getString("SystemTapLaunchShortcut.ErrorMessage") + name); //$NON-NLS-1$ //$NON-NLS-2$
+		if (invalid(scriptPath)) {
+			//Setting the variable didn't work, do not launch.
+			
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+					Messages
+							.getString("SystemTapLaunchShortcut.ErrorMessageName"), //$NON-NLS-1$
+					Messages
+							.getString("SystemTapLaunchShortcut.ErrorMessageTitle"), Messages.getString("SystemTapLaunchShortcut.ErrorMessage") + name); //$NON-NLS-1$ //$NON-NLS-2$
+			mess.schedule();
+			return false;
+		}
+		
+		
+		if (invalid(parserID))
+			parserID = setParserID();
+		if (invalid(parserID)) {
+			//Setting the variable didn't work, do not launch.
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+					"no_parser_specified_error_message",
+					"No parser specified", "A null parserID or empty parserID was submitted. Please submit a valid parserID. Parsers should extend the bundled parser extension point.");
+			mess.schedule();
+			return false;
+		}
+			
+		
+		if (invalid(viewID))
+			viewID = setViewID();
+		if (invalid(viewID)) {
+			//Setting the variable didn't work, do not launch.
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("no_view_specified_error_message",
+					"No view specified", "A null viewID or empty viewID was submitted. Please submit a valid viewID. Views should extend org.eclipse.ui.views.");
+			mess.schedule();
+			return false;
+		}
+		
+		
+		if (needToGenerate) {
+			if (invalid(generatedScript))
+				generatedScript = generateScript();
+			if (invalid(generatedScript)) {
+				//Setting the variable didn't work, do not launch.
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Generation Error",
+						"Script not generated", "Launch specifies needToGenerate but does not " +
+				"specify a corresponding generateScript() function.");
 				mess.schedule();
-				return;
+				return false;
 			}
 		}
-
-		if (needToGenerate) {
-			generatedScript = generateScript();
-			if (generatedScript == null || generatedScript.length() < 0)
-				return;
-		}
-
+		return true;
 	}
 
 	/**
