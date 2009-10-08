@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -30,16 +31,20 @@ public class ViewFactory {
 	 * @param viewID : A string corresponding to a type of View
 	 * @return : The view object that corresponds to the viewID
 	 */
-	public static boolean createView(String viewID) {
-		try {
-			PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage()
-					.showView(viewID);
-			return true;
-		} catch (PartInitException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public static void createView(final String viewID) {
+		Display.getDefault().syncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage().showView(viewID, null,
+									IWorkbenchPage.VIEW_CREATE);
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	/**
