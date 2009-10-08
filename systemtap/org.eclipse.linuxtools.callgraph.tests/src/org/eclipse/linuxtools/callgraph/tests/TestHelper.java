@@ -41,7 +41,10 @@ public class TestHelper {
 //			
 //			view = (SystemTapView)o;				
 //			view.forceCreate();
-			ViewFactory.createView(viewID);
+			if (! ViewFactory.createView(viewID)){
+				throw new Exception("The view : " +viewID+ " could not be created.");
+			}
+			
 			IViewPart vp = ViewFactory.getView();
 			 
 			if (! (vp instanceof SystemTapView))

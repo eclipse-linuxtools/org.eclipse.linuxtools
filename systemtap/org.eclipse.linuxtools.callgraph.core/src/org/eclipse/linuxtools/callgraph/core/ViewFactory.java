@@ -30,16 +30,16 @@ public class ViewFactory {
 	 * @param viewID : A string corresponding to a type of View
 	 * @return : The view object that corresponds to the viewID
 	 */
-	public static void createView(String viewID) {
+	public static boolean createView(String viewID) {
 		try {
 			PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage()
 					.showView(viewID);
-			return;
+			return true;
 		} catch (PartInitException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return;
 	}
 	
 	/**
