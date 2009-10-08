@@ -1,3 +1,7 @@
+2009-10-08  Andrew Overholt  <overholt@redhat.com>
+
+	* testing.properties: Add GProf tests.
+
 2009-10-07  Andrew Overholt  <overholt@redhat.com>
 
 	* psfs/eclipse-build.psf: Add -config and -feature.
