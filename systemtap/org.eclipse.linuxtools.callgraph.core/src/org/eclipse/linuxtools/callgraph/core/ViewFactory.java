@@ -30,17 +30,16 @@ public class ViewFactory {
 	 * @param viewID : A string corresponding to a type of View
 	 * @return : The view object that corresponds to the viewID
 	 */
-	public static IViewPart createView(String viewID) {
+	public static void createView(String viewID) {
 		try {
-			IViewPart view = PlatformUI.getWorkbench()
+			PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage()
 					.showView(viewID);
-			views.add(view);
-			return view;
+			return;
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return;
 	}
 	
 	/**
@@ -53,10 +52,14 @@ public class ViewFactory {
 	}
 	
 	/**
-	 * Returns the first view added to the views list.
+	 * Returns the first view added to the views list that is of type SystemTapView.
 	 */
 	public static IViewPart getView() {
-		return views.get(0);
+		for (IViewPart view : views) {
+			if (view instanceof SystemTapView)
+				return view;
+		}
+		return null;
 	}
 	
 	/**
