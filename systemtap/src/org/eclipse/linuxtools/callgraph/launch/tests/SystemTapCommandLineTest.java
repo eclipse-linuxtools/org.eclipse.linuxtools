@@ -18,13 +18,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
-import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchShortcut;
-
-import junit.framework.TestCase;
+import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
 
 public class SystemTapCommandLineTest extends TestCase {
 	File tmpfile = new File("");
@@ -140,7 +140,7 @@ public class SystemTapCommandLineTest extends TestCase {
 
 	public void testFailure(){
 		try {
-			SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
+			LaunchStapGraph shortcut = new LaunchStapGraph();
 			ILaunchConfiguration config = shortcut.outsideGetLaunchConfigType().newInstance(null, "Temp Name");
 			ILaunchConfigurationWorkingCopy wc = config.copy("Temp Name");
 			
