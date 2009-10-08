@@ -69,17 +69,13 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	}
 	
 	public void launch(IBinary bin, String mode) {
-		super.Init();
+		super.initialize();
 		this.bin = bin;
 		name = "SystemTapGraph";  //$NON-NLS-1$
 		binName = getName(bin);
 		partialScriptPath = PluginConstants.getPluginLocation()
 				+ "parse_function_partial.stp";  //$NON-NLS-1$
 
-		scriptPath = PluginConstants.DEFAULT_OUTPUT 
-				+ "callgraphGen.stp";  //$NON-NLS-1$
-		
-		parserID = ATTR_PARSER;
 		viewID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
 		
 
@@ -243,6 +239,24 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 	public void setPartialScriptPath(String val) {
 		partialScriptPath = val;
+	}
+
+	@Override
+	public String setScriptPath() {
+		scriptPath = PluginConstants.DEFAULT_OUTPUT 
+				+ "callgraphGen.stp";  //$NON-NLS-1$
+		return scriptPath;
+	}
+
+	@Override
+	public String setParserID() {
+		parserID = ATTR_PARSER;
+		return parserID;
+	}
+
+	@Override
+	public String setViewID() {
+		return ATTR_VIEWER;
 	}
 	
 //	/**

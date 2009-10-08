@@ -101,7 +101,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 	
 	@Override
 	public void launch(IEditorPart ed, String mode) {
-		super.Init();
+		super.initialize();
 		promptForInputs();
 		
 		this.mode = mode;
@@ -111,7 +111,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 	
 	@Override
 	public void launch(ISelection selection, String mode) {
-		super.Init();
+		super.initialize();
 		completed = false;
 		promptForInputs();
 		
@@ -269,6 +269,21 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 	
 	public boolean isCompleted() {
 		return completed;
+	}
+	
+	public String setScriptPath() {
+		scriptPath = "IMPLEMENT";
+		return scriptPath;
+	}
+
+	@Override
+	public String setParserID() {
+		return null;
+	}
+
+	@Override
+	public String setViewID() {
+		return null;
 	}
 	
 }

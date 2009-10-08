@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchShortcut;
 
 public class ConfigurationTest extends TestCase{
 	
@@ -33,7 +33,7 @@ public class ConfigurationTest extends TestCase{
 	public void testConfig() {
 		
 		System.out.println("\n\nLaunching ConfigurationTest\n");
-		SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
+		LaunchStapGraph shortcut = new LaunchStapGraph();
 		
 		try {
 			String testCDirectives = "-DRandomjunk -DMoreJunk";
