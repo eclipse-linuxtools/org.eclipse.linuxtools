@@ -13,7 +13,6 @@ plugin@org.eclipse.linuxtools.rpm.ui.editor.tests=SVN,trunk,svn://dev.eclipse.or
 feature@org.eclipse.linuxtools.rpm.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.ui.editor-feature
 plugin@org.eclipse.linuxtools.rpm.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.core
 plugin@org.eclipse.linuxtools.rpm.core.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.core.tests
-plugin@org.eclipse.linuxtools.rpm.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.doc
 plugin@org.eclipse.linuxtools.rpm.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.ui
 feature@org.eclipse.linuxtools.rpm=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm-feature
 
