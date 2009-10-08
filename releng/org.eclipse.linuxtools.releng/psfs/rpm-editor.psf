@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.core,org.eclipse.linuxtools.rpm.core"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.core.tests,org.eclipse.linuxtools.rpm.core.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.rpmlint,org.eclipse.linuxtools.rpm.rpmlint"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui,org.eclipse.linuxtools.rpm.ui"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor,org.eclipse.linuxtools.rpm.ui.editor"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor.doc,org.eclipse.linuxtools.rpm.ui.editor.doc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/trunk/org.eclipse.linuxtools.rpm.ui.editor-feature,org.eclipse.linuxtools.rpm.ui.editor-feature"/>
