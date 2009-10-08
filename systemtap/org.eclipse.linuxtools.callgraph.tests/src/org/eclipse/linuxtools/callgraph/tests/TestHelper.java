@@ -42,6 +42,7 @@ public class TestHelper {
 //			view = (SystemTapView)o;				
 //			view.forceCreate();
 			IViewPart vp =  ViewFactory.createView(viewID);
+			vp = ViewFactory.getView();
 			 
 			if (! (vp instanceof SystemTapView))
 				throw new Exception("createView did not create a stapview.");

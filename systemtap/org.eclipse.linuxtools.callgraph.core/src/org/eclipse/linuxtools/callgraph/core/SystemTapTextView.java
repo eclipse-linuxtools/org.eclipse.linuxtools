@@ -224,6 +224,7 @@ public class SystemTapTextView extends SystemTapView {
 	
 		addKillButton();
 		addErrorMenu();
+		ViewFactory.addView(this);
 	}
 
 	protected class RunTimeJob extends UIJob {
