@@ -26,7 +26,10 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.ppc,org.eclipse.linuxtools.oprofile.core.linux.ppc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86,org.eclipse.linuxtools.oprofile.core.linux.x86"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.core.linux.x86_64,org.eclipse.linuxtools.oprofile.core.linux.x86_64"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.doc,org.eclipse.linuxtools.oprofile.doc"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.launch,org.eclipse.linuxtools.oprofile.launch"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.launch.tests,org.eclipse.linuxtools.oprofile.launch.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.test-feature,org.eclipse.linuxtools.oprofile.test-feature"/> 
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.tests,org.eclipse.linuxtools.oprofile.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui,org.eclipse.linuxtools.oprofile.ui"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/trunk/org.eclipse.linuxtools.oprofile.ui.tests,org.eclipse.linuxtools.oprofile.ui.tests"/>
