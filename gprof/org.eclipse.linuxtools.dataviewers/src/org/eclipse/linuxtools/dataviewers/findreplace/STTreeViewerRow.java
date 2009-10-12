@@ -290,7 +290,7 @@ public class STTreeViewerRow extends ViewerRow {
 
 	public TreePath getTreePath() {
 		TreeItem tItem = item;
-		LinkedList segments = new LinkedList();
+		LinkedList<Object> segments = new LinkedList<Object>();
 		while (tItem != null) {
 			Object segment = tItem.getData();
 			Assert.isNotNull(segment);
