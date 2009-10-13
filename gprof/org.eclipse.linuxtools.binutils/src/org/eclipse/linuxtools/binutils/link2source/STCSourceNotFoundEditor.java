@@ -17,7 +17,6 @@ import java.util.Iterator;
 
 import org.eclipse.cdt.debug.core.CDebugCorePlugin;
 import org.eclipse.cdt.debug.core.sourcelookup.MappingSourceContainer;
-import org.eclipse.cdt.debug.internal.core.sourcelookup.CSourceLookupDirector;
 import org.eclipse.cdt.debug.internal.core.sourcelookup.MapEntrySourceContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -189,7 +188,7 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 	}
 
 	private void addSourceMappingToCommon(IPath missingPath, IPath newSourcePath) throws CoreException {
-		CSourceLookupDirector director = CDebugCorePlugin.getDefault().getCommonSourceLookupDirector();
+		AbstractSourceLookupDirector director = CDebugCorePlugin.getDefault().getCommonSourceLookupDirector();
 		addSourceMappingToDirector(missingPath, newSourcePath, director);
 		CDebugCorePlugin.getDefault().savePluginPreferences();
 	}
