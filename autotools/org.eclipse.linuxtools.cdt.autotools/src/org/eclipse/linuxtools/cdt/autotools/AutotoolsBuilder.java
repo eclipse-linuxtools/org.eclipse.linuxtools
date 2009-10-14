@@ -29,7 +29,7 @@ public class AutotoolsBuilder extends Builder {
 	private IProject project;
 	
 	public AutotoolsBuilder(IBuilder builder, IProject project, ToolChain toolChain) {
-		super(toolChain, builder, builder.getId(), builder.getName(), builder.isExtensionElement());
+		super(toolChain, builder.getId(), builder.getName(), (Builder)builder);
 		this.project = project;
 	}
 	

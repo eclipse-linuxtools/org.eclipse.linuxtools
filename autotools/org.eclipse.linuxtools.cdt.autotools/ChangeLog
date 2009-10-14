@@ -1,3 +1,12 @@
+2009-10-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #292272
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsBuilder.java (AutotoolsBuilder): Use
+	a super copy constructor rather than a parent chained super constructor.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (clean): Save old
+	builder and replace back when build is complete. 
+	(build): Ditto.
+
 2009-09-30  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #289557

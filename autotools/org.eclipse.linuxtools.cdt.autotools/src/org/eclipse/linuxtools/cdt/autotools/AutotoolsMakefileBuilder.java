@@ -262,6 +262,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			// Perform build
 
 			ToolChain toolChain = (ToolChain)cfg.getToolChain();
+			IBuilder oldBuilder = cfg.getBuilder();
 			IBuilder builder = new AutotoolsBuilder(cfg.getEditableBuilder(), project, toolChain);
 			String buildLocation = null;
 			String buildCommand = null;
@@ -294,8 +295,8 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			try {
 				projects = super.build(kind, args, monitor);
 			} finally {
-				// Must ensure we reset ManagedBuild back on so configuration will be run in future.
-				builder.setManagedBuildOn(true);
+				// Must ensure we reset everything back so configuration will be run in future.
+				toolChain.setBuilder((Builder)oldBuilder);
 			}
 
 			if(VERBOSE)
@@ -370,6 +371,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 //			builders[0].setManagedBuildOn(false);
 
 			ToolChain toolChain = (ToolChain)cfg.getToolChain();
+			IBuilder oldBuilder = cfg.getBuilder();
 			IBuilder builder = new AutotoolsBuilder(cfg.getEditableBuilder(), project, toolChain);
 			builder.setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toOSString());
 			builder.setAutoBuildEnable(true);
@@ -383,8 +385,7 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 			try {
 				super.build(CLEAN_BUILD, (Map)null, monitor);
 			} finally {
-				builder.setManagedBuildOn(true);
-				builder.setCleanBuildEnable(false);
+				toolChain.setBuilder((Builder)oldBuilder);
 			}
 		}
 	}
