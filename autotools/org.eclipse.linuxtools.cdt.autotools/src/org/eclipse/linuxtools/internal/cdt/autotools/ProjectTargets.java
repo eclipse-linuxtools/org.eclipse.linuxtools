@@ -47,6 +47,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+@SuppressWarnings("deprecation")
 public class ProjectTargets {
 
 	private static final String MAKE_TARGET_KEY = MakeCorePlugin.getUniqueIdentifier() + ".buildtargets"; //$NON-NLS-1$
@@ -259,7 +260,6 @@ public class ProjectTargets {
 	 * @param doc
 	 * @throws CoreException
 	 */
-	@SuppressWarnings("deprecation")
 	protected void translateDocumentToCDTProject(Document doc) throws CoreException {
 		ICDescriptor descriptor;
 		descriptor = CCorePlugin.getDefault().getCProjectDescription(getProject(), true);
@@ -291,7 +291,6 @@ public class ProjectTargets {
 	 * @param input
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
 	protected Document translateCDTProjectToDocument() {
 		Document document = null;
 		Element rootElement = null;

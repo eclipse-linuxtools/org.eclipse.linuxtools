@@ -41,6 +41,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 
+@SuppressWarnings("deprecation")
 public class NewAutotoolsCProjectWizard extends NewCProjectWizard {
 
 	/* (non-Javadoc)
@@ -179,7 +180,6 @@ public class NewAutotoolsCProjectWizard extends NewCProjectWizard {
 		return projectConfigurationPage.getProjectType();
 	}
 
-	@SuppressWarnings("deprecation")
 	protected void doRun(IProgressMonitor monitor) throws CoreException {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();

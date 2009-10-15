@@ -1,5 +1,8 @@
 2009-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCCProjectWizard.java (doRun): Fix warnings.
+	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCProjectWizard.java (doRun): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ProjectTargets.java: Ditto.
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsPlugin.java (setScannerInfoProvider): Fix
 	deprecated warnings. 
 	(verifyScannerInfoProvider): Ditto. 
