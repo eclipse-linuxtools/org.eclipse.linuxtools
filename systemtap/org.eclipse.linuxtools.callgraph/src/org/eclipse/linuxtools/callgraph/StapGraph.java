@@ -20,12 +20,14 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.callgraph.core.MP;
+import org.eclipse.linuxtools.callgraph.graphlisteners.Projectionist;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphKeyListener;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseWheelListener;
@@ -71,6 +73,8 @@ public class StapGraph extends Graph {
 	private int topLevelOnScreen;
 	public static int levelBuffer = 30;
 	private static int maxNodes = 150;
+	private Projectionist proj;
+
 
 
 	private int lowestLevelOfNodesAdded;
@@ -1716,6 +1720,16 @@ public class StapGraph extends Graph {
 		
 		return list.get(nextMarkedNode);
 	}
+	
+	
+	public void play() {
+		if (proj == null || proj.getResult() == Status.OK_STATUS) {
+			proj = new Projectionist("Projectionist", this, 2000); 
+			proj.schedule();
+		} else {
+			proj.pause();
+		}
+	}
 
 	
 	
@@ -1825,5 +1839,16 @@ public class StapGraph extends Graph {
 	
 	public CallgraphView getCallgraphView() {
 		return callgraphView;
+	}
+
+
+
+	public void drawNextNode() {
+		if (isCollapseMode()) {
+			setCollapseMode(false);
+		}
+		int toDraw = getNextCalledNode(getRootVisibleNodeNumber());
+		if (toDraw != -1)
+			draw(toDraw);		
 	}
 }

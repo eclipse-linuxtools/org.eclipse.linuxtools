@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.graphlisteners;
 
-import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.callgraph.CallgraphView;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.swt.SWT;
@@ -22,7 +21,6 @@ import org.eclipse.swt.events.KeyListener;
  */
 public class StapGraphKeyListener implements KeyListener {
 	private CallgraphView callgraphView;
-	private Projectionist proj;
 	
 	public StapGraphKeyListener(StapGraph g) {
 		callgraphView = g.getCallgraphView();
@@ -70,22 +68,14 @@ public class StapGraphKeyListener implements KeyListener {
 		}else if (e.character == 'C') {
 			callgraphView.getMode_collapsednodes().run();
 		} else if (e.character == 'N') {
-			nextFrame();
+			callgraphView.getGoto_next().run();
 		} else if (e.character == 'P') {
 			callgraphView.getGoto_previous().run();
 		} else if (e.character == 'L') {
 			callgraphView.getGoto_last().run();
 		} else if (e.character == 'D') {
-			if (proj == null || proj.getResult() == Status.OK_STATUS) {
-				proj = new Projectionist("Projectionist", this, 2000); 
-				proj.schedule();
-			} else {
-				proj.pause();
-			}
+			callgraphView.getPlay().run();
 		}
 	}
 	
-	public void nextFrame() {
-		callgraphView.getGoto_next().run();
-	}
 };

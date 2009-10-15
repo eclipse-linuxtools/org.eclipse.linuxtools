@@ -67,6 +67,7 @@ public class CallgraphView extends SystemTapView {
 	private  Action goto_next;
 	private  Action goto_previous;
 	private  Action goto_last;
+	private  Action play;
 	
 	private  IMenuManager menu;
 	private  IMenuManager gotoMenu;
@@ -82,6 +83,7 @@ public class CallgraphView extends SystemTapView {
 	
 	private  StapGraph g;
 	private  int treeSize = 200;
+
 	
 
 
@@ -397,6 +399,7 @@ public class CallgraphView extends SystemTapView {
 		view.add(limits);
 		
 		
+		gotoMenu.add(play);
 		gotoMenu.add(goto_previous);
 		gotoMenu.add(goto_next);
 		gotoMenu.add(goto_last);
@@ -620,12 +623,7 @@ public class CallgraphView extends SystemTapView {
 	public void createMovementActions() {
 		goto_next = new Action(Messages.getString("CallgraphView.Next")) { //$NON-NLS-1$
 			public void run() {
-				if (graph.isCollapseMode()) {
-					graph.setCollapseMode(false);
-				}
-				int toDraw = graph.getNextCalledNode(graph.getRootVisibleNodeNumber());
-				if (toDraw != -1)
-					graph.draw(toDraw);
+				graph.drawNextNode();
 			}
 		};
 		
@@ -645,6 +643,12 @@ public class CallgraphView extends SystemTapView {
 				if (graph.isCollapseMode())
 					graph.setCollapseMode(false);
 				graph.draw(graph.getLastFunctionCalled());
+			}
+		};
+		
+		play = new Action("Play/Pause (D)") {
+			public void run() {
+				graph.play();
 			}
 		};
 	}
@@ -773,6 +777,10 @@ public class CallgraphView extends SystemTapView {
 
 	public  void setGoto_previous(Action gotoPrevious) {
 		goto_previous = gotoPrevious;
+	}
+	
+	public  Action getPlay() {
+		return play;
 	}
 	
 	public  StapGraph getGraph() {

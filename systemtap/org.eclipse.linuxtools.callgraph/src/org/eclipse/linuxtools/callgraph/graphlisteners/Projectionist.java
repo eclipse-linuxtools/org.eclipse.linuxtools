@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -12,7 +13,7 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class Projectionist extends Job {
-	private StapGraphKeyListener listener;
+	private StapGraph graph;
 	private int frame_time = 2000;
 	private boolean pause;
 	
@@ -22,9 +23,9 @@ public class Projectionist extends Job {
 	 * @param listener    -- the keyListener instantiating this class
 	 * @param time -- Amount of time between frames
 	 */
-	public Projectionist(String name, StapGraphKeyListener listener, int time) {
+	public Projectionist(String name, StapGraph graph, int time) {
 		super(name);
-		this.listener = listener;
+		this.graph = graph;
 		this.frame_time = time;
 		pause = false;
 	}
@@ -42,7 +43,7 @@ public class Projectionist extends Job {
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						listener.nextFrame();	
+						graph.drawNextNode();	
 					}
 				});
 				
