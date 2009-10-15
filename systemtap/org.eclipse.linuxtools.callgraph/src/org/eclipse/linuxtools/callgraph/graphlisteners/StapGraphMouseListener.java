@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.callgraph.graphlisteners;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.linuxtools.callgraph.StapNode;
@@ -19,6 +20,7 @@ import org.eclipse.linuxtools.callgraph.core.FileFinderOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 @SuppressWarnings("unused")
@@ -88,6 +90,9 @@ public class StapGraphMouseListener implements MouseListener {
 
 	@Override
 	public void mouseDown(MouseEvent e) {
+		if (graph.getProjectionist() != null) {
+			graph.getProjectionist().pause();
+		}
 //		MP.println("You clicked: " + e.x + ", " + e.y); //$NON-NLS-1$ //$NON-NLS-2$
 //		MP.println("Convert to control: " + graph.toControl(e.x, e.y).x + ", " //$NON-NLS-1$ //$NON-NLS-2$
 //				+ graph.toControl(e.x, e.y).y);

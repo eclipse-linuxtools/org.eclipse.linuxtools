@@ -1832,6 +1832,9 @@ public class StapGraph extends Graph {
 	}
 
 
+	public Projectionist getProjectionist() {
+		return proj;
+	}
 
 	public void setProject(ICProject myProject) {
 		this.project = myProject;
