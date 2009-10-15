@@ -13,7 +13,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.progress.UIJob;
 
 public class SystemTapTextView extends SystemTapView {
 	private StyledText viewer;
@@ -196,6 +195,7 @@ public class SystemTapTextView extends SystemTapView {
 	
 		addKillButton();
 		addErrorMenu();
+		addHelpMenu();
 		ViewFactory.addView(this);
 	}
 

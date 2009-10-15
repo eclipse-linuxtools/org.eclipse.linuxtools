@@ -392,6 +392,7 @@ public class CallgraphView extends SystemTapView {
 //		menu.add(animation);
 		menu.add(gotoMenu);
 		addErrorMenu();
+		addHelpMenu();
 
 		
 		file.add(open_callgraph);

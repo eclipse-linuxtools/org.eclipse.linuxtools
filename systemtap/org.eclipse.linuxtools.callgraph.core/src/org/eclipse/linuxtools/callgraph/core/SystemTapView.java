@@ -211,15 +211,20 @@ public abstract class SystemTapView extends ViewPart {
 	public void addErrorMenu() {
 		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
 		errors = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
-		help = new MenuManager(Messages.getString("SystemTapView.3")); //$NON-NLS-1$
 		menu.add(errors);
-		menu.add(help);
 		createErrorActions();
+
+		errors.add(error_errorLog);
+		errors.add(error_deleteError);
+	}
+	
+	public void addHelpMenu() {
+		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+		help = new MenuManager(Messages.getString("SystemTapView.3")); //$NON-NLS-1$
+		menu.add(help);
 		createHelpActions();
 		
 		help.add(help_version);
-		errors.add(error_errorLog);
-		errors.add(error_deleteError);
 	}
 
 	
