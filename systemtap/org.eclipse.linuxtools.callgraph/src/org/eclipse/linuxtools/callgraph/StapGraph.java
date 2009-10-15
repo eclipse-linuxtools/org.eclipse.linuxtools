@@ -23,6 +23,7 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.linuxtools.callgraph.core.MP;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphKeyListener;
@@ -278,9 +279,18 @@ public class StapGraph extends Graph {
 				/ 2 - CONSTANT_VERTICAL_INCREMENT;
 
 		rootVisibleNodeNumber = centerNode;
+		StapData nodeData = getNodeData(centerNode);
+		int collapsed = nodeData.getPartOfCollapsedNode();
+		if (!nodeData.isCollapsed && collapsed != StapData.NOT_PART_OF_COLLAPSED_NODE) {
+			nodeData = getNodeData(collapsed);
+		}
+		treeViewer.expandToLevel(nodeData, 0);
+		treeViewer.setSelection(new StructuredSelection(nodeData));
+		
 		if (nodeMap.get(centerNode) == null) {
 			nodeMap.put(centerNode, getNodeData(centerNode).makeNode(this));
 		}
+		
 
 		// Draw node in center
 		StapNode n = nodeMap.get(centerNode);
@@ -1260,7 +1270,7 @@ public class StapGraph extends Graph {
 					nodeDataMap.get(aggregateID).callees.addAll(nodeDataMap
 							.get(otherChildID).callees);
 
-					nodeDataMap.get(otherChildID).setPartOfCollapsedNode(true);
+					nodeDataMap.get(otherChildID).setPartOfCollapsedNode(aggregateID);
 
 				} else 
 					//-------------Aggregate - third and additional nodes
@@ -1280,7 +1290,7 @@ public class StapGraph extends Graph {
 							nodeMap.get(id).getLocation().y);
 				}
 
-				nodeDataMap.get(childID).setPartOfCollapsedNode(true);
+				nodeDataMap.get(childID).setPartOfCollapsedNode(aggregateID);
 			} else {
 				//-------------First child with this name
 				
@@ -1782,11 +1792,9 @@ public class StapGraph extends Graph {
 	}
 
 
-
 	public ArrayList<Integer> getCallOrderList() {
 		return callOrderList;
 	}
-
 
 
 	public void setCallOrderList(ArrayList<Integer> callOrderList) {
@@ -1794,11 +1802,9 @@ public class StapGraph extends Graph {
 	}
 
 
-
 	public int getLastFunctionCalled() {
 		return lastFunctionCalled;
 	}
-
 
 
 	public void setLastFunctionCalled(int lastFunctionCalled) {

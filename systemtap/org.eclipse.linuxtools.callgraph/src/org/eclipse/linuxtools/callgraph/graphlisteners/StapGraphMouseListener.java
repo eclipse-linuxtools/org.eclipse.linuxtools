@@ -76,8 +76,7 @@ public class StapGraphMouseListener implements MouseListener {
 			
 			unhighlightall(node);
 			graph.setSelection(null);
-			graph.getTreeViewer().expandToLevel(node.getData(), 0);
-			graph.getTreeViewer().setSelection(new StructuredSelection(node.getData()));
+
 			// Draw in current modes with 'id' at the top
 			int id = node.getData().id;
 			graph.draw(id);

@@ -34,17 +34,25 @@ public class StapData {
     public boolean hasCollapsedChildren;
     public boolean isCollapsed;
     public boolean onlyChildWithThisName;
-    private boolean partOfCollapsedNode;
+    private int partOfCollapsedNode;
     public int collapsedCaller;
     private boolean marked;
     public String markedMessage;
+    public static final int NOT_PART_OF_COLLAPSED_NODE = -10;
 
     public boolean isPartOfCollapsedNode() {
-		return partOfCollapsedNode;
+		return (partOfCollapsedNode == NOT_PART_OF_COLLAPSED_NODE);
 	}
 
 
-
+    /**
+     * Compare to StapData.NOT_PART_OF_COLLAPSED_NODE to verify
+     * 
+     * @return The collapsed node this node is a part of (if any)
+     */
+    public int getPartOfCollapsedNode() {
+    	return partOfCollapsedNode;
+    }
 	
 	/**
 	 * Initialize StapData object
@@ -73,7 +81,7 @@ public class StapData {
         this.hasCollapsedChildren = false;
         this.isCollapsed = false;
         this.onlyChildWithThisName = false;
-        this.partOfCollapsedNode= false;
+        this.partOfCollapsedNode= NOT_PART_OF_COLLAPSED_NODE;
         this.collapsedCaller = -1;
         this.caller = caller;
         this.levelOfRecursion = 0;
@@ -193,7 +201,7 @@ public class StapData {
     * uncollapsed mode)
     * @param partOfCollapsedNode
     */
-	public void setPartOfCollapsedNode(boolean partOfCollapsedNode) {
+	public void setPartOfCollapsedNode(int partOfCollapsedNode) {
 		this.partOfCollapsedNode = partOfCollapsedNode;
 	}
 
