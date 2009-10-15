@@ -52,8 +52,7 @@ public class CallgraphView extends SystemTapView {
 	private StapGraphParser parser;
 
 
-	private Action open_callgraph;
-	private Action open_default;
+
 	private Action view_treeview;
 	private Action view_radialview;
 	private  Action view_aggregateview;
@@ -71,7 +70,6 @@ public class CallgraphView extends SystemTapView {
 	
 	private  IMenuManager menu;
 	private  IMenuManager gotoMenu;
-	private  IMenuManager file;
 	private  IMenuManager view;
 	private  IMenuManager animation;
 	private  IMenuManager markers; //Unused
@@ -379,26 +377,16 @@ public class CallgraphView extends SystemTapView {
 		menu = getViewSite().getActionBars().getMenuManager();
 		
 		// ADD OPTIONS TO THE GRAPH MENU
-		file = new MenuManager(Messages.getString("CallgraphView.0")); //$NON-NLS-1$
+		addFileMenu();
 		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
 		markers = new MenuManager(Messages.getString("CallgraphView.6")); //$NON-NLS-1$
 		gotoMenu = new MenuManager(Messages.getString("CallgraphView.9")); //$NON-NLS-1$
-		
-
-		
-		menu.add(file);
 		menu.add(view);
-//		menu.add(animation);
+//		menu.add(animation);	
 		menu.add(gotoMenu);
 		addErrorMenu();
 		addHelpMenu();
-
-		
-		file.add(open_callgraph);
-		file.add(open_default);
-		file.add(save_file);
-
 		
 		view.add(view_treeview);
 		view.add(view_radialview);
@@ -436,44 +424,6 @@ public class CallgraphView extends SystemTapView {
 		setView(this);
 	}
 
-
-	/**
-	 * Populates the file menu
-	 */
-	public void createFileActions() {
-		//Opens from some location in your program
-		open_callgraph = new Action(Messages.getString("CallgraphView.7")){ //$NON-NLS-1$
-			public void run(){
-				try {
-				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
-				String filePath =  dialog.open();
-				if (filePath != null){
-					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setSourcePath(filePath);
-						new_parser.setViewID(CallGraphConstants.viewID);
-					new_parser.schedule();					
-				}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		
-		//Opens from the default location
-		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
-			public void run(){
-				try {
-				StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setViewID(CallGraphConstants.viewID);
-				new_parser.schedule();					
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		
-		createSaveAction();
-	}
 
 	
 	public void createViewActions() {
@@ -655,11 +605,9 @@ public class CallgraphView extends SystemTapView {
 	}
 
 /**
- * Creates actions by calling the relevant functions
+ * Convenience method for creating all the various actions
  */
 	public void createActions() {
-		createFileActions();
-		createErrorActions();
 		createViewActions();
 		createAnimateActions();
 		createMarkerActions();		
@@ -791,14 +739,6 @@ public class CallgraphView extends SystemTapView {
 		goto_last = gotoLast;
 	}
 
-	public  Action getOpen_callgraph() {
-		return open_callgraph;
-	}
-
-	public  void setOpen_callgraph(Action openCallgraph) {
-		open_callgraph = openCallgraph;
-	}
-
 	public  Action getView_treeview() {
 		return view_treeview;
 	}
@@ -861,6 +801,46 @@ public class CallgraphView extends SystemTapView {
 	@Override
 	public void setViewID() {
 		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";		 //$NON-NLS-1$
+	}
+	@Override
+	protected boolean createOpenAction() {
+		//Opens from specified location
+		open_file = new Action(Messages.getString("CallgraphView.7")){ //$NON-NLS-1$
+			public void run(){
+				try {
+				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
+				String filePath =  dialog.open();
+				if (filePath != null){
+					StapGraphParser new_parser = new StapGraphParser();
+					new_parser.setSourcePath(filePath);
+						new_parser.setViewID(CallGraphConstants.viewID);
+					new_parser.schedule();					
+				}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};	
+		return true;
+	}
+
+
+	@Override
+	protected boolean createOpenDefaultAction() {
+		//Opens from the default location
+		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
+			public void run(){
+				try {
+				StapGraphParser new_parser = new StapGraphParser();
+					new_parser.setViewID(CallGraphConstants.viewID);
+				new_parser.schedule();					
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		return true;
 	}
 
 }

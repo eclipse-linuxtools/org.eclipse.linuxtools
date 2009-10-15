@@ -241,7 +241,7 @@ public class SystemTapGraphTest extends TestCase {
 				act = cView.getSave_file();
 				break;
 			case 15:
-				act = cView.getOpen_callgraph();
+				act = cView.getOpen_file();
 				break;
 			case 16:
 				act = cView.getHelp_version();

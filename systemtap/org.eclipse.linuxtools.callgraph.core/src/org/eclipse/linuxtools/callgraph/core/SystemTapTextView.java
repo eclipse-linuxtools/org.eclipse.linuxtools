@@ -194,6 +194,7 @@ public class SystemTapTextView extends SystemTapView {
 		createViewer(parent);
 	
 		addKillButton();
+		addFileMenu();
 		addErrorMenu();
 		addHelpMenu();
 		ViewFactory.addView(this);
@@ -211,6 +212,16 @@ public class SystemTapTextView extends SystemTapView {
 	@Override
 	public void setViewID() {
 		viewID = "org.eclipse.linuxtools.callgraph.core.staptextview";		 //$NON-NLS-1$
+	}
+
+	@Override
+	protected boolean createOpenAction() {
+		return false;
+	}
+
+	@Override
+	protected boolean createOpenDefaultAction() {
+		return false;
 	}
 	
 	

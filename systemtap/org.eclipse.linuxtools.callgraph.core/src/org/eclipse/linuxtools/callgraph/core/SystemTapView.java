@@ -58,7 +58,11 @@ public abstract class SystemTapView extends ViewPart {
 	private Action help_about;
 	private Action help_version;
 	protected Action save_file;
+	protected Action open_file;
+	protected Action open_default;
 	protected String sourcePath;
+	protected IMenuManager file;
+
 
 	/**
 	 * The constructor.
@@ -203,6 +207,25 @@ public abstract class SystemTapView extends ViewPart {
 	 * point.
 	 */
 	public abstract void setViewID();
+	
+	/**
+	 * Implement this method so that the Open button in the file menu created
+	 * by <code>addFileMenu()</code> is able to actually open files. User will
+	 * be prompted for a file to open.
+	 * 
+	 * @return True if an open action should be created, false otherwise.
+	 */
+	protected abstract boolean createOpenAction();
+	
+	/**
+	 * Implement this method so that the Open default button in the file menu created
+	 * by <code>addFileMenu()</code> is able to actually open default. The Open
+	 * default button should open from a fixed location, usually the default output
+	 * path if that is accessible..
+	 * 
+	 *  @return True if an open default action should be created, false otherwise.
+	 */
+	protected abstract boolean createOpenDefaultAction();
 
 	/**
 	 * Appends the error menu, containing options for opening and clearing the
@@ -217,6 +240,30 @@ public abstract class SystemTapView extends ViewPart {
 		errors.add(error_errorLog);
 		errors.add(error_deleteError);
 	}
+	
+	/**
+	 * Create File menu -- calls the abstract protected methods 
+	 * <code>createOpenAction()</code> and <code>createOpenDefaultAction()</code>. Have 
+	 * these methods return false if you do not wish to create an Open or Open Default
+	 * option in the File menu of your view.
+	 */
+	public void addFileMenu() {
+		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+		if (file == null) {
+			file = new MenuManager("File");
+			menu.add(file);
+		}
+		
+		
+		if (createOpenAction())
+			file.add(open_file);
+		if (createOpenDefaultAction())
+			file.add(open_default);
+		
+		createSaveAction();
+		file.add(save_file);
+	}
+	
 	
 	public void addHelpMenu() {
 		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
@@ -528,5 +575,9 @@ public abstract class SystemTapView extends ViewPart {
 
 	public void setSourcePath(String file) {
 		sourcePath = file;
+	}
+	
+	public Action getOpen_file() {
+		return open_file;
 	}
 }
