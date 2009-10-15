@@ -231,12 +231,9 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				e1.printStackTrace();
 			}
 
-			
-			
-
 			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,
 					scriptPath);
-			
+
 			if (!invalid(binaryPath))
 				wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,
 						binaryPath);
@@ -268,21 +265,22 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			if (!testMode)
 				DebugUITools.launch(config, mode);
 		} else
-			throw new Exception("Configuration is null for " + name);
+			throw new Exception(
+					Messages
+							.getString("SystemTapLaunchShortcut.NullConfiguration") + name); //$NON-NLS-1$
 
 	}
 
-	
-	
 	/**
-	 * returns true if str == null || str.length() < 1. Convenience method. 
+	 * returns true if str == null || str.length() < 1. Convenience method.
+	 * 
 	 * @param str
 	 * @return
 	 */
 	private static boolean invalid(String str) {
 		return (str == null || str.length() < 1);
 	}
-	
+
 	/**
 	 * Helper function for methods common to both types of finishLaunch.
 	 * 
@@ -292,8 +290,8 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		if (invalid(scriptPath))
 			scriptPath = setScriptPath();
 		if (invalid(scriptPath)) {
-			//Setting the variable didn't work, do not launch.
-			
+			// Setting the variable didn't work, do not launch.
+
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 					Messages
 							.getString("SystemTapLaunchShortcut.ErrorMessageName"), //$NON-NLS-1$
@@ -302,39 +300,41 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			mess.schedule();
 			return false;
 		}
-		
-		
+
 		if (invalid(parserID))
 			parserID = setParserID();
 		if (invalid(parserID)) {
-			//Setting the variable didn't work, do not launch.
+			// Setting the variable didn't work, do not launch.
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-					"no_parser_specified_error_message",
-					"No parser specified", "A null parserID or empty parserID was submitted. Please submit a valid parserID. Parsers should extend the bundled parser extension point.");
+					Messages
+							.getString("SystemTapLaunchShortcut.InvalidParser1"), //$NON-NLS-1$
+					Messages
+							.getString("SystemTapLaunchShortcut.InvalidParser2"), Messages.getString("SystemTapLaunchShortcut.InvalidParser3")); //$NON-NLS-1$ //$NON-NLS-2$
 			mess.schedule();
 			return false;
 		}
-			
-		
+
 		if (invalid(viewID))
 			viewID = setViewID();
 		if (invalid(viewID)) {
-			//Setting the variable didn't work, do not launch.
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("no_view_specified_error_message",
-					"No view specified", "A null viewID or empty viewID was submitted. Please submit a valid viewID. Views should extend org.eclipse.ui.views.");
+			// Setting the variable didn't work, do not launch.
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+					Messages.getString("SystemTapLaunchShortcut.InvalidView1"), //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchShortcut.InvalidView2"), Messages.getString("SystemTapLaunchShortcut.InvalidView3")); //$NON-NLS-1$ //$NON-NLS-2$
 			mess.schedule();
 			return false;
 		}
-		
-		
+
 		if (needToGenerate) {
 			if (invalid(generatedScript))
 				generatedScript = generateScript();
 			if (invalid(generatedScript)) {
-				//Setting the variable didn't work, do not launch.
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages("Generation Error",
-						"Script not generated", "Launch specifies needToGenerate but does not " +
-				"specify a corresponding generateScript() function.");
+				// Setting the variable didn't work, do not launch.
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+						Messages
+								.getString("SystemTapLaunchShortcut.InvalidGeneration1"), //$NON-NLS-1$
+						Messages
+								.getString("SystemTapLaunchShortcut.InvalidGeneration2"), Messages.getString("SystemTapLaunchShortcut.InvalidGeneration3"));//$NON-NLS-1$ //$NON-NLS-2$
 				mess.schedule();
 				return false;
 			}
@@ -485,15 +485,11 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	public void errorHandler() {
 	};
 
-	
-	
 	/*
 	 * The following are convenience methods for test programs, etc. to check
 	 * the value of certain protected parameters.
-	 * 
 	 */
-	
-	
+
 	public ILaunchConfigurationType outsideGetLaunchConfigType() {
 		return getLaunchConfigType();
 	}
@@ -787,10 +783,10 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	}
 
 	/**
-	 * Returns all ICElements in val that contains the given path.
-	 * WARNING: Uses .contains, so be careful with the String path or you'll
-	 * get too many hits.
-	 *  
+	 * Returns all ICElements in val that contains the given path. WARNING: Uses
+	 * .contains, so be careful with the String path or you'll get too many
+	 * hits.
+	 * 
 	 * @param list
 	 * @param path
 	 * @return
@@ -850,11 +846,10 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			IIndexManager manager = CCorePlugin.getIndexManager();
 			IIndex index = null;
 			IProgressMonitor m = monitor;
-			
+
 			if (m == null)
 				m = new NullProgressMonitor();
 			m.worked(1);
-				
 
 			try {
 				index = manager.getIndex(project);
@@ -881,7 +876,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 							}
 						}
 					}
-					
+
 					m.worked(1);
 				}
 
@@ -911,29 +906,28 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	public void setTestMode(boolean val) {
 		testMode = val;
 	}
-	
 
 	/**
-	 * Set the parserID variable. ParserID should point to the ID of an extension extending
-	 * the org.eclipse.linuxtools.callgraph.core.parser extension point. This function must return
-	 * the parserID to be set.
+	 * Set the parserID variable. ParserID should point to the ID of an
+	 * extension extending the org.eclipse.linuxtools.callgraph.core.parser
+	 * extension point. This function must return the parserID to be set.
 	 * 
 	 * @return a valid parserID
 	 */
 	public abstract String setParserID();
 
 	/**
-	 * Set the viewID variable. ViewID should point to the ID of an extension extending
-	 * the org.eclipse.ui.views extension point. This function must return the 
-	 * viewID to be set.
+	 * Set the viewID variable. ViewID should point to the ID of an extension
+	 * extending the org.eclipse.ui.views extension point. This function must
+	 * return the viewID to be set.
 	 * 
 	 * @return a valid viewID
 	 */
 	public abstract String setViewID();
 
 	/**
-	 * Each launch class should define its own script path. Must return the correct script
-	 * path or launch will fail.
+	 * Each launch class should define its own script path. Must return the
+	 * correct script path or launch will fail.
 	 */
 	public abstract String setScriptPath();
 }
