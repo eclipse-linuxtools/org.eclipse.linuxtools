@@ -22,7 +22,8 @@ public class StapGraphParserTest extends TestCase {
 	public  static StapGraphParser initializeGraph(String filePath){
 		StapGraphParser grph = new StapGraphParser();
 		grph.setSourcePath(filePath);
-		grph.testRun(new NullProgressMonitor());
+		grph.schedule();
+//		grph.testRun(new NullProgressMonitor());
 		return grph;
 	}
 	
@@ -87,6 +88,11 @@ public class StapGraphParserTest extends TestCase {
 	}
 	
 
+	public void testJustMain(){
+		graphDataPath = currentPath+"/main.graph";
+		executeGraphTests();	
+	}
+	
 	public void testCallGraphRunBasic(){
 		graphDataPath = currentPath+"/basic.graph";
 		executeGraphTests();
@@ -102,5 +108,14 @@ public class StapGraphParserTest extends TestCase {
 		executeGraphTests();
 	}
 	
+	public void testComprehensive(){
+		graphDataPath = currentPath+"/comprehensive.graph";
+		executeGraphTests();
+	}
+	
+	public void testHeavy(){
+		graphDataPath = currentPath+"/heavy.graph";
+		executeGraphTests();
+	}
 	
 }
