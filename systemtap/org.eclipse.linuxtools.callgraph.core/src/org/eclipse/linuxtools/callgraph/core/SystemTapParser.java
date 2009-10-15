@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.jobs.Job;
 
 public abstract class SystemTapParser extends Job {
 	protected IProgressMonitor monitor;
-	protected String filePath;
+	protected String sourcePath;
 	protected String viewID;
 	protected SystemTapView view;
 	protected boolean realTime = false;
@@ -38,7 +38,7 @@ public abstract class SystemTapParser extends Job {
 
 	public SystemTapParser() {
 		super("Parsing data");
-		this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		this.sourcePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		this.viewID = null;
 		initialize();
 		isDone = false;
@@ -54,9 +54,9 @@ public abstract class SystemTapParser extends Job {
 		super(name);
 		// BY DEFAULT READ/WRITE FROM HERE
 		if (filePath != null)
-			this.filePath = filePath;
+			this.sourcePath = filePath;
 		else
-			this.filePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+			this.sourcePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 		this.viewID = null;
 		initialize();
 	}
@@ -81,15 +81,7 @@ public abstract class SystemTapParser extends Job {
 	 */
 	public abstract IStatus nonRealTimeParsing();
 
-	/**
-	 * Implement this method to save data in whichever format your program
-	 * needs. Keep in mind that the filePath variable should contain the
-	 * filePath of the most recently opened file.
-	 * 
-	 * @param filePath
-	 */
-	public abstract void saveData(String targetFile);
-	
+
 	
 	
 	/**
@@ -225,7 +217,7 @@ public abstract class SystemTapParser extends Job {
 		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages
 				.getString("SystemTapParser.2"), //$NON-NLS-1$
 				Messages.getString("SystemTapParser.3"), //$NON-NLS-1$
-				Messages.getString("SystemTapParser.4") + filePath + //$NON-NLS-1$
+				Messages.getString("SystemTapParser.4") + sourcePath + //$NON-NLS-1$
 						Messages.getString("SystemTapParser.5")); //$NON-NLS-1$
 		err.schedule();
 	}
@@ -275,7 +267,7 @@ public abstract class SystemTapParser extends Job {
 	 * @throws Exception
 	 */
 	protected void setInternalData() throws Exception {
-		File file = new File(filePath);
+		File file = new File(sourcePath);
 		internalData = new BufferedReader(new FileReader(file));				
 	}
 
@@ -296,7 +288,7 @@ public abstract class SystemTapParser extends Job {
 	 * @return
 	 */
 	public String getFile() {
-		return filePath;
+		return sourcePath;
 	}
 	
 	
@@ -308,10 +300,10 @@ public abstract class SystemTapParser extends Job {
 	/**
 	 * Sets the file to read from
 	 * 
-	 * @param filePath
+	 * @param source
 	 */
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+	public void setSourcePath(String source) {
+		this.sourcePath = source;
 	}
 	
 

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,11 +20,8 @@ import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.linuxtools.callgraph.core.Helper;
 import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
-import org.eclipse.swt.widgets.Shell;
 
 
 /**
@@ -39,7 +35,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class StapGraphParser extends SystemTapParser {
 	
-	private static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
 	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
@@ -84,7 +79,7 @@ public class StapGraphParser extends SystemTapParser {
 		callOrderList.clear();
 		
 		try {
-			BufferedReader buff = new BufferedReader(new FileReader(filePath));
+			BufferedReader buff = new BufferedReader(new FileReader(sourcePath));
 			String tmp;
 			while ((tmp = buff.readLine()) != null) {
 				if (monitor.isCanceled()) {
@@ -324,39 +319,6 @@ public class StapGraphParser extends SystemTapParser {
 	}
 
 	
-
-	public void saveData(String filePath) {
-		File file = new File(filePath);
-		String content = Messages.getString("CallgraphView.25") //$NON-NLS-1$
-		+ project.getElementName()
-		+ NEW_LINE
-		+ text
-		+ NEW_LINE
-		+ endingTimeInNS
-		+ NEW_LINE
-		+ totalTime;
-		try {
-			// WAS THE FILE CREATED OR DOES IT ALREADY EXIST
-			if (file.createNewFile()) {
-				Helper.writeToFile(filePath, content);
-			} else {
-				if (MessageDialog
-						.openConfirm(
-								new Shell(),
-								Messages
-										.getString("CallgraphView.FileExistsTitle"), //$NON-NLS-1$
-								Messages
-										.getString("CallgraphView.FileExistsMessage"))) { //$NON-NLS-1$
-					file.delete();
-					file.createNewFile();
-					Helper.writeToFile(filePath, content);
-				}
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}		
-	}
-
 
 	@Override
 	public IStatus realTimeParsing() {

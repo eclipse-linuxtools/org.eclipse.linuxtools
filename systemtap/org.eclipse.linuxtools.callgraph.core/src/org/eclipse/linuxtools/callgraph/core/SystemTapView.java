@@ -2,10 +2,14 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,10 +29,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
@@ -53,6 +57,8 @@ public abstract class SystemTapView extends ViewPart {
 	@SuppressWarnings("unused")
 	private Action help_about;
 	private Action help_version;
+	protected Action save_file;
+	protected String sourcePath;
 
 	/**
 	 * The constructor.
@@ -320,6 +326,23 @@ public abstract class SystemTapView extends ViewPart {
 		};
 	}
 	
+	protected void createSaveAction() {
+		//Save callgraph.out
+		save_file = new Action("Save"){
+			public void run(){
+				Shell sh = new Shell();
+				FileDialog dialog = new FileDialog(sh, SWT.SAVE);
+				String filePath = dialog.open();
+				
+				if (filePath != null) {
+					saveData(filePath);
+				}
+			}
+		};
+	}
+	
+	
+	
 	
 	/**
 	 * Populates the Errors menu
@@ -446,6 +469,59 @@ public abstract class SystemTapView extends ViewPart {
 	public  void setHelp_version(Action helpVersion) {
 		help_version = helpVersion;
 	}
+	
+	public Action getSave_file() {
+		return save_file;
+	}
 
 
+	/**
+	 * Implement this method to save data in whichever format your program
+	 * needs. Keep in mind that the filePath variable should contain the
+	 * filePath of the most recently opened file.
+	 * 
+	 * @param sourcePath
+	 */
+	public void saveData(String targetFile) {
+		try {
+			File file = new File(targetFile);
+			file.delete();
+			file.createNewFile();
+			
+			File sFile = new File(sourcePath);
+			if (!sFile.exists()) {
+				return;
+			}
+			
+		     FileChannel in = null;
+		     FileChannel out = null;
+		     
+		     try {          
+		          in = new FileInputStream(sFile).getChannel();
+		          out = new FileOutputStream(file).getChannel();
+		          
+		          if (in == null || out == null)
+		        	  return;
+		 
+		          long size = in.size();
+		          MappedByteBuffer buf = in.map(FileChannel.MapMode.READ_ONLY, 0, size);
+		 
+		          out.write(buf);
+		 
+		     } finally {
+		          if (in != null)          
+		        	  in.close();
+		          if (out != null)     
+		        	  out.close();
+		     }
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setSourcePath(String file) {
+		sourcePath = file;
+	}
 }

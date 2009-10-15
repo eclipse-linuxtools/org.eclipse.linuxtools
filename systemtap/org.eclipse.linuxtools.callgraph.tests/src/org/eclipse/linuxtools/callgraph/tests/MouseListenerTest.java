@@ -25,7 +25,7 @@ public class MouseListenerTest extends TestCase {
 
 	public void test() {
 		StapGraphParser parse = new StapGraphParser();
-		parse.setFilePath(Activator.PLUGIN_LOCATION + "eag.graph");
+		parse.setSourcePath(Activator.PLUGIN_LOCATION + "eag.graph");
 		parse.testRun(new NullProgressMonitor());
 
 		CallgraphView cView = (CallgraphView) TestHelper.makeView("org.eclipse.linuxtools.callgraph.callgraphview");

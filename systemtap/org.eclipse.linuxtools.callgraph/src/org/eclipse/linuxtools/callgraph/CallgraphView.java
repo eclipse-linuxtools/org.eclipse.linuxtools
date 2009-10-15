@@ -53,7 +53,6 @@ public class CallgraphView extends SystemTapView {
 
 
 	private Action open_callgraph;
-	private Action save_callgraph;
 	private Action open_default;
 	private Action view_treeview;
 	private Action view_radialview;
@@ -260,7 +259,7 @@ public class CallgraphView extends SystemTapView {
 	 * @param visible
 	 */
 	public  void setGraphOptions (boolean visible){
-		save_callgraph.setEnabled(visible);
+		save_file.setEnabled(visible);
 		view_treeview.setEnabled(visible);
 		view_radialview.setEnabled(visible);
 		view_aggregateview.setEnabled(visible);
@@ -397,7 +396,7 @@ public class CallgraphView extends SystemTapView {
 		
 		file.add(open_callgraph);
 		file.add(open_default);
-		file.add(save_callgraph);
+		file.add(save_file);
 
 		
 		view.add(view_treeview);
@@ -449,7 +448,7 @@ public class CallgraphView extends SystemTapView {
 				String filePath =  dialog.open();
 				if (filePath != null){
 					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setFilePath(filePath);
+					new_parser.setSourcePath(filePath);
 						new_parser.setViewID(CallGraphConstants.viewID);
 					new_parser.schedule();					
 				}
@@ -472,20 +471,7 @@ public class CallgraphView extends SystemTapView {
 			}
 		};
 		
-		
-		//Save callgraph.out
-		save_callgraph = new Action(Messages.getString("CallgraphView.8")){ //$NON-NLS-1$
-			public void run(){
-				Shell sh = new Shell();
-				FileDialog dialog = new FileDialog(sh, SWT.SAVE);
-				String filePath = dialog.open();
-				
-				if (filePath != null) {
-					parser.saveData(filePath);
-				}
-			}
-		};
-		
+		createSaveAction();
 	}
 
 	
@@ -810,14 +796,6 @@ public class CallgraphView extends SystemTapView {
 
 	public  void setOpen_callgraph(Action openCallgraph) {
 		open_callgraph = openCallgraph;
-	}
-
-	public  Action getSave_callgraph() {
-		return save_callgraph;
-	}
-
-	public  void setSave_callgraph(Action saveCallgraph) {
-		save_callgraph = saveCallgraph;
 	}
 
 	public  Action getView_treeview() {

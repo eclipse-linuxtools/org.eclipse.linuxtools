@@ -302,7 +302,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				(SystemTapParser) element.createExecutableExtension(PluginConstants.ATTR_CLASS);
 			parser.setViewID(config.getAttribute(LaunchConfigurationConstants.VIEW_CLASS,
 					LaunchConfigurationConstants.VIEW_CLASS));
-			parser.setFilePath(outputPath);
+			parser.setSourcePath(outputPath);
 			parser.setMonitor(SubMonitor.convert(monitor));
 			parser.setDone(false);
 

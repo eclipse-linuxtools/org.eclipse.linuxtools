@@ -68,7 +68,7 @@ public class SystemTapGraphTest extends TestCase {
 	public void testGraphLoading() throws InterruptedException {
 
 		StapGraphParser parse = new StapGraphParser();
-		parse.setFilePath(Activator.PLUGIN_LOCATION+"eag.graph");
+		parse.setSourcePath(Activator.PLUGIN_LOCATION+"eag.graph");
 //		parse.setTestMode(true);
 		parse.testRun(new NullProgressMonitor());
 		
@@ -136,12 +136,12 @@ public class SystemTapGraphTest extends TestCase {
 					String tempLocation = Activator.PLUGIN_LOCATION+"eag.graph2"; 
 					File temp = new File(tempLocation);
 					temp.delete();
-					parse.saveData(tempLocation);
+					cView.saveData(tempLocation);
 					temp.delete();
 					break;
 				case 15:
 					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setFilePath(Activator.PLUGIN_LOCATION+"eag.graph");
+					new_parser.setSourcePath(Activator.PLUGIN_LOCATION+"eag.graph");
 					new_parser.testRun(new NullProgressMonitor());	
 					break;
 				case 16:
@@ -238,7 +238,7 @@ public class SystemTapGraphTest extends TestCase {
 				act = cView.getMode_collapsednodes();
 				break;
 			case 14:
-				act = cView.getSave_callgraph();
+				act = cView.getSave_file();
 				break;
 			case 15:
 				act = cView.getOpen_callgraph();

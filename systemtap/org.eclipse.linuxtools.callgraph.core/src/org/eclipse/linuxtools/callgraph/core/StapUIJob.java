@@ -72,6 +72,7 @@ public class StapUIJob extends UIJob {
 			if (!parser.realTime) {
 				viewer.updateMethod();
 			}
+			viewer.setSourcePath(parser.getFile());
 			viewer.setKillButtonEnabled(true);
 			 
 			return Status.OK_STATUS;
