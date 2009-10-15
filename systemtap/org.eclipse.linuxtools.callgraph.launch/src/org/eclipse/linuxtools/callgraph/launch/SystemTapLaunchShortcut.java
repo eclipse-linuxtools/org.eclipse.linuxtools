@@ -906,6 +906,18 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	public void setTestMode(boolean val) {
 		testMode = val;
 	}
+	
+	/**
+	 * Set the viewID variable. ViewID should point to the ID of an extension
+	 * extending the org.eclipse.ui.views extension point. This function must
+	 * return the viewID to be set. Defaults to the SystemTap Text View, if
+	 * not overridden.
+	 * 
+	 * @return a valid viewID
+	 */
+	public String setViewID() {
+		return PluginConstants.DEFAULT_VIEW_ID;
+	}
 
 	/**
 	 * Set the parserID variable. ParserID should point to the ID of an
@@ -916,14 +928,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	public abstract String setParserID();
 
-	/**
-	 * Set the viewID variable. ViewID should point to the ID of an extension
-	 * extending the org.eclipse.ui.views extension point. This function must
-	 * return the viewID to be set.
-	 * 
-	 * @return a valid viewID
-	 */
-	public abstract String setViewID();
+
 
 	/**
 	 * Each launch class should define its own script path. Must return the
