@@ -18,30 +18,9 @@ import org.eclipse.ui.progress.UIJob;
 public class SystemTapTextView extends SystemTapView {
 	private StyledText viewer;
 
-	private String text;
-	private StyleRange[] sr;
-
 	private Display display;
 	private int previousEnd;
 
-
-	protected void cleanViewer() {
-		if (viewer != null && !viewer.isDisposed()) {
-			text = viewer.getText();
-			sr = viewer.getStyleRanges();
-			viewer.dispose();
-		}
-		previousEnd = 0;
-
-	}
-
-	protected void restoreViewerContents() {
-		if (text != null) {
-			viewer.setText(text);
-			viewer.setStyleRanges(sr);
-		}
-		previousEnd = 0;
-	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
@@ -62,6 +41,11 @@ public class SystemTapTextView extends SystemTapView {
 		display = masterComposite.getDisplay();
 	}
 
+	/**
+	 * Print with colour codes. Colour codes accepted in the form of ~(R,G,B)~,
+	 * and apply for the rest of the line or until another code is encountered
+	 * @param text
+	 */
 	public void prettyPrintln(String text) {
 		Vector<StyleRange> styles = new Vector<StyleRange>();
 		String[] txt = text.split("\\n"); //$NON-NLS-1$
@@ -119,19 +103,13 @@ public class SystemTapTextView extends SystemTapView {
 				int G = new Integer(colours[1].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
 				int B = new Integer(colours[2].replaceAll(" ", "")).intValue(); //$NON-NLS-1$ //$NON-NLS-2$
 
-				if (R > 255)
-					R = 255;
-				if (G > 255)
-					G = 255;
-				if (B > 255)
-					B = 255;
+				if (R > 255) R = 255;
+				if (G > 255) G = 255;
+				if (B > 255) B = 255;
 
-				if (R < 0)
-					R = 0;
-				if (G < 0)
-					G = 0;
-				if (B < 0)
-					B = 0;
+				if (R < 0) R = 0;
+				if (G < 0) G = 0;
+				if (B < 0) B = 0;
 
 				Color newColor = new Color(display, R, G, B);
 
@@ -167,6 +145,10 @@ public class SystemTapTextView extends SystemTapView {
 		viewer.update();
 	}
 
+	/**
+	 * Default print, just dumps text into the viewer.
+	 * @param text
+	 */
 	public void println(String text) {
 		if (viewer != null && !viewer.isDisposed()) {
 			viewer.append(text);
@@ -192,16 +174,6 @@ public class SystemTapTextView extends SystemTapView {
 		return viewer.getText();
 	}
 
-	public void disposeView() {
-		if (viewer != null && !viewer.isDisposed()) {
-			String tmp = viewer.getText();
-			StyleRange[] tempRange = viewer.getStyleRanges();
-			viewer.dispose();
-			createViewer(masterComposite);
-			viewer.setText(tmp);
-			viewer.setStyleRanges(tempRange);
-		}
-	}
 
 	@Override
 	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
@@ -225,18 +197,6 @@ public class SystemTapTextView extends SystemTapView {
 		addKillButton();
 		addErrorMenu();
 		ViewFactory.addView(this);
-	}
-
-	protected class RunTimeJob extends UIJob {
-
-		public RunTimeJob(String name) {
-			super(name);
-		}
-
-		@Override
-		public IStatus runInUIThread(IProgressMonitor monitor) {
-			return Status.CANCEL_STATUS;
-		}
 	}
 
 	@Override
