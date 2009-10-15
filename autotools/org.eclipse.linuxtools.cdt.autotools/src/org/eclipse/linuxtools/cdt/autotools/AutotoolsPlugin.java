@@ -42,6 +42,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
+@SuppressWarnings("deprecation")
 public class AutotoolsPlugin extends AbstractUIPlugin {
 
 	//The shared instance.
@@ -93,7 +94,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 		return fTargetManager;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void verifyScannerInfoProvider(IProject project) throws CoreException {
 		boolean found = false;
 		ICDescriptor desc = CCorePlugin.getDefault().getCProjectDescription(project, true);
@@ -107,7 +107,6 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
         }
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void setScannerInfoProvider(IProject project) throws CoreException {
 		ICDescriptor desc = CCorePlugin.getDefault().getCProjectDescription(project, true);
 		desc.remove(CCorePlugin.BUILD_SCANNER_INFO_UNIQ_ID);

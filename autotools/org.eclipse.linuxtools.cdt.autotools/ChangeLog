@@ -1,5 +1,12 @@
 2009-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsPlugin.java (setScannerInfoProvider): Fix
+	deprecated warnings. 
+	(verifyScannerInfoProvider): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java: Ditto. 
+	
+2009-10-15  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/wizards/AutotoolsBuildWizard.java: New file.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/wizards/NewAutotoolsProject.java: New file.
 	* templates/projecttemplates/EmptyProject/template.properties: New file.

@@ -75,6 +75,7 @@ import org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyConst
 import org.eclipse.linuxtools.internal.cdt.autotools.MarkerGenerator;
 
 
+@SuppressWarnings("deprecation")
 public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMakefileGenerator, IManagedBuilderMakefileGenerator2 {
 
 	public final String CONFIG_STATUS = "config.status"; //$NON-NLS-1$
