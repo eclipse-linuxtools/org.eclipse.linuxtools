@@ -1,3 +1,22 @@
+2009-10-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/wizards/AutotoolsBuildWizard.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/wizards/NewAutotoolsProject.java: New file.
+	* templates/projecttemplates/EmptyProject/template.properties: New file.
+	* templates/projecttemplates/EmptyProject/template.xml: New file.
+	* templates/projecttemplates/HelloWorldCAutotoolsProject/src: New file.
+	* templates/projecttemplates/HelloWorldCAutotoolsProject/template.properties: New file.
+	* templates/projecttemplates/HelloWorldCAutotoolsProject/template.xml: New file.
+	* templates/projecttemplates/HelloWorldCPPAutotoolsProject/src: New file.
+	* templates/projecttemplates/HelloWorldCPPAutotoolsProject/template.properties: New file.
+	* templates/projecttemplates/HelloWorldCPPAutotoolsProject/template.xml: New file.
+	* build.properties: Add templates directory to binary contents.
+	* plugin.properties: Add new strings to support additions in plugin.xml.
+	* plugin.xml: Remove name from Autotools project type so it will get a category in the C/C++
+	new project wizard UI.  Connect the gcc and g++ tools to their proper parents in the CDT.
+	Add template and wizard support for Autotools.  Remove project conversion stuff that shouldn't
+	have been checked in.
+
 2009-10-14  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #292272

@@ -476,8 +476,7 @@
       <projectType
             buildArtefactType="org.eclipse.linuxtools.cdt.autotools.buildArtefactType.autotools"
             id="org.eclipse.linuxtools.cdt.autotools.projectType"
-            isAbstract="false"
-            name="%Autotools.projecttype.name">
+            isAbstract="false">
          <configuration
                buildProperties="org.eclipse.linuxtools.cdt.autotools.buildType.default"
                cleanCommand="rm -rf"
@@ -486,7 +485,6 @@
                name="%Configuration.build.name">
             <toolChain
                   archList="all"
-                  convertToId="org.eclipse.linuxtools.cdt.autotools.toolChain.new"
                   id="org.eclipse.linuxtools.cdt.autotools.toolChain"
                   name="%Autotools.gnu.toolchain.name"
                   unusedChildren="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc;org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
@@ -505,11 +503,13 @@
                </tool>
                <tool
                      id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc"
-                     isAbstract="false">
+                     isAbstract="false"
+                     superClass="cdt.managedbuild.tool.gnu.c.compiler">
                </tool>
                <tool
                      id="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
-                     isAbstract="false">
+                     isAbstract="false"
+                     superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
                </tool>
                <builder
                      id="org.eclipse.linuxtools.cdt.autotools.toolchain.builder"
@@ -1150,14 +1150,52 @@
       </handler>
    </extension>
    <extension
-         point="org.eclipse.cdt.managedbuilder.core.projectConverter">
-      <converter
-            class="org.eclipse.linuxtools.cdt.autotools.Converter1"
-            fromId="org.eclipse.linuxtools.cdt.autotools.converter1"
-            id="org.eclipse.linuxtools.cdt.autotools.converter1"
-            mbsVersion="4.0.0"
-            name="name"
-            toId="org.eclipse.linuxtools.cdt.autotools.converter1">
-      </converter>
+         point="org.eclipse.cdt.core.templateProcessTypes">
+      <processType
+            name="NewAutotoolsProject"
+            processRunner="org.eclipse.linuxtools.internal.cdt.autotools.wizards.NewAutotoolsProject">
+         <simple
+               name="name">
+         </simple>
+         <simple
+               external="true"
+               name="location"
+               nullable="true">
+         </simple>
+         <simple
+               name="artifactExtension">
+         </simple>
+         <simple
+               external="true"
+               name="isCProject">
+         </simple>
+      </processType>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.core.templates">
+      <template
+            id="org.eclipse.linuxtools.cdt.autotools.template.emptyProject"
+            location="templates/projecttemplates/EmptyProject/template.xml"
+            projectType="org.eclipse.linuxtools.cdt.autotools.projectType">
+      </template>
+      <template
+            filterPattern=".*gcc"
+            id="org.eclipse.linuxtools.cdt.autotools.template.helloWorldCProject"
+            location="templates/projecttemplates/HelloWorldCAutotoolsProject/template.xml"
+            projectType="org.eclipse.linuxtools.cdt.autotools.projectType">
+      </template>
+      <template
+            filterPattern=",*g\+\+"
+            id="org.eclipse.linuxtools.cdt.autotools.template.helloWorldCPPProject"
+            location="templates/projecttemplates/HelloWorldCPPAutotoolsProject/template.xml"
+            projectType="org.eclipse.linuxtools.cdt.autotools.projectType">
+      </template>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.ui.CDTWizard">
+      <wizard
+            class="org.eclipse.linuxtools.internal.cdt.autotools.wizards.AutotoolsBuildWizard"
+            name="%Autotools.wizard.name">
+      </wizard>
    </extension>
  </plugin>
