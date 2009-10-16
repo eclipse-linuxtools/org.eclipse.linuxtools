@@ -1,3 +1,4 @@
+global markedMessages
 
 probe begin{
 	printf("\nPROBE_BEGIN\n")
@@ -20,7 +21,7 @@ function callFunction(probefunc) {
 
 	start[serial] = gettimeofday_ns()
 	
-	if (probefunc != "___STAP_MARKER___" && !(isinstr(probefunc,"(")) && !(isinstr(probefunc,")")) ) {
+	if (!isinstr(probefunc,"___STAP_MARKER___") && !(isinstr(probefunc,"(")) && !(isinstr(probefunc,")")) ) {
 		currentLevel++
 		currentlyIn[currentLevel] = serial
 		
@@ -47,32 +48,34 @@ function callFunction(probefunc) {
 }
 
 function returnFunction(probefunc) {
-	if (probefunc != "___STAP_MARKER___" && !(isinstr(probefunc,"(")) && !(isinstr(probefunc,")")) ) {
-	val--
-	currentLevel--
-
-	/*IF WE ARE BACK TO THE DEPTH OF ANY FUNCTION WE HAVE RETURNED FROM IT*/
-	foreach (ser in depth)
-		if (depth[ser] == val){
-			total[ser] = gettimeofday_ns() - start[ser]
-			delete start[ser]
-		}
-		/*PREVENT CHANGING THE TIME OF THIS FUNCTION ONCE FOUND*/
-		delete depth[ser]
-
-        /*RELATED TO MEASURING TOTAL TIME A FUNCTION TAKES */
-        if (nested[probefunc] == 1){
-                start_total[probefunc] = start_total[probefunc] + ( gettimeofday_ns() )
-        }
-
-	printf(">")
-
-	/*RELATED TO MEASURING TOTAL TIME A FUNCTION TAKES */
-        nested[probefunc]--
+	if (!isinstr(probefunc,"___STAP_MARKER___") && !(isinstr(probefunc,"(")) && !(isinstr(probefunc,")")) ) {
+		val--
+		currentLevel--
+	
+		/*IF WE ARE BACK TO THE DEPTH OF ANY FUNCTION WE HAVE RETURNED FROM IT*/
+		foreach (ser in depth)
+			if (depth[ser] == val){
+				total[ser] = gettimeofday_ns() - start[ser]
+				delete start[ser]
+			}
+			/*PREVENT CHANGING THE TIME OF THIS FUNCTION ONCE FOUND*/
+			delete depth[ser]
+	
+	        /*RELATED TO MEASURING TOTAL TIME A FUNCTION TAKES */
+	        if (nested[probefunc] == 1){
+	                start_total[probefunc] = start_total[probefunc] + ( gettimeofday_ns() )
+	        }
+	
+		printf(">")
+	
+		/*RELATED TO MEASURING TOTAL TIME A FUNCTION TAKES */
+	        nested[probefunc]--
     }
 }
 
-
+probe process(@1).function("___STAP_MARKER___").call {
+	markedMessages[fc]=user_string($stapMarker)
+}
 
 probe end{
 	total[0] = gettimeofday_ns() - start[0]
@@ -114,8 +117,8 @@ probe end{
                 
     printf("\n")
     
-    foreach (fc in markedFunctions) {
-    	printf("%d:%s;", markedFunctions[fc], markedMessages[fc])
+    foreach (fc in markedMessages) {
+    	printf("%d:%s;", fc, markedMessages[fc])
     }
     printf("\n")
     exit()
