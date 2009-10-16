@@ -54,7 +54,7 @@
       </actionSet>
    </extension>
    
-   	<extension point="org.eclipse.ui.bindings">
+   	<!--<extension point="org.eclipse.ui.bindings">
 		<key
         commandId="org.eclipse.linuxtools.callgraph.command3"
         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
@@ -81,7 +81,7 @@
              id="org.eclipse.linuxtools.callgraph.command4"
              name="Remove stap marker function">
        </command>
-    </extension>
+    </extension>-->
     <extension
           id="org.eclipse.linuxtools.callgraph.graphparser"
           name="GraphParser"
