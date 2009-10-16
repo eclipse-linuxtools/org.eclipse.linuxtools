@@ -652,7 +652,7 @@ public class CallgraphView extends SystemTapView {
 			}
 		};
 		
-		play = new Action("Play (D)") {
+		play = new Action(Messages.getString("CallgraphView.0")) { //$NON-NLS-1$
 			public void run() {
 				graph.play();
 				togglePlayImage();
@@ -666,13 +666,13 @@ public class CallgraphView extends SystemTapView {
 	 * @param play
 	 */
 	protected void togglePlayImage() {
-		if (play.getToolTipText() == "Pause (D)") {
+		if (play.getToolTipText() == Messages.getString("CallgraphView.3")) { //$NON-NLS-1$
 			play.setImageDescriptor(playImage);
-			play.setToolTipText("Play (D)");
+			play.setToolTipText(Messages.getString("CallgraphView.4")); //$NON-NLS-1$
 		}
 		else {
 			play.setImageDescriptor(pauseImage);
-			play.setToolTipText("Pause (D)");
+			play.setToolTipText(Messages.getString("CallgraphView.5")); //$NON-NLS-1$
 		}
 	}
 	

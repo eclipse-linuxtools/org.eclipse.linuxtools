@@ -418,7 +418,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 								PluginConstants.VIEW_NAME);
 				ArrayList<IConfigurationElement> ext = new ArrayList<IConfigurationElement>();
 				for (IConfigurationElement el : extensions) {
-					if (!el.getNamespaceIdentifier().contains("org.eclipse.linuxtools"))
+					if (!el.getNamespaceIdentifier().contains("org.eclipse.linuxtools")) //$NON-NLS-1$
 						continue;
 					//TODO: Rough hack to get all the objects. We restrict to id's containing org.eclipse.linuxtools, then see if the class extends SystemTapView
 					try {

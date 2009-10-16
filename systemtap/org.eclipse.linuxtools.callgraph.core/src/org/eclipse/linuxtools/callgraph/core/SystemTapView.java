@@ -151,7 +151,7 @@ public abstract class SystemTapView extends ViewPart {
 			IViewPart view = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().showView(viewID);
 			if (!(view instanceof SystemTapView))
-				throw new Exception("Miscast type: " + view.getClass().toString()); 
+				throw new Exception("Miscast type: " + view.getClass().toString());  //$NON-NLS-1$
 			setView((SystemTapView) view); 
 			stapview.setFocus();
 		} catch (PartInitException e2) {
@@ -250,7 +250,7 @@ public abstract class SystemTapView extends ViewPart {
 	public void addFileMenu() {
 		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
 		if (file == null) {
-			file = new MenuManager("File");
+			file = new MenuManager(Messages.getString("SystemTapView.8")); //$NON-NLS-1$
 			menu.add(file);
 		}
 		
@@ -380,7 +380,7 @@ public abstract class SystemTapView extends ViewPart {
 	
 	protected void createSaveAction() {
 		//Save callgraph.out
-		save_file = new Action("Save"){
+		save_file = new Action(Messages.getString("SystemTapView.9")){ //$NON-NLS-1$
 			public void run(){
 				Shell sh = new Shell();
 				FileDialog dialog = new FileDialog(sh, SWT.SAVE);

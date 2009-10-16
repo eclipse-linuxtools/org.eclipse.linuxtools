@@ -1724,7 +1724,7 @@ public class StapGraph extends Graph {
 	
 	public void play() {
 		if (proj == null || proj.getResult() == Status.OK_STATUS) {
-			proj = new Projectionist("Projectionist", this, 2000); 
+			proj = new Projectionist("Projectionist", this, 2000);  //$NON-NLS-1$
 			proj.schedule();
 		} else {
 			proj.pause();
