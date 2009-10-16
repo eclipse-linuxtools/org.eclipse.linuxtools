@@ -171,6 +171,11 @@ public abstract class SystemTapParser extends Job {
 		}
 
 		IStatus returnStatus = nonRealTimeParsing();
+		
+		if (!returnStatus.isOK()){
+			return returnStatus;
+		}
+		
 		setData(this);
 		postProcessing();
 		return returnStatus;
