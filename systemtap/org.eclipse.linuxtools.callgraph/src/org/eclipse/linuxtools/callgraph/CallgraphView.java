@@ -68,6 +68,10 @@ public class CallgraphView extends SystemTapView {
 	private  Action goto_previous;
 	private  Action goto_last;
 	private  Action play;
+	ImageDescriptor playImage= ImageDescriptor.createFromImage(
+			new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "icons/perform.png")); //$NON-NLS-1$
+	ImageDescriptor pauseImage= ImageDescriptor.createFromImage(
+			new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "icons/pause.gif")); //$NON-NLS-1$
 	
 	private  IMenuManager menu;
 	private  IMenuManager gotoMenu;
@@ -259,6 +263,7 @@ public class CallgraphView extends SystemTapView {
 	 * @param visible
 	 */
 	public  void setGraphOptions (boolean visible){
+		play.setEnabled(visible);
 		save_file.setEnabled(visible);
 		view_treeview.setEnabled(visible);
 		view_radialview.setEnabled(visible);
@@ -405,6 +410,7 @@ public class CallgraphView extends SystemTapView {
 		gotoMenu.add(goto_last);
 		
 		
+		mgr.add(play);
 		mgr.add(view_radialview);
 		mgr.add(view_treeview);
 		mgr.add(view_levelview);
@@ -646,11 +652,28 @@ public class CallgraphView extends SystemTapView {
 			}
 		};
 		
-		play = new Action("Play/Pause (D)") {
+		play = new Action("Play (D)") {
 			public void run() {
 				graph.play();
+				togglePlayImage();
 			}
 		};
+		play.setImageDescriptor(playImage);
+	}
+	
+	/**
+	 * Toggles the play/pause image
+	 * @param play
+	 */
+	protected void togglePlayImage() {
+		if (play.getToolTipText() == "Pause (D)") {
+			play.setImageDescriptor(playImage);
+			play.setToolTipText("Play (D)");
+		}
+		else {
+			play.setImageDescriptor(pauseImage);
+			play.setToolTipText("Pause (D)");
+		}
 	}
 	
 	public void createMarkerActions() {
