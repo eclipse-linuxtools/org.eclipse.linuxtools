@@ -430,7 +430,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	
 	
 	private String generateErrorMessage(String configName, String binaryCommand) {
-		String output = Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch7"); //$NON-NLS-1$
+		String output = ""; //$NON-NLS-1$
 		
 		if (binaryCommand == null || binaryCommand.length() < 0) {
 			output = PluginConstants.NEW_LINE +

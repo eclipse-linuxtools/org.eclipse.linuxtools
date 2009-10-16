@@ -12,8 +12,9 @@ package org.eclipse.linuxtools.callgraph.tests;
 
 import java.io.File;
 import java.util.ArrayList;
+
 import junit.framework.TestCase;
-import org.eclipse.core.runtime.NullProgressMonitor;
+
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
 
 public class StapGraphParserTest extends TestCase {
