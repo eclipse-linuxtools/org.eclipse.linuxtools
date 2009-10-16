@@ -975,6 +975,7 @@ public class StapGraph extends Graph {
 		treeLevelFromRoot = 0;
 		currentPositionInLevel.clear();
 		
+		
 		this.setRedraw(false);
 		if (draw_mode == CONSTANT_DRAWMODE_RADIAL) {
 			//Remove thumbnail
@@ -1636,13 +1637,18 @@ public class StapGraph extends Graph {
 	public int getNextCalledNode(int id) {
 		int returnID = -1;
 		
+		if (isCollapseMode()) {
+			setCollapseMode(false);
+			draw(getRootVisibleNodeNumber());
+		}
+		
 		for (int count = callOrderList.indexOf((Integer)id) + 1;
 			count < callOrderList.size(); count++) {
+			int next = callOrderList.get(count);
 			if (getNodeData(id) == null)
 				continue;
-			if (!getNodeData(id).isCollapsed || getNodeData(id).isOnlyChildWithThisName()) {
-				returnID = callOrderList.get(count);
-				return returnID;
+			if (!getNodeData(next).isCollapsed || getNodeData(next).isOnlyChildWithThisName()) {
+				return next;
 			}
 		}
 		
@@ -1852,6 +1858,9 @@ public class StapGraph extends Graph {
 		}
 		int toDraw = getNextCalledNode(getRootVisibleNodeNumber());
 		if (toDraw != -1)
-			draw(toDraw);		
+			draw(toDraw);
+		 else
+			proj.pause();
 	}
+	
 }

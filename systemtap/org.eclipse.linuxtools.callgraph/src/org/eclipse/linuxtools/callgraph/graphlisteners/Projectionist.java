@@ -26,6 +26,7 @@ public class Projectionist extends Job {
 	private StapGraph graph;
 	private int frame_time = 2000;
 	private boolean pause;
+	private boolean busy;
 	
 
 	/**
@@ -38,6 +39,7 @@ public class Projectionist extends Job {
 		this.graph = graph;
 		this.frame_time = time;
 		pause = false;
+		busy = false;
 	}
 
 	@Override
@@ -45,15 +47,24 @@ public class Projectionist extends Job {
 
 		long snapshot = System.currentTimeMillis();
 		while (true) {
+			if (busy)
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			
 			if (pause)
 				return Status.OK_STATUS;
 			
 			if (System.currentTimeMillis() - snapshot >= frame_time) {
 				snapshot = System.currentTimeMillis();
+				busy = true;
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						graph.drawNextNode();	
+						graph.drawNextNode();
+						busy = false;
 					}
 				});
 				

@@ -151,8 +151,8 @@ public class CallgraphView extends SystemTapView {
 		
 		//Initialize graph
 		g = new StapGraph(graphComp, SWT.BORDER, treeComp, papaCanvas, this);
-		g.setLayoutData(new GridData(disp.getPrimaryMonitor().getBounds().width - 200,
-					disp.getPrimaryMonitor().getBounds().height - 200));
+		g.setLayoutData(new GridData(masterComposite.getBounds().width - 220,
+					masterComposite.getBounds().height));
 
 		up.addSelectionListener(new AutoScrollSelectionListener(
 				AutoScrollSelectionListener.AutoScroll_up, g));
