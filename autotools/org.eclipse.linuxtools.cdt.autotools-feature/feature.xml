@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.cdt.autotools"
       label="%featureName"
-      version="1.0.4.qualifier"
+      version="1.0.5.qualifier"
       provider-name="%provider">
 
    <description>
