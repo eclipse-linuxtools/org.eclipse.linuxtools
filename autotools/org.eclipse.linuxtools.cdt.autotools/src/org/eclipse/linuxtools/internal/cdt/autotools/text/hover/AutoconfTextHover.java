@@ -74,6 +74,8 @@ import org.xml.sax.SAXParseException;
 
 public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 
+	public static String LOCAL_AUTOCONF_MACROS_DOC_NAME = "macros/acmacros";
+	public static String LOCAL_AUTOMAKE_MACROS_DOC_NAME = "macros/ammacros";
 	public static String AUTOCONF_MACROS_DOC_NAME = "http://www.sourceware.org/eclipse/autotools/acmacros"; //$NON-NLS-1$
 	public static String AUTOMAKE_MACROS_DOC_NAME = "http://www.sourceware.org/eclipse/autotools/ammacros"; //$NON-NLS-1$
 
@@ -112,11 +114,15 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 		+ ".xml"; //$NON-NLS-1$	
 	}
 	
+	public static String getLocalAutoconfMacrosDocName(String version) {
+		return LOCAL_AUTOCONF_MACROS_DOC_NAME + "-" //$NON-NLS-1$ 
+		+ version
+		+ ".xml"; //$NON-NLS-1$	
+	}
+
 	/* Get the preferences default for the autoconf macros document name.  */
-	public static String getDefaultAutoconfMacrosDocName() {
-		return getAutoconfMacrosDocName( 
-				AutotoolsPlugin.getDefault().getPreferenceStore().getString(AutotoolsEditorPreferenceConstants.AUTOCONF_VERSION)
-		);	
+	public static String getDefaultAutoconfMacrosVer() {
+		return AutotoolsPlugin.getDefault().getPreferenceStore().getString(AutotoolsEditorPreferenceConstants.AUTOCONF_VERSION);
 	}
 
 	public static String getAutomakeMacrosDocName(String version) {
@@ -125,34 +131,44 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 		+ ".xml"; //$NON-NLS-1$	
 	}
 	
+	public static String getLocalAutomakeMacrosDocName(String version) {
+		return LOCAL_AUTOMAKE_MACROS_DOC_NAME + "-" //$NON-NLS-1$ 
+		+ version
+		+ ".xml"; //$NON-NLS-1$	
+	}
+	
 	/* Get the preferences default for the autoconf macros document name.  */
-	public static String getDefaultAutomakeMacrosDocName() {
-		return getAutomakeMacrosDocName( 
-				AutotoolsPlugin.getDefault().getPreferenceStore().getString(AutotoolsEditorPreferenceConstants.AUTOMAKE_VERSION)
-		);	
+	public static String getDefaultAutomakeMacrosVer() {
+		return AutotoolsPlugin.getDefault().getPreferenceStore().getString(AutotoolsEditorPreferenceConstants.AUTOMAKE_VERSION);
 	}
 
-	protected static Document getACDoc(String acDocName) {
+	protected static Document getACDoc(String acDocVer) {
 		Document ac_document = null;
 		if (acHoverDocs == null) {
 			acHoverDocs = new HashMap<String, Document>();
 		}
-		ac_document = (Document)acHoverDocs.get(acDocName);
+		ac_document = (Document)acHoverDocs.get(acDocVer);
 		if (ac_document == null) {
 			Document doc = null;
 			try {
 				// see comment in initialize()
 				try {
-					// Either open the html file or file system file depending
-					// on what has been specified.
-					URI acDoc = new URI(acDocName);
-					IPath p = URIUtil.toPath(acDoc);
 					InputStream docStream = null;
-					if (p == null) {
-						URL url = acDoc.toURL();
-						docStream = url.openStream();
-					} else {
-						docStream = new FileInputStream(p.toFile());
+					try {
+						URI uri = new URI(getLocalAutoconfMacrosDocName(acDocVer));
+						IPath p = URIUtil.toPath(uri);
+						// Try to open the file as local to this plug-in.
+						docStream = FileLocator.openStream(AutotoolsPlugin.getDefault().getBundle(), p, false);
+					} catch (IOException e) {
+						// Local open failed.  Try normal external location.
+						URI acDoc = new URI(getAutoconfMacrosDocName(acDocVer));
+						IPath p = URIUtil.toPath(acDoc);
+						if (p == null) {
+							URL url = acDoc.toURL();
+							docStream = url.openStream();
+						} else {
+							docStream = new FileInputStream(p.toFile());
+						}
 					}
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 					factory.setValidating(false);
@@ -184,31 +200,37 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 			catch (IOException ioe) {
 			}
 		}
-		acHoverDocs.put(acDocName, ac_document);
+		acHoverDocs.put(acDocVer, ac_document);
 		return ac_document;
 	}
 	
-	protected static Document getAMDoc(String amDocName) {
+	protected static Document getAMDoc(String amDocVer) {
 		Document am_document = null;
 		if (amHoverDocs == null) {
 			amHoverDocs = new HashMap<String, Document>();
 		}
-		am_document = (Document)amHoverDocs.get(amDocName);
+		am_document = (Document)amHoverDocs.get(amDocVer);
 		if (am_document == null) {
 			Document doc = null;
 			try {
 				// see comment in initialize()
 				try {
-					// Either open the html file or file system file depending
-					// on what has been specified.
-					URI amDoc = new URI(amDocName);
-					IPath p = URIUtil.toPath(amDoc);
 					InputStream docStream = null;
-					if (p == null) {
-						URL url = amDoc.toURL();
-						docStream = url.openStream();
-					} else {
-						docStream = new FileInputStream(p.toFile());
+					try {
+						URI uri = new URI(getLocalAutomakeMacrosDocName(amDocVer));
+						IPath p = URIUtil.toPath(uri);
+						// Try to open the file as local to this plug-in.
+						docStream = FileLocator.openStream(AutotoolsPlugin.getDefault().getBundle(), p, false);
+					} catch (IOException e) {
+						// Local open failed.  Try normal external location.
+						URI acDoc = new URI(getAutomakeMacrosDocName(amDocVer));
+						IPath p = URIUtil.toPath(acDoc);
+						if (p == null) {
+							URL url = acDoc.toURL();
+							docStream = url.openStream();
+						} else {
+							docStream = new FileInputStream(p.toFile());
+						}
 					}
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 					factory.setValidating(false);
@@ -240,13 +262,13 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 			catch (IOException ioe) {
 			}
 		}
-		amHoverDocs.put(amDocName, am_document);
+		amHoverDocs.put(amDocVer, am_document);
 		return am_document;
 	}
 
 	protected static AutotoolsHoverDoc getHoverDoc(IEditorInput input) {
-		String acDocName = getDefaultAutoconfMacrosDocName();
-		String amDocName = getDefaultAutomakeMacrosDocName();
+		String acDocVer = getDefaultAutoconfMacrosVer();
+		String amDocVer = getDefaultAutomakeMacrosVer();
 		if (input instanceof IFileEditorInput) {
 			IFileEditorInput fe = (IFileEditorInput)input;
 			IFile f = fe.getFile();
@@ -254,20 +276,20 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 			try {
 				String acVer = p.getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION);
 				if (acVer != null)
-					acDocName = getAutoconfMacrosDocName(acVer);
+					acDocVer = acVer;
 			} catch (CoreException ce1) {
 				// do nothing
 			}
 			try {
 				String amVer = p.getPersistentProperty(AutotoolsPropertyConstants.AUTOMAKE_VERSION);
 				if (amVer != null)
-					amDocName = getAutomakeMacrosDocName(amVer);
+					amDocVer = amVer;
 			} catch (CoreException ce2) {
 				// do nothing
 			}
 		}
-		Document ac_document = getACDoc(acDocName);
-		Document am_document = getAMDoc(amDocName);
+		Document ac_document = getACDoc(acDocVer);
+		Document am_document = getAMDoc(amDocVer);
 		return new AutoconfTextHover.AutotoolsHoverDoc(ac_document, am_document);
 	}
 

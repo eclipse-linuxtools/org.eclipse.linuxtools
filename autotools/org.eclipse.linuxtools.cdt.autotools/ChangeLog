@@ -1,3 +1,14 @@
+2009-10-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/text/hover/AutoconfTextHover.java (getHoverDoc):
+	Change to get document versions and pass these to getACDoc and getAMDoc. 
+	(getDefaultAutomakeMacrosVer): New method.
+	(getAMDoc): Change to take doc version rather than name and to support document in local plugin.
+	(getDefaultAutoconfMacrosVer): New method.
+	(getLocalAutoconfMacrosDocName): New method.
+	(getACDoc): Change to take doc version rather than name and to support document in local plugin.
+	(getLocalAutomakeMacrosDocName): New method.
+
 2009-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/wizards/NewAutotoolsCCProjectWizard.java (doRun): Fix warnings.
