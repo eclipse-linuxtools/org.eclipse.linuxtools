@@ -1,5 +1,6 @@
 2009-10-16  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* META-INF/MANIFEST.MF: Bump version to 1.0.5.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/text/hover/AutoconfTextHover.java (getHoverDoc):
 	Change to get document versions and pass these to getACDoc and getAMDoc. 
 	(getDefaultAutomakeMacrosVer): New method.
