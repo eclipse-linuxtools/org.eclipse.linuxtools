@@ -47,12 +47,14 @@ public class Projectionist extends Job {
 
 		long snapshot = System.currentTimeMillis();
 		while (true) {
-			if (busy)
+			if (busy) {
 				try {
 					Thread.sleep(300);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
+				continue;
+			}
 			
 			if (pause)
 				return Status.OK_STATUS;

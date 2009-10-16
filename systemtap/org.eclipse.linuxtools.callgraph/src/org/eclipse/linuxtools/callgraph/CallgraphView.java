@@ -668,11 +668,11 @@ public class CallgraphView extends SystemTapView {
 	protected void togglePlayImage() {
 		if (play.getToolTipText() == Messages.getString("CallgraphView.3")) { //$NON-NLS-1$
 			play.setImageDescriptor(playImage);
-			play.setToolTipText(Messages.getString("CallgraphView.4")); //$NON-NLS-1$
+			play.setToolTipText(Messages.getString("CallgraphView.0")); //$NON-NLS-1$
 		}
 		else {
 			play.setImageDescriptor(pauseImage);
-			play.setToolTipText(Messages.getString("CallgraphView.5")); //$NON-NLS-1$
+			play.setToolTipText(Messages.getString("CallgraphView.3")); //$NON-NLS-1$
 		}
 	}
 	
