@@ -656,8 +656,10 @@ public class CallgraphView extends SystemTapView {
 		
 		play = new Action(Messages.getString("CallgraphView.0")) { //$NON-NLS-1$
 			public void run() {
-				graph.play();
-				togglePlayImage();
+				if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
+					graph.play();
+					togglePlayImage();
+				}
 			}
 		};
 		play.setImageDescriptor(playImage);
