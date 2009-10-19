@@ -126,14 +126,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" +  //$NON-NLS-1$
-				        function + "\").call{" +  //$NON-NLS-1$
-				        "\tcallFunction(probefunc())\t" +  //$NON-NLS-1$
-						"}\t" +  //$NON-NLS-1$
-						"probe process(@1).function(\"" +  //$NON-NLS-1$
-				        function + "\").return{\t" +  //$NON-NLS-1$
-				        "\treturnFunction(probefunc())\t" +  //$NON-NLS-1$
-						"}\n";  //$NON-NLS-1$
+		String output = "probe process(@1).function(\"" + function + "\").call{	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc()) } else { markedMessages[callArray[currentDepth]] = user_string(strtol(tokenize($$parms, \"marker=\"),16))}	}	probe process(@1).function(\"" + function + "\").return{		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc())	}";
 		return output;
 	}
 	
@@ -198,41 +191,17 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		exclusions = e;
 	}
 
-	
-	/**
-	 * Writes global variables for the StapGraph script to the BufferedWriter.
-	 * Should be called first.
-	 * 
-	 * @param bw
-	 * @return
-	 * @throws IOException
-	 */
-	private String writeGlobalVariables() throws IOException {
-		String toWrite = "global serial\n" + //$NON-NLS-1$
-						 "global startTime\n " + //$NON-NLS-1$
-						 "global finalTime\n"; //$NON-NLS-1$
-		
-		return toWrite;
-	}
-	
 	@Override
 	public String generateScript() throws IOException {
 		
 		String scriptContents = "";  //$NON-NLS-1$
 
 
-		scriptContents += writeGlobalVariables();
 //		scriptContents += writeStapMarkers();
 
 		scriptContents += funcs;
 		
 		scriptContents += writeFromPartialScript(projectName);
-		
-		scriptContents += "probe syscall.exit {\n" + //$NON-NLS-1$
-							"if (pid() == target()) {\n" +  //$NON-NLS-1$
-							"finalTime = gettimeofday_ns()\n" + //$NON-NLS-1$
-							"}\n" +  //$NON-NLS-1$
-							"}\n"; //$NON-NLS-1$
 		
 		return scriptContents;
 	}
