@@ -48,6 +48,8 @@ public class StapGraphParser extends SystemTapParser {
 	public long totalTime;
 	public int lastFunctionCalled;
 	public ICProject project;
+	private String[] markedMessages;
+	private static final String DELIM = ",,";
 
 	
 	public String text;
@@ -65,6 +67,7 @@ public class StapGraphParser extends SystemTapParser {
 		markedMap = new HashMap<Integer, String>();
 		lastFunctionCalled = 0;
 		project = null;
+		markedMessages = null;
 	}
 
 	
@@ -114,6 +117,12 @@ public class StapGraphParser extends SystemTapParser {
 						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
 					}
+					
+					tmp = buff.readLine();
+					if (tmp != null && tmp.length() > 0)
+						markedMessages = tmp.split(";");
+					else
+						markedMessages = null;
 				}
 			}
 			buff.close();
@@ -146,7 +155,7 @@ public class StapGraphParser extends SystemTapParser {
 				switch (s.charAt(0)) {
 					case '<' :
 						
-						args = s.substring(1, s.length()).split(",,"); //$NON-NLS-1$
+						args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
 						// args[0] = name
 						// args[1] = id
 						// arsg[2] = time of event
@@ -205,7 +214,7 @@ public class StapGraphParser extends SystemTapParser {
 
 						break;
 					case '>' :
-						args = s.substring(1, s.length()).split(",,"); //$NON-NLS-1$
+						args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
 						//args[0] = name
 						//args[1] = time of event
 						name = args[0];
@@ -301,6 +310,16 @@ public class StapGraphParser extends SystemTapParser {
 				
 				markedMap.put(firstNode, markedMessage);
 			}
+			
+			if (markedMessages != null) {
+				//Search for marked nodes
+				for (String s : markedMessages) {
+					String[] tokens = s.split(DELIM);
+					if (tokens.length > 1) 
+						markedMap.put(Integer.parseInt(tokens[0]), tokens[1]);
+				}
+			}
+			
 			
 			
 			} catch (NumberFormatException e) {

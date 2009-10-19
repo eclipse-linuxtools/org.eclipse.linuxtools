@@ -28,7 +28,7 @@ probe end {
 	printf("\n%d",finalTime);
 	printf("\n%d\n",finalTime - startTime);
 	foreach (num in markedMessages) {
-		printf("%d:%s;", num, markedMessages[num]);
+		printf("%d,,%s;", num, markedMessages[num]);
 	}
     exit()
 }

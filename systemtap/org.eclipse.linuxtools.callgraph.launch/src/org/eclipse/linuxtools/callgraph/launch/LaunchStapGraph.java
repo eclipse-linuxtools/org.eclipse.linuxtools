@@ -126,7 +126,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" + function + "\").call{	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc()) } else { markedMessages[callArray[currentDepth]] = user_string(strtol(tokenize($$parms, \"marker=\"),16))}	}	probe process(@1).function(\"" + function + "\").return{		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc())	}";
+		String output = "probe process(@1).function(\"" + function + "\").call{	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc()) } 	}	probe process(@1).function(\"" + function + "\").return{		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc())	else { markedMessages[callArray[currentDepth]] = user_string(strtol(tokenize($$return, \"return=\"),16))}}";
 		return output;
 	}
 	
