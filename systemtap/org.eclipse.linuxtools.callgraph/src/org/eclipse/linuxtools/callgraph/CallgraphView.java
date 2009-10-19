@@ -446,6 +446,8 @@ public class CallgraphView extends SystemTapView {
 				graph.scrollTo(graph.getNode(graph.getRootVisibleNodeNumber()).getLocation().x
 						- graph.getBounds().width / 2, graph.getNode(
 						graph.getRootVisibleNodeNumber()).getLocation().y);
+				if (play != null)
+					play.setEnabled(true);
 			}
 		};
 		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
@@ -458,7 +460,8 @@ public class CallgraphView extends SystemTapView {
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, graph.getAnimationMode(),
 						graph.getRootVisibleNodeNumber());
-
+				if (play != null)
+					play.setEnabled(true);
 			}
 		};
 		ImageDescriptor d = ImageDescriptor.createFromImage(
@@ -472,7 +475,8 @@ public class CallgraphView extends SystemTapView {
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, graph.getAnimationMode(), 
 						graph.getRootVisibleNodeNumber());
-
+				if (play != null)
+					play.setEnabled(false);
 			}
 		};
 		ImageDescriptor aggregateImage = ImageDescriptor.createFromImage(
@@ -486,6 +490,8 @@ public class CallgraphView extends SystemTapView {
 			public void run(){
 				graph.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, graph.getAnimationMode(), 
 						graph.getRootVisibleNodeNumber());
+				if (play != null)
+					play.setEnabled(true);
 			}
 		};
 		ImageDescriptor levelImage = ImageDescriptor.createFromImage(
