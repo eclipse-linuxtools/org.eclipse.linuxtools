@@ -216,7 +216,7 @@ public class CallgraphView extends SystemTapView {
 
 	    
 	    g.aggregateCount = parser.countMap;
-	    g.aggregateTime = parser.cumulativeTimeMap;
+	    g.aggregateTime = parser.aggregateTimeMap;
 
 	    //Set total time
 	    g.setTotalTime(parser.totalTime);

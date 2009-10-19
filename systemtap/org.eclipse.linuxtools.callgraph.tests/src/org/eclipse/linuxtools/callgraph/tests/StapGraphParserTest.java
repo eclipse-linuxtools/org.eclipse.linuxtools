@@ -37,7 +37,7 @@ public class StapGraphParserTest extends TestCase {
 		for (int val : grph.serialMap.keySet()){
 			String fname = grph.serialMap.get(val);
 			assertTrue(grph.timeMap.get(val) != null);
-			assertTrue(grph.cumulativeTimeMap.get(fname) != null);
+			assertTrue(grph.aggregateTimeMap.get(fname) != null);
 		}
 	}
 	
@@ -47,7 +47,7 @@ public class StapGraphParserTest extends TestCase {
 		for (int val : grph.serialMap.keySet()){
 			String fname = grph.serialMap.get(val);
 			assertTrue(grph.totalTime >= grph.timeMap.get(val));
-			assertTrue(grph.totalTime >= grph.cumulativeTimeMap.get(fname));
+			assertTrue(grph.totalTime >= grph.aggregateTimeMap.get(fname));
 		}
 	}
 	
