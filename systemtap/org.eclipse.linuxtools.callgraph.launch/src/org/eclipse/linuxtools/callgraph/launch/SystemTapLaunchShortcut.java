@@ -89,6 +89,19 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  * <li>
  * Call finishLaunch or finishLaunchWithoutBinary</li>
  * </ul>
+ *<br>
+ *<br>
+	 * The following protected parameters are provided by
+	 * SystemTapLaunchShortcut:
+	 *<br> <br>
+	 * Optional customization parameters: <code> protected String name; protected
+	 * String binaryPath; protected String arguments; protected String
+	 * outputPath; protected String dirPath; protected String generatedScript;
+	 * protected boolean needToGenerate; protected boolean overwrite;</code>
+	 * <br> <br>
+	 * Mandatory: <code> protected String scriptPath; protected ILaunchConfiguration
+	 * config;</code>
+
  */
 public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	protected IEditorPart editor;

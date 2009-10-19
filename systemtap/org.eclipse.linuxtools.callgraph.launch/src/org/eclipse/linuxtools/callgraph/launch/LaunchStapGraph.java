@@ -25,18 +25,6 @@ import org.eclipse.ui.IEditorPart;
 
 
 public class LaunchStapGraph extends SystemTapLaunchShortcut {
-	/*
-	 * The following protected parameters are provided by
-	 * SystemTapLaunchShortcut:
-	 * 
-	 * Optional customization parameters: protected String name; protected
-	 * String binaryPath; protected String arguments; protected String
-	 * outputPath; protected String dirPath; protected String generatedScript;
-	 * protected boolean needToGenerate; protected boolean overwrite;
-	 * 
-	 * Mandatory: protected String scriptPath; protected ILaunchConfiguration
-	 * config;
-	 */
 
 	
 	private String partialScriptPath;
