@@ -66,11 +66,11 @@ public class StapUIJob extends UIJob {
 					.createExecutableExtension(PluginConstants.ATTR_CLASS);
 			view.forceDisplay();
 			viewer = view.getSingleInstance();
+			if (!viewer.setParser(parser))
+				return Status.CANCEL_STATUS;
 			if (viewer.initialize(this.getDisplay(), monitor) == Status.CANCEL_STATUS)
 				return Status.CANCEL_STATUS;
 			
-			if (!viewer.setParser(parser))
-				return Status.CANCEL_STATUS;
 			if (!parser.realTime) {
 				viewer.updateMethod();
 			}
