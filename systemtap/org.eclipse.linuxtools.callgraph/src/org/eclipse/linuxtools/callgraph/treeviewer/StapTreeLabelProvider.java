@@ -31,7 +31,7 @@ public class StapTreeLabelProvider implements ILabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		return ((StapData) element).called + ": " + ((StapData) element).name; //$NON-NLS-1$
+		return ((StapData) element).timesCalled + ": " + ((StapData) element).name; //$NON-NLS-1$
 	}
 
 	@Override

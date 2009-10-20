@@ -114,9 +114,9 @@ public class StapGraphMouseListener implements MouseListener {
 		List<Integer> callees = null;
 
 		if (graph.isCollapseMode())
-			callees = graph.getNodeData(id).collapsedCallees;
+			callees = graph.getNodeData(id).collapsedChildren;
 		else
-			callees = graph.getNodeData(id).callees;
+			callees = graph.getNodeData(id).children;
 		for (int subID : callees) {
 			if (graph.getNode(subID) != null)
 				graph.getNode(subID).unhighlight();
@@ -245,9 +245,9 @@ public class StapGraphMouseListener implements MouseListener {
 				List<Integer> callees = null;
 
 				if (graph.isCollapseMode())
-					callees = graph.getNodeData(id).collapsedCallees;
+					callees = graph.getNodeData(id).collapsedChildren;
 				else
-					callees = graph.getNodeData(id).callees;
+					callees = graph.getNodeData(id).children;
 
 				for (int subID : callees) {
 					if (graph.getNode(subID) != null)

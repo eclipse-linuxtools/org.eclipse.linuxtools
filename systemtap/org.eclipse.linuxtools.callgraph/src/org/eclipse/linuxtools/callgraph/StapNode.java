@@ -74,14 +74,14 @@ public class StapNode extends GraphNode{
 			this.connection = new GraphConnection( graphModel, style, 
 					this, graphModel.getNode(data.parent));
 			if (graphModel.isCollapseMode())
-				connection.setText("" + data.called); //$NON-NLS-1$
+				connection.setText("" + data.timesCalled); //$NON-NLS-1$
 		}
 		
 		if (graphModel.getNode(data.collapsedParent) != null) {
 			this.connection = new GraphConnection( graphModel, style, 
 					this, graphModel.getNode(data.collapsedParent));
 			if (graphModel.isCollapseMode())
-				connection.setText("" + data.called); //$NON-NLS-1$
+				connection.setText("" + data.timesCalled); //$NON-NLS-1$
 		}
 	}
 

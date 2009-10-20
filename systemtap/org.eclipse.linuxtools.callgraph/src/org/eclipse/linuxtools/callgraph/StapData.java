@@ -26,15 +26,15 @@ public class StapData {
 	public boolean isCollapsed;
 	public boolean onlyChildWithThisName;
     public int id;			  //id of the StapNode
-    public int called, parent, style;
+    public int timesCalled, parent, style;
     public int levelOfRecursion;
     public int collapsedParent;
     public int uncollapsedPiece;	//An uncollapsed piece of this node
     public long time;
     public String markedMessage;
     public String name;
-    public List<Integer> callees;
-    public List<Integer> collapsedCallees;
+    public List<Integer> children;
+    public List<Integer> collapsedChildren;
     
     private int partOfCollapsedNode;
     private StapGraph graph;
@@ -72,10 +72,10 @@ public class StapData {
     		long time, int called, int currentID, int caller, boolean isMarked, String message) {
         this.time = time;
         this.style = style;
-        this.called = called;
+        this.timesCalled = called;
         this.expandable = false;
-        callees = new ArrayList<Integer>();
-        collapsedCallees = new ArrayList<Integer>();
+        children = new ArrayList<Integer>();
+        collapsedChildren = new ArrayList<Integer>();
         this.id = currentID;
         this.name = txt;
         this.graph = graphModel;
@@ -126,18 +126,18 @@ public class StapData {
     	//then call a sort once instead of doing some crazy n! insertion :P
     	
     	//Insert id based on its time
-    	int size = callees.size();
+    	int size = children.size();
     	
     	if (size ==0) {
-    		callees.add(id);
-    		return callees.size();
+    		children.add(id);
+    		return children.size();
     	}
     	int position = search(time);
     	
-    	if (position == -1) callees.add(id);
-    	else callees.add(position, id);
+    	if (position == -1) children.add(id);
+    	else children.add(position, id);
    
-        return callees.size();
+        return children.size();
     }
     
 
@@ -148,12 +148,12 @@ public class StapData {
      * @return location in callees 
      */
     private int search(long time) {
-    	if (time > graph.getNodeData(callees.get(0)).time)
+    	if (time > graph.getNodeData(children.get(0)).time)
     		return 0;
 
-    	for (int i = 1; i < callees.size(); i++) {
-    		if (time < graph.getNodeData(callees.get(i -1)).time && 
-    				time > graph.getNodeData(callees.get(i)).time)
+    	for (int i = 1; i < children.size(); i++) {
+    		if (time < graph.getNodeData(children.get(i -1)).time && 
+    				time > graph.getNodeData(children.get(i)).time)
     				return i;
     	}
     	
@@ -178,7 +178,7 @@ public class StapData {
     	TreeMap<Long,ArrayList<StapData>> tempList = new TreeMap<Long,ArrayList<StapData>>();
     	//INDEX ALL THE STAPDATA INTO AN ARRAY AT THE CALCULATED INDEX
     	//SCATTERED INDICES : 0,1,...,5,..,10
-    	for (int val : collapsedCallees){
+    	for (int val : collapsedChildren){
     		if (tempList.get(graph.getNodeData(val).time) == null){
     			tempList.put(graph.getNodeData(val).time, new ArrayList<StapData>());
     		}
@@ -186,12 +186,12 @@ public class StapData {
     		tempList.get(graph.getNodeData(val).time).add(graph.getNodeData(val));
     	}
 
-    	collapsedCallees.clear();
+    	collapsedChildren.clear();
     	int count = 0;
 		// ANOTHER PASS THROUGH TO INDEX CONTINUOUSLY 0,1,2,..
 		for (long i : tempList.descendingKeySet()) {
 			for (StapData j : tempList.get(i)){
-				collapsedCallees.add(count, j.id);
+				collapsedChildren.add(count, j.id);
 			}
 			count++;
 		}

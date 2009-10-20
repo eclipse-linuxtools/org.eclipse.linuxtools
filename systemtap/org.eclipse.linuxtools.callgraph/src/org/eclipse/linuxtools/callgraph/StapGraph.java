@@ -349,7 +349,7 @@ public class StapGraph extends Graph {
 			getNode(callerID).setBackgroundColor(CONSTANT_HAS_PARENT);
 			getNode(callerID).setLocation(x + radius / 5, y - radius / 5);
 			if (getNode(id).connection == null) {
-				getNode(id).makeConnection(SWT.NONE, getNode(callerID), getNodeData(id).called);
+				getNode(id).makeConnection(SWT.NONE, getNode(callerID), getNodeData(id).timesCalled);
 			}
 			
 			if (getNodeData(callerID).isMarked())
@@ -360,10 +360,10 @@ public class StapGraph extends Graph {
 		//-------------Draw children nodes
 		List<Integer> nodeList;
 		if (!collapse_mode) {
-			nodeList = nodeDataMap.get(id).callees;
+			nodeList = nodeDataMap.get(id).children;
 		}
 		else {
-			nodeList = nodeDataMap.get(id).collapsedCallees;
+			nodeList = nodeDataMap.get(id).collapsedChildren;
 		}
 
 		int numberOfNodes;
@@ -405,7 +405,7 @@ public class StapGraph extends Graph {
 			subN.setLocation(x + xOffset, y + yOffset);
 			if (subN.connection == null) {
 				subN.makeConnection(SWT.NONE, nodeMap.get(id), nodeDataMap
-						.get(subID).called);
+						.get(subID).timesCalled);
 			}
 			
 			if (getNodeData(subID).isMarked())
@@ -513,7 +513,7 @@ public class StapGraph extends Graph {
 
 		//This is the lowest level of nodes to draw, and it still has kids
 		if (getLevelOfNode(id) == bottomLevelToDraw &&
-				getNodeData(id).callees.size() > 0)
+				getNodeData(id).children.size() > 0)
 			n.setBackgroundColor(CONSTANT_HAS_CHILDREN);
 		
 		if (getNodeData(id).isMarked())
@@ -526,9 +526,9 @@ public class StapGraph extends Graph {
 		
 		// Determine which list of callees to use
 		if (!collapse_mode)
-			callees = getNodeData(id).callees;
+			callees = getNodeData(id).children;
 		else
-			callees = getNodeData(id).collapsedCallees;
+			callees = getNodeData(id).collapsedChildren;
 		if (callees == null)
 			return;
 		
@@ -585,15 +585,15 @@ public class StapGraph extends Graph {
 		
 		
 		StapData data = getNodeData(rootVisibleNodeNumber);
-		if (data.callees != null) {
-			if (data.callees.size() < 1) {
+		if (data.children != null) {
+			if (data.children.size() < 1) {
 				return;
 			}
 		}
 		
-		List<Integer> list = data.callees;
+		List<Integer> list = data.children;
 		if (isCollapseMode())
-			list = data.collapsedCallees;
+			list = data.collapsedChildren;
 		
 		if (list.size() == 1) {
 			//Special case - only one child of the root node
@@ -753,7 +753,7 @@ public class StapGraph extends Graph {
 			}
 			
 			//IF WE CANNOT DISPLAY ALL NODES COLOUR NODES ON BOTTOM THAT STILL HAVE CHILDREN
-			if (level == bottomLevelToDraw && nodeDataMap.get(id).callees.size() != 0){
+			if (level == bottomLevelToDraw && nodeDataMap.get(id).children.size() != 0){
 				n.setBackgroundColor(CONSTANT_HAS_CHILDREN);
 			}
 			
@@ -766,14 +766,14 @@ public class StapGraph extends Graph {
 			// FIND ALL THE NODES THAT THIS NODE CALLS AND MAKE CONNECTIONS
 			List<Integer> setOfCallees = null;
 			if (collapse_mode)
-				setOfCallees = nodeDataMap.get(id).collapsedCallees;
+				setOfCallees = nodeDataMap.get(id).collapsedChildren;
 			else 
-				setOfCallees = nodeDataMap.get(id).callees;
+				setOfCallees = nodeDataMap.get(id).children;
 			
 			for (int val : setOfCallees) {
 				if (nodeMap.get(val) != null)
 					nodeMap.get(val).makeConnection(SWT.NONE, n, 
-						nodeDataMap.get(val).called);
+						nodeDataMap.get(val).timesCalled);
 			}
 			
 			count++;
@@ -918,9 +918,9 @@ public class StapGraph extends Graph {
 		for (int level = lvl; level < maxLevel; level++) {
 			for (int id : levels.get(level)) {
 				if (isCollapseMode())
-					list = getNodeData(id).collapsedCallees;
+					list = getNodeData(id).collapsedChildren;
 				else
-					list = getNodeData(id).callees;
+					list = getNodeData(id).children;
 				
 				numberOfNodes += list.size();
 				
@@ -1174,9 +1174,9 @@ public class StapGraph extends Graph {
 		List<Integer> list = null;
 		
 		if (collapse_mode)
-			list = nodeDataMap.get(id).collapsedCallees;
+			list = nodeDataMap.get(id).collapsedChildren;
 		else
-			list = nodeDataMap.get(id).callees;
+			list = nodeDataMap.get(id).children;
 		for (int i = 0; i < list.size(); i++) {
 			moveRecursive(list.get(i), xTarget, yTarget);
 		}
@@ -1218,7 +1218,7 @@ public class StapGraph extends Graph {
 		setCollapseMode(true);
 
 		if (nodeDataMap.get(id).hasCollapsedChildren
-				|| nodeDataMap.get(id).callees.size() == 0)
+				|| nodeDataMap.get(id).children.size() == 0)
 			return true;
 		nodeDataMap.get(id).hasCollapsedChildren = true;
 
@@ -1228,14 +1228,14 @@ public class StapGraph extends Graph {
 		HashMap<String, Integer> newNodeMap = new HashMap<String, Integer>();
 		// id of 'collapsed' node, id of its uncollapsed twin
 		HashMap<Integer, Integer> collapsedNodesWithOnlyOneNodeInThem = new HashMap<Integer, Integer>();
-		int size = nodeDataMap.get(id).callees.size();
+		int size = nodeDataMap.get(id).children.size();
 		
 		
 		
 		//-------------Iterate
 		for (int i = 0; i < size; i++) {
 
-			int childID = nodeDataMap.get(id).callees.get(i);
+			int childID = nodeDataMap.get(id).children.get(i);
 			int childLevel = getLevelOfNode(childID);
 			if (collapsedLevelSize.get(childLevel) == null)
 				collapsedLevelSize.put(childLevel, 0);
@@ -1253,7 +1253,7 @@ public class StapGraph extends Graph {
 					// We still think this is an only child, but now we know better.
 					// Create a new data node and aggregate
 					this.loadData(SWT.NONE, aggregateID, nodeName, nodeDataMap
-							.get(childID).time, nodeDataMap.get(childID).called,
+							.get(childID).time, nodeDataMap.get(childID).timesCalled,
 							id, nodeDataMap.get(childID).isMarked(), ""); //$NON-NLS-1$
 					
 					if (getNodeData(aggregateID).isMarked()) {
@@ -1261,8 +1261,8 @@ public class StapGraph extends Graph {
 						markedNodes.remove((Integer) aggregateID);
 					}
 					
-					nodeDataMap.get(id).callees.remove((Integer) aggregateID);
-					nodeDataMap.get(id).collapsedCallees.add(aggregateID);
+					nodeDataMap.get(id).children.remove((Integer) aggregateID);
+					nodeDataMap.get(id).collapsedChildren.add(aggregateID);
 
 					nodeDataMap.get(aggregateID).collapsedParent = id;
 
@@ -1273,8 +1273,8 @@ public class StapGraph extends Graph {
 					aggregateData(nodeDataMap.get(aggregateID), nodeDataMap
 							.get(otherChildID));
 					collapsedNodesWithOnlyOneNodeInThem.remove(aggregateID);
-					nodeDataMap.get(aggregateID).callees.addAll(nodeDataMap
-							.get(otherChildID).callees);
+					nodeDataMap.get(aggregateID).children.addAll(nodeDataMap
+							.get(otherChildID).children);
 
 					nodeDataMap.get(otherChildID).setPartOfCollapsedNode(aggregateID);
 					nodeDataMap.get(aggregateID).uncollapsedPiece = otherChildID;
@@ -1286,8 +1286,8 @@ public class StapGraph extends Graph {
 
 				
 				//-------------Complete aggregation
-				nodeDataMap.get(aggregateID).callees
-						.addAll(nodeDataMap.get(childID).callees);
+				nodeDataMap.get(aggregateID).children
+						.addAll(nodeDataMap.get(childID).children);
 				nodeDataMap.get(aggregateID).isCollapsed = true;
 
 				if (nodeMap.get(childID) != null) {
@@ -1319,7 +1319,7 @@ public class StapGraph extends Graph {
 		for (int i : collapsedNodesWithOnlyOneNodeInThem.keySet()) {
 			int childID =collapsedNodesWithOnlyOneNodeInThem.get(i); 
 			nodeDataMap.get(childID).onlyChildWithThisName = true;
-			nodeDataMap.get(id).collapsedCallees.add(childID);
+			nodeDataMap.get(id).collapsedChildren.add(childID);
 			newNodeMap.remove(nodeDataMap.get(childID).name);
 			nodeDataMap.get(childID).collapsedParent = id;
 			
@@ -1330,7 +1330,7 @@ public class StapGraph extends Graph {
 
 		
 		//-------------Finish iterations
-		for (int i : nodeDataMap.get(id).collapsedCallees) {
+		for (int i : nodeDataMap.get(id).collapsedChildren) {
 			recursivelyCollapseAllChildrenOfNode(i);
 		}
 
@@ -1351,7 +1351,7 @@ public class StapGraph extends Graph {
 	 */
 	public void aggregateData(StapData target, StapData victim) {
 		target.time += victim.time;
-		target.called += victim.called;
+		target.timesCalled += victim.timesCalled;
 		if (victim.isMarked() || target.isMarked()) {
 			target.setMarked();
 			markedCollapsedNodes.add(target.id);
@@ -1443,7 +1443,7 @@ public class StapGraph extends Graph {
 	 * @return
 	 */
 	public boolean hasChildren(int nodeID) {
-		if (nodeDataMap.get(nodeID).callees.size() > 0)
+		if (nodeDataMap.get(nodeID).children.size() > 0)
 			return true;
 		return false;
 	}
