@@ -70,16 +70,16 @@ public class StapNode extends GraphNode{
 		buttons = new ArrayList<Integer>();
 		
 
-		if (graphModel.getNode(data.caller) != null) {
+		if (graphModel.getNode(data.parent) != null) {
 			this.connection = new GraphConnection( graphModel, style, 
-					this, graphModel.getNode(data.caller));
+					this, graphModel.getNode(data.parent));
 			if (graphModel.isCollapseMode())
 				connection.setText("" + data.called); //$NON-NLS-1$
 		}
 		
-		if (graphModel.getNode(data.collapsedCaller) != null) {
+		if (graphModel.getNode(data.collapsedParent) != null) {
 			this.connection = new GraphConnection( graphModel, style, 
-					this, graphModel.getNode(data.collapsedCaller));
+					this, graphModel.getNode(data.collapsedParent));
 			if (graphModel.isCollapseMode())
 				connection.setText("" + data.called); //$NON-NLS-1$
 		}

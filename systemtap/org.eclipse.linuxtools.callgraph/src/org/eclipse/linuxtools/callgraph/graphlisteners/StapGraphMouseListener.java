@@ -58,7 +58,7 @@ public class StapGraphMouseListener implements MouseListener {
 			int id = node.getData().id;
 
 			graph.scale = 1;
-			graph.setCollapseMode(true);
+//			graph.setCollapseMode(true);
 			// Redraw in the current mode with the new id as the center
 			// The x,y parameters to draw() are irrelevant for radial mode
 			graph.draw(id);
@@ -181,7 +181,7 @@ public class StapGraphMouseListener implements MouseListener {
 			if (node == null)
 				return null;
 
-			int caller = node.getData().caller;
+			int caller = node.getData().parent;
 
 			if (caller < graph.getFirstUsefulNode()) {
 				// The only node that satisfies this condition should be

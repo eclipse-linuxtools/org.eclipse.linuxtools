@@ -20,25 +20,25 @@ import java.util.TreeMap;
  */
 public class StapData {
 	public boolean expandable;
+	public static final int NOT_PART_OF_COLLAPSED_NODE = -10;
+	public boolean noCaller;
+	public boolean hasCollapsedChildren;
+	public boolean isCollapsed;
+	public boolean onlyChildWithThisName;
     public int id;			  //id of the StapNode
-    public long time;
-    public int called;
-    public int caller;
-    public int style;
+    public int called, parent, style;
     public int levelOfRecursion;
+    public int collapsedParent;
+    public int uncollapsedPiece;	//An uncollapsed piece of this node
+    public long time;
+    public String markedMessage;
     public String name;
-    public boolean noCaller;
     public List<Integer> callees;
     public List<Integer> collapsedCallees;
-    private StapGraph graph;
-    public boolean hasCollapsedChildren;
-    public boolean isCollapsed;
-    public boolean onlyChildWithThisName;
+    
     private int partOfCollapsedNode;
-    public int collapsedCaller;
+    private StapGraph graph;
     private boolean marked;
-    public String markedMessage;
-    public static final int NOT_PART_OF_COLLAPSED_NODE = -10;
 
     public boolean isPartOfCollapsedNode() {
 		return (partOfCollapsedNode == NOT_PART_OF_COLLAPSED_NODE);
@@ -46,7 +46,8 @@ public class StapData {
 
 
     /**
-     * Compare to StapData.NOT_PART_OF_COLLAPSED_NODE to verify
+     * Compare to StapData.NOT_PART_OF_COLLAPSED_NODE to verify, or check
+     * isPartOfCollapseNode first.
      * 
      * @return The collapsed node this node is a part of (if any)
      */
@@ -82,18 +83,19 @@ public class StapData {
         this.isCollapsed = false;
         this.onlyChildWithThisName = false;
         this.partOfCollapsedNode= NOT_PART_OF_COLLAPSED_NODE;
-        this.collapsedCaller = -1;
-        this.caller = caller;
+        this.collapsedParent = -1;
+        this.parent = caller;
         this.levelOfRecursion = 0;
         this.marked = isMarked;
         this.markedMessage = message;
+        this.uncollapsedPiece = -1;
         
         
     	//Add this data to the caller's list of IDs
-		if (this.caller != -1) {
-			if (graphModel.getNodeData(this.caller) != null) {
-				graphModel.getNodeData(this.caller).addCallee(this.id, this.time);
-				this.levelOfRecursion = graphModel.getNodeData(this.caller).levelOfRecursion + 1;
+		if (this.parent != -1) {
+			if (graphModel.getNodeData(this.parent) != null) {
+				graphModel.getNodeData(this.parent).addCallee(this.id, this.time);
+				this.levelOfRecursion = graphModel.getNodeData(this.parent).levelOfRecursion + 1;
 			}
 		}
         

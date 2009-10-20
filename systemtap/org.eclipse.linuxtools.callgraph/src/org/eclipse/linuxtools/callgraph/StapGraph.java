@@ -341,7 +341,7 @@ public class StapGraph extends Graph {
 	public void radialHelper(int id, int x, int y, int radius, int startFromChild) {		
 		//-------------Draw parent node
 		// Draw caller node right beside this one, in a different color
-		int callerID = nodeDataMap.get(id).caller;
+		int callerID = nodeDataMap.get(id).parent;
 		if (callerID != -1) {
 			if (getNode(callerID) == null) {
 				nodeMap.put(callerID, getNodeData(callerID).makeNode(this));
@@ -1250,8 +1250,8 @@ public class StapGraph extends Graph {
 				if (collapsedNodesWithOnlyOneNodeInThem.get(aggregateID) != null) {
 					
 					//-------------Aggregate nodes - second node to be found
-					// We still think this is an only child - create a new
-					// data node and aggregate
+					// We still think this is an only child, but now we know better.
+					// Create a new data node and aggregate
 					this.loadData(SWT.NONE, aggregateID, nodeName, nodeDataMap
 							.get(childID).time, nodeDataMap.get(childID).called,
 							id, nodeDataMap.get(childID).isMarked(), ""); //$NON-NLS-1$
@@ -1264,9 +1264,10 @@ public class StapGraph extends Graph {
 					nodeDataMap.get(id).callees.remove((Integer) aggregateID);
 					nodeDataMap.get(id).collapsedCallees.add(aggregateID);
 
-					nodeDataMap.get(aggregateID).collapsedCaller = id;
+					nodeDataMap.get(aggregateID).collapsedParent = id;
 
-					// Aggregate
+					// Aggregate the first node that we found, and set it
+					// as the uncollapsed piece of the aggregate node
 					int otherChildID = collapsedNodesWithOnlyOneNodeInThem
 							.get(aggregateID);
 					aggregateData(nodeDataMap.get(aggregateID), nodeDataMap
@@ -1276,6 +1277,7 @@ public class StapGraph extends Graph {
 							.get(otherChildID).callees);
 
 					nodeDataMap.get(otherChildID).setPartOfCollapsedNode(aggregateID);
+					nodeDataMap.get(aggregateID).uncollapsedPiece = otherChildID;
 
 				} else 
 					//-------------Aggregate - third and additional nodes
@@ -1319,7 +1321,7 @@ public class StapGraph extends Graph {
 			nodeDataMap.get(childID).onlyChildWithThisName = true;
 			nodeDataMap.get(id).collapsedCallees.add(childID);
 			newNodeMap.remove(nodeDataMap.get(childID).name);
-			nodeDataMap.get(childID).collapsedCaller = id;
+			nodeDataMap.get(childID).collapsedParent = id;
 			
 			if (getNodeData(childID).isMarked())
 				markedCollapsedNodes.add(childID);
@@ -1473,11 +1475,43 @@ public class StapGraph extends Graph {
 	}
 	
 	public void setCollapseMode(boolean value) {
-		collapse_mode = value;
+		if (draw_mode == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)
+			return;
+		
+		if (collapse_mode != value) {
+			if (collapse_mode && !value) {
+				//Collapsed to noncollapsed
+				if (!getRootData().isOnlyChildWithThisName()) {
+					//A collapsed node that isn't an only child must have an
+					//uncollapsed piece
+					rootVisibleNodeNumber = getRootData().uncollapsedPiece;
+				}
+	
+			}
+			
+			if (!collapse_mode && value) {
+				//Uncollapsed to collapsed -- set center node to collapsed node
+				if (!getRootData().isOnlyChildWithThisName()) {
+					int temp = getRootData().getPartOfCollapsedNode();
+					if (temp != StapData.NOT_PART_OF_COLLAPSED_NODE) {
+						rootVisibleNodeNumber = temp;
+					}
+				}
+			}
+			collapse_mode = value;
+			callgraphView.getMode_collapsednodes().setChecked(value);
+		}
 		nextMarkedNode = -1;
-		callgraphView.getMode_collapsednodes().setChecked(value);
 	}
 
+	/**
+	 * 
+	 * @return getNodeData(getRootVisibleNodeNumber())
+	 */
+	public StapData getRootData() {
+		return getNodeData(getRootVisibleNodeNumber());
+	}
+	
 	/**
 	 * Gets id of root visible node
 	 * @return rootVisibleNode - ID of centre node
@@ -1614,7 +1648,7 @@ public class StapGraph extends Graph {
 	 * @return
 	 */
 	public StapNode getParentNode(int id) {
-		return nodeMap.get(nodeDataMap.get(id).caller);
+		return nodeMap.get(nodeDataMap.get(id).parent);
 	}
 	
 	
@@ -1624,7 +1658,7 @@ public class StapGraph extends Graph {
 	 * @return
 	 */
 	public StapData getParentData(int id) {
-		return nodeDataMap.get(nodeDataMap.get(id).caller);
+		return nodeDataMap.get(nodeDataMap.get(id).parent);
 	}
 	
 	/**

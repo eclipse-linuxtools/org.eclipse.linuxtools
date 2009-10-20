@@ -40,7 +40,7 @@ public class StapTreeContentProvider implements ITreeContentProvider{
 	@Override
 	public Object getParent(Object element) {
 		if (element instanceof StapData) {
-			return graph.getNodeData(((StapData) element).collapsedCaller);
+			return graph.getNodeData(((StapData) element).collapsedParent);
 		}
 		return null;
 	}
