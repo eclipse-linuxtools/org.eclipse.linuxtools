@@ -114,7 +114,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" + function + "\").call{	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc()) } 	}	probe process(@1).function(\"" + function + "\").return{		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc())	else { markedMessages[callArray[currentDepth]] = user_string(strtol(tokenize($$return, \"return=\"),16))}}";
+		String output = "probe process(@1).function(\"" + function + "\").call{	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc()) } 	}	probe process(@1).function(\"" + function + "\").return{		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc())	else { markedMessages[callArray[currentDepth]] = user_string(strtol(tokenize($$return, \"return=\"),16))}}\n";
 		return output;
 	}
 	
@@ -157,7 +157,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	private String writeFromPartialScript(String projectName) throws IOException {
 		String toWrite = "";  //$NON-NLS-1$
 		String temp = ""; //$NON-NLS-1$
-		toWrite += "probe begin{\n" + //$NON-NLS-1$
+		toWrite += "\nprobe begin{\n" + //$NON-NLS-1$
 					"printf(\"\\nPROBE_BEGIN\\n\")\n" +  //$NON-NLS-1$
 					"serial=1\n" +  //$NON-NLS-1$
 					"startTime = 0;\n" + //$NON-NLS-1$
