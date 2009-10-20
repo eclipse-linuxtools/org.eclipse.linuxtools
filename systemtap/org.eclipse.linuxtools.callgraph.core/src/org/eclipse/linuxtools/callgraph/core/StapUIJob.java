@@ -53,7 +53,7 @@ public class StapUIJob extends UIJob {
 		if (extensions == null || extensions.length < 1) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 					Messages.getString("GraphUIJob.0"), Messages.getString("GraphUIJob.1"), //$NON-NLS-1$ //$NON-NLS-2$
-					"Could not load view with id: " + viewID); //$NON-NLS-1$
+					Messages.getString("GraphUIJob.1") + ": " + viewID); //$NON-NLS-1$ //$NON-NLS-2$
 			mess.schedule();
 			return Status.CANCEL_STATUS;
 		}
@@ -66,9 +66,11 @@ public class StapUIJob extends UIJob {
 					.createExecutableExtension(PluginConstants.ATTR_CLASS);
 			view.forceDisplay();
 			viewer = view.getSingleInstance();
+			if (viewer.initialize(this.getDisplay(), monitor) == Status.CANCEL_STATUS)
+				return Status.CANCEL_STATUS;
+			
 			if (!viewer.setParser(parser))
 				return Status.CANCEL_STATUS;
-			viewer.initialize(this.getDisplay(), monitor);
 			if (!parser.realTime) {
 				viewer.updateMethod();
 			}
