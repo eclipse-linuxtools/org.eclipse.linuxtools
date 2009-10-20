@@ -55,7 +55,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		AbstractCLaunchDelegate {
 
 	private static final String TEMP_ERROR_OUTPUT =
-		PluginConstants.PLUGIN_LOCATION + "stapTempError.error"; //$NON-NLS-1$
+		PluginConstants.DEFAULT_OUTPUT + "stapTempError.error"; //$NON-NLS-1$
 	private String cmd;
 	private File temporaryScript = null;
 	private String arguments = ""; //$NON-NLS-1$
@@ -465,6 +465,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 		private Helper h;
 		private int counter;
 		public StreamListener() throws IOException {
+			File file = new File(TEMP_ERROR_OUTPUT);
+			file.delete();
+			file.createNewFile();
 			h = new Helper();
 			counter = 0;
 			h.setBufferedWriter(TEMP_ERROR_OUTPUT); //$NON-NLS-1$
