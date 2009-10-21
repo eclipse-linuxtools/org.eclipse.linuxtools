@@ -675,13 +675,16 @@ public class StapGraph extends Graph {
 			int size = levels.get(i).size();
 			for (int j = 1; j < size; j++){
 				int val = levels.get(i).get(j);
-				if (collapse_mode && nodeDataMap.get(val).isPartOfCollapsedNode()) {
-					continue;
+				StapData data = nodeDataMap.get(val);
+				if (!data.isOnlyChildWithThisName()) {
+					if (collapse_mode && data.isPartOfCollapsedNode()) {
+						continue;
+					}
+					if (!collapse_mode && data.isCollapsed)
+						continue;
 				}
-				if (!collapse_mode && nodeDataMap.get(val).isCollapsed)
-					continue;
 				
-				currPixelWidth += nodeDataMap.get(val).name.length() * 10 + StapGraph.CONSTANT_HORIZONTAL_SPACING_FOR_LEVEL;
+				currPixelWidth += data.name.length() * 10 + StapGraph.CONSTANT_HORIZONTAL_SPACING_FOR_LEVEL;
 				if (MaxLevelPixelWidth < currPixelWidth) {
 					MaxLevelPixelWidth = currPixelWidth;
 				}
@@ -721,11 +724,14 @@ public class StapGraph extends Graph {
 		for (int i = 0; i < levels.get(level).size(); i ++) {
 			int id = levels.get(level).get(i);
 			
-			if (collapse_mode && nodeDataMap.get(id).isPartOfCollapsedNode()) {
-				continue;
+			StapData data = nodeDataMap.get(id);
+			if (!data.isOnlyChildWithThisName()) {
+				if (collapse_mode && data.isPartOfCollapsedNode() ) {
+					continue;
+				}
+				if (!collapse_mode && nodeDataMap.get(id).isCollapsed)
+					continue;
 			}
-			if (!collapse_mode && nodeDataMap.get(id).isCollapsed)
-				continue;
 			
 			if (nodeMap.get(id) == null) {
 				nodeMap.put(id, getNodeData(id).makeNode(this));
@@ -1263,6 +1269,7 @@ public class StapGraph extends Graph {
 					
 					nodeDataMap.get(id).children.remove((Integer) aggregateID);
 					nodeDataMap.get(id).collapsedChildren.add(aggregateID);
+					nodeDataMap.get(childID).setPartOfCollapsedNode(aggregateID);
 
 					nodeDataMap.get(aggregateID).collapsedParent = id;
 
@@ -1275,6 +1282,7 @@ public class StapGraph extends Graph {
 					collapsedNodesWithOnlyOneNodeInThem.remove(aggregateID);
 					nodeDataMap.get(aggregateID).children.addAll(nodeDataMap
 							.get(otherChildID).children);
+					nodeDataMap.get(aggregateID).setPartOfCollapsedNode(StapData.NOT_PART_OF_COLLAPSED_NODE);
 
 					nodeDataMap.get(otherChildID).setPartOfCollapsedNode(aggregateID);
 					nodeDataMap.get(aggregateID).uncollapsedPiece = otherChildID;
@@ -1322,6 +1330,8 @@ public class StapGraph extends Graph {
 			nodeDataMap.get(id).collapsedChildren.add(childID);
 			newNodeMap.remove(nodeDataMap.get(childID).name);
 			nodeDataMap.get(childID).collapsedParent = id;
+			//This node is technically a part of itself
+			nodeDataMap.get(childID).setPartOfCollapsedNode(childID);
 			
 			if (getNodeData(childID).isMarked())
 				markedCollapsedNodes.add(childID);
@@ -1479,22 +1489,25 @@ public class StapGraph extends Graph {
 			return;
 		
 		if (collapse_mode != value) {
-			if (collapse_mode && !value) {
-				//Collapsed to noncollapsed
-				if (!getRootData().isOnlyChildWithThisName()) {
-					//A collapsed node that isn't an only child must have an
-					//uncollapsed piece
-					rootVisibleNodeNumber = getRootData().uncollapsedPiece;
-				}
-	
-			}
 			
-			if (!collapse_mode && value) {
-				//Uncollapsed to collapsed -- set center node to collapsed node
-				if (!getRootData().isOnlyChildWithThisName()) {
-					int temp = getRootData().getPartOfCollapsedNode();
-					if (temp != StapData.NOT_PART_OF_COLLAPSED_NODE) {
-						rootVisibleNodeNumber = temp;
+			if (draw_mode != StapGraph.CONSTANT_DRAWMODE_LEVEL) {
+				if (collapse_mode && !value) {
+					//Collapsed to noncollapsed
+					if (!getRootData().isOnlyChildWithThisName()) {
+						//A collapsed node that isn't an only child must have an
+						//uncollapsed piece
+						rootVisibleNodeNumber = getRootData().uncollapsedPiece;
+					}
+		
+				}
+				
+				if (!collapse_mode && value) {
+					//Uncollapsed to collapsed -- set center node to collapsed node
+					if (!getRootData().isOnlyChildWithThisName()) {
+						int temp = getRootData().getPartOfCollapsedNode();
+						if (temp != StapData.NOT_PART_OF_COLLAPSED_NODE) {
+							rootVisibleNodeNumber = temp;
+						}
 					}
 				}
 			}

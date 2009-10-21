@@ -41,7 +41,7 @@ public class StapData {
     private boolean marked;
 
     public boolean isPartOfCollapsedNode() {
-		return (partOfCollapsedNode == NOT_PART_OF_COLLAPSED_NODE);
+		return (partOfCollapsedNode != NOT_PART_OF_COLLAPSED_NODE);
 	}
 
 

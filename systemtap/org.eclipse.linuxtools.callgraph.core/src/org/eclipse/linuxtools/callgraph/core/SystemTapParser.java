@@ -352,7 +352,7 @@ public abstract class SystemTapParser extends Job {
 	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
 	 * its data structures that way. 
 	 */
-	protected void setData(Object obj) {
+	public void setData(Object obj) {
 		data = obj;
 	}
 	
