@@ -73,12 +73,12 @@ public abstract class SystemTapView extends ViewPart {
 	}
 
 	/**
-	 * This method will be called from GraphUIJob to load data
+	 * This method will be called from GraphUIJob to load the view
 	 * @param targetDisplay
 	 * @param monitor
 	 * @return Status.OK_STATUS to continue, Status.CANCEL_STATUS to abort
 	 */
-	public abstract IStatus initialize(Display targetDisplay,
+	public abstract IStatus loadView(Display targetDisplay,
 			IProgressMonitor monitor);
 
 	public SystemTapView getSingleInstance() {

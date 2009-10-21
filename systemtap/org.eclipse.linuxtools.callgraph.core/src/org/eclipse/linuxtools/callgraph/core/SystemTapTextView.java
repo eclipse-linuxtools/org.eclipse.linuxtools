@@ -175,7 +175,7 @@ public class SystemTapTextView extends SystemTapView {
 
 
 	@Override
-	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
+	public IStatus loadView(Display targetDisplay, IProgressMonitor monitor) {
 		previousEnd = 0;
 		forceDisplay();
 		viewer.setText(""); //$NON-NLS-1$

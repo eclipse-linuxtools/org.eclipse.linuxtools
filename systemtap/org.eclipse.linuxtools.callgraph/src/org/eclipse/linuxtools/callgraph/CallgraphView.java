@@ -92,14 +92,13 @@ public class CallgraphView extends SystemTapView {
 
 
 	
-	public IStatus initialize(Display targetDisplay, IProgressMonitor monitor) {
+	public IStatus loadView(Display targetDisplay, IProgressMonitor monitor) {
 
 		Display disp = targetDisplay;
 		if (disp == null)
 			disp = Display.getCurrent();
 		if (disp == null)
 			disp = Display.getDefault();
-		
 		
 		
 		//-------------Initialize shell, menu
@@ -169,6 +168,8 @@ public class CallgraphView extends SystemTapView {
 		thumb.setSource(g.getContents());
 		lws.setContents(thumb);
 
+		
+		
 		/*
 		 *                Load graph data
 		 */
@@ -247,11 +248,13 @@ public class CallgraphView extends SystemTapView {
 	}
 	
 	
-	public  void testFunction() {
-		if (masterComposite != null && !masterComposite.isDisposed())
-			masterComposite.dispose();
-	}
-	
+	/**
+	 * Convenience method for setting composites, graph and parser objects
+	 * @param graphC
+	 * @param treeC
+	 * @param g
+	 * @param p
+	 */
 	public  void setValues(Composite graphC, Composite treeC, StapGraph g, StapGraphParser p){
 		treeComp = treeC;
 		graphComp = graphC;
@@ -285,13 +288,7 @@ public class CallgraphView extends SystemTapView {
 		goto_previous.setEnabled(visible);
 		goto_last.setEnabled(visible);
 	}
-	
-	
-	
-	public  void firstTimeRefresh(){
 
-		graphComp.setSize(masterComposite.getSize().x ,masterComposite.getSize().y);
-	}
 	
 	
 	public  Composite makeTreeComp(int treeSize) {
@@ -353,9 +350,7 @@ public class CallgraphView extends SystemTapView {
 		if (treeComp != null)
 			treeComp.setParent(masterComposite);
 
-		
-		//MAXIMIZE THE SYSTEMTAP VIEW WHEN RENDERING A GRAPH
-		firstTimeRefresh();
+		graphComp.setSize(masterComposite.getSize().x ,masterComposite.getSize().y);
 	}
 	
 	
@@ -700,18 +695,63 @@ public class CallgraphView extends SystemTapView {
 		};
 	}
 	
-	
-	public  void disposeGraph() {
-		if (graphComp != null && !graphComp.isDisposed())
-			graphComp.dispose();
-		if (treeComp != null && !treeComp.isDisposed())
-			treeComp.dispose();
-		this.setGraphOptions(false);
-		//Force a redraw (.redraw() .update() not working)
-		this.maximizeOrRefresh(false);
+	@Override
+	protected boolean createOpenAction() {
+		//Opens from specified location
+		open_file = new Action(Messages.getString("CallgraphView.7")){ //$NON-NLS-1$
+			public void run(){
+				try {
+				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
+				String filePath =  dialog.open();
+				if (filePath != null){
+					StapGraphParser new_parser = new StapGraphParser();
+					new_parser.setSourcePath(filePath);
+						new_parser.setViewID(CallGraphConstants.viewID);
+					new_parser.schedule();					
+				}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};	
+		return true;
 	}
 
-	//METHODS USED MOSTLY IN TESTING
+
+	@Override
+	protected boolean createOpenDefaultAction() {
+		//Opens from the default location
+		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
+			public void run(){
+				try {
+				StapGraphParser new_parser = new StapGraphParser();
+					new_parser.setViewID(CallGraphConstants.viewID);
+				new_parser.schedule();					
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		return true;
+	}
+	
+	public boolean setParser(SystemTapParser newParser) {
+		if (newParser instanceof StapGraphParser) {
+			parser = (StapGraphParser) newParser;
+			return true;
+		}
+		return false;
+		
+	}
+
+	@Override
+	public void setViewID() {
+		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";		 //$NON-NLS-1$
+	}
+
+	
+
 	public  Action getAnimation_slow() {
 		return animation_slow;
 	}
@@ -820,16 +860,6 @@ public class CallgraphView extends SystemTapView {
 		return graph;
 	}
 	
-	public boolean setParser(SystemTapParser newParser) {
-		if (newParser instanceof StapGraphParser) {
-			parser = (StapGraphParser) newParser;
-			return true;
-		}
-		return false;
-		
-	}
-
-
 	@Override
 	public void setFocus() {
 	}
@@ -839,49 +869,5 @@ public class CallgraphView extends SystemTapView {
 	public void updateMethod() {		
 	}
 
-	@Override
-	public void setViewID() {
-		viewID = "org.eclipse.linuxtools.callgraph.callgraphview";		 //$NON-NLS-1$
-	}
-	@Override
-	protected boolean createOpenAction() {
-		//Opens from specified location
-		open_file = new Action(Messages.getString("CallgraphView.7")){ //$NON-NLS-1$
-			public void run(){
-				try {
-				FileDialog dialog = new FileDialog(new Shell(), SWT.DEFAULT);
-				String filePath =  dialog.open();
-				if (filePath != null){
-					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setSourcePath(filePath);
-						new_parser.setViewID(CallGraphConstants.viewID);
-					new_parser.schedule();					
-				}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		};	
-		return true;
-	}
-
-
-	@Override
-	protected boolean createOpenDefaultAction() {
-		//Opens from the default location
-		open_default = new Action(Messages.getString("CallgraphView.11")){ //$NON-NLS-1$
-			public void run(){
-				try {
-				StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setViewID(CallGraphConstants.viewID);
-				new_parser.schedule();					
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		
-		return true;
-	}
 
 }
