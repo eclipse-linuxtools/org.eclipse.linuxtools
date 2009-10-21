@@ -245,15 +245,12 @@ public class SystemTapLaunchConfigurationDelegate extends
 				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
-
-
 			// Generate the command
 			SystemTapCommandGenerator cmdGenerator = new SystemTapCommandGenerator();
 			cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
 					command, needsBinary, needsArguments, arguments, binaryArguments);
 
 
-//			MP.println(cmd);
 			// Prepare cmd for execution - we need a command array of strings,
 			// no string can contain a space character. (One of the process'
 			// requirements)
@@ -262,8 +259,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			for (String str : tmp) {
 				cmdLine.add(str);
 			}
-			String[] commandArray = (String[]) cmdLine
-					.toArray(new String[cmdLine.size()]);
+			String[] commandArray = (String[]) cmdLine.toArray(new String[cmdLine.size()]);
 			
 			// Check for cancellation
 			if (monitor.isCanceled()) {
@@ -289,7 +285,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			
 			if (extensions == null || extensions.length < 1) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"), Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2"), //$NON-NLS-1$ //$NON-NLS-2$
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"), 
+						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2"), //$NON-NLS-1$ //$NON-NLS-2$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser3") + //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser4") + parserClass); //$NON-NLS-1$
 				mess.schedule();
@@ -321,17 +318,16 @@ public class SystemTapLaunchConfigurationDelegate extends
 			System.out.println(cmd);
 			
 			if (subProcess == null){
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"),
+				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
 				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1")); //$NON-NLS-1$
 				mess.schedule();
 				return;
 			}
 			
-			IProcess process = createNewProcess(launch, subProcess,
-					commandArray[0]);
+			IProcess process = createNewProcess(launch, subProcess,commandArray[0]);
 			// set the command line used
-			process.setAttribute(IProcess.ATTR_CMDLINE,
-					cmd);
+			process.setAttribute(IProcess.ATTR_CMDLINE,cmd);
 			monitor.worked(1);
 			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
 			
