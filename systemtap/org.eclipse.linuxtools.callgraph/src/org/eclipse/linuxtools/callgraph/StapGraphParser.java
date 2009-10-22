@@ -408,7 +408,6 @@ public class StapGraphParser extends SystemTapParser {
 			return Status.CANCEL_STATUS;
 
 		BufferedReader buff = (BufferedReader) internalData;
-		StringBuffer text = new StringBuffer();
 
 		String line;
 		boolean draw = false;
@@ -446,7 +445,7 @@ public class StapGraphParser extends SystemTapParser {
 					}
 					
 					tmp = buff.readLine();
-					if (tmp != null && tmp.length() > 0 && (tmp = buff.readLine()) == null) {
+					if (tmp != null && tmp.length() > 0 && (tmp = buff.readLine()) != null) {
 						markedMessages = tmp.split(";"); //$NON-NLS-1$
 					}
 					else
