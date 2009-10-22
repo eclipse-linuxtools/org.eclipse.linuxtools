@@ -16,4 +16,15 @@
       </view>
    </extension>
 
+ <extension
+       id="org.eclipse.linuxtools.callgraph.core.systemtaptextparser"
+       name="SleepingThreadParser"
+       point="org.eclipse.linuxtools.callgraph.core.parser">
+    <parser
+          class="org.eclipse.linuxtools.callgraph.core.SystemTapTextParser"
+          realtime="true">
+    </parser>
+ </extension>
+ 
+
 </plugin>
