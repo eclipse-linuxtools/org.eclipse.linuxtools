@@ -25,18 +25,20 @@ public class StapData {
 	public boolean hasCollapsedChildren;
 	public boolean isCollapsed;
 	public boolean onlyChildWithThisName;
-    public int id;			  //id of the StapNode
+    public int id;		//id of the StapNode
     public int timesCalled, parent, style;
     public int levelOfRecursion;
     public int collapsedParent;
     public int uncollapsedPiece;	//An uncollapsed piece of this node
-    public long time;
-    public String markedMessage;
-    public String name;
+    public long time;	//execution time of this node
+    public String markedMessage;	//alt text for this node
+    public String name;		//text to be displayed
     public List<Integer> children;
     public List<Integer> collapsedChildren;
     
     private int partOfCollapsedNode;
+    //TODO: every StapData holds a copy of its StapGraph
+    //It is not used that often and one StapGraph per StapData is a lot 
     private StapGraph graph;
     private boolean marked;
 
@@ -58,18 +60,18 @@ public class StapData {
 	/**
 	 * Initialize StapData object
 	 * 
-	 * @param graphModel
-	 * @param style
-	 * @param txt
-	 * @param time
-	 * @param called
-	 * @param currentID
-	 * @param caller
+	 * @param graphModel StapGraph containing the StapNode that matches this StapData
+	 * @param style 
+	 * @param txt Text to be displayed when rendering the StapNode
+	 * @param time Time taken for this particular node to execute
+	 * @param called Number of times this particular node was called
+	 * @param currentID The unique identifier for this node
+	 * @param caller The parent of this node
 	 * @param isMarked
-	 * @param message
+	 * @param message Alt text to be displayed when hover over this node
 	 */
 	public StapData(StapGraph graphModel, int style, String txt, 
-    		long time, int called, int currentID, int caller, boolean isMarked, String message) {
+    		long time, int called, int currentID, int parent, boolean isMarked, String message) {
         this.time = time;
         this.style = style;
         this.timesCalled = called;
@@ -84,7 +86,7 @@ public class StapData {
         this.onlyChildWithThisName = false;
         this.partOfCollapsedNode= NOT_PART_OF_COLLAPSED_NODE;
         this.collapsedParent = -1;
-        this.parent = caller;
+        this.parent = parent;
         this.levelOfRecursion = 0;
         this.marked = isMarked;
         this.markedMessage = message;
@@ -110,7 +112,7 @@ public class StapData {
 			graphModel.setLowestLevelOfNodesAdded(levelOfRecursion);
         
 
-        this.noCaller = (caller == -1) ? true : false;
+        this.noCaller = (parent == -1) ? true : false;
     }
 
     
@@ -121,9 +123,6 @@ public class StapData {
      * @return
      */
     public int addCallee(int id, long time) {
-    	
-    	//TODO: This is phenomenally inefficient. We should just add them all
-    	//then call a sort once instead of doing some crazy n! insertion :P
     	
     	//Insert id based on its time
     	int size = children.size();
@@ -148,6 +147,7 @@ public class StapData {
      * @return location in callees 
      */
     private int search(long time) {
+    //TODO: This may not be entirely necessary as it doesn't always keep the order
     	if (time > graph.getNodeData(children.get(0)).time)
     		return 0;
 
@@ -198,6 +198,7 @@ public class StapData {
 		
     }
     
+    
    /**
     * Indicate that this StapData is part of a collapsed node (will not be drawn in
     * uncollapsed mode)
@@ -207,12 +208,14 @@ public class StapData {
 		this.partOfCollapsedNode = partOfCollapsedNode;
 	}
 
+	
 	/**
 	 * Indicate that this StapData was marked by the user
 	 */
 	public void setMarked() {
 		marked = true;
 	}
+	
 	
 	/**
 	 * Check if this StapData is marked
@@ -222,14 +225,10 @@ public class StapData {
 		return marked;
 	}
 
-
-
-
+	
 	public boolean isOnlyChildWithThisName() {
 		return onlyChildWithThisName;
 	}
-
-
 
 
 	public void setOnlyChildWithThisName(boolean onlyChildWithThisName) {
