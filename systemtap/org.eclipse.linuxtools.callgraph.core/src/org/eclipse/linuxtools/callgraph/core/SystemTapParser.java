@@ -384,4 +384,7 @@ public abstract class SystemTapParser extends Job {
 		
 	}
 
+	public boolean isRealTime() {
+		return realTime;
+	}
 }

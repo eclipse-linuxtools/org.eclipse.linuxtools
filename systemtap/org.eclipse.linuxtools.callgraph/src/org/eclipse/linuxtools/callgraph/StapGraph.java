@@ -977,9 +977,12 @@ public class StapGraph extends Graph {
 	public void draw(int drawMode, int animationMode, int id) {
 		setDrawMode(drawMode);
 		setAnimationMode(animationMode);
+		if (nodeDataMap.get(id) == null)
+			return;
 		this.clearSelection();
 		treeLevelFromRoot = 0;
 		currentPositionInLevel.clear();
+		
 		
 		
 		this.setRedraw(false);
@@ -1412,6 +1415,10 @@ public class StapGraph extends Graph {
 		return levels.get(topLevelToDraw).get(0);
 	}
 
+	public boolean isDataMapNull() {
+		return (nodeDataMap == null || nodeDataMap.isEmpty());
+	}
+	
 	/**
 	 * Recommend use of this function instead of getTopNode()
 	 * @return First node that is not the dummy first node
@@ -1423,7 +1430,7 @@ public class StapGraph extends Graph {
 		}
 
 		// Get first node that is not TOP_NODE_NAME
-		while (nodeDataMap.get(id) == null) {
+		while (nodeDataMap.get(id) == null && id < idOfLastNode) {
 			id++;
 		}
 

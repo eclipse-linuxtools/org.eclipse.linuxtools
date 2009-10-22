@@ -11,8 +11,11 @@
 
 package org.eclipse.linuxtools.callgraph;
 
+import java.util.HashMap;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
@@ -52,7 +55,7 @@ public class CallgraphView extends SystemTapView {
 	private StapGraphParser parser;
 
 
-
+	private int lastNodeChecked;
 	private Action view_treeview;
 	private Action view_radialview;
 	private  Action view_aggregateview;
@@ -100,7 +103,7 @@ public class CallgraphView extends SystemTapView {
 		if (disp == null)
 			disp = Display.getDefault();
 		
-		
+		lastNodeChecked = 0;
 		//-------------Initialize shell, menu
 		treeSize = 200;
 
@@ -168,7 +171,18 @@ public class CallgraphView extends SystemTapView {
 		thumb.setSource(g.getContents());
 		lws.setContents(thumb);
 
-		
+		loadData(monitor);
+		if (!parser.isRealTime())
+			return finishLoad(monitor);
+				
+		return Status.OK_STATUS;
+	}
+	
+	private IStatus loadData(IProgressMonitor mon) {
+		IProgressMonitor monitor = mon;
+		if (mon == null)
+			monitor = new NullProgressMonitor();
+
 		
 		/*
 		 *                Load graph data
@@ -179,6 +193,9 @@ public class CallgraphView extends SystemTapView {
 		
 		
 	    for (int id_parent : parser.serialMap.keySet()) {
+	    	if (id_parent < lastNodeChecked)
+	    		continue;
+	    	lastNodeChecked = id_parent;
 	    	if (g.getNodeData(id_parent) == null) {
 				if (parser.markedMap.get(id_parent) != null) {
 					marked = true;
@@ -214,13 +231,23 @@ public class CallgraphView extends SystemTapView {
 			}
 			
 		}
+	    return Status.OK_STATUS;
+	}
+	
+	private IStatus finishLoad(IProgressMonitor monitor) {
 
+	    if (g.aggregateCount == null)
+	    	g.aggregateCount = new HashMap<String, Integer>();
 	    
-	    g.aggregateCount = parser.countMap;
-	    g.aggregateTime = parser.aggregateTimeMap;
+	    g.aggregateCount.putAll(parser.countMap);
+	    
+	    if (g.aggregateTime == null)
+	    	g.aggregateTime = new HashMap<String, Long>();
+	    g.aggregateTime.putAll(parser.aggregateTimeMap);
 
 	    //Set total time
-	    g.setTotalTime(parser.totalTime);
+	    if (parser.totalTime != -1)
+	    	g.setTotalTime(parser.totalTime);
 	    
 	    //-------------Finish initializations
 	    //Generate data for collapsed nodes
@@ -242,8 +269,8 @@ public class CallgraphView extends SystemTapView {
 	    
 	    this.setValues(graphComp, treeComp, g, parser);
 	    this.initializePartControl();
-	    g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
-		g.getFirstUsefulNode());
+    	g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
+    			g.getFirstUsefulNode());
 		return Status.OK_STATUS;
 	}
 	
@@ -345,6 +372,8 @@ public class CallgraphView extends SystemTapView {
 	 */
 	private void initializePartControl(){
 		setGraphOptions(true);
+		if (graphComp == null)
+			return;
 		graphComp.setParent(masterComposite);
 		
 		if (treeComp != null)
@@ -866,7 +895,13 @@ public class CallgraphView extends SystemTapView {
 
 
 	@Override
-	public void updateMethod() {		
+	public void updateMethod() {
+		loadData(null);
+		if (parser.totalTime > 0) {
+			finishLoad(new NullProgressMonitor());
+		}
+		g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
+
 	}
 
 
