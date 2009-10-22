@@ -1,3 +1,7 @@
+2009-10-22  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (setSpecfile): Remove parts that are autodone in 3.5.
+
 2009-08-12  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/NoExecutableWizardPage.java: New file.

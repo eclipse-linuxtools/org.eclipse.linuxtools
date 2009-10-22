@@ -8,16 +8,13 @@
  * Contributors:
  *    Red Hat - initial API and implementation
  *    Alphonse Van Assche
+ *    Alexander Kurtakov - adapt to 3.5 API.
  *******************************************************************************/
 
 package org.eclipse.linuxtools.rpm.ui.editor;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultLineTracker;
 import org.eclipse.jface.text.IDocument;
@@ -38,8 +35,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.texteditor.ContentAssistAction;
-import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class SpecfileEditor extends TextEditor {
@@ -198,35 +193,6 @@ public class SpecfileEditor extends TextEditor {
 			startTabConversion();
 		}
 		fOccurrencesUpdater = new RpmMacroOccurrencesUpdater(this);
-	}
-
-	/*
-	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#createActions()
-	 */
-	@Override
-	protected void createActions() {
-		super.createActions();
-
-		IAction action = new ContentAssistAction(getResourceBundle(),
-				Messages.SpecfileEditor_0, this);
-		action
-				.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
-		setAction(Messages.SpecfileEditor_1, action);
-		markAsStateDependentAction(Messages.SpecfileEditor_2, true);
-	}
-
-	// ContentAssistAction take a ResourceBundle but Resource bundles are not
-	// yet implemented on
-	// a plugin level, so we have add this method here as a quick fix.
-	public ResourceBundle getResourceBundle() {
-		ResourceBundle resourceBundle;
-		try {
-			resourceBundle = ResourceBundle
-					.getBundle("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorMessages"); //$NON-NLS-1$
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
-		return resourceBundle;
 	}
 
 	protected void setSpecfile(Specfile specfile) {
