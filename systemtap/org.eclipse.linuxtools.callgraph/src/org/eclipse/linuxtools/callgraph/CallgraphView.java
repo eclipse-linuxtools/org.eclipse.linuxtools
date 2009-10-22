@@ -896,11 +896,13 @@ public class CallgraphView extends SystemTapView {
 
 	@Override
 	public void updateMethod() {
-		loadData(null);
-		if (parser.totalTime > 0) {
-			finishLoad(new NullProgressMonitor());
+		if (parser.isRealTime()) {
+			loadData(null);
+			if (parser.totalTime > 0) {
+				finishLoad(new NullProgressMonitor());
+			}
+			g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
 		}
-		g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
 
 	}
 
