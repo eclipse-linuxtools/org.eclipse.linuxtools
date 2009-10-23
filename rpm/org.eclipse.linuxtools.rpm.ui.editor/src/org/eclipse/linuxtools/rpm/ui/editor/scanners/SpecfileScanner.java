@@ -94,6 +94,7 @@ public class SpecfileScanner extends RuleBasedScanner {
 			AUTO_REQ_PROV, AUTO_PROV, EPOCH };
 
 	public SpecfileScanner(ColorManager manager) {
+		super();
 		IToken sectionToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
 

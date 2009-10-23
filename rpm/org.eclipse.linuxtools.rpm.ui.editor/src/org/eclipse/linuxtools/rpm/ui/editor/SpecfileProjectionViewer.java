@@ -56,6 +56,8 @@ class SpecfileProjectionViewer extends ProjectionViewer {
 		case REDO:
 			ignoreTextConverters = true;
 			break;
+		default:
+			break;
 		}
 		super.doOperation(operation);
 	}

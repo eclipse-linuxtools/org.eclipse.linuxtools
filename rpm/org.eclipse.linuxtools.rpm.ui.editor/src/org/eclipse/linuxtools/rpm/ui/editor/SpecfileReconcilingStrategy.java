@@ -86,7 +86,6 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 				}
 			});
 		}
-		return;
 	}
 
 	private void updateFolding() {

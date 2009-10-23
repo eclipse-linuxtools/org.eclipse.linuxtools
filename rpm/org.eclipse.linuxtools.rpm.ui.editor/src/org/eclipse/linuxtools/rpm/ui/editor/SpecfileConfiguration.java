@@ -57,6 +57,7 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private IAnnotationHover annotationHover;
 
 	public SpecfileConfiguration(ColorManager colorManager, SpecfileEditor editor) {
+		super();
 		this.colorManager = colorManager;
 		this.editor = editor;
 	}

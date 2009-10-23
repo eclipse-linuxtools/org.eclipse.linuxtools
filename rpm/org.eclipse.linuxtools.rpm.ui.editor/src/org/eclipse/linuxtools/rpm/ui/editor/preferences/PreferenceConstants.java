@@ -14,7 +14,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 /**
  * Constant definitions for plug-in preferences
  */
-public class PreferenceConstants {
+public final class PreferenceConstants {
 
 	/*
 	 * Other Constant
@@ -110,5 +110,9 @@ public class PreferenceConstants {
 	public static final boolean DP_RPMINFO_SOURCERPM = true;
 
 	public static final long DP_RPM_LIST_LAST_BUILD = 0;
+	
+	private PreferenceConstants(){
+		super();
+	}
 
 }

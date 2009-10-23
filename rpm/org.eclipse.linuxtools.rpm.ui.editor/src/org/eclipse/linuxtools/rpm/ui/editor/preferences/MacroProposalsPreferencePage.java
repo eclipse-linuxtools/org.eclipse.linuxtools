@@ -124,6 +124,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		private SelectionListener selectionListener;
 
 		public MacroListEditor(String name, String labelText, Composite parent) {
+			super();
 			init(name, labelText);
 			createControl(parent);
 			list = getListControl(parent);
@@ -307,7 +308,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		 * @return the list control
 		 */
 		@Override
-		public List getListControl(Composite parent) {
+		public final List getListControl(Composite parent) {
 			if (list == null) {
 				list = new List(parent, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL
 						| SWT.H_SCROLL);

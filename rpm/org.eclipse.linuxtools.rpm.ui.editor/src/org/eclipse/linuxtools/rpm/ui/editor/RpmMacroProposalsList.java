@@ -46,7 +46,7 @@ public class RpmMacroProposalsList {
 	/**
 	 * Build the macro list.
 	 */
-	public void buildMacroList() {
+	public final void buildMacroList() {
 		for (String definedMacro: SpecfileScanner.DEFINED_MACROS){
 			macroMap.put(definedMacro, Messages.RpmMacroProposalsList_0);
 			//TODO find way to provide info about buildin macros.

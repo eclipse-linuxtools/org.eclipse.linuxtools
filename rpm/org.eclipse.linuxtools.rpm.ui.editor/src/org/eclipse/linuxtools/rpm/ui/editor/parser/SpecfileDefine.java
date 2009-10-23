@@ -22,6 +22,7 @@ public class SpecfileDefine extends SpecfileTag {
 	}
 
 	public SpecfileDefine(SpecfileTag tag) {
+		super();
 		setName(tag.getName().toLowerCase());
 		setSpecfile(tag.getSpecfile());
 		setLineNumber(tag.getLineNumber());

@@ -210,7 +210,7 @@ public class SpecfileEditor extends TextEditor {
 
 	}
 
-	public SpecfileParser getParser() {
+	public final SpecfileParser getParser() {
 		if (parser == null) {
 			parser = new SpecfileParser();
 		}

@@ -76,7 +76,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 
 	private Text licenseText;
 
-	private Text URLText;
+	private Text urlText;
 
 	private Text source0Text;
 
@@ -173,7 +173,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 							setTemplateTagValue(licenseText, line);
 						}
 						if (line.startsWith("URL:")) { //$NON-NLS-1$
-							setTemplateTagValue(URLText, line);
+							setTemplateTagValue(urlText, line);
 						}
 						if (line.startsWith("Source0:")) { //$NON-NLS-1$
 							setTemplateTagValue(source0Text, line);
@@ -207,7 +207,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		licenseText = setTextItem(container, Messages.SpecfileNewWizardPage_18);
 
 		// Package URL
-		URLText = setTextItem(container, Messages.SpecfileNewWizardPage_19);
+		urlText = setTextItem(container, Messages.SpecfileNewWizardPage_19);
 
 		// Package Source0
 		source0Text = setTextItem(container, Messages.SpecfileNewWizardPage_20);
@@ -276,7 +276,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 					line = "License:" + "        " + licenseText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				if (line.startsWith("URL:")) { //$NON-NLS-1$
-					line = "URL:" + "            " + URLText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+					line = "URL:" + "            " + urlText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				if (line.startsWith("Source0:")) { //$NON-NLS-1$
 					line = "Source0:" + "        " + source0Text.getText(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -387,7 +387,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		summaryText.setText(SUMMARY);
 		groupCombo.setText(GROUP);
 		licenseText.setText(LICENSE);
-		URLText.setText(URL);
+		urlText.setText(URL);
 		source0Text.setText(SOURCE0);
 	}
 

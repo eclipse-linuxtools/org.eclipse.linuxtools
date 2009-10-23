@@ -29,6 +29,7 @@ public class SpecfileFormEditor extends FormEditor {
 	SpecfileParser parser;
 
 	public SpecfileFormEditor() {
+		super();
 		editor = new SpecfileEditor();
 	}
 

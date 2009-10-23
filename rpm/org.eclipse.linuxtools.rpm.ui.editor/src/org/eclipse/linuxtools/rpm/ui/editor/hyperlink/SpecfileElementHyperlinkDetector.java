@@ -47,6 +47,7 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	private Specfile specfile;
 
 	public SpecfileElementHyperlinkDetector(Specfile specfile) {
+		super();
 		this.specfile = specfile;
 	}
 

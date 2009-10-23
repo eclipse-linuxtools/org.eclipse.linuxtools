@@ -82,7 +82,7 @@ public class SpecfilePackage extends SpecfileSection {
 		return getSpecfile().getName()+"-" + getPackageName(); //$NON-NLS-1$
 	}
 
-	public void setPackageName(String packageName) {
+	public final void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
 

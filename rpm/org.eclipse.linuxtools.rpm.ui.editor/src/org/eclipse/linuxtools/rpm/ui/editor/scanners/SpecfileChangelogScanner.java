@@ -38,6 +38,7 @@ public class SpecfileChangelogScanner extends RuleBasedScanner {
 	private IToken fLastToken;
 	
 	public SpecfileChangelogScanner(ColorManager manager) {
+		super();
 		IToken sectionToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
 		

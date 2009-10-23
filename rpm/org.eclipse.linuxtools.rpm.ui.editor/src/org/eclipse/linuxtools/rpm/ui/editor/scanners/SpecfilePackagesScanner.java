@@ -42,6 +42,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 			"Obsoletes", "Prereq" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	public SpecfilePackagesScanner(ColorManager manager) {
+		super();
 		IToken packageToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.PACKAGES), null, SWT.NONE));
 

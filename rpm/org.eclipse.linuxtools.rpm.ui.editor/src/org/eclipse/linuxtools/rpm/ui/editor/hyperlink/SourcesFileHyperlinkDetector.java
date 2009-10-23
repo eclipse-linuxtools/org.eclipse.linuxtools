@@ -38,6 +38,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	 * @param editor Reference to the specfile editor.
 	 */
 	public SourcesFileHyperlinkDetector(SpecfileEditor editor) {
+		super();
 		this.editor = editor;
 	}
 
@@ -70,7 +71,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 					.getFile();
 			if (line.startsWith(SOURCE_IDENTIFIER)
 					|| line.startsWith(PATCH_IDENTIFIER)) {
-				int delimiterIndex = line.indexOf(":") + 1; //$NON-NLS-1$
+				int delimiterIndex = line.indexOf(':') + 1; 
 				String fileName = line.substring(delimiterIndex).trim();
 				if (region.getOffset() > lineInfo.getOffset()
 						+ line.indexOf(fileName)) {

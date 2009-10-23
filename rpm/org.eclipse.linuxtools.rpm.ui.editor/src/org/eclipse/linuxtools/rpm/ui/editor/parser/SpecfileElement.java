@@ -40,7 +40,7 @@ public class SpecfileElement {
 		return resolve(name);
 	}
 
-	public void setName(String name) {
+	public final void setName(String name) {
 		this.name = name;
 	}
 	
@@ -77,8 +77,7 @@ public class SpecfileElement {
 		if (specfile == null) {
 			return toResolve;
 		}
-		String resolved = Utils.resolveDefines(specfile, toResolve);
-		return resolved;
+		return Utils.resolveDefines(specfile, toResolve);
 	}
 
 }

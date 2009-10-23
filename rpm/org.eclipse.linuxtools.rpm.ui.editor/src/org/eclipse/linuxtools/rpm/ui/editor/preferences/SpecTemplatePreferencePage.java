@@ -26,6 +26,7 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage {
 	 * Default constructor
 	 */
 	public SpecTemplatePreferencePage() {
+		super();
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setTemplateStore(Activator.getDefault().getTemplateStore());
 		setContextTypeRegistry(Activator.getDefault().getContextTypeRegistry());
@@ -50,7 +51,7 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage {
 			new InstanceScope().getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {
 			//Error while saving.
-			return false;
+			ok = false;
 		}
 		return ok;
 	}

@@ -17,7 +17,11 @@ import org.eclipse.core.runtime.Status;
 /**
  * The logger of convenience for the Specfile Plug-In.
  */
-public class SpecfileLog {
+public final class SpecfileLog {
+	
+	private SpecfileLog(){
+		super();
+	}
 	
    /**
     * Log the specified information.

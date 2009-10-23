@@ -1,3 +1,59 @@
+2009-10-23  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/Messages.java (Messages): Fix issues found by pmd.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogParser.java (parseCurrentFunction): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java (Activator): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/compare/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/IStrictWordDetector.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (SpecfileFormEditor): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Likewise.
+	(SourcesFileHyperlinkDetector): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (SpecfileElementHyperlinkDetector): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentProvider.java (getChildren): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileLabelProvider.java (addListener): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Messages.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileDefine.java (SpecfileDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Likewise.
+	(setName): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (setPackageName): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackageContainer.java (getLineEndPosition): Likewise.
+	(SpecfilePackageContainer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (toString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java (MacroListEditor.MacroListEditor): Likewise.
+	(MacroListEditor.getListControl): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java (PreferenceConstants): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java (performOk): Likewise.
+	(SpecTemplatePreferencePage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/TaskTagsPreferencePage.java (TasksListEditor.parseString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java (buildMacroList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (update): Likewise.
+	(setPropertyChangeListener): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/AuthorEmailRule.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/StringWithEndingRule.java (StringWithEndingRule): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/VersionReleaseRule.java (evaluate): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileChangelogScanner.java (SpecfileChangelogScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePackagesScanner.java (SpecfilePackagesScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java (SpecfileScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (computeTemplateProposals): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java (SpecfileConfiguration): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDocumentProvider.java (getDocument): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (getParser): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java (updateFoldingRegions): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileLog.java (SpecfileLog): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java (doOperation): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java (setDefaultValues): Likewise.
+	(getContent): Likewise.
+	(.modifyText): Likewise.
+	(createControl): Likewise.
+
 2009-10-22  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (setSpecfile): Remove parts that are autodone in 3.5.

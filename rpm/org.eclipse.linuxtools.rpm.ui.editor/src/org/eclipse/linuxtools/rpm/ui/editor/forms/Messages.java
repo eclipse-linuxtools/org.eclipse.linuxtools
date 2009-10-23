@@ -2,7 +2,7 @@ package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.osgi.util.NLS;
 
-public class Messages extends NLS {
+public final class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.editor.forms.messages"; //$NON-NLS-1$
 	public static String MainPackagePage_0;
 	public static String MainPackagePage_1;
@@ -19,5 +19,6 @@ public class Messages extends NLS {
 	}
 
 	private Messages() {
+		super();
 	}
 }

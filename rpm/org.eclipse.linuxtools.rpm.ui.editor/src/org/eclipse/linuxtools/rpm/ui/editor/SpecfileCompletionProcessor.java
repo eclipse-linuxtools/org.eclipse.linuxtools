@@ -84,7 +84,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 
 	private final SpecfileEditor editor;
 	
-	private static final Comparator<TemplateProposal> proposalComparator = new ProposalComparator();
+	private static final Comparator<TemplateProposal> PROPOSAL_COMPARATOR = new ProposalComparator();
 
 	/**
 	 * Default constructor
@@ -198,7 +198,7 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 						Activator.getDefault().getImage(TEMPLATE_ICON), relevance));
 			}
 		}
-		Collections.sort(matches, proposalComparator);
+		Collections.sort(matches, PROPOSAL_COMPARATOR);
 		return matches;
 	}
 

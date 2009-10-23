@@ -76,7 +76,7 @@ public class SpecfileTag extends SpecfileElement {
 			return getName() + ": " + getIntValue(); //$NON-NLS-1$
 		}
 		String tagValue = getStringValue();
-		if ((tagValue != null) && (tagValue.length() > 0) && (tagValue.indexOf("%") > 0)) { //$NON-NLS-1$
+		if ((tagValue != null) && (tagValue.length() > 0) && (tagValue.indexOf('%') > 0)) { 
 			return getName() + ": " + super.resolve(tagValue); //$NON-NLS-1$
 		}
 		return getName() + ": " + getStringValue(); //$NON-NLS-1$
