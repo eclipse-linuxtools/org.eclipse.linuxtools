@@ -421,11 +421,11 @@ public class SpecfileParser {
 									.parseInt(defineStringValue);
 						} catch (NumberFormatException e) {
 							toReturn = new SpecfileDefine(defineName,
-									defineStringValue, specfile, activePackage);
+									defineStringValue, specfile, null);
 						}
 						if (toReturn == null)
 							toReturn = new SpecfileDefine(defineName,
-									defineIntValue, specfile, activePackage);
+									defineIntValue, specfile, null);
 					}
 				}
 			}

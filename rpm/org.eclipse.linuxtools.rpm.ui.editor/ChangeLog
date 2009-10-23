@@ -1,3 +1,7 @@
+2009-10-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseDefine): %define and %global shouldn't be associated with a subpackage.
+
 2009-10-23  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/Messages.java (Messages): Fix issues found by pmd.
