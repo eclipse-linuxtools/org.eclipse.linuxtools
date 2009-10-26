@@ -87,6 +87,7 @@ public class CallgraphView extends SystemTapView {
 	
 	private  StapGraph g;
 	private  int treeSize = 200;
+	private Canvas papaCanvas;
 
 	
 
@@ -102,14 +103,12 @@ public class CallgraphView extends SystemTapView {
 		
 		//-------------Initialize shell, menu
 		treeSize = 200;
-
-		Composite treeComp = this.makeTreeComp(treeSize);
-		Composite graphComp = this.makeGraphComp();
+		treeComp = this.makeTreeComp(treeSize);
+		graphComp = this.makeGraphComp();
 		graphComp.setBackgroundMode(SWT.INHERIT_FORCE);
 		
-		
 		//Create papa canvas
-		Canvas papaCanvas = new Canvas(graphComp, SWT.BORDER);
+		papaCanvas = new Canvas(graphComp, SWT.BORDER);
 		GridLayout papaLayout = new GridLayout(1, true);
 		papaLayout.horizontalSpacing=0;
 		papaLayout.verticalSpacing=0;
@@ -228,6 +227,7 @@ public class CallgraphView extends SystemTapView {
 			}
 			
 		}
+		setGraphOptions(true);
 	    return Status.OK_STATUS;
 	}
 	
@@ -320,7 +320,7 @@ public class CallgraphView extends SystemTapView {
 			return treeComp;
 		}
 		
-		Composite treeComp = new Composite(this.masterComposite, SWT.NONE);
+		treeComp = new Composite(this.masterComposite, SWT.NONE);
 		GridData treegd = new GridData(SWT.BEGINNING, SWT.FILL, false, true);
 		treegd.widthHint = treeSize;
 		treeComp.setLayout(new FillLayout());
@@ -329,12 +329,10 @@ public class CallgraphView extends SystemTapView {
 	}
 	
 	public  Composite makeGraphComp() {
-//		if (graphComp != null && !graphComp.isDisposed()) {
-//			return graphComp;
-//		}
-		if (graphComp != null)
+		if (graphComp != null && !graphComp.isDisposed()) {
 			graphComp.dispose();
-		Composite graphComp = new Composite(this.masterComposite, SWT.NONE);
+		}
+		graphComp = new Composite(this.masterComposite, SWT.NONE);
 		GridData graphgd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		GridLayout gl = new GridLayout(2, false);
 		gl.horizontalSpacing=0;
