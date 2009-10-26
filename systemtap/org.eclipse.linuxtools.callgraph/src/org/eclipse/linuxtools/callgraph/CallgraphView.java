@@ -184,6 +184,9 @@ public class CallgraphView extends SystemTapView {
 		 */
 		if (g.getNodeData(0) == null)
 			g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$
+		g.setStartTime(parser.startTime);
+		g.setEndTime(parser.endingTimeInNS);
+		
 		boolean marked = false;
 		String msg = ""; //$NON-NLS-1$
 		

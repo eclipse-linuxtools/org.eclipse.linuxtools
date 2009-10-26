@@ -47,18 +47,18 @@ public class StapNode extends GraphNode{
 			if (data.name.length() > nodeSize)
 				 shortName = data.name.substring(0, nodeSize - 3) + "...";   //$NON-NLS-1$
 			this.setText(shortName + ": " +  //$NON-NLS-1$
-				numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+				numberFormat.format((float) data.getTime()/graphModel.getTotalTime() * 100) 
 				+ "%"); //$NON-NLS-1$
 		}
 		
 		if (data.markedMessage.length() != 0) {
 			Label tooltip = new Label(data.name + ": " +  //$NON-NLS-1$
-					numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+					numberFormat.format((float) data.getTime()/graphModel.getTotalTime() * 100) 
 					+ "%" + "\n  " + data.markedMessage); //$NON-NLS-1$ //$NON-NLS-2$
 			this.setTooltip(tooltip);
 		} else if (data.name.length() > nodeSize) {
 			Label tooltip = new Label(data.name + ": " +  //$NON-NLS-1$
-					numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+					numberFormat.format((float) data.getTime()/graphModel.getTotalTime() * 100) 
 					+ "%"); //$NON-NLS-1$
 			this.setTooltip(tooltip);
 		}

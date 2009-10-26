@@ -100,6 +100,8 @@ public class StapGraph extends Graph {
 
 	//Time
 	private long totalTime;
+	private long endTime;
+	private long startTime;
 
 	//The current center/top of the nodes list
 	private int rootVisibleNodeNumber;
@@ -1262,7 +1264,7 @@ public class StapGraph extends Graph {
 					// We still think this is an only child, but now we know better.
 					// Create a new data node and aggregate
 					this.loadData(SWT.NONE, aggregateID, nodeName, nodeDataMap
-							.get(childID).time, nodeDataMap.get(childID).timesCalled,
+							.get(childID).getTime(), nodeDataMap.get(childID).timesCalled,
 							id, nodeDataMap.get(childID).isMarked(), ""); //$NON-NLS-1$
 					
 					if (getNodeData(aggregateID).isMarked()) {
@@ -1363,7 +1365,7 @@ public class StapGraph extends Graph {
 	 * @param victim
 	 */
 	public void aggregateData(StapData target, StapData victim) {
-		target.time += victim.time;
+		target.setTime(target.getTime()+ victim.getTime());
 		target.timesCalled += victim.timesCalled;
 		if (victim.isMarked() || target.isMarked()) {
 			target.setMarked();
@@ -1553,6 +1555,8 @@ public class StapGraph extends Graph {
 	 * @return Time in milliseconds
 	 */
 	public long getTotalTime() {
+		if (totalTime == 0)
+			return endTime - startTime;
 		return totalTime;
 	}
 
@@ -1915,6 +1919,21 @@ public class StapGraph extends Graph {
 			draw(toDraw);
 		 else
 			proj.pause();
+	}
+
+
+	public void setEndTime(long val) {
+		endTime = val;
+	}
+	
+	public long getEndTime() {
+		return endTime;
+	}
+
+
+
+	public void setStartTime(long val) {
+		startTime = val;		
 	}
 	
 }

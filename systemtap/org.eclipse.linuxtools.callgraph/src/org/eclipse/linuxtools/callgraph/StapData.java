@@ -30,7 +30,7 @@ public class StapData {
     public int levelOfRecursion;
     public int collapsedParent;
     public int uncollapsedPiece;	//An uncollapsed piece of this node
-    public long time;	//execution time of this node
+    private long time;	//execution time of this node
     public String markedMessage;	//alt text for this node
     public String name;		//text to be displayed
     public List<Integer> children;
@@ -233,5 +233,18 @@ public class StapData {
 
 	public void setOnlyChildWithThisName(boolean onlyChildWithThisName) {
 		this.onlyChildWithThisName = onlyChildWithThisName;
+	}
+
+
+	public long getTime() {
+		if (time > 1200000000000000000l) {
+			return graph.getEndTime() - time;
+		}
+		return time;
+	}
+
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 }

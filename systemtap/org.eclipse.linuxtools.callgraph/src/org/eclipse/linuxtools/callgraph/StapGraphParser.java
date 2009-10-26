@@ -60,7 +60,7 @@ public class StapGraphParser extends SystemTapParser {
 	private boolean skippedDirectives = false; 			
 	private int firstNode = -1;
 	
-
+	public long startTime = -1;
 	
 	public String text;
 	
@@ -78,6 +78,7 @@ public class StapGraphParser extends SystemTapParser {
 		lastFunctionCalled = 0;
 		project = null;
 		markedMessages = null;
+		startTime = -1;
 	}
 
 	
@@ -96,6 +97,7 @@ public class StapGraphParser extends SystemTapParser {
 		encounteredMain = false;
 		skippedDirectives = false; 			
 		firstNode = -1;
+		startTime = -1;
 		
 		BufferedReader buff = null;
 		try {
@@ -282,7 +284,9 @@ public class StapGraphParser extends SystemTapParser {
 					int id = Integer.parseInt(args[1]);
 					long time = Long.parseLong(args[2]);
 					endingTimeInNS=time;
-					
+					if (startTime < 1) {
+						startTime = time;
+					}
 					String name = args[0];
 					
 					//If we haven't encountered a main function yet and the name isn't clean,
@@ -371,8 +375,8 @@ public class StapGraphParser extends SystemTapParser {
 						parsingError(Messages.getString("StapGraphParser.13") + name); //$NON-NLS-1$
 						return Status.CANCEL_STATUS;
 					}		
-					time =  Long.parseLong(args[1]) - timeMap.get(id);
-					endingTimeInNS=time;
+					endingTimeInNS=Long.parseLong(args[1]);
+					time = endingTimeInNS - timeMap.get(id);
 					timeMap.put(id, time);
 					
 					
