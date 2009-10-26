@@ -86,8 +86,6 @@ public class CallgraphView extends SystemTapView {
 	private  Composite graphComp;
 	private  Composite treeComp;
 	
-	private  StapGraph graph;
-	
 	private  StapGraph g;
 	private  int treeSize = 200;
 
@@ -96,7 +94,7 @@ public class CallgraphView extends SystemTapView {
 
 	
 	public IStatus loadView(Display targetDisplay, IProgressMonitor monitor) {
-
+		
 		Display disp = targetDisplay;
 		if (disp == null)
 			disp = Display.getCurrent();
@@ -153,8 +151,7 @@ public class CallgraphView extends SystemTapView {
 		
 		//Initialize graph
 		g = new StapGraph(graphComp, SWT.BORDER, treeComp, papaCanvas, this);
-		g.setLayoutData(new GridData(masterComposite.getBounds().width - 220,
-					masterComposite.getBounds().height));
+		g.setLayoutData(new GridData(masterComposite.getBounds().width,Display.getCurrent().getBounds().height - treeSize));
 
 		up.addSelectionListener(new AutoScrollSelectionListener(
 				AutoScrollSelectionListener.AutoScroll_up, g));
@@ -267,7 +264,7 @@ public class CallgraphView extends SystemTapView {
 	    
 	    g.setProject(parser.project);
 	    
-	    this.setValues(graphComp, treeComp, g, parser);
+//	    this.setValues(graphComp, treeComp, g, parser);
 	    this.initializePartControl();
     	g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
     			g.getFirstUsefulNode());
@@ -275,19 +272,19 @@ public class CallgraphView extends SystemTapView {
 	}
 	
 	
-	/**
-	 * Convenience method for setting composites, graph and parser objects
-	 * @param graphC
-	 * @param treeC
-	 * @param g
-	 * @param p
-	 */
-	public  void setValues(Composite graphC, Composite treeC, StapGraph g, StapGraphParser p){
-		treeComp = treeC;
-		graphComp = graphC;
-		graph = g;
-		parser = p;
-	}
+//	/**
+//	 * Convenience method for setting composites, graph and parser objects
+//	 * @param graphC
+//	 * @param treeC
+//	 * @param g
+//	 * @param p
+//	 */
+//	public  void setValues(Composite graphC, Composite treeC, StapGraph g, StapGraphParser p){
+//		treeComp = treeC;
+//		graphComp = graphC;
+//		g = g;
+//		parser = p;
+//	}
 	
 	
 	/**
@@ -465,11 +462,11 @@ public class CallgraphView extends SystemTapView {
 		//Set drawmode to tree view
 		view_treeview = new Action(Messages.getString("CallgraphView.16")){ //$NON-NLS-1$
 			public void run() {
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_TREE, graph.getAnimationMode(), 
-						graph.getRootVisibleNodeNumber());
-				graph.scrollTo(graph.getNode(graph.getRootVisibleNodeNumber()).getLocation().x
-						- graph.getBounds().width / 2, graph.getNode(
-						graph.getRootVisibleNodeNumber()).getLocation().y);
+				g.draw(StapGraph.CONSTANT_DRAWMODE_TREE, g.getAnimationMode(), 
+						g.getRootVisibleNodeNumber());
+				g.scrollTo(g.getNode(g.getRootVisibleNodeNumber()).getLocation().x
+						- g.getBounds().width / 2, g.getNode(
+						g.getRootVisibleNodeNumber()).getLocation().y);
 				if (play != null)
 					play.setEnabled(true);
 			}
@@ -482,8 +479,8 @@ public class CallgraphView extends SystemTapView {
 		//Set drawmode to radial view
 		view_radialview = new Action(Messages.getString("CallgraphView.17")){ //$NON-NLS-1$
 			public void run(){
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, graph.getAnimationMode(),
-						graph.getRootVisibleNodeNumber());
+				g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, g.getAnimationMode(),
+						g.getRootVisibleNodeNumber());
 				if (play != null)
 					play.setEnabled(true);
 			}
@@ -497,8 +494,8 @@ public class CallgraphView extends SystemTapView {
 		//Set drawmode to aggregate view
 		view_aggregateview = new Action(Messages.getString("CallgraphView.18")){ //$NON-NLS-1$
 			public void run(){
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, graph.getAnimationMode(), 
-						graph.getRootVisibleNodeNumber());
+				g.draw(StapGraph.CONSTANT_DRAWMODE_AGGREGATE, g.getAnimationMode(), 
+						g.getRootVisibleNodeNumber());
 				if (play != null)
 					play.setEnabled(false);
 			}
@@ -512,8 +509,8 @@ public class CallgraphView extends SystemTapView {
 		//Set drawmode to level view
 		view_levelview = new Action(Messages.getString("CallgraphView.19")){ //$NON-NLS-1$
 			public void run(){
-				graph.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, graph.getAnimationMode(), 
-						graph.getRootVisibleNodeNumber());
+				g.draw(StapGraph.CONSTANT_DRAWMODE_LEVEL, g.getAnimationMode(), 
+						g.getRootVisibleNodeNumber());
 				if (play != null)
 					play.setEnabled(true);
 			}
@@ -526,7 +523,7 @@ public class CallgraphView extends SystemTapView {
 		
 		setView_refresh(new Action(Messages.getString("CallgraphView.Reset")){ //$NON-NLS-1$
 			public void run(){
-				graph.reset();
+				g.reset();
 			}
 		});
 		ImageDescriptor refreshImage = ImageDescriptor.createFromImage(
@@ -545,7 +542,7 @@ public class CallgraphView extends SystemTapView {
 		//Set animation mode to slow
 		animation_slow = new Action(Messages.getString("CallgraphView.20"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
 			public void run(){
-				graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
+				g.setAnimationMode(StapGraph.CONSTANT_ANIMATION_SLOW);
 				this.setChecked(true);
 				animation_slow.setChecked(true);
 				animation_fast.setChecked(false);
@@ -557,7 +554,7 @@ public class CallgraphView extends SystemTapView {
 		//Set animation mode to fast
 		animation_fast = new Action(Messages.getString("CallgraphView.22"), Action.AS_RADIO_BUTTON){ //$NON-NLS-1$
 			public void run(){
-				graph.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
+				g.setAnimationMode(StapGraph.CONSTANT_ANIMATION_FASTEST);
 				animation_slow.setChecked(false);
 				animation_fast.setChecked(true);
 			}
@@ -567,13 +564,13 @@ public class CallgraphView extends SystemTapView {
 		mode_collapsednodes = new Action(Messages.getString("CallgraphView.24"), Action.AS_CHECK_BOX){ //$NON-NLS-1$
 			public void run(){
 				
-				if (graph.isCollapseMode()) {
-					graph.setCollapseMode(false);
-					graph.draw(graph.getRootVisibleNodeNumber());
+				if (g.isCollapseMode()) {
+					g.setCollapseMode(false);
+					g.draw(g.getRootVisibleNodeNumber());
 				}
 				else {
-					graph.setCollapseMode(true);
-					graph.draw(graph.getRootVisibleNodeNumber());
+					g.setCollapseMode(true);
+					g.draw(g.getRootVisibleNodeNumber());
 				}
 			}
 		};
@@ -595,7 +592,7 @@ public class CallgraphView extends SystemTapView {
 				limitLabel.setText(Messages.getString("CallgraphView.MaxNodes")); //$NON-NLS-1$
 				limit = new Spinner(sh, SWT.BORDER);
 				limit.setMaximum(5000);
-				limit.setSelection(graph.getMaxNodes());
+				limit.setSelection(g.getMaxNodes());
 				limit.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
 				
 				Label bufferLabel = new Label(sh, SWT.NONE);
@@ -603,7 +600,7 @@ public class CallgraphView extends SystemTapView {
 				bufferLabel.setText(Messages.getString("CallgraphView.MaxDepth")); //$NON-NLS-1$
 				buffer = new Spinner(sh, SWT.BORDER);
 				buffer.setMaximum(5000);
-				buffer.setSelection(graph.getLevelBuffer());
+				buffer.setSelection(g.getLevelBuffer());
 				buffer.setLayoutData(new GridData(SWT.CENTER, SWT.DEFAULT, true, false));
 				
 				Button set_limit = new Button(sh, SWT.PUSH);
@@ -613,16 +610,16 @@ public class CallgraphView extends SystemTapView {
 					public void widgetSelected(SelectionEvent e) {
 						boolean redraw = false;
 						if (limit.getSelection() > 0 && buffer.getSelection() > 0) {
-							graph.setMaxNodes(limit.getSelection());
-							graph.setLevelBuffer(buffer.getSelection());
+							g.setMaxNodes(limit.getSelection());
+							g.setLevelBuffer(buffer.getSelection());
 							
-							if (graph.changeLevelLimits(graph.getLevelOfNode(graph.getRootVisibleNodeNumber()))) {
+							if (g.changeLevelLimits(g.getLevelOfNode(g.getRootVisibleNodeNumber()))) {
 								SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 										Messages.getString("CallgraphView.BufferTooHigh"), Messages.getString("CallgraphView.BufferTooHigh"),  //$NON-NLS-1$ //$NON-NLS-2$
 										Messages.getString("CallgraphView.BufferMessage1") + //$NON-NLS-1$
 										Messages.getString("CallgraphView.BufferMessage2") + //$NON-NLS-1$
 										Messages.getString("CallgraphView.BufferMessage3") + //$NON-NLS-1$
-										Messages.getString("CallgraphView.BufferMessage4") + graph.getLevelBuffer() + //$NON-NLS-1$
+										Messages.getString("CallgraphView.BufferMessage4") + g.getLevelBuffer() + //$NON-NLS-1$
 										Messages.getString("CallgraphView.BufferMessage5") + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE +   //$NON-NLS-1$
 										Messages.getString("CallgraphView.BufferMessage6") + //$NON-NLS-1$
 										Messages.getString("CallgraphView.BufferMessage7")); //$NON-NLS-1$
@@ -634,7 +631,7 @@ public class CallgraphView extends SystemTapView {
 						sh.dispose();
 						
 						if (redraw)
-							graph.draw();
+							g.draw();
 					}
 					
 				});
@@ -661,33 +658,33 @@ public class CallgraphView extends SystemTapView {
 	public void createMovementActions() {
 		goto_next = new Action(Messages.getString("CallgraphView.Next")) { //$NON-NLS-1$
 			public void run() {
-				graph.drawNextNode();
+				g.drawNextNode();
 			}
 		};
 		
 		goto_previous = new Action(Messages.getString("CallgraphView.Previous")) { //$NON-NLS-1$
 			public void run() {
-				if (graph.isCollapseMode()) {
-					graph.setCollapseMode(false);
+				if (g.isCollapseMode()) {
+					g.setCollapseMode(false);
 				}
-				int toDraw = graph.getPreviousCalledNode(graph.getRootVisibleNodeNumber());
+				int toDraw = g.getPreviousCalledNode(g.getRootVisibleNodeNumber());
 				if (toDraw != -1)
-					graph.draw(toDraw);
+					g.draw(toDraw);
 			}
 		};
 		
 		goto_last = new Action(Messages.getString("CallgraphView.Last")) { //$NON-NLS-1$
 			public void run() {
-				if (graph.isCollapseMode())
-					graph.setCollapseMode(false);
-				graph.draw(graph.getLastFunctionCalled());
+				if (g.isCollapseMode())
+					g.setCollapseMode(false);
+				g.draw(g.getLastFunctionCalled());
 			}
 		};
 		
 		play = new Action(Messages.getString("CallgraphView.0")) { //$NON-NLS-1$
 			public void run() {
-				if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
-					graph.play();
+				if (g.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
+					g.play();
 					togglePlayImage();
 				}
 			}
@@ -713,13 +710,13 @@ public class CallgraphView extends SystemTapView {
 	public void createMarkerActions() {
 		markers_next = new Action(Messages.getString("CallgraphView.nextMarker")) { //$NON-NLS-1$
 			public void run() {
-				graph.draw(graph.getNextMarkedNode());
+				g.draw(g.getNextMarkedNode());
 			}
 		};
 		
 		markers_previous = new Action(Messages.getString("CallgraphView.previousMarker")) { //$NON-NLS-1$
 			public void run() {
-				graph.draw(graph.getPreviousMarkedNode());
+				g.draw(g.getPreviousMarkedNode());
 			}
 		};
 	}
@@ -886,7 +883,7 @@ public class CallgraphView extends SystemTapView {
 	}
 	
 	public  StapGraph getGraph() {
-		return graph;
+		return g;
 	}
 	
 	@Override
