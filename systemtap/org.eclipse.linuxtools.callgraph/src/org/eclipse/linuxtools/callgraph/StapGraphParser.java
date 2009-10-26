@@ -128,15 +128,22 @@ public class StapGraphParser extends SystemTapParser {
 						return Status.CANCEL_STATUS;
 					}
 					
+					StringBuilder builder = new StringBuilder();
 					text = buff.readLine();
 					if (text == null || text.length() < 1) {
 						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
 					}
+					builder.append(text);
+					while ((tmp = buff.readLine()) != null) {
+						if (tmp.charAt(0) == '-' || tmp.charAt(0) == '+')
+							break;
+						builder.append(tmp);
+					}
+					text = builder.toString();
 					
-					tmp = buff.readLine();
 					if (tmp != null && tmp.length() > 0)
-						endingTimeInNS = Long.parseLong(tmp);
+						endingTimeInNS = Long.parseLong(tmp.substring(1));
 					else {
 						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
@@ -144,7 +151,7 @@ public class StapGraphParser extends SystemTapParser {
 					
 					tmp = buff.readLine();
 					if (tmp != null && tmp.length() > 0)
-						totalTime = Long.parseLong(tmp);
+						totalTime = Long.parseLong(tmp.substring(1));
 					else {
 						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
@@ -152,7 +159,7 @@ public class StapGraphParser extends SystemTapParser {
 					
 					tmp = buff.readLine();
 					if (tmp != null && tmp.length() > 0)
-						markedMessages = tmp.split(";"); //$NON-NLS-1$
+						markedMessages = tmp.substring(1).split(";"); //$NON-NLS-1$
 					else
 						//Not having any marked messages is not an error
 						markedMessages = null;
@@ -420,7 +427,6 @@ public class StapGraphParser extends SystemTapParser {
 					continue;
 				
 				if (line.equals("PROBE_BEGIN")) {
-					//TODO: Do not assume that project line is already printed
 					String tmp = buff.readLine();
 					
 					if (tmp != null && tmp.length() > 0) {
@@ -430,30 +436,17 @@ public class StapGraphParser extends SystemTapParser {
 						launchFileErrorDialog();
 						return Status.CANCEL_STATUS;
 					}
-				} else if (parse(line) == Status.CANCEL_STATUS) {
-					if (line != null && line.length() > 0)
-						endingTimeInNS = Long.parseLong(line);
-					else {
-						launchFileErrorDialog();
-						return Status.CANCEL_STATUS;
-					}
-					
-					String tmp = buff.readLine();
-					while (tmp != null && tmp.length() > 0) {
-						totalTime = Long.parseLong(tmp);
-						tmp = buff.readLine();
-					}
-					
-					tmp = buff.readLine();
-					if (tmp != null && tmp.length() > 0 && (tmp = buff.readLine()) != null) {
-						markedMessages = tmp.split(";"); //$NON-NLS-1$
-					}
-					else
-						//Not having any marked messages is not an error
-						markedMessages = null;
-					
+				} else if (line.charAt(0) == '-') {
+					endingTimeInNS = Long.parseLong(line.substring(1));
+				} else if (line.charAt(0) == '+') {
+					totalTime = Long.parseLong(line.substring(1));
+				} else if (line.charAt(0) == '?') {
+					//Messages should be the last line in the output
+					markedMessages = line.substring(1).split(";");
 					parseEnd();
 					parseMarked();
+				} else {
+					parse(line);
 				}
 			}
 			if (draw)

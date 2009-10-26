@@ -9,9 +9,9 @@ global currentDepth
 function callFunction(probefunc) {
 	if (startTime == 0) {
 		startTime = gettimeofday_ns()
-		printf("<%s,,%d,,%d;", probefunc, serial, startTime)
+		printf("<%s,,%d,,%d;\n", probefunc, serial, startTime)
 	} else
-	    printf("<%s,,%d,,%d;", probefunc, serial, gettimeofday_ns())
+	    printf("<%s,,%d,,%d;\n", probefunc, serial, gettimeofday_ns())
 	currentDepth++
 	callArray[currentDepth] = serial
 	serial++
@@ -19,14 +19,15 @@ function callFunction(probefunc) {
 
 function returnFunction(probefunc) {
 	finalTime = gettimeofday_ns()
-	printf(">%s,,%d;", probefunc, finalTime)
+	printf(">%s,,%d;\n", probefunc, finalTime)
 	currentDepth--
 }
 
 
 probe end {
-	printf("\n%d",finalTime);
-	printf("\n%d\n",finalTime - startTime);
+	printf("-%d\n",finalTime);
+	printf("+%d\n",finalTime - startTime);
+	printf("?")
 	foreach (num in markedMessages) {
 		printf("%d,,%s;", num, markedMessages[num]);
 	}
