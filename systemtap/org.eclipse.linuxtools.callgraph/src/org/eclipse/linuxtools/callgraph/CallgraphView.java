@@ -55,7 +55,6 @@ public class CallgraphView extends SystemTapView {
 	private StapGraphParser parser;
 
 
-	private int lastNodeChecked;
 	private Action view_treeview;
 	private Action view_radialview;
 	private  Action view_aggregateview;
@@ -101,7 +100,6 @@ public class CallgraphView extends SystemTapView {
 		if (disp == null)
 			disp = Display.getDefault();
 		
-		lastNodeChecked = 0;
 		//-------------Initialize shell, menu
 		treeSize = 200;
 
@@ -184,15 +182,13 @@ public class CallgraphView extends SystemTapView {
 		/*
 		 *                Load graph data
 		 */
-		g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$
+		if (g.getNodeData(0) == null)
+			g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$
 		boolean marked = false;
 		String msg = ""; //$NON-NLS-1$
 		
 		
 	    for (int id_parent : parser.serialMap.keySet()) {
-	    	if (id_parent < lastNodeChecked)
-	    		continue;
-	    	lastNodeChecked = id_parent;
 	    	if (g.getNodeData(id_parent) == null) {
 				if (parser.markedMap.get(id_parent) != null) {
 					marked = true;
@@ -203,7 +199,8 @@ public class CallgraphView extends SystemTapView {
 	    	}
 	    	
 			for (int id_child : parser.outNeighbours.get(id_parent)) {
-				
+				if (g.getNodeData(id_child) != null)
+					continue;
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}

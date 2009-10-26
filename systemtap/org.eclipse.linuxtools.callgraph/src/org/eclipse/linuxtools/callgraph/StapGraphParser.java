@@ -281,6 +281,8 @@ public class StapGraphParser extends SystemTapParser {
 					// arsg[2] = time of event
 					int id = Integer.parseInt(args[1]);
 					long time = Long.parseLong(args[2]);
+					endingTimeInNS=time;
+					
 					String name = args[0];
 					
 					//If we haven't encountered a main function yet and the name isn't clean,
@@ -370,6 +372,7 @@ public class StapGraphParser extends SystemTapParser {
 						return Status.CANCEL_STATUS;
 					}		
 					time =  Long.parseLong(args[1]) - timeMap.get(id);
+					endingTimeInNS=time;
 					timeMap.put(id, time);
 					
 					
@@ -394,9 +397,6 @@ public class StapGraphParser extends SystemTapParser {
 			} 
 			
 		} 
-		
-		
-		
 		} catch (NumberFormatException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("StapGraphParser.22"),  //$NON-NLS-1$
 					Messages.getString("StapGraphParser.23"), Messages.getString("StapGraphParser.24") + //$NON-NLS-1$ //$NON-NLS-2$
@@ -461,17 +461,16 @@ public class StapGraphParser extends SystemTapParser {
 	}
 
 
-	public void clear() {
-		// TODO Auto-generated method stub
-		outNeighbours.clear();
-		timeMap.clear();
-		serialMap.clear();
-		countMap.clear();
-		text = ""; //$NON-NLS-1$
-		shouldGetEndingTimeForID.clear();
-		nameList.clear();
-		idList.clear();		
-	}
+//	public void clear() {
+//		outNeighbours.clear();
+//		timeMap.clear();
+//		serialMap.clear();
+//		countMap.clear();
+//		text = ""; //$NON-NLS-1$
+//		shouldGetEndingTimeForID.clear();
+//		nameList.clear();
+//		idList.clear();		
+//	}
 
 
 
