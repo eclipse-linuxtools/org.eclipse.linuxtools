@@ -87,12 +87,19 @@ public class CallgraphView extends SystemTapView {
 	
 	private  StapGraph g;
 	private  int treeSize = 200;
-	private Canvas papaCanvas;
 
 	
 
 
 	
+	/**
+	 * Initializes the view by creating composites (if necessary) and canvases
+	 * Calls loadData(), and calls finishLoad() if not in realTime mode (otherwise
+	 * it is up to the user-defined update methods to finish loading).
+	 * 
+	 * @return status
+	 * 
+	 */
 	public IStatus loadView(Display targetDisplay, IProgressMonitor monitor) {
 		
 		Display disp = targetDisplay;
@@ -100,15 +107,14 @@ public class CallgraphView extends SystemTapView {
 			disp = Display.getCurrent();
 		if (disp == null)
 			disp = Display.getDefault();
-		
-		//-------------Initialize shell, menu
+
 		treeSize = 200;
-		treeComp = this.makeTreeComp(treeSize);
-		graphComp = this.makeGraphComp();
+		makeTreeComp(treeSize);
+		makeGraphComp();
 		graphComp.setBackgroundMode(SWT.INHERIT_FORCE);
 		
 		//Create papa canvas
-		papaCanvas = new Canvas(graphComp, SWT.BORDER);
+		Canvas papaCanvas = new Canvas(graphComp, SWT.BORDER);
 		GridLayout papaLayout = new GridLayout(1, true);
 		papaLayout.horizontalSpacing=0;
 		papaLayout.verticalSpacing=0;
@@ -172,6 +178,11 @@ public class CallgraphView extends SystemTapView {
 		return Status.OK_STATUS;
 	}
 	
+	/**
+	 * Load data.
+	 * @param mon -- Progress monitor. Give null to use a new NullProgressMonitor instead.
+	 * @return
+	 */
 	private IStatus loadData(IProgressMonitor mon) {
 		IProgressMonitor monitor = mon;
 		if (mon == null)
@@ -231,6 +242,12 @@ public class CallgraphView extends SystemTapView {
 	    return Status.OK_STATUS;
 	}
 	
+	/**
+	 * Completes the loading process by calculating aggregate data.
+	 * 
+	 * @param monitor
+	 * @return
+	 */
 	private IStatus finishLoad(IProgressMonitor monitor) {
 
 	    if (g.aggregateCount == null)
@@ -315,9 +332,9 @@ public class CallgraphView extends SystemTapView {
 
 	
 	
-	public  Composite makeTreeComp(int treeSize) {
+	public  void makeTreeComp(int treeSize) {
 		if (treeComp != null && !treeComp.isDisposed()) {
-			return treeComp;
+			return;
 		}
 		
 		treeComp = new Composite(this.masterComposite, SWT.NONE);
@@ -325,10 +342,9 @@ public class CallgraphView extends SystemTapView {
 		treegd.widthHint = treeSize;
 		treeComp.setLayout(new FillLayout());
 		treeComp.setLayoutData(treegd);
-		return treeComp; 
 	}
 	
-	public  Composite makeGraphComp() {
+	public  void makeGraphComp() {
 		if (graphComp != null && !graphComp.isDisposed()) {
 			graphComp.dispose();
 		}
@@ -340,7 +356,6 @@ public class CallgraphView extends SystemTapView {
 		
 		graphComp.setLayout(gl);
 		graphComp.setLayoutData(graphgd);
-		return graphComp;
 	}
 
 	
