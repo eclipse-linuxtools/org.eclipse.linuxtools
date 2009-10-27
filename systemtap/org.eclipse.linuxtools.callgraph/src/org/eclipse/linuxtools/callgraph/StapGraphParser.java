@@ -283,10 +283,6 @@ public class StapGraphParser extends SystemTapParser {
 					// arsg[2] = time of event
 					int id = Integer.parseInt(args[1]);
 					long time = Long.parseLong(args[2]);
-					endingTimeInNS=time;
-					if (startTime < 1) {
-						startTime = time;
-					}
 					String name = args[0];
 					
 					//If we haven't encountered a main function yet and the name isn't clean,
@@ -295,6 +291,11 @@ public class StapGraphParser extends SystemTapParser {
 						skippedDirectives = true;
 						break;
 					}
+					if (startTime < 1) {
+						startTime = time;
+					}
+					endingTimeInNS=time;
+					
 					name = cleanFunctionName(name);
 					if (name.equals("main")) //$NON-NLS-1$
 						encounteredMain = true;

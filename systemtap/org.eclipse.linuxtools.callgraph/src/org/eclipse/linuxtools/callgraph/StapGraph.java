@@ -430,9 +430,11 @@ public class StapGraph extends Graph {
 	
 	
 	/**
-	 * THE AGGREGATE VIEW FROM VIEW -> AGGREGATE VIEW
+	 * Draws nodes according to the name of the function (not accounting for call
+	 * heirarchies). Uses colour to indicate the number of calls and size to indicate
+	 * the percentage time spent.
 	 */
-	public void drawAggregateView(){
+	private void drawAggregateView(){
 		
 		//TEMPORARY STORAGE OF THE ENTRIES
 		//IMPLEMENTS A COMPARATOR TO STORE BY ORDER OF THE VALUE
@@ -515,7 +517,7 @@ public class StapGraph extends Graph {
 	 * @param x
 	 * @param y
 	 */
-	public void drawTree(int id, int x, int y) {
+	private void drawTree(int id, int x, int y) {
 		
 		//-------------Create node id
 		// Create and set
@@ -1051,7 +1053,7 @@ public class StapGraph extends Graph {
 			
 			
 		}
-			//Remove treeComp
+		callgraphView.layout();
 		this.setRedraw(true);
 
 		

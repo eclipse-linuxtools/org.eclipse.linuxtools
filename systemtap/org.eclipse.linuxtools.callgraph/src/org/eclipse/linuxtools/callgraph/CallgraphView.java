@@ -192,8 +192,8 @@ public class CallgraphView extends SystemTapView {
 		if (g.getNodeData(0) == null) {
 			g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 
 					1, 1, -1, false, ""); //$NON-NLS-1$
-			g.setStartTime(parser.startTime);
 		}
+		g.setStartTime(parser.startTime);
 		g.setEndTime(parser.endingTimeInNS);
 
 		
@@ -442,13 +442,12 @@ public class CallgraphView extends SystemTapView {
 		gotoMenu.add(goto_next);
 		gotoMenu.add(goto_last);
 		
-		
+		addKillButton();
 		mgr.add(play);
 		mgr.add(view_radialview);
 		mgr.add(view_treeview);
 		mgr.add(view_levelview);
 		mgr.add(view_aggregateview);
-		mgr.add(getView_refresh());
 		mgr.add(mode_collapsednodes);
 		
 //		help.add(help_about);
