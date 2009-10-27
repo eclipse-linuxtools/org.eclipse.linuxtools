@@ -467,23 +467,30 @@ public class StapGraph extends Graph {
 			}
 		}
 		
+		
+		TreeSet<Entry<String, Long>> sortedValues = new TreeSet<Entry<String, Long>>(StapGraph.VALUE_ORDER);
 		HashMap<String, Long> tempMap = new HashMap<String, Long>();
-		tempMap = aggregateTime;
+		tempMap.putAll(aggregateTime);
+		
+		for (String key : tempMap.keySet()) {
+			long time = aggregateTime.get(key);
+			//This is a stupid way to get the times right, but it is almost always guaranteed to work.
+
+			while (time < 0)
+				time += endTime;
+			tempMap.put(key, time);
+		}
+		
+		sortedValues.addAll(tempMap.entrySet());
 		
 		//-------------Draw nodes
-		for (String key: tempMap.keySet()) {
-
+		for (Entry<String, Long> ent: sortedValues) {
+			String key = ent.getKey();
 				GraphNode n = new GraphNode(this.getGraphModel(),SWT.NONE);
 				aggregateNodes.add(n);
 				
 				percentage_count = (float)aggregateCount.get(key) / (float)maxTimesCalled;
-				long time = tempMap.get(key);
-				//This is a stupid way to get the times right, but it is almost always guaranteed to work.
-				while (time < 0)
-					time += endTime;
-				tempMap.put(key, time);
-				
-				percentage_time = ((float) time/ this
+				percentage_time = ((float)  ent.getValue()/ this
 						.getTotalTime() * 100);
 				
 				n.setText(key + "\n"  //$NON-NLS-1$
@@ -513,9 +520,8 @@ public class StapGraph extends Graph {
 				));
 				n.setBorderWidth(2);
 		}
+
 		
-		TreeSet<Entry<String, Long>> sortedValues = new TreeSet<Entry<String, Long>>(StapGraph.VALUE_ORDER);
-		sortedValues.addAll(tempMap.entrySet());
 		//Set layout to gridlayout
 		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width, endTime), true);
 	}

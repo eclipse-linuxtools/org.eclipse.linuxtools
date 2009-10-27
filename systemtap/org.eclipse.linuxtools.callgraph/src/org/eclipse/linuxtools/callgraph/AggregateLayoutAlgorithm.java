@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
@@ -25,7 +25,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  */
 public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	
-	protected ArrayList<Long> sortedAggregateTimes;
+	protected HashMap<String, Long> list;
 	protected Long totalTime;
 	protected int graphWidth;
 	protected Long endTime;
@@ -33,10 +33,9 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width, long endTime){
 		super(styles);
 		
-		this.sortedAggregateTimes = new ArrayList<Long>();
-		for (Entry<String,Long> val : entries){
-			this.sortedAggregateTimes.add(val.getValue());
-		}
+		list = new HashMap<String, Long>();
+		for (Entry<String, Long> ent : entries)
+			list.put(ent.getKey(),ent.getValue());
 		
 		this.totalTime = time;
 		this.graphWidth = width;
@@ -52,7 +51,16 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 		double ycursor = 0.0;
 
 		for (InternalNode sn : entitiesToLayout) {
-			time = sortedAggregateTimes.remove(0);
+			String name = "";
+			for (String key : list.keySet()) {
+				if (sn.toString().startsWith(key + "\n")) {
+					name = key;
+					break;
+				}
+			}
+			if (name.length() < 1)
+				continue;
+			time = list.remove(name);
 			percent = (double) time / (double) totalTime;
 			double snWidth = (sn.getInternalWidth() * percent) + minimumSize;
 			double snHeight = (sn.getInternalHeight() * percent) + minimumSize;
@@ -69,7 +77,6 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 				xcursor += snWidth;
 			}
 		}
-		
 	}
 
 }
