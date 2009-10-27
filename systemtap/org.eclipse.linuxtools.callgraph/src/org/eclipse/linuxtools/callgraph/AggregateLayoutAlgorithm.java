@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.callgraph;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
@@ -29,9 +28,8 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	protected ArrayList<Long> list;
 	protected Long totalTime;
 	protected int graphWidth;
-	protected Long endTime;
 	
-	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width, long endTime){
+	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width){
 		super(styles);
 		
 		list = new ArrayList<Long>();
@@ -40,7 +38,6 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 		
 		this.totalTime = time;
 		this.graphWidth = width;
-		this.endTime = endTime;
 	}
 	
 	//THIS METHOD OVERRIDES THE PARENT'S IMPLEMENTATION (WHICH IS EMPTY ANYWAYS)

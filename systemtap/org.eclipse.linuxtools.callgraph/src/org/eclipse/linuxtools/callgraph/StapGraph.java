@@ -523,7 +523,7 @@ public class StapGraph extends Graph {
 
 		
 		//Set layout to gridlayout
-		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width, endTime), true);
+		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width), true);
 	}
 
 
