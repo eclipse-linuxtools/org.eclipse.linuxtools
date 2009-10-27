@@ -174,7 +174,8 @@ public class CallgraphView extends SystemTapView {
 		loadData(monitor);
 		if (!parser.isRealTime())
 			return finishLoad(monitor);
-				
+			
+		finishLoad(monitor);	
 		return Status.OK_STATUS;
 	}
 	
@@ -241,6 +242,11 @@ public class CallgraphView extends SystemTapView {
 			
 		}
 	    
+	    g.aggregateCount.clear();
+	    g.aggregateCount.putAll(parser.countMap);
+	    g.aggregateTime.clear();
+	    g.aggregateTime.putAll(parser.aggregateTimeMap);
+	    
 	    //Finish off by collapsing nodes, initializing the tree and setting options
 	    g.recursivelyCollapseAllChildrenOfNode(g.getTopNode());
 		setGraphOptions(true);
@@ -257,7 +263,7 @@ public class CallgraphView extends SystemTapView {
 	 */
 	private IStatus finishLoad(IProgressMonitor monitor) {
 
-	    if (g.aggregateCount == null)
+		if (g.aggregateCount == null)
 	    	g.aggregateCount = new HashMap<String, Integer>();
 	    
 	    g.aggregateCount.putAll(parser.countMap);
@@ -269,7 +275,7 @@ public class CallgraphView extends SystemTapView {
 	    //Set total time
 	    if (parser.totalTime != -1)
 	    	g.setTotalTime(parser.totalTime);
-	    
+		
 	    //-------------Finish initializations
 	    //Generate data for collapsed nodes
 	    g.recursivelyCollapseAllChildrenOfNode(g.getTopNode());
