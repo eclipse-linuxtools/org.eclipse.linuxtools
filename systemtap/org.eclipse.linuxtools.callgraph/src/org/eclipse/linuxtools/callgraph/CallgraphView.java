@@ -285,27 +285,11 @@ public class CallgraphView extends SystemTapView {
 	    
 	    g.setProject(parser.project);
 	    
-//	    this.setValues(graphComp, treeComp, g, parser);
 	    this.initializePartControl();
     	g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
     			g.getFirstUsefulNode());
 		return Status.OK_STATUS;
 	}
-	
-	
-//	/**
-//	 * Convenience method for setting composites, graph and parser objects
-//	 * @param graphC
-//	 * @param treeC
-//	 * @param g
-//	 * @param p
-//	 */
-//	public  void setValues(Composite graphC, Composite treeC, StapGraph g, StapGraphParser p){
-//		treeComp = treeC;
-//		graphComp = graphC;
-//		g = g;
-//		parser = p;
-//	}
 	
 	
 	/**
