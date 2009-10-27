@@ -238,7 +238,11 @@ public class CallgraphView extends SystemTapView {
 			}
 			
 		}
+	    g.recursivelyCollapseAllChildrenOfNode(g.getTopNode());
+
 		setGraphOptions(true);
+	    g.initializeTree();
+
 	    return Status.OK_STATUS;
 	}
 	

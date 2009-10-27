@@ -190,6 +190,7 @@ public class StapGraph extends Graph {
 			StapTreeListener stl = new StapTreeListener(treeViewer.getTree().getHorizontalBar());
 			treeViewer.addTreeListener(stl);
 		}
+		
 				
 		//-------------Add listeners
 		mListener = new StapGraphMouseListener(this);
@@ -201,6 +202,7 @@ public class StapGraph extends Graph {
 	
 	}
 
+	
 	
 	
 	/**
@@ -1228,8 +1230,7 @@ public class StapGraph extends Graph {
 		//If all nodes have been collapsed, don't do anything
 		setCollapseMode(true);
 
-		if (nodeDataMap.get(id).hasCollapsedChildren
-				|| nodeDataMap.get(id).children.size() == 0)
+		if (nodeDataMap.get(id).children.size() == 0)
 			return true;
 		nodeDataMap.get(id).hasCollapsedChildren = true;
 
@@ -1247,6 +1248,8 @@ public class StapGraph extends Graph {
 		for (int i = 0; i < size; i++) {
 
 			int childID = nodeDataMap.get(id).children.get(i);
+			if (getNodeData(childID).isPartOfCollapsedNode())
+				continue;
 			int childLevel = getLevelOfNode(childID);
 			if (collapsedLevelSize.get(childLevel) == null)
 				collapsedLevelSize.put(childLevel, 0);
