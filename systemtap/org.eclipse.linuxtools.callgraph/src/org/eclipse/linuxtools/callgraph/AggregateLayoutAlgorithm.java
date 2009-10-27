@@ -28,8 +28,9 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	protected ArrayList<Long> sortedAggregateTimes;
 	protected Long totalTime;
 	protected int graphWidth;
+	protected Long endTime;
 	
-	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width){
+	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width, long endTime){
 		super(styles);
 		
 		this.sortedAggregateTimes = new ArrayList<Long>();
@@ -39,6 +40,7 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 		
 		this.totalTime = time;
 		this.graphWidth = width;
+		this.endTime = endTime;
 	}
 	
 	//THIS METHOD OVERRIDES THE PARENT'S IMPLEMENTATION (WHICH IS EMPTY ANYWAYS)
@@ -51,10 +53,13 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 
 		for (InternalNode sn : entitiesToLayout) {
 			time = sortedAggregateTimes.remove(0);
+			while (time < 0)
+				time+=endTime;
 			percent = (double) time / (double) totalTime;
 			double snWidth = (sn.getInternalWidth() * percent) + minimumSize;
 			double snHeight = (sn.getInternalHeight() * percent) + minimumSize;
 
+			
 			sn.setSize(snWidth, snHeight);
 			if (xcursor + snWidth > graphWidth) {
 				//reaching the end of row, move to lower column

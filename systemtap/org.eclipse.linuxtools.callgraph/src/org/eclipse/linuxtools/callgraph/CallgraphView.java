@@ -242,9 +242,13 @@ public class CallgraphView extends SystemTapView {
 			
 		}
 	    
-	    g.aggregateCount.clear();
+	    
+	    if (g.aggregateTime == null)
+	    	g.aggregateTime = new HashMap<String, Long>();
+		if (g.aggregateCount == null)
+	    	g.aggregateCount = new HashMap<String, Integer>();	    
+	    
 	    g.aggregateCount.putAll(parser.countMap);
-	    g.aggregateTime.clear();
 	    g.aggregateTime.putAll(parser.aggregateTimeMap);
 	    
 	    //Finish off by collapsing nodes, initializing the tree and setting options

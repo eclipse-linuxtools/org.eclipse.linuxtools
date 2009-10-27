@@ -475,8 +475,14 @@ public class StapGraph extends Graph {
 				aggregateNodes.add(n);
 				
 				percentage_count = (float)aggregateCount.get(ent.getKey()) / (float)maxTimesCalled;
-				percentage_time = ((float) ent.getValue() / this
+				long time = ent.getValue();
+				//This is a stupid way to get the times right, but it is almost always guaranteed to work.
+				while (time < 0)
+					time += endTime;
+				
+				percentage_time = ((float) time/ this
 						.getTotalTime() * 100);
+				
 				n.setText(ent.getKey() + "\n"  //$NON-NLS-1$
 						+ num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$
 						+ aggregateCount.get(ent.getKey()) + "\n") ; //$NON-NLS-1$
@@ -506,7 +512,7 @@ public class StapGraph extends Graph {
 		}
 		
 		//Set layout to gridlayout
-		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width), true);
+		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width, endTime), true);
 	}
 
 
