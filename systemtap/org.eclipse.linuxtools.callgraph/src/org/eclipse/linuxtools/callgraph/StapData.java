@@ -58,7 +58,7 @@ public class StapData {
     }
 	
 	/**
-	 * Initialize StapData object
+	 * Initialize StapData object. This object is not intended to be called by users.
 	 * 
 	 * @param graphModel StapGraph containing the StapNode that matches this StapData
 	 * @param style 
@@ -96,7 +96,7 @@ public class StapData {
     	//Add this data to the caller's list of IDs
 		if (this.parent != -1) {
 			if (graphModel.getNodeData(this.parent) != null) {
-				graphModel.getNodeData(this.parent).addCallee(this.id, this.time);
+				graphModel.getNodeData(this.parent).addCallee(this.id);
 				this.levelOfRecursion = graphModel.getNodeData(this.parent).levelOfRecursion + 1;
 			}
 		}
@@ -117,49 +117,15 @@ public class StapData {
 
     
     /**
-     * Add the given id to my list of children/callees. Sort based on time
+     * Add the given id to the list of children, at the end.
      * 
      * @param id
      * @return
      */
-    public int addCallee(int id, long time) {
-    	
-    	//Insert id based on its time
-    	int size = children.size();
-    	
-    	if (size ==0) {
-    		children.add(id);
-    		return children.size();
-    	}
-    	int position = search(time);
-    	
-    	if (position == -1) children.add(id);
-    	else children.add(position, id);
-   
-        return children.size();
+    public int addCallee(int id) {
+    	children.add(id);
+		return id;
     }
-    
-
-    /**
-     * Returns the proper position in callees list for the node with the given time.
-     * Afterwards an insert at the return value will put the node in the right spot. 
-     * @param time
-     * @return location in callees 
-     */
-    private int search(long time) {
-    //TODO: This may not be entirely necessary as it doesn't always keep the order
-    	if (time > graph.getNodeData(children.get(0)).time)
-    		return 0;
-
-    	for (int i = 1; i < children.size(); i++) {
-    		if (time < graph.getNodeData(children.get(i -1)).time && 
-    				time > graph.getNodeData(children.get(i)).time)
-    				return i;
-    	}
-    	
-    	return -1;
-    }
-   
     
     /**
      * Creates a node in the given graphModel using this stapData

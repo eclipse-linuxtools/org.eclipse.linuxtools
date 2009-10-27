@@ -206,13 +206,20 @@ public class StapGraph extends Graph {
 	
 	
 	/**
-	 * Initialize the treeviewer with data from the graph
+	 * Initialize the treeviewer with data from the graph. If the treeviewer
+	 * has already been initialized (i.e. if it already has a content provider
+	 * set), we merely call treeViewer.refresh();
 	 */
 	public void initializeTree() {
 		if (treeViewer.getContentProvider() == null) {
 			StapTreeContentProvider scp = new StapTreeContentProvider();
 			treeViewer.setContentProvider(scp);
-		} 
+		} else {
+			((StapTreeContentProvider) treeViewer.getContentProvider())
+					.setGraph(this);
+			treeViewer.refresh();
+			return;
+		}
 		
 		((StapTreeContentProvider) treeViewer.getContentProvider()).setGraph(this);
 		
@@ -231,9 +238,12 @@ public class StapGraph extends Graph {
 		treeViewer.refresh();
 	}
 	
+	
+	
 
 	/**
-	 * Create a new StapData object with the given parameters
+	 * Create a new StapData object with the given parameters. If the id is larger
+	 * than the current idOfLastNode, then idOfLastNode is set to id.
 	 * 
 	 * @param style
 	 * @param id
@@ -258,7 +268,8 @@ public class StapGraph extends Graph {
 		} 
 		
 		//-------------Add node to appropriate map/list
-		StapData n = new StapData(this, style, txt, time, called, id, caller, isMarked, message);
+		StapData n = new StapData(this, style, txt, time, called, 
+				id, caller, isMarked, message);
 		if (isMarked)
 			markedNodes.add(id);
 		nodeDataMap.put(id, n);
@@ -1497,35 +1508,33 @@ public class StapGraph extends Graph {
 	}
 	
 	public void setCollapseMode(boolean value) {
-		if (draw_mode == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)
+		if (collapse_mode == value || 
+				draw_mode == StapGraph.CONSTANT_DRAWMODE_AGGREGATE)
 			return;
 		
-		if (collapse_mode != value) {
-			
-			if (draw_mode != StapGraph.CONSTANT_DRAWMODE_LEVEL) {
-				if (collapse_mode && !value) {
-					//Collapsed to noncollapsed
-					if (!getRootData().isOnlyChildWithThisName()) {
-						//A collapsed node that isn't an only child must have an
-						//uncollapsed piece
-						rootVisibleNodeNumber = getRootData().uncollapsedPiece;
-					}
-		
+		if (draw_mode != StapGraph.CONSTANT_DRAWMODE_LEVEL) {
+			if (collapse_mode && !value) {
+				//Collapsed to noncollapsed
+				if (!getRootData().isOnlyChildWithThisName()) {
+					//A collapsed node that isn't an only child must have an
+					//uncollapsed piece
+					rootVisibleNodeNumber = getRootData().uncollapsedPiece;
 				}
-				
-				if (!collapse_mode && value) {
-					//Uncollapsed to collapsed -- set center node to collapsed node
-					if (!getRootData().isOnlyChildWithThisName()) {
-						int temp = getRootData().getPartOfCollapsedNode();
-						if (temp != StapData.NOT_PART_OF_COLLAPSED_NODE) {
-							rootVisibleNodeNumber = temp;
-						}
+	
+			}
+			
+			if (!collapse_mode && value) {
+				//Uncollapsed to collapsed -- set center node to collapsed node
+				if (!getRootData().isOnlyChildWithThisName()) {
+					int temp = getRootData().getPartOfCollapsedNode();
+					if (temp != StapData.NOT_PART_OF_COLLAPSED_NODE) {
+						rootVisibleNodeNumber = temp;
 					}
 				}
 			}
-			collapse_mode = value;
-			callgraphView.getMode_collapsednodes().setChecked(value);
 		}
+		collapse_mode = value;
+		callgraphView.getMode_collapsednodes().setChecked(value);
 		nextMarkedNode = -1;
 	}
 

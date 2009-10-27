@@ -11,8 +11,6 @@
 package org.eclipse.linuxtools.callgraph;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.eclipse.draw2d.Label;
@@ -26,8 +24,6 @@ public class StapNode extends GraphNode{
 	private static int nodeSize = 20;
 	public int id;
 	public GraphConnection connection;		//Each node should have only one connection (to its caller)
-	private boolean hasButtons;				//Has buttons already attached
-	public List<Integer> buttons;
 	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
 
 	public StapNode(StapGraph graphModel, int style, StapData data) {
@@ -37,8 +33,6 @@ public class StapNode extends GraphNode{
 		numberFormat.setMinimumFractionDigits(2);
 		if (Display.getCurrent().getPrimaryMonitor().getBounds().width < 1000)
 			nodeSize = 10;
-		
-		
 		
 		if (data.name == StapGraph.CONSTANT_TOP_NODE_NAME)
 			this.setText(StapGraph.CONSTANT_TOP_NODE_NAME);
@@ -66,8 +60,6 @@ public class StapNode extends GraphNode{
 		
 		this.id = data.id;
 		this.connection = null;
-		hasButtons = false;
-		buttons = new ArrayList<Integer>();
 		
 
 		if (graphModel.getNode(data.parent) != null) {
@@ -75,23 +67,12 @@ public class StapNode extends GraphNode{
 					this, graphModel.getNode(data.parent));
 			if (graphModel.isCollapseMode())
 				connection.setText("" + data.timesCalled); //$NON-NLS-1$
-		}
-		
-		if (graphModel.getNode(data.collapsedParent) != null) {
+		} else if (graphModel.getNode(data.collapsedParent) != null) {
 			this.connection = new GraphConnection( graphModel, style, 
 					this, graphModel.getNode(data.collapsedParent));
 			if (graphModel.isCollapseMode())
 				connection.setText("" + data.timesCalled); //$NON-NLS-1$
-		}
-	}
-
-	
-	public void setHasButtons(boolean value) {
-		hasButtons = value;
-	}
-	
-	public boolean getHasButtons() {
-		return hasButtons;
+		} //else do not create any connections (this should usually never happen)
 	}
 	
 	/**

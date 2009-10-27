@@ -187,20 +187,22 @@ public class CallgraphView extends SystemTapView {
 		IProgressMonitor monitor = mon;
 		if (mon == null)
 			monitor = new NullProgressMonitor();
+		//Dummy node, set start time
+		if (g.getNodeData(0) == null) {
+			g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 
+					1, 1, -1, false, ""); //$NON-NLS-1$
+			g.setStartTime(parser.startTime);
+		}
+		g.setEndTime(parser.endingTimeInNS);
 
 		
 		/*
 		 *                Load graph data
 		 */
-		if (g.getNodeData(0) == null)
-			g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 1, 1, -1, false, ""); //$NON-NLS-1$
-		g.setStartTime(parser.startTime);
-		g.setEndTime(parser.endingTimeInNS);
+		
 		
 		boolean marked = false;
 		String msg = ""; //$NON-NLS-1$
-		
-		
 	    for (int id_parent : parser.serialMap.keySet()) {
 	    	if (g.getNodeData(id_parent) == null) {
 				if (parser.markedMap.get(id_parent) != null) {
@@ -238,8 +240,9 @@ public class CallgraphView extends SystemTapView {
 			}
 			
 		}
+	    
+	    //Finish off by collapsing nodes, initializing the tree and setting options
 	    g.recursivelyCollapseAllChildrenOfNode(g.getTopNode());
-
 		setGraphOptions(true);
 	    g.initializeTree();
 
