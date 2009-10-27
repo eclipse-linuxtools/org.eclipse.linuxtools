@@ -438,8 +438,7 @@ public class StapGraph extends Graph {
 		
 		//TEMPORARY STORAGE OF THE ENTRIES
 		//IMPLEMENTS A COMPARATOR TO STORE BY ORDER OF THE VALUE
-		TreeSet<Entry<String, Long>> sortedValues = new TreeSet<Entry<String, Long>>(StapGraph.VALUE_ORDER);
-		sortedValues.addAll(aggregateTime.entrySet());
+
 		
 		
 		if (aggregateNodes == null){
@@ -468,25 +467,29 @@ public class StapGraph extends Graph {
 			}
 		}
 		
+		HashMap<String, Long> tempMap = new HashMap<String, Long>();
+		tempMap = aggregateTime;
+		
 		//-------------Draw nodes
-		for (Entry<String, Long> ent : sortedValues) {
+		for (String key: tempMap.keySet()) {
 
 				GraphNode n = new GraphNode(this.getGraphModel(),SWT.NONE);
 				aggregateNodes.add(n);
 				
-				percentage_count = (float)aggregateCount.get(ent.getKey()) / (float)maxTimesCalled;
-				long time = ent.getValue();
+				percentage_count = (float)aggregateCount.get(key) / (float)maxTimesCalled;
+				long time = tempMap.get(key);
 				//This is a stupid way to get the times right, but it is almost always guaranteed to work.
 				while (time < 0)
 					time += endTime;
+				tempMap.put(key, time);
 				
 				percentage_time = ((float) time/ this
 						.getTotalTime() * 100);
 				
-				n.setText(ent.getKey() + "\n"  //$NON-NLS-1$
+				n.setText(key + "\n"  //$NON-NLS-1$
 						+ num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-						+ aggregateCount.get(ent.getKey()) + "\n") ; //$NON-NLS-1$
-				n.setData("AGGREGATE_NAME", ent.getKey()); //$NON-NLS-1$
+						+ aggregateCount.get(key) + "\n") ; //$NON-NLS-1$
+				n.setData("AGGREGATE_NAME", key); //$NON-NLS-1$
 				
 				
 				primary = (int)(percentage_count * colorLevels * colorLevelDifference);
@@ -504,13 +507,15 @@ public class StapGraph extends Graph {
 				n.setHighlightColor(c);
 				n.setForegroundColor(new Color(this.getDisplay(),255,255,255));
 				n.setTooltip(new Label(
-						Messages.getString("StapGraph.2")+ ent.getKey() + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("StapGraph.2")+ key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
 						+ Messages.getString("StapGraph.3") + num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						+ Messages.getString("StapGraph.1") + aggregateCount.get(ent.getKey())		 //$NON-NLS-1$
+						+ Messages.getString("StapGraph.1") + aggregateCount.get(key)		 //$NON-NLS-1$
 				));
 				n.setBorderWidth(2);
 		}
 		
+		TreeSet<Entry<String, Long>> sortedValues = new TreeSet<Entry<String, Long>>(StapGraph.VALUE_ORDER);
+		sortedValues.addAll(tempMap.entrySet());
 		//Set layout to gridlayout
 		this.setLayoutAlgorithm(new AggregateLayoutAlgorithm(LayoutStyles.NONE, sortedValues, this.getTotalTime(), this.getBounds().width, endTime), true);
 	}

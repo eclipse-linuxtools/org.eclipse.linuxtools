@@ -53,8 +53,6 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 
 		for (InternalNode sn : entitiesToLayout) {
 			time = sortedAggregateTimes.remove(0);
-			while (time < 0)
-				time+=endTime;
 			percent = (double) time / (double) totalTime;
 			double snWidth = (sn.getInternalWidth() * percent) + minimumSize;
 			double snHeight = (sn.getInternalHeight() * percent) + minimumSize;
