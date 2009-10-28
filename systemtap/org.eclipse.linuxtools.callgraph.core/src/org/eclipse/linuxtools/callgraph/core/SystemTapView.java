@@ -188,7 +188,14 @@ public abstract class SystemTapView extends ViewPart {
 	protected void setView(SystemTapView view) {
 		stapview = view;
 	}
-	
+	/**
+	 * Method for fetching a parser object. This method should return
+	 * the running parser, or else some features may not work. Create 
+	 * your own parser parameter, but please ensure that it extends
+	 * SystemTapParser.
+	 * 
+	 * @return
+	 */
 	public abstract SystemTapParser getParser();
 
 	/**
