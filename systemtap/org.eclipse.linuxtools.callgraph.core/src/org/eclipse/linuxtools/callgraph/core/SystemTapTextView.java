@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 public class SystemTapTextView extends SystemTapView {
+	private SystemTapParser parser;
 	private StyledText viewer;
 
 	private Display display;
@@ -222,6 +223,11 @@ public class SystemTapTextView extends SystemTapView {
 	@Override
 	protected boolean createOpenDefaultAction() {
 		return false;
+	}
+
+	@Override
+	public SystemTapParser getParser() {
+		return parser;
 	}
 	
 	

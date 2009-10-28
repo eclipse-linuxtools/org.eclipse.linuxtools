@@ -775,6 +775,7 @@ public class CallgraphView extends SystemTapView {
 		return true;
 	}
 	
+	@Override
 	public boolean setParser(SystemTapParser newParser) {
 		if (newParser instanceof StapGraphParser) {
 			parser = (StapGraphParser) newParser;
@@ -914,6 +915,11 @@ public class CallgraphView extends SystemTapView {
 			g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
 		}
 
+	}
+
+	@Override
+	public SystemTapParser getParser() {
+		return parser;
 	}
 
 

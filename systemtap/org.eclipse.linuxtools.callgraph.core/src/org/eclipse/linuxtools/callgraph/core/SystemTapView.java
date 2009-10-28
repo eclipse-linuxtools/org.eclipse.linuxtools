@@ -51,7 +51,6 @@ public abstract class SystemTapView extends ViewPart {
 	private IMenuManager errors;
 	private IMenuManager help;
 	private Action kill;
-	public SystemTapParser parser;
 
 	protected String viewID;
 	@SuppressWarnings("unused")
@@ -189,6 +188,8 @@ public abstract class SystemTapView extends ViewPart {
 	protected void setView(SystemTapView view) {
 		stapview = view;
 	}
+	
+	public abstract SystemTapParser getParser();
 
 	/**
 	 * Method for setting the parser object of the view. Make this method return
@@ -484,7 +485,7 @@ public abstract class SystemTapView extends ViewPart {
 			public void run() {
 				Runtime run = Runtime.getRuntime();
 				try {
-					parser.setDone(true);
+					getParser().setDone(true);
 					run.exec("kill stap"); //$NON-NLS-1$
 				} catch (IOException e) {
 					e.printStackTrace();
