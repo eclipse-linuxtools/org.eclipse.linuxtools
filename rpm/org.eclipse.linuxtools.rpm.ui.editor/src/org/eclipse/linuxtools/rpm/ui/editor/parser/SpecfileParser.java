@@ -199,15 +199,17 @@ public class SpecfileParser {
 			}
 		}
 
-		if (lineText.startsWith(complexDefinitions[0])) {
+		if (lineText.startsWith(complexDefinitions[0])
+				&& lineText.contains(DEFINE_SEPARATOR)) {
 			return parseComplexDefinition(lineText, lineNumber,
 					SourceType.SOURCE);
-		} else if (lineText.startsWith(complexDefinitions[1])) {
+		} else if (lineText.startsWith(complexDefinitions[1])
+				&& lineText.contains(DEFINE_SEPARATOR)) {
 			return parseComplexDefinition(lineText, lineNumber,
 					SourceType.PATCH);
 		} else if (lineText.startsWith("BuildRequires")) { //$NON-NLS-1$
 			return parseBuildRequire(lineText, lineNumber, specfile);
-		} 
+		}
 
 		return null;
 	}
