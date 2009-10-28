@@ -338,11 +338,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
 				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
-					if (!parser.isJobCancelled()) {
-						parser.cancelJob();
-						Runtime run = Runtime.getRuntime();
-						run.exec("kill stap"); //$NON-NLS-1$
-					}
+					parser.cancelJob();
+					Runtime run = Runtime.getRuntime();
+					run.exec("kill stap"); //$NON-NLS-1$
 					process.terminate();
 					return;
 				}
@@ -353,6 +351,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 
 			if (process.getExitValue() != 0) {
+				parser.cancelJob();
 				//SystemTap terminated with errors, parse console to figure out which error 
 				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
 				//Sometimes the console has not been printed to yet, wait for a little while longer
@@ -364,9 +363,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 						+ cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
 				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
-				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
-					monitor.setCanceled(true);
-					parser.cancelJob();
+				if ((monitor != null && monitor.isCanceled())) {
 					return;
 				}
 				
