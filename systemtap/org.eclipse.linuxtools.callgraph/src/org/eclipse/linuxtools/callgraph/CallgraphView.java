@@ -333,7 +333,7 @@ public class CallgraphView extends SystemTapView {
 	
 	public  void makeTreeComp(int treeSize) {
 		if (treeComp != null && !treeComp.isDisposed()) {
-			return;
+			treeComp.dispose();
 		}
 		
 		treeComp = new Composite(this.masterComposite, SWT.NONE);
