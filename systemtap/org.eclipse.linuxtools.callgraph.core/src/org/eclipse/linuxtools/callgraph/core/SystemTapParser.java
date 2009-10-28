@@ -35,6 +35,7 @@ public abstract class SystemTapParser extends Job {
 	public boolean isDone;
 	
 	private RunTimeJob job;
+	private boolean jobCancelled;
 
 	public SystemTapParser() {
 		super("Parsing data"); //$NON-NLS-1$
@@ -362,8 +363,10 @@ public abstract class SystemTapParser extends Job {
 	 * of job.cancel() if job is not null, or false if job is null.
 	 */
 	public boolean cancelJob() {
-		if (job != null)
-			job.cancel();
+		if (job != null) {
+			jobCancelled = true;
+			return job.cancel();
+		}
 		return false;
 	}
 	
@@ -372,7 +375,8 @@ public abstract class SystemTapParser extends Job {
 	 *  False otherwise.
 	 */
 	public boolean isJobCancelled() {
-		if (job != null && job.getResult() == Status.CANCEL_STATUS) {
+		if ((job != null && job.getResult() == Status.CANCEL_STATUS)
+				|| jobCancelled) {
 			return true;
 		}
 		return false;

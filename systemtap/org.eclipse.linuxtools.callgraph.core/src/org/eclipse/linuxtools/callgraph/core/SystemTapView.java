@@ -492,7 +492,7 @@ public abstract class SystemTapView extends ViewPart {
 			public void run() {
 				Runtime run = Runtime.getRuntime();
 				try {
-					getParser().setDone(true);
+					getParser().cancelJob();
 					run.exec("kill stap"); //$NON-NLS-1$
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -500,6 +500,7 @@ public abstract class SystemTapView extends ViewPart {
 			}
 		};
 		mgr.add(kill);
+		setKillButtonEnabled(false);
 	}
 	
 	public void setKillButtonEnabled(boolean val) {
