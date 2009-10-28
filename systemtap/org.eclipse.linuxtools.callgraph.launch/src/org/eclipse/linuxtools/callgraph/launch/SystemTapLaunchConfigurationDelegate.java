@@ -285,7 +285,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			
 			if (extensions == null || extensions.length < 1) {
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"), 
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"),  //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2"), //$NON-NLS-1$ //$NON-NLS-2$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser3") + //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser4") + parserClass); //$NON-NLS-1$
@@ -318,7 +318,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			System.out.println(cmd);
 			
 			if (subProcess == null){
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"),
+				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), //$NON-NLS-1$
 				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
 				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1")); //$NON-NLS-1$
 				mess.schedule();

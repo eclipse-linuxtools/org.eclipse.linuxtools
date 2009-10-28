@@ -263,7 +263,7 @@ public class StapGraphParser extends SystemTapParser {
 	}
 	
 	private IStatus parse(String data) {
-		String[] callsAndReturns = data.split(";");
+		String[] callsAndReturns = data.split(";"); //$NON-NLS-1$
 
 		try {
 		for (String s : callsAndReturns) {
@@ -431,7 +431,7 @@ public class StapGraphParser extends SystemTapParser {
 				if (line.length() < 1)
 					continue;
 				
-				if (line.equals("PROBE_BEGIN")) {
+				if (line.equals("PROBE_BEGIN")) { //$NON-NLS-1$
 					String tmp = buff.readLine();
 					
 					if (tmp != null && tmp.length() > 0) {
@@ -447,7 +447,7 @@ public class StapGraphParser extends SystemTapParser {
 					totalTime = Long.parseLong(line.substring(1));
 				} else if (line.charAt(0) == '?') {
 					//Messages should be the last line in the output
-					markedMessages = line.substring(1).split(";");
+					markedMessages = line.substring(1).split(";"); //$NON-NLS-1$
 					parseEnd();
 					parseMarked();
 				} else {

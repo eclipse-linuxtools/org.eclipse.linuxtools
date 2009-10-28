@@ -88,8 +88,6 @@ public class CallgraphView extends SystemTapView {
 	private  StapGraph g;
 	private  int treeSize = 200;
 
-	
-
 
 	
 	/**

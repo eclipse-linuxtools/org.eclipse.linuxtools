@@ -436,11 +436,6 @@ public class StapGraph extends Graph {
 	 */
 	private void drawAggregateView(){
 		
-		//TEMPORARY STORAGE OF THE ENTRIES
-		//IMPLEMENTS A COMPARATOR TO STORE BY ORDER OF THE VALUE
-
-		
-		
 		if (aggregateNodes == null){
 			aggregateNodes = new ArrayList<GraphNode>();
 		}else{
@@ -468,6 +463,8 @@ public class StapGraph extends Graph {
 		}
 		
 		
+		//TEMPORARY STORAGE OF THE ENTRIES
+		//IMPLEMENTS A COMPARATOR TO STORE BY ORDER OF THE VALUE
 		TreeSet<Entry<String, Long>> sortedValues = new TreeSet<Entry<String, Long>>(StapGraph.VALUE_ORDER);
 		HashMap<String, Long> tempMap = new HashMap<String, Long>();
 		tempMap.putAll(aggregateTime);
