@@ -248,6 +248,7 @@ public abstract class SystemTapParser extends Job {
 	            		return Status.CANCEL_STATUS;
 	            	}
 	            }
+	            returnStatus = realTimeParsing();
 		    } catch (Exception e) {
 		       	e.printStackTrace();
 	        }
