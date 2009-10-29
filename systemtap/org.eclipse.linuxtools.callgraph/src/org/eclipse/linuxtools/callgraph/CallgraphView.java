@@ -920,6 +920,8 @@ public class CallgraphView extends SystemTapView {
 			if (parser.totalTime > 0) {
 				finishLoad(new NullProgressMonitor());
 			}
+			
+			g.setBounds(g.getBounds().x,g.getBounds().y,masterComposite.getBounds().width,Display.getCurrent().getBounds().height - treeSize);
 			g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
 		}
 

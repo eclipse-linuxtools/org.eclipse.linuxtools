@@ -329,7 +329,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 			// set the command line used
 			process.setAttribute(IProcess.ATTR_CMDLINE,cmd);
 			monitor.worked(1);
-			((TextConsole)Helper.getConsoleByName(config.getName())).activate();
 			
 			StreamListener s = new StreamListener();
 			process.getStreamsProxy().getErrorStreamMonitor().addListener(s);
