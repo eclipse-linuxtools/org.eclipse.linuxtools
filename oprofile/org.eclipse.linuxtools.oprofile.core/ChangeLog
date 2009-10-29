@@ -1,26 +1,3 @@
-2010-07-08  Andrew Overholt  <overholt@redhat.com>
-
-	Bug #314737
-
-	* build.properties: JAR core classes. 
-	* META-INF/MANIFEST.MF: Likewise.  Add to bundle classpath.
-
-2010-05-07  Andrew Overholt  <overholt@redhat.com>
-
-	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Fix typo
-	with \find instead of \nfind. 
-
-2010-05-05  Andrew Overholt  <overholt@redhat.com>
-
-	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Clean up
-	build/install instructions.
-
-2009-12-07  Andrew Overholt  <overholt@redhat.com>
-
-	Bug #297007
-
-	* natives/linux/opxml/move_opxml.sh: Fix release number.
-
 2009-10-29  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #292172

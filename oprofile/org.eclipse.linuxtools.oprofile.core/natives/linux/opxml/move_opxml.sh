@@ -1,5 +1,5 @@
 #!/bin/sh
-RELEASE_VER=0.2.0
+RELEASE_VER=0.4.0
 
 case `uname -m` in 
  	'i386') \
