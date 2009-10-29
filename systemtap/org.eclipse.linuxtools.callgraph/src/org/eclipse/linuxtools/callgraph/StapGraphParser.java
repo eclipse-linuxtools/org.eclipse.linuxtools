@@ -201,11 +201,13 @@ public class StapGraphParser extends SystemTapParser {
 
 		
 		//CHECK FOR EXIT() CALL
-		if (idList.size() != 0){
+		if (idList.size() > 1) {
 			for (int val : idList){
 				String name = serialMap.get(val);
 				long time =  endingTimeInNS - timeMap.get(val);
 				timeMap.put(val, time);
+				if (val == firstNode)
+					showTime(val, time);
 				if (shouldGetEndingTimeForID.contains(val)){
 					long cumulativeTime = aggregateTimeMap.get(name) + endingTimeInNS;
 					aggregateTimeMap.put(name, cumulativeTime);
@@ -213,9 +215,13 @@ public class StapGraphParser extends SystemTapParser {
 				
 				lastFunctionCalled = val;
 			}
-			markedMap.put(lastFunctionCalled, Messages.getString("StapGraphParser.16")); //$NON-NLS-1$
+			String tmp = markedMap.get(lastFunctionCalled);
+			if (tmp == null) tmp = "";
+			markedMap.put(lastFunctionCalled, 
+					tmp + "\n" + Messages.getString("StapGraphParser.16")); //$NON-NLS-1$
 		}
-			
+		
+		
 		//timecheck is true if the total execution time is less than 10ms
 		//and the first function is more than 1% off from the total time.
 		boolean timeCheck = totalTime < 50000000 && 
@@ -255,7 +261,8 @@ public class StapGraphParser extends SystemTapParser {
 					if (msg.equals("<unknown>")) { //$NON-NLS-1$
 						msg = msg + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
 					}
-					markedMap.put(Integer.parseInt(tokens[0]), tokens[1]);
+					int i = Integer.parseInt(tokens[0]);
+					markedMap.put(i, markedMap.get(i) + msg);
 				}
 			}
 		}
@@ -379,6 +386,8 @@ public class StapGraphParser extends SystemTapParser {
 					endingTimeInNS=Long.parseLong(args[1]);
 					time = endingTimeInNS - timeMap.get(id);
 					timeMap.put(id, time);
+					if (id == firstNode)
+						showTime(id, time);
 					
 					
 					//IF AN ID IS IN THIS ARRAY IT IS BECAUSE WE NEED THE ENDING TIME
@@ -477,6 +486,14 @@ public class StapGraphParser extends SystemTapParser {
 //		idList.clear();		
 //	}
 
-
+	/**
+	 * Mark node id with a message giving its actual time.
+	 */
+	private void showTime(int id, long time) {
+		String tmp = markedMap.get(id);
+		if (tmp == null) tmp = "";
+		markedMap.put(id, tmp + 
+				"\nActual time: " + time/1000000 + "ms");
+	}
 
 }

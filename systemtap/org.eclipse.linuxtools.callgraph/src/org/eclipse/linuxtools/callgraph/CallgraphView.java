@@ -206,7 +206,7 @@ public class CallgraphView extends SystemTapView {
 	    	if (g.getNodeData(id_parent) == null) {
 				if (parser.markedMap.get(id_parent) != null) {
 					marked = true;
-					msg = parser.markedMap.get(id_parent);
+					msg = parser.markedMap.remove(id_parent);
 				}
 	    		g.loadData(SWT.NONE, id_parent, parser.serialMap.get(id_parent), parser.timeMap.get(id_parent),
 	    				1, 0, marked, msg);
@@ -223,7 +223,7 @@ public class CallgraphView extends SystemTapView {
 				msg = ""; //$NON-NLS-1$
 				if (parser.markedMap.get(id_child) != null) {
 					marked = true;
-					msg = parser.markedMap.get(id_child);
+					msg = parser.markedMap.remove(id_child);
 				}
 				if (id_child != -1) {
 					if (parser.timeMap.get(id_child) == null){						
@@ -236,6 +236,16 @@ public class CallgraphView extends SystemTapView {
 								1, id_parent, marked,msg);
 					}
 				}
+			}
+			
+			if (parser.markedMap.size() > 0) {
+				//Still some markers left
+				for (int key : parser.markedMap.keySet()) {
+					g.insertMessage(key, parser.markedMap.get(key));
+				}
+				
+				//Erase the remaining nodes, just in case
+				parser.markedMap.clear();
 			}
 			
 		}

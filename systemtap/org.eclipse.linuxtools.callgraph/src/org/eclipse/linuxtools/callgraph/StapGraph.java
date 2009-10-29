@@ -242,8 +242,7 @@ public class StapGraph extends Graph {
 	
 
 	/**
-	 * Create a new StapData object with the given parameters. If the id is larger
-	 * than the current idOfLastNode, then idOfLastNode is set to id.
+	 * Convenience method to loadData with a message preset.
 	 * 
 	 * @param style
 	 * @param id
@@ -269,7 +268,8 @@ public class StapGraph extends Graph {
 		
 		//-------------Add node to appropriate map/list
 		StapData n = new StapData(this, style, txt, time, called, 
-				id, caller, isMarked, message);
+				id, caller, isMarked);
+		n.setMessage(message);
 		if (isMarked)
 			markedNodes.add(id);
 		nodeDataMap.put(id, n);
@@ -278,6 +278,52 @@ public class StapGraph extends Graph {
 		if (id > idOfLastNode)
 			idOfLastNode = id;
 		return id;
+	}
+
+	/**
+	 * Create a new StapData object with the given parameters. If the id is larger
+	 * than the current idOfLastNode, then idOfLastNode is set to id.
+	 * 
+	 * @param style
+	 * @param id
+	 * @param txt
+	 * @param time
+	 * @param called
+	 * @param caller
+	 * @return
+	 */
+	public int loadData(int style, int id, String txt, long time, int called,
+			int caller, boolean isMarked) {
+		//-------------Invalid function catching
+		// Catches some random C/C++ directive functions
+		if (id < 10 && killInvalidFunctions) {
+			if (txt.contains(")")) { //$NON-NLS-1$
+				return -1;
+			} else if (txt.contains(".")) { //$NON-NLS-1$
+				return -1;
+			} else if (txt.contains("\"")) { //$NON-NLS-1$
+				return -1;
+			}
+		} 
+		
+		//-------------Add node to appropriate map/list
+		StapData n = new StapData(this, style, txt, time, called, 
+				id, caller, isMarked);
+		if (isMarked)
+			markedNodes.add(id);
+		nodeDataMap.put(id, n);
+
+		// Make no assumptions about the order that data is input
+		if (id > idOfLastNode)
+			idOfLastNode = id;
+		return id;
+	}
+	
+	public void insertMessage(int id, String message) {
+		StapData temp = nodeDataMap.get(id);
+		if (temp == null) return;
+		temp.insertMessage(message);
+		nodeDataMap.put(id, temp);
 	}
 	
 	/*

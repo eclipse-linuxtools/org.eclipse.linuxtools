@@ -68,10 +68,9 @@ public class StapData {
 	 * @param currentID The unique identifier for this node
 	 * @param caller The parent of this node
 	 * @param isMarked
-	 * @param message Alt text to be displayed when hover over this node
 	 */
 	public StapData(StapGraph graphModel, int style, String txt, 
-    		long time, int called, int currentID, int parent, boolean isMarked, String message) {
+    		long time, int called, int currentID, int parent, boolean isMarked) {
         this.time = time;
         this.style = style;
         this.timesCalled = called;
@@ -89,7 +88,6 @@ public class StapData {
         this.parent = parent;
         this.levelOfRecursion = 0;
         this.marked = isMarked;
-        this.markedMessage = message;
         this.uncollapsedPiece = -1;
         
         
@@ -213,4 +211,20 @@ public class StapData {
 	public void setTime(long time) {
 		this.time = time;
 	}
+
+
+	public StapData setMessage(String message) {
+		this.markedMessage = message;
+		return this;
+	}
+	
+	
+	public StapData insertMessage(String message) {
+		String tmp = message;
+		if (this.markedMessage != null && this.markedMessage.length() > 0)
+			tmp = this.markedMessage + tmp;
+		this.markedMessage = tmp;
+		return this;
+	}
+
 }
