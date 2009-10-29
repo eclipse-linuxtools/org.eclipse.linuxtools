@@ -474,18 +474,6 @@ public class StapGraphParser extends SystemTapParser {
 		return Status.OK_STATUS;
 	}
 
-
-//	public void clear() {
-//		outNeighbours.clear();
-//		timeMap.clear();
-//		serialMap.clear();
-//		countMap.clear();
-//		text = ""; //$NON-NLS-1$
-//		shouldGetEndingTimeForID.clear();
-//		nameList.clear();
-//		idList.clear();		
-//	}
-
 	/**
 	 * Mark node id with a message giving its actual time.
 	 */

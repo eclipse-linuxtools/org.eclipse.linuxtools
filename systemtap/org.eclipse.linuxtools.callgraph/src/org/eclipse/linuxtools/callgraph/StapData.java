@@ -182,11 +182,12 @@ public class StapData {
 	
 	
 	/**
-	 * Check if this StapData is marked
+	 * Check if this StapData is marked -- returns the result of
+	 * marked || markedMessage.length() > 0 (in case marked was not set)
 	 * @return
 	 */
 	public boolean isMarked() {
-		return marked;
+		return marked || markedMessage.length() > 0;
 	}
 
 	
@@ -224,6 +225,7 @@ public class StapData {
 		if (this.markedMessage != null && this.markedMessage.length() > 0)
 			tmp = this.markedMessage + tmp;
 		this.markedMessage = tmp;
+		this.marked = true;
 		return this;
 	}
 
