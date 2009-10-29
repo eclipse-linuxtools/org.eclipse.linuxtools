@@ -339,8 +339,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 				Thread.sleep(100);
 				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
 					parser.cancelJob();
-					Runtime run = Runtime.getRuntime();
-					run.exec("kill stap"); //$NON-NLS-1$
 					process.terminate();
 					return;
 				}
