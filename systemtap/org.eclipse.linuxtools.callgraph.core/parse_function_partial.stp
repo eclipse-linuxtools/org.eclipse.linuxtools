@@ -1,8 +1,6 @@
 global serial
 global startTime
 global finalTime
-global markedMessages
-global callArray
 global currentDepth
 
 
@@ -13,7 +11,6 @@ function callFunction(probefunc) {
 	} else
 	    printf("<%s,,%d,,%d;\n", probefunc, serial, gettimeofday_ns())
 	currentDepth++
-	callArray[currentDepth] = serial
 	serial++
 }
 
@@ -27,10 +24,6 @@ function returnFunction(probefunc) {
 probe end {
 	printf("-%d\n",finalTime);
 	printf("+%d\n",finalTime - startTime);
-	printf("?")
-	foreach (num in markedMessages) {
-		printf("%d,,%s;", num, markedMessages[num]);
-	}
     exit()
 }
 probe syscall.exit {

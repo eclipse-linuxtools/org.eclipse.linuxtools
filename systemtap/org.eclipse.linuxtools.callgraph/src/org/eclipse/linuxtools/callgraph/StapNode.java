@@ -45,7 +45,7 @@ public class StapNode extends GraphNode{
 				+ "%"); //$NON-NLS-1$
 		}
 		
-		if (data.markedMessage.length() != 0) {
+		if (data.markedMessage != null && data.markedMessage.length() != 0) {
 			Label tooltip = new Label(data.name + ": " +  //$NON-NLS-1$
 					numberFormat.format((float) data.getTime()/graphModel.getTotalTime() * 100) 
 					+ "%" + "\n  " + data.markedMessage); //$NON-NLS-1$ //$NON-NLS-2$

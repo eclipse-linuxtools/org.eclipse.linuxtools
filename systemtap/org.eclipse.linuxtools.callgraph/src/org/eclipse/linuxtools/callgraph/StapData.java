@@ -187,7 +187,7 @@ public class StapData {
 	 * @return
 	 */
 	public boolean isMarked() {
-		return marked || markedMessage.length() > 0;
+		return marked || (markedMessage != null && markedMessage.length() > 0);
 	}
 
 	
@@ -213,14 +213,26 @@ public class StapData {
 		this.time = time;
 	}
 
-
+/**
+ * Sets the message for this data object to the given string,
+ * overwriting the current markedMessage. Sets marked to true.
+ * 
+ * Returns this.
+ * @param message
+ * @return this
+ */
 	public StapData setMessage(String message) {
+		if (message == null || message.length() < 1)
+			return this;
 		this.markedMessage = message;
+		this.marked = true;
 		return this;
 	}
 	
 	
 	public StapData insertMessage(String message) {
+		if (message == null || message.length() < 1)
+			return this;
 		String tmp = message;
 		if (this.markedMessage != null && this.markedMessage.length() > 0)
 			tmp = this.markedMessage + tmp;

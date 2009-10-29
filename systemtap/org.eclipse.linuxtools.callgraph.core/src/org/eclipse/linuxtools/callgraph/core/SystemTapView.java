@@ -128,7 +128,7 @@ public abstract class SystemTapView extends ViewPart {
 	 * @throws InterruptedException
 	 */
 	public void update() throws InterruptedException {
-		ViewUIUpdater updater = new ViewUIUpdater("UIUpdater"); //$NON-NLS-1$
+		ViewUIUpdater updater = new ViewUIUpdater("SystemTapView.update"); //$NON-NLS-1$
 		updater.schedule();
 		updater.join();
 	}

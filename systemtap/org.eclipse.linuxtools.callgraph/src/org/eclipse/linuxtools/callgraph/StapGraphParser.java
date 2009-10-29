@@ -49,7 +49,6 @@ public class StapGraphParser extends SystemTapParser {
 	public long totalTime;
 	public int lastFunctionCalled;
 	public ICProject project;
-	private String[] markedMessages;
 	private static final String DELIM = ",,"; //$NON-NLS-1$
 	
 	private boolean encounteredMain = false;
@@ -77,7 +76,6 @@ public class StapGraphParser extends SystemTapParser {
 		markedMap = new HashMap<Integer, String>();
 		lastFunctionCalled = 0;
 		project = null;
-		markedMessages = null;
 		startTime = -1;
 	}
 
@@ -160,11 +158,11 @@ public class StapGraphParser extends SystemTapParser {
 					}
 					
 					tmp = buff.readLine();
-					if (tmp != null && tmp.length() > 0)
-						markedMessages = tmp.substring(1).split(";"); //$NON-NLS-1$
-					else
-						//Not having any marked messages is not an error
-						markedMessages = null;
+//					if (tmp != null && tmp.length() > 0)
+//						markedMessages = tmp.substring(1).split(";"); //$NON-NLS-1$
+//					else
+//						//Not having any marked messages is not an error
+//						markedMessages = null;
 				}
 			}
 			
@@ -184,7 +182,6 @@ public class StapGraphParser extends SystemTapParser {
 		if (text.length() > 0) {
 			if (parse(text) == Status.OK_STATUS) {  //$NON-NLS-1$
 				parseEnd();
-				parseMarked();
 			}
 			else
 				return Status.CANCEL_STATUS;
@@ -248,25 +245,18 @@ public class StapGraphParser extends SystemTapParser {
 		}
 	}
 	
-	private void parseMarked() {
+	private void parseMarked(String msg) {
 		/*
-		 * Parse marked messages for marked nodes 
+		 * Append message
 		 */
-		if (markedMessages != null) {
-			//Search for marked nodes
-			for (String s : markedMessages) {
-				String[] tokens = s.split(DELIM);
-				if (tokens.length > 1) {
-					String msg = tokens[1];
-					if (msg.equals("<unknown>")) { //$NON-NLS-1$
-						msg = msg + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
-					}
-					int i = Integer.parseInt(tokens[0]);
-					markedMap.put(i, markedMap.get(i) + msg);
-				}
-			}
+		if (msg.length() < 1)
+			return;
+		int id = idList.get(idList.size() -1);
+		if (msg.equals("<unknown>")) { //$NON-NLS-1$
+			msg = msg + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
 		}
-		
+		markedMap.put(id, markedMap.get(id) + msg);
+	
 	}
 	
 	private IStatus parse(String data) {
@@ -352,7 +342,6 @@ public class StapGraphParser extends SystemTapParser {
 					/*
 					 * 
 					 * Close tag -- Function return
-					 * 
 					 * 
 					 */
 					
@@ -454,11 +443,11 @@ public class StapGraphParser extends SystemTapParser {
 					endingTimeInNS = Long.parseLong(line.substring(1));
 				} else if (line.charAt(0) == '+') {
 					totalTime = Long.parseLong(line.substring(1));
-				} else if (line.charAt(0) == '?') {
-					//Messages should be the last line in the output
-					markedMessages = line.substring(1).split(";"); //$NON-NLS-1$
+					//Total time should be the last line in the output
 					parseEnd();
-					parseMarked();
+				} else if (line.charAt(0) == '?') {
+					if (line.length() > 1)
+						parseMarked(line.substring(1));
 				} else {
 					parse(line);
 				}
