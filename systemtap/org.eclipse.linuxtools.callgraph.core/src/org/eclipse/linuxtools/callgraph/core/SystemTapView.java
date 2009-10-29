@@ -490,13 +490,7 @@ public abstract class SystemTapView extends ViewPart {
 						PluginConstants.PLUGIN_LOCATION
 								+ "icons/progress_stop.gif"))) { //$NON-NLS-1$
 			public void run() {
-				Runtime run = Runtime.getRuntime();
-				try {
-					getParser().cancelJob();
-					run.exec("kill stap"); //$NON-NLS-1$
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				getParser().cancelJob();
 			}
 		};
 		mgr.add(kill);
