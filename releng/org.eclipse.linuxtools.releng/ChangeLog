@@ -1,3 +1,11 @@
+2009-10-29  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Change map for GProf test plugin to be a fragment.
+
+2009-10-08  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Add GProf feature.
+
 2009-10-08  Andrew Overholt  <overholt@redhat.com>
 
 	* testing.properties: Add GProf tests.
