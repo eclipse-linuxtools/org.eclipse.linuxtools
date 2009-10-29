@@ -723,16 +723,19 @@
             class="org.eclipse.linuxtools.cdt.autotools.ui.properties.AutotoolsPropertyPage"
             id="org.eclipse.linuxtools.cdt.autotools.propertypage"
             name="%PropertyAutotools.name">
+         <filter
+               name="projectNature"
+               value="org.eclipse.linuxtools.cdt.autotools.autotoolsNature">
+         </filter>
          <enabledWhen>
-            <and>
-               <instanceof
-                     value="org.eclipse.core.resources.IResource">
-               </instanceof>
-               <test
-                     property="org.eclipse.linuxtools.cdt.autotools.isAutotoolsProject"
-                     value="true">
-               </test>
-            </and>
+            <or>
+               <instanceof value="org.eclipse.core.resources.IProject"/>
+               <instanceof value="org.eclipse.cdt.core.model.ICProject"/>
+               <instanceof value="org.eclipse.core.resources.IFolder"/>
+               <instanceof value="org.eclipse.cdt.core.model.ICContainer"/>
+               <instanceof value="org.eclipse.core.resources.IFile"/>
+               <instanceof value="org.eclipse.cdt.core.model.ITranslationUnit"/>
+           </or>
          </enabledWhen>
       </page>
    </extension>

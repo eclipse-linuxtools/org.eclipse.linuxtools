@@ -28,6 +28,10 @@ public class AutotoolsPropertyPage extends AbstractPage {
 		return super.createContents(parent);
 	}
 	
+	protected boolean showsConfig() {
+		return false;
+	}
+	
 //	protected Combo fACVersionCombo;
 //	protected Combo fAMVersionCombo;
 //	

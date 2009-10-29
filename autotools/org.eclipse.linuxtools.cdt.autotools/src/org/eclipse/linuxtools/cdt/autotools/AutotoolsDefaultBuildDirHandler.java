@@ -146,6 +146,8 @@ public class AutotoolsDefaultBuildDirHandler extends ManagedOptionValueHandler
 
 	public boolean isOptionVisible(IBuildObject configuration,
 			IHoldsOptions holder, IOption option) {
+		if (option.getName().equals("includes") || option.getName().equals("symbols"))
+			return false;
 		return true;
 	}
 

@@ -1,3 +1,12 @@
+2009-10-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Fix so Autotools page tests project nature and doesn't require
+	property tester loaded.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsDefaultBuildDirHandler.java (isOptionVisible): Fix
+	so includes and symbols options are not visible. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/properties/AutotoolsPropertyPage.java (showsConfig):
+	Set so there is no Manage Configurations dialog. 
+
 2009-10-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 1.0.5.
