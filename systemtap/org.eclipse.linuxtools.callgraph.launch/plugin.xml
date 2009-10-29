@@ -85,6 +85,14 @@
          </contextualLaunch>
       </shortcut>
    </extension>
+ <extension
+       point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+          configTypeID="org.eclipse.linuxtools.callgraph.launch.systemtapLaunch"
+          icon="icons/bar_graph.png"
+          id="org.eclipse.linuxtools.callgraph.launch.systemtapLaunchImage">
+    </launchConfigurationTypeImage>
+ </extension>
    
 
 </plugin>
