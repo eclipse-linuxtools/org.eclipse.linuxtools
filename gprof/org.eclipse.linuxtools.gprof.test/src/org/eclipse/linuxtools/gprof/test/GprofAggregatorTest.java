@@ -61,9 +61,13 @@ public class GprofAggregatorTest extends TestCase {
 		s.add(gmon.toString());
 
 		String gprof2use="gprof";
-		
-
 		File f = Aggregator.aggregate(gprof2use, binary, s, directory);
-		STJunitUtils.compare(f.getAbsolutePath(), directory + File.separator + "gmon.sum.ref", true);
+		
+		Process p = Runtime.getRuntime().exec(new String[] {gprof2use, binary, f.getAbsolutePath()});
+		Process p2 = Runtime.getRuntime().exec(new String[] {gprof2use, binary, directory + File.separator + "gmon.sum.ref"});
+		
+		STJunitUtils.compare(p.getInputStream(), p2.getInputStream());
+		p.waitFor();
+		p2.waitFor();
 	}
 }
