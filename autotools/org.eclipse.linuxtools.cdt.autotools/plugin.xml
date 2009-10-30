@@ -425,11 +425,13 @@
                primaryOutput="true"/>
          <inputType
                id="org.eclipse.linuxtools.cdt.autotools.inputType.configure"
-               languageId="org.eclipse.cdt.core.gcc">
+               languageId="org.eclipse.cdt.core.gcc"
+               scannerConfigDiscoveryProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
          </inputType>
          <inputType
                id="org.eclipse.linuxtools.cdt.autotools.inputType.configure1"
-               languageId="org.eclipse.cdt.core.g++">
+               languageId="org.eclipse.cdt.core.g++"
+               scannerConfigDiscoveryProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile">
          </inputType>
       </tool>
       <tool
@@ -487,9 +489,9 @@
                   archList="all"
                   id="org.eclipse.linuxtools.cdt.autotools.toolChain"
                   name="%Autotools.gnu.toolchain.name"
-                  unusedChildren="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc;org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp"
                   scannerConfigDiscoveryProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfile"
-                  targetTool="org.eclipse.linuxtools.cdt.autotools.tool.configure">
+                  targetTool="org.eclipse.linuxtools.cdt.autotools.tool.configure"
+                  unusedChildren="org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gcc;org.eclipse.linuxtools.cdt.autotools.toolchain.tool.gpp">
                <tool
                      id="org.eclipse.linuxtools.cdt.autotools.gnu.toolchain.tool.configure"
                      isAbstract="false"

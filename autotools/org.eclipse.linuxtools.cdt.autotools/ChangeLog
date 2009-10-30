@@ -1,5 +1,11 @@
 2009-10-29  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #291464
+	* plugin.xml: Add ScannerDiscoveryProfile to both configure inputs to avoid failure
+	in Discovery Profiles tab.
+
+2009-10-29  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* plugin.xml: Fix so Autotools page tests project nature and doesn't require
 	property tester loaded.
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsDefaultBuildDirHandler.java (isOptionVisible): Fix
