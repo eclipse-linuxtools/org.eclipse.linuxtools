@@ -364,7 +364,6 @@ public class StapGraphParser extends SystemTapParser {
 						parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
 						return Status.CANCEL_STATUS;
 					}
-					System.out.println("Closing" + name);
 					
 					nameList.remove(lastOccurance);
 					id = idList.remove(lastOccurance);
