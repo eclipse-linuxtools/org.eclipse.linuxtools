@@ -249,13 +249,13 @@ public class StapGraphParser extends SystemTapParser {
 		/*
 		 * Append message
 		 */
-		if (msg.length() < 1)
+		if (msg.length() < 1 || idList.size() < 1)
 			return;
 		int id = idList.get(idList.size() -1);
 		if (msg.equals("<unknown>")) { //$NON-NLS-1$
 			msg = msg + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
 		}
-		markedMap.put(id, markedMap.get(id) + msg);
+		markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + msg);
 	
 	}
 	
@@ -324,6 +324,7 @@ public class StapGraphParser extends SystemTapParser {
 					nameList.add(name);
 					idList.add(id);
 					
+
 					if (outNeighbours.get(id) == null){
 						outNeighbours.put(id, new ArrayList<Integer>());
 					}
@@ -363,10 +364,11 @@ public class StapGraphParser extends SystemTapParser {
 						parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
 						return Status.CANCEL_STATUS;
 					}
+					System.out.println("Closing" + name);
 					
 					nameList.remove(lastOccurance);
 					id = idList.remove(lastOccurance);
-					
+
 					
 					if (timeMap.get(id) == null) {
 						parsingError(Messages.getString("StapGraphParser.13") + name); //$NON-NLS-1$
