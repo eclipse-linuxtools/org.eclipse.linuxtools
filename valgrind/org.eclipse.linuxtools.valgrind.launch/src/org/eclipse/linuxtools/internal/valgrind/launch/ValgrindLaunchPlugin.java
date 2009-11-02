@@ -30,6 +30,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
@@ -111,6 +113,13 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		if (valgrindLocation == null) {
 			findValgrindLocation();
 		}
+		
+		// valgrind binary location in preferences overrides default location
+		String valgrindPreferedPath = ValgrindPlugin.getDefault().getPreferenceStore().getString(ValgrindPreferencePage.VALGRIND_PATH);
+		if (! valgrindLocation.toOSString().equals(valgrindPreferedPath)){
+			valgrindLocation = Path.fromOSString(valgrindPreferedPath);
+		}
+		
 		return valgrindLocation;
 	}
 	
