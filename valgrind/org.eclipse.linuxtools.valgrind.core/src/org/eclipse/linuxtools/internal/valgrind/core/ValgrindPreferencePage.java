@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ValgrindPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage{
 	
-	public static final String VALGRIND_PATH = "VALGRIND_PATH";
+	public static final String VALGRIND_PATH = "VALGRIND_PATH"; //$NON-NLS-1$
 	private Text binText;
 	private Button button;
 	private IPreferenceStore store;
@@ -60,7 +60,7 @@ public class ValgrindPreferencePage extends PreferencePage implements
 		
 		//Path Label
 		Label pathLabel = new Label(composite,SWT.NONE);
-		pathLabel.setText("Valgrind Binary");
+		pathLabel.setText(Messages.getString("ValgrindPreferencePage.Binary_path")); //$NON-NLS-1$
 		
 		//Path Text Field
 		binText = new Text(composite, SWT.SINGLE | SWT.BORDER);
@@ -71,7 +71,7 @@ public class ValgrindPreferencePage extends PreferencePage implements
 		
 		//Button
 		button = new Button(composite, SWT.PUSH);
-		button.setText("Browse File System");
+		button.setText(Messages.getString("ValgrindPreferencePage.Browse_button")); //$NON-NLS-1$
 		button.addSelectionListener(new SelectionListener(){
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -135,8 +135,8 @@ public class ValgrindPreferencePage extends PreferencePage implements
 			performDefaults();
 			Shell shell = new Shell();
 			MessageDialog
-					.openError(shell, "Invalid Binary Path",
-							"The binary path specified is not valid. Please choose a valid binary.");
+					.openError(shell, Messages.getString("ValgrindPreferencePage.Error_invalid_title"), //$NON-NLS-1$
+							Messages.getString("ValgrindPreferencePage.Error_invalid_message")); //$NON-NLS-1$
 			return false;
 		}
 		

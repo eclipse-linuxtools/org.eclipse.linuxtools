@@ -6,7 +6,7 @@
       <page
             class="org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage"
             id="org.eclipse.linuxtools.valgrind.internal.core.ValgrindPreferencePage"
-            name="Valgrind">
+            name="%page.name">
       </page>
    </extension>
 
