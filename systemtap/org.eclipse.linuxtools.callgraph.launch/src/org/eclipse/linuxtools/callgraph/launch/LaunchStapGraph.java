@@ -78,7 +78,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			arguments = binaryPath;
 			outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
 			
-			writeFunctionListToScript(resourceToSearchFor);
+			if (writeFunctionListToScript(resourceToSearchFor) == null)
+				return;
 			if (funcs == null || funcs.length() < 0)
 				return;
 
