@@ -1,3 +1,7 @@
+2009-11-03  chwang  <chwang@toto>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Delete unused temporary variable
+
 2009-11-03  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Disable Callgraph View from stealing focus when an update has been made.
