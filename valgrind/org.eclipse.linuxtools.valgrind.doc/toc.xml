@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Valgrind Integration User Guide">
+ <link toc="userguide/Valgrind Reference-toc.xml"/>
+ <topic href="doc/notices.html" label="Legal" />
+</toc>

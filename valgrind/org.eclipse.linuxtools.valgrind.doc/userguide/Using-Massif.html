@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Valgrind Reference - Using Massif</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Using Massif</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Using-Memcheck.html" title="Using Memcheck">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Using-Cachegrind.html" title="Using Cachegrind">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Using Memcheck</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Using Cachegrind</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Using_Massif">Using Massif</h1>
+		<p>Massif is a Valgrind tool that measures how much heap memory an application uses. Heap memory profiling is useful in determining how to reduce the memory usage of an application. For more information about Massif, refer to 
+			<a href="http://www.valgrind.org/docs/manual/ms-manual.html">http://www.valgrind.org/docs/manual/ms-manual.html</a>.
+		</p>
+		<p>To use Massif, navigate to <u>Profile As</u> > <u>Profile Configurations</u> to access the 
+			<b>
+				<i>Profile Configurations</i>
+			</b> menu. Open the 
+			<b>
+				<i>Valgrind Options</i>
+			</b> tab and choose Massif from the <u>Tool to run:</u> drop-down list.
+			<br/>
+			<img border="0" src="images/SwitchMassif.png"/>  
+		</p>
+		<h2 id="Analyzing_Massif_Profile_Results">Analyzing Massif Profile Results</h2>
+		<p>Massif distills a large volume of data. The Valgrind plug-in for Eclipse presents three ways to view this data:</p>
+		<ul>
+			<li>
+				<b>Snapshots Table</b>. Each entry in the Valgrind view contains useful information about each snapshot taken by Massif during the profile run. The peak snapshot is highlighed in bold text.
+			</li>
+		</ul>
+		<p>
+			<br/>
+			<img border="0" src="images/MassifTable.png"/>
+		</p>
+		<ul>
+			<li>
+				<b>Heap Tree</b>. Detailed snapshots are denoted by the <u>Show Heap Tree</u> icon ( 
+				<img border="0" src="images/hierarchy.gif"/> ). Double-clicking any of these snapshots will modify the Valgrind view to display all detailed snapshots. Collapsing each detailed snapshot in this view will display a heirarchy of function calls (i.e. heap tree) detailing the heap allocations used during the snapshot.
+				<br/>
+				<img border="0" src="images/MassifTree.png"/>
+				<br/>Some functions within the heap tree list a related source file. Double-clicking these functions will open the listed source file and place the insertion point on the specific function responsible for the call.
+				<br/>You also can also toggle the  <u>Show Heap Tree</u> shortcut on the Valgrind view toolbar to switch between 
+				<b>Snapshots Table</b> and 
+				<b>Heap Tree</b> views.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>Heap Chart</b>. The information in the snapshots table is also available in line chart form, displayed in the 
+				<b>Heap Chart</b> window. Clicking any data point in the chart will highlight its corresponding snapshot in the snapshot table. Double-clicking on a data point that corresponds to a detailed snapshot will open an editor to one of its function calls. 
+				<br/>
+				<img border="0" src="images/MassifChartSelect.png"/>
+				<br/>If a detailed snapshot contains calls to multiple source files (or multiple functions within a source file), double-clicking its corresponding data point on the heap chart will open the 
+				<b>
+					<i>Open Allocation Function Call</i>
+				</b> menu. Double-clicking a function from the 
+				<b>
+					<i>Open Allocation Function Call</i>
+				</b> menu will open its corresponding source file and place the insertion point on the specific function responsible for the call.
+			</li>
+		</ul>
+		<h2 id="Configuring_a_Massif_Profile_Run">Configuring a Massif Profile Run</h2>
+		<p>To configure a Massif profile run, navigate to <u>Profile As</u> > <u>Profile Configurations</u> to access the 
+			<b>
+				<i>Profile Configurations</i>
+			</b> menu. In the 
+			<b>
+				<i>Valgrind Options</i>
+			</b> tab, navigate further to 
+			<b>
+				<i>Massif Options</i>
+			</b>. 
+			<br/>
+			<img border="0" src="images/MassifOptions.png"/>
+		</p>
+		<p>The 
+			<b>
+				<i>Massif Options</i>
+			</b> tab allows you to configure the following Massif options:
+		</p>
+		<ul>
+			<li>
+				<b>
+					<i>profile heap</i>
+				</b> specifies whether or not heap profiling should be performed. This option is enabled by default. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>profile stack</i>
+				</b> specifies whether or not stack profiling should be performed. This option is disabled by default, as it significantly slows down Massif.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>heap allocation threshold</i>
+				</b> specifies the significance threshold for heap allocations (as a percentage). Allocation tree entries that account for less than this will be aggregated. The default value for this option is 1%.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>time unit</i>
+				</b> specifies what time unit should be used for the profile. The possible values for this are instructions (default), milliseconds, or bytes.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>max snapshots</i>
+				</b> specifies the maximum number of snapshots that the profile should take. The default value for this is 100.
+			</li>
+		</ul>
+		<ul>
+			<li>The 
+				<b>
+					<i>allocated functions</i>
+				</b> field is identical to the Massif command-line option <code>--alloc-fn=</code>, which allows you to specify any function to be treated as a heap allocation function. To add or remove functions to this field, use the <u>New</u> or <u>Remove</u> buttons. You can specify multiple functions in this field. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>administrative bytes per block</i>
+				</b> is identical to the Massif command-line option <code>--heap-admin=</code>, which specifies the number of administrative bytes (per block) to use if heap profiling is enabled. The default value for this option is 8. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>allocation tree depth</i>
+				</b> is identical to the Massif command-line option <code>--depth=</code>, which specifies the maximum depth of the allocation trees recorded for detailed snapshots. The default value for this option is 30.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>allocation peak inaccuracy</i>
+				</b> is identical to the Massif command-line option <code>--peak-inaccuracy=</code>. Massif records a peak only when the global memory allocation size exceeds the previous peak by the specified percentage value of this option. The default value for this option is 1.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>detailed snapshot frequency</i>
+				</b> specifies the frequency at which Massif should take detailed snapshots. The default value for this option is 10; to specify that each snapshot should be detailed, set this option to 1.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>minimum heap block alignment</i>
+				</b> specifies the minimum alignment (i.e. size) of heap blocks. 
+			</li>
+		</ul>
+		<p>For more information about each Massif option in the Valgrind plug-in for Eclipse, refer to <code>man valgrind</code>.</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Using-Memcheck.html" title="Using Memcheck">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="Valgrind Reference.html" title="Valgrind Reference">
+						<img alt="Valgrind Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Using-Cachegrind.html" title="Using Cachegrind">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Using Memcheck</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Using Cachegrind</td>
+			</tr>
+		</table>
+	</body>
+</html>

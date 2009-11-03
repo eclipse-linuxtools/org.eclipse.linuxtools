@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Valgrind Reference - Using Memcheck</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Using Memcheck</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Using-Massif.html" title="Using Massif">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">General Usage</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Using Massif</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Using_Memcheck">Using Memcheck</h1>
+		<p>Memcheck is the default tool used by Valgrind and the Valgrind plug-in for Eclipse. It allows you to detect memory-related problems such as memory leaks, use of uninitialized memory, and reads from/writes to inappropriate stack areas. For more information about Memcheck, refer to 
+			<a href="http://www.valgrind.org/docs/manual/mc-manual.html">http://www.valgrind.org/docs/manual/mc-manual.html</a>.
+		</p>
+		<h2 id="Analyzing_Memcheck_Profile_Results">Analyzing Memcheck Profile Results</h2>
+		<p>Any memory management errors detected by Memcheck are displayed in the Valgrind view, which appears automatically after a profile run. Each displayed error can be expanded in the Valgrind view to display its stack trace.  </p>
+		<p>
+			<br/>
+			<img border="0" src="images/MemcheckOutput.png"/>
+		</p>
+		<p>In some cases, Memcheck can determine which section of the source code causes a reported error. Whenever this is the case, double-clicking on the stack trace of the reported error will open the related source file and place the insertion point on the line responsible for the error. </p>
+		<h2 id="Configuring_a_Memcheck_Profile_Run">Configuring a Memcheck Profile Run</h2>
+		<p>To configure a Memcheck profile run, navigate to <u>Profile As</u> > <u>Profile Configurations</u> to access the 
+			<b>
+				<i>Profile Configurations</i>
+			</b> menu. In the 
+			<b>
+				<i>Valgrind Options</i>
+			</b> tab, navigate further to 
+			<b>
+				<i>Memcheck Options</i>
+			</b>.
+			<br/>
+			<img border="0" src="images/MemcheckOptions.png"/>
+		</p>
+		<p>The 
+			<b>
+				<i>Memcheck Options</i>
+			</b> tab allows you to configure the following Memcheck options:
+		</p>
+		<ul>
+			<li>
+				<b>
+					<i>leak resolution</i>
+				</b> sets how tolerant Memcheck should be in considering different stack traces to be the same. The default setting is "low", which means only the first two entries need to match. The "med" setting requires four entries to declare a match. The "high" setting requires all entries to declare match. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>freelist size (blocks)</i>
+				</b> is identical to the Memcheck command-line option <code>--freelist-vol=</code>, which specifies the maximum total size (in bytes) of memory blocks to be marked "inaccessible" once they have been freed using <code>free</code> (as in C) or <code>delete</code> (as in C++). The default value for 
+				<b>
+					<i>freelist size (blocks)</i>
+				</b> is 10000000.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>minimum heap block alignment</i>
+				</b> is identical to the Memcheck command-line option <code>--alignment=</code>, which specifies the minimum alignment/size of heap blocks. The default value for this option is 8.
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>show reachable blocks</i>
+				</b> configures whether or not Memcheck should report blocks it could not find a pointer to during leak detection. This is disabled by default (i.e. do not report blocks with undetermined pointers). 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>undef value errors</i>
+				</b> configures whether or not Memcheck should detect dangerous uses of undefined value errors. This is enabled by default. 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>allow partial loads</i>
+				</b> is identical to the Memcheck command-line option <code>--partial-loads-ok=</code>, which controls how Memcheck handles word-sized, word-aligned loads from addresses from which bytes are addressable and others are not. This is disabled by default (i.e. treat loads from partially invalid and completely invalid addresses as the same). 
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<b>
+					<i>gcc 2.96 workarounds</i>
+				</b> is identical to the Memcheck command-line option <code>--workaround-gcc296-bugs</code>, which controls whether Memcheck should assume that small reads/writes below the stack pointer are due to bugs in 
+				<i>gcc-2.96</i>. This option is disabled by default (i.e. do not assume them to be reslting from 
+				<i>gcc-2.96</i> bugs; report such reads/writes as errors). 
+			</li>
+		</ul>
+		<p>Refer to 
+			<a href="http://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.suppfiles">http://www.valgrind.org/docs/manual/mc-manual.html#mc-manual.suppfiles</a> for information about Memcheck suppression files. For more information about each Memcheck option in the Valgrind plug-in for Eclipse, refer to <code>man valgrind</code>.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="Valgrind Reference.html" title="Valgrind Reference">
+						<img alt="Valgrind Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Using-Massif.html" title="Using Massif">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">General Usage</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Using Massif</td>
+			</tr>
+		</table>
+	</body>
+</html>

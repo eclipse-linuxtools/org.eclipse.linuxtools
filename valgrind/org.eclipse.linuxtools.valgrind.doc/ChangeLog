@@ -1,0 +1,66 @@
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #285861
+
+	* plugin.properties: Change Provider to Eclipse.
+
+2009-06-26  Elliott Baron  <ebaron@redhat.com>
+
+	* userguide/General-Usage.html: New file.
+	* userguide/images/Exportbuttonvalgrindview.gif: New file.
+	* userguide/Installing.html: New file.
+	* userguide/Special-Cases.html: New file.
+	* userguide/Using-Cachegrind.html: New file.
+	* userguide/Using-Massif.html: New file.
+	* userguide/Using-Memcheck.html: New file.
+	* userguide/Updating-This-Document.html: Regenerated documentation.
+	* userguide/Valgrind\ Reference-toc.xml: Likewise.
+	* userguide/Valgrind\ Reference.html: Likewise.
+	* userguide/Valgrind\ Reference.xml: Likewise.
+
+2009-06-18  Elliott Baron  <ebaron@redhat.com>
+
+	* build-helper.xml: Added call to wikitext-to-docbook target.
+	* META-INF/MANIFEST.MF: New dep for Eclipse help.
+	* plugin.xml: New extension for Eclipse help.
+	* userguide/images/Screenshot-ProfileConfigurations.png: Retook screenshot.
+	* userguide/Valgrind Reference.xml: Generated docbook.
+
+2009-05-28  Elliott Baron  <ebaron@redhat.com>
+
+	* .classpath: New file.
+	* .project: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* about.html: New file.
+	* build-helper.xml: New file.
+	* build.properties: New file.
+	* doc/notices.html: New file.
+	* extract-markup.xsl: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* plugin.properties: New file.
+	* plugin.xml: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/doc/anttask/MediaWikiImageFetcher.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/doc/anttask/tasks.properties: New file.
+	* toc.xml: New file.
+	* userguide/images/CachegrindOptions.png: New file.
+	* userguide/images/CachegrindOutput.png: New file.
+	* userguide/images/exportbuttonvalgrindview.png: New file.
+	* userguide/images/MassifChartSelect.png: New file.
+	* userguide/images/MassifOptions.png: New file.
+	* userguide/images/MassifTable.png: New file.
+	* userguide/images/MassifTree.png: New file.
+	* userguide/images/MemcheckOptions.png: New file.
+	* userguide/images/MemcheckOutput.png: New file.
+	* userguide/images/Screenshot-ProfileConfigurations-valgrind-options-tab.png: New file.
+	* userguide/images/Screenshot-ProfileConfigurations.png: New file.
+	* userguide/images/Screenshot-Suppressions.png: New file.
+	* userguide/images/Shortcut.png: New file.
+	* userguide/images/SwitchCachegrind.png: New file.
+	* userguide/images/SwitchCoreTool.png: New file.
+	* userguide/images/SwitchMassif.png: New file.
+	* userguide/images/Thread.gif: New file.
+	* userguide/images/ValgrindExportWizard.png: New file.
+	* userguide/images/ValgrindSegfault.png: New file.
+	* userguide/Updating-This-Document.html: New file.
+	* userguide/Valgrind\ Reference-toc.xml: New file.
+	* userguide/Valgrind\ Reference.html: New file.
