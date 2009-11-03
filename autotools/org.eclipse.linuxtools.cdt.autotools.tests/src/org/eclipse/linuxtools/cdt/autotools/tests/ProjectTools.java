@@ -6,16 +6,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.zip.ZipFile;
 
 import org.eclipse.cdt.core.CommandLauncher;
-import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
-import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IProjectType;
-import org.eclipse.cdt.managedbuilder.core.ITool;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.ui.wizards.conversion.ConvertProjectWizardPage;
 import org.eclipse.core.resources.IContainer;
