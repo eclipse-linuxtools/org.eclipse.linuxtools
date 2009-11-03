@@ -221,6 +221,7 @@ public class CallgraphView extends SystemTapView {
 				
 				marked = false;
 				msg = ""; //$NON-NLS-1$
+				StapGraphParser t = parser;
 				if (parser.markedMap.get(id_child) != null) {
 					marked = true;
 					msg = parser.markedMap.remove(id_child);
@@ -238,17 +239,17 @@ public class CallgraphView extends SystemTapView {
 				}
 			}
 			
-			if (parser.markedMap.size() > 0) {
-				//Still some markers left
-				for (int key : parser.markedMap.keySet()) {
-					g.insertMessage(key, parser.markedMap.get(key));
-				}
-				
-				//Erase the remaining nodes, just in case
-				parser.markedMap.clear();
-			}
-			
 		}
+	    
+	    if (parser.markedMap.size() > 0) {
+	    	//Still some markers left
+	    	for (int key : parser.markedMap.keySet()) {
+	    		g.insertMessage(key, parser.markedMap.get(key));
+	    	}
+	    	
+	    	//Erase the remaining nodes, just in case
+	    	parser.markedMap.clear();
+	    }
 	    
 	    
 	    if (g.aggregateTime == null)
