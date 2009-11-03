@@ -83,8 +83,10 @@ public class StapGraph extends Graph {
 
 	//Node management
 	private int idOfLastNode;	
+	private int idOfLastCollapsedNode;
 	private HashMap<Integer, StapNode> nodeMap; 				// HashMap of current nodes
 	private HashMap<Integer, StapData> nodeDataMap; 			// HashMap of all data
+	//The negative side of nodeDataMap is collapsed, the positive side is uncollapsed
 	
 	public List<GraphNode> aggregateNodes;
 	public HashMap<String, Long> aggregateTime;
@@ -181,6 +183,7 @@ public class StapGraph extends Graph {
 		nextMarkedNode = -1;
 		scale = 1;
 		treeLevelFromRoot = 0;
+		idOfLastCollapsedNode = 0;
 		this.callgraphView = callgraphView;
 		
 		this.treeComp = treeComp;
@@ -1390,9 +1393,9 @@ public class StapGraph extends Graph {
 			} else {
 				//-------------First child with this name
 				
-				idOfLastNode++;
-				newNodeMap.put(nodeName, idOfLastNode);
-				collapsedNodesWithOnlyOneNodeInThem.put(idOfLastNode, childID);
+				idOfLastCollapsedNode--;
+				newNodeMap.put(nodeName, idOfLastCollapsedNode);
+				collapsedNodesWithOnlyOneNodeInThem.put(idOfLastCollapsedNode, childID);
 				if (nodeMap.get(childID) != null) {
 					nodeMap.get(childID).setLocation(
 							nodeMap.get(id).getLocation().x,
@@ -1995,7 +1998,6 @@ public class StapGraph extends Graph {
 			proj.pause();
 	}
 
-
 	public void setEndTime(long val) {
 		endTime = val;
 	}
@@ -2003,8 +2005,6 @@ public class StapGraph extends Graph {
 	public long getEndTime() {
 		return endTime;
 	}
-
-
 
 	public void setStartTime(long val) {
 		startTime = val;		

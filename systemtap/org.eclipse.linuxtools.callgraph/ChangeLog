@@ -1,0 +1,3 @@
+2009-11-03  chwang  <chwang@toto>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Enhance capability for collapse nodes by making collapse nodes take a negative ID. 
