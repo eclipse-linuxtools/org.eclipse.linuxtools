@@ -221,7 +221,6 @@ public class CallgraphView extends SystemTapView {
 				
 				marked = false;
 				msg = ""; //$NON-NLS-1$
-				StapGraphParser t = parser;
 				if (parser.markedMap.get(id_child) != null) {
 					marked = true;
 					msg = parser.markedMap.remove(id_child);
