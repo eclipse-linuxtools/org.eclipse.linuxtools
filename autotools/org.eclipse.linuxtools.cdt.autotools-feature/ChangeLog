@@ -1,31 +1,12 @@
-2009-10-16  Jeff Johnston  <jjohnstn@redhat.com>
+2009-10-21  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* feature.xml: Bump up version to 1.0.5.
+	* feature.xml: Add revised org.eclipse.linuxtools.cdt.autotools plug-in that has been
+	set up for compatbility mode to build older projects.
 
-2009-08-05  Andrew Overholt  <overholt@redhat.com>
+2009-10-13  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* feature.xml: Re-name to org.eclipse.linuxtools.cdt.autotools (-feature
-	is the SVN directory name).
-	* feature.properties: Update copyright.
-
-2009-06-17  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* feature.xml: Bump up version to 1.0.4.
-
-2009-06-05  Andrew Overholt  <overholt@redhat.com>
-
-	* Fix up after erroneous SVN operation.
-
-2009-05-19  Andrew Overholt  <overholt@redhat.com>
-
-	Bug #273931
-
-	* feature.properties: Change provider from Eclipse.org to Eclipse.
-
-2009-04-24  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* feature.xml: Fix dependencies for CDT to be greater than or equal as opposed
-	to compatible.
+	* feature.xml: Bump to 2.0.0.  Refer to new org.eclipse.linuxtools.cdt.autotools.core and
+	org.eclipse.linuxtools.cdt.autotools.ui plug-ins.
 
 2009-04-24  Jeff Johnston  <jjohnstn@redhat.com>
 
