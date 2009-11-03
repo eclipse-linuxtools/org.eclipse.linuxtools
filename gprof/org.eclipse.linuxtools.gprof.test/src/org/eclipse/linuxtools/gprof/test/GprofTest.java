@@ -14,6 +14,9 @@ package org.eclipse.linuxtools.gprof.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -49,15 +52,45 @@ public class GprofTest extends TestCase {
 
 	public static Test suite() {
 		TestSuite ats = new TestSuite("GProf:View CSV Export");
-
-		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test", ".*" + GMON_DIRECTORY_SUFFIX);
+		boolean addr2line2_16 = false;
+		try {
+			Process p = Runtime.getRuntime().exec("addr2line --version");
+			InputStream is = p.getInputStream();
+			LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.contains("addr2line 2.16.")) {
+					addr2line2_16 = true;
+					break;
+				}
+			}
+		} catch (Exception _) {
+		}
+		
+		File[] testDirs = STJunitUtils.getTestDirs("org.eclipse.linuxtools.gprof.test",
+				".*" + GMON_DIRECTORY_SUFFIX);
 		for (File testDir : testDirs) {
 			final File gmonFile = new File(testDir, GMON_OUTPUT_FILE);
 			final File binaryFile = new File(testDir, GMON_BINARY_FILE);
-			final File view_cg_RefFile = new File(testDir, "testCallgraphView.ref");
-			final File view_cg_DumpFile = new File(testDir, "testCallgraphView.dump");
-			final File view_cg2_RefFile = new File(testDir, "testCallgraphTimeView.ref");
+
+			File view_cg_RefFile_default = new File(testDir, "testCallgraphView.ref");
+			File view_cg_RefFile_alternate = new File(testDir, "testCallgraphView.ref.binutils-2.16");
+			File view_cg2_RefFile_default = new File(testDir, "testCallgraphTimeView.ref");
+			File view_cg2_RefFile_alternate = new File(testDir, "testCallgraphTimeView.ref.binutils-2.16");
+			final File view_cg_RefFile;
+			final File view_cg2_RefFile;
+			if (addr2line2_16 && view_cg_RefFile_alternate.exists()) {
+				view_cg_RefFile = view_cg_RefFile_alternate;
+			} else {
+				view_cg_RefFile = view_cg_RefFile_default;
+			}
+			if (addr2line2_16 && view_cg2_RefFile_alternate.exists()) {
+				view_cg2_RefFile = view_cg2_RefFile_alternate;
+			} else {
+				view_cg2_RefFile = view_cg2_RefFile_default;
+			}
 			final File view_cg2_DumpFile = new File(testDir, "testCallgraphTimeView.dump");
+			final File view_cg_DumpFile = new File(testDir, "testCallgraphView.dump");
 
 			final File view_samplesFile_RefFile = new File(testDir, "testSampleView.ref");
 			final File view_samplesFile_DumpFile = new File(testDir, "testSampleView.dump");
@@ -73,68 +106,82 @@ public class GprofTest extends TestCase {
 			final File view_samplesFlatT_RefFile = new File(testDir, "testFlatTimeView.ref");
 			final File view_samplesFlatT_DumpFile = new File(testDir, "testFlatTimeView.dump");
 
-			IBinaryObject binary = STSymbolManager.sharedInstance.getBinaryObject(new Path(binaryFile.getAbsolutePath()));
+			IBinaryObject binary = STSymbolManager.sharedInstance.getBinaryObject(
+					new Path(binaryFile.getAbsolutePath()));
 			final GmonDecoder gd = new GmonDecoder(binary);
 			try {
 				gd.read(gmonFile.getAbsolutePath());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-CALLGRAPH") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_cg_RefFile, view_cg_DumpFile, CallGraphContentProvider.sharedInstance, false);
+							testView(gmonFile, gd, view_cg_RefFile, view_cg_DumpFile,
+									CallGraphContentProvider.sharedInstance, false);
 						}
 					}
 			);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-CALLGRAPH-TIMED") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_cg2_RefFile, view_cg2_DumpFile, CallGraphContentProvider.sharedInstance, true);
+							testView(gmonFile, gd, view_cg2_RefFile, view_cg2_DumpFile,
+									CallGraphContentProvider.sharedInstance, true);
 						}
 					}
 			);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-FILE") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_samplesFile_RefFile, view_samplesFile_DumpFile, FileHistogramContentProvider.sharedInstance, false);
+							testView(gmonFile, gd, view_samplesFile_RefFile,
+									view_samplesFile_DumpFile,
+									FileHistogramContentProvider.sharedInstance, false);
 						}
 					}
 			);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-FILE-TIMED") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_samplesFileT_RefFile, view_samplesFileT_DumpFile, FileHistogramContentProvider.sharedInstance, true);
+							testView(gmonFile, gd, view_samplesFileT_RefFile,
+									view_samplesFileT_DumpFile,
+									FileHistogramContentProvider.sharedInstance, true);
 						}
 					}
 			);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-FUNCTION") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_samplesFunction_RefFile, view_samplesFunction_DumpFile, FunctionHistogramContentProvider.sharedInstance, false);
+							testView(gmonFile, gd, view_samplesFunction_RefFile,
+									view_samplesFunction_DumpFile,
+									FunctionHistogramContentProvider.sharedInstance, false);
 						}
 					}
 			);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-FUNCTION-TIMED") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_samplesFunctionT_RefFile, view_samplesFunctionT_DumpFile, FunctionHistogramContentProvider.sharedInstance, true);
+							testView(gmonFile, gd, view_samplesFunctionT_RefFile,
+									view_samplesFunctionT_DumpFile,
+									FunctionHistogramContentProvider.sharedInstance, true);
 						}
 					}
 			);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-FLAT") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_samplesFlat_RefFile, view_samplesFlat_DumpFile, FlatHistogramContentProvider.sharedInstance, false);
+							testView(gmonFile, gd, view_samplesFlat_RefFile,
+									view_samplesFlat_DumpFile,
+									FlatHistogramContentProvider.sharedInstance, false);
 						}
 					}
 			);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":CSV-FLAT-TIMED") {
 						public void runTest() throws Throwable {
-							testView(gmonFile, gd, view_samplesFlatT_RefFile, view_samplesFlatT_DumpFile, FlatHistogramContentProvider.sharedInstance, true);
+							testView(gmonFile, gd, view_samplesFlatT_RefFile,
+									view_samplesFlatT_DumpFile,
+									FlatHistogramContentProvider.sharedInstance, true);
 						}
 					}
 			);
@@ -163,7 +210,9 @@ public class GprofTest extends TestCase {
 			File refFile, File dumpFile,
 			ITreeContentProvider contentProvider, boolean timeMode) throws Exception {
 		GmonView view = GmonView.displayGprofView(gd, gmonFile.getAbsolutePath(), null);
-		SwitchContentProviderAction action = new SwitchContentProviderAction("testAction", "icons/ch_callees.png" /*to avoid error*/, view.getSTViewer().getViewer(), contentProvider);
+		SwitchContentProviderAction action = new SwitchContentProviderAction("testAction",
+				"icons/ch_callees.png" /*to avoid error*/, view.getSTViewer().getViewer(),
+				contentProvider);
 		action.run();
 		changeMode(view, timeMode);
 		STJunitUtils.testCSVExport(view, dumpFile.getAbsolutePath(), refFile.getAbsolutePath());
