@@ -1,3 +1,7 @@
+2009-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Set noclean=false (bug #292911).
+
 2009-10-29  Andrew Overholt  <overholt@redhat.com>
 
 	* maps/linuxtools.map: Change map for GProf test plugin to be a fragment.
