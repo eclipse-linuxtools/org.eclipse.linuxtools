@@ -1,7 +1,9 @@
 2009-11-04  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Make nonRealTimeParser work again
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Fix problem with marked messages not displaying until the methods have closed.
-	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Remove unused comments. Minor formatting.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Remove unused comments. Minor formatting. Make nonRealTimeParser work again.
+	
 	
 
 2009-11-03  chwang  <chwang@toto>

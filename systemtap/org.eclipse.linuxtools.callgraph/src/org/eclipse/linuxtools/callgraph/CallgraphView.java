@@ -302,7 +302,6 @@ public class CallgraphView extends SystemTapView {
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
-	    g.setFocus();
 	    g.setCallOrderList(parser.callOrderList);
 	    
 	    g.setProject(parser.project);
@@ -898,15 +897,12 @@ public class CallgraphView extends SystemTapView {
 
 	@Override
 	public void updateMethod() {
-		if (parser.isRealTime()) {
-			loadData(null);
-			if (parser.totalTime > 0) {
-				finishLoad(new NullProgressMonitor());
-			}
-			
-			g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
+		loadData(null);
+		if (parser.totalTime > 0) {
+			finishLoad(new NullProgressMonitor());
 		}
-
+		
+		g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
 	}
 
 	@Override
