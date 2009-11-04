@@ -367,7 +367,7 @@ public class StapGraphParser extends SystemTapParser {
 					parse(line);
 				}
 			}
-			if (draw)
+			if (draw && view != null)
 				view.update();
 		} catch (IOException e) {
 			e.printStackTrace();

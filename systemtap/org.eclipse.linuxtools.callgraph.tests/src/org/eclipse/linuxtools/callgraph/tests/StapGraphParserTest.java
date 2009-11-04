@@ -23,7 +23,7 @@ public class StapGraphParserTest extends TestCase {
 	public  static StapGraphParser initializeGraph(String filePath){
 		StapGraphParser grph = new StapGraphParser();
 		grph.setSourcePath(filePath);
-		grph.realTimeParsing();
+		grph.nonRealTimeParsing();
 		return grph;
 	}
 	
