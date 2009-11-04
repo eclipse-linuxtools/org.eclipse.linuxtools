@@ -131,54 +131,46 @@ public abstract class SystemTapParser extends Job {
 	}
 
 	/**
-	 * Specify what to do after executeParsing is run
+	 * Load the specified viewID by creating a StapUIJob. Does not return until the StapUIJob has.
+	 * Returns true if the makeView was successful, false otherwise.
 	 */
-	protected void postProcessing() {
+	protected boolean makeView() {
 		// Create a UIJob to handle the rest
-		try {
-		StapUIJob uijob = new StapUIJob(Messages
-				.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
-		uijob.schedule();
-		uijob.join();
-		view = uijob.getViewer();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (viewID != null && viewID.length() > 0) {
+			try {
+			StapUIJob uijob = new StapUIJob(Messages
+					.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
+			uijob.schedule();
+			uijob.join();
+			view = uijob.getViewer();
+			return true;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		return false;
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		// Generate real-time job
-		if (realTime && viewID != null) {
-			try {
-				if (realTime) {
-					StapUIJob job = new StapUIJob("RealTimeUIJob", this, //$NON-NLS-1$
-							this.viewID);
-					job.schedule();
-					job.join();
-					view = job.getViewer();
-				}
-				
-				if (job == null || job.getResult()==null) {
-					job = new RunTimeJob("RealTimeParser"); //$NON-NLS-1$
-					job.schedule();
-				}
-				
-				
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			return Status.OK_STATUS;
-		}
-
-		IStatus returnStatus = nonRealTimeParsing();
+		IStatus returnStatus = Status.CANCEL_STATUS;
 		
+		makeView();
+		
+		if (realTime && (job == null || job.getResult()==null)) {
+			job = new RunTimeJob("RealTimeParser"); //$NON-NLS-1$
+			job.schedule();
+		} else {
+			returnStatus = nonRealTimeParsing();
+		}
+				
+	
 		if (!returnStatus.isOK()){
 			return returnStatus;
 		}
 		
 		setData(this);
-		postProcessing();
 		return returnStatus;
 	}
 	
