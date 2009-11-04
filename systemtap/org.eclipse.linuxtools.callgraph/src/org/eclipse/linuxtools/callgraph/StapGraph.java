@@ -272,9 +272,10 @@ public class StapGraph extends Graph {
 		//-------------Add node to appropriate map/list
 		StapData n = new StapData(this, style, txt, time, called, 
 				id, caller, isMarked);
-		n.setMessage(message);
-		if (isMarked)
+		if (isMarked) {
+			n.setMessage(message);
 			markedNodes.add(id);
+		}
 		nodeDataMap.put(id, n);
 
 		// Make no assumptions about the order that data is input
@@ -472,7 +473,8 @@ public class StapGraph extends Graph {
 						.get(subID).timesCalled);
 			}
 			
-			if (getNodeData(subID).isMarked())
+			StapData d = getNodeData(subID);
+			if (d.isMarked())
 				subN.setBackgroundColor(CONSTANT_MARKED);
 		}
 	}

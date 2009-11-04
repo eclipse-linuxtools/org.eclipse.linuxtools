@@ -173,7 +173,10 @@ public class CallgraphView extends SystemTapView {
 		if (!parser.isRealTime())
 			return finishLoad(monitor);
 			
-		finishLoad(monitor);	
+		g.setBounds(g.getBounds().x,g.getBounds().y,masterComposite.getBounds().width,Display.getCurrent().getBounds().height - treeSize);
+		finishLoad(monitor);
+		
+
 		return Status.OK_STATUS;
 	}
 	
@@ -198,8 +201,6 @@ public class CallgraphView extends SystemTapView {
 		/*
 		 *                Load graph data
 		 */
-		
-		
 		boolean marked = false;
 		String msg = ""; //$NON-NLS-1$
 	    for (int id_parent : parser.serialMap.keySet()) {
@@ -367,24 +368,6 @@ public class CallgraphView extends SystemTapView {
 		graphComp.setLayoutData(graphgd);
 	}
 
-	
-//	
-//	public  void disposeAll() {
-//		if (graphComp != null) {
-//			graphComp.setVisible(false);
-//			GridData gd = (GridData) graphComp.getLayoutData();
-//			gd.exclude = true;
-//			graphComp.setLayoutData(gd);
-//			graphComp.dispose();
-//		}
-//		if (treeComp != null) {
-//			treeComp.setVisible(false);
-//			GridData gd = (GridData) treeComp.getLayoutData();
-//			gd.exclude = true;
-//			treeComp.setLayoutData(gd);
-//			treeComp.dispose();
-//		}
-//	}
 
 	/**
 	 * This must be executed before a Graph is displayed
@@ -772,7 +755,7 @@ public class CallgraphView extends SystemTapView {
 			public void run(){
 				try {
 				StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setViewID(CallGraphConstants.viewID);
+				new_parser.setViewID(CallGraphConstants.viewID);
 				new_parser.schedule();					
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -921,7 +904,6 @@ public class CallgraphView extends SystemTapView {
 				finishLoad(new NullProgressMonitor());
 			}
 			
-			g.setBounds(g.getBounds().x,g.getBounds().y,masterComposite.getBounds().width,Display.getCurrent().getBounds().height - treeSize);
 			g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
 		}
 
