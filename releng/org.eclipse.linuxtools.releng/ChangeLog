@@ -1,3 +1,7 @@
+2009-11-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* maps/linuxtools.map: Add autotools.core and autotools.ui plugins.
+
 2009-11-03  Andrew Overholt  <overholt@redhat.com>
 
 	* category.xml: Add GProf feature.

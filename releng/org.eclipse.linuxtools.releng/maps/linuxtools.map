@@ -22,6 +22,8 @@ feature@org.eclipse.linuxtools.rpmstubby=SVN,trunk,svn://dev.eclipse.org/svnroot
 
 !*** autotools
 plugin@org.eclipse.linuxtools.cdt.autotools=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools
+plugin@org.eclipse.linuxtools.cdt.autotools.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools.core
+plugin@org.eclipse.linuxtools.cdt.autotools.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools.ui
 plugin@org.eclipse.linuxtools.cdt.autotools_docs=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools-docs
 plugin@org.eclipse.linuxtools.cdt.autotools.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools.tests
 feature@org.eclipse.linuxtools.cdt.autotools=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools-feature
