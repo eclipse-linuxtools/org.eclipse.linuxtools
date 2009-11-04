@@ -23,16 +23,16 @@ public class StapGraphParserTest extends TestCase {
 	public  static StapGraphParser initializeGraph(String filePath){
 		StapGraphParser grph = new StapGraphParser();
 		grph.setSourcePath(filePath);
-		grph.nonRealTimeParsing();
+		grph.realTimeParsing();
 		return grph;
 	}
 	
 	public static void assertSanity(StapGraphParser grph){
-		if (grph.serialMap.size() == 0 || grph.timeMap.size() == 0 
+		/*if (grph.serialMap.size() == 0 || grph.timeMap.size() == 0 
 				|| grph.outNeighbours.size() == 0 || grph.countMap.size() == 0
 				|| grph.aggregateTimeMap.size() == 0){
 			fail("Parsing Error : One or more data structures were empty.");
-		}
+		}*/
 		
 		//SAME NUMBER OF NODES ENTRIES
 		assertEquals(grph.serialMap.size(),grph.timeMap.size());
