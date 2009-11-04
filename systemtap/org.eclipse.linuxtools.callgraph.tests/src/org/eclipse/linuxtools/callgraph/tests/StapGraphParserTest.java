@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.tests;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
@@ -81,8 +80,7 @@ public class StapGraphParserTest extends TestCase {
 	}
 	
 	
-	File tmpfile = new File("");
-	public final String currentPath = tmpfile.getAbsolutePath();
+	public final String currentPath = Activator.PLUGIN_LOCATION;
 	public String graphDataPath= "";
 	
 	//FOR TESTING THE GRAPH PARSING
@@ -95,32 +93,32 @@ public class StapGraphParserTest extends TestCase {
 	
 
 	public void testJustMain(){
-		graphDataPath = currentPath+"/main.graph";
+		graphDataPath = currentPath+"main.graph";
 		executeGraphTests();	
 	}
 	
 	public void testCallGraphRunBasic(){
-		graphDataPath = currentPath+"/basic.graph";
+		graphDataPath = currentPath+"basic.graph";
 		executeGraphTests();
 	}
 	
 	public void testCallGraphRunRecursive(){
-		graphDataPath = currentPath+"/catlan.graph";
+		graphDataPath = currentPath+"catlan.graph";
 		executeGraphTests();
 	}
 	
 	public void testManyFuncs(){
-		graphDataPath = currentPath+"/eag.graph";
+		graphDataPath = currentPath+"eag.graph";
 		executeGraphTests();
 	}
 	
 	public void testComprehensive(){
-		graphDataPath = currentPath+"/comprehensive.graph";
+		graphDataPath = currentPath+"comprehensive.graph";
 		executeGraphTests();
 	}
 	
 	public void testHeavy(){
-		graphDataPath = currentPath+"/heavy.graph";
+		graphDataPath = currentPath+"heavy.graph";
 		executeGraphTests();
 	}
 	
