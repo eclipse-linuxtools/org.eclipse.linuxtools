@@ -1,3 +1,8 @@
+2009-11-04  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update dependency versions (SDK 3.5.1, CDT 6.0.1,
+	GEF 3.5.1, BIRT 2.5.1).
+
 2009-11-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* maps/linuxtools.map: Add autotools.core and autotools.ui plugins.
