@@ -173,7 +173,6 @@ public class CallgraphView extends SystemTapView {
 		if (!parser.isRealTime())
 			return finishLoad(monitor);
 			
-		g.setBounds(g.getBounds().x,g.getBounds().y,masterComposite.getBounds().width,Display.getCurrent().getBounds().height - treeSize);
 		finishLoad(monitor);
 		
 
