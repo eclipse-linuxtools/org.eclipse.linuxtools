@@ -88,12 +88,17 @@ public class PomModel {
 	}
 
 	/**
-	 * Returns the project version (xpath:/project/version).
+	 * Returns the project version (xpath:/project/version) or the parent version if
+	 * version is not present.
 	 *
 	 * @return The version.
 	 */
 	public String getVersion() {
-		return xpathEval("/project/version");
+		String version = xpathEval("/project/version");
+		if (version.equals("")) {
+			version = xpathEval("/project/parent/version");
+		}
+		return version;
 	}
 
 	/**
