@@ -77,7 +77,7 @@ public abstract class SystemTapView extends ViewPart {
 	 * @param monitor
 	 * @return Status.OK_STATUS to continue, Status.CANCEL_STATUS to abort
 	 */
-	public abstract IStatus loadView(Display targetDisplay,
+	public abstract IStatus initializeView(Display targetDisplay,
 			IProgressMonitor monitor);
 
 	public SystemTapView getSingleInstance() {

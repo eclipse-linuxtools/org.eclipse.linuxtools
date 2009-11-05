@@ -68,7 +68,7 @@ public class StapUIJob extends UIJob {
 			viewer = view.getSingleInstance();
 			if (!viewer.setParser(parser))
 				return Status.CANCEL_STATUS;
-			if (viewer.loadView(this.getDisplay(), monitor) == Status.CANCEL_STATUS)
+			if (viewer.initializeView(this.getDisplay(), monitor) == Status.CANCEL_STATUS)
 				return Status.CANCEL_STATUS;
 			
 			if (!parser.realTime) {

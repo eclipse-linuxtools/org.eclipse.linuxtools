@@ -98,7 +98,7 @@ public class CallgraphView extends SystemTapView {
 	 * @return status
 	 * 
 	 */
-	public IStatus loadView(Display targetDisplay, IProgressMonitor monitor) {
+	public IStatus initializeView(Display targetDisplay, IProgressMonitor monitor) {
 		
 		Display disp = targetDisplay;
 		if (disp == null)
