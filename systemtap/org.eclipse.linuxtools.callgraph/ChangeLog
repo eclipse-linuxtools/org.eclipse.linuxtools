@@ -1,3 +1,7 @@
+2009-11-05  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/messages.properties: Updated UnknownMarkers error message.
+
 2009-11-04  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Make Callgraph draw in space provided regardless of window size or view size.
