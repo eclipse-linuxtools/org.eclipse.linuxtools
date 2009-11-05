@@ -129,7 +129,7 @@ public class StapGraphParser extends SystemTapParser {
 			String tmp = markedMap.get(lastFunctionCalled);
 			if (tmp == null) tmp = "";
 			markedMap.put(lastFunctionCalled, 
-					tmp + "\n" + Messages.getString("StapGraphParser.16")); //$NON-NLS-1$
+					tmp + "\n" + Messages.getString("StapGraphParser.16")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		
@@ -385,7 +385,8 @@ public class StapGraphParser extends SystemTapParser {
 		String tmp = markedMap.get(id);
 		if (tmp == null) tmp = "";
 		markedMap.put(id, tmp + 
-				"\nActual time: " + time/1000000 + "ms");
+				Messages.getString("StapGraphParser.ActualTime") + time/1000000 
+				+ Messages.getString("StapGraphParser.TimeUnits")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }
