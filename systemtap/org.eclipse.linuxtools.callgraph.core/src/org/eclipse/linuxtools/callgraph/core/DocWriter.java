@@ -11,10 +11,14 @@ import org.eclipse.ui.progress.UIJob;
 public class DocWriter extends UIJob {
 	private TextConsole console;
 	private String message;
+	private int length;
+	private int start;
 
 	/**
 	 * Initiate DocWriter class. DocWriter will append the given message
-	 * to the given console in a separate UI job. 
+	 * to the given console in a separate UI job. By default, DocWriter will
+	 * append to the end of the console and replace 0 characters. To change this,
+	 * see DocWriter's set methods.
 	 * 
 	 * 
 	 * @param name
@@ -26,18 +30,53 @@ public class DocWriter extends UIJob {
 		super(name);
 		this.console = console;
 		this.message = message;
+		this.start=-1;
+		this.length=-1;
 	}
+	
+
+	/**
+	 * Set the start location for DocWriter. Defaults to 0.
+	 * @param val
+	 */
+	public void setStart(int val) {
+		this.start =val;
+	}
+	
+	/**
+	 * Sets the number of characters to replace for DocWriter. Defaults 
+	 * @param val
+	 */
+	public void setLength(int val) {
+		this.length=val;
+	}
+	
+	/**
+	 * Convenience method to set start and length.
+	 * @param start
+	 * @param length
+	 */
+	public void setRegion(int start, int length) {
+		this.start = start;
+		this.length = length;
+	}
+	
 
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
-		
 		if (console == null)
 			return Status.CANCEL_STATUS;
+		if (message == null)
+			return Status.OK_STATUS;
 		
 		IDocument doc = console.getDocument();
 		
+		if (length < 0) 
+			length = 0;
+		if (start < 0)
+			start = doc.getLength();
 		try {
-			doc.replace(doc.getLength(), 0, message);
+			doc.replace(start, length, message);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
