@@ -39,7 +39,7 @@ public abstract class SystemTapParser extends Job {
 
 	public SystemTapParser() {
 		super("Parsing data"); //$NON-NLS-1$
-		this.sourcePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		this.sourcePath = PluginConstants.getDefaultIOPath();
 		this.viewID = null;
 		initialize();
 		isDone = false;
@@ -57,7 +57,7 @@ public abstract class SystemTapParser extends Job {
 		if (filePath != null)
 			this.sourcePath = filePath;
 		else
-			this.sourcePath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+			this.sourcePath = PluginConstants.getDefaultIOPath();
 		this.viewID = null;
 		initialize();
 	}

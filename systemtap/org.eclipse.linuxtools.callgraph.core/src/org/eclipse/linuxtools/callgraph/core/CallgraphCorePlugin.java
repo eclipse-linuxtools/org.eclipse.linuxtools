@@ -27,15 +27,15 @@ import org.osgi.framework.BundleContext;
  *  except for the checkRun() function.
  *
  */
-public class Activator extends AbstractUIPlugin {
+public class CallgraphCorePlugin extends AbstractUIPlugin {
 
 	// The shared instance
-	private static Activator plugin;
+	private static CallgraphCorePlugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public CallgraphCorePlugin() {
 	}
 
 	/*
@@ -45,8 +45,6 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		PluginConstants.setPluginLocation(getPluginLocation());
-		PluginConstants.setWorkspaceLocation(getDefault().getStateLocation().toString()+"/"); //$NON-NLS-1$
 	}
 
 	/*
@@ -64,7 +62,7 @@ public class Activator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static CallgraphCorePlugin getDefault() {
 		return plugin;
 	}
 

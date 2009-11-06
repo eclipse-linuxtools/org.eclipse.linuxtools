@@ -1,5 +1,7 @@
 2009-11-06  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java: Rename Activator --> CallgraphCorePlugin. 
+	(start): Clean out the start method to contain only the bare essentials instead of always finding the location, etc. on startup.  
 	* src/org/eclipse/linuxtools/callgraph/core/ViewFactory.java: Change the way viewFactory creates views. Have ViewFactory set the view id.
 	* src/org/eclipse/linuxtools/callgraph/core/StapUIJob.java: Simplify StapUIJob by using ViewFactory to instantiate views.
 	* src/org/eclipse/linuxtools/callgraph/core/DocWriter.java: Update DocWriter's methods.

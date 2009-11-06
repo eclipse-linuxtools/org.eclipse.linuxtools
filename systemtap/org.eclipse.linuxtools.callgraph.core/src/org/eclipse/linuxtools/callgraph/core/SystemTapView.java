@@ -287,7 +287,7 @@ public abstract class SystemTapView extends ViewPart {
 
 				sh.setText(""); //$NON-NLS-1$
 				
-				Image img = new Image(disp, PluginConstants.PLUGIN_LOCATION+"systemtap.png"); //$NON-NLS-1$
+				Image img = new Image(disp, PluginConstants.getPluginLocation()+"systemtap.png"); //$NON-NLS-1$
 				Composite cmp = new Composite(sh, sh.getStyle());
 				cmp.setLayout(gl);
 				GridData data = new GridData(415,100);
@@ -369,7 +369,7 @@ public abstract class SystemTapView extends ViewPart {
 		error_errorLog = new Action(Messages.getString("SystemTapView.0")) { //$NON-NLS-1$
 			public void run() {
 				boolean error = false;
-				File log = new File(PluginConstants.DEFAULT_OUTPUT
+				File log = new File(PluginConstants.getDefaultOutput()
 						+ "Error.log"); //$NON-NLS-1$
 				BufferedReader buff;
 				try {
@@ -438,7 +438,7 @@ public abstract class SystemTapView extends ViewPart {
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
 		kill = new Action(Messages.getString("SystemTapView.16"), ImageDescriptor //$NON-NLS-1$
 				.createFromImage(new Image(Display.getCurrent(),
-						PluginConstants.PLUGIN_LOCATION
+						PluginConstants.getPluginLocation()
 								+ "icons/progress_stop.gif"))) { //$NON-NLS-1$
 			public void run() {
 				getParser().cancelJob();

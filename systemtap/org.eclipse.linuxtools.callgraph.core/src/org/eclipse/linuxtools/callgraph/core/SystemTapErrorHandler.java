@@ -45,7 +45,7 @@ public class SystemTapErrorHandler {
 	 * Delete the log file and create an empty one
 	 */
 	public static void delete() {
-		File log = new File(PluginConstants.DEFAULT_OUTPUT + FILE_ERROR_LOG); //$NON-NLS-1$
+		File log = new File(PluginConstants.getDefaultOutput() + FILE_ERROR_LOG); //$NON-NLS-1$
 		log.delete();
 		try {
 			log.createNewFile();
@@ -79,7 +79,7 @@ public class SystemTapErrorHandler {
 		String[] blah = errors.split("\n"); //$NON-NLS-1$
 
 		// READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
-		File file = new File(PluginConstants.PLUGIN_LOCATION + FILE_PROP);
+		File file = new File(PluginConstants.getPluginLocation() + FILE_PROP);
 		try {
 			BufferedReader buff = new BufferedReader(new FileReader(file));
 			String line;
@@ -199,7 +199,7 @@ public class SystemTapErrorHandler {
 			}
 
 			StringBuilder resultFileContent = new StringBuilder();
-			String fileLocation = PluginConstants.DEFAULT_OUTPUT
+			String fileLocation = PluginConstants.getDefaultOutput()
 					+ "callgraphGen.stp"; //$NON-NLS-1$
 			String line;
 			boolean skip = false;
@@ -255,7 +255,7 @@ public class SystemTapErrorHandler {
 	 * time.
 	 */
 	public void writeToLog() {
-		File errorLog = new File(PluginConstants.DEFAULT_OUTPUT + "Error.log"); //$NON-NLS-1$
+		File errorLog = new File(PluginConstants.getDefaultOutput() + "Error.log"); //$NON-NLS-1$
 
 		try {
 			// CREATE THE ERROR LOG IF IT DOES NOT EXIST
