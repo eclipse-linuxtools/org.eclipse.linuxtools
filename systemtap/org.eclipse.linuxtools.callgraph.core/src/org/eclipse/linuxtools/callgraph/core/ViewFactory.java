@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -25,26 +24,35 @@ import org.eclipse.ui.PlatformUI;
 public class ViewFactory {
 	
 	private static ArrayList<IViewPart> views;
+	private static SystemTapView newView;
 	
 	/**
 	 * Create a view of type designated by the viewID argument
 	 * @param viewID : A string corresponding to a type of View
 	 * @return : The view object that corresponds to the viewID
 	 */
-	public static void createView(final String viewID) {
+	public static SystemTapView createView(final String viewID) {
 		Display.getDefault().syncExec(new Runnable() {
 			
 			@Override
 			public void run() {
 				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage().showView(viewID, null,
-									IWorkbenchPage.VIEW_CREATE);
+					IViewPart view = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage().showView(viewID);
+					if (!(view instanceof SystemTapView))
+						throw new Exception("Miscast type: " + view.getClass().toString());  //$NON-NLS-1$
+					newView = ((SystemTapView) view);
+					newView.setViewID();
 				} catch (PartInitException e) {
+					e.printStackTrace();
+				}  catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+		
+		addView(newView);
+		return newView;
 	}
 	
 	/**

@@ -11,17 +11,9 @@
 
 package org.eclipse.linuxtools.callgraph.core;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.callgraph.core.PluginConstants;
-import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
-import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
-import org.eclipse.linuxtools.callgraph.core.SystemTapView;
 import org.eclipse.ui.progress.UIJob;
 
 /**
@@ -44,45 +36,19 @@ public class StapUIJob extends UIJob {
 
 	@Override
 	public IStatus runInUIThread(IProgressMonitor monitor) {
-
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		IConfigurationElement[] extensions = reg.getConfigurationElementsFor(
-				PluginConstants.VIEW_RESOURCE, PluginConstants.VIEW_NAME,
-				viewID);
-
-		if (extensions == null || extensions.length < 1) {
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-					Messages.getString("GraphUIJob.0"), Messages.getString("GraphUIJob.1"), //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getString("GraphUIJob.1") + ": " + viewID); //$NON-NLS-1$ //$NON-NLS-2$
-			mess.schedule();
+		viewer = ViewFactory.createView(viewID);
+		if (!viewer.setParser(parser))
 			return Status.CANCEL_STATUS;
+		if (viewer.initializeView(this.getDisplay(), monitor) == Status.CANCEL_STATUS)
+			return Status.CANCEL_STATUS;
+		
+		if (!parser.realTime) {
+			viewer.updateMethod();
 		}
-
-		IConfigurationElement element = extensions[0];
-
-		SystemTapView view;
-		try {
-			view = (SystemTapView) element
-					.createExecutableExtension(PluginConstants.ATTR_CLASS);
-			view.forceDisplay();
-			viewer = view.getSingleInstance();
-			if (!viewer.setParser(parser))
-				return Status.CANCEL_STATUS;
-			if (viewer.initializeView(this.getDisplay(), monitor) == Status.CANCEL_STATUS)
-				return Status.CANCEL_STATUS;
-			
-			if (!parser.realTime) {
-				viewer.updateMethod();
-			}
-			viewer.setSourcePath(parser.getFile());
-			viewer.setKillButtonEnabled(true);
-			 
-			return Status.OK_STATUS;
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-
-		return Status.CANCEL_STATUS;
+		viewer.setSourcePath(parser.getFile());
+		viewer.setKillButtonEnabled(true);
+		 
+		return Status.OK_STATUS;
 	}
 
 	/**

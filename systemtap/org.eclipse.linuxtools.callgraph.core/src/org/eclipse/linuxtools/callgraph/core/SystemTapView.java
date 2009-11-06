@@ -31,10 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.part.ViewPart;
@@ -45,7 +42,6 @@ public abstract class SystemTapView extends ViewPart {
 	private final String NEW_LINE = Messages.getString("SystemTapView.1"); //$NON-NLS-1$
 	
 	public Composite masterComposite;
-	private SystemTapView stapview;
 	private Action error_errorLog;
 	private Action error_deleteError;
 	private IMenuManager errors;
@@ -80,23 +76,19 @@ public abstract class SystemTapView extends ViewPart {
 	public abstract IStatus initializeView(Display targetDisplay,
 			IProgressMonitor monitor);
 
-	public SystemTapView getSingleInstance() {
-		return stapview;
-	}
-
 	/**
 	 * @param doMaximize
 	 *            : true && view minimized will maximize the view, otherwise it
 	 *            will just 'refresh'
 	 */
 	public void maximizeOrRefresh(boolean doMaximize) {
-		IWorkbenchPage page = this.getSingleInstance().getViewSite()
+		IWorkbenchPage page = this.getViewSite()
 				.getWorkbenchWindow().getActivePage();
 
 		if (doMaximize
 				&& page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED) {
 			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(this
-					.getSingleInstance().getViewSite().getWorkbenchWindow());
+					.getViewSite().getWorkbenchWindow());
 			action.run();
 		} else {
 			this.layout();
@@ -111,12 +103,12 @@ public abstract class SystemTapView extends ViewPart {
 	 * If view is not maximized it will be maximized
 	 */
 	public void maximizeIfUnmaximized() {
-		IWorkbenchPage page = this.getSingleInstance().getViewSite()
+		IWorkbenchPage page = this.getViewSite()
 				.getWorkbenchWindow().getActivePage();
 
 		if (page.getPartState(page.getActivePartReference()) != IWorkbenchPage.STATE_MAXIMIZED) {
 			IWorkbenchAction action = ActionFactory.MAXIMIZE.create(this
-					.getSingleInstance().getViewSite().getWorkbenchWindow());
+					.getViewSite().getWorkbenchWindow());
 			action.run();
 		}
 	}
@@ -147,47 +139,6 @@ public abstract class SystemTapView extends ViewPart {
 
 	};
 
-	/**
-	 * Force the view to initialize
-	 */
-	public void forceDisplay() {
-		this.setViewID();
-		try {
-			IViewPart view = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().showView(viewID);
-			if (!(view instanceof SystemTapView))
-				throw new Exception("Miscast type: " + view.getClass().toString());  //$NON-NLS-1$
-			setView((SystemTapView) view); 
-			stapview.setFocus();
-		} catch (PartInitException e2) {
-			e2.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Force the view to be created, but will not necessarily display the view.
-	 */
-	public void forceCreate() {
-		this.setViewID();
-		try {
-			IViewPart view = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().showView(viewID, null, 
-						IWorkbenchPage.VIEW_CREATE);
-			if (!(view instanceof SystemTapView))
-				return; 
-			setView((SystemTapView) view); 
-			stapview.setFocus();
-		} catch (PartInitException e2) {
-			e2.printStackTrace();
-		}
-		
-	}
-	
-	protected void setView(SystemTapView view) {
-		stapview = view;
-	}
 	/**
 	 * Method for fetching a parser object. This method should return
 	 * the running parser, or else some features may not work. Create 
