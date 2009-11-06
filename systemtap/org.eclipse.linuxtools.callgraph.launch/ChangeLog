@@ -1,4 +1,5 @@
 2009-11-06  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/launch/ConfigurationOptionsSetter.java: Remove unused Options setting function
 	* src/org/eclipse/linuxtools/callgraph/launch/: Removed the ASTTranslationVisitor, which is never used.
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Delete unused functions, add javadoc comments to other functions.
