@@ -451,9 +451,6 @@ public class CallgraphView extends SystemTapView {
 //		menu.add(markers);
 
 		setGraphOptions(false);
-		
-		// Colouring helper variable
-		setView(this);
 	}
 
 

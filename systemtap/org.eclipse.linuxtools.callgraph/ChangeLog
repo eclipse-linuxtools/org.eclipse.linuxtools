@@ -2,6 +2,9 @@
 
 	* src/org/eclipse/linuxtools/callgraph/AggregateLayoutAlgorithm.java: Improve javadocs
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Add better progress monitor use to updateMethod.
+	Remove many unused methods. Remove reference to SystemTapView because we can just use 'this' instead.
+	 
+	
 
 2009-11-05  Charley Wang  <chwang@redhat.com>
 
