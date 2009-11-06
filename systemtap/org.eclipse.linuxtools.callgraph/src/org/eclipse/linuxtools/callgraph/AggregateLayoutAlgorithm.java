@@ -29,6 +29,14 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	protected Long totalTime;
 	protected int graphWidth;
 	
+	
+	/**
+	 * Layout algorithm for the Aggregate View in Eclipse Callgraph, based on the GridLayoutAlgorithm in Zest.
+	 * @param styles
+	 * @param entries
+	 * @param time
+	 * @param width
+	 */
 	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width){
 		super(styles);
 		
@@ -39,8 +47,10 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 		this.totalTime = time;
 		this.graphWidth = width;
 	}
-	
-	//THIS METHOD OVERRIDES THE PARENT'S IMPLEMENTATION (WHICH IS EMPTY ANYWAYS)
+
+	/**
+	 * Make final changes to the appearance of the nodes
+	 */
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
 		Long time;
 		final int minimumSize = 40;

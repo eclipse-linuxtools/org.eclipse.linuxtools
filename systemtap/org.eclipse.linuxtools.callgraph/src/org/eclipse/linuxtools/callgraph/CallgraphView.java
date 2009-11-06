@@ -181,13 +181,11 @@ public class CallgraphView extends SystemTapView {
 	
 	/**
 	 * Load data.
-	 * @param mon -- Progress monitor. Give null to use a new NullProgressMonitor instead.
+	 * @param mon -- Progress monitor.
 	 * @return
 	 */
 	private IStatus loadData(IProgressMonitor mon) {
 		IProgressMonitor monitor = mon;
-		if (mon == null)
-			monitor = new NullProgressMonitor();
 		//Dummy node, set start time
 		if (g.getNodeData(0) == null) {
 			g.loadData(SWT.NONE, 0, StapGraph.CONSTANT_TOP_NODE_NAME, 
@@ -240,6 +238,7 @@ public class CallgraphView extends SystemTapView {
 			
 		}
 	    
+	    monitor.worked(1);
 	    if (parser.markedMap.size() > 0) {
 	    	//Still some markers left
 	    	for (int key : parser.markedMap.keySet()) {
@@ -258,9 +257,12 @@ public class CallgraphView extends SystemTapView {
 	    
 	    g.aggregateCount.putAll(parser.countMap);
 	    g.aggregateTime.putAll(parser.aggregateTimeMap);
+	    g.setLastFunctionCalled(parser.lastFunctionCalled);
+
 	    
 	    //Finish off by collapsing nodes, initializing the tree and setting options
 	    g.recursivelyCollapseAllChildrenOfNode(g.getTopNode());
+	    monitor.worked(1);
 		setGraphOptions(true);
 	    g.initializeTree();
 
@@ -290,12 +292,10 @@ public class CallgraphView extends SystemTapView {
 		
 	    //-------------Finish initializations
 	    //Generate data for collapsed nodes
-	    g.recursivelyCollapseAllChildrenOfNode(g.getTopNode());
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
 	    g.initializeTree();
-	    g.setLastFunctionCalled(parser.lastFunctionCalled);
 	    
 
 		if (monitor.isCanceled()) {
@@ -306,8 +306,6 @@ public class CallgraphView extends SystemTapView {
 	    g.setProject(parser.project);
 	    
 	    this.initializePartControl();
-    	g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW,
-    			g.getFirstUsefulNode());
 		return Status.OK_STATUS;
 	}
 	
@@ -896,10 +894,15 @@ public class CallgraphView extends SystemTapView {
 
 	@Override
 	public void updateMethod() {
-		loadData(null);
+		IProgressMonitor m = new NullProgressMonitor();
+		m.beginTask("Updating callgraph", 4);
+		
+		loadData(m);
+		m.worked(1);
 		if (parser.totalTime > 0) {
-			finishLoad(new NullProgressMonitor());
+			finishLoad(m);
 		}
+		m.worked(1);
 		
 		g.draw(StapGraph.CONSTANT_DRAWMODE_RADIAL, StapGraph.CONSTANT_ANIMATION_SLOW, g.getFirstUsefulNode());
 	}

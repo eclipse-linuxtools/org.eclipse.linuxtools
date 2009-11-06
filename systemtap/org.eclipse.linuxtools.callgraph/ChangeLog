@@ -1,3 +1,8 @@
+2009-11-06  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/AggregateLayoutAlgorithm.java: Improve javadocs
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Add better progress monitor use to updateMethod.
+
 2009-11-05  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Rename loadView --> initializeView
