@@ -74,6 +74,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 		return null;
 	}
 
+	
+	/**
+	 * Sets strings to blank, booleans to false and everything else to null
+	 */
 	private void initialize() {
 		 temporaryScript = null;
 		 arguments = ""; //$NON-NLS-1$
@@ -186,6 +190,11 @@ public class SystemTapLaunchConfigurationDelegate extends
 		finishLaunch(launch, config, partialCommand, m, true);
 	}
 
+	
+	/**
+	 * Returns the current SystemTap command, or returns an error message.
+	 * @return
+	 */
 	public String getCommand() {
 		if (cmd.length() > 0)
 			return cmd;
@@ -193,6 +202,17 @@ public class SystemTapLaunchConfigurationDelegate extends
 			return Messages.getString("SystemTapLaunchConfigurationDelegate.0"); //$NON-NLS-1$
 	}
 
+	
+	/**
+	 * Executes a command array using pty
+	 * 
+	 * @param commandArray -- Split a command string on the ' ' character
+	 * @param env -- Use <code>getEnvironment(ILaunchConfiguration)</code> in the AbstractCLaunchDelegate.
+	 * @param wd -- Working directory
+	 * @param usePty -- A value of 'true' usually suffices
+	 * @return A properly formed process, or null
+	 * @throws IOException -- If the process cannot be created
+	 */
 	public Process execute(String[] commandArray, String[] env, File wd,
 			boolean usePty) throws IOException {
 		Process process = null;
@@ -219,21 +239,19 @@ public class SystemTapLaunchConfigurationDelegate extends
 	
 	
 
+	/**
+	 * Spawn a new IProcess using the Debug Plugin.
+	 * 
+	 * @param launch
+	 * @param systemProcess
+	 * @param programName
+	 * @return
+	 */
 	protected IProcess createNewProcess(ILaunch launch, Process systemProcess,
 			String programName) {
 		return DebugPlugin.newProcess(launch, systemProcess,
 				renderProcessLabel(programName));
 	}
-
-	public String getCommandLine(String[] args) {
-		StringBuilder ret = new StringBuilder();
-		for (String arg : args) {
-			ret.append(arg + " "); //$NON-NLS-1$
-		}
-		return ret.toString().trim();
-	}
-
-	
 
 	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
 			IProgressMonitor monitor, boolean retry) {
