@@ -1,3 +1,8 @@
+2009-11-06  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUElementScanner.java:
+	(GNUElementScanner): Change the rule for colouring of ( ) elements so that the colour ends on the next ), rather than terminating on ):
+
 2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #285866

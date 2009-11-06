@@ -52,7 +52,7 @@ public class GNUElementScanner extends RuleBasedScanner {
 		rules[0] = new GNUFileEntryRule(file);
 
 		// function
-		rules[1] = new SingleLineRule("(", "):", func); // $NON-NLS-1$ // $NON-NLS-2$
+		rules[1] = new SingleLineRule("(", ")", func); // $NON-NLS-1$ // $NON-NLS-2$
 		// email
 		rules[2] = new SingleLineRule("<", ">\n", email); // $NON-NLS-1$ // $NON-NLS-2$
 		
