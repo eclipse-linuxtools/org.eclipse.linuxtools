@@ -1,3 +1,7 @@
+2009-11-06  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/XMLParser.java: Add javadocs, modify functions for ease of use.
+
 2009-11-05  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Rename loadView --> initializeView

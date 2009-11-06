@@ -15,6 +15,7 @@ public class XMLParser {
 	private int currentlyIn;
 	private static final String ATTR_NAME = "name";
 	private static final String ATTR_TEXT = "text"; 
+	public static final String noName = "NoName";
 	private boolean textMode;
 	private int counter;
 	
@@ -33,10 +34,21 @@ public class XMLParser {
 		counter = 0;
 	}
 	
+	/**
+	 * Helper method to call parse on the contents of a file.
+	 * @param file
+	 */
 	public void parse(File file) {
 		parse(getContents(file));
 	}
 	
+	
+	/**
+	 * Parses a String according to XML formatting rules. Will return a HashMap indexed by an 
+	 * identification number, where each value is a further HashMap of String, String pairs representing
+	 * attributes.
+	 * @param message
+	 */
 	public void parse(String message) {
 		String tabstrip = message.replaceAll("\t", "");
 		String[] lines = tabstrip.split("\n");
@@ -63,7 +75,7 @@ public class XMLParser {
 					map.put(ATTR_NAME, tokens[0]);
 					keyValues.put(id,map);
 					textMode = false;
-					addAttributes(tokens, 1);
+					addAttributes(currentlyIn, tokens, 1);
 					
 				} else {
 					//Open tag
@@ -78,7 +90,7 @@ public class XMLParser {
 					map.put(ATTR_NAME, tokens[0]);
 					keyValues.put(id,map);
 					
-					addAttributes(tokens, 1);
+					addAttributes(currentlyIn, tokens, 1);
 				}
 			} else {
 				//Attribute addition
@@ -92,14 +104,19 @@ public class XMLParser {
 				}
 				
 				String[] tokens = line.split(" ");
-				addAttributes(tokens, 0);
+				addAttributes(currentlyIn, tokens, 0);
 			}
 		}
 	}
 	
-	public static final String noName = "NoName";
-	public void addAttributes(String[] tokens, int start) {
-		HashMap<String,String> map = keyValues.get(currentlyIn);
+	/**
+	 * Turns an array of Strings of form attribute=value into attribute/value pairings for the specified node.
+	 * Starts looking at token number start.
+	 * @param tokens
+	 * @param start
+	 */
+	public void addAttributes(int id, String[] tokens, int start) {
+		HashMap<String,String> map = keyValues.get(id);
 		int nameless = 0;
 		
 
@@ -132,7 +149,7 @@ public class XMLParser {
 			map.put(key, value);
 		}
 		
-		keyValues.put(currentlyIn, map);
+		keyValues.put(id, map);
 	}
 	
 	public HashMap<Integer, HashMap<String,String>> getKeyValues() {
