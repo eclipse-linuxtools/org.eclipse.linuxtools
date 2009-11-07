@@ -76,7 +76,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 			config = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
-			outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+			outputPath = PluginConstants.getDefaultIOPath();
 			
 			if (writeFunctionListToScript(resourceToSearchFor) == null)
 				return;
@@ -201,7 +201,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
 	@Override
 	public String setScriptPath() {
-		scriptPath = PluginConstants.DEFAULT_OUTPUT 
+		scriptPath = PluginConstants.getDefaultOutput() 
 				+ "callgraphGen.stp";  //$NON-NLS-1$
 		return scriptPath;
 	}

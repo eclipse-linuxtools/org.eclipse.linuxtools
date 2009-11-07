@@ -154,7 +154,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				scriptFile.setEnabled(false);
 				workspaceBrowseButton.setEnabled(false);
 				fileBrowseButton.setEnabled(false);
-				scriptFile.setText(PluginConstants.PLUGIN_LOCATION+"parse_function.stp"); //$NON-NLS-1$
+				scriptFile.setText(PluginConstants.getPluginLocation()+"parse_function.stp"); //$NON-NLS-1$
 			}else{
 				scriptFile.setEnabled(true);
 				workspaceBrowseButton.setEnabled(true);

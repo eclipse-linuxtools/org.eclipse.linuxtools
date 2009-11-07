@@ -149,7 +149,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				.toString();
 		binaryPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
 		arguments = LaunchConfigurationConstants.DEFAULT_ARGUMENTS;
-		outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+		outputPath = PluginConstants.getDefaultIOPath();
 		overwrite = true;
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
 		needToGenerate = false;

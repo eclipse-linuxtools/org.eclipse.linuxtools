@@ -147,7 +147,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		sh.setText(name);
 		
 		
-		Image img = new Image(sh.getDisplay(), PluginConstants.PLUGIN_LOCATION + "systemtapbanner.png"); //$NON-NLS-1$
+		Image img = new Image(sh.getDisplay(), PluginConstants.getPluginLocation() + "systemtapbanner.png"); //$NON-NLS-1$
 		Composite imageCmp = new Composite(sh, SWT.BORDER);
 		imageCmp.setLayout(new FillLayout());
 		GridData imageData = new GridData(650, 157);

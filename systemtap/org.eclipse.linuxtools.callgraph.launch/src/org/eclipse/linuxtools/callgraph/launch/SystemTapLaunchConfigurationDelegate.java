@@ -55,7 +55,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		AbstractCLaunchDelegate {
 
 	private static final String TEMP_ERROR_OUTPUT =
-		PluginConstants.DEFAULT_OUTPUT + "stapTempError.error"; //$NON-NLS-1$
+		PluginConstants.getDefaultOutput() + "stapTempError.error"; //$NON-NLS-1$
 	private String cmd;
 	private File temporaryScript = null;
 	private String arguments = ""; //$NON-NLS-1$
@@ -169,7 +169,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
-				PluginConstants.DEFAULT_OUTPUT);
+				PluginConstants.getDefaultOutput());
 		partialCommand += "-o " + outputPath; //$NON-NLS-1$
 		
 		try {
