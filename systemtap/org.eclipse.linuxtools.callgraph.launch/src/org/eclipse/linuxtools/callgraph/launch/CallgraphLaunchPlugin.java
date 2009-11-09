@@ -21,15 +21,15 @@ import org.osgi.framework.BundleContext;
  * 
  * This is more or less the default Eclipse plugin-wizard Activator.
  */
-public class Activator extends AbstractUIPlugin {
+public class CallgraphLaunchPlugin extends AbstractUIPlugin {
 
 	// The shared instance
-	private static Activator plugin;
+	private static CallgraphLaunchPlugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public CallgraphLaunchPlugin() {
 	}
 
 	/*
@@ -59,7 +59,7 @@ public class Activator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static CallgraphLaunchPlugin getDefault() {
 		return plugin;
 	}
 
