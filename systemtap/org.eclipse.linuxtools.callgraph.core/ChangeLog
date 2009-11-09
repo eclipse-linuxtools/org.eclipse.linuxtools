@@ -1,3 +1,11 @@
+2009-11-09  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java: Remove commented out unused code.
+	* src/org/eclipse/linuxtools/callgraph/core/DocWriter.java: Add necessary headers to all files listed below.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextParser.java: 
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextView.java: 
+	* src/org/eclipse/linuxtools/callgraph/core/XMLParser.java: 
+
 2009-11-06  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java: Rename Activator --> CallgraphCorePlugin. 
