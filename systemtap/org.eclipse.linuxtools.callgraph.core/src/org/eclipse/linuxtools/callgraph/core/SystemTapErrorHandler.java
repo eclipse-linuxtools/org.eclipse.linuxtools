@@ -76,7 +76,7 @@ public class SystemTapErrorHandler {
 	 * @param doc
 	 */
 	public void handle(IProgressMonitor m, String errors) {
-		String[] blah = errors.split("\n"); //$NON-NLS-1$
+		String[] errorsList = errors.split("\n"); //$NON-NLS-1$
 
 		// READ FROM THE PROP FILE AND DETERMINE TYPE OF ERROR
 		File file = new File(PluginConstants.getPluginLocation() + FILE_PROP);
@@ -85,7 +85,7 @@ public class SystemTapErrorHandler {
 			String line;
 			int index;
 
-			for (String message : blah) {
+			for (String message : errorsList) {
 				boolean firstLine = true; // Keep the error about mismatched
 											// probe points first
 				buff = new BufferedReader(new FileReader(file));
@@ -104,11 +104,11 @@ public class SystemTapErrorHandler {
 											.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
 							setErrorRecognized(true);
 						}
-						String tmp = line.substring(index+1);
+						String errorFound = line.substring(index+1);
 
 						if (!errorMessage.toString().contains(
-								tmp)) {
-							errorMessage.append(tmp
+								errorFound)) {
+							errorMessage.append(errorFound
 									+ PluginConstants.NEW_LINE);
 						}
 

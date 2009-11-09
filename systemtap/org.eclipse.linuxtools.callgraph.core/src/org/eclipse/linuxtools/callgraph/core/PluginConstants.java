@@ -54,13 +54,13 @@ public final class PluginConstants {
 
 	public static String getDefaultOutput() {
 		if (DEFAULT_OUTPUT.length() < 1)
-			DEFAULT_OUTPUT = CallgraphCorePlugin.getDefault().getStateLocation().toString()+"/";
+			DEFAULT_OUTPUT = CallgraphCorePlugin.getDefault().getStateLocation().toString()+"/"; //$NON-NLS-1$
 		return DEFAULT_OUTPUT;
 	}
 	
 	public static String getDefaultIOPath() {
 		if (STAP_GRAPH_DEFAULT_IO_PATH.length() < 1)
-			STAP_GRAPH_DEFAULT_IO_PATH = CallgraphCorePlugin.getDefault().getStateLocation().toString()+"/callgraph.out";
+			STAP_GRAPH_DEFAULT_IO_PATH = CallgraphCorePlugin.getDefault().getStateLocation().toString()+"/callgraph.out"; //$NON-NLS-1$
 		return STAP_GRAPH_DEFAULT_IO_PATH;
 	}
 	

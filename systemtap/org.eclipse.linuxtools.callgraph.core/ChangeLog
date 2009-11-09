@@ -1,5 +1,9 @@
 2009-11-09  Roland Grunberg  <rgrunber@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Externalize/Fix Strings
+	* src/org/eclipse/linuxtools/callgraph/core/PluginConstants.java: Externalize/Fix Strings
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Give some variables more meaningful names.
+	
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java: Remove commented out unused code.
 	* src/org/eclipse/linuxtools/callgraph/core/DocWriter.java: Add necessary headers to all files listed below.
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextParser.java: 
