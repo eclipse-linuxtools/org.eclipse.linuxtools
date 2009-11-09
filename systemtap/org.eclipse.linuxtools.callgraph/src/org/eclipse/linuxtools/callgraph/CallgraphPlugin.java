@@ -23,18 +23,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class CallgraphPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.callgraph"; //$NON-NLS-1$
 
 	// The shared instance
-	private static Activator plugin;
+	private static CallgraphPlugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public CallgraphPlugin() {
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class Activator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static CallgraphPlugin getDefault() {
 		return plugin;
 	}
 

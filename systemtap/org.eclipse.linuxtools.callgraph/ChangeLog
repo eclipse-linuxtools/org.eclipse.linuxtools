@@ -1,3 +1,11 @@
+2009-11-09  Charley Wang  <chwang@redhat.com>
+
+	* META-INF/MANIFEST.MF: Change reference to Activator to reflect name change
+	* src/org/eclipse/linuxtools/callgraph/treeviewer/StapTreeLabelProvider.java: Change references to PLUGIN_LOCATION to use getter.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Change references to PLUGIN_LOCATION to use getter.
+	* src/org/eclipse/linuxtools/callgraph/CallGraphConstants.java: Change PLUGIN_LOCATION to private, create getter.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphPlugin.java: RENAME: Activator --> CallgraphPlugin
+
 2009-11-06  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/AggregateLayoutAlgorithm.java: Improve javadocs
