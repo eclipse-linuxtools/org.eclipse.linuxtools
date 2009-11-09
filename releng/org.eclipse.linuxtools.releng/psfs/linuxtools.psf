@@ -106,7 +106,7 @@
 
 <provider id="org.eclipse.team.cvs.core.cvsnature">
 <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/org.eclipse,www/linuxtools,linuxtools"/>
-<project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.cdt/all/org.eclipse.cdt.core.tests,org.eclipse.cdt.core.tests,CDT_5_0_1"/>
+<project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.cdt/all/org.eclipse.cdt.core.tests,org.eclipse.cdt.core.tests,CDT_6_0_0"/>
 <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.mylyn/org.eclipse.mylyn.wikitext.core,org.eclipse.mylyn.wikitext.core,R_3_1_1"/>
 <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.mylyn/org.eclipse.mylyn.wikitext.mediawiki.core,org.eclipse.mylyn.wikitext.mediawiki.core,R_3_1_1"/>
 <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/birt,source/org.apache.commons.codec,org.apache.commons.codec,BIRT_2_3_2_Nightly_20090331"/>

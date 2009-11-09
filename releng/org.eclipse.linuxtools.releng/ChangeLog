@@ -1,5 +1,18 @@
 2009-11-09  Andrew Overholt  <overholt@redhat.com>
 
+	* psfs/linuxtoolsAndAthena.psf: Removed.
+	* psfs/athena.psf: New file.  PSF for Athena for local builds.
+	* psfs/linuxtools.psf: Update cdt.test dependency version.
+
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/callgraph.psf: Fix typos.
+	* psfs/autotools.psf: Likewise.
+	* psfs/linuxtools.psf: Change "http" to "svn".  Add "anonymous@" for CVS
+	modules.
+
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+
 	* psfs/systemtap.local.psf: Removed.  Renamed to callgraph.psf.
 	* psfs/callgraph.psf: New file.
 	* maps/linuxtools.map: Merged and renamed a few sections.
