@@ -4,7 +4,7 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools,org.eclipse.linuxtools.cdt.autotools"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.core,org.eclipse.linuxtools.cdt.autotools.core"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.ui,org.eclipse.linuxtools.cdt.autotools.ui"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools_docs,org.eclipse.linuxtools.cdt.autotools_docs"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools-docs,org.eclipse.linuxtools.cdt.autotools-docs"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools-feature,org.eclipse.linuxtools.cdt.autotools-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.tests,org.eclipse.linuxtools.cdt.autotools.tests"/>
 </provider>
