@@ -1430,8 +1430,6 @@ public class StapGraph extends Graph {
 			recursivelyCollapseAllChildrenOfNode(i);
 		}
 
-		nodeDataMap.get(id).sortByTime();
-
 		collapsedNodesWithOnlyOneNodeInThem.clear();
 		newNodeMap.clear();
 
@@ -1496,10 +1494,6 @@ public class StapGraph extends Graph {
 	 */
 	public int getTopNode() {
 		return levels.get(topLevelToDraw).get(0);
-	}
-
-	public boolean isDataMapNull() {
-		return (nodeDataMap == null || nodeDataMap.isEmpty());
 	}
 	
 	/**
@@ -1580,7 +1574,7 @@ public class StapGraph extends Graph {
 			return;
 		
 		if (draw_mode != StapGraph.CONSTANT_DRAWMODE_LEVEL) {
-			if (collapse_mode && !value) {
+			if (collapse_mode) {
 				//Collapsed to noncollapsed
 				if (!getRootData().isOnlyChildWithThisName()) {
 					//A collapsed node that isn't an only child must have an
@@ -1588,9 +1582,7 @@ public class StapGraph extends Graph {
 					rootVisibleNodeNumber = getRootData().uncollapsedPiece;
 				}
 	
-			}
-			
-			if (!collapse_mode && value) {
+			} else {
 				//Uncollapsed to collapsed -- set center node to collapsed node
 				if (!getRootData().isOnlyChildWithThisName()) {
 					int temp = getRootData().getPartOfCollapsedNode();

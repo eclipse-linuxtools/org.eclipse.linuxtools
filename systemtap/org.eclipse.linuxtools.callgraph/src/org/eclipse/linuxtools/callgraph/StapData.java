@@ -37,8 +37,7 @@ public class StapData {
     public List<Integer> collapsedChildren;
     
     private int partOfCollapsedNode;
-    //TODO: every StapData holds a copy of its StapGraph
-    //It is not used that often and one StapGraph per StapData is a lot 
+
     private StapGraph graph;
     private boolean marked;
 
@@ -201,6 +200,14 @@ public class StapData {
 	}
 
 
+	/**
+	 * If the node has not yet terminated (i.e. the time is > 1200000000000000000l) this
+	 * function will return graph.getEndTime() - time. In other words, getTime will assume
+	 * that only the start time has been recorded if time is abnormally large, and will compensate
+	 * by assuming that the node 'terminates' at the current endTime.
+	 * 
+	 * @return long time
+	 */
 	public long getTime() {
 		if (time > 1200000000000000000l) {
 			return graph.getEndTime() - time;
@@ -209,6 +216,11 @@ public class StapData {
 	}
 
 
+	/**
+	 * Sets the time
+	 * 
+	 * @param time
+	 */
 	public void setTime(long time) {
 		this.time = time;
 	}
@@ -230,6 +242,11 @@ public class StapData {
 	}
 	
 	
+	/**
+	 * Inserts the message after the current message. No spaces or newlines are appended.
+	 * @param message
+	 * @return
+	 */
 	public StapData insertMessage(String message) {
 		if (message == null || message.length() < 1)
 			return this;
