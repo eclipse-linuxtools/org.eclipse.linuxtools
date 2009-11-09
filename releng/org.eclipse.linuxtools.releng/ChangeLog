@@ -1,5 +1,10 @@
 2009-11-09  Andrew Overholt  <overholt@redhat.com>
 
+	* psfs/eclipse-build.psf: Correct eclipse-build URLs.
+	* psfs/linuxtools.psf: Likewise.
+
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+ 
 	* psfs/linuxtoolsAndAthena.psf: Removed.
 	* psfs/athena.psf: New file.  PSF for Athena for local builds.
 	* psfs/linuxtools.psf: Update cdt.test dependency version.

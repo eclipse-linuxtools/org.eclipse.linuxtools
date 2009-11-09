@@ -26,9 +26,9 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.library-docs,org.eclipse.linuxtools.cdt.libhover.library-docs"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib,org.eclipse.linuxtools.cdt.libhover.newlib"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/trunk/org.eclipse.linuxtools.cdt.libhover.newlib-feature,org.eclipse.linuxtools.cdt.libhover.newlib-feature"/><project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.binutils,org.eclipse.linuxtools.binutils"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk,eclipse-build"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk,eclipse-build-config"/>
-<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk,eclipse-build-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk/eclipse-build,eclipse-build"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk/eclipse-build-config,eclipse-build-config"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/eclipse-build/trunk/eclipse-build-feature,eclipse-build-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.binutils,org.eclipse.linuxtools.binutils"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.dataviewers,org.eclipse.linuxtools.dataviewers"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/trunk/org.eclipse.linuxtools.gprof,org.eclipse.linuxtools.gprof"/>
