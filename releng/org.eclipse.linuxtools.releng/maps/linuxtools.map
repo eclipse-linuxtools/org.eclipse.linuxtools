@@ -47,8 +47,6 @@ feature@org.eclipse.linuxtools.cdt.libhover.newlib=SVN,trunk,svn://dev.eclipse.o
 !*** systemtap
 plugin@org.eclipse.linuxtools.systemtap.backup.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.backup.ui.editor
 feature@org.eclipse.linuxtools.systemtap.backup=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.backup-feature
-
-!*** systemtapgui
 plugin@org.eclipse.linuxtools.systemtap.ui.consolelog=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.consolelog
 plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.editor
 feature@org.eclipse.linuxtools.systemtap=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap-feature
@@ -60,7 +58,7 @@ plugin@org.eclipse.linuxtools.systemtap.ui.logging=SVN,trunk,svn://dev.eclipse.o
 plugin@org.eclipse.linuxtools.systemtap.ui.structures=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.structures
 plugin@org.eclipse.linuxtools.systemtap.ui.systemtapgui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.systemtapgui
 
-!*** systemtaplocal
+!*** callgraph
 plugin@org.eclipse.linuxtools.callgraph.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.core
 plugin@org.eclipse.linuxtools.callgraph.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.launch
 plugin@org.eclipse.linuxtools.callgraph=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph

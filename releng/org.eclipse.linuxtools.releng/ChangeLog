@@ -1,3 +1,14 @@
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/systemtap.local.psf: Removed.  Renamed to callgraph.psf.
+	* psfs/callgraph.psf: New file.
+	* maps/linuxtools.map: Merged and renamed a few sections.
+	* psfs/autotools.psf: Reflect re-written plugins.
+	* psfs/libhover.psf: Add libstdc++.
+	* psfs/linuxtools.psf: Merge changes in smaller .psf files.  Add
+	dependencies.
+	* psfs/rpm-editor.psf: Add new feature.
+
 2009-11-04  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Update dependency versions (SDK 3.5.1, CDT 6.0.1,
