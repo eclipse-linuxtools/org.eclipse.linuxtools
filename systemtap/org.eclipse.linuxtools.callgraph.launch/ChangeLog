@@ -1,5 +1,6 @@
 2009-11-09  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/launch/ConfigurationOptionsSetter.java: Use StringBuilder instead of String
 	* META-INF/MANIFEST.MF: Change to reflect rename of Activator
 	* src/org/eclipse/linuxtools/callgraph/launch/CallgraphLaunchPlugin.java: RENAME: Activator --> CallgraphLaunchPlugin
 
