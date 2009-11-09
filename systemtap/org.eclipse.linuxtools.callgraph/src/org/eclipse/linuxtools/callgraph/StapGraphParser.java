@@ -127,7 +127,7 @@ public class StapGraphParser extends SystemTapParser {
 				lastFunctionCalled = val;
 			}
 			String tmp = markedMap.get(lastFunctionCalled);
-			if (tmp == null) tmp = "";
+			if (tmp == null) tmp = ""; //$NON-NLS-1$
 			markedMap.put(lastFunctionCalled, 
 					tmp + "\n" + Messages.getString("StapGraphParser.16")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -169,7 +169,7 @@ public class StapGraphParser extends SystemTapParser {
 		if (msg.equals("<unknown>")) { //$NON-NLS-1$
 			msg = msg + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
 		}
-		markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + msg);
+		markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + msg); //$NON-NLS-1$
 	
 	}
 	
@@ -383,9 +383,9 @@ public class StapGraphParser extends SystemTapParser {
 	 */
 	private void showTime(int id, long time) {
 		String tmp = markedMap.get(id);
-		if (tmp == null) tmp = "";
+		if (tmp == null) tmp = ""; //$NON-NLS-1$
 		markedMap.put(id, tmp + 
-				Messages.getString("StapGraphParser.ActualTime") + time/1000000 
+				Messages.getString("StapGraphParser.ActualTime") + time/1000000  //$NON-NLS-1$
 				+ Messages.getString("StapGraphParser.TimeUnits")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

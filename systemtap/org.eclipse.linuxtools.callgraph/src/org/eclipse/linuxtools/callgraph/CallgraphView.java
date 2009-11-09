@@ -892,7 +892,7 @@ public class CallgraphView extends SystemTapView {
 	@Override
 	public void updateMethod() {
 		IProgressMonitor m = new NullProgressMonitor();
-		m.beginTask("Updating callgraph", 4);
+		m.beginTask("Updating callgraph", 4); //$NON-NLS-1$
 		
 		loadData(m);
 		m.worked(1);

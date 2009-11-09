@@ -1,3 +1,9 @@
+2009-11-09  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java:  Externalize/Fix Strings
+	* src/org/eclipse/linuxtools/callgraph/messages.properties:
+	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: 
+
 2009-11-09  Charley Wang  <chwang@redhat.com>
 
 	* META-INF/MANIFEST.MF: Change reference to Activator to reflect name change
