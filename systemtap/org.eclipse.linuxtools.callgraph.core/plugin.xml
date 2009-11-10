@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.eclipse.linuxtools.callgraph.core.parser" name="SystemTapParserPoint" schema="schema/org.eclipse.linuxtools.callgraph.core.parser.exsd"/>
-   
+   <!--
    <extension
                id="org.eclipse.linuxtools.callgraph.core.systemtaptextview"
                name="SystemTapTextView"
@@ -14,7 +14,7 @@
             name="SystemTap Text View"
             restorable="true">
       </view>
-   </extension>
+   </extension>-->
 
  <extension
        id="org.eclipse.linuxtools.callgraph.core.systemtaptextparser"
