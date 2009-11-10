@@ -124,7 +124,7 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		//Add first button
-		Image image = CallgraphCorePlugin.getImageDescriptor("icons/up.gif").createImage(); //$NON-NLS-1$
+		Image image = CallgraphPlugin.getImageDescriptor("icons/up.gif").createImage(); //$NON-NLS-1$
 		Button up = new Button(papaCanvas, SWT.PUSH);
 		GridData buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;
@@ -139,7 +139,7 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		//Add second button
-		image = CallgraphCorePlugin.getImageDescriptor("icons/down.gif").createImage(); //$NON-NLS-1$
+		image = CallgraphPlugin.getImageDescriptor("icons/down.gif").createImage(); //$NON-NLS-1$
 		Button down = new Button(papaCanvas, SWT.PUSH);
 		buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;

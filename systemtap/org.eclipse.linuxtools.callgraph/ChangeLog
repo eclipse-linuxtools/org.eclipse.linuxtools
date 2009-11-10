@@ -1,3 +1,7 @@
+2009-11-10  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Up/Down.gif now refer to the correct icons.
+
 2009-11-09  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapData.java: Cleanup
@@ -54,4 +58,4 @@
 2009-11-03  chwang  <chwang@toto>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Fix capability to mark nodes.
-	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Enhance capability for collapse nodes by making collapse nodes take a negative ID. 
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Enhance capability for collapse nodes by making collapse nodes take a negative ID.
