@@ -1,3 +1,9 @@
+2009-11-10  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Change reference to kill button to use imageDescriptor function in AbstractUIPlugin
+	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java: Add PLUGIN_ID string 
+
+
 2009-11-09  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Externalize/Fix Strings
