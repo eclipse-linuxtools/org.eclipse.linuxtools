@@ -1,3 +1,7 @@
+2009-11-10  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Make featureName a bit more user-friendly.
+
 2009-08-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Remove newlib as included feature.
