@@ -1,3 +1,7 @@
+2009-11-10  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/RuledTreeSelectionDialog.java: Delete unnecessary TODO
+
 2009-11-09  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/ConfigurationOptionsSetter.java: Use StringBuilder instead of String
