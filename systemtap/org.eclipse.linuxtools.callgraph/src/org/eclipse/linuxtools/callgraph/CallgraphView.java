@@ -24,6 +24,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.linuxtools.callgraph.core.CallgraphCorePlugin;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
@@ -70,10 +71,8 @@ public class CallgraphView extends SystemTapView {
 	private  Action goto_previous;
 	private  Action goto_last;
 	private  Action play;
-	ImageDescriptor playImage= ImageDescriptor.createFromImage(
-			new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "icons/perform.png")); //$NON-NLS-1$
-	ImageDescriptor pauseImage= ImageDescriptor.createFromImage(
-			new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "icons/pause.gif")); //$NON-NLS-1$
+	ImageDescriptor playImage= CallgraphPlugin.getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
+	ImageDescriptor pauseImage= CallgraphPlugin.getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 	
 	private  IMenuManager menu;
 	private  IMenuManager gotoMenu;
@@ -125,7 +124,7 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		//Add first button
-		Image image = new Image(disp, CallGraphConstants.getPluginLocation()+"icons/up.gif"); //$NON-NLS-1$
+		Image image = CallgraphCorePlugin.getImageDescriptor("icons/up.gif").createImage(); //$NON-NLS-1$
 		Button up = new Button(papaCanvas, SWT.PUSH);
 		GridData buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;
@@ -140,7 +139,7 @@ public class CallgraphView extends SystemTapView {
 		
 		
 		//Add second button
-		image = new Image(disp, CallGraphConstants.getPluginLocation()+"icons/down.gif"); //$NON-NLS-1$
+		image = CallgraphCorePlugin.getImageDescriptor("icons/down.gif").createImage(); //$NON-NLS-1$
 		Button down = new Button(papaCanvas, SWT.PUSH);
 		buttonData = new GridData(SWT.CENTER, SWT.CENTER, true, false);
 		buttonData.widthHint = 150;
@@ -468,8 +467,7 @@ public class CallgraphView extends SystemTapView {
 					play.setEnabled(true);
 			}
 		};
-		ImageDescriptor treeImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "icons/tree_view.gif")); //$NON-NLS-1$
+		ImageDescriptor treeImage = CallgraphPlugin.getImageDescriptor("icons/tree_view.gif"); //$NON-NLS-1$
 		view_treeview.setImageDescriptor(treeImage);
 		
 		
@@ -482,11 +480,8 @@ public class CallgraphView extends SystemTapView {
 					play.setEnabled(true);
 			}
 		};
-		ImageDescriptor d = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), 
-						CallGraphConstants.getPluginLocation() + "/icons/radial_view.gif")); //$NON-NLS-1$
+		ImageDescriptor d = CallgraphPlugin.getImageDescriptor("/icons/radial_view.gif"); //$NON-NLS-1$
 		view_radialview.setImageDescriptor(d);
-
 		
 		//Set drawmode to aggregate view
 		view_aggregateview = new Action(Messages.getString("CallgraphView.18")){ //$NON-NLS-1$
@@ -497,9 +492,7 @@ public class CallgraphView extends SystemTapView {
 					play.setEnabled(false);
 			}
 		};
-		ImageDescriptor aggregateImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), 
-						CallGraphConstants.getPluginLocation() + "/icons/view_aggregateview.gif")); //$NON-NLS-1$
+		ImageDescriptor aggregateImage = CallgraphPlugin.getImageDescriptor("/icons/view_aggregateview.gif"); //$NON-NLS-1$
 		view_aggregateview.setImageDescriptor(aggregateImage);
 		
 		
@@ -512,9 +505,7 @@ public class CallgraphView extends SystemTapView {
 					play.setEnabled(true);
 			}
 		};
-		ImageDescriptor levelImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), 
-						CallGraphConstants.getPluginLocation() + "/icons/showchild_mode.gif")); //$NON-NLS-1$
+		ImageDescriptor levelImage = CallgraphPlugin.getImageDescriptor("/icons/showchild_mode.gif"); //$NON-NLS-1$
 		view_levelview.setImageDescriptor(levelImage);
 		
 		
@@ -523,9 +514,7 @@ public class CallgraphView extends SystemTapView {
 				g.reset();
 			}
 		});
-		ImageDescriptor refreshImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), 
-						CallGraphConstants.getPluginLocation() + "/icons/nav_refresh.gif")); //$NON-NLS-1$
+		ImageDescriptor refreshImage = CallgraphPlugin.getImageDescriptor("/icons/nav_refresh.gif"); //$NON-NLS-1$
 		getView_refresh().setImageDescriptor(refreshImage);
 		
 		
@@ -572,8 +561,7 @@ public class CallgraphView extends SystemTapView {
 			}
 		};
 		
-		ImageDescriptor newImage = ImageDescriptor.createFromImage(
-				new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "icons/mode_collapsednodes.gif")); //$NON-NLS-1$
+		ImageDescriptor newImage = CallgraphPlugin.getImageDescriptor("icons/mode_collapsednodes.gif"); //$NON-NLS-1$
 		mode_collapsednodes.setImageDescriptor(newImage);
 		
 		limits = new Action(Messages.getString("CallgraphView.SetLimits"), Action.AS_PUSH_BUTTON) { //$NON-NLS-1$

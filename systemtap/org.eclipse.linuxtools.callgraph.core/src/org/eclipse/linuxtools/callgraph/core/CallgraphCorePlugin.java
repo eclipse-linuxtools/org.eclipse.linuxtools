@@ -29,6 +29,8 @@ import org.osgi.framework.BundleContext;
  */
 public class CallgraphCorePlugin extends AbstractUIPlugin {
 
+	
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.callgraph.core";
 	// The shared instance
 	private static CallgraphCorePlugin plugin;
 	

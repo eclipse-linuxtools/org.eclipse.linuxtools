@@ -19,7 +19,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Font;
@@ -436,10 +435,8 @@ public abstract class SystemTapView extends ViewPart {
 
 	protected void addKillButton() {
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-		kill = new Action(Messages.getString("SystemTapView.16"), ImageDescriptor //$NON-NLS-1$
-				.createFromImage(new Image(Display.getCurrent(),
-						PluginConstants.getPluginLocation()
-								+ "icons/progress_stop.gif"))) { //$NON-NLS-1$
+		kill = new Action(Messages.getString("SystemTapView.16"), 
+				CallgraphCorePlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
 			public void run() {
 				getParser().cancelJob();
 			}
