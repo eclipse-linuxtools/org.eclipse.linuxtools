@@ -333,7 +333,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			Process subProcess = execute(commandArray, getEnvironment(config),
 					workDir, true);
-			System.out.println(cmd);
 			
 			if (subProcess == null){
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), //$NON-NLS-1$
