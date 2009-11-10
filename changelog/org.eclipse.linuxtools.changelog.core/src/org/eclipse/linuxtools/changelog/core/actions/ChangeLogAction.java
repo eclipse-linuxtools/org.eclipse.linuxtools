@@ -45,7 +45,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
 
 public abstract class ChangeLogAction extends Action {
@@ -163,7 +162,7 @@ public abstract class ChangeLogAction extends Action {
 
 		IResource given_resource = myWorkspaceRoot.findMember(editorLoc);
 
-		ContainerSelectionDialog dialog = new ContainerSelectionDialog(ws
+		ChangeLogContainerSelectionDialog dialog = new ChangeLogContainerSelectionDialog(ws
 				.getActiveWorkbenchWindow().getShell(), given_resource
 				.getParent(), false, Messages
 				.getString("AddAction.str_ChangeLog_Location")); //$NON-NLS-1$
