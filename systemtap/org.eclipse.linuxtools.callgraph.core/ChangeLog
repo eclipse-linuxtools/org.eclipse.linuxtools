@@ -1,5 +1,6 @@
 2009-11-10  Charley Wang  <chwang@redhat.com>
 
+	* plugin.xml: Add icons to build.properties
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Change reference to kill button to use imageDescriptor function in AbstractUIPlugin
 	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java: Add PLUGIN_ID string 
 
