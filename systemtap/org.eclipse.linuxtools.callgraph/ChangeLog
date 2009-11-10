@@ -1,6 +1,7 @@
 2009-11-10  Charley Wang  <chwang@redhat.com>
 
-	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Up/Down.gif now refer to the correct icons.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Up/Down.gif now refer to the correct icons. Remove import of CallgraphCorePlugin
+	
 
 2009-11-09  Charley Wang  <chwang@redhat.com>
 
