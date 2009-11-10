@@ -2,8 +2,6 @@
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Up/Down.gif now refer to the correct icons.
 
-
-
 2009-11-09  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapData.java: Cleanup
