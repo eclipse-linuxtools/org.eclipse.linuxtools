@@ -1,3 +1,7 @@
+2009-11-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Mild code cleanup, commenting
+
 2009-11-10  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/RuledTreeSelectionDialog.java: Delete unnecessary TODO

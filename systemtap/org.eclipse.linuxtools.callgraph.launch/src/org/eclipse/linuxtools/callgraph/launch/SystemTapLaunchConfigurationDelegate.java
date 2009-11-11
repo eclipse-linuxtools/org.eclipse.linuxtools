@@ -301,7 +301,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 							PluginConstants.PARSER_NAME, 
 							parserClass);
 			
-			
 			if (extensions == null || extensions.length < 1) {
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"),  //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2"), //$NON-NLS-1$ //$NON-NLS-2$
@@ -373,16 +372,22 @@ public class SystemTapLaunchConfigurationDelegate extends
 				if (doc.get().length() < 1)
 					Thread.sleep(300);
 				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
+				
+				
+				//Prepare stap information
 				errorHandler.handle(monitor, config.getName() 
 						+ Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
 						+ cmd
 						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
+				
+				//Handle error from TEMP_ERROR_OUTPUT
 				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
-				if ((monitor != null && monitor.isCanceled())) {
+				if ((monitor != null && monitor.isCanceled()))
 					return;
-				}
 				
 				
+				//If we are meant to retry, and the conditions for retry are met
+				//Currently conditions only met if there are mismatched probe points present
 				if (errorHandler.hasMismatchedProbePoints() && retry) {
 					
 					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
@@ -390,11 +395,12 @@ public class SystemTapLaunchConfigurationDelegate extends
 							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch3")); //$NON-NLS-1$
 					mess.schedule();
 					
-					if (!errorHandler.finishHandling(monitor, s.getNumberOfErrors())) {
-						//Check if we should attempt a relaunch or not
+					//If finishHandling determines that errors are not fixable, return
+					if (!errorHandler.finishHandling(monitor, s.getNumberOfErrors(), scriptPath))
 						return;
-					}
 					
+					
+					//Abort job
 					if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
 						monitor.setCanceled(true);
 						parser.cancelJob();
@@ -404,7 +410,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					return;
 				}
 				
-				errorHandler.finishHandling(monitor, s.getNumberOfErrors());
+				errorHandler.finishHandling(monitor, s.getNumberOfErrors(), scriptPath);
 				return;
 			}
 			
@@ -413,7 +419,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			} else {
 				//Parser already scheduled, but double-check
 				if (parser != null)
-					parser.setDone(true);
+					parser.cancelJob();
 			}
 						
 			
