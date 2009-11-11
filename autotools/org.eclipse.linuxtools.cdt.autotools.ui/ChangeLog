@@ -1,3 +1,8 @@
+2009-11-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/Resources.properties: Fix conversion wizard messages
+	to not mention CVS or repository.
+
 2009-11-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix dependencies to support CDT 6.0.0 and up.
