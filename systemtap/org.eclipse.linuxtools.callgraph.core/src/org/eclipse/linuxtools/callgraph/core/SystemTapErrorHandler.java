@@ -168,7 +168,7 @@ public class SystemTapErrorHandler {
 	 * be attempted. Currently relaunch only works for the callgraph script.
 	 * 
 	 */
-	public boolean finishHandling(IProgressMonitor m, int numberOfErrors) {
+	public boolean finishHandling(IProgressMonitor m, int numberOfErrors, String scriptPath) {
 		if (!isErrorRecognized()) {
 			errorMessage.append(Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
 					Messages.getString("SystemTapErrorHandler.5")); //$NON-NLS-1$
@@ -198,58 +198,61 @@ public class SystemTapErrorHandler {
 				return false;
 			}
 
-			StringBuilder resultFileContent = new StringBuilder();
-			String fileLocation = PluginConstants.getDefaultOutput()
-					+ "callgraphGen.stp"; //$NON-NLS-1$
-			String line;
-			boolean skip = false;
-			File file = new File(fileLocation);
-			int counter = 0;
-			try {
-				BufferedReader buff = new BufferedReader(new FileReader(file));
-				while ((line = buff.readLine()) != null) {
-					if (m != null && m.isCanceled())
-						return false;
-					skip = false;
-					for (String func : functions) {
-						if (line.contains("function(\"" + func + "\").call")) { //$NON-NLS-1$ //$NON-NLS-2$
-							skip = true;
-							counter++;
-							if (counter == functions.size()) {
-								buff.close();
-								return false;
-							}
-							break;
-						}
-					}
-					
-
-					if (!skip && !line.equals("\n")) { //$NON-NLS-1$
-						//This works because call and return are on the same line.
-						resultFileContent.append(line);
-						resultFileContent.append("\n"); //$NON-NLS-1$
-					}
-				}
-
-				buff.close();
-
-				BufferedWriter wbuff = new BufferedWriter(new FileWriter(file));
-				wbuff.write(resultFileContent.toString());
-				wbuff.close();
-				
-				return true;
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			return cleanScript(m, new File(scriptPath));
+			
 
 		}
 		return false;
 
 	}
 
+	
+	private boolean cleanScript(IProgressMonitor m, File script) {
+		StringBuilder resultFileContent = new StringBuilder();
+		int counter = 0;
+		String line;
+		try {
+			BufferedReader buff = new BufferedReader(new FileReader(script));
+			while ((line = buff.readLine()) != null) {
+				if (m != null && m.isCanceled())
+					return false;
+				boolean skip = false;
+				for (String func : functions) {
+					if (line.contains("function(\"" + func + "\").call")) { //$NON-NLS-1$ //$NON-NLS-2$
+						skip = true;
+						counter++;
+						if (counter == functions.size()) {
+							buff.close();
+							return false;
+						}
+						break;
+					}
+				}
+				
+
+				if (!skip && !line.equals("\n")) { //$NON-NLS-1$
+					//This works only because call and return are on the same line.
+					resultFileContent.append(line);
+					resultFileContent.append("\n"); //$NON-NLS-1$
+				}
+			}
+
+			buff.close();
+
+			BufferedWriter wbuff = new BufferedWriter(new FileWriter(script));
+			wbuff.write(resultFileContent.toString());
+			wbuff.close();
+			
+			return true;
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	/**
 	 * Writes the contents of logContents to the error log, along with date and
 	 * time.

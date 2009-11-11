@@ -1,3 +1,7 @@
+2009-11-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Create cleanScript(): function as a possible first step to abstraction of Error Handling
+
 2009-11-10  Charley Wang  <chwang@redhat.com>
 
 	* plugin.xml: Add icons to build.properties
