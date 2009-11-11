@@ -1,3 +1,8 @@
+2009-11-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogRootContainer.java: Resolve warnings about generic type inferral. All methods return null, in any case.
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java: Add check in getDocumentLocation to fetch the relevant page of a multipage editor.
+
 2009-11-10  Roland Grunberg  <rgrunber@redhat.com>
 	
 	Resolves #256182

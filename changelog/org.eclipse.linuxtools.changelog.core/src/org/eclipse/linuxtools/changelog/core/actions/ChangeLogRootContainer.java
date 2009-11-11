@@ -222,7 +222,7 @@ public class ChangeLogRootContainer implements IContainer {
 		return null;
 	}
 
-	public Map getPersistentProperties() throws CoreException {
+	public Map<?, ?> getPersistentProperties() throws CoreException {
 		return null;
 	}
 
@@ -250,7 +250,7 @@ public class ChangeLogRootContainer implements IContainer {
 		return null;
 	}
 
-	public Map getSessionProperties() throws CoreException {
+	public Map<?, ?> getSessionProperties() throws CoreException {
 		return null;
 	}
 
@@ -392,6 +392,7 @@ public class ChangeLogRootContainer implements IContainer {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		return null;
 	}
