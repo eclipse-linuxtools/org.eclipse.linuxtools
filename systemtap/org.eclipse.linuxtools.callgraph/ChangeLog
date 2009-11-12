@@ -1,3 +1,7 @@
+2009-11-12  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/AggregateLayoutAlgorithm.java (postLayoutAlgorithm): Rearrange declarations, update documentation.
+
 2009-11-10  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Up/Down.gif now refer to the correct icons. Remove import of CallgraphCorePlugin
