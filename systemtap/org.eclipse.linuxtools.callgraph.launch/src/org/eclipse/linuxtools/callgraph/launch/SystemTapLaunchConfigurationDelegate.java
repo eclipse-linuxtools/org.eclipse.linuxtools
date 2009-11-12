@@ -393,7 +393,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					mess.schedule();
 					
 					//If finishHandling determines that errors are not fixable, return
-					if (!errorHandler.finishHandling(monitor, s.getNumberOfErrors(), scriptPath))
+					if (!errorHandler.finishHandling(monitor, scriptPath))
 						return;
 					
 					
@@ -407,7 +407,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					return;
 				}
 				
-				errorHandler.finishHandling(monitor, s.getNumberOfErrors(), scriptPath);
+				errorHandler.finishHandling(monitor, scriptPath);
 				return;
 			}
 			

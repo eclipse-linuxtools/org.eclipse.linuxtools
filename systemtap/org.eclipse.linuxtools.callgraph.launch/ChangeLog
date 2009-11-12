@@ -1,3 +1,8 @@
+2009-11-12  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java:
+		Number of errors can be taken from the number of functions that have been matched, in the error handler
+
 2009-11-12  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java (StreamListener.streamAppended): Add a return if text is less than 1 character
