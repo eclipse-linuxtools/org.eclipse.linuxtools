@@ -708,9 +708,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 							output.add(c);
 					}
 				} else if (obj instanceof ICElement) {
-					if (((ICElement) obj).getElementName().endsWith(".c") //$NON-NLS-1$
-							|| ((ICElement) obj).getElementName().endsWith(
-									".cpp")) { //$NON-NLS-1$
+					if (validFile((ICElement) obj)) { //$NON-NLS-1$
 						if (!output.contains(obj)) {
 							output.add(obj);
 						}
