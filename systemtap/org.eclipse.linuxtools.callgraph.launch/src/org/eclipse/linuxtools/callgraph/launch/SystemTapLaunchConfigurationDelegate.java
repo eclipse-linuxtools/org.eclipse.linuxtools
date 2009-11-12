@@ -482,12 +482,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 			file.delete();
 			file.createNewFile();
 			h = new Helper();
-			counter = 0;
 			h.setBufferedWriter(TEMP_ERROR_OUTPUT); //$NON-NLS-1$
+			counter = 0;
 		}
 		@Override
 		public void streamAppended(String text, IStreamMonitor monitor) {
 			try {
+				if (text.length() < 1) return;
 				counter++;
 				if (counter < PluginConstants.MAX_ERRORS)
 					h.appendToExistingFile(text);
