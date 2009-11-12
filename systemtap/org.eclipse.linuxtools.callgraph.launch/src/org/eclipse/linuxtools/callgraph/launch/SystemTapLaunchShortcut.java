@@ -591,7 +591,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			if (numberOfFiles == 1) {
 				for (ICContainer c : list) {
 					for (ITranslationUnit e : c.getTranslationUnits()) {
-						if (validFile(e)) {
+						if (validElement(e)) {
 							e.accept(v);
 							funcs += v.getFunctions();
 						}
@@ -670,7 +670,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 					if (obj instanceof ICContainer) {
 						ICElement[] array = ((ICContainer) obj).getChildren();
 						for (ICElement c : array) {
-							if (!(validFile(c))) //$NON-NLS-1$
+							if (!(validElement(c))) //$NON-NLS-1$
 								continue;
 							if (c.getElementName().contains("main") && !output.contains(c)) //$NON-NLS-1$
 								output.add(c);
@@ -702,13 +702,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				if (obj instanceof ICContainer) {
 					ICElement[] array = ((ICContainer) obj).getChildren();
 					for (ICElement c : array) {
-						if (!(validFile(c))) //$NON-NLS-1$
+						if (!(validElement(c))) //$NON-NLS-1$
 							continue;
 						if (!output.contains(c))
 							output.add(c);
 					}
 				} else if (obj instanceof ICElement) {
-					if (validFile((ICElement) obj)) { //$NON-NLS-1$
+					if (validElement((ICElement) obj)) { //$NON-NLS-1$
 						if (!output.contains(obj)) {
 							output.add(obj);
 						}
@@ -738,12 +738,12 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 								.getChildren());
 					}
 					if (ele instanceof ICElement) {
-						if (validFile(ele))
+						if (validElement(ele))
 							output++;
 					}
 				}
 			} else if (parent instanceof ICElement) {
-				if (validFile((ICElement) parent))
+				if (validElement((ICElement) parent))
 					output++;
 			}
 		}
@@ -925,7 +925,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		return PluginConstants.DEFAULT_VIEW_ID;
 	}
 	
-	protected boolean validFile(ICElement e) {
+	public static boolean validElement(ICElement e) {
 		return e.getElementName().endsWith(".c") || //$NON-NLS-1$
 		e.getElementName().endsWith(".cpp") || //$NON-NLS-1$
 		e.getElementName().endsWith(".h"); //$NON-NLS-1$ 

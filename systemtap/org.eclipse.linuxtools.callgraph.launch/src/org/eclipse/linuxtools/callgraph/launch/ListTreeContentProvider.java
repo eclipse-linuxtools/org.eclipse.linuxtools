@@ -35,7 +35,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 							output.add(item);
 					} else if (item instanceof ICElement) {
 						ICElement el = (ICElement) item;
-						if (el.getElementName().contains(".c")) //$NON-NLS-1$
+						if (SystemTapLaunchShortcut.validElement(el)) //$NON-NLS-1$
 							output.add(el);
 					}
 					
@@ -61,7 +61,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 			for (ICElement child : cont.getChildren()) {
 
 				if (child instanceof ICElement)
-					if (child.getElementName().endsWith(".c")) //$NON-NLS-1$
+					if (SystemTapLaunchShortcut.validElement(child)) //$NON-NLS-1$
 						return true;
 				if (child instanceof ICContainer) {
 					if (checkForValidChildren((ICContainer) child))
@@ -112,8 +112,7 @@ public class ListTreeContentProvider implements ITreeContentProvider {
 									output.add(item);
 							}
 
-							if (item.getElementName().endsWith(".cpp") || //$NON-NLS-1$
-								item.getElementName().endsWith(".c")) //$NON-NLS-1$
+							if (SystemTapLaunchShortcut.validElement(item))
 								output.add(item);
 						}
 						return output.toArray();
