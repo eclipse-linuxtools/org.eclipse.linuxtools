@@ -1,5 +1,6 @@
 2009-11-12  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java: Add method validFile(ICElement e): this function will return true if the given element is a .c, .cpp or .h file.
 	* src/org/eclipse/linuxtools/callgraph/launch/LaunchWizard.java (.widgetSelected): Remove dependency on ShellOpener, use Display.asyncExec() instead.
 
 2009-11-11  Charley Wang  <chwang@redhat.com>

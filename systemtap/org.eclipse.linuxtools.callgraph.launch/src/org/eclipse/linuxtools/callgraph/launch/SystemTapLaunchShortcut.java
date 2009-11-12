@@ -591,8 +591,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			if (numberOfFiles == 1) {
 				for (ICContainer c : list) {
 					for (ITranslationUnit e : c.getTranslationUnits()) {
-						if (e.getElementName().endsWith(".c") || //$NON-NLS-1$
-								e.getElementName().endsWith(".cpp")) { //$NON-NLS-1$
+						if (validFile(e)) {
 							e.accept(v);
 							funcs += v.getFunctions();
 						}
@@ -671,8 +670,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 					if (obj instanceof ICContainer) {
 						ICElement[] array = ((ICContainer) obj).getChildren();
 						for (ICElement c : array) {
-							if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
-							c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
+							if (!(validFile(c))) //$NON-NLS-1$
 								continue;
 							if (c.getElementName().contains("main") && !output.contains(c)) //$NON-NLS-1$
 								output.add(c);
@@ -704,8 +702,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				if (obj instanceof ICContainer) {
 					ICElement[] array = ((ICContainer) obj).getChildren();
 					for (ICElement c : array) {
-						if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
-						c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
+						if (!(validFile(c))) //$NON-NLS-1$
 							continue;
 						if (!output.contains(c))
 							output.add(c);
@@ -743,14 +740,12 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 								.getChildren());
 					}
 					if (ele instanceof ICElement) {
-						if (ele.getElementName().endsWith(".c") || //$NON-NLS-1$
-								ele.getElementName().endsWith(".cpp")) //$NON-NLS-1$
+						if (validFile(ele))
 							output++;
 					}
 				}
 			} else if (parent instanceof ICElement) {
-				if (((ICElement) parent).getElementName().endsWith(".c") || //$NON-NLS-1$
-						((ICElement) parent).getElementName().endsWith(".cpp")) //$NON-NLS-1$
+				if (validFile((ICElement) parent))
 					output++;
 			}
 		}
@@ -930,6 +925,12 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	public String setViewID() {
 		return PluginConstants.DEFAULT_VIEW_ID;
+	}
+	
+	protected boolean validFile(ICElement e) {
+		return e.getElementName().endsWith(".c") || //$NON-NLS-1$
+		e.getElementName().endsWith(".cpp") || //$NON-NLS-1$
+		e.getElementName().endsWith(".h"); //$NON-NLS-1$ 
 	}
 
 	/**
