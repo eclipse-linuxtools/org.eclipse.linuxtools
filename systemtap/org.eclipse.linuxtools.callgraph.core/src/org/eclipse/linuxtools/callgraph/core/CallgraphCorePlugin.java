@@ -79,6 +79,12 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 		return imageDescriptorFromPlugin(LaunchConfigurationConstants.PLUGIN_ID, path);
 	}
 	
+	/**
+	 * Returns the location of the plugin by checking the path of the bundle's 
+	 * locationURL.
+	 * 
+	 * @return
+	 */
 	public String getPluginLocation() {
 		Bundle bundle = getBundle();
 
@@ -90,44 +96,6 @@ public class CallgraphCorePlugin extends AbstractUIPlugin {
 			e.printStackTrace();
 		}
 		return fileUrl.getFile();
-		
 	}
-
-	
-	
-	/**
-	 *  Check if install script has been executed. Install script MUST delete the FirstRun file,
-	 *	or else this will execute every time!
-	 *
-	 *	Opens an install script to prompt user to properly install the plugin.
-	 */
-	//@SuppressWarnings("static-access")
-/*	private void checkRun() {
-		
-		PluginConstants.setPluginLocation(getPluginLocation());
-		File initFile = new File(PluginConstants.PLUGIN_LOCATION + "SystemTapPlugin.init");//$NON-NLS-1
-		String line;
-
-		try {
-			BufferedReader br = new BufferedReader (new FileReader(initFile));
-			while ( (line = br.readLine()) != null) {
-				if (line.contains("First time")) {
-				Shell sh = new Shell();
-				//String command = "SystemTapPluginInstall/" + "install.sh"; //$NON-NLS-1$ $NON-NLS-2$
-				MessageDialog.openInformation(sh, Messages.getString("Activator.0"), Messages.getString("Activator.1")); //$NON-NLS-1$ //$NON-NLS-2$
-				BufferedWriter bw = new BufferedWriter(new FileWriter(initFile));
-				bw.append("Easter egg");
-				bw.close();
-				}
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}*/
-
 
 }
