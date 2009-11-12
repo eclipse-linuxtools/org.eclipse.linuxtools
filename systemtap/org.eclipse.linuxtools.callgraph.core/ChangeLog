@@ -1,5 +1,6 @@
 2009-11-12  Charley Wang  <chwang@redhat.com>
 
+	* ChangeLog: Remove the ShellOpener class.
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java (buildScript): CommandGenerator no longer extends action or IWindow...Delegate. None of those functions were being used.
 	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java (getPluginLocation): Add javadoc. Remove commented functions at the bottom.
 
