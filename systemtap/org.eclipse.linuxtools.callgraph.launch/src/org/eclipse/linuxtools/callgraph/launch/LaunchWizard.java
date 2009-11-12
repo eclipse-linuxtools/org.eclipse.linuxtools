@@ -22,7 +22,6 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
-import org.eclipse.linuxtools.callgraph.core.ShellOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -32,6 +31,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -260,10 +260,17 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 				
 		});
 		
-		ShellOpener so = new ShellOpener(Messages.getString("LaunchWizard.23"), sh); //$NON-NLS-1$
-		so.schedule();
+		//TODO: Verify that this works
+		Display.getCurrent().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				sh.open();
+				completed = true;
+			}
+			
+		});
 		
-		completed = true;
 
 	}
 	
