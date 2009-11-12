@@ -13,18 +13,15 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import java.util.ArrayList;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 
 /**
  * This <code>Action</code> is used to run a SystemTap script that is currently open in the editor.
  * @author Ryan Morse
  */
-public class SystemTapCommandGenerator extends Action implements IWorkbenchWindowActionDelegate {	
+public class SystemTapCommandGenerator {	
 	
 	private boolean needsToSendCommand;
 	private boolean needsArguments;
@@ -33,7 +30,6 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 	protected String commands;
 	protected boolean isGuru;
 	private String binaryPath = null;
-	protected IWorkbenchWindow actionWindow = null;
 	private IAction act;
 	private String executeCommand;
 	private String binaryArguments;
@@ -43,22 +39,6 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		super();
 	}
 
-	public void dispose() {
-		actionWindow= null;
-	}
-
-	public void init(IWorkbenchWindow window) {
-		actionWindow= window;
-	}
-
-	public void run(IAction action) {
-		System.out.println("Not implemented"); //$NON-NLS-1$
-	}
-
-	public void run() {
-		System.out.println("Calling run() without parameters not implemented"); //$NON-NLS-1$
-	}
-	
 	public String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, String binArguments) {
 		needsToSendCommand = needBinary;
 		needsArguments = needsArgs;
@@ -138,14 +118,6 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 	
 	public String getExecuteCommand(){
 		return this.executeCommand;
-	}
-
-	
-	/**
-	 * Convenience method to return the current window
-	 */
-	public IWorkbenchWindow getWindow() {
-		return actionWindow;
 	}
 	
 }

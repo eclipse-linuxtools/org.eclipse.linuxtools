@@ -1,5 +1,6 @@
 2009-11-12  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java (buildScript): CommandGenerator no longer extends action or IWindow...Delegate. None of those functions were being used.
 	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java (getPluginLocation): Add javadoc. Remove commented functions at the bottom.
 
 2009-11-11  Charley Wang  <chwang@redhat.com>
