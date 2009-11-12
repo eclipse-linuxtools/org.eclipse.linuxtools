@@ -235,11 +235,8 @@ public abstract class SystemTapParser extends Job {
 	        	setInternalData();
 	            while (!isDone){
 	            	returnStatus = realTimeParsing();
-	            	
-	            	
-	            	if (monitor.isCanceled() || returnStatus == Status.CANCEL_STATUS) {
+	            	if (monitor.isCanceled() || returnStatus == Status.CANCEL_STATUS)
 	            		return Status.CANCEL_STATUS;
-	            	}
 	            }
 	            returnStatus = realTimeParsing();
 		    } catch (Exception e) {
@@ -291,11 +288,6 @@ public abstract class SystemTapParser extends Job {
 	}
 	
 	
-	public Job getJob() {
-		return job;
-	}
-	
-	
 	/**
 	 * Sets the file to read from
 	 * 
@@ -306,6 +298,13 @@ public abstract class SystemTapParser extends Job {
 	}
 	
 
+	/**
+	 * Slightly more graceful termination than cancelJob.
+	 * Setting to true will cause the parser's RunTimeJob to terminate at the end
+	 * of its current iteration. Does not offer as solid a guarantee
+	 * of termination, however.
+	 * @param val
+	 */
 	public void setDone(boolean val) {
 		isDone = val;
 	}

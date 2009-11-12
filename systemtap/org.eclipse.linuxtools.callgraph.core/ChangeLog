@@ -1,3 +1,7 @@
+2009-11-12  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Remove unused functions. Add docs to setDone. 
+
 2009-11-12  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: (appendToLog):
