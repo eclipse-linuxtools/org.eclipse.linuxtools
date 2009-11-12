@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.doc;singleton:=true
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.4.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.apache.ant;bundle-version="1.7.0";resolution:=optional,
