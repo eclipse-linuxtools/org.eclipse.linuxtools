@@ -2,6 +2,7 @@
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: (appendToLog):
 		Method writes directly to the log without requires String argument to go through lengthy validation.
+		General cleanup of SystemTapErrorhandler
 
 2009-11-12  Charley Wang  <chwang@redhat.com>
 

@@ -93,25 +93,21 @@ public class SystemTapErrorHandler {
 					if (m != null && m.isCanceled())
 						return;
 					index = line.indexOf('=');
-					Pattern pat = Pattern.compile(line.substring(0, index),
-							Pattern.DOTALL);
+					Pattern pat = Pattern.compile(line.substring(0, index),Pattern.DOTALL);
 					Matcher matcher = pat.matcher(message);
 
 					if (matcher.matches()) {
 						if (!isErrorRecognized()) {
-							errorMessage
-									.append(Messages
-											.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
+							errorMessage.append(Messages.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
 							setErrorRecognized(true);
 						}
 						String errorFound = line.substring(index+1);
 
-						if (!errorMessage.toString().contains(
-								errorFound)) {
-							errorMessage.append(errorFound
-									+ PluginConstants.NEW_LINE);
+						if (!errorMessage.toString().contains(errorFound)) {
+							errorMessage.append(errorFound+ PluginConstants.NEW_LINE);
 						}
 
+						//first line in error properties is mismatched probes
 						if (firstLine) {
 							findFunctions(m, message, pat);
 							mismatchedProbePoints = true;
@@ -177,7 +173,7 @@ public class SystemTapErrorHandler {
 	 * be attempted. Currently relaunch only works for the callgraph script.
 	 * 
 	 */
-	public boolean finishHandling(IProgressMonitor m, int numberOfErrors, String scriptPath) {
+	public boolean finishHandling(IProgressMonitor m, String scriptPath) {
 		if (!isErrorRecognized()) {
 			errorMessage.append(Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
 					Messages.getString("SystemTapErrorHandler.5")); //$NON-NLS-1$
@@ -186,12 +182,12 @@ public class SystemTapErrorHandler {
 		writeToLog();
 
 		if (mismatchedProbePoints) {
-			if (numberOfErrors > PluginConstants.MAX_ERRORS) {
+			if (functions.size() > PluginConstants.MAX_ERRORS) {
 				errorMessage.setLength(0);
 				errorMessage
 						.append(PluginConstants.NEW_LINE
 								+ Messages
-										.getString("SystemTapErrorHandler.TooManyErrors1") + numberOfErrors + Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
+										.getString("SystemTapErrorHandler.TooManyErrors1") + functions.size() + Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
 								Messages
 										.getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
 								Messages
@@ -230,10 +226,10 @@ public class SystemTapErrorHandler {
 					if (line.contains("function(\"" + func + "\").call")) { //$NON-NLS-1$ //$NON-NLS-2$
 						skip = true;
 						counter++;
-						if (counter == functions.size()) {
-							buff.close();
-							return false;
-						}
+//						if (counter == functions.size()) {
+//							buff.close();
+//							return false;
+//						}
 						break;
 					}
 				}
@@ -331,23 +327,18 @@ public class SystemTapErrorHandler {
 	}
 
 	public void findFunctions(IProgressMonitor m, String message, Pattern pat) {
-		String[] list = message.split("\n"); //$NON-NLS-1$
 		String result;
-		for (String s : list) {
 			if (m.isCanceled())
 				return;
-			if (pat.matcher(s).matches()) {
-				int lastQuote = s.lastIndexOf('"');
+				int lastQuote = message.lastIndexOf('"');
 				if (lastQuote < 0)
 					return;
-				int secondLastQuote = s.lastIndexOf('"', lastQuote - 1);
+				int secondLastQuote = message.lastIndexOf('"', lastQuote - 1);
 				if (secondLastQuote < 0)
 					return;
-				result = s.substring(secondLastQuote + 1, lastQuote);
+				result = message.substring(secondLastQuote + 1, lastQuote);
 				if (!functions.contains(result))
 					functions.add(result);
-			}
-		}
 	}
 
 	public ArrayList<String> getFunctions() {
