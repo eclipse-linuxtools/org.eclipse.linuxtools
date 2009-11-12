@@ -375,10 +375,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				
 				
 				//Prepare stap information
-				errorHandler.handle(monitor, config.getName() 
-						+ Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command")  //$NON-NLS-1$
-						+ cmd
-						+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
+				errorHandler.appendToLog(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command") + cmd+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);//$NON-NLS-1$
 				
 				//Handle error from TEMP_ERROR_OUTPUT
 				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$

@@ -131,6 +131,15 @@ public class SystemTapErrorHandler {
 		}
 
 	}
+	
+	
+	/**
+	 * Append to the log contents
+	 */
+	public void appendToLog (String header){
+		logContents.append(header);
+	}
+	
 
 	/**
 	 * Handle the error. Intended to work with a FileReader for a temporary error file.
