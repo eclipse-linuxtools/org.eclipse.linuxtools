@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Structures Plug-in
+Bundle-Name: SystemTap Structures Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.structures;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.structures.internal.StructuresPlugin
