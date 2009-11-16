@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -203,12 +204,17 @@ public abstract class SystemTapParser extends Job {
 	 * @param m
 	 * @return
 	 */
-	public IStatus testRun(IProgressMonitor m) {
-		StapUIJob uijob = new StapUIJob(Messages
-				.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
-		uijob.schedule();
-		view = uijob.getViewer();
-		return Status.OK_STATUS;
+	public IStatus testRun(IProgressMonitor m, boolean realTime) {
+		try {
+			internalData = new BufferedReader(new FileReader(new File(sourcePath)));
+		if (realTime)
+			return realTimeParsing();
+		else
+			return nonRealTimeParsing();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return Status.CANCEL_STATUS;
 	}
 
 	public void launchFileErrorDialog() {

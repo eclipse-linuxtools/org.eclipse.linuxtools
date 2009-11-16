@@ -1,3 +1,7 @@
+2009-11-16  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: (testRun): Change testRun so it will actually work and actually mimicks the properties of run. 
+
 2009-11-12  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Remove unused functions. Add docs to setDone. 
