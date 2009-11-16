@@ -13,33 +13,24 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import java.util.ArrayList;
 
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-
-
 /**
- * This <code>Action</code> is used to run a SystemTap script that is currently open in the editor.
- * @author Ryan Morse
+ * Contains methods for generating a stap command
+ * @author chwang
+ *
  */
 public class SystemTapCommandGenerator {	
 	
-	private boolean needsToSendCommand;
-	private boolean needsArguments;
-	protected String arguments;
-	protected String scriptPath;
-	protected String commands;
-	protected boolean isGuru;
-	private String binaryPath = null;
-	private IAction act;
-	private String executeCommand;
-	private String binaryArguments;
+	private static boolean needsToSendCommand;
+	private static boolean needsArguments;
+	protected static String arguments;
+	protected static String scriptPath;
+	protected static String commands;
+	protected static boolean isGuru;
+	private static String binaryPath = null;
+	private static String binaryArguments;
 
-	
-	public SystemTapCommandGenerator() {		
-		super();
-	}
 
-	public String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, String binArguments) {
+	public static String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, String binArguments) {
 		needsToSendCommand = needBinary;
 		needsArguments = needsArgs;
 		binaryPath = binPath;
@@ -56,7 +47,6 @@ public class SystemTapCommandGenerator {
 			cmd = cmd + script[i] + " "; //$NON-NLS-1$
 		cmd = cmd + script[script.length-1];
 
-		this.executeCommand = cmd;
 		return cmd;
 	}
 	
@@ -65,7 +55,7 @@ public class SystemTapCommandGenerator {
 	 * Parses the data created from generateCommand
 	 * @return An array of strings to be joined and executed by the shell
 	 */
-	protected String[] buildScript() {
+	protected static String[] buildScript() {
 		//TODO: Take care of this in the next release. For now only the guru mode is sent
 		ArrayList<String> cmdList = new ArrayList<String>();
 		String[] script;
@@ -105,19 +95,4 @@ public class SystemTapCommandGenerator {
 		
 	}
 
-	
-	public void selectionChanged(IAction act, ISelection select) {
-		this.act = act;
-		setEnablement(false);
-		//buildEnablementChecks();
-	}
-
-	private void setEnablement(boolean enabled) {
-		act.setEnabled(enabled);
-	}
-	
-	public String getExecuteCommand(){
-		return this.executeCommand;
-	}
-	
 }
