@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GraphingAPI UI Plug-in
+Bundle-Name: SystemTap Graphing API (UI) (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphingapi.ui;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin
