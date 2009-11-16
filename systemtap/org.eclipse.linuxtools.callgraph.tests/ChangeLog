@@ -1,3 +1,9 @@
+2009-11-16  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/tests/SystemTapGraphViewTest.java: Change call to TestHelper to a call to ViewFactory
+	* src/org/eclipse/linuxtools/callgraph/tests/SystemTapGraphTest.java: Change call to TestHelper to a call to ViewFactory. Remove unnecessary checklist, add assert in the call to parse.testRun
+	* src/org/eclipse/linuxtools/callgraph/tests/MouseListenerTest.java: Change call to TestHelper to a call to ViewFactory
+
 2009-11-04  Roland Grunberg  <rgrunber@redhat.com>
 
 	* build.properties: Add data files to build.properties

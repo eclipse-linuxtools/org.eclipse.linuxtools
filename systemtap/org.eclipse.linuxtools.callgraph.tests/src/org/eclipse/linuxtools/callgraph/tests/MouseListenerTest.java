@@ -18,6 +18,7 @@ import org.eclipse.linuxtools.callgraph.CallgraphView;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
 import org.eclipse.linuxtools.callgraph.core.StapUIJob;
+import org.eclipse.linuxtools.callgraph.core.ViewFactory;
 import org.eclipse.linuxtools.callgraph.graphlisteners.StapGraphMouseListener;
 import org.eclipse.zest.core.widgets.GraphItem;
 
@@ -26,9 +27,9 @@ public class MouseListenerTest extends TestCase {
 	public void test() {
 		StapGraphParser parse = new StapGraphParser();
 		parse.setSourcePath(Activator.PLUGIN_LOCATION + "eag.graph");
-		parse.testRun(new NullProgressMonitor());
+		parse.testRun(new NullProgressMonitor(), true);
 
-		CallgraphView cView = (CallgraphView) TestHelper.makeView("org.eclipse.linuxtools.callgraph.callgraphview");
+		CallgraphView cView = (CallgraphView) ViewFactory.createView("org.eclipse.linuxtools.callgraph.callgraphview");
 
 		StapUIJob j = new StapUIJob("Test Graph UI Job", parse,
 				CallGraphConstants.viewID);
