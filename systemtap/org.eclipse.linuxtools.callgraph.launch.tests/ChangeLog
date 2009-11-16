@@ -1,3 +1,7 @@
+2009-11-16  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Eclipse to Provider field.
+
 2009-11-16  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapCommandGeneratorTest.java: Reflect change to static in SystemTapCommandGenerator
