@@ -264,8 +264,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 
 			// Generate the command
-			SystemTapCommandGenerator cmdGenerator = new SystemTapCommandGenerator();
-			cmd = cmdGenerator.generateCommand(scriptPath, binaryPath,
+			cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
 					command, needsBinary, needsArguments, arguments, binaryArguments);
 
 
@@ -501,9 +500,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 		public void close() throws IOException {
 			h.closeBufferedWriter();
 		}
-		
-		public int getNumberOfErrors() {
-			return counter;
-		}
+
 	}
 }
