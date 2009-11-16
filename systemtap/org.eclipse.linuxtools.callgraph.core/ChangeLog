@@ -1,3 +1,7 @@
+2009-11-16  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Eclipse To Provider field.
+
 2009-11-10  Charley Wang  <chwang@redhat.com>
 
 	* plugin.xml: Add icons folder
