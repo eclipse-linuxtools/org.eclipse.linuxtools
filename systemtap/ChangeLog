@@ -1,0 +1,3 @@
+2009-11-16  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapCommandGeneratorTest.java: Reflect change to static in SystemTapCommandGenerator
