@@ -719,6 +719,22 @@ public class StapGraph extends Graph {
 		treeLevelFromRoot--;		
 	}
 	
+
+	/**
+	 * Draws the next node, unless the next node does not exist.
+	 */
+	public void drawNextNode() {
+		if (isCollapseMode()) {
+			setCollapseMode(false);
+		}
+		int toDraw = getNextCalledNode(getRootVisibleNodeNumber());
+		if (toDraw != -1)
+			draw(toDraw);
+		 else
+			proj.pause();
+	}
+
+	
 	/**
 	 * Moves all nodes to the point x,y
 	 * @param x
@@ -1028,7 +1044,7 @@ public class StapGraph extends Graph {
 	 * Convenience method to redraw everything.
 	 */
 	public void draw() {
-		draw(getFirstUsefulNode());
+		draw(getRootVisibleNodeNumber());
 	}
 	
 	/**
@@ -1768,7 +1784,8 @@ public class StapGraph extends Graph {
 		
 		if (isCollapseMode()) {
 			setCollapseMode(false);
-			draw(getRootVisibleNodeNumber());
+			//Redraw the current graph in uncollapsed mode if currently collapsed
+			draw();
 		}
 		
 		for (int count = callOrderList.indexOf((Integer)id) + 1;
@@ -1977,19 +1994,6 @@ public class StapGraph extends Graph {
 	
 	public CallgraphView getCallgraphView() {
 		return callgraphView;
-	}
-
-
-
-	public void drawNextNode() {
-		if (isCollapseMode()) {
-			setCollapseMode(false);
-		}
-		int toDraw = getNextCalledNode(getRootVisibleNodeNumber());
-		if (toDraw != -1)
-			draw(toDraw);
-		 else
-			proj.pause();
 	}
 
 	public void setEndTime(long val) {
