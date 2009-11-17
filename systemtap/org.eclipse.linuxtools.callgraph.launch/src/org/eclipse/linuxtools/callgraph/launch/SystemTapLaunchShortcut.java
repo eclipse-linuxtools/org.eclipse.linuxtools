@@ -317,14 +317,8 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		if (invalid(parserID))
 			parserID = setParserID();
 		if (invalid(parserID)) {
-			// Setting the variable didn't work, do not launch.
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-					Messages
-							.getString("SystemTapLaunchShortcut.InvalidParser1"), //$NON-NLS-1$
-					Messages
-							.getString("SystemTapLaunchShortcut.InvalidParser2"), Messages.getString("SystemTapLaunchShortcut.InvalidParser3")); //$NON-NLS-1$ //$NON-NLS-2$
-			mess.schedule();
-			return false;
+			//Default to using the text parser
+			parserID = "org.eclipse.linuxtools.callgraph.core.systemtaptextparser";
 		}
 
 		if (invalid(viewID))
@@ -935,6 +929,9 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * Set the parserID variable. ParserID should point to the ID of an
 	 * extension extending the org.eclipse.linuxtools.callgraph.core.parser
 	 * extension point. This function must return the parserID to be set.
+	 * 
+	 * If not declared, the parserID will be set to the default SystemTap
+	 * Text parser with colour support
 	 * 
 	 * @return a valid parserID
 	 */
