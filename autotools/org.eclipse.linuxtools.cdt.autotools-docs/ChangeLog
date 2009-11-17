@@ -1,3 +1,7 @@
+2009-11-16  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Fix bundle name.
+
 2009-10-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* cheatsheets/autotools.xml: Revised for Autotools rewrite.
