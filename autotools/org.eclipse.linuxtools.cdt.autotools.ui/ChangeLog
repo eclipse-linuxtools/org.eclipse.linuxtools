@@ -1,3 +1,9 @@
+2009-11-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* templates/projecttemplates/HelloWorldCAutotoolsProject/template.xml: Make sure COPYING file
+	is copied over as part of template.
+	* templates/projecttemplates/HelloWorldCPPAutotoolsProject/template.xml: Ditto. 
+
 2009-11-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/Resources.properties: Fix conversion wizard messages

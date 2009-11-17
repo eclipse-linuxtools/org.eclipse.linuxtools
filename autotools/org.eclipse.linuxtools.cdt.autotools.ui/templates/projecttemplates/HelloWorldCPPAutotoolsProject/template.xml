@@ -84,6 +84,11 @@
 				<simple name="replaceable" value="true"/>
 			</element>
 			<element>
+				<simple name="source" value="src/COPYING"/>
+				<simple name="target" value="COPYING"/>
+				<simple name="replaceable" value="true"/>
+			</element>
+			<element>
 				<simple name="source" value="src/Makefile.am.top"/>
 				<simple name="target" value="Makefile.am"/>
 				<simple name="replaceable" value="true"/>
