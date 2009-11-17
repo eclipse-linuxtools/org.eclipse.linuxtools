@@ -1,6 +1,6 @@
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
-	* plugin.properties: Fix bundle name.
+	* plugin.properties: Fix bundle name.  Fix provider.
 
 2009-10-20  Jeff Johnston  <jjohnstn@redhat.com>
 
