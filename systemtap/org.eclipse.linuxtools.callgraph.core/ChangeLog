@@ -1,3 +1,7 @@
+2009-11-18  Roland Grunberg  <rgrunber@redhat.com>
+
+	* build.properties: Add errors.prop to build.
+
 2009-11-18  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/PluginConstants.java: Correct default viewID.
