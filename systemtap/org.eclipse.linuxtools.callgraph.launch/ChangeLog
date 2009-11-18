@@ -1,3 +1,7 @@
+2009-11-18  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java: Make setParserID non-abstract. Default implementation returns the id of the SystemTap Text View. Create error message. 
+
 2009-11-17  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java: Have parser default to text parser if not selected

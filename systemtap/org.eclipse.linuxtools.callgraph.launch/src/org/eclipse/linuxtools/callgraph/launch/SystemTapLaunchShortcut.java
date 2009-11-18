@@ -317,8 +317,11 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		if (invalid(parserID))
 			parserID = setParserID();
 		if (invalid(parserID)) {
-			//Default to using the text parser
-			parserID = "org.eclipse.linuxtools.callgraph.core.systemtaptextparser";
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+					Messages.getString("SystemTapLaunchShortcut.InvalidParser1"), //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchShortcut.InvalidParser2"), Messages.getString("SystemTapLaunchShortcut.InvalidParser3")); //$NON-NLS-1$ //$NON-NLS-2$
+			mess.schedule();
+			return false;
 		}
 
 		if (invalid(viewID))
@@ -894,6 +897,23 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			return functionList;
 		}
 	}
+	
+
+	/**
+	 * Set the parserID variable. ParserID should point to the ID of an
+	 * extension extending the org.eclipse.linuxtools.callgraph.core.parser
+	 * extension point. This function must return the parserID to be set.
+	 * 
+	 * If not declared, the parserID will be set to the default SystemTap
+	 * Text parser with colour support
+	 * 
+	 * @return a valid parserID
+	 */
+	public String setParserID() {
+		return "org.eclipse.linuxtools.callgraph.core.systemtaptextparser"; 
+	}
+
+
 
 	public String getScript() {
 		return generatedScript;
@@ -924,19 +944,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		e.getElementName().endsWith(".cpp") || //$NON-NLS-1$
 		e.getElementName().endsWith(".h"); //$NON-NLS-1$ 
 	}
-
-	/**
-	 * Set the parserID variable. ParserID should point to the ID of an
-	 * extension extending the org.eclipse.linuxtools.callgraph.core.parser
-	 * extension point. This function must return the parserID to be set.
-	 * 
-	 * If not declared, the parserID will be set to the default SystemTap
-	 * Text parser with colour support
-	 * 
-	 * @return a valid parserID
-	 */
-	public abstract String setParserID();
-
 
 
 	/**
