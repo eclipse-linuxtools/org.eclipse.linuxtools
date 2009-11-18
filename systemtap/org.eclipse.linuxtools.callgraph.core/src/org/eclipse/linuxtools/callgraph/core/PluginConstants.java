@@ -23,7 +23,7 @@ public final class PluginConstants {
 	public static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 	public static final String ATTR_REALTIME = "realtime"; //$NON-NLS-1$
 	public static final String VAL_TRUE = "true"; //$NON-NLS-1$
-	public static final String DEFAULT_VIEW_ID = "org.eclipse.linuxtools.callgraph.core.systemtaptextview"; //$NON-NLS-1$
+	public static final String DEFAULT_VIEW_ID = "org.eclipse.linuxtools.callgraph.core.staptextview"; //$NON-NLS-1$
 	
 	public static final String NEW_LINE = "\n"; //$NON-NLS-1$
 	

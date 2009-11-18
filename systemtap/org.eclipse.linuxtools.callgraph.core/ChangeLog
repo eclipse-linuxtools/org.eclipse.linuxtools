@@ -1,3 +1,7 @@
+2009-11-18  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/PluginConstants.java: Correct default viewID.
+
 2009-11-16  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add Eclipse to Provider field.
