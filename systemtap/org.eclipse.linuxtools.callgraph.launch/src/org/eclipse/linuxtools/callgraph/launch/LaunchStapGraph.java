@@ -23,10 +23,10 @@ import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
 
-
 public class LaunchStapGraph extends SystemTapLaunchShortcut {
 
-	
+
+	//TODO: Do not let this class persist, or otherwise change it so persistence doesn't matter.
 	private String partialScriptPath;
 	private String funcs;
 	private ArrayList<String> exclusions;
@@ -35,9 +35,6 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	protected static final String ATTR_VIEWER = "org.eclipse.linuxtools.callgraph.callgraphview";  //$NON-NLS-1$
 	
 	
-	public void setProjectName(String val) {
-		projectName = val;
-	}
 	
 	public LaunchStapGraph() {
 		funcs = null;
@@ -68,8 +65,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 
 		
-		if (projectName == null || projectName.length() < 1)
-			projectName = bin.getCProject().getElementName();
+		projectName = bin.getCProject().getElementName();
 		
 		try {
 			 
