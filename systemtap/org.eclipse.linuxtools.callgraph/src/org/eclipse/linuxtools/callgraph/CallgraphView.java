@@ -263,6 +263,8 @@ public class CallgraphView extends SystemTapView {
 	    monitor.worked(1);
 		setGraphOptions(true);
 	    g.initializeTree();
+	    g.setProject(parser.project);
+
 
 	    return Status.OK_STATUS;
 	}
@@ -300,8 +302,8 @@ public class CallgraphView extends SystemTapView {
 			return Status.CANCEL_STATUS;
 		}
 	    g.setCallOrderList(parser.callOrderList);
-	    
 	    g.setProject(parser.project);
+	    
 	    
 	    this.initializePartControl();
 		return Status.OK_STATUS;

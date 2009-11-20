@@ -1,3 +1,7 @@
+2009-11-20  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java (finishLoad): Set project in the regular load, not just in finishLoad
+
 2009-11-17  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Fix draw() to redraw from the root visible node number rather than the first available node.
