@@ -1,3 +1,9 @@
+2009-11-20  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java (finishLoad):
+		Fix ctrl double click not finding name of specified function.
+		Also gain the ability to ctrl double click during real-time parsing.
+
 2009-11-16  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add Eclipse to Provider field.

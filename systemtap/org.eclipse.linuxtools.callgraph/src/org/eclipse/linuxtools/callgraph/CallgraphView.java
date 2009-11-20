@@ -24,7 +24,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.linuxtools.callgraph.core.CallgraphCorePlugin;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
@@ -264,6 +263,8 @@ public class CallgraphView extends SystemTapView {
 	    monitor.worked(1);
 		setGraphOptions(true);
 	    g.initializeTree();
+	    g.setProject(parser.project);
+
 
 	    return Status.OK_STATUS;
 	}
@@ -301,8 +302,8 @@ public class CallgraphView extends SystemTapView {
 			return Status.CANCEL_STATUS;
 		}
 	    g.setCallOrderList(parser.callOrderList);
-	    
 	    g.setProject(parser.project);
+	    
 	    
 	    this.initializePartControl();
 		return Status.OK_STATUS;
