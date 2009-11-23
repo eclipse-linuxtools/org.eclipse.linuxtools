@@ -13,11 +13,15 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.cdt.launch,
  org.eclipse.cdt.launch.ui,
  org.eclipse.cdt.ui,
+ org.eclipse.cdt.utils.pty,
+ org.eclipse.cdt.utils.spawner,
  org.eclipse.core.resources,
  org.eclipse.debug.core,
  org.eclipse.debug.core.model,
  org.eclipse.debug.ui,
- org.eclipse.debug.ui.sourcelookup
+ org.eclipse.debug.ui.sourcelookup,
+ org.eclipse.jface.text,
+ org.eclipse.ui.console
 Export-Package: org.eclipse.linuxtools.internal.profiling.launch,
  org.eclipse.linuxtools.profiling.launch
 Bundle-Localization: plugin
