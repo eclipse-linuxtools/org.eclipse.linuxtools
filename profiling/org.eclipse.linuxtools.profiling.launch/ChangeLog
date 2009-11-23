@@ -1,5 +1,7 @@
 2009-11-23  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationTab.java: Add (Currently empty) ProfileLaunchConfigurationTab
+	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchShortcut.java: Improve documentation on abstract functions
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java: Add ProfileLaunchConfigurationDelegate. This class contains functions that Roland and I had difficulty with when we were creating the SystemTap plugin, namely the creation and reading of a process. 
 
 2009-08-11  Elliott Baron  <ebaron@redhat.com>

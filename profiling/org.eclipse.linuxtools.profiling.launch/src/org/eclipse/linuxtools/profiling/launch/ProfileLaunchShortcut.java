@@ -116,6 +116,13 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		return configuration;
 	}
 
+	/**
+	 * Can return <code>getLaunchManager().getLaunchConfigurationType(String ID)</code>.
+	 * This String will be used to identify your configuration type to Eclipse, and should
+	 * be unique.
+	 * 
+	 * @return
+	 */
 	protected abstract ILaunchConfigurationType getLaunchConfigType();
 	
 	protected abstract void setDefaultProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException;
