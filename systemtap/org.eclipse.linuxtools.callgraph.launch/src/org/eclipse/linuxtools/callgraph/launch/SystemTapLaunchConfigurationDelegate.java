@@ -16,11 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
-import org.eclipse.cdt.utils.pty.PTY;
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -28,7 +24,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.IStreamListener;
@@ -43,6 +38,7 @@ import org.eclipse.linuxtools.callgraph.core.SystemTapCommandGenerator;
 import org.eclipse.linuxtools.callgraph.core.SystemTapErrorHandler;
 import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
+import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.ui.console.TextConsole;
 
 
@@ -52,7 +48,7 @@ import org.eclipse.ui.console.TextConsole;
  * 
  */
 public class SystemTapLaunchConfigurationDelegate extends
-		AbstractCLaunchDelegate {
+		ProfileLaunchConfigurationDelegate {
 
 	private static final String TEMP_ERROR_OUTPUT =
 		PluginConstants.getDefaultOutput() + "stapTempError.error"; //$NON-NLS-1$
@@ -171,19 +167,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 				LaunchConfigurationConstants.OUTPUT_PATH,
 				PluginConstants.getDefaultOutput());
 		partialCommand += "-o " + outputPath; //$NON-NLS-1$
-		
-		try {
-			//Make sure the output file exists
-			File tempFile = new File(outputPath);
-			tempFile.delete();
-			tempFile.createNewFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
 
 		// check for cancellation
-		if (monitor.isCanceled()) {
+		if ( !testOutput(outputPath) || monitor.isCanceled() ) {
 			return;
 		}
 
@@ -201,82 +187,20 @@ public class SystemTapLaunchConfigurationDelegate extends
 		else
 			return Messages.getString("SystemTapLaunchConfigurationDelegate.0"); //$NON-NLS-1$
 	}
-
 	
-	/**
-	 * Executes a command array using pty
-	 * 
-	 * @param commandArray -- Split a command string on the ' ' character
-	 * @param env -- Use <code>getEnvironment(ILaunchConfiguration)</code> in the AbstractCLaunchDelegate.
-	 * @param wd -- Working directory
-	 * @param usePty -- A value of 'true' usually suffices
-	 * @return A properly formed process, or null
-	 * @throws IOException -- If the process cannot be created
-	 */
-	public Process execute(String[] commandArray, String[] env, File wd,
-			boolean usePty) throws IOException {
-		Process process = null;
-		try {
-			if (wd == null) {
-				process = ProcessFactory.getFactory().exec(commandArray, env);
-			} else {
-				if (PTY.isSupported() && usePty) {
-					process = ProcessFactory.getFactory().exec(commandArray,
-							env, wd, new PTY());
-				} else {
-					process = ProcessFactory.getFactory().exec(commandArray,
-							env, wd);
-				}
-			}
-		} catch (IOException e) {
-			if (process != null) {
-				process.destroy();
-			}
-			return null;
-		}
-		return process;
-	}
-	
-	
-
-	/**
-	 * Spawn a new IProcess using the Debug Plugin.
-	 * 
-	 * @param launch
-	 * @param systemProcess
-	 * @param programName
-	 * @return
-	 */
-	protected IProcess createNewProcess(ILaunch launch, Process systemProcess,
-			String programName) {
-		return DebugPlugin.newProcess(launch, systemProcess,
-				renderProcessLabel(programName));
-	}
 
 	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
 			IProgressMonitor monitor, boolean retry) {
 		String errorMessage = ""; //$NON-NLS-1$
 
 		try {
-			File workDir = getWorkingDirectory(config);
-			if (workDir == null) {
-				workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
 
 			// Generate the command
 			cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
 					command, needsBinary, needsArguments, arguments, binaryArguments);
 
 
-			// Prepare cmd for execution - we need a command array of strings,
-			// no string can contain a space character. (One of the process'
-			// requirements)
-			String tmp[] = cmd.split(" "); //$NON-NLS-1$
-			ArrayList<String> cmdLine = new ArrayList<String>();
-			for (String str : tmp) {
-				cmdLine.add(str);
-			}
-			String[] commandArray = (String[]) cmdLine.toArray(new String[cmdLine.size()]);
+
 			
 			// Check for cancellation
 			if (monitor.isCanceled()) {
@@ -327,23 +251,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 
 			monitor.worked(1);
-
 			
-			Process subProcess = execute(commandArray, getEnvironment(config),
-					workDir, true);
-			System.out.println(cmd);
+			IProcess process = createProcess(config, cmd, launch);
 			
-			if (subProcess == null){
-				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorName"), //$NON-NLS-1$
-				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorTitle"),  //$NON-NLS-1$ //$NON-NLS-2$
-				Messages.getString("SystemTapLaunchConfigurationDelegate.NullProcessErrorMessage1")); //$NON-NLS-1$
-				mess.schedule();
-				return;
-			}
-			
-			IProcess process = createNewProcess(launch, subProcess,commandArray[0]);
-			// set the command line used
-			process.setAttribute(IProcess.ATTR_CMDLINE,cmd);
 			monitor.worked(1);
 			
 			StreamListener s = new StreamListener();

@@ -1,3 +1,7 @@
+2009-11-23  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Use the new ProfileLaunchConfiguration.
+
 2009-11-20  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph.java (launch): Remove redundant check for projectName == null
