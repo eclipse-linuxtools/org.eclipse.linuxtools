@@ -1,3 +1,8 @@
+2009-11-23  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Use deleteLog function
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Add deleteLog function
+
 2009-11-18  Roland Grunberg  <rgrunber@redhat.com>
 
 	* build.properties: Add errors.prop to build.
