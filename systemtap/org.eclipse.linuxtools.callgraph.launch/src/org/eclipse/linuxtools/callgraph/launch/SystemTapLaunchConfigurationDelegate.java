@@ -331,7 +331,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			monitor.worked(1);
 			
-			errorMessage = generateErrorMessage(config.getName(), command) + errorMessage;
+			errorMessage = generateErrorMessage(config.getName(), binaryArguments) + errorMessage;
 			
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
 					((TextConsole)Helper.getConsoleByName(config.getName())), errorMessage);
