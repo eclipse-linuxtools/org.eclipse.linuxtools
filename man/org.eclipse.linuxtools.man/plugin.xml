@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.eclipse.linuxtools.man"
+            name="Man pages">
+      </category>
+      <view
+            category="org.eclipse.linuxtools.man"
+            class="org.eclipse.linuxtools.man.views.ManView"
+            icon="icons/sample.gif"
+            id="org.eclipse.linuxtools.man.views.ManView"
+            name="Man Page View">
+      </view>
+   </extension>
+</plugin>
