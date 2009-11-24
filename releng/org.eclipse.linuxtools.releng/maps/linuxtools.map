@@ -44,6 +44,10 @@ plugin@org.eclipse.linuxtools.cdt.libhover.libstdcxx=SVN,trunk,svn://dev.eclipse
 feature@org.eclipse.linuxtools.cdt.libhover=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover-feature
 feature@org.eclipse.linuxtools.cdt.libhover.newlib=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover.newlib-feature
 
+!*** man
+plugin@org.eclipse.linuxtools.man=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/man,,org.eclipse.linuxtools.man
+feature@org.eclipse.linuxtools.man=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/man,,org.eclipse.linuxtools.man-feature
+
 !*** systemtap
 plugin@org.eclipse.linuxtools.systemtap.backup.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.backup.ui.editor
 feature@org.eclipse.linuxtools.systemtap.backup=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.backup-feature

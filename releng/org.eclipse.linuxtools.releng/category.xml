@@ -19,6 +19,9 @@
    <feature url="features/org.eclipse.linuxtools.gprof_${org.eclipse.linuxtools.gprof.version}.jar" id="org.eclipse.linuxtools.gprof" version="${org.eclipse.linuxtools.gprof.version}">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.man_${org.eclipse.linuxtools.man.version}.jar" id="org.eclipse.linuxtools.man" version="${org.eclipse.linuxtools.man.version}">
+      <category name="Linux Tools"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.oprofile_${org.eclipse.linuxtools.oprofile.version}.jar" id="org.eclipse.linuxtools.oprofile" version="${org.eclipse.linuxtools.oprofile.version}">
       <category name="Linux Tools"/>
    </feature>
