@@ -73,4 +73,8 @@
          id="org.eclipse.linuxtools.gprof"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.linuxtools.man"
+         version="0.0.0"/>
+
 </feature>

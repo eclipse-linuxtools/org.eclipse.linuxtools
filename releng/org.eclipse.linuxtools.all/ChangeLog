@@ -1,3 +1,7 @@
+2009-11-24  Alexander Kurakov  <akurtakov@redhat.com>
+
+	* feature.xml: Add man viewer feature.
+
 2009-10-08  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add GProf feature.
