@@ -1,9 +1,12 @@
+2009-11-24  Andrew Overholt  <overholt@redhat.com>
+
+	* testing.properties: Add temporary workaround for bug #295394.
+
 2009-11-24  Alexander Kurakov  <akurtakov@redhat.com>
 
 	* psfs/manviewer.psf: New file.
 	* category.xml: Add man viewer.
 	* maps/linuxtools.map: Likewise.
-	
 
 2009-11-09  Andrew Overholt  <overholt@redhat.com>
 
