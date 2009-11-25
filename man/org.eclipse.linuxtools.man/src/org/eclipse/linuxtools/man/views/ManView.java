@@ -35,7 +35,6 @@ public class ManView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new ManTextViewer(parent);
-		viewer.setDocument(new ManDocument("ls"));
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(),
 				"org.eclipse.linuxtools.man.viewer");

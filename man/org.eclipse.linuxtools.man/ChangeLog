@@ -1,0 +1,4 @@
+2009-11-25  Alexander Kurakov  <akurtakov@redhat.com>
+
+	* src/org/eclipse/linuxtools/man/parser/ManPage.java (getStrippedHtmlPage): Fix AIOOB.
+	* src/org/eclipse/linuxtools/man/views/ManView.java (createPartControl): Do not set default man page.

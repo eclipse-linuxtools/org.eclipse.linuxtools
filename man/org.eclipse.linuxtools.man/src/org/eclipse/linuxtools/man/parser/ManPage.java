@@ -71,10 +71,16 @@ public class ManPage {
 	public StringBuilder getStrippedHtmlPage() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(rawContent);
-		sb.delete(0, sb.indexOf("<b>N</b>"));
-		sb.delete(sb
-				.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>"),
-				sb.length());
+		if (sb.indexOf("<b>N</b>") != -1) {
+			sb.delete(0, sb.indexOf("<b>N</b>"));
+		}
+		if (sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>") != -1) {
+			sb
+					.delete(
+							sb
+									.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>"),
+							sb.length());
+		}
 		sb.insert(0, "<pre>");
 		sb.append("</pre>");
 		return sb;
