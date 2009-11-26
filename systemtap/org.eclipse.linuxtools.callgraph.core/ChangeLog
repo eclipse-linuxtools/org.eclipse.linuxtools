@@ -1,3 +1,8 @@
+2009-11-26  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/PluginConstants.java: Rearrange constants. Add DEFAULT_PARSER_ID. Remove final modifier on STAP_PATH, so it can be changed to accommodate other commands, if need be.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextParser.java: Get rid of println statement
+
 2009-11-23  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Use deleteLog function
