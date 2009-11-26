@@ -1,3 +1,7 @@
+2009-11-26  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java: Add generateCommand abstract function for command generation. This is called by createProcess()
+
 2009-11-23  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationTab.java: Add (Currently empty) ProfileLaunchConfigurationTab

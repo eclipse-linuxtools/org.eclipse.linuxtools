@@ -52,6 +52,9 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 * in <code>process.getStreamsProxy()</code>, or use the static get methods in 
 	 * <code>ProfileLaunchConfigurationDelegate</code>.
 	 * 
+	 * <br>
+	 * Will call generateCommand(config) to create the command line.
+	 * 
 	 * 
 	 * @param config -- Use the configuration passed as a parameter to the launch method.
 	 * @param cmd -- Command string, as it would appear on the command line.
@@ -61,8 +64,9 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 * @throws IOException
 	 */
 
-	protected IProcess createProcess(ILaunchConfiguration config, String cmd, ILaunch launch) throws CoreException, IOException {
+	protected IProcess createProcess(ILaunchConfiguration config, ILaunch launch) throws CoreException, IOException {
 
+		String cmd = generateCommand(config);
 		File workDir = getWorkingDirectory(config);
 		if (workDir == null) {
 			workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -79,6 +83,13 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 		
 		return process;
 	}
+	
+	/**
+	 * Use to generate the command. 
+	 * @param config
+	 * @return The command string, as it would appear on command-line
+	 */
+	protected abstract String generateCommand(ILaunchConfiguration config);
 	
 
 	/** 
