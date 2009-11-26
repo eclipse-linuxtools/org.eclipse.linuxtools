@@ -947,6 +947,47 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 
 	/**
+	 * Default implementation of launch. It will run stap with the selected binary
+	 * as an argument and set the output path to <code>PluginConstants.getDefaultIOPath()</code>.
+	 * <br>
+	 * The name of the created launch will be 'binary_name + DefaultSystemTapLaunch' 
+	 */
+	public void launch(IBinary bin, String mode) {
+		initialize();
+		this.bin = bin;
+		binName = getName(bin);
+		name = binName + "DefaultSystemTapLaunch";  //$NON-NLS-1$
+		
+		try {
+			 
+			config = createConfiguration(bin, name);
+			binaryPath = bin.getResource().getLocation().toString();
+			arguments = binaryPath;
+			outputPath = PluginConstants.getDefaultIOPath();
+			finishLaunch(name, mode);
+
+		} catch (IOException e) {
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+					"LaunchShortcutScriptGen",  //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.0"),   //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.6"));  //$NON-NLS-1$
+			mess.schedule();
+			e.printStackTrace();
+		} catch (CoreException e1) {
+			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resourceToSearchFor = ""; //$NON-NLS-1$
+			searchForResource = false;
+		}
+		
+		
+	}
+	
+	
+
+	/**
 	 * Each launch class should define its own script path. Must return the
 	 * correct script path or launch will fail.
 	 */
