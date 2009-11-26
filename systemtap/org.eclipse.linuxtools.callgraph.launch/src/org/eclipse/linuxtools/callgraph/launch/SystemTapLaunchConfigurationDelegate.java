@@ -63,6 +63,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	@SuppressWarnings("unused")
 	private boolean useColour = false;
 	private String binaryArguments = ""; //$NON-NLS-1$
+	private String partialCommand = ""; //$NON-NLS-1$
 	
 
 	@Override
@@ -161,7 +162,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		/**
 		 * Generate partial command
 		 */
-		String partialCommand = ConfigurationOptionsSetter.setOptions(config);  
+		partialCommand = ConfigurationOptionsSetter.setOptions(config);  
 
 		outputPath = config.getAttribute(
 				LaunchConfigurationConstants.OUTPUT_PATH,
@@ -198,9 +199,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 			// Generate the command
 			cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
 					command, needsBinary, needsArguments, arguments, binaryArguments);
-
-
-
 			
 			// Check for cancellation
 			if (monitor.isCanceled()) {
@@ -252,7 +250,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			monitor.worked(1);
 			
-			IProcess process = createProcess(config, cmd, launch);
+			IProcess process = createProcess(config, launch);
 			
 			monitor.worked(1);
 			
@@ -411,5 +409,17 @@ public class SystemTapLaunchConfigurationDelegate extends
 			h.closeBufferedWriter();
 		}
 
+	}
+
+
+	@Override
+	protected String generateCommand(ILaunchConfiguration config) {
+		if (cmd != null && cmd.length() > 0)
+			return cmd;
+
+		// Generate the command
+		cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
+				partialCommand, needsBinary, needsArguments, arguments, binaryArguments);
+		return cmd;
 	}
 }
