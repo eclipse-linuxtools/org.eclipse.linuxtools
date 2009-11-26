@@ -1,6 +1,7 @@
 2009-11-26  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java: Provide default implementation of launch in SystemTapLaunchShortcut.
+	Fix naming of basic configurations. Add call to PluginConstants.DEFAULT_PARSER_ID instead of hard-coding.
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Make use of the generateCommand abstract function in ProfileLaunchDelegate
 
 2009-11-23  Charley Wang  <chwang@redhat.com>

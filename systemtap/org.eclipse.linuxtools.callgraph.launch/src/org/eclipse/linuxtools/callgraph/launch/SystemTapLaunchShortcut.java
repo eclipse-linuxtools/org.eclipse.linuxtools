@@ -910,7 +910,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * @return a valid parserID
 	 */
 	public String setParserID() {
-		return "org.eclipse.linuxtools.callgraph.core.systemtaptextparser"; 
+		return PluginConstants.DEFAULT_PARSER_ID; 
 	}
 
 
@@ -950,13 +950,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * Default implementation of launch. It will run stap with the selected binary
 	 * as an argument and set the output path to <code>PluginConstants.getDefaultIOPath()</code>.
 	 * <br>
-	 * The name of the created launch will be 'binary_name + DefaultSystemTapLaunch' 
+	 * The name of the created launch will be 'DefaultSystemTapLaunch' 
 	 */
 	public void launch(IBinary bin, String mode) {
 		initialize();
 		this.bin = bin;
 		binName = getName(bin);
-		name = binName + "DefaultSystemTapLaunch";  //$NON-NLS-1$
+		name = "DefaultSystemTapLaunch";  //$NON-NLS-1$
 		
 		try {
 			 
