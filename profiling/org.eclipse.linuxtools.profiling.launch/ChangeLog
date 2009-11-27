@@ -1,5 +1,6 @@
 2009-11-26  Charley Wang  <chwang@redhat.com>
 
+	* META-INF/MANIFEST.MF: Add org.eclipse.cdt.core, which seems needed with some versions and not with others.
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java: Add generateCommand abstract function for command generation. This is called by createProcess()
 
 2009-11-23  Charley Wang  <chwang@redhat.com>
