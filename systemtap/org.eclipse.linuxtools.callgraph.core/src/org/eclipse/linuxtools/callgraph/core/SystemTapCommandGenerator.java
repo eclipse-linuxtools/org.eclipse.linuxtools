@@ -24,21 +24,25 @@ public class SystemTapCommandGenerator {
 	private static boolean needsArguments;
 	protected static String arguments;
 	protected static String scriptPath;
-	protected static String commands;
+	protected static String flags;
 	protected static boolean isGuru;
 	private static String binaryPath = null;
 	private static String binaryArguments;
+	private static String command;
 
 
-	public static String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, String binArguments) {
+	public static String generateCommand(String scrPath, String binPath, String opts, boolean needBinary, boolean needsArgs, String arg, String binArguments,
+			String cmdTarget) {
 		needsToSendCommand = needBinary;
 		needsArguments = needsArgs;
 		binaryPath = binPath;
 		scriptPath = scrPath;
 		isGuru = false;
 		arguments = arg;
-		commands = cmds;
+		flags = opts;
 		binaryArguments = binArguments;
+		command = cmdTarget;
+		
 		
 		String[] script = buildScript();
 		
@@ -61,8 +65,8 @@ public class SystemTapCommandGenerator {
 		String[] script;
 
 		//getImportedTapsets(cmdList);
-		if (commands.length() > 0){
-			cmdList.add(commands);	
+		if (flags.length() > 0){
+			cmdList.add(flags);	
 		}
 		
 		//Execute a binary
@@ -84,7 +88,7 @@ public class SystemTapCommandGenerator {
 			script[script.length-1] = scriptPath;
 		}
 		
-		script[0] = PluginConstants.STAP_PATH; //$NON-NLS-1$
+		script[0] = command; //$NON-NLS-1$
 
 		for(int i=0; i< cmdList.size(); i++) {
 			if (cmdList.get(i) != null)

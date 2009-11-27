@@ -1,3 +1,8 @@
+2009-11-27  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java: Add capacity to change the command used. The command attribute should be derived from Config.getLaunchAttribute(LaunchConfigurationConstants.COMMAND)
+	* src/org/eclipse/linuxtools/callgraph/core/LaunchConfigurationConstants.java: Adding Command to LaunchConfigurationConstants. The default value is PluginConstants.STAP_PATH.
+
 2009-11-26  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/PluginConstants.java: Rearrange constants. Add DEFAULT_PARSER_ID. Remove final modifier on STAP_PATH, so it can be changed to accommodate other commands, if need be.
