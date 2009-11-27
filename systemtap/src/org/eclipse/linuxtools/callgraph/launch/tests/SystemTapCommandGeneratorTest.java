@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.callgraph.launch.tests;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapCommandGenerator;
 
 import junit.framework.TestCase;
@@ -38,7 +39,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 						"",
 						true,
 						true,
-						binaryFilePath, "");
+						binaryFilePath, "", PluginConstants.STAP_PATH);
 		
 		assertEquals(
 				"stap -c '"+binaryFilePath+"' "+scriptPath+ " " +binaryFilePath,
@@ -59,7 +60,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 				"",
 				false,
 				false,
-				"", "");
+				"", "", PluginConstants.STAP_PATH);
 		
 		assertEquals(
 				"stap "+scriptPath,
@@ -74,7 +75,7 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		String scriptPath = location + "allsyscall.stp";
 
 		String cmd = SystemTapCommandGenerator.
-			generateCommand(scriptPath, binaryFilePath, "", true, false, "", "");
+			generateCommand(scriptPath, binaryFilePath, "", true, false, "", "", PluginConstants.STAP_PATH);
 
 		assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath, cmd);
 		// END
