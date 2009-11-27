@@ -1,3 +1,7 @@
+2009-11-27  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Add capacity to use the new command option in the CommandGenerator.
+
 2009-11-26  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java: Provide default implementation of launch in SystemTapLaunchShortcut.

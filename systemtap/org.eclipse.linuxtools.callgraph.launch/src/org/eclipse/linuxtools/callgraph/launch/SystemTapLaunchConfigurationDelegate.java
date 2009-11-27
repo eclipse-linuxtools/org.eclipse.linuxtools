@@ -64,7 +64,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	private boolean useColour = false;
 	private String binaryArguments = ""; //$NON-NLS-1$
 	private String partialCommand = ""; //$NON-NLS-1$
-	
+	private String command = "";
 
 	@Override
 	protected String getPluginID() {
@@ -158,6 +158,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 				e1.printStackTrace();
 			}
 		}
+		
+		command = config.getAttribute(LaunchConfigurationConstants.COMMAND,
+				PluginConstants.STAP_PATH);
 
 		/**
 		 * Generate partial command
@@ -190,7 +193,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	}
 	
 
-	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String command,
+	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String options,
 			IProgressMonitor monitor, boolean retry) {
 		String errorMessage = ""; //$NON-NLS-1$
 
@@ -198,7 +201,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 			// Generate the command
 			cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
-					command, needsBinary, needsArguments, arguments, binaryArguments);
+					options, needsBinary, needsArguments, arguments, binaryArguments, command);
 			
 			// Check for cancellation
 			if (monitor.isCanceled()) {
@@ -310,7 +313,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 						parser.cancelJob();
 						return;
 					}
-					finishLaunch(launch, config, command, monitor, false);
+					finishLaunch(launch, config, options, monitor, false);
 					return;
 				}
 				
@@ -419,7 +422,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		// Generate the command
 		cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
-				partialCommand, needsBinary, needsArguments, arguments, binaryArguments);
+				partialCommand, needsBinary, needsArguments, arguments, binaryArguments, command);
 		return cmd;
 	}
 }
