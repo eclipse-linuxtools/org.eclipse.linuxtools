@@ -243,6 +243,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 			parser.setSourcePath(outputPath);
 			parser.setMonitor(SubMonitor.convert(monitor));
 			parser.setDone(false);
+			parser.setSecondaryID(config.getAttribute(LaunchConfigurationConstants.SECONDARY_VIEW_ID,
+					LaunchConfigurationConstants.DEFAULT_SECONDARY_VIEW_ID));
 
 			parser.setKillButtonEnabled(true);
 						

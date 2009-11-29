@@ -128,6 +128,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 	private Button OKButton;
 	private boolean testMode = false;
+	protected String secondaryID = "";
 
 	/**
 	 * Provides access to the Profiling Frameworks' launch method
@@ -154,6 +155,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
 		needToGenerate = false;
 		useColours = false;
+		secondaryID = "";
 	}
 
 	@Override
@@ -266,6 +268,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 					.setAttribute(LaunchConfigurationConstants.PARSER_CLASS,
 							parserID);
 			wc.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewID);
+			wc.setAttribute(LaunchConfigurationConstants.SECONDARY_VIEW_ID, setSecondaryViewID());
 
 			try {
 				config = wc.doSave();
@@ -992,4 +995,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * correct script path or launch will fail.
 	 */
 	public abstract String setScriptPath();
+	
+	/**
+	 * Overwrite to return a non-empty string if you want to be able to create
+	 * multiple views.
+	 * @return
+	 */
+	public String setSecondaryViewID() {
+		return ""; //$NON-NLS-1$
+	}
 }
