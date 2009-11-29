@@ -32,6 +32,7 @@ public abstract class SystemTapParser extends Job {
 	protected boolean realTime = false;
 	protected Object data;
 	protected Object internalData;
+	private String secondaryID = ""; //$NON-NLS-1$
 
 	public boolean isDone;
 	
@@ -388,5 +389,15 @@ public abstract class SystemTapParser extends Job {
 
 	public boolean isRealTime() {
 		return realTime;
+	}
+
+
+	public void setSecondaryID(String secondaryID) {
+		this.secondaryID = secondaryID;
+	}
+
+
+	public String getSecondaryID() {
+		return secondaryID;
 	}
 }

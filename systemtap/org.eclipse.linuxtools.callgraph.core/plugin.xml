@@ -12,7 +12,8 @@
             class="org.eclipse.linuxtools.callgraph.core.SystemTapTextView"
             id="org.eclipse.linuxtools.callgraph.core.staptextview"
             name="SystemTap Text View"
-            restorable="true">
+            restorable="true"
+            allowMultiple="true">
       </view>
    </extension>
 

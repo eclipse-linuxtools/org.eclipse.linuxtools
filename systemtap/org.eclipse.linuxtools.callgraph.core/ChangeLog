@@ -1,3 +1,10 @@
+2009-11-28  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/ViewFactory.java:Add createView function that uses secondaryID. 
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Add secondaryID
+	* src/org/eclipse/linuxtools/callgraph/core/StapUIJob.java: Add toggle for creating views with and without multiples
+	* src/org/eclipse/linuxtools/callgraph/core/LaunchConfigurationConstants.java: Add SECONDARY_VIEW_ID and DEFAULT_SECONDARY_VIEW_ID
+
 2009-11-27  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java: Add capacity to change the command used. The command attribute should be derived from Config.getLaunchAttribute(LaunchConfigurationConstants.COMMAND)
