@@ -1,6 +1,6 @@
 2009-11-30  Charley Wang  <chwang@redhat.com>
 
-	* plugin.xml: Add icon to SystemTapTextView
+	* plugin.xml: Add icon to SystemTapTextView (Icon 12446.monitorOn.gif is from 3.4 Ganymede, source: http://xantorohara.110mb.com/core-icons/Eclipse.html)
 
 2009-11-28  Charley Wang  <chwang@redhat.com>
 
