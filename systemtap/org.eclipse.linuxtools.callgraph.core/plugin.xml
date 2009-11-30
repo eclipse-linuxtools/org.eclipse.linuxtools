@@ -13,6 +13,7 @@
             id="org.eclipse.linuxtools.callgraph.core.staptextview"
             name="SystemTap Text View"
             restorable="true"
+			icon="icons/12446.monitorOn.gif"
             allowMultiple="true">
       </view>
    </extension>

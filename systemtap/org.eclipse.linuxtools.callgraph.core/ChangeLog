@@ -1,3 +1,7 @@
+2009-11-30  Charley Wang  <chwang@redhat.com>
+
+	* plugin.xml: Add icon to SystemTapTextView
+
 2009-11-28  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/ViewFactory.java:Add createView function that uses secondaryID. 
