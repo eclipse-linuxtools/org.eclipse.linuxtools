@@ -1,3 +1,13 @@
+2009-12-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #296616
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MakeTarget.java: Removed.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MakeTargetManager.java: Removed.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ProjectTargets.java: Removed.
+	* src/org/eclipse/linuxtools/cdt/autotools/core/AutotoolsNewProjectNature.java: 
+	(removeOldAutotoolsNature): New Method.
+	(addAutotoolsBuilder): Compensate for case where we are dealing with old Autotools project.
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* plugin.properties: Fix provider name.

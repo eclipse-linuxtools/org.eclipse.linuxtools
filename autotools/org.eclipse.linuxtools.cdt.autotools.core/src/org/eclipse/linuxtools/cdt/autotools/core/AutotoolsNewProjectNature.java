@@ -28,7 +28,9 @@ import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsConfiguration
 public class AutotoolsNewProjectNature implements IProjectNature {
 
 	public static final String AUTOTOOLS_NATURE_ID = AutotoolsPlugin.getUniqueIdentifier() + ".autotoolsNatureV2";  //$NON-NLS-1$
+	public static final String OLD_AUTOTOOLS_NATURE_ID = "org.eclipse.linuxtools.cdt.autotools.autotoolsNature"; //$NON-NLS-1$
 	public final static String BUILDER_ID = ManagedBuilderCorePlugin.getUniqueIdentifier() + ".genmakebuilder"; //$NON-NLS-1$
+	public final static String OLD_AUTOTOOLS_BUILDER_ID = "org.eclipse.linuxtools.cdt.autotools.genmakebuilder"; //$NON-NLS-1$
 
 	private IProject project;
 	
@@ -78,6 +80,11 @@ public class AutotoolsNewProjectNature implements IProjectNature {
 			if (command.getBuilderName().equals(AutotoolsConfigurationBuilder.BUILDER_ID)) {
 				// ignore it
 			} else {
+				if (command.getBuilderName().equals(OLD_AUTOTOOLS_BUILDER_ID)) {
+					ICommand newCommand = description.newCommand();
+					newCommand.setBuilderName(BUILDER_ID);
+					command = newCommand;
+				}
 				if (command.getBuilderName().equals(BUILDER_ID)) {
 					// add Autotools Configuration builder just before builder
 					ICommand newCommand = description.newCommand();
@@ -135,6 +142,18 @@ public class AutotoolsNewProjectNature implements IProjectNature {
 	 */
 	public static void removeAutotoolsNature(IProject project, IProgressMonitor mon) throws CoreException {
 		removeNature(project, AUTOTOOLS_NATURE_ID, mon);
+	}
+
+	/**
+	 * Utility method to remove the old autotools nature from a project.
+	 * 
+	 * @param project to remove the old autotools nature from
+	 * @param mon progress monitor to indicate the duration of the operation, or 
+	 * <code>null</code> if progress reporting is not required. 
+	 * @throws CoreException
+	 */
+	public static void removeOldAutotoolsNature(IProject project, IProgressMonitor mon) throws CoreException {
+		removeNature(project, OLD_AUTOTOOLS_NATURE_ID, mon);
 	}
 
 	/**
