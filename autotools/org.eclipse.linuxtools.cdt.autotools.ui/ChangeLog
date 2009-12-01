@@ -1,3 +1,10 @@
+2009-12-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #296616
+	* META-INF/MANIFEST.MF: Add dependency on org.eclipse.linuxtools.cdt.autotools plugin.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject): 
+	Remove old Autotools nature from existing project. 
+
 2009-11-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* templates/projecttemplates/HelloWorldCAutotoolsProject/template.xml: Make sure COPYING file
