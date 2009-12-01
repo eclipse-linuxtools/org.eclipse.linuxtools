@@ -26,7 +26,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.linuxtools.cdt.autotools.AutotoolsProjectNature;
 import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsNewProjectNature;
 import org.eclipse.linuxtools.cdt.autotools.ui.AutotoolsUIPlugin;
 import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsPropertyConstants;
@@ -115,7 +114,8 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 			monitor.subTask(AutotoolsUIPlugin.getResourceString(MSG_ADD_NATURE));
 			ManagedCProjectNature.addManagedNature(project, new SubProgressMonitor(monitor, 1));
 			AutotoolsNewProjectNature.addAutotoolsNature(project, new SubProgressMonitor(monitor, 1));
-			AutotoolsProjectNature.removeAutotoolsNature(project, new SubProgressMonitor(monitor, 1));
+			// We need to remove any old Autotools nature, if one exists.
+			AutotoolsNewProjectNature.removeOldAutotoolsNature(project, new SubProgressMonitor(monitor, 1));
 			monitor.subTask(AutotoolsUIPlugin.getResourceString(MSG_ADD_BUILDER));
 //			ManagedCProjectNature.addManagedBuilder(project, new SubProgressMonitor(monitor, 1));
 			AutotoolsNewProjectNature.addAutotoolsBuilder(project, new SubProgressMonitor(monitor,1));
