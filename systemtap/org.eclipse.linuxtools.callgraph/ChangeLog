@@ -1,3 +1,7 @@
+2009-12-01  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: While collapsing nodes, first check for existing collapsed nodes.
+
 2009-11-20  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java (finishLoad): Set project in the regular load, not just in finishLoad

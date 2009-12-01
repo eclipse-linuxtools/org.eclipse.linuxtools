@@ -1332,6 +1332,10 @@ public class StapGraph extends Graph {
 		
 		// Name, id
 		HashMap<String, Integer> newNodeMap = new HashMap<String, Integer>();
+		
+		for (int collapsedID : nodeDataMap.get(id).collapsedChildren) {
+			newNodeMap.put(getNodeData(collapsedID).name, collapsedID);
+		}
 		// id of 'collapsed' node, id of its uncollapsed twin
 		HashMap<Integer, Integer> collapsedNodesWithOnlyOneNodeInThem = new HashMap<Integer, Integer>();
 		int size = nodeDataMap.get(id).children.size();
