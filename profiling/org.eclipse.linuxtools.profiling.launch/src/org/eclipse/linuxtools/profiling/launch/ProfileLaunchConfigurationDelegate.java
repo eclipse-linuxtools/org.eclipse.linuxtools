@@ -77,6 +77,10 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 		Process subProcess = execute(commandArray, getEnvironment(config),
 				workDir, true);
 		
+		if (subProcess == null){
+			return null;
+		}
+		
 		IProcess process = createNewProcess(launch, subProcess,commandArray[0]);
 		// set the command line used
 		process.setAttribute(IProcess.ATTR_CMDLINE,cmd);

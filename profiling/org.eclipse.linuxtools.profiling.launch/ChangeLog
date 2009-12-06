@@ -1,3 +1,8 @@
+2009-12-06  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java 
+		(createProcess): Return null when a process fails to execute and let use decide action to take.
+
 2009-11-26  Charley Wang  <chwang@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add org.eclipse.cdt.core, which seems needed with some versions and not with others.
