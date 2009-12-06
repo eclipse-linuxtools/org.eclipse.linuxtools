@@ -1,3 +1,8 @@
+2009-12-06  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java
+		(finishLaunch): Write to error log when stap command does not exist.
+
 2009-11-28  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java (finishLaunch): Set LaunchConfigurationConstants.SECONDARY_VIEW_ID using an overrideable function (defaults to returning "")

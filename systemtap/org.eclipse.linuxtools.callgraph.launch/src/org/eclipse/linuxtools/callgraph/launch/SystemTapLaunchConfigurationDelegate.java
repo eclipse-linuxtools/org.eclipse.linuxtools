@@ -257,6 +257,15 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			IProcess process = createProcess(config, launch);
 			
+			if (process == null){
+				
+				parser.setDone(true);
+				SystemTapErrorHandler err = new SystemTapErrorHandler();
+				err.handle(monitor, "could not find stap");
+				err.finishHandling(monitor, scriptPath);
+				return;
+			}
+			
 			monitor.worked(1);
 			
 			StreamListener s = new StreamListener();
