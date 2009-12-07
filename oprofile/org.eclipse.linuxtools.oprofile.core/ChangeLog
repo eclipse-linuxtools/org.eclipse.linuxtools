@@ -1,3 +1,9 @@
+2009-12-07  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #297007
+
+	* natives/linux/opxml/move_opxml.sh: Fix release number.
+
 2009-10-29  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #292172
