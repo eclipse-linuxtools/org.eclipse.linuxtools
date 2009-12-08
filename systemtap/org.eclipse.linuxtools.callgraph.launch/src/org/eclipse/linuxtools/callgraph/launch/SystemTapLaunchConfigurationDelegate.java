@@ -253,14 +253,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 			 */
 			IProcess process = createProcess(config, launch);
 			
-			if (process == null){
-				parser.setDone(true);
-				SystemTapErrorHandler err = new SystemTapErrorHandler();
-				err.handle(monitor, Messages.getString("SystemTapLaunchConfigurationDelegate.2")); //$NON-NLS-1$
-				err.finishHandling(monitor, scriptPath);
-				return;
-			}
-			
 			monitor.worked(1);
 			
 			StreamListener s = new StreamListener();
@@ -280,15 +272,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 			parser.setKillButtonEnabled(false);
 			
 
-			if (process.getExitValue() != 0) {
+			if (process.getExitValue() != 0) {				
 				parser.cancelJob();
-				//SystemTap terminated with errors, parse console to figure out which error 
-				IDocument doc = Helper.getConsoleDocumentByName(config.getName());
-				//Sometimes the console has not been printed to yet, wait for a little while longer
-				if (doc.get().length() < 1)
-					Thread.sleep(300);
 				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-				
 				
 				//Prepare stap information
 				errorHandler.appendToLog(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command") + cmd+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);//$NON-NLS-1$
