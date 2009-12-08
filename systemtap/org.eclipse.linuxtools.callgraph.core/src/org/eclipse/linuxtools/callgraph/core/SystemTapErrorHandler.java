@@ -12,11 +12,9 @@
 package org.eclipse.linuxtools.callgraph.core;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,12 +36,10 @@ public class SystemTapErrorHandler {
     private boolean errorRecognized;
     private StringBuilder errorMessage = new StringBuilder(""); //$NON-NLS-1$
     private StringBuilder logContents;
-//    private boolean mismatchedProbePoints;
     ArrayList<String> functions = new ArrayList<String>();
 
 
     public SystemTapErrorHandler() {
-//        mismatchedProbePoints = false;
         errorRecognized = false;
         if (errorMessage.length() < 1) {
             errorMessage.append(Messages
@@ -74,8 +70,6 @@ public class SystemTapErrorHandler {
             int index;
 
             for (String message : errorsList) {
-//                boolean firstLine = true; // Keep the error about mismatched
-                                            // probe points first
                 buff = new BufferedReader(new FileReader(file));
                 while ((line = buff.readLine()) != null) {
                     if (m != null && m.isCanceled())
@@ -94,15 +88,8 @@ public class SystemTapErrorHandler {
                         if (!errorMessage.toString().contains(errorFound)) {
                             errorMessage.append(errorFound+ PluginConstants.NEW_LINE);
                         }
-
-                        //first line in error properties is mismatched probes
-                        /*if (firstLine) {
-                            findFunctions(m, message, pat);
-                            mismatchedProbePoints = true;
-                        }*/
                         break;
                     }
-//                    firstLine = false;
                 }
                 buff.close();
             }
@@ -168,83 +155,9 @@ public class SystemTapErrorHandler {
         }
 
         writeToLog();
-
-        /*if (mismatchedProbePoints) {
-            if (functions.size() > PluginConstants.MAX_ERRORS) {
-                errorMessage.setLength(0);
-                errorMessage
-                        .append(PluginConstants.NEW_LINE
-                                + Messages
-                                        .getString("SystemTapErrorHandler.TooManyErrors1") + functions.size() + Messages.getString("SystemTapErrorHandler.TooManyErrors2") + //$NON-NLS-1$ //$NON-NLS-2$
-                                Messages
-                                        .getString("SystemTapErrorHandler.TooManyErrors3") + //$NON-NLS-1$
-                                Messages
-                                        .getString("SystemTapErrorHandler.TooManyErrors4")); //$NON-NLS-1$
-                SystemTapUIErrorMessages mes = new SystemTapUIErrorMessages(
-                        Messages
-                                .getString("SystemTapErrorHandler.ErrorMessageName"), //$NON-NLS-1$
-                        Messages
-                                .getString("SystemTapErrorHandler.ErrorMessageTitle"), //$NON-NLS-1$
-                        errorMessage.toString());
-                mes.schedule();
-                m.setCanceled(true);
-                return false;
-            }
-
-            return cleanScript(m, new File(scriptPath));
-           
-
-        }*/
         return false;
-
     }
-
-   
-    /*private boolean cleanScript(IProgressMonitor m, File script) {
-        StringBuilder resultFileContent = new StringBuilder();
-        int counter = 0;
-        String line;
-        try {
-            BufferedReader buff = new BufferedReader(new FileReader(script));
-            while ((line = buff.readLine()) != null) {
-                if (m != null && m.isCanceled())
-                    return false;
-                boolean skip = false;
-                for (String func : functions) {
-                    if (line.contains("function(\"" + func + "\").call")) { //$NON-NLS-1$ //$NON-NLS-2$
-                        skip = true;
-                        counter++;
-//                        if (counter == functions.size()) {
-//                            buff.close();
-//                            return false;
-//                        }
-                        break;
-                    }
-                }
-               
-
-                if (!skip && !line.equals("\n")) { //$NON-NLS-1$
-                    //This works only because call and return are on the same line.
-                    resultFileContent.append(line);
-                    resultFileContent.append("\n"); //$NON-NLS-1$
-                }
-            }
-
-            buff.close();
-
-            BufferedWriter wbuff = new BufferedWriter(new FileWriter(script));
-            wbuff.write(resultFileContent.toString());
-            wbuff.close();
-           
-            return true;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }*/
+    
    
     /**
      * Writes the contents of logContents to the error log, along with date and
@@ -345,14 +258,6 @@ public class SystemTapErrorHandler {
     private void setErrorRecognized(boolean errorsRecognized) {
         errorRecognized = errorsRecognized;
     }
-
-    /*public boolean hasMismatchedProbePoints() {
-        return mismatchedProbePoints;
-    }*/
-
-    /*public void setMismatchedProbePoints(boolean mismatchedProbePoints) {
-        this.mismatchedProbePoints = mismatchedProbePoints;
-    }*/
    
     public ArrayList<String> getFunctions() {
         return functions;

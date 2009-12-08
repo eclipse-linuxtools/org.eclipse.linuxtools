@@ -29,7 +29,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IStreamMonitor;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.callgraph.core.DocWriter;
 import org.eclipse.linuxtools.callgraph.core.Helper;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
@@ -287,7 +286,8 @@ public class SystemTapLaunchConfigurationDelegate extends
 				
 				//If we are meant to retry, and the conditions for retry are met
 				//Currently conditions only met if there are mismatched probe points present
-				if (retry) {
+				//TODO: Do we need a retry now that we cannot think of a case where we need to relaunch?
+				/*if (retry) {
 					
 					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"),  //$NON-NLS-1$
@@ -307,7 +307,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 					}
 					finishLaunch(launch, config, options, monitor, false);
 					return;
-				}
+				}*/
 				
 				errorHandler.finishHandling(monitor, scriptPath);
 				return;
