@@ -64,7 +64,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	private boolean useColour = false;
 	private String binaryArguments = ""; //$NON-NLS-1$
 	private String partialCommand = ""; //$NON-NLS-1$
-	private String command = ""; //$NON-NLS-1$
+	private String stap = ""; //$NON-NLS-1$
 
 	@Override
 	protected String getPluginID() {
@@ -159,7 +159,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 		}
 		
-		command = config.getAttribute(LaunchConfigurationConstants.COMMAND,
+		stap = config.getAttribute(LaunchConfigurationConstants.COMMAND,
 				PluginConstants.STAP_PATH);
 
 		/**
@@ -422,13 +422,13 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 
 	@Override
-	protected String generateCommand(ILaunchConfiguration config) {
+	public String generateCommand(ILaunchConfiguration config) {
 		if (cmd != null && cmd.length() > 0)
 			return cmd;
 
 		// Generate the command
 		cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
-				partialCommand, needsBinary, needsArguments, arguments, binaryArguments, command);
+				partialCommand, needsBinary, needsArguments, arguments, binaryArguments, stap);
 		return cmd;
 	}
 }
