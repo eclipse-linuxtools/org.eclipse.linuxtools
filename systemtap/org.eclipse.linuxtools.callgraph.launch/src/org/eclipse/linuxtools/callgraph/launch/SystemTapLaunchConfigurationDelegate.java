@@ -64,7 +64,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	private boolean useColour = false;
 	private String binaryArguments = ""; //$NON-NLS-1$
 	private String partialCommand = ""; //$NON-NLS-1$
-	private String command = "";
+	private String command = ""; //$NON-NLS-1$
 
 	@Override
 	protected String getPluginID() {
@@ -198,25 +198,18 @@ public class SystemTapLaunchConfigurationDelegate extends
 		String errorMessage = ""; //$NON-NLS-1$
 
 		try {
-
-			// Generate the command
-			cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
-					options, needsBinary, needsArguments, arguments, binaryArguments, command);
-			
 			// Check for cancellation
-			if (monitor.isCanceled()) {
+			if (monitor.isCanceled() || launch == null) {
 				return;
 			}
-
 			monitor.worked(1);
-			
-			if (launch == null) {
-				return;
-			}
-			// Not sure if this line is necessary
+
 			// set the default source locator if required
 			setDefaultSourceLocator(launch, config);
 			
+			/*
+			 * Fetch a parser 
+			 */
 			String parserClass = config.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, 
 					LaunchConfigurationConstants.DEFAULT_PARSER_CLASS);
 			IExtensionRegistry reg = Platform.getExtensionRegistry();
@@ -224,7 +217,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 					.getConfigurationElementsFor(PluginConstants.PARSER_RESOURCE, 
 							PluginConstants.PARSER_NAME, 
 							parserClass);
-			
 			if (extensions == null || extensions.length < 1) {
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"),  //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2"), //$NON-NLS-1$ //$NON-NLS-2$
@@ -235,9 +227,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 			}
 			
 			IConfigurationElement element = extensions[0];
-
 			SystemTapParser parser = 
 				(SystemTapParser) element.createExecutableExtension(PluginConstants.ATTR_CLASS);
+			
+			//Set parser options
 			parser.setViewID(config.getAttribute(LaunchConfigurationConstants.VIEW_CLASS,
 					LaunchConfigurationConstants.VIEW_CLASS));
 			parser.setSourcePath(outputPath);
@@ -252,16 +245,18 @@ public class SystemTapLaunchConfigurationDelegate extends
 				parser.setRealTime(true);
 				parser.schedule();
 			}
-
 			monitor.worked(1);
-			
+
+
+			/*
+			 * Launch
+			 */
 			IProcess process = createProcess(config, launch);
 			
 			if (process == null){
-				
 				parser.setDone(true);
 				SystemTapErrorHandler err = new SystemTapErrorHandler();
-				err.handle(monitor, "could not find stap");
+				err.handle(monitor, Messages.getString("SystemTapLaunchConfigurationDelegate.2")); //$NON-NLS-1$
 				err.finishHandling(monitor, scriptPath);
 				return;
 			}

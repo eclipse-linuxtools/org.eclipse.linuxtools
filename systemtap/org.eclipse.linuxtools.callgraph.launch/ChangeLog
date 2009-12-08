@@ -1,3 +1,7 @@
+2009-12-08  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Externalize strings and cleanup of the finishLaunch function
+
 2009-12-06  rgrunber  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java
