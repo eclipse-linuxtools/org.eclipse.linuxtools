@@ -2,6 +2,7 @@
 
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java: Change delegate to launch by creating a temporary shell script, rather than launch directly.
 	Make generateCommand public
+	Do not setExecutable.
 
 2009-12-06  rgrunber  <rgrunber@redhat.com>
 

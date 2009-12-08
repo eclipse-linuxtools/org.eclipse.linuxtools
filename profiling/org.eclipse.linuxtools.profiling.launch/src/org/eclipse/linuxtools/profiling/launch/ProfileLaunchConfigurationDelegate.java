@@ -75,7 +75,6 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 		String cmd = generateCommand(config);
 		File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(),
 												".sh");
-		script.setExecutable(true);
 		String data = "#!/bin/sh\nexec " + cmd; //$NON-NLS-1$
 		FileOutputStream out = new FileOutputStream(script);
 		out.write(data.getBytes());
