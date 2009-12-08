@@ -101,7 +101,7 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 * @param config
 	 * @return The command string, as it would appear on command-line
 	 */
-	protected abstract String generateCommand(ILaunchConfiguration config);
+	public abstract String generateCommand(ILaunchConfiguration config);
 	
 
 	/** 
