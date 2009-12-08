@@ -1,6 +1,7 @@
 package org.eclipse.linuxtools.profiling.launch;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -65,15 +66,22 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 	 */
 
 	protected IProcess createProcess(ILaunchConfiguration config, ILaunch launch) throws CoreException, IOException {
-
-		String cmd = generateCommand(config);
 		File workDir = getWorkingDirectory(config);
 		if (workDir == null) {
 			workDir = new File(System.getProperty("user.home", ".")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		
-		String[] commandArray = prepareCommand(cmd);
 
+		//Put command into a shell script
+		String cmd = generateCommand(config);
+		File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(),
+												".sh");
+		script.setExecutable(true);
+		String data = "#!/bin/sh\nexec " + cmd; //$NON-NLS-1$
+		FileOutputStream out = new FileOutputStream(script);
+		out.write(data.getBytes());
+
+		
+		String[] commandArray = prepareCommand("sh " + script.getAbsolutePath());
 		Process subProcess = execute(commandArray, getEnvironment(config),
 				workDir, true);
 		
