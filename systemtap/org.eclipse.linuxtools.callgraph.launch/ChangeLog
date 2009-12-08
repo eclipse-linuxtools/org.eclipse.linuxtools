@@ -1,3 +1,8 @@
+2009-12-08  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph.java: Use '?' at the end of probe point for silent failure if any.
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Comment out potentially obsolete code.
+
 2009-12-08  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Externalize strings and cleanup of the finishLaunch function

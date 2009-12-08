@@ -301,7 +301,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				
 				//If we are meant to retry, and the conditions for retry are met
 				//Currently conditions only met if there are mismatched probe points present
-				if (errorHandler.hasMismatchedProbePoints() && retry) {
+				if (retry) {
 					
 					SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch1"), //$NON-NLS-1$
 							Messages.getString("SystemTapLaunchConfigurationDelegate.Relaunch2"),  //$NON-NLS-1$

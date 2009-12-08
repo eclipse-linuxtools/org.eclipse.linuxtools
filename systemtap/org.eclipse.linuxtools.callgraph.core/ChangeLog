@@ -1,3 +1,8 @@
+2009-12-08  Roland Grunberg  <rgrunber@redhat.com>
+
+	* parse_function_partial.stp: Replace syscall.exit with process(@1).end to eliminate use of debug-info
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Comment out potentially obsolete code
+
 2009-11-30  Charley Wang  <chwang@redhat.com>
 
 	* plugin.xml: Add icon to SystemTapTextView (Icon 12446.monitorOn.gif is from 3.4 Ganymede, source: http://xantorohara.110mb.com/core-icons/Eclipse.html)

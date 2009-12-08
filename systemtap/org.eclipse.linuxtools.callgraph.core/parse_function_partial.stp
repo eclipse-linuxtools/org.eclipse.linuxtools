@@ -26,8 +26,7 @@ probe end {
 	printf("+%d\n",finalTime - startTime);
     exit()
 }
-probe syscall.exit {
-if (pid() == target()) {
+
+probe process(@1).end {
 finalTime = gettimeofday_ns()
-}
 }

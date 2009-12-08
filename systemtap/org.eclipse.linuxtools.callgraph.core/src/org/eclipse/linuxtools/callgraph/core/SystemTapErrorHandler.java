@@ -38,12 +38,12 @@ public class SystemTapErrorHandler {
     private boolean errorRecognized;
     private StringBuilder errorMessage = new StringBuilder(""); //$NON-NLS-1$
     private StringBuilder logContents;
-    private boolean mismatchedProbePoints;
+//    private boolean mismatchedProbePoints;
     ArrayList<String> functions = new ArrayList<String>();
 
 
     public SystemTapErrorHandler() {
-        mismatchedProbePoints = false;
+//        mismatchedProbePoints = false;
         errorRecognized = false;
         if (errorMessage.length() < 1) {
             errorMessage.append(Messages
@@ -74,7 +74,7 @@ public class SystemTapErrorHandler {
             int index;
 
             for (String message : errorsList) {
-                boolean firstLine = true; // Keep the error about mismatched
+//                boolean firstLine = true; // Keep the error about mismatched
                                             // probe points first
                 buff = new BufferedReader(new FileReader(file));
                 while ((line = buff.readLine()) != null) {
@@ -96,13 +96,13 @@ public class SystemTapErrorHandler {
                         }
 
                         //first line in error properties is mismatched probes
-                        if (firstLine) {
+                        /*if (firstLine) {
                             findFunctions(m, message, pat);
                             mismatchedProbePoints = true;
-                        }
+                        }*/
                         break;
                     }
-                    firstLine = false;
+//                    firstLine = false;
                 }
                 buff.close();
             }
@@ -169,7 +169,7 @@ public class SystemTapErrorHandler {
 
         writeToLog();
 
-        if (mismatchedProbePoints) {
+        /*if (mismatchedProbePoints) {
             if (functions.size() > PluginConstants.MAX_ERRORS) {
                 errorMessage.setLength(0);
                 errorMessage
@@ -194,13 +194,13 @@ public class SystemTapErrorHandler {
             return cleanScript(m, new File(scriptPath));
            
 
-        }
+        }*/
         return false;
 
     }
 
    
-    private boolean cleanScript(IProgressMonitor m, File script) {
+    /*private boolean cleanScript(IProgressMonitor m, File script) {
         StringBuilder resultFileContent = new StringBuilder();
         int counter = 0;
         String line;
@@ -244,7 +244,7 @@ public class SystemTapErrorHandler {
             e.printStackTrace();
         }
         return false;
-    }
+    }*/
    
     /**
      * Writes the contents of logContents to the error log, along with date and
@@ -346,13 +346,13 @@ public class SystemTapErrorHandler {
         errorRecognized = errorsRecognized;
     }
 
-    public boolean hasMismatchedProbePoints() {
+    /*public boolean hasMismatchedProbePoints() {
         return mismatchedProbePoints;
-    }
+    }*/
 
-    public void setMismatchedProbePoints(boolean mismatchedProbePoints) {
+    /*public void setMismatchedProbePoints(boolean mismatchedProbePoints) {
         this.mismatchedProbePoints = mismatchedProbePoints;
-    }
+    }*/
    
     public ArrayList<String> getFunctions() {
         return functions;

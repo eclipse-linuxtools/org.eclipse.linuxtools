@@ -111,7 +111,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" + function + "\").call{	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc()) } 	}	probe process(@1).function(\"" + function + "\").return{		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc())	else { printf(\"?%s\\n\", user_string(strtol(tokenize($$return, \"return=\"),16)))}}\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String output = "probe process(@1).function(\"" + function + "\").call ? {	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc()) } 	}	probe process(@1).function(\"" + function + "\").return ? {		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc())	else { printf(\"?%s\\n\", user_string(strtol(tokenize($$return, \"return=\"),16)))}}\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return output;
 	}
 	
