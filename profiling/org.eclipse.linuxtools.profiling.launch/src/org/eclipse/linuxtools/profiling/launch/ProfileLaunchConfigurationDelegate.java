@@ -73,20 +73,14 @@ public abstract class ProfileLaunchConfigurationDelegate extends AbstractCLaunch
 
 		//Put command into a shell script
 		String cmd = generateCommand(config);
-		File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(),
-												".sh");
+		File script = File.createTempFile("org.eclipse.linuxtools.profiling.launch" + System.currentTimeMillis(), ".sh");
 		String data = "#!/bin/sh\nexec " + cmd; //$NON-NLS-1$
 		FileOutputStream out = new FileOutputStream(script);
 		out.write(data.getBytes());
-
 		
 		String[] commandArray = prepareCommand("sh " + script.getAbsolutePath());
 		Process subProcess = execute(commandArray, getEnvironment(config),
 				workDir, true);
-		
-		if (subProcess == null){
-			return null;
-		}
 		
 		IProcess process = createNewProcess(launch, subProcess,commandArray[0]);
 		// set the command line used

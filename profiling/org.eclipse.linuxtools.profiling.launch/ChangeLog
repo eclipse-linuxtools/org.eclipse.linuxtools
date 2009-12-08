@@ -1,3 +1,8 @@
+2009-12-08  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java:
+		Get rid of error checking for (createProcess) since subprocess cannot be null as long as initial command is 'exec'.
+
 2009-12-08  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java: Change delegate to launch by creating a temporary shell script, rather than launch directly.
@@ -7,7 +12,7 @@
 2009-12-06  rgrunber  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java 
-		(createProcess): Return null when a process fails to execute and let use decide action to take.
+		(createProcess): Return null when a process fails to execute and let user decide action to take.
 
 2009-11-26  Charley Wang  <chwang@redhat.com>
 
