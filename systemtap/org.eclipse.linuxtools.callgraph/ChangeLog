@@ -1,3 +1,7 @@
+2009-12-08  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Return endTime - time if time > 38 years
+
 2009-12-01  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: While collapsing nodes, first check for existing collapsed nodes.
