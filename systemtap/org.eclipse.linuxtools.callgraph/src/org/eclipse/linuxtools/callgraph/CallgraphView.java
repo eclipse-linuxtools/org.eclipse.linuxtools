@@ -197,9 +197,9 @@ public class CallgraphView extends SystemTapView {
 		/*
 		 *                Load graph data
 		 */
-		boolean marked = false;
-		String msg = ""; //$NON-NLS-1$
 	    for (int id_parent : parser.serialMap.keySet()) {
+	    	boolean marked = false;
+	    	String msg = ""; //$NON-NLS-1$
 	    	if (g.getNodeData(id_parent) == null) {
 				if (parser.markedMap.get(id_parent) != null) {
 					marked = true;

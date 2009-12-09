@@ -2,6 +2,7 @@
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java (parse): Add basic threading capability into parse. Create maps sorted by thread ID for neighbours.
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java (loadData): Add basic threading capability into loadData
+	Fix faulty marking of threaded nodes.
 
 2009-12-08  Charley Wang  <chwang@redhat.com>
 
