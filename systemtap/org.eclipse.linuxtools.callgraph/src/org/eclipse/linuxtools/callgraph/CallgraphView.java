@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.callgraph;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -208,31 +209,36 @@ public class CallgraphView extends SystemTapView {
 	    				1, 0, marked, msg);
 	    	}
 	    	
-			for (int id_child : parser.outNeighbours.get(id_parent)) {
-				if (g.getNodeData(id_child) != null)
-					continue;
-				if (monitor.isCanceled()) {
-					return Status.CANCEL_STATUS;
-				}
-				
-				marked = false;
-				msg = ""; //$NON-NLS-1$
-				if (parser.markedMap.get(id_child) != null) {
-					marked = true;
-					msg = parser.markedMap.remove(id_child);
-				}
-				if (id_child != -1) {
-					if (parser.timeMap.get(id_child) == null){						
-						g.loadData(SWT.NONE, id_child, parser.serialMap
-								.get(id_child), parser.timeMap.get(0),
-								1, id_parent, marked,msg);
-					}else{
-						g.loadData(SWT.NONE, id_child, parser.serialMap
-								.get(id_child), parser.timeMap.get(id_child),
-								1, id_parent, marked,msg);
+	    	for (int key :parser.neighbourMaps.keySet()) { 
+		    	HashMap<Integer, ArrayList<Integer>> outNeighbours = parser.neighbourMaps.get(key);
+		    	if (outNeighbours == null || outNeighbours.get(id_parent) == null)
+		    		continue;
+				for (int id_child : outNeighbours.get(id_parent)) {
+					if (g.getNodeData(id_child) != null)
+						continue;
+					if (monitor.isCanceled()) {
+						return Status.CANCEL_STATUS;
+					}
+					
+					marked = false;
+					msg = ""; //$NON-NLS-1$
+					if (parser.markedMap.get(id_child) != null) {
+						marked = true;
+						msg = parser.markedMap.remove(id_child);
+					}
+					if (id_child != -1) {
+						if (parser.timeMap.get(id_child) == null){						
+							g.loadData(SWT.NONE, id_child, parser.serialMap
+									.get(id_child), parser.timeMap.get(0),
+									1, id_parent, marked,msg);
+						}else{
+							g.loadData(SWT.NONE, id_child, parser.serialMap
+									.get(id_child), parser.timeMap.get(id_child),
+									1, id_parent, marked,msg);
+						}
 					}
 				}
-			}
+	    	}
 			
 		}
 	    
@@ -255,7 +261,8 @@ public class CallgraphView extends SystemTapView {
 	    
 	    g.aggregateCount.putAll(parser.countMap);
 	    g.aggregateTime.putAll(parser.aggregateTimeMap);
-	    g.setLastFunctionCalled(parser.lastFunctionCalled);
+	    //TODO: Do not set to 0.
+	    g.setLastFunctionCalled(0);
 
 	    
 	    //Finish off by collapsing nodes, initializing the tree and setting options
