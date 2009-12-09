@@ -409,9 +409,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 	@Override
 	public String generateCommand(ILaunchConfiguration config) {
-		if (cmd != null && cmd.length() > 0)
-			return cmd;
-
 		// Generate the command
 		cmd = SystemTapCommandGenerator.generateCommand(scriptPath, binaryPath,
 				partialCommand, needsBinary, needsArguments, arguments, binaryArguments, stap);

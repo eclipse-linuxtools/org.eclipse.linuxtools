@@ -1,3 +1,8 @@
+2009-12-09  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java (generateCommand): Tweaks for threading. Force command generation every time (otherwise may skip for bad reasons)
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph.java (launch): Enable threading, make process probes accept tid() argument
+
 2009-12-08  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Clean up unused externalized strings
