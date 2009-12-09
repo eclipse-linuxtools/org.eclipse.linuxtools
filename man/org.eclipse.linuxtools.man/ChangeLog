@@ -1,3 +1,13 @@
+2009-12-09  Alexander Kurakov  <akurtakov@redhat.com>
+
+	* src/org/eclipse/linuxtools/man/preferences/ManPathPage.java: New file.
+	* src/org/eclipse/linuxtools/man/preferences/PreferenceConstants.java: New file.
+	* src/org/eclipse/linuxtools/man/preferences/PreferenceInitializer.java: New file.
+	* .settings/org.eclipse.jdt.core.prefs: Enable project specific settings.
+	* .settings/org.eclipse.jdt.ui.prefs: Likewise.
+	* plugin.xml: Add preferences.
+	* src/org/eclipse/linuxtools/man/parser/ManParser.java (getRawManPage): Use the executable from the preferences.
+
 2009-11-25  Alexander Kurakov  <akurtakov@redhat.com>
 
 	* src/org/eclipse/linuxtools/man/parser/ManPage.java (getStrippedHtmlPage): Fix AIOOB.

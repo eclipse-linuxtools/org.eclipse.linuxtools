@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.eclipse.linuxtools.man.Activator;
+import org.eclipse.linuxtools.man.preferences.PreferenceConstants;
+
 /**
  * Parser for the man executable output.
  * 
@@ -30,7 +33,9 @@ public class ManParser {
 	 * @return Raw output of the man command.
 	 */
 	public StringBuilder getRawManPage(String manPage) {
-		ProcessBuilder builder = new ProcessBuilder("/usr/bin/man", manPage);
+		String manExecutable = Activator.getDefault().getPreferenceStore()
+				.getString(PreferenceConstants.P_PATH);
+		ProcessBuilder builder = new ProcessBuilder(manExecutable, manPage);
 		builder.redirectErrorStream(true);
 		Process process;
 		StringBuilder sb = new StringBuilder();
