@@ -1,3 +1,7 @@
+2009-12-09  Charley Wang  <chwang@redhat.com>
+
+	* parse_function_partial.stp: Add threading capability
+
 2009-12-08  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Clean up unused externalized strings
