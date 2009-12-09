@@ -1,8 +1,10 @@
 2009-12-09  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java (getFirstUsefulNode): Return 0 if threaded
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java (parse): Add basic threading capability into parse. Create maps sorted by thread ID for neighbours.
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java (loadData): Add basic threading capability into loadData
 	Fix faulty marking of threaded nodes.
+	(view_radialview): Set StapGraph.threaded if the profiled program contains threads.
 
 2009-12-08  Charley Wang  <chwang@redhat.com>
 

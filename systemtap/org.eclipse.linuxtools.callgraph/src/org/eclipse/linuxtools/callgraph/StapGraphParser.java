@@ -230,7 +230,6 @@ public class StapGraphParser extends SystemTapParser {
 						outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
 					}
 					
-					
 					if (startTime < 1) {
 						startTime = time;
 					}

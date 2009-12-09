@@ -124,17 +124,18 @@ public class StapGraph extends Graph {
 	//Zooming factor
 	public double scale;
 	
-	private int counter; 		//All purpose counting variable
 
 	
 	private ArrayList<Integer> callOrderList;
 	private int lastFunctionCalled;
-	private Canvas thumbCanvas;
-	
-	
-	private ICProject project;
-	
 	private int treeLevelFromRoot;
+	private Canvas thumbCanvas;
+	private ICProject project;
+	private boolean threaded;
+	private int counter; 		//All purpose counting variable
+	
+	
+	
 	public StapGraphMouseListener getMouseListener() {
 		return mListener;
 	}
@@ -1521,7 +1522,10 @@ public class StapGraph extends Graph {
 	 * @return First node that is not the dummy first node
 	 */
 	public int getFirstUsefulNode() {
+		if (threaded)
+			return 0;
 		int id = 0;
+		
 		if (nodeDataMap.get(id).name == CONSTANT_TOP_NODE_NAME) {
 			id++;
 		}
@@ -2010,6 +2014,14 @@ public class StapGraph extends Graph {
 
 	public void setStartTime(long val) {
 		startTime = val;		
+	}
+
+	public void setThreaded() {
+		threaded = true;		
+	}
+	
+	public boolean isThreaded() {
+		return threaded;
 	}
 	
 }

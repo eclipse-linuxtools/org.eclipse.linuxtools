@@ -55,7 +55,6 @@ public class CallgraphView extends SystemTapView {
 
 	private StapGraphParser parser;
 
-
 	private Action view_treeview;
 	private Action view_radialview;
 	private  Action view_aggregateview;
@@ -240,6 +239,9 @@ public class CallgraphView extends SystemTapView {
 				}
 	    	}
 			
+	    	if (parser.neighbourMaps.size() > 1) {
+	    		g.setThreaded();
+	    	}
 		}
 	    
 	    monitor.worked(1);
