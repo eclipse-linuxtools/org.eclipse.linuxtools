@@ -398,7 +398,7 @@
             buildfileGenerator="org.eclipse.linuxtools.cdt.autotools.MakeGenerator"
             command="make"
             id="org.eclipse.linuxtools.cdt.autotools.builder"
-            isAbstract="false"
+            isAbstract="true"
             isVariableCaseSensitive="false"
             name="%Makefile.builder.name"/>
       <targetPlatform

@@ -1,6 +1,8 @@
 2009-12-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #297260
+	* plugin.xml: Make org.eclipse.linuxtools.cdt.autotools.builder abstract as it is used as
+	a superclass only.
 	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsBuilder.java (getOutputEntries): Override
 	to ensure we don't use the Builder default for this method which returns an output entry
 	based on the configuration name.
