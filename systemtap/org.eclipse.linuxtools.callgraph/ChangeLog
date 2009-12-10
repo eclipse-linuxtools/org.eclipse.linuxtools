@@ -1,3 +1,7 @@
+2009-12-10  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Quit with error message if opening a file encounters an I/O error.
+
 2009-12-09  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java (getFirstUsefulNode): Return 0 if threaded

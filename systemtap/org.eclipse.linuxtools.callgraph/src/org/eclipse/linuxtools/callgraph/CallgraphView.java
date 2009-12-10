@@ -168,13 +168,7 @@ public class CallgraphView extends SystemTapView {
 		lws.setContents(thumb);
 
 		loadData(monitor);
-		if (!parser.isRealTime())
-			return finishLoad(monitor);
-			
-		finishLoad(monitor);
-		
-
-		return Status.OK_STATUS;
+		return finishLoad(monitor);
 	}
 	
 	/**

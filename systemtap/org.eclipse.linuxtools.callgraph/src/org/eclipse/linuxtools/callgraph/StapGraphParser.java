@@ -21,8 +21,11 @@ import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.linuxtools.callgraph.core.SystemTapParser;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 
 /**
@@ -107,7 +110,16 @@ public class StapGraphParser extends SystemTapParser {
 		try {
 			buff = new BufferedReader(new FileReader(sourcePath));
 		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+			Display.getDefault().asyncExec(new Runnable() {
+				
+				@Override
+				public void run(){
+					MessageDialog.openError(new Shell(), Messages.getString("StapGraphParser.FileNotFound"),  //$NON-NLS-1$
+							Messages.getString("StapGraphParser.CouldNotOpen") + sourcePath); //$NON-NLS-1$
+					
+				}
+			});
+			return Status.CANCEL_STATUS;
 		}
 		internalData = buff;
 		return realTimeParsing();

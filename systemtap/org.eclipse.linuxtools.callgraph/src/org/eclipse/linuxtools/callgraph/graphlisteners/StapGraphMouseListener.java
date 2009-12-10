@@ -43,6 +43,7 @@ public class StapGraphMouseListener implements MouseListener {
 	public void mouseDoubleClick(MouseEvent e) {
 		if (e.stateMask == SWT.CONTROL) {
 			controlDoubleClick();
+			return;
 		}
 		
 		
@@ -117,6 +118,10 @@ public class StapGraphMouseListener implements MouseListener {
 			callees = graph.getNodeData(id).collapsedChildren;
 		else
 			callees = graph.getNodeData(id).children;
+		
+		if (callees == null)
+			return;
+		
 		for (int subID : callees) {
 			if (graph.getNode(subID) != null)
 				graph.getNode(subID).unhighlight();
@@ -175,6 +180,7 @@ public class StapGraphMouseListener implements MouseListener {
 			
 			String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
 			output= FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+			node.unhighlight();
 		} else {
 			StapNode node = getNodeFromSelection();
 			
@@ -189,6 +195,7 @@ public class StapGraphMouseListener implements MouseListener {
 				caller = graph.getFirstUsefulNode();
 			}
 			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getNodeData(caller).name);
+			node.unhighlight();
 		}
 
 		graph.setSelection(null);
@@ -277,7 +284,7 @@ public class StapGraphMouseListener implements MouseListener {
 //				unhighlightall(n);
 //			}
 //		}
-
+//
 //		graph.setSelection(null);
 	}
 };
