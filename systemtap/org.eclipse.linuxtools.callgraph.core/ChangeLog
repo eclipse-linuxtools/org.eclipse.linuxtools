@@ -1,3 +1,7 @@
+2009-12-10  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/FileFinderOpener.java: Properly quit if findAndOpen encounters a user-sent 'Cancel'
+
 2009-12-10  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java: Add NON-NLS as needed

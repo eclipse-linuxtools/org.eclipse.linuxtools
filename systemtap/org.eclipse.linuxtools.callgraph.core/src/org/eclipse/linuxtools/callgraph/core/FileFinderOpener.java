@@ -124,6 +124,11 @@ public class FileFinderOpener {
 					Messages.getString("FileFinderOpener.MultFilesDialogM3"));  //$NON-NLS-1$
 			d.setElements(files.toArray());
 			d.open();
+			
+			if (d.getResult() == null) {
+				return null;
+			}
+			
 			for (Object o : d.getResult()) {
 				if (o instanceof String) {
 					String s = (String) o;
