@@ -1,3 +1,13 @@
+2009-12-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #297260
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsBuilder.java (getOutputEntries): Override
+	to ensure we don't use the Builder default for this method which returns an output entry
+	based on the configuration name.
+	* src/org/eclipse/linuxtools/cdt/autotools/AutotoolsMakefileBuilder.java (build): Set the
+	build location and makefile generator element for the old builder to ensure the build path
+	set by the configure settings will always be returned. 
+
 2009-11-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix dependencies to support CDT 6.0.0 and up.

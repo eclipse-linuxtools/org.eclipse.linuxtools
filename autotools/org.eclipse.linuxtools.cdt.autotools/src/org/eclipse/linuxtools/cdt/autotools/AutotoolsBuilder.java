@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools;
 
+import org.eclipse.cdt.core.settings.model.COutputEntry;
+import org.eclipse.cdt.core.settings.model.ICLanguageSettingEntry;
+import org.eclipse.cdt.core.settings.model.ICOutputEntry;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
 import org.eclipse.cdt.managedbuilder.internal.core.Builder;
 import org.eclipse.cdt.managedbuilder.internal.core.ToolChain;
@@ -66,6 +69,11 @@ public class AutotoolsBuilder extends Builder {
 	 */
 	public IManagedBuilderMakefileGenerator getBuildFileGenerator() {
 		return new MakeGenerator();
+	}
+
+	/* @override */
+	public ICOutputEntry[] getOutputEntries() {
+		return new ICOutputEntry[]{new COutputEntry(buildPath, null, ICLanguageSettingEntry.VALUE_WORKSPACE_PATH | ICLanguageSettingEntry.RESOLVED)};
 	}
 
 }

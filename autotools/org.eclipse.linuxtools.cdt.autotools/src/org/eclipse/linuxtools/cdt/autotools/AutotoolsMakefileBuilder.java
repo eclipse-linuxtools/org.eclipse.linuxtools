@@ -263,6 +263,10 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 
 			ToolChain toolChain = (ToolChain)cfg.getToolChain();
 			IBuilder oldBuilder = cfg.getBuilder();
+			String workingDir = generator.getBuildWorkingDir().toString();
+			IPath location = project.getLocation().append(workingDir);
+			oldBuilder.setBuildPath(location.toString());	
+			oldBuilder.setBuildFileGeneratorElement(AutotoolsPlugin.getDefault().getGeneratorElement());
 			IBuilder builder = new AutotoolsBuilder(cfg.getEditableBuilder(), project, toolChain);
 			String buildLocation = null;
 			String buildCommand = null;
@@ -273,8 +277,9 @@ public class AutotoolsMakefileBuilder extends CommonBuilder {
 				buildCommand = (String)args.get("org.eclipse.cdt.make.core.build.command"); // $NON-NLS-1$
 				buildArguments = (String)args.get("org.eclipse.cdt.make.core.build.arguments"); // $NON-NLS-1$
 			}
-			if (buildLocation == null)
-				builder.setBuildPath(project.getLocation().append(generator.getBuildWorkingDir()).toString());
+			if (buildLocation == null) {
+				builder.setBuildPath(location.toString());
+			}
 			else {
 				IWorkspace workspace = project.getWorkspace();
 				builder.setBuildPath(workspace.getRoot().getLocation().append(buildLocation).toString());
