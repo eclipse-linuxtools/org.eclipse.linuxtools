@@ -13,11 +13,12 @@ package org.eclipse.linuxtools.binutils.link2source;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.eclipse.cdt.debug.core.CDebugCorePlugin;
-import org.eclipse.cdt.debug.core.sourcelookup.MappingSourceContainer;
-import org.eclipse.cdt.debug.internal.core.sourcelookup.MapEntrySourceContainer;
+import org.eclipse.cdt.debug.core.sourcelookup.ICSourceLocation;
+import org.eclipse.cdt.debug.core.sourcelookup.IDirectorySourceLocation;
+import org.eclipse.cdt.debug.core.sourcelookup.SourceLookupFactory;
+import org.eclipse.cdt.debug.internal.core.sourcelookup.SourceUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -40,10 +41,7 @@ import org.eclipse.ui.IEditorInput;
  * and modifies the source locator accordingly.
  *
  */
-public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
-
-	private final static String foundMappingsContainerName = "Found Mappings"; //$NON-NLS-1$
-	
+public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {	
 
 	private Button locateFileButton;
 	private Button editLookupButton;
@@ -161,29 +159,14 @@ public class STCSourceNotFoundEditor extends CommonSourceNotFoundEditor {
 	}
 
 	private void addSourceMappingToDirector(IPath missingPath, IPath newSourcePath, AbstractSourceLookupDirector director) throws CoreException {
-
 		ArrayList<ISourceContainer> containerList = new ArrayList<ISourceContainer>(Arrays.asList(
 				director.getSourceContainers()
 		));
-		boolean hasFoundMappings = false;
-		MappingSourceContainer foundMappings = null;
-		for (Iterator<ISourceContainer> iter = containerList.iterator(); iter.hasNext() && !hasFoundMappings;) {
-			ISourceContainer container = iter.next();
-			if (container instanceof MappingSourceContainer)
-			{
-				hasFoundMappings = container.getName().equals(foundMappingsContainerName);
-				if (hasFoundMappings)
-					foundMappings = (MappingSourceContainer) container;
-			}
+		IDirectorySourceLocation loc = SourceLookupFactory.createDirectorySourceLocation(newSourcePath, missingPath, false);
+		ISourceContainer[] containers = SourceUtils.convertSourceLocations(new ICSourceLocation[] {loc});
+		for (ISourceContainer sourceContainer : containers) {
+			containerList.add(sourceContainer);
 		}
-
-		if (!hasFoundMappings) {
-			foundMappings = new MappingSourceContainer(foundMappingsContainerName);
-			foundMappings.init(director);
-			containerList.add(foundMappings);
-		}
-
-		foundMappings.addMapEntry(new MapEntrySourceContainer(missingPath, newSourcePath));
 		director.setSourceContainers(containerList.toArray(new ISourceContainer[containerList.size()]));
 	}
 
