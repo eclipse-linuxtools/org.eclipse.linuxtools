@@ -128,7 +128,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 	private Button OKButton;
 	private boolean testMode = false;
-	protected String secondaryID = "";
+	protected String secondaryID = ""; //$NON-NLS-1$
 
 	/**
 	 * Provides access to the Profiling Frameworks' launch method
@@ -155,7 +155,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
 		needToGenerate = false;
 		useColours = false;
-		secondaryID = "";
+		secondaryID = ""; //$NON-NLS-1$
 	}
 
 	@Override

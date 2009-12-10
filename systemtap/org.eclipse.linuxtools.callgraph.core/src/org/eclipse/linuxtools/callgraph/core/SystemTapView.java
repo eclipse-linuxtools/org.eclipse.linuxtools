@@ -263,7 +263,7 @@ public abstract class SystemTapView extends ViewPart {
                     Shell sh = new Shell();
 
                     MessageDialog.openInformation(sh, Messages
-                            .getString("SystemTapView.5"), message); //$NON-NLS-1$
+                            .getString("SystemTapView.5"), message + NEW_LINE + Messages.getString("Callgraph.Version")); //$NON-NLS-1$ //$NON-NLS-2$
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -435,7 +435,7 @@ public abstract class SystemTapView extends ViewPart {
 
     protected void addKillButton() {
         IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-        kill = new Action(Messages.getString("SystemTapView.16"),
+        kill = new Action(Messages.getString("SystemTapView.16"), //$NON-NLS-1$
                 CallgraphCorePlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
             public void run() {
                 getParser().cancelJob();

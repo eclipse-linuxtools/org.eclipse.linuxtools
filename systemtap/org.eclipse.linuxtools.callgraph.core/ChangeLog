@@ -1,3 +1,9 @@
+2009-12-10  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/CallgraphCorePlugin.java: Add NON-NLS as needed
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Add Callgraph version
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Let Help->Version refer to systemtap, and callgraph versions
+
 2009-12-09  Charley Wang  <chwang@redhat.com>
 
 	* parse_function_partial.stp: Add threading capability
