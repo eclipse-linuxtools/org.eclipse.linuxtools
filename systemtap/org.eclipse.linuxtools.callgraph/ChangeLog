@@ -1,3 +1,7 @@
+2009-12-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Write to .dot in a slightly modified way that will make it easier for users to just delete chunks of data and still graph accurately.
+
 2009-12-11  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Reset StringBuilder per iteration as opposed to creating a new one each time.

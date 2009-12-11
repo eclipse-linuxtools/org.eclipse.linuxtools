@@ -446,9 +446,8 @@ public class CallgraphView extends SystemTapView {
 	                		if (d.isCollapsed && !d.isOnlyChildWithThisName())
 	                			continue;
 	                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
-	                		for (int j : d.children) {
-	                			build.append(d.id + "->" + g.getNodeData(j).id + "\n");
-	                		}
+	                		int j = d.collapsedParent;
+	                		build.append(d.id + "->" + g.getNodeData(j).id);
 	                		out.write(build.toString());
 	                		build.setLength(0);
 	                	}
@@ -490,10 +489,11 @@ public class CallgraphView extends SystemTapView {
 		                		StapData d = g.getNodeData(i);
 		                		if (!d.isCollapsed && !d.isOnlyChildWithThisName())
 		                			continue;
-		                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
-		                		for (int j : d.collapsedChildren) {
-		                			build.append(d.id + "->" + g.getNodeData(j).id + " [label=\"" + g.getNodeData(j).timesCalled + "\"]\n");
-		                		}
+		                		build.append(d.id + " [label=\"" + d.name);
+		                		build.append(" " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
+		                		int j = d.collapsedParent;
+		                		build.append(d.id + "->" + g.getNodeData(j).id);
+		                		build.append(" [label=\"" + g.getNodeData(j).timesCalled + "\"]\n");
 		                		out.write(build.toString());
 		                		build.setLength(0);
 		                	}
