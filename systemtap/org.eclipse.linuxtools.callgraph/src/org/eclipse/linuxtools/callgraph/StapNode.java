@@ -24,7 +24,7 @@ public class StapNode extends GraphNode{
 	private static int nodeSize = 20;
 	public int id;
 	public GraphConnection connection;		//Each node should have only one connection (to its caller)
-	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
+	static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
 
 	public StapNode(StapGraph graphModel, int style, StapData data) {
 		
