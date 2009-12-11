@@ -3,6 +3,7 @@
 	* src/org/eclipse/linuxtools/callgraph/StapNode.java: Make numberFormat public.
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Create the 'Save as .dot' option.
 	Create 'save uncollapsed as .dot' and 'save collapsed as .dot' options in the File menu.
+	Remove unused import.
 	
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Make the DataMap publically accessible
 
