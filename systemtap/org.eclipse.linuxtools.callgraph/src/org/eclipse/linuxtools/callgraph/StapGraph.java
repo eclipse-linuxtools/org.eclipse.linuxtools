@@ -85,7 +85,7 @@ public class StapGraph extends Graph {
 	private int idOfLastNode;	
 	private int idOfLastCollapsedNode;
 	private HashMap<Integer, StapNode> nodeMap; 				// HashMap of current nodes
-	private HashMap<Integer, StapData> nodeDataMap; 			// HashMap of all data
+	public HashMap<Integer, StapData> nodeDataMap; 			// HashMap of all data
 	//The negative side of nodeDataMap is collapsed, the positive side is uncollapsed
 	
 	public List<GraphNode> aggregateNodes;

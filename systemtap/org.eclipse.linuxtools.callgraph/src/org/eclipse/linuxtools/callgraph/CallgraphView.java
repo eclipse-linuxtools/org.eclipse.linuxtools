@@ -11,6 +11,16 @@
 
 package org.eclipse.linuxtools.callgraph;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -70,6 +80,7 @@ public class CallgraphView extends SystemTapView {
 	private  Action goto_previous;
 	private  Action goto_last;
 	private  Action play;
+	private  Action saveAsDot;
 	ImageDescriptor playImage= CallgraphPlugin.getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
 	ImageDescriptor pauseImage= CallgraphPlugin.getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 	
@@ -412,6 +423,49 @@ public class CallgraphView extends SystemTapView {
 		
 		// ADD OPTIONS TO THE GRAPH MENU
 		addFileMenu();
+		saveAsDot = new Action("Save as .dot file") {
+            public void run(){
+                Shell sh = new Shell();
+                FileDialog dialog = new FileDialog(sh, SWT.SAVE);
+                String filePath = dialog.open();
+               
+                if (filePath != null) {
+                	File f = new File(filePath);
+                    f.delete();
+                    try {
+						f.createNewFile();
+					} catch (IOException e) {
+						return;
+					}
+
+                    try {
+    					BufferedWriter out = new BufferedWriter(new FileWriter(f));
+                
+    					out.write("digraph stapgraph {\n");
+	                	for (int i : g.nodeDataMap.keySet()) {
+	                		StringBuilder build = new StringBuilder("");
+	                		StapData d = g.getNodeData(i);
+	                		build.append(d.id + " [label=\"" + d.name + " " + (float) d.getTime()/g.getTotalTime() * 100 + "\"]\n");
+	                		for (int j : d.children) {
+	                			build.append(d.id + "->" + g.getNodeData(j).id + " [label=\"" + g.getNodeData(j).timesCalled + "\"]\n");
+	                		}
+	                		out.write(build.toString());
+	                	}
+	                	out.write("}");
+	                	out.flush();
+	                	out.close();
+                    } catch (FileNotFoundException e) {
+                    	// TODO Auto-generated catch block
+                    	e.printStackTrace();
+                    } catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+                }
+            }
+		};
+		
+		file.add(saveAsDot);
 		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
 		markers = new MenuManager(Messages.getString("CallgraphView.6")); //$NON-NLS-1$

@@ -1,3 +1,8 @@
+2009-12-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Create the 'Save as .dot' option
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Make the DataMap publically accessible
+
 2009-12-10  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Quit with error message if opening a file encounters an I/O error.
