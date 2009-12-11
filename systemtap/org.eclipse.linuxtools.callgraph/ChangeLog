@@ -5,6 +5,7 @@
 	Create 'save uncollapsed as .dot' and 'save collapsed as .dot' options in the File menu.
 	Remove unused import.
 	Rename save_dot, save_col_dot. Add these to the list of actions enabled/disabled by opening a graph.
+	Do not label edges in uncollapsed .dot files. Change order of collapsed/uncollapsed .dot's
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Make the DataMap publically accessible
 
 2009-12-10  Charley Wang  <chwang@redhat.com>

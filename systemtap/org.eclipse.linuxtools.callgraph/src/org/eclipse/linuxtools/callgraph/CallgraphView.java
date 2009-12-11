@@ -449,7 +449,7 @@ public class CallgraphView extends SystemTapView {
 	            					StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) 
 	            					+ "%\"]\n");
 	                		for (int j : d.children) {
-	                			build.append(d.id + "->" + g.getNodeData(j).id + " [label=\"" + g.getNodeData(j).timesCalled + "\"]\n");
+	                			build.append(d.id + "->" + g.getNodeData(j).id + "\n");
 	                		}
 	                		out.write(build.toString());
 	                	}
@@ -514,8 +514,8 @@ public class CallgraphView extends SystemTapView {
 			
 		};
 		
-		file.add(save_dot);
 		file.add(save_col_dot);
+		file.add(save_dot);
 		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
 		markers = new MenuManager(Messages.getString("CallgraphView.6")); //$NON-NLS-1$
