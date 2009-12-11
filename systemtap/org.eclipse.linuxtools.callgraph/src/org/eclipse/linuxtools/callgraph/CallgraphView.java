@@ -443,6 +443,8 @@ public class CallgraphView extends SystemTapView {
                 
     					out.write("digraph stapgraph {\n");
 	                	for (int i : g.nodeDataMap.keySet()) {
+	                		if (i == 0)
+	                			continue;
 	                		StapData d = g.getNodeData(i);
 	                		if (d.isCollapsed && !d.isOnlyChildWithThisName())
 	                			continue;
@@ -489,6 +491,8 @@ public class CallgraphView extends SystemTapView {
 	    					
 	    					out.write("digraph stapgraph {\n");
 		                	for (int i : g.nodeDataMap.keySet()) {
+		                		if (i == 0)
+		                			continue;
 		                		StapData d = g.getNodeData(i);
 		                		if (!d.isCollapsed && !d.isOnlyChildWithThisName())
 		                			continue;
