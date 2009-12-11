@@ -84,7 +84,7 @@ public class StapGraph extends Graph {
 	//Node management
 	private int idOfLastNode;	
 	private int idOfLastCollapsedNode;
-	private HashMap<Integer, StapNode> nodeMap; 				// HashMap of current nodes
+	public HashMap<Integer, StapNode> nodeMap; 				// HashMap of current nodes
 	public HashMap<Integer, StapData> nodeDataMap; 			// HashMap of all data
 	//The negative side of nodeDataMap is collapsed, the positive side is uncollapsed
 	
@@ -2024,4 +2024,7 @@ public class StapGraph extends Graph {
 		return threaded;
 	}
 	
+	public boolean getCollapseMode() {
+		return collapse_mode;
+	}
 }

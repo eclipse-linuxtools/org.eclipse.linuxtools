@@ -1,8 +1,10 @@
 2009-12-11  Charley Wang  <chwang@redhat.com>
 
-	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Add check for nullity when attaching parent nodes.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Add "Save current view as .dot" which will save only the currently visible nodes, in whatever collapse mode they are in. Fix problem where nodes will display parent's timeCalled instead of their own.  
+	Add check for nullity when attaching parent nodes.
 	Add a missing newline to uncollapsed.
 	Do not graph Start Of Program
+	
 
 2009-12-11  Roland Grunberg  <rgrunber@redhat.com>
 
