@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -423,155 +424,23 @@ public class CallgraphView extends SystemTapView {
 		
 		// ADD OPTIONS TO THE GRAPH MENU
 		addFileMenu();
-		
+
+		//TODO I AM HERE
 		save_cur_dot = new Action("Save current view as .dot file") {
 			  public void run(){
-	                Shell sh = new Shell();
-	                FileDialog dialog = new FileDialog(sh, SWT.SAVE);
-	                
-	                String filePath = dialog.open();
-	               
-	                if (filePath != null) {
-	                	File f = new File(filePath);
-	                    f.delete();
-	                    try {
-							f.createNewFile();
-						} catch (IOException e) {
-							return;
-						}
+				  writeToDot(g.getCollapseMode(), g.nodeMap.keySet());
+			  }
 
-	                    try {
-	    					BufferedWriter out = new BufferedWriter(new FileWriter(f));
-	    					StringBuilder build = new StringBuilder("");
-	                
-	    					out.write("digraph stapgraph {\n");
-	    					boolean mode = g.getCollapseMode();
-		                	for (int i : g.nodeMap.keySet()) {
-		                		if (i == 0)
-		                			continue;
-		                		StapData d = g.getNodeData(i);
-		                		if ( (d.isCollapsed != mode) && !d.isOnlyChildWithThisName())
-		                			continue;
-		                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
-		                		int j = d.parent;
-		                		if (g.getNode(j) == null || j == 0)
-		                			continue;
-		                		
-		                		String called = mode ? "[label=\"" + g.getNodeData(i).timesCalled + "\"]\n" : "\n";
-	                			build.append( g.getNodeData(j).id + "->" + d.id + called);	                			
-		                		out.write(build.toString());
-		                		build.setLength(0);
-		                	}
-		                	out.write("}");
-		                	out.flush();
-		                	out.close();
-	                    } catch (FileNotFoundException e) {
-	                    	// TODO Auto-generated catch block
-	                    	e.printStackTrace();
-	                    } catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} 
-	                }
-	            }
 		};
 		save_dot = new Action("Save all uncollapsed as .dot file") {
             public void run(){
-                Shell sh = new Shell();
-                FileDialog dialog = new FileDialog(sh, SWT.SAVE);
-                
-                String filePath = dialog.open();
-               
-                if (filePath != null) {
-                	File f = new File(filePath);
-                    f.delete();
-                    try {
-						f.createNewFile();
-					} catch (IOException e) {
-						return;
-					}
-
-                    try {
-    					BufferedWriter out = new BufferedWriter(new FileWriter(f));
-    					StringBuilder build = new StringBuilder("");
-                
-    					out.write("digraph stapgraph {\n");
-	                	for (int i : g.nodeDataMap.keySet()) {
-	                		if (i == 0)
-	                			continue;
-	                		StapData d = g.getNodeData(i);
-	                		if (d.isCollapsed && !d.isOnlyChildWithThisName())
-	                			continue;
-	                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
-	                		int j = d.parent;
-	                		if (g.getNodeData(j) == null || j == 0)
-	                			continue;
-                			build.append( g.getNodeData(j).id + "->" + d.id + "\n");
-                			
-	                		out.write(build.toString());
-	                		build.setLength(0);
-	                	}
-	                	out.write("}");
-	                	out.flush();
-	                	out.close();
-                    } catch (FileNotFoundException e) {
-                    	// TODO Auto-generated catch block
-                    	e.printStackTrace();
-                    } catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-                }
+              writeToDot(false, g.nodeDataMap.keySet());
             }
 		};
 		
 		save_col_dot = new Action ("Save all collapsed as .dot") {
 		     public void run(){
-	                Shell sh = new Shell();
-	                FileDialog dialog = new FileDialog(sh, SWT.SAVE);
-	                String filePath = dialog.open();
-	               
-	                if (filePath != null) {
-	                	File f = new File(filePath);
-	                    f.delete();
-	                    try {
-							f.createNewFile();
-						} catch (IOException e) {
-							return;
-						}
-
-	                    try {
-	    					BufferedWriter out = new BufferedWriter(new FileWriter(f));
-	    					StringBuilder build = new StringBuilder("");
-	    					
-	    					out.write("digraph stapgraph {\n");
-		                	for (int i : g.nodeDataMap.keySet()) {
-		                		if (i == 0)
-		                			continue;
-		                		StapData d = g.getNodeData(i);
-		                		if (!d.isCollapsed && !d.isOnlyChildWithThisName())
-		                			continue;
-		                		build.append(d.id + " [label=\"" + d.name);
-		                		build.append(" " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
-		                		int j = d.collapsedParent;
-		                		if (g.getNodeData(j) == null || j == 0)
-		                			continue;
-	                			build.append(g.getNodeData(j).id + "->" + d.id);
-	                			build.append(" [label=\"" + g.getNodeData(i).timesCalled + "\"]\n");
-		                		out.write(build.toString());
-		                		build.setLength(0);
-		                	}
-		                	out.write("}");
-		                	out.flush();
-		                	out.close();
-	                    } catch (FileNotFoundException e) {
-	                    	// TODO Auto-generated catch block
-	                    	e.printStackTrace();
-	                    } catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} 
-	                }
+	                writeToDot(true, g.nodeDataMap.keySet());
 	            }
 			
 		};
@@ -1066,6 +935,58 @@ public class CallgraphView extends SystemTapView {
 	@Override
 	public SystemTapParser getParser() {
 		return parser;
+	}
+	
+	private void writeToDot(boolean mode, Set<Integer> keySet) {
+        Shell sh = new Shell();
+        FileDialog dialog = new FileDialog(sh, SWT.SAVE);
+        
+        String filePath = dialog.open();
+       
+        if (filePath != null) {
+        	File f = new File(filePath);
+            f.delete();
+            try {
+				f.createNewFile();
+			} catch (IOException e) {
+				return;
+			}
+
+            try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(f));
+				StringBuilder build = new StringBuilder("");
+        
+				out.write("digraph stapgraph {\n");
+            	for (int i : keySet) {
+            		if (i == 0)
+            			continue;
+            		StapData d = g.getNodeData(i);
+            		if ( (d.isCollapsed != mode) && !d.isOnlyChildWithThisName())
+            			continue;
+            		build.append(i + " [label=\"" + d.name + " " );
+            		build.append(StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
+            		int j = d.parent;
+            		if (mode)
+            			j = d.collapsedParent;
+            		 
+            		if (!keySet.contains(j) || j == 0)
+            			continue;
+            		
+            		String called = mode ? " [label=\"" + g.getNodeData(i).timesCalled + "\"]\n" : "\n";
+        			build.append( j + "->" + i );
+        			build.append( called );
+            		out.write(build.toString());
+            		build.setLength(0);
+            	}
+            	out.write("}");
+            	out.flush();
+            	out.close();
+            } catch (FileNotFoundException e) {
+            	e.printStackTrace();
+            } catch (IOException e) {
+				e.printStackTrace();
+			} 
+        }
 	}
 
 
