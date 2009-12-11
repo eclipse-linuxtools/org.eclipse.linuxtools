@@ -438,20 +438,19 @@ public class CallgraphView extends SystemTapView {
 
                     try {
     					BufferedWriter out = new BufferedWriter(new FileWriter(f));
+    					StringBuilder build = new StringBuilder("");
                 
     					out.write("digraph stapgraph {\n");
 	                	for (int i : g.nodeDataMap.keySet()) {
 	                		StapData d = g.getNodeData(i);
 	                		if (d.isCollapsed && !d.isOnlyChildWithThisName())
 	                			continue;
-	                		StringBuilder build = new StringBuilder("");
-	                		build.append(d.id + " [label=\"" + d.name + " " + 
-	            					StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) 
-	            					+ "%\"]\n");
+	                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
 	                		for (int j : d.children) {
 	                			build.append(d.id + "->" + g.getNodeData(j).id + "\n");
 	                		}
 	                		out.write(build.toString());
+	                		build.setLength(0);
 	                	}
 	                	out.write("}");
 	                	out.flush();
@@ -484,20 +483,19 @@ public class CallgraphView extends SystemTapView {
 
 	                    try {
 	    					BufferedWriter out = new BufferedWriter(new FileWriter(f));
-	                
+	    					StringBuilder build = new StringBuilder("");
+	    					
 	    					out.write("digraph stapgraph {\n");
 		                	for (int i : g.nodeDataMap.keySet()) {
 		                		StapData d = g.getNodeData(i);
 		                		if (!d.isCollapsed && !d.isOnlyChildWithThisName())
 		                			continue;
-		                		StringBuilder build = new StringBuilder("");
-		                		build.append(d.id + " [label=\"" + d.name + " " + 
-		            					StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) 
-		            					+ "%\"]\n");
+		                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
 		                		for (int j : d.collapsedChildren) {
 		                			build.append(d.id + "->" + g.getNodeData(j).id + " [label=\"" + g.getNodeData(j).timesCalled + "\"]\n");
 		                		}
 		                		out.write(build.toString());
+		                		build.setLength(0);
 		                	}
 		                	out.write("}");
 		                	out.flush();
