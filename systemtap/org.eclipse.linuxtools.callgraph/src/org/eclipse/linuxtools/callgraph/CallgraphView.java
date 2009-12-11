@@ -448,9 +448,9 @@ public class CallgraphView extends SystemTapView {
 	                			continue;
 	                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
 	                		int j = d.parent;
-	                		if (j != 0){
-	                			build.append( g.getNodeData(j).id + "->" + d.id );	                			
-	                		}
+	                		if (g.getNodeData(j) == null || j == 0)
+	                			continue;
+                			build.append( g.getNodeData(j).id + "->" + d.id );	                			
 	                		out.write(build.toString());
 	                		build.setLength(0);
 	                	}
@@ -495,10 +495,10 @@ public class CallgraphView extends SystemTapView {
 		                		build.append(d.id + " [label=\"" + d.name);
 		                		build.append(" " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
 		                		int j = d.collapsedParent;
-		                		if (j != 0){
-		                			build.append(g.getNodeData(j).id + "->" + d.id);
-		                			build.append(" [label=\"" + g.getNodeData(j).timesCalled + "\"]\n");
-		                		}
+		                		if (g.getNodeData(j) == null || j == 0)
+		                			continue;
+	                			build.append(g.getNodeData(j).id + "->" + d.id);
+	                			build.append(" [label=\"" + g.getNodeData(j).timesCalled + "\"]\n");
 		                		out.write(build.toString());
 		                		build.setLength(0);
 		                	}

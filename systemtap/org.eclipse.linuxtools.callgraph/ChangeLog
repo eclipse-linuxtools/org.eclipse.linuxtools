@@ -1,3 +1,7 @@
+2009-12-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Add check for nullity when attaching parent nodes.
+
 2009-12-11  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Do not try to find parent for the root node.
