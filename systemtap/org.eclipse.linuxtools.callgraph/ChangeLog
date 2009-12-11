@@ -1,6 +1,6 @@
 2009-12-11  Charley Wang  <chwang@redhat.com>
 
-	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Write to .dot in a slightly modified way that will make it easier for users to just delete chunks of data and still graph accurately.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Write to .dot in a slightly modified way that will make it easier for users to just delete chunks of data and still graph accurately. (FIX: uncollapse should attach to d.parent, not d.collapsedParent)
 
 2009-12-11  Roland Grunberg  <rgrunber@redhat.com>
 

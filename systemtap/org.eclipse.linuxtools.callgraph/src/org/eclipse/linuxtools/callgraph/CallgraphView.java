@@ -425,6 +425,7 @@ public class CallgraphView extends SystemTapView {
             public void run(){
                 Shell sh = new Shell();
                 FileDialog dialog = new FileDialog(sh, SWT.SAVE);
+                
                 String filePath = dialog.open();
                
                 if (filePath != null) {
@@ -446,7 +447,7 @@ public class CallgraphView extends SystemTapView {
 	                		if (d.isCollapsed && !d.isOnlyChildWithThisName())
 	                			continue;
 	                		build.append(d.id + " [label=\"" + d.name + " " + StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
-	                		int j = d.collapsedParent;
+	                		int j = d.parent;
 	                		build.append(d.id + "->" + g.getNodeData(j).id);
 	                		out.write(build.toString());
 	                		build.setLength(0);
