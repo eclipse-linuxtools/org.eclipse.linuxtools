@@ -75,8 +75,8 @@ public class CallgraphView extends SystemTapView {
 	private  Action goto_previous;
 	private  Action goto_last;
 	private  Action play;
-	private  Action saveAsDot;
-	private  Action saveColAsDot;
+	private  Action save_dot;
+	private  Action save_col_dot;
 	ImageDescriptor playImage= CallgraphPlugin.getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
 	ImageDescriptor pauseImage= CallgraphPlugin.getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 	
@@ -327,6 +327,8 @@ public class CallgraphView extends SystemTapView {
 	public  void setGraphOptions (boolean visible){
 		play.setEnabled(visible);
 		save_file.setEnabled(visible);
+		save_dot.setEnabled(visible);
+		save_col_dot.setEnabled(visible);
 		view_treeview.setEnabled(visible);
 		view_radialview.setEnabled(visible);
 		view_aggregateview.setEnabled(visible);
@@ -419,7 +421,7 @@ public class CallgraphView extends SystemTapView {
 		
 		// ADD OPTIONS TO THE GRAPH MENU
 		addFileMenu();
-		saveAsDot = new Action("Save uncollapsed as .dot file") {
+		save_dot = new Action("Save uncollapsed as .dot file") {
             public void run(){
                 Shell sh = new Shell();
                 FileDialog dialog = new FileDialog(sh, SWT.SAVE);
@@ -465,7 +467,7 @@ public class CallgraphView extends SystemTapView {
             }
 		};
 		
-		saveColAsDot = new Action ("Save collapsed as .dot") {
+		save_col_dot = new Action ("Save collapsed as .dot") {
 		     public void run(){
 	                Shell sh = new Shell();
 	                FileDialog dialog = new FileDialog(sh, SWT.SAVE);
@@ -512,8 +514,8 @@ public class CallgraphView extends SystemTapView {
 			
 		};
 		
-		file.add(saveAsDot);
-		file.add(saveColAsDot);
+		file.add(save_dot);
+		file.add(save_col_dot);
 		view = new MenuManager(Messages.getString("CallgraphView.1")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.2")); //$NON-NLS-1$
 		markers = new MenuManager(Messages.getString("CallgraphView.6")); //$NON-NLS-1$
