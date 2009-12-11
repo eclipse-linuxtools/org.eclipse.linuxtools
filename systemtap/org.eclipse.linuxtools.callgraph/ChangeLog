@@ -1,6 +1,7 @@
 2009-12-11  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Add check for nullity when attaching parent nodes.
+	Add a missing newline to uncollapsed.
 
 2009-12-11  Roland Grunberg  <rgrunber@redhat.com>
 

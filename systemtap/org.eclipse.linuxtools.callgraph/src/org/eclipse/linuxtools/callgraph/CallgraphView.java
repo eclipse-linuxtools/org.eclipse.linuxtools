@@ -450,7 +450,7 @@ public class CallgraphView extends SystemTapView {
 	                		int j = d.parent;
 	                		if (g.getNodeData(j) == null || j == 0)
 	                			continue;
-                			build.append( g.getNodeData(j).id + "->" + d.id );	                			
+                			build.append( g.getNodeData(j).id + "->" + d.id + "\n");	                			
 	                		out.write(build.toString());
 	                		build.setLength(0);
 	                	}
