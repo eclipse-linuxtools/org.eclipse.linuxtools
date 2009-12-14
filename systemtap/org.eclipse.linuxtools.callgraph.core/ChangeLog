@@ -1,3 +1,8 @@
+2009-12-14  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/Helper.java:
+		BufferedWriter helper methods can be static if we simply pass in the BufferedWriter to be acted upon.
+
 2009-12-10  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/FileFinderOpener.java: Properly quit if findAndOpen encounters a user-sent 'Cancel'

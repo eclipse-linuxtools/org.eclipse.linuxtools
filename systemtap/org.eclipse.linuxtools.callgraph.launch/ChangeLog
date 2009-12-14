@@ -1,3 +1,8 @@
+2009-12-14  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: 
+		Refactor BufferedWriter logic to reflect the static only methods.
+
 2009-12-09  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java (generateCommand): Tweaks for threading. Force command generation every time (otherwise may skip for bad reasons)

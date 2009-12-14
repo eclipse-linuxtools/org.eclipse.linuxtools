@@ -377,14 +377,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 	
 		
 	private class StreamListener implements IStreamListener{
-		private Helper h;
 		private int counter;
+		private BufferedWriter bw;
+		
 		public StreamListener() throws IOException {
 			File file = new File(TEMP_ERROR_OUTPUT);
 			file.delete();
 			file.createNewFile();
-			h = new Helper();
-			h.setBufferedWriter(TEMP_ERROR_OUTPUT); //$NON-NLS-1$
+			bw = Helper.setBufferedWriter(TEMP_ERROR_OUTPUT); //$NON-NLS-1$
 			counter = 0;
 		}
 		@Override
@@ -393,7 +393,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				if (text.length() < 1) return;
 				counter++;
 				if (counter < PluginConstants.MAX_ERRORS)
-					h.appendToExistingFile(text);
+					bw.append(text);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -401,7 +401,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		}
 
 		public void close() throws IOException {
-			h.closeBufferedWriter();
+			bw.close();
 		}
 
 	}
