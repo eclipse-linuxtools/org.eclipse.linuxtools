@@ -105,9 +105,12 @@ public class FileFinderOpener {
 	 * @return
 	 */
 	public static String findAndOpen(ICProject project, String functionName) {
+		//Safety valve: Do not enforce use of project names
+		if (project == null)
+			return null;
+		
 		offset.clear();
 		length.clear();
-
 		ArrayList<String> files = findFunctionsInProject(project, functionName);
 		
 		if (files == null || files.size() < 1)
