@@ -396,22 +396,24 @@ public class StapGraphParser extends SystemTapParser {
 		boolean draw = false;
 		try {
 			while ((line = buff.readLine()) != null) {
-				draw = true; 
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 				if (line.length() < 1)
 					continue;
 				
+				draw = true; 
 				if (line.equals("PROBE_BEGIN")) { //$NON-NLS-1$
+					buff.mark(100);
 					String tmp = buff.readLine();
 					
 					if (tmp != null && tmp.length() > 0) {
-						project = CoreModel.getDefault().getCModel().getCProject(tmp);
+						char tchar = tmp.charAt(0);
+						if (tchar != '-' && tchar != '+' && tchar != '?' && tchar != '>' && tchar != '<')
+							project = CoreModel.getDefault().getCModel().getCProject(tmp);
+						else
+							buff.reset();
 					}
-					else {
-						launchFileErrorDialog();
-						return Status.CANCEL_STATUS;
-					}
+					
 				} else if (line.charAt(0) == '-') {
 					endingTimeInNS = Long.parseLong(line.substring(1));
 				} else if (line.charAt(0) == '+') {
