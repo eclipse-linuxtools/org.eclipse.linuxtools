@@ -1,3 +1,7 @@
+2009-12-15  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapOptionsTab.java: Prevent Preprocessor Directives textbox from auto-resizing at will.
+
 2009-12-14  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: 

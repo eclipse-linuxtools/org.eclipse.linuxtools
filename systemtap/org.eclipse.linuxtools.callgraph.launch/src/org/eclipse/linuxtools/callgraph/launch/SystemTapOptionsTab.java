@@ -802,7 +802,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		Label button_D_label = new Label(buttonsTop, SWT.NONE);
 		button_D_label.setText(Messages.getString("SystemTapOptionsTab.PreprocessorDirective")); //$NON-NLS-1$
 		button_D_text = new Text(buttonsTop, SWT.BORDER);
-		button_D_text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_D_text.setLayoutData(new GridData(200,15));
 		button_D_text.addModifyListener(modifyListener);
 		button_D_label.setToolTipText(
 					  Messages.getString("SystemTapOptionsTab.42") + //$NON-NLS-1$
