@@ -196,185 +196,181 @@ public class StapGraphParser extends SystemTapParser {
 			}
 	}
 	
-	private IStatus parse(String data) {
-		String[] callsAndReturns = data.split(";"); //$NON-NLS-1$
+	private IStatus parse(String s) {
 
 		try {
-		for (String s : callsAndReturns) {
-			if (s.length() < 1)
-				continue;
-			switch (s.charAt(0)) {
-				case '<' :
-					/*
-					 * 
-					 * Open tag -- function call
-					 * 
-					 * 
-					 */
-					String[] args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
-					// args[0] = name
-					// args[1] = id
-					// arsg[2] = time of event
-					int id = Integer.parseInt(args[1]);
-					long time = Long.parseLong(args[2]);
-					int tid = Integer.parseInt(args[3]);
-					String name = args[0];
-					
-					//If we haven't encountered a main function yet and the name isn't clean,
-					//and the name contains "__", then this is probably a C directive
-					if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
-						skippedDirectives = true;
-						break;
-					}
-					
-					ArrayList<String> nameList = nameMaps.get(tid);
-					if (nameList == null) {
-						nameList = new ArrayList<String>();
-					}
-					
-					ArrayList<Integer> idList = idMaps.get(tid);
-					if (idList == null) {
-						idList = new ArrayList<Integer>();
-					}
-					
-					HashMap<Integer, ArrayList<Integer>> outNeighbours = neighbourMaps.get(tid);
-					if (outNeighbours == null) {
-						outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
-					}
-					
-					if (startTime < 1) {
-						startTime = time;
-					}
-					endingTimeInNS=time;
-					
-					name = cleanFunctionName(name);
-					if (name.equals("main")) //$NON-NLS-1$
-						encounteredMain = true;
-					if (firstNode == -1) {
-						firstNode = id;
-					}
-					
-					serialMap.put(id, name);
-					timeMap.put(id, time);
-					
-					if (aggregateTimeMap.get(name) == null){
-						aggregateTimeMap.put(name, (long) 0);
-					}
-
-					//IF THERE ARE PREVIOUS FUNCTIONS WITH THE SAME NAME
-					//WE ARE IN ONE OF THEM SO DO NOT ADD TO CUMULATIVE TIME
-
-					
-					if (nameList.indexOf(name) == -1) {
-						long cumulativeTime = aggregateTimeMap.get(name) - time;
-						aggregateTimeMap.put(name, cumulativeTime);
-						shouldGetEndingTimeForID.add(id);
-					}
-					
-					
-					if (countMap.get(name) == null){
-						countMap.put(name, 0);
-					}
-					countMap.put(name, countMap.get(name) + 1);
-					
-					nameList.add(name);
-					idList.add(id);
-					
-
-					if (outNeighbours.get(id) == null){
-						outNeighbours.put(id, new ArrayList<Integer>());
-					}
-					
-					if (idList.size() > 1) {
-						int parentID = idList.get(idList.size() - 2);
-						outNeighbours.get(parentID).add(id);
-					}
-					
-					
-					callOrderList.add(id);
-					lastFunctionMap.put(tid,id);
-					
-					neighbourMaps.put(tid, outNeighbours);
-					nameMaps.put(tid, nameList);
-					idMaps.put(tid, idList);
-
+		if (s.length() < 1)
+			return Status.OK_STATUS;
+		switch (s.charAt(0)) {
+			case '<' :
+				/*
+				 * 
+				 * Open tag -- function call
+				 * 
+				 * 
+				 */
+				String[] args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
+				// args[0] = name
+				// args[1] = id
+				// arsg[2] = time of event
+				int id = Integer.parseInt(args[1]);
+				long time = Long.parseLong(args[2]);
+				int tid = Integer.parseInt(args[3]);
+				String name = args[0];
+				
+				//If we haven't encountered a main function yet and the name isn't clean,
+				//and the name contains "__", then this is probably a C directive
+				if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
+					skippedDirectives = true;
 					break;
-				case '>' :
-					
-					/*
-					 * 
-					 * Close tag -- Function return
-					 * 
-					 */
-					
-					args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
-					//args[0] = name
-					//args[1] = time of event
-					name = args[0];
-					tid = Integer.parseInt(args[2]);
-					
-					nameList = nameMaps.get(tid);
-					if (nameList == null) {
-						nameList = new ArrayList<String>();
-					}
-					
-					idList = idMaps.get(tid);
-					if (idList == null) {
-						idList = new ArrayList<Integer>();
-					}
-					
-					
-					//If we haven't encountered a main function yet and the name isn't clean,
-					//and the name contains "__", then this is probably a C directive
-					if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
-						skippedDirectives = true;							
-						break;
-					}
-					
-					name = cleanFunctionName(name);
-					int lastOccurance = nameList.lastIndexOf(name);
-					if (lastOccurance < 0) {
-						parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
-						return Status.CANCEL_STATUS;
-					}
+				}
+				
+				ArrayList<String> nameList = nameMaps.get(tid);
+				if (nameList == null) {
+					nameList = new ArrayList<String>();
+				}
+				
+				ArrayList<Integer> idList = idMaps.get(tid);
+				if (idList == null) {
+					idList = new ArrayList<Integer>();
+				}
+				
+				HashMap<Integer, ArrayList<Integer>> outNeighbours = neighbourMaps.get(tid);
+				if (outNeighbours == null) {
+					outNeighbours = new HashMap<Integer, ArrayList<Integer>>();
+				}
+				
+				if (startTime < 1) {
+					startTime = time;
+				}
+				endingTimeInNS=time;
+				
+				name = cleanFunctionName(name);
+				if (name.equals("main")) //$NON-NLS-1$
+					encounteredMain = true;
+				if (firstNode == -1) {
+					firstNode = id;
+				}
+				
+				serialMap.put(id, name);
+				timeMap.put(id, time);
+				
+				if (aggregateTimeMap.get(name) == null){
+					aggregateTimeMap.put(name, (long) 0);
+				}
 
-					nameList.remove(lastOccurance);
-					id = idList.remove(lastOccurance);
+				//IF THERE ARE PREVIOUS FUNCTIONS WITH THE SAME NAME
+				//WE ARE IN ONE OF THEM SO DO NOT ADD TO CUMULATIVE TIME
 
-					
-					if (timeMap.get(id) == null) {
-						parsingError(Messages.getString("StapGraphParser.13") + name); //$NON-NLS-1$
-						return Status.CANCEL_STATUS;
-					}		
-					endingTimeInNS=Long.parseLong(args[1]);
-					time = endingTimeInNS - timeMap.get(id);
-					timeMap.put(id, time);
-					if (id == firstNode)
-						showTime(id, time);
-					
-					
-					//IF AN ID IS IN THIS ARRAY IT IS BECAUSE WE NEED THE ENDING TIME
-					// TO BE ADDED TO THE CUMULATIVE TIME FOR FUNCTIONS OF THIS NAME
-					if (shouldGetEndingTimeForID.contains(id)){
-						long cumulativeTime = aggregateTimeMap.get(name) + Long.parseLong(args[1]);
-						aggregateTimeMap.put(name, cumulativeTime);
-					}
-					
-					nameMaps.put(tid, nameList);
-					idMaps.put(tid, idList);
+				
+				if (nameList.indexOf(name) == -1) {
+					long cumulativeTime = aggregateTimeMap.get(name) - time;
+					aggregateTimeMap.put(name, cumulativeTime);
+					shouldGetEndingTimeForID.add(id);
+				}
+				
+				
+				if (countMap.get(name) == null){
+					countMap.put(name, 0);
+				}
+				countMap.put(name, countMap.get(name) + 1);
+				
+				nameList.add(name);
+				idList.add(id);
+				
+
+				if (outNeighbours.get(id) == null){
+					outNeighbours.put(id, new ArrayList<Integer>());
+				}
+				
+				if (idList.size() > 1) {
+					int parentID = idList.get(idList.size() - 2);
+					outNeighbours.get(parentID).add(id);
+				}
+				
+				
+				callOrderList.add(id);
+				lastFunctionMap.put(tid,id);
+				
+				neighbourMaps.put(tid, outNeighbours);
+				nameMaps.put(tid, nameList);
+				idMaps.put(tid, idList);
+
+				break;
+			case '>' :
+				
+				/*
+				 * 
+				 * Close tag -- Function return
+				 * 
+				 */
+				
+				args = s.substring(1, s.length()).split(DELIM); //$NON-NLS-1$
+				//args[0] = name
+				//args[1] = time of event
+				name = args[0];
+				tid = Integer.parseInt(args[2]);
+				
+				nameList = nameMaps.get(tid);
+				if (nameList == null) {
+					nameList = new ArrayList<String>();
+				}
+				
+				idList = idMaps.get(tid);
+				if (idList == null) {
+					idList = new ArrayList<Integer>();
+				}
+				
+				
+				//If we haven't encountered a main function yet and the name isn't clean,
+				//and the name contains "__", then this is probably a C directive
+				if (!encounteredMain && !isFunctionNameClean(name) && name.contains("__")) { //$NON-NLS-1$
+					skippedDirectives = true;							
 					break;
-				default : 
-					/*
-					 * 
-					 * Anything else -- error
-					 * 
-					 */
-					
+				}
+				
+				name = cleanFunctionName(name);
+				int lastOccurance = nameList.lastIndexOf(name);
+				if (lastOccurance < 0) {
+					parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
+					return Status.CANCEL_STATUS;
+				}
+
+				nameList.remove(lastOccurance);
+				id = idList.remove(lastOccurance);
+
+				
+				if (timeMap.get(id) == null) {
+					parsingError(Messages.getString("StapGraphParser.13") + name); //$NON-NLS-1$
+					return Status.CANCEL_STATUS;
+				}		
+				endingTimeInNS=Long.parseLong(args[1]);
+				time = endingTimeInNS - timeMap.get(id);
+				timeMap.put(id, time);
+				if (id == firstNode)
+					showTime(id, time);
+				
+				
+				//IF AN ID IS IN THIS ARRAY IT IS BECAUSE WE NEED THE ENDING TIME
+				// TO BE ADDED TO THE CUMULATIVE TIME FOR FUNCTIONS OF THIS NAME
+				if (shouldGetEndingTimeForID.contains(id)){
+					long cumulativeTime = aggregateTimeMap.get(name) + Long.parseLong(args[1]);
+					aggregateTimeMap.put(name, cumulativeTime);
+				}
+				
+				nameMaps.put(tid, nameList);
+				idMaps.put(tid, idList);
+				break;
+			default : 
+				/*
+				 * 
+				 * Anything else -- error
+				 * 
+				 */
+				
 //					parsingError(Messages.getString("StapGraphParser.14") + s.charAt(0) + //$NON-NLS-1$
 //							Messages.getString("StapGraphParser.15") ); //$NON-NLS-1$
-					return Status.CANCEL_STATUS;
-				
-			} 
+				return Status.CANCEL_STATUS;
 			
 		} 
 		} catch (NumberFormatException e) {
@@ -426,7 +422,8 @@ public class StapGraphParser extends SystemTapParser {
 					if (line.length() > 1)
 						parseMarked(line.substring(1));
 				} else {
-					parse(line);
+					if (parse(line) == Status.CANCEL_STATUS)
+						break;
 				}
 			}
 			if (draw && view != null)

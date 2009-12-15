@@ -1,3 +1,7 @@
+2009-12-15  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Terminate properly if an unknown symbol is encountered. Do not split on the semicolon
+
 2009-12-11  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Fix misgraph error in the writeToDot function. 
