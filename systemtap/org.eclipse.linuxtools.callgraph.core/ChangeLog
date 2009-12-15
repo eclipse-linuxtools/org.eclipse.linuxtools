@@ -1,3 +1,8 @@
+2009-12-15  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Set monitor
+	* parse_function_partial.stp: Remove semicolon from partial script
+
 2009-12-14  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/Helper.java:

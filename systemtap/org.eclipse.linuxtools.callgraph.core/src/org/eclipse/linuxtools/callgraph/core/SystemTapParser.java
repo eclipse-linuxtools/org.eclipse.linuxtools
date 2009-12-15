@@ -157,7 +157,10 @@ public abstract class SystemTapParser extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		// Generate real-time job
 		IStatus returnStatus = Status.CANCEL_STATUS;
-		
+		this.monitor = monitor;
+		if (this.monitor == null) {
+			this.monitor = new NullProgressMonitor();
+		}
 		makeView();
 		
 		if (realTime && (job == null || job.getResult()==null)) {
