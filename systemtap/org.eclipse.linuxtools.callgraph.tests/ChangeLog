@@ -1,3 +1,7 @@
+2009-12-15  Charley Wang  <chwang@redhat.com>
+
+	* (all).graph: Modify to remove semi-colon from ends of lines
+
 2009-12-09  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/tests/StapGraphParserTest.java: Fix to correlate with the new threading output. There are a lot of changes to the .graph files, all to add ',,1;' to the end of each call/return line to indicate that these are single-threaded. Tests for multi-threaded runs will come soon. 
