@@ -438,7 +438,7 @@ public class CallgraphView extends SystemTapView {
             }
 		};
 		
-		save_col_dot = new Action ("Save all collapsed as .dot") {
+		save_col_dot = new Action ("Save all collapsed as .dot file") {
 		     public void run(){
 	                writeToDot(true, g.nodeDataMap.keySet());
 	            }

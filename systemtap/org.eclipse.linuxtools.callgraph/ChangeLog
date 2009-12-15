@@ -1,3 +1,8 @@
+2009-12-15  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Minor name change to File option.
+	* src/org/eclipse/linuxtools/callgraph/treeviewer/StapTreeDoubleClickListener.java: Do not maximize Callgraph View when clicking on list element.
+
 2009-12-15  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Terminate properly if an unknown symbol is encountered. Do not split on the semicolon
