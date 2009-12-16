@@ -1,3 +1,7 @@
+2009-12-16  Charley Wang  <chwang@redhat.com>
+
+	* build.properties: Update reference to GEF-ALL to point to the correct location
+
 2009-11-24  Andrew Overholt  <overholt@redhat.com>
 
 	* testing.properties: Add temporary workaround for bug #295394.
