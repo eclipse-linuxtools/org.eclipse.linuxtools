@@ -239,5 +239,15 @@ public class SystemTapErrorHandler {
     private void setErrorRecognized(boolean errorsRecognized) {
         errorRecognized = errorsRecognized;
     }
+    
+    
+    public String getErrorMessage(){
+    	return errorMessage.toString();
+    }
+    
+    
+    public String getLogContents(){
+    	return logContents.toString();
+    }
    
 }
