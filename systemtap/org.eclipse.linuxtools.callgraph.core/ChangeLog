@@ -1,3 +1,9 @@
+2009-12-16  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java:
+		Remove function extracting logic. It was used to determine which probe points did not match.
+		Stap now silently fails on a probe point that fails to match. 
+
 2009-12-15  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/FileFinderOpener.java: Make findAndOpen safety-valve return null if project is null.

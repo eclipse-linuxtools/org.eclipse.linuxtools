@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -36,7 +35,6 @@ public class SystemTapErrorHandler {
     private boolean errorRecognized;
     private StringBuilder errorMessage = new StringBuilder(""); //$NON-NLS-1$
     private StringBuilder logContents;
-    ArrayList<String> functions = new ArrayList<String>();
 
 
     public SystemTapErrorHandler() {
@@ -202,21 +200,6 @@ public class SystemTapErrorHandler {
     }
 
 
-    public void findFunctions(IProgressMonitor m, String message, Pattern pat) {
-        String result;
-            if (m.isCanceled())
-                return;
-                int lastQuote = message.lastIndexOf('"');
-                if (lastQuote < 0)
-                    return;
-                int secondLastQuote = message.lastIndexOf('"', lastQuote - 1);
-                if (secondLastQuote < 0)
-                    return;
-                result = message.substring(secondLastQuote + 1, lastQuote);
-                if (!functions.contains(result))
-                    functions.add(result);
-    }
-
     /**
      * Convenience method for deleting and recreating log at default location
      */
@@ -239,8 +222,6 @@ public class SystemTapErrorHandler {
     }
    
    
-   
-
     /**
      * Returns true if an error matches one of the regex's in error.prop
      *
@@ -257,10 +238,6 @@ public class SystemTapErrorHandler {
      */
     private void setErrorRecognized(boolean errorsRecognized) {
         errorRecognized = errorsRecognized;
-    }
-   
-    public ArrayList<String> getFunctions() {
-        return functions;
     }
    
 }
