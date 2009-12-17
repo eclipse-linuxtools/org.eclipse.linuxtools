@@ -1,6 +1,10 @@
 2009-12-17  rgrunber  <rgrunber@redhat.com>
 
-	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Externalize error string
+	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Externalize Strings and cleanup.
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph.java: 
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchWizard.java: 
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java: 
+	
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java 
 		(finishLaunch): Create error dialog when launch fails and specify the potential problem.
 

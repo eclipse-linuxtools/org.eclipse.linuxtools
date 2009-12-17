@@ -85,8 +85,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		} catch (IOException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 					"LaunchShortcutScriptGen",  //$NON-NLS-1$
-					Messages.getString("LaunchStapGraph.0"),   //$NON-NLS-1$
-					Messages.getString("LaunchStapGraph.6"));  //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErr"),   //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErrMsg"));  //$NON-NLS-1$
 			mess.schedule();
 			e.printStackTrace();
 		} catch (CoreException e1) {

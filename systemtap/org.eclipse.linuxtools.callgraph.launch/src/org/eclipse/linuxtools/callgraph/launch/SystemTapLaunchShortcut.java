@@ -391,7 +391,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 								getLaunchManager()
 										.generateUniqueLaunchConfigurationNameFrom(
 												Messages
-														.getString("SystemTapLaunchShortcut.0"))); //$NON-NLS-1$
+														.getString("SystemTapLaunchShortcut.Invalid"))); //$NON-NLS-1$
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
@@ -642,13 +642,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		RuledTreeSelectionDialog dialog = new RuledTreeSelectionDialog(
 				getActiveWorkbenchShell(), new WorkbenchLabelProvider(), prov);
 
-		dialog.setTitle(Messages.getString("SystemTapLaunchShortcut.8")); //$NON-NLS-1$
-		dialog.setMessage(Messages.getString("SystemTapLaunchShortcut.9")); //$NON-NLS-1$
+		dialog.setTitle(Messages.getString("SystemTapLaunchShortcut.SelectFiles")); //$NON-NLS-1$
+		dialog.setMessage(Messages.getString("SystemTapLaunchShortcut.SelectFilesMsg")); //$NON-NLS-1$
 		dialog.setInput(list);
 		dialog.setHelpAvailable(false);
 		dialog.setStatusLineAboveButtons(false);
 		dialog.setEmptyListMessage(Messages
-				.getString("SystemTapLaunchShortcut.10")); //$NON-NLS-1$
+				.getString("SystemTapLaunchShortcut.NoFiles")); //$NON-NLS-1$
 		dialog.setContainerMode(true);
 
 		Object[] topLevel = prov.findElements(list);
@@ -972,8 +972,8 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		} catch (IOException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 					"LaunchShortcutScriptGen",  //$NON-NLS-1$
-					Messages.getString("LaunchStapGraph.0"),   //$NON-NLS-1$
-					Messages.getString("LaunchStapGraph.6"));  //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErr"),   //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErrMsg"));  //$NON-NLS-1$
 			mess.schedule();
 			e.printStackTrace();
 		} catch (CoreException e1) {

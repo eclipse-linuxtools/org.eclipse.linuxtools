@@ -122,12 +122,12 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 	
 	
 	private void promptForInputs() {
-		InputDialog id = new InputDialog(new Shell(), Messages.getString("LaunchWizard.0"),   //$NON-NLS-1$
-				Messages.getString("LaunchWizard.1") +  //$NON-NLS-1$
-				Messages.getString("LaunchWizard.2") +  //$NON-NLS-1$
-				Messages.getString("LaunchWizard.3"),   //$NON-NLS-1$
+		InputDialog id = new InputDialog(new Shell(), Messages.getString("LaunchWizard.WelcomeWizard"),   //$NON-NLS-1$
+				Messages.getString("LaunchWizard.Text1") +  //$NON-NLS-1$
+				Messages.getString("LaunchWizard.Text2") +  //$NON-NLS-1$
+				Messages.getString("LaunchWizard.Text3"),   //$NON-NLS-1$
 				getLaunchManager().generateUniqueLaunchConfigurationNameFrom(
-						Messages.getString("LaunchWizard.4")), null);  //$NON-NLS-1$
+						Messages.getString("LaunchWizard.NamePrefix")), null);  //$NON-NLS-1$
 		id.open();
 		
 		if (id.getReturnCode() == InputDialog.CANCEL){			
@@ -164,7 +164,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 									.span(2,1);
 		
 		Label scriptLabel = new Label(fileComp, SWT.HORIZONTAL);
-		scriptLabel.setText(Messages.getString("LaunchWizard.19")); //$NON-NLS-1$
+		scriptLabel.setText(Messages.getString("LaunchWizard.Script")); //$NON-NLS-1$
 		labelData.applyTo(scriptLabel);
 		
 		GridDataFactory textData = GridDataFactory.fillDefaults().grab( true, false )
@@ -190,7 +190,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		GridData gd2 = new GridData();
 		gd2.horizontalSpan = 3;
 		Label binaryLabel= new Label(fileComp, SWT.HORIZONTAL);
-		binaryLabel.setText(Messages.getString("LaunchWizard.20")); //$NON-NLS-1$
+		binaryLabel.setText(Messages.getString("LaunchWizard.BinFile")); //$NON-NLS-1$
 		labelData.applyTo(binaryLabel);
 		
 		binaryLocation = new Text(fileComp, SWT.SINGLE | SWT.BORDER);
@@ -217,7 +217,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		argumentsComp.setLayout(new GridLayout(2, false));
 		
 		Label argumentsLabel= new Label(argumentsComp, SWT.HORIZONTAL);
-		argumentsLabel.setText(Messages.getString("LaunchWizard.21")); //$NON-NLS-1$
+		argumentsLabel.setText(Messages.getString("LaunchWizard.Args")); //$NON-NLS-1$
 		labelData.applyTo(argumentsLabel);
 		
 		argumentsLocation = new Text(argumentsComp, SWT.MULTI | SWT.WRAP | SWT.BORDER);
@@ -225,7 +225,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		gd3.heightHint=200;
 		argumentsLocation.setLayoutData(gd3);
 		Button argumentsButton = new Button(argumentsComp, SWT.PUSH);
-		argumentsButton.setText(Messages.getString("LaunchWizard.22")); //$NON-NLS-1$
+		argumentsButton.setText(Messages.getString("LaunchWizard.Func")); //$NON-NLS-1$
 		argumentsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				argumentsLocation.setText(
@@ -242,7 +242,7 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 		
 		Button launch = new Button(sh, SWT.PUSH);
 		launch.setLayoutData(new GridData(GridData.CENTER, GridData.BEGINNING, false, false));
-		launch.setText(Messages.getString("LaunchWizard.24")); //$NON-NLS-1$
+		launch.setText(Messages.getString("LaunchWizard.Launch")); //$NON-NLS-1$
 		launch.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 					scriptPath = scriptLocation.getText();

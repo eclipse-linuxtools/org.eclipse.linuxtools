@@ -188,7 +188,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 		if (cmd.length() > 0)
 			return cmd;
 		else
-			return Messages.getString("SystemTapLaunchConfigurationDelegate.0"); //$NON-NLS-1$
+			return Messages.getString("SystemTapLaunchConfigurationDelegate.NoCommand"); //$NON-NLS-1$
 	}
 	
 
@@ -218,9 +218,9 @@ public class SystemTapLaunchConfigurationDelegate extends
 							parserClass);
 			if (extensions == null || extensions.length < 1) {
 				SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"),  //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2"), //$NON-NLS-1$ //$NON-NLS-2$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser3") + //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser4") + parserClass); //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser1"), //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser2") + //$NON-NLS-1$
+						Messages.getString("SystemTapLaunchConfigurationDelegate.InvalidParser3") + parserClass); //$NON-NLS-1$
 				mess.schedule();
 				return;
 			}
