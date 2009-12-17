@@ -1,3 +1,8 @@
+2009-12-17  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMemberSummary):
+	Remove unnecessary catch block.
+
 2009-09-23  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Load plugin if any of its classes are used.

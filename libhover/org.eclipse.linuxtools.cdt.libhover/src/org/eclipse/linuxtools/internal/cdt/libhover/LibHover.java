@@ -450,16 +450,8 @@ public class LibHover implements ICHelpProvider {
 		if (info == null)
 			return null;
 		if (methodType != null) {
-			try {
-				args = resolveArgs(info, methodType.getParameterTypes(), templateTypes);
-				returnType = methodType.getReturnType();
-			} catch (DOMException e) {
-				// TODO Auto-generated catch block
-				return null;
-			}
-//			for (int i = 0; i < args.length; ++i)
-//				System.out.println("args<" + i + "> is " + args[i].toString());
-//			System.out.println("return type is " + returnType.toString());
+			args = resolveArgs(info, methodType.getParameterTypes(), templateTypes);
+			returnType = methodType.getReturnType();
 			
 		}
 		MemberInfo member = info.getMember(memberName);
