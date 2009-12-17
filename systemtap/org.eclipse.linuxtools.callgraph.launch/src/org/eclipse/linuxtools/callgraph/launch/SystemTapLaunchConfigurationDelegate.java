@@ -194,7 +194,6 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String options,
 			IProgressMonitor monitor, boolean retry) {
-		String errorMessage = ""; //$NON-NLS-1$
 
 		try {
 			// Check for cancellation
@@ -279,7 +278,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				errorHandler.appendToLog(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command") + cmd+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);//$NON-NLS-1$
 				
 				//Handle error from TEMP_ERROR_OUTPUT
-				errorMessage = errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
+				errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
 				if ((monitor != null && monitor.isCanceled()))
 					return;
 				
@@ -313,7 +312,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages
 						(Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
-						errorMessage);
+						errorHandler.getErrorMessage());
 				errorDialog.schedule();
 				return;
 			}
@@ -329,10 +328,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			monitor.worked(1);
 			
-			errorMessage = generateErrorMessage(config.getName(), binaryArguments) + errorMessage;
+			String message = generateErrorMessage(config.getName(), binaryArguments);
 			
 			DocWriter dw = new DocWriter(Messages.getString("SystemTapLaunchConfigurationDelegate.DocWriterName"),  //$NON-NLS-1$
-					((TextConsole)Helper.getConsoleByName(config.getName())), errorMessage);
+					((TextConsole)Helper.getConsoleByName(config.getName())), message);
 			dw.schedule();
 
 			
