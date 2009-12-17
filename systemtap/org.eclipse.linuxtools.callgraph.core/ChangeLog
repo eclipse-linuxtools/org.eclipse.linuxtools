@@ -1,3 +1,8 @@
+2009-12-17  Roland Grunberg  <rgrunber@redhat.com>
+
+	* parse_function_partial.stp: Remove dependence on kernel function syscall.exit.
+		This allows profiling without the kernel debuginfo.
+
 2009-11-18  Roland Grunberg  <rgrunber@redhat.com>
 
 	* build.properties: Add errors.prop to build.
