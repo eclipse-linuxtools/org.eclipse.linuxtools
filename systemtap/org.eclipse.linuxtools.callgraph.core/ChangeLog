@@ -1,3 +1,9 @@
+2009-12-17  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Fix certain externalized strings.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java 
+		(finishHandling): Change method to void.
+
 2009-12-16  rgrunber  <rgrunber@redhat.com>
 
 	* errors.prop: Update / Clean up error file.

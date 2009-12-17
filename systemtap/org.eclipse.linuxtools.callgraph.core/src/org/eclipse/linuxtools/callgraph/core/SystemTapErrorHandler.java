@@ -146,14 +146,13 @@ public class SystemTapErrorHandler {
      * be attempted. Currently relaunch only works for the callgraph script.
      *
      */
-    public boolean finishHandling(IProgressMonitor m, String scriptPath) {
+    public void finishHandling(IProgressMonitor m, String scriptPath) {
         if (!isErrorRecognized()) {
             errorMessage.append(Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
                     Messages.getString("SystemTapErrorHandler.5")); //$NON-NLS-1$
         }
 
         writeToLog();
-        return false;
     }
     
    
