@@ -1,3 +1,9 @@
+2009-12-17  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Externalize error string
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java 
+		(finishLaunch): Create error dialog when launch fails and specify the potential problem.
+
 2009-12-15  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapOptionsTab.java: Prevent Preprocessor Directives textbox from auto-resizing at will.
