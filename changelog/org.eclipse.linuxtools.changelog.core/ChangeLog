@@ -1,3 +1,12 @@
+2009-12-17  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogRootContainer.java (setDerived): Stub out inherited methods. 
+	(isGroup): Likewise.
+	(hasFilters): Likewise. 
+	(getFilters): Likewise.
+	(createFilter): Likewise.
+	(removeFilter): Likewise.
+
 2009-11-11  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogRootContainer.java: Resolve warnings about generic type inferral. All methods return null, in any case.
