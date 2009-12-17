@@ -48,7 +48,7 @@ import org.eclipse.zest.layouts.LayoutStyles;
 
 public class StapGraph extends Graph {
 
-	public static final String CONSTANT_TOP_NODE_NAME = Messages.getString("StapGraph.0"); //$NON-NLS-1$
+	public static final String CONSTANT_TOP_NODE_NAME = Messages.getString("StapGraph.StartNode"); //$NON-NLS-1$
 	public static final int CONSTANT_HORIZONTAL_SPACING = 50; 
 	public static final int CONSTANT_DRAWMODE_LEVEL = 0;
 	public static final int CONSTANT_DRAWMODE_RADIAL = 1;
@@ -563,9 +563,9 @@ public class StapGraph extends Graph {
 				n.setHighlightColor(c);
 				n.setForegroundColor(new Color(this.getDisplay(),255,255,255));
 				n.setTooltip(new Label(
-						Messages.getString("StapGraph.2")+ key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-						+ Messages.getString("StapGraph.3") + num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						+ Messages.getString("StapGraph.1") + aggregateCount.get(key)		 //$NON-NLS-1$
+						Messages.getString("StapGraph.Func")+ key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+						+ Messages.getString("StapGraph.Time") + num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						+ Messages.getString("StapGraph.NumOfCalls") + aggregateCount.get(key)		 //$NON-NLS-1$
 				));
 				n.setBorderWidth(2);
 		}

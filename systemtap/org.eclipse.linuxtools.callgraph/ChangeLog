@@ -1,3 +1,11 @@
+2009-12-17  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/messages.properties:
+		Rename externalized strings to be more descriptive.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java:
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: 
+	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: 
+
 2009-12-15  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Make the project variable non-mandatory. Read and reset buffer to avoid eating an extra line while looking for project name.

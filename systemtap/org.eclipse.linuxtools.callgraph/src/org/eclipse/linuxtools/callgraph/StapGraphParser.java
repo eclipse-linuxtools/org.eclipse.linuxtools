@@ -150,7 +150,7 @@ public class StapGraphParser extends SystemTapParser {
 			String tmp = markedMap.get(lastFunctionCalled);
 			if (tmp == null) tmp = ""; //$NON-NLS-1$
 			markedMap.put(lastFunctionCalled, 
-					tmp + "\n" + Messages.getString("StapGraphParser.16")); //$NON-NLS-1$ //$NON-NLS-2$
+					tmp + "\n" + Messages.getString("StapGraphParser.Term")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		}
 		
@@ -170,11 +170,11 @@ public class StapGraphParser extends SystemTapParser {
 				markedMessage = markedMap.get(firstNode) + "\n"; //$NON-NLS-1$
 			}
 			if (skippedDirectives)
-				markedMessage += Messages.getString("StapGraphParser.19"); //$NON-NLS-1$
+				markedMessage += Messages.getString("StapGraphParser.CDirectives"); //$NON-NLS-1$
 			if (timeCheck)
-				markedMessage += Messages.getString("StapGraphParser.20"); //$NON-NLS-1$
+				markedMessage += Messages.getString("StapGraphParser.TooFast"); //$NON-NLS-1$
 			
-			markedMessage += Messages.getString("StapGraphParser.21"); //$NON-NLS-1$
+			markedMessage += Messages.getString("StapGraphParser.TimeForThisNode"); //$NON-NLS-1$
 			
 			markedMap.put(firstNode, markedMessage);
 		}
@@ -332,7 +332,7 @@ public class StapGraphParser extends SystemTapParser {
 				name = cleanFunctionName(name);
 				int lastOccurance = nameList.lastIndexOf(name);
 				if (lastOccurance < 0) {
-					parsingError(Messages.getString("StapGraphParser.12") + name); //$NON-NLS-1$
+					parsingError(Messages.getString("StapGraphParser.RetMismatch") + name); //$NON-NLS-1$
 					return Status.CANCEL_STATUS;
 				}
 
@@ -341,7 +341,7 @@ public class StapGraphParser extends SystemTapParser {
 
 				
 				if (timeMap.get(id) == null) {
-					parsingError(Messages.getString("StapGraphParser.13") + name); //$NON-NLS-1$
+					parsingError(Messages.getString("StapGraphParser.NoStartTime") + name); //$NON-NLS-1$
 					return Status.CANCEL_STATUS;
 				}		
 				endingTimeInNS=Long.parseLong(args[1]);
@@ -374,9 +374,11 @@ public class StapGraphParser extends SystemTapParser {
 			
 		} 
 		} catch (NumberFormatException e) {
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("StapGraphParser.22"),  //$NON-NLS-1$
-					Messages.getString("StapGraphParser.23"), Messages.getString("StapGraphParser.24") + //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getString("StapGraphParser.25")); //$NON-NLS-1$
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages
+					(Messages.getString("StapGraphParser.BadSymbol"),  //$NON-NLS-1$
+					Messages.getString("StapGraphParser.BadSymbol"),   //$NON-NLS-1$
+					Messages.getString("StapGraphParser.BadSymbolMsg1") + //$NON-NLS-1$
+					Messages.getString("StapGraphParser.BadSymbolMsg2")); //$NON-NLS-1$
 			mess.schedule();
 			
 			return Status.CANCEL_STATUS;
