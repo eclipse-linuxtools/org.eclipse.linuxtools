@@ -1626,7 +1626,7 @@ public class StapGraph extends Graph {
 	 * @return Time in milliseconds
 	 */
 	public long getTotalTime() {
-		if (totalTime == 0)
+		if (totalTime == 0 || totalTime > 1200000000000000000l)
 			return endTime - startTime;
 		return totalTime;
 	}
