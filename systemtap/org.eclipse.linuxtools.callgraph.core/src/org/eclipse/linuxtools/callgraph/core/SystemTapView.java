@@ -197,7 +197,7 @@ public abstract class SystemTapView extends ViewPart {
      */
     public void addErrorMenu() {
         IMenuManager menu = getViewSite().getActionBars().getMenuManager();
-        errors = new MenuManager(Messages.getString("SystemTapView.2")); //$NON-NLS-1$
+        errors = new MenuManager(Messages.getString("SystemTapView.ErrMenu")); //$NON-NLS-1$
         menu.add(errors);
         createErrorActions();
 
@@ -214,7 +214,7 @@ public abstract class SystemTapView extends ViewPart {
     public void addFileMenu() {
         IMenuManager menu = getViewSite().getActionBars().getMenuManager();
         if (file == null) {
-            file = new MenuManager(Messages.getString("SystemTapView.8")); //$NON-NLS-1$
+            file = new MenuManager(Messages.getString("SystemTapView.FileMenu")); //$NON-NLS-1$
             menu.add(file);
         }
        
@@ -231,7 +231,7 @@ public abstract class SystemTapView extends ViewPart {
    
     public void addHelpMenu() {
         IMenuManager menu = getViewSite().getActionBars().getMenuManager();
-        help = new MenuManager(Messages.getString("SystemTapView.3")); //$NON-NLS-1$
+        help = new MenuManager(Messages.getString("SystemTapView.Help")); //$NON-NLS-1$
         menu.add(help);
         createHelpActions();
        
@@ -240,7 +240,7 @@ public abstract class SystemTapView extends ViewPart {
 
    
     public void createHelpActions() {
-        help_version = new Action(Messages.getString("SystemTapView.4")) { //$NON-NLS-1$
+        help_version = new Action(Messages.getString("SystemTapView.Version")) { //$NON-NLS-1$
             public void run() {
                 Runtime rt = Runtime.getRuntime();
                 try {
@@ -263,7 +263,7 @@ public abstract class SystemTapView extends ViewPart {
                     Shell sh = new Shell();
 
                     MessageDialog.openInformation(sh, Messages
-                            .getString("SystemTapView.5"), message + NEW_LINE + Messages.getString("Callgraph.Version")); //$NON-NLS-1$ //$NON-NLS-2$
+                            .getString("SystemTapView.StapVersion"), message + NEW_LINE + Messages.getString("Callgraph.Version")); //$NON-NLS-1$ //$NON-NLS-2$
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -271,7 +271,7 @@ public abstract class SystemTapView extends ViewPart {
             }
         };
        
-        help_about = new Action(Messages.getString("SystemTapView.6")) { //$NON-NLS-1$
+        help_about = new Action(Messages.getString("SystemTapView.AboutMenu")) { //$NON-NLS-1$
             public void run() {
                 Display disp = Display.getCurrent();
                 if (disp == null){
@@ -344,7 +344,7 @@ public abstract class SystemTapView extends ViewPart {
    
     protected void createSaveAction() {
         //Save callgraph.out
-        save_file = new Action(Messages.getString("SystemTapView.9")){ //$NON-NLS-1$
+        save_file = new Action(Messages.getString("SystemTapView.SaveMenu")){ //$NON-NLS-1$
             public void run(){
                 Shell sh = new Shell();
                 FileDialog dialog = new FileDialog(sh, SWT.SAVE);
@@ -365,7 +365,7 @@ public abstract class SystemTapView extends ViewPart {
      */
     public void createErrorActions() {
 
-        error_errorLog = new Action(Messages.getString("SystemTapView.0")) { //$NON-NLS-1$
+        error_errorLog = new Action(Messages.getString("SystemTapView.OpenLog")) { //$NON-NLS-1$
             public void run() {
                 boolean error = false;
                 File log = new File(PluginConstants.getDefaultOutput()
@@ -382,7 +382,7 @@ public abstract class SystemTapView extends ViewPart {
 
                     Shell sh = new Shell(SWT.BORDER | SWT.TITLE);
 
-                    sh.setText(Messages.getString("SystemTapView.15")); //$NON-NLS-1$
+                    sh.setText(Messages.getString("SystemTapView.ErrLog")); //$NON-NLS-1$
                     sh.setLayout(new FillLayout());
                     sh.setSize(600, 600);
 
@@ -391,7 +391,7 @@ public abstract class SystemTapView extends ViewPart {
 
                     txt.setText(logText);
 
-                    sh.setText(Messages.getString("SystemTapView.21")); //$NON-NLS-1$
+                    sh.setText(Messages.getString("SystemTapView.ErrLogWindow")); //$NON-NLS-1$
 
                     sh.open();
                     txt.setTopIndex(txt.getLineCount());
@@ -435,7 +435,7 @@ public abstract class SystemTapView extends ViewPart {
 
     protected void addKillButton() {
         IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-        kill = new Action(Messages.getString("SystemTapView.16"), //$NON-NLS-1$
+        kill = new Action(Messages.getString("SystemTapView.StopScript"), //$NON-NLS-1$
                 CallgraphCorePlugin.imageDescriptorFromPlugin(CallgraphCorePlugin.PLUGIN_ID, "icons/progress_stop.gif")) { //$NON-NLS-1$
             public void run() {
                 getParser().cancelJob();

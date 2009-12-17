@@ -65,9 +65,10 @@ public class Helper {
 			out.write(content);
 			out.close();
 		} catch (Exception e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
+			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
 		}
@@ -86,9 +87,10 @@ public class Helper {
 			out.append(content);
 			out.close();
 		} catch (Exception e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
+			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
 		}
@@ -128,9 +130,10 @@ public class Helper {
 			fstream = new FileWriter(absoluteFilePath, true);
 			return new BufferedWriter(fstream);
 		} catch (Exception e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
+			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
 			return null;

@@ -51,10 +51,7 @@ public class SystemTapErrorHandler {
     /**
      * Search given string for recognizable error messages. Can append the
      * contents of the string to the error log if writeToLog() or
-     * finishHandling() are called. A call to finishHandling() will also open a
-     * popup window with user-friendly messages corresponding to the
-     * recognizable errors.
-     *
+     * finishHandling() are called.
      * @param doc
      */
     public void handle(IProgressMonitor m, String errors) {
@@ -115,10 +112,9 @@ public class SystemTapErrorHandler {
      *
      * @param m
      * @param f Temporary error file
-     * @return
      * @throws IOException
      */
-    public String handle(IProgressMonitor m, FileReader f) throws IOException {
+    public void handle(IProgressMonitor m, FileReader f) throws IOException {
         BufferedReader br = new BufferedReader(f);
 
         String line;
@@ -129,7 +125,7 @@ public class SystemTapErrorHandler {
             builder.append(line);
             builder.append("\n"); //$NON-NLS-1$
             if (m != null && m.isCanceled())
-                return ""; //$NON-NLS-1$
+                return;
             if (counter == 300) {
                 handle(m, builder.toString());
                 builder = new StringBuilder();
@@ -137,19 +133,17 @@ public class SystemTapErrorHandler {
             }
         }
         handle(m, builder.toString());
-        return errorMessage.toString();
     }
 
     /**
      * Run this method when there are no more error messages to handle. Creates
-     * the error pop-up message and writes to log. Returns true if a relaunch should
-     * be attempted. Currently relaunch only works for the callgraph script.
-     *
+     * the error pop-up message and writes to log.Currently relaunch only works 
+     * for the callgraph script.
      */
     public void finishHandling(IProgressMonitor m, String scriptPath) {
         if (!isErrorRecognized()) {
-            errorMessage.append(Messages.getString("SystemTapErrorHandler.4") + //$NON-NLS-1$
-                    Messages.getString("SystemTapErrorHandler.5")); //$NON-NLS-1$
+            errorMessage.append(Messages.getString("SystemTapErrorHandler.NoErrRecognized") + //$NON-NLS-1$
+                    Messages.getString("SystemTapErrorHandler.NoErrRecognizedMsg")); //$NON-NLS-1$
         }
 
         writeToLog();

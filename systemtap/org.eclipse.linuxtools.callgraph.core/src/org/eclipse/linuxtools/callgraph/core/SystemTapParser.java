@@ -128,7 +128,9 @@ public abstract class SystemTapParser extends Job {
 	 */
 	protected void parsingError(String message) {
 		SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-				Messages.getString("SystemTapParser.0"), Messages.getString("SystemTapParser.1"), message); //$NON-NLS-1$ //$NON-NLS-2$
+				Messages.getString("SystemTapParser.ParseErr"), //$NON-NLS-1$
+				Messages.getString("SystemTapParser.ErrSymbol"), //$NON-NLS-1$
+				message);
 		mess.schedule();
 	}
 
@@ -141,7 +143,7 @@ public abstract class SystemTapParser extends Job {
 		if (viewID != null && viewID.length() > 0) {
 			try {
 			StapUIJob uijob = new StapUIJob(Messages
-					.getString("StapGraphParser.5"), this, viewID); //$NON-NLS-1$
+					.getString("StapGraphParser.JobName"), this, viewID); //$NON-NLS-1$
 			uijob.schedule();
 			uijob.join();
 			view = uijob.getViewer();
@@ -223,10 +225,10 @@ public abstract class SystemTapParser extends Job {
 
 	public void launchFileErrorDialog() {
 		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages
-				.getString("SystemTapParser.2"), //$NON-NLS-1$
-				Messages.getString("SystemTapParser.3"), //$NON-NLS-1$
-				Messages.getString("SystemTapParser.4") + sourcePath + //$NON-NLS-1$
-						Messages.getString("SystemTapParser.5")); //$NON-NLS-1$
+				.getString("SystemTapParser.InvalidFile"), //$NON-NLS-1$
+				Messages.getString("SystemTapParser.InvalidFile"), //$NON-NLS-1$
+				Messages.getString("SystemTapParser.InvalidFileMsg1") + sourcePath + //$NON-NLS-1$
+						Messages.getString("SystemTapParser.InvalidFileMsg2")); //$NON-NLS-1$
 		err.schedule();
 	}
 
