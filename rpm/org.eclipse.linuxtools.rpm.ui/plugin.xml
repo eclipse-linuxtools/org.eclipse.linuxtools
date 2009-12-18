@@ -27,7 +27,7 @@
             %wizard.description.0
          </description>
          <selection
-               class="org.eclipse.core.resources.IProject" />
+               class="org.eclipse.core.resources.IResource" />
       </wizard>
    </extension>
    <extension

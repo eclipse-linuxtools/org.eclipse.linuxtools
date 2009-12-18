@@ -1,5 +1,19 @@
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* plugin.xml: Accept IResource for export wizard.
+	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: Add new strings.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportPage.java (getExportType): Format.
+	(createErrorControls): New method.
+	(RPMExportPage): Accept IProject.
+	(createExportTypeControls): Format.
+	(createControl): Invoke createErrorControls.
+	(canFinish): Check whether there is a project.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java (performFinish): Format.
+	(addPages): Handle resources and find the parent project.
+	(init): Format.
+	
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* plugin.xml: Move all rpm wizards to their own category.
 	
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
