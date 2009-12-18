@@ -1,5 +1,18 @@
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Format.
+	(parseMacro): Likewise.
+	(complexDefinitions): Likewise.
+	(parseDirectDefinition): Likewise.
+	(parseLine): Likewise.
+	(parseBuildRequire): Likewise
+	(directValuesDefinitions): Likewise
+	(parseSection): Likewise.
+	(simpleDefinitions): Remove buildroot.
+	(directDefinitions): Add buildroot.
+	
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Remove false warning for Release tag.
 
 2009-10-28  Alexander Kurtakov  <akurtako@redhat.com>
