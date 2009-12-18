@@ -87,6 +87,7 @@ public class CallgraphView extends SystemTapView {
 	private  IMenuManager view;
 	private  IMenuManager animation;
 	private  IMenuManager markers; //Unused
+	private  IMenuManager saveMenu;
 	public  IToolBarManager mgr;
 	
 	private  Composite graphComp;
@@ -426,34 +427,34 @@ public class CallgraphView extends SystemTapView {
 		addFileMenu();
 
 		//TODO I AM HERE
-		save_cur_dot = new Action("Save current view as .dot file") {
+		save_cur_dot = new Action(Messages.getString("CallgraphView.0")) { //$NON-NLS-1$
 			  public void run(){
 				  writeToDot(g.getCollapseMode(), g.nodeMap.keySet());
 			  }
 
 		};
-		save_dot = new Action("Save all uncollapsed as .dot file") {
+		save_dot = new Action(Messages.getString("CallgraphView.1")) { //$NON-NLS-1$
             public void run(){
               writeToDot(false, g.nodeDataMap.keySet());
             }
 		};
 		
-		save_col_dot = new Action ("Save all collapsed as .dot file") {
+		save_col_dot = new Action (Messages.getString("CallgraphView.2")) { //$NON-NLS-1$
 		     public void run(){
 	                writeToDot(true, g.nodeDataMap.keySet());
 	            }
 			
 		};
-		
-		file.add(save_cur_dot);
-		file.add(save_col_dot);
-		file.add(save_dot);
+		saveMenu = new MenuManager(Messages.getString("CallgraphView.4")); //$NON-NLS-1$
+		file.add(saveMenu);
+		saveMenu.add(save_cur_dot);
+		saveMenu.add(save_col_dot);
+		saveMenu.add(save_dot);
 		view = new MenuManager(Messages.getString("CallgraphView.ViewMenu")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.AnimationMenu")); //$NON-NLS-1$
 		markers = new MenuManager(Messages.getString("CallgraphView.Markers")); //$NON-NLS-1$
 		gotoMenu = new MenuManager(Messages.getString("CallgraphView.GoTo")); //$NON-NLS-1$
 		menu.add(view);
-//		menu.add(animation);	
 		menu.add(gotoMenu);
 		addErrorMenu();
 		addHelpMenu();
@@ -465,12 +466,14 @@ public class CallgraphView extends SystemTapView {
 		view.add(getView_refresh());
 		view.add(mode_collapsednodes);
 		view.add(limits);
+		view.add(animation);
 		
 		
 		gotoMenu.add(play);
 		gotoMenu.add(goto_previous);
 		gotoMenu.add(goto_next);
 		gotoMenu.add(goto_last);
+		gotoMenu.add(markers);
 		
 		addKillButton();
 		mgr.add(play);
@@ -728,7 +731,7 @@ public class CallgraphView extends SystemTapView {
 		}
 		else {
 			play.setImageDescriptor(pauseImage);
-			play.setToolTipText(Messages.getString("CallgraphView.3")); //$NON-NLS-1$
+			play.setToolTipText(""); //$NON-NLS-1$
 		}
 	}
 	
@@ -954,17 +957,17 @@ public class CallgraphView extends SystemTapView {
 
             try {
 				BufferedWriter out = new BufferedWriter(new FileWriter(f));
-				StringBuilder build = new StringBuilder("");
+				StringBuilder build = new StringBuilder(""); //$NON-NLS-1$
         
-				out.write("digraph stapgraph {\n");
+				out.write("digraph stapgraph {\n"); //$NON-NLS-1$
             	for (int i : keySet) {
             		if (i == 0)
             			continue;
             		StapData d = g.getNodeData(i);
             		if ( (d.isCollapsed != mode) && !d.isOnlyChildWithThisName())
             			continue;
-            		build.append(i + " [label=\"" + d.name + " " );
-            		build.append(StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n");
+            		build.append(i + " [label=\"" + d.name + " " ); //$NON-NLS-1$ //$NON-NLS-2$
+            		build.append(StapNode.numberFormat.format((float) d.getTime()/g.getTotalTime() * 100) + "%\"]\n"); //$NON-NLS-1$
             		int j = d.parent;
             		if (mode)
             			j = d.collapsedParent;
@@ -972,13 +975,13 @@ public class CallgraphView extends SystemTapView {
             		if (!keySet.contains(j) || j == 0)
             			continue;
             		
-            		String called = mode ? " [label=\"" + g.getNodeData(i).timesCalled + "\"]\n" : "\n";
-        			build.append( j + "->" + i );
+            		String called = mode ? " [label=\"" + g.getNodeData(i).timesCalled + "\"]\n" : "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        			build.append( j + "->" + i ); //$NON-NLS-1$
         			build.append( called );
             		out.write(build.toString());
             		build.setLength(0);
             	}
-            	out.write("}");
+            	out.write("}"); //$NON-NLS-1$
             	out.flush();
             	out.close();
             } catch (FileNotFoundException e) {
