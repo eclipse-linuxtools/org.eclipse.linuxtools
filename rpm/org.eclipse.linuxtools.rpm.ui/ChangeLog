@@ -1,5 +1,9 @@
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* plugin.xml: Move all rpm wizards to their own category.
+	
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: Indicate that the new project is going to be rpm project.
 	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (getNewProject): Run RPMNewProject instead of the generic new project.
 	 

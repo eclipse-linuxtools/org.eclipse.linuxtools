@@ -13,25 +13,34 @@
 <plugin>
    <extension
          point="org.eclipse.ui.exportWizards">
+      <category
+            id="org.eclipse.linuxtools.rpm.ui"
+            name="%category.name.0">
+      </category>
       <wizard
             name="%wizard.name.0"
             icon="icons/rpm.gif"
             class="org.eclipse.linuxtools.rpm.ui.RPMExportWizard"
+            category="org.eclipse.linuxtools.rpm.ui"
             id="org.eclipse.linuxtools.rpm.ui.RPMExportWizard">
          <description>
             %wizard.description.0
          </description>
          <selection
-               class="org.eclipse.core.resources.IResource">
-         </selection>
+               class="org.eclipse.core.resources.IProject" />
       </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.importWizards">
+      <category
+            id="org.eclipse.linuxtools.rpm.ui"
+            name="%category.name.0">
+      </category>
       <wizard
             name="%wizard.name.1"
             icon="icons/rpm.gif"
-            class="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard"
+            class="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard" 
+            category="org.eclipse.linuxtools.rpm.ui"
             id="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard">
          <description>
             %wizard.description.1
