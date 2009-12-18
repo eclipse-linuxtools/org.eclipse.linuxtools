@@ -1,3 +1,7 @@
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.ui.prefs: Enable save actions.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: Fix provider to be Eclipse not Eclipse.org.
