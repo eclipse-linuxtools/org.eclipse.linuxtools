@@ -30,7 +30,6 @@ public class RPMProject {
 
 	private IProject project;
 	private SourceRPM sourceRPM;
-	private IFile specFile;
 	private RPMConfiguration rpmConfig;
 
 	public RPMProject(IProject project) throws CoreException {
@@ -72,7 +71,6 @@ public class RPMProject {
 	}
 
 	public void setSpecFile(IFile specFile) throws CoreException {
-		this.specFile = specFile;
 		getProject().setPersistentProperty(
 				new QualifiedName(RPMCorePlugin.ID,
 						IRPMConstants.SPEC_FILE_PROPERTY), specFile.getName());
