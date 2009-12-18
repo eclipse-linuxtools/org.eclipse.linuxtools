@@ -1,3 +1,9 @@
+2009-12-18  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Set bundle version constraint on o.e.c.resources.
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogRootContainer.java:
+	Revert 3.6-only changes on trunk.
+
 2009-12-17  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogRootContainer.java (setDerived): Stub out inherited methods. 

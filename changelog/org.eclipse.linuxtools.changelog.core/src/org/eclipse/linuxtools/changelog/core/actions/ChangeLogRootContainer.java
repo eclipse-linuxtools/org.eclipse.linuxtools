@@ -15,13 +15,11 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFileInfoMatcherDescription;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceFilterDescription;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
@@ -405,46 +403,6 @@ public class ChangeLogRootContainer implements IContainer {
 
 	public boolean isConflicting(ISchedulingRule rule) {
 		return false;
-	}
-
-
-	public IResourceFilterDescription createFilter(int type,
-			IFileInfoMatcherDescription matcherDescription, int updateFlags,
-			IProgressMonitor monitor) throws CoreException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public void removeFilter(IResourceFilterDescription filterDescription,
-			int updateFlags, IProgressMonitor monitor) throws CoreException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	public IResourceFilterDescription[] getFilters() throws CoreException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public boolean isGroup() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	public boolean hasFilters() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	public void setDerived(boolean isDerived, IProgressMonitor monitor)
-			throws CoreException {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
