@@ -1,5 +1,9 @@
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* .settings/org.eclipse.jdt.ui.prefs: New file.
+	
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (setSpecFile): Store directly, there is no need to keep local variable.
 
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
