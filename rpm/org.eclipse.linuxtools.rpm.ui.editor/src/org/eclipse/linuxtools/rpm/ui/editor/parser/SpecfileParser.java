@@ -547,14 +547,6 @@ public class SpecfileParser {
 			}
 		}
 		if ((toReturn != null) && (toReturn.getStringValue() != null)) {
-			if (toReturn.getStringValue().indexOf("_") > 0) { //$NON-NLS-1$
-				if (toReturn.getName().equalsIgnoreCase(RpmTags.RELEASE))
-					errorHandler
-							.handleError(new SpecfileParseException(
-									Messages.getString("SpecfileParser.15"), lineNumber, //$NON-NLS-1$
-									0, lineText.length(),
-									IMarker.SEVERITY_WARNING));
-			}
 			try {
 				int intValue = Integer.parseInt(toReturn.getStringValue());
 				toReturn.setValue(intValue);

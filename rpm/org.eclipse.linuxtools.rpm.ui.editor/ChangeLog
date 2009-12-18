@@ -1,3 +1,7 @@
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Remove false warning for Release tag.
+
 2009-10-28  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseLine): Make sure that when trying to parse Source or Patch they are really such.
