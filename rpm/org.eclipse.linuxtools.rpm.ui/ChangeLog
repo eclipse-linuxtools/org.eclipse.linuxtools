@@ -1,5 +1,10 @@
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: Indicate that the new project is going to be rpm project.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (getNewProject): Run RPMNewProject instead of the generic new project.
+	 
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* .settings/org.eclipse.jdt.ui.prefs: Enable save actions.
 
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>

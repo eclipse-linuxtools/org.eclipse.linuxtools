@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -43,7 +44,6 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.actions.NewProjectAction;
 
 /**
  * RPM GUI import  page. Defines the page the is shown to the user when they choose
@@ -438,9 +438,13 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		NewProjectListener listener = new NewProjectListener();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener,
 				IResourceChangeEvent.POST_CHANGE);
-		(new NewProjectAction(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow())).run();
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
+		RPMNewProject wizard = new RPMNewProject();
+		wizard.init(PlatformUI.getWorkbench(), null);
+	    // Instantiates the wizard container with the wizard and opens it
+	    WizardDialog dialog = new WizardDialog(getShell(), wizard);
+	    dialog.create();
+	    dialog.open();
+	    ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
 		IProject project = listener.getNewProject();
 		return project;
 	}
