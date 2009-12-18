@@ -59,10 +59,10 @@ public class SpecfileParser {
 			FILES_SECTION, PACKAGE_SECTION, DESCRIPTION_SECTION };
 
 	private static String[] simpleDefinitions = { RpmTags.EPOCH, RpmTags.NAME,
-			RpmTags.VERSION, RpmTags.RELEASE, RpmTags.URL, RpmTags.BUILD_ARCH,
-			RpmTags.BUILD_ROOT };
+			RpmTags.VERSION, RpmTags.RELEASE, RpmTags.URL, RpmTags.BUILD_ARCH };
 
-	private static String[] directValuesDefinitions = { RpmTags.LICENSE };
+	private static String[] directValuesDefinitions = { RpmTags.LICENSE,
+			RpmTags.BUILD_ROOT };
 	// Note that the ordering here should match that in
 	// SpecfileSource#SOURCETYPE
 	private static String[] complexDefinitions = { "Source", "Patch" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -187,12 +187,13 @@ public class SpecfileParser {
 		}
 		for (String directValuesDefinition : packageLevelDefinitions) {
 			if (lineText.startsWith(directValuesDefinition + DEFINE_SEPARATOR)) {
-				SpecfileElement definition = parseDirectDefinition(lineText, specfile, lineNumber);
-				if (directValuesDefinition.equals(RpmTags.REQUIRES)){
+				SpecfileElement definition = parseDirectDefinition(lineText,
+						specfile, lineNumber);
+				if (directValuesDefinition.equals(RpmTags.REQUIRES)) {
 					if (activePackage != null) {
-						activePackage.addRequire((SpecfileTag)definition);
+						activePackage.addRequire((SpecfileTag) definition);
 					} else {
-						specfile.addRequire((SpecfileTag)definition);
+						specfile.addRequire((SpecfileTag) definition);
 					}
 				}
 				return definition;
@@ -214,9 +215,12 @@ public class SpecfileParser {
 		return null;
 	}
 
-	private SpecfileElement parseBuildRequire(String lineText, int lineNumber, Specfile specfile) {
-		String value = lineText.substring(lineText.indexOf(':')+1, lineText.length()).trim();
-		SpecfileDefine buildRequire = new SpecfileDefine("BuildRequires", value, specfile, null); //$NON-NLS-1$
+	private SpecfileElement parseBuildRequire(String lineText, int lineNumber,
+			Specfile specfile) {
+		String value = lineText.substring(lineText.indexOf(':') + 1,
+				lineText.length()).trim();
+		SpecfileDefine buildRequire = new SpecfileDefine(
+				"BuildRequires", value, specfile, null); //$NON-NLS-1$
 		buildRequire.setLineNumber(lineNumber);
 		specfile.addBuildRequire(buildRequire);
 		return buildRequire;
@@ -289,7 +293,8 @@ public class SpecfileParser {
 
 						// this is a package
 						if (toReturn == null) {
-							SpecfilePackage tmpPackage = specfile.getPackage(nextToken);
+							SpecfilePackage tmpPackage = specfile
+									.getPackage(nextToken);
 
 							if (tmpPackage == null) {
 								tmpPackage = new SpecfilePackage(nextToken,
@@ -352,7 +357,7 @@ public class SpecfileParser {
 		for (String section : sections) {
 			if (lineText.startsWith(section)) {
 				lastSection = parseSection(lineText, specfile, lineNumber);
-				lastSection.setSectionEndLine(lineNumber+1);
+				lastSection.setSectionEndLine(lineNumber + 1);
 				return lastSection;
 			}
 		}
@@ -529,7 +534,8 @@ public class SpecfileParser {
 					possValue += ' ' + iter.next();
 				}
 				toReturn = new SpecfileTag(token.substring(0,
-						token.length() - 1).toLowerCase(), possValue, specfile, null);
+						token.length() - 1).toLowerCase(), possValue, specfile,
+						null);
 				if (iter.hasNext() && !warnMultipleValues) {
 					errorHandler.handleError(new SpecfileParseException(
 							token.substring(0, token.length() - 1)
@@ -567,8 +573,8 @@ public class SpecfileParser {
 	private SpecfileElement parseDirectDefinition(String lineText,
 			Specfile specfile, int lineNumber) {
 		String[] parts = lineText.split(DEFINE_SEPARATOR);
-		SpecfileTag licenseElement = new SpecfileTag(parts[0],
-				parts[1].trim(), specfile, activePackage);
+		SpecfileTag licenseElement = new SpecfileTag(parts[0], parts[1].trim(),
+				specfile, activePackage);
 		licenseElement.setLineNumber(lineNumber);
 		return licenseElement;
 	}
