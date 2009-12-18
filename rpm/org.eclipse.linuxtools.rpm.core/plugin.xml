@@ -19,5 +19,8 @@
          	<run class="org.eclipse.linuxtools.rpm.core.RPMProjectNature"></run>
          </runtime>
    </extension>
-
+<extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="org.eclipse.linuxtools.rpm.core.RPMCoreInitializer" />
+	</extension>
 </plugin>

@@ -18,7 +18,6 @@ import java.util.ResourceBundle;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -76,20 +75,6 @@ public class RPMCorePlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
-	
-	@Override
-	protected void initializeDefaultPreferences(IPreferenceStore store)
-		 {
-		  String user_name = System.getProperty("user.name"); //$NON-NLS-1$
-		  store.setDefault(IRPMConstants.RPM_DISPLAYED_LOG_NAME, ".logfilename_" //$NON-NLS-1$
-		  		+ user_name);
-		  store.setDefault(IRPMConstants.RPM_LOG_NAME, "rpmbuild.log"); //$NON-NLS-1$
-	
-		  store.setDefault(IRPMConstants.RPM_CMD, "/bin/rpm"); //$NON-NLS-1$
-		  store.setDefault(IRPMConstants.RPMBUILD_CMD, "/usr/bin/rpmbuild"); //$NON-NLS-1$
-		  store.setDefault(IRPMConstants.DIFF_CMD, "/usr/bin/diff"); //$NON-NLS-1$
-		 }
-
 	
 	//Note this method is not thread-safe
 	public File getShellScriptFile() throws CoreException {
