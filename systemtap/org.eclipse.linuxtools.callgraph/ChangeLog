@@ -1,5 +1,6 @@
 2009-12-21  Charley Wang  <chwang@redhat.com>
 
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Gentle code cleaning
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Fix setLimits logic
 	Add save as ASCII option -- TODO: Implement a table view in Eclipse.
 

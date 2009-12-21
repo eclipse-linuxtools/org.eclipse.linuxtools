@@ -747,13 +747,6 @@ public class StapGraph extends Graph {
 		}
 	}
 
-	/*
-	 * Partially functional draw functions
-	 * 
-	 * -Box (drawFromBottomToTop)
-	 * 	Breaks when switching modes??
-	 */
-
 
 	/**
 	 * Draws a tree roughly starting from node id
@@ -806,6 +799,7 @@ public class StapGraph extends Graph {
 		if (id == getFirstUsefulNode())
 			nodeMap.get(id).setLocation(150 + (MaxLevelPixelWidth/2),y);
 	}
+	
 	
 	public void drawFromBottomToTop(int level, int height,
 			int MaxLevelPixelWidth) {
@@ -1965,32 +1959,25 @@ public class StapGraph extends Graph {
 		maxNodes = val;
 	}
 
-
 	public ArrayList<Integer> getCallOrderList() {
 		return callOrderList;
 	}
-
 
 	public void setCallOrderList(ArrayList<Integer> callOrderList) {
 		this.callOrderList = callOrderList;
 	}
 
-
 	public int getLastFunctionCalled() {
 		return lastFunctionCalled;
 	}
-
 
 	public void setLastFunctionCalled(int lastFunctionCalled) {
 		this.lastFunctionCalled = lastFunctionCalled;
 	}
 
-
-
 	public ICProject getProject() {
 		return project;
 	}
-
 
 	public Projectionist getProjectionist() {
 		return proj;
@@ -2018,10 +2005,6 @@ public class StapGraph extends Graph {
 
 	public void setThreaded() {
 		threaded = true;		
-	}
-	
-	public boolean isThreaded() {
-		return threaded;
 	}
 	
 	public boolean getCollapseMode() {
