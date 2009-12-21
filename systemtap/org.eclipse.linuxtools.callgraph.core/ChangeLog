@@ -1,3 +1,7 @@
+2009-12-21  Charley Wang  <chwang@redhat.com>
+
+	* errors.prop: Get rid of error for uprobes -- the stap output is pretty descriptive. The popup box is just annoying.
+
 2009-12-17  rgrunber  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Fix certain externalized strings.
