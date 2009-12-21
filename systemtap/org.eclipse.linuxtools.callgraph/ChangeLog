@@ -1,3 +1,7 @@
+2009-12-21  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Fix setLimits logic
+
 2009-12-18  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Reorganize menus and externalize.

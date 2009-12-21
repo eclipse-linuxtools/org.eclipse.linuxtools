@@ -637,7 +637,7 @@ public class CallgraphView extends SystemTapView {
 				set_limit.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {
 						boolean redraw = false;
-						if (limit.getSelection() > 0 && buffer.getSelection() > 0) {
+						if (limit.getSelection() >= 0 && buffer.getSelection() >= 0) {
 							g.setMaxNodes(limit.getSelection());
 							g.setLevelBuffer(buffer.getSelection());
 							
