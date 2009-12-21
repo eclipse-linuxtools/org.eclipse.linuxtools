@@ -79,6 +79,7 @@ public class CallgraphView extends SystemTapView {
 	private  Action save_dot;
 	private  Action save_col_dot;
 	private  Action save_cur_dot;
+	private  Action save_text;
 	ImageDescriptor playImage= CallgraphPlugin.getImageDescriptor("icons/perform.png"); //$NON-NLS-1$
 	ImageDescriptor pauseImage= CallgraphPlugin.getImageDescriptor("icons/pause.gif"); //$NON-NLS-1$
 	
@@ -428,9 +429,9 @@ public class CallgraphView extends SystemTapView {
 
 		//TODO I AM HERE
 		save_cur_dot = new Action(Messages.getString("CallgraphView.0")) { //$NON-NLS-1$
-			  public void run(){
-				  writeToDot(g.getCollapseMode(), g.nodeMap.keySet());
-			  }
+			public void run(){
+				writeToDot(g.getCollapseMode(), g.nodeMap.keySet());
+			}
 
 		};
 		save_dot = new Action(Messages.getString("CallgraphView.1")) { //$NON-NLS-1$
@@ -445,10 +446,62 @@ public class CallgraphView extends SystemTapView {
 	            }
 			
 		};
+		
+		save_text = new Action (Messages.getString("CallgraphView.3")) { //$NON-NLS-1$
+			public void run() {
+				//Prints an 80 char table
+		        Shell sh = new Shell();
+		        FileDialog dialog = new FileDialog(sh, SWT.SAVE);
+		        String filePath = dialog.open();
+		        
+		        if (filePath == null)
+		        	return;
+		        File f = new File(filePath);
+		        f.delete();
+        		try {
+	            	f.createNewFile();
+					BufferedWriter out = new BufferedWriter(new FileWriter(f));
+					StringBuilder builder = new StringBuilder();
+					builder.append("                           Function                           | Called |  Time\n"); //$NON-NLS-1$
+					
+					for (StapData k : g.nodeDataMap.values()) {
+	            		if ( (!k.isCollapsed ) && !k.isOnlyChildWithThisName())
+	            			continue;
+						if (k.isCollapsed) {
+							StringBuilder name = new StringBuilder(k.name);
+							name = fixString(name, 60);
+							builder.append(" " + name + " | "); //$NON-NLS-1$ //$NON-NLS-2$
+							
+							StringBuilder called = new StringBuilder("" + k.timesCalled); //$NON-NLS-1$
+							called = fixString(called, 6);
+							
+							StringBuilder time = new StringBuilder("" + //$NON-NLS-1$
+									StapNode.numberFormat.format((float) k.getTime()/g.getTotalTime() * 100) 
+									+ "%"); //$NON-NLS-1$
+							time = fixString(time, 6);
+							
+							builder.append(called + " | " + time + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
+						if (builder.length() > 2000) {
+							out.append(builder.toString());
+							out.flush();
+							builder.setLength(0);
+						}
+					}
+					
+					if (builder.length() > 0)
+						out.append(builder.toString());
+					out.close();
+		        } catch (IOException e) {
+		        	e.printStackTrace();
+		        }
+			}
+		};
 		saveMenu = new MenuManager(Messages.getString("CallgraphView.4")); //$NON-NLS-1$
 		file.add(saveMenu);
 		saveMenu.add(save_cur_dot);
 		saveMenu.add(save_col_dot);
+		saveMenu.add(save_text);
 		saveMenu.add(save_dot);
 		view = new MenuManager(Messages.getString("CallgraphView.ViewMenu")); //$NON-NLS-1$
 		animation = new MenuManager(Messages.getString("CallgraphView.AnimationMenu")); //$NON-NLS-1$
@@ -496,6 +549,27 @@ public class CallgraphView extends SystemTapView {
 	}
 
 
+	public StringBuilder fixString(StringBuilder name, int length) {
+		if (name.length() > length)
+			name = new StringBuilder(name.substring(0, length - 1));
+		else {
+			int diff = length - name.length();
+			boolean left = true;
+			while (diff > 0) {
+				if (left) {
+					name.insert(0, " "); //$NON-NLS-1$
+					left = false;
+				}
+				else {
+					name.append(" "); //$NON-NLS-1$
+					left = true;
+				}
+				diff--;
+			}
+		}
+		return name;
+	}
+	
 	
 	public void createViewActions() {
 		//Set drawmode to tree view
