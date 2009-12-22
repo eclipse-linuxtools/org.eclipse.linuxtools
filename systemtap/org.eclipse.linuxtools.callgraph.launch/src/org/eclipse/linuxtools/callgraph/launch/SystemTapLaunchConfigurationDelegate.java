@@ -309,7 +309,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 				}*/
 				
 				errorHandler.finishHandling(monitor, scriptPath);
-				if (errorHandler.getErrorMessage().length() > 0) {
+				if (errorHandler.isErrorRecognized()) {
 					SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages
 						(Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
