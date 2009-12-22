@@ -1,3 +1,8 @@
+2009-12-22  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMemberSummary):
+	Revert Helios-only change on trunk.
+
 2009-12-17  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMemberSummary):
