@@ -1,3 +1,7 @@
+2009-12-22  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Fix o.e.c.resources bundle version range.
+
 2009-12-18  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Set bundle version constraint on o.e.c.resources.
