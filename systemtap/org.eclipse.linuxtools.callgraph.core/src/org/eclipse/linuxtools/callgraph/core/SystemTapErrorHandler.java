@@ -39,11 +39,9 @@ public class SystemTapErrorHandler {
 
     public SystemTapErrorHandler() {
         errorRecognized = false;
-        if (errorMessage.length() < 1) {
-            errorMessage.append(Messages
-                    .getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
-                    Messages.getString("SystemTapErrorHandler.ErrorMessage1")); //$NON-NLS-1$
-        }
+        errorMessage.append(Messages
+             .getString("SystemTapErrorHandler.ErrorMessage") + //$NON-NLS-1$
+             Messages.getString("SystemTapErrorHandler.ErrorMessage1")); //$NON-NLS-1$
 
         logContents = new StringBuilder(); //$NON-NLS-1$
     }
@@ -75,6 +73,7 @@ public class SystemTapErrorHandler {
 
                     if (matcher.matches()) {
                         if (!isErrorRecognized()) {
+                        	//First error
                             errorMessage.append(Messages.getString("SystemTapErrorHandler.ErrorMessage2")); //$NON-NLS-1$
                             setErrorRecognized(true);
                         }

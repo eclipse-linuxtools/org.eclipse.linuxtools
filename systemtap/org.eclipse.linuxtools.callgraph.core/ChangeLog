@@ -1,3 +1,8 @@
+2009-12-22  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Remove extraneous logic
+	* errors.prop: Re-add uprobes error after slight modification to popup error
+
 2009-12-21  Charley Wang  <chwang@redhat.com>
 
 	* errors.prop: Get rid of error for uprobes -- the stap output is pretty descriptive. The popup box is just annoying.
