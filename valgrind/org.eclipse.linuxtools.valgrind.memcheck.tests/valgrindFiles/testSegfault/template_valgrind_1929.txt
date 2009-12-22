@@ -1,0 +1,4 @@
+==1929== 
+==1929== Process terminating with default action of signal 11 (SIGSEGV)
+==1929==  Bad permissions for mapped region at address 0x400588
+==1929==    at 0x400484: main (main.c:3)

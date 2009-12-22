@@ -1,0 +1,4 @@
+==1595== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==1595==    at 0x4A05E5D: malloc (vg_replace_malloc.c:195)
+==1595==    by 0x4005AE: main (parent.c:8)
+==1595== 
