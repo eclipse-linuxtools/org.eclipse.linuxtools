@@ -1,3 +1,7 @@
+2009-12-22  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Only display error popup if there is something to say
+
 2009-12-17  rgrunber  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Externalize Strings and cleanup.
