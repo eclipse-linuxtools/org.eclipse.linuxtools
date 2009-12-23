@@ -1,3 +1,7 @@
+2009-12-23  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Properly align nodes in radial mode. No more annoying 'just-off-center'ness!!
+
 2009-12-21  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Gentle code cleaning
