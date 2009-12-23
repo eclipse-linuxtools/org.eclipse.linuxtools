@@ -368,7 +368,6 @@ public class StapGraph extends Graph {
 		int y = this.getBounds().height / 2;
 		n.setLocation(x, y);
 		
-		System.out.println("Center: " + x + "," + y);
 		if (getNodeData(centerNode).isMarked())
 			nodeMap.get(centerNode).setBackgroundColor(CONSTANT_MARKED);
 		radialHelper(centerNode, x, y, radius, 0);
@@ -466,7 +465,6 @@ public class StapGraph extends Graph {
 				yOffset = (int) (radius * Math.cos((float) angle * i));
 				xOffset = (int) (radius * Math.sin((float) angle * i)) - subN.getSize().width/2 + getNode(id).getSize().width/2;
 			}
-			System.out.println("Fraction " + (float)angle*i/2/Math.PI + ":" + (x + xOffset) +"," + (y + yOffset));
 
 			if (hasChildren(subID))
 				subN.setBackgroundColor(CONSTANT_HAS_CHILDREN);
