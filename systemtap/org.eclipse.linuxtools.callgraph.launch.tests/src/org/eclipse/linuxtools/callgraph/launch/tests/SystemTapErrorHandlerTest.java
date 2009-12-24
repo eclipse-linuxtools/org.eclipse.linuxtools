@@ -76,13 +76,13 @@ public class SystemTapErrorHandlerTest extends TestCase {
 	
 	public void testUprobesError(){
 		
-		errorString = "SystemTap's version of uprobes is out of date. As root, run or a member of the stapdev group run \"make -C /usr/local/share/systemtap/runtime/uprobes\".";
+		errorString = "SystemTap's version of uprobes is out of date. As root, or a member of the 'root' group, run \"make -C /usr/local/share/systemtap/runtime/uprobes\".";
 		
 		errHandler = new SystemTapErrorHandler();
 		errHandler.handle(new NullProgressMonitor(), errorString);
 		
 		assertTrue(errHandler.isErrorRecognized());
-		assertTrue(errHandler.getErrorMessage().contains("Probes were not compiled on your system. Try 'make -C /usr/local/share/systemtap/runtime/uprobes' as root"));
+		assertTrue(errHandler.getErrorMessage().contains("SystemTap's version of uprobes is out of date. As root, please run \"make -C /usr/local/share/systemtap/runtime/uprobes\"."));
 		
 	}
 
