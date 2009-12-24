@@ -1,3 +1,10 @@
+2009-12-24  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java 
+		(setGraphOptions): Add save_text so it is disabled when context does not require it. 
+	* src/org/eclipse/linuxtools/callgraph/messages.properties:
+		Give relevant names to save_text externalized Strings.
+
 2009-12-23  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Properly align nodes in radial mode. No more annoying 'just-off-center'ness!!

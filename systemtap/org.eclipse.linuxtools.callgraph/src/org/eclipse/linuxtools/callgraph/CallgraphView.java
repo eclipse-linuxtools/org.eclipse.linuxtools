@@ -334,6 +334,8 @@ public class CallgraphView extends SystemTapView {
 		save_dot.setEnabled(visible);
 		save_col_dot.setEnabled(visible);
 		save_cur_dot.setEnabled(visible);
+		save_text.setEnabled(visible);
+		
 		view_treeview.setEnabled(visible);
 		view_radialview.setEnabled(visible);
 		view_aggregateview.setEnabled(visible);
@@ -428,26 +430,26 @@ public class CallgraphView extends SystemTapView {
 		addFileMenu();
 
 		//TODO I AM HERE
-		save_cur_dot = new Action(Messages.getString("CallgraphView.0")) { //$NON-NLS-1$
+		save_cur_dot = new Action(Messages.getString("CallgraphView.SaveViewAsDot")) { //$NON-NLS-1$
 			public void run(){
 				writeToDot(g.getCollapseMode(), g.nodeMap.keySet());
 			}
 
 		};
-		save_dot = new Action(Messages.getString("CallgraphView.1")) { //$NON-NLS-1$
+		save_dot = new Action(Messages.getString("CallgraphView.SaveAllUncollapsedAsDot")) { //$NON-NLS-1$
             public void run(){
               writeToDot(false, g.nodeDataMap.keySet());
             }
 		};
 		
-		save_col_dot = new Action (Messages.getString("CallgraphView.2")) { //$NON-NLS-1$
+		save_col_dot = new Action (Messages.getString("CallgraphView.SaveAllCollapsedAsDot")) { //$NON-NLS-1$
 		     public void run(){
 	                writeToDot(true, g.nodeDataMap.keySet());
 	            }
 			
 		};
 		
-		save_text = new Action (Messages.getString("CallgraphView.3")) { //$NON-NLS-1$
+		save_text = new Action (Messages.getString("CallgraphView.SaveCollapsedAsASCII")) { //$NON-NLS-1$
 			public void run() {
 				//Prints an 80 char table
 		        Shell sh = new Shell();
@@ -497,7 +499,7 @@ public class CallgraphView extends SystemTapView {
 		        }
 			}
 		};
-		saveMenu = new MenuManager(Messages.getString("CallgraphView.4")); //$NON-NLS-1$
+		saveMenu = new MenuManager(Messages.getString("CallgraphView.SaveMenu")); //$NON-NLS-1$
 		file.add(saveMenu);
 		saveMenu.add(save_cur_dot);
 		saveMenu.add(save_col_dot);
