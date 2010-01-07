@@ -1,3 +1,26 @@
+2010-01-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/util/ExceptionHandler.java: Removed.
+	* META-INF/MANIFEST.MF: Do not export removed package.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ChangelogPage.java (addChangelogField): Uses StatusManger for error reporting.
+	(RPM_CHANGELOG_ENTRIES): Formatted.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/InstallScriptsPage.java (RPM_POST_UNINSTALL): Likewise.
+	(RPM_POST_INSTALL): Likewise.
+	(addScriptFields): Use StatusManger for error reporting.
+	(RPM_PRE_INSTALL): Formatted.
+	(RPM_PRE_UNINSTALL): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/Messages.java (getString): Remove not needed TODO.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/messages.properties: Remove not needed string.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/ProvidesPage.java (addProvidesField): Uses StatusManager for error reporting.
+	(RPM_QL): Formatted.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/SpecFileHeaderPage.java (RPM_QI): Likewise. 
+	(addInfoField): Uses StatusManager for error reporting.
+	* src/org/eclipse/linuxtools/rpm/ui/propertypage/TargetPage.java (RPM_TIME): Formatted. 
+	(RPM_ARCH): Likewise.
+	(RPM_PLATFORM): Likewise. 
+	(RPM_HOST): Likewise.
+	(addTargetFields): Uses StatusManager for error reporting.
+
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Accept IResource for export wizard.

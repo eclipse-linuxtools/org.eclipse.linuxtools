@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
-import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,11 +22,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class ChangelogPage extends PropertyPage {
 
-	private static final String RPM_CHANGELOG_ENTRIES = 
-		Messages.getString("ChangelogPage.entries"); //$NON-NLS-1$
+	private static final String RPM_CHANGELOG_ENTRIES = Messages
+			.getString("ChangelogPage.entries"); //$NON-NLS-1$
 
 	private static final int CL_ENTRIES_FIELD_WIDTH = 80;
 
@@ -57,11 +58,12 @@ public class ChangelogPage extends PropertyPage {
 		rpm_ChangelogEntriesText.setLayoutData(gdEntries);
 
 		try {
-			String rpm_ChangelogEntries = RPMQuery.getChangelog((IFile) getElement());
+			String rpm_ChangelogEntries = RPMQuery
+					.getChangelog((IFile) getElement());
 			rpm_ChangelogEntriesText.setText(rpm_ChangelogEntries);
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage()); //$NON-NLS-1$
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
+					StatusManager.LOG | StatusManager.SHOW);
 		}
 
 	}

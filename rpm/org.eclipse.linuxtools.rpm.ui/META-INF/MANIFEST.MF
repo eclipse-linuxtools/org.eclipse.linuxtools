@@ -19,5 +19,4 @@ Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.ui.console
 Export-Package: 
  org.eclipse.linuxtools.rpm.ui,
- org.eclipse.linuxtools.rpm.ui.propertypage,
- org.eclipse.linuxtools.rpm.ui.util
+ org.eclipse.linuxtools.rpm.ui.propertypage

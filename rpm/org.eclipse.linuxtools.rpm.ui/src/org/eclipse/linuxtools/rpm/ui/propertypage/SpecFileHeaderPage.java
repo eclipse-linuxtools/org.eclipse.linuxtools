@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
-import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,11 +22,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class SpecFileHeaderPage extends PropertyPage {
-	
-	private static final String RPM_QI = Messages.getString("SpecFileHeaderPage.info"); //$NON-NLS-1$
-	
+
+	private static final String RPM_QI = Messages
+			.getString("SpecFileHeaderPage.info"); //$NON-NLS-1$
+
 	private static final int QI_FIELD_WIDTH = 80;
 
 	private static final int QI_FIELD_HEIGHT = 40;
@@ -59,9 +61,9 @@ public class SpecFileHeaderPage extends PropertyPage {
 		try {
 			String rpm_qi = RPMQuery.getHeaderInfo((IFile) getElement());
 			rpm_qiText.setText(rpm_qi);
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage()); //$NON-NLS-1$
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
+					StatusManager.LOG | StatusManager.SHOW);
 		}
 	}
 

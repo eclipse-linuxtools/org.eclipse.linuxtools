@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
-import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,18 +21,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class TargetPage extends PropertyPage {
-	
-	private static final String RPM_ARCH = Messages.getString("TargetPage.Architecture"); //$NON-NLS-1$
 
-	private static final String RPM_PLATFORM = Messages.getString("TargetPage.Platform"); //$NON-NLS-1$
+	private static final String RPM_ARCH = Messages
+			.getString("TargetPage.Architecture"); //$NON-NLS-1$
+
+	private static final String RPM_PLATFORM = Messages
+			.getString("TargetPage.Platform"); //$NON-NLS-1$
 
 	private static final String RPM_OS = Messages.getString("TargetPage.OS"); //$NON-NLS-1$
 
-	private static final String RPM_HOST = Messages.getString("TargetPage.BuildHost"); //$NON-NLS-1$
+	private static final String RPM_HOST = Messages
+			.getString("TargetPage.BuildHost"); //$NON-NLS-1$
 
-	private static final String RPM_TIME = Messages.getString("TargetPage.BuildTime"); //$NON-NLS-1$
+	private static final String RPM_TIME = Messages
+			.getString("TargetPage.BuildTime"); //$NON-NLS-1$
 
 	private static final int ARCH_FIELD_WIDTH = 8;
 
@@ -115,9 +120,9 @@ public class TargetPage extends PropertyPage {
 			rpm_hostText.setText(rpm_host);
 			String rpm_time = RPMQuery.getBuildTime(rpmFile);
 			rpm_timeText.setText(rpm_time);
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage()); //$NON-NLS-1$
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
+					StatusManager.LOG | StatusManager.SHOW);
 		}
 
 	}
