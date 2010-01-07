@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: org.eclipse.linuxtools.gcov.test
+Bundle-Version: 4.1.1.qualifier
+Bundle-Vendor: %bundleProvider
+Fragment-Host: org.eclipse.linuxtools.gcov
+Require-Bundle: org.junit
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
