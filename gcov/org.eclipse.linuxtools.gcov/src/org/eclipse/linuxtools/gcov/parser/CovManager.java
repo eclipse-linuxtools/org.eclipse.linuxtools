@@ -153,6 +153,7 @@ public class CovManager implements Serializable {
 				folder = new Folder(folderName);
 				allFolders.add(folder);
 			}
+			folder.addSrcFiles(sf);
 		}
 
 		// assign sourcesList for each folder
