@@ -370,6 +370,7 @@ public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		/**
 		 * Notifies that the list selection has changed.
 		 */
+		@Override
 		protected void selectionChanged() {
 
 			int index = list.getSelectionIndex();

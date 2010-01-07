@@ -1,3 +1,12 @@
+2010-01-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/LineBreakingReader.java (readLine): Fix javadoc.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/Messages.java: Add copyright header.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (RpmTagText): Externalize string.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSection.java (getContents): Add NON-NLS.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java (MacroListEditor.selectionChanged): Add @Override.
+
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Format.

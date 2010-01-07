@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.forms;
 
 import org.eclipse.osgi.util.NLS;
@@ -12,6 +22,7 @@ public final class Messages extends NLS {
 	public static String MainPackagePage_5;
 	public static String MainPackagePage_6;
 	public static String MainPackagePage_7;
+	public static String RpmTagText_0;
 	public static String SpecfileFormEditor_0;
 	static {
 		// initialize resource bundle

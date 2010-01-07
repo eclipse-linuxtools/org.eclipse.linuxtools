@@ -73,7 +73,7 @@ public class SpecfileSection extends SpecfileElement {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public void setContents(String newContent) {
