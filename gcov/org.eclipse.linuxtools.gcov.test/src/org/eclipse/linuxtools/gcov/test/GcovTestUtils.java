@@ -8,7 +8,7 @@
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *******************************************************************************/
-package com.st.stgcov.test;
+package org.eclipse.linuxtools.gcov.test;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -19,7 +19,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-public class STGcovTestUtils {
+public class GcovTestUtils {
 	public static final String GCOV_FILE_SUFFIX = ".gcda"; 
 	public static final String GCOV_BINARY_FILE_SUFFIX = ".out";
 	public static final String GCOV_DIRECTORY_SUFFIX = "_gcov_input";

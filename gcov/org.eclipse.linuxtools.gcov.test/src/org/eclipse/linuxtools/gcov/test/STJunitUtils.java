@@ -8,7 +8,7 @@
  * Contributors:
  *   Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *******************************************************************************/
-package com.st.stgcov.test;
+package org.eclipse.linuxtools.gcov.test;
 
 import java.io.File;
 import java.io.FileFilter;

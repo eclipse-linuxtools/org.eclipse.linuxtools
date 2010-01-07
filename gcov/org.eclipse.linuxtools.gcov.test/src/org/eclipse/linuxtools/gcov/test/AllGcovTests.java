@@ -8,23 +8,19 @@
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *******************************************************************************/
-package com.st.stgcov.test.core;
+package org.eclipse.linuxtools.gcov.test;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.st.stgcov.test.STgcovGCDARetrieverTest;
-import com.st.stgcov.test.STgcovParserTest;
-import com.st.stgcov.test.STgcovViewTest;
-
-public class RootGcovTests {
+public class AllGcovTests {
 
 	public static Test suite() {
-		TestSuite ats = new TestSuite("STGCov");
+		TestSuite ats = new TestSuite("Tests for org.eclipse.linuxtools.gcov.test");
 		//$JUnit-BEGIN$
-		ats.addTest(STgcovGCDARetrieverTest.suite());
-		ats.addTest(STgcovParserTest.suite());
-		ats.addTest(STgcovViewTest.suite());
+		ats.addTest(GcovGCDARetrieverTest.suite());
+		ats.addTest(GcovParserTest.suite());
+		ats.addTest(GcovViewTest.suite());
 		//$JUnit-END$
 		return ats;		
 	}

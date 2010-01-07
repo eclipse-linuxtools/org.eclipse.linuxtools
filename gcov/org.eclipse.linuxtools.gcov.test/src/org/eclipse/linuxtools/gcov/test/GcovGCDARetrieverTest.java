@@ -8,7 +8,7 @@
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *******************************************************************************/
-package com.st.stgcov.test;
+package org.eclipse.linuxtools.gcov.test;
 
 import java.io.File;
 import java.util.Arrays;
@@ -22,17 +22,17 @@ import junit.framework.TestSuite;
 import org.eclipse.linuxtools.gcov.Activator;
 import org.eclipse.linuxtools.gcov.parser.CovManager;
 
-public class STgcovGCDARetrieverTest extends TestCase {
+public class GcovGCDARetrieverTest extends TestCase {
 
-	public STgcovGCDARetrieverTest() {
+	public GcovGCDARetrieverTest() {
 	}
 
 	public static Test suite() {
-		TestSuite ats = new TestSuite("STGcov:GCDA_Retriever");
+		TestSuite ats = new TestSuite("Gcov:GCDA_Retriever");
 		File[] testDirs = STJunitUtils.getTestDirs(Activator.PLUGIN_ID + ".test", "test.*");
 		for (File testDir : testDirs) {	
-			final String[] covFiles = STGcovTestUtils.getGCDANames(testDir);
-			final File binaryFile = STGcovTestUtils.getBinary(testDir);
+			final String[] covFiles = GcovTestUtils.getGCDANames(testDir);
+			final File binaryFile = GcovTestUtils.getBinary(testDir);
 			ats.addTest(
 					new TestCase(testDir.getName() + ":GCDA_Retriever") {
 						public void runTest() throws Throwable {

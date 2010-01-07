@@ -8,7 +8,7 @@
  * Contributors:
  *    Xavier Raynaud <xavier.raynaud@st.com> - initial API and implementation
  *******************************************************************************/
-package com.st.stgcov.test;
+package org.eclipse.linuxtools.gcov.test;
 
 import java.io.File;
 import java.util.List;
@@ -27,18 +27,18 @@ import org.eclipse.linuxtools.gcov.view.CovFolderContentProvider;
 import org.eclipse.linuxtools.gcov.view.CovFunctionContentProvider;
 import org.eclipse.linuxtools.gcov.view.CovView;
 
-public class STgcovViewTest extends TestCase {
+public class GcovViewTest extends TestCase {
 	
-	public STgcovViewTest() {
+	public GcovViewTest() {
 	}
 	
 	public static Test suite() {
-		TestSuite ats = new TestSuite("STGCov:View");
+		TestSuite ats = new TestSuite("GCov:View");
 		File[] testDirs = STJunitUtils.getTestDirs(Activator.PLUGIN_ID + ".test", "test.*");
 		
 		for (File testDir : testDirs) {		
-			final List<String> covFilesPaths = STGcovTestUtils.getGCDAPath(testDir);
-			final File binary = STGcovTestUtils.getBinary(testDir);
+			final List<String> covFilesPaths = GcovTestUtils.getGCDAPath(testDir);
+			final File binary = GcovTestUtils.getBinary(testDir);
 			final File folderRefFile = new File(testDir, "testViewFolder.ref");
 			final File folderDumpFile = new File(testDir, "testViewFolder.dump");
 			final File fileRefFile = new File(testDir, "testView.ref");
