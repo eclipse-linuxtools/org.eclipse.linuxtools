@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core.tests;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URL;
 
@@ -163,7 +164,8 @@ public class RPMProjectTest extends TestCase {
 		}
 		File foo = new File(FileLocator.toFileURL(url).getPath());
 		rpmProject.importSourceRPM(foo);
-		rpmProject.buildSourceRPM();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		rpmProject.buildSourceRPM(bos);
 
 		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder().getFile(
 				"helloworld-2-2.src.rpm");
