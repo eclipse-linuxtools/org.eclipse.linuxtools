@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +20,6 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
-import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -59,13 +56,16 @@ public class RPMExportOperation implements IRunnableWithProgress {
 		monitor.beginTask(Messages.getString("RPMExportOperation.Starting"), //$NON-NLS-1$
 				totalWork);
 		monitor.worked(1);
-		InputStream result = null;
+		MessageConsole myConsole = findConsole("rpmbuild"); //$NON-NLS-1$
+		MessageConsoleStream out = myConsole.newMessageStream();
+		myConsole.clearConsole();
+		myConsole.activate();
 		switch (exportType) {
 		case ALL:
 			try {
 				monitor.setTaskName(Messages
 						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
-				result = rpmProject.buildAll();
+				rpmProject.buildAll(out);
 			} catch (Exception e) {
 				rpm_errorTable.add(e);
 			}
@@ -75,7 +75,7 @@ public class RPMExportOperation implements IRunnableWithProgress {
 			monitor.setTaskName(Messages
 					.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 			try {
-				result = rpmProject.buildBinaryRPM();
+				rpmProject.buildBinaryRPM(out);
 			} catch (Exception e) {
 				rpm_errorTable.add(e);
 			}
@@ -85,23 +85,11 @@ public class RPMExportOperation implements IRunnableWithProgress {
 			monitor.setTaskName(Messages
 					.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
 			try {
-				result = rpmProject.buildSourceRPM();
+				rpmProject.buildSourceRPM(out);
 			} catch (Exception e) {
 				rpm_errorTable.add(e);
 			}
 			break;
-		}
-		MessageConsole myConsole = findConsole("rpmbuild"); //$NON-NLS-1$
-		MessageConsoleStream out = myConsole.newMessageStream();
-		myConsole.clearConsole();
-		myConsole.activate();
-		if (null != result) {
-			try {
-				out.println(Utils.inputStreamToString(result));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		monitor.worked(1);
 	}
