@@ -1,3 +1,15 @@
+2010-01-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildSourceRPM): Make it void which writes to the passed OutputStream.
+	(buildBinaryRPM): Likewise.
+	(buildAll): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (buildAll): Likewise.
+	(buildBinary): Likewise.
+	(buildSource): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (runCommandToInputStream): Remove not needed try/catch.
+	(inputStreamToString): Javadoc format.
+	(runCommand): New method.
+
 2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.ui.prefs: New file.

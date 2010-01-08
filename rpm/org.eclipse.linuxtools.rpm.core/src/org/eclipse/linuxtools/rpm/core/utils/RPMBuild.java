@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Red Hat, Inc.
+ * Copyright (c) 2005-2010 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.rpm.core.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,13 +94,13 @@ public class RPMBuild {
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public InputStream buildBinary(IFile specFile) throws CoreException {
+	public void buildBinary(IFile specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bb"); //$NON-NLS-1$
 		command.add(specFile.getLocation().toString());
 		try {
-			return Utils.runCommandToInputStream(command
+			Utils.runCommand(outStream, command
 					.toArray(new String[command.size()]));
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
@@ -134,16 +135,17 @@ public class RPMBuild {
 	 * 
 	 * @param specFile
 	 *            the spec file
+	 * @param outStream 
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public InputStream buildAll(IFile specFile) throws CoreException {
+	public void buildAll(IFile specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-ba"); //$NON-NLS-1$
 		command.add(specFile.getLocation().toString());
 		try {
-			return Utils.runCommandToInputStream(command
+			Utils.runCommand(outStream, command
 					.toArray(new String[command.size()]));
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
@@ -159,13 +161,13 @@ public class RPMBuild {
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public InputStream buildSource(IFile specFile) throws CoreException {
+	public void buildSource(IFile specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bs"); //$NON-NLS-1$
 		command.add(specFile.getLocation().toString());
 		try {
-			return Utils.runCommandToInputStream(command
+			Utils.runCommand(outStream, command
 					.toArray(new String[command.size()]));
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Red Hat, Inc.
+ * Copyright (c) 2005, 2010 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.linuxtools.rpm.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -116,10 +116,10 @@ public class RPMProject {
 
 	}
 
-	public InputStream buildAll() throws CoreException {
+	public void buildAll(OutputStream outStream) throws CoreException {
 		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		InputStream result = rpmbuild.buildAll(getSpecFile());
+		 rpmbuild.buildAll(getSpecFile(), outStream);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
@@ -127,33 +127,28 @@ public class RPMProject {
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
-		buildPrep();
-		return result;
 	}
 
-	public InputStream buildBinaryRPM() throws CoreException {
+	public void buildBinaryRPM(OutputStream out) throws CoreException {
 		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		InputStream result = rpmbuild.buildBinary(getSpecFile());
+		rpmbuild.buildBinary(getSpecFile(), out);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getRpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
-		return result;
 	}
 
-	public InputStream buildSourceRPM() throws CoreException {
+	public void buildSourceRPM(OutputStream out) throws CoreException {
 		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		InputStream result = rpmbuild.buildSource(getSpecFile());
+		rpmbuild.buildSource(getSpecFile(), out);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
-		buildPrep();
-		return result;
 	}
 
 	public void buildPrep() throws CoreException {
