@@ -1,3 +1,7 @@
+2010-01-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+
 2010-01-08  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (run): Adapt to RPMBuild api changes.
