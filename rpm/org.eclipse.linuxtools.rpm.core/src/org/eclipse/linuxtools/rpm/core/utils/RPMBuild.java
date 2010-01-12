@@ -69,6 +69,7 @@ public class RPMBuild {
 	 * 
 	 * @param specFile
 	 *            the spec file
+	 * @return The output of the `rpmbuild -bp` command.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
@@ -91,6 +92,7 @@ public class RPMBuild {
 	 * 
 	 * @param specFile
 	 *            the spec file
+	 * @param outStream The stream to write the output to.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
@@ -109,33 +111,11 @@ public class RPMBuild {
 	}
 
 	/**
-	 * Rebuilds a binary RPM from a given source RPM.
-	 * 
-	 * @param sourceRPM
-	 *            the source RPM
-	 * @throws CoreException
-	 *             if the operation fails
-	 */
-	public InputStream rebuild(IFile sourceRPM) throws CoreException {
-		List<String> command = new ArrayList<String>();
-		command.addAll(Arrays.asList(macroDefines));
-		command.add("--rebuild"); //$NON-NLS-1$
-		command.add(sourceRPM.getLocation().toString());
-		try {
-			return Utils.runCommandToInputStream(command
-					.toArray(new String[command.size()]));
-		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
-					e.getMessage(), e));
-		}
-	}
-
-	/**
 	 * Builds both a binary and source RPM for a given spec file.
 	 * 
 	 * @param specFile
 	 *            the spec file
-	 * @param outStream 
+	 * @param outStream The stream to write the output to.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
@@ -158,6 +138,7 @@ public class RPMBuild {
 	 * 
 	 * @param specFile
 	 *            the spec file
+	 * @param outStream The stream to write the output to.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */

@@ -20,6 +20,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+/**
+ * Utilities for calling system executables.
+ * 
+ */
 public class Utils {
 
 	/**
@@ -29,6 +33,7 @@ public class Utils {
 	 *            The command with all parameters.
 	 * @return Stream containing the combined content of stderr and stdout.
 	 * @throws IOException
+	 *             If IOException occurs.
 	 */
 	public static BufferedInputStream runCommandToInputStream(String... command)
 			throws IOException {
@@ -43,10 +48,12 @@ public class Utils {
 	/**
 	 * Runs the given command and parameters.
 	 * 
+	 * @param outStream
+	 *            The stream to write the output to.
+	 * 
 	 * @param command
 	 *            The command with all parameters.
-	 * @return Stream containing the combined content of stderr and stdout.
-	 * @throws IOException
+	 * @throws IOException If an IOException occurs.
 	 */
 	public static void runCommand(final OutputStream outStream,
 			String... command) throws IOException {
@@ -100,7 +107,7 @@ public class Utils {
 	 * @param stream
 	 *            The InputStream to read.
 	 * @return Textual content of the stream.
-	 * @throws IOException
+	 * @throws IOException If an IOException occurs.
 	 */
 	public static String inputStreamToString(InputStream stream)
 			throws IOException {

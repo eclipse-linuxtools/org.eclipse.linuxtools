@@ -1,3 +1,15 @@
+2010-01-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (install): Fix javadoc.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (buildAll): Likewise.
+	(buildBinary): Likewise.
+	(buildPrep): Likewise.
+	(buildSource): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (runCommandToInputStream): Likewise.
+	(inputStreamToString): Likewise.
+	(runCommand): Likewise.
+
 2010-01-08  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildSourceRPM): Make it void which writes to the passed OutputStream.

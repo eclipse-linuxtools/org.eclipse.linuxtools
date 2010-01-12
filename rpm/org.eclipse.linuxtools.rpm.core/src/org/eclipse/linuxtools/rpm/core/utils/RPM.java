@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Red Hat, Inc.
+ * Copyright (c) 2005, 2010 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,8 +63,9 @@ public class RPM {
 	/**
 	 * Installs a given source RPM
 	 * 
-	 * @param sourceRPM
-	 * @throws CoreException
+	 * @param sourceRPM The src.rpm file to install.
+	 * @return The output of the install command.
+	 * @throws CoreException If something fails.
 	 */
 	public String install(IFile sourceRPM) throws CoreException {
 		List<String> command = new ArrayList<String>();
