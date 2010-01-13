@@ -1,3 +1,10 @@
+2010-01-13  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtoolsupdatesite-helios.sh: New file.  Helios update site
+	updater.
+	* tools/linuxtoolsupdatesite-galileo.sh: Update for new Hudson location.
+	Rename from -trunk.sh.
+
 2009-12-16  Charley Wang  <chwang@redhat.com>
 
 	* build.properties: Update reference to GEF-ALL to point to the correct location
