@@ -87,7 +87,7 @@ public class StapGraphParser extends SystemTapParser {
 		project = null;
 		startTime = -1;
 	}
-
+	
 	
 	public IStatus nonRealTimeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
@@ -385,7 +385,90 @@ public class StapGraphParser extends SystemTapParser {
 		}
 		return Status.OK_STATUS;
 	}
+
 	
+	private IStatus parseDotFile() {
+		if (!(internalData instanceof BufferedReader))
+			return Status.CANCEL_STATUS;
+
+		BufferedReader buff = (BufferedReader) internalData;
+		
+		HashMap <Integer, ArrayList<Integer>> outNeighbours= new HashMap<Integer, ArrayList<Integer>>();
+		ArrayList<String> nameList = new ArrayList<String>();
+		ArrayList<Integer> idList = new ArrayList<Integer>();
+		endingTimeInNS =0l;
+		totalTime=10000l;
+		try {
+			String line;
+			while ((line = buff.readLine()) != null) {
+				if (line.equals("}"))
+					break;
+				if (monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+				if (line.length() < 1)
+					continue;
+				
+				String[] args = new String[2];
+				args = line.split(" ", 2);
+				if (args[0].contains("->")) {
+					//connection
+					int[] ids = new int[2];
+					ids[0] = Integer.parseInt(args[0].split("->")[0]);
+					ids[1] = Integer.parseInt(args[0].split("->")[1]);
+					
+					//Set neighbour
+					ArrayList<Integer> tmpList = outNeighbours.get(ids[0]);
+					if (tmpList == null)
+						tmpList = new ArrayList<Integer>();
+					tmpList.add(ids[1]);
+					outNeighbours.put(ids[0], tmpList);
+				} else {
+					//node
+					int id = Integer.parseInt(args[0]);
+					if (firstNode == -1) {
+						firstNode = id;
+					}
+					int index = args[1].indexOf("=\"");
+					String name = args[1].substring(index + 2, args[1].indexOf(" ", index));
+					double dtime = Double.parseDouble(args[1].substring(args[1].indexOf(" ") + 1, args[1].indexOf("%")));
+					long time = (long) (dtime*100); 
+
+					nameList.add(name);
+					idList.add(id);
+					timeMap.put(id, time);
+					serialMap.put(id, name);
+					if (countMap.get(name) == null){
+						countMap.put(name, 0);
+					}
+					countMap.put(name, countMap.get(name) + 1);
+					
+					long cumulativeTime = (aggregateTimeMap.get(name) != null ? aggregateTimeMap.get(name) : 0) + time;
+					aggregateTimeMap.put(name, cumulativeTime);
+					
+				}
+				
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				buff.close();
+			} catch (IOException e) {
+				//Do nothing
+			}
+		}
+		neighbourMaps.put(0, outNeighbours);
+		nameMaps.put(0, nameList);
+		idMaps.put(0, idList);
+		try {
+			view.update();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		return Status.OK_STATUS;
+	}
 
 	@Override
 	public IStatus realTimeParsing() {
@@ -396,12 +479,17 @@ public class StapGraphParser extends SystemTapParser {
 
 		String line;
 		boolean draw = false;
+		boolean first = true;
 		try {
 			while ((line = buff.readLine()) != null) {
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 				if (line.length() < 1)
 					continue;
+				if (first && (line.contains("digraph stapgraph {"))) {
+					return parseDotFile();
+				}
+				first = false;
 				
 				draw = true; 
 				if (line.equals("PROBE_BEGIN")) { //$NON-NLS-1$
@@ -454,5 +542,6 @@ public class StapGraphParser extends SystemTapParser {
 				Messages.getString("StapGraphParser.ActualTime") + time/1000000  //$NON-NLS-1$
 				+ Messages.getString("StapGraphParser.TimeUnits")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+
 
 }

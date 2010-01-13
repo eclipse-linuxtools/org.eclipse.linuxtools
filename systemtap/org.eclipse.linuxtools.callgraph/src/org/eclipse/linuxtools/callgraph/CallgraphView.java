@@ -201,6 +201,7 @@ public class CallgraphView extends SystemTapView {
 		/*
 		 *                Load graph data
 		 */
+		System.out.println("SIZE: " + parser.serialMap.keySet().size()); 
 	    for (int id_parent : parser.serialMap.keySet()) {
 	    	boolean marked = false;
 	    	String msg = ""; //$NON-NLS-1$
