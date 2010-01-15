@@ -1,0 +1,5 @@
+2010-01-15  Alexander Kurakov  <akurtakov@redhat.com>
+
+	* epl-v10.html: New file.
+	* build.properties: Include license and epl in the build.
+	* feature.xml: Add description url and fix license url.
