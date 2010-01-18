@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-SymbolicName: org.eclipse.linuxtools.annotatedSourceEditor;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.annotatedsourceeditor;singleton:=true
 Bundle-Version: 4.1.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.dataviewers.annotatedsourceeditor.STAnnotatedSourceEditorActivator
 Bundle-Vendor: %bundleProvider
