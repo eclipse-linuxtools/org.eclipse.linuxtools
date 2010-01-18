@@ -434,7 +434,6 @@ public class CallgraphView extends SystemTapView {
 		// ADD OPTIONS TO THE GRAPH MENU
 		addFileMenu();
 
-		//TODO I AM HERE
 		save_cur_dot = new Action(Messages.getString("CallgraphView.SaveViewAsDot")) { //$NON-NLS-1$
 			public void run(){
 				writeToDot(g.getCollapseMode(), g.nodeMap.keySet());
