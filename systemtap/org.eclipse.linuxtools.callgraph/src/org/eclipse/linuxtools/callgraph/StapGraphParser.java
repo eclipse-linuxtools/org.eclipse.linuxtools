@@ -401,7 +401,7 @@ public class StapGraphParser extends SystemTapParser {
 		try {
 			String line;
 			while ((line = buff.readLine()) != null) {
-				if (line.equals("}"))
+				if (line.equals("}")) //$NON-NLS-1$
 					break;
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
@@ -409,17 +409,24 @@ public class StapGraphParser extends SystemTapParser {
 					continue;
 				
 				String[] args = new String[2];
-				args = line.split(" ", 2);
-				if (args[0].contains("->")) {
+				args = line.split(" ", 2); //$NON-NLS-1$
+				if (args[0].contains("->")) { //$NON-NLS-1$
 					//connection
 					int[] ids = new int[2];
-					ids[0] = Integer.parseInt(args[0].split("->")[0]);
-					ids[1] = Integer.parseInt(args[0].split("->")[1]);
-					
 					int called = 1;
-					int index1 = args[1].indexOf("=\"");
-					int index2 = args[1].indexOf("\"]");
-					called = Integer.parseInt(args[1].substring(index1 + 2,index2));
+					try {
+						ids[0] = Integer.parseInt(args[0].split("->")[0]); //$NON-NLS-1$
+						ids[1] = Integer.parseInt(args[0].split("->")[1]); //$NON-NLS-1$
+						int index1 = args[1].indexOf("=\""); //$NON-NLS-1$
+						int index2 = args[1].indexOf("\"]"); //$NON-NLS-1$
+						called = Integer.parseInt(args[1].substring(index1 + 2,index2));
+					} catch (NumberFormatException e) {
+						SystemTapUIErrorMessages m = new SystemTapUIErrorMessages(
+								Messages.getString("StapGraphParser.idOrLabel"), Messages.getString("StapGraphParser.idOrLabel"),  //$NON-NLS-1$ //$NON-NLS-2$ 
+								Messages.getString("StapGraphParser.nonNumericLabel")); //$NON-NLS-1$
+						m.schedule();
+						return Status.CANCEL_STATUS;
+					}
 					
 					//Set neighbour
 					ArrayList<Integer> tmpList = outNeighbours.get(ids[0]);
@@ -432,26 +439,35 @@ public class StapGraphParser extends SystemTapParser {
 					outNeighbours.put(ids[0], tmpList);
 				} else {
 					//node
-					int id = Integer.parseInt(args[0]);
-					if (firstNode == -1) {
-						firstNode = id;
+					try {
+						int id = Integer.parseInt(args[0]);
+						if (firstNode == -1) {
+							firstNode = id;
+						}
+						int index = args[1].indexOf("=\""); //$NON-NLS-1$
+						String name = args[1].substring(index + 2, args[1].indexOf(" ", index)); //$NON-NLS-1$
+						double dtime = 0.0;
+						dtime = Double.parseDouble(args[1].substring(args[1].indexOf(" ") + 1, args[1].indexOf("%"))); //$NON-NLS-1$ //$NON-NLS-2$
+						long time = (long) (dtime*100); 
+	
+						nameList.add(name);
+						idList.add(id);
+						timeMap.put(id, time);
+						serialMap.put(id, name);
+						if (countMap.get(name) == null){
+							countMap.put(name, 0);
+						}
+						countMap.put(name, countMap.get(name) + 1);
+						
+						long cumulativeTime = (aggregateTimeMap.get(name) != null ? aggregateTimeMap.get(name) : 0) + time;
+						aggregateTimeMap.put(name, cumulativeTime);
+					} catch (NumberFormatException e) {
+						SystemTapUIErrorMessages m = new SystemTapUIErrorMessages(
+								Messages.getString("StapGraphParser.idOrTime"), Messages.getString("StapGraphParser.idOrTime"),  //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("StapGraphParser.nonNumericTime")); //$NON-NLS-1$
+						m.schedule();
+						return Status.CANCEL_STATUS;
 					}
-					int index = args[1].indexOf("=\"");
-					String name = args[1].substring(index + 2, args[1].indexOf(" ", index));
-					double dtime = Double.parseDouble(args[1].substring(args[1].indexOf(" ") + 1, args[1].indexOf("%")));
-					long time = (long) (dtime*100); 
-
-					nameList.add(name);
-					idList.add(id);
-					timeMap.put(id, time);
-					serialMap.put(id, name);
-					if (countMap.get(name) == null){
-						countMap.put(name, 0);
-					}
-					countMap.put(name, countMap.get(name) + 1);
-					
-					long cumulativeTime = (aggregateTimeMap.get(name) != null ? aggregateTimeMap.get(name) : 0) + time;
-					aggregateTimeMap.put(name, cumulativeTime);
 					
 				}
 				
@@ -494,7 +510,7 @@ public class StapGraphParser extends SystemTapParser {
 					return Status.CANCEL_STATUS;
 				if (line.length() < 1)
 					continue;
-				if (first && (line.contains("digraph stapgraph {"))) {
+				if (first && (line.contains(Messages.getString("StapGraphParser.17")))) { //$NON-NLS-1$
 					return parseDotFile();
 				}
 				first = false;
