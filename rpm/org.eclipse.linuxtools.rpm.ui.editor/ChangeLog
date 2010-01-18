@@ -1,4 +1,9 @@
 2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Preference store should not be set to the editor if you want to inherit configurations like showing line numbers and etc.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Remove not needed import.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (SpecfileEditor): Do not set preference store. 
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
     Switch from the current commands and actions mixture to only commands.
 	* plugin.xml: Replace all actions with commands.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorOrganizePatchesActionDelegate.java : Rewrite it to be AbstractHandler.

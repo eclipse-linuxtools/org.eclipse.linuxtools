@@ -47,8 +47,6 @@ public class SpecfileEditor extends TextEditor {
 				this));
 		setDocumentProvider(new SpecfileDocumentProvider());
 		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.rpm.ui.specEditorScope" }); //$NON-NLS-1$
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		setPreferenceStore(store);
 	}
 
 	@Override
