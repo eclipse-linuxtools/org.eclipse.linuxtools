@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.tml.linuxtools.feature"
+      id="org.eclipse.sequoyah.device.linuxtools.feature"
       label="%featureName"
       version="0.1.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.tml.linuxtools">
+      plugin="org.eclipse.sequoyah.device.linuxtools">
 
    <description>
       %description
@@ -24,14 +24,14 @@
    </url>
 
    <plugin
-         id="org.eclipse.tml.linuxtools"
+         id="org.eclipse.sequoyah.device.linuxtools"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.tml.linuxtools.base"
+         id="org.eclipse.sequoyah.device.linuxtools.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
