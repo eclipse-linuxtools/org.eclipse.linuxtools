@@ -8,4 +8,5 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %bundleProvider
 Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=ppc))
 Bundle-Localization: fragment
-Import-Package: org.eclipse.linuxtools.oprofile.core.linux
+Import-Package: org.eclipse.linuxtools.oprofile.core,
+ org.eclipse.linuxtools.oprofile.core.linux
