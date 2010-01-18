@@ -1,3 +1,11 @@
+2010-01-18  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Properly attach dot-file nodes with id < 0
+
+2010-01-14  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Remove extraneous println
+
 2010-01-13  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Add function parseDotFile() -- all calls to this function assumes non-real-time.
