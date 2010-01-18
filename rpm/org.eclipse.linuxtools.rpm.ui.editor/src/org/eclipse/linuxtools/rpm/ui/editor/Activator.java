@@ -203,15 +203,4 @@ public class Activator extends AbstractUIPlugin {
 		return image;
 	}
 	
-    public static IEditorPart getActiveEditor() {
-        IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
-        if (window != null) {
-            IWorkbenchPage page = window.getActivePage();
-            if (page != null) {
-                return page.getActiveEditor();
-            }
-        }
-        return null;
-    }
-	
 }

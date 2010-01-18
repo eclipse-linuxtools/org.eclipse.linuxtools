@@ -1,4 +1,12 @@
 2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Switch from the current commands and actions mixture to only commands.
+	* plugin.xml: Replace all actions with commands.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorOrganizePatchesActionDelegate.java : Rewrite it to be AbstractHandler.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorShowOutlineActionDelegate.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java (getActiveEditor): Removed, not needed. 
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
     Replace our custom tab-to-space implementation with org.eclipse.jface.text.TabToSpacesConverter.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTabConverter.java: Removed.

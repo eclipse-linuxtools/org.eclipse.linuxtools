@@ -199,6 +199,17 @@
             id="rpmEditor.showOutline.command"
             name="Show outline"/>
    </extension>
+   <extension point="org.eclipse.ui.handlers">
+    	<handler
+         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+         	commandId="rpmEditor.toggleComment.command" />
+   		<handler
+         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+         	commandId="rpmEditor.organizePatches.command" />
+   		<handler
+         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+         	commandId="rpmEditor.showOutline.command" />
+   </extension>
    <!-- Key bindings -->
    <extension
      point="org.eclipse.ui.bindings">
@@ -218,66 +229,25 @@
            contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
-   <!-- Action set for command bindings -->
-   <extension
-         point="org.eclipse.ui.actionSets">
-
-      <actionSet
-            label="Editor Commands"
-            description="Specfile Editor Commands"
-            visible="true"
-            id="rpmEditor.actionSet">
-
-         <action
-               label="Toggle Comments"
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
-               definitionId="rpmEditor.toggleComment.command"
-               id="rpmEditor.toggleComment.command"/>
-         <action
-               label="Organize patches"
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
-               definitionId="rpmEditor.organizePatches.command"
-               id="rpmEditor.organizePatches.command"/>
-         <action
-               label="Show outline"
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
-               definitionId="rpmEditor.showOutline.command"
-               id="rpmEditor.showOutline.command"/>
-      </actionSet>
-   </extension>      
    <!-- Editor menu actions -->
    <extension
-         id="org.eclipse.linuxtools.rpm.ui.editor.popupMenu"
-         point="org.eclipse.ui.popupMenus">
-      <viewerContribution
-            id="org.eclipse.linuxtools.rpm.ui.editor.viewerContribution"
-            targetID="#TextEditorContext">
-         <action
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
-               id="org.eclipse.linuxtools.rpm.ui.editor.organizePatchesAction"
-               label="Organize patches"
-               menubarPath="additions"
-               tooltip="Organize patches numerically"
-               definitionId="rpmEditor.organizePatches.command">
-         </action>
-         <action
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
-               id="org.eclipse.linuxtools.rpm.ui.editor.toggleCommentAction"
+         point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:#TextEditorContext?after=additions">
+         <command
+               commandId="rpmEditor.toggleComment.command"
                label="Toggle Comments"
-               menubarPath="additions"
-               tooltip="Add or Remove Comments"
-               definitionId="rpmEditor.toggleComment.command">
-         </action>
-         <action
-               class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
-               id="org.eclipse.linuxtools.rpm.ui.editor.showOutlineAction"
+               tooltip="Add or Remove Comments" />
+         <command
+               commandId="rpmEditor.organizePatches.command"
+               label="Organize patches"
+               tooltip="Organize patches numerically" />
+         <command
+               commandId="rpmEditor.showOutline.command"
                label="Show Outline"
-               menubarPath="additions"
-               tooltip="Show Outline"
-               definitionId="rpmEditor.showOutline.command">
-         </action>
-      </viewerContribution>
-   </extension>   
+               tooltip="Show Outline" />
+      </menuContribution>
+   </extension>
    <!-- Compare support-->
    <extension point="org.eclipse.compare.contentMergeViewers">
 	  <viewer
