@@ -109,6 +109,24 @@ plugin@org.eclipse.linuxtools.valgrind.ui.editor=SVN,trunk,svn://dev.eclipse.org
 feature@org.eclipse.linuxtools.valgrind=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind-feature
 feature@org.eclipse.linuxtools.valgrind.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.test-feature
 
+!*** tmf
+plugin@org.eclipse.linuxtools.tmf=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf
+plugin@org.eclipse.linuxtools.tmf.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.doc
+plugin@org.eclipse.linuxtools.tmf.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.tests
+plugin@org.eclipse.linuxtools.tmf.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui
+plugin@org.eclipse.linuxtools.tmf.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui.tests
+feature@org.eclipse.linuxtools.tmf-feature=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/tmf,,org.eclipse.linuxtools.tmf-feature
+feature@org.eclipse.linuxtools.tmf.test-feature=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/tmf,,org.eclipse.linuxtools.tmf.test-feature
+
+!*** lttng
+plugin@org.eclipse.linuxtools.lttng=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng
+plugin@org.eclipse.linuxtools.lttng.help=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.help
+plugin@org.eclipse.linuxtools.lttng.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.tests
+plugin@org.eclipse.linuxtools.lttng.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.ui
+plugin@org.eclipse.linuxtools.lttng.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.ui.tests
+feature@org.eclipse.linuxtools.lttng-feature=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng-feature
+feature@org.eclipse.linuxtools.lttng.test-feature=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.test-feature
+
 feature@org.eclipse.linuxtools.all=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.all
 feature@org.eclipse.linuxtools.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.test-feature
 plugin@org.eclipse.linuxtools.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.tests

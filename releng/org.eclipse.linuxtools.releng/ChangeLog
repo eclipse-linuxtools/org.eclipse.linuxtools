@@ -1,9 +1,25 @@
+2010-01-17  Francois Chouinard  <fchouinard@gmail.com>
+
+	* psfs/lttng.psf: New file.
+	* psfs/linuxtools.psf: Add LTTng.
+	* psfs/athena.psf: Fix format.
+	* maps/linuxtools.map: Add LTTng.
+	* category.xml: Add LTTng.
+
 2010-01-13  Andrew Overholt  <overholt@redhat.com>
 
 	* tools/linuxtoolsupdatesite-helios.sh: New file.  Helios update site
 	updater.
 	* tools/linuxtoolsupdatesite-galileo.sh: Update for new Hudson location.
 	Rename from -trunk.sh.
+
+2010-01-12  Francois Chouinard  <fchouinard@gmail.com>
+
+	* psfs/lttng.psf: New file.
+	* psfs/linuxtools.psf: Add LTTng.
+	* psfs/athena.psf: Fix format.
+	* maps/linuxtools.map: Add LTTng.
+	* category.xml: Add LTTng.
 
 2009-12-16  Charley Wang  <chwang@redhat.com>
 
