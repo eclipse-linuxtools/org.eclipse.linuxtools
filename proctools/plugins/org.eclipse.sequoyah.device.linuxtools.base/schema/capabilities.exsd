@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.tml.linuxtools.base" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.sequoyah.device.linuxtools.base" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
-         <meta.schema plugin="org.eclipse.tml.linuxtools.base" id="org.eclipse.tml.linuxtools.base.capabilities" name="Linux tools capabilities"/>
-      </appinfo>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.sequoyah.device.linuxtools.base" id="org.eclipse.sequoyah.device.linuxtools.base.capabilities" name="Linux tools capabilities"/>
+      </appInfo>
       <documentation>
          
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <sequence>
@@ -39,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>

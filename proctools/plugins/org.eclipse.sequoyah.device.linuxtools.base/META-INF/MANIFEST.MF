@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.tml.linuxtools.base;singleton:=true
+Bundle-SymbolicName: org.eclipse.sequoyah.device.linuxtools.base;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.tml.linuxtools.network,
- org.eclipse.tml.linuxtools.tools,
- org.eclipse.tml.linuxtools.ui,
- org.eclipse.tml.linuxtools.utilities
-Require-Bundle: org.eclipse.tml.common.utilities;bundle-version="0.2.0",
+Export-Package: org.eclipse.sequoyah.device.linuxtools.network,
+ org.eclipse.sequoyah.device.linuxtools.tools,
+ org.eclipse.sequoyah.device.linuxtools.ui,
+ org.eclipse.sequoyah.device.linuxtools.utilities
+Require-Bundle: org.eclipse.sequoyah.device.common.utilities,
  org.eclipse.ui,
  org.eclipse.core.runtime
