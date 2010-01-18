@@ -15,11 +15,14 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.DefaultLineTracker;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
+import org.eclipse.jface.text.TabsToSpacesConverter;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -37,6 +40,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
@@ -235,5 +239,34 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
         targets.put("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", editor); //$NON-NLS-1$
         return targets;
     }
+
+	private int getTabSize() {
+		return Activator.getDefault().getPreferenceStore().getInt(
+				PreferenceConstants.P_NBR_OF_SPACES_FOR_TAB);
+	}
+
+	private boolean isTabConversionEnabled() {
+		return Activator.getDefault().getPreferenceStore().getBoolean(
+				PreferenceConstants.P_SPACES_FOR_TABS);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies
+	 * (org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 */
+	@Override
+	public IAutoEditStrategy[] getAutoEditStrategies(
+			ISourceViewer sourceViewer, String contentType) {
+		if (isTabConversionEnabled()) {
+			TabsToSpacesConverter tabsConverter = new TabsToSpacesConverter();
+			tabsConverter.setLineTracker(new DefaultLineTracker());
+			tabsConverter.setNumberOfSpacesPerTab(getTabSize());
+			return new IAutoEditStrategy[] { tabsConverter };
+		}
+		return null;
+	}
 		
 }

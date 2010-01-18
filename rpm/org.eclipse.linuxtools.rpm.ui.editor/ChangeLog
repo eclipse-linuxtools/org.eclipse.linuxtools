@@ -1,4 +1,15 @@
 2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Replace our custom tab-to-space implementation with org.eclipse.jface.text.TabToSpacesConverter.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTabConverter.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java (getAutoEditStrategies): New method.
+	(getTabSize): Likewise.
+	(isTabConversionEnabled): Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (getAdapter): Drop references to all old tab replacing code.
+	(createPartControl): Likewise.
+	(doSetInput): Likewise.
+	
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Remove not needed member.
 

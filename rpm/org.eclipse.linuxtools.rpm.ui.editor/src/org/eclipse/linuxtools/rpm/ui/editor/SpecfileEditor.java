@@ -16,20 +16,13 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.DefaultLineTracker;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.text.source.projection.ProjectionSupport;
-import org.eclipse.jface.text.source.projection.ProjectionViewer;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
-import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
@@ -43,9 +36,7 @@ public class SpecfileEditor extends TextEditor {
 	private SpecfileContentOutlinePage outlinePage;
 	private IEditorInput input;
 	private Specfile specfile;
-	private ProjectionSupport projectionSupport;
 	private SpecfileParser parser;
-	private SpecfileTabConverter tabConverter;
 	private RpmMacroOccurrencesUpdater fOccurrencesUpdater;
 
 	public SpecfileEditor() {
@@ -79,7 +70,6 @@ public class SpecfileEditor extends TextEditor {
 		if (outlinePage != null)
 			outlinePage.setInput(input);
 
-		configureTabConverter();
 		validateAndMark();
 	}
 
@@ -137,12 +127,6 @@ public class SpecfileEditor extends TextEditor {
 		if (IContentOutlinePage.class.equals(required)) {
 			return getOutlinePage();
 		}
-		if (projectionSupport != null) {
-			Object adapter = projectionSupport.getAdapter(getSourceViewer(),
-					required);
-			if (adapter != null)
-				return adapter;
-		}
 		return super.getAdapter(required);
 	}
 
@@ -159,22 +143,6 @@ public class SpecfileEditor extends TextEditor {
 		return specfile;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer
-	 * (org.eclipse.swt.widgets.Composite,
-	 * org.eclipse.jface.text.source.IVerticalRuler, int)
-	 */
-	@Override
-	protected ISourceViewer createSourceViewer(Composite parent,
-			IVerticalRuler ruler, int styles) {
-		fAnnotationAccess = createAnnotationAccess();
-		fOverviewRuler = createOverviewRuler(getSharedColors());
-		ISourceViewer viewer = new SpecfileProjectionViewer(parent, ruler,
-				fOverviewRuler, true, styles, getSourceViewerConfiguration());
-		getSourceViewerDecorationSupport(viewer);
-		return viewer;
-	}
 
 	/*
 	 * @see
@@ -184,14 +152,6 @@ public class SpecfileEditor extends TextEditor {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		ProjectionViewer projectionViewer = (ProjectionViewer) getSourceViewer();
-		projectionSupport = new ProjectionSupport(projectionViewer,
-				getAnnotationAccess(), getSharedColors());
-		projectionSupport.install();
-		projectionViewer.doOperation(ProjectionViewer.TOGGLE);
-		if (isTabConversionEnabled()) {
-			startTabConversion();
-		}
 		fOccurrencesUpdater = new RpmMacroOccurrencesUpdater(this);
 	}
 
@@ -224,85 +184,6 @@ public class SpecfileEditor extends TextEditor {
 	 */
 	public SourceViewer getSpecfileSourceViewer() {
 		return (SourceViewer) getSourceViewer();
-	}
-
-	private void configureTabConverter() {
-		if (tabConverter != null) {
-			tabConverter.setLineTracker(new DefaultLineTracker());
-		}
-	}
-
-	private int getTabSize() {
-		return Activator.getDefault().getPreferenceStore().getInt(
-				PreferenceConstants.P_NBR_OF_SPACES_FOR_TAB);
-	}
-
-	private boolean isTabConversionEnabled() {
-		return Activator.getDefault().getPreferenceStore().getBoolean(
-				PreferenceConstants.P_SPACES_FOR_TABS);
-	}
-
-	private void startTabConversion() {
-		if (tabConverter == null) {
-			tabConverter = new SpecfileTabConverter();
-			tabConverter.setLineTracker(new DefaultLineTracker());
-			tabConverter.setNumberOfSpacesPerTab(getTabSize());
-			SpecfileProjectionViewer asv = (SpecfileProjectionViewer) getSourceViewer();
-			asv.addTextConverter(tabConverter);
-			asv.updateIndentationPrefixes();
-		}
-	}
-
-	private void stopTabConversion() {
-		if (tabConverter != null) {
-			SpecfileProjectionViewer asv = (SpecfileProjectionViewer) getSourceViewer();
-			asv.removeTextConverter(tabConverter);
-			asv.updateIndentationPrefixes();
-			tabConverter = null;
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.ui.texteditor.AbstractDecoratedTextEditor#
-	 * handlePreferenceStoreChanged(org.eclipse.jface.util.PropertyChangeEvent)
-	 */
-	@Override
-	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
-
-		if (getSourceViewer() == null
-				|| getSourceViewer().getTextWidget() == null)
-			return;
-		try {
-			SpecfileProjectionViewer viewer = (SpecfileProjectionViewer) getSourceViewer();
-			if (viewer != null) {
-				String p = event.getProperty();
-				if (PreferenceConstants.P_SPACES_FOR_TABS.equals(p)) {
-					if (isTabConversionEnabled())
-						startTabConversion();
-					else
-						stopTabConversion();
-					return;
-				}
-				if (PreferenceConstants.P_NBR_OF_SPACES_FOR_TAB.equals(p)) {
-					viewer.updateIndentationPrefixes();
-					if (tabConverter != null)
-						tabConverter.setNumberOfSpacesPerTab(getTabSize());
-					Object value = event.getNewValue();
-					if (value instanceof Integer) {
-						viewer.getTextWidget().setTabs(
-								((Integer) value).intValue());
-					} else if (value instanceof String) {
-						viewer.getTextWidget().setTabs(
-								Integer.parseInt((String) value));
-					}
-					return;
-				}
-			}
-		} finally {
-			super.handlePreferenceStoreChanged(event);
-		}
 	}
 
 }
