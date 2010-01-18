@@ -33,7 +33,6 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.linuxtools.rpm.ui.editor.derived.AnnotationHover;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
@@ -229,17 +228,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 				new SpecfileElementHyperlinkDetector(editor.getSpecfile()), new MailHyperlinkDetector(editor), new SourcesFileHyperlinkDetector(editor)};
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAnnotationHover(org.eclipse.jface.text.source.ISourceViewer)
-	 */
-	@Override
-	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
-		if (annotationHover == null)
-			annotationHover = new AnnotationHover();
-		return annotationHover;
-	}
-	
-
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
 	 */
