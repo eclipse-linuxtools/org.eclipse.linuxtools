@@ -1,3 +1,7 @@
+2010-01-18  Francois Chouinard  <fchouinard@gmail.com>
+
+	* testing.properties: Added LTTng/TMF tests.
+
 2010-01-18  Andrew Overholt  <overholt@redhat.com>
 
 	* maps/linuxtools.map: Fix TMF SVN location.
