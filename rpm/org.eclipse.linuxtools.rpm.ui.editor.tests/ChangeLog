@@ -1,3 +1,8 @@
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Remove an empty test class now that it's AbstractHandler not an ActionDelegate.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/SpecfileEditorShowOutlineActionDelegateTest.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/ActionsAllTests.java (suite): Remove action delegate test.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
