@@ -116,7 +116,7 @@ plugin@org.eclipse.linuxtools.tmf.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/
 plugin@org.eclipse.linuxtools.tmf.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui
 plugin@org.eclipse.linuxtools.tmf.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui.tests
 feature@org.eclipse.linuxtools.tmf=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf-feature
-feature@org.eclipse.linuxtools.tmf.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.test-feature
+feature@org.eclipse.linuxtools.tmf.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.test-feature
 
 !*** lttng
 plugin@org.eclipse.linuxtools.lttng=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng
@@ -125,7 +125,7 @@ plugin@org.eclipse.linuxtools.lttng.tests=SVN,trunk,svn://dev.eclipse.org/svnroo
 plugin@org.eclipse.linuxtools.lttng.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.ui
 plugin@org.eclipse.linuxtools.lttng.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.ui.tests
 feature@org.eclipse.linuxtools.lttng=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng-feature
-feature@org.eclipse.linuxtools.lttng.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.test-feature
+feature@org.eclipse.linuxtools.lttng.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.test-feature
 
 feature@org.eclipse.linuxtools.all=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.all
 feature@org.eclipse.linuxtools.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.test-feature
