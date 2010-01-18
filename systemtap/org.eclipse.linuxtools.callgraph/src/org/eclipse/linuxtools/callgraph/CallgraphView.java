@@ -219,8 +219,12 @@ public class CallgraphView extends SystemTapView {
 		    	if (outNeighbours == null || outNeighbours.get(id_parent) == null)
 		    		continue;
 				for (int id_child : outNeighbours.get(id_parent)) {
-					if (g.getNodeData(id_child) != null)
+					if (g.getNodeData(id_child) != null) {
+						//Assume this is an additional call of the same node
+						//Should only happen in dot-files!!
+						g.addCalled(id_child);
 						continue;
+					}
 					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
 					}

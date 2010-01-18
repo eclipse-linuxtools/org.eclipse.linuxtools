@@ -416,11 +416,19 @@ public class StapGraphParser extends SystemTapParser {
 					ids[0] = Integer.parseInt(args[0].split("->")[0]);
 					ids[1] = Integer.parseInt(args[0].split("->")[1]);
 					
+					int called = 1;
+					int index1 = args[1].indexOf("=\"");
+					int index2 = args[1].indexOf("\"]");
+					called = Integer.parseInt(args[1].substring(index1 + 2,index2));
+					
 					//Set neighbour
 					ArrayList<Integer> tmpList = outNeighbours.get(ids[0]);
 					if (tmpList == null)
 						tmpList = new ArrayList<Integer>();
-					tmpList.add(ids[1]);
+					
+					for (int i = 0; i < called; i++)
+						tmpList.add(ids[1]);
+					
 					outNeighbours.put(ids[0], tmpList);
 				} else {
 					//node

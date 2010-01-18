@@ -2010,4 +2010,10 @@ public class StapGraph extends Graph {
 	public boolean getCollapseMode() {
 		return collapse_mode;
 	}
+
+
+
+	public void addCalled(int idChild) {
+		getNodeData(idChild).timesCalled++;
+	}
 }
