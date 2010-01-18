@@ -1,5 +1,9 @@
 2010-01-18  Andrew Overholt  <overholt@redhat.com>
 
+	* maps/linuxtools.map: Fix TMF SVN location.
+
+2010-01-18  Andrew Overholt  <overholt@redhat.com>
+
 	* maps/linuxtools.map: Fix TMF and LTTng feature IDs.
 
 2010-01-17  Francois Chouinard  <fchouinard@gmail.com>

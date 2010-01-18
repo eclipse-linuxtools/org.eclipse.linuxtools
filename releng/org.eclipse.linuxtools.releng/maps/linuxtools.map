@@ -115,8 +115,8 @@ plugin@org.eclipse.linuxtools.tmf.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/te
 plugin@org.eclipse.linuxtools.tmf.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.tests
 plugin@org.eclipse.linuxtools.tmf.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui
 plugin@org.eclipse.linuxtools.tmf.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui.tests
-feature@org.eclipse.linuxtools.tmf=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/tmf,,org.eclipse.linuxtools.tmf-feature
-feature@org.eclipse.linuxtools.tmf.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/tmf,,org.eclipse.linuxtools.tmf.test-feature
+feature@org.eclipse.linuxtools.tmf=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf-feature
+feature@org.eclipse.linuxtools.tmf.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.test-feature
 
 !*** lttng
 plugin@org.eclipse.linuxtools.lttng=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng
