@@ -344,9 +344,10 @@ public class StapGraph extends Graph {
 	 * @param centerNode
 	 */
 	public void drawRadial(int centerNode) {
-		int radius = Math.min(this.getBounds().width,
+		int radius = Math.max(CONSTANT_VERTICAL_INCREMENT,
+				Math.min(this.getBounds().width,
 				this.getBounds().height)
-				/ 2 - CONSTANT_VERTICAL_INCREMENT;
+				/ 2 - 2*CONSTANT_VERTICAL_INCREMENT);
 
 		rootVisibleNodeNumber = centerNode;
 		StapData nodeData = getNodeData(centerNode);

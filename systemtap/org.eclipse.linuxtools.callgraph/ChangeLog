@@ -1,6 +1,7 @@
 2010-01-18  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Add addCalled method, which increments the timesCalled variable on stapData corresponding to the input id.
+	Change bounds on radius in radial view.
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Add multiple identical entries to neighbourMap for collapsed nodes (dot-file)
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Properly attach dot-file nodes with id < 0
 																Properly account for collapsed nodes (dot-file)
