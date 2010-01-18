@@ -6,27 +6,27 @@
          point="org.eclipse.ui.views">
       <category
             name="%category.name"
-            id="org.eclipse.tml.linuxtools.Category">
+            id="org.eclipse.sequoyah.device.linuxtools.Category">
       </category>
       <view
             name="%view.memorymap.name"
             icon="icons/eclipse.gif"
-            category="org.eclipse.tml.linuxtools.Category"
-            class="org.eclipse.tml.linuxtools.tools.memorymap.MemoryMapView"
-            id="org.eclipse.tml.linuxtools.tools.memorymap.View">
+            category="org.eclipse.sequoyah.device.linuxtools.Category"
+            class="org.eclipse.sequoyah.device.linuxtools.tools.memorymap.MemoryMapView"
+            id="org.eclipse.sequoyah.device.linuxtools.tools.memorymap.View">
       </view>
       <view
-            category="org.eclipse.tml.linuxtools.Category"
-            class="org.eclipse.tml.linuxtools.tools.cpuload.CpuLoadView"
+            category="org.eclipse.sequoyah.device.linuxtools.Category"
+            class="org.eclipse.sequoyah.device.linuxtools.tools.cpuload.CpuLoadView"
             icon="icons/eclipse.gif"
-            id="org.eclipse.tml.linuxtools.tools.cpuload.View"
+            id="org.eclipse.sequoyah.device.linuxtools.tools.cpuload.View"
             name="%view.cpuload.name">
       </view>
    </extension>
    <extension
-         point="org.eclipse.tml.linuxtools.base.protocols">
+         point="org.eclipse.sequoyah.device.linuxtools.base.protocols">
       <protocol
-            class="org.eclipse.tml.linuxtools.network.telnet.TelnetProvider"
+            class="org.eclipse.sequoyah.device.linuxtools.network.telnet.TelnetProvider"
             default_port="23"
             id="TELNET"
             name="Telnet">
@@ -35,7 +35,7 @@
          </capability>
       </protocol>
       <protocol
-            class="org.eclipse.tml.linuxtools.network.tcf.TCFProvider"
+            class="org.eclipse.sequoyah.device.linuxtools.network.tcf.TCFProvider"
             default_port="1534"
             id="TM_TCF_AGENT"
             name="TM TCF Agent">
