@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2009, 2010 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,6 @@ import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
@@ -53,7 +52,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private ColorManager colorManager;
 	private SpecfileHover specfileHover;
 	private SpecfileEditor editor;
-	private IAnnotationHover annotationHover;
 
 	public SpecfileConfiguration(ColorManager colorManager, SpecfileEditor editor) {
 		super();

@@ -1,4 +1,8 @@
 2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Remove not needed member.
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
 	Use default annotation hover instead of our copied and staled one.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/AnnotationHover.java: Removed.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java (getAnnotationHover): Removed. 
