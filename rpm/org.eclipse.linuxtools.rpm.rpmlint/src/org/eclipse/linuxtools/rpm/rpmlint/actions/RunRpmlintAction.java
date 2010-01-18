@@ -12,44 +12,37 @@ package org.eclipse.linuxtools.rpm.rpmlint.actions;
 
 import java.io.IOException;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.ui.editor.Utils;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * Manually invoke rpmlint action, which prints the output of rpmlint execution to the console.
  *
  */
-public class RunRpmlintAction implements IObjectActionDelegate {
-	private ISelection selection;
-
+public class RunRpmlintAction extends AbstractHandler{
 	/**
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction, org.eclipse.ui.IWorkbenchPart)
+	 * @param event The execution event.
+	 * @return Nothing.
 	 */
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	public void run(IAction action) {
+	public Object execute(ExecutionEvent event)  {
+		ISelection selection = HandlerUtil.getCurrentSelection(event);
 		if (selection instanceof IStructuredSelection) {
 			for (Object element : ((IStructuredSelection) selection).toList()) {
 				IFile rpmFile = null;
@@ -92,14 +85,8 @@ public class RunRpmlintAction implements IObjectActionDelegate {
 				}
 			}
 		}
+		return null;
 
-	}
-
-	/**
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-		this.selection = selection;
 	}
 
 	private MessageConsole findConsole(String name) {
@@ -114,5 +101,4 @@ public class RunRpmlintAction implements IObjectActionDelegate {
 		conMan.addConsoles(new IConsole[] { myConsole });
 		return myConsole;
 	}
-
 }

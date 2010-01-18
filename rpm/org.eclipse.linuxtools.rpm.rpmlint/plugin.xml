@@ -24,46 +24,62 @@
       <builder id="org.eclipse.linuxtools.rpm.rpmlint.rpmlintBuilder"/>
    </extension>
    <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IProject"
-            nameFilter="*"
-            id="org.eclipse.linuxtools.rpm.rpmlint.contribution1">
-         <action
-               label="Add/Remove Rpmlint Warnings"
-               class="org.eclipse.linuxtools.rpm.rpmlint.actions.ToggleRpmlintNatureAction"
-               menubarPath="additions"
-               enablesFor="+"
-               id="org.eclipse.linuxtools.rpm.rpmlint.addRemoveNatureAction">
-         </action>
-      </objectContribution>
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IFile"
-            nameFilter="*.rpm"
-            id="org.eclipse.linuxtools.rpm.rpmlint.contribution2">
-         <action
-               label="Run Rpmlint "
-               class="org.eclipse.linuxtools.rpm.rpmlint.actions.RunRpmlintAction"
-               menubarPath="additions"
-               enablesFor="+"
-               id="org.eclipse.linuxtools.rpm.rpmlint.runRpmlintAction">
-         </action>
-      </objectContribution>
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IFile"
-            nameFilter="*.spec"
-            id="org.eclipse.linuxtools.rpm.rpmlint.contribution3">
-         <action
-               label="Run Rpmlint "
-               class="org.eclipse.linuxtools.rpm.rpmlint.actions.RunRpmlintAction"
-               menubarPath="additions"
-               enablesFor="+"
-               id="org.eclipse.linuxtools.rpm.rpmlint.runRpmlintAction">
-         </action>
-      </objectContribution>
+         point="org.eclipse.ui.commands">
+         <category
+            name="Rpmlint Commands"
+            description="Specfile Editor Commands"
+            id="rpmlint.category"/>
+         <command
+            categoryId="rpmlint.category"
+            name="Toggle Rpmlint"
+            id="rpmlint.toggleRpmlint.command"/>
+         <command
+            categoryId="rpmlint.category"
+            name="Run rpmlint"
+            id="rpmlint.runRpmlint.command"/>
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+    	<handler
+         	class="org.eclipse.linuxtools.rpm.rpmlint.actions.ToggleRpmlintNatureAction"
+         	commandId="rpmlint.toggleRpmlint.command" />
+   		<handler
+         	class="org.eclipse.linuxtools.rpm.rpmlint.actions.RunRpmlintAction"
+         	commandId="rpmlint.runRpmlint.command" />
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="rpmlint.toggleRpmlint.command"
+               label="Add/Remove Rpmlint Warnings" >
+                <visibleWhen>
+   		<iterate operator="and" ifEmpty="false">
+      			<adapt type="org.eclipse.core.resources.IProject">
+      			</adapt>
+   		</iterate>
+        </visibleWhen>
+               
+               </command>
+         <command
+               commandId="rpmlint.runRpmlint.command"
+               label="Run Rpmlint ">
+               <visibleWhen>
+  <iterate operator="and" ifEmpty="false">
+    <or>
+      <adapt type="org.eclipse.core.resources.IResource">
+         <or>
+            <test property="org.eclipse.core.resources.name" value="*.rpm"/> 
+            <test property="org.eclipse.core.resources.name" value="*.spec"/> 
+         </or>
+      </adapt>
+      <adapt type="org.eclipse.jface.text.ITextSelection" />
+    </or>
+   </iterate>
+</visibleWhen>
+               
+               </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">

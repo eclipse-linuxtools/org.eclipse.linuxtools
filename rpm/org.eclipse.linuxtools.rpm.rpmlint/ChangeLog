@@ -1,3 +1,9 @@
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Switch to commands.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java: Make it AbstractHandler. 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java: Likewise. 
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.

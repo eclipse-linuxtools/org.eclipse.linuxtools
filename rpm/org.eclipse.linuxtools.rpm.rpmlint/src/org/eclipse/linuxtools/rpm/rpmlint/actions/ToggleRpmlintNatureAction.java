@@ -10,30 +10,31 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.rpmlint.actions;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.linuxtools.rpm.rpmlint.builder.RpmlintNature;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * Toggle rpmlint nature for the given project. 
  * As a result this enables/disables rpmlint builder.
  *
  */
-public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
+public class ToggleRpmlintNatureAction extends AbstractHandler {
 
-	private ISelection selection;
 
 	/** 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 * @param event The event
+	 * @return Null.
 	 */
-	public void run(IAction action) {
+	public Object execute(ExecutionEvent event) {
+		ISelection selection = HandlerUtil.getCurrentSelection(event);
 		if (selection instanceof IStructuredSelection) {
 			for (Object element: ((IStructuredSelection) selection).toList()) {
 				IProject project = null;
@@ -48,22 +49,7 @@ public class ToggleRpmlintNatureAction implements IObjectActionDelegate {
 				}
 			}
 		}
-	}
-
-	/** 
-	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.jface.viewers.ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-		this.selection = selection;
-	}
-
-	/** 
-	 * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-	 *      org.eclipse.ui.IWorkbenchPart)
-	 */
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		//Do nothing
+		return null;
 	}
 
 	/**
