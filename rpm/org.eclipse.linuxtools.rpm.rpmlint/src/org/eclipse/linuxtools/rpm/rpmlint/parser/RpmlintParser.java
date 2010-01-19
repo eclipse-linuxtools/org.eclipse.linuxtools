@@ -23,12 +23,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.rpmlint.builder.RpmlintBuilder;
 import org.eclipse.linuxtools.rpm.rpmlint.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.rpmlint.resolutions.RpmlintMarkerResolutionGenerator;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 
 public class RpmlintParser {
 	

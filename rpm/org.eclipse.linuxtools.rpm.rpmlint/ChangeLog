@@ -1,3 +1,9 @@
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Require o.e.l.rpm.core.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java: Use Utils from core.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java: Likewise.
+
 2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Switch to commands.
