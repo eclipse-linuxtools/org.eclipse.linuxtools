@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.rpm.ui.editor.forms;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePackage;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileTag;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,12 +30,9 @@ public class MainPackagePage extends FormPage {
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private Specfile specfile;
-	SpecfileParser parser;
-	SpecfileFormEditor editor;
 
 	public MainPackagePage(SpecfileFormEditor editor, Specfile specfile) {
 		super(editor, Messages.MainPackagePage_0, Messages.MainPackagePage_1);
-		this.editor = editor;
 		this.specfile = specfile;
 	}
 

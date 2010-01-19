@@ -33,7 +33,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -201,7 +201,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		groupCombo = new Combo(container, SWT.NULL);
 		populateGroupCombo(groupCombo);
 		// empty label for the last row.
-		label = new Label(container, SWT.NULL);
+		new Label(container, SWT.NULL);
 
 		// Package License
 		licenseText = setTextItem(container, Messages.SpecfileNewWizardPage_18);
@@ -228,7 +228,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			}
 		});
 		// empty label for the last row.
-		label = new Label(container, SWT.NULL);
+		new Label(container, SWT.NULL);
 		return text;
 	}
 
@@ -424,7 +424,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		BufferedInputStream in = null;
 		// Here we assuming that the rpmdevtools package is installed.
 		try {
-			in = Utils.runCommandToInputStream("rpmdev-newspec", "-o", "-", "-t", template ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			in = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToInputStream("rpmdev-newspec", "-o", "-", "-t", template ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		} catch (IOException e) {
 			// FIXME: rpmdev-newspec is not in the system $PATH, what should we do here?.
 			SpecfileLog.logError(e);

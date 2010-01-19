@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * RPM macro proposals and hover preference page class.
@@ -48,7 +47,6 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  */
 public class MacroProposalsPreferencePage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
-	ScopedPreferenceStore preferences;
 
 	public MacroProposalsPreferencePage() {
 		super(FLAT);

@@ -22,7 +22,7 @@ import java.util.Map;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmTags;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 
 public class Specfile {
 
@@ -114,7 +114,7 @@ public class Specfile {
     public void addDefine(SpecfileDefine define) {
     	SpecfilePackage rpmPackage = define.getParent();
     	if (rpmPackage != null && !rpmPackage.isMainPackage()) {
-    		defines.put(Utils.getPackageDefineId(define, rpmPackage), define);
+    		defines.put(UiUtils.getPackageDefineId(define, rpmPackage), define);
     		return;
     	}
 		defines.put(define.getName(), define);
@@ -129,7 +129,7 @@ public class Specfile {
 	}
 	
 	public SpecfileDefine getDefine(String defineName, SpecfilePackage rpmPackage) {
-		return defines.get(Utils.getPackageDefineId(defineName, rpmPackage));
+		return defines.get(UiUtils.getPackageDefineId(defineName, rpmPackage));
 	}
 
 	public int getEpoch() {
@@ -252,7 +252,7 @@ public class Specfile {
 
 	public void modifyDefine(String defineName, SpecfilePackage rpmPackage,
 			String newValue) {
-		SpecfileDefine define = getDefine(Utils.getPackageDefineId(defineName, rpmPackage));
+		SpecfileDefine define = getDefine(UiUtils.getPackageDefineId(defineName, rpmPackage));
 		if (define != null) {
 			define.setValue(newValue);
 			try {

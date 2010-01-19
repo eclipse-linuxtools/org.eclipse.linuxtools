@@ -1,3 +1,35 @@
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/UiUtils.java: New file.
+	* .settings/org.moreunit.prefs: Fix configuration.
+	* META-INF/MANIFEST.MF: Require o.e.linuxtools.rpm.core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java (formatDateLine): Use Utils from core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java (start): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/HTMLTextPresenter.java (adaptTextPresentation): Remove dead variable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (MainPackagePage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Use UiUtils instead of Utils which is now in core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/URLHyperlinkWithMacroDetector.java (detectHyperlinks): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SourceComparator.java: Implement Serializable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (addDefine): Use UiUtils instead of Utils which is now in core.
+	(getDefine): Likewise.
+	(modifyDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (simpleSections): Make declarations final.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java: Remove dead variable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (rpmtoolsRadioGroupFieldEditor): Use UiUtils instead of Utils which is now in core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java (getMacroEval): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (getRpmInfo): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (ProposalComparator): Implement Serializable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java (SpecfileReconcilingStrategy): Remove dead store.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/NoExecutableWizardPage.java (createControl): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java: Use UiUtils instead of Utils which is now in core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java (setTextItem): Remove dead store.
+	(runRpmdevNewSpec): Use utils from core.
+	(createControl): Remove dead store.
+
 2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
     Preference store should not be set to the editor if you want to inherit configurations like showing line numbers and etc.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Remove not needed import.

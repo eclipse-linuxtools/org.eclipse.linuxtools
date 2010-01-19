@@ -45,7 +45,7 @@ public class SpecfileParser {
 	 * or -f. Hence they are called simple. This is probably a misleading name
 	 * and it should be renamed to reflect that they are SRPM-wide sections.
 	 */
-	public static String[] simpleSections = { PREP_SECTION, BUILD_SECTION,
+	public static final String[] simpleSections = { PREP_SECTION, BUILD_SECTION,
 			INSTALL_SECTION, CLEAN_SECTION, CHANGELOG_SECTION };
 
 	/**

@@ -207,7 +207,7 @@ public class RpmMacroProposalsList {
 	public static String getMacroEval(String macroName) {
 		String eval = EMPTY_STRING;
 		try {
-			eval = Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
+			eval = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToString( "rpm", "--eval", macroName); //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {
 			SpecfileLog.logError(e);
 		}

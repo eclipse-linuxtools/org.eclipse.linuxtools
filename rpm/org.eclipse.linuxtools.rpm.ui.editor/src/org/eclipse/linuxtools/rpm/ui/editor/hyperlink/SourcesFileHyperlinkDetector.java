@@ -19,7 +19,7 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 import org.eclipse.ui.part.FileEditorInput;
 
 /**
@@ -78,7 +78,7 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 					IRegion fileNameRegion = new Region(lineInfo.getOffset()
 							+ line.indexOf(fileName), fileName.length());
 					return new IHyperlink[] { new SourcesFileHyperlink(
-							original, Utils.resolveDefines(
+							original, UiUtils.resolveDefines(
 									editor.getSpecfile(), fileName),
 							fileNameRegion) };
 				}

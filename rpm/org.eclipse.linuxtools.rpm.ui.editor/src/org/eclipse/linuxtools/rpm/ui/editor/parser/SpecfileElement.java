@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.parser;
 
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 
 public class SpecfileElement {
 	private Specfile specfile;
@@ -77,7 +77,7 @@ public class SpecfileElement {
 		if (specfile == null) {
 			return toResolve;
 		}
-		return Utils.resolveDefines(specfile, toResolve);
+		return UiUtils.resolveDefines(specfile, toResolve);
 	}
 
 }

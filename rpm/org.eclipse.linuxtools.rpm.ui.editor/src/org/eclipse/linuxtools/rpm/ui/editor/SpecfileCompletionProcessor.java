@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -58,7 +59,9 @@ public class SpecfileCompletionProcessor implements IContentAssistProcessor {
 	 * <code>Comparator</code> implementation used to sort template proposals
 	 * @author Van Assche Alphonse
 	 */
-	private static final class ProposalComparator implements Comparator<TemplateProposal> {
+	private static final class ProposalComparator implements Comparator<TemplateProposal>, Serializable {
+		private static final long serialVersionUID = 1L;
+
 		public int compare(TemplateProposal t1, TemplateProposal t2) {
 			return (t2.getRelevance() - t1.getRelevance());
 		}

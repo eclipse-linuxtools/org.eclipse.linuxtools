@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 /**
@@ -105,7 +106,7 @@ public class RpmPackageProposalsList {
 	public String getRpmInfo(String pkgName) {
 		String ret = ""; //$NON-NLS-1$
 		try {
-			ret = Utils.runCommandToString("rpm", "-q", pkgName, "--qf",  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+			ret = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToString("rpm", "-q", pkgName, "--qf",  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 					getformattedRpmInformations());
 		} catch (IOException e) {
 			SpecfileLog.logError(e);

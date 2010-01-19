@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmSections;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
-import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -26,7 +25,6 @@ public class SpecfileFormEditor extends FormEditor {
 	FormPage mainPackage;
 	SpecfileEditor editor;
 	private Specfile specfile;
-	SpecfileParser parser;
 
 	public SpecfileFormEditor() {
 		super();

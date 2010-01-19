@@ -28,7 +28,7 @@ import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
@@ -66,7 +66,7 @@ public class SpecfileChangelogFormatter implements IFormatterChangeLogContrib {
         	dateLine =  MessageFormat
 					.format("* {0} {1} <{2}>", formatTodaysDate(), authorName, authorEmail); //$NON-NLS-1$
         
-       	dateLine = Utils.resolveDefines(specfile, dateLine);
+       	dateLine = UiUtils.resolveDefines(specfile, dateLine);
         return dateLine;
 
     }
