@@ -1,3 +1,10 @@
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Require core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java: Use Utils from core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java: Likewise.
+
 2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
     Remove an empty test class now that it's AbstractHandler not an ActionDelegate.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/SpecfileEditorShowOutlineActionDelegateTest.java: Removed.
