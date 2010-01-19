@@ -1,5 +1,9 @@
 2010-01-19  Andrew Overholt  <overholt@redhat.com>
 
+	* build.properties: Add missing DTP dep (of BIRT). 
+
+2010-01-19  Andrew Overholt  <overholt@redhat.com>
+
 	* maps/linuxtools.map: Add gcov.
 	* category.xml: Likewise.
 
