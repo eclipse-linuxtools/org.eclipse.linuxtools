@@ -1,8 +1,12 @@
+2010-01-18  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add gcov feature.
+
 2010-01-17  Francois Chouinard  <fchouinard@gmail.com>
 
 	* feature.xml: Add LTTng/TMF feature.
 
-2009-11-24  Alexander Kurakov  <akurtakov@redhat.com>
+2009-11-24  Alexander Kurtakov  <akurtakov@redhat.com>
 
 	* feature.xml: Add man viewer feature.
 

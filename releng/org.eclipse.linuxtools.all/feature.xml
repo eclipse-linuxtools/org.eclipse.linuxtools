@@ -85,4 +85,8 @@
          id="org.eclipse.linuxtools.tmf"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.linuxtools.gcov"
+         version="0.0.0"/>
+
 </feature>
