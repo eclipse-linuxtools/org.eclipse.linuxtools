@@ -11,9 +11,13 @@
 package org.eclipse.linuxtools.rpm.core.utils;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -89,10 +93,10 @@ public class Utils {
 	}
 
 	/**
-	 * 
-	 * @param command
-	 * @return
-	 * @throws IOException
+	 * Run a command and return its output.
+	 * @param command The command to execute.
+	 * @return The output of the executed command.
+	 * @throws IOException If an I/O exception occurred.
 	 */
 	public static String runCommandToString(String... command)
 			throws IOException {
@@ -111,12 +115,43 @@ public class Utils {
 	 */
 	public static String inputStreamToString(InputStream stream)
 			throws IOException {
-		String retStr = ""; //$NON-NLS-1$
+		StringBuilder retStr = new StringBuilder(); 
 		int c;
 		while ((c = stream.read()) != -1) {
-			retStr += ((char) c);
+			retStr.append((char) c);
 		}
 		stream.close();
-		return retStr;
+		return retStr.toString();
+	}
+	
+	/**
+	 * Checks whether a file exists.
+	 * 
+	 * @param cmdPath The file path to be checked.
+	 * @return <code>true</code> if the file exists, <code>false</code> otherwise.
+	 */
+	public static boolean fileExist(String cmdPath) {
+		return new File(cmdPath).exists();
+	}
+	
+	/**
+	 * Copy file from one destination to another.
+	 * @param in The source file.
+	 * @param out The destination.
+	 * @throws IOException If an I/O exception occurs.
+	 */
+	public static void copyFile(File in, File out) throws IOException {
+		FileChannel inChannel = new FileInputStream(in).getChannel();
+		FileChannel outChannel = new FileOutputStream(out).getChannel();
+		try {
+			inChannel.transferTo(0, inChannel.size(), outChannel);
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			if (inChannel != null)
+				inChannel.close();
+			if (outChannel != null)
+				outChannel.close();
+		}
 	}
 }

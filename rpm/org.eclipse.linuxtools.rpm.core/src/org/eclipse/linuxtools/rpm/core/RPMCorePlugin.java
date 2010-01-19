@@ -10,14 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -26,12 +18,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class RPMCorePlugin extends AbstractUIPlugin {
 	//The shared instance.
 	private static RPMCorePlugin plugin;
-	//Resource bundle.
-	private ResourceBundle resourceBundle;
-	//Shell script shared by all external operations
-	private File shellScriptFile;
-	//Log file shared by all external operations
-	private File externalLogFile;
 	
 	public static final String ID = "org.eclipse.linuxtools.rpm.core"; //$NON-NLS-1$
 	
@@ -42,11 +28,6 @@ public class RPMCorePlugin extends AbstractUIPlugin {
 	public RPMCorePlugin() {
 		//super();
 		plugin = this;
-		try {
-			resourceBundle= ResourceBundle.getBundle("org.eclipse.linuxtools.rpm.core.RPMPluginResources"); //$NON-NLS-1$
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
 	}
 
 	/**
@@ -56,55 +37,4 @@ public class RPMCorePlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle= RPMCorePlugin.getDefault().getResourceBundle();
-		try {
-			return bundle.getString(key);
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
-
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
-	
-	//Note this method is not thread-safe
-	public File getShellScriptFile() throws CoreException {
-		if(shellScriptFile == null) {
-			try {
-				shellScriptFile = File.createTempFile(RPMCorePlugin.ID, ".sh"); //$NON-NLS-1$
-			} catch(IOException e) {
-				String throw_message = Messages.getString("RPMCore.Error_creating__1") + //$NON-NLS-1$
-				  shellScriptFile.getAbsolutePath();
-				IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
-						throw_message, null);
-				throw new CoreException(error);
-			}
-		}
-		return shellScriptFile;
-	}
-	
-	//Note this method is not thread-safe
-	public File getExternalLogFile() throws CoreException {
-		if(externalLogFile == null) {
-			try {
-				externalLogFile = File.createTempFile(RPMCorePlugin.ID, ".log"); //$NON-NLS-1$
-			} catch(IOException e) {
-				String throw_message = Messages.getString("RPMCore.Error_creating__1") + //$NON-NLS-1$
-				  externalLogFile.getAbsolutePath();
-				IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
-						throw_message, null);
-				throw new CoreException(error);
-			}
-		}
-		return externalLogFile;
-	}
 }

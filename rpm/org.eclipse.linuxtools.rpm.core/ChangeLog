@@ -1,3 +1,12 @@
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java: Removed not needed methods.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (importSourceRPM): Assign directly to the variable.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (fileExist): New method.
+	(copyFile): Likewise.
+	(inputStreamToString): Concatenate with StringBuilder.
+	(runCommandToString): Fix javadoc.
+
 2010-01-12  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.

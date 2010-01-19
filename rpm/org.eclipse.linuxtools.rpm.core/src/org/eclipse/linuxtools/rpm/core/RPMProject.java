@@ -98,8 +98,7 @@ public class RPMProject {
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 
 		// Set the spec file
-		IResource[] installedSpecs = {};
-		installedSpecs = getConfiguration().getSpecsFolder().members();
+		IResource[] installedSpecs = getConfiguration().getSpecsFolder().members();
 		if (installedSpecs.length != 1) {
 			String throw_message = Messages
 					.getString("RPMCore.spec_file_ambiguous") + //$NON-NLS-1$
