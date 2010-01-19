@@ -46,6 +46,9 @@
    <feature url="features/org.eclipse.linuxtools.lttng_${org.eclipse.linuxtools.lttng.version}.jar" id="org.eclipse.linuxtools.lttng" version="${org.eclipse.linuxtools.lttng.version}" os="linux">
       <category name="Linux Tools"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.gcov_${org.eclipse.linuxtools.gcov.version}.jar" id="org.eclipse.linuxtools.gcov" version="${org.eclipse.linuxtools.gcov.version}">
+      <category name="Linux Tools"/>
+   </feature>
    <category-def name="Linux Tools" label="Linux Tools">
       <description>
          Eclipse Linux Tools

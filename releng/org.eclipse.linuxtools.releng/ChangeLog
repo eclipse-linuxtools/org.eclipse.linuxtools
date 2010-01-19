@@ -1,3 +1,8 @@
+2010-01-19  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Add gcov.
+	* category.xml: Likewise.
+
 2010-01-18  Francois Chouinard  <fchouinard@gmail.com>
 
 	* testing.properties: Added LTTng/TMF tests.
