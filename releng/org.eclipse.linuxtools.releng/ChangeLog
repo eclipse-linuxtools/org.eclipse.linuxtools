@@ -1,3 +1,7 @@
+2010-01-19  Charley Wang  <chwang@redhat.com>
+
+	* build.properties: Remove trailing ,\ from dependencyURLs
+
 2010-01-19  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Add missing DTP dep (of BIRT). 
