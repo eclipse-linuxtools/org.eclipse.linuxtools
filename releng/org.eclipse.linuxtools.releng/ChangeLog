@@ -1,3 +1,7 @@
+2010-01-20  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/athena.psf: Remove extraneous tags.
+
 2010-01-19  Charley Wang  <chwang@redhat.com>
 
 	* build.properties: Remove trailing ,\ from dependencyURLs
