@@ -1,3 +1,8 @@
+2010-01-22  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java:
+		(createPartControl): Prepare for removal of Error Log window functionality.
+
 2010-01-18  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: Add addCalled method, which increments the timesCalled variable on stapData corresponding to the input id.

@@ -515,7 +515,7 @@ public class CallgraphView extends SystemTapView {
 		gotoMenu = new MenuManager(Messages.getString("CallgraphView.GoTo")); //$NON-NLS-1$
 		menu.add(view);
 		menu.add(gotoMenu);
-		addErrorMenu();
+//		addErrorMenu();
 		addHelpMenu();
 		
 		view.add(view_treeview);
