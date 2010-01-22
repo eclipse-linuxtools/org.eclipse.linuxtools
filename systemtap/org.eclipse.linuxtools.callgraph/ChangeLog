@@ -1,3 +1,8 @@
+2010-01-22  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraph.java: removed extra loadData function that is never used.
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Fix miscounting in non-dot-file-node
+
 2010-01-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java:
