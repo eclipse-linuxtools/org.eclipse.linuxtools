@@ -22,6 +22,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Helper class parses the given string for recognizable error messages
@@ -30,8 +32,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class SystemTapErrorHandler {
 
     public static final String FILE_PROP = "errors.prop"; //$NON-NLS-1$
-    public static final String FILE_ERROR_LOG = "Error.log"; //$NON-NLS-1$
-    public static final int MAX_LOG_SIZE = 50000;
+//    public static final String FILE_ERROR_LOG = "Error.log"; //$NON-NLS-1$
+//    public static final int MAX_LOG_SIZE = 50000;
     private boolean errorRecognized;
     private StringBuilder errorMessage = new StringBuilder(""); //$NON-NLS-1$
     private StringBuilder logContents;
@@ -154,9 +156,14 @@ public class SystemTapErrorHandler {
      * time.
      */
     public void writeToLog() {
-        File errorLog = new File(PluginConstants.getDefaultOutput() + "Error.log"); //$NON-NLS-1$
+    	IStatus status = new Status(IStatus.ERROR,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
+    	CallgraphCorePlugin.getDefault().getLog().log(status);
+    	
+        /*File errorLog = new File(PluginConstants.getDefaultOutput() + "Error.log"); //$NON-NLS-1$
 
         try {
+        	
+        	
             // CREATE THE ERROR LOG IF IT DOES NOT EXIST
             // CLEAR THE ERROR LOG AFTER A FIXED SIZE(BYTES)
             if (!errorLog.exists() || errorLog.length() > MAX_LOG_SIZE) {
@@ -186,7 +193,7 @@ public class SystemTapErrorHandler {
                     + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         logContents = new StringBuilder(); //$NON-NLS-1$
     }
@@ -195,10 +202,10 @@ public class SystemTapErrorHandler {
     /**
      * Convenience method for deleting and recreating log at default location
      */
-    public static void deleteLog() {
+/*    public static void deleteLog() {
         File log = new File(PluginConstants.getDefaultOutput() + FILE_ERROR_LOG); //$NON-NLS-1$
         deleteLog(log);
-    }
+    }*/
    
     /**
      * Delete the log at File and replace it with a new (empty) file

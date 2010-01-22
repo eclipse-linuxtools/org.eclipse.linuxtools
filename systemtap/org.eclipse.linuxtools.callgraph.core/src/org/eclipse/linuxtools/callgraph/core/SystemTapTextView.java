@@ -205,7 +205,7 @@ public class SystemTapTextView extends SystemTapView {
 	
 		addKillButton();
 		addFileMenu();
-		addErrorMenu();
+//		addErrorMenu();
 		addHelpMenu();
 		ViewFactory.addView(this);
 	}

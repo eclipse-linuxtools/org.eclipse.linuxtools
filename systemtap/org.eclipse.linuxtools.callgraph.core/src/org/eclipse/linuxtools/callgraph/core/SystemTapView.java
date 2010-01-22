@@ -41,8 +41,8 @@ public abstract class SystemTapView extends ViewPart {
     private final String NEW_LINE = Messages.getString("SystemTapView.1"); //$NON-NLS-1$
    
     public Composite masterComposite;
-    private Action error_errorLog;
-    private Action error_deleteError;
+//    private Action error_errorLog;
+//    private Action error_deleteError;
     private IMenuManager errors;
     private IMenuManager help;
     private Action kill;
@@ -195,7 +195,7 @@ public abstract class SystemTapView extends ViewPart {
      * Appends the error menu, containing options for opening and clearing the
      * error log.
      */
-    public void addErrorMenu() {
+/*    public void addErrorMenu() {
         IMenuManager menu = getViewSite().getActionBars().getMenuManager();
         errors = new MenuManager(Messages.getString("SystemTapView.ErrMenu")); //$NON-NLS-1$
         menu.add(errors);
@@ -203,7 +203,7 @@ public abstract class SystemTapView extends ViewPart {
 
         errors.add(error_errorLog);
         errors.add(error_deleteError);
-    }
+    }*/
    
     /**
      * Create File menu -- calls the abstract protected methods
@@ -363,7 +363,7 @@ public abstract class SystemTapView extends ViewPart {
     /**
      * Populates the Errors menu
      */
-    public void createErrorActions() {
+    /*public void createErrorActions() {
 
         error_errorLog = new Action(Messages.getString("SystemTapView.OpenLog")) { //$NON-NLS-1$
             public void run() {
@@ -431,7 +431,7 @@ public abstract class SystemTapView extends ViewPart {
                 SystemTapErrorHandler.deleteLog();
             }
         };
-    }
+    }*/
 
     protected void addKillButton() {
         IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
@@ -455,7 +455,7 @@ public abstract class SystemTapView extends ViewPart {
         return kill;
     }
    
-    public Action getError_errorLog() {
+/*    public Action getError_errorLog() {
         return error_errorLog;
     }
 
@@ -469,7 +469,7 @@ public abstract class SystemTapView extends ViewPart {
 
     public void setError_deleteError(Action errorDeleteError) {
         error_deleteError = errorDeleteError;
-    }
+    }*/
 
     public  Action getHelp_version() {
         return help_version;

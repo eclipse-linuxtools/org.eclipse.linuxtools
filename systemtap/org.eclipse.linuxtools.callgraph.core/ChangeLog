@@ -1,3 +1,13 @@
+2010-01-22  Roland Grunberg  <rgrunber@redhat.com>
+
+	* errors.prop: Add case for when uprobes.ko built for a previous kernel, and must be updated.
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Remove Error Log externalized strings.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java:
+		(writeToLog): Output logged errors using the Eclipse Error Log.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextView.java:
+		(createPartControl): remove the Error Log from being displayed. 
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Remove the Error Log window.
+
 2009-12-22  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Remove extraneous logic
