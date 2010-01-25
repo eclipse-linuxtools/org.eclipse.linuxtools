@@ -1,3 +1,8 @@
+2010-01-25  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/gcov.psf: New file.
+	* psfs/linuxtools.psf: Add GCov contribution.
+
 2010-01-20  Andrew Overholt  <overholt@redhat.com>
 
 	* psfs/athena.psf: Remove extraneous tags.
