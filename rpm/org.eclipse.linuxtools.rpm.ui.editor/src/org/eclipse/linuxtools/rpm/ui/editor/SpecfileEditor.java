@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
@@ -45,7 +44,6 @@ public class SpecfileEditor extends TextEditor {
 		parser = getParser();
 		setSourceViewerConfiguration(new SpecfileConfiguration(colorManager,
 				this));
-		setDocumentProvider(new SpecfileDocumentProvider());
 		setKeyBindingScopes(new String[] { "org.eclipse.linuxtools.rpm.ui.specEditorScope" }); //$NON-NLS-1$
 	}
 

@@ -1,3 +1,8 @@
+2010-01-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Fix documentProviders file extensions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (SpecfileEditor): Do not set document provider, correctly done with the extension.
+
 2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java: Removed.
