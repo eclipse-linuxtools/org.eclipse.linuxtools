@@ -224,6 +224,8 @@ public class CallgraphView extends SystemTapView {
 						//Should only happen in dot-files!!
 						g.addCalled(id_child);
 						continue;
+					} else if (g.getNodeData(id_child) != null) {
+						continue;
 					}
 					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
@@ -236,6 +238,7 @@ public class CallgraphView extends SystemTapView {
 						msg = parser.markedMap.remove(id_child);
 					}
 					if (id_child != -1) {
+						System.out.println(parser.serialMap.get(id_parent) + "->" +  parser.serialMap.get(id_child));
 						if (parser.timeMap.get(id_child) == null){						
 							g.loadData(SWT.NONE, id_child, parser.serialMap
 									.get(id_child), parser.timeMap.get(0),
