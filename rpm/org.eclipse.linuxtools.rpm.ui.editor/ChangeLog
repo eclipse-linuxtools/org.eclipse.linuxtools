@@ -1,3 +1,9 @@
+2010-01-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Fix stackoverflow when recursive define is used.
+	(SpecfileElement): Format.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseDirectDefinition): Fix parsing defines without value.
+
 2010-01-25  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Fix documentProviders file extensions.

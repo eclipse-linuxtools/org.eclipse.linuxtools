@@ -19,7 +19,7 @@ public class SpecfileElement {
 	private int lineNumber;
 	private int lineStartPosition;
 	private int lineEndPosition;
-	
+
 	public int getLineNumber() {
 		return lineNumber;
 	}
@@ -28,10 +28,10 @@ public class SpecfileElement {
 		this.lineNumber = lineNumber;
 	}
 
-	public SpecfileElement(){
-		//weird
+	public SpecfileElement() {
+		// weird
 	}
-	
+
 	public SpecfileElement(String name) {
 		setName(name);
 	}
@@ -43,7 +43,7 @@ public class SpecfileElement {
 	public final void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;
@@ -72,9 +72,10 @@ public class SpecfileElement {
 	public void setSpecfile(Specfile specfile) {
 		this.specfile = specfile;
 	}
-	
+
 	public String resolve(String toResolve) {
-		if (specfile == null) {
+		if (specfile == null
+				|| toResolve.equals("") || toResolve.substring(2, toResolve.length() - 1).equals(name)) { //$NON-NLS-1$
 			return toResolve;
 		}
 		return UiUtils.resolveDefines(specfile, toResolve);

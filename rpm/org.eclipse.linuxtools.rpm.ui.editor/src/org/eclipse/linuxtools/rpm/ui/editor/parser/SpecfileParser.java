@@ -573,10 +573,16 @@ public class SpecfileParser {
 	private SpecfileElement parseDirectDefinition(String lineText,
 			Specfile specfile, int lineNumber) {
 		String[] parts = lineText.split(DEFINE_SEPARATOR);
-		SpecfileTag licenseElement = new SpecfileTag(parts[0], parts[1].trim(),
-				specfile, activePackage);
-		licenseElement.setLineNumber(lineNumber);
-		return licenseElement;
+		SpecfileTag directDefinition;
+		if (parts.length == 2) {
+			directDefinition = new SpecfileTag(parts[0], parts[1].trim(),
+					specfile, activePackage);
+		} else {
+			directDefinition = new SpecfileTag(parts[0], "", //$NON-NLS-1$
+					specfile, activePackage);
+		}
+		directDefinition.setLineNumber(lineNumber);
+		return directDefinition;
 	}
 
 	public void setErrorHandler(SpecfileErrorHandler specfileErrorHandler) {
