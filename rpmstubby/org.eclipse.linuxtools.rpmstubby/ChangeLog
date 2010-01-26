@@ -1,3 +1,13 @@
+2010-01-26  Alexander Kurtakov  <akurtako@redhat.com>
+    Drop ability to generate gcj specific parts. Use %global not %define.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceConstants.java: Remove gcj parts.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceInitializer.java (initializeDefaultPreferences): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/StubbyPreferencePage.java (createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (getPackageFiles): Likewise.
+	(generateFilesSections): Likewise.
+	(StubbyGenerator): Likewise.
+	(generateSpecfile): Likewise. Replace %define with %global.
+
 2009-12-03  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Fix duplicated popup menu ids.

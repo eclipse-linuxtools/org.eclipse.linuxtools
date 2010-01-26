@@ -45,7 +45,6 @@ public class StubbyGenerator {
 
 	private MainPackage mainPackage;
 	private List<SubPackage> subPackages;
-	private boolean withGCJSupport;
 	private boolean withFetchScript;
 	private boolean usePdebuildScript;
 	private IPreferenceStore store;
@@ -62,8 +61,6 @@ public class StubbyGenerator {
 		this.mainPackage = mainPackage;
 		this.subPackages = subPackages;
 		store = StubbyPlugin.getDefault().getPreferenceStore();
-		this.withGCJSupport = store
-				.getBoolean(PreferenceConstants.P_STUBBY_WITH_GCJ);
 		this.withFetchScript = store
 				.getBoolean(PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT);
 		this.usePdebuildScript = store
@@ -79,12 +76,10 @@ public class StubbyGenerator {
 		StringBuilder buffer = new StringBuilder();
 		String simplePackageName = getPackageName(mainPackage.getName());
 		String packageName = "eclipse-" + simplePackageName;
-		if (withGCJSupport)
-			buffer.append("%define gcj_support    1\n");
 		if (withFetchScript)
-			buffer.append("%define src_repo_tag   #FIXME\n");
-		buffer.append("%define eclipse_base   %{_libdir}/eclipse\n");
-		buffer.append("%define install_loc    %{_datadir}/eclipse/dropins/"
+			buffer.append("%global src_repo_tag   #FIXME\n");
+		buffer.append("%global eclipse_base   %{_libdir}/eclipse\n");
+		buffer.append("%global install_loc    %{_datadir}/eclipse/dropins/"
 				+ simplePackageName.toLowerCase() + "\n\n");
 		buffer.append("Name:           " + packageName.toLowerCase() + "\n");
 		buffer.append("Version:        "
@@ -107,19 +102,6 @@ public class StubbyGenerator {
 		}
 		buffer
 				.append("BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)\n\n");
-		if (withGCJSupport) {
-			buffer.append("%if %{gcj_support}\n");
-			buffer.append("BuildRequires:    gcc-java\n");
-			buffer.append("BuildRequires:    java-gcj-compat-devel\n");
-			buffer.append("Requires(post):   java-gcj-compat\n");
-			buffer.append("Requires(postun): java-gcj-compat\n");
-			buffer.append("%else\n");
-			buffer.append("BuildRequires:    java-devel >= 1.5.0\n");
-			buffer.append("%endif\n");
-			buffer.append("%if ! %{gcj_support}\n");
-			buffer.append("BuildArch: noarch\n");
-			buffer.append("%endif\n\n");
-		} else
 			buffer.append("BuildArch: noarch\n\n");
 		buffer.append("BuildRequires: eclipse-pde >= 1:3.4.0\n");
 		buffer.append("Requires: eclipse-platform >= 3.4.0\n");
@@ -149,25 +131,8 @@ public class StubbyGenerator {
 		buffer.append("%{__unzip} -q -d %{buildroot}%{install_loc} \\\n");
 		buffer.append("     build/rpmBuild/" + mainPackage.getName()
 				+ ".zip \n\n");
-		if (withGCJSupport) {
-			buffer.append("%if %{gcj_support}\n");
-			buffer.append("  %{_bindir}/aot-compile-rpm\n");
-			buffer.append("%endif\n\n");
-		}
 		buffer.append("%clean\n");
 		buffer.append("%{__rm} -rf %{buildroot}\n\n");
-		if (withGCJSupport) {
-			buffer.append("%if %{gcj_support}\n");
-			buffer.append("%post\n");
-			buffer.append("if [ -x %{_bindir}/rebuild-gcj-db ]; then\n");
-			buffer.append("  %{_bindir}/rebuild-gcj-db\n");
-			buffer.append("fi\n\n");
-			buffer.append("%preun\n");
-			buffer.append("if [ -x %{_bindir}/rebuild-gcj-db ]; then\n");
-			buffer.append("  %{_bindir}/rebuild-gcj-db\n");
-			buffer.append("fi\n");
-			buffer.append("%endif\n\n");
-		}
 		generateFilesSections(buffer);
 		buffer.append("%changelog\n\n");
 		buffer.append("#FIXME\n");
@@ -192,8 +157,7 @@ public class StubbyGenerator {
 					+ subPackage.getName() + "_*/*.html\n");
 			buffer.append("%{eclipse_base}/features/" + subPackage.getName()
 					+ "_*/feature.*\n");
-			buffer.append(getPackageFiles(subPackage.getProvides(),
-					withGCJSupport)
+			buffer.append(getPackageFiles(subPackage.getProvides())
 					+ "\n");
 		}
 	}
@@ -404,20 +368,11 @@ public class StubbyGenerator {
 		return uniqueProvides;
 	}
 
-	private String getPackageFiles(List<PackageItem> packageItems,
-			boolean withGCJSupport) {
+	private String getPackageFiles(List<PackageItem> packageItems) {
 		StringBuilder toRet = new StringBuilder();
 		for (PackageItem packageItem : packageItems) {
 			toRet.append("%{eclipse_base}/plugins/").append(
 					packageItem.getName()).append("_*.jar\n");
-		}
-		if (withGCJSupport) {
-			toRet.append("%if %{gcj_support}\n");
-			for (PackageItem packageItem : packageItems) {
-				toRet.append("%{_libdir}/gcj/%{name}/").append(
-						packageItem.getName()).append("_*\n");
-			}
-			toRet.append("%endif\n");
 		}
 		return toRet.toString();
 	}
