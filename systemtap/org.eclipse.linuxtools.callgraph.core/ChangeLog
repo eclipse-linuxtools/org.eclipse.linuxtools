@@ -1,3 +1,7 @@
+2010-01-26  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Fix settings for nonrealtimeparsing.
+
 2010-01-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* errors.prop: Add case for when uprobes.ko built for a previous kernel, and must be updated.

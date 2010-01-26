@@ -163,7 +163,6 @@ public abstract class SystemTapParser extends Job {
 		if (this.monitor == null) {
 			this.monitor = new NullProgressMonitor();
 		}
-		makeView();
 		
 		if (realTime && (job == null || job.getResult()==null)) {
 			job = new RunTimeJob("RealTimeParser"); //$NON-NLS-1$
@@ -171,6 +170,7 @@ public abstract class SystemTapParser extends Job {
 		} else {
 			returnStatus = nonRealTimeParsing();
 		}
+		makeView();
 				
 	
 		if (!returnStatus.isOK()){
