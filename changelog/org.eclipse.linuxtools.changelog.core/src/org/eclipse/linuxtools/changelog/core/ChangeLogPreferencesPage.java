@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2006, 2010 Phil Muldoon <pkmuldoon@picobot.org> and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,10 +8,9 @@
  * Contributors:
  *    Phil Muldoon <pmuldoon@redhat.com> - initial API and implementation
  *    Kyu Lee <klee@redhat.com>          - editor support
+ *    Alexander Kurtakov (Red Hat)       - remove parts notneeded
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core;
-
-import java.net.UnknownHostException;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -19,10 +18,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -42,7 +37,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * preference dialog based on the registration.
  */
 public class ChangeLogPreferencesPage extends PreferencePage implements
-		IWorkbenchPreferencePage, SelectionListener, ModifyListener {
+		IWorkbenchPreferencePage {
 
 	private Text emailField;
 
@@ -80,7 +75,6 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 
 	private Text createTextField(Composite parent) {
 		Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		text.addModifyListener(this);
 		GridData data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
@@ -103,60 +97,12 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 		return list;
 	}
 
+	public void init(IWorkbench workbench) {
+	}
+	
 	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
 		return ChangelogPlugin.getDefault().getPreferenceStore();
-	}
-
-	public void init(IWorkbench workbench) {
-		initializeDefaultPreferences(getPreferenceStore());
-	}
-
-	protected static String getUserRealName() {
-		String realUserName = System.getenv("ECLIPSE_CHANGELOG_REALNAME"); // $NON-NLS-1$
-		if (realUserName != null)
-			return realUserName;
-		return System.getProperty("gnu.gcj.user.realname", //$NON-NLS-1$
-				getUserName());
-	}
-	
-	protected static String getUserEmail() {
-		String emailID = System.getenv("ECLIPSE_CHANGELOG_EMAIL"); // $NON-NLS-1$
-		if (emailID != null)
-			return emailID;
-		return getUserName() + "@" + getHostName(); // $NON-NLS-1$
-	}
-
-	protected static String getUserName() {
-		return System.getProperty("user.name"); //$NON-NLS-1$
-	}
-
-	protected static String getHostName() {
-		try {
-			return java.net.InetAddress.getLocalHost().getHostName();
-		} catch (UnknownHostException e) {
-			// instead of throwing exception, return default host name
-			// RH bug#194406
-			return "localhost.localdomain"; //$NON-NLS-1$
-		}
-	}
-
-	protected void initializeDefaultPreferences(IPreferenceStore store) {
-		// store.setDefault("IChangeLogConstants.AUTHOR_NAME", getUserName());
-		// //$NON-NLS-1$ //$NON-NLS-2$
-		// store
-		// .setDefault(
-		// "IChangeLogConstants.AUTHOR_EMAIL", getUserName() + "@" +
-		// getHostName()); //$NON-NLS-1$ //$NON-NLS-2$
-		//						
-		store.setDefault("IChangeLogConstants.AUTHOR_NAME", getUserRealName()); //$NON-NLS-1$	
-		store.setDefault("IChangeLogConstants.AUTHOR_EMAIL", getUserEmail()); //$NON-NLS-1$
-
-		store.setDefault("IChangeLogConstants.DEFAULT_FORMATTER", // $NON-NLS-1$ 
-				Messages.getString("ChangeLogPreferencesPage.gnuFormatter")); //$NON-NLS-1$
-		store.setDefault("IChangeLogConstants.DEFAULT_EDITOR", // $NON-NLS-1$
-				Messages.getString("ChangeLogPreferencesPage.gnuEditorConfig")); //$NON-NLS-1$
-
 	}
 
 	private void initializeDefaults() {
@@ -270,10 +216,6 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 
 	}
 
-	public void modifyText(ModifyEvent event) {
-		// Do nothing on a modification in this example
-	}
-
 	/*
 	 * (non-Javadoc) Method declared on PreferencePage
 	 */
@@ -319,16 +261,5 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 		initializeValues();
 
 		return new Composite(parent, SWT.NULL);
-	}
-
-	public void widgetDefaultSelected(SelectionEvent event) {
-		// Handle a default selection. Do nothing in this example
-	}
-
-	/**
-	 * (non-Javadoc) Method declared on SelectionListener
-	 */
-	public void widgetSelected(SelectionEvent event) {
-		// Do nothing on selection in this example;
 	}
 }

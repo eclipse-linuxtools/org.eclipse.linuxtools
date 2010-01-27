@@ -1,5 +1,21 @@
 2010-01-27  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPreferenceInitializer.java: New file.
+	* plugin.xml: Register preferenceInitializer.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java: Remove parts that belong to the preference initializer. 
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java (createTextField): Don't register modify listener.
+	(getHostName): Removed.
+	(getUserEmail): Removed.
+	(getUserName): Removed.
+	(getUserRealName): Removed.
+	(init): Do not initialize properties.
+	(initializeDefaultPreferences): Removed.
+	(modifyText): Removed.
+	(widgetDefaultSelected): Removed.
+	(widgetSelected): Removed.
+		 
+2010-01-27  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/changelog/core/editors/GNUFileEntryDamagerRepairer.java (getDamageRegion): Add missing @Override.
 	(createPresentation): Remove dead variables.
 	* src/org/eclipse/linuxtools/changelog/core/editors/GNUPartitionScanner.java (nextToken): Add missing @Override.
