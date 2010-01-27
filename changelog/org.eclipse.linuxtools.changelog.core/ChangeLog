@@ -1,3 +1,10 @@
+2010-01-27  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUFileEntryDamagerRepairer.java (getDamageRegion): Add missing @Override.
+	(createPresentation): Remove dead variables.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUPartitionScanner.java (nextToken): Add missing @Override.
+	* src/org/eclipse/linuxtools/changelog/core/editors/MultilineRuleDamagerRepairer.java (getDamageRegion): Likewise.
+
 2009-12-22  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix o.e.c.resources bundle version range.
