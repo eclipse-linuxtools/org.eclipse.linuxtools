@@ -1,3 +1,9 @@
+2010-01-28  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Clean up unnecessary code.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextView.java: Same as above.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Same as above.
+
 2010-01-26  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Fix settings for nonrealtimeparsing.

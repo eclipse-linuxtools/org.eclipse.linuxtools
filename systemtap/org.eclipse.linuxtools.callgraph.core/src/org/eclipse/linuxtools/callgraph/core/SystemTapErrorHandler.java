@@ -16,8 +16,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,8 +30,6 @@ import org.eclipse.core.runtime.Status;
 public class SystemTapErrorHandler {
 
     public static final String FILE_PROP = "errors.prop"; //$NON-NLS-1$
-//    public static final String FILE_ERROR_LOG = "Error.log"; //$NON-NLS-1$
-//    public static final int MAX_LOG_SIZE = 50000;
     private boolean errorRecognized;
     private StringBuilder errorMessage = new StringBuilder(""); //$NON-NLS-1$
     private StringBuilder logContents;
@@ -159,53 +155,9 @@ public class SystemTapErrorHandler {
     	IStatus status = new Status(IStatus.ERROR,CallgraphCorePlugin.PLUGIN_ID,logContents.toString());
     	CallgraphCorePlugin.getDefault().getLog().log(status);
     	
-        /*File errorLog = new File(PluginConstants.getDefaultOutput() + "Error.log"); //$NON-NLS-1$
-
-        try {
-        	
-        	
-            // CREATE THE ERROR LOG IF IT DOES NOT EXIST
-            // CLEAR THE ERROR LOG AFTER A FIXED SIZE(BYTES)
-            if (!errorLog.exists() || errorLog.length() > MAX_LOG_SIZE) {
-                errorLog.delete();
-                errorLog.createNewFile();
-            }
-
-            Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-            int hour = cal.get(Calendar.HOUR_OF_DAY);
-            int minute = cal.get(Calendar.MINUTE);
-            int second = cal.get(Calendar.SECOND);
-
-            // APPEND THE ERROR TO THE LOG
-            Helper.appendToFile(errorLog.getAbsolutePath(), Messages
-                    .getString("SystemTapErrorHandler.ErrorLogDashes") //$NON-NLS-1$
-                    + PluginConstants.NEW_LINE
-                    + day
-                    + "/" + month //$NON-NLS-1$
-                    + "/" + year + " - " + hour + ":" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    + minute
-                    + ":" + second //$NON-NLS-1$
-                    + PluginConstants.NEW_LINE
-                    + logContents
-                    + PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
         logContents = new StringBuilder(); //$NON-NLS-1$
     }
 
-
-    /**
-     * Convenience method for deleting and recreating log at default location
-     */
-/*    public static void deleteLog() {
-        File log = new File(PluginConstants.getDefaultOutput() + FILE_ERROR_LOG); //$NON-NLS-1$
-        deleteLog(log);
-    }*/
    
     /**
      * Delete the log at File and replace it with a new (empty) file
