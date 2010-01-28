@@ -238,7 +238,6 @@ public class CallgraphView extends SystemTapView {
 						msg = parser.markedMap.remove(id_child);
 					}
 					if (id_child != -1) {
-						System.out.println(parser.serialMap.get(id_parent) + "->" +  parser.serialMap.get(id_child));
 						if (parser.timeMap.get(id_child) == null){						
 							g.loadData(SWT.NONE, id_child, parser.serialMap
 									.get(id_child), parser.timeMap.get(0),
@@ -518,7 +517,6 @@ public class CallgraphView extends SystemTapView {
 		gotoMenu = new MenuManager(Messages.getString("CallgraphView.GoTo")); //$NON-NLS-1$
 		menu.add(view);
 		menu.add(gotoMenu);
-//		addErrorMenu();
 		addHelpMenu();
 		
 		view.add(view_treeview);

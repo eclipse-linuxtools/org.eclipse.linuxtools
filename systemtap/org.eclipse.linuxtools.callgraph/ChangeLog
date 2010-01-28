@@ -1,3 +1,7 @@
+2010-01-28  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java : Clean up unnecessary code.
+
 2010-01-26  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/CallgraphView.java: Fix miscounting caused by lack of proper escape clause.
