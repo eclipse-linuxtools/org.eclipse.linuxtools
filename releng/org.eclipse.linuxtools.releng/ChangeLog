@@ -1,3 +1,7 @@
+2010-01-28  Charley Wang  <chwang@redhat.com>
+
+	* psfs/callgraph.psf: Add profiling framework to callgraph.psf
+
 2010-01-25  Andrew Overholt  <overholt@redhat.com>
 
 	* psfs/gcov.psf: New file.
