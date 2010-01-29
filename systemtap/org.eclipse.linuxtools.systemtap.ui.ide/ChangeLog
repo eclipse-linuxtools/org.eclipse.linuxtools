@@ -1,3 +1,20 @@
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptChartAction.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/hidden/FunctionBrowserAction.java (run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/hidden/ProbeAliasAction.java (run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getImportedTapsets): 
+	(isValidFile): 
+	(buildStandardScript): 
+	(isValid): 
+	(run): 
+	(getFilePath): 
+	(createClientSession): 
+	(isValidDirectory): 
+	(finalizeScript): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/c/CEditor.java (checkProbe): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPDocumentProvider.java: 
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix bundle name.

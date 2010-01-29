@@ -1,3 +1,11 @@
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/actions/file/NewFileAction.java (queryFile): 
+	* src/org/eclipse/linuxtools/systemtap/ui/editor/SimpleDocumentProvider.java (doSaveDocument): 
+	(isReadOnly): 
+	(setDocumentContent): 
+	(isModifiable): 
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix Bundle-Name.

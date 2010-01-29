@@ -30,6 +30,7 @@ import org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.ui.ide.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.runnable.Command;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -237,7 +238,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 	 * @param probe	the systemtap probe to test for validity
 	 * @return	true when the probe is a valid probe
 	 */
-	/*private boolean checkProbe(String probe) {
+	private boolean checkProbe(String probe) {
 		LogManager.logDebug("Start checkProbe: probe-" + probe, this);
 		String[] stap = new String[4];
 		stap[0] = "stap";
@@ -259,7 +260,7 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		cmd.dispose();
 		LogManager.logDebug("End checkProbe:", this);
     	return success;
-	}*/
+	}
 	
 	public void dispose() {
 		LogManager.logDebug("Start dispose:", this);

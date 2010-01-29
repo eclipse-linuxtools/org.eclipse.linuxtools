@@ -19,15 +19,18 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IBlockData
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IHistoricalDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AreaChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.BarChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.LineChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.MeterChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.PieChartBuilder;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.ScatterChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.BarGraph;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.IGraph;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.LineGraph;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.PieChart;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.ScatterGraph;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -37,41 +40,52 @@ public final class GraphFactory {
 			Localization.getString("GraphFactory.ScatterGraph"),
 			Localization.getString("GraphFactory.LineGraph"),
 			Localization.getString("GraphFactory.BarGraph"),
-			Localization.getString("GraphFactory.PieChart")
+			Localization.getString("GraphFactory.AreaGraph"),
+			Localization.getString("GraphFactory.PieChart"),
+		//	Localization.getString("GraphFactory.MeterChart")
 	};
 
 	private static final String[] graphDescriptions = new String[] {
 		Localization.getString("GraphFactory.ScatterDescription"),
 		Localization.getString("GraphFactory.LineDescription"),
 		Localization.getString("GraphFactory.BarDescription"),
-		Localization.getString("GraphFactory.PieDescription")
+		Localization.getString("GraphFactory.AreaDescription"),
+		Localization.getString("GraphFactory.PieDescription"),
+		//Localization.getString("GraphFactory.MeterDescription")
 	};
 
 	private static final Image[] graphImages = new Image[] {
 		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/ScatterGraph.gif").createImage(),
 		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/LineGraph.gif").createImage(),
 		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/BarGraph.gif").createImage(),
-		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/PieChart.gif").createImage()
+		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/AreaChart.gif").createImage(),
+		GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/PieChart.gif").createImage(),
+		//GraphingAPIUIPlugin.getImageDescriptor("icons/graphs/MeterChart.gif").createImage()
 	};
 
 	private static final String[] graphIDs = new String[] {
-		ScatterGraph.ID,
-		LineGraph.ID,
-		BarGraph.ID,
-		PieChart.ID
+		ScatterChartBuilder.ID,
+		LineChartBuilder.ID,
+		BarChartBuilder.ID,
+		AreaChartBuilder.ID,
+		PieChartBuilder.ID,
+		//MeterChartBuilder.ID
 	};
 
 	public static String[] getAvailableGraphs(IDataSet data) {
-		LinkedList<String> ids = new LinkedList<String>();
+		LinkedList ids = new LinkedList();
 		if(data instanceof IHistoricalDataSet) {
-			ids.add(ScatterGraph.ID);
-			ids.add(LineGraph.ID);
-			ids.add(BarGraph.ID);
+			ids.add(ScatterChartBuilder.ID);
+			ids.add(LineChartBuilder.ID);
+			ids.add(AreaChartBuilder.ID);
+			ids.add(BarChartBuilder.ID);
+			ids.add(PieChartBuilder.ID);
+		//	ids.add(MeterChartBuilder.ID);
 		}
 		if(data instanceof IBlockDataSet) {
-			if(!ids.contains(BarGraph.ID))
-				ids.add(BarGraph.ID);
-			ids.add(PieChart.ID);
+			if(!ids.contains(BarChartBuilder.ID))
+				ids.add(BarChartBuilder.ID);
+			    ids.add(PieChartBuilder.ID);
 		}
 		
 		String[] id = new String[0];
@@ -126,29 +140,55 @@ public final class GraphFactory {
 		}
 	}
 
-	public static final IGraph createGraph(GraphComposite comp, GraphData gd, IDataSet data) {
-		IGraph g = null;
+	public static final AbstractChartBuilder createGraph(GraphComposite comp, int style, GraphData gd, IDataSet data) {
+		AbstractChartBuilder builder = null;
+		
 		switch(getIndex(gd.graphID)) {
 			case 0:
-				g = new ScatterGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+				builder = new ScatterChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				break;
 			case 1:
-				g = new LineGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+		//		g = new LineGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+				builder = new LineChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				break;
 			case 2:
+				BarGraph g;
 				if(!(data instanceof IBlockDataSet) || (null != gd.key))
-					g = new BarGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+					//g = new BarGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+				{
+					builder = new BarChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+				
+				}
 				else
-					g = new BarGraph(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+					//g = new BarGraph(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+				{
+				builder = new BarChartBuilder(comp, style, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+				
+				}
 				break;
 			case 3:
-				g = new PieChart(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+				//		g = new PieChart(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+						builder = new AreaChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+						break;
+			case 4:
+		//		g = new PieChart(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+				//builder = new PieChartBuilder(comp, style, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+				builder = new PieChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+				
 				break;
+			case 5:
+				//		g = new PieChart(comp, SWT.NONE, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+						//builder = new PieChartBuilder(comp, style, gd.title, new BlockAdapter((IBlockDataSet)data, gd.xSeries, gd.ySeries));
+						builder = new MeterChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
+						
+						break;
+			
 		}
-		return g;
+		return builder;
 	}
 
 	private static int getIndex(String id) {
+		
 		for(int i=0; i<graphIDs.length; i++)
 			if(id.equals(graphIDs[i]))
 				return i;

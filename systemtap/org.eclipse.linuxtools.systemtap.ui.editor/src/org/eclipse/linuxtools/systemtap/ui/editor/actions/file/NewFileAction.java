@@ -16,20 +16,12 @@ import java.io.File;
 import org.eclipse.linuxtools.systemtap.ui.editor.internal.Localization;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.ui.IWorkbenchWindow;
 
 
 
 public class NewFileAction extends OpenFileAction {
 	
-	public NewFileAction() {
-		super();
-	}
 	
-	public NewFileAction(IWorkbenchWindow window) {
-		super();
-		init(window);
-	}
 	/**
 	 * Creates a new file.
 	 * @return the new file object.

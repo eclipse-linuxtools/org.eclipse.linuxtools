@@ -1,3 +1,15 @@
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/graphing/actions/ModifyParsingAction.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/graphing/actions/SaveGraphImageAction.java (getImage): 
+	(run): 
+	(getGraph): 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphing/structures/GraphDisplaySet.java (builders): 
+	(.close): 
+	(ButtonClickListener.widgetSelected): 
+	(getActiveGraph): 
+	(GraphDisplaySet): 
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix Bundle-Name.

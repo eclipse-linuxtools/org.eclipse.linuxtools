@@ -1,6 +1,5 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures;
 
-import org.eclipse.linuxtools.systemtap.ui.structures.*;
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
 import org.eclipse.linuxtools.systemtap.ui.structures.UpdateManager;
 

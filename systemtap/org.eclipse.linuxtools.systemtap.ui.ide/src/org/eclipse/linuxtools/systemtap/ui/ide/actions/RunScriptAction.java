@@ -15,11 +15,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -27,6 +25,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.ProgressMonitorPart;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.ClientSession;
+import org.eclipse.linuxtools.systemtap.ui.consolelog.ScpClient;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.Subscription;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.dialogs.SelectServerDialog;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin;
@@ -38,18 +37,16 @@ import org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor;
 import org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.ui.ide.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferenceConstants;
+import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
 import org.eclipse.linuxtools.systemtap.ui.ide.structures.TapsetLibrary;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
+import org.eclipse.linuxtools.systemtap.ui.structures.PasswordPrompt;
 import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentVariablesPreferencePage;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.ide.FileStoreEditorInput;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 
 
 
@@ -70,7 +67,6 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	public void init(IWorkbenchWindow window) {
 		LogManager.logInfo("Initializing fWindow: "+ window, this);
 		fWindow= window;
-		
 	}
 
 	public void run(IAction action) {
@@ -85,12 +81,28 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	public void run() {
 		LogManager.logDebug("Start run:", this);
 		continueRun = true;
+		if(ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)!=true)
+        	
+        {
+			new SelectServerDialog(fWindow.getShell()).open();
+		}
 		if(isValid()) {
-	//		String[] script = buildScript();
-	//		String[] envVars = getEnvironmentVariables();
+			 try{
+				 
+					ScpClient scpclient = new ScpClient();
+					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
+					tmpfileName="/tmp/"+ serverfileName;
+					 scpclient.transfer(fileName,tmpfileName);
+			        }catch(Exception e){e.printStackTrace();}
+					
+			String[] script = buildScript();
+			String[] envVars = getEnvironmentVariables();
             if(continueRun)
             {
-        		createClientSession();        
+            
+    	
+            	ScriptConsole console = ScriptConsole.getInstance(serverfileName);
+                console.run(script, envVars, new PasswordPrompt(IDESessionSettings.password), new StapErrorParser());
             }
 		}
 		
@@ -103,23 +115,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected String getFilePath() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-		String filename = null;
-		if (ed.getEditorInput() instanceof FileStoreEditorInput)
-		{
-			URI uri = ((FileStoreEditorInput)ed.getEditorInput()).getURI();
-			IFileStore location = EFS.getLocalFileSystem().getStore(uri);
-			try {
-				filename = location.toLocalFile(EFS.NONE, null).getAbsolutePath();
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (ed.getEditorInput() instanceof FileEditorInput)
-			filename = ((FileEditorInput)ed.getEditorInput()).getFile().getFullPath().toString();
-		if (ed.getEditorInput() instanceof PathEditorInput)
-			filename = ((PathEditorInput)ed.getEditorInput()).getPath().toString();
-		return filename;
+		return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
 	}
 	
 	/**
@@ -129,33 +125,16 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected boolean isValid() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
+        
 		if(isValidFile(ed))
-		{ 
-			if (ed.getEditorInput() instanceof FileStoreEditorInput)
-			{
-				URI uri = ((FileStoreEditorInput)ed.getEditorInput()).getURI();
-				IFileStore location = EFS.getLocalFileSystem().getStore(uri);
-				try {
-					fileName = location.toLocalFile(EFS.NONE, null).getAbsolutePath();
-				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if (ed.getEditorInput() instanceof FileEditorInput)
-				fileName = ((FileEditorInput)ed.getEditorInput()).getFile().getFullPath().toString();
-			if (ed.getEditorInput() instanceof PathEditorInput)
-				fileName = ((PathEditorInput)ed.getEditorInput()).getPath().toString();
-		if(isValidDirectory(fileName))
+			if(isValidDirectory(((PathEditorInput)ed.getEditorInput()).getPath().toString()))
 				return true;
-		}	
 		return true;
 	}
 	
 	private boolean isValidFile(IEditorPart ed) {
-		
 		if(null == ed) {
-			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"), (Object[])null);
+			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"), null);
 			LogManager.logInfo("Initializing", MessageDialog.class);
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Problem"), msg);
 			LogManager.logInfo("Disposing", MessageDialog.class);
@@ -173,7 +152,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		if(0 == IDESessionSettings.tapsetLocation.trim().length())
 			TapsetLibrary.getTapsetLocation(IDEPlugin.getDefault().getPreferenceStore());
 		if(fileName.contains(IDESessionSettings.tapsetLocation)) {
-			String msg = MessageFormat.format(Localization.getString("RunScriptAction.TapsetDirectoryRun"), (Object[])null);
+			String msg = MessageFormat.format(Localization.getString("RunScriptAction.TapsetDirectoryRun"), null);
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Error"), msg);
 			return false;
 		}
@@ -198,13 +177,14 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected String[] buildStandardScript() {
 	//FixMe: Take care of this in the next release. For now only the guru mode is sent
-		ArrayList<String> cmdList = new ArrayList<String>();
+		ArrayList cmdList = new ArrayList();
 		String[] script;
-
+		
 		getImportedTapsets(cmdList);
 		
 		if(isGuru())
 			cmdList.add("-g"); //$NON-NLS-1$
+		
 
 		script = finalizeScript(cmdList);
 		
@@ -215,7 +195,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * Adds the tapsets that the user has added in preferences to the input <code>ArrayList</code>
 	 * @param cmdList The list to add the user-specified tapset locations to.
 	 */
-	protected void getImportedTapsets(ArrayList<String> cmdList) {
+	protected void getImportedTapsets(ArrayList cmdList) {
 		Preferences pref = IDEPlugin.getDefault().getPluginPreferences();
 		String[] tapsets = pref.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 
@@ -273,18 +253,19 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	
 	protected boolean createClientSession()
 	{
-		if (!ClientSession.isConnected())
+		
+	if (!ClientSession.isConnected())
 		{
 				new SelectServerDialog(fWindow.getShell()).open();
 		}
 		if((ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.CANCELLED))!=true)
 		{
 		subscription = new Subscription(fileName,isGuru());
-		if (ClientSession.isConnected())		
+	/*	if (ClientSession.isConnected())		
 		{
 		console = ScriptConsole.getInstance(fileName, subscription);
         console.run();
-		}
+		}*/
 		}		
 		return true;
 	}
@@ -297,16 +278,25 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * @param cmdList The list of arguments for stap for this script
 	 * @return An array suitable to pass to <code>Runtime.exec</code> to start stap on this file.
 	 */
-	protected String[] finalizeScript(ArrayList<String> cmdList) {
+	protected String[] finalizeScript(ArrayList cmdList) {
+		
 		String[] script;
 
-		script = new String[cmdList.size() + 2];
+		script = new String[cmdList.size() + 4];
 		script[0] = "stap"; //$NON-NLS-1$
-
-		script[script.length-1] = fileName;
+			
+		script[script.length-1] = tmpfileName;
+		
 		for(int i=0; i< cmdList.size(); i++) {
 			script[i+1] = cmdList.get(i).toString();
 		}
+		script[script.length-3]="-m";
+		
+		String modname = serverfileName.substring(0, serverfileName.indexOf('.'));
+		if (modname.indexOf('-') != -1)
+			modname = modname.substring(0, modname.indexOf('-'));
+		script[script.length-2]=modname;
+		
 		return script;
 	}
 	
@@ -335,7 +325,9 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	}
 
 	protected boolean continueRun = true;
-	private String fileName = null;
+	protected String fileName = null;
+	protected String tmpfileName = null;
+	protected String serverfileName = null;
 	protected IWorkbenchWindow fWindow;
 	private IAction act;
 	protected Subscription subscription;

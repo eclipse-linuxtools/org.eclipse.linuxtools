@@ -15,12 +15,13 @@ import java.util.ArrayList;
 
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.IGraph;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.chart.widget.ChartCanvas;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.GraphFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -47,40 +48,63 @@ public class GraphComposite extends Composite {
 		layout.marginWidth = 5;
 		layout.marginHeight = 5;
 		this.setLayout(layout);
-		checkOptions = new ArrayList<Button>();
+		checkOptions = new ArrayList();
 
-		label = new Label(this, SWT.HORIZONTAL | SWT.CENTER);
+		label = new Label(this, SWT.HORIZONTAL | SWT.BORDER | SWT.BOLD | SWT.CENTER);
 		scale = scales[7];
-		label.setText(scale + Localization.getString("GraphComposite.ScaleValue"));
+		//label.setText(scale + Localization.getString("GraphComposite.ScaleValue"));
+		label.setText("-");
 		FormData data = new FormData();
-		data.top = new FormAttachment(0,0);
-		data.right = new FormAttachment(100, 0);
-		data.width = 40;
+	//	data.top = new FormAttachment(0,0);
+		data.bottom = new FormAttachment(100,-4);
+		data.left = new FormAttachment(0, 2);
+		data.width = 15;
 		label.setLayoutData(data);
-
-		zoomScale = new Scale(this,SWT.VERTICAL | SWT.BORDER);
+		label.setFont(new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD ));
+		zoomScale = new Scale(this,SWT.HORIZONTAL);
 		zoomScale.setMinimum(0);
 		zoomScale.setMaximum(14);
 		zoomScale.setIncrement(1);
 		zoomScale.setPageIncrement(1);
 		zoomScale.setSelection(7);
+		zoomScale.setToolTipText("Increase/Decrease the no of X axis ticks");
 		data = new FormData();
-		data.top = new FormAttachment(label, 10);
-		data.bottom = new FormAttachment(100, 5);
-		data.right = new FormAttachment(100,-10);
+		data.left = new FormAttachment(label,2);
+		data.bottom = new FormAttachment(100, -4);
+		data.right = new FormAttachment(100, -20);
 		zoomScale.setLayoutData(data);
+		
+		pluslabel = new Label(this, SWT.HORIZONTAL | SWT.BOLD | SWT.BORDER | SWT.CENTER);
+		pluslabel.setText("+");
+		pluslabel.setFont(new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD));
+		data = new FormData();
+//		data.top = new FormAttachment(0,0);
+		data.left = new FormAttachment(zoomScale,2);
+		data.bottom = new FormAttachment(100,-4);
+		data.width = 15;
+		pluslabel.setLayoutData(data);
 
-		graph = GraphFactory.createGraph(this, gd, ds);
+	
+		//this.setLayout(new FillLayout());
+		//System.out.println("In graphcomposite style" + style);
+		//for (int i=0; i<gd.ySeries.length; i++)
+			//System.out.println("In graphcomposite, y: " + gd.ySeries[i]);
+		builder = GraphFactory.createGraph(this, style,gd, ds);
 		data = new FormData();
 		data.top = new FormAttachment(0,0);
-		data.bottom = new FormAttachment(100,0);
-		data.right = new FormAttachment(label,-10);
+		data.bottom = new FormAttachment(label,-5);
+		//data.right = new FormAttachment(label,-10);
+		data.right = new FormAttachment(100,0);
 		data.left = new FormAttachment(0,0);
-		graph.setLayoutData(data);
+		builder.build();
 
-		graph.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-		graph.setForeground(this.getDisplay().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND));
-		this.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+		
+		
+		builder.setLayoutData(data);
+         
+		//builder.setBackground(this.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+		//builder.setForeground(this.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+		//this.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 		zoomScale.addSelectionListener(scaleListener);
 	}
 
@@ -96,13 +120,16 @@ public class GraphComposite extends Composite {
 		
 		zoomScale.setVisible(sidebarVisible);
 		label.setVisible(sidebarVisible);
+		pluslabel.setVisible(sidebarVisible);
 
 		FormData data = new FormData();
 		data.top = new FormAttachment(0,0);
-		data.bottom = new FormAttachment(100,0);
+		//data.bottom = new FormAttachment(100,0);
+		data.bottom = (withSidebar ? new FormAttachment(label,-7) : new FormAttachment(100, 0));
 		data.left = new FormAttachment(0,0);
-		data.right = (withSidebar ? new FormAttachment(label,-10) : new FormAttachment(100, 0));
-		graph.setLayoutData(data);
+		data.right = new FormAttachment(100,0);
+//		data.right = (withSidebar ? new FormAttachment(label,-10) : new FormAttachment(100, 0));
+		builder.setLayoutData(data);
 
 		layout(true, true);
 	}
@@ -148,8 +175,15 @@ public class GraphComposite extends Composite {
 	/**
 	 * Returns the graph that is rendering to this composite.
 	 */
-	public IGraph getGraph() {
+/*	public IGraph getGraph() {
 		return graph;
+	}*/
+	
+	/**
+	 * Returns the graph that is rendering to this composite.
+	 */
+	public AbstractChartBuilder getCanvas() {
+		return builder;
 	}
 
 	/**
@@ -165,8 +199,8 @@ public class GraphComposite extends Composite {
 	public void dispose() {
 		scaleListener = null;
 
-		if(null != graph) graph.dispose();
-		graph = null;
+		if(null != canvas) canvas.dispose();
+		canvas = null;
 		
 		if(null != zoomScale) zoomScale.dispose();
 		zoomScale = null;
@@ -187,12 +221,14 @@ public class GraphComposite extends Composite {
 	 */
 	private SelectionListener scaleListener = new SelectionListener() {
 		public void widgetSelected(SelectionEvent e) {
+			
 			Scale scaler = (Scale) e.widget;
 			int index = scaler.getSelection();
 			if(scale != scales[index]) {
 				scale = scales[index];
-				label.setText(scale + Localization.getString("GraphComposite.ScaleValue"));
-				graph.setScale(scale);
+			//	label.setText(scale + Localization.getString("GraphComposite.ScaleValue"));
+				builder.setScale(scale);
+				//graph.setScale(scale);
 			}
 		}
 
@@ -200,11 +236,14 @@ public class GraphComposite extends Composite {
 	};
 	
 	private boolean sidebarVisible = true;
-	private IGraph graph;
+	private ChartCanvas canvas;
+	private AbstractChartBuilder builder;
 	private Scale zoomScale;
 	public double scale;
 	private static final double[] scales = { .0625, .125, .25, .33 , .5, .66, .8, 1.0, 1.25, 1.5, 2, 3, 4, 8, 16 }; 
 	private Label label;
+	private Label pluslabel;
 	
-	private ArrayList<Button> checkOptions;
+	private ArrayList checkOptions;
+
 }

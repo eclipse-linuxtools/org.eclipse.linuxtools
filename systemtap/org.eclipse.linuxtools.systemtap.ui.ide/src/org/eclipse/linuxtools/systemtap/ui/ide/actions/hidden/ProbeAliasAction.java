@@ -93,7 +93,7 @@ public class ProbeAliasAction extends Action implements ISelectionListener, IWor
 		IWorkbenchPage page = window.getActivePage();
 		IEditorPart editor = page.getActiveEditor();
 		if(null == editor) {
-			NewFileAction action = new NewFileAction(page.getWorkbenchWindow());
+			NewFileAction action = new NewFileAction();
 			//action.init(page.getWorkbenchWindow());
 			action.run();
 			editor = page.getWorkbenchWindow().getActivePage().getActiveEditor();
