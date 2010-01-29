@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GraphicalRun Plug-in
+Bundle-Name: GraphicalRun Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphicalrun; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphicalrun.internal.GraphicalRunPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures
 Require-Bundle: org.eclipse.ui,
@@ -17,4 +17,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.systemtap.ui.ide,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui
-Eclipse-AutoStart: true
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
