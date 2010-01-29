@@ -66,7 +66,7 @@ public class ExportScriptAction extends RunScriptAction implements IWorkbenchWin
 	public void run(IAction action) {
 		String script = getFilePath();
 		if(null == script || script.length() <= 0) {
-			String msg = MessageFormat.format(Localization.getString("ExportScriptAction.NoFileToExport"), null);
+			String msg = MessageFormat.format(Localization.getString("ExportScriptAction.NoFileToExport"), (Object[])null);
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("ExportScriptAction.Error"), msg);
 		} else {
 			DataSetWizard wizard = new DataSetWizard(GraphingConstants.DataSetMetaData, script);

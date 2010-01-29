@@ -1,5 +1,12 @@
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/ImportModuleLocationAction.java:
+	(run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/DashboardCloseMonitor.java:
+	(preShutdown):
+	
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+	
 	* .classpath: New file.
 	* .project: New file.
 	* bin: New file.

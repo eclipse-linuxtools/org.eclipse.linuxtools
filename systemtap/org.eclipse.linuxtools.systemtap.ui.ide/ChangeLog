@@ -12,6 +12,11 @@
 	(createClientSession): 
 	(isValidDirectory): 
 	(finalizeScript): 
+	(getImportedTapsets): 
+	(isValidFile): 
+	(buildStandardScript): 
+	(isValidDirectory): 
+	(finalizeScript): 
 	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/c/CEditor.java (checkProbe): 
 	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPDocumentProvider.java: 
 

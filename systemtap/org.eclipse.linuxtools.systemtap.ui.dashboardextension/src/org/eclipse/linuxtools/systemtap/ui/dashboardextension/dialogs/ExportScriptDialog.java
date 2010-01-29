@@ -197,7 +197,7 @@ public class ExportScriptDialog extends Dialog {
 			   txtCategory.getText().length() <= 0 ||
 			   txtDescription.getText().length() <= 0 ||
 			   treeGraphs.getItemCount() <= 0) {
-				String msg = MessageFormat.format(Localization.getString("ExportScriptDialog.FillFields"), null);
+				String msg = MessageFormat.format(Localization.getString("ExportScriptDialog.FillFields"), (Object[])null);
 				MessageDialog.openWarning(this.getShell(), Localization.getString("ExportScriptDialog.Error"), msg);
 				return;
 			}

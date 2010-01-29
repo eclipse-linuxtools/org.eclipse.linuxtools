@@ -134,7 +134,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	
 	private boolean isValidFile(IEditorPart ed) {
 		if(null == ed) {
-			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"), null);
+			String msg = MessageFormat.format(Localization.getString("RunScriptAction.NoScriptFile"),(Object[]) null);
 			LogManager.logInfo("Initializing", MessageDialog.class);
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Problem"), msg);
 			LogManager.logInfo("Disposing", MessageDialog.class);
@@ -152,7 +152,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 		if(0 == IDESessionSettings.tapsetLocation.trim().length())
 			TapsetLibrary.getTapsetLocation(IDEPlugin.getDefault().getPreferenceStore());
 		if(fileName.contains(IDESessionSettings.tapsetLocation)) {
-			String msg = MessageFormat.format(Localization.getString("RunScriptAction.TapsetDirectoryRun"), null);
+			String msg = MessageFormat.format(Localization.getString("RunScriptAction.TapsetDirectoryRun"),(Object []) null);
 			MessageDialog.openWarning(fWindow.getShell(), Localization.getString("RunScriptAction.Error"), msg);
 			return false;
 		}
@@ -177,7 +177,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected String[] buildStandardScript() {
 	//FixMe: Take care of this in the next release. For now only the guru mode is sent
-		ArrayList cmdList = new ArrayList();
+		ArrayList<String> cmdList = new ArrayList<String>();
 		String[] script;
 		
 		getImportedTapsets(cmdList);
@@ -195,7 +195,8 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * Adds the tapsets that the user has added in preferences to the input <code>ArrayList</code>
 	 * @param cmdList The list to add the user-specified tapset locations to.
 	 */
-	protected void getImportedTapsets(ArrayList cmdList) {
+	@SuppressWarnings("deprecation")
+	protected void getImportedTapsets(ArrayList<String> cmdList) {
 		Preferences pref = IDEPlugin.getDefault().getPluginPreferences();
 		String[] tapsets = pref.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);
 
@@ -278,7 +279,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * @param cmdList The list of arguments for stap for this script
 	 * @return An array suitable to pass to <code>Runtime.exec</code> to start stap on this file.
 	 */
-	protected String[] finalizeScript(ArrayList cmdList) {
+	protected String[] finalizeScript(ArrayList<String> cmdList) {
 		
 		String[] script;
 
