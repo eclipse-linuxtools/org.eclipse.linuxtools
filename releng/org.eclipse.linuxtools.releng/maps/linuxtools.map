@@ -61,6 +61,9 @@ plugin@org.eclipse.linuxtools.systemtap.ui.ide=SVN,trunk,svn://dev.eclipse.org/s
 plugin@org.eclipse.linuxtools.systemtap.ui.logging=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.logging
 plugin@org.eclipse.linuxtools.systemtap.ui.structures=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.structures
 plugin@org.eclipse.linuxtools.systemtap.ui.systemtapgui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.systemtapgui
+plugin@org.eclipse.linuxtools.systemtap.ui.dashboard=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.dashboard
+plugin@org.eclipse.linuxtools.systemtap.ui.dashboardextension=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.dashboardextension
+plugin@org.eclipse.linuxtools.systemtap.ui.graphicalrun=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphicalrun
 
 !*** callgraph
 plugin@org.eclipse.linuxtools.callgraph.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.core
