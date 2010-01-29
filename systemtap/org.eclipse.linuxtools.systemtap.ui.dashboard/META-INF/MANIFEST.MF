@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Dashboard Plug-in
+Bundle-Name: SystemTap Dashboard(Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.dashboard; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin
-Bundle-Vendor: IBM
+Bundle-Vendor: Eclipse
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.dashboard,
  org.eclipse.linuxtools.systemtap.ui.dashboard.internal,
@@ -18,8 +18,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.linuxtools.systemtap.ui.graphingapi.ui,
  org.eclipse.linuxtools.systemtap.ui.systemtapgui,
  org.eclipse.linuxtools.systemtap.ui.consolelog
-Eclipse-AutoStart: true
 Import-Package: org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures,
  org.eclipse.linuxtools.systemtap.ui.graphing,
  org.eclipse.linuxtools.systemtap.ui.ide,
  org.eclipse.linuxtools.systemtap.ui.ide.structures
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
