@@ -74,9 +74,10 @@ public class SpecfileElement {
 	}
 
 	public String resolve(String toResolve) {
-		if (specfile == null
-				|| toResolve.equals("") || toResolve.substring(2, toResolve.length() - 1).equals(name)) { //$NON-NLS-1$
-			return toResolve;
+		if (specfile == null || toResolve.equals("")) {//$NON-NLS-1$
+			if (toResolve.length()>2 && toResolve.substring(2, toResolve.length() - 1).equals(name)) { 
+				return toResolve;
+			}
 		}
 		return UiUtils.resolveDefines(specfile, toResolve);
 	}
