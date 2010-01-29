@@ -1,5 +1,10 @@
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
+	* META-INF/MANIFEST.MF: Changed Bundle-version
+	
+
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
 	* .classpath: New file.
 	* .project: New file.
 	* bin: New file.
