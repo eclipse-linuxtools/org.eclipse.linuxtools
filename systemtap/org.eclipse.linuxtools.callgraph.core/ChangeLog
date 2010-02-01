@@ -1,3 +1,8 @@
+2010-02-01  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Remove unused externalized string.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Remove Callgraph Version string.
+
 2010-01-28  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Clean up unnecessary code.

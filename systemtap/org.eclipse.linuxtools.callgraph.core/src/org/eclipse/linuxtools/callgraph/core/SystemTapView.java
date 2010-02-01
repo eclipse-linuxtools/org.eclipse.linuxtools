@@ -244,7 +244,7 @@ public abstract class SystemTapView extends ViewPart {
                     Shell sh = new Shell();
 
                     MessageDialog.openInformation(sh, Messages
-                            .getString("SystemTapView.StapVersion"), message + NEW_LINE + Messages.getString("Callgraph.Version")); //$NON-NLS-1$ //$NON-NLS-2$
+                            .getString("SystemTapView.StapVersion"), message); //$NON-NLS-1$
 
                 } catch (IOException e) {
                     e.printStackTrace();
