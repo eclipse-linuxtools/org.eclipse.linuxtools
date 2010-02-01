@@ -1,3 +1,8 @@
+2010-02-01  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseDirectDefinition): Show error when missing value.
+	(parseDefine): Likewise.
+
 2010-01-29  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Fix StringIndexOutOfBounds.

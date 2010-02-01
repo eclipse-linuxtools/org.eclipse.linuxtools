@@ -433,6 +433,11 @@ public class SpecfileParser {
 						if (toReturn == null)
 							toReturn = new SpecfileDefine(defineName,
 									defineIntValue, specfile, null);
+					} else {
+						errorHandler.handleError(new SpecfileParseException(defineName+
+								Messages.getString("SpecfileParser.14"), //$NON-NLS-1$
+								lineNumber, 0, lineText.length(),
+								IMarker.SEVERITY_ERROR));
 					}
 				}
 			}
@@ -577,11 +582,13 @@ public class SpecfileParser {
 		if (parts.length == 2) {
 			directDefinition = new SpecfileTag(parts[0], parts[1].trim(),
 					specfile, activePackage);
+			directDefinition.setLineNumber(lineNumber);
 		} else {
-			directDefinition = new SpecfileTag(parts[0], "", //$NON-NLS-1$
-					specfile, activePackage);
+			errorHandler.handleError(new SpecfileParseException(parts[0]
+					+ Messages.getString("SpecfileParser.14"), lineNumber, //$NON-NLS-1$
+					0, lineText.length(), IMarker.SEVERITY_ERROR));
+			directDefinition = null;
 		}
-		directDefinition.setLineNumber(lineNumber);
 		return directDefinition;
 	}
 
