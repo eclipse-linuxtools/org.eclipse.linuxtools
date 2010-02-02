@@ -1,3 +1,7 @@
+2010-02-02  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java: Fix binary argument handling.
+
 2010-02-01  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Remove unused externalized string.
