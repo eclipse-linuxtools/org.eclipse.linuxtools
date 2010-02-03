@@ -1,3 +1,7 @@
+2010-02-03  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.xml: Add "(Incubation)" and Provider.
+
 2009-12-09  Alexander Kurakov  <akurtakov@redhat.com>
 
 	* src/org/eclipse/linuxtools/man/preferences/ManPathPage.java: New file.
