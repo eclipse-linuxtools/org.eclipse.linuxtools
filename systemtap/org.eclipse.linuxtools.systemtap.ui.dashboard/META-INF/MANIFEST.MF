@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SystemTap Dashboard(Incubation)
+Bundle-Name: SystemTap Dashboard (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.dashboard; singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin
