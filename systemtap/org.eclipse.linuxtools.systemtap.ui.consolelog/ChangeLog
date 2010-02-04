@@ -1,3 +1,7 @@
+2010-02-04  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* META-INF/MANIFEST.MF: removed version dependency for org.eclipse.ui bundle
+
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/LoggedCommand2.java: New file.
