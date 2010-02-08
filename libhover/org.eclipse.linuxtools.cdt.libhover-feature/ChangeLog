@@ -1,3 +1,7 @@
+2010-02-08  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Capitalize "library" in featureName.
+
 2009-11-10  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Make featureName a bit more user-friendly.
