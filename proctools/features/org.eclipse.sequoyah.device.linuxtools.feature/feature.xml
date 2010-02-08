@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.sequoyah.device.linuxtools.feature"
       label="%featureName"
-      version="0.1.0.qualifier"
+      version="0.5.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.sequoyah.device.linuxtools">
 
@@ -19,8 +19,8 @@
    </license>
 
    <url>
-      <update label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3/"/>
-      <discovery label="%tmlUpdateSiteName" url="http://download.eclipse.org/dsdp/tml/updates/0.3/"/>
+      <update label="%sequoyahUpdateSiteName" url="http://download.eclipse.org/sequoyah/updates/0.5/"/>
+      <discovery label="%sequoyahUpdateSiteName" url="http://download.eclipse.org/sequoyah/updates/0.5/"/>
    </url>
 
    <plugin
