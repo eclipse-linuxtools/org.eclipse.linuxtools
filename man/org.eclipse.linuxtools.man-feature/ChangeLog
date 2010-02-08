@@ -1,3 +1,7 @@
+2010-02-08  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Update featureName.
+
 2010-01-15  Alexander Kurakov  <akurtakov@redhat.com>
 
 	* epl-v10.html: New file.
