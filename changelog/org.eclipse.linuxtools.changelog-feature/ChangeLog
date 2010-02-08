@@ -1,3 +1,7 @@
+2010-02-08  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Capitalize words in featureName.
+
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Variable-ize some strings.
