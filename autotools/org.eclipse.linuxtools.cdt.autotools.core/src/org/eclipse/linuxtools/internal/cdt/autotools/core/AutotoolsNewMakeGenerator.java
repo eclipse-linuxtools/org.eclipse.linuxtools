@@ -14,6 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,6 +51,7 @@ import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
 import org.eclipse.cdt.managedbuilder.macros.BuildMacroException;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.newmake.core.IMakeCommonBuildInfo;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -1173,8 +1176,29 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		valueList.toArray(makeTargetArray);
 		MakeTargetComparator compareMakeTargets = new MakeTargetComparator();
 		Arrays.sort(makeTargetArray, compareMakeTargets);
-		
-		saveTargets(makeTargetArray);
+
+		// Check if we have MakeTargetManager patch which adds the ability
+		// to save multiple targets at once.  If yes, use it as it updates
+		// the MakeTargets now.  Otherwise, fall back to old method which
+		// saves the targets externally..requiring closing the project and
+		// reopening to see them.
+		Class<? extends IMakeTargetManager> c = makeTargetManager.getClass();
+		boolean targetsAdded = false;
+		try {
+			Method m = c.getMethod("setTargets", IContainer.class, IMakeTarget[].class);
+			m.invoke(makeTargetManager, project, makeTargetArray);
+			targetsAdded = true;
+		} catch (NoSuchMethodException e) {
+			// ignore and use fail-safe saveTargets method
+		} catch (IllegalArgumentException e) {
+			// ignore and use fail-safe saveTargets method
+		} catch (IllegalAccessException e) {
+			// ignore and use fail-safe saveTargets method
+		} catch (InvocationTargetException e) {
+			// ignore and use fail-safe saveTargets method
+		}
+		if (!targetsAdded)
+			saveTargets(makeTargetArray);
 	}
 
 	private boolean isValidTarget(String targetName, IMakeTargetManager makeTargetManager) {

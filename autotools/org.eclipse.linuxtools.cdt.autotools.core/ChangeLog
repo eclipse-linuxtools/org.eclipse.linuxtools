@@ -1,3 +1,9 @@
+2010-02-09  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (addMakeTargetsToManager): Add
+	code to use reflection to look for new MakeTargetManager setTargets method which will set the entire list
+	of MakeTargets at one time. 
+
 2009-12-01  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #296616
