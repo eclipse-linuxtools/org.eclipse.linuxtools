@@ -56,14 +56,16 @@ public class ScriptConsole extends MessageConsole {
 				StopScriptAction ssa = new StopScriptAction();
 				ssa.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				for(int i=0; i<ic.length; i++) {
-					activeConsole = (ScriptConsole)ic[i];
-					if(activeConsole.getName().endsWith(name)) {
-						//Stop any script currently running
-						ssa.run(i);
-						//Remove output from last run
-						activeConsole.clearConsole();
-						activeConsole.setName(name);
-						console = activeConsole;
+					if (ic[i] instanceof ScriptConsole){
+						activeConsole = (ScriptConsole)ic[i];
+						if(activeConsole.getName().endsWith(name)) {
+							//Stop any script currently running
+							ssa.run(i);
+							//Remove output from last run
+							activeConsole.clearConsole();
+							activeConsole.setName(name);
+							console = activeConsole;
+						}
 					}
 				}
 			}
@@ -89,15 +91,17 @@ public class ScriptConsole extends MessageConsole {
 				StopScriptAction ssa = new StopScriptAction();
 				ssa.init(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				for(int i=0; i<ic.length; i++) {
-					activeConsole = (ScriptConsole)ic[i];
-					if(activeConsole.getName().endsWith(name)) {
-						//Stop any script currently running
-						ssa.run(i);
-			
-						//Remove output from last run
-						activeConsole.clearConsole();
-						activeConsole.setName(name);
-						console = activeConsole;
+					if (ic[i] instanceof ScriptConsole) {
+						activeConsole = (ScriptConsole)ic[i];
+						if(activeConsole.getName().endsWith(name)) {
+							//Stop any script currently running
+							ssa.run(i);
+				
+							//Remove output from last run
+							activeConsole.clearConsole();
+							activeConsole.setName(name);
+							console = activeConsole;
+						}
 					}
 				}
 			}

@@ -49,11 +49,12 @@ public class StopScriptAction extends ConsoleAction {
 	 */
 	public void run(int i) {
 		IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
-		ScriptConsole console = (ScriptConsole)ic[i];
-
-		if(console.isRunning())
-			console.stop();
-	
+		if (ic[i] instanceof ScriptConsole){
+			ScriptConsole console = (ScriptConsole)ic[i];
+			
+			if(console.isRunning())
+				console.stop();
+		}
 	}
 
 	/**
@@ -64,9 +65,11 @@ public class StopScriptAction extends ConsoleAction {
 		ScriptConsole console;
 		
 		for(int i=0; i<ic.length; i++) {
-			console = (ScriptConsole)ic[i];
-			if(console.isRunning())
-				console.stop();
+			if (ic[i] instanceof ScriptConsole){
+				console = (ScriptConsole)ic[i];
+				if(console.isRunning())
+					console.stop();
+			}
 		}
 	}
 	
@@ -79,9 +82,11 @@ public class StopScriptAction extends ConsoleAction {
 		ScriptConsole console;
 		
 		for(int i=0; i<ic.length; i++) {
-			console = (ScriptConsole)ic[i];
-			if(console.isRunning())
-				return true;
+			if (ic[i] instanceof ScriptConsole){
+				console = (ScriptConsole)ic[i];
+				if(console.isRunning())
+					return true;
+			}
 		}
 		return false;
 	}
