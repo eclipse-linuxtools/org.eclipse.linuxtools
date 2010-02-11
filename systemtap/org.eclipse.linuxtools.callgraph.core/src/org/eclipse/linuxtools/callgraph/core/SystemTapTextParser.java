@@ -44,9 +44,11 @@ public class SystemTapTextParser extends SystemTapParser{
 			while ((line = buff.readLine()) != null) {
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
-				text.append(line);
+				text.append(line + "\n");
 			}
 			setData(text.toString());
+			if (text.length() > 0)
+				System.out.println(text.toString());
 			view.update();
 		} catch (IOException e) {
 			e.printStackTrace();
