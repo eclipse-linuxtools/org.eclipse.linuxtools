@@ -1,3 +1,7 @@
+2010-02-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Call makeView earlier so SystemTapTextView will stop breaking.
+
 2010-02-02  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java: Fix binary argument handling.
