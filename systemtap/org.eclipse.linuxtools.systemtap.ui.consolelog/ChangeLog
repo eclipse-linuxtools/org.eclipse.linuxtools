@@ -1,5 +1,6 @@
 2010-02-11  Roland Grunberg  <rgrunber@redhat.com>
 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/ConsoleAction.java: Fix for BZ #293207
 	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/StopScriptAction.java: Fix for BZ #293207
 	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/ScriptConsole.java: Fix for BZ #293207
 	

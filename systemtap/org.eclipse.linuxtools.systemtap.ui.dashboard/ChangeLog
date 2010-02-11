@@ -1,3 +1,8 @@
+2010-02-11  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/DashboardCloseMonitor.java:
+		Fix NPE by proceeding only when the view exists.
+
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/ImportModuleLocationAction.java:

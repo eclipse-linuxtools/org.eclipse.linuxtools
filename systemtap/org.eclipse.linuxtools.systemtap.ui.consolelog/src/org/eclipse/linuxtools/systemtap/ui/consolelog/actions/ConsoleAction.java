@@ -21,6 +21,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.internal.console.ConsoleView;
 
@@ -50,7 +51,12 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 	 */
 	protected ScriptConsole getActive() {
 		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
-		return (ScriptConsole)((ConsoleView)ivp).getConsole();
+		IConsole activeConsole = ((ConsoleView)ivp).getConsole();
+		if (activeConsole instanceof ScriptConsole){
+			return (ScriptConsole)activeConsole;
+		}else{
+			return null;
+		}
 	}
 	
 	/**
@@ -76,8 +82,12 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 	 * Checks to see if the active console is still running
 	 */
 	private boolean isRunning(ConsoleView cv) {
-		ScriptConsole console = (ScriptConsole)cv.getConsole();
-		return (console != null && console.isRunning());
+		if (cv.getConsole() instanceof ScriptConsole){
+			ScriptConsole console = (ScriptConsole)cv.getConsole();
+			return (console != null && console.isRunning());
+		}else{
+			return false;
+		}
 	}
 	
 	/**
