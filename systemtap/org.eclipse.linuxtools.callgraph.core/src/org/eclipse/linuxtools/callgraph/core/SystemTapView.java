@@ -50,6 +50,7 @@ public abstract class SystemTapView extends ViewPart {
     protected Action open_default;
     protected String sourcePath;
     protected IMenuManager file;
+    private SystemTapParser parser;
 
 
     /**
@@ -140,7 +141,9 @@ public abstract class SystemTapView extends ViewPart {
      *
      * @return
      */
-    public abstract SystemTapParser getParser();
+    public SystemTapParser getParser() {
+    	return parser;
+    }
 
     /**
      * Method for setting the parser object of the view. Make this method return
@@ -150,7 +153,12 @@ public abstract class SystemTapView extends ViewPart {
      * @param parser
      * @return
      */
-    public abstract boolean setParser(SystemTapParser parser);
+    public boolean setParser(SystemTapParser parser) {
+    	this.parser = parser;
+    	if (this.parser == null)
+    		return false;
+    	return true;
+    }
 
     /**
      * Perform whatever actions are necessary to 'update' this viewer. It is

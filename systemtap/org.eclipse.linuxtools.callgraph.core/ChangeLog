@@ -1,3 +1,8 @@
+2010-02-12  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Create default implementations of getParser and setParser using a private SystemTapParser variable.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextView.java: Get rid of getParser and setParser functions.
+
 2010-02-11  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextParser.java: Properly grab new lines in text parser.
