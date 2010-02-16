@@ -123,6 +123,7 @@ feature@org.eclipse.linuxtools.tmf.tests=SVN,trunk,svn://dev.eclipse.org/svnroot
 
 !*** lttng
 plugin@org.eclipse.linuxtools.lttng=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng
+plugin@org.eclipse.linuxtools.lttng.jni=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.jni
 plugin@org.eclipse.linuxtools.lttng.help=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.help
 plugin@org.eclipse.linuxtools.lttng.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.tests
 plugin@org.eclipse.linuxtools.lttng.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.ui
