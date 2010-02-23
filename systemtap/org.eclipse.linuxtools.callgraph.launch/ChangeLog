@@ -1,3 +1,7 @@
+2010-02-23  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph.java: Add tid to marker functions
+
 2009-12-22  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Only display error popup if there is something to say -- use isErrorRecognized instead of message length.
