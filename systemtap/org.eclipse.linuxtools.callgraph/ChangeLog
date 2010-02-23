@@ -1,3 +1,7 @@
+2010-02-23  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Fix markers to work with threads
+
 2010-02-01  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/graphlisteners/StapGraphMouseListener.java: ctrl+double-click go to actual function instead of its parent. Very confusing otherwise.

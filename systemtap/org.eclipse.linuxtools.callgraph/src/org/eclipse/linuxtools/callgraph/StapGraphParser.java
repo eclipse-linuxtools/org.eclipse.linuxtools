@@ -41,7 +41,6 @@ public class StapGraphParser extends SystemTapParser {
 	
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
-//	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
 	public  HashMap<Integer, HashMap<Integer, ArrayList<Integer>>> neighbourMaps;
 	public  HashMap<String, Long> aggregateTimeMap;
 	public  HashMap<String, Integer> countMap;
@@ -51,7 +50,6 @@ public class StapGraphParser extends SystemTapParser {
 	public int validator;
 	public Long endingTimeInNS;
 	public long totalTime;
-//	public int lastFunctionCalled;
 	public  HashMap<Integer, Integer> lastFunctionMap;
 	public ICProject project;
 	private static final String DELIM = ",,"; //$NON-NLS-1$
@@ -59,8 +57,6 @@ public class StapGraphParser extends SystemTapParser {
 	private boolean encounteredMain = false;
 	private ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
 	
-//	private ArrayList<String> nameList = new ArrayList<String>();
-//	private ArrayList<Integer> idList = new ArrayList<Integer>();
 	private  HashMap<Integer, ArrayList<String>> nameMaps;
 	private  HashMap<Integer, ArrayList<Integer>> idMaps;
 	private boolean skippedDirectives = false; 			
@@ -184,16 +180,18 @@ public class StapGraphParser extends SystemTapParser {
 		/*
 		 * Append message
 		 */
-		for (int key : idMaps.keySet()) {
-			ArrayList<Integer> idList = idMaps.get(key);
-			if (msg.length() < 1 || idList.size() < 1)
-				continue;
-			int id = idList.get(idList.size() -1);
-			if (msg.equals("<unknown>")) { //$NON-NLS-1$
-				msg = msg + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
-			}
-			markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + msg); //$NON-NLS-1$
-			}
+		String[] parsed = msg.split(",,", 2);
+		
+		int key = Integer.parseInt(parsed[0]);
+		
+		ArrayList<Integer> idList = idMaps.get(key);
+		if (idList == null || msg.length() < 1 || idList.size() < 1)
+			return;
+		int id = idList.get(idList.size() -1);
+		if (parsed[1].equals("<unknown>")) { //$NON-NLS-1$
+			parsed[1] = parsed[1] + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
+		}
+		markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + parsed[1]); //$NON-NLS-1$
 	}
 	
 	private IStatus parse(String s) {
