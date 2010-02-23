@@ -259,7 +259,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
-				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
+				if ((monitor != null && monitor.isCanceled()) || parser.isDone()) {
 					parser.cancelJob();
 					process.terminate();
 					return;
