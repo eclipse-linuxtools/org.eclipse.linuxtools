@@ -1,6 +1,7 @@
 2010-02-23  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Add a Thread.sleep() to stop abusing CPU cycles so much
+	Get rid of extraneous parsing job as a further optimization
 
 2010-02-12  Charley Wang  <chwang@redhat.com>
 
