@@ -1,7 +1,6 @@
 global serial
 global startTime
 global finalTime
-global currentDepth
 
 
 function callFunction(probefunc, tid) {
@@ -10,14 +9,12 @@ function callFunction(probefunc, tid) {
 		printf("<%s,,%d,,%d,,%d\n", probefunc, serial, startTime, tid)
 	} else
 	    printf("<%s,,%d,,%d,,%d\n", probefunc, serial, gettimeofday_ns(), tid)
-	currentDepth++
 	serial++
 }
 
 function returnFunction(probefunc, tid) {
 	finalTime = gettimeofday_ns()
 	printf(">%s,,%d,,%d\n", probefunc, finalTime, tid)
-	currentDepth--
 }
 
 
