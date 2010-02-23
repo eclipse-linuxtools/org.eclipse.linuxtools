@@ -1,3 +1,15 @@
+2010-02-23  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #303616
+	* src/org/eclipse/inuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (getAutogenArgs):
+	Add additional parameter of arguments found in the command itself. 
+	(getConfigArgs): Ditto. 
+	(getAutogenPath): Fix to split out additional arguments specified with the command.
+	(getConfigurePath): Ditto. 
+	(runScript): Fix to resolve build macros for arguments.
+	(runCommand): Ditto. 
+	(regenerateMakefiles): Fix references to functions above to pass additional parms.
+
 2010-02-09  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (addMakeTargetsToManager): Add

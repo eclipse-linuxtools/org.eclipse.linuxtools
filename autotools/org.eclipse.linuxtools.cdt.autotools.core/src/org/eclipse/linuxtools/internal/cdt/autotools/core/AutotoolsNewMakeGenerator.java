@@ -362,7 +362,6 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			File topConfigStatus = topConfigFile.toFile();
 			File makefile = makefilePath.toFile();
 			File topMakefile = topMakefilePath.toFile();
-			String[] configArgs = getConfigArgs();
 
 			// Check if a configure has been done in the top-level source directory
 			if (!(configfile.equals(topConfigFile)) && topConfigStatus.exists()) {
@@ -455,9 +454,12 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			}
 			
 			ArrayList<String> configureEnvs = new ArrayList<String>();
-			IPath configurePath = getConfigurePath(configureEnvs);
+			ArrayList<String> configureCmdParms = new ArrayList<String>();
+			IPath configurePath = getConfigurePath(configureEnvs, configureCmdParms);
+			String[] configArgs = getConfigArgs(configureCmdParms);
 			ArrayList<String> autogenEnvs = new ArrayList<String>();
-			IPath autogenPath = getAutogenPath(autogenEnvs);
+			ArrayList<String> autogenCmdParms = new ArrayList<String>();
+			IPath autogenPath = getAutogenPath(autogenEnvs, autogenCmdParms);
 			
 			// Check if we have a config.status (meaning configure has already run).
     		if (!needFullConfigure && configStatus != null && configStatus.exists()) {
@@ -495,7 +497,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 				if (configStatus.exists())
 					configStatus.delete();
 				// Get any user-specified arguments for autogen.
-				String[] autogenArgs = getAutogenArgs();
+				String[] autogenArgs = getAutogenArgs(autogenCmdParms);
 				rc = runScript(autogenPath,
 						autogenPath.removeLastSegments(1), autogenArgs,
 						AutotoolsPlugin.getFormattedString("MakeGenerator.autogen.sh", new String[]{buildDir}), //$NON-NLS-1$
@@ -630,13 +632,19 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		return command;
 	}
 	
-	protected IPath getConfigurePath(ArrayList<String> envVars) {
+	protected IPath getConfigurePath(ArrayList<String> envVars, ArrayList<String> cmdParms) {
 		IPath configPath;
 		IConfigureOption configOption = toolsCfg.getOption(CONFIGURE_TOOL_ID);
 		String command = "configure"; // $NON-NLS-1$
 		if (configOption != null)
 			command = stripEnvVars(configOption.getValue().trim(), envVars);
 			
+		String[] tokens = command.split("\\s");
+		if (tokens.length > 1) {
+			command = tokens[0];
+			for (int i = 1; i < tokens.length; ++i)
+				cmdParms.add(tokens[i]);
+		}
 		if (srcDir.equals(""))
 			configPath = project.getLocation().append(command);
 		else
@@ -659,12 +667,19 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		return makefileCVSPath.toFile().exists();
 	}
 
-	protected IPath getAutogenPath(ArrayList<String> envVars) {
+	protected IPath getAutogenPath(ArrayList<String> envVars, ArrayList<String> cmdParms) {
 		IPath autogenPath;
 		IConfigureOption autogenOption = toolsCfg.getOption(AUTOGEN_TOOL_ID);
 		String command = "autogen.sh"; // $NON-NLS-1$
 		if (autogenOption != null)
 			command = stripEnvVars(autogenOption.getValue().trim(), envVars);
+
+		String[] tokens = command.split("\\w");
+		if (tokens.length > 1) {
+			command = tokens[0];
+			for (int i = 1; i < tokens.length; ++i)
+				cmdParms.add(tokens[i]);
+		}
 			
 		if (srcDir.equals(""))
 			autogenPath = project.getLocation().append(command);
@@ -673,16 +688,18 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		return autogenPath;
 	}
 	
-	private String[] getAutogenArgs() throws BuildException {
+	private String[] getAutogenArgs(ArrayList<String> cmdParms) {
 		// Get the arguments to be passed to config from build model
 		ArrayList<String> autogenArgs = toolsCfg.getToolArgs(AUTOGEN_TOOL_ID);
-		return autogenArgs.toArray(new String[autogenArgs.size()]);
+		cmdParms.addAll(autogenArgs);
+		return cmdParms.toArray(new String[cmdParms.size()]);
 	}
 
-	private String[] getConfigArgs() throws BuildException {
+	private String[] getConfigArgs(ArrayList<String> cmdParms) {
 		// Get the arguments to be passed to config from build model
 		ArrayList<String> configArgs = toolsCfg.getToolArgs(CONFIGURE_TOOL_ID);
-		return configArgs.toArray(new String[configArgs.size()]);
+		cmdParms.addAll(configArgs);
+		return cmdParms.toArray(new String[cmdParms.size()]);
 	}
 
 	// Run a command or executable (e.g. make).
@@ -690,20 +707,6 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			String jobDescription, String errMsg, IConsole console, 
 			boolean consoleStart) throws BuildException, CoreException,
 			NullPointerException, IOException {
-		// TODO: Figure out what this next stuff is used for
-		// //try to resolve the build macros in the builder command
-		// try{
-		// String resolved =
-		// ManagedBuildManager.getBuildMacroProvider().resolveValueToMakefileFormat(
-		// configCmd,
-		// "", //$NON-NLS-1$
-		// " ", //$NON-NLS-1$
-		// IBuildMacroProvider.CONTEXT_CONFIGURATION,
-		// info.getDefaultConfiguration());
-		// if((resolved = resolved.trim()).length() > 0)
-		// configCmd = resolved;
-		// } catch (BuildMacroException e){
-		// }
 
 		int rc = IStatus.OK;
 		
@@ -712,6 +715,22 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		String[] configTargets = args;
 		if (args == null)
 			configTargets = new String[0];
+		
+		for (int i = 0; i < configTargets.length; ++i) {
+			// try to resolve the build macros in any argument
+			try{
+				String resolved =
+					ManagedBuildManager.getBuildMacroProvider().resolveValueToMakefileFormat(
+							configTargets[i],
+							"", //$NON-NLS-1$
+							" ", //$NON-NLS-1$
+							IBuildMacroProvider.CONTEXT_CONFIGURATION,
+							cfg);
+				if((resolved = resolved.trim()).length() > 0)
+					configTargets[i] = resolved;
+			} catch (BuildMacroException e) {
+			}
+		}
 	
 		String[] msgs = new String[2];
 		msgs[0] = commandPath.toString();
@@ -898,6 +917,22 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			System.arraycopy(args, 0, configTargets, 1, args.length);
 		}
         configTargets[0] = getPathString(commandPath);
+
+        for (int i = 0; i < configTargets.length; ++i) {
+			// try to resolve the build macros in any argument
+			try{
+				String resolved =
+					ManagedBuildManager.getBuildMacroProvider().resolveValueToMakefileFormat(
+							configTargets[i],
+							"", //$NON-NLS-1$
+							" ", //$NON-NLS-1$
+							IBuildMacroProvider.CONTEXT_CONFIGURATION,
+							cfg);
+				if((resolved = resolved.trim()).length() > 0)
+					configTargets[i] = resolved;
+			} catch (BuildMacroException e) {
+			}
+		}
 		
 		String[] msgs = new String[2];
 		msgs[0] = commandPath.toString();
