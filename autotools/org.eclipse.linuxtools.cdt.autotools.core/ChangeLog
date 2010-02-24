@@ -1,3 +1,9 @@
+2010-02-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #303613
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/ConfigureMessages.properties: Fix tooltip
+	for config tool directory.
+
 2010-02-23  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #303616
