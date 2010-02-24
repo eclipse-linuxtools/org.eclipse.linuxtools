@@ -1,3 +1,9 @@
+2010-02-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #303613
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/Resources.properties: Fix message
+	issued for autoreconf.
+
 2009-12-01  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #296616
