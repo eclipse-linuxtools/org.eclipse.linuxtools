@@ -1,3 +1,11 @@
+2010-02-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #303616
+	* src/org/eclipse/linuxtools/cdt/autotools/MakeGenerator.java (getAutogenArgs): Fall
+	back to default value for uninitialized environment variable. 
+	(getConfigArgs): Ditto.
+	(initializeBuildConfigDirs): Ditto. 
+
 2009-12-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #297260

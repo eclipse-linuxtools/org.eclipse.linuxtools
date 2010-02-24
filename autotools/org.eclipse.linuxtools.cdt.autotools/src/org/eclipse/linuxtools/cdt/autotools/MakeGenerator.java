@@ -130,10 +130,9 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 			if (id.indexOf("builddir") > 0) { //$NON-NLS-1$
 				buildDir = (String) options[i].getValue();
 				try {
-					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(buildDir, "", null, 
+					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(buildDir, "build", null, 
 							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
-					if (resolved != null && (resolved = resolved.trim()).length() > 0)
-						buildDir = resolved;
+					buildDir = resolved;
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
@@ -148,8 +147,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				try {
 					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(srcDir, "", null, 
 							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
-					if (resolved != null && (resolved = resolved.trim()).length() > 0)
-						srcDir = resolved;
+					srcDir = resolved;
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
@@ -737,8 +735,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				try {
 					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(value, "", null, 
 							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
-					if(resolved != null && (resolved = resolved.trim()).length() > 0)
-						value = resolved;
+					value = resolved;
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
@@ -779,8 +776,7 @@ public class MakeGenerator extends MarkerGenerator implements IManagedBuilderMak
 				try {
 					String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(value, "", null, 
 							IBuildMacroProvider.CONTEXT_CONFIGURATION, cfg);
-					if(resolved != null && (resolved = resolved.trim()).length() > 0)
-						value = resolved;
+					value = resolved;
 				} catch (BuildMacroException e) {
 					// do nothing
 				}
