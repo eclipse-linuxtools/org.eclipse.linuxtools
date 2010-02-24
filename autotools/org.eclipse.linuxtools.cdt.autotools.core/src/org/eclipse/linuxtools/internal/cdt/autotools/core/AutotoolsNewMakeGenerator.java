@@ -139,8 +139,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		try {
 			String resolved = ManagedBuildManager.getBuildMacroProvider().resolveValue(srcDir, "", null, 
 					IBuildMacroProvider.CONTEXT_CONFIGURATION, c);
-			if (resolved != null && (resolved = resolved.trim()).length() > 0)
-				srcDir = resolved;
+			srcDir = resolved;
 		} catch (BuildMacroException e) {
 			// do nothing
 		}
@@ -726,8 +725,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 							" ", //$NON-NLS-1$
 							IBuildMacroProvider.CONTEXT_CONFIGURATION,
 							cfg);
-				if((resolved = resolved.trim()).length() > 0)
-					configTargets[i] = resolved;
+				configTargets[i] = resolved;
 			} catch (BuildMacroException e) {
 			}
 		}
@@ -887,20 +885,6 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			ArrayList<String> additionalEnvs, 
 			boolean consoleStart) throws BuildException, CoreException,
 			NullPointerException, IOException {
-		// TODO: Figure out what this next stuff is used for
-		// //try to resolve the build macros in the builder command
-		// try{
-		// String resolved =
-		// ManagedBuildManager.getBuildMacroProvider().resolveValueToMakefileFormat(
-		// configCmd,
-		// "", //$NON-NLS-1$
-		// " ", //$NON-NLS-1$
-		// IBuildMacroProvider.CONTEXT_CONFIGURATION,
-		// info.getDefaultConfiguration());
-		// if((resolved = resolved.trim()).length() > 0)
-		// configCmd = resolved;
-		// } catch (BuildMacroException e){
-		// }
 
 		int rc = IStatus.OK;
 		
@@ -928,8 +912,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 							" ", //$NON-NLS-1$
 							IBuildMacroProvider.CONTEXT_CONFIGURATION,
 							cfg);
-				if((resolved = resolved.trim()).length() > 0)
-					configTargets[i] = resolved;
+				configTargets[i] = resolved;
 			} catch (BuildMacroException e) {
 			}
 		}
