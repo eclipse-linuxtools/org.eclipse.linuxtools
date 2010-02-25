@@ -1,3 +1,11 @@
+2010-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+    Add ability to download sources if they are hyperlinks.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileDownloadHyperlink.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/Messages.java: Add more messages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Add download hyperlink.
+	(SourcesFileHyperlinkDetector): Format.
+
 2010-02-01  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseDirectDefinition): Show error when missing value.

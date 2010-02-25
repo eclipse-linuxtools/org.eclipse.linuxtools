@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2010 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 /**
  * Detects values for Patch and Source definitions.
- *
+ * 
  */
 public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 
@@ -35,7 +35,8 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	/**
 	 * Creates the detector.
 	 * 
-	 * @param editor Reference to the specfile editor.
+	 * @param editor
+	 *            Reference to the specfile editor.
 	 */
 	public SourcesFileHyperlinkDetector(SpecfileEditor editor) {
 		super();
@@ -43,7 +44,8 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	}
 
 	/**
-	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion, boolean)
+	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
+	 *      org.eclipse.jface.text.IRegion, boolean)
 	 */
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion region, boolean canShowMultipleHyperlinks) {
@@ -71,16 +73,19 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 					.getFile();
 			if (line.startsWith(SOURCE_IDENTIFIER)
 					|| line.startsWith(PATCH_IDENTIFIER)) {
-				int delimiterIndex = line.indexOf(':') + 1; 
+				int delimiterIndex = line.indexOf(':') + 1;
 				String fileName = line.substring(delimiterIndex).trim();
 				if (region.getOffset() > lineInfo.getOffset()
 						+ line.indexOf(fileName)) {
 					IRegion fileNameRegion = new Region(lineInfo.getOffset()
 							+ line.indexOf(fileName), fileName.length());
-					return new IHyperlink[] { new SourcesFileHyperlink(
-							original, UiUtils.resolveDefines(
-									editor.getSpecfile(), fileName),
-							fileNameRegion) };
+					return new IHyperlink[] {
+							new SourcesFileHyperlink(original, UiUtils
+									.resolveDefines(editor.getSpecfile(),
+											fileName), fileNameRegion),
+							new SourcesFileDownloadHyperlink(original, UiUtils
+									.resolveDefines(editor.getSpecfile(),
+											fileName), fileNameRegion) };
 				}
 			}
 		}
