@@ -1,3 +1,8 @@
+2010-02-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsConfigurePropertyPage.java (cloneCfg): If
+	clonee is null, assign new configuration to clonee variable to avoid NPE.
+
 2010-02-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #303613

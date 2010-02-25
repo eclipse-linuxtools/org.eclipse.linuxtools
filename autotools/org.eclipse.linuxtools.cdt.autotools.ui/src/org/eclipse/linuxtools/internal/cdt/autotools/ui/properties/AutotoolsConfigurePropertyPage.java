@@ -49,7 +49,7 @@ public class AutotoolsConfigurePropertyPage extends AbstractPage implements ICon
 		// Find config to clone or create it if we haven't seen it before
 		IAConfiguration clonee = cfgs.get(cloneName);
 		if (clonee == null) {
-			AutotoolsConfigurationManager.getInstance().getConfiguration(getProject(), cloneName, false);
+			clonee = AutotoolsConfigurationManager.getInstance().getConfiguration(getProject(), cloneName, false);
 		}
 		String newName = c.getName();
 		IAConfiguration newCfg = clonee.copy(newName);
