@@ -1,3 +1,11 @@
+2010-02-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (getAutogenPath): Fix typo
+	so we split tokens on white-space, not non-white-space. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfigurationManager.java (saveConfigs): 
+	Since we base ourselves on hashing by name, do not save multiple configurations with same name. 
+	(getConfigs): Do not load multiple configurations with same name, just the first.
+
 2010-02-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #303616

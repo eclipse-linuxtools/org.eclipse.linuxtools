@@ -16,8 +16,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
+import org.eclipse.linuxtools.internal.cdt.autotools.core.configure.AutotoolsConfiguration.Option;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -179,13 +180,14 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 				if (dirFile.exists()) {
 					Document d = db.parse(dirFile);
 					Element e = d.getDocumentElement();
+					Set<String> nameSet = new HashSet<String>();
 					// Figure out the name of the active configuration.
 					NodeList cfgs = e.getElementsByTagName("configuration"); // $NON-NLS-1$
 					for (int x = 0; x < cfgs.getLength(); ++x) {
 						Node n = cfgs.item(x);
 						NamedNodeMap attrs = n.getAttributes();
 						Node name = attrs.getNamedItem("name"); // $NON-NLS-1$
-						if (name != null) {
+						if (name != null && !nameSet.contains(name)) {
 							String cfgName = name.getNodeValue();
 							IAConfiguration cfg = new AutotoolsConfiguration(cfgName);
 							NodeList l = n.getChildNodes();
@@ -241,15 +243,22 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 				ArrayList<IAConfiguration> cfgs = configs.get(projectName);
 				p.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
 				p.println("<configurations>"); // $NON-NLS-1$
+				Set<String> names = new HashSet<String>();
+				Option[] optionList = AutotoolsConfiguration.getOptionList();
 				for (int i = 0; i < cfgs.size(); ++i) {
 					IAConfiguration cfg = cfgs.get(i);
-					p.println("<configuration name=\"" + cfg.getName() + "\">"); //$NON-NLS-1$ //$NON-NLS-2$
-					Collection<IConfigureOption> values = cfg.getOptions().values(); 
-					for (Iterator<IConfigureOption> j = values.iterator(); j.hasNext();) {
-						IConfigureOption opt = j.next();
-						p.println("<option id=\"" + opt.getName() + "\" value=\"" + opt.getValue() + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
+					if (!names.contains(cfg.getName())) {
+						p.println("<configuration name=\"" + cfg.getName() + "\">"); //$NON-NLS-1$ //$NON-NLS-2$ 
+						for (int j = 0; j < optionList.length; ++j) {
+							Option option = optionList[j];
+							IConfigureOption opt = cfg.getOption(option.getName());
+							if (!opt.isCategory())
+								p.println("<option id=\"" + option.getName() + "\" value=\"" + opt.getValue() + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
+						}
+						p.println("</configuration>"); //$NON-NLS-1$
+					} else {
+						System.out.println("extra " + cfg.getName());
 					}
-					p.println("</configuration>"); //$NON-NLS-1$
 				}
 				p.println("</configurations>");
 				p.close();

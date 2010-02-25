@@ -673,7 +673,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		if (autogenOption != null)
 			command = stripEnvVars(autogenOption.getValue().trim(), envVars);
 
-		String[] tokens = command.split("\\w");
+		String[] tokens = command.split("\\s");
 		if (tokens.length > 1) {
 			command = tokens[0];
 			for (int i = 1; i < tokens.length; ++i)
