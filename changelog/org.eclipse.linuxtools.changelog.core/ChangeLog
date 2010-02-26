@@ -1,3 +1,25 @@
+2010-02-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #299974
+	* src/org/eclipse/linuxtools/changelog/core/actions/SourceEditorInput.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/actions/StorageEditorInput.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java (addLineRange): New
+	parameter that reveals whether patch is to local file or ancestor.
+	(getStorage): New method.
+	(setStorage): Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchRangeElement.java (equals): Modified
+	to compare local change field instead of patch field which is never used and has been
+	removed. 
+	(PatchRangeElement): Add new boolean which is set to true if patch is to local file.
+	Remove setting of patch text which is never used.
+	(isLocalChange): New method.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (guessFunctionNames): Add
+	support for finding function names for changes to ancestor file which will be backed only by storage
+	and not a local file.
+	(MyStorageDocumentProvider): New private class.
+	(getChangedLines): Add changes to ancestor file and save the storage we get back to later
+	guess function names.
+
 2010-01-27  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/ChangelogPreferenceInitializer.java: New file.

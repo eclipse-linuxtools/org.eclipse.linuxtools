@@ -20,23 +20,23 @@ public class PatchRangeElement {
 	
 	public int ffromLine;
 	public int ftoLine;
-	public String fpatch;
+	public boolean flocalChange;
 	
-	public PatchRangeElement(int from, int to, String txt) {
+	public PatchRangeElement(int from, int to, boolean localChange) {
 		ffromLine =from;
 		ftoLine= to;
-		fpatch = txt;
+		flocalChange = localChange;
 	}
 
-	public void appendTxt(String txt) {
-		fpatch += txt + "\n";
+	public boolean isLocalChange() {
+		return flocalChange;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PatchRangeElement) {
 			PatchRangeElement b = (PatchRangeElement)o;
-			return b.ffromLine == ffromLine && b.ftoLine == ftoLine && b.fpatch.equals(fpatch);
+			return b.ffromLine == ffromLine && b.ftoLine == ftoLine && b.flocalChange == flocalChange;
 		}
 		else
 			return this == o;

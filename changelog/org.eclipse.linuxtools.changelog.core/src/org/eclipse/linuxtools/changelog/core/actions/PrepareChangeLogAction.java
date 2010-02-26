@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.changelog.core.actions;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Vector;
@@ -58,7 +59,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
+import org.eclipse.ui.editors.text.StorageDocumentProvider;
 import org.eclipse.ui.part.FileEditorInput;
+
 
 
 /**
@@ -77,6 +80,14 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	 */
 	
 	private class MyDocumentProvider extends FileDocumentProvider {
+
+		@Override
+		public IDocument createDocument(Object element) throws CoreException {
+			return super.createDocument(element);
+		}
+	}
+
+	private class MyStorageDocumentProvider extends StorageDocumentProvider {
 
 		@Override
 		public IDocument createDocument(Object element) throws CoreException {
@@ -214,8 +225,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 					String osEncoding = file.getCharset();
 					IFileRevision ancestorState = localDiff.getBeforeState();
 					IStorage ancestorStorage;
-					if (ancestorState != null)
+					if (ancestorState != null) {
 						ancestorStorage = ancestorState.getStorage(monitor);
+						p.setStorage(ancestorStorage);
+					}
 					else 
 						ancestorStorage = null;
 
@@ -227,8 +240,15 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 						LineComparator right = new LineComparator(file.getContents(), osEncoding);
 						for (RangeDifference tmp: RangeDifferencer.findDifferences(left, right)) {
 							if (tmp.kind() == RangeDifference.CHANGE) {
+								// Right side of diff are all changes found in local file.
 								int rightLength = tmp.rightLength() > 0 ? tmp.rightLength() : tmp.rightLength() + 1;
-								p.addLineRange(tmp.rightStart() + 1, tmp.rightStart() + rightLength);
+								// We also want to store left side of the diff which are changes to the ancestor as it may contain
+								// functions/methods that have been removed.
+								int leftLength = tmp.leftLength() > 0 ? tmp.leftLength() : tmp.leftLength() + 1;
+								// Only store left side changes if the storage exists and we add one to the start line number
+								if (p.getStorage() != null)
+									p.addLineRange(tmp.leftStart(), tmp.leftStart() + leftLength, false);
+								p.addLineRange(tmp.rightStart(), tmp.rightStart() + rightLength, true);
 							}
 						}
 					} catch (UnsupportedEncodingException e) {
@@ -492,44 +512,50 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 				.getFileForLocation(
 						getWorkspaceRoot().getLocation().append(
 								patchFileInfo.getPath())));
+		
+		SourceEditorInput sei = new SourceEditorInput(patchFileInfo.getStorage());
 
 		MyDocumentProvider mdp = new MyDocumentProvider();
+		MyStorageDocumentProvider msdp = new MyStorageDocumentProvider();
 
 		try {
-			// get document for target file
+			// get document for target file (one for local file, one for repository storage)
 			IDocument doc = mdp.createDocument(fei);
+			IDocument olddoc = msdp.createDocument(sei);
 
 			HashMap<String, String> functionNamesMap = new HashMap<String, String>();
+			ArrayList<String> nameList = new ArrayList<String>();
 
 			// for all the ranges
 			for (PatchRangeElement tpre: patchFileInfo.getRanges()) {
 
-				// for all the lines in a range
-				for (int j = tpre.ffromLine; j <= tpre.ftoLine; j++) {
+					for (int j = tpre.ffromLine; j <= tpre.ftoLine; j++) {
 
-					if ((j <= 0) || (j >= doc.getNumberOfLines()))
-						continue; // ignore out of bound lines
+						if ((j < 0) || (j > doc.getNumberOfLines() - 1))
+							continue; // ignore out of bound lines
 
-					// add func that determines type of file.
-					// right now it assumes it's java file.
-					String functionGuess = parseCurrentFunctionAtOffset(
-							editorName, fei, doc.getLineOffset(j));
+						String functionGuess = "";
+						// add func that determines type of file.
+						// right now it assumes it's java file.
+						if (tpre.isLocalChange())
+							functionGuess = parseCurrentFunctionAtOffset(
+									editorName, fei, doc.getLineOffset(j));
+						else
+							functionGuess = parseCurrentFunctionAtOffset(
+									editorName, sei, olddoc.getLineOffset(j));
 
-					// putting it in hashmap will eliminate duplicate
-					// guesses.
-					functionNamesMap.put(functionGuess, functionGuess);
-
-				}
+						// putting it in hashmap will eliminate duplicate
+						// guesses.  We use a list to keep track of ordering which
+						// is helpful when trying to document a large set of changes.
+						if (functionNamesMap.get(functionGuess) == null)
+							nameList.add(functionGuess);
+						functionNamesMap.put(functionGuess, functionGuess);
+					}
 			}
 
-			// dump all unique func. guesses
-			fnames = new String[functionNamesMap.size()];
-
-			int i = 0;
-			for (String fnm: functionNamesMap.values()){
-				fnames[i++] = fnm;
-			}
-
+			// dump all unique func. guesses in the order found
+			fnames = new String[nameList.size()];
+			fnames = nameList.toArray(fnames);
 		
 		} catch (CoreException e) {
 			ChangelogPlugin.getDefault().getLog().log(

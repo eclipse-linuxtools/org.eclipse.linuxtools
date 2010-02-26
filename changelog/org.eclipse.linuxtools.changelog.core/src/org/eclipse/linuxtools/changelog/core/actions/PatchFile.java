@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.changelog.core.actions;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
@@ -26,6 +27,7 @@ import org.eclipse.core.runtime.Path;
 public class PatchFile {
 
 	private IPath fpath;
+	private IStorage storage;
 	private ArrayList<PatchRangeElement> pranges = new ArrayList<PatchRangeElement>();
 	
 	private boolean newfile = false;
@@ -56,10 +58,10 @@ public class PatchFile {
 	public PatchFile(IPath filePath) {
 		fpath = filePath;
 	}
+
+	public void addLineRange(int from, int to, boolean localChange) {
 	
-	public void addLineRange(int from, int to) {
-	
-		pranges.add(new PatchRangeElement(from, to, ""));
+		pranges.add(new PatchRangeElement(from, to, localChange));
 	}
 	
 	public PatchRangeElement[] getRanges() {
@@ -73,13 +75,16 @@ public class PatchFile {
 	}
 
 
-	public void appendTxtToLastRange(String txt) {
-		
-		(pranges.get(pranges.size()-1)).appendTxt(txt);
-	}
-	
 	public IPath getPath() {
 		return fpath;
+	}
+	
+	public IStorage getStorage() {
+		return storage;
+	}
+
+	public void setStorage(IStorage storage) {
+		this.storage = storage;
 	}
 	
 	public void setResource(IResource resource) {
