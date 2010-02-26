@@ -146,8 +146,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	public void initialize() {
 		name = ""; //$NON-NLS-1$
-		dirPath = ResourcesPlugin.getWorkspace().getRoot().getLocation()
-				.toString();
+		dirPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		binaryPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
 		arguments = LaunchConfigurationConstants.DEFAULT_ARGUMENTS;
 		outputPath = PluginConstants.getDefaultIOPath();
@@ -246,27 +245,18 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				e1.printStackTrace();
 			}
 
-			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,
-					scriptPath);
+			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,scriptPath);
 
 			if (!invalid(binaryPath))
-				wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,
-						binaryPath);
+				wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,binaryPath);
 
-			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,
-					outputPath);
+			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,outputPath);
 			wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS, arguments);
-			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT,
-					generatedScript);
-			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE,
-					needToGenerate);
+			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT,generatedScript);
+			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE,needToGenerate);
 			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
-			wc
-					.setAttribute(LaunchConfigurationConstants.USE_COLOUR,
-							useColours);
-			wc
-					.setAttribute(LaunchConfigurationConstants.PARSER_CLASS,
-							parserID);
+			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR,useColours);
+			wc.setAttribute(LaunchConfigurationConstants.PARSER_CLASS,parserID);
 			wc.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewID);
 			wc.setAttribute(LaunchConfigurationConstants.SECONDARY_VIEW_ID, setSecondaryViewID());
 
@@ -445,18 +435,10 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 								.generateUniqueLaunchConfigurationNameFrom(
 										name + " - " + bin.getElementName())); //$NON-NLS-1$
 
-				wc.setAttribute(
-						ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,
-						projectName);
-				wc.setAttribute(
-						ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin
-								.getCProject().getElementName());
-				wc.setMappedResources(new IResource[] { bin.getResource(),
-						bin.getResource().getProject() });
-				wc
-						.setAttribute(
-								ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
-								(String) null);
+				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,projectName);
+				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin.getCProject().getElementName());
+				wc.setMappedResources(new IResource[] { bin.getResource(),bin.getResource().getProject() });
+				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,(String) null);
 
 				setDefaultProfileAttributes(wc);
 
@@ -916,8 +898,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		return PluginConstants.DEFAULT_PARSER_ID; 
 	}
 
-
-
 	public String getScript() {
 		return generatedScript;
 	}
@@ -987,7 +967,6 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		
 		
 	}
-	
 	
 
 	/**
