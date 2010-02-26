@@ -10,16 +10,33 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.parsers;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.eclipse.cdt.core.dom.ICodeReaderFactory;
+import org.eclipse.cdt.core.dom.ast.IASTFunctionDeclarator;
+import org.eclipse.cdt.core.dom.ast.IASTFunctionDefinition;
+import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.cdt.core.dom.ast.IASTNodeSelector;
+import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
+import org.eclipse.cdt.core.dom.ast.gnu.cpp.GPPLanguage;
 import org.eclipse.cdt.core.model.ICElement;
+import org.eclipse.cdt.core.model.ILanguage;
 import org.eclipse.cdt.core.model.IWorkingCopy;
+import org.eclipse.cdt.core.parser.CodeReader;
+import org.eclipse.cdt.core.parser.IScannerInfo;
+import org.eclipse.cdt.core.parser.ParserUtil;
+import org.eclipse.cdt.core.parser.ScannerInfo;
 import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.cdt.ui.IWorkingCopyManager;
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 /**
@@ -32,7 +49,6 @@ public class CParser implements IParserChangeLogContrib {
 		super();
 	}
 
-
 	/**
 	 * @see IParserChangeLogContrib#parseCurrentFunction(IEditorInput, int)
 	 */
@@ -41,6 +57,7 @@ public class CParser implements IParserChangeLogContrib {
 
 		String currentElementName;
 
+		if (input instanceof IFileEditorInput) {
 		// Get the working copy and connect to input.		
 		IWorkingCopyManager manager = CUIPlugin.getDefault()
 				.getWorkingCopyManager();
@@ -109,6 +126,67 @@ public class CParser implements IParserChangeLogContrib {
 
 		}
 		return currentElementName;
+		}
+		else if (input instanceof IStorageEditorInput) {
+			// Get the working copy and connect to input.
+			// don't follow inclusions
+			currentElementName = "";
+			IStorageEditorInput sei = (IStorageEditorInput)input;
+			ICodeReaderFactory codeReaderFactory= NullCodeReaderFactory.getInstance();
+			
+			// empty scanner info
+			IScannerInfo scanInfo= new ScannerInfo();
+			IStorage ancestorStorage = sei.getStorage();
+			if (ancestorStorage == null)
+				return "";
+			InputStream stream = ancestorStorage.getContents();
+			byte buffer[] = new byte[100];
+			String data = new String("");
+			int read = 0;
+			try {
+				do {
+					read = stream.read(buffer);
+					if (read > 0) {
+						String tmp = new String(buffer, 0, read);
+						data = data.concat(tmp);
+					}
+				} while (read == 100);
+				stream.close();
+			} catch (IOException e) {
+				// do nothing
+			}
+			
+			CodeReader reader= new CodeReader(data.toCharArray());
+			
+			// determine the language
+			boolean isSource[]= {false};
+			ILanguage language= GPPLanguage.getDefault();
+			
+			try {
+				IASTTranslationUnit ast;
+				int options= isSource[0] ? ILanguage.OPTION_IS_SOURCE_UNIT : 0;
+				ast= language.getASTTranslationUnit(reader, scanInfo, codeReaderFactory, null, options, ParserUtil.getParserLogService());
+				IASTNodeSelector n = ast.getNodeSelector(null);
+				IASTNode node = n.findFirstContainedNode(offset, 100);
+				while (node != null && !(node instanceof IASTTranslationUnit)) {
+					if (node instanceof IASTFunctionDefinition) {
+						IASTFunctionDefinition fd = (IASTFunctionDefinition)node;
+						IASTFunctionDeclarator d = fd.getDeclarator();
+						currentElementName = new String(d.getName().getSimpleID());
+						break;
+					}
+					node = node.getParent();
+				}
+//				System.out.println(currentElementName);
+			} catch (CoreException exc) {
+				currentElementName = "";
+				CUIPlugin.log(exc);
+			}
+
+			return currentElementName;
+		}
+		
+		return "";
 	}
 
 	/**

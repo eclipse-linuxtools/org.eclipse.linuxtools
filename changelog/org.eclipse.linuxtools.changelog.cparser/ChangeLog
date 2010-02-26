@@ -1,3 +1,11 @@
+2010-02-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #299974
+	* src/org/eclipse/linuxtools/changelog/parsers/NullCodeReaderFactory.java: New file.
+	* src/org/eclipse/linuxtools/changelog/parsers/CParser.java (parseCurrentFunction): Add
+	support for parsing storage which happens with changes to ancestor file i.e. function
+	removals.
+
 2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #285866
