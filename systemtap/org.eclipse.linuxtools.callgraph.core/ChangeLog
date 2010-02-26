@@ -1,3 +1,8 @@
+2010-02-26  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java:
+		Clean up code and add getter for internal data field.
+
 2010-02-23  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Add a Thread.sleep() to stop abusing CPU cycles so much

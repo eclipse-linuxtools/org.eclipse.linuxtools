@@ -61,8 +61,7 @@ public abstract class SystemTapParser extends Job {
 		initialize();
 	}
 
-
-
+	
 	/**
 	 * Initialize will be called in the constructors for this class. Use this
 	 * method to initialize variables.
@@ -82,8 +81,6 @@ public abstract class SystemTapParser extends Job {
 	public abstract IStatus nonRealTimeParsing();
 
 
-	
-	
 	/**
 	 * Implement this method if your parser is to execute in realtime. This method 
 	 * will be called as part of a while loop in a separate Job. Use the setInternalData
@@ -194,8 +191,6 @@ public abstract class SystemTapParser extends Job {
 			setData(this);
 			return returnStatus;
 		}
-		
-				
 	
 	}
 	
@@ -240,6 +235,7 @@ public abstract class SystemTapParser extends Job {
 		}
 		return Status.CANCEL_STATUS;
 	}
+	
 
 	public void launchFileErrorDialog() {
 		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages
@@ -252,11 +248,17 @@ public abstract class SystemTapParser extends Job {
 
 
 	/**
-	 * Return the Data object.
-	 * @return
+	 * @return the Data object
 	 */
 	public Object getData() {
 		return data;
+	}
+	
+	/**
+	 * @return the internal data object
+	 */
+	public Object getInternalData(){
+		return internalData;
 	}
 	
 	
@@ -291,8 +293,7 @@ public abstract class SystemTapParser extends Job {
 	public String getFile() {
 		return sourcePath;
 	}
-	
-	
+
 	/**
 	 * Sets the file to read from
 	 * 
@@ -301,21 +302,20 @@ public abstract class SystemTapParser extends Job {
 	public void setSourcePath(String source) {
 		this.sourcePath = source;
 	}
-	
 
 	/**
 	 * Will terminate the parser at the next opportunity (~once every 0.5s)s
+	 * 
 	 * @param val
 	 */
 	public void setDone(boolean val) {
 		done = val;
 	}
 
-	
 	public void setMonitor(IProgressMonitor m) {
 		this.monitor = m;
 	}
-	
+
 	/**
 	 * Set whether or not this parser runs in real time. If viewID has already
 	 * been set, this will also attempt to open the view.
@@ -326,7 +326,7 @@ public abstract class SystemTapParser extends Job {
 		realTime = val;
 
 	}
-	
+
 	/**
 	 * Set the viewID to use for this parser -- see the callgraph.core view
 	 * extension point. If realTime is set to true, this will also attempt to
@@ -341,11 +341,12 @@ public abstract class SystemTapParser extends Job {
 	/**
 	 * Called at the end of a non-realtime run. 
 	 * Feel free to override this method if using non-realtime functions.
-	 * The setData method will be called after executeParsing() is run. The getData() method
-	 * will be used by the SystemTapView to get the data associated with this parser.
+	 * The setData method will be called after executeParsing() is run.
+	 * The getData() method will be used by the SystemTapView to get the 
+	 * data associated with this parser.
 	 * <br><br>
-	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
-	 * its data structures that way. 
+	 * Alternatively, you can cast the parser within SystemTapView to your
+	 * own parser class and access its data structures that way. 
 	 */
 	public void setData(Object obj) {
 		data = obj;
@@ -357,26 +358,23 @@ public abstract class SystemTapParser extends Job {
 	public void cancelJob() {
 		done = true;
 	}
-	
+
 	public boolean isDone() {
 		return done;
 	}
-	
+
 	public void setKillButtonEnabled(boolean val) {
-		if (view != null) 
+		if (view != null)
 			view.setKillButtonEnabled(val);
-		
 	}
 
 	public boolean isRealTime() {
 		return realTime;
 	}
 
-
 	public void setSecondaryID(String secondaryID) {
 		this.secondaryID = secondaryID;
 	}
-
 
 	public String getSecondaryID() {
 		return secondaryID;
