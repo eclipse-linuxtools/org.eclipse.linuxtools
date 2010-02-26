@@ -46,6 +46,10 @@ public class JavaParser implements IParserChangeLogContrib {
 
 		// Retrieve the Java Element in question.
 		ICompilationUnit workingCopy = manager.getWorkingCopy(input);
+		
+		if (workingCopy == null)
+			return "";
+		
 		IJavaElement method = workingCopy.getElementAt(offset);
 		
 		manager.disconnect(input);

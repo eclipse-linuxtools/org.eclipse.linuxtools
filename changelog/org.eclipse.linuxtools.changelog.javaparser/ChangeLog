@@ -1,3 +1,8 @@
+2010-02-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/java/JavaParser.java (parseCurrentFunction): Add
+	check for null WorkingCopy to avoid errors if type of IEditorInput is not supported.
+
 2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #285866
