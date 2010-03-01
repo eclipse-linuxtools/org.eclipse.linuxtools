@@ -21,6 +21,7 @@ import org.eclipse.cdt.core.parser.ICodeReaderCache;
  *
  * @since 4.0
  */
+@SuppressWarnings("deprecation")
 public class NullCodeReaderFactory implements ICodeReaderFactory {
 
 	private static final char[] EMPTY_CHARS = new char[0];

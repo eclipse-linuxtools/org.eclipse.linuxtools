@@ -42,7 +42,7 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 /**
  * @author pmuldoon (Phil Muldoon)
  */
-
+@SuppressWarnings("deprecation")
 public class CParser implements IParserChangeLogContrib {
 
 	public CParser() {

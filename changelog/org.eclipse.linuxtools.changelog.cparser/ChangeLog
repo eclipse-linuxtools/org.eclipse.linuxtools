@@ -1,3 +1,11 @@
+2010-03-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #304185
+	* META-INF/MANIFEST.MF: Add import of org.eclipse.core.resources.
+	* src/org/eclipse/linuxtools/changelog/parsers/CParser.java: Add deprecated annotation as
+	the CodeReader will be deprecated in Eclipse 3.6.
+	* src/org/eclipse/linuxtools/changelog/parsers/NullCodeReaderFactory.java: Ditto. 
+
 2010-02-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #299974
