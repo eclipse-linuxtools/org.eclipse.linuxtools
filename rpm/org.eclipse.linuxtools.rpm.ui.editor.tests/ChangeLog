@@ -1,3 +1,7 @@
+2010-03-01  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/SourcesFileHyperlinkDetectorTest.java (testDetectHyperlinks): Fix number of hyperlink detectors.
+
 2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Require core.
