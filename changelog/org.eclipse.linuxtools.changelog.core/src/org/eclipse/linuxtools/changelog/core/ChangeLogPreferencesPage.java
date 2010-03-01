@@ -229,6 +229,7 @@ public class ChangeLogPreferencesPage extends PreferencePage implements
 	/*
 	 * (non-Javadoc) Method declared on PreferencePage
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean performOk() {
 		storeValues();

@@ -1,3 +1,15 @@
+2010-03-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogContainerContentProvider.java (getChildren): Add specific
+	check for ChangeLogRootContainer which is no longer an IContainer.
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogContainerSelectionGroup.java (createTreeViewer): Change
+	call to ChangeLogRootContainer constructor which now takes the project as input.  
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogRootContainer.java (ChangeLogRootContainer): Do not
+	implement IContainer which is not meant to be implemented externally and instead just create a simple class.  Also
+	take the project as a constructor parameter. 
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java (performOk): Add deprecation annotation to
+	remove warning. 
+
 2010-02-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #299974

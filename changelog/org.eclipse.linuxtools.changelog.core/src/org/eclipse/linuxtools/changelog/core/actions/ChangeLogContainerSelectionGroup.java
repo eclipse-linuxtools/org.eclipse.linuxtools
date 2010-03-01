@@ -299,8 +299,7 @@ public class ChangeLogContainerSelectionGroup extends Composite {
 		 * This helps in displaying all folders under the document
 		 * root as well as the actual root itself.
 		 */
-		ChangeLogRootContainer root = new ChangeLogRootContainer();
-		root.setProject(this.initialSelection.getProject());
+		ChangeLogRootContainer root = new ChangeLogRootContainer(this.initialSelection.getProject());
 		// This has to be done after the viewer has been laid out
 		treeViewer.setInput(root);
 	}
