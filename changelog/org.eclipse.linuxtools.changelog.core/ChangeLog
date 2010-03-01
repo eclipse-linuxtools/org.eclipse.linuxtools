@@ -1,5 +1,7 @@
 2010-03-01  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #304185
+	* META-INF/MANIFEST.MF: Change dependency on org.eclipse.core.resources to not have specific versions.
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogContainerContentProvider.java (getChildren): Add specific
 	check for ChangeLogRootContainer which is no longer an IContainer.
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogContainerSelectionGroup.java (createTreeViewer): Change
