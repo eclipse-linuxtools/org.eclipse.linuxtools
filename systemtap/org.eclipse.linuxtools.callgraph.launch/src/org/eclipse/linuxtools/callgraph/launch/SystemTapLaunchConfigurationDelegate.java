@@ -173,6 +173,10 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		// check for cancellation
 		if ( !testOutput(outputPath) || monitor.isCanceled() ) {
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.0"),  //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchConfigurationDelegate.1"), Messages.getString("SystemTapLaunchConfigurationDelegate.2") + outputPath +  //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("SystemTapLaunchConfigurationDelegate.3")); //$NON-NLS-1$
+			mess.schedule();
 			return;
 		}
 
