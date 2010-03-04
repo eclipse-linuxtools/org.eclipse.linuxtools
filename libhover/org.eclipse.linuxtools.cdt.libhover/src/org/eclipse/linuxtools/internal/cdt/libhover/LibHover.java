@@ -453,8 +453,7 @@ public class LibHover implements ICHelpProvider {
 			try {
 				args = resolveArgs(info, methodType.getParameterTypes(), templateTypes);
 				returnType = methodType.getReturnType();
-			} catch (DOMException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				return null;
 			}
 //			for (int i = 0; i < args.length; ++i)

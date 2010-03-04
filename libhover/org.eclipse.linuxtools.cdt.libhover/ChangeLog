@@ -1,3 +1,9 @@
+2010-03-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMemberSummary): Change
+	DOMException catch statement to Exception since the IFunction interface getReturnType method
+	changes in CDT 7.0.
+
 2009-12-22  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMemberSummary):
