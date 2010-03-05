@@ -1,3 +1,7 @@
+2010-03-05  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Stop passsing a useless argument to finishLaunch
+
 2010-03-02  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java (launch): Toss out a message dialog if output path is broken.

@@ -180,7 +180,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			return;
 		}
 
-		finishLaunch(launch, config, partialCommand, m, true);
+		finishLaunch(launch, config, m, true);
 	}
 
 	
@@ -196,7 +196,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	}
 	
 
-	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String options,
+	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, 
 			IProgressMonitor monitor, boolean retry) {
 
 		try {
