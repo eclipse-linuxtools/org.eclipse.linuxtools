@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *     Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P j
+ *     Roland Grunberg
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
@@ -18,6 +18,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
@@ -71,8 +72,9 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 	 * Builds the checks to see if the action should be enabled or not
 	 */
 	private void buildEnablementChecks() {
-		IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(IConsoleConstants.ID_CONSOLE_VIEW);
-		if(null != ivp) {
+		IWorkbenchPart wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart();
+		if (wbp instanceof ConsoleView){
+			IViewPart ivp = (IViewPart) wbp;
 			setEnablement(isRunning((ConsoleView)ivp));
 			ivp.addPropertyListener(listener);
 		}

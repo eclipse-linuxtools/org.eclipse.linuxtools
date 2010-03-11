@@ -1,3 +1,7 @@
+2010-03-11  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/ConsoleAction.java (buildEnablementChecks): Fix for BZ #304208
+
 2010-02-11  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/ConsoleAction.java: Fix for BZ #293207
