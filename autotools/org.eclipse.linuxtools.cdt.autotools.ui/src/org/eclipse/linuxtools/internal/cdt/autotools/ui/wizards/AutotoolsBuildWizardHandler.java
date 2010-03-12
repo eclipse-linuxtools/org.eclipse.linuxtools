@@ -1,5 +1,6 @@
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.wizards;
 
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.IProjectType;
@@ -32,8 +33,10 @@ public class AutotoolsBuildWizardHandler extends MBSWizardHandler {
 		IConfiguration[] cfgs = info.getManagedProject().getConfigurations();
 		for (int i = 0; i < cfgs.length; ++i) {
 			IConfiguration cfg = cfgs[i];
-			AutotoolsConfigurationManager.getInstance().getConfiguration(proj, cfg.getName(), true);
+			ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(cfg);
+			String id = cfgd.getId();
+			AutotoolsConfigurationManager.getInstance().getConfiguration(proj, id, true);
 		}
-		AutotoolsConfigurationManager.getInstance().saveConfigs(proj.getName());
+		AutotoolsConfigurationManager.getInstance().saveConfigs(proj);
 	}
 }

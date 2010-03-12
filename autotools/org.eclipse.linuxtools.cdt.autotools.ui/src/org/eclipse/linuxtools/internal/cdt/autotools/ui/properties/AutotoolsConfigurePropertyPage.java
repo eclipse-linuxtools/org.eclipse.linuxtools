@@ -10,67 +10,50 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.properties;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.core.settings.model.extension.CConfigurationData;
 import org.eclipse.cdt.ui.newui.AbstractPage;
-import org.eclipse.cdt.ui.newui.CDTPropertyManager;
-import org.eclipse.linuxtools.internal.cdt.autotools.core.IConfigurationCloneListener;
 import org.eclipse.linuxtools.internal.cdt.autotools.core.configure.AutotoolsConfigurationManager;
 import org.eclipse.linuxtools.internal.cdt.autotools.core.configure.IAConfiguration;
 
-public class AutotoolsConfigurePropertyPage extends AbstractPage implements IConfigurationCloneListener {
+public class AutotoolsConfigurePropertyPage extends AbstractPage {
+
+	private ICConfigurationDescription cfgd;
 	
 	protected boolean isSingle() {
 		return true;
 	}
-	
-	// Keep a private list of cloned and created Autotools configurations.  If the user
-	// cancels, these won't end up connected to the project.
-	private static Map<String, IAConfiguration> cfgs = new HashMap<String, IAConfiguration>();
-	
 	
 	/**
 	 * Default constructor
 	 */
 	public AutotoolsConfigurePropertyPage() {
 		super();
-		if (CDTPropertyManager.getPagesCount() == 0) {
-			cfgs.clear();
+	}
+
+	public ICConfigurationDescription getCfgd() {
+		return cfgd;
+	}
+	
+	public void getAllConfigurationData() {
+		ICConfigurationDescription[] cfgds = getCfgsEditable();
+		for (int i = 0; i < cfgds.length; ++i) {
+			@SuppressWarnings("unused")
+			// Following will trigger an option value handler check which will
+			// clone a configuration if necessary
+			CConfigurationData data = cfgds[i].getConfigurationData();
 		}
 	}
 	
-	public void cloneCfg(String cloneName, IConfiguration c) {
-		// First verify that the configuration cloning is for this project
-		if (!c.getManagedProject().getOwner().getName().equals(getProject().getName()))
-			return;
-		// Find config to clone or create it if we haven't seen it before
-		IAConfiguration clonee = cfgs.get(cloneName);
-		if (clonee == null) {
-			clonee = AutotoolsConfigurationManager.getInstance().getConfiguration(getProject(), cloneName, false);
-		}
-		String newName = c.getName();
-		IAConfiguration newCfg = clonee.copy(newName);
-		cfgs.put(newName, newCfg);
-	}
-	
-	public IAConfiguration getConfiguration(String name) {
-		IAConfiguration acfg = cfgs.get(name);
-		if (acfg == null)
-			acfg = 
-				AutotoolsConfigurationManager.getInstance().getConfiguration(getProject(), 
-						name, false);
-		cfgs.put(name, acfg);
+	public IAConfiguration getConfiguration(ICConfigurationDescription cfgd) {
+		IAConfiguration acfg = AutotoolsConfigurationManager.getInstance().getTmpConfiguration(getProject(), cfgd);
 		return acfg;
 	}
 	
-	
 	protected void cfgChanged(ICConfigurationDescription _cfgd) {
+		cfgd = _cfgd;
 		// Let super update all pages
 		super.cfgChanged(_cfgd);
 	}
-	
 }
 

@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.wizards;
 
  
 import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
@@ -151,8 +152,10 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 						defaultCfg = newConfigs[0];
 					
 					// Create a default Autotools configuration and save it.
-					AutotoolsConfigurationManager.getInstance().getConfiguration(project, defaultCfg.getName(), true);
-					AutotoolsConfigurationManager.getInstance().saveConfigs(project.getName());
+					ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(defaultCfg);
+					String id = cfgd.getId();
+					AutotoolsConfigurationManager.getInstance().getConfiguration(project, id, true);
+					AutotoolsConfigurationManager.getInstance().saveConfigs(project);
 					
 					if(defaultCfg != null) {
 						ManagedBuildManager.setDefaultConfiguration(project, defaultCfg);

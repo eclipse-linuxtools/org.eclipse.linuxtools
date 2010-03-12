@@ -1,3 +1,32 @@
+2010-03-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsCategoryPropertyOptionPage.java (createFieldEditors): 
+	Specify minimum length of 20 for text entry windows. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsConfigurePropertyPage.java (cfgChanged): Store configuration
+	descriptor for possible later usage.
+	(getConfiguration): Changed to use id rather than name.
+	(getAllConfigurationData): New method. 
+	(getCfgd): New method.
+	(AutotoolsConfigurePropertyPage): No longer implement ICloneCfgListener interface.  No longer keep track of temporary configuration
+	list.  This is now done by AutotoolsConfigurationManager.
+	(cloneCfg): Removed.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsConfigurePropertyTab.java (createEditArea): Comment out
+	minimum size setting.
+	(setValues): Remove resizing.
+	(syncClones): New method.
+	(createControls): Sync all clones and clear the temporary configuration list.
+	(updateData): Get configuration description.
+	(performApply): Call AutotoolsConfigurationManager to do apply passing the Configuration Description list for
+	the page instead of calling performOk.
+	(getAutotoolsCfg): Change to use id rather than name. 
+	(performCancel): Call AutotoolsConfigurationManager to clear temporary configuration list.
+	(performOK): Changed to use new calls to AutotoolsConfigurationManager.
+	(specificResize): Removed.
+	(calcExtra): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/AutotoolsBuildWizardHandler.java (convertProject): Create
+	configuration by id not name. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject): Ditto. 
+
 2010-02-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsConfigurePropertyPage.java (cloneCfg): If

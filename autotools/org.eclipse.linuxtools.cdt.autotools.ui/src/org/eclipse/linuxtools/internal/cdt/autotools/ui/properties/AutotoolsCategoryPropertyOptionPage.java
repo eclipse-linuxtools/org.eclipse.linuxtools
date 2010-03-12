@@ -12,8 +12,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.properties;
 
 import java.util.ArrayList;
 
-import org.eclipse.cdt.ui.newui.AbstractCPropertyTab;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -22,7 +20,6 @@ import org.eclipse.linuxtools.internal.cdt.autotools.core.configure.AutotoolsCon
 import org.eclipse.linuxtools.internal.cdt.autotools.core.configure.IAConfiguration;
 import org.eclipse.linuxtools.internal.cdt.autotools.core.configure.IConfigureOption;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -84,7 +81,7 @@ public class AutotoolsCategoryPropertyOptionPage extends
 	protected void createFieldEditors() {
 		super.createFieldEditors();
 		Composite parent = getFieldEditorParent();
-		FontMetrics fm = AbstractCPropertyTab.getFontMetrics(parent);
+//		FontMetrics fm = AbstractCPropertyTab.getFontMetrics(parent);
 		AutotoolsConfiguration.Option[] options = AutotoolsConfiguration.getChildOptions(catName);
 		for (int i = 0; i < options.length; ++i) {
 			AutotoolsConfiguration.Option option = options[i];
@@ -93,11 +90,8 @@ public class AutotoolsCategoryPropertyOptionPage extends
 			case IConfigureOption.INTERNAL:
 			case IConfigureOption.MULTIARG:
 				parent = getFieldEditorParent();
-				StringFieldEditor f = new StringFieldEditor(option.getName(), option.getDescription(), parent);
-				GridData gd = ((GridData)f.getTextControl(parent).getLayoutData());
+				StringFieldEditor f = new StringFieldEditor(option.getName(), option.getDescription(), 20, parent);
 				f.getLabelControl(parent).setToolTipText(option.getToolTip());
-				gd.grabExcessHorizontalSpace = true;
-				gd.minimumWidth = Dialog.convertWidthInCharsToPixels(fm, 3);
 				addField(f);
 				fieldEditors.add(f);
 				break;
