@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.zip.ZipFile;
 
 import org.eclipse.cdt.core.CommandLauncher;
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.IProjectType;
@@ -191,7 +192,9 @@ public class ProjectTools {
 	public static void setConfigDir(IProject project, String dir) {
 		IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 		IConfiguration c = info.getDefaultConfiguration();
-		IAConfiguration cfg = AutotoolsConfigurationManager.getInstance().getConfiguration(project, c.getName(), true);
+		ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(c);
+		String id = cfgd.getId();
+		IAConfiguration cfg = AutotoolsConfigurationManager.getInstance().getConfiguration(project, id, true);
 		cfg.setConfigToolDirectory(dir);
 //		IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 //		ITool tool = info.getToolFromOutputExtension("status"); //$NON-NLS-1$

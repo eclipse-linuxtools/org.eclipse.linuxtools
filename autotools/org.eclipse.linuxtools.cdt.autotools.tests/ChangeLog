@@ -1,3 +1,8 @@
+2010-03-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java (setConfigDir): Fix up how
+	configuration is allocated.  Use id instead of name.
+
 2009-11-13  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Make singleton.
