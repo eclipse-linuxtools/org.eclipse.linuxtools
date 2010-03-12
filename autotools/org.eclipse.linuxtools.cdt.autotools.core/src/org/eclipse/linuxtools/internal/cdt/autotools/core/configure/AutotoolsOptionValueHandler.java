@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.core.configure;
 
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
@@ -18,6 +19,7 @@ import org.eclipse.cdt.managedbuilder.core.IHoldsOptions;
 import org.eclipse.cdt.managedbuilder.core.IManagedOptionValueHandler;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IOptionApplicability;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 import org.eclipse.cdt.ui.newui.CDTPropertyManager;
 import org.eclipse.core.resources.IProject;
@@ -48,16 +50,15 @@ public class AutotoolsOptionValueHandler extends ManagedOptionValueHandler
 	{
 		// Get the current value of the build dir option.
 		String value = (String)option.getValue();
-//		String valueBase = value;
 
 		if (buildObject instanceof IConfiguration &&
 				(event == IManagedOptionValueHandler.EVENT_OPEN)) {
-//						|| event == IManagedOptionValueHandler.EVENT_APPLY)) {
 //			SortedSet<Integer> nums = new TreeSet<Integer>();
 			IConfiguration configuration = (IConfiguration)buildObject;
-			String cfgName = configuration.getName();
+			ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(configuration);
+			String cfgId = cfgd.getId();
 			if (option.getName().equals("Name")) {
-				if (!value.equals("") && !value.equals(cfgName)) {
+				if (!value.equals("") && !value.equals(cfgId)) {
 					// we have a cloned configuration and we know that the
 					// clonee's name is the value of the option
 					IProject project = (IProject)configuration.getManagedProject().getOwner();
@@ -73,100 +74,26 @@ public class AutotoolsOptionValueHandler extends ManagedOptionValueHandler
 					}
 					if (autoName == null || autoName.equals(AutotoolsPropertyConstants.TRUE)) {
 						autoNameTemplate = "${workspace_loc:/" + project.getName() + // $NON-NLS-1$ 
-							"}/build-" + fixName(cfgName); // $NON-NLS-1$
+							"}/build-" + fixName(configuration.getName()); // $NON-NLS-1$
 						IBuilder cfgBuilder = configuration.getEditableBuilder();
 						cfgBuilder.setBuildPath(autoNameTemplate);
 					}
-					// Notify any AutotoolsConfigurePropertyPages that a clone has occurred and
-					// copy configuration settings.
-					int x = CDTPropertyManager.getPagesCount();
-					for (int i=0; i<x; i++) {
-						Object p = CDTPropertyManager.getPage(i);
-						if (p == null || !(p instanceof IConfigurationCloneListener))
-							continue;
-						IConfigurationCloneListener ap = (IConfigurationCloneListener)p;
-						ap.cloneCfg(value, configuration);
+					// Clone old configuration to tmp configuration list
+					boolean isSaved = AutotoolsConfigurationManager.getInstance().cloneCfg(project, value, cfgd);
+					// Check to see if we should patch up the name option.  If we aren't synchronizing
+					// configurations or the configuration isn't already saved, we leave the name field alone
+					// so we will trigger this again when the clone will get used.
+					if (!isSaved && !AutotoolsConfigurationManager.getInstance().isSyncing()) {
+						return true;
 					}
 				}
 				try {
 					IOption optionToSet = holder.getOptionToSet(option, false);
-					optionToSet.setValue(cfgName);
+					optionToSet.setValue(cfgId);
 				} catch (BuildException e) {
 					return false;
 				}
 			}
-			
-//			IConfiguration[] cfgs = configuration.getManagedProject().getConfigurations();
-//			int index = 1;
-//			boolean valueFound = false;
-//			for (int i = 0; i < cfgs.length; ++i) {
-//				IConfiguration config = cfgs[i];
-//				if (config == null || config.getName().equals(configuration.getName())) {
-//					continue;
-//				}
-//				ITool tool = config.getToolFromOutputExtension("status");  //$NON-NLS-1$
-//				// We now want to get the builddir option for the tool.  If we use
-//				// getOptionById(), we must know the full id which in our case has a generated
-//				// numeric extension at the end.  Otherwise, the base builddir option id
-//				// will get us the default option, not the one for the configuration we
-//				// are currently looking at.  We use getOptionBySuperClassId() instead
-//				// which will find us options that are based off the original builddir
-//				// option which include those with generated extensions at the end.
-//				IOption buildDirOption = tool.getOptionBySuperClassId(BUILD_DIR_OPTION_ID);
-//				String buildDir = (String)buildDirOption.getValue();
-//				if (buildDir.equals(value)) {
-//					valueFound = true;
-//				}
-//				// For "buildXX" values, store the XX values in a list of used extensions.
-//				if (buildDir.startsWith(DEFAULT_BUILD_DIR)) {
-//					String numstr = buildDir.substring(DEFAULT_BUILD_DIR.length());
-//					try {
-//						Integer k = Integer.valueOf(numstr);
-//						// Assume the value to start with is the last value in the list
-//						// plus 1.
-//						index = k.intValue() + 1;
-//						nums.add(k);
-//					} catch (NumberFormatException e) {
-//						// ignore
-//					}
-//				}
-//			}
-//			
-//			// If there is no name collision for the configurations, then we simply return.
-//			if (!valueFound)
-//				return true;
-//			
-////			// If the user has applied a change and it matches an existing build directory,
-////			// then warn and ask if the user wants the value defaulted to a safe value.
-////			if (event == EVENT_APPLY) {
-////				String title = AutotoolsPlugin.getResourceString(BUILD_DIR_APPLY);
-////				String question = AutotoolsPlugin.getResourceString(BUILD_DIR_DEFAULT_QUESTION);
-////				String[] buttonLabels = new String[2];
-////				buttonLabels[0] = AutotoolsPlugin.getResourceString(BUILD_DIR_YES);
-////				buttonLabels[1] = AutotoolsPlugin.getResourceString(BUILD_DIR_NO);
-////				MessageDialog d = new MessageDialog(AutotoolsPlugin.getActiveWorkbenchShell(),
-////						title, null, question, MessageDialog.QUESTION, buttonLabels, 0);
-////				int result = d.open();
-////				if (result == 1)
-////					return true;
-////			}
-//			
-//			// For defaulted buildXX values, we support defaulting a unique XX value.
-//			if (value.startsWith(DEFAULT_BUILD_DIR)) {
-//				valueBase = DEFAULT_BUILD_DIR;
-//				// Try and establish a unique "buildXX" name that hasn't been used yet.
-//				while (nums.contains(Integer.valueOf(index))) {
-//					++index;
-//				}
-//			}
-//			
-//			// Reset the default build directory for this opened configuration.
-//			try {
-//				IOption optionToSet = holder.getOptionToSet(option, false);
-//				optionToSet.setValue(valueBase + index);
-//			} catch (BuildException e) {
-//				return false;
-//			}
 		}
 		
 		// The event was not handled, thus return false

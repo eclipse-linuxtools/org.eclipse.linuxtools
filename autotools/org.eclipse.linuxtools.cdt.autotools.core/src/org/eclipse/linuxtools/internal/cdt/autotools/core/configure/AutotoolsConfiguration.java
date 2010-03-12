@@ -109,7 +109,7 @@ public class AutotoolsConfiguration implements IAConfiguration {
 	
 	private static Option[] toolList;
 	
-	private String name;
+	private String id;
 	private boolean isDirty;
 	private boolean isParmsDirty;
 	private Map<String, IConfigureOption> configOptions;
@@ -120,7 +120,7 @@ public class AutotoolsConfiguration implements IAConfiguration {
 	}
 		
 	private AutotoolsConfiguration(String name, boolean initialize) {
-		this.name = name;
+		this.id = name;
 		configOptions = new HashMap<String, IConfigureOption>();
 		if (initialize)
 			initConfigOptions();
@@ -214,19 +214,24 @@ public class AutotoolsConfiguration implements IAConfiguration {
 	public IConfigureOption getOption(String name) {
 		return configOptions.get(name);
 	}
+
+	public IAConfiguration copy() {
+		return copy(id);
+	}
 	
-	public IAConfiguration copy(String newName) {
-		AutotoolsConfiguration cfg = new AutotoolsConfiguration(newName, false);
+	public IAConfiguration copy(String newId) {
+		AutotoolsConfiguration cfg = new AutotoolsConfiguration(newId, false);
 		Collection<IConfigureOption> oldValues = configOptions.values();
 		for (Iterator<IConfigureOption> i = oldValues.iterator(); i.hasNext();) {
 			IConfigureOption opt = i.next();
 			cfg.configOptions.put(opt.getName(), opt.copy(cfg));
 		}
+		cfg.setDirty(true);
 		return cfg;
 	}
 	
-	public String getName() {
-		return name;
+	public String getId() {
+		return id;
 	}
 	
 	public boolean isDirty() {

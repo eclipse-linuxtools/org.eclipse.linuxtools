@@ -87,7 +87,7 @@ public class NewAutotoolsProject extends ProcessRunner {
 					IConfiguration cfg = cfgs[i];
 					AutotoolsConfigurationManager.getInstance().getConfiguration(project, cfg.getName(), true);
 				}
-				AutotoolsConfigurationManager.getInstance().saveConfigs(project.getName());
+				AutotoolsConfigurationManager.getInstance().saveConfigs(project);
 
 				info.setValid(true);
 				ManagedBuildManager.saveBuildInfo(project, true);

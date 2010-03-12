@@ -15,7 +15,7 @@ import java.util.Map;
 
 public interface IAConfiguration {
 	public IConfigureOption getOption(String name);
-	public String getName();
+	public String getId();
 	public boolean isDirty();
 	public void setDirty(boolean value);
 	public Map<String, IConfigureOption> getOptions();
@@ -24,6 +24,7 @@ public interface IAConfiguration {
 	public void setOption(String name, String value);
 	public void setConfigToolDirectory(String configToolDirectory);
 	public String getConfigToolDirectory();
-	public IAConfiguration copy(String newName);
+	public IAConfiguration copy();
+	public IAConfiguration copy(String id);
 	public void setDefaultOptions();
 }

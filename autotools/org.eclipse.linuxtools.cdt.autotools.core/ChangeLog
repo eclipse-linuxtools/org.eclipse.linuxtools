@@ -1,3 +1,57 @@
+2010-03-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #304005
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsConfigurationBuilder.java (build): Add logic to
+	check for dirty configuration.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (runScript): Change to use getId
+	instead of getName method for IAConfiguration.
+	(runCommand): Ditto.
+	(regenerateMakefiles): Add call to sync configurations. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfiguration.java (getId): New
+	method. 
+	(copy): Changed to two separate methods, one which takes an id and the other which takes no parameter
+	and expects the id to be copied.
+	(AutotoolsConfiguration): Changed to accept an id rather than a name. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfigurationManager.java: Change to keep
+	track of temporary configuration list for a project.  This is needed when performing configuration settings and the
+	user has not yet confirmed.  In addition, store all configurations by id and not name since the id does not change.
+	(resourceChanged): Logic changed to rename both saved and temporary configuration lists which are now Map structures.
+	(AutotoolsConfigurationManager): Add hash maps for saved and temporary configuration lists.
+	(syncConfigurations): New method. 
+	(applyConfigs): Ditto.
+	(saveConfigs): Changed to take the project as parameter.  A second private
+	version of the function also has been added which takes an array of Configuration
+	Descriptions.  The option value "Name" for configure tool is resolved for saved configurations.
+	(getConfigs): Renamed to getSavedConfigs.
+	(getSavedConfigs): New method renamed from getConfigs.
+	(getConfigurations): Renamed to getSavedConfigs.
+	(isConfigurationAlreadySaved): Modified calls. 
+	(setSyncing): New method.
+	(createDefaultConfiguration): Pass id instead of name to constructor.
+	(isSyncing): New method.
+	(addConfiguration): No longer need to check for existence because we are adding to a Map.
+	(replaceConfiguration): Removed.
+	(saveAllConfigs): Ditto.
+	(replaceProjectConfigurations): Split into two versions.  The new version takes an additional
+	parameter which is an array of Configuration descriptions.
+	(getTmpConfigs): New method.
+	(syncNameField): New method.
+	(clearTmpConfigurations): New method.
+	(findCfg): Find by id and not name.
+	(getTmpConfiguration): New method.
+	(getConfiguration): Try and find configuration by id before creating default.
+	(cloneCfg): New method taken out of AutotoolsConfigurationPropertyPage and added here to perform cloning of an Autotools configuration.
+	Logic has been added to not perform cloning if the target configuration already has been saved and to return a boolean regarding this.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsOptionValueHandler.java (handleValue): Changed to
+	call new cloneCfg interface in AutotoolsConfigurationManager.  Logic to check for an Autotools Clone listener is removed.  The return
+	code of cloneCfg is checked to see if the configuration has already been saved.  If not saved and we are not doing a sync
+	then it returns without resolving the Name option field.  The Name option field is now the Configuration Description id
+	which does not change on a rename operation. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/IAConfiguration.java: Add new getId method.  Remove name methods
+	which are no longer used. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/wizards/NewAutotoolsProject.java (process): Modified call to
+	saveConfigs. 
+
 2010-02-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (getAutogenPath): Fix typo

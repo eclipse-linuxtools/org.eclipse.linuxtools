@@ -34,6 +34,7 @@ import org.eclipse.cdt.core.resources.IConsole;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.core.settings.model.ICStorageElement;
+import org.eclipse.cdt.core.settings.model.extension.CConfigurationData;
 import org.eclipse.cdt.make.core.IMakeBuilderInfo;
 import org.eclipse.cdt.make.core.IMakeTarget;
 import org.eclipse.cdt.make.core.IMakeTargetManager;
@@ -303,7 +304,10 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		// See if the user has cancelled the build
 		checkCancel();
 
+		// Synchronize the Autotools configurations with the Project Description
+		AutotoolsConfigurationManager.getInstance().syncConfigurations(getProject());	
 		toolsCfg = AutotoolsConfigurationManager.getInstance().getConfiguration(getProject(), icfg.getName());
+			
 		initializeBuildConfigDirs(icfg, toolsCfg);
 		// Create the top-level directory for the build output
 		if (!createDirectory(buildDir)) {
@@ -747,7 +751,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		String[] consoleHeader = new String[3];
 
 		consoleHeader[0] = jobDescription;
-		consoleHeader[1] = toolsCfg.getName();
+		consoleHeader[1] = toolsCfg.getId();
 		consoleHeader[2] = project.getName();
 		buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
 		buf.append(jobDescription);
@@ -934,7 +938,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		String[] consoleHeader = new String[3];
 
 		consoleHeader[0] = jobDescription;
-		consoleHeader[1] = toolsCfg.getName();
+		consoleHeader[1] = toolsCfg.getId();
 		consoleHeader[2] = project.getName();
 		buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
 		buf.append(jobDescription);

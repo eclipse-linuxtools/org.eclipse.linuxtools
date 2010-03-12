@@ -59,6 +59,12 @@ public class AutotoolsConfigurationBuilder extends ACBuilder {
 			} else {
 				bPerformBuild = false;
 			}
+			IConfiguration cfg = info.getDefaultConfiguration();
+			if (cfg != null) {
+				IAConfiguration acfg = AutotoolsConfigurationManager.getInstance().findCfg(project, cfg.getName());
+				if (acfg == null || acfg.isDirty())
+					bPerformBuild = true;
+			}
 		}
 		if (bPerformBuild) {
 			MultiStatus result = performMakefileGeneration(project, info, monitor);
