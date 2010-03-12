@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.internal.cdt.autotools.core.wizards;
 import java.util.List;
 
 import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.templateengine.TemplateCore;
 import org.eclipse.cdt.core.templateengine.process.ProcessArgument;
 import org.eclipse.cdt.core.templateengine.process.ProcessFailureException;
@@ -85,7 +86,9 @@ public class NewAutotoolsProject extends ProcessRunner {
 				IConfiguration[] cfgs = pca.getConfigs();
 				for (int i = 0; i < cfgs.length; ++i) {
 					IConfiguration cfg = cfgs[i];
-					AutotoolsConfigurationManager.getInstance().getConfiguration(project, cfg.getName(), true);
+					ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(cfg);
+					String id = cfgd.getId();
+					AutotoolsConfigurationManager.getInstance().getConfiguration(project, id, true);
 				}
 				AutotoolsConfigurationManager.getInstance().saveConfigs(project);
 
