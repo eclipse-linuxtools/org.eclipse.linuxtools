@@ -1,3 +1,7 @@
+2010-03-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDoubleClickStrategy.java: Fix line ending check. (Charley Wang bz#294555)	
+
 2010-02-25  Alexander Kurtakov  <akurtako@redhat.com>
     Add ability to download sources if they are hyperlinks.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileDownloadHyperlink.java: New file.

@@ -15,6 +15,8 @@ import org.eclipse.jface.text.*;
 
 public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 	protected ITextViewer fText;
+	//lTerminator should be either '\r' or '\n' depending on the OS
+	final char lTerminator = System.getProperty("line.separator").charAt(0); //$NON-NLS-1$
 
 	public void doubleClicked(ITextViewer part) {
 		int pos = part.getSelectedRange().x;
@@ -31,7 +33,6 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 	protected boolean selectComment(int caretPos) {
 		IDocument doc = fText.getDocument();
 		int startPos, endPos;
-
 		try {
 			int pos = caretPos;
 			char c = ' ';
@@ -42,11 +43,10 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 					pos -= 2;
 					continue;
 				}
-				if (c == Character.LINE_SEPARATOR || c == '\"')
+				if ( c == lTerminator || c == '\"')
 					break;
 				--pos;
 			}
-
 			if (c != '\"')
 				return false;
 
@@ -58,7 +58,7 @@ public class SpecfileDoubleClickStrategy implements ITextDoubleClickStrategy {
 
 			while (pos < length) {
 				c = doc.getChar(pos);
-				if (c == Character.LINE_SEPARATOR || c == '\"')
+				if ( c == lTerminator || c == '\"' )
 					break;
 				++pos;
 			}
