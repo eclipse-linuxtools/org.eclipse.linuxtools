@@ -21,12 +21,10 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IOptionApplicability;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
-import org.eclipse.cdt.ui.newui.CDTPropertyManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
 import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsPropertyConstants;
-import org.eclipse.linuxtools.internal.cdt.autotools.core.IConfigurationCloneListener;
 
 public class AutotoolsOptionValueHandler extends ManagedOptionValueHandler 
 	implements IOptionApplicability {
