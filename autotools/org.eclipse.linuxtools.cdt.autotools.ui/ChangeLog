@@ -1,5 +1,6 @@
 2010-03-12  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Resolves #304005
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsCategoryPropertyOptionPage.java (createFieldEditors): 
 	Specify minimum length of 20 for text entry windows. 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsConfigurePropertyPage.java (cfgChanged): Store configuration
