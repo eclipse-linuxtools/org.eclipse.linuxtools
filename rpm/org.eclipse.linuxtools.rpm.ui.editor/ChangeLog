@@ -1,5 +1,9 @@
 2010-03-12  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Fix direct definitions split. (Charley Wang bz#305421)
+	
+2010-03-12  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDoubleClickStrategy.java: Fix line ending check. (Charley Wang bz#294555)	
 
 2010-02-25  Alexander Kurtakov  <akurtako@redhat.com>

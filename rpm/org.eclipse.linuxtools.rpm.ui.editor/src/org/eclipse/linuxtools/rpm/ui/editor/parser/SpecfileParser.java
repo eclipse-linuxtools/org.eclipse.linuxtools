@@ -577,7 +577,7 @@ public class SpecfileParser {
 
 	private SpecfileElement parseDirectDefinition(String lineText,
 			Specfile specfile, int lineNumber) {
-		String[] parts = lineText.split(DEFINE_SEPARATOR);
+		String[] parts = lineText.split(DEFINE_SEPARATOR, 2);
 		SpecfileTag directDefinition;
 		if (parts.length == 2) {
 			directDefinition = new SpecfileTag(parts[0], parts[1].trim(),
