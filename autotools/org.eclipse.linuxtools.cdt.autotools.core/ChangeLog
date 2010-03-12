@@ -51,6 +51,7 @@
 	which are no longer used. 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/wizards/NewAutotoolsProject.java (process): Modified call to
 	saveConfigs. 
+	(process): Ditto.
 
 2010-02-25  Jeff Johnston  <jjohnstn@redhat.com>
 
