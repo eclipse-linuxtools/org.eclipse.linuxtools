@@ -1,3 +1,8 @@
+2010-03-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Externalize strings.
+	* plugin.xml: Likewise.
+
 2010-03-12  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Fix direct definitions split. (Charley Wang bz#305421)
