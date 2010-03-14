@@ -1,3 +1,7 @@
+2010-03-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: Remove redundant New.
+
 2010-01-12  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
