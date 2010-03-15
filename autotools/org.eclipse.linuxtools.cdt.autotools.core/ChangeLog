@@ -1,5 +1,7 @@
 2010-03-15  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (regenerateMakefiles): Use the
+	id of the IConfiguration not the name to fetch the IAConfiguration for it.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsOptionValueHandler.java (handleValue): Make
 	sure ICConfigurationDescription exists before accessing it.
 
