@@ -1,5 +1,10 @@
 2010-03-15  Andrew Overholt  <overholt@redhat.com>
 
+	* build.properties: Update version.
+	* maps/linuxtools.map: Fix syntax.
+
+2010-03-15  Andrew Overholt  <overholt@redhat.com>
+
 	* maps/linuxtools.map: Use 0.5.0 branch.
 	* psfs/autotools.psf: Likewise.
 	* psfs/callgraph.psf: Likewise.
