@@ -305,7 +305,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 
 		// Synchronize the Autotools configurations with the Project Description
 		AutotoolsConfigurationManager.getInstance().syncConfigurations(getProject());	
-		toolsCfg = AutotoolsConfigurationManager.getInstance().getConfiguration(getProject(), icfg.getName());
+		toolsCfg = AutotoolsConfigurationManager.getInstance().getConfiguration(getProject(), icfg.getId());
 			
 		initializeBuildConfigDirs(icfg, toolsCfg);
 		// Create the top-level directory for the build output
