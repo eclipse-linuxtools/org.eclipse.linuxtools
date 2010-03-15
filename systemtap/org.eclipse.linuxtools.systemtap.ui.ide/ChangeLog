@@ -1,3 +1,7 @@
+2010-03-15  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getFilePath): Bz 304206
+
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptChartAction.java: Removed.

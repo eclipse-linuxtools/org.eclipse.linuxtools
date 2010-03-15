@@ -1,12 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse
+ *     Jeff Briggs, Henry Hughes, Ryan Morse, Roland Grunberg, Anithra P J
  *******************************************************************************/
 
 package org.eclipse.linuxtools.systemtap.ui.ide.actions;
@@ -47,6 +46,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.ResourceUtil;
 
 
 
@@ -115,7 +115,8 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected String getFilePath() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-		return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+		return ResourceUtil.getFile(ed.getEditorInput()).getLocation().toString();
+		//return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
 	}
 	
 	/**
