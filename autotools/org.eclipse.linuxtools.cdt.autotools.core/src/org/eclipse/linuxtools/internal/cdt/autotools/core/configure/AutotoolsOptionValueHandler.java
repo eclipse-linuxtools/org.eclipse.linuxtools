@@ -54,8 +54,8 @@ public class AutotoolsOptionValueHandler extends ManagedOptionValueHandler
 //			SortedSet<Integer> nums = new TreeSet<Integer>();
 			IConfiguration configuration = (IConfiguration)buildObject;
 			ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(configuration);
-			String cfgId = cfgd.getId();
-			if (option.getName().equals("Name")) {
+			if (option.getName().equals("Name") && cfgd != null) {
+				String cfgId = cfgd.getId();
 				if (!value.equals("") && !value.equals(cfgId)) {
 					// we have a cloned configuration and we know that the
 					// clonee's name is the value of the option
