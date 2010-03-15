@@ -110,6 +110,7 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
     
 	public void convertProject(IProject project, IProgressMonitor monitor, String projectID) throws CoreException {
 		monitor.beginTask(AutotoolsUIPlugin.getResourceString("WizardMakeProjectConversion.monitor.convertingToMakeProject"), 7); //$NON-NLS-1$
+		IConfiguration defaultCfg = null;
 		try {
 			super.convertProject(project, new SubProgressMonitor(monitor, 1), projectID);
 			monitor.subTask(AutotoolsUIPlugin.getResourceString(MSG_ADD_NATURE));
@@ -139,7 +140,6 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 						newConfig.setArtifactName(newManagedProject.getDefaultArtifactName());
 					}
 					// Now add the first supported config in the list as the default
-					IConfiguration defaultCfg = null;
 					IConfiguration[] newConfigs = newManagedProject.getConfigurations();
 					for(int i = 0; i < newConfigs.length; i++) {
 						if(newConfigs[i].isSupported()){
@@ -151,11 +151,6 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 					if(defaultCfg == null && newConfigs.length > 0)
 						defaultCfg = newConfigs[0];
 					
-					// Create a default Autotools configuration and save it.
-					ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(defaultCfg);
-					String id = cfgd.getId();
-					AutotoolsConfigurationManager.getInstance().getConfiguration(project, id, true);
-					AutotoolsConfigurationManager.getInstance().saveConfigs(project);
 					
 					if(defaultCfg != null) {
 						ManagedBuildManager.setDefaultConfiguration(project, defaultCfg);
@@ -199,6 +194,15 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 				ManagedBuildManager.saveBuildInfo(project, true);
 			}
 		} finally {
+			// Create a default Autotools configuration and save it.
+			// We must do this after the ManagedBuildManager does a save because
+			// we might not yet have a Configuration Description set up for the
+			// default configuration and we need the id to create our own form
+			// of configuration.
+			ICConfigurationDescription cfgd = ManagedBuildManager.getDescriptionForConfiguration(defaultCfg);
+			String id = cfgd.getId();
+			AutotoolsConfigurationManager.getInstance().getConfiguration(project, id, true);
+			AutotoolsConfigurationManager.getInstance().saveConfigs(project);
 			IStatus initResult = ManagedBuildManager.initBuildInfoContainer(project);
 			if (initResult.getCode() != IStatus.OK) {
 				// At this point, I can live with a failure

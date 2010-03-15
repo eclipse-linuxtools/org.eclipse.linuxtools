@@ -1,3 +1,9 @@
+2010-03-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject): Move
+	creation of Autotools configuration to bottom as we must ensure that an ICConfigurationDescription
+	has been set up for the default configuration and we can't do this manually ourselves.
+
 2010-03-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #304005
