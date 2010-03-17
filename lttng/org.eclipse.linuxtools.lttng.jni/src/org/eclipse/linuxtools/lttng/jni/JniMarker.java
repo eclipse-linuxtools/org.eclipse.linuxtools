@@ -126,7 +126,6 @@ public abstract class JniMarker extends Jni_C_Common
      * @param markerName        Name of the parent marker
      * @param markerFieldPtr    C Pointer (converted in long) to marker_field C Structure
      */
-    @SuppressWarnings("unused")
 	private void addMarkerFieldFromC(String markerFieldName, long markerFieldPtr) {
         // Create a new Jaf_markerField object and insert it in the map
         // the maker field fill itself with LTT data while being constructed
@@ -165,7 +164,7 @@ public abstract class JniMarker extends Jni_C_Common
      * 
      * @return The actual (long converted) pointer or NULL
      * 
-     * @see org.eclipse.linuxtools.lttng.jni.common.eclipse.linuxtools.lttng.jni.Jni_C_Pointer
+     * @see org.eclipse.linuxtools.lttng.jni.common.Jni_C_Pointer
      */
     public Jni_C_Pointer getMarkerPtr() {
         return thisMarkerPtr;
@@ -224,6 +223,28 @@ public abstract class JniMarker extends Jni_C_Common
     }
     
     
+    // ****************************
+    // **** ABSTRACT FUNCTIONS ****
+    // You MUST override those in your version specific implementation
+	
+	
+	/**
+     * Function place holder to allocate a new JniMarkerField.<p>
+     * <br>
+     * JniMarkerField constructor is non overridable so we need another overridable function to return the correct version of JniMarkerField.<br>
+     * Effect of this function should be the same (allocate a fresh new JniMarkerField).<br>
+     * <br>
+     * <b>!! Override this with you version specific implementation.</b><br>
+     * 
+     * @param newMarkerFieldPtr		The pointer of an already opened marker_field C Structure
+     * 
+     * @return						The newly allocated JniMarkerField of the correct version
+     * 
+     * @throws JniException			The construction (allocation) failed.
+     * 
+     * @see org.eclipse.linuxtools.lttng.jni.common.Jni_C_Pointer
+     * @see org.eclipse.linuxtools.lttng.jni.JniMarkerField
+     */
     public abstract JniMarkerField allocateNewJniMarkerField(Jni_C_Pointer newMarkerFieldPtr) throws JniException;
     
 }
