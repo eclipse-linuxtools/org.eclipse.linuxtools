@@ -1,3 +1,16 @@
+2010-03-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #306283
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMemberSummary): Remove
+	code that looks in editor text for class name and then asks the AST.  Just get the class name
+	from the member we already do the lookup for.  Get the fully templated name using the new
+	getClassName method. 
+	(getMatchingFunctions): Remove commented out code.
+	(getClassName): New method to get class name including template parameters.
+	(getFunctionInfo): Change to specify fully qualified name and not remove
+	namespace.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLibrary.java (getClassInfo): 
+
 2010-03-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getMemberSummary): Change

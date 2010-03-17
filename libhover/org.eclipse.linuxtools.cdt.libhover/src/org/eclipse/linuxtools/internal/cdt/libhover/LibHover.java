@@ -30,17 +30,18 @@ import java.util.SortedMap;
 import java.util.Map.Entry;
 
 import org.eclipse.cdt.core.dom.ast.DOMException;
-import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTName;
-import org.eclipse.cdt.core.dom.ast.IASTNamedTypeSpecifier;
-import org.eclipse.cdt.core.dom.ast.IASTNode;
-import org.eclipse.cdt.core.dom.ast.IASTSimpleDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IBinding;
 import org.eclipse.cdt.core.dom.ast.IType;
-import org.eclipse.cdt.core.dom.ast.cpp.ICPPBinding;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPClassType;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunction;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPFunctionType;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateArgument;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateDefinition;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateInstance;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateParameter;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPTemplateParameterMap;
 import org.eclipse.cdt.core.model.ILanguage;
 import org.eclipse.cdt.core.model.ITranslationUnit;
 import org.eclipse.cdt.ui.ICHelpBook;
@@ -256,11 +257,6 @@ public class LibHover implements ICHelpProvider {
         IFunctionSummary f;
 
         f = null;
-        boolean isPTR = false;
-        boolean isREF = false;
-        int offset = -1;
-        int length = 0;
-        
         ITranslationUnit t = context.getTranslationUnit();
         
         String className = null;
@@ -271,128 +267,31 @@ public class LibHover implements ICHelpProvider {
         		if (context instanceof IHoverHelpInvocationContext) {
         			// We know the file offset of the member reference.
         			IRegion region = (IRegion)((IHoverHelpInvocationContext)context).getHoverRegion();
-        			char[] contents = t.getCodeReader().buffer;
-        			int i = region.getOffset();
-        			// Let's figure out if it is a pointer reference or a direct reference in which case we can
-        			// find the variable and hence it's class.
-        			if (i > 2 && contents[i-1] == '>' && contents[i-2] == '-') {
-        				// Pointer reference
-        				int j = i - 3;
-        				int pointer = 0;
-        				while (j > 0 && isCPPCharacter(contents[j])) {
-        					pointer = j;
-        					--j;
-        				}
-        				if (pointer != 0) {
-        					offset = pointer;
-        					length = region.getOffset() - pointer - 2;
-        					isPTR = true;
-        					//						String pointerName = new String(contents, pointer, region.getOffset() - pointer - 2);
-        					//						System.out.println("pointer reference to " + pointerName);
-        				}
-        			} else if (i > 1 && contents[i-1] == '.') {
-        				int j = i - 2;
-        				int ref = 0;
-        				while (j > 0 && isCPPCharacter(contents[j])) {
-        					ref = j;
-        					--j;
-        				}
-        				if (ref != 0) {
-        					offset = ref;
-        					length = region.getOffset() - ref - 1;
-        					isREF = true;
-        					//						String refName = new String(contents, ref, region.getOffset() - ref - 1);
-        					//						System.out.println("regular reference to " + refName);
-        				}
-        			}
-        			final IASTName[] result= {null};
-        			final int toffset = offset;
-        			final int tlength = length;
-
-        			// If we have a pointer or reference variable, get its ASTName.
-        			if (isPTR || isREF) {
-        				EnclosingASTNameJob job = new EnclosingASTNameJob(t, toffset, tlength);
-        				job.schedule();
-        				try {
-        					job.join();
-        				} catch (InterruptedException e) {
-        					// TODO Auto-generated catch block
-        					e.printStackTrace();
-        				}
-        				if (job.getResult() == Status.OK_STATUS)
-        					result[0] = job.getASTName();
-        			}
-
-        			// If we get the ASTName for the variable, let's find its declaration which will give us its class.
-        			final IASTName[][] decl = {null};
-        			if (result[0] != null) {
-        				final IBinding binding = result[0].resolveBinding();
-        				ASTDeclarationFinderJob job = new ASTDeclarationFinderJob(t, binding);
-        				job.schedule();
-        				try {
-        					job.join();
-        				} catch (InterruptedException e) {
-        					// TODO Auto-generated catch block
-        					e.printStackTrace();
-        				}
-        				if (job.getResult() == Status.OK_STATUS) {
-        					decl[0] = job.getDeclarations();
-        				}
-        			}
-
-        			// Look for a simple declaration.
-        			IASTNode n = null;
-        			if (decl[0] != null && decl[0].length > 0) {
-         				n = decl[0][0];
-        				while (n != null && !(n instanceof IASTSimpleDeclaration)) {
-        					n = n.getParent();
-        				}
-        			}
-
-        			// If we have the simple declaration, get its declaration specifier which hopefully will
-        			// be a named type.
-        			if (n != null) {
-        				IASTSimpleDeclaration d = (IASTSimpleDeclaration)n;
-        				IASTDeclSpecifier s = d.getDeclSpecifier();
-        				if (s instanceof IASTNamedTypeSpecifier) {
-        					// From the named type, we can get the binding of the type name and from that,
-        					// its qualified name.  We need a qualified name (i.e. with namespace) because our
-        					// repository of classes and typedefs are hashed by fully qualified names.
-        					IASTName astName = ((IASTNamedTypeSpecifier)s).getName();
-        					if (astName != null) {
-        						IBinding nameBinding = astName.resolveBinding();
-        						if (nameBinding instanceof ICPPBinding) {
-        							String[] qualified = ((ICPPBinding)nameBinding).getQualifiedName();
-        							className = qualified[0];
-        							for (int k = 1; k < qualified.length; ++k)
-        								className += "::" + qualified[k];
-        						} else {
-        							className = nameBinding.getName();
-        						}
-        					}
-        				}
-        			}
-//        							System.out.println("classname is " + className);
         			
         			// Now, let's find the declaration of the method.  We need to do this because we want the specific
         			// member prototype to go searching for.  There could be many members called "x" which have different
         			// documentation.
-        			if (className != null) {
-        				EnclosingASTNameJob job = new EnclosingASTNameJob(t, region.getOffset(), region.getLength());
-        				job.schedule();
-        				try {
-        					job.join();
-        				} catch (InterruptedException e) {
-        					// TODO Auto-generated catch block
-        					e.printStackTrace();
-        				}
-        				if (job.getResult() == Status.OK_STATUS)
-        					result[0] = job.getASTName();
-        			}
+           			final IASTName[] result= {null};
+           			EnclosingASTNameJob job = new EnclosingASTNameJob(t, region.getOffset(), region.getLength());
+           			job.schedule();
+           			try {
+           				job.join();
+           			} catch (InterruptedException e) {
+           				// TODO Auto-generated catch block
+           				e.printStackTrace();
+           			}
+           			if (job.getResult() == Status.OK_STATUS)
+           				result[0] = job.getASTName();
         			if (result[0] != null) {
         				final IBinding binding = result[0].getBinding();
+        				// Check to see we have a member function.
         				if (binding instanceof ICPPFunction) {
         					methodType = ((ICPPFunction)binding).getType();
+        					// We have a member function, find the class name.
+        					IBinding owner = ((ICPPFunction)binding).getOwner();
+        					if (owner instanceof ICPPClassType) {
+        						className = getClassName((ICPPClassType)owner);
+        					}
         				}
         			}
         		}
@@ -421,6 +320,56 @@ public class LibHover implements ICHelpProvider {
         }
         
         return null;
+	}
+
+	// Get the class name for a type, including any instance template parameters
+	// e.g. std::basic_string<char>
+	private String getClassName(ICPPClassType c) {
+		String className = null;
+		try {
+			String[] qualified = c.getQualifiedName();
+			className = qualified[0];
+			for (int k = 1; k < qualified.length; ++k) {
+				className += "::" + qualified[k];
+			}
+
+			// Check if we have an instance of a template class.	
+			if (c instanceof ICPPTemplateInstance) {
+				ICPPTemplateInstance ti = (ICPPTemplateInstance)c;
+				// Get a map which tells us the values of the template
+				// arguments (e.g. _CharT maps to char in the instance).
+				ICPPTemplateParameterMap tiMap = ti.getTemplateParameterMap();
+				ICPPTemplateDefinition td = ti.getTemplateDefinition();
+				ICPPTemplateParameter[] templateArgs = td.getTemplateParameters();
+				className += "<";
+				String separator = "";
+				for (int x = 0; x < templateArgs.length; ++x) {
+					ICPPTemplateParameter tp = templateArgs[x];
+					ICPPTemplateArgument ta = tiMap.getArgument(tp);
+					IType type = null;
+					// The template may have a type specified or a value.
+					// In the case of a value, figure out its type and use
+					// that when we do a lookup.
+					if (ta.isTypeValue())
+						type = ta.getTypeValue();
+					else
+						type = ta.getTypeOfNonTypeValue();
+					if (tp.getTemplateNestingLevel() == 0) {
+						// if the parameter is a class type, use recursion to
+						// get its class name including template parameters
+						if (type instanceof ICPPClassType)
+							className += separator + getClassName((ICPPClassType)type);
+						else
+							className += separator + type.toString();
+						separator = ",";
+					}
+				}
+				className += ">";
+			}
+		} catch(DOMException e) {
+			return null;
+		}
+		return className;
 	}
 	
 	private IFunctionSummary getFunctionSummary(LibHoverLibrary l, String name) {
@@ -483,8 +432,8 @@ public class LibHover implements ICHelpProvider {
 				f.ReturnType = m.getReturnType();
 				f.Prototype = m.getPrototype();
 				f.Summary = m.getDescription();
-				String actualClassName = className.substring(className.indexOf("::")+2); // $NON-NLS-1$
-				f.Name = actualClassName + "::" + memberName; // $NON-NLS-1$
+//				String actualClassName = className.substring(className.indexOf("::")+2); // $NON-NLS-1$
+				f.Name = className + "::" + memberName; // $NON-NLS-1$
 				String[] templateParms = info.getTemplateParms();
 				for (int i = 0; i < templateTypes.size(); ++i) {
 					f.ReturnType = f.ReturnType.replaceAll(templateParms[i], templateTypes.get(i));
@@ -569,28 +518,6 @@ public class LibHover implements ICHelpProvider {
 					fList.add(f);
 				}
 			}
-			
-//			Document document = l != null ? l.getDocument() : null;
-//			if ((null != document) && (null != prefix)) {
-//				NodeList elems = document.getElementsByTagName("construct"); // $NON-NLS-1$
-//				for (int i = 0; i < elems.getLength(); ++i) {
-//					Element elem = (Element)elems.item(i);
-//					NamedNodeMap attrs = elem.getAttributes();
-//					Node id_node = attrs.item(0);
-//					String elemName = id_node.getNodeValue();
-//					if (elemName != null && elemName.startsWith("function-")) { // $NON-NLS-1$
-//						String funcName = elemName.substring(9);
-//						if (funcName != null && funcName.startsWith(prefix)) {
-//							NodeList functionNodes = elem.getElementsByTagName("function"); // $NON-NLS-1$
-//							for (int j = 0; j < functionNodes.getLength(); ++j) {
-//								Node function_node = functionNodes.item(j);
-//								FunctionSummary f = getFunctionSummaryFromNode(funcName, function_node, document);
-//								fList.add(f);
-//							}
-//						}
-//					}
-//				}
-//			}
 		}
 		IFunctionSummary[] summaries = new IFunctionSummary[fList.size()];
 		for (int k = 0; k < summaries.length; k++) {
