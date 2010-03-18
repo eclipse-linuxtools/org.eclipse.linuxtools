@@ -9,7 +9,8 @@
 	(getClassName): New method to get class name including template parameters.
 	(getFunctionInfo): Change to specify fully qualified name and not remove
 	namespace.
-	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLibrary.java (getClassInfo): 
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLibrary.java (getClassInfo): Check
+	info is not null before accessing.
 
 2010-03-04  Jeff Johnston  <jjohnstn@redhat.com>
 
