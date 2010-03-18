@@ -20,9 +20,16 @@ import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsConfigurationBuilder;
 
 public class AutotoolsNewProjectNature implements IProjectNature {
@@ -94,9 +101,45 @@ public class AutotoolsNewProjectNature implements IProjectNature {
 				commandList.add(command);
 			}
 		}
-		ICommand[] newCommands = new ICommand[commandList.size()];
-		description.setBuildSpec(commandList.toArray(newCommands));
-		project.setDescription(description, new NullProgressMonitor());
+		final ICommand[] newCommands = commandList.toArray(new ICommand[commandList.size()]);
+		if (newCommands.length == commands.length) {
+			boolean hasCorrectBuilderCommands = true;
+			for (int j = 0; j < commands.length; ++j) {
+				if (!commands[j].getBuilderName().equals(newCommands[j])) {
+					hasCorrectBuilderCommands = false;
+					break;
+				}
+			}
+			if (hasCorrectBuilderCommands)
+				return;
+		}
+		final ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRoot();
+		final IProject proj = project;
+
+		Job backgroundJob = new Job("Autotools Set Project Description") {
+			/* (non-Javadoc)
+			 * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
+			 */
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+
+						public void run(IProgressMonitor monitor) throws CoreException {
+
+							IProjectDescription description = proj.getDescription();
+							description.setBuildSpec(newCommands);
+							proj.setDescription(description, new NullProgressMonitor());
+						}
+					}, rule, IWorkspace.AVOID_UPDATE, monitor);
+				} catch (CoreException e) {
+					return e.getStatus();
+				}
+				IStatus returnStatus = Status.OK_STATUS;
+				return returnStatus;
+			}
+		};
+		backgroundJob.setRule(rule);
+		backgroundJob.schedule();
 	}
 
 	/**
