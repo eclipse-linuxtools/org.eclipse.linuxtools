@@ -1,3 +1,10 @@
+2010-03-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #306406
+	* src/org/eclipse/linuxtools/cdt/autotools/core/AutotoolsNewProjectNature.java (addAutotoolsBuilder): Don't save
+	project description unless builder list has been modified.  To save the project description, use a Job so it is
+	done asynchronously. 
+
 2010-03-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (regenerateMakefiles): Use the
