@@ -159,13 +159,15 @@ public class LibHoverLibrary {
 			// and we choose the first match.  If nothing matches our particular
 			// case, we fall back on the initial generic template.
 			ClassInfo info = getHoverInfo().classes.get(className.substring(0, index));
-			ArrayList<ClassInfo> children = info.getChildren();
-			if (children != null && children.size() > 0) {
-				for (int x = 0; x < children.size(); ++x) {
-					ClassInfo child = children.get(x);
-					if (className.matches(child.getClassName())) {
-						info = child;
-						break;
+			if (info != null) {
+				ArrayList<ClassInfo> children = info.getChildren();
+				if (children != null && children.size() > 0) {
+					for (int x = 0; x < children.size(); ++x) {
+						ClassInfo child = children.get(x);
+						if (className.matches(child.getClassName())) {
+							info = child;
+							break;
+						}
 					}
 				}
 			}
