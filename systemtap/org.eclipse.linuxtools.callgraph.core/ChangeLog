@@ -1,3 +1,10 @@
+2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add o.e.l.profiling.ui to imported packages.
+	* src/org/eclipse/linuxtools/callgraph/core/FileFinderOpener.java:
+		Clean up code by using openEditorAndSelect which is now in profiling framework.
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Remove these strings.
+
 2010-02-26  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java:

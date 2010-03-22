@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.core;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,18 +23,12 @@ import org.eclipse.cdt.core.index.IIndexManager;
 import org.eclipse.cdt.core.index.IIndexName;
 import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
-import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * Helper class that finds and opens files. Finds based on function names,
  * opens based on path and in the current default editor. 
@@ -45,7 +38,6 @@ public class FileFinderOpener {
 	
 	private static HashMap<String, Integer> offset = new HashMap<String, Integer>();
 	private static HashMap<String, Integer> length = new HashMap<String, Integer>();
-
 	
 	/**
 	 * Returns a list of files locations for all files that contain the selected
@@ -104,24 +96,22 @@ public class FileFinderOpener {
 	 * @param functionName
 	 * @return
 	 */
-	public static String findAndOpen(ICProject project, String functionName) {
+	public static void findAndOpen(ICProject project, String functionName) {
 		//Safety valve: Do not enforce use of project names
 		if (project == null)
-			return null;
+			return;
 		
 		offset.clear();
 		length.clear();
 		ArrayList<String> files = findFunctionsInProject(project, functionName);
 		
 		if (files == null || files.size() < 1)
-			return null;
-		StringBuilder output = new StringBuilder();
+			return;
 
 		if (files.size() == 1) {
 			open(files.get(0), offset.get(files.get(0)), length.get(files.get(0)));
 		} else {
-			ElementListSelectionDialog d = new ElementListSelectionDialog(
-					new Shell(), new LabelProvider());
+			ElementListSelectionDialog d = new ElementListSelectionDialog(new Shell(), new LabelProvider());
 			d.setTitle(Messages.getString("FileFinderOpener.MultipleFilesDialog"));  //$NON-NLS-1$
 			d.setMessage(Messages.getString("FileFinderOpener.MultFilesDialogM1") + functionName + Messages.getString("FileFinderOpener.MultFilesDialogM2") +   //$NON-NLS-1$ //$NON-NLS-2$
 					Messages.getString("FileFinderOpener.MultFilesDialogM3"));  //$NON-NLS-1$
@@ -129,51 +119,25 @@ public class FileFinderOpener {
 			d.open();
 			
 			if (d.getResult() == null) {
-				return null;
+				return;
 			}
 			
 			for (Object o : d.getResult()) {
 				if (o instanceof String) {
 					String s = (String) o;
-					output.append(open(s, offset.get(s), length.get(s)));
+					open(s, offset.get(s), length.get(s));
 				}
 			}
 		}	
-		
-		return output.toString();
 	}
 	
-	/**
-	 * Open a file in the Editor at the specified offset, highlighting the given length
-	 * 
-	 * @param path : Absolute path pointing to the file which will be opened.
-	 * @param offset : Offset of the function to be highlighted.
-	 * @param length : Length of the function to be highlighted.
-	 * @return The title of the workbench.
-	 */
-	public static String open(String path, int offset, int length) {
+	public static void open(String path, int offset, int length) {
 		if (path == null)
-			return null;
-		File fileToOpen = new File(path);
-		 
-		if (fileToOpen.exists() && fileToOpen.isFile()) {
-		    IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
-		    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		 
-		    try {
-		        IEditorPart ed = IDE.openEditorOnFileStore( page, fileStore );
-		        if (ed instanceof ITextEditor && offset > 0) {
-		        	ITextEditor text = (ITextEditor) ed;
-		        	text.selectAndReveal(offset, length);
-		        	return text.getTitle();
-		        }
-		    } catch ( PartInitException e ) {
-			}
-		} else {
-			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("FileFinderOpener.FileNotFound"),  //$NON-NLS-1$
-					Messages.getString("FileFinderOpener.FileNotFound1"), Messages.getString("FileFinderOpener.FileNotFound2") + path);   //$NON-NLS-1$ //$NON-NLS-2$
-			mess.schedule();
+			return;
+		try {
+			ProfileUIUtils.openEditorAndSelect(path, offset, length);
+		} catch (PartInitException e) {
+			e.printStackTrace();
 		}
-		return null;
 	}
 }
