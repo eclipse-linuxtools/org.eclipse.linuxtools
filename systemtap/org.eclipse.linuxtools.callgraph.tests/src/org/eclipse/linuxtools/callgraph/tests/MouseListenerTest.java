@@ -47,7 +47,6 @@ public class MouseListenerTest extends TestCase {
 		GraphItem[] nodes = { g.getNode(g.getFirstUsefulNode()) };
 		g.setSelection(nodes);
 
-		System.out.println(mListener.controlDoubleClick());
 		mListener.mouseDownEvent(0, 0);
 		g.draw(StapGraph.CONSTANT_DRAWMODE_TREE,
 				StapGraph.CONSTANT_ANIMATION_FASTEST, g.getFirstUsefulNode());

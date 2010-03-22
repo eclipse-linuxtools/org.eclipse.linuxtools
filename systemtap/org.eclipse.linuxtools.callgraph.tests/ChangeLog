@@ -1,3 +1,7 @@
+2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/tests/MouseListenerTest.java: Remove printline call.
+
 2009-12-15  Charley Wang  <chwang@redhat.com>
 
 	* (all).graph: Modify to remove semi-colon from ends of lines
