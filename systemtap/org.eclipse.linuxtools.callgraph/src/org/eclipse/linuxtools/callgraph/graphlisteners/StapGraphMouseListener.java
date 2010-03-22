@@ -170,22 +170,21 @@ public class StapGraphMouseListener implements MouseListener {
 		return node;
 	}
 	
-	public String controlDoubleClick() {
-		String output = null;
+	public void controlDoubleClick() {
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
 			GraphNode node = getAggregateNodeFromSelection();
 			
 			if (node == null)
-				return null;
+				return;
 			
 			String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
-			output= FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+			FileFinderOpener.findAndOpen(graph.getProject(), functionName);
 			node.unhighlight();
 		} else {
 			StapNode node = getNodeFromSelection();
 			
 			if (node == null)
-				return null;
+				return;
 
 			int caller = node.getData().id;
 
@@ -194,12 +193,11 @@ public class StapGraphMouseListener implements MouseListener {
 				// main
 				caller = graph.getFirstUsefulNode();
 			}
-			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getNodeData(caller).name);
+			FileFinderOpener.findAndOpen(graph.getProject(), graph.getNodeData(caller).name);
 			node.unhighlight();
 		}
 
 		graph.setSelection(null);
-		return output;
 	}
 	
 	public void mouseDownEvent(int x, int y) {

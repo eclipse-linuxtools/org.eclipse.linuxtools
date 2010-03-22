@@ -1,3 +1,8 @@
+2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/graphlisteners/StapGraphMouseListener.java (controlDoubleClick):
+		Remove unnecessary return value from this method.
+
 2010-02-23  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/StapGraphParser.java: Fix markers to work with threads
