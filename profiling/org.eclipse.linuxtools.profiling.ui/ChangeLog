@@ -1,3 +1,8 @@
+2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java:
+		(openEditorAndSelect): Overload to take an offset and length.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.3.0.

@@ -104,4 +104,28 @@ public class ProfileUIUtils {
 			}
 		}
 	}
+	
+	/**
+	 * Open a file in the Editor at the specified offset, highlighting the given length
+	 * 
+	 * @param path : Absolute path pointing to the file which will be opened.
+	 * @param offset : Offset of the function to be highlighted.
+	 * @param length : Length of the function to be highlighted.
+	 * @throws PartInitException if the editor could not be initialized
+	 */
+	public static void openEditorAndSelect(String path, int offset, int length) throws PartInitException {
+		Path p = new Path (path);
+
+		if (p.toFile().exists()) {
+			IWorkbenchPage activePage = ProfileUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(p);
+
+			IEditorPart editor = IDE.openEditorOnFileStore(activePage, fileStore);
+			if (editor instanceof ITextEditor) {
+				ITextEditor text = (ITextEditor) editor;
+				text.selectAndReveal(offset, length);
+			}
+		}
+	}
+	
 }
