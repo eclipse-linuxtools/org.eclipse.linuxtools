@@ -1,3 +1,10 @@
+2010-04-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #308261
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfiguration.java (copy): Only set
+	the isDirty flag to true if we are cloning a configuration to a new id.  A straight copy should not change the isDirty
+	flag.
+
 2010-03-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #306406
