@@ -226,7 +226,10 @@ public class AutotoolsConfiguration implements IAConfiguration {
 			IConfigureOption opt = i.next();
 			cfg.configOptions.put(opt.getName(), opt.copy(cfg));
 		}
-		cfg.setDirty(true);
+		if (getId().equals(newId))
+			cfg.setDirty(isDirty()); // copying with same id, do not change dirty attribute
+		else
+			cfg.setDirty(true); // we are cloning with a new id, treat it as never built/dirty
 		return cfg;
 	}
 	
