@@ -43,7 +43,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileLaunchConfigurationDelegate {
 	@Override
-	protected void preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
+	protected boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
 //		//set up the oprofile daemon
 //		try {
 //			//kill the daemon (it shouldn't be running already, but to be safe)
@@ -60,6 +60,7 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 //			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
 //			return;
 //		}
+		return true;
 	}
 
 	@Override
@@ -72,6 +73,8 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				//TODO: have a initialization dialog to do reset and setupDaemon?
 				// using a progress dialog, can't abort the launch if there's an exception..
 				try {
+					if (!oprofileStatus())
+						return;
 					oprofileReset();
 					oprofileSetupDaemon(fOptions.getOprofileDaemonOptions(), fDaemonEvents);
 				} catch (OpcontrolException oe) {
