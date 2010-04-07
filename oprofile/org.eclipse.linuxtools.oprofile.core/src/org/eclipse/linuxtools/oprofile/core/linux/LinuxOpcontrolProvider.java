@@ -40,7 +40,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	
 	// Setup daemon collection arguments
 	private static final String _OPD_SETUP = "--setup"; //$NON-NLS-1$
-	private static final String _OPD_HELP = "--"; //$NON-NLS-1$
+	private static final String _OPD_HELP = "--help"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE = "--separate="; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_SEPARATOR = ","; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_NONE = "none"; //$NON-NLS-1$
@@ -261,8 +261,10 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
 				}
 				
-				if (output.length() != 0)
+				System.out.println(output);
+				if (output.length() != 0) {
 					return true;
+				}
 				
 			} catch (IOException ioe) { 
 				ioe.printStackTrace();
