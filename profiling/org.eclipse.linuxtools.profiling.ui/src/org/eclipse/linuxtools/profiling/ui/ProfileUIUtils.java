@@ -191,7 +191,8 @@ public class ProfileUIUtils {
 	 * @return a HashMap<String, int []> of String absolute paths of files and the
 	 * function's corresponding node-offset and length.
 	 */
-	public static HashMap<String,int[]> findFunctionsInProject(ICProject project, String functionName, int numArgs, String fileHint)  {
+	public static HashMap<String,int[]> findFunctionsInProject(ICProject project, String functionName,
+			int numArgs, String fileHint)  {
 		  HashMap<String,int[]> files = new HashMap<String,int[]>() ;
 
 		  IIndexManager manager = CCorePlugin.getIndexManager();
@@ -235,4 +236,22 @@ public class ProfileUIUtils {
 			}
 		   return files;
 	}
+	
+	/**
+	 * Helper function for findFunctionsInProject
+	 * @param needResult True if the function should relax constraints in order
+	 * to return some value. False if a failure to find the function(s) is acceptable.
+	 */
+	public static HashMap<String,int[]> findFunctionsInProject(ICProject project, String functionName, 
+			int numArgs, String fileHint, boolean needResult){
+		HashMap<String, int []> map = findFunctionsInProject(project, functionName, numArgs, fileHint);
+		if (needResult && map.size() == 0){
+			map = findFunctionsInProject(project, functionName, -1, fileHint);
+			if (map.size() == 0){
+				return findFunctionsInProject(project, functionName, -1, null);
+			}
+		}
+		return map;
+	}
+	
 }
