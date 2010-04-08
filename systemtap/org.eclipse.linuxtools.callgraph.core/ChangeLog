@@ -1,3 +1,10 @@
+2010-04-08  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add required import packages.
+	* src/org/eclipse/linuxtools/callgraph/core/FileFinderOpener.java
+		(findAndOpen): Simplify logic by using functions in profiling
+		framework o.e.l.profiling to link to source code.
+
 2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add o.e.l.profiling.ui to imported packages.

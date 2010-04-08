@@ -13,22 +13,13 @@ package org.eclipse.linuxtools.callgraph.core;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.core.dom.ast.IBinding;
-import org.eclipse.cdt.core.dom.ast.IFunction;
-import org.eclipse.cdt.core.index.IIndex;
-import org.eclipse.cdt.core.index.IIndexFile;
-import org.eclipse.cdt.core.index.IIndexFileLocation;
-import org.eclipse.cdt.core.index.IIndexManager;
-import org.eclipse.cdt.core.index.IIndexName;
-import org.eclipse.cdt.core.index.IndexFilter;
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
+
 /**
  * Helper class that finds and opens files. Finds based on function names,
  * opens based on path and in the current default editor. 
@@ -36,56 +27,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
  */
 public class FileFinderOpener {
 	
-	private static HashMap<String, Integer> offset = new HashMap<String, Integer>();
-	private static HashMap<String, Integer> length = new HashMap<String, Integer>();
-	
-	/**
-	 * Returns a list of files locations for all files that contain the selected
-	 * function name.
-	 * 
-	 * @param project : C Project Type
-	 * @param functionName : name of a function 
-	 * @return an ArrayList of String paths (relative to current workspace) of
-	 * files with specified function name
-	 */
-	private static ArrayList<String> findFunctionsInProject(ICProject project, 
-			String functionName)  {
-		  ArrayList<String> files = new ArrayList<String>() ;
-
-		  IIndexManager manager = CCorePlugin.getIndexManager();
-		  IIndex index = null;
-		    try {
-				index = manager.getIndex(project);
-				index.acquireReadLock();
-				IBinding[] bindings = index.findBindings(functionName.toCharArray(), IndexFilter.ALL, null);
-				for (IBinding bind : bindings) {
-					if (bind instanceof IFunction) {
-						IFunction ifunction = (IFunction) bind;
-						IIndexName[] names = index.findNames(ifunction,
-								IIndex.FIND_DEFINITIONS);
-						for (IIndexName iname : names) {
-							IIndexFile file = iname.getFile();
-							if (file != null) {
-								IIndexFileLocation filelocation = file.getLocation();
-								String loc = filelocation.getURI().getPath();
-								files.add(loc);
-								offset.put(loc, iname.getNodeOffset());
-								length.put(loc, iname.getNodeLength());
-							}
-						}
-					}
-				}
-				
-			} catch (CoreException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-		   index.releaseReadLock();
-		   return files;
-	}
-	
+	private static HashMap<String, int []> map = new HashMap<String, int []>();
 	
 	/**
 	 * Seeks all functions in the given proejct that contains the given function name.
@@ -101,15 +43,14 @@ public class FileFinderOpener {
 		if (project == null)
 			return;
 		
-		offset.clear();
-		length.clear();
-		ArrayList<String> files = findFunctionsInProject(project, functionName);
+		map = ProfileUIUtils.findFunctionsInProject(project, functionName, -1, null);
+		ArrayList<String> files = new ArrayList<String>(map.keySet());
 		
 		if (files == null || files.size() < 1)
 			return;
 
 		if (files.size() == 1) {
-			open(files.get(0), offset.get(files.get(0)), length.get(files.get(0)));
+			open(files.get(0), map.get(files.get(0))[0], map.get(files.get(0))[1]);
 		} else {
 			ElementListSelectionDialog d = new ElementListSelectionDialog(new Shell(), new LabelProvider());
 			d.setTitle(Messages.getString("FileFinderOpener.MultipleFilesDialog"));  //$NON-NLS-1$
@@ -125,7 +66,7 @@ public class FileFinderOpener {
 			for (Object o : d.getResult()) {
 				if (o instanceof String) {
 					String s = (String) o;
-					open(s, offset.get(s), length.get(s));
+					open(s, map.get(s)[0], map.get(s)[1]);
 				}
 			}
 		}	
