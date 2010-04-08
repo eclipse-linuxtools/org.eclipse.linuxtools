@@ -261,7 +261,6 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
 				}
 				
-				System.out.println(output);
 				if (output.length() != 0) {
 					return true;
 				}
