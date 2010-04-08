@@ -1,3 +1,11 @@
+2010-04-08  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Added imports needed for using CDT Indexer.
+	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java
+		(findCProjectWithAbsolutePath): New, for purpose of locating an ICProject.
+		(findFunctionsInProject): New, for purpose of finding data needed to link
+		to source code of a function call.
+
 2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java:

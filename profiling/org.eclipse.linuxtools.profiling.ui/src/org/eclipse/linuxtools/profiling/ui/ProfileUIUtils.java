@@ -10,9 +10,26 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.ui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.core.dom.ast.DOMException;
+import org.eclipse.cdt.core.dom.ast.IBinding;
+import org.eclipse.cdt.core.dom.ast.IFunction;
+import org.eclipse.cdt.core.index.IIndex;
+import org.eclipse.cdt.core.index.IIndexFile;
+import org.eclipse.cdt.core.index.IIndexManager;
+import org.eclipse.cdt.core.index.IIndexName;
+import org.eclipse.cdt.core.index.IndexFilter;
+import org.eclipse.cdt.core.model.ICElement;
+import org.eclipse.cdt.core.model.ICElementVisitor;
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.debug.core.CDebugCorePlugin;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.ui.DebugUITools;
@@ -128,4 +145,94 @@ public class ProfileUIUtils {
 		}
 	}
 	
+	/**
+	 * Find an ICProject that contains the specified absolute path.
+	 * 
+	 * @param absPath An absolute path (usually to some file/folder in a project)
+	 * @return an ICProject corresponding to the project that contains the absolute path
+	 * @throws CoreException
+	 */
+	public static ICProject findCProjectWithAbsolutePath(final String absPath) throws CoreException{
+		final String workspaceLoc = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+		final ArrayList<ICProject> ret = new ArrayList<ICProject>();
+		
+		// visitor object to check for the matching path string
+		ICElementVisitor vis = new ICElementVisitor() {
+			public boolean visit(ICElement element) throws CoreException {
+				if (element.getElementType() == ICElement.C_CCONTAINER
+						|| element.getElementType() == ICElement.C_PROJECT){
+					return true;
+				}else if (absPath.equals(workspaceLoc+element.getPath().toFile().getAbsolutePath())){
+					ret.add(element.getCProject());
+				}
+				return false;
+		}};
+		
+			ICProject[] cProjects = CCorePlugin.getDefault().getCoreModel().getCModel().getCProjects();
+			for (ICProject proj : cProjects){
+					// visit every project
+					proj.accept(vis);
+			}
+		
+		// is it possible to find more than one matching project ?
+		return ret.size() == 0 ? null : ret.get(0);
+	}
+	
+	/**
+	 * Get a mapping between a file name, and the data relevant to locating
+	 * the corresponding function name for a given project.
+	 * 
+	 * @param project : C Project Type
+	 * @param functionName : Name of a function 
+	 * @param numArgs : The number of arguments this function is expected to have.
+	 * A value of -1 will ignore the number of arguments when searching.
+	 * @param fileHint : The name of the file where we expect to find functionName.
+	 * It is null if we do not want to use this option.
+	 * @return a HashMap<String, int []> of String absolute paths of files and the
+	 * function's corresponding node-offset and length.
+	 */
+	public static HashMap<String,int[]> findFunctionsInProject(ICProject project, String functionName, int numArgs, String fileHint)  {
+		  HashMap<String,int[]> files = new HashMap<String,int[]>() ;
+
+		  IIndexManager manager = CCorePlugin.getIndexManager();
+		  IIndex index = null;
+		    try {
+				index = manager.getIndex(project);
+				index.acquireReadLock();
+				IBinding[] bindings = index.findBindings(functionName.toCharArray(), IndexFilter.ALL, null);
+				for (IBinding bind : bindings) {
+					if (bind instanceof IFunction
+							&& (numArgs == -1 || ((IFunction)bind).getParameters().length == numArgs)) {
+						IFunction ifunction = (IFunction) bind;
+						IIndexName[] names = index.findNames(ifunction, IIndex.FIND_DEFINITIONS);
+						for (IIndexName iname : names) {
+							IIndexFile file = iname.getFile();
+							if (file != null) {
+								String loc = file.getLocation().getURI().getPath();
+								if (fileHint != null){
+									if (loc.endsWith(fileHint)){
+										//TODO: Consider changing data structure so that we can
+										// store multiple same-named functions (different args)
+										// from the same file.
+										files.put(loc, new int [] {iname.getNodeOffset(), iname.getNodeLength()});
+									}
+								}else{
+									files.put(loc, new int [] {iname.getNodeOffset(), iname.getNodeLength()});
+								}
+							}
+						}
+					}
+				}
+				
+			} catch (CoreException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (DOMException e) {
+				e.printStackTrace();
+			}finally{
+				index.releaseReadLock();
+			}
+		   return files;
+	}
 }

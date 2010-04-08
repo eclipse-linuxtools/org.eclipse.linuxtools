@@ -12,7 +12,11 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.internal.profiling.ui,
  org.eclipse.linuxtools.profiling.ui
-Import-Package: org.eclipse.cdt.debug.core,
+Import-Package: org.eclipse.cdt.core,
+ org.eclipse.cdt.core.dom.ast,
+ org.eclipse.cdt.core.index,
+ org.eclipse.cdt.core.model,
+ org.eclipse.cdt.debug.core,
  org.eclipse.core.filesystem,
  org.eclipse.core.resources,
  org.eclipse.debug.core.model,
