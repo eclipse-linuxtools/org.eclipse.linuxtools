@@ -1,3 +1,9 @@
+2010-04-09  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #307258
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileEditor.java (isTabsToSpacesConversionEnabled): 
+	Add override method so tabs are not converted within the Automake editor.
+
 2010-03-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject): Move

@@ -150,6 +150,15 @@ public class MakefileEditor extends TextEditor implements ISelectionChangedListe
 		return AutotoolsPlugin.getDefault().getPreferenceStore().getBoolean(MakefileEditorPreferenceConstants.EDITOR_FOLDING_ENABLED);
 	}
 
+	/*
+	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#isTabsToSpacesConversionEnabled()
+	 */
+	protected boolean isTabsToSpacesConversionEnabled() {
+		// always false for Makefiles
+		// see http://bugs.eclipse.org/186106
+		return false;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
