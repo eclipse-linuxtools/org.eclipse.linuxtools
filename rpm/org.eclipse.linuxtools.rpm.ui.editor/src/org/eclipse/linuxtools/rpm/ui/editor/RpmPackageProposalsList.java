@@ -52,6 +52,8 @@ public class RpmPackageProposalsList {
 					list.add(line.trim());
 					line = reader.readLine();
 				}
+			} else {
+				RpmPackageBuildProposalsJob.update();
 			}
 		} catch (IOException e) {
 			RpmPackageBuildProposalsJob.update();

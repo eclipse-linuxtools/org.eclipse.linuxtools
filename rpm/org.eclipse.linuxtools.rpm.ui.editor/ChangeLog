@@ -1,3 +1,9 @@
+2010-04-09  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (createFieldEditors): Store field editor in a member.
+	(propertyChange): Erase package proposals on tools change.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (setPackagesList): Regenerate package list if file is missing.
+
 2010-03-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Externalize strings.
