@@ -1,3 +1,7 @@
+2010-04-12  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+
 2010-02-08  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Capitalize feature name.
