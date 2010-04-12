@@ -1,3 +1,8 @@
+2010-04-12  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+	* license.html: Likewise.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* feature.properties: Fix provider to be Eclipse not Eclipse.org.
