@@ -1,3 +1,7 @@
+2010-04-12  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+
 2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* feature.xml:renaming to systemtap.backup 
