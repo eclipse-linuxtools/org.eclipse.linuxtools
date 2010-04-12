@@ -1,3 +1,7 @@
+2010-04-12  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+
 2009-07-22  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Remove trailing "-feature".
