@@ -1,3 +1,7 @@
+2010-04-12  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+
 2009-11-10  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Make featureName a bit more user-friendly.
