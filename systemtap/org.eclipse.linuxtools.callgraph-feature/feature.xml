@@ -3,7 +3,8 @@
       id="org.eclipse.linuxtools.callgraph"
       label="%featureName"
       version="0.0.1.qualifier"
-      provider-name="%featureProvider">
+      provider-name="%featureProvider"
+      os="linux">
 
    <description>
       %description
