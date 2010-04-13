@@ -1,3 +1,8 @@
+2010-04-13  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java:
+		Clean up code.
+
 2010-03-05  Charley Wang  <chwang@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Stop passsing a useless argument to finishLaunch
