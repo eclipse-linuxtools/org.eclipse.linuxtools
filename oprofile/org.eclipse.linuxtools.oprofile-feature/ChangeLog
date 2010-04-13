@@ -1,3 +1,7 @@
+2010-04-13  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Restrict to os=linux.
+
 2010-04-12  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Match consistent license text (bug #306627).
