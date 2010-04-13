@@ -30,10 +30,10 @@ import org.eclipse.core.runtime.Status;
 public class SystemTapErrorHandler {
 
     public static final String FILE_PROP = "errors.prop"; //$NON-NLS-1$
+    private final int LINE_LIMIT = 300;
     private boolean errorRecognized;
     private StringBuilder errorMessage = new StringBuilder(""); //$NON-NLS-1$
     private StringBuilder logContents;
-
 
     public SystemTapErrorHandler() {
         errorRecognized = false;
@@ -58,14 +58,13 @@ public class SystemTapErrorHandler {
         try {
             BufferedReader buff = new BufferedReader(new FileReader(file));
             String line;
-            int index;
 
             for (String message : errorsList) {
                 buff = new BufferedReader(new FileReader(file));
                 while ((line = buff.readLine()) != null) {
                     if (m != null && m.isCanceled())
                         return;
-                    index = line.indexOf('=');
+                    int index = line.indexOf('=');
                     Pattern pat = Pattern.compile(line.substring(0, index),Pattern.DOTALL);
                     Matcher matcher = pat.matcher(message);
 
@@ -78,7 +77,7 @@ public class SystemTapErrorHandler {
                         String errorFound = line.substring(index+1);
 
                         if (!errorMessage.toString().contains(errorFound)) {
-                            errorMessage.append(errorFound+ PluginConstants.NEW_LINE);
+                            errorMessage.append(errorFound + PluginConstants.NEW_LINE);
                         }
                         break;
                     }
@@ -95,14 +94,12 @@ public class SystemTapErrorHandler {
 
     }
    
-   
     /**
      * Append to the log contents
      */
     public void appendToLog (String header){
         logContents.append(header);
     }
-   
 
     /**
      * Handle the error.
@@ -119,11 +116,10 @@ public class SystemTapErrorHandler {
         int counter = 0;
         while ((line = br.readLine()) != null) {
             counter++;
-            builder.append(line);
-            builder.append("\n"); //$NON-NLS-1$
+            builder.append(line + "\n"); //$NON-NLS-1$
             if (m != null && m.isCanceled())
                 return;
-            if (counter == 300) {
+            if (counter == LINE_LIMIT) {
                 handle(m, builder.toString());
                 builder = new StringBuilder();
                 counter = 0;
@@ -145,7 +141,6 @@ public class SystemTapErrorHandler {
 
         writeToLog();
     }
-    
    
     /**
      * Writes the contents of logContents to the error log, along with date and
@@ -157,11 +152,10 @@ public class SystemTapErrorHandler {
     	
         logContents = new StringBuilder(); //$NON-NLS-1$
     }
-
    
     /**
      * Delete the log at File and replace it with a new (empty) file
-     * @param log
+     * @param log The File object for the log file to delete and refresh
      */
     public static void deleteLog(File log) {
         log.delete();
@@ -172,11 +166,9 @@ public class SystemTapErrorHandler {
         }
     }
    
-   
     /**
-     * Returns true if an error matches one of the regex's in error.prop
-     *
-     * @return
+     * @return Returns true if an error matches one of the regex's in error.prop
+     * and false otherwise.
      */
     public boolean isErrorRecognized() {
         return errorRecognized;
@@ -184,19 +176,23 @@ public class SystemTapErrorHandler {
 
     /**
      * Convenience method to change the error recognition value.
-     *
-     * @param errorsRecognized
+     * @param errorsRecognized True if the handler recognizes some error
+     * and false otherwise.
      */
     private void setErrorRecognized(boolean errorsRecognized) {
         errorRecognized = errorsRecognized;
     }
     
-    
+    /**
+     * @return The error message string
+     */
     public String getErrorMessage(){
     	return errorMessage.toString();
     }
     
-    
+    /**
+     * @return The string contents of what will be printed to the log
+     */
     public String getLogContents(){
     	return logContents.toString();
     }
