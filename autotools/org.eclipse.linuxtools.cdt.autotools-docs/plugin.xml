@@ -6,6 +6,10 @@
       <toc
             file="toc.xml"
             primary="true"/>
+      <toc
+            file="userguide/Autotools Plugin-in User Guide-toc.xml"
+            primary="true">
+      </toc>
    </extension>
    <extension
          id="com.redhat.eclipse.cdt.autotools.docs.cheatsheets"

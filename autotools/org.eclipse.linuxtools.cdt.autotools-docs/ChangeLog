@@ -1,3 +1,55 @@
+2010-04-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #309117
+	* .classpath: New file.
+	* build-helper.xml: New file.
+	* doc/notices.html: New file.
+	* extract-markup.xsl: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/doc/anttask/MediaWikiImageFetcher.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/doc/anttask/tasks.properties: New file.
+	* userguide/Autotools\ Plugin-in\ User\ Guide-toc.xml: New file.
+	* userguide/Autotools\ Plugin-in\ User\ Guide.html: New file.
+	* userguide/Building.html: New file.
+	* userguide/Configuration.html: New file.
+	* userguide/Creating-an-Autotools-Project.html: New file.
+	* userguide/images/Linuxtool-AutotoolsMakeTargetsMenu.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAclocal.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutoconfEditor.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutoconfEditorPrefs.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutoheader.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutomake.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutomakeEditor.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutoreconf.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutotools.png: New file.
+	* userguide/images/Linuxtools-AutotoolsAutotoolsConsole.png: New file.
+	* userguide/images/Linuxtools-AutotoolsBuilders.png: New file.
+	* userguide/images/Linuxtools-AutotoolsBuildLocation.png: New file.
+	* userguide/images/Linuxtools-AutotoolsCheckout.png: New file.
+	* userguide/images/Linuxtools-AutotoolsConfsettings.png: New file.
+	* userguide/images/Linuxtools-AutotoolsConsolePrefs.png: New file.
+	* userguide/images/Linuxtools-AutotoolsConsoleSelect.png: New file.
+	* userguide/images/Linuxtools-AutotoolsConvAutotoolsWizard.png: New file.
+	* userguide/images/Linuxtools-AutotoolsConvertWizard.png: New file.
+	* userguide/images/Linuxtools-AutotoolsCProjectWizard.png: New file.
+	* userguide/images/Linuxtools-AutotoolsCreateConf.png: New file.
+	* userguide/images/Linuxtools-AutotoolsEditorsTab.png: New file.
+	* userguide/images/Linuxtools-AutotoolsLibtoolize.png: New file.
+	* userguide/images/Linuxtools-AutotoolsMakeTargetBuild.png: New file.
+	* userguide/images/Linuxtools-AutotoolsMakeTargetCreate.png: New file.
+	* userguide/images/Linuxtools-AutotoolsMakeTargetEdit.png: New file.
+	* userguide/images/Linuxtools-AutotoolsManageConfs.png: New file.
+	* userguide/images/Linuxtools-AutotoolsNewOther.png: New file.
+	* userguide/images/Linuxtools-AutotoolsToolSettings.png: New file.
+	* userguide/Invoking-Autotools.html: New file.
+	* userguide/Make-Targets.html: New file.
+	* userguide/Special-Editors.html: New file.
+	* userguide/Supported-Environments.html: New file.
+	* userguide/Updating-This-Document.html: New file.
+	* .project: Change to be Java project.
+	* build.properties: Add new binary files.
+	* META-INF/MANIFEST.MF: Dependency added.
+	* plugin.xml: Add additional toc for Autotools User Guide.
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* plugin.properties: Fix bundle name.  Fix provider.
