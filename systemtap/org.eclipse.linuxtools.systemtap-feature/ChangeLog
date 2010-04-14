@@ -1,3 +1,7 @@
+2010-04-14  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add OS filter for Linux (won't work on other OSes).
+
 2010-04-12  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Match consistent license text (bug #306627).
