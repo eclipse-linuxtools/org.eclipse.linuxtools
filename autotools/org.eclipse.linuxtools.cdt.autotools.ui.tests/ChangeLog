@@ -1,6 +1,7 @@
 2010-04-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java: New file.
+	(canAccessAutomake): New test.
 
 2010-04-12  Jeff Johnston  <jjohnstn@redhat.com>
 

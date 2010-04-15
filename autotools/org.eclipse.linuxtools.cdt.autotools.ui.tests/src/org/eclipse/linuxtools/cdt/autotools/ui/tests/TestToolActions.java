@@ -160,6 +160,67 @@ public class TestToolActions {
 		assertTrue(f.exists());
 	}
 	
+	@Test
+	// Verify we can access the aclocal tool
+	public void canAccessAutomake() throws Exception {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		assertTrue(workspace != null);
+		IWorkspaceRoot root = workspace.getRoot();
+		assertTrue(root != null);
+		IProject project = root.getProject("GnuProject1");
+		assertTrue(project != null);
+		IPath path = project.getLocation();
+		// Verify configure does not exist initially
+		IPath path2 = path.append("src/Makefile.in");
+		path = path.append("Makefile.in");
+		File f = new File(path.toOSString());
+		assertTrue(!f.exists());
+		File f2 = new File(path2.toOSString());
+		assertTrue(!f2.exists());
+		SWTBotView view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject1");
+		bot.menu("Project", 1).menu("Invoke Autotools").menu("Invoke Automake").click();
+		SWTBotShell shell = bot.shell("Automake Options");
+		shell.activate();
+		bot.text(0).typeText("--help");
+		bot.button("OK").click();
+		bot.sleep(1000);
+		SWTBotView consoleView = bot.viewByTitle("Console");
+		consoleView.setFocus();
+		String output = consoleView.bot().styledText().getText();
+		// Verify we got some help output to the console
+		Pattern p = Pattern.compile(".*Invoking automake in.*GnuProject1.*automake --help.*Usage:.*", Pattern.DOTALL);
+		Matcher m = p.matcher(output);
+		assertTrue(m.matches());
+		// Verify we still don't have Makefile.in files yet
+		f = new File(path.toOSString());
+		assertTrue(!f.exists());
+		f2 = new File(path2.toOSString());
+		assertTrue(!f2.exists());
+		// Now lets run automake for our hello world project which hasn't had any
+		// Makefile.in files generated yet.
+		view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject1");
+		bot.menu("Project", 1).menu("Invoke Autotools").menu("Invoke Automake").click();
+		shell = bot.shell("Automake Options");
+		shell.activate();
+		bot.text(0).typeText("--add-missing"); // need this to successfully run here
+		bot.text(1).typeText("Makefile src/Makefile");
+		bot.button("OK").click();
+		bot.sleep(2000);
+		consoleView = bot.viewByTitle("Console");
+		consoleView.setFocus();
+		output = consoleView.bot().styledText().getText();
+		p = Pattern.compile(".*Invoking automake in.*GnuProject1.*automake --add-missing Makefile src/Makefile.*", Pattern.DOTALL);
+		m = p.matcher(output);
+		assertTrue(m.matches());
+		// Verify we now have Makefile.in files created
+		f = new File(path.toOSString());
+		assertTrue(f.exists());
+		f2 = new File(path2.toOSString());
+		assertTrue(f2.exists());
+	}
+	
 	@AfterClass
 	public static void sleep() {
 		bot.sleep(4000);
