@@ -1,3 +1,7 @@
+2010-04-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java: New file.
+
 2010-04-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Initial check-in.
