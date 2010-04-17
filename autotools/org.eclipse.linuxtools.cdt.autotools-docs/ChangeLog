@@ -1,3 +1,7 @@
+2010-04-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Change J2SE level to 1.5.
+
 2010-04-14  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #309117
