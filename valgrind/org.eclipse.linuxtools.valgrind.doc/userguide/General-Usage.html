@@ -150,7 +150,43 @@
 			<b>
 				<i>Export</i>
 			</b> wizard menu.
-		</p><hr/>
+		</p>
+		<h2 id="Other_Operating_Systems">Other Operating Systems</h2>
+		<p>The Valgrind Eclipse plugins were designed and tested on Linux systems only. However, the Valgrind tools are also available on Mac OS X and so too are the Linux Tools Eclipse Valgrind plugins. The plugins are not officially supported on Mac OS X, but here are instructions to get it working.</p>
+		<h3 id="Mac_OS_X_10.6">Mac OS X 10.6</h3>
+		<p>As of Apr 19, 2010 the official release of the Valgrind tool does not work on 10.6. However, there are patches available to make it work.</p>
+		<p>Brief instructions to compile the Valgrind tool is here: 
+			<a href="http://code.google.com/p/data-race-test/wiki/ValgrindOnSnowLeopard">http://code.google.com/p/data-race-test/wiki/ValgrindOnSnowLeopard</a>
+		</p>
+		<p>Essentially, you need to run the following script. (Ensure you have wget installed)</p>
+		<pre> svn co -r 11104 svn://svn.valgrind.org/valgrind/trunk valgrind
+ cd valgrind
+ wget http://bugs.kde.org/attachment.cgi?id=40091 -O snow-leopard.patch
+ wget http://bugsfiles.kde.org/attachment.cgi?id=40900 -O arc4random.patch
+ wget http://bugsfiles.kde.org/attachment.cgi?id=42530 -O sidt.patch 
+ wget http://bugsfiles.kde.org/attachment.cgi?id=42892 -O signal.patch
+ patch -p0 &lt; snow-leopard.patch
+ patch -p0 &lt; arc4random.patch
+ patch -p1 &lt; signal.patch
+ cd VEX; patch -p0 &lt; ../sidt.patch ; cd ..
+ touch darwin10-drd.supp
+ touch darwin10.supp
+ ./autogen.sh || autoreconf -fvi
+ ./configure --prefix=`pwd`/inst
+ make -j 8 &amp;&amp; make install
+</pre>
+		<p>Once this is done, see instructions below for other Mac OS's</p>
+		<h3 id="x86_64_Mac_OS">x86_64 Mac OS</h3>
+		<p>Valgrind is only compatible with x86 binaries on Mac OS, so if you have x86_64 you'll need to ensure that x86 binaries are being built. To do this, right click on the project and select Properties. </p>
+		<p>Within the Properties window, select C/C++ Build then add '-m32' to the Command field for the MacOS X C++ Linker, GCC C++ Compiler and GCC C Compiler. This will cause x86 binaries to be created.</p>
+		<h3 id="Other_Mac_OS">Other Mac OS</h3>
+		<p>Ensure you have a release of the Valgrind command-line tool installed. See 
+			<a href="http://valgrind.org/">http://valgrind.org/</a>.
+		</p>
+		<p>After installing, you will need to create a symlink to /usr/bin/valgrind. </p>
+		<p>Use <code>which valgrind</code> to find the install location of the Valgrind binary. </p>
+		<p><code>ln -s /usr/bin/valgrind /location/of/valgrind</code> will create the symlink.</p>
+		<p>After that, the Eclipse Valgrind plugin should work as specified in other parts of this wiki page.</p><hr/>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
 			<tr>
 				<td style="width: 20%" align="left">
