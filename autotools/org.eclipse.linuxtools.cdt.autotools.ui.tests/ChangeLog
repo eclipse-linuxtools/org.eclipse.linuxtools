@@ -1,3 +1,11 @@
+2010-04-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java (canAccessAutoheader): New test. 
+	(canAccessAutomake): Ditto.
+	(canReconfigureProject): Ditto.
+	(canAccessLibtoolize): Ditto.
+	(canAccessAutoreconf): Ditto.
+
 2010-04-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java: New file.

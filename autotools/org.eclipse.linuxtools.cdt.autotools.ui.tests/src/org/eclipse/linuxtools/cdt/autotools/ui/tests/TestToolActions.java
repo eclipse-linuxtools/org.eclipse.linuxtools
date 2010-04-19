@@ -161,7 +161,7 @@ public class TestToolActions {
 	}
 	
 	@Test
-	// Verify we can access the aclocal tool
+	// Verify we can access the automake tool
 	public void canAccessAutomake() throws Exception {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		assertTrue(workspace != null);
@@ -221,6 +221,177 @@ public class TestToolActions {
 		assertTrue(f2.exists());
 	}
 	
+	@Test
+	// Verify we can access the libtoolize tool
+	public void canAccessLibtoolize() throws Exception {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		assertTrue(workspace != null);
+		IWorkspaceRoot root = workspace.getRoot();
+		assertTrue(root != null);
+		IProject project = root.getProject("GnuProject1");
+		assertTrue(project != null);
+		SWTBotView view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject1");
+		bot.menu("Project", 1).menu("Invoke Autotools").menu("Invoke Libtoolize").click();
+		SWTBotShell shell = bot.shell("Libtoolize Options");
+		shell.activate();
+		bot.text(0).typeText("--help");
+		bot.button("OK").click();
+		bot.sleep(1000);
+		SWTBotView consoleView = bot.viewByTitle("Console");
+		consoleView.setFocus();
+		String output = consoleView.bot().styledText().getText();
+		// Verify we got some help output to the console
+		Pattern p = Pattern.compile(".*Invoking libtoolize in.*GnuProject1.*libtoolize --help.*Usage: libtoolize.*", Pattern.DOTALL);
+		Matcher m = p.matcher(output);
+		assertTrue(m.matches());
+	}
+
+	@Test
+	// Verify we can access the libtoolize tool
+	public void canAccessAutoheader() throws Exception {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		assertTrue(workspace != null);
+		IWorkspaceRoot root = workspace.getRoot();
+		assertTrue(root != null);
+		IProject project = root.getProject("GnuProject1");
+		assertTrue(project != null);
+		SWTBotView view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject1");
+		bot.menu("Project", 1).menu("Invoke Autotools").menu("Invoke Autoheader").click();
+		SWTBotShell shell = bot.shell("Autoheader Options");
+		shell.activate();
+		bot.text(0).typeText("--help");
+		bot.button("OK").click();
+		bot.sleep(1000);
+		SWTBotView consoleView = bot.viewByTitle("Console");
+		consoleView.setFocus();
+		String output = consoleView.bot().styledText().getText();
+		// Verify we got some help output to the console
+		Pattern p = Pattern.compile(".*Invoking autoheader in.*GnuProject1.*autoheader --help.*Usage:.*autoheader.*", Pattern.DOTALL);
+		Matcher m = p.matcher(output);
+		assertTrue(m.matches());
+	}
+
+	@Test
+	// Verify we can access the autoreconf tool
+	public void canAccessAutoreconf() throws Exception {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		assertTrue(workspace != null);
+		IWorkspaceRoot root = workspace.getRoot();
+		assertTrue(root != null);
+		IProject project = root.getProject("GnuProject1");
+		assertTrue(project != null);
+		IPath path = project.getLocation();
+		// Remove a number of generated files
+		File f = new File(path.append("src/Makefile.in").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("Makefile.in").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("configure").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("config.status").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("config.sub").toOSString());
+		if (f.exists())
+			f.delete();
+		SWTBotView view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject1");
+		bot.menu("Project", 1).menu("Invoke Autotools").menu("Invoke Autoreconf").click();
+		SWTBotShell shell = bot.shell("Autoreconf Options");
+		shell.activate();
+		bot.text(0).typeText("--help");
+		bot.button("OK").click();
+		bot.sleep(1000);
+		SWTBotView consoleView = bot.viewByTitle("Console");
+		consoleView.setFocus();
+		String output = consoleView.bot().styledText().getText();
+		// Verify we got some help output to the console
+		Pattern p = Pattern.compile(".*Invoking autoreconf in.*GnuProject1.*autoreconf --help.*Usage: .*autoreconf.*", Pattern.DOTALL);
+		Matcher m = p.matcher(output);
+		assertTrue(m.matches());
+		view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject1");
+		bot.menu("Project", 1).menu("Invoke Autotools").menu("Invoke Autoreconf").click();
+		shell = bot.shell("Autoreconf Options");
+		shell.activate();
+		bot.text(0).typeText("-i");
+		bot.button("OK").click();
+		// We need to wait until the Makefile.in file is created so
+		// sleep a bit and look for it...give up after 20 seconds
+		for (int i = 0; i < 10; ++i) {
+			bot.sleep(2000);
+			f = new File(path.append("Makefile.in").toOSString());
+			if (f.exists())
+				break;
+		}
+		// Verify a number of generated files now exist
+		f = new File(path.append("src/Makefile.in").toOSString());
+		assertTrue(f.exists());
+		f = new File(path.append("Makefile.in").toOSString());
+		assertTrue(f.exists());
+		f = new File(path.append("configure").toOSString());
+		assertTrue(f.exists());
+		f = new File(path.append("config.status").toOSString());
+		assertTrue(!f.exists()); //shouldn't have run configure
+		f = new File(path.append("config.sub").toOSString());
+		assertTrue(f.exists());
+	}
+
+	@Test
+	// Verify we can access the autoreconf tool
+	public void canReconfigureProject() throws Exception {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		assertTrue(workspace != null);
+		IWorkspaceRoot root = workspace.getRoot();
+		assertTrue(root != null);
+		IProject project = root.getProject("GnuProject1");
+		assertTrue(project != null);
+		IPath path = project.getLocation();
+		// Remove a number of generated files
+		File f = new File(path.append("src/Makefile.in").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("Makefile.in").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("configure").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("config.status").toOSString());
+		if (f.exists())
+			f.delete();
+		f = new File(path.append("config.sub").toOSString());
+		if (f.exists())
+			f.delete();
+		SWTBotView view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject1");
+		bot.menu("Project", 1).menu("Reconfigure Project").click();
+		// We need to wait until the config.status file is created so
+		// sleep a bit and look for it...give up after 40 seconds
+		for (int i = 0; i < 20; ++i) {
+			bot.sleep(2000);
+			f = new File(path.append("config.status").toOSString());
+			if (f.exists())
+				break;
+		}
+		// Verify a number of generated files now exist
+		f = new File(path.append("src/Makefile.in").toOSString());
+		assertTrue(f.exists());
+		f = new File(path.append("Makefile.in").toOSString());
+		assertTrue(f.exists());
+		f = new File(path.append("configure").toOSString());
+		assertTrue(f.exists());
+		f = new File(path.append("config.status").toOSString());
+		assertTrue(f.exists());
+		f = new File(path.append("config.sub").toOSString());
+		assertTrue(f.exists());
+	}
+
 	@AfterClass
 	public static void sleep() {
 		bot.sleep(4000);
