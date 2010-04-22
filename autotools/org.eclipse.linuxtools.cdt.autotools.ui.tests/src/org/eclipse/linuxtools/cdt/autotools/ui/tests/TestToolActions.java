@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat Inc..
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat Incorporated - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.ui.tests;
 
 import static org.junit.Assert.assertTrue;
@@ -14,6 +24,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -29,10 +40,15 @@ public class TestToolActions {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
+		SWTBotPreferences.KEYBOARD_LAYOUT = "EN_US";
 		bot = new SWTWorkbenchBot();
-		// Close the Welcome view
+		// Close the Welcome view if it exists
+		try {
 		bot.viewByTitle("Welcome").close();
 		// Turn off automatic building by default
+		} catch (Exception e) {
+			// do nothing
+		}
 		bot.menu("Window").menu("Preferences").click();
 		SWTBotShell shell = bot.shell("Preferences");
 		shell.activate();
@@ -394,7 +410,8 @@ public class TestToolActions {
 
 	@AfterClass
 	public static void sleep() {
-		bot.sleep(4000);
+		bot.sleep(2000);
+		bot.menu("File").menu("Exit").click();
 	}
 
 }
