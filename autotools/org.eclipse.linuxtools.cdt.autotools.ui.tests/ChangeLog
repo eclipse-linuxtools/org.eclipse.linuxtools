@@ -1,0 +1,35 @@
+2010-04-22  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.properties: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/AllTests.java: New file.
+	* build.properties: Make plugin.properties part of binary build.
+	* META-INF/MANIFEST.MF: Change Java requirement to 1.5.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/Activator.java: Add copyright notice. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (beforeClass): Close
+	Welcome view optionally if it exists.  Also hard-wire keyboard to EN_US. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java (beforeClass): Ditto.
+	(sleep): Close Eclipse.
+
+2010-04-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java (canAccessAutoheader): New test. 
+	(canAccessAutomake): Ditto.
+	(canReconfigureProject): Ditto.
+	(canAccessLibtoolize): Ditto.
+	(canAccessAutoreconf): Ditto.
+
+2010-04-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java: New file.
+	(canAccessAutomake): New test.
+
+2010-04-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Initial check-in.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/Activator.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java: New file.
+	* build.properties: New file.
+	* .project: New file.
+	* .classpath: New file.
+	* .settings: New file.
+	* META-INF/MANIFEST.MF: New file.
