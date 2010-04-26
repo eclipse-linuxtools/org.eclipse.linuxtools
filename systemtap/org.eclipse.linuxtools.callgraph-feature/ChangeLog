@@ -1,5 +1,9 @@
 2010-04-26  Andrew Overholt  <overholt@redhat.com>
 
+	* feature.xml: Use featureURL property instead of explicit URL.
+
+2010-04-26  Andrew Overholt  <overholt@redhat.com>
+
 	* feature.properties: Match consistent license text (bug #306627).  Update
 	copyright year.
 	* license.html: New file.  HTML version of SUA (bug #306627).
