@@ -46,6 +46,9 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+   <includes
+         id="org.eclipse.linuxtools.autotools.ui.tests"
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.linuxtools.rpm.ui.editor.tests"

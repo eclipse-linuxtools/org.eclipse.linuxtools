@@ -1,3 +1,7 @@
+2010-04-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Add autotools ui tests.
+
 2010-04-26  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Match consistent license text (bug #306627).  Update
