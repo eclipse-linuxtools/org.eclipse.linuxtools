@@ -1,3 +1,11 @@
+2010-04-26  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).  Update
+	copyright text.
+	* license.html: Updated HTML version of SUA (bug #306627).
+	* about.html: Remove.
+	* build.properties: Remove about.html.
+
 2010-04-12  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Match consistent license text (bug #306627).
