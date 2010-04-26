@@ -13,7 +13,7 @@
       %copyright
    </copyright>
 
-   <license url="epl-v10.html">
+   <license url="%licenseURL">
       %license
    </license>
 
