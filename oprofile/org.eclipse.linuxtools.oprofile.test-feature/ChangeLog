@@ -1,3 +1,10 @@
+2010-04-26  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).  Update
+	copyright year.
+	* license.html: New file.  HTML version of SUA (bug #306627).
+	* build.properties: Include license.html.
+
 2010-04-12  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Match consistent license text (bug #306627).
