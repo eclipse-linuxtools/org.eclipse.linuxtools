@@ -1,3 +1,9 @@
+2010-04-26  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+	* license.html: New file.  HTML version of SUA (bug #306627).
+	* build.properties: Include license.html.
+
 2010-04-14  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Add OS filter for Linux (won't work on other OSes).
