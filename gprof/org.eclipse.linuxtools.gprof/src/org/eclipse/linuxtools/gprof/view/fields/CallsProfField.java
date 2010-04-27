@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.gprof.view.fields;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField;
+import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
 import org.eclipse.linuxtools.gprof.view.GmonView;
 import org.eclipse.linuxtools.gprof.view.histogram.CGArc;
 import org.eclipse.linuxtools.gprof.view.histogram.CGCategory;
@@ -25,7 +26,7 @@ import org.eclipse.swt.graphics.Color;
  *
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
-public class CallsProfField extends AbstractSTDataViewersField {
+public class CallsProfField extends AbstractSTDataViewersField implements IChartField{
 
 	/*
 	 * (non-Javadoc)

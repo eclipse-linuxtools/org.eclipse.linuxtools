@@ -24,6 +24,7 @@ import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.dataviewers.abstractview.AbstractSTDataView;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.linuxtools.dataviewers.actions.STExportToCSVAction;
+import org.eclipse.linuxtools.dataviewers.charts.actions.ChartAction;
 import org.eclipse.linuxtools.gprof.Activator;
 import org.eclipse.linuxtools.gprof.action.SwitchContentProviderAction;
 import org.eclipse.linuxtools.gprof.action.SwitchSampleTimeAction;
@@ -94,6 +95,7 @@ public class GmonView extends AbstractSTDataView {
 		manager.add(new Separator());
 		manager.add(switchSampleTime); 
 		manager.add(new Separator());
+		manager.add(new ChartAction(getViewSite().getShell(), getSTViewer()));
 	}
 
 

@@ -30,7 +30,6 @@ import org.eclipse.linuxtools.gprof.utils.LEDataInputStream;
 import org.eclipse.linuxtools.gprof.view.histogram.HistRoot;
 
 
-
 /** 
  * Parser of gmon file
  */
@@ -49,8 +48,8 @@ public class GmonDecoder {
 	private byte[] spare;
 
 	private final IBinaryObject program;
-	private final HistogramDecoder histo;
-	private final CallGraphDecoder callGraph;
+	private  HistogramDecoder histo;
+	private  CallGraphDecoder callGraph;
 	private final PrintStream ps;
 	private final HistRoot rootNode = new HistRoot(this);
 	private String file;
@@ -65,6 +64,7 @@ public class GmonDecoder {
 	/**
 	 * Constructor
 	 * @param program 
+	 * @throws IOException 
 	 */
 	public GmonDecoder(IBinaryObject program) {
 		this(program, null);
@@ -74,12 +74,20 @@ public class GmonDecoder {
 	/**
 	 * Constructor
 	 * @param program 
+	 * @throws IOException 
 	 */
 	public GmonDecoder(IBinaryObject program, PrintStream ps) {
 		this.program = program;
-		histo = new HistogramDecoder(this);
-		callGraph = new CallGraphDecoder(this);
 		this.ps = ps;
+		program.getBinaryParser().getFormat();
+		if ("x86_64".equals(program.getCPU())){
+			histo = new HistogramDecoder_64(this);
+			callGraph = new CallGraphDecoder_64(this);
+		}
+		else {
+			histo = new HistogramDecoder(this);
+			callGraph = new CallGraphDecoder(this);
+		}
 	}
 	
 
