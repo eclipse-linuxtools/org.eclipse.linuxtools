@@ -47,7 +47,7 @@
          install-size="0"
          version="0.0.0"/>
    <includes
-         id="org.eclipse.linuxtools.autotools.ui.tests"
+         id="org.eclipse.linuxtools.cdt.autotools.ui.tests"
          version="0.0.0"/>
 
    <plugin
