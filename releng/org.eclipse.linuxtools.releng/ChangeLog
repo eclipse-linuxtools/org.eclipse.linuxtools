@@ -1,3 +1,7 @@
+2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add swtbot eclipse plugins as dependency.
+
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* maps/linuxtools.map: Add new dashboard plugins for SystemTap
