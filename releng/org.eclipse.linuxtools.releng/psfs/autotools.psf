@@ -7,5 +7,6 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools-docs,org.eclipse.linuxtools.cdt.autotools-docs"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools-feature,org.eclipse.linuxtools.cdt.autotools-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.tests,org.eclipse.linuxtools.cdt.autotools.tests"/>
-</provider>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/trunk/org.eclipse.linuxtools.cdt.autotools.ui.tests,org.eclipse.linuxtools.cdt.autotools.ui.tests"/>
+/provider>
 </psf>

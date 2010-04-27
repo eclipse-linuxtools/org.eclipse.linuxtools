@@ -1,5 +1,10 @@
 2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* psfs/autotools.psf: Add ui.tests.
+	* maps/linuxtools.map: Add org.eclipse.linuxtools.cdt.autotools.ui.tests plugin.
+
+2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* build.properties: Add swtbot eclipse plugins as dependency.
 
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
