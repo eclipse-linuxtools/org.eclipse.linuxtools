@@ -1,3 +1,7 @@
+2010-04-28  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Fix reference of autotools ui tests to be plugin, not feature.
+
 2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Fix typo for autotools ui tests plug-in.
