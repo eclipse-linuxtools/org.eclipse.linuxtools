@@ -177,9 +177,9 @@ public class SetConfigurationParameter {
 		IPath path = project.getLocation();
 		path = path.append("config.status");
 		// We need to wait until the config.status file is created so
-		// sleep a bit and look for it...give up after 20 seconds
-		for (int i = 0; i < 10; ++i) {
-			bot.sleep(2000);
+		// sleep a bit and look for it...give up after 120 seconds
+		for (int i = 0; i < 240; ++i) {
+			bot.sleep(500);
 			File f = new File(path.toOSString());
 			if (f.exists())
 				break;
@@ -288,8 +288,8 @@ public class SetConfigurationParameter {
 		path = path.append("build-debug/config.status");
 		// We need to wait until the config.status file is created so
 		// sleep a bit and look for it...give up after 20 seconds
-		for (int i = 0; i < 10; ++i) {
-			bot.sleep(2000);
+		for (int i = 0; i < 40; ++i) {
+			bot.sleep(500);
 			File f = new File(path.toOSString());
 			if (f.exists())
 				break;

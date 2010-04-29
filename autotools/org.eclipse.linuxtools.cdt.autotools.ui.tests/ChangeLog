@@ -1,8 +1,16 @@
 2010-04-29  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* plugin.properties: Change provider to Eclipse instead of Eclipse.org. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (canBuildWithConfigParm): Add
+	waiting period before testing existence of created file to ensure action has run on a slower system. 
+	(newConfigCopiesParms): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java (canAccessAutoconf): Ditto. 
+	(canAccessAutomake): Ditto.
+	(canReconfigureProject): Ditto.
+	(canAccessAutoreconf): Ditto.
+	(canAccessAclocal): Ditto.
+	* plugin.properties: Change provider to Eclipse instead of Eclipse.org.
 	* META-INF/MANIFEST.MF: Add BundleLocalization statement so plugin.properties gets
-	used.
+    used.
 
 2010-04-22  Jeff Johnston  <jjohnstn@redhat.com>
 
