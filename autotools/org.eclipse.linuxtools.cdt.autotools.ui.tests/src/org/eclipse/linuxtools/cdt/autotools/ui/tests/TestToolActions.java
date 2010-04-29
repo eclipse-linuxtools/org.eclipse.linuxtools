@@ -124,8 +124,15 @@ public class TestToolActions {
 		p = Pattern.compile(".*Invoking aclocal in.*GnuProject1.*aclocal.*", Pattern.DOTALL);
 		m = p.matcher(output);
 		assertTrue(m.matches());
+		// We need to wait until the aclocal.m4 file is created so
+		// sleep a bit and look for it...give up after 20 seconds
+		for (int i = 0; i < 40; ++i) {
+			bot.sleep(500);
+			f = new File(path.toOSString());
+			if (f.exists())
+				break;
+		}
 		// Verify we now have an aclocal.m4 file created
-		f = new File(path.toOSString());
 		assertTrue(f.exists());
 	}
 
@@ -154,6 +161,14 @@ public class TestToolActions {
 		Pattern p = Pattern.compile(".*Invoking autoconf in.*GnuProject1.*autoconf.*", Pattern.DOTALL);
 		Matcher m = p.matcher(output);
 		assertTrue(m.matches());
+		// We need to wait until the configure file is created so
+		// sleep a bit and look for it...give up after 20 seconds
+		for (int i = 0; i < 40; ++i) {
+			bot.sleep(500);
+			f = new File(path.toOSString());
+			if (f.exists())
+				break;
+		}
 		// Verify we now have a configure script
 		f = new File(path.toOSString());
 		assertTrue(f.exists());
@@ -171,6 +186,14 @@ public class TestToolActions {
 		p = Pattern.compile(".*Invoking autoconf in.*GnuProject1.*autoconf.*", Pattern.DOTALL);
 		m = p.matcher(output);
 		assertTrue(m.matches());
+		// We need to wait until the configure file is created so
+		// sleep a bit and look for it...give up after 20 seconds
+		for (int i = 0; i < 40; ++i) {
+			bot.sleep(500);
+			f = new File(path.toOSString());
+			if (f.exists())
+				break;
+		}
 		// Verify we now have a configure script again
 		f = new File(path.toOSString());
 		assertTrue(f.exists());
@@ -230,6 +253,15 @@ public class TestToolActions {
 		p = Pattern.compile(".*Invoking automake in.*GnuProject1.*automake --add-missing Makefile src/Makefile.*", Pattern.DOTALL);
 		m = p.matcher(output);
 		assertTrue(m.matches());
+		// We need to wait until the Makefile.in files are created so
+		// sleep a bit and look for it...give up after 20 seconds
+		for (int i = 0; i < 40; ++i) {
+			bot.sleep(500);
+			f = new File(path.toOSString());
+			f2 = new File(path2.toOSString());
+			if (f.exists() && f2.exists())
+				break;
+		}
 		// Verify we now have Makefile.in files created
 		f = new File(path.toOSString());
 		assertTrue(f.exists());
@@ -339,8 +371,8 @@ public class TestToolActions {
 		bot.button("OK").click();
 		// We need to wait until the Makefile.in file is created so
 		// sleep a bit and look for it...give up after 20 seconds
-		for (int i = 0; i < 10; ++i) {
-			bot.sleep(2000);
+		for (int i = 0; i < 40; ++i) {
+			bot.sleep(500);
 			f = new File(path.append("Makefile.in").toOSString());
 			if (f.exists())
 				break;
@@ -389,8 +421,8 @@ public class TestToolActions {
 		bot.menu("Project", 1).menu("Reconfigure Project").click();
 		// We need to wait until the config.status file is created so
 		// sleep a bit and look for it...give up after 40 seconds
-		for (int i = 0; i < 20; ++i) {
-			bot.sleep(2000);
+		for (int i = 0; i < 40; ++i) {
+			bot.sleep(500);
 			f = new File(path.append("config.status").toOSString());
 			if (f.exists())
 				break;
