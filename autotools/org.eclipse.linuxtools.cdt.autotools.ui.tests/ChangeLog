@@ -1,3 +1,9 @@
+2010-04-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.properties: Change provider to Eclipse instead of Eclipse.org.
+	* META-INF/MANIFEST.MF: Add BundleLocalization statement so plugin.properties gets
+    used.
+
 2010-04-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.properties: New file.
