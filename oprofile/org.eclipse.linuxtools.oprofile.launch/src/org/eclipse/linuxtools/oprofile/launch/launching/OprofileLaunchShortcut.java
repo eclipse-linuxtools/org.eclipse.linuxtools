@@ -11,6 +11,8 @@
 package org.eclipse.linuxtools.oprofile.launch.launching;
 
 import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -53,7 +55,12 @@ public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 		
 		try {
 			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+			IResource binary = bin.getResource(); 
 			wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
+			// A project at /some/arbitrary/path/projectName/Debug/binaryName will
+			// produce a workDir of /some/arbitrary/path
+			String workDir = binary.getLocation().removeLastSegments(3).toOSString();
+			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, workDir);
 			wc.doSave();
 		} catch (CoreException e) {
 			e.printStackTrace();

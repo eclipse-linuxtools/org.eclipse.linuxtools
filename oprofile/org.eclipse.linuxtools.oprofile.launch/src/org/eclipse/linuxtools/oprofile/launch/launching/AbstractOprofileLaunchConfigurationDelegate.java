@@ -23,7 +23,6 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -47,8 +46,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		//FIXME: this assumes that project names are always the directory names in the workspace.
 		//this assumption may be wrong, but a shallow lookup seems ok
-		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-		String imagePath = workspacePath
+		String imagePath = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, "")
 				+ Path.SEPARATOR
 				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "") //$NON-NLS-1$
 				+ Path.SEPARATOR
