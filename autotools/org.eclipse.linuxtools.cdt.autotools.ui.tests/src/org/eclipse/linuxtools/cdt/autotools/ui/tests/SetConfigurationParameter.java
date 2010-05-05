@@ -175,16 +175,15 @@ public class SetConfigurationParameter {
 		IProject project = root.getProject("GnuProject0");
 		assertTrue(project != null);
 		IPath path = project.getLocation();
-		path = path.append("config.status");
-		// We need to wait until the config.status file is created so
+		// We need to wait until the a.out file is created so
 		// sleep a bit and look for it...give up after 120 seconds
 		for (int i = 0; i < 240; ++i) {
 			bot.sleep(500);
-			File f = new File(path.toOSString());
+			File f = new File(path.append("src/a.out").toOSString());
 			if (f.exists())
 				break;
 		}
-		File f = new File(path.toOSString());
+		File f = new File(path.append("config.status").toOSString());
 		assertTrue(f.exists());
 		BufferedReader r = new BufferedReader(new FileReader(f));
 		int ch;
@@ -254,12 +253,18 @@ public class SetConfigurationParameter {
 		shell = bot.shell("Properties for GnuProject0");
 		shell.activate();
 		bot.tree().expandNode("Autotools").select("Configure Settings");
+		SWTBotCombo configs = bot.comboBoxWithLabel(UIMessages.getString("AbstractPage.6"));
+		configs.setFocus();
+		String[] items = configs.items();
+		for (int i = 0; i < items.length; ++i) {
+			if (items[i].contains("debug") && items[i].contains("Active"))
+				configs.setSelection(i);
+		}
+		assertTrue(configs.getText().contains("debug"));
 		bot.treeWithLabel("Configure Settings").expandNode("configure").select("Advanced");
 		SWTBotText text = bot.textWithLabel("Additional command-line options");
 		String val = text.getText();
 		assertEquals(val, "--enable-jeff");
-		String config = bot.comboBoxWithLabel(UIMessages.getString("AbstractPage.6")).getText();
-		assertTrue(config.contains("debug"));
 		// Verify that the build directory for the new configuration has been
 		// switched to build-debug
 		bot.tree().expandNode("C/C++ Build").select();
@@ -267,7 +272,7 @@ public class SetConfigurationParameter {
 		assertTrue(buildDir.endsWith("build-debug"));
 		// Verify the default configuration has no user setting
 		bot.tree().expandNode("Autotools").select("Configure Settings");
-		SWTBotCombo configs = bot.comboBoxWithLabel(UIMessages.getString("AbstractPage.6"));
+		configs = bot.comboBoxWithLabel(UIMessages.getString("AbstractPage.6"));
 		configs.setSelection("default");
 		bot.treeWithLabel("Configure Settings").expandNode("configure").select("Advanced");
 		text = bot.textWithLabel("Additional command-line options");
@@ -285,16 +290,15 @@ public class SetConfigurationParameter {
 		IProject project = root.getProject("GnuProject0");
 		assertTrue(project != null);
 		IPath path = project.getLocation();
-		path = path.append("build-debug/config.status");
 		// We need to wait until the config.status file is created so
 		// sleep a bit and look for it...give up after 20 seconds
 		for (int i = 0; i < 40; ++i) {
 			bot.sleep(500);
-			File f = new File(path.toOSString());
+			File f = new File(path.append("build-debug/src/a.out").toOSString());
 			if (f.exists())
 				break;
 		}
-		File f = new File(path.toOSString());
+		File f = new File(path.append("build-debug/config.status").toOSString());
 		assertTrue(f.exists());
 		BufferedReader r = new BufferedReader(new FileReader(f));
 		int ch;
