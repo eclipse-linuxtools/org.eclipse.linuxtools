@@ -1,3 +1,8 @@
+2010-05-05  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Clean up
+	build/install instructions.
+
 2009-12-07  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #297007
