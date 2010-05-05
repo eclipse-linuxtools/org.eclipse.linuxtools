@@ -26,7 +26,6 @@ import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -44,17 +43,11 @@ import org.eclipse.ui.PlatformUI;
 
 public abstract class AbstractOprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		//FIXME: this assumes that project names are always the directory names in the workspace.
-		//this assumption may be wrong, but a shallow lookup seems ok
-		String imagePath = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, "")
-				+ Path.SEPARATOR
-				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "") //$NON-NLS-1$
-				+ Path.SEPARATOR
-				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, ""); //$NON-NLS-1$
-		
+
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
 		options.loadConfiguration(config);
-		options.setBinaryImage(imagePath);
+		IPath exePath = verifyProgramPath( config );
+		options.setBinaryImage(exePath.toOSString());
 
 		//if daemonEvents null or zero size, the default event will be used
 		OprofileDaemonEvent[] daemonEvents = null;
@@ -80,7 +73,6 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 		 */
 		//set up and launch the local c/c++ program
 		try {
-			IPath exePath = verifyProgramPath( config );
 			File wd = getWorkingDirectory( config );
 			if ( wd == null ) {
 				wd = new File( System.getProperty( "user.home", "." ) ); //$NON-NLS-1$ //$NON-NLS-2$

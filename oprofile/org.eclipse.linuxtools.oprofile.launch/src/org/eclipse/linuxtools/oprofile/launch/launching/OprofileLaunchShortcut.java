@@ -11,10 +11,7 @@
 package org.eclipse.linuxtools.oprofile.launch.launching;
 
 import org.eclipse.cdt.core.model.IBinary;
-import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -56,19 +53,7 @@ public class OprofileLaunchShortcut extends ProfileLaunchShortcut {
 		
 		try {
 			ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-			IResource binary = bin.getResource(); 
 			wc.setAttribute(OprofileLaunchPlugin.ATTR_MANUAL_PROFILE, false);
-			// A project at /some/arbitrary/path/projectName/Debug/binaryName will
-			// produce a workDir of /some/arbitrary/path
-			int pathSegments = 1;
-			String binaryRelPath = wc.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, ""); //$NON-NLS-1$
-			for (char c : binaryRelPath.toCharArray()){
-				if (c == Path.SEPARATOR){
-					pathSegments++;
-				}
-			}
-			String workDir = binary.getLocation().removeLastSegments(pathSegments).toOSString();
-			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, workDir);
 			wc.doSave();
 		} catch (CoreException e) {
 			e.printStackTrace();
