@@ -68,6 +68,10 @@ public class UiModelSymbol implements IUiModelElement {
 	public String getFileName() {
 		return _symbol.getFile();
 	}
+	
+	public String getFunctionName(){
+		return _symbol.getName();
+	}
 
 	/** IUiModelElement functions **/
 	public String getLabelText() {
