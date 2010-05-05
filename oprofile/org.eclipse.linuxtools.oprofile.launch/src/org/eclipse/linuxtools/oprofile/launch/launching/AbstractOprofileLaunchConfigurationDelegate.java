@@ -46,7 +46,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		//FIXME: this assumes that project names are always the directory names in the workspace.
 		//this assumption may be wrong, but a shallow lookup seems ok
-		String imagePath = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, "") //$NON-NLS-1$
+		String imagePath = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, "")
 				+ Path.SEPARATOR
 				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "") //$NON-NLS-1$
 				+ Path.SEPARATOR
@@ -185,10 +185,10 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 	}
 	
 	/**
-	 * Runs opcontrol --status. Returns true if there was any output, false 
+	 * Runs opcontrol --help. Returns true if there was any output, false 
 	 * otherwise. Return value can be used to tell if the user successfully
 	 * entered a password.
-	 * @return true if opcontrol --status was run correctly. False otherwise
+	 * @return true if opcontrol --help was run correctly. False otherwise
 	 * @throws OpcontrolException
 	 */
 	protected boolean oprofileStatus() throws OpcontrolException {

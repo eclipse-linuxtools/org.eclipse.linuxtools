@@ -248,10 +248,10 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 		
 		if (p != null) {
-			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			BufferedReader errout = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			String output = "", s; //$NON-NLS-1$
 			try {
-				while ((s = stdout.readLine()) != null) {
+				while ((s = errout.readLine()) != null) {
 					output += s;
 				}
 				
@@ -261,8 +261,9 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
 				}
 				
-				if (output.length() != 0)
+				if (output.length() != 0) {
 					return true;
+				}
 				
 			} catch (IOException ioe) { 
 				ioe.printStackTrace();
