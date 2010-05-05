@@ -72,7 +72,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 			events.toArray(daemonEvents);
 		}
 		
-		preExec(options, daemonEvents);
+		if (!preExec(options, daemonEvents)) return;
 
 		/* 
 		 * this code written by QNX Software Systems and others and was 
@@ -101,7 +101,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 		}
 	}
 	
-	protected abstract void preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);
+	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);
 
 	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process);
 
@@ -182,5 +182,16 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 	
 	protected void oprofileDumpSamples() throws OpcontrolException {
 		OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
+	}
+	
+	/**
+	 * Runs opcontrol --status. Returns true if there was any output, false 
+	 * otherwise. Return value can be used to tell if the user successfully
+	 * entered a password.
+	 * @return true if opcontrol --status was run correctly. False otherwise
+	 * @throws OpcontrolException
+	 */
+	protected boolean oprofileStatus() throws OpcontrolException {
+		return OprofileCorePlugin.getDefault().getOpcontrolProvider().status();
 	}
 }

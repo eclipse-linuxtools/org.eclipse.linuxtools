@@ -80,4 +80,6 @@ public interface IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void saveSession(String name) throws OpcontrolException;
+
+	public boolean status() throws OpcontrolException;
 }
