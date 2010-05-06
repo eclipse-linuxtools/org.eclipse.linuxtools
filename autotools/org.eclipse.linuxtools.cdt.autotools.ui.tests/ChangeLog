@@ -1,5 +1,6 @@
 2010-05-06  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* build.properties: Remove non-existent test.xml references.
 	* META-INF/MANIFEST.MF: Mark plug-in as singleton.
 
 2010-05-05  Jeff Johnston  <jjohnstn@redhat.com>
