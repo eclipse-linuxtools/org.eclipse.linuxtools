@@ -25,12 +25,12 @@
 			commandId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.ExportScript"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M1+X"/>
+			sequence="M1+1"/>
 		<key
 			commandId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.CreateModuleAction"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M1+Y"/>
+			sequence="M1+2"/>
 	</extension>
 	<extension
 		point="org.eclipse.ui.actionSets">

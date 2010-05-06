@@ -33,7 +33,7 @@ public class ScriptDetails extends Dialog {
 	private Text scriptText;
 	private Button OKButton;
 	private Button cancelButton;
-	private boolean canceled = false; 
+	private boolean canceled = true; 
 	
 	public ScriptDetails(Shell parent) {
 		super(parent);
@@ -97,7 +97,6 @@ public class ScriptDetails extends Dialog {
 		cancelButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				shell.dispose();
-				canceled = true;
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
@@ -115,12 +114,12 @@ public class ScriptDetails extends Dialog {
 				// Set the preferences to this new info.
 				DashboardPlugin.getDefault().getPreferenceStore().setValue(DashboardPreferenceConstants.P_DASHBOARD_EXAMPLES_DIR, dirText.getText());
 				DashboardPlugin.getDefault().getPreferenceStore().setValue(DashboardPreferenceConstants.P_DASHBOARD_SCRIPT, scriptText.getText());
-
+				canceled = false;
 				shell.close();
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {}
 		});
-
+		
 		shell.open();
 		Display display = parent.getDisplay();
 		while (!shell.isDisposed()) {
