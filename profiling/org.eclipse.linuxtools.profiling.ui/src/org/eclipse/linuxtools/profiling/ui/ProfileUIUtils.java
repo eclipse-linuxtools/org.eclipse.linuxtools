@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.profiling.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -211,7 +213,7 @@ public class ProfileUIUtils {
 							if (file != null) {
 								String loc = file.getLocation().getURI().getPath();
 								if (fileHint != null){
-									if (loc.endsWith(fileHint)){
+									if (loc.equals(new File(fileHint).getCanonicalPath())){
 										//TODO: Consider changing data structure so that we can
 										// store multiple same-named functions (different args)
 										// from the same file.
@@ -230,6 +232,8 @@ public class ProfileUIUtils {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (DOMException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}finally{
 				index.releaseReadLock();
