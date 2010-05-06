@@ -19,19 +19,19 @@
 			categoryId="org.eclipse.linuxtools.systemtap.ui.dashboard.category.file"
 			id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.CreateModuleAction"/>
 	</extension>
-	<!--<extension
+	<extension
 		point="org.eclipse.ui.bindings">
 		<key
 			commandId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.ExportScript"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M1+1"/>
+			sequence="M1+4"/>
 		<key
 			commandId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.CreateModuleAction"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M1+2"/>
-	</extension>-->
+			sequence="M1+5"/>
+	</extension>
 	<extension
 		point="org.eclipse.ui.actionSets">
 		<actionSet
