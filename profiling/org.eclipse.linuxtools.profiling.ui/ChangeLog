@@ -1,3 +1,8 @@
+2010-05-06  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java (findFunctionsInProject):
+		Use a stronger comparison when determining if two files have the same path.
+
 2010-04-08  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Added imports needed for using CDT Indexer.
