@@ -10,14 +10,9 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.oprofile.ui.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.cdt.core.model.ICProject;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -85,18 +80,18 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 						numOfArgs = 1;
 					}
 					functionName = functionName.substring(0, start);
+				}else{
+					numOfArgs = 0;
 				}
 
 				if (fileName.length() > 0 && functionName.length() > 0) {
+					// this should almost ALWAYS be the case
 					// try and go to the function in the file
 					map = ProfileUIUtils.findFunctionsInProject(project,functionName, numOfArgs, fileName, true);
 
 					// if function still can't be found, go to first line in the file
 					if (map.isEmpty()) {
-						ArrayList<String> filePaths = findFileInProject(project.getProject(), fileName);
-						for (String filePath : filePaths) {
-							ProfileUIUtils.openEditorAndSelect(filePath, 1);
-						}
+						ProfileUIUtils.openEditorAndSelect(fileName, 1);
 					} else {
 						for (String loc : map.keySet()) {
 							ProfileUIUtils.openEditorAndSelect(loc, map.get(loc)[0], map.get(loc)[1]);
@@ -104,6 +99,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 					}
 
 				} else if (functionName.length() > 0) {
+					// can this ever happen ?
 					// try to find the file name that has this function
 					map = ProfileUIUtils.findFunctionsInProject(project, functionName, numOfArgs, null, true);
 
@@ -113,10 +109,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 				} else if (fileName.length() > 0) {
 					// can this ever happen ?
 					// jump to 1st line in the file
-					ArrayList<String> filePaths = findFileInProject(project.getProject(), fileName);
-					for (String filePath : filePaths) {
-						ProfileUIUtils.openEditorAndSelect(filePath, 1);
-					}
+					ProfileUIUtils.openEditorAndSelect(fileName, 1);
 				}
 				
 			} else if (element instanceof UiModelSample) {
@@ -127,19 +120,7 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 				// get file name from the parent sample
 				final UiModelSymbol symbol = ((UiModelSymbol) sample.getParent());
 				final String fileName = symbol.getFileName();
-				final String imageLabel = symbol.getParent().getLabelText();
-
-				// hard coded to match "XY.PQ% in /some/arbitrary/path/to/binary"
-				String absPath = imageLabel.substring(imageLabel.indexOf(" in ") + 4);
-				project = ProfileUIUtils.findCProjectWithAbsolutePath(absPath);
-				if (project == null) {
-					return;
-				}
-
-				ArrayList<String> filePaths = findFileInProject(project.getProject(), fileName);
-				for (String filePath : filePaths) {
-					ProfileUIUtils.openEditorAndSelect(filePath, line);
-				}
+				ProfileUIUtils.openEditorAndSelect(fileName, line);
 			}
 		} catch (BadLocationException e1) {
 			e1.printStackTrace();
@@ -148,29 +129,6 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 		} catch (CoreException e3) {
 			e3.printStackTrace();
 		}
-	}
-	
-	private ArrayList<String> findFileInProject (IProject proj, final String fileName){
-		final ArrayList<String> ret = new ArrayList<String>();
-		
-		IResourceVisitor visitor = new IResourceVisitor(){
-			public boolean visit(IResource resource) throws CoreException {
-				if (resource instanceof IContainer){
-					return true;
-				}else{
-					if (resource.getName().equals(fileName)){
-						ret.add(resource.getLocation().toOSString());
-					}
-					return false;
-				}
-			}};
-		
-		try {
-			proj.accept(visitor);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		return ret;
 	}
 	
 }
