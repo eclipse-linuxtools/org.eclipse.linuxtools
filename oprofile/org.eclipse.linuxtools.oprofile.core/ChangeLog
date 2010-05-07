@@ -1,3 +1,8 @@
+2010-05-07  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Fix typo
+	with \find instead of \nfind. 
+
 2010-05-05  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Clean up
