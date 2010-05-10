@@ -15,7 +15,7 @@ import org.osgi.framework.BundleContext;
 public class AutotoolsTestsPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.cdt.autotools.core.tests";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.cdt.autotools.tests";
 
 	// The shared instance
 	private static AutotoolsTestsPlugin plugin;
@@ -25,9 +25,8 @@ public class AutotoolsTestsPlugin extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public AutotoolsTestsPlugin() {
-		plugin = this;
 		try {
-			resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.cdt.autotools.core.tests.Resources");
+			resourceBundle = ResourceBundle.getBundle("org.eclipse.linuxtools.cdt.autotools.tests.Resources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -39,6 +38,7 @@ public class AutotoolsTestsPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		plugin = this;
 	}
 
 	/*

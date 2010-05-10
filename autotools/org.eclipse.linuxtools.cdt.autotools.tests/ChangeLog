@@ -1,3 +1,9 @@
+2010-05-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/AutotoolsTestsPlugin.java: Fix plugin id.
+	(AutotoolsTestsPlugin): Remove setting of plugin. 
+	(start): Add setting of plugin here.
+
 2010-03-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java (setConfigDir): Fix up how
