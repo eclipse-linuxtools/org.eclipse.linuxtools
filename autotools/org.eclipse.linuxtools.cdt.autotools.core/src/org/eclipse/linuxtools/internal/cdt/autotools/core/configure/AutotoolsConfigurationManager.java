@@ -462,8 +462,6 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 			return;
 		String name = res.getName();
 		IResourceDelta delta = event.getDelta();
-		if (delta == null)
-			return;
 		int kind = delta.getKind();
 		if (configs.containsKey(name)) {
 			if (kind == IResourceDelta.REMOVED) {
