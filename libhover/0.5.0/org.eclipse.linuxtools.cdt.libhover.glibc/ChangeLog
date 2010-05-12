@@ -1,0 +1,42 @@
+2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #285867
+	* plugin.properties: Change Provider to Eclipse instead of Eclipse.org.
+
+2009-02-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up version to 1.0.1.
+	* plugin.xml: Change to use new libhover library interface which requires
+	the location of a serialized LibHoverInfo instance rather than an xml document.
+
+2009-01-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier to version.
+
+2008-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Add plugin.properties.
+
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Initial checkin.
+	* META-INF/MANIFEST.MF: Use plugin.properties.  Add "(Incubation)".
+
+2008-10-22  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Modify library name which shows up in the Project properties C/C++ General
+	Documentation page.
+
+2008-10-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add toc.xml to binary build files.
+
+2008-10-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* fragment.xml: Removed.
+	* plugin.xml: New file.
+	* build.properties: Specify about.html in src build.
+	* META-INF/MANIFEST.MF: Require org.eclipse.linuxtools.cdt.libhover.library-docs
+	instead of org.eclipse.linuxtools.cdt.autotools-docs.
+	* toc.xml: Change to use moreclibdocs anchor instead of moregnutools
+	anchor which is in autotools-docs.

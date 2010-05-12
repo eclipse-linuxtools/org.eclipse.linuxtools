@@ -1,0 +1,20 @@
+2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #285867
+	* feature.properties: Change provider to Eclipse instead of Eclipse.org.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add ".qualifier" to version.
+	
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Rename to org.eclipse.linuxtools.cdt.libhover.newlib.
+
+2009-05-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* about.html: Initial check-in.
+	* build.properties: Ditto.
+	* epl-v10.html:  Ditto.
+	* feature.properties:  Ditto.
+	* feature.xml: Ditto.
