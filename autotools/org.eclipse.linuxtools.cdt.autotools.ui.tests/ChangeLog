@@ -1,6 +1,7 @@
 2010-05-13  Jeff Johnston  <jjohnstn@redhat.com>
 
-	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java(canBuildWithConfigParm): Add
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestEnvironmentVars.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (canBuildWithConfigParm): Add
 	test for bug #308261.
 
 2010-05-05  Jeff Johnston  <jjohnstn@redhat.com>
