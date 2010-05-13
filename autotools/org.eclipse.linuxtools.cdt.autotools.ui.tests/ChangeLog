@@ -1,5 +1,8 @@
 2010-05-13  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/AllTests.java: 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java (sleep): Don't exit Eclipse since this
+	is no longer the last test in the list. 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestEnvironmentVars.java: New file.
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (canBuildWithConfigParm): Add
 	test for bug #308261.

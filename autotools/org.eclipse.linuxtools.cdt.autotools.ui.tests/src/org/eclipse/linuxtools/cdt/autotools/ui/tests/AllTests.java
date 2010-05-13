@@ -17,6 +17,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
   SetConfigurationParameter.class,
   TestToolActions.class,
+  TestEnvironmentVars.class
 })
 public class AllTests {
     // needed for this class to compile

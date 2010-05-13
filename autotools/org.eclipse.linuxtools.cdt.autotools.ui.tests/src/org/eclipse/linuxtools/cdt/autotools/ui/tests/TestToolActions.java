@@ -443,7 +443,6 @@ public class TestToolActions {
 	@AfterClass
 	public static void sleep() {
 		bot.sleep(2000);
-		bot.menu("File").menu("Exit").click();
 	}
 
 }

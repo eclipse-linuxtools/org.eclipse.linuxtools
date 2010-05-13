@@ -31,6 +31,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -219,5 +220,11 @@ public class TestEnvironmentVars {
 		Matcher m = p.matcher(output);
 		assertTrue(m.matches());
 		bot.sleep(10000);
+	}
+
+	@AfterClass
+	public static void sleep() {
+		bot.sleep(2000);
+		bot.menu("File").menu("Exit").click();
 	}
 }
