@@ -208,6 +208,25 @@ public class SetConfigurationParameter {
 			}
 		}
 		assertTrue(optionFound);
+		// Verify that if we build again, we don't reconfigure.
+		// Verifies fix for bug: #308261
+		long oldDate = f.lastModified();
+		view = bot.viewByTitle("Project Explorer");
+		view.bot().tree().select("GnuProject0");
+		bot.menu("Project", 1).menu("Build Project").click();
+		path = project.getLocation();
+		// We need to wait until the a.out file is created so
+		// sleep a bit and look for it...give up after 120 seconds
+		for (int i = 0; i < 240; ++i) {
+			bot.sleep(500);
+			File tmp = new File(path.append("src/a.out").toOSString());
+			if (tmp.exists())
+				break;
+		}
+		f = new File(path.append("config.status").toOSString());
+		assertTrue(f.exists());
+		long newDate = f.lastModified();
+		assertEquals(newDate, oldDate);
 	}
 
 	@Test
