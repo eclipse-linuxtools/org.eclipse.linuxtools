@@ -155,6 +155,7 @@ public class ConvertToAutotoolsProjectWizard extends ConversionWizard {
 		return curProject;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void applyOptions(IProject project, IProgressMonitor monitor) {
 		// When applying the project options, we need to specify which
 		// project because the conversion wizard allows us to convert

@@ -1,5 +1,16 @@
 2010-05-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ReferenceBlock.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/AutotoolsWizardMessages.properties: Add new message
+	for Referenced projects.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ConvertToAutotoolsProjectWizard.java (applyOptions): Suppress
+	warnings.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ManagedProjectOptionBlock.java: Extend the new
+	ReferenceBlock rather than the API-restricted one in CDT.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/NewAutotoolsProjectOptionPage.java: Suppress warnings.
+	
+2010-05-17  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/IArchiveTarget.java: New file.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/IBadDirective.java: New file.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ICommand.java: New file.

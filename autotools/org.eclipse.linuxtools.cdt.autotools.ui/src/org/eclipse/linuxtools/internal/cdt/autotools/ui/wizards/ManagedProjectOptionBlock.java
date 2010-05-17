@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
 
+@SuppressWarnings("deprecation")
 public class ManagedProjectOptionBlock extends TabFolderOptionBlock {
 
 	private ErrorParserBlock errParserBlock;
