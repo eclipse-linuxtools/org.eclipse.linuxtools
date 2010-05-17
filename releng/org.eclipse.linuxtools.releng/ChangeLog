@@ -1,5 +1,6 @@
 2010-05-17  Andrew Overholt  <overholt@redhat.com>
 
+	* build.properties: Update to latest Helios drops of dependencies.
 	* lots: Merge Helios branch to trunk.
 
 2010-05-17  Andrew Overholt  <overholt@redhat.com>
