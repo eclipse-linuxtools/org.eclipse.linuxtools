@@ -29,7 +29,7 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 
-public class AutomakefileContentOutlinePage extends ContentOutlinePage implements IContentOutlinePage {
+public class AutomakefileContentOutlinePage extends ContentOutlinePage {
 	
 	protected IMakefile makefile;
 	protected IMakefile nullMakefile = new NullMakefile();
