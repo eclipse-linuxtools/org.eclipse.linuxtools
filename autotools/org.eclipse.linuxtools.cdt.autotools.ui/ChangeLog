@@ -1,5 +1,11 @@
 2010-05-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ResourceMarkerAnnotationModel.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileDocumentProvider.java: Refer to
+	local ResourceMarkerAnnotationModel class. 
+	
+2010-05-17  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* META-INF/MANIFEST.MF: Add org.eclipse.linuxtools.cdt.autotools as a friend that can access
 	internal classes.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ReferenceBlock.java: New file.

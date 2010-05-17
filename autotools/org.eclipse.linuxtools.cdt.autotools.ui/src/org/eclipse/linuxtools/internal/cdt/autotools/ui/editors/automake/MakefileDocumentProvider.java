@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
 import java.util.Iterator;
 
-import org.eclipse.cdt.make.core.MakeCorePlugin;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -22,7 +21,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel;
 
 public class MakefileDocumentProvider extends TextFileDocumentProvider implements IMakefileDocumentProvider {
 	
