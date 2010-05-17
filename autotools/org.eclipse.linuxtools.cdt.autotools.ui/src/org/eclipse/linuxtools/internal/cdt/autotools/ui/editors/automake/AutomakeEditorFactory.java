@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.ui.IWorkingCopyManager;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.ColorManager;

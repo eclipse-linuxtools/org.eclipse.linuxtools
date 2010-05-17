@@ -12,11 +12,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
 import java.util.ArrayList;
 
-import org.eclipse.cdt.make.core.makefile.ICommand;
-import org.eclipse.cdt.make.core.makefile.IRule;
-import org.eclipse.cdt.make.core.makefile.IDirective;
-import org.eclipse.cdt.make.core.makefile.ITarget;
-
 public abstract class Rule extends Parent implements IRule {
 
 	Target target;

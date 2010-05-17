@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.gnu.ISecondaryRule;
-
-
 /**
  * .SECONDARY
  *  The targets which `.SECONDARY' depends on are treated as

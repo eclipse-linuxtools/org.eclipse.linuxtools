@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.IIgnoreRule;
-
 /**
  * .IGNORE
  * Prerequisites of this special target are targets themselves; this shall cause errors

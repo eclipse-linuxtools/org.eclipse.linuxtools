@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.IDefaultRule;
-
 /**
  * .DEFAULT
  * If the makefile uses this special target, the application shall ensure that it is

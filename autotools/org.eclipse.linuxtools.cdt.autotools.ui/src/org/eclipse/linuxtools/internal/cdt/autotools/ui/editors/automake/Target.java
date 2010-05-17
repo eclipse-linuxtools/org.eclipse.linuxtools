@@ -12,8 +12,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
 import java.io.File;
 
-import org.eclipse.cdt.make.core.makefile.ITarget;
-
 public class Target implements ITarget {
 
 	String target;

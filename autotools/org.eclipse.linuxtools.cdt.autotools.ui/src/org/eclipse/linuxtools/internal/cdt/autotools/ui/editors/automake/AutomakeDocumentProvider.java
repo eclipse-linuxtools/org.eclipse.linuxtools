@@ -15,7 +15,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.eclipse.cdt.make.core.makefile.IMakefile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IFileEditorInput;

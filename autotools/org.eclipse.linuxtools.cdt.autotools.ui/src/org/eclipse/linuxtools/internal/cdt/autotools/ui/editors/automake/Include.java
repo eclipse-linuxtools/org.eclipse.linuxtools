@@ -12,9 +12,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
 import java.io.IOException;
 
-import org.eclipse.cdt.make.core.makefile.IDirective;
-import org.eclipse.cdt.make.core.makefile.gnu.IInclude;
-
 public class Include extends Parent implements IInclude {
 
 	String[] filenames;

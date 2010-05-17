@@ -14,9 +14,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 import java.net.URI;
 
 import org.eclipse.cdt.core.resources.FileStorage;
-import org.eclipse.cdt.make.core.makefile.IDirective;
-import org.eclipse.cdt.make.core.makefile.IMakefile;
-import org.eclipse.cdt.make.ui.IWorkingCopyManager;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IStorage;

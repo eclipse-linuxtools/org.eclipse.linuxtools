@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
 import java.util.ResourceBundle;
 
-import org.eclipse.cdt.make.core.makefile.IDirective;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.action.IAction;

@@ -14,8 +14,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.cdt.make.core.makefile.ICommand;
-
 public class Else extends Conditional implements IAutomakeConditional, ICommand {
 
 	private boolean isAutomake;

@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.URI;
 
-import org.eclipse.cdt.make.core.makefile.IDirective;
-
 /**
  * Makefile : ( statement ) *
  * statement :   rule | macro_definition | comments | empty

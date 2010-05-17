@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.ISpecialRule;
-import org.eclipse.cdt.make.core.makefile.ICommand;
-
 /**
  * Targets that have special meaning for Make.
  */

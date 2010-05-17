@@ -14,7 +14,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 import java.util.Iterator;
 
 import org.eclipse.cdt.make.core.MakeCorePlugin;
-import org.eclipse.cdt.make.core.makefile.IMakefile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -62,7 +61,7 @@ public class MakefileDocumentProvider extends TextFileDocumentProvider implement
 	 */
 	private IMakefile createMakefile(IFile file) throws CoreException {
 		if (file.exists()) {
-			return MakeCorePlugin.getDefault().createMakefile(file);
+			return GNUAutomakefile.createMakefile(file);
 		}
 		return null;
 	}

@@ -13,9 +13,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.eclipse.cdt.make.core.makefile.IParent;
-import org.eclipse.cdt.make.core.makefile.IDirective;
-
 /**
  * IParent
  */

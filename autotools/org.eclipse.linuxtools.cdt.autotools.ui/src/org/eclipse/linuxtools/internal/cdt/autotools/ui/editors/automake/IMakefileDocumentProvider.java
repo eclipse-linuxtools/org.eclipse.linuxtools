@@ -12,7 +12,6 @@
  */
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.IMakefile;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 
 /**

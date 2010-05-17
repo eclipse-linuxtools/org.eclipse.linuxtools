@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.gnu.IDeleteOnErrorRule;
-
 /**
  * .DELETE_ON_ERROR
  *  If `.DELETE_ON_ERROR' is mentioned as a target anywhere in the

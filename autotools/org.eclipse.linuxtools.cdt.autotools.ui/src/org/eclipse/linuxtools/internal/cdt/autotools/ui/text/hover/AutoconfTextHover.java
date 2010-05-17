@@ -29,7 +29,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -586,7 +585,7 @@ public class AutoconfTextHover implements ITextHover, ITextHoverExtension {
 					}
 					fgStyleSheet= buffer.toString();
 				} catch (IOException ex) {
-					CCorePlugin.log(ex);
+					AutotoolsUIPlugin.log(ex);
 					fgStyleSheet= ""; //$NON-NLS-1$
 				}
 			}

@@ -48,6 +48,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
+import org.eclipse.linuxtools.cdt.autotools.ui.AutotoolsUIPlugin;
 
 /**
  * Allows for looking up resources by location or name. When using this class 100 bytes per resource
@@ -167,7 +169,7 @@ class ResourceLookupTree implements IResourceChangeListener, IResourceDeltaVisit
 			try {
 				delta.accept(this);
 			} catch (CoreException e) {
-				CCorePlugin.log(e);
+				AutotoolsUIPlugin.log(e);
 			} finally {
 				if (fNeedCleanup)
 					cleanup();
@@ -266,7 +268,7 @@ class ResourceLookupTree implements IResourceChangeListener, IResourceDeltaVisit
 			try {
 				res.accept(this, 0);
 			} catch (CoreException e) {
-				CCorePlugin.log(e);
+				AutotoolsUIPlugin.log(e);
 			}
 		}
 	}
@@ -332,7 +334,7 @@ class ResourceLookupTree implements IResourceChangeListener, IResourceDeltaVisit
 						ext= fCDTProjectExtensions;
 					}
 				} catch (CoreException e) {
-					CCorePlugin.log(e);
+					AutotoolsUIPlugin.log(e);
 					// treat as non-cdt project
 				}
 				fCurrentExtensions= ext;

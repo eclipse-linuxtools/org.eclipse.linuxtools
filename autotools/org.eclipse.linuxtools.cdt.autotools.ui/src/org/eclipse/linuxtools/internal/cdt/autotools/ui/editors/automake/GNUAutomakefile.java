@@ -26,12 +26,17 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 import org.eclipse.cdt.make.core.MakeCorePlugin;
-import org.eclipse.cdt.make.core.makefile.IDirective;
-import org.eclipse.cdt.make.core.makefile.IMakefile;
-import org.eclipse.cdt.make.core.makefile.gnu.IGNUMakefile;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.linuxtools.cdt.autotools.ui.AutotoolsUIPlugin;
 
 
 /**
@@ -927,6 +932,40 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 		return includeDirectories;
 	}
 
+	/**
+	 * Create an IMakefile using the given IMakefileReaderProvider to fetch
+	 * contents by name. 
+	 * 
+	 * @param fileURI URI of main file
+	 * @param makefileReaderProvider may be <code>null</code> for EFS IFileStore reading
+	 */
+	public static IMakefile createMakefile(IFile file) throws CoreException {
+		URI fileURI = file.getLocationURI();
+		IMakefile makefile = null;
+		GNUAutomakefile gnu = new GNUAutomakefile();
+		ArrayList<String> includeList = new ArrayList<String>();
+		includeList.add(new Path(fileURI.getPath()).removeLastSegments(1).toString());
+		includeList.addAll(Arrays.asList(gnu.getIncludeDirectories()));
+		String[] includes = includeList.toArray(new String[includeList.size()]);
+		gnu.setIncludeDirectories(includes);
+		try {
+			final IFileStore store = EFS.getStore(fileURI);
+			final IFileInfo info = store.fetchInfo();
+			if (!info.exists() || info.isDirectory())
+				throw new IOException();
+
+			MakefileReader reader = new MakefileReader(new InputStreamReader(
+					store.openInputStream(EFS.NONE, null)));
+			gnu.parse(fileURI, reader);
+		} catch (IOException e) {
+			AutotoolsUIPlugin.log(e);
+			Status status = new Status(IStatus.ERROR, AutotoolsUIPlugin.PLUGIN_ID, e.getLocalizedMessage());
+			throw new CoreException(status);
+		}
+		makefile = gnu;
+		return makefile;
+	}
+	
 	public static void main(String[] args) {
 		try {
 			String filename = "Makefile"; //$NON-NLS-1$

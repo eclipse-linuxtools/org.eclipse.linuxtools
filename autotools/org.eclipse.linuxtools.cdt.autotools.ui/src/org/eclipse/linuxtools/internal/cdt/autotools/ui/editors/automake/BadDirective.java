@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.IBadDirective;
-
 public class BadDirective extends Directive implements IBadDirective {
 
 	String line;

@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.cdt.make.core.makefile.gnu.IConditional;
-
 
 public abstract class Conditional extends Parent implements IConditional {
 

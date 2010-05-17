@@ -15,8 +15,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.eclipse.cdt.make.core.makefile.IMakefile;
-import org.eclipse.cdt.make.ui.IWorkingCopyManager;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
