@@ -1,5 +1,9 @@
 2010-05-17  Andrew Overholt  <overholt@redhat.com>
 
+	* lots: Merge Helios branch to trunk.
+
+2010-05-17  Andrew Overholt  <overholt@redhat.com>
+
 	* build.properties: Make release 0.5.1.
 
 2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
