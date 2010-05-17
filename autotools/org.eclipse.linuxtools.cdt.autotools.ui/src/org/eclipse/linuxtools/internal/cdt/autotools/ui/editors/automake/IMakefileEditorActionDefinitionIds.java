@@ -11,11 +11,10 @@
 
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
-import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 /**
  */
-public interface IMakefileEditorActionDefinitionIds extends ITextEditorActionDefinitionIds {
+public interface IMakefileEditorActionDefinitionIds {
 
 	final String UNCOMMENT = "org.eclipse.cdt.make.ui.edit.text.makefile.uncomment"; //$NON-NLS-1$
 

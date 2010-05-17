@@ -1,5 +1,7 @@
 2010-05-17  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/IMakefileEditorActionDefinitionIds.java: Do not
+	extend ITextEditorDefinitionIds as it is not extensible and it is not required.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakefileContentOutlinePage.java: Remove
 	extraneous implements of IContentOutlinePage since this is implemented by the 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ResourceMarkerAnnotationModel.java: New file.
