@@ -1,3 +1,8 @@
+2009-09-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* valgrindFiles: Regenerated.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/LaunchConfigTabTest.java: Alignment option changes.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/valgrind/massif: Removed.
