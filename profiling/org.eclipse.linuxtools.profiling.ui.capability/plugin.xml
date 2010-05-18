@@ -8,7 +8,7 @@
 		</category>
 		<activity
 		        name="Profiling"
-		        description="Profiling Tools capabilities"
+		        description="Profiling Tools Capabilities"
 		        id="org.eclipse.linuxtools.profiling.ui.capabilities">
 		</activity>
 		
@@ -21,7 +21,6 @@
 		    pattern="org\.eclipse\.linuxtools\.profiling/*">
 		</activityPatternBinding>
 		
-		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.callgraph\..*/*">
@@ -30,7 +29,6 @@
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.callgraph/*">
 		</activityPatternBinding>
-		
 		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
@@ -41,7 +39,6 @@
 		    pattern="org\.eclipse\.linuxtools\.oprofile/*">
 		</activityPatternBinding>
 		
-		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.valgrind\..*/*">
@@ -50,7 +47,6 @@
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.valgrind/*">
 		</activityPatternBinding>
-		
 		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
@@ -61,7 +57,6 @@
 		    pattern="org\.eclipse\.linuxtools\.lttng/*">
 		</activityPatternBinding>
 		
-		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.tmf\..*/*">
@@ -70,7 +65,6 @@
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.tmf/*">
 		</activityPatternBinding>
-		
 		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
@@ -85,7 +79,6 @@
 		    pattern="org\.eclipse\.linuxtools\.dataviewers\..*/*">
 		</activityPatternBinding>
 		
-		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.gprof\..*/*">
@@ -97,6 +90,19 @@
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.dataviewers/*">
+		</activityPatternBinding>
+		
+		<activityPatternBinding
+		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.graphing.*/*">
+		</activityPatternBinding>
+		<activityPatternBinding
+		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\/dashboard.*/*">
+		</activityPatternBinding>
+		<activityPatternBinding
+		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.ide.*/*">
 		</activityPatternBinding>
 		
    </extension>
