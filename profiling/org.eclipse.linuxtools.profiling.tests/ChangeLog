@@ -1,3 +1,7 @@
+2009-12-21  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Make necessary changes for switch from JUnit 3 to JUnit 4.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.3.0.
