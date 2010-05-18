@@ -36,7 +36,6 @@
 		point="org.eclipse.ui.actionSets">
 		<actionSet
 			label="%actionset.export.name"
-			visible="true"
 			id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.ExportScriptActionSet">
 			<action
 				label="%action.exportScript.name"
@@ -55,7 +54,6 @@
 		point="org.eclipse.ui.actionSets">
 		<actionSet
 			label="%actionset.createModule.name"
-			visible="true"
 			id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.CreateModuleActionSet">
 			<action
 				label="%action.createModule.name"
