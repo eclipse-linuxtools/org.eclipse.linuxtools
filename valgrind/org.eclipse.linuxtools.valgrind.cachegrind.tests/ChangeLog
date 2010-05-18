@@ -1,3 +1,7 @@
+2009-09-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* valgrindFiles: Regenerated.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/valgrind/cachegrind: Removed.
