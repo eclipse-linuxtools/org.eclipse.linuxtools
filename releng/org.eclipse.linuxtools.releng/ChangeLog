@@ -1,6 +1,7 @@
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
-	* build.properties: Try reverting to 3.6M4 to see if tests "install".
+	* build.properties: Try reverting to 3.6M4 and other deps to see if
+	tests "install".
 
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
