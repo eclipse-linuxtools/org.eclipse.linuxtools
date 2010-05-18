@@ -38,7 +38,7 @@ public class LinkedResourceMarkerTest extends AbstractLinkedResourceMemcheckTest
 		ArrayList<IMarker> markers = new ArrayList<IMarker>(Arrays.asList(proj
 				.getProject().findMarkers(ValgrindLaunchPlugin.MARKER_TYPE,
 						true, IResource.DEPTH_INFINITE)));
-		assertEquals(4, markers.size());
+		assertEquals(5, markers.size());
 		for (IValgrindMessage error : errors) {
 			findMarker(markers, error);
 		}
