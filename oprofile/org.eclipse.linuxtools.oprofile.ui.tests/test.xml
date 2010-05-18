@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="run" basedir=".">
-	<property name="classname" value="org.eclipse.linuxtools.oprofile.launch.tests.AllLaunchTests" />
-	<property name="plugin-name" value="org.eclipse.linuxtools.oprofile.launch.tests" />
+	<property name="classname" value="org.eclipse.linuxtools.oprofile.ui.tests.AllUiTests" />
+	<property name="plugin-name" value="org.eclipse.linuxtools.oprofile.ui.tests" />
 
 	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 
@@ -21,11 +21,11 @@
 	</target>
 
 	<!-- This target defines the tests that need to be run. -->
-	<target name="oprofile_launch_suite">
-		<property name="oprofile-launch-folder" value="${eclipse-home}/oprofile_launch_folder" />
-		<delete dir="${oprofile-launch-folder}" quiet="true" />
+	<target name="oprofile_ui_suite">
+		<property name="oprofile-ui-folder" value="${eclipse-home}/oprofile_ui_folder" />
+		<delete dir="${oprofile-ui-folder}" quiet="true" />
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-			<property name="data-dir" value="${oprofile-launch-folder}" />
+			<property name="data-dir" value="${oprofile-ui-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="${classname}" />
 		</ant>
@@ -41,7 +41,7 @@
 
 	<!-- This target runs the test suite. Any actions that need to happen -->
 	<!-- after all the tests have been run should go here. -->
-	<target name="run" depends="init,oprofile_launch_suite,cleanup">
+	<target name="run" depends="init,oprofile_ui_suite,cleanup">
 		<ant target="collect" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="includes" value="org*.xml" />
 			<property name="output-file" value="${plugin-name}.xml" />
