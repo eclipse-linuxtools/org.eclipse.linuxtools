@@ -1,3 +1,8 @@
+2010-05-18  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Use trunk for test plugins that were previously
+	using Helios branches.
+
 2010-05-17  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Update to latest Helios drops of dependencies.

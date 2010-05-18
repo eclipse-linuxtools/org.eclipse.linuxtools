@@ -70,14 +70,14 @@ plugin@org.eclipse.linuxtools.systemtap.ui.graphicalrun=SVN,trunk,svn://dev.ecli
 plugin@org.eclipse.linuxtools.callgraph.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.core
 plugin@org.eclipse.linuxtools.callgraph.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.launch
 plugin@org.eclipse.linuxtools.callgraph=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph
-plugin@org.eclipse.linuxtools.callgraph.launch.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/Helios,,org.eclipse.linuxtools.callgraph.launch.tests
+plugin@org.eclipse.linuxtools.callgraph.launch.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.launch.tests
 plugin@org.eclipse.linuxtools.callgraph.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.tests
 feature@org.eclipse.linuxtools.callgraph=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph-feature
 feature@org.eclipse.linuxtools.callgraph.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.tests-feature
 
 !*** profiling framework
 plugin@org.eclipse.linuxtools.profiling.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.launch
-plugin@org.eclipse.linuxtools.profiling.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/Helios,,org.eclipse.linuxtools.profiling.tests
+plugin@org.eclipse.linuxtools.profiling.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.tests
 plugin@org.eclipse.linuxtools.profiling.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.ui
 feature@org.eclipse.linuxtools.profiling=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling-feature
 feature@org.eclipse.linuxtools.profiling.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.test-feature
@@ -90,24 +90,24 @@ fragment@org.eclipse.linuxtools.oprofile.core.linux.ppc=SVN,trunk,svn://dev.ecli
 fragment@org.eclipse.linuxtools.oprofile.core.linux.x86=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.core.linux.x86
 fragment@org.eclipse.linuxtools.oprofile.core.linux.x86_64=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.core.linux.x86_64
 plugin@org.eclipse.linuxtools.oprofile.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.launch
-plugin@org.eclipse.linuxtools.oprofile.launch.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/Helios,,org.eclipse.linuxtools.oprofile.launch.tests
+plugin@org.eclipse.linuxtools.oprofile.launch.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.launch.tests
 plugin@org.eclipse.linuxtools.oprofile.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.tests
 plugin@org.eclipse.linuxtools.oprofile.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.ui
-plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/Helios,,org.eclipse.linuxtools.oprofile.ui.tests
+plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.ui.tests
 feature@org.eclipse.linuxtools.oprofile=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile-feature
 feature@org.eclipse.linuxtools.oprofile.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.test-feature
 
 !*** valgrind
 plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.cachegrind
-plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/Helios,,org.eclipse.linuxtools.valgrind.cachegrind.tests
+plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.cachegrind.tests
 plugin@org.eclipse.linuxtools.valgrind.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.core
 plugin@org.eclipse.linuxtools.valgrind.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.doc
 plugin@org.eclipse.linuxtools.valgrind.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.launch
 plugin@org.eclipse.linuxtools.valgrind.massif=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.massif
-plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/Helios,,org.eclipse.linuxtools.valgrind.massif.tests
+plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.massif.tests
 plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.memcheck
-plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/Helios,,org.eclipse.linuxtools.valgrind.memcheck.tests
-plugin@org.eclipse.linuxtools.valgrind.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/Helios,,org.eclipse.linuxtools.valgrind.tests
+plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.memcheck.tests
+plugin@org.eclipse.linuxtools.valgrind.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.tests
 plugin@org.eclipse.linuxtools.valgrind.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.ui
 plugin@org.eclipse.linuxtools.valgrind.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.ui.editor
 feature@org.eclipse.linuxtools.valgrind=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind-feature
