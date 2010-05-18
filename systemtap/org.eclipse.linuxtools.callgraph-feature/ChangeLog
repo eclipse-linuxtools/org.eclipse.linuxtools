@@ -1,3 +1,7 @@
+2010-05-18  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Fix provider name.
+
 2010-04-26  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.xml: Use featureURL property instead of explicit URL.
