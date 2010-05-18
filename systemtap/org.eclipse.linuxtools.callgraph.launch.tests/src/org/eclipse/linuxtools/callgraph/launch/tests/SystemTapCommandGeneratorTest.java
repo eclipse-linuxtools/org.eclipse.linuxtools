@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.callgraph.launch.tests;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapCommandGenerator;
 
 import junit.framework.TestCase;
@@ -31,18 +32,18 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		String scriptPath = location + "function_count.stp";
 		
 		//RUN
-		stapgen
+		String cmd = SystemTapCommandGenerator
 				.generateCommand(
 						scriptPath,
 						binaryFilePath,
 						"",
 						true,
 						true,
-						binaryFilePath, "");
+						binaryFilePath, "", PluginConstants.STAP_PATH);
 		
 		assertEquals(
 				"stap -c '"+binaryFilePath+"' "+scriptPath+ " " +binaryFilePath,
-				stapgen.getExecuteCommand());
+				cmd);
 		killStap();
 		//END
 		}
@@ -52,18 +53,18 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		String scriptPath = location + "simple.stp";
 		
 		//RUN
-		stapgen
+		String cmd = SystemTapCommandGenerator
 		.generateCommand(
 				scriptPath,
 				"",
 				"",
 				false,
 				false,
-				"", "");
+				"", "", PluginConstants.STAP_PATH);
 		
 		assertEquals(
 				"stap "+scriptPath,
-				stapgen.getExecuteCommand());
+				cmd);
 		//END
 	}
 
@@ -73,10 +74,10 @@ public class SystemTapCommandGeneratorTest extends TestCase{
 		String binaryFilePath = location + "factorial";
 		String scriptPath = location + "allsyscall.stp";
 
-		stapgen.generateCommand(scriptPath, binaryFilePath, "", true, false, "", "");
+		String cmd = SystemTapCommandGenerator.
+			generateCommand(scriptPath, binaryFilePath, "", true, false, "", "", PluginConstants.STAP_PATH);
 
-		assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath, stapgen
-				.getExecuteCommand());
+		assertEquals("stap -c '" + binaryFilePath + "' " + scriptPath, cmd);
 		// END
 		
 		killStap();
