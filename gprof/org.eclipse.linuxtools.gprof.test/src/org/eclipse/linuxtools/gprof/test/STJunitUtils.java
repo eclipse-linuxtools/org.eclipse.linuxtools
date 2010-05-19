@@ -45,11 +45,11 @@ public class STJunitUtils {
 	 * @param dumpFullFileName
 	 * @param refFullFileName
 	 */
-	public static void testCSVExport(AbstractSTDataView view, String dumpFullFileName, String refFullFileName) {
+	public static boolean testCSVExport(AbstractSTDataView view, String dumpFullFileName, String refFullFileName) {
 		STDataViewersCSVExporter exporter = new STDataViewersCSVExporter(view.getSTViewer());
 		exporter.exportTo(dumpFullFileName, new NullProgressMonitor());
 		// compare with ref
-		compareCSVIgnoreEOL(dumpFullFileName, refFullFileName, true);
+		return compareCSVIgnoreEOL(dumpFullFileName, refFullFileName, true);
 	}
 	
 	/**
@@ -174,13 +174,22 @@ public class STJunitUtils {
 					break;
 				} 				
 			} while (true);
-			
-			if (!equals) {
- 				junit.framework.Assert.assertEquals(message + ": not correspond ", true, false);
-			}
 
 			is1.close();
 			is2.close();
+			if (!equals) {
+ 				junit.framework.Assert.assertEquals(message + ": not correspond ", true, false);
+ 				System.out.println("========= begin dump file =========");
+ 				FileReader fr = new FileReader(dumpFile);
+ 				int c;
+ 				while ((c = fr.read()) != -1) {
+ 					System.out.print(c);
+ 				}
+ 				fr.close();
+ 				System.out.println("=========  end dump file  =========");
+ 				
+			}
+
 			// delete dump only for successful tests
 			if (equals && deleteDumpFileIfOk) {
 				new File(dumpFile).delete();
