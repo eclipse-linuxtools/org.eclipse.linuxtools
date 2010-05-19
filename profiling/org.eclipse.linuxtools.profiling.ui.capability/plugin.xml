@@ -105,5 +105,7 @@
 		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.ide.*/*">
 		</activityPatternBinding>
 		
+		<defaultEnablement id="org.eclipse.linuxtools.profiling.ui.capabilities"/>
+		
    </extension>
 </plugin>
