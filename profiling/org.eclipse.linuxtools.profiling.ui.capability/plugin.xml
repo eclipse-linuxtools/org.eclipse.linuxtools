@@ -118,6 +118,21 @@
 		    pattern="org\.eclipse\.linuxtools\.systemtap\.ui\.ide.*/*">
 		</activityPatternBinding>
 		
+		<activityPatternBinding
+		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
+		    pattern="org\.eclipse\.linuxtools\.cdt\.autotools.*/*">
+		</activityPatternBinding>
+		
+		<activityPatternBinding
+		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
+		    pattern="org\.eclipse\.linuxtools\.changelog.*/*">
+		</activityPatternBinding>
+		
+		<activityPatternBinding
+		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
+		    pattern="org\.eclipse\.linuxtools\.rpm.*/*">
+		</activityPatternBinding>
+		
 		<defaultEnablement id="org.eclipse.linuxtools.profiling.ui.capabilities"/>
 		
    </extension>
