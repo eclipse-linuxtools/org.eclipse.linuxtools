@@ -3,14 +3,27 @@
 <plugin>
 	<extension point="org.eclipse.ui.activities">
 		<category
-		    name="Profiling Tools Category"
-		    id="org.eclipse.linuxtools.profilingCategory">
+		    name="Linux Tools"
+		    id="org.eclipse.linuxtools.activities.category">
 		</category>
 		<activity
 		        name="Profiling"
 		        description="Profiling Tools Capabilities"
 		        id="org.eclipse.linuxtools.profiling.ui.capabilities">
 		</activity>
+		<activity
+		        name="General"
+		        description="General Capabilities"
+		        id="org.eclipse.linuxtools.profiling.general.ui.capabilities">
+		</activity>
+		
+		<categoryActivityBinding
+      activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
+      categoryId="org.eclipse.linuxtools.activities.category"/>
+      
+      <categoryActivityBinding
+      activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
+      categoryId="org.eclipse.linuxtools.activities.category"/>
 		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.ui.capabilities"
