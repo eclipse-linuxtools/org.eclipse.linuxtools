@@ -118,6 +118,7 @@
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/trunk/org.eclipse.linuxtools.lttng.tests,org.eclipse.linuxtools.lttng.tests"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/trunk/org.eclipse.linuxtools.lttng.ui,org.eclipse.linuxtools.lttng.ui"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/trunk/org.eclipse.linuxtools.lttng.ui.tests,org.eclipse.linuxtools.lttng.ui.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/trunk/org.eclipse.linuxtools.lttng.jni,org.eclipse.linuxtools.lttng.jni"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/trunk/org.eclipse.linuxtools.tmf,org.eclipse.linuxtools.tmf"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/trunk/org.eclipse.linuxtools.tmf-feature,org.eclipse.linuxtools.tmf-feature"/>
 <project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/trunk/org.eclipse.linuxtools.tmf.doc,org.eclipse.linuxtools.tmf.doc"/>
