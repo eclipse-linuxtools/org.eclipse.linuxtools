@@ -1,3 +1,7 @@
+2010-05-20  Charley Wang  <chwang@redhat.com>
+
+	* build.properties: Revert back to 3.6M4 so the build doesn't keep failing 
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Try reverting to 3.6M4 and other deps to see if
