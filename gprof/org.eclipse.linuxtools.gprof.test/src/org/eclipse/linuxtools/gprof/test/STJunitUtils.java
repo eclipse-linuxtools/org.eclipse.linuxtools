@@ -178,16 +178,16 @@ public class STJunitUtils {
 			is1.close();
 			is2.close();
 			if (!equals) {
- 				junit.framework.Assert.assertEquals(message + ": not correspond ", true, false);
- 				System.out.println("========= begin dump file =========");
+				StringBuffer msg = new StringBuffer(message + ": not correspond ");
+ 				msg.append("\n========= begin dump file =========\n");
  				FileReader fr = new FileReader(dumpFile);
  				int c;
  				while ((c = fr.read()) != -1) {
- 					System.out.print(c);
+ 					msg.append((char) c);
  				}
  				fr.close();
- 				System.out.println("=========  end dump file  =========");
- 				
+ 				msg.append("\n=========  end dump file  =========\n");
+ 				junit.framework.Assert.assertEquals(msg.toString(), true, false);
 			}
 
 			// delete dump only for successful tests
