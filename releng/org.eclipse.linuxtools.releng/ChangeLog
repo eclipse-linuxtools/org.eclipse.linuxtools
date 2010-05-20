@@ -1,6 +1,9 @@
 2010-05-20  Charley Wang  <chwang@redhat.com>
 
-	* build.properties: Revert back to 3.6M4 so the build doesn't keep failing 
+	* build.properties: Revert back to 3.6M4 so the build doesn't keep 
+	failing, switch versions of swtbot to a non-broken link for swtbot
+	3.6 
+						
 
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
