@@ -194,6 +194,12 @@ public class TestEnvironmentVars {
 		w.newLine();
 		w.append("echo VAR3 is ${some_var3}");
 		w.newLine();
+		w.append("echo VAR4 is ${some_var4}");
+		w.newLine();
+		w.append("echo VAR5 is ${some_var5}");
+		w.newLine();
+		w.append("echo VAR6 is ${some_var6}");
+		w.newLine();
 		w.close();
 		// Now change the configure script command to be the fake configure script
 		// and set the three envvars on the command itself
@@ -206,7 +212,7 @@ public class TestEnvironmentVars {
 		bot.treeWithLabel("Configure Settings").select("configure");
 		bot.textWithLabel("Command").setText("");
 		// Choose three different forms, some using quotes to allow blanks in them
-		bot.textWithLabel("Command").typeText("some_var1=\"a boat\" some_var2='a train' some_var3=car fake_configure");
+		bot.textWithLabel("Command").typeText("some_var1=\"a boat\" some_var2='a train' some_var3=car fake_configure some_var4=\"a wagon\" some_var5='a plane' some_var6=skates");
 		bot.button("OK").click();
 		// Reconfigure the project and make sure the env variables are seen in the script
 		view = bot.viewByTitle("Project Explorer");
@@ -216,15 +222,13 @@ public class TestEnvironmentVars {
 		SWTBotView consoleView = bot.viewByTitle("Console");
 		consoleView.setFocus();
 		String output = consoleView.bot().styledText().getText();
-		Pattern p = Pattern.compile(".*VAR1 is a boat.*VAR2 is a train.*VAR3 is car.*", Pattern.DOTALL);
+		Pattern p = Pattern.compile(".*VAR1 is a boat.*VAR2 is a train.*VAR3 is car.*VAR4 is a wagon.*VAR5 is a plane.*VAR6 is skates.*", Pattern.DOTALL);
 		Matcher m = p.matcher(output);
 		assertTrue(m.matches());
-		bot.sleep(10000);
 	}
 
 	@AfterClass
 	public static void sleep() {
 		bot.sleep(2000);
-		bot.menu("File").menu("Exit").click();
 	}
 }

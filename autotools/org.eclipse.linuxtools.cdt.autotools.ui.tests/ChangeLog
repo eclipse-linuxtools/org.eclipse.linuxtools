@@ -1,3 +1,11 @@
+2010-05-21  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Tests: #313748
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestMakeTargets.java: New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/AllTests.java: Add TestMakeTargets.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestEnvironmentVars.java (setEnvVarOnCommandLine): Add extra
+	environment variables that follow the command. 
+
 2010-05-13  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/AllTests.java: 
