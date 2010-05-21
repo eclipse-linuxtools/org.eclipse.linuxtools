@@ -1,6 +1,6 @@
 2010-05-21  Jeff Johnston  <jjohnstn@redhat.com>
 
-	Resolves: #313748
+	Resolves: #313754
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (stripEnvVars): Add
 	support to strip off environment variables that follow the command.
 
