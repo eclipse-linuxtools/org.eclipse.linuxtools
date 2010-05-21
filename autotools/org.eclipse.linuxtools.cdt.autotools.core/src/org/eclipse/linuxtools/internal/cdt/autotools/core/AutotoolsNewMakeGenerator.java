@@ -596,7 +596,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 	}
 
 	/**
-	 * Strip a command of VAR=VALUE pairs that appear ahead of the command and add
+	 * Strip a command of VAR=VALUE pairs that appear ahead or behind the command and add
 	 * them to a list of environment variables.
 	 *
 	 * @param command - command to strip
@@ -607,6 +607,9 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		Pattern p = Pattern.compile("(\\w+[=]([$]?\\w+[:;]?)+\\s+)\\w+.*");
 		Pattern p2 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s+)\\w+.*");
 		Pattern p3 = Pattern.compile("(\\w+[=]'.*?'\\s+)\\w+.*");
+		Pattern p4 = Pattern.compile("\\w+\\s+(\\w+[=]([$]?\\w+[:;]?)+).*");
+		Pattern p5 = Pattern.compile("\\w+\\s+(\\w+[=]\\\".*?\\\"\\s*)+.*");
+		Pattern p6 = Pattern.compile("\\w+\\s+(\\w+[=]'.*?'\\s*)+.*"); 
 		boolean finished = false;
 		while (!finished) {
 			Matcher m = p.matcher(command);
@@ -626,7 +629,27 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 						String s = m3.group(1).trim();
 						envVars.add(s.replaceAll("'", ""));
 					} else {
-						finished = true;
+						Matcher m4 = p4.matcher(command);
+						if (m4.matches()) {
+							command = command.replaceFirst("\\w+[=]([$]?\\w+[:;]?)+", "").trim();
+							envVars.add(m4.group(1).trim());
+						} else {
+							Matcher m5 = p5.matcher(command);
+							if (m5.matches()) {
+								command = command.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
+								String s = m5.group(1).trim();
+								envVars.add(s.replaceAll("\\\"", ""));
+							} else {
+								Matcher m6 = p6.matcher(command);
+								if (m6.matches()) {
+									command = command.replaceFirst("\\w+[=]'.*?'", "").trim();
+									String s = m6.group(1).trim();
+									envVars.add(s.replaceAll("'", ""));
+								} else {
+									finished = true;
+								}
+							}
+						}
 					}
 				}
 			}
