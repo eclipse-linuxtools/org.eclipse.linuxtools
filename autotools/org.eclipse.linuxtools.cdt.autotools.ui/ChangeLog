@@ -1,3 +1,10 @@
+2010-05-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakefileContentOutlinePage.java: Remove
+	unused import warning.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/ResourceLookupTree.java: Ditto.
+
+
 2010-05-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/IMakefileEditorActionDefinitionIds.java: Do not

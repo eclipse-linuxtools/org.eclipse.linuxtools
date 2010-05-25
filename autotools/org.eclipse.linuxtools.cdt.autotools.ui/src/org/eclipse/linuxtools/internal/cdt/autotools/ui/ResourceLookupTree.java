@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.CProjectNature;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.parser.util.CharArrayUtils;
@@ -48,7 +47,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.ui.AutotoolsUIPlugin;
 
 /**
