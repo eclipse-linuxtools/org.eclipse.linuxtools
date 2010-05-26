@@ -42,7 +42,7 @@ public class ExpandCollapseTest extends AbstractMassifTest {
 		doLaunch(config, "testDefaults"); //$NON-NLS-1$
 		
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		viewer = view.getTreeViewer();
+		viewer = view.getTreeViewer().getViewer();
 		contextMenu = viewer.getTree().getMenu();
 		
 		// Select first snapshot and expand it

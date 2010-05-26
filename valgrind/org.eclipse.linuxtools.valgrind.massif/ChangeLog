@@ -1,3 +1,18 @@
+2010-05-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #314376
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/birt/ChartEditorInput.java (getAdapter): Change @suppresswarnings.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifTreeViewer.java (MassifTreeViewer): Do not extend TreeViewer,
+		act as a wrapper instead.
+	(.doubleClick): Change access to TreeViewer.
+	(.menuAboutToShow): Likewise.
+	(getViewer): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifViewPart.java (createPartControl): Likewise. 
+	(.doubleClick): Likewise.
+	(.run): Likewise.
+	(refreshView): Likewise.
+	(getTreeViewer): Likewise.
+
 2009-09-28  Elliott Baron  <ebaron@fedoraproject.org>
 
 	#290597

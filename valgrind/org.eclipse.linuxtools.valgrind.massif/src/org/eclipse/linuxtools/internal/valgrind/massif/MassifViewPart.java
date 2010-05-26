@@ -133,7 +133,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		viewer.setLabelProvider(new MassifLabelProvider());
 
 		treeViewer = new MassifTreeViewer(top);
-		treeViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+		treeViewer.getViewer().getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
@@ -141,10 +141,10 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 						.getSelection()).getFirstElement();
 				if (snapshot.getType() != SnapshotType.EMPTY) {
 					treeAction.setChecked(true);
-					setTopControl(treeViewer.getControl());
-					treeViewer.setSelection(new StructuredSelection(snapshot
+					setTopControl(treeViewer.getViewer().getControl());
+					treeViewer.getViewer().setSelection(new StructuredSelection(snapshot
 							.getRoot()), true);
-					treeViewer.expandToLevel(snapshot.getRoot(),
+					treeViewer.getViewer().expandToLevel(snapshot.getRoot(),
 							TreeViewer.ALL_LEVELS);
 				}
 			}
@@ -265,7 +265,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			@Override
 			public void run() {
 				if (isChecked()) {
-					stackLayout.topControl = treeViewer.getControl();
+					stackLayout.topControl = treeViewer.getViewer().getControl();
 					top.layout();
 				} else {
 					stackLayout.topControl = viewer.getControl();
@@ -350,7 +350,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				for (int i = 0; i < detailed.length; i++) {
 					nodes[i] = detailed[i].getRoot();
 				}
-				treeViewer.setInput(nodes);
+				treeViewer.getViewer().setInput(nodes);
 
 				// create and display chart
 				if (snapshots.length > 0) {
@@ -410,7 +410,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 		return viewer;
 	}
 
-	public TreeViewer getTreeViewer() {
+	public MassifTreeViewer getTreeViewer() {
 		return treeViewer;
 	}
 

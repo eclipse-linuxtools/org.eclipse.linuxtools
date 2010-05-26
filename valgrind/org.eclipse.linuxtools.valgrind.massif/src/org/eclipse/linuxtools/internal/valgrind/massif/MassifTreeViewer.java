@@ -27,15 +27,17 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 
-public class MassifTreeViewer extends TreeViewer {
+public class MassifTreeViewer {
 
 	protected IDoubleClickListener doubleClickListener;
 	protected ITreeContentProvider contentProvider;
 	protected Action expandAction;
 	protected Action collapseAction;
 
+	private TreeViewer viewer;
+	
 	public MassifTreeViewer(Composite parent) {
-		super(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		contentProvider = new ITreeContentProvider() {
 			public Object[] getChildren(Object parentElement) {
@@ -61,9 +63,9 @@ public class MassifTreeViewer extends TreeViewer {
 					Object newInput) {}
 
 		};
-		setContentProvider(contentProvider);
+		viewer.setContentProvider(contentProvider);
 
-		setLabelProvider(new MassifTreeLabelProvider());
+		viewer.setLabelProvider(new MassifTreeLabelProvider());
 
 		doubleClickListener = new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
@@ -72,19 +74,19 @@ public class MassifTreeViewer extends TreeViewer {
 					MassifPlugin.getDefault().openEditorForNode(element);
 				} 
 				if (contentProvider.hasChildren(element)) {
-					expandToLevel(element, 1);
+					viewer.expandToLevel(element, 1);
 				}
 			}			
 		};
-		addDoubleClickListener(doubleClickListener);
+		viewer.addDoubleClickListener(doubleClickListener);
 		
-		expandAction = new ExpandAction(this);
-		collapseAction = new CollapseAction(this);
+		expandAction = new ExpandAction(viewer);
+		collapseAction = new CollapseAction(viewer);
 		
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				ITreeSelection selection = (ITreeSelection) getSelection();
+				ITreeSelection selection = (ITreeSelection) viewer.getSelection();
 				MassifHeapTreeNode element = (MassifHeapTreeNode) selection.getFirstElement();
 				if (contentProvider.hasChildren(element)) {
 					manager.add(expandAction);
@@ -94,12 +96,15 @@ public class MassifTreeViewer extends TreeViewer {
 		});
 		
 		manager.setRemoveAllWhenShown(true);	
-		Menu contextMenu = manager.createContextMenu(getTree());
-		getControl().setMenu(contextMenu);
+		Menu contextMenu = manager.createContextMenu(viewer.getTree());
+		viewer.getControl().setMenu(contextMenu);
 	}
 
 	public IDoubleClickListener getDoubleClickListener() {
 		return doubleClickListener;
 	}
 
+	public TreeViewer getViewer() {
+		return viewer;
+	}
 }

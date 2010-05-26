@@ -142,7 +142,7 @@ public class ValgrindViewPart extends ViewPart {
 
 	public void refreshView() {
 		if (messages != null) {
-			messagesViewer.setInput(messages);
+			messagesViewer.getTreeViewer().setInput(messages);
 			
 			// decide which page to show
 			if (hasDynamicContent && messages.length == 0) {
@@ -177,7 +177,7 @@ public class ValgrindViewPart extends ViewPart {
 	}
 	
 	private void showCorePage() {
-		pageBook.showPage(messagesViewer.getControl());
+		pageBook.showPage(messagesViewer.getTreeViewer().getControl());
 		showCoreAction.setChecked(true);
 		showToolAction.setChecked(false);
 	}

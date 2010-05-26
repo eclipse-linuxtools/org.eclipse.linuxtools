@@ -89,7 +89,7 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
 		CoreMessagesViewer viewer = view.getMessagesViewer();
 
 		// get first leaf
-		IValgrindMessage[] elements = (IValgrindMessage[]) viewer.getInput();
+		IValgrindMessage[] elements = (IValgrindMessage[]) viewer.getTreeViewer().getInput();
 		IValgrindMessage element = elements[0];
 		TreePath path = new TreePath(new Object[] { element });
 		frame = null;
@@ -102,11 +102,11 @@ public class LinkedResourceDoubleClickTest extends AbstractLinkedResourceMemchec
 		}
 		assertNotNull(frame);
 
-		viewer.expandToLevel(frame, TreeViewer.ALL_LEVELS);
+		viewer.getTreeViewer().expandToLevel(frame, TreeViewer.ALL_LEVELS);
 		TreeSelection selection = new TreeSelection(path);
 
 		// do double click
 		IDoubleClickListener listener = viewer.getDoubleClickListener();
-		listener.doubleClick(new DoubleClickEvent(viewer, selection));
+		listener.doubleClick(new DoubleClickEvent(viewer.getTreeViewer(), selection));
 	}
 }

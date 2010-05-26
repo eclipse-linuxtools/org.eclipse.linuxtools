@@ -1,3 +1,11 @@
+2010-05-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #314376
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/CoreMessagesViewer.java: Do not extend TreeViewer,
+		act as wrapper instead.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/ValgrindViewPart.java (refreshView): Change access to TreeViewer.
+	(showCorePage): Likewise.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.3.0.

@@ -42,7 +42,7 @@ public class DoubleClickTest extends AbstractMassifTest {
 	
 	private void doDoubleClick() {
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		MassifTreeViewer treeViewer = (MassifTreeViewer) view.getTreeViewer();
+		MassifTreeViewer treeViewer = view.getTreeViewer();
 		
 		MassifSnapshot[] snapshots = view.getSnapshots();
 		node = snapshots[1].getRoot(); // first detailed
@@ -52,12 +52,12 @@ public class DoubleClickTest extends AbstractMassifTest {
 			path = path.createChildPath(node);
 		}
 		if (node.hasSourceFile()) {
-			treeViewer.expandToLevel(node, TreeViewer.ALL_LEVELS);
+			treeViewer.getViewer().expandToLevel(node, TreeViewer.ALL_LEVELS);
 			TreeSelection selection = new TreeSelection(path);
 	
 			// do double click
 			IDoubleClickListener listener = treeViewer.getDoubleClickListener();
-			listener.doubleClick(new DoubleClickEvent(treeViewer, selection));
+			listener.doubleClick(new DoubleClickEvent(treeViewer.getViewer(), selection));
 		}
 		else {
 			fail();

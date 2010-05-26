@@ -42,20 +42,23 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public class CoreMessagesViewer extends TreeViewer {
+public class CoreMessagesViewer {
 	public IDoubleClickListener doubleClickListener;
 	public ITreeContentProvider contentProvider;
 	public IAction expandAction;
 	public IAction collapseAction;
+	
+	private TreeViewer viewer;
 
 	public CoreMessagesViewer(Composite parent, int style) {
-		super(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | style);
-		getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | style);
+		viewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
 		contentProvider = new ITreeContentProvider() {
 
 			public Object[] getChildren(Object parentElement) {
@@ -83,9 +86,9 @@ public class CoreMessagesViewer extends TreeViewer {
 					Object newInput) {}
 
 		};
-		setContentProvider(contentProvider);
+		viewer.setContentProvider(contentProvider);
 
-		setLabelProvider(new LabelProvider() {
+		viewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
 				return ((IValgrindMessage) element).getText();
@@ -156,24 +159,24 @@ public class CoreMessagesViewer extends TreeViewer {
 					}
 				}
 				else {
-					if (getExpandedState(element)) {
-						collapseToLevel(element, TreeViewer.ALL_LEVELS);
+					if (viewer.getExpandedState(element)) {
+						viewer.collapseToLevel(element, TreeViewer.ALL_LEVELS);
 					}
 					else {
-						expandToLevel(element, 1);
+						viewer.expandToLevel(element, 1);
 					}
 				}
 			}
 		};
-		addDoubleClickListener(doubleClickListener);
+		viewer.addDoubleClickListener(doubleClickListener);
 
-		expandAction = new ExpandAction(this);
-		collapseAction = new CollapseAction(this);
+		expandAction = new ExpandAction(viewer);
+		collapseAction = new CollapseAction(viewer);
 
 		MenuManager manager = new MenuManager();
 		manager.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				ITreeSelection selection = (ITreeSelection) getSelection();
+				ITreeSelection selection = (ITreeSelection) viewer.getSelection();
 				Object element = selection.getFirstElement();
 				if (contentProvider.hasChildren(element)) {
 					manager.add(expandAction);
@@ -183,11 +186,15 @@ public class CoreMessagesViewer extends TreeViewer {
 		});
 
 		manager.setRemoveAllWhenShown(true);	
-		Menu contextMenu = manager.createContextMenu(getTree());
-		getControl().setMenu(contextMenu);
+		Menu contextMenu = manager.createContextMenu(viewer.getTree());
+		viewer.getControl().setMenu(contextMenu);
 	}
 
 	public IDoubleClickListener getDoubleClickListener() {
 		return doubleClickListener;
+	}
+
+	public TreeViewer getTreeViewer() {
+		return viewer;
 	}
 }

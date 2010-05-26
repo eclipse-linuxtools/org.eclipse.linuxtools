@@ -40,7 +40,7 @@ public class TreeTest extends AbstractMassifTest {
 		doLaunch(config, "testTreeNodes"); //$NON-NLS-1$
 				
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		TreeViewer treeViewer = view.getTreeViewer();
+		TreeViewer treeViewer = view.getTreeViewer().getViewer();
 		
 		MassifSnapshot[] snapshots = view.getSnapshots();
 		MassifHeapTreeNode[] nodes = (MassifHeapTreeNode[]) treeViewer.getInput();
@@ -59,7 +59,7 @@ public class TreeTest extends AbstractMassifTest {
 		doLaunch(config, "testNoDetailed"); //$NON-NLS-1$
 				
 		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
-		TreeViewer treeViewer = view.getTreeViewer();
+		TreeViewer treeViewer = view.getTreeViewer().getViewer();
 		
 		MassifHeapTreeNode[] nodes = (MassifHeapTreeNode[]) treeViewer.getInput();
 		

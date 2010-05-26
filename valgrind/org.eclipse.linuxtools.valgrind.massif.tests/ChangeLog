@@ -1,3 +1,11 @@
+2010-05-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #314376
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/DoubleClickTest.java (doDoubleClick): Change access to TreeViewer.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ExpandCollapseTest.java (testExpand): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/TreeTest.java (testTreeNodes): Likewise.
+	(testNoDetailed): Likewise.
+
 2009-12-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Make necessary changes for switch from JUnit 3 to JUnit 4.
