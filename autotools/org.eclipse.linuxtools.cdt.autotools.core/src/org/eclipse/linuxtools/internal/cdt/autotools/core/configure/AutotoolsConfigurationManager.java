@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc.
+ * Copyright (c) 2009, 2010 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -327,6 +327,14 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 		}
 	}
 	
+	private String xmlEscape(String value) {
+		value = value.replaceAll("\\&", "&amp;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\\"", "&quot;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\\'", "&apos;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\>", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		return value;
+	}
 	
 	private void saveConfigs(IProject project, ICConfigurationDescription[] cfgds) {
 		try {
@@ -360,7 +368,7 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 						Option option = optionList[j];
 						IConfigureOption opt = cfg.getOption(option.getName());
 						if (!opt.isCategory())
-							p.println("<option id=\"" + option.getName() + "\" value=\"" + opt.getValue() + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
+							p.println("<option id=\"" + option.getName() + "\" value=\"" + xmlEscape(opt.getValue()) + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
 					}
 					p.println("</configuration>"); //$NON-NLS-1$
 					// Sync name field as this configuration is now officially saved

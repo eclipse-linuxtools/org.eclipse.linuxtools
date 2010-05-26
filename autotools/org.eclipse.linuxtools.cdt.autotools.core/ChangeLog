@@ -1,3 +1,11 @@
+2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #314122
+	2010-05-26  Jon Beniston  <jon@beniston.com>
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfigurationManager.java (saveConfigs): Convert
+	any special characters in value before saving. 
+	(xmlEscape): New method. 
+
 2010-05-21  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #313754
