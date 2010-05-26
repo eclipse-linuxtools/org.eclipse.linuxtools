@@ -357,7 +357,8 @@ public class SpecfileParser {
 		for (String section : sections) {
 			if (lineText.startsWith(section)) {
 				lastSection = parseSection(lineText, specfile, lineNumber);
-				lastSection.setSectionEndLine(lineNumber + 1);
+				if (lastSection != null)
+					lastSection.setSectionEndLine(lineNumber + 1);
 				return lastSection;
 			}
 		}
