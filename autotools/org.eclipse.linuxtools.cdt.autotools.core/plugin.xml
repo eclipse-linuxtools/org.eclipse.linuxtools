@@ -492,6 +492,24 @@
                 name="isCProject">
           </simple>
        </processType>
+       <processType
+             name="SetAutotoolsStringOptionValue"
+             processRunner="org.eclipse.linuxtools.internal.cdt.autotools.core.wizards.SetAutotoolsStringOptionValue">
+          <simple
+                name="name">
+          </simple>
+          <complexArray
+                name="resourcePaths">
+             <baseType>
+                <simple
+                      name="id">
+                </simple>
+                <simple
+                      name="value">
+                </simple>
+             </baseType>
+          </complexArray>
+       </processType>
     </extension>
     <extension
           point="org.eclipse.core.contenttype.contentTypes">

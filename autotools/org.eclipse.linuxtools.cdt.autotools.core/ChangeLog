@@ -1,5 +1,12 @@
 2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/core/Resources.properties: Add new error message for setting options
+	via template.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/wizards/SetAutotoolsStringOptionValue.java: New file.
+	* plugin.xml: Add new template process type. 
+
+2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Resolves: #314122
 	2010-05-26  Jon Beniston  <jon@beniston.com>
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfigurationManager.java (saveConfigs): Convert
