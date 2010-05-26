@@ -1,3 +1,9 @@
+2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java
+	(getDocumentLocation): Add support for FileStoreEditorInput.  Do not assume
+	loc is non-null at end of method.
+	
 2010-03-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #306247
