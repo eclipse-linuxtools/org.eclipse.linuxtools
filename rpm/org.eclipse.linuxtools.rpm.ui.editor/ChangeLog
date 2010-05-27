@@ -1,21 +1,3 @@
-2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
-
-	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (setDocumentProvider): New
-	override to set the document provider to the SpecfileDocumentProvider.
-	(getSpecfileDocumentProvider): New static method.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/UiUtils.java (resolveDefines): Prevent NPE from
-	occurring instead of letting try/catch handle it.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecFileParser.java:
-	(parseMacro): Add check for lastSection being null before accessing.
-	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileErrorHandler.java: Rewritten
-	to support external files in addition to project files.
-	(SpecfileErrorHandler): Changed to accept an IEditorInput instead of IFile.
-	(SpecfileMarker): New private class.
-	(handleError): Rewritten.
-	(removeAllExistingMarkers): Moved here from base class.
-	(removeExistingMarkers): Ditto.
-	(getAnnotationModel): New method.
-
 2010-04-09  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (createFieldEditors): Store field editor in a member.
