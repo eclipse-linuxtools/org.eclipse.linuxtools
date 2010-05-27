@@ -1,0 +1,5 @@
+#Tue Jan 19 00:22:12 EET 2010
+eclipse.preferences.version=1
+org.moreunit.prefixes=
+org.moreunit.unitsourcefolder=org.eclipse.linuxtools.rpm.ui.editor\:src\:org.eclipse.linuxtools.rpm.ui.editor.tests\:src
+org.moreunit.useprojectsettings=true
