@@ -6,11 +6,11 @@ Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.oprofile.ui.tests.UiTestsPlugin
 Bundle-Vendor: %bundleProvider
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.core.resources;bundle-version="3.4.1"
+ org.eclipse.core.resources;bundle-version="3.4.1",
+ org.junit;bundle-version="3.8.2"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Import-Package: junit.framework;version="[3.0.0,4.0.0)",
- org.eclipse.linuxtools.oprofile.core.model,
+Import-Package: org.eclipse.linuxtools.oprofile.core.model,
  org.eclipse.linuxtools.oprofile.tests,
  org.eclipse.linuxtools.oprofile.ui.model,
  org.eclipse.swt.graphics
