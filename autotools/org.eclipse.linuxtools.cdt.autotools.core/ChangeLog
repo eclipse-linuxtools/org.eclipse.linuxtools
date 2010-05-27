@@ -1,3 +1,10 @@
+2010-05-27  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #270326
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java
+	(initialize): Test fix for black-on-black configure console.
+
 2010-05-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #314587

@@ -52,6 +52,7 @@ import org.eclipse.cdt.managedbuilder.core.ManagedBuilderCorePlugin;
 import org.eclipse.cdt.managedbuilder.macros.BuildMacroException;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.newmake.core.IMakeCommonBuildInfo;
+import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -155,6 +156,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		this.cfg = info.getDefaultConfiguration();
 		this.builder = cfg.getBuilder();
 		this.monitor = monitor;
+		CUIPlugin.getDefault().getPreferenceStore().getString("dummy");
 	}
 
 	public IProject getProject() {
