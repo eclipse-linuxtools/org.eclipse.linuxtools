@@ -13,6 +13,8 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor;
 
+import java.net.URI;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
@@ -26,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
@@ -37,6 +40,7 @@ public class SpecfileEditor extends TextEditor {
 	private Specfile specfile;
 	private SpecfileParser parser;
 	private RpmMacroOccurrencesUpdater fOccurrencesUpdater;
+	private static SpecfileDocumentProvider fDocumentProvider;
 
 	public SpecfileEditor() {
 		super();
@@ -84,7 +88,7 @@ public class SpecfileEditor extends TextEditor {
 		try {
 			IDocument document = getInputDocument();
 			SpecfileErrorHandler specfileErrorHandler = new SpecfileErrorHandler(
-					getInputFile(), document);
+					getEditorInput(), document);
 			specfileErrorHandler.removeExistingMarkers();
 			SpecfileTaskHandler specfileTaskHandler = new SpecfileTaskHandler(
 					getInputFile(), document);
@@ -139,7 +143,22 @@ public class SpecfileEditor extends TextEditor {
 		return specfile;
 	}
 
+	/*
+	 * If there is no explicit document provider set, the implicit one is
+	 * re-initialized based on the given editor input.
+	 *
+	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#setDocumentProvider(org.eclipse.ui.IEditorInput)
+	 */
+	@Override
+	protected void setDocumentProvider(IEditorInput input) {
+		setDocumentProvider(getSpecfileDocumentProvider());
+	}
 
+	public static SpecfileDocumentProvider getSpecfileDocumentProvider() {
+		if (fDocumentProvider == null)
+			fDocumentProvider = new SpecfileDocumentProvider();
+		return fDocumentProvider;
+	}
 	/*
 	 * @see
 	 * org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createPartControl
