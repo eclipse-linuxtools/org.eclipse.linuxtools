@@ -1,3 +1,9 @@
+2010-05-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #314587
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (getWinOSType): New method. 
+	(getPathString): Modify to check for WinOSType if platform is WIN_32.
+
 2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/core/Resources.properties: Add new error message for setting options

@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.cdt.autotools.core;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -110,6 +111,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 	private IPath buildLocation;
 	private String buildDir;
 	private String srcDir;
+	private String winOSType = "";
 
 	private IConfiguration cfg;
 	private ICConfigurationDescription cdesc;
@@ -894,14 +896,39 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		return rc;
 	}
 
+	// Method to get the Win OS Type to distinguish between Cygwin and MingW
+	private String getWinOSType() {
+		if (winOSType.equals("")) {
+			try {
+				CommandLauncher launcher = new CommandLauncher();
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				launcher.execute(
+						new Path(SHELL_COMMAND), //$NON-NLS-1$
+						new String[] { "-c", "echo $OSTYPE" }, //$NON-NLS-1$ //$NON-NLS-2$
+						new String[0],
+						new Path("."), //$NON-NLS-1$
+						new NullProgressMonitor());
+				if (launcher.waitAndRead(out, out) == CommandLauncher.OK)
+					winOSType = out.toString().trim();
+			} catch (CoreException e) {
+				// do nothing
+			}
+		}
+		return winOSType;
+	}	
+
     // Get the path string.  We add a Win check to handle MingW.
     // For MingW, we would rather represent C:\a\b as /C/a/b which
-    // doesn't cause Makefile to choke.
-    // TODO: further logic would be needed to handle cygwin if desired
+    // doesn't cause Makefile to choke. For Cygwin we use /cygdrive/C/a/b
     private String getPathString(IPath path) {
             String s = path.toString();
-            if (Platform.getOS().equals(Platform.OS_WIN32))
-                    s = s.replaceAll("^([A-Z])(:)", "/$1");
+            if (Platform.getOS().equals(Platform.OS_WIN32)) {
+            	if (getWinOSType().equals("cygwin")) {
+                    s = s.replaceAll("^([A-Z])(:)", "/cygdrive/$1");            		
+            	} else {
+                    s = s.replaceAll("^([A-Z])(:)", "/$1");            		
+            	}
+            }
             return s;
     }
 
