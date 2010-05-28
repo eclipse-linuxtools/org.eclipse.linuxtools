@@ -1,3 +1,7 @@
+2010-05-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* feature.xml: Regenerated dependencies.
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Fix provider name.

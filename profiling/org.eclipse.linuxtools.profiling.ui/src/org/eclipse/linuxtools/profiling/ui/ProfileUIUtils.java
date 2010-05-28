@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.profiling.ui;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,10 +31,15 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.debug.core.CDebugCorePlugin;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
@@ -97,7 +103,19 @@ public class ProfileUIUtils {
 		if (input == null || editorID == null) {
 			// Consult the CDT DebugModelPresentation
 			Object sourceElement = result.getSourceElement();
-			if (sourceElement != null) {				
+			if (sourceElement != null) {
+				// Resolve IResource in case we get a LocalFileStorage object
+				if (sourceElement instanceof LocalFileStorage) {
+					IPath filePath = ((LocalFileStorage) sourceElement).getFullPath();
+					URI fileURI = URIUtil.toURI(filePath);
+					IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+					IFile[] files = root.findFilesForLocationURI(fileURI);
+					if (files.length > 0) {
+						// Take the first match
+						sourceElement = files[0];
+					}
+				}
+				
 				IDebugModelPresentation pres = DebugUITools.newDebugModelPresentation(CDebugCorePlugin.getUniqueIdentifier());
 				input = pres.getEditorInput(sourceElement);
 				editorID = pres.getEditorId(input, sourceElement);
