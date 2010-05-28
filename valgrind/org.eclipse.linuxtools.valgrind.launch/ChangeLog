@@ -1,3 +1,10 @@
+2010-05-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #314680
+	* META-INF/MANIFEST.MF: Added new dependency.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchConfigurationDelegate.java (createMarkers): Account
+		for source lookup returning LocalFileStorage. 
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.3.0.

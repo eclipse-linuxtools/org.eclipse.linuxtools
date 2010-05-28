@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.valgrind.launch;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +21,12 @@ import java.util.Stack;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
+import org.eclipse.core.filesystem.URIUtil;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -34,6 +39,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
+import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.sourcelookup.ISourceLookupResult;
 import org.eclipse.linuxtools.internal.valgrind.core.CommandLineConstants;
@@ -211,13 +217,27 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 						ISourceLocator locator = frame.getLaunch().getSourceLocator();					
 						ISourceLookupResult result = DebugUITools.lookupSource(frame.getFile(), locator);
 						Object sourceElement = result.getSourceElement();
+						
+						if (sourceElement != null) {
+							// Resolve IResource in case we get a LocalFileStorage object
+							if (sourceElement instanceof LocalFileStorage) {
+								IPath filePath = ((LocalFileStorage) sourceElement).getFullPath();
+								URI fileURI = URIUtil.toURI(filePath);
+								IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+								IFile[] files = root.findFilesForLocationURI(fileURI);
+								if (files.length > 0) {
+									// Take the first match
+									sourceElement = files[0];
+								}
+							}
 
-						if (sourceElement != null && sourceElement instanceof IResource) {
-							IResource resource = (IResource) sourceElement;
-							marker = resource.createMarker(ValgrindLaunchPlugin.MARKER_TYPE);
-							marker.setAttribute(IMarker.MESSAGE, message.getText());
-							marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-							marker.setAttribute(IMarker.LINE_NUMBER, frame.getLine());
+							if (sourceElement instanceof IResource) {
+								IResource resource = (IResource) sourceElement;
+								marker = resource.createMarker(ValgrindLaunchPlugin.MARKER_TYPE);
+								marker.setAttribute(IMarker.MESSAGE, message.getText());
+								marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+								marker.setAttribute(IMarker.LINE_NUMBER, frame.getLine());
+							}
 						}
 					}
 				}
