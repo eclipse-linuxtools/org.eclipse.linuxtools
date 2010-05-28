@@ -1,18 +1,18 @@
 Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
-+-;Summary;0;;;0.0
++-;Summary;3;;;100.0
   +-;A::foocpp::foocpp();0;2;0ns;0.0
   | +-;parents;0;2;0ns;0.0
   |   +-;B::foocpp::foocpp() (foox.cpp:82);0;1;0ns;0.0
   |   +-;main (foox.cpp:110);0;1;0ns;0.0
-  +-;A::foocpp::func_a(int);0;2;0ns;0.0
+  +-;A::foocpp::func_a(int);1;2;5.0ms;33.333332
   | +-;children;0;2;0ns;0.0
-  | | +-;A::foocpp::func_f(int) (foox.cpp:99);0;2;0ns;0.0
-  | +-;parents;0;2;0ns;0.0
-  |   +-;B::foocpp::func_b(int) (foox.cpp:95);0;1;0ns;0.0
+  | | +-;A::foocpp::func_f(int) (foox.cpp:47);0;2;0ns;0.0
+  | +-;parents;2;2;10.0ms;66.666664
+  |   +-;B::foocpp::func_b(int) (foox.cpp:95);2;1;20.0ms;66.666664
   |   +-;main (foox.cpp:112);0;1;0ns;0.0
   +-;A::foocpp::func_f(int);0;2;0ns;0.0
-  | +-;parents;0;2;0ns;0.0
-  |   +-;A::foocpp::func_a(int) (foox.cpp:59);0;2;0ns;0.0
+  | +-;parents;1;2;5.0ms;33.333332
+  |   +-;A::foocpp::func_a(int) (foox.cpp:59);1;2;5.0ms;33.333332
   +-;A::foocpp::~foocpp();0;2;0ns;0.0
   | +-;parents;0;2;0ns;0.0
   |   +-;B::foocpp::~foocpp() (foox.cpp:87);0;1;0ns;0.0
@@ -22,21 +22,21 @@ Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
   | | +-;A::foocpp::foocpp() (foox.cpp:42);0;1;0ns;0.0
   | +-;parents;0;1;0ns;0.0
   |   +-;main (foox.cpp:109);0;1;0ns;0.0
-  +-;B::foocpp::func_b(int);0;1;0ns;0.0
-  | +-;children;0;1;0ns;0.0
-  | | +-;A::foocpp::func_a(int) (foox.cpp:44);0;1;0ns;0.0
+  +-;B::foocpp::func_b(int);2;1;20.0ms;66.666664
+  | +-;children;1;1;10.0ms;33.333332
+  | | +-;A::foocpp::func_a(int) (foox.cpp:99);1;1;10.0ms;33.333332
   | +-;parents;0;1;0ns;0.0
   |   +-;main (foox.cpp:115);0;1;0ns;0.0
   +-;B::foocpp::~foocpp();0;1;0ns;0.0
   | +-;children;0;1;0ns;0.0
-  | | +-;A::foocpp::~foocpp() (foox.cpp:42);0;1;0ns;0.0
+  | | +-;A::foocpp::~foocpp() (foox.cpp:44);0;1;0ns;0.0
   | +-;parents;0;1;0ns;0.0
   |   +-;main (foox.cpp:119);0;1;0ns;0.0
   +-;main;0;0;;0.0
-    +-;children;0;6;0ns;0.0
+    +-;children;3;6;5.0ms;100.0
       +-;A::foocpp::foocpp() (foox.cpp:42);0;1;0ns;0.0
-      +-;A::foocpp::func_a(int) (foox.cpp:44);0;1;0ns;0.0
-      +-;A::foocpp::~foocpp() (foox.cpp:42);0;1;0ns;0.0
-      +-;B::foocpp::foocpp() (foox.cpp:81);0;1;0ns;0.0
-      +-;B::foocpp::func_b(int) (foox.cpp:91);0;1;0ns;0.0
+      +-;A::foocpp::func_a(int) (foox.cpp:99);1;1;10.0ms;33.333332
+      +-;A::foocpp::~foocpp() (foox.cpp:44);0;1;0ns;0.0
+      +-;B::foocpp::foocpp() (foox.cpp:42);0;1;0ns;0.0
+      +-;B::foocpp::func_b(int) (foox.cpp:44);2;1;20.0ms;66.666664
       +-;B::foocpp::~foocpp() (foox.cpp:86);0;1;0ns;0.0
