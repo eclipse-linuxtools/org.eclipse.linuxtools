@@ -36,12 +36,8 @@ public class HistogramDecoder_64 extends HistogramDecoder {
 		hist_sample    = new int[hist_num_bins]; // Impl note: JVM sets all integers to 0
 		dimen          = new String(bytes);
 		dimen_abbrev   = (char) b;
-		scale          = (highpc - lowpc)/(double)(hist_num_bins -2);
 		long temp = highpc - lowpc;
-		long tmp = hist_num_bins - 2;
-		bucketSize = temp/tmp;
-		//bucketSize     = (highpc - lowpc)/(hist_num_bins - 1);
-		if (bucketSize > scale) scale = bucketSize;
+		bucketSize = Math.round(temp/(double)hist_num_bins);
 	}
 
 	
