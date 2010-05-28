@@ -1,8 +1,8 @@
 Hierarchy;Name (location);Time;Calls;Time/Call;%Time
 +-;Summary;30.0ms;;;100.0
   +-;A::foocpp::func_a(int) (foox.cpp:60);10.0ms;;;33.333332
-  | +-;0x8048b89;10.0ms;;;33.333332
+  | +-;0x8048b84;10.0ms;;;33.333332
   +-;B::foocpp::func_b(int) (foox.cpp:93);10.0ms;;;33.333332
-  | +-;0x804897b;10.0ms;;;33.333332
+  | +-;0x8048978;10.0ms;;;33.333332
   +-;B::foocpp::func_b(int) (foox.cpp:97);10.0ms;;;33.333332
-    +-;0x8048a2c;10.0ms;;;33.333332
+    +-;0x8048a28;10.0ms;;;33.333332
