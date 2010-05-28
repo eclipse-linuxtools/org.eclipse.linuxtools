@@ -47,7 +47,6 @@ public class HistogramDecoder {
 	protected int[] hist_sample;
 	/** Total time for all routines.  */
 	protected double total_time;
-	protected double scale;
 
 	protected long bucketSize;
 
@@ -115,12 +114,8 @@ public class HistogramDecoder {
 		hist_sample    = new int[hist_num_bins]; // Impl note: JVM sets all integers to 0
 		dimen          = new String(bytes);
 		dimen_abbrev   = (char) b;
-		scale          = (highpc - lowpc)/(double)(hist_num_bins -2);
 		long temp = highpc - lowpc;
-		long tmp = hist_num_bins - 2;
-		bucketSize = temp/tmp;
-		//bucketSize     = (highpc - lowpc)/(hist_num_bins - 1);
-		if (bucketSize > scale) scale = bucketSize;
+		bucketSize = Math.round(temp/(double)hist_num_bins);
 	}
 
 	/**
@@ -190,16 +185,13 @@ public class HistogramDecoder {
 		printHistHeader(ps);
 
 		/*ps.println(" \nHistogram Samples : ");
-        ISymbol[] symbols = this.program.getSymbols();
-        for (int i = 0 ; i< symbols.length; i++) {
-        	if (buckets[i] != null) {
-            	System.out.println(symbols[i].getName());
-        		for (Bucket b : buckets[i]) {
-        			System.out.println("  " + b.start_addr + " :: " + b.time);
-        		}
-        	}
-		}*/
-
+        ISymbol[] symbols = this.decoder.getProgram().getSymbols();
+        for (ISymbol iSymbol : symbols) {
+			ps.println(iSymbol.getName() + "\t" + iSymbol.getAddress());
+		}
+        for (int i = 0; i<hist_sample.length; i++) {
+        	ps.println("histSample[" + i + "]\t" + hist_sample[i]);
+        }*/
 	}
 
 	/**
@@ -217,8 +209,8 @@ public class HistogramDecoder {
 			int ccnt = hist_sample[i];
 			if (ccnt != 0)
 			{
-				long pcl = lowpc + (long) (scale*i);
-				long pch = lowpc + (long) (scale * (i+1));
+				long pcl = lowpc + (bucketSize*i);
+				long pch = pcl+bucketSize;
 				total_time += ccnt;
 				long svalue0;
 				long svalue1 = symblist[j-1].getAddress().getValue().longValue();
@@ -239,7 +231,7 @@ public class HistogramDecoder {
 						long overlap = end_addr - start_addr;
 						if(overlap > 0)
 						{
-							int time = (int) ((overlap * ccnt) / scale);
+							int time = (int) ((overlap * ccnt) / bucketSize);
 							Bucket   bck = new Bucket(start_addr, end_addr, time);
 							addBucket(bck,symblist[j]);
 						}
