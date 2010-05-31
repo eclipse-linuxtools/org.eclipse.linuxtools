@@ -138,7 +138,7 @@ public class StubbyPomGenerator {
 
 	private void generateCleanSection(StringBuilder buffer) {
 		buffer.append("%clean\n");
-		buffer.append("%{__rm} -rf %{buildroot}\n\n");
+		buffer.append("rm -rf %{buildroot}\n\n");
 	}
 
 	private void generateInstallSection(StringBuilder buffer) {

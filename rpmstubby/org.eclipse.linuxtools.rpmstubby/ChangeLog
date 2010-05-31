@@ -1,3 +1,7 @@
+2010-05-31  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateCleanSection): Fix rm call (bug 312864).
+
 2010-02-11  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateInstallSection): Proper install for jars in a <packaging>pom</packaging> project and use %{_mavenpomdir} macro.
