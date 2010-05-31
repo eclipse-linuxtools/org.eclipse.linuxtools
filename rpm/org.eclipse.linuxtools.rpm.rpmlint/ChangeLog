@@ -1,3 +1,8 @@
+2010-05-31  Alexander Kurtakov  <akurtako@redhat.com>
+    Fix for bz#309188 (rpmlint doesn't run from within editor).
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (runRpmlint): New method.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (execute): Run on the editor input if it's not structured selection.
+
 2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Require o.e.l.rpm.core.
