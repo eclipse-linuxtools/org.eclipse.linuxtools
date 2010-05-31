@@ -116,7 +116,8 @@ public class StubbyPomGenerator {
 	private void generateJavadocSubpackage(StringBuilder buffer) {
 		buffer.append("%package javadoc\n");
 		buffer.append("Group:          Documentation\n");
-		buffer.append("Summary:        Javadoc for %{name}\n\n");
+		buffer.append("Summary:        Javadoc for %{name}\n");
+		buffer.append("Requires:       jpackage-utils\n\n");
 
 		buffer.append("%description javadoc\n");
 		buffer.append("API documentation for %{name}.\n\n");

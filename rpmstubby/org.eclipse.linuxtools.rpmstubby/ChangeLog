@@ -1,3 +1,7 @@
+2010-05-31   Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateJavadocSubpackage): Add missing Requires to javadoc subpackage. (bz#312865)
+
 2010-05-31  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateCleanSection): Fix rm call (bug 312864).
