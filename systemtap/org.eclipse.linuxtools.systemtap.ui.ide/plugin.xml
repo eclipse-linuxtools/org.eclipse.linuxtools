@@ -13,23 +13,26 @@
 	<extension
 		point="org.eclipse.ui.views">
 		<view
-			name="%view.function.name"
-			allowMultiple="true"
-			icon="icons/views/func_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"/>
+        allowMultiple="true"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
+        icon="icons/views/func_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
+        name="%view.function.name"/>
 		<view
-			name="%view.kernel.name"
-			allowMultiple="true"
-			icon="icons/views/kernel_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"/>
+        allowMultiple="true"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
+        icon="icons/views/kernel_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
+        name="%view.kernel.name"/>
 		<view
-			name="%view.probe.name"
-			allowMultiple="true"
-			icon="icons/views/probe_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
+        allowMultiple="true"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+        icon="icons/views/probe_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+        name="%view.probe.name"/>
 	</extension>
 	
 	<extension
