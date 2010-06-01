@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2006, 2010 Phil Muldoon <pkmuldoon@picobot.org>.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.changelog.parsers;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.cdt.core.dom.ICodeReaderFactory;
 import org.eclipse.cdt.core.dom.ast.IASTFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTFunctionDefinition;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
@@ -23,8 +22,9 @@ import org.eclipse.cdt.core.dom.ast.gnu.cpp.GPPLanguage;
 import org.eclipse.cdt.core.model.ICElement;
 import org.eclipse.cdt.core.model.ILanguage;
 import org.eclipse.cdt.core.model.IWorkingCopy;
-import org.eclipse.cdt.core.parser.CodeReader;
+import org.eclipse.cdt.core.parser.FileContent;
 import org.eclipse.cdt.core.parser.IScannerInfo;
+import org.eclipse.cdt.core.parser.IncludeFileContentProvider;
 import org.eclipse.cdt.core.parser.ParserUtil;
 import org.eclipse.cdt.core.parser.ScannerInfo;
 import org.eclipse.cdt.ui.CUIPlugin;
@@ -42,7 +42,6 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 /**
  * @author pmuldoon (Phil Muldoon)
  */
-@SuppressWarnings("deprecation")
 public class CParser implements IParserChangeLogContrib {
 
 	public CParser() {
@@ -58,81 +57,82 @@ public class CParser implements IParserChangeLogContrib {
 		String currentElementName;
 
 		if (input instanceof IFileEditorInput) {
-		// Get the working copy and connect to input.		
-		IWorkingCopyManager manager = CUIPlugin.getDefault()
-				.getWorkingCopyManager();
-		manager.connect(input);
+			// Get the working copy and connect to input.		
+			IWorkingCopyManager manager = CUIPlugin.getDefault()
+			.getWorkingCopyManager();
+			manager.connect(input);
 
-		// Retrieve the C/C++ Element in question.
-		IWorkingCopy workingCopy = manager.getWorkingCopy(input);
-		ICElement method = workingCopy.getElementAtOffset(offset);
+			// Retrieve the C/C++ Element in question.
+			IWorkingCopy workingCopy = manager.getWorkingCopy(input);
+			ICElement method = workingCopy.getElementAtOffset(offset);
 
-		manager.disconnect(input);
+			manager.disconnect(input);
 
-		// no element selected
-		if (method == null)
-			return "";
+			// no element selected
+			if (method == null)
+				return "";
 
-		// Get the current element name, to test it.
-		currentElementName = method.getElementName();
-		
-		// Element doesn't have a name. Can go no further.
-		if (currentElementName == null) {
-			// element doesn't have a name
-			return "";
-		}
-
-		// Get the Element Type to test.
-		int elementType = method.getElementType();
-
-		switch (elementType) {
-		case ICElement.C_FIELD:
-		case ICElement.C_METHOD:
-		case ICElement.C_FUNCTION:
-			break;
-		case ICElement.C_MODEL:
-			return "";
-
-		// So it's not a method, field, function, or model. Where are we?			
-		default:
-			ICElement tmpMethodType;
-		if (((tmpMethodType = method.getAncestor(ICElement.C_FUNCTION)) == null)
-				&& ((tmpMethodType = method.getAncestor(ICElement.C_METHOD)) == null)
-				&& ((tmpMethodType = method.getAncestor(ICElement.C_CLASS)) == null)) {
-			return "";
-		} else {
-			// In a class, but not in a method. Return class name instead.
-			method = tmpMethodType;
+			// Get the current element name, to test it.
 			currentElementName = method.getElementName();
-		}
 
-		}
+			// Element doesn't have a name. Can go no further.
+			if (currentElementName == null) {
+				// element doesn't have a name
+				return "";
+			}
 
-		// Build all ancestor classes.
-		// Append all ancestor class names to string
-		ICElement tmpParent = method.getParent();
+			// Get the Element Type to test.
+			int elementType = method.getElementType();
 
-		while (tmpParent != null) {
-			ICElement tmpParentClass = tmpParent.getAncestor(ICElement.C_CLASS);
-			if (tmpParentClass != null) {
-				String tmpParentClassName = tmpParentClass.getElementName();
-				if (tmpParentClassName == null)
+			switch (elementType) {
+			case ICElement.C_FIELD:
+			case ICElement.C_METHOD:
+			case ICElement.C_FUNCTION:
+				break;
+			case ICElement.C_MODEL:
+				return "";
+
+				// So it's not a method, field, function, or model. Where are we?			
+			default:
+				ICElement tmpMethodType;
+				if (((tmpMethodType = method.getAncestor(ICElement.C_FUNCTION)) == null)
+						&& ((tmpMethodType = method.getAncestor(ICElement.C_METHOD)) == null)
+						&& ((tmpMethodType = method.getAncestor(ICElement.C_CLASS)) == null)) {
+					return "";
+				} else {
+					// In a class, but not in a method. Return class name instead.
+					method = tmpMethodType;
+					currentElementName = method.getElementName();
+				}
+
+			}
+
+			// Build all ancestor classes.
+			// Append all ancestor class names to string
+			ICElement tmpParent = method.getParent();
+
+			while (tmpParent != null) {
+				ICElement tmpParentClass = tmpParent.getAncestor(ICElement.C_CLASS);
+				if (tmpParentClass != null) {
+					String tmpParentClassName = tmpParentClass.getElementName();
+					if (tmpParentClassName == null)
+						return currentElementName;
+					currentElementName = tmpParentClassName + "."
+					+ currentElementName;
+				} else
 					return currentElementName;
-				currentElementName = tmpParentClassName + "."
-						+ currentElementName;
-			} else
-				return currentElementName;
-			tmpParent = tmpParentClass.getParent();
+				tmpParent = tmpParentClass.getParent();
 
-		}
-		return currentElementName;
+			}
+			return currentElementName;
 		}
 		else if (input instanceof IStorageEditorInput) {
 			// Get the working copy and connect to input.
 			// don't follow inclusions
 			currentElementName = "";
 			IStorageEditorInput sei = (IStorageEditorInput)input;
-			ICodeReaderFactory codeReaderFactory= NullCodeReaderFactory.getInstance();
+			// don't follow inclusions
+			IncludeFileContentProvider contentProvider = IncludeFileContentProvider.getEmptyFilesProvider();
 			
 			// empty scanner info
 			IScannerInfo scanInfo= new ScannerInfo();
@@ -156,7 +156,7 @@ public class CParser implements IParserChangeLogContrib {
 				// do nothing
 			}
 			
-			CodeReader reader= new CodeReader(data.toCharArray());
+			FileContent content = FileContent.create("<text>", data.toCharArray()); //$NON-NLS-1$
 			
 			// determine the language
 			boolean isSource[]= {false};
@@ -165,7 +165,7 @@ public class CParser implements IParserChangeLogContrib {
 			try {
 				IASTTranslationUnit ast;
 				int options= isSource[0] ? ILanguage.OPTION_IS_SOURCE_UNIT : 0;
-				ast= language.getASTTranslationUnit(reader, scanInfo, codeReaderFactory, null, options, ParserUtil.getParserLogService());
+				ast= language.getASTTranslationUnit(content, scanInfo, contentProvider, null, options, ParserUtil.getParserLogService());
 				IASTNodeSelector n = ast.getNodeSelector(null);
 				IASTNode node = n.findFirstContainedNode(offset, 100);
 				while (node != null && !(node instanceof IASTTranslationUnit)) {
