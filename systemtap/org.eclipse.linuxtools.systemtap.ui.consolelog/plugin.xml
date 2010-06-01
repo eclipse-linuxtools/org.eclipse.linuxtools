@@ -4,11 +4,12 @@
 	<extension
 		point="org.eclipse.ui.views">
 		<view
-			name="%view.error.name"
-			allowMultiple="false"
-			icon="icons/views/error_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"
-			id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"/>
+        allowMultiple="false"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"
+        icon="icons/views/error_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.consolelog.views.ErrorView"
+        name="%view.error.name"/>
 	</extension>
 	
 	
