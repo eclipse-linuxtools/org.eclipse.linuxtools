@@ -13,28 +13,32 @@
 	<extension
 		point="org.eclipse.ui.views">
 		<view
-			name="%view.module.name"
-			allowMultiple="false"
-			icon="icons/views/mod_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView"
-			id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView">
+        allowMultiple="false"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView"
+        icon="icons/views/mod_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView"
+        name="%view.module.name">
 		</view>
 		<view
-			name="%view.activeModule.name"
-			allowMultiple="false"
-			icon="icons/views/active_mod_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView"
-			id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView">
+        allowMultiple="false"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView"
+        icon="icons/views/active_mod_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView"
+        name="%view.activeModule.name">
 		</view>
 		<view
-			name="%view.dashboard.name"
-			allowMultiple="false"
-			icon="icons/views/dashboard_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView"
-			id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView">
+        allowMultiple="false"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView"
+        icon="icons/views/dashboard_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardView"
+        name="%view.dashboard.name">
 		</view>
   <view
         allowMultiple="false"
+        category="org.eclipse.linuxtools.systemtap.ui"
         class="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardGraphsBrowserView"
         icon="icons/misc/graph_act.gif"
         id="org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleGraphsView"

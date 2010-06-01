@@ -13,11 +13,12 @@
 	<extension
 		point="org.eclipse.ui.views">
 		<view
-			name="%view.graphSelector.name"
-			allowMultiple="false"
-			icon="icons/views/selector_obj.gif"
-			class="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
-			id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView">
+        allowMultiple="false"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
+        icon="icons/views/selector_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
+        name="%view.graphSelector.name">
 		</view>
 	</extension>
 	
