@@ -10,5 +10,5 @@
 .*stapdev.*stapusr.*=Please add yourself to the 'stapdev' or 'stapusr' group in order to run stap.
 .*Error inserting module.*File exists=A previous run of systemtap did not finish execution properly. In commandline, try ps aux | grep stap, kill any running stap processes and try again. 
 .*line 0: syntax error near unexpected token.*=Your workspace name may contain opening and closing brackets -- please switch to a workspace that does not use brackets and try again.
-.*SystemTap's version of uprobes is out of date.*=SystemTap's version of uprobes is out of date. As root, please run "make -C /usr/local/share/systemtap/runtime/uprobes".
-.*Error inserting module.*Invalid module format.*=SystemTap's version of uprobes is out of date. As root, please run "make -C /usr/local/share/systemtap/runtime/uprobes".
+.*SystemTap's version of uprobes is out of date.*=SystemTap's version of uprobes is out of date. If this is a standard SystemTap install, please run as root "make -C /usr/share/systemtap/runtime/uprobes". If SystemTap was built from source, please run as root "make -C /usr/local/share/systemtap/runtime/uprobes".
+.*Error inserting module.*Invalid module format.*=SystemTap's version of uprobes is out of date. If this is a standard SystemTap install, please run as root "make -C /usr/share/systemtap/runtime/uprobes". If SystemTap was built from source, please run as root "make -C /usr/local/share/systemtap/runtime/uprobes".

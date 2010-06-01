@@ -1,3 +1,9 @@
+2010-06-01  Roland Grunberg  <rgrunber@redhat.com>
+
+	* errors.prop: Modify error message for uprobes to list both
+	/usr/share/ and /usr/local/share in the make step for standard
+	SystemTap installs, and local installations.
+
 2010-04-13  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextParser.java:
