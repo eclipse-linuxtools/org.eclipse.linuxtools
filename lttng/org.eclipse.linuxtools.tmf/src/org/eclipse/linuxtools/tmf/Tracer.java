@@ -15,14 +15,14 @@ public class Tracer {
 	private static String pluginID = TmfCorePlugin.PLUGIN_ID;
 
 	static Boolean ERROR     = Boolean.FALSE;
+	static Boolean WARNING   = Boolean.FALSE;
+	static Boolean INFO      = Boolean.FALSE;
 
 	static Boolean COMPONENT = Boolean.FALSE;
 	static Boolean REQUEST   = Boolean.FALSE;
+	static Boolean SIGNAL    = Boolean.FALSE;
 	static Boolean EVENT     = Boolean.FALSE;
 	static Boolean EXCEPTION = Boolean.FALSE;
-
-//	static Boolean SIGNALS    = Boolean.FALSE;
-//	static Boolean INTERNALS  = Boolean.FALSE;
 
 	private static BufferedWriter fTraceLog = null;
 
@@ -39,46 +39,60 @@ public class Tracer {
 	public static void init() {
 
 		String traceKey;
+		boolean isTracing = false;
 		
 		traceKey = Platform.getDebugOption(pluginID + "/error");
 		if (traceKey != null) {
-			ERROR = (new Boolean(traceKey)).booleanValue();
+			ERROR = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= ERROR;
+		}
+
+		traceKey = Platform.getDebugOption(pluginID + "/warning");
+		if (traceKey != null) {
+			WARNING = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= WARNING;
+		}
+
+		traceKey = Platform.getDebugOption(pluginID + "/info");
+		if (traceKey != null) {
+			INFO = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= INFO;
 		}
 
 		traceKey = Platform.getDebugOption(pluginID + "/component");
 		if (traceKey != null) {
-			COMPONENT = (new Boolean(traceKey)).booleanValue();
+			COMPONENT = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= COMPONENT;
 		}
 
 		traceKey = Platform.getDebugOption(pluginID + "/request");
 		if (traceKey != null) {
-			REQUEST = (new Boolean(traceKey)).booleanValue();
+			REQUEST = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= REQUEST;
+		}
+
+		traceKey = Platform.getDebugOption(pluginID + "/signal");
+		if (traceKey != null) {
+			SIGNAL = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= SIGNAL;
 		}
 
 		traceKey = Platform.getDebugOption(pluginID + "/event");
 		if (traceKey != null) {
-			EVENT = (new Boolean(traceKey)).booleanValue();
+			EVENT = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= EVENT;
 		}
 
 		traceKey = Platform.getDebugOption(pluginID + "/exception");
 		if (traceKey != null) {
-			EXCEPTION = (new Boolean(traceKey)).booleanValue();
+			EXCEPTION = (Boolean.valueOf(traceKey)).booleanValue();
+			isTracing |= EXCEPTION;
 		}
 
 		// Create trace log file if needed
-		if (ERROR || COMPONENT || REQUEST || EVENT || EXCEPTION) {
+		if (isTracing) {
 			fTraceLog = openLogFile("trace.log");
 		}
-
-//		String signalsKey = Platform.getDebugOption(pluginID + "/signals");
-//		if (signalsKey != null) {
-//			SIGNALS = (new Boolean(signalsKey)).booleanValue();
-//		}
-//
-//		String internalsKey = Platform.getDebugOption(pluginID + "/internals");
-//		if (internalsKey != null) {
-//			INTERNALS = (new Boolean(signalsKey)).booleanValue();
-//		}
 	}
 
 	// Predicates
@@ -103,11 +117,18 @@ public class Tracer {
 	}
 
 	// Tracers
-	private static void trace(String message) {
+	public static void trace(String msg) {
+		long currentTime = System.currentTimeMillis();
+		StringBuilder message = new StringBuilder("[");
+		message.append(currentTime / 1000);
+		message.append(".");
+		message.append(currentTime % 1000);
+		message.append("] ");
+		message.append(msg);
 		System.out.println(message);
 		try {
 			if (fTraceLog != null) {
-				fTraceLog.write(message);
+				fTraceLog.write(message.toString());
 				fTraceLog.newLine();
 				fTraceLog.flush();
 			}
@@ -134,25 +155,9 @@ public class Tracer {
 	public static void traceException(Exception e) {
 	}
 
-	
 	public static void traceError(String msg) {
-		String message = ("[ERR] Thread=" + Thread.currentThread().getId() + msg);
+		String message = ("[ERR] Thread=" + Thread.currentThread().getId() + " " + msg);
 		trace(message);
 	}
-
-//	public static void traceComponent(String message) {
-//		if (COMPONENTS)
-//			trace(Thread.currentThread() + ": " + message);
-//	}
-//
-//	public static void traceSignal(TmfSignal signal) {
-//		if (SIGNALS)
-//			trace(Thread.currentThread() + ": " + signal.toString());
-//	}
-//
-//	public static void traceInternal(String message) {
-//		if (INTERNALS)
-//			trace(Thread.currentThread() + ": " + message);
-//	}
 
 }

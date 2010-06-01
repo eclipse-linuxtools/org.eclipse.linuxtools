@@ -105,9 +105,8 @@ public class StateManagerFactory {
 	 * @param traceUniqueId
 	 */
 	public static void removeManager(ITmfTrace rtrace, LTTngTreeNode rexperiment) {
-		Object experimentObj = rexperiment.getValue();
 		if (rtrace != null && rexperiment != null
-				&& experimentObj instanceof TmfExperiment<?>) {
+				&& rexperiment.getValue() instanceof TmfExperiment<?>) {
 			LTTngTreeNode childToremove = rexperiment.getChildByName(rtrace
 					.getName());
 			if (childToremove != null) {

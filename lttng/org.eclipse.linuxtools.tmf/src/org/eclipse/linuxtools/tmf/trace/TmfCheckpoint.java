@@ -19,7 +19,7 @@ import org.eclipse.linuxtools.tmf.event.TmfTimestamp;
  * <p>
  * This class maps an event timestamp to a generic location.
  */
-public class TmfCheckpoint implements Comparable<TmfCheckpoint> {
+public class TmfCheckpoint implements Comparable<TmfCheckpoint>, Cloneable {
 
     // ------------------------------------------------------------------------
     // Attributes

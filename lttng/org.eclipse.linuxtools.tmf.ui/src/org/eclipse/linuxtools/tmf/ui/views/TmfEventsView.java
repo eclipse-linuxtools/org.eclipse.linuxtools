@@ -261,9 +261,8 @@ public class TmfEventsView extends TmfView {
         fTable.getDisplay().asyncExec(new Runnable() {
         	public void run() {
        			fTable.setSelection(0);
-            	fTable.clearAll();
+            	fTable.removeAll();
 				cacheStartIndex = cacheEndIndex = 0;	// Clear the cache
-            	fTable.setItemCount((int) fExperiment.getNbEvents());        
         	}
         });
     }

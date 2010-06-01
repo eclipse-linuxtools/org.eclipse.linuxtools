@@ -233,7 +233,7 @@ public class StateTraceManager extends LTTngTreeNode implements IStateTraceManag
 			}
 
 			// Restore the stored traceState
-			synchronized (fStateModel) {
+			synchronized (this) {
 				fStateModel = traceState;
 			}
 		}

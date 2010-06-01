@@ -489,7 +489,10 @@ class ProcessStateKey {
     
     @Override
     public boolean equals(Object obj) {
-        boolean isSame = false;
+
+    	if (obj == null) return false;
+  
+    	boolean isSame = false;
         
         if ( obj instanceof ProcessStateKey ) {
         	ProcessStateKey procKey = (ProcessStateKey) obj;

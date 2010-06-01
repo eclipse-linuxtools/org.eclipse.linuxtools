@@ -70,7 +70,7 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 		fQueueSize = queueSize;
 		fDataQueue = (queueSize > 1) ? new LinkedBlockingQueue<T>(fQueueSize) : new SynchronousQueue<T>();
 
-//        Tracer.traceComponent(getName() + " created");
+        if (Tracer.isComponentTraced()) Tracer.traceComponent(this, "created");
 
         fExecutor = new TmfRequestExecutor();
 		fSignalDepth = 0;
@@ -79,7 +79,7 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 		fLogException = Tracer.isEventTraced();
 
 		TmfProviderManager.register(fType, this);
-//		Tracer.traceComponent(getName() + " started");
+		if (Tracer.isComponentTraced()) Tracer.traceComponent(this, "started");
 }
 	
 	public TmfDataProvider(TmfDataProvider<T> other) {
@@ -99,7 +99,9 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	public void dispose() {
 		TmfProviderManager.deregister(fType, this);
 		fExecutor.stop();
-//		Tracer.traceComponent(getName() + " stopped");
+
+		if (Tracer.isComponentTraced()) Tracer.traceComponent(this, "stopped");
+		
 		if (fClone != null) fClone.dispose();
 		super.dispose();
 	}
@@ -116,25 +118,25 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	// ITmfRequestHandler
 	// ------------------------------------------------------------------------
 
-//	public synchronized void sendRequest(final ITmfDataRequest<T> request, ExecutionType execType) {
-//		sendRequest(request);
-//	}
-
-	public synchronized void sendRequest(final ITmfDataRequest<T> request) {
-		sendRequest(request, ExecutionType.SHORT);
+	public void sendRequest(final ITmfDataRequest<T> request) {
+		synchronized(this) {
+			sendRequest(request, ExecutionType.SHORT);
+		}
 	}
 
 	protected TmfDataProvider<T> fClone;
-	public synchronized void sendRequest(final ITmfDataRequest<T> request, ExecutionType execType) {
-		if (fClone == null || execType == ExecutionType.SHORT) {
-			if (fSignalDepth > 0) {
-				coalesceDataRequest(request);
-			} else {
-				queueRequest(request);
+	public void sendRequest(final ITmfDataRequest<T> request, ExecutionType execType) {
+		synchronized(this) {
+			if (fClone == null || execType == ExecutionType.SHORT) {
+				if (fSignalDepth > 0) {
+					coalesceDataRequest(request);
+				} else {
+					queueRequest(request);
+				}
 			}
-		}
-		else {
-			fClone.sendRequest(request);
+			else {
+				fClone.sendRequest(request);
+			}
 		}
 	}
 
@@ -143,14 +145,16 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	 * 
 	 * @param thread
 	 */
-	public synchronized void fireRequests() {
-		for (TmfDataRequest<T> request : fPendingCoalescedRequests) {
-			queueRequest(request);
-		}
-		fPendingCoalescedRequests.clear();
+	public void fireRequests() {
+		synchronized(this) {
+			for (TmfDataRequest<T> request : fPendingCoalescedRequests) {
+				queueRequest(request);
+			}
+			fPendingCoalescedRequests.clear();
 
-		if (fClone != null)
-			fClone.fireRequests();
+			if (fClone != null)
+				fClone.fireRequests();
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -159,21 +163,25 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 
 	protected Vector<TmfCoalescedDataRequest<T>> fPendingCoalescedRequests = new Vector<TmfCoalescedDataRequest<T>>();
 
-	protected synchronized void newCoalescedDataRequest(ITmfDataRequest<T> request) {
-		TmfCoalescedDataRequest<T> coalescedRequest =
-			new TmfCoalescedDataRequest<T>(fType, request.getIndex(), request.getNbRequested(), request.getBlockize());
-		coalescedRequest.addRequest(request);
-		fPendingCoalescedRequests.add(coalescedRequest);
+	protected void newCoalescedDataRequest(ITmfDataRequest<T> request) {
+		synchronized(this) {
+			TmfCoalescedDataRequest<T> coalescedRequest =
+				new TmfCoalescedDataRequest<T>(fType, request.getIndex(), request.getNbRequested(), request.getBlockize());
+			coalescedRequest.addRequest(request);
+			fPendingCoalescedRequests.add(coalescedRequest);
+		}
 	}
 
 	protected synchronized void coalesceDataRequest(ITmfDataRequest<T> request) {
-		for (TmfCoalescedDataRequest<T> req : fPendingCoalescedRequests) {
-			if (req.isCompatible(request)) {
-				req.addRequest(request);
-				return;
+		synchronized(this) {
+			for (TmfCoalescedDataRequest<T> req : fPendingCoalescedRequests) {
+				if (req.isCompatible(request)) {
+					req.addRequest(request);
+					return;
+				}
 			}
+			newCoalescedDataRequest(request);
 		}
-		newCoalescedDataRequest(request);
 	}
 
 	// ------------------------------------------------------------------------
@@ -182,8 +190,8 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 
 	protected void queueRequest(final ITmfDataRequest<T> request) {
 
-//		final String provider = getName();
-		final ITmfDataProvider<T> provider = this;
+		final ITmfDataProvider provider  = this;
+		final ITmfComponent    component = this;
 
 		// Process the request
 		Thread thread = new Thread() {
@@ -209,9 +217,9 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 
 				try {
 					// Get the ordered events
-//					Tracer.traceLog("Request #" + request.getRequestId() + " is serviced by " + provider);
+					if (Tracer.isRequestTraced()) Tracer.trace("Request #" + request.getRequestId() + " is serviced by " + component.getName());
 					T data = getNext(context);
-//					Tracer.traceLog("Request #" + request.getRequestId() + " read first event");
+					if (Tracer.isRequestTraced()) Tracer.trace("Request #" + request.getRequestId() + " read first event");
 					while (data != null && !isCompleted(request, data, nbRead))
 					{
 						if (fLogData) Tracer.traceEvent(provider, request, data);
@@ -223,7 +231,7 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 						if (nbRead < nbRequested) {
 							data = getNext(context);
 							if (data == null || data.isNullRef()) {
-//								Tracer.traceLog("Request #" + request.getRequestId() + " end of data");
+								if (Tracer.isRequestTraced()) Tracer.trace("Request #" + request.getRequestId() + " end of data");
 							}
 						}
 					}
@@ -277,7 +285,7 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	 * @param context
 	 * @return
 	 */
-	private final int TIMEOUT = 5000;
+	private static final int TIMEOUT = 1000;
 	public T getNext(ITmfContext context) throws InterruptedException {
 		T event = fDataQueue.poll(TIMEOUT, TimeUnit.MILLISECONDS);
 		if (event == null) {
@@ -316,19 +324,15 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	// ------------------------------------------------------------------------
 
 	@TmfSignalHandler
-	public void startSynch(TmfStartSynchSignal signal) {
-		synchronized(this) {
-			fSignalDepth++;
-		}
+	public synchronized void startSynch(TmfStartSynchSignal signal) {
+		fSignalDepth++;
 	}
 
 	@TmfSignalHandler
-	public void endSynch(TmfEndSynchSignal signal) {
-		synchronized(this) {
-			fSignalDepth--;
-			if (fSignalDepth == 0) {
-				fireRequests();
-			}
+	public synchronized void endSynch(TmfEndSynchSignal signal) {
+		fSignalDepth--;
+		if (fSignalDepth == 0) {
+			fireRequests();
 		}
 	}
 

@@ -374,7 +374,7 @@ public class LTTngTrace extends TmfTrace<LttngEvent> {
      * @see org.eclipse.linuxtools.lttng.event.LttngLocation
      */
     @Override
-	public ITmfLocation<?> getCurrentLocation() {
+	public synchronized ITmfLocation<?> getCurrentLocation() {
         return previousLocation;
     }
     
@@ -846,7 +846,7 @@ public class LTTngTrace extends TmfTrace<LttngEvent> {
      * 
      * @see org.eclipse.linuxtools.lttng.event.LttngEvent
      */
-    public LttngEvent getCurrentEvent() {
+    public synchronized LttngEvent getCurrentEvent() {
         return currentLttngEvent;
     }
     

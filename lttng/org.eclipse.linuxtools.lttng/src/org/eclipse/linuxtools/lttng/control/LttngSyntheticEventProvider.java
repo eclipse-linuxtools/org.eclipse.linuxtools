@@ -186,7 +186,8 @@ public class LttngSyntheticEventProvider extends
 						}
 					} else {
 						TraceDebug.debug("handle data received with no data");
-						// done();
+						updateSynEvent(LttngSyntheticEvent.NullEvent);
+//						done();
 					}
 				}
 
@@ -200,6 +201,7 @@ public class LttngSyntheticEventProvider extends
 					// mark this sub-request as completed
 					super.done();
 					handleProviderDone(getTraceModel());
+//					super.done();
 				}
 				
 				/**
@@ -375,7 +377,7 @@ public class LttngSyntheticEventProvider extends
 	 * 
 	 * @param experimentNode
 	 */
-	public/* synchronized */void reset(LTTngTreeNode experimentNode) {
+	public synchronized void reset(LTTngTreeNode experimentNode) {
 
 		fmainRequest = null;
 

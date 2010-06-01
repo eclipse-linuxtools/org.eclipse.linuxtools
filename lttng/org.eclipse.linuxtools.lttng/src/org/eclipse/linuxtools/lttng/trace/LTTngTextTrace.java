@@ -143,7 +143,7 @@ public class LTTngTextTrace extends TmfTrace<LttngEvent> implements ITmfTrace {
 	        // Make sure the event time is consistent
 	        eventTimestamp.setValue(0L);
     	}
-    	catch (Exception e) {
+    	catch (IOException e) {
     		isSuccessful = false;
     	}
     	
