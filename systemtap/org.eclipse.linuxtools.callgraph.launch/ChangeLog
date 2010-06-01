@@ -1,3 +1,10 @@
+2010-06-01  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Externalize string.
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java'
+		(finishLaunch): Display error message pop-up when stap may not be on the system path
+		or installed.
+
 2010-04-13  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java:

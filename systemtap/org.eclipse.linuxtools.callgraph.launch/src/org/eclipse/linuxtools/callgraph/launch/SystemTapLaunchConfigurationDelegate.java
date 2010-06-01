@@ -265,26 +265,36 @@ public class SystemTapLaunchConfigurationDelegate extends
 			s.close();
 			parser.setKillButtonEnabled(false);
 
-			if (process.getExitValue() != 0) {				
+			if (process.getExitValue() != 0) {
 				parser.cancelJob();
-				SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
-				
-				//Prepare stap information
-				errorHandler.appendToLog(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command") + cmd+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);//$NON-NLS-1$
-				
-				//Handle error from TEMP_ERROR_OUTPUT
-				errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
-				if ((monitor != null && monitor.isCanceled()))
-					return;
-				
-				errorHandler.finishHandling(monitor, scriptPath);
-				if (errorHandler.isErrorRecognized()) {
-					SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages
-						(Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
-						Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
-						errorHandler.getErrorMessage());
-				
+				//exit code for command not found
+				if (process.getExitValue() == 127){
+					SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages(
+							Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"), //$NON-NLS-1$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"), //$NON-NLS-1$
+							Messages.getString("SystemTapLaunchConfigurationDelegate.stapNotFound")); //$NON-NLS-1$
+					
 					errorDialog.schedule();
+				}else{
+					SystemTapErrorHandler errorHandler = new SystemTapErrorHandler();
+					
+					//Prepare stap information
+					errorHandler.appendToLog(config.getName() + Messages.getString("SystemTapLaunchConfigurationDelegate.stap_command") + cmd+ PluginConstants.NEW_LINE + PluginConstants.NEW_LINE);//$NON-NLS-1$
+					
+					//Handle error from TEMP_ERROR_OUTPUT
+					errorHandler.handle(monitor, new FileReader(TEMP_ERROR_OUTPUT)); //$NON-NLS-1$
+					if ((monitor != null && monitor.isCanceled()))
+						return;
+					
+					errorHandler.finishHandling(monitor, scriptPath);
+					if (errorHandler.isErrorRecognized()) {
+						SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages(
+								Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
+								Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
+								errorHandler.getErrorMessage());
+						
+						errorDialog.schedule();
+					}
 				}
 				return;
 			}
