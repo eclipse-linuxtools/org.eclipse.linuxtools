@@ -35,7 +35,7 @@
 			commandId="org.eclipse.linuxtools.systemtap.ui.graphicalrun.commands.ModifyParsing"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M1+P"/>
+			sequence="M1+M3+F6"/>
 	</extension>
 	
 	<extension

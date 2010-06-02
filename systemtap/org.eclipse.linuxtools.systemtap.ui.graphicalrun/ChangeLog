@@ -1,3 +1,8 @@
+2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
+
+	* plugin.xml: Switch "Modify Parsing Expression" to M1+M3+F6 [Ctrl+Shift+F6] to avoid
+	collision with printing.
+
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* META-INF/MANIFEST.MF: Changed Bundle-version
