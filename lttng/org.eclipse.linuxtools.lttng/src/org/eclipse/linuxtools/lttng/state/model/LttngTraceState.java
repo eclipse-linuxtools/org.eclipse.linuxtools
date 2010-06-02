@@ -491,33 +491,42 @@ class ProcessStateKey {
     public boolean equals(Object obj) {
 
     	if (obj == null) return false;
-  
-    	boolean isSame = false;
-        
+		boolean isSame = true;
+		
         if ( obj instanceof ProcessStateKey ) {
         	ProcessStateKey procKey = (ProcessStateKey) obj;
         	
-        	if ( valueRef != null ) {
-	            if ( (procKey.getPid().equals(valueRef.getPid()) ) &&
-	                 (procKey.getTraceId().equals(valueRef.getTrace_id()) ) &&
-	                 ( (procKey.getCpuId().longValue() == 0L ) || (procKey.getCpuId().equals(valueRef.getCpu()))  )  )
-	            {
-	                isSame = true;
-	            }
-        	}
-        	else {
-        		if ( (procKey.getPid().equals(this.pid) ) &&
-   	                 (procKey.getTraceId().equals(this.traceId) ) &&
-   	                 ( (procKey.getCpuId().longValue() == 0L ) || (procKey.getCpuId().equals(this.cpuId))  )  )
-   	            {
-   	                isSame = true;
-   	            }
-        	}
-        }
+			if (valueRef != null) {
+				if (!(procKey.getPid().equals(valueRef.getPid()))) {
+					return false;
+				}
+				
+				if (!procKey.getTraceId().equals(valueRef.getTrace_id())) {
+					return false;
+				}
+
+				if (((procKey.getPid().longValue() == 0L) && !(procKey.getCpuId().equals(valueRef.getCpu())))) {
+					isSame = false;
+				}
+			} else {
+				if (!(procKey.getPid().equals(this.pid))) {
+					return false;
+				}
+
+				if (!(procKey.getTraceId().equals(this.traceId))) {
+					return false;
+				}
+
+				if (((procKey.getPid().longValue() == 0L) && !(procKey.getCpuId().equals(this.cpuId)))) {
+					return false;
+				}
+			}
+		}
         else {
 			TraceDebug
 					.debug("ERROR : The received Key is not of the type ProcessStateKey! but "
 							+ obj.getClass().toString());
+			return false;
         }
         
         return isSame;
@@ -561,9 +570,14 @@ class ProcessStateKey {
     @Override
     public String toString() {
         if ( valueRef != null ) {
-            return (valueRef.getPid().toString() + ":" + valueRef.getCpu().toString() + ":" + valueRef.getTrace_id().toString() );
+			// return (valueRef.getPid().toString() + ":" +
+			// valueRef.getCpu().toString() + ":" +
+			// valueRef.getTrace_id().toString() );
+			return (valueRef.getPid().toString() + ":" + valueRef.getTrace_id().toString());
         } 
         
-        return (pid.toString() + ":" + cpuId.toString() + ":" + traceId.toString());
+		// return (pid.toString() + ":" + cpuId.toString() + ":" +
+		// traceId.toString());
+		return (pid.toString() + ":" + traceId.toString());
     }
 }

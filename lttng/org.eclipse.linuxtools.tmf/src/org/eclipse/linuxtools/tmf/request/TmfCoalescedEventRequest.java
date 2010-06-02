@@ -94,7 +94,7 @@ public class TmfCoalescedEventRequest<T extends TmfEvent> extends TmfCoalescedDa
     @Override
 	public void handleData() {
     	for (ITmfDataRequest<T> request : fRequests) {
-    		if (request instanceof TmfEventRequest) {
+			if (request instanceof TmfEventRequest<?>) {
     			TmfEventRequest<T> req = (TmfEventRequest<T>) request;
         		T[] data = getData();
         		if (data.length > 0 && req.getRange().contains(data[0].getTimestamp())) {
