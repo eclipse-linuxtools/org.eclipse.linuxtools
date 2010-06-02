@@ -1,3 +1,10 @@
+2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
+
+	* plugin.properties: Externalize some strings in the Manifest.
+	* build.properties: See above
+	* META-INF/MANIFEST.MF: See above
+	* plugin.xml: See above
+
 2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/graphlisteners/StapGraphMouseListener.java (controlDoubleClick):

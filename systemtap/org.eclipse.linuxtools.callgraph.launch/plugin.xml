@@ -26,7 +26,6 @@
    
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-         name = "SystemTap Control Tab"
       <launchConfigurationTabGroup
             class="org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationTabGroup"
             description="%launchConfigurationTabGroup.description.0"
@@ -42,7 +41,7 @@
             class="org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph"
             id="org.eclipse.linuxtools.systemtap.quicklaunchStapGraph1"
             icon="icons/bar_graph.png"
-            label="Function callgraph"
+            label="%launch.name"
             modes="profile">
          <contextualLaunch>
             <enablement>

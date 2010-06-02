@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Callgraph Graphing (Incubation)
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.callgraph.CallgraphPlugin
@@ -19,4 +19,5 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.zest.core.widgets,
  org.eclipse.zest.layouts,
  org.eclipse.zest.layouts.algorithms
-Bundle-Vendor: Eclipse
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Localization: plugin

@@ -1,3 +1,10 @@
+2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
+
+	* build.properties: Externalize some strings in the Manifest.
+	* META-INF/MANIFEST.MF: See above
+	* plugin.properties: See above
+	* plugin.xml: See above
+
 2010-06-01  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Externalize string.
