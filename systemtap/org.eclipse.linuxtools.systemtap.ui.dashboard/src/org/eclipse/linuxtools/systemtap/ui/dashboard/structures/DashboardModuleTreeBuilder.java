@@ -57,6 +57,9 @@ public class DashboardModuleTreeBuilder {
 	 */
 	private void scanNextLevel(File f) {
 		File[] fs = f.listFiles(new DashboardModuleFileFilter());
+		if (fs == null){
+			return;
+		}
 		DashboardMetaData dmd;
 		DashboardModule dm;
 		

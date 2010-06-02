@@ -1,3 +1,10 @@
+2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModuleLocator.java 
+		(getModuleLocations): Fix BZ #314873
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModuleTreeBuilder.java
+		(scanNextLevel): Fix BZ #314873
+
 2010-02-11  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/DashboardCloseMonitor.java:

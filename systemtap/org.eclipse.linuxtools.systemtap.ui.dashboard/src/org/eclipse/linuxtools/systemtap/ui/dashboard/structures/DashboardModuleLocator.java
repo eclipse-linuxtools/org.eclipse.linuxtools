@@ -80,8 +80,11 @@ public final class DashboardModuleLocator {
 			allFolders[0] = moduleLocation;
 		} else {
 			allFolders[0] = System.getProperty("osgi.splashLocation");
-			allFolders[0] = allFolders[0].substring(0, allFolders[0].indexOf("systemtapgui"));
-			allFolders[0] += "dashboard/modules/";
+			int stapguiLoc = allFolders[0].indexOf("systemtapgui");
+			if (stapguiLoc != -1) {
+				allFolders[0] = allFolders[0].substring(0, stapguiLoc);
+				allFolders[0] += "dashboard/modules/";
+			}
 		}
 		
 		allFolders[1] = SystemTapGUISettings.settingsFolder.getAbsolutePath();
