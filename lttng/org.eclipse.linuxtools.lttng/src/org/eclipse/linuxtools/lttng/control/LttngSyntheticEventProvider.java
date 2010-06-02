@@ -355,7 +355,8 @@ public class LttngSyntheticEventProvider extends
 			// End the loop in the main request
 			queueResult(LttngSyntheticEvent.NullEvent);
 		} catch (InterruptedException e) {
-			System.out.println(getName() + ":handleProviderDone() failed to queue request");
+			// System.out.println(getName() +
+			// ":handleProviderDone() failed to queue request");
 			e.printStackTrace();
 		}
 	}

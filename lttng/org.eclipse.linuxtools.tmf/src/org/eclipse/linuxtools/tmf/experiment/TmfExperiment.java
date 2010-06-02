@@ -546,7 +546,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 
 		ITmfEventRequest<TmfEvent> request = new TmfEventRequest<TmfEvent>(TmfEvent.class, TmfTimeRange.Eternity, TmfDataRequest.ALL_DATA, 1, ITmfDataRequest.ExecutionType.LONG) {
 
-			long indexingStart = System.nanoTime();
+			// long indexingStart = System.nanoTime();
 			
 			TmfTimestamp startTime =  null;
 			TmfTimestamp lastTime  =  null;
@@ -570,7 +570,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 
 			@Override
 			public void handleSuccess() {
-				long indexingEnd = System.nanoTime();
+				// long indexingEnd = System.nanoTime();
 
 				updateExperiment();
 //					experiment.fCheckpoints = new Vector<TmfCheckpoint>();
@@ -583,8 +583,11 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 //	            	clone.dispose();
 //	            	if (Tracer.INTERNALS) Tracer.trace(getName() + ": nbEvents=" + nbEvents + " (" + ((indexingEnd-indexingStart)/nbEvents)+ " ns/evt), start=" + startTime + ", end=" + lastTime);
 
-            	System.out.println(getName() + ": start=" + startTime + ", end=" + lastTime + ", elapsed=" + (indexingEnd*1.0 - indexingStart) / 1000000000);
-            	System.out.println(getName() + ": nbEvents=" + fNbEvents + " (" + ((indexingEnd-indexingStart)/nbEvents)+ " ns/evt)");
+				// System.out.println(getName() + ": start=" + startTime +
+				// ", end=" + lastTime + ", elapsed=" + (indexingEnd*1.0 -
+				// indexingStart) / 1000000000);
+				// System.out.println(getName() + ": nbEvents=" + fNbEvents +
+				// " (" + ((indexingEnd-indexingStart)/nbEvents)+ " ns/evt)");
 //            	for (int i = 0; i < experiment.fCheckpoints.size(); i++) {
 //            		TmfCheckpoint checkpoint = experiment.fCheckpoints.get(i);
 //            		System.out.println("fCheckpoints[" + i + "] " + checkpoint.getTimestamp() + ", " + checkpoint.getLocation().toString());
