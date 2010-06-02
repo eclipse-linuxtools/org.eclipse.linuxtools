@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.lttng.state.trace.IStateTraceManager;
 import org.eclipse.linuxtools.tmf.event.TmfEvent;
 import org.eclipse.linuxtools.tmf.event.TmfTimeRange;
 import org.eclipse.linuxtools.tmf.experiment.TmfExperiment;
+import org.eclipse.linuxtools.tmf.request.ITmfDataRequest;
 import org.eclipse.linuxtools.tmf.request.ITmfEventRequest;
 import org.eclipse.linuxtools.tmf.request.TmfDataRequest;
 import org.eclipse.linuxtools.tmf.request.TmfEventRequest;
@@ -51,7 +52,7 @@ public class StateExperimentManager extends LTTngTreeNode implements
 	 * Used to route incoming events to proper trace manager, during check point
 	 * building
 	 */
-	private final Map<ITmfTrace, IStateTraceManager> ftraceToManagerMap = new HashMap<ITmfTrace, IStateTraceManager>();
+	private final Map<String, IStateTraceManager> ftraceToManagerMap = new HashMap<String, IStateTraceManager>();
 	private LttngSyntheticEvent syntheticEvent = null;
 	private ITmfEventRequest<LttngEvent> fStateCheckPointRequest = null;
 
@@ -293,10 +294,11 @@ public class StateExperimentManager extends LTTngTreeNode implements
 		
 		// get the trace manager nodes associated to the experiment
 		LTTngTreeNode[] traceNodes = experimentNode.getChildren();
-		synchronized (ftraceToManagerMap) {
+		synchronized (this) {
 			ftraceToManagerMap.clear();
 		}
 		
+		ITmfTrace trace;
 		for (LTTngTreeNode traceStateManagerNode : traceNodes) {
 			IStateTraceManager traceManager;
 			try {
@@ -311,8 +313,9 @@ public class StateExperimentManager extends LTTngTreeNode implements
 			traceManager.clearCheckPoints();
 		
 			// build the trace to manager mapping for event dispatching
-			synchronized (ftraceToManagerMap) {
-				ftraceToManagerMap.put(traceManager.getTrace(), traceManager);
+			trace = traceManager.getTrace();
+			synchronized (this) {
+				ftraceToManagerMap.put(getTraceKey(trace), traceManager);
 			}
 		}
 		
@@ -325,7 +328,7 @@ public class StateExperimentManager extends LTTngTreeNode implements
 		// Prepare event data request to build state model
 		ITmfEventRequest<LttngEvent> request = new TmfEventRequest<LttngEvent>(
 				LttngEvent.class, TmfTimeRange.Eternity,
-				TmfDataRequest.ALL_DATA, 1) {
+				TmfDataRequest.ALL_DATA, 1, ITmfDataRequest.ExecutionType.LONG) {
 		
 			Long nbEvents = 0L;
 		
@@ -343,8 +346,7 @@ public class StateExperimentManager extends LTTngTreeNode implements
 		
 					LttngEvent event = (LttngEvent) events[0];
 					ITmfTrace trace = event.getParentTrace();
-					IStateTraceManager traceManager = ftraceToManagerMap
-							.get(trace);
+					IStateTraceManager traceManager = ftraceToManagerMap.get(getTraceKey(trace));
 					if (traceManager != null) {
 						// obtain synthetic event
 						LttngSyntheticEvent synEvent = updateSynEvent(event,
@@ -414,21 +416,31 @@ public class StateExperimentManager extends LTTngTreeNode implements
 				e.printStackTrace();
 			}
 		}
-		
+
 		return request;
+	}
+
+	/**
+	 * Simplified trace key used to identify trace within experiment
+	 * 
+	 * @param trace
+	 * @return
+	 */
+	private String getTraceKey(ITmfTrace trace) {
+		String traceKey = trace.getPath() + trace.getName();
+		return traceKey;
+	}
+
+	private LttngSyntheticEvent updateSynEvent(LttngEvent e, IStateTraceManager stateTraceManager) {
+		if (syntheticEvent == null || syntheticEvent.getBaseEvent() != e) {
+			syntheticEvent = new LttngSyntheticEvent(e);
 		}
-		
-		private LttngSyntheticEvent updateSynEvent(LttngEvent e,
-				IStateTraceManager stateTraceManager) {
-			if (syntheticEvent == null || syntheticEvent.getBaseEvent() != e) {
-				syntheticEvent = new LttngSyntheticEvent(e);
-			}
-		
-			// Trace model needed by application handlers
-			syntheticEvent.setTraceModel(stateTraceManager.getStateModel());
-			syntheticEvent.setSequenceInd(SequenceInd.UPDATE);
-				
-			return syntheticEvent;
-		}
+
+		// Trace model needed by application handlers
+		syntheticEvent.setTraceModel(stateTraceManager.getStateModel());
+		syntheticEvent.setSequenceInd(SequenceInd.UPDATE);
+
+		return syntheticEvent;
+	}
 
 }

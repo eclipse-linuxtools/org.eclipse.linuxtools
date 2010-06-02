@@ -26,11 +26,11 @@ public class TraceDebug {
 		String warnTrace = Platform.getDebugOption(pluginID + "/warn");
 
 		if (debugTrace != null) {
-			DEBUG = (Boolean.valueOf(warnTrace)).booleanValue();
+			DEBUG = (Boolean.valueOf(debugTrace)).booleanValue();
 		}
 
 		if (infoTrace != null) {
-			INFO = (Boolean.valueOf(warnTrace)).booleanValue();
+			INFO = (Boolean.valueOf(infoTrace)).booleanValue();
 		}
 
 		if (warnTrace != null) {
