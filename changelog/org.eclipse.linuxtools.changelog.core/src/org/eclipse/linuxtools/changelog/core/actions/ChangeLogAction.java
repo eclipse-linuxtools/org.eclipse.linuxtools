@@ -165,6 +165,9 @@ public abstract class ChangeLogAction extends Action {
 
 		IResource given_resource = myWorkspaceRoot.findMember(editorLoc);
 
+		if (given_resource == null)
+			return null;
+		
 		ChangeLogContainerSelectionDialog dialog = new ChangeLogContainerSelectionDialog(ws
 				.getActiveWorkbenchWindow().getShell(), given_resource
 				.getParent(), false, Messages

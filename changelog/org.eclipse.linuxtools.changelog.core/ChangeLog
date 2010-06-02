@@ -1,3 +1,10 @@
+2010-06-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java (askChangeLogLocation): Don't continue
+	if the given_resource ends up null.
+	* src/org/eclipse/linuxtools/changelog/core/actions/InsertChangeLogKeyHandler.java (execute): Don't continue
+	if the result of getChangeLog is null. 
+
 2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java
