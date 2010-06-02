@@ -246,15 +246,12 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 		TmfTimestamp endTime   = fTimeRange != null ? fTimeRange.getEndTime()   : TmfTimestamp.BigBang;
 
 		for (ITmfTrace trace : fTraces) {
-			if (trace.getNbEvents() > 0) {
-	    		TmfTimestamp traceStartTime = trace.getStartTime();
-	    		if (traceStartTime.compareTo(startTime, true) < 0)
-	    			startTime = traceStartTime;
-
-	    		TmfTimestamp traceEndTime = trace.getEndTime();
-	    		if (traceEndTime.compareTo(endTime, true) > 0)
-	    			endTime = traceEndTime;
-			}
+    		TmfTimestamp traceStartTime = trace.getStartTime();
+    		if (traceStartTime.compareTo(startTime, true) < 0)
+    			startTime = traceStartTime;
+    		TmfTimestamp traceEndTime = trace.getEndTime();
+    		if (traceEndTime.compareTo(endTime, true) > 0)
+    			endTime = traceEndTime;
     	}
 		fTimeRange = new TmfTimeRange(startTime, endTime);
     }
