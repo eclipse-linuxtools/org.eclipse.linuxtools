@@ -85,12 +85,13 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
     // Attributes
     // ------------------------------------------------------------------------
 
-    private final Class<T> fDataType;
-    private final int      fRequestId;  	// A unique request ID
-    private final int      fIndex;      	// The index (rank) of the requested event
-    private final int      fNbRequested;	// The number of requested events (ALL_DATA for all)
-    private final int      fBlockSize;     	// The maximum number of events per chunk
-    private       int      fNbRead;        	// The number of reads so far
+    private final Class<T>      fDataType;
+    private final ExecutionType fExecType;
+    private final int      		fRequestId;  	// A unique request ID
+    private final int      		fIndex;      	// The index (rank) of the requested event
+    private final int      		fNbRequested;	// The number of requested events (ALL_DATA for all)
+    private final int      		fBlockSize;     // The maximum number of events per chunk
+    private       int      		fNbRead;        // The number of reads so far
 
     private final Object lock;
     private boolean fRequestRunning   = false;
@@ -117,7 +118,11 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param dataType the requested data type
      */
     public TmfDataRequest(Class<T> dataType) {
-        this(dataType, 0, ALL_DATA, DEFAULT_BLOCK_SIZE);
+        this(dataType, 0, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+    }
+
+    public TmfDataRequest(Class<T> dataType, ExecutionType execType) {
+        this(dataType, 0, ALL_DATA, DEFAULT_BLOCK_SIZE, execType);
     }
 
     /**
@@ -125,7 +130,11 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param nbRequested the number of data items requested
      */
     public TmfDataRequest(Class<T> dataType, int index) {
-        this(dataType, index, ALL_DATA, DEFAULT_BLOCK_SIZE);
+        this(dataType, index, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+    }
+
+    public TmfDataRequest(Class<T> dataType, int index, ExecutionType execType) {
+        this(dataType, index, ALL_DATA, DEFAULT_BLOCK_SIZE, execType);
     }
 
     /**
@@ -134,7 +143,11 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param blockSize the number of data items per block
      */
     public TmfDataRequest(Class<T> dataType, int index, int nbRequested) {
-        this(dataType, index, nbRequested, DEFAULT_BLOCK_SIZE);
+        this(dataType, index, nbRequested, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+    }
+
+    public TmfDataRequest(Class<T> dataType, int index, int nbRequested, ExecutionType execType) {
+        this(dataType, index, nbRequested, DEFAULT_BLOCK_SIZE, execType);
     }
 
     /**
@@ -144,11 +157,16 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param blockSize the number of data items per block
      */
     public TmfDataRequest(Class<T> dataType, int index, int nbRequested, int blockSize) {
+        this(dataType, index, nbRequested, blockSize, ExecutionType.SHORT);
+    }
+
+    public TmfDataRequest(Class<T> dataType, int index, int nbRequested, int blockSize, ExecutionType execType) {
     	fRequestId   = fRequestNumber++;
     	fDataType    = dataType;
     	fIndex       = index;
     	fNbRequested = nbRequested;
     	fBlockSize   = blockSize;
+    	fExecType    = execType;
     	fNbRead      = 0;
         lock         = new Object();
         if (Tracer.isRequestTraced()) Tracer.traceRequest(this, "created");
@@ -178,6 +196,13 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
 	 */
 	public int getIndex() {
 		return fIndex;
+	}
+
+	/**
+	 * @return the index of the first event requested
+	 */
+	public ExecutionType getExecType() {
+		return fExecType;
 	}
 
     /**

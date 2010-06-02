@@ -82,11 +82,6 @@ public class TmfSyntheticEventProviderStub extends TmfEventProvider<TmfSynthetic
 	}
 
 	@Override
-	public void sendRequest(ITmfDataRequest<TmfSyntheticEventStub> request, ExecutionType execType) {
-		super.sendRequest(request, execType);
-	}
-	
-	@Override
 	public void sendRequest(ITmfDataRequest<TmfSyntheticEventStub> request) {
 		super.sendRequest(request);
 	}

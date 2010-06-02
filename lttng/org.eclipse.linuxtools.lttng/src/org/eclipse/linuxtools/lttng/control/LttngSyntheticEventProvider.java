@@ -161,7 +161,7 @@ public class LttngSyntheticEventProvider extends
 			// create sub-request for one trace within experiment
 			final LttngBaseEventRequest subRequest = new LttngBaseEventRequest(
 					adjustedRange, reqWindow.getStartTime(), 0,
-					TmfEventRequest.ALL_DATA, BLOCK_SIZE, traceModel) {
+					TmfEventRequest.ALL_DATA, BLOCK_SIZE, traceModel, ITmfDataRequest.ExecutionType.SHORT) {
 
 				private LttngSyntheticEvent syntheticEvent = null;
 				private LttngSyntheticEvent syntheticAckIndicator = null;
@@ -186,7 +186,7 @@ public class LttngSyntheticEventProvider extends
 						}
 					} else {
 						TraceDebug.debug("handle data received with no data");
-						updateSynEvent(LttngSyntheticEvent.NullEvent);
+//						handleProviderDone(getTraceModel());
 //						done();
 					}
 				}
@@ -292,7 +292,8 @@ public class LttngSyntheticEventProvider extends
 			// start request
 			TmfTrace<LttngEvent> provider = (TmfTrace<LttngEvent>) traceManager
 					.getTrace();
-			provider.sendRequest(subRequest, ExecutionType.LONG);
+			// provider.sendRequest(subRequest, ExecutionType.LONG);
+			provider.sendRequest(subRequest);
 			subRequestQueued = true;
 		}
 
@@ -344,16 +345,17 @@ public class LttngSyntheticEventProvider extends
 		// All sub-requests are marked completed so the main request can be
 		// completed as well
 		// Notify application,
-		LttngSyntheticEvent finishEvent = new LttngSyntheticEvent(fStatusEvent);
-		finishEvent.setSequenceInd(SequenceInd.ENDREQ);
-		finishEvent.setTraceModel(traceModel);
+//		LttngSyntheticEvent finishEvent = new LttngSyntheticEvent(fStatusEvent);
+//		finishEvent.setSequenceInd(SequenceInd.ENDREQ);
+//		finishEvent.setTraceModel(traceModel);
 
 		try {
-			queueResult(finishEvent);
-			queueResult(fStatusEventAck);
+//			queueResult(finishEvent);
+//			queueResult(fStatusEventAck);
 			// End the loop in the main request
 			queueResult(LttngSyntheticEvent.NullEvent);
 		} catch (InterruptedException e) {
+			System.out.println(getName() + ":handleProviderDone() failed to queue request");
 			e.printStackTrace();
 		}
 	}

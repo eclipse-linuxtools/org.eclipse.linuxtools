@@ -13,11 +13,12 @@ package org.eclipse.linuxtools.lttng.ui.views.histogram;
 
 import org.eclipse.linuxtools.lttng.event.LttngEvent;
 import org.eclipse.linuxtools.lttng.event.LttngTimestamp;
-import org.eclipse.linuxtools.tmf.component.ITmfDataProvider.ExecutionType;
 import org.eclipse.linuxtools.tmf.event.TmfEvent;
 import org.eclipse.linuxtools.tmf.event.TmfTimeRange;
 import org.eclipse.linuxtools.tmf.event.TmfTimestamp;
 import org.eclipse.linuxtools.tmf.experiment.TmfExperiment;
+import org.eclipse.linuxtools.tmf.request.ITmfDataRequest;
+import org.eclipse.linuxtools.tmf.request.ITmfDataRequest.ExecutionType;
 import org.eclipse.linuxtools.tmf.signal.TmfExperimentSelectedSignal;
 import org.eclipse.linuxtools.tmf.signal.TmfExperimentUpdatedSignal;
 import org.eclipse.linuxtools.tmf.signal.TmfRangeSynchSignal;
@@ -652,7 +653,7 @@ public class HistogramView extends TmfView implements ControlListener {
      * @param newRange			The range of the request
      * @param newInterval		The interval of time we use to store the result into the HistogramContent
      */
-    private synchronized HistogramRequest performRequest(TmfExperiment<LttngEvent> experiment, HistogramCanvas targetCanvas, TmfTimeRange newRange, long newInterval, ExecutionType execType) {
+    private synchronized HistogramRequest performRequest(TmfExperiment<LttngEvent> experiment, HistogramCanvas targetCanvas, TmfTimeRange newRange, long newInterval, ITmfDataRequest.ExecutionType execType) {
     	HistogramRequest returnedRequest = null;
     	
         // *** FIXME ***
@@ -660,10 +661,10 @@ public class HistogramView extends TmfView implements ControlListener {
 	    // We use int.MAX_VALUE because we want every events BUT we don't know the number inside the range.
         // HOWEVER, this would cause the request to run forever (or until it reach the end of trace).
         // Seeting an EndTime does not seems to stop the request
-        returnedRequest = new HistogramRequest(newRange, Integer.MAX_VALUE, targetCanvas, newInterval );
+        returnedRequest = new HistogramRequest(newRange, Integer.MAX_VALUE, targetCanvas, newInterval, execType );
         
         // Send the request to the framework : it will be queued and processed later
-        experiment.sendRequest(returnedRequest, execType);
+        experiment.sendRequest(returnedRequest);
         
         return returnedRequest;
     }

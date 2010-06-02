@@ -134,11 +134,15 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
      */
     @Override
 	public void dispose() {
-   		for (ITmfTrace trace : fTraces) {
-			trace.dispose();
-   		}
-		fTraces = null;
-    	fCheckpoints.clear();
+    	if (fTraces != null) {
+    		for (ITmfTrace trace : fTraces) {
+    			trace.dispose();
+    		}
+    		fTraces = null;
+    	}
+    	if (fCheckpoints != null) {
+    		fCheckpoints.clear();
+    	}
         super.dispose();
     }
 
@@ -543,7 +547,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 		final TmfExperiment<?> experiment = getCurrentExperiment();
 		fCheckpoints.clear();
 
-		ITmfEventRequest<TmfEvent> request = new TmfEventRequest<TmfEvent>(TmfEvent.class, TmfTimeRange.Eternity, TmfDataRequest.ALL_DATA, 1) {
+		ITmfEventRequest<TmfEvent> request = new TmfEventRequest<TmfEvent>(TmfEvent.class, TmfTimeRange.Eternity, TmfDataRequest.ALL_DATA, 1, ITmfDataRequest.ExecutionType.LONG) {
 
 			long indexingStart = System.nanoTime();
 			
@@ -599,7 +603,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 			}
 		};
 
-		sendRequest((ITmfDataRequest<T>) request, ExecutionType.LONG);
+		sendRequest((ITmfDataRequest<T>) request);
 	}
 	
 	protected void notifyListeners() {

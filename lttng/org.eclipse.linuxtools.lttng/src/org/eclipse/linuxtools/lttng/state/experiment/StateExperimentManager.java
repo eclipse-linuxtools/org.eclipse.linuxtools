@@ -405,7 +405,7 @@ public class StateExperimentManager extends LTTngTreeNode implements
 		};
 		
 		// Execute event data request
-		experiment.sendRequest(request);
+//		experiment.sendRequest(request);
 		if (fwaitForCompletion) {
 			try {
 				request.waitForCompletion();

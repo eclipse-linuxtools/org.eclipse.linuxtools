@@ -22,12 +22,6 @@ import org.eclipse.linuxtools.tmf.request.ITmfDataRequest;
  */
 public interface ITmfDataProvider<T extends TmfData> {
 
-	// ------------------------------------------------------------------------
-	// Constants
-	// ------------------------------------------------------------------------
-
-    public enum ExecutionType { SHORT, LONG };
-    
     /**
      * Queues the request for processing.
      * 
@@ -36,7 +30,6 @@ public interface ITmfDataProvider<T extends TmfData> {
 	 * @param request The request to process
 	 */
 	public void sendRequest(ITmfDataRequest<T> request);
-	public void sendRequest(ITmfDataRequest<T> request, ExecutionType type);
 	public void fireRequests();
 
 }

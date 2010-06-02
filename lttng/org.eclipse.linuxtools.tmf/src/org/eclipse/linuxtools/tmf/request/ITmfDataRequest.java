@@ -22,6 +22,12 @@ import org.eclipse.linuxtools.tmf.event.TmfData;
 public interface ITmfDataRequest<T extends TmfData> {
 
 	// ------------------------------------------------------------------------
+	// Constants
+	// ------------------------------------------------------------------------
+
+    public enum ExecutionType { SHORT, LONG };
+    
+	// ------------------------------------------------------------------------
 	// Accessors
 	// ------------------------------------------------------------------------
 
@@ -34,6 +40,11 @@ public interface ITmfDataRequest<T extends TmfData> {
      * @return request ID
      */
     public int getRequestId();
+
+    /**
+     * @return request ID
+     */
+    public ExecutionType getExecType();
 
     /**
 	 * @return the index of the first event requested

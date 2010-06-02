@@ -45,6 +45,17 @@ import org.eclipse.linuxtools.tmf.trace.ITmfContext;
  */
 public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent implements ITmfDataProvider<T> {
 
+	// ------------------------------------------------------------------------
+	// Constants
+	// ------------------------------------------------------------------------
+
+	private static final ITmfDataRequest.ExecutionType SHORT = ITmfDataRequest.ExecutionType.SHORT;
+//	private static final ITmfDataRequest.ExecutionType LONG  = ITmfDataRequest.ExecutionType.LONG;
+	
+	// ------------------------------------------------------------------------
+	// 
+	// ------------------------------------------------------------------------
+
 	final protected Class<T> fType;
 	final protected boolean  fLogData;
 	final protected boolean  fLogException;
@@ -118,16 +129,10 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	// ITmfRequestHandler
 	// ------------------------------------------------------------------------
 
+	protected TmfDataProvider<T> fClone;
 	public void sendRequest(final ITmfDataRequest<T> request) {
 		synchronized(this) {
-			sendRequest(request, ExecutionType.SHORT);
-		}
-	}
-
-	protected TmfDataProvider<T> fClone;
-	public void sendRequest(final ITmfDataRequest<T> request, ExecutionType execType) {
-		synchronized(this) {
-			if (fClone == null || execType == ExecutionType.SHORT) {
+			if (fClone == null || request.getExecType() == SHORT) {
 				if (fSignalDepth > 0) {
 					coalesceDataRequest(request);
 				} else {
@@ -190,7 +195,7 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 
 	protected void queueRequest(final ITmfDataRequest<T> request) {
 
-		final ITmfDataProvider provider  = this;
+		final ITmfDataProvider<T> provider  = this;
 		final ITmfComponent    component = this;
 
 		// Process the request
@@ -217,7 +222,7 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 
 				try {
 					// Get the ordered events
-					if (Tracer.isRequestTraced()) Tracer.trace("Request #" + request.getRequestId() + " is serviced by " + component.getName());
+					if (Tracer.isRequestTraced()) Tracer.trace("Request #" + request.getRequestId() + " is being serviced by " + component.getName());
 					T data = getNext(context);
 					if (Tracer.isRequestTraced()) Tracer.trace("Request #" + request.getRequestId() + " read first event");
 					while (data != null && !isCompleted(request, data, nbRead))
@@ -235,7 +240,9 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 							}
 						}
 					}
-					pushData(request, result);
+					if (result.size() > 0) {
+						pushData(request, result);
+					}
 					request.done();
 				}
 				catch (Exception e) {
@@ -285,11 +292,12 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	 * @param context
 	 * @return
 	 */
-	private static final int TIMEOUT = 1000;
+	private static final int TIMEOUT = 100000;
 	public T getNext(ITmfContext context) throws InterruptedException {
 		T event = fDataQueue.poll(TIMEOUT, TimeUnit.MILLISECONDS);
 		if (event == null) {
 			if (Tracer.isErrorTraced()) Tracer.traceError("Request timeout on read");
+			System.out.println(getName() + ": Request timeout on read");
 			throw new InterruptedException();
 		}
 		return event;
@@ -304,6 +312,7 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 		boolean ok = fDataQueue.offer(data, TIMEOUT, TimeUnit.MILLISECONDS);
 		if (!ok) {
 			if (Tracer.isErrorTraced()) Tracer.traceError("Request timeout on write");
+			System.out.println(getName() + ": Request timeout on write");
 			throw new InterruptedException();
 		}
 	}
