@@ -9,12 +9,12 @@
             class="org.eclipse.linuxtools.dataviewers.charts.view.ChartView"
             icon="icons/chart_icon.png"
             id="org.eclipse.linuxtools.dataviewers.charts.view"
-            name="Chart View"
+            name="%chartview.name"
             restorable="true">
       </view>
       <category
             id="org.eclipse.linuxtools.dataviewers.charts"
-            name="Charts">
+            name="%chartcategory.name">
       </category>
    </extension>
 
