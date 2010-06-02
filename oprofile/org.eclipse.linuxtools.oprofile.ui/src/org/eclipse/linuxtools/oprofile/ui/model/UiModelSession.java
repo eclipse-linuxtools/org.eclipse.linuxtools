@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.oprofile.ui.model;
 
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelSession;
+import org.eclipse.linuxtools.oprofile.ui.OprofileUiMessages;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.swt.graphics.Image;
 
@@ -60,6 +61,9 @@ public class UiModelSession implements IUiModelElement {
 
 	/** IUiModelElement functions **/
 	public String getLabelText() {
+		if (_session.getName().equals(DEFAULT_SESSION_NAME)){
+			return OprofileUiMessages.getString("UiModelSession_current"); //$NON-NLS-1$
+		}
 		return toString();
 	}
 
