@@ -11,8 +11,6 @@
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -20,14 +18,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
-import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.texteditor.MarkerAnnotation;
 
 /**
  * Test case providing all the objects needed for the rpm editor tests.
@@ -41,15 +34,11 @@ public abstract class FileTestCase extends TestCase {
 	protected Document testDocument;
 	SpecfileErrorHandler errorHandler;
 	SpecfileTestProject testProject;
-    FileEditorInput fei;
-    SpecfileEditor editor;
 
 	@Override
 	protected void setUp() throws CoreException {
 		testProject = new SpecfileTestProject();
-		String fileName = "test" + this.getClass().getSimpleName() + ".spec";
-		testFile = testProject.createFile(fileName);
-		editor = new SpecfileEditor();
+		testFile = testProject.createFile("test.spec");
 		parser = new SpecfileParser();
 		specfile = new Specfile();
 	}
@@ -59,20 +48,10 @@ public abstract class FileTestCase extends TestCase {
 		testProject.dispose();
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected IMarker[] getFailureMarkers() {
-		ArrayList<IMarker> markers = new ArrayList<IMarker>();
 		try {
-			IAnnotationModel model = SpecfileEditor.getSpecfileDocumentProvider().getAnnotationModel(fei);
-			for (Iterator i = model.getAnnotationIterator(); i.hasNext(); ) {
-				Annotation annotation = (Annotation)i.next();
-				if (annotation instanceof MarkerAnnotation) {
-					MarkerAnnotation m = (MarkerAnnotation)annotation;
-					markers.add(m.getMarker());
-				}
-			}
-			return markers.toArray(new IMarker[markers.size()]);
-		} catch (Exception e) {
+			return testProject.getFailureMarkers();
+		} catch (CoreException e) {
 			fail(e.getMessage());
 		}
 		return null;
@@ -86,16 +65,8 @@ public abstract class FileTestCase extends TestCase {
 			fail(e.getMessage());
 		}
 		testDocument = new Document(contents);
-		fei = new FileEditorInput(testFile);
-		try {
-			SpecfileEditor.getSpecfileDocumentProvider().disconnect(fei);
-			SpecfileEditor.getSpecfileDocumentProvider().connect(fei);
-		} catch (CoreException e) {
-			// let failures occur
-		}
-		errorHandler = new SpecfileErrorHandler(fei, testDocument);
+		errorHandler = new SpecfileErrorHandler(testFile, testDocument);
 		parser.setErrorHandler(errorHandler);
 		specfile = parser.parse(testDocument);
 	}
-
 }
