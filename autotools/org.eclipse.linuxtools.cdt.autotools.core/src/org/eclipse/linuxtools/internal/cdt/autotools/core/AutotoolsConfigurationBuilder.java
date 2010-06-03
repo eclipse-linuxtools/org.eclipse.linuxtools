@@ -144,7 +144,7 @@ public class AutotoolsConfigurationBuilder extends ACBuilder {
 			builder = cfg.getEditableBuilder();
 		switch (kind) {
 		case IncrementalProjectBuilder.AUTO_BUILD :
-			return builder.isAutoBuildEnable();
+			return true;
 		case IncrementalProjectBuilder.INCREMENTAL_BUILD : // now treated as the same!
 		case IncrementalProjectBuilder.FULL_BUILD :
 			return builder.isFullBuildEnabled() | builder.isIncrementalBuildEnabled() ;
