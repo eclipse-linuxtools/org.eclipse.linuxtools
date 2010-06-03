@@ -1,5 +1,8 @@
-opxml requires 3 packages to be compiled:
+opxml requires 4 packages to be compiled:
 
 * oprofile
 * oprofile-devel
 * binutils-devel
+* binutils-static
+
+These packages may vary in name and some may be combined across distributions.
