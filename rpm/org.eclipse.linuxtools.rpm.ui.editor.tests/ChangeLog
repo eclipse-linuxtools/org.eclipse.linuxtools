@@ -1,3 +1,11 @@
+2010-06-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/FileTestCase.java (setUp): Change the name of the
+	spec file to edit based on the test class name to avoid threading issues.  Also instantiate the
+	SpecfileEditor.
+	(getFailureMarkers): Rewritten to use the document provider annotation model.
+	(newFile): Modified to connect and disconnect the document from the document provider.
+
 2010-03-01  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/SourcesFileHyperlinkDetectorTest.java (testDetectHyperlinks): Fix number of hyperlink detectors.
