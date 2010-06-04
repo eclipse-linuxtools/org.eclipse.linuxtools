@@ -1,3 +1,8 @@
+2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #315852
+	* toc.xml: Fixed link for pkg-config tool.
+
 2010-04-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Change J2SE level to 1.5.
