@@ -31,6 +31,7 @@ import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 
 
@@ -48,6 +49,8 @@ public class OpenFileAction extends EditorAction {
 	 * Opens the editor input.
 	 */
 	public void run() {
+		if (window == null)
+					window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		File file = queryFile();
 		if (file != null) {
 			IEditorInput input= createEditorInput(file);
