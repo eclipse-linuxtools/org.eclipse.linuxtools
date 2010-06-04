@@ -1,3 +1,8 @@
+2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (canBuildWithConfigParm): Add a check
+	for the Configure console showing a warning about the unknown option.
+
 2010-05-21  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Tests: #313754

@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.ui.tests;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,6 +30,8 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -37,6 +42,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -208,6 +214,17 @@ public class SetConfigurationParameter {
 			}
 		}
 		assertTrue(optionFound);
+		view = bot.viewByTitle("Console");
+		view.setFocus();
+		SWTBotToolbarDropDownButton b = bot.toolbarDropDownButtonWithTooltip("Display Selected Console");
+		org.hamcrest.Matcher<MenuItem> withRegex = withRegex(".*Configure.*");
+		b.menuItem(withRegex).click();
+		b.pressShortcut(KeyStroke.getInstance("ESC"));
+		String output = view.bot().styledText().getText();
+		// Verify we got some help output to the console
+		Pattern p = Pattern.compile(".*WARNING:.*unrecognized.*--enable-jeff.*", Pattern.DOTALL);
+		Matcher m = p.matcher(output);
+		assertTrue(m.matches());
 		// Verify that if we build again, we don't reconfigure.
 		// Verifies fix for bug: #308261
 		long oldDate = f.lastModified();
