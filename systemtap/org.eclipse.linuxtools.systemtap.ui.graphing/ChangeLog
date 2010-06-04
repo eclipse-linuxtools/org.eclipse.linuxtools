@@ -2,6 +2,13 @@
 
 	* plugin.xml: Fix BZ #315223. Identical ActionSet in GraphicalRun
 
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #282039
+
+	* plugin.properties: Externalize bundle name and provider.
+	* plugin.xml: Likewise.
+
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/graphing/actions/ModifyParsingAction.java: Removed.
