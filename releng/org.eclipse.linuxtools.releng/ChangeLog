@@ -1,3 +1,7 @@
+2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Try out 3.6RC3 dependencies.
+
 2010-05-26  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Try out 3.6RC1 and RC2 dependencies.
