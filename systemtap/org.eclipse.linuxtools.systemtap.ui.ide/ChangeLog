@@ -1,3 +1,9 @@
+2010-06-05  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/internal/localization.properties: 
+	
+	Bug #315650
+
 2010-06-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #282039
