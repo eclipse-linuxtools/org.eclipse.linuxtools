@@ -28,6 +28,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin;
@@ -40,7 +42,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 
-public class ValgrindLaunchPlugin extends AbstractUIPlugin {
+public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyChangeListener {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = PluginConstants.LAUNCH_PLUGIN_ID;
@@ -89,6 +91,9 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
+		// Register as listener for changes to the property page
+		ValgrindPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
 	}
 
 	/*
@@ -112,12 +117,6 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	public IPath getValgrindLocation() throws CoreException {
 		if (valgrindLocation == null) {
 			findValgrindLocation();
-		}
-		
-		// valgrind binary location in preferences overrides default location
-		String valgrindPreferedPath = ValgrindPlugin.getDefault().getPreferenceStore().getString(ValgrindPreferencePage.VALGRIND_PATH);
-		if (! valgrindLocation.toOSString().equals(valgrindPreferedPath)){
-			valgrindLocation = Path.fromOSString(valgrindPreferedPath);
 		}
 		
 		return valgrindLocation;
@@ -310,6 +309,14 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 			initializeToolMap();
 		}
 		return toolMap;
+	}
+
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getProperty().equals(ValgrindPreferencePage.VALGRIND_PATH)) {
+			// Reset Valgrind location and version
+			valgrindLocation = null;
+			valgrindVersion = null;
+		}
 	}
 	
 }

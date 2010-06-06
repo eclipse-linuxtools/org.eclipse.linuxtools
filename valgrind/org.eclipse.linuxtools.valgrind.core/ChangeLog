@@ -1,3 +1,10 @@
+2010-06-06  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #315890
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCommand.java (whichValgrind): Handle preference
+	for Valgrind location here.
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindPreferencePage.java: Reformatted. 
+
 2009-11-03  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* plugin.properties: Externalized preference page name.

@@ -31,13 +31,13 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
- * The Valgrind Preference Page can be found by going to Windows ->
- * Preferences from the Eclipse top menu bar. This can hold all
- * non-launch specific configuration settings or user preferences.
+ * The Valgrind Preference Page can be found by going to Windows -> Preferences
+ * from the Eclipse top menu bar. This can hold all non-launch specific
+ * configuration settings or user preferences.
  */
 public class ValgrindPreferencePage extends PreferencePage implements
-		IWorkbenchPreferencePage{
-	
+		IWorkbenchPreferencePage {
+
 	public static final String VALGRIND_PATH = "VALGRIND_PATH"; //$NON-NLS-1$
 	private Text binText;
 	private Button button;
@@ -57,22 +57,24 @@ public class ValgrindPreferencePage extends PreferencePage implements
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
 		composite.setLayoutData(data);
-		
-		//Path Label
-		Label pathLabel = new Label(composite,SWT.NONE);
-		pathLabel.setText(Messages.getString("ValgrindPreferencePage.Binary_path")); //$NON-NLS-1$
-		
-		//Path Text Field
+
+		// Path Label
+		Label pathLabel = new Label(composite, SWT.NONE);
+		pathLabel.setText(Messages
+				.getString("ValgrindPreferencePage.Binary_path")); //$NON-NLS-1$
+
+		// Path Text Field
 		binText = new Text(composite, SWT.SINGLE | SWT.BORDER);
 		GridData binTextData = new GridData();
 		binTextData.horizontalAlignment = SWT.FILL;
 		binTextData.grabExcessHorizontalSpace = true;
 		binText.setLayoutData(binTextData);
-		
-		//Button
+
+		// Button
 		button = new Button(composite, SWT.PUSH);
-		button.setText(Messages.getString("ValgrindPreferencePage.Browse_button")); //$NON-NLS-1$
-		button.addSelectionListener(new SelectionListener(){
+		button.setText(Messages
+				.getString("ValgrindPreferencePage.Browse_button")); //$NON-NLS-1$
+		button.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
@@ -82,31 +84,32 @@ public class ValgrindPreferencePage extends PreferencePage implements
 				Shell shell = new Shell();
 				FileDialog dialog = new FileDialog(shell);
 				String path = dialog.open();
-				if (path != null){
+				if (path != null) {
 					binText.setText(path);
 				}
-			}});
-		
+			}
+		});
+
 		loadPreferences();
 		return parent;
 	}
-	
-	//Loading preferences into controls
+
+	// Loading preferences into controls
 	private void loadPreferences() {
 		binText.setText(store.getString(VALGRIND_PATH));
 	}
-	
-	//Get the PreferenceStore for this Plugin
+
+	// Get the PreferenceStore for this Plugin
 	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
 		return ValgrindPlugin.getDefault().getPreferenceStore();
 	}
 
-	//Initialization (Before Creating Widgets)
+	// Initialization (Before Creating Widgets)
 	public void init(IWorkbench workbench) {
 		store = getPreferenceStore();
 	}
-	
+
 	@Override
 	protected void performDefaults() {
 		super.performDefaults();
@@ -115,31 +118,32 @@ public class ValgrindPreferencePage extends PreferencePage implements
 	}
 
 	@Override
-	public boolean performOk(){
-		if (passesValidityChecks()){
+	public boolean performOk() {
+		if (passesValidityChecks()) {
 			ValgrindPlugin.getDefault().savePluginPreferences();
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
 	private boolean passesValidityChecks() {
-		
-		//Check the Binary Path is valid
+		// Check the Binary Path is valid
 		File file = new File(binText.getText());
-		//Can be more strict if necessary
-		if (file.exists() && !file.isDirectory()){
+		// Can be more strict if necessary
+		if (file.exists() && !file.isDirectory()) {
 			store.setValue(VALGRIND_PATH, binText.getText());
-		}else{
+		} else {
 			performDefaults();
 			Shell shell = new Shell();
 			MessageDialog
-					.openError(shell, Messages.getString("ValgrindPreferencePage.Error_invalid_title"), //$NON-NLS-1$
+					.openError(
+							shell,
+							Messages.getString("ValgrindPreferencePage.Error_invalid_title"), //$NON-NLS-1$
 							Messages.getString("ValgrindPreferencePage.Error_invalid_message")); //$NON-NLS-1$
 			return false;
 		}
-		
+
 		return true;
 	}
 

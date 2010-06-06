@@ -1,3 +1,9 @@
+2010-06-06  Elliott Baron  <ebaron@fedoraproject.org>
+	
+	Bug #315890
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/LocationPreferenceTest.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/tests/AllTests.java (suite): Added new test.
+
 2010-05-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	Bug #314376

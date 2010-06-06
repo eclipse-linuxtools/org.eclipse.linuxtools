@@ -32,6 +32,7 @@ public class AllTests {
 		suite.addTestSuite(ShortcutTest.class);
 		suite.addTestSuite(SignalTest.class);
 		suite.addTestSuite(MinVersionTest.class);
+		suite.addTestSuite(LocationPreferenceTest.class);
 		// $JUnit-END$
 		return suite;
 	}

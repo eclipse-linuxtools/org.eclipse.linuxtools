@@ -1,3 +1,12 @@
+2010-06-06  Elliott Baron  <ebaron@fedoraproject.org>
+	
+	Bug #315890
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/messages.properties: Mention preference page.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchPlugin.java (start): Register as listener
+		for Valgrind preference page changes. 
+	(getValgrindLocation): Handle preference page in ValgrindCommand.
+	(propertyChange): Reset location and version, so the low-level methods will be called again.
+
 2010-05-28  Elliott Baron  <ebaron@fedoraproject.org>
 
 	Bug #314680

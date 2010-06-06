@@ -25,10 +25,21 @@ public class ValgrindCommand {
 	protected String[] args;
 
 	public String whichValgrind() throws IOException {
-		StringBuffer out = new StringBuffer();
-		Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
-		readIntoBuffer(out, p);
-		return out.toString().trim();
+		String ret;
+		// Valgrind binary location in preferences overrides default location
+		String valgrindPreferedPath = ValgrindPlugin.getDefault().getPreferenceStore().getString(ValgrindPreferencePage.VALGRIND_PATH);
+		if (valgrindPreferedPath.equals("")) {
+			// No preference, check Valgrind exists in the user's PATH
+			StringBuffer out = new StringBuffer();
+			Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
+			// Throws IOException if which command is unsuccessful
+			readIntoBuffer(out, p);
+			ret = out.toString().trim();
+		}
+		else {
+			ret = valgrindPreferedPath;
+		}
+		return ret;
 	}
 
 	public String whichVersion(String whichValgrind) throws IOException {
@@ -73,7 +84,7 @@ public class ValgrindCommand {
 		return ret.toString().trim();
 	}
 
-	private void readIntoBuffer(StringBuffer out, Process p) throws IOException {
+	protected void readIntoBuffer(StringBuffer out, Process p) throws IOException {
 		boolean success;
 		InputStream in;
 		try {
