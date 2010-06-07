@@ -4,9 +4,10 @@
 	<extension
 		point="org.eclipse.ui.preferencePages">
 		<page
-			name="%preference.graphing.name"
-			id="com.qualityeclipse.generic.prefs.graphingapi"
-			class="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferencePage"/>
+        category="com.qualityeclipse.systemtap.prefs.view"
+        class="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAPIPreferencePage"
+        id="com.qualityeclipse.generic.prefs.graphingapi"
+        name="%preference.graphing.name"/>
 		<page
 			name="%preference.dataTable.name"
 			id="com.qualityeclipse.generic.prefs.graphing.datatable"
