@@ -1,3 +1,9 @@
+2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+		* plugin.xml: Removing invalid Menu Extensions
+	
+	Bug #315440
+
 2010-06-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #282039

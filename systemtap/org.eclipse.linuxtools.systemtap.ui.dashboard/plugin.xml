@@ -105,7 +105,6 @@
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ImportModuleAction"
 				icon="icons/actions/import_wiz.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/open.ext"
-				menubarPath="file2/new.ext"
 				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.ImportModuleLocationAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.ImportModuleAction"
 				style="push"
@@ -133,9 +132,9 @@
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.StopModuleAction"
 				icon="icons/actions/stop_script.gif"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.StopModuleAction"
+				menubarPath="org.eclipse.ui.run/runGroup"
 				state="false"
 				style="push"
-				menubarPath="launch/wbStart"
 				toolbarPath="org.eclipse.ui.workbench.file/build.group">
 			</action>
 			<action
@@ -144,9 +143,9 @@
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.PauseModuleAction"
 				icon="icons/actions/pause_script.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/build.group"
-				menubarPath="launch/wbStart"
 				class="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.PauseModuleAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.PauseModuleAction"
+				menubarPath="org.eclipse.ui.run/runGroup"
 				style="push"
 				state="false"/>
 			<action
@@ -156,7 +155,7 @@
 				definitionId="org.eclipse.linuxtools.systemtap.ui.dashboard.commands.RunModuleAction"
 				icon="icons/actions/start_script.gif"
 				id="org.eclipse.linuxtools.systemtap.ui.dashboard.actions.RunModuleAction"
-				menubarPath="launch/wbStart"
+				menubarPath="org.eclipse.ui.run/runGroup"
 				state="false"
 				style="push"
 				toolbarPath="org.eclipse.ui.workbench.file/build.group"/>

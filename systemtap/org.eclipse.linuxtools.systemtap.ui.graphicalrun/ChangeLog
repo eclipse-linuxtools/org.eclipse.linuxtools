@@ -1,3 +1,10 @@
+2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Removing invalid Menu Extensions
+	
+	Bug #315440
+	
+
 2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
 
 	* plugin.xml: Switch "Modify Parsing Expression" to M1+M3+F6 [Ctrl+Shift+F6] to avoid

@@ -50,7 +50,6 @@
 				id="org.eclipse.linuxtools.systemtap.ui.graphicalrun.actions.RunScriptChartAction"
 				icon="icons/actions/run_chart.gif"
 				toolbarPath="org.eclipse.ui.workbench.file/build.ext"
-				menubarPath="launch/build.ext"
 				class="org.eclipse.linuxtools.systemtap.ui.graphicalrun.actions.RunScriptChartAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.graphicalrun.commands.RunScriptChart"
 				style="push"
