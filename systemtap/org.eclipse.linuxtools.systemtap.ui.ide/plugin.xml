@@ -150,11 +150,6 @@
 			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
 			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"/>
 		<command
-			name="%command.runChart.name"
-			description="%command.runChart.desc"
-			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
-			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScriptChart"/>
-		<command
 			name="%command.stop.name"
 			description="%command.stop.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
@@ -228,16 +223,6 @@
 				toolbarPath="org.eclipse.ui.workbench.file/build.group"
 				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction"
 				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"
-				style="push"
-				state="false"/>
-			<action
-				label="%action.runChart.name"
-				tooltip="%action.runChart.desc"
-				id="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptChartAction"
-				icon="icons/actions/run/run_chart.gif"
-				toolbarPath="org.eclipse.ui.workbench.file/build.group"
-				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptChartAction"
-				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScriptChart"
 				style="push"
 				state="false"/>
 			<action
