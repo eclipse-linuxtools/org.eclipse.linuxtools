@@ -3,6 +3,13 @@
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (runRpmlint): New method.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (execute): Run on the editor input if it's not structured selection.
 
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #315304
+
+	* plugin.properties: Externalize menu items, category names, etc.
+	* plugin.xml: Likewise.
+
 2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Require o.e.l.rpm.core.

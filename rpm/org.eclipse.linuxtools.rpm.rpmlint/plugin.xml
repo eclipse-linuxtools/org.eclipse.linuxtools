@@ -3,7 +3,7 @@
 <plugin>
    <extension
          id="rpmlintBuilder"
-         name="Rpmlint project builder"
+         name="%rpmlintbuilder.name"
          point="org.eclipse.core.resources.builders">
       <builder
             hasNature="true">
@@ -14,7 +14,7 @@
    </extension>
    <extension
          id="rpmlintNature"
-         name="Rpmlint Projet Nature"
+         name="%rpmlintnature.name"
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
@@ -26,16 +26,16 @@
    <extension
          point="org.eclipse.ui.commands">
          <category
-            name="Rpmlint Commands"
-            description="Specfile Editor Commands"
+            name="%rpmlintcommands.name"
+            description="%specfilecommands.description"
             id="rpmlint.category"/>
          <command
             categoryId="rpmlint.category"
-            name="Toggle Rpmlint"
+            name="%togglerpmlint.name"
             id="rpmlint.toggleRpmlint.command"/>
          <command
             categoryId="rpmlint.category"
-            name="Run rpmlint"
+            name="%runrpmlint.name"
             id="rpmlint.runRpmlint.command"/>
    </extension>
    <extension point="org.eclipse.ui.handlers">
@@ -52,7 +52,7 @@
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
                commandId="rpmlint.toggleRpmlint.command"
-               label="Add/Remove Rpmlint Warnings" >
+               label="%addremovewarnings.name" >
                 <visibleWhen>
    		<iterate operator="and" ifEmpty="false">
       			<adapt type="org.eclipse.core.resources.IProject">
@@ -63,7 +63,7 @@
                </command>
          <command
                commandId="rpmlint.runRpmlint.command"
-               label="Run Rpmlint ">
+               label="%runrpmlintcommand.label">
                <visibleWhen>
   <iterate operator="and" ifEmpty="false">
     <or>
@@ -87,7 +87,7 @@
             category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
             class="org.eclipse.linuxtools.rpm.rpmlint.preferences.RpmlintPreferencePage"
             id="org.eclipse.linuxtools.rpm.rpmlint.preferences.rpmlintPreferencePage"
-            name="Rpmlint"/>
+            name="%rpmlintpreferences.name"/>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
@@ -95,7 +95,7 @@
    </extension>
    <extension
          id="rpmlintProblem"
-         name="Rpmlint Problem"
+         name="%rpmlintproblem.name"
          point="org.eclipse.core.resources.markers">
       <super type="org.eclipse.core.resources.problemmarker"/>
       <super type="org.eclipse.core.resources.textmarker"/>
