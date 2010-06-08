@@ -115,8 +115,11 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 */
 	protected String getFilePath() {
 		IEditorPart ed = fWindow.getActivePage().getActiveEditor();
-		return ResourceUtil.getFile(ed.getEditorInput()).getLocation().toString();
-		//return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+		if(ed.getEditorInput() instanceof PathEditorInput)
+		 return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+		else
+	     return ResourceUtil.getFile(ed.getEditorInput()).getLocation().toString();
+		
 	}
 	
 	/**

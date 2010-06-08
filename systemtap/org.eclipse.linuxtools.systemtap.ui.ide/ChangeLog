@@ -1,8 +1,10 @@
 2010-06-08  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getFilePath): 
 	* src/org/eclipse/linuxtools/systemtap/ui/ide/views/BrowserView.java (ViewUpdater.handleUpdateEvent): 
 	
 	Bug #315988
+	Bug #304206
 
 2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
