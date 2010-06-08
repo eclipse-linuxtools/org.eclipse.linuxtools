@@ -1,3 +1,9 @@
+2010-06-08  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/StopScriptAction.java (selectionChanged): 
+	
+	Bug #315224
+
 2010-06-05  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
     Bug #315843

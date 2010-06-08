@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
 
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -42,6 +44,11 @@ public class StopScriptAction extends ConsoleAction {
 			}
 		});
 	}
+	
+	public void selectionChanged(IAction a, ISelection s) {
+				a.setEnabled(anyRunning());
+			}
+		
 	
 	/**
 	 * This method will stop the i'th <code>ScriptConsole</code> if it is running.
