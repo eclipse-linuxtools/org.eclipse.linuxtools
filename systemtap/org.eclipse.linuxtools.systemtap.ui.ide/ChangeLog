@@ -1,3 +1,9 @@
+2010-06-08  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/views/BrowserView.java (ViewUpdater.handleUpdateEvent): 
+	
+	Bug #315988
+
 2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* plugin.xml: Removing RunwithChart action
