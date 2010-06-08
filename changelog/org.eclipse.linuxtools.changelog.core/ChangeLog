@@ -1,3 +1,9 @@
+2010-06-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #315976
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (outputMultipleEntryChangeLog): For
+	inline ChangeLog, we cannot assume the editor is already open so we must open it.
+
 2010-06-02  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java (askChangeLogLocation): Don't continue

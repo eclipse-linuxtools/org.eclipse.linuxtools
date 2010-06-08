@@ -437,11 +437,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		if (formatterConfigElement.getAttribute("inFile").toLowerCase().equals( //$NON-NLS-1$
 		    "true")) { //$NON-NLS-1$
 			try {
-				IWorkbenchPage ref = getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				IWorkbenchPart part = ref.getActivePart();
-				if (part instanceof IEditorPart) {
-					changelog = (IEditorPart)part;
-				}
+				changelog = openEditor((IFile)pf.getResource());
 				clw.setFormatter(extensionManager.getFormatterContributor(
 						clw.getEntryFilePath(), pref_Formatter));
 			} catch (Exception e) {
