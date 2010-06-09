@@ -162,7 +162,8 @@ public class ScriptConsole extends MessageConsole {
 		if (errorParser != null)
 		createErrorDaemon(errorParser);
 	    cmd = new LoggedCommand2(command, envVars, prompt, 100,this.getName());
-        cmd.addErrorStreamListener(errorDaemon);
+	    if (errorDaemon != null)
+	    	cmd.addErrorStreamListener(errorDaemon);
         cmd.addInputStreamListener(consoleDaemon);
         cmd.start();
         activate();
