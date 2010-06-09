@@ -115,7 +115,10 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 					NewFileAction action = new NewFileAction();
 					//action.init(page.getWorkbenchWindow());
 					action.run();
-					ed = page.getWorkbenchWindow().getActivePage().getActiveEditor();
+					if (action.isSuccessful())
+						ed = page.getWorkbenchWindow().getActivePage().getActiveEditor();
+					else
+						return;
 				}
 				input = ed.getEditorInput();
 				//System.out.println("Node " +  t.toString() + "claims to be clickable");

@@ -36,9 +36,13 @@ import org.eclipse.ui.PlatformUI;
 
 
 public class OpenFileAction extends EditorAction {
+	
+	private boolean successful;
+	
 	public OpenFileAction() {
 		super();
 		setEnabled(true);
+		successful = false;
 	}
 	
 	public void run(IAction act) {
@@ -49,6 +53,7 @@ public class OpenFileAction extends EditorAction {
 	 * Opens the editor input.
 	 */
 	public void run() {
+		successful = false;
 		if (window == null)
 					window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		File file = queryFile();
@@ -59,6 +64,7 @@ public class OpenFileAction extends EditorAction {
 			try {
 				page.openEditor(input, editorId);
 				RecentFileLog.updateRecentFiles(file);
+				successful = true;
 			} catch (PartInitException e) {}
 		} else if (file != null) {
 			String msg = MessageFormat.format(Localization.getString("OpenFileAction.FileIsNull"), (Object [])(new String[] {file.getName()}));
@@ -103,5 +109,9 @@ public class OpenFileAction extends EditorAction {
 		IPath location= new Path(file.getAbsolutePath());
 		PathEditorInput input= new PathEditorInput(location);
 		return input;
+	}
+	
+	public boolean isSuccessful() {
+		return successful;
 	}
 }
