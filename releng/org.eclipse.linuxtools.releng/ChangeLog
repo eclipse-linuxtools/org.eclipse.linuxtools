@@ -1,12 +1,3 @@
-2010-07-02  Andrew Overholt  <overholt@redhat.com>
-
-	* maps/linuxtools.map: Update for 0.6.0 final.
-
-2010-06-14  Andrew Overholt  <overholt@redhat.com>
-
-	* build.properties: Update SDK dependency URL.
-	* maps/linuxtools.map: Use 0.6.0 branches.
-
 2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Try out 3.6RC3 dependencies.
