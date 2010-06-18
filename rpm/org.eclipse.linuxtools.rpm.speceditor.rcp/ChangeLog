@@ -1,3 +1,13 @@
+2010-06-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* RPM\ Editor.launch: Regenerated.
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/DelayedEventsProcessor.java (handleEvent): Remove
+	extraneous println. 
+	(openFile): Add logic to support opening a new file if the specified file doesn't currently
+	exist. 
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMEditorPerspective.java (createInitialLayout): Add
+	Outline view. 
+
 2010-06-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Initial check-in of project.

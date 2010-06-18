@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -56,7 +57,6 @@ public class DelayedEventsProcessor implements Listener {
 			return;
 		// If we start supporting events that can arrive on a non-UI thread, the following
 		// line will need to be in a "synchronized" block:
-		System.out.println("handleEvent adding " + path.toString());
 		filesToOpen.add(path); 
 	}
 	
@@ -92,6 +92,18 @@ public class DelayedEventsProcessor implements Listener {
 					try {
 						IDE.openEditorOnFileStore(page, fileStore);
 					} catch (PartInitException e) {
+						String msg = "Error on open of: " +	fileStore.getName();
+						MessageDialog.open(MessageDialog.ERROR, window.getShell(),
+								"Initial Open",
+								msg, SWT.SHEET);
+					}
+				} else if (!fetchInfo.isDirectory()) {
+					IWorkbenchPage page = window.getActivePage();
+					try {
+						fileStore.openOutputStream(0, null);
+						fetchInfo = fileStore.fetchInfo();
+						IDE.openEditorOnFileStore(page, fileStore);
+					} catch (CoreException e) {
 						String msg = "Error on open of: " +	fileStore.getName();
 						MessageDialog.open(MessageDialog.ERROR, window.getShell(),
 								"Initial Open",

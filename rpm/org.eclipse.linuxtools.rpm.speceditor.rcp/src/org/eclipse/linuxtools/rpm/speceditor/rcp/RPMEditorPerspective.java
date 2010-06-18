@@ -20,5 +20,7 @@ public class RPMEditorPerspective implements IPerspectiveFactory {
     }
 
     public void createInitialLayout(IPageLayout layout) {
+		layout.addView(IPageLayout.ID_OUTLINE, IPageLayout.RIGHT,
+				0.80f, IPageLayout.ID_EDITOR_AREA);
     }
 }
