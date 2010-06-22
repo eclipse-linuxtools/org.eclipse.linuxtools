@@ -1,3 +1,17 @@
+2010-06-22  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Tests: #317345
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/TestToolActions.java (canSeeTools): New test. 
+	(canAccessAclocal2): Ditto.
+	(canAccessAutoconf2): Ditto.
+	(canAccessAutomake2): Ditto.
+	(canAccessLibtoolize2): Ditto.
+	(canAccessAutoheader2): Ditto. 
+	(canAccessAutoreconf2): Ditto.
+	(canReconfigureProject2): Ditto.
+	(canSetTools): Ditto.
+	(canResetTools): Ditto.
+
 2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/tests/SetConfigurationParameter.java (canBuildWithConfigParm): Add a check
