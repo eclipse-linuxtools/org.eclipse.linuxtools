@@ -1,3 +1,8 @@
+2010-06-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java: Fix warnings.
+	* src/org/eclipse/linuxtools/changelog/core/actions/StorageEditorInput.java (getAdapter): Ditto. 
+
 2010-06-24  Charley Wang  <chwang@redhat.com>
 
 	Bug #317639
