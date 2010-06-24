@@ -295,5 +295,43 @@
          </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.file"
+            description="Open a file"
+            id="org.eclipse.linuxtools.rpm.speceditor.rcp.commands.OpenFile"
+            name="Open"/>
+   </extension>
+  
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.linuxtools.rpm.speceditor.rcp.commands.OpenFile"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+O"/>
+   </extension>
+  
+   <!-- must come after the command definition above -->
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="File Action Set"
+            visible="true"
+            id="org.eclipse.linuxtools.rpm.speceditor.rcp.fileActionSet">
+         <action
+               id="org.eclipse.linuxtools.rpm.speceditor.rcp.actions.OpenFile"
+               icon="icons/open.gif"
+               label="%openAction.name"
+               tooltip="Open a File"
+               toolbarPath="org.eclipse.ui.workbench.file/open.ext"
+               menubarPath="file/new.ext"
+               class="org.eclipse.linuxtools.rpm.speceditor.rcp.actions.OpenFileAction"
+               definitionId="org.eclipse.linuxtools.rpm.speceditor.rcp.commands.OpenFile"
+               style="push"
+               state="false"/>
+      </actionSet>
+   </extension>
 
 </plugin>

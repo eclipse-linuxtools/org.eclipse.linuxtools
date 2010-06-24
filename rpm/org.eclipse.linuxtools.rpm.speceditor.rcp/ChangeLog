@@ -1,3 +1,22 @@
+2010-06-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/PathEditorInput.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMMessages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMMessages.properties: New file.
+	* META-INF/MANIFEST.MF: Add dependency to org.eclipse.core.resources.
+	* plugin.properties: Add open action messages.
+	* plugin.xml: Add open action.
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/actions/RPMEditorActionBarAdvisor.java: 
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/DelayedEventsProcessor.java (.run): Use
+	IDE openEditor method that takes a URI and handles new or old files. 
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/actions/OpenFileAction.java (run): Ditto. 
+	(queryFile): Remove comments. 
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMEditorApplication.java: Fix import warnings.
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMEditorPerspective.java: Ditto.
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMEditorWorkbenchAdvisor.java (.preWindowOpen): 
+	Use RPMMessages instead of hard-coded strings.
+	(.postWindowOpen): New method.
+
 2010-06-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* RPM\ Editor.launch: Regenerated.
