@@ -23,23 +23,27 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
-import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.team.ui.synchronize.SyncInfoCompareInput;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
  * 
  * @author klee (Kyu Lee)
  */
-public class GNUHyperlinkDetector implements IHyperlinkDetector {
+public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 
 	private IPath documentLocation;
 
+	public GNUHyperlinkDetector() {
+	}
+	
 	/**
 	 * Creates a new URL hyperlink detector for GNU Format changelogs.
 	 * 
@@ -66,6 +70,10 @@ public class GNUHyperlinkDetector implements IHyperlinkDetector {
 	 */
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion region, boolean canShowMultipleHyperlinks) {
+		if (documentLocation == null) {
+			ITextEditor ed = (ITextEditor) this.getAdapter(ITextEditor.class);
+			documentLocation = getDocumentLocation(ed);
+		}
 
 		IDocument thisDoc = textViewer.getDocument();
 

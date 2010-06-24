@@ -1,3 +1,17 @@
+2010-06-24  Charley Wang  <chwang@redhat.com>
+
+	Bug #317639
+	* plugin.xml: Add hyperlink target and hyperlink detector for hyperlinking ChangeLog file
+	names.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java: Change to
+	base on TextSourceViewerConfiguration.
+	(getHyperlinkDetectors): Get the registered hyperlink detectors from extensions rather than
+	creating one so as to get additional detectors such as bugzilla bug number detector. 
+	(getHyperlinkDetectorTargets): New override method.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java (GNUHyperlinkDetector): Add
+	default constructor. 
+	(detectHyperlinks): Ensure document location is calculated.
+
 2010-06-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #315976

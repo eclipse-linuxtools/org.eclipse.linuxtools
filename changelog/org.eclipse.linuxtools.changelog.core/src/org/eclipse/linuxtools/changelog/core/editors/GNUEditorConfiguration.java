@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.editors;
 
+import java.util.Map;
+
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.TextAttribute;
@@ -24,11 +26,11 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib2;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
 
 /**
@@ -36,7 +38,7 @@ import org.eclipse.ui.editors.text.TextEditor;
  * 
  * @author klee (Kyu Lee)
  */
-public class GNUEditorConfiguration extends SourceViewerConfiguration implements
+public class GNUEditorConfiguration extends TextSourceViewerConfiguration implements
 		IEditorChangeLogContrib, IEditorChangeLogContrib2 {
 
 	public final static String CHANGELOG_PARTITIONING= "gnu_changelog_partitioning";  //$NON-NLS-1$
@@ -44,8 +46,6 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 	private GNUElementScanner scanner;
 
 	private ColorManager colorManager;
-
-	private GNUHyperlinkDetector linkDetector;
 
 	private final RGB DEFAULT_HYPERLINK_COLOR = new RGB(127, 0, 0);
 
@@ -96,13 +96,14 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		if (sourceViewer == null)
 			return null;
-
-		if (linkDetector == null) {
-			linkDetector = new GNUHyperlinkDetector(sourceViewer, parentEditor);
-
-		}
-
-		return new IHyperlinkDetector[] { linkDetector };
+		
+		return getRegisteredHyperlinkDetectors(sourceViewer);
+//		if (linkDetector == null) {
+//			linkDetector = new GNUHyperlinkDetector(sourceViewer, parentEditor);
+//
+//		}
+//
+//		return new IHyperlinkDetector[] { linkDetector };
 	}
 
 	/**
@@ -186,4 +187,11 @@ public class GNUEditorConfiguration extends SourceViewerConfiguration implements
 			document.setDocumentPartitioner(partitioner);
 		}
 	}
-}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override 
+	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+		Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
+		targets.put("org.eclipse.changelog.editor.target", parentEditor); //$NON-NLS-1$
+		return targets;
+	}}
