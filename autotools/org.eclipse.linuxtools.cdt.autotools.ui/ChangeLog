@@ -1,5 +1,12 @@
 2010-06-25  Jeff Johnston  <jjohnstn@redhat.com>
 
+	Bug #314358
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java: Remove AdaptedSourceViewer class. 
+	(createSourceViewer): Return ProjectionViewer.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileEditor.java (createSourceViewer): Ditto.
+	 
+2010-06-25  Jeff Johnston  <jjohnstn@redhat.com>
+
 	Bug #314359
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/MessageLine.java (MessageLine): Rewritten to not extend CLabel but
 	instead to have an internal CLabel field because CLabel is nonextend.
