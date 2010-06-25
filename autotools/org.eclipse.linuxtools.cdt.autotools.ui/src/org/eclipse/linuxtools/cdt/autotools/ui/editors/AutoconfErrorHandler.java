@@ -59,7 +59,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 			// TODO Auto-generated method stub
 			return true;
 		}
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "rawtypes" })
 		public Object getAdapter(Class adapter) {
 			// TODO Auto-generated method stub
 			return null;
@@ -125,7 +125,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 				throws CoreException {
 			attributes.put(attributeName, value);
 		}
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public void setAttributes(Map map) throws CoreException {
 			attributes.putAll(map);
 		}
@@ -195,7 +195,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 		annotations.clear();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	public void removeExistingMarkers(int offset, int length)
 	{	
 		Iterator i = fAnnotationModel.getAnnotationIterator();

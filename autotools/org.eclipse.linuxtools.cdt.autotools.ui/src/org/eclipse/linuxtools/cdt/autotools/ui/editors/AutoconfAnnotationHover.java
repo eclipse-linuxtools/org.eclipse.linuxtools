@@ -65,7 +65,6 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 	/**
 	 * Returns one marker which includes the ruler's line of activity.
 	 */
-	@SuppressWarnings("unchecked")
 	protected List<IMarker> getMarkersForLine(ISourceViewer viewer, int line) {
 		
 		IDocument document= viewer.getDocument();
@@ -77,6 +76,7 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 		List<IMarker> exact= new ArrayList<IMarker>();
 		List<IMarker> including= new ArrayList<IMarker>();
 		
+		@SuppressWarnings("rawtypes")
 		Iterator e= model.getAnnotationIterator();
 		while (e.hasNext()) {
 			Object o= e.next();

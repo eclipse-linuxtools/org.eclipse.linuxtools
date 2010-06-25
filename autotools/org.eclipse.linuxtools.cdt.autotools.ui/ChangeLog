@@ -1,3 +1,46 @@
+2010-06-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #314359
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/MessageLine.java (MessageLine): Rewritten to not extend CLabel but
+	instead to have an internal CLabel field because CLabel is nonextend.
+	(setErrorMessage): New method.
+	(setMessage): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MessageLine.java (MessageLine): Rewritten to
+	not extend CLabel which is nonextend.
+	(setErrorMessage): New method.
+	(setMessage): Ditto.
+	(isDisposed): Ditto.
+	(setAlignment): Ditto.
+	(setLayoutData): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfAnnotationHover.java (getMarkersForLine): Fix warnings. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (shutdown): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java (getAdapter): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfErrorHandler.java (AutoconfMarker): Ditto. 
+	(AutoconfMarker.getAdapter): Ditto.
+	(AutoconfMarker.setAttributes): Ditto.
+	(removeExistingMarkers): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/outline/AutoconfContentOutlinePage.java (updateSelection):  
+	Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/autoconf/ProjectionFileUpdater.java (createAnnotationMap): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AddBuildTargetAction.java (getTargetRules): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeDocumentProvider.java (shutdown): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeEditor.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeErrorHandler.java (AutomakeMarker): Ditto. 
+	(AutomakeMarker.getAdapter): Ditto.
+	(AutomakeMarker.getAttributes): Ditto.
+	(AutomakeMarker.setAttributes): Ditto.
+	(createMarker): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ExternalEditorInput.java (getAdapter): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileDocumentProvider.java (shutdown): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileEditor.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/OpenIncludeAction.java (getIncludeStatement): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ProjectionMakefileUpdater.java (initialize): 
+	(createAnnotationMap): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ResourceMarkerAnnotationModel.java (batchedUpdate): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/SelectionStatusDialog.java (getPrimaryInitialSelection): 
+	(setInitialSelection): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/HTMLTextPresenter.java (adaptTextPresentation): 
+
 2010-06-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #317345

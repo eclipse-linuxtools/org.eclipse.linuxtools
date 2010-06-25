@@ -17,6 +17,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -24,10 +25,11 @@ import org.eclipse.swt.widgets.Composite;
  * Setting an error message hides a currently displayed message until 
  * <code>clearErrorMessage</code> is called.
  */
-public class MessageLine extends CLabel {
+public class MessageLine {
 
 	private String fMessageText;
 	private String fErrorText;
+	private CLabel clabel;
 
 	private Color fDefaultColor;
 	private RGB fErrorRGB;
@@ -67,8 +69,8 @@ public class MessageLine extends CLabel {
 	 * Error message will be shown with in the given rgb color.
 	 */
 	public MessageLine(Composite parent, int style, RGB errorRGB) {
-		super(parent, style);
-		fDefaultColor= getForeground();
+		clabel = new CLabel(parent, style);
+		fDefaultColor= clabel.getForeground();
 		fErrorRGB= errorRGB;
 	}
 	/**
@@ -76,8 +78,8 @@ public class MessageLine extends CLabel {
 	 * Error message will be shown with in the rgb color 200,0,0.
 	 */
 	public MessageLine(Composite parent, int style) {
-		super(parent, style);
-		fDefaultColor= getForeground();
+		clabel = new CLabel(parent, style);
+		fDefaultColor= clabel.getForeground();
 		fErrorRGB= fgErrorRGB;
 	}
 	/**
@@ -105,15 +107,15 @@ public class MessageLine extends CLabel {
 			setMessage(fMessageText);
 		} else {
 			if (fErrorColor == null) {
-				fErrorColor= new Color(getDisplay(), fErrorRGB);
-				addDisposeListener(new DisposeListener() {
+				fErrorColor= new Color(clabel.getDisplay(), fErrorRGB);
+				clabel.addDisposeListener(new DisposeListener() {
 					public void widgetDisposed(DisposeEvent e) {
 						fErrorColor.dispose();
 					}
 				});
 			}
-			setForeground(fErrorColor);
-			setText(message);
+			clabel.setForeground(fErrorColor);
+			clabel.setText(message);
 		}
 	}
 	/**
@@ -125,8 +127,30 @@ public class MessageLine extends CLabel {
 		if (message == null)
 			message= ""; //$NON-NLS-1$
 		if (fErrorText == null) {
-			setForeground(fDefaultColor);
-			setText(message);
+			clabel.setForeground(fDefaultColor);
+			clabel.setText(message);
 		}
 	}
+	
+	/**
+	 * @see org.eclipse.swt.custom.CLabel#isDisposed()
+	 */
+	public boolean isDisposed() {
+		return clabel.isDisposed();
+	}
+	
+	/**
+	 * @see org.eclipse.swt.custom.CLabel#setAlignment(int)
+	 */
+	public void setAlignment(int left) {
+		clabel.setAlignment(left);
+	}
+	
+	/**
+	 * @see org.eclipse.swt.widgets.Control#setLayoutData(Object)
+	 */
+	public void setLayoutData(GridData gridData) {
+		clabel.setLayoutData(gridData);
+	}
+	
 }

@@ -58,7 +58,7 @@ public class AutomakeErrorHandler {
 			// TODO Auto-generated method stub
 			return true;
 		}
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "rawtypes" })
 		public Object getAdapter(Class adapter) {
 			// TODO Auto-generated method stub
 			return null;
@@ -84,7 +84,7 @@ public class AutomakeErrorHandler {
 				return (String)o;
 			return defaultValue;
 		}
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "rawtypes" })
 		public Map getAttributes() throws CoreException {
 			return attributes;
 		}
@@ -125,7 +125,7 @@ public class AutomakeErrorHandler {
 				throws CoreException {
 			attributes.put(attributeName, value);
 		}
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public void setAttributes(Map map) throws CoreException {
 			attributes.putAll(map);
 		}
@@ -146,7 +146,7 @@ public class AutomakeErrorHandler {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes" })
 	private IMarker createMarker(Map attributes, String markerType) throws CoreException {
 		IMarker marker= new AutomakeMarker(markerType, -1);
 		marker.setAttributes(attributes);

@@ -22,13 +22,15 @@ import org.eclipse.swt.widgets.Composite;
  * Setting an error message hides a currently displayed message until 
  * <code>clearErrorMessage</code> is called.
  */
-public class MessageLine extends CLabel {
+public class MessageLine {
 
 	private String fMessage;
 
 	private Color fNormalMsgAreaBackground;
 
 	private boolean hasErrorMessage;
+	
+	private CLabel clabel;
 
 	/**
 	 * Creates a new message line as a child of the given parent.
@@ -41,8 +43,8 @@ public class MessageLine extends CLabel {
 	 * Creates a new message line as a child of the parent and with the given SWT stylebits.
 	 */
 	public MessageLine(Composite parent, int style) {
-		super(parent, style);
-		fNormalMsgAreaBackground= getBackground();
+		clabel = new CLabel(parent, style);
+		fNormalMsgAreaBackground= clabel.getBackground();
 	}
 
 	
@@ -53,20 +55,20 @@ public class MessageLine extends CLabel {
 	public void setErrorMessage(String message) {
 		if (message != null && message.length() > 0) {
 			hasErrorMessage = true;
-			setText(message);
-			setImage(MakeUIImages.getImage(MakeUIImages.IMG_OBJS_ERROR));
-			setBackground(JFaceColors.getErrorBackground(getDisplay()));
+			clabel.setText(message);
+			clabel.setImage(MakeUIImages.getImage(MakeUIImages.IMG_OBJS_ERROR));
+			clabel.setBackground(JFaceColors.getErrorBackground(clabel.getDisplay()));
 			return;
 		}
 		hasErrorMessage = false;
-		setText(fMessage);	
-		setImage(null);
-		setBackground(fNormalMsgAreaBackground);	
+		clabel.setText(fMessage);	
+		clabel.setImage(null);
+		clabel.setBackground(fNormalMsgAreaBackground);	
 	}
 
 	public void setMessage(String message) {
 		fMessage = message;
-		setText(message);
+		clabel.setText(message);
 	}
 	
 	public boolean hasErrorMessage() {
