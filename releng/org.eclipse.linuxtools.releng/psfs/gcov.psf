@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/trunk/org.eclipse.linuxtools.dataviewers.annotatedsourceeditor,org.eclipse.linuxtools.dataviewers.annotatedsourceeditor"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/trunk/org.eclipse.linuxtools.dataviewers.charts,org.eclipse.linuxtools.dataviewers.charts"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/trunk/org.eclipse.linuxtools.gcov,org.eclipse.linuxtools.gcov"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/trunk/org.eclipse.linuxtools.gcov-feature,org.eclipse.linuxtools.gcov-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/trunk/org.eclipse.linuxtools.gcov.test,org.eclipse.linuxtools.gcov.test"/>
+</provider>
+</psf>
