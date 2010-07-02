@@ -1,3 +1,7 @@
+2010-07-02  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update URLs for final Helios builds of dependencies.
+
 2010-06-14  Andrew Overholt  <overholt@redhat.com>
 
 	* build.properties: Update SDK dependency URL.
