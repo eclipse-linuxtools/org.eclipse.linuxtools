@@ -1,3 +1,7 @@
+2010-07-02  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update to final helios dependencies.
+
 2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Try out 3.6RC3 dependencies.
