@@ -1,3 +1,8 @@
+2010-07-06  Andrew Overholt  <overholt@redhat.com>
+
+	* about.html: Add missing file.
+	* build.properties: Likewise.
+
 2010-06-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #314358
