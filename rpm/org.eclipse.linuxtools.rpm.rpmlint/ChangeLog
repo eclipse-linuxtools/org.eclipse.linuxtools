@@ -1,3 +1,9 @@
+2010-07-07  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (execute):  Add support
+	for IURLEditorInput and call runRpmlint with String arguments for the file path. 
+	(runRpmlint): Fix to take a String argument.
+
 2010-05-31  Alexander Kurtakov  <akurtako@redhat.com>
     Fix for bz#309188 (rpmlint doesn't run from within editor).
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (runRpmlint): New method.

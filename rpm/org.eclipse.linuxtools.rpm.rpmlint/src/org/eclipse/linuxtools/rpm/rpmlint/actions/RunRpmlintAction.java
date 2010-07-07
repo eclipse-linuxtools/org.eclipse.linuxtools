@@ -27,6 +27,7 @@ import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
@@ -56,7 +57,7 @@ public class RunRpmlintAction extends AbstractHandler{
 							.getAdapter(IFile.class);
 				}
 				if (rpmFile != null) {
-					runRpmlint(rpmFile);
+					runRpmlint(rpmFile.getLocation().toString());
 				}
 			}
 		} else {
@@ -64,7 +65,9 @@ public class RunRpmlintAction extends AbstractHandler{
 			if (editor != null) {
 				IEditorInput editorInput = editor.getEditorInput();
 				if (editorInput != null && editorInput instanceof IFileEditorInput) {
-					runRpmlint(((IFileEditorInput) editorInput).getFile());
+					runRpmlint(((IFileEditorInput) editorInput).getFile().getLocation().toString());
+				} else if (editorInput != null && editorInput instanceof IURIEditorInput) {
+					runRpmlint(((IURIEditorInput) editorInput).getURI().getPath().toString());
 				}
 			}
 		}
@@ -72,13 +75,12 @@ public class RunRpmlintAction extends AbstractHandler{
 
 	}
 
-	private void runRpmlint(IFile rpmFile) {
+	private void runRpmlint(String location) {
 		try {
 			if (Utils.fileExist(Activator.getRpmlintPath())) {
 				String output = Utils.runCommandToString(Activator
 						.getRpmlintPath(),
-						"-i", rpmFile.getLocation() //$NON-NLS-1$
-								.toString());
+						"-i", location); //$NON-NLS-1$
 				MessageConsole myConsole = findConsole(Messages.RunRpmlintAction_0);
 				MessageConsoleStream out = myConsole
 						.newMessageStream();
