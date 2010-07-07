@@ -9,7 +9,8 @@
 	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMEditorWorkbenchAdvisor.java (.preWindowOpen): Fix the initial
 	window size to be something more reasonable.  This size is used to determine the open sizes of the Outline
 	view and Console view used for rpmlint messages.
-	(.postWindowOpen): Remove the openFiles action set which causes an additional Open Files menu item under Files. 
+	(.postWindowOpen): Remove the openFiles action set which causes an additional Open Files menu item under Files.
+	Also, remove the search action set as search only applies to Workspace.
 	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMMessages.java: 
 	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMMessages.properties: Fix comment so it does not cause a
 	warning message. 

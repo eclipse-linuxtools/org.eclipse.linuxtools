@@ -49,8 +49,10 @@ public class RPMEditorWorkbenchAdvisor extends WorkbenchAdvisor {
 				IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
 				for (int i = 0; i < windows.length; ++i) {
 					IWorkbenchPage page = windows[i].getActivePage();
-					if (page != null)
+					if (page != null) {
 						page.hideActionSet("org.eclipse.ui.actionSet.openFiles");
+						page.hideActionSet("org.eclipse.search.searchActionSet");
+					}
 				}
 			}
 			
