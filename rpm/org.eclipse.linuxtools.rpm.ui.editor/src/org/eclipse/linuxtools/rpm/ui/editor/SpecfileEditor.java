@@ -16,7 +16,11 @@ package org.eclipse.linuxtools.rpm.ui.editor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.source.projection.ProjectionSupport;
+import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileTaskHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.outline.SpecfileContentOutlinePage;
@@ -37,6 +41,7 @@ public class SpecfileEditor extends TextEditor {
 	private Specfile specfile;
 	private SpecfileParser parser;
 	private RpmMacroOccurrencesUpdater fOccurrencesUpdater;
+	private ProjectionSupport projectionSupport;
 
 	public SpecfileEditor() {
 		super();
@@ -123,9 +128,32 @@ public class SpecfileEditor extends TextEditor {
 		if (IContentOutlinePage.class.equals(required)) {
 			return getOutlinePage();
 		}
+		if (projectionSupport != null) {
+			Object adapter = projectionSupport.getAdapter(getSourceViewer(),
+					required);
+			if (adapter != null)
+				return adapter;
+		}
 		return super.getAdapter(required);
 	}
 
+	/*
+	 * @see
+	 * org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createSourceViewer
+	 * (org.eclipse.swt.widgets.Composite,
+	 * org.eclipse.jface.text.source.IVerticalRuler, int)
+	 */
+	@Override
+	protected ISourceViewer createSourceViewer(Composite parent,
+			IVerticalRuler ruler, int styles) {
+		fAnnotationAccess = createAnnotationAccess();
+		fOverviewRuler = createOverviewRuler(getSharedColors());
+		ISourceViewer viewer = new ProjectionViewer(parent, ruler,
+				fOverviewRuler, true, styles);
+		getSourceViewerDecorationSupport(viewer);
+		return viewer;
+	}
+	
 	public SpecfileContentOutlinePage getOutlinePage() {
 		if (outlinePage == null) {
 			outlinePage = new SpecfileContentOutlinePage(this);
@@ -148,6 +176,11 @@ public class SpecfileEditor extends TextEditor {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
+		ProjectionViewer projectionViewer = (ProjectionViewer) getSourceViewer();
+		projectionSupport = new ProjectionSupport(projectionViewer,
+				getAnnotationAccess(), getSharedColors());
+		projectionSupport.install();
+		projectionViewer.doOperation(ProjectionViewer.TOGGLE);
 		fOccurrencesUpdater = new RpmMacroOccurrencesUpdater(this);
 	}
 

@@ -1,3 +1,9 @@
+2010-07-07  Alexander Kurtakov  <akurtako@redhat.com>
+    Fix section folding (bz#309192)
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (getAdapter): Adapt ProjectionAnnotationModel.
+	(createSourceViewer): Create PrjectionViewer.
+	(createPartControl): Likewise.
+
 2010-04-09  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (createFieldEditors): Store field editor in a member.
