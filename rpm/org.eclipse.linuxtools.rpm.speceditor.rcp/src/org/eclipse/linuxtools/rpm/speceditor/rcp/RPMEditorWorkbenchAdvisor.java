@@ -38,7 +38,7 @@ public class RPMEditorWorkbenchAdvisor extends WorkbenchAdvisor {
     	return new WorkbenchWindowAdvisor(configurer) {
 			public void preWindowOpen() {
 				super.preWindowOpen();
-		        getWindowConfigurer().setInitialSize(new Point(600, 450));
+		        getWindowConfigurer().setInitialSize(new Point(800, 600));
 		        getWindowConfigurer().setShowCoolBar(true);
 		        getWindowConfigurer().setShowStatusLine(true);
 		        getWindowConfigurer().setTitle(RPMMessages.EditorTitle);
@@ -50,7 +50,7 @@ public class RPMEditorWorkbenchAdvisor extends WorkbenchAdvisor {
 				for (int i = 0; i < windows.length; ++i) {
 					IWorkbenchPage page = windows[i].getActivePage();
 					if (page != null)
-						page.hideActionSet("org.eclipse.ui.edit.text.actionSet.openExternalFile");
+						page.hideActionSet("org.eclipse.ui.actionSet.openFiles");
 				}
 			}
 			

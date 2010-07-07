@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.linuxtools.rpm.rpmlint;bundle-version="0.4.3",
  org.eclipse.linuxtools.rpm.ui.editor;bundle-version="0.4.3",
  org.eclipse.jface.text;bundle-version="3.5.1",
  org.eclipse.ui.editors;bundle-version="3.5.0",

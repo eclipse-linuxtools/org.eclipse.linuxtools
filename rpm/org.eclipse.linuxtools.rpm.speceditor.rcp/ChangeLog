@@ -1,3 +1,19 @@
+2010-07-07  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add dependency on rpmlint.
+	* plugin.xml: Remove preferences that are already supplied by the rpm and rpmlint dependent
+	plugins.
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMEditorPerspective.java (createInitialLayout): Specify that
+	the Console will be placed on the bottom of the window when shown.  Also give better initial ratios for the
+	Outline and Console views. 
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMEditorWorkbenchAdvisor.java (.preWindowOpen): Fix the initial
+	window size to be something more reasonable.  This size is used to determine the open sizes of the Outline
+	view and Console view used for rpmlint messages.
+	(.postWindowOpen): Remove the openFiles action set which causes an additional Open Files menu item under Files. 
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMMessages.java: 
+	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/RPMMessages.properties: Fix comment so it does not cause a
+	warning message. 
+
 2010-06-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/speceditor/rcp/PathEditorInput.java: Removed.
