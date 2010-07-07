@@ -1,4 +1,8 @@
 2010-07-07  Alexander Kurtakov  <akurtako@redhat.com>
+    Fix bz#309195.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileQuickOutlineDialog.java (stringMatcherUpdated): Select first item in the filtered tree.
+
+2010-07-07  Alexander Kurtakov  <akurtako@redhat.com>
     Fix section folding (bz#309192)
 	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (getAdapter): Adapt ProjectionAnnotationModel.
 	(createSourceViewer): Create PrjectionViewer.
