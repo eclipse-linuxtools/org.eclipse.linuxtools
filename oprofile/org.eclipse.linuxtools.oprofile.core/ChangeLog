@@ -1,3 +1,10 @@
+2010-07-08  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #314737
+
+	* build.properties: JAR core classes. 
+	* META-INF/MANIFEST.MF: Likewise.  Add to bundle classpath.
+
 2010-05-07  Andrew Overholt  <overholt@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Fix typo
