@@ -1,0 +1,8 @@
+2010-07-08  francois  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/control/LttngSyntheticEventProvider.java: Issue a single request to experiment and dispatch events to proper trace state manager
+	* src/org/eclipse/linuxtools/lttng/event/LttngLocation.java: Added equals() and tweaked toString()
+	* src/org/eclipse/linuxtools/lttng/request/LttngBaseEventRequest.java: New constructor
+	* src/org/eclipse/linuxtools/lttng/request/LttngSyntEventRequest.java: New constructor
+	* src/org/eclipse/linuxtools/lttng/state/experiment/StateExperimentManager.java: Minor changes
+	* src/org/eclipse/linuxtools/lttng/trace/LTTngTrace.java: Synchronized clone()

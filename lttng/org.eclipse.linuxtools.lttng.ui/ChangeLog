@@ -1,0 +1,9 @@
+2010-07-08  francois  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/common/AbsTimeUpdateView.java: Selected correct request type
+	* src/org/eclipse/linuxtools/lttng/ui/views/controlflow/ControlFlowView.java: Selected correct request type
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramRequest.java: Add missing handleCompleted()
+	* src/org/eclipse/linuxtools/lttng/ui/views/statistics/StatisticsView.java: Selected correct request type
+	* src/org/eclipse/linuxtools/lttng/ui/views/timeframe/TimeFrameView.java: Use correct time range
+	* src/org/eclipse/linuxtools/lttng/ui/views/resources/ResourcesView.java: Selected correct request type
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramView.java: Selected correct request type; Init smaller window to 1s range.
