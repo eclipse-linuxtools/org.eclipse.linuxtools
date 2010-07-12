@@ -45,13 +45,13 @@ public class HTMLTextPresenter implements DefaultInformationControl.IInformation
 		return new HTML2TextReader(new StringReader(hoverInfo), presentation);
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected void adaptTextPresentation(TextPresentation presentation, int offset, int insertLength) {
 				
 		int yoursStart= offset;
 		int yoursEnd=   offset + insertLength -1;
 		yoursEnd= Math.max(yoursStart, yoursEnd);
 		
+		@SuppressWarnings("rawtypes")
 		Iterator e= presentation.getAllStyleRangeIterator();
 		while (e.hasNext()) {
 			

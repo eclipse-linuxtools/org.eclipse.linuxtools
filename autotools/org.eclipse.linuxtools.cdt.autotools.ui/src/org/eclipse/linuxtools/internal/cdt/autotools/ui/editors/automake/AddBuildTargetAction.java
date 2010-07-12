@@ -133,9 +133,9 @@ public class AddBuildTargetAction extends Action {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	private ITargetRule[] getTargetRules(ISelection sel) {
 		if (!sel.isEmpty() && sel instanceof IStructuredSelection) {
+			@SuppressWarnings("rawtypes")
 			List list = ((IStructuredSelection)sel).toList();
 			if (list.size() > 0) {
 				List<ITargetRule> targets = new ArrayList<ITargetRule>(list.size());

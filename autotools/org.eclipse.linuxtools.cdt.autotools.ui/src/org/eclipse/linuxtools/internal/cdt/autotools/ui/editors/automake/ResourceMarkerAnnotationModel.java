@@ -118,7 +118,9 @@ public class ResourceMarkerAnnotationModel extends AbstractMarkerAnnotationModel
 	 */
 	@SuppressWarnings("unchecked")
 	private void batchedUpdate(IMarkerDelta[] markerDeltas) {
+		@SuppressWarnings("rawtypes")
 		HashSet removedMarkers= new HashSet(markerDeltas.length);
+		@SuppressWarnings("rawtypes")
 		HashSet modifiedMarkers= new HashSet(markerDeltas.length);
 
 		for (int i= 0; i < markerDeltas.length; i++) {
@@ -139,6 +141,7 @@ public class ResourceMarkerAnnotationModel extends AbstractMarkerAnnotationModel
 		if (modifiedMarkers.isEmpty() && removedMarkers.isEmpty())
 			return;
 
+		@SuppressWarnings("rawtypes")
 		Iterator e= getAnnotationIterator(false);
 		while (e.hasNext()) {
 			Object o= e.next();
@@ -163,6 +166,7 @@ public class ResourceMarkerAnnotationModel extends AbstractMarkerAnnotationModel
 			}
 		}
 
+		@SuppressWarnings("rawtypes")
 		Iterator iter= modifiedMarkers.iterator();
 		while (iter.hasNext())
 			addMarkerAnnotation((IMarker)iter.next());
