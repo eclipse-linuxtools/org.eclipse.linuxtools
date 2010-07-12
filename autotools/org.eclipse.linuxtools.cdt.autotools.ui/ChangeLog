@@ -1,3 +1,45 @@
+2010-07-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Fix for bug #314348
+	* plugin.xml: Make AutomakeEditor default for .am and Makefile.in files.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfAnnotationHover.java (select): Use
+	Annotations rather than IMarkers. 
+	(getAnnotationsForLine): New method.
+	(getHoverInfo): Change logic to get annotations and get messages as opposed to using
+	markers.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java (getAdapter): Fix warning.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfErrorHandler.java (AutoconfAnnotation): New class. 
+	(AutoconfAnnotation.AutoconfAnnotation): New method.
+	(AutoconfAnnotation.setQuickFixable): Ditto.
+	(AutoconfAnnotation.isQuickFixableStateSet): Ditto. 
+	(AutoconfAnnotation.isQuickFixable): Ditto.
+	(handleError): Instead of adding a hacked up IMarker and creating a MarkerAnnotation, create
+	a normal annotation and add it to the annotation model.
+	(removeExistingMarkers): Fix warning.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeErrorHandler.java (AutomakeAnnotation):
+	New class.
+	(checkChildren): Add an AutomakeAnnotation to the annotation model rather than a MarkerAnnotation which requires us to
+	make up our own IMarker implementation. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileAnnotationHover.java: Add
+	implements IAnnotationHoverExtension. 
+	(fEditor): Mark	unused for now.
+	(compareRulerLine): New method.
+	(select): Ditto.
+	(getAnnotationsForLine): Ditto.  
+	(getHoverInfo): Change to get annotations and fetch the annotation text.
+	(formatSingleMessage): New method.
+	(formatMultipleMessages): Ditto.
+	(getHoverControlCreator): Ditto.
+	(.createInformationControl): New internal class.
+	(canHandleMouseCursor): New method. 
+	(getHoverLineRange): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileDocumentProvider.java (MakefileAnnotationModel): 
+	(MakefileAnnotationModel.MakefileAnnotationModel): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileMessages.java (getResourceBundle): New static
+	method.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakeFileMessages.properties: Add message for bad directive.
+	Currently unused because of problem loading resource bundle. 
+
 2010-07-06  Andrew Overholt  <overholt@redhat.com>
 
 	* about.html: Add missing file.
@@ -53,6 +95,7 @@
 	(setInitialSelection): 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/HTMLTextPresenter.java (adaptTextPresentation): 
 
+>>>>>>> .r25252
 2010-06-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #317345

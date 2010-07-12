@@ -156,12 +156,14 @@
          name="MakefileEditor"
          point="org.eclipse.ui.editors">
       <editor
-            name="%AutomakeEditor.name"
-            icon="icons/automake.gif"
-            contributorClass="org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.MakefileEditorActionContributor"
             class="org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.AutomakeEditor"
+            contributorClass="org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.MakefileEditorActionContributor"
+            default="true"
+            extensions="am"
+            filenames="Makefile.am,Makefile.in"
+            icon="icons/automake.gif"
             id="org.eclipse.linuxtools.cdt.autotools.ui.editors.AutomakeEditor"
-            filenames="Makefile.am,Makefile.in">
+            name="%AutomakeEditor.name">
             <contentTypeBinding contentTypeId="org.eclipse.linuxtools.cdt.autotools.ui.automake"/>
       </editor>
    </extension>

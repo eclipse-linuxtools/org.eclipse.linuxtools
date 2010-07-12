@@ -16,6 +16,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
@@ -26,12 +27,12 @@ public class MakefileDocumentProvider extends TextFileDocumentProvider implement
 	
 	IMakefile fMakefile;
 
-	protected class MakefileAnnotationModel extends ResourceMarkerAnnotationModel /*implements IProblemRequestor */{
+	protected class MakefileAnnotationModel extends AnnotationModel /*implements IProblemRequestor */{
 		/**
 		 * @param resource
 		 */
 		public MakefileAnnotationModel(IResource resource) {
-			super(resource);
+			super();
 		}
 
 		/**
