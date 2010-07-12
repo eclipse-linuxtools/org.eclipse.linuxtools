@@ -95,7 +95,6 @@
 	(setInitialSelection): 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/HTMLTextPresenter.java (adaptTextPresentation): 
 
->>>>>>> .r25252
 2010-06-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #317345
