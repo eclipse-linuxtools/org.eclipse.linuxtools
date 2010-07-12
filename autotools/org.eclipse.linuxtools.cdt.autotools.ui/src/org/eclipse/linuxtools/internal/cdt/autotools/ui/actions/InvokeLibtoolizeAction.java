@@ -57,7 +57,7 @@ public class InvokeLibtoolizeAction extends InvokeAction {
 			String libtoolizeCommand = null;
 			IProject project = getSelectedContainer().getProject();
 			try {
-				libtoolizeCommand = project.getPersistentProperty(AutotoolsPropertyConstants.AUTOHEADER_TOOL);
+				libtoolizeCommand = project.getPersistentProperty(AutotoolsPropertyConstants.LIBTOOLIZE_TOOL);
 			} catch (CoreException e) {
 				// do nothing
 			}
