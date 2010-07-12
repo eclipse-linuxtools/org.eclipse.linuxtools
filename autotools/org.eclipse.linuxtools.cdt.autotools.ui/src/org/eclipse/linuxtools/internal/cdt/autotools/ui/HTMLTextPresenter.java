@@ -51,7 +51,7 @@ public class HTMLTextPresenter implements DefaultInformationControl.IInformation
 		int yoursEnd=   offset + insertLength -1;
 		yoursEnd= Math.max(yoursStart, yoursEnd);
 		
-		@SuppressWarnings("rawtypes")
+		@SuppressWarnings("unchecked")
 		Iterator e= presentation.getAllStyleRangeIterator();
 		while (e.hasNext()) {
 			
