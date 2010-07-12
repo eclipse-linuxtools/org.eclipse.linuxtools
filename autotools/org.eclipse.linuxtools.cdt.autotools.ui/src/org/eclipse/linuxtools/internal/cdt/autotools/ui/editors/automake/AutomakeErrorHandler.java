@@ -38,17 +38,14 @@ public class AutomakeErrorHandler {
 			super(annotationType, persist, message);
 		}
 
-		@Override
 		public void setQuickFixable(boolean state) {
 			// do nothing
 		}
 
-		@Override
 		public boolean isQuickFixableStateSet() {
 			return true;
 		}
 
-		@Override
 		public boolean isQuickFixable() throws AssertionFailedException {
 			return false;
 		}

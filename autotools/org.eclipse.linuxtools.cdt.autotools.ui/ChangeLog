@@ -1,5 +1,13 @@
 2010-07-12  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeErrorHandler.java: 
+	(AutomakeAnnotation.setQuickFixable): Remove unnecessary override statement.
+	(AutomakeAnnotation.isQuickFixableStateSet): Ditto.
+	(AutomakeAnnotation.isQuickFixable): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfErrorHandler.java: 
+	(AutoconfAnnotation.setQuickFixable): Remove unnecessary override statement.
+	(AutoconfAnnotation.isQuickFixableStateSet): Ditto.
+	(AutoconfAnnotation.isQuickFixable): Ditto.
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (shutdown): Remove references to
 	Java rawtypes annotation which doesn't exist in J2SE-1.5. 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/outline/AutoconfContentOutlinePage.java (updateSelection): Ditto. 
