@@ -1,3 +1,11 @@
+2010-07-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #314334
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AddBuildTargetAction.java: Removed.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileContentOutlinePage.java (MakefileContentOutlinePage): Remove
+	AddBuildTargetAction which wasn't being used and illegally instantiated MakeTargetDialog. 
+	(contextMenuAboutToShow): Ditto.
+
 2010-07-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeErrorHandler.java: 
