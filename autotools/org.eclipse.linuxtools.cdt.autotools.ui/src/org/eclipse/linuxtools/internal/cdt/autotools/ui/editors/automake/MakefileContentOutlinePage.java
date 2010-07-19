@@ -208,13 +208,11 @@ public class MakefileContentOutlinePage extends ContentOutlinePage implements IC
 
 	protected MakefileEditor fEditor;
 	protected Object fInput;
-	protected AddBuildTargetAction fAddBuildTargetAction;
 	protected OpenIncludeAction fOpenIncludeAction;
 
 	public MakefileContentOutlinePage(MakefileEditor editor) {
 		super();
 		fEditor = editor;
-		fAddBuildTargetAction = new AddBuildTargetAction(this);
 		fOpenIncludeAction = new OpenIncludeAction(this);
 	}
 
@@ -265,9 +263,6 @@ public class MakefileContentOutlinePage extends ContentOutlinePage implements IC
 	protected void contextMenuAboutToShow(IMenuManager menu) {
 		if (OpenIncludeAction.canActionBeAdded(getSelection())) {
 			menu.add(fOpenIncludeAction);
-		}
-		if (fAddBuildTargetAction.canActionBeAdded(getSelection())) {
-			menu.add(fAddBuildTargetAction);
 		}
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS+"-end"));//$NON-NLS-1$
