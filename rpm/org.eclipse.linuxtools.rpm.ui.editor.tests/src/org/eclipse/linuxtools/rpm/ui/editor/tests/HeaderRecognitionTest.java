@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 
@@ -51,12 +50,12 @@ public class HeaderRecognitionTest extends FileTestCase {
 		newFile(testText);
 		specfile = parser.parse(testDocument);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals("No package name after -n in post section.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals("No package name after -n in post section.",
+				failure.getAnnotation().getText());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
 	}
 
 	public void testGetComplexSectionName3() {
@@ -124,12 +123,12 @@ public class HeaderRecognitionTest extends FileTestCase {
 		newFile(testText);
 		specfile = parser.parse(testDocument);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals("Package name must not start with '-': -p.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals("Package name must not start with '-': -p.",
+				failure.getAnnotation().getText());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
 	}
 
 	// public void testGetComplexSectionName8() {

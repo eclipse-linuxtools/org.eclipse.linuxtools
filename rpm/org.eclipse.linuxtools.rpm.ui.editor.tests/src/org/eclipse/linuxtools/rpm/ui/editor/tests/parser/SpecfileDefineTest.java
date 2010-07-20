@@ -11,11 +11,12 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests.parser;
 
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
+import org.eclipse.linuxtools.rpm.ui.editor.tests.SpecfileTestFailure;
 
 public class SpecfileDefineTest extends FileTestCase {
 
@@ -98,14 +99,14 @@ public class SpecfileDefineTest extends FileTestCase {
 
 	public void testNonLetterDefinitionName() {
 		boolean fail = true;
-		for (IMarker marker : getFailureMarkers()) {
-			if ((marker.getAttribute(IMarker.CHAR_START, 0) == 84)
-					&& (marker.getAttribute(IMarker.CHAR_END, 0) == 95)) {
-				assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-						IMarker.SEVERITY, -1));
+		for (SpecfileTestFailure failure : getFailures()) {
+			if ((failure.getPosition().getOffset() == 84)
+					&& (failure.getPosition().getLength() == 11)) {
+				assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, 
+						failure.getAnnotation().getType());
 				assertEquals(
 						"Definition lvalue must begin with a letter or an underscore.",
-						marker.getAttribute(IMarker.MESSAGE, ""));
+						failure.getAnnotation().getText());
 				fail = false;
 			}
 		}
@@ -129,14 +130,14 @@ public class SpecfileDefineTest extends FileTestCase {
 
 	public void testNonLetterDefinitionName2() {
 		boolean fail = true;
-		for (IMarker marker : getFailureMarkers()) {
-			if ((marker.getAttribute(IMarker.CHAR_START, 0) == 96)
-					&& (marker.getAttribute(IMarker.CHAR_END, 0) == 109)) {
-				assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-						IMarker.SEVERITY, -1));
+		for (SpecfileTestFailure failure : getFailures()) {
+			if ((failure.getPosition().getOffset() == 96)
+					&& (failure.getPosition().getLength() == 13)) {
+				assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, 
+						failure.getAnnotation().getType());
 				assertEquals(
 						"Definition lvalue must begin with a letter or an underscore.",
-						marker.getAttribute(IMarker.MESSAGE, ""));
+						failure.getAnnotation().getText());
 				fail = false;
 			}
 		}

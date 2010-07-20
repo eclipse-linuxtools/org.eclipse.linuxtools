@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import org.eclipse.core.resources.IMarker;
 
 public class NameTagTests extends FileTestCase {
 
@@ -45,47 +44,47 @@ public class NameTagTests extends FileTestCase {
 	public void testNullNameTag() {
 		String testText = "Name:	";
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Name declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Name declaration without value.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testNullNameTag2() {
 		String testText = "Name: ";
 
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Name declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Name declaration without value.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testMultipleNamesTag() {
 		String testText = "Name: blah bleh";
 
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Name cannot have multiple values.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Name cannot have multiple values.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testMultipleNamesTag2() {
 		String testText = "Name: 	blah bleh";
 
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Name cannot have multiple values.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Name cannot have multiple values.", 
+				failure.getAnnotation().getText());
 	}
 }

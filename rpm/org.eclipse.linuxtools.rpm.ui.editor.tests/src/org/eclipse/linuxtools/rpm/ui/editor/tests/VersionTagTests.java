@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import org.eclipse.core.resources.IMarker;
 
 public class VersionTagTests extends FileTestCase {
 
@@ -37,12 +36,12 @@ public class VersionTagTests extends FileTestCase {
 		String testText = "Version: ";
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Version declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Version declaration without value.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testNullVersionTag2() {
@@ -50,24 +49,24 @@ public class VersionTagTests extends FileTestCase {
 
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Version declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Version declaration without value.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testMultipleVersionsTag() {
 		String testText = "Version: blah bleh";
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Version cannot have multiple values.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Version cannot have multiple values.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testMultipleVersionsTag2() {
@@ -75,12 +74,12 @@ public class VersionTagTests extends FileTestCase {
 
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Version cannot have multiple values.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Version cannot have multiple values.",
+				failure.getAnnotation().getText());
 	}
 
 }

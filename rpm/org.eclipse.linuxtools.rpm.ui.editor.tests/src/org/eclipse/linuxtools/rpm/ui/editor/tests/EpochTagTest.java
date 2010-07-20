@@ -11,7 +11,7 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import org.eclipse.core.resources.IMarker;
+import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 
 public class EpochTagTest extends FileTestCase {
 
@@ -30,72 +30,60 @@ public class EpochTagTest extends FileTestCase {
 	public void testNullEpochTag() {
 		String testText = "Epoch:";
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(6, marker.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-				IMarker.SEVERITY, -1));
-		assertEquals("Epoch declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(6, failure.getPosition().getLength());
+		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure.getAnnotation().getType());
+		assertEquals("Epoch declaration without value.", failure.getAnnotation().getText());
 	}
 
 	public void testNullEpochTag2() {
 		String testText = "Epoch:	";
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(7, marker.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-				IMarker.SEVERITY, -1));
-		assertEquals("Epoch declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(7, failure.getPosition().getLength());
+		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure.getAnnotation().getType());
+		assertEquals("Epoch declaration without value.", failure.getAnnotation().getText());
 	}
 
 	public void testMultipleEpochsTag() {
 		String testText = "Epoch: 1 2";
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(10, marker.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-				IMarker.SEVERITY, -1));
-		assertEquals("Epoch cannot have multiple values.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(10, failure.getPosition().getLength());
+		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure.getAnnotation().getType());
+		assertEquals("Epoch cannot have multiple values.", failure.getAnnotation().getText());
 	}
 
 	public void testMultipleEpochsTag2() {
 		String testText = "Epoch: 	1 2";
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(11, marker.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-				IMarker.SEVERITY, -1));
-		assertEquals("Epoch cannot have multiple values.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(11, failure.getPosition().getLength());
+		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure.getAnnotation().getType());
+		assertEquals("Epoch cannot have multiple values.", failure.getAnnotation().getText());
 	}
 
 	public void testNonIntegerEpoch() {
 		String testText = "Epoch: blah";
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(11, marker.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-				IMarker.SEVERITY, -1));
-		assertEquals("Epoch cannot have non-integer value.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(11, failure.getPosition().getLength());
+		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure.getAnnotation().getType());
+		assertEquals("Epoch cannot have non-integer value.", failure.getAnnotation().getText());
 	}
 
 	public void testNonIntegerEpoch2() {
 		String testText = "Epoch:	blah";
 		newFile(testText);
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(11, marker.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals(IMarker.SEVERITY_ERROR, marker.getAttribute(
-				IMarker.SEVERITY, -1));
-		assertEquals("Epoch cannot have non-integer value.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(11, failure.getPosition().getLength());
+		assertEquals(SpecfileErrorHandler.ANNOTATION_ERROR, failure.getAnnotation().getType());
+		assertEquals("Epoch cannot have non-integer value.", failure.getAnnotation().getText());
 	}
 }

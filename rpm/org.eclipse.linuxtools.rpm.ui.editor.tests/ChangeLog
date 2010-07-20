@@ -1,3 +1,36 @@
+2010-07-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestFailure.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/EpochTagTest.java (testNullEpochTag): Change
+	to get SpecfileTestFailures instead of IMarkers.
+	(testNullEpochTag2): Ditto.
+	(testMultipleEpochsTag): Ditto.
+	(testMultipleEpochsTag2): Ditto.
+	(testNonIntegerEpoch): Ditto.
+	(testNonIntegerEpoch2): Ditto.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/HeaderRecognitionTest.java (testGetComplexSectionName2): Ditto. 
+	(testGetComplexSectionName7): Ditto.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/NameTagTests.java (testNullNameTag): Ditto.
+	(testNullNameTag2): Ditto.
+	(testMultipleNamesTag): Ditto.
+	(testMultipleNamesTag2): Ditto.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileDefineTest.java (testNonLetterDefinitionName): Ditto. 
+	(testNonLetterDefinitionName2): Ditto.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/ReleaseTagTests.java (testNullReleaseTag): Ditto. 
+	(testNullReleaseTag2): Ditto.
+	(testMultipleReleasesTag): Ditto.
+	(testMultipleReleasesTag2): Ditto.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/VersionTagTests.java (testNullVersionTag): Ditto.
+	(testNullVersionTag2): Ditto.
+	(testMultipleVersionsTag): Ditto.
+	(testMultipleVersionsTag2): Ditto.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/FileTestCase.java (newFile): Change to connect to
+	document provider and disconnect from document provider. 
+	(getFailureMarkers): Renamed to getFailures.
+	(setUp): Use test case name to form spec file name.
+	(getFailures): Renamed from getFailureMarkers to use annotation model
+	instead of IMarkers.
+
 2010-03-01  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/SourcesFileHyperlinkDetectorTest.java (testDetectHyperlinks): Fix number of hyperlink detectors.
