@@ -42,6 +42,7 @@ public class SpecfileEditor extends TextEditor {
 	private SpecfileParser parser;
 	private RpmMacroOccurrencesUpdater fOccurrencesUpdater;
 	private ProjectionSupport projectionSupport;
+	private static SpecfileDocumentProvider fDocumentProvider;
 
 	public SpecfileEditor() {
 		super();
@@ -89,7 +90,7 @@ public class SpecfileEditor extends TextEditor {
 		try {
 			IDocument document = getInputDocument();
 			SpecfileErrorHandler specfileErrorHandler = new SpecfileErrorHandler(
-					getInputFile(), document);
+					getEditorInput(), document);
 			specfileErrorHandler.removeExistingMarkers();
 			SpecfileTaskHandler specfileTaskHandler = new SpecfileTaskHandler(
 					getInputFile(), document);
@@ -167,7 +168,23 @@ public class SpecfileEditor extends TextEditor {
 		return specfile;
 	}
 
+	/*
+	 * If there is no explicit document provider set, the implicit one is
+	 * re-initialized based on the given editor input.
+	 *
+	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#setDocumentProvider(org.eclipse.ui.IEditorInput)
+	 */
+	@Override
+	protected void setDocumentProvider(IEditorInput input) {
+		setDocumentProvider(getSpecfileDocumentProvider());
+	}
 
+	public static SpecfileDocumentProvider getSpecfileDocumentProvider() {
+		if (fDocumentProvider == null)
+			fDocumentProvider = new SpecfileDocumentProvider();
+		return fDocumentProvider;
+	}
+	
 	/*
 	 * @see
 	 * org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createPartControl
@@ -191,7 +208,9 @@ public class SpecfileEditor extends TextEditor {
 			if (!(shell == null || shell.isDisposed())) {
 				shell.getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						fOccurrencesUpdater.update(getSourceViewer());
+						ISourceViewer viewer = getSourceViewer();
+						if (viewer != null)
+							fOccurrencesUpdater.update(viewer);
 					}
 				});
 			}

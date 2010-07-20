@@ -1,3 +1,33 @@
+2010-07-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileMarkerHandler.java (removeExistingMarkers): Don't
+	access file if it does not exist. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (.run): Don't access viewer if it is
+	null.
+
+2010-07-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDocumentProvider.java (canSaveDocument):
+	Fix the case when we have an empty new file and the length is 0 since it doesn't exist yet.
+
+2010-07-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (setDocumentProvider): New
+	override to set the document provider to the SpecfileDocumentProvider.
+	(getSpecfileDocumentProvider): New static method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/UiUtils.java (resolveDefines): Prevent NPE from
+	occurring instead of letting try/catch handle it.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecFileParser.java:
+	(parseMacro): Add check for lastSection being null before accessing.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileErrorHandler.java: Rewritten
+	to support external files in addition to project files.
+	(SpecfileErrorHandler): Changed to accept an IEditorInput instead of IFile.
+	(SpecfileMarker): New private class.
+	(handleError): Rewritten.
+	(removeAllExistingMarkers): Moved here from base class.
+	(removeExistingMarkers): Ditto.
+	(getAnnotationModel): New method.
+	
 2010-07-20  Alexander Kurtakov  <akurtako@redhat.com>
     Fix #319742 ( Severin Gehwolf ).
 	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java (DP_RPM_LIST_FILEPATH): Save pkglist file in user.home.
