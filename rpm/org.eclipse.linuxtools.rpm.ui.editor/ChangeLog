@@ -1,3 +1,7 @@
+2010-07-20  Alexander Kurtakov  <akurtako@redhat.com>
+    Fix #319742 ( Severin Gehwolf ).
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java (DP_RPM_LIST_FILEPATH): Save pkglist file in user.home.
+
 2010-07-07  Alexander Kurtakov  <akurtako@redhat.com>
     Fix bz#309195.
 	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileQuickOutlineDialog.java (stringMatcherUpdated): Select first item in the filtered tree.
