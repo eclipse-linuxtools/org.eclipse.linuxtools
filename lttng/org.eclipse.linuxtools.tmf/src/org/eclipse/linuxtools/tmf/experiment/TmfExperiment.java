@@ -80,7 +80,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
      * @param indexPageSize
      */
     public TmfExperiment(Class<T> type, String id, ITmfTrace[] traces, TmfTimestamp epoch, int indexPageSize) {
-        this(type, id, traces, TmfTimestamp.Zero, DEFAULT_INDEX_PAGE_SIZE, false);
+        this(type, id, traces, TmfTimestamp.Zero, indexPageSize, false);
 	}
 
     public TmfExperiment(Class<T> type, String id, ITmfTrace[] traces, TmfTimestamp epoch, int indexPageSize, boolean preIndexExperiment) {
@@ -593,6 +593,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 		    TmfContext traceContext = expContext.getContexts()[lastTrace];
 			expContext.getEvents()[lastTrace] = expContext.getTraces()[lastTrace].getNextEvent(traceContext);
 			expContext.getEvents()[lastTrace] = expContext.getTraces()[lastTrace].parseEvent(traceContext);
+	        fSavedContext = new TmfExperimentContext(expContext);
 		}
 
 		// Scan the candidate events and identify the "next" trace to read from 
