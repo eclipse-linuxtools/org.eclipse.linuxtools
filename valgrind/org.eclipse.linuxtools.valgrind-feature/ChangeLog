@@ -1,3 +1,8 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #320867
+	* feature.xml: Make feature available on Mac OSX.
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Fix provider name.
