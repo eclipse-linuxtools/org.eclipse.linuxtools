@@ -1,0 +1,13 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* .classpath: New file.
+	* .project: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* about.html: New file.
+	* build.properties: New file.
+	* OSGI-INF/l10n/bundle.properties: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/ProfileRemoteLaunchConfigurationTabGroup.java: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/ProfileRemoteLaunchPlugin.java: New file.
+	* META-INF/MANIFEST.MF: New file.
+	
+	

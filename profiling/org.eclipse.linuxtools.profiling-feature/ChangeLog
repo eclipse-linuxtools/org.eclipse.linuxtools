@@ -1,3 +1,7 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* feature.xml: Bump version, require CDT 7.
+
 2010-05-28  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* feature.xml: Regenerated dependencies.

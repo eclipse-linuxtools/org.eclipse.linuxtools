@@ -132,7 +132,7 @@ public abstract class ProfileLaunchShortcut implements ILaunchShortcut {
 		try {
 			String projectName = bin.getResource().getProjectRelativePath().toString();
 			ILaunchConfigurationType configType = getLaunchConfigType();
-			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, getLaunchManager().generateUniqueLaunchConfigurationNameFrom(bin.getElementName()));
+			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, getLaunchManager().generateLaunchConfigurationName(bin.getElementName()));
 	
 			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, projectName);
 			wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin.getCProject().getElementName());

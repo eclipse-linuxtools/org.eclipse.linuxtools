@@ -1,3 +1,8 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.7.0.
+	* src/org/eclipse/linuxtools/profiling/tests/AbstractTest.java (createConfiguration): Change deprecated method.
+
 2009-12-21  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Make necessary changes for switch from JUnit 3 to JUnit 4.

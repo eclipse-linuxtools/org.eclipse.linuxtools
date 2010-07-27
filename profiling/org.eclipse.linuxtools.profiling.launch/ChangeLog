@@ -1,3 +1,8 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version.
+	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchShortcut.java (createConfiguration): Change deprecated method. 
+
 2009-12-08  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java:

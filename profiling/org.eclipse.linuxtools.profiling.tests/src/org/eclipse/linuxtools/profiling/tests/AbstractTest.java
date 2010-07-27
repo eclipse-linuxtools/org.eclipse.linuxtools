@@ -172,7 +172,7 @@ public abstract class AbstractTest extends TestCase {
 		ILaunchConfigurationType configType = getLaunchConfigType();
 		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
 				getLaunchManager()
-				.generateUniqueLaunchConfigurationNameFrom(
+				.generateLaunchConfigurationName(
 						projectName));
 
 		wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, binPath);
