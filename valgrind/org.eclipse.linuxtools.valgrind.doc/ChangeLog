@@ -1,3 +1,7 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.7.0. 
+
 2010-04-19  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* userguide/General-Usage.html: Regenerated to include Mac OSX info.

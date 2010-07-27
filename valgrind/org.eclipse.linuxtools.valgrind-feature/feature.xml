@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.valgrind"
       label="%featureName"
-      version="0.4.0.qualifier"
+      version="0.7.0.qualifier"
       provider-name="%featureProvider"
       os="linux,macosx">
 
@@ -52,7 +52,7 @@
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.help"/>
-      <import feature="org.eclipse.linuxtools.profiling" version="0.2.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.linuxtools.profiling" version="0.7.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

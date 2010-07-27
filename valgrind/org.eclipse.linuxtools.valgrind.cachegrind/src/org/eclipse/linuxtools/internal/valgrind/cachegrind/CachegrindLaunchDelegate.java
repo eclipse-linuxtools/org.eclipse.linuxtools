@@ -19,17 +19,18 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 
-public class CachegrindLaunchDelegate extends
-		ValgrindLaunchConfigurationDelegate implements IValgrindLaunchDelegate {
+public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 	protected static final String OUT_PREFIX = "cachegrind_"; //$NON-NLS-1$
 	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter CACHEGRIND_FILTER = new FileFilter() {
@@ -39,13 +40,15 @@ public class CachegrindLaunchDelegate extends
 	};
 	
 	private static final String COMMA = ","; //$NON-NLS-1$
+	private static final String EQUALS = "="; //$NON-NLS-1$
+	private static final String NO = "no"; //$NON-NLS-1$
+	private static final String YES = "yes"; //$NON-NLS-1$
 	
-	public void handleLaunch(ILaunchConfiguration config,	ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(Messages.getString("CachegrindLaunchDelegate.Parsing_Cachegrind_Output"), 3); //$NON-NLS-1$
 			
-			IPath outputPath = verifyOutputPath(config);
-			File[] cachegrindOutputs = outputPath.toFile().listFiles(CACHEGRIND_FILTER);
+			File[] cachegrindOutputs = logDir.toFile().listFiles(CACHEGRIND_FILTER);
 			
 			if (cachegrindOutputs.length > 0) {
 				parseOutput(cachegrindOutputs, monitor);
@@ -75,11 +78,10 @@ public class CachegrindLaunchDelegate extends
 		monitor.worked(1);
 	}
 	
-	public String[] getCommandArray(ILaunchConfiguration config) throws CoreException {
+	public String[] getCommandArray(ILaunchConfiguration config, IPath logDir) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		
-		IPath outputPath = verifyOutputPath(config);
-		opts.add(CachegrindCommandConstants.OPT_CACHEGRIND_OUTFILE + EQUALS + outputPath.append(OUT_FILE).toOSString());
+		opts.add(CachegrindCommandConstants.OPT_CACHEGRIND_OUTFILE + EQUALS + logDir.append(OUT_FILE).toOSString());
 		opts.add(CachegrindCommandConstants.OPT_CACHE_SIM + EQUALS + (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_CACHE_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_CACHE_SIM) ? YES : NO));
 		opts.add(CachegrindCommandConstants.OPT_BRANCH_SIM + EQUALS + (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_BRANCH_SIM, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_BRANCH_SIM) ? YES : NO));
 		if (config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_I1, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_I1)) {
@@ -98,6 +100,30 @@ public class CachegrindLaunchDelegate extends
 					+ COMMA + config.getAttribute(CachegrindLaunchConstants.ATTR_CACHEGRIND_L2_LSIZE, CachegrindLaunchConstants.DEFAULT_CACHEGRIND_L2_LSIZE));
 		}
 		return opts.toArray(new String[opts.size()]);
+	}
+	
+	/**
+	 * Throws a core exception with an error status object built from the given
+	 * message, lower level exception, and error code.
+	 * 
+	 * @param message
+	 *            the status message
+	 * @param exception
+	 *            lower level exception associated with the error, or
+	 *            <code>null</code> if none
+	 * @param code
+	 *            error code
+	 */
+	private void abort(String message, Throwable exception, int code) throws CoreException {
+		IStatus status;
+		if (exception != null) {
+			MultiStatus multiStatus = new MultiStatus(CachegrindPlugin.PLUGIN_ID, code, message, exception);
+			multiStatus.add(new Status(IStatus.ERROR, CachegrindPlugin.PLUGIN_ID, code, exception.getLocalizedMessage(), exception));
+			status= multiStatus;
+		} else {
+			status= new Status(IStatus.ERROR, CachegrindPlugin.PLUGIN_ID, code, message, null);
+		}
+		throw new CoreException(status);
 	}
 
 }

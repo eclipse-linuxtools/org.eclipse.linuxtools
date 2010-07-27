@@ -1,3 +1,10 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.7.0.
+	* src/org/eclipse/linuxtools/internal/valgrind/tests/ValgrindStubCommand.java (execute): Change parameters.
+	* src/org/eclipse/linuxtools/internal/valgrind/tests/ValgrindStubProcess.java (getAdapter): Change warning suppression.
+	* src/org/eclipse/linuxtools/internal/valgrind/tests/ValgrindTestLaunchDelegate.java (setOutputPath): Add parameter. 
+
 2009-12-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Make necessary changes for switch from JUnit 3 to JUnit 4.

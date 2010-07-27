@@ -1,3 +1,9 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.7.0.
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCommand.java: Extract method to
+	create process.
+
 2010-06-06  Elliott Baron  <ebaron@fedoraproject.org>
 
 	Bug #315890

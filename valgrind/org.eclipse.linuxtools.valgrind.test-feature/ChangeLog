@@ -1,3 +1,7 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* feature.xml: Bump version to 0.7.0, recompute dependencies.
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Fix provider name.

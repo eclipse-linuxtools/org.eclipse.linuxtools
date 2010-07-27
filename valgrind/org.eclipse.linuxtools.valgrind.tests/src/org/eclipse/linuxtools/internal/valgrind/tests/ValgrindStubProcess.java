@@ -57,7 +57,7 @@ public class ValgrindStubProcess implements IProcess {
 		attributes.put(key, value);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		return null;
 	}

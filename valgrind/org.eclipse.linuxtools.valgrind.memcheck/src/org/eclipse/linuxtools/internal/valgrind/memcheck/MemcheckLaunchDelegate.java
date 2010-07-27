@@ -13,20 +13,24 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck;
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.osgi.framework.Version;
 
-public class MemcheckLaunchDelegate extends ValgrindLaunchConfigurationDelegate implements IValgrindLaunchDelegate {
+public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
+	
+	private static final String EQUALS = "="; //$NON-NLS-1$
+	private static final String NO = "no"; //$NON-NLS-1$
+	private static final String YES = "yes"; //$NON-NLS-1$
 
-	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) throws CoreException {
 	}
 	
-	public String[] getCommandArray(ILaunchConfiguration config) throws CoreException {
+	public String[] getCommandArray(ILaunchConfiguration config, IPath outDir) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		
 		opts.add(MemcheckCommandConstants.OPT_LEAKCHECK + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKCHECK) ? YES : NO));

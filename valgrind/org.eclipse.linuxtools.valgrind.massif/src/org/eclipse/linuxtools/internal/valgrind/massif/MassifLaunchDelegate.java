@@ -20,16 +20,17 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchConfigurationDelegate;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 
-public class MassifLaunchDelegate extends ValgrindLaunchConfigurationDelegate
-implements IValgrindLaunchDelegate {
+public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	protected static final String OUT_PREFIX = "massif_";	 //$NON-NLS-1$
 	protected static final String OUT_FILE = OUT_PREFIX + "%p.txt"; //$NON-NLS-1$
 	protected static final FileFilter MASSIF_FILTER = new FileFilter() {
@@ -37,18 +38,21 @@ implements IValgrindLaunchDelegate {
 			return pathname.getName().startsWith(OUT_PREFIX);
 		}
 	};
+	
+	private static final String EQUALS = "="; //$NON-NLS-1$
+	private static final String NO = "no"; //$NON-NLS-1$
+	private static final String YES = "yes"; //$NON-NLS-1$
 
 	protected MassifOutput output;
 
-	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor)
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor)
 	throws CoreException {
 		MassifPlugin.getDefault().setConfig(config);
 		MassifPlugin.getDefault().setSourceLocator(launch.getSourceLocator());
 		try {
 			monitor.beginTask(Messages.getString("MassifLaunchDelegate.Parsing_Massif_Output"), 3); //$NON-NLS-1$
 			
-			IPath outputPath = verifyOutputPath(config);
-			File[] massifOutputs = outputPath.toFile().listFiles(MASSIF_FILTER);
+			File[] massifOutputs = outDir.toFile().listFiles(MASSIF_FILTER);
 			
 			if (massifOutputs.length > 0) {
 				parseOutput(massifOutputs, monitor);
@@ -80,12 +84,11 @@ implements IValgrindLaunchDelegate {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String[] getCommandArray(ILaunchConfiguration config)
+	public String[] getCommandArray(ILaunchConfiguration config, IPath outDir)
 	throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 
-		IPath outputPath = verifyOutputPath(config);
-		opts.add(MassifCommandConstants.OPT_MASSIF_OUTFILE + EQUALS + outputPath.append(OUT_FILE).toOSString());
+		opts.add(MassifCommandConstants.OPT_MASSIF_OUTFILE + EQUALS + outDir.append(OUT_FILE).toOSString());
 
 		opts.add(MassifCommandConstants.OPT_HEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP) ? YES : NO));
 		opts.add(MassifCommandConstants.OPT_HEAPADMIN + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN));
@@ -105,5 +108,29 @@ implements IValgrindLaunchDelegate {
 		}
 
 		return opts.toArray(new String[opts.size()]);
+	}
+	
+	/**
+	 * Throws a core exception with an error status object built from the given
+	 * message, lower level exception, and error code.
+	 * 
+	 * @param message
+	 *            the status message
+	 * @param exception
+	 *            lower level exception associated with the error, or
+	 *            <code>null</code> if none
+	 * @param code
+	 *            error code
+	 */
+	private void abort(String message, Throwable exception, int code) throws CoreException {
+		IStatus status;
+		if (exception != null) {
+			MultiStatus multiStatus = new MultiStatus(MassifPlugin.PLUGIN_ID, code, message, exception);
+			multiStatus.add(new Status(IStatus.ERROR, MassifPlugin.PLUGIN_ID, code, exception.getLocalizedMessage(), exception));
+			status= multiStatus;
+		} else {
+			status= new Status(IStatus.ERROR, MassifPlugin.PLUGIN_ID, code, message, null);
+		}
+		throw new CoreException(status);
 	}
 }

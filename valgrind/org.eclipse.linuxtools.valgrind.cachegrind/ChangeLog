@@ -1,3 +1,9 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.7.0.
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CachegrindLaunchDelegate.java: Remove dependence on
+	internal Valgrind launch delegate.
+
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* src/org/eclipse/linuxtools/valgrind/cachegrind: Removed.

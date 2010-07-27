@@ -1,0 +1,26 @@
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* .classpath: New file.
+	* .project: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* about.html: New file.
+	* build.properties: New file.
+	* icons/valgrind-icon.png: New file.
+	* OSGI-INF/l10n/bundle.properties: New file.
+	* plugin.xml: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/Messages.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/messages.properties: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchConstants.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchPlugin.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchStep.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteCommand.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchShortcut.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchTabGroup.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteProcess.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFOutputStream.java: New file.
+	* src/org/eclipse/linuxtools/valgrind/launch/remote: New file.
+	* META-INF/MANIFEST.MF: New file.
+	
+	

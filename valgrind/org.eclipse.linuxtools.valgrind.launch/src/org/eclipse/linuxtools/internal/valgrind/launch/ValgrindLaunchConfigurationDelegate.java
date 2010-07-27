@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.filesystem.URIUtil;
@@ -107,7 +108,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			getPlugin().getValgrindVersion();
 
 			monitor.worked(1);
-			IPath exePath = verifyProgramPath(config);
+			IPath exePath = CDebugUtils.verifyProgramPath(config);
 			String[] arguments = getProgramArgumentsArray(config);
 			File workDir = getWorkingDirectory(config);
 			if (workDir == null) {
@@ -115,7 +116,8 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			}
 
 			// set output directory in config
-			setOutputPath(config);
+			IValgrindOutputDirectoryProvider provider = getPlugin().getOutputDirectoryProvider();
+			setOutputPath(config, provider.getOutputPath());
 			outputPath = verifyOutputPath(config);
 			// create/empty output directory
 			createDirectory(outputPath);
@@ -143,7 +145,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				return;
 			}
 			// call Valgrind
-			command.execute(commandArray, getEnvironment(config), workDir, usePty);
+			command.execute(commandArray, getEnvironment(config), workDir, valgrindLocation.toOSString(), usePty);
 			monitor.worked(3);
 			process = createNewProcess(launch, command.getProcess() ,commandArray[0]);
 			// set the command line used
@@ -169,7 +171,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			monitor.worked(1);
 
 			// pass off control to extender
-			dynamicDelegate.handleLaunch(config, launch, monitor.newChild(3));
+			dynamicDelegate.handleLaunch(config, launch, outputPath, monitor.newChild(3));
 
 			// refresh view
 			ValgrindUIPlugin.getDefault().refreshView();
@@ -277,10 +279,9 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		return result;
 	}
 
-	protected void setOutputPath(ILaunchConfiguration config) throws CoreException, IOException {
-		IValgrindOutputDirectoryProvider provider = getPlugin().getOutputDirectoryProvider();
+	protected void setOutputPath(ILaunchConfiguration config, IPath outputPath) throws CoreException, IOException {
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(LaunchConfigurationConstants.ATTR_INTERNAL_OUTPUT_DIR, provider.getOutputPath().toPortableString());
+		wc.setAttribute(LaunchConfigurationConstants.ATTR_INTERNAL_OUTPUT_DIR, outputPath.toPortableString());
 		wc.doSave();
 	}
 
@@ -320,7 +321,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		opts.add(CommandLineConstants.OPT_BELOWMAIN + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN) ? YES : NO));
 		opts.add(CommandLineConstants.OPT_MAXFRAME + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME));
 
-		// 3.4.0 specific
+		// FIXME 3.4.0 specific
 		Version ver = getPlugin().getValgrindVersion();
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			boolean useMainStack = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
@@ -336,7 +337,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				opts.add(CommandLineConstants.OPT_SUPPFILE + EQUALS + suppfile.toOSString());
 			}
 		}
-		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config)));		
+		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config, outputPath)));		
 
 		String[] ret = new String[opts.size()];
 		return opts.toArray(ret);

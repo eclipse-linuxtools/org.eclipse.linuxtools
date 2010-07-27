@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.valgrind.test"
       label="%featureName"
-      version="0.4.0.qualifier"
+      version="0.7.0.qualifier"
       provider-name="%featureProvider">
 
    <description>
@@ -20,7 +20,6 @@
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.junit" version="0.0.0"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.cdt.core.tests"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
@@ -46,6 +45,7 @@
       <import plugin="org.eclipse.linuxtools.valgrind.massif"/>
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.linuxtools.valgrind.cachegrind"/>
+      <import plugin="org.junit" version="4.7.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

@@ -72,7 +72,7 @@ public class MinVersionTest extends AbstractMemcheckTest {
 		ValgrindOptionsTab tab = new ValgrindOptionsTab();
 		
 		ILaunchConfiguration config = getLaunchConfigType().newInstance(null, getLaunchManager()
-				.generateUniqueLaunchConfigurationNameFrom(
+				.generateLaunchConfigurationName(
 						proj.getProject().getName()));
 		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		tab.setDefaults(wc);

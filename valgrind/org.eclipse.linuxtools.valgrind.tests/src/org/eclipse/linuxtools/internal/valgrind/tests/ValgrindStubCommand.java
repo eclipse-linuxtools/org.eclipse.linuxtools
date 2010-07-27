@@ -31,7 +31,7 @@ public class ValgrindStubCommand extends ValgrindCommand {
 	}
 	
 	@Override
-	public void execute(String[] commandArray, String[] env, File wd,
+	public void execute(String[] commandArray, Object env, File wd, String exeFile,
 			boolean usePty) throws IOException {
 		args = commandArray;
 	}

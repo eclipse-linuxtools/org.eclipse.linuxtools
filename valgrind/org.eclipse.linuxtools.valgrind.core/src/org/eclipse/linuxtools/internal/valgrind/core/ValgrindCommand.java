@@ -49,20 +49,10 @@ public class ValgrindCommand {
 		return out.toString().trim();
 	}
 	
-	public void execute(String[] commandArray, String[] env, File wd, boolean usePty) throws IOException {
+	public void execute(String[] commandArray, Object env, File wd, String exeFile, boolean usePty) throws IOException {
 		args = commandArray;
 		try {
-			if (wd == null) {
-				process = ProcessFactory.getFactory().exec(commandArray, env);
-			}
-			else {
-				if (PTY.isSupported() && usePty) {
-					process = ProcessFactory.getFactory().exec(commandArray, env, wd, new PTY());
-				}
-				else {
-					process = ProcessFactory.getFactory().exec(commandArray, env, wd);
-				}
-			}
+			process = startProcess(commandArray, env, wd, exeFile, usePty);
 		}
 		catch (IOException e) {
 			if (process != null) {
@@ -82,6 +72,18 @@ public class ValgrindCommand {
 			ret.append(arg + " "); //$NON-NLS-1$
 		}
 		return ret.toString().trim();
+	}
+	
+	protected Process startProcess(String[] commandArray, Object env, File workDir, String binPath, boolean usePty) throws IOException {
+		if (workDir == null) {
+			return ProcessFactory.getFactory().exec(commandArray, (String[]) env);
+		}
+		if (PTY.isSupported() && usePty) {
+			return ProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, new PTY());
+		}
+		else {
+			return ProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir);
+		}
 	}
 
 	protected void readIntoBuffer(StringBuffer out, Process p) throws IOException {

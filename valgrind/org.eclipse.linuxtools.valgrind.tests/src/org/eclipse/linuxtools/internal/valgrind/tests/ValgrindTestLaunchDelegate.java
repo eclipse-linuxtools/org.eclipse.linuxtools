@@ -55,10 +55,10 @@ public class ValgrindTestLaunchDelegate extends ValgrindLaunchConfigurationDeleg
 	}
 
 	@Override
-	protected void setOutputPath(ILaunchConfiguration config)
+	protected void setOutputPath(ILaunchConfiguration config, IPath outputPath)
 	throws CoreException, IOException {
 		if (!ValgrindTestsPlugin.GENERATE_FILES && ValgrindTestsPlugin.RUN_VALGRIND) {
-			super.setOutputPath(config);
+			super.setOutputPath(config, outputPath);
 		}
 	}
 	

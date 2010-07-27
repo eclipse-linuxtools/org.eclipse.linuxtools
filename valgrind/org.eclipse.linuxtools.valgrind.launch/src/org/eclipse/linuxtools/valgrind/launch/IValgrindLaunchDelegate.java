@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.valgrind.launch;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -28,18 +29,20 @@ public interface IValgrindLaunchDelegate {
 	 * @param config - the configuration to launch
 	 * @param launch - the launch object to contribute processes and debug
 	 *  targets to
+	 * @param logDir - directory to store Valgrind log output files
 	 * @param monitor - to report progress
 	 * @throws CoreException - if this method fails
 	 */
-	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IProgressMonitor monitor) throws CoreException;
+	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException;
 
 	/**
 	 * Parses attributes of an <code>ILaunchConfiguration</code> into an array
 	 * of arguments to be passed to Valgrind
 	 * @param config - the <code>ILaunchConfiguration</code>
+	 * @param logDir - directory to store Valgrind log output files
 	 * @return an array of arguments that can appended to a <code>valgrind</code> command
 	 * @throws CoreException - retrieving attributes from config failed
 	 */
-	public String[] getCommandArray(ILaunchConfiguration config) throws CoreException;
+	public String[] getCommandArray(ILaunchConfiguration config, IPath logDir) throws CoreException;
 	
 }
