@@ -1,3 +1,13 @@
+2010-07-28  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/ui/widgets/TMFTable.java: Removed.
+	* src/org/eclipse/linuxtools/tmf/ui/viewers/events/TmfEventsTable.java: New file.
+	* src/org/eclipse/linuxtools/tmf/ui/widgets/TmfTable.java: New file.
+	* src/org/eclipse/linuxtools/tmf/ui/widgets/TmfVirtualTable.java: New file.
+	* META-INF/MANIFEST.MF: Exported widgets
+	* src/org/eclipse/linuxtools/tmf/ui/views/TmfEventsView.java: Repalced Table by TmfVirtualTable 
+	* src/org/eclipse/linuxtools/tmf/ui/widgets/ColumnData.java: 
+
 2010-07-08  francois  <fchouinard@gmail.com>
 
 	* src/org/eclipse/linuxtools/tmf/ui/views/TmfEventsView.java: Cosmetic change

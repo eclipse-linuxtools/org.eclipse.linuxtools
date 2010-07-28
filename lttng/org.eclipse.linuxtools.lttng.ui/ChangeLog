@@ -1,3 +1,8 @@
+2010-07-28  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/events/EventsTable.java: New file.
+	* src/org/eclipse/linuxtools/lttng/ui/views/events/EventsView.java: Use decoupled EventsTable 
+
 2010-07-14  Francois Chouinard  <fchouinard@gmail.com>
 
 	* plugin.xml: Point to the 16x16 LTTng icon for the perspective

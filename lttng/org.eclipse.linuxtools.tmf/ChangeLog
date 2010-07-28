@@ -1,3 +1,8 @@
+2010-07-28  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/trace/ITmfTrace.java: Added getRank() to API 
+	* src/org/eclipse/linuxtools/tmf/trace/TmfTrace.java: Provide a default implementation of getRank() + minor changes 
+
 2010-07-20  Francois Chouinard  <fchouinard@gmail.com>
 
 	* src/org/eclipse/linuxtools/tmf/component/TmfDataProvider.java:
