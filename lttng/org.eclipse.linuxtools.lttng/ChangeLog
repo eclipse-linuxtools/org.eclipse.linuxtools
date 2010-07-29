@@ -1,3 +1,8 @@
+2010-07-29  Francois Chouinard  <fchouinard@gmail.com>
+
+    * src/org/eclipse/linuxtools/lttng/state/evProcessor/state/StateUpdateHandlers.java: Fixed state of running process
+    * src/org/eclipse/linuxtools/lttng/state/evProcessor/AbsEventToHandlerResolver.java: Optimized condition handling
+
 2010-07-08  francois  <fchouinard@gmail.com>
 
 	* src/org/eclipse/linuxtools/lttng/control/LttngSyntheticEventProvider.java: Issue a single request to experiment and dispatch events to proper trace state manager
