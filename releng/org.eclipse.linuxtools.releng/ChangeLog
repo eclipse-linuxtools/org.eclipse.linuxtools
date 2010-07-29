@@ -1,3 +1,8 @@
+2010-07-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Update SDK dependency URL for SWTBOT to point to archived version
+	last known to work with Autotools UI tests.
+
 2010-07-29  Francois Chouinard  <fchouinard@gmail.com>
 
     * build.properties: Update SDK dependency URL for SWTBOT
