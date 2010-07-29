@@ -1,3 +1,7 @@
+2010-07-29  Francois Chouinard  <fchouinard@gmail.com>
+
+    * build.properties: Update SDK dependency URL for SWTBOT
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* psfs/valgrind-tests.psf: Updated Valgrind PSF. 
