@@ -1,6 +1,7 @@
 2010-07-29  Francois Chouinard  <fchouinard@gmail.com>
 
     * build.properties: Update SDK dependency URL for SWTBOT
+    * build.properties: Removed commented out line...
 
 2010-07-02  Andrew Overholt  <overholt@redhat.com>
 
