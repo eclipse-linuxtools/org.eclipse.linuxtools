@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.linuxtools.internal.valgrind.launch.remote</name>
+	<name>org.eclipse.linuxtools.valgrind.launch.remote</name>
 	<comment></comment>
 	<projects>
 	</projects>
