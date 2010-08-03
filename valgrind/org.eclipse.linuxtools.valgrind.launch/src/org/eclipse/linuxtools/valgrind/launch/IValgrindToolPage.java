@@ -11,11 +11,21 @@
 package org.eclipse.linuxtools.valgrind.launch;
 
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
+import org.osgi.framework.Version;
 
 /**
  * Interface for declaring the specifics of integrating a Valgrind tool
  * into this plugin.
  */
 public interface IValgrindToolPage extends ILaunchConfigurationTab {
+	
+	/**
+	 * To be called before createControl. This method is used to inform extenders
+	 * which version of Valgrind is available. The extender may then perform
+	 * tool-specific version checking. If a value of null is passed, then version
+	 * checking should not be performed.
+	 * @param ver - the version of Valgrind, or null
+	 */
+	public void setValgrindVersion(Version ver);
 	
 }

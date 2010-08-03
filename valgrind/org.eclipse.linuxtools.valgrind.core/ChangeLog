@@ -1,3 +1,10 @@
+2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/core/AbstractValgrindTextParser.java: Removed.
+	* src/org/eclipse/linuxtools/valgrind/core/ValgrindParserUtils.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCoreParser.java (ValgrindCoreParser): Superclass moved to utils class. 
+	(getMessage): Likewise.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.7.0.

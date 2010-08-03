@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.LinkedList;
 
 import org.eclipse.tm.tcf.protocol.IChannel;
 import org.eclipse.tm.tcf.protocol.IToken;
@@ -22,17 +21,15 @@ import org.eclipse.tm.tcf.services.IProcesses.DoneCommand;
 public class ValgrindRemoteProcess extends Process {
 	private IProcesses.ProcessContext context;
 	private IChannel channel;
-	private LinkedList<RemoteLaunchStep> launchSteps;
 	private Boolean terminated;
 	private Integer exitCode;
 	private OutputStream outputStream;
 	private InputStream inputStream;
 	private InputStream errorStream;
 	
-	public ValgrindRemoteProcess(IProcesses.ProcessContext context, IChannel channel, LinkedList<RemoteLaunchStep> launchSteps) {
+	public ValgrindRemoteProcess(IProcesses.ProcessContext context, IChannel channel) {
 		this.context = context;
 		this.channel = channel;
-		this.launchSteps = launchSteps;
 		terminated = false;
 	}
 
@@ -92,15 +89,15 @@ public class ValgrindRemoteProcess extends Process {
 	}
 	
 	public void connectOutputStream(String id) {
-		outputStream = new ValgrindTCFOutputStream(channel, id, launchSteps);
+		outputStream = new ValgrindTCFOutputStream(channel, id);
 	}
 
 	public void connectInputStream(String id) {
-		inputStream = new ValgrindTCFInputStream(channel, id, launchSteps);
+		inputStream = new ValgrindTCFInputStream(channel, id);
 	}
 	
 	public void connectErrorStream(String id) {
-		errorStream = new ValgrindTCFInputStream(channel, id, launchSteps);
+		errorStream = new ValgrindTCFInputStream(channel, id);
 	}
 
 }

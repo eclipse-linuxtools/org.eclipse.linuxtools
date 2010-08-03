@@ -17,7 +17,7 @@ import org.eclipse.ui.IViewPart;
  * Provides an interface for including controls in the Valgrind view.
  */
 public interface IValgrindToolView extends IViewPart {
-	
+		
 	/**
 	 * Provides a mechanism to add actions to the Valgrind view's toolbar
 	 * @return an array of actions to add to the toolbar

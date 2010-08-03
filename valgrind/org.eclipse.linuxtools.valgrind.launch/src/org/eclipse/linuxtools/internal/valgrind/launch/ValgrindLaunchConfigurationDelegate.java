@@ -50,6 +50,7 @@ import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCoreParser;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindError;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
@@ -78,6 +79,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 	protected ILaunch launch;
 	protected IProcess process;
 	protected String launchStr;
+	protected Version valgrindVersion; // null if not used
 
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor m) throws CoreException {
@@ -105,7 +107,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// find Valgrind binary if not already done
 			IPath valgrindLocation = getPlugin().getValgrindLocation();
 			// also ensure Valgrind version is usable
-			getPlugin().getValgrindVersion();
+			valgrindVersion = getPlugin().getValgrindVersion();
 
 			monitor.worked(1);
 			IPath exePath = CDebugUtils.verifyProgramPath(config);
@@ -167,11 +169,15 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// create view
 			ValgrindUIPlugin.getDefault().createView(launchStr, toolID);
 			// set log messages
-			ValgrindUIPlugin.getDefault().getView().setMessages(messages);
+			ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
+			view.setMessages(messages);
 			monitor.worked(1);
 
 			// pass off control to extender
-			dynamicDelegate.handleLaunch(config, launch, outputPath, monitor.newChild(3));
+			dynamicDelegate.handleLaunch(config, launch, outputPath, monitor.newChild(2));
+			
+			// initialize tool-specific part of view
+			dynamicDelegate.initializeView(view.getDynamicView(), launchStr, monitor.newChild(1));
 
 			// refresh view
 			ValgrindUIPlugin.getDefault().refreshView();
@@ -321,9 +327,8 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		opts.add(CommandLineConstants.OPT_BELOWMAIN + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN) ? YES : NO));
 		opts.add(CommandLineConstants.OPT_MAXFRAME + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME));
 
-		// FIXME 3.4.0 specific
-		Version ver = getPlugin().getValgrindVersion();
-		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+		// 3.4.0 specific
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			boolean useMainStack = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
 			if (useMainStack) {
 				opts.add(CommandLineConstants.OPT_MAINSTACK + EQUALS + config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK));
@@ -337,7 +342,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				opts.add(CommandLineConstants.OPT_SUPPFILE + EQUALS + suppfile.toOSString());
 			}
 		}
-		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config, outputPath)));		
+		opts.addAll(Arrays.asList(dynamicDelegate.getCommandArray(config, valgrindVersion, outputPath)));		
 
 		String[] ret = new String[opts.size()];
 		return opts.toArray(ret);

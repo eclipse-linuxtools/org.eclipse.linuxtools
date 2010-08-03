@@ -15,7 +15,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.ISourceLocator;
 import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
@@ -39,7 +38,7 @@ public class MassifPlugin extends AbstractUIPlugin {
 	// and not full paths
 	protected ISourceLocator locator;
 
-	public static final String TOOL_ID = PluginConstants.LAUNCH_PLUGIN_ID + ".massif"; //$NON-NLS-1$
+	public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.massif"; //$NON-NLS-1$
 	
 	/**
 	 * The constructor

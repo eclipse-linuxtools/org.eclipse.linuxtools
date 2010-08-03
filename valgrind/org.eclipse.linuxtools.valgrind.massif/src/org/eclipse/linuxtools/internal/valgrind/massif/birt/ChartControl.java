@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -45,27 +45,26 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 public class ChartControl extends Canvas implements PaintListener, ControlListener, ICallBackNotifier {
 
 	private transient boolean bIsPainting = false;
-
 	private transient Image buffer;
-
 	private static int X_OFFSET = 3;
-
 	private static int Y_OFFSET = 3;
 
 	protected Chart cm = null;
-
 	protected GeneratedChartState state = null;
-
 	protected IDeviceRenderer deviceRenderer = null;
-
 	private boolean needsGeneration = true;
-
-	public ChartControl(Composite parent, Chart chart, int style) {
+	private MassifViewPart view;
+	
+	public ChartControl(Composite parent, Chart chart, MassifViewPart view, int style) {
 		super(parent, SWT.BORDER);
+		this.view = view;
 		cm = chart;
 		setLayoutData(new GridData(GridData.FILL_BOTH));
 		setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
@@ -89,11 +88,10 @@ public class ChartControl extends Canvas implements PaintListener, ControlListen
 
 	public void callback(Object event, Object source, CallBackValue value) {
 		// give Valgrind view focus
-		ValgrindUIPlugin.getDefault().showView();
+		showView();
 		MouseEvent mEvent = (MouseEvent) event;
 		
 		DataPointHints point = ((DataPointHints)((WrappedStructureSource)source).getSource());
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		// select the corresponding snapshot in the TableViewer
 		TableViewer viewer = view.getTableViewer();
 		view.setTopControl(viewer.getControl());
@@ -243,4 +241,19 @@ public class ChartControl extends Canvas implements PaintListener, ControlListen
 		redraw();
 	}
 	
+	/**
+	 * Shows the Valgrind view in the active page and gives it focus.
+	 */
+	public void showView() {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					activePage.showView(ValgrindUIConstants.VIEW_ID);
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
+			}			
+		});
+	}
 }

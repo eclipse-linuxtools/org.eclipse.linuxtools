@@ -20,9 +20,13 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFile;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFunction;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindLine;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.internal.valgrind.core.AbstractValgrindTextParser;
+import org.eclipse.linuxtools.valgrind.core.ValgrindParserUtils;
 
-public class CachegrindParser extends AbstractValgrindTextParser {
+public class CachegrindParser {
+	private static final String COLON = ":"; //$NON-NLS-1$
+	private static final String SPACE = " "; //$NON-NLS-1$
+	private static final String EQUALS = "="; //$NON-NLS-1$
+	
 	private static final String CMD = "cmd"; //$NON-NLS-1$
 	private static final String DESC = "desc"; //$NON-NLS-1$
 	private static final String FL = "fl"; //$NON-NLS-1$
@@ -48,42 +52,42 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(cgOut));
-			output.setPid(parsePID(cgOut.getName(), CachegrindLaunchDelegate.OUT_PREFIX));
+			output.setPid(ValgrindParserUtils.parsePID(cgOut.getName(), CachegrindLaunchDelegate.OUT_PREFIX));
 
 			String line;
 			CachegrindFile curFl = null;
 			CachegrindFunction curFn = null;
 			while ((line = br.readLine()) != null) {		
 				if (line.startsWith(EVENTS + COLON)) {
-					output.setEvents(parseStrValue(line, COLON + SPACE).split(SPACE));
+					output.setEvents(ValgrindParserUtils.parseStrValue(line, COLON + SPACE).split(SPACE));
 				}
 				else if (line.startsWith(CMD + COLON)) {
-					output.setCommand(parseStrValue(line, COLON + SPACE));
+					output.setCommand(ValgrindParserUtils.parseStrValue(line, COLON + SPACE));
 				}
 				else if (line.startsWith(DESC + COLON)) {
 					CachegrindDescription description = parseDescription(line);
 					output.addDescription(description);
 				}
 				else if (line.startsWith(FL + EQUALS)) {
-					curFl = new CachegrindFile(output, parseStrValue(line, EQUALS));
+					curFl = new CachegrindFile(output, ValgrindParserUtils.parseStrValue(line, EQUALS));
 					output.addFile(curFl);
 				}
 				else if (line.startsWith(FN + EQUALS)) {				
 					if (curFl != null) {
-						curFn = new CachegrindFunction(curFl, parseStrValue(line, EQUALS));
+						curFn = new CachegrindFunction(curFl, ValgrindParserUtils.parseStrValue(line, EQUALS));
 						curFl.addFunction(curFn);
 					}
 					else {
-						fail(line);
+						ValgrindParserUtils.fail(line);
 					}
 				}
 				else if (line.startsWith(SUMMARY + COLON)) {
-					long[] summary = parseData(line, parseStrValue(line, COLON + SPACE).split(SPACE));
+					long[] summary = parseData(line, ValgrindParserUtils.parseStrValue(line, COLON + SPACE).split(SPACE));
 					output.setSummary(summary);
 				}
 				else { // line data
 					String[] tokens = line.split(SPACE, 2);
-					if (isNumber(tokens[0])) {
+					if (ValgrindParserUtils.isNumber(tokens[0])) {
 						int lineNo = Integer.parseInt(tokens[0]);
 
 						long[] data = parseData(line, tokens[1].split(SPACE));
@@ -91,11 +95,11 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 							curFn.addLine(new CachegrindLine(curFn, lineNo, data));
 						}
 						else {
-							fail(line);
+							ValgrindParserUtils.fail(line);
 						}
 					}
 					else {
-						fail(line);
+						ValgrindParserUtils.fail(line);
 					}
 				}
 			}
@@ -109,8 +113,8 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 	private long[] parseData(String line, String[] data) throws IOException {
 		long[] result = new long[data.length];
 		for (int i = 0; i < data.length; i++) {
-			if (!isNumber(data[i])) {
-				fail(line);
+			if (!ValgrindParserUtils.isNumber(data[i])) {
+				ValgrindParserUtils.fail(line);
 			}
 			result[i] = Long.parseLong(data[i]);
 		}
@@ -127,11 +131,11 @@ public class CachegrindParser extends AbstractValgrindTextParser {
 				desc = new CachegrindDescription(name, tokens[0], tokens[1], tokens[2]);
 			}
 			else {
-				fail(line);
+				ValgrindParserUtils.fail(line);
 			}
 		}
 		else {
-			fail(line);
+			ValgrindParserUtils.fail(line);
 		}
 		return desc;
 	}

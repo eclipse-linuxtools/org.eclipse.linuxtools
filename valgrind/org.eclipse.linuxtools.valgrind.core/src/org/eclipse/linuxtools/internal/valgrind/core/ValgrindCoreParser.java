@@ -20,8 +20,11 @@ import java.util.Stack;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
+import org.eclipse.linuxtools.valgrind.core.ValgrindParserUtils;
 
-public class ValgrindCoreParser extends AbstractValgrindTextParser {
+public class ValgrindCoreParser {
+	private static final String SPACE = " "; //$NON-NLS-1$
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private static final String AT = "at"; //$NON-NLS-1$
 	private static final String BY = "by"; //$NON-NLS-1$
 
@@ -38,7 +41,7 @@ public class ValgrindCoreParser extends AbstractValgrindTextParser {
 		messages = new ArrayList<IValgrindMessage>();
 
 		try { 
-			pid = parsePID(inputFile.getName(), CommandLineConstants.LOG_PREFIX);
+			pid = ValgrindParserUtils.parsePID(inputFile.getName(), CommandLineConstants.LOG_PREFIX);
 			String line;
 			while ((line = br.readLine()) != null) {
 				// remove PID string
@@ -86,7 +89,7 @@ public class ValgrindCoreParser extends AbstractValgrindTextParser {
 
 	protected IValgrindMessage getMessage(IValgrindMessage message, String line) throws IOException {
 		if (line.startsWith(AT) || line.startsWith(BY)) {
-			Object[] parsed = parseFilename(line);
+			Object[] parsed = ValgrindParserUtils.parseFilename(line);
 			String filename = (String) parsed[0];
 			int lineNo = (Integer) parsed[1];
 			return new ValgrindStackFrame(message, line, launch, filename, lineNo);

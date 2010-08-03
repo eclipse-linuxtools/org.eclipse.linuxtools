@@ -1,3 +1,18 @@
+2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CollapseAction.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/ExpandAction.java: New file.
+	* META-INF/MANIFEST.MF: Remove internal dependencies.
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CachegrindLaunchDelegate.java (parseOutput): API change. 
+	(getCommandArray): Likewise.
+	(initializeView): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CachegrindParser.java (parse): Superclass moved to static utils class. 
+	(parseData): Likewise.
+	(parseDescription): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CachegrindPlugin.java: Remove internals use. 
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CachegrindToolPage.java (setValgrindVersion): API change. 
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CachegrindViewPart.java: Remove internals use.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.7.0.

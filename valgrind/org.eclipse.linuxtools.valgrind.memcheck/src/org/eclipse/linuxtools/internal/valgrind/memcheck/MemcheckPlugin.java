@@ -10,7 +10,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.memcheck;
 
-import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -21,7 +20,7 @@ public class MemcheckPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static MemcheckPlugin plugin;
 	
-	public static final String TOOL_ID = PluginConstants.LAUNCH_PLUGIN_ID + ".memcheck"; //$NON-NLS-1$
+	public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.memcheck"; //$NON-NLS-1$
 	
 	/**
 	 * The constructor

@@ -16,12 +16,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.linuxtools.internal.valgrind.core.AbstractValgrindTextParser;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.SnapshotType;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.TimeUnit;
+import org.eclipse.linuxtools.valgrind.core.ValgrindParserUtils;
 import org.eclipse.osgi.util.NLS;
 
-public class MassifParser extends AbstractValgrindTextParser {
+public class MassifParser {
+	private static final String COLON = ":"; //$NON-NLS-1$
+	private static final String SPACE = " "; //$NON-NLS-1$
+	private static final String EQUALS = "="; //$NON-NLS-1$
+	
 	private static final String CMD = "cmd"; //$NON-NLS-1$
 	private static final String TIME_UNIT = "time_unit"; //$NON-NLS-1$
 	private static final String SNAPSHOT = "snapshot"; //$NON-NLS-1$
@@ -54,12 +58,12 @@ public class MassifParser extends AbstractValgrindTextParser {
 
 			// retrive PID from filename
 			String filename = inputFile.getName();
-			pid = parsePID(filename, MassifLaunchDelegate.OUT_PREFIX);
+			pid = ValgrindParserUtils.parsePID(filename, MassifLaunchDelegate.OUT_PREFIX);
 
 			// parse contents of file
 			while ((line = br.readLine()) != null) {
 				if (line.startsWith(CMD + COLON)){
-					cmd = parseStrValue(line, COLON + SPACE);
+					cmd = ValgrindParserUtils.parseStrValue(line, COLON + SPACE);
 				}
 				else if (line.startsWith(TIME_UNIT + COLON)) {
 					unit = parseTimeUnit(line);
@@ -75,16 +79,16 @@ public class MassifParser extends AbstractValgrindTextParser {
 					snapshot.setUnit(unit);
 				}
 				else if (line.startsWith(TIME + EQUALS)) {
-					snapshot.setTime(parseLongValue(line, EQUALS));
+					snapshot.setTime(ValgrindParserUtils.parseLongValue(line, EQUALS));
 				}
 				else if (line.startsWith(MEM_HEAP_B + EQUALS)) {
-					snapshot.setHeapBytes(parseLongValue(line, EQUALS));
+					snapshot.setHeapBytes(ValgrindParserUtils.parseLongValue(line, EQUALS));
 				}
 				else if (line.startsWith(MEM_HEAP_EXTRA_B + EQUALS)) {
-					snapshot.setHeapExtra(parseLongValue(line, EQUALS));
+					snapshot.setHeapExtra(ValgrindParserUtils.parseLongValue(line, EQUALS));
 				}
 				else if (line.startsWith(MEM_STACKS_B + EQUALS)) {
-					snapshot.setStacks(parseLongValue(line, EQUALS));
+					snapshot.setStacks(ValgrindParserUtils.parseLongValue(line, EQUALS));
 				}
 				else if (line.startsWith(HEAP_TREE + EQUALS)) {
 					SnapshotType type = parseSnapshotType(line);
@@ -119,17 +123,17 @@ public class MassifParser extends AbstractValgrindTextParser {
 		String[] parts = line.split(" "); //$NON-NLS-1$
 		// bounds checking so we can fail with a more informative error
 		if (parts.length < 2) {
-			fail(line);
+			ValgrindParserUtils.fail(line);
 		}
 		
 		Integer numChildren = parseNumChildren(parts[0]);
 		if (numChildren == null) {
-			fail(line);
+			ValgrindParserUtils.fail(line);
 		}
 
 		Long numBytes = parseNumBytes(parts[1]);
 		if (numBytes == null) {
-			fail(line);
+			ValgrindParserUtils.fail(line);
 		}
 		
 		double percentage;
@@ -148,7 +152,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 		if (parts[2].startsWith("0x")) { //$NON-NLS-1$
 			// we extend the above bounds checking
 			if (parts.length < 3) {
-				fail(line);
+				ValgrindParserUtils.fail(line);
 			}
 			// remove colon from address
 			address = parts[2].substring(0, parts[2].length() - 1);
@@ -156,7 +160,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 			function = parseFunction(parts[3], line);
 			
 			// Parse source file if specified
-			Object[] subparts = parseFilename(line);
+			Object[] subparts = ValgrindParserUtils.parseFilename(line);
 			filename = (String) subparts[0];
 			lineNo = (Integer) subparts[1];
 			
@@ -193,7 +197,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 			function = function.trim();
 		}
 		else {
-			fail(line);
+			ValgrindParserUtils.fail(line);
 		}
 		
 		return function;
@@ -201,7 +205,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 
 	private Long parseNumBytes(String string) {
 		Long result = null;
-		if (isNumber(string)) {
+		if (ValgrindParserUtils.isNumber(string)) {
 			result = Long.parseLong(string);
 		}
 		return result;
@@ -214,7 +218,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 		Integer result = null;
 		if (string.length() >= 3) {
 			String number = string.substring(1, string.length() - 1);
-			if (isNumber(number)) {
+			if (ValgrindParserUtils.isNumber(number)) {
 				result = Integer.parseInt(number);
 			}
 		}
@@ -245,7 +249,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 			}
 		}
 		if (result == null) {
-			fail(line);
+			ValgrindParserUtils.fail(line);
 		}
 		return result;
 	}
@@ -266,7 +270,7 @@ public class MassifParser extends AbstractValgrindTextParser {
 			}
 		}
 		if (result == null) {
-			fail(line);
+			ValgrindParserUtils.fail(line);
 		}
 		return result;
 	}

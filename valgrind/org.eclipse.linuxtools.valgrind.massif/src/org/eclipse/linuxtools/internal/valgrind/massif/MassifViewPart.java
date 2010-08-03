@@ -35,7 +35,6 @@ import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot.SnapshotTy
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartEditorInput;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.ChartSVG;
 import org.eclipse.linuxtools.internal.valgrind.massif.birt.HeapChart;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -90,6 +89,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 	protected TableViewer viewer;
 	protected MassifTreeViewer treeViewer;
 	protected MassifHeapTreeNode[] nodes;
+	protected String chartName;
 
 	protected static final int COLUMN_SIZE = 125;
 
@@ -250,7 +250,7 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 				ChartEditorInput currentInput = getChartInput(pid);
 				String path = getChartSavePath(currentInput.getName() + ".svg"); //$NON-NLS-1$
 				if (path != null) {
-					ChartSVG renderer = new ChartSVG(currentInput.getChart());
+					ChartSVG renderer = new ChartSVG(currentInput.getChart(), MassifViewPart.this);
 					renderer.renderSVG(Path.fromOSString(path));
 				}
 			}
@@ -295,11 +295,11 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 
 	protected void createChart(MassifSnapshot[] snapshots) {
 		HeapChart chart = new HeapChart(snapshots);
-		String title = ValgrindUIPlugin.getDefault().getView().getContentDescription() + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
+		String title = chartName + " [PID: " + pid + "]";  //$NON-NLS-1$//$NON-NLS-2$
 		chart.getTitle().getLabel().getCaption().setValue(title);
 
 		String name = getInputName(title);
-		ChartEditorInput input = new ChartEditorInput(chart, name, pid);
+		ChartEditorInput input = new ChartEditorInput(chart, this, name, pid);
 		chartInputs.add(input);
 
 		// open the editor
@@ -466,6 +466,10 @@ public class MassifViewPart extends ViewPart implements IValgrindToolView {
 			}
 			return font;
 		}
+	}
+	
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
 	}
 
 	private MassifSnapshot[] getDetailed(MassifSnapshot[] snapshots) {

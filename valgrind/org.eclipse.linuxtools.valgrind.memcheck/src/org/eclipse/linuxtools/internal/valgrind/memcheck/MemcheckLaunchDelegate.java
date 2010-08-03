@@ -17,12 +17,12 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
+import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.osgi.framework.Version;
 
 public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
-	
+	private static final Version VER_3_4_0 = new Version(3, 4, 0);
 	private static final String EQUALS = "="; //$NON-NLS-1$
 	private static final String NO = "no"; //$NON-NLS-1$
 	private static final String YES = "yes"; //$NON-NLS-1$
@@ -30,7 +30,7 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) throws CoreException {
 	}
 	
-	public String[] getCommandArray(ILaunchConfiguration config, IPath outDir) throws CoreException {
+	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		
 		opts.add(MemcheckCommandConstants.OPT_LEAKCHECK + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_LEAKCHECK, MemcheckLaunchConstants.DEFAULT_MEMCHECK_LEAKCHECK) ? YES : NO));
@@ -45,15 +45,14 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 		}
 		
 		// 3.4.0 specific
-		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
+		if (ver == null || ver.compareTo(VER_3_4_0) >= 0) {
+			opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
 		}
 
 		return opts.toArray(new String[opts.size()]);
+	}
+
+	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor)
+			throws CoreException {
 	}
 }

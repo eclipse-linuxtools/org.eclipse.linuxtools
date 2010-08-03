@@ -52,7 +52,7 @@ public class ChartExportTest extends AbstractMassifTest {
 		if (input instanceof ChartEditorInput) {
 			Chart chart = ((ChartEditorInput) input).getChart();
 			
-			ChartSVG svg = new ChartSVG(chart);
+			ChartSVG svg = new ChartSVG(chart, ((ChartEditorInput) input).getView());
 			svg.renderSVG(svgPath);
 			
 			File chartFile = svgPath.toFile();

@@ -25,10 +25,9 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
+import org.osgi.framework.Version;
 
 public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	protected static final String OUT_PREFIX = "massif_";	 //$NON-NLS-1$
@@ -72,23 +71,14 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 			output.putSnapshots(parser.getPid(), parser.getSnapshots());
 		}
 		monitor.worked(2);
-		
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IValgrindToolView massifPart = view.getDynamicView();
-		if (massifPart instanceof MassifViewPart) {
-			((MassifViewPart) massifPart).setOutput(output);
-			// initialize to first pid
-			((MassifViewPart) massifPart).setPid(output.getPids()[0]);
-		}
-		monitor.worked(1);
 	}
 
 	@SuppressWarnings("unchecked")
-	public String[] getCommandArray(ILaunchConfiguration config, IPath outDir)
+	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir)
 	throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 
-		opts.add(MassifCommandConstants.OPT_MASSIF_OUTFILE + EQUALS + outDir.append(OUT_FILE).toOSString());
+		opts.add(MassifCommandConstants.OPT_MASSIF_OUTFILE + EQUALS + logDir.append(OUT_FILE).toOSString());
 
 		opts.add(MassifCommandConstants.OPT_HEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP) ? YES : NO));
 		opts.add(MassifCommandConstants.OPT_HEAPADMIN + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN));
@@ -110,6 +100,16 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 		return opts.toArray(new String[opts.size()]);
 	}
 	
+	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException {
+		if (view instanceof MassifViewPart) {
+			((MassifViewPart) view).setChartName(contentDescription);
+			((MassifViewPart) view).setOutput(output);
+			// initialize to first pid
+			((MassifViewPart) view).setPid(output.getPids()[0]);
+		}
+		monitor.worked(1);
+	}
+
 	/**
 	 * Throws a core exception with an error status object built from the given
 	 * message, lower level exception, and error code.

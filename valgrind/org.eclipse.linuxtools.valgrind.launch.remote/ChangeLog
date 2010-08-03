@@ -1,3 +1,21 @@
+2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* icons/tcf.gif: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteTab.java: New file.
+	* META-INF/MANIFEST.MF: New dep.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/Messages.java: New keys. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchConstants.java: New constants.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchStep.java: Added debugging code. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteCommand.java: Disconnect stdin on exit.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java: Refactoring, improvements
+	to cleanup.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchTabGroup.java (getProfileTabs): Don't check version.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteProcess.java: Removed launch steps.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java: Don't use launch step,
+	disconnect stream on EOS.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFOutputStream.java: Don't use launch step.
+
 2010-08-01  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* .project: Remove "internal" from project name.

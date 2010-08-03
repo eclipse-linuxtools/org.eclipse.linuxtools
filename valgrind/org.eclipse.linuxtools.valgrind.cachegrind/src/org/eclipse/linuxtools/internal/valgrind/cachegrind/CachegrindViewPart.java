@@ -34,8 +34,6 @@ import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindFunct
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindLine;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.ICachegrindElement;
-import org.eclipse.linuxtools.internal.valgrind.ui.CollapseAction;
-import org.eclipse.linuxtools.internal.valgrind.ui.ExpandAction;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;

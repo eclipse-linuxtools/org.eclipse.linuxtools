@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
@@ -33,7 +34,6 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = PluginConstants.UI_PLUGIN_ID;
-	public static final String VIEW_ID = PLUGIN_ID + ".valgrindview"; //$NON-NLS-1$
 	public static final String TOOLBAR_LOC_GROUP_ID = "toolbarLocal"; //$NON-NLS-1$
 	public static final String TOOLBAR_EXT_GROUP_ID = "toolbarExtensions"; //$NON-NLS-1$
 	
@@ -89,7 +89,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 			public void run() {
 				try {
 					activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					activePage.showView(ValgrindUIPlugin.VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
+					activePage.showView(ValgrindUIConstants.VIEW_ID, null, IWorkbenchPage.VIEW_CREATE);
 
 					// create the view's tool specific controls and populate content description
 					view.createDynamicContent(contentDescription, toolID);
@@ -111,7 +111,7 @@ public class ValgrindUIPlugin extends AbstractUIPlugin {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				try {
-					activePage.showView(ValgrindUIPlugin.VIEW_ID);
+					activePage.showView(ValgrindUIConstants.VIEW_ID);
 				} catch (PartInitException e) {
 					e.printStackTrace();
 				}

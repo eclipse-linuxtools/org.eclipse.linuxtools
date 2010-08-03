@@ -89,9 +89,27 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected boolean isInitializing = false;
 	protected boolean initDefaults = false;
 	
-	protected IPath valgrindLocation;
-	protected Version valgrindVersion;
 	protected Exception ex;
+	
+	private Version valgrindVersion;
+	
+	public ValgrindOptionsTab() {
+		this(true);
+	}
+	
+	public ValgrindOptionsTab(boolean checkVersion) {
+		if (checkVersion) {
+			try {
+				valgrindVersion = getPlugin().getValgrindVersion();
+			} catch (CoreException e) {
+				ex = e;
+			}
+		}
+		else {
+			// Do not check version
+			valgrindVersion = null;
+		}
+	}	
 
 	protected SelectionListener selectListener = new SelectionAdapter() {
 		@Override
@@ -106,6 +124,10 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	};
 	
 	public void createControl(Composite parent) {
+		// Check for exception
+		if (ex != null) {
+			setErrorMessage(ex.getLocalizedMessage());
+		}
 		scrollTop = new ScrolledComposite(parent,	SWT.H_SCROLL | SWT.V_SCROLL);
 		scrollTop.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		scrollTop.setExpandVertical(true);
@@ -280,30 +302,24 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		maxStackFrameSpinner.addModifyListener(modifyListener);	
 		maxStackFrameSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		// 3.4.0 specific
-		try {
-			Version ver = getPlugin().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				Composite mainStackSizeTop = new Composite(errorTop, SWT.NONE);
-				GridLayout mainStackSizeLayout = new GridLayout(2, false);
-				mainStackSizeLayout.marginHeight = mainStackSizeLayout.marginWidth = 0;
-				mainStackSizeTop.setLayout(mainStackSizeLayout);
-				mainStackSizeButton = new Button(mainStackSizeTop, SWT.CHECK);
-				mainStackSizeButton.setText(Messages.getString("ValgrindOptionsTab.Main_stack_size")); //$NON-NLS-1$
-				mainStackSizeButton.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						checkMainStackEnablement();
-						updateLaunchConfigurationDialog();
-					}
-				});
-				mainStackSizeSpinner = new Spinner(mainStackSizeTop, SWT.BORDER);
-				mainStackSizeSpinner.setMaximum(Integer.MAX_VALUE);
-				mainStackSizeSpinner.addModifyListener(modifyListener);
-				mainStackSizeSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			}
-		} catch (CoreException e) {
-			ex = e;
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			Composite mainStackSizeTop = new Composite(errorTop, SWT.NONE);
+			GridLayout mainStackSizeLayout = new GridLayout(2, false);
+			mainStackSizeLayout.marginHeight = mainStackSizeLayout.marginWidth = 0;
+			mainStackSizeTop.setLayout(mainStackSizeLayout);
+			mainStackSizeButton = new Button(mainStackSizeTop, SWT.CHECK);
+			mainStackSizeButton.setText(Messages.getString("ValgrindOptionsTab.Main_stack_size")); //$NON-NLS-1$
+			mainStackSizeButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					checkMainStackEnablement();
+					updateLaunchConfigurationDialog();
+				}
+			});
+			mainStackSizeSpinner = new Spinner(mainStackSizeTop, SWT.BORDER);
+			mainStackSizeSpinner.setMaximum(Integer.MAX_VALUE);
+			mainStackSizeSpinner.addModifyListener(modifyListener);
+			mainStackSizeSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
 	}
 
@@ -411,6 +427,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			throw new CoreException(new Status(IStatus.ERROR, ValgrindLaunchPlugin.PLUGIN_ID, Messages.getString("ValgrindOptionsTab.No_options_tab_found") + tool)); //$NON-NLS-1$
 		}
 		dynamicTab.setLaunchConfigurationDialog(getLaunchConfigurationDialog());
+		dynamicTab.setValgrindVersion(valgrindVersion);
 		dynamicTab.createControl(dynamicTabHolder);
 
 		dynamicTabHolder.layout(true);		
@@ -468,8 +485,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			suppFileList.setItems(suppFiles.toArray(new String[suppFiles.size()]));
 			
 			// 3.4.0 specific
-			Version ver = getPlugin().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				mainStackSizeButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL));
 				mainStackSizeSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK));
 				checkMainStackEnablement();
@@ -527,16 +543,11 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, showBelowMainButton.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, maxStackFrameSpinner.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, Arrays.asList(suppFileList.getItems()));
-		
+
 		// 3.4.0 specific
-		try {
-			Version ver = getPlugin().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, mainStackSizeButton.getSelection());
-				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, mainStackSizeSpinner.getSelection());
-			}
-		} catch (CoreException e) {
-			ex = e;
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, mainStackSizeButton.getSelection());
+			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, mainStackSizeSpinner.getSelection());
 		}
 		if (dynamicTab != null) {
 			dynamicTab.performApply(configuration);
@@ -556,16 +567,11 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_BELOWMAIN, LaunchConfigurationConstants.DEFAULT_GENERAL_BELOWMAIN);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAXFRAME, LaunchConfigurationConstants.DEFAULT_GENERAL_MAXFRAME);
 		configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILES);
-		
+
 		// 3.4.0 specific
-		try {
-			Version ver = getPlugin().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
-				configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK);
-			}
-		} catch (CoreException e) {
-			ex = e;
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
+			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK);
 		}
 		
 		if (dynamicTab != null) {

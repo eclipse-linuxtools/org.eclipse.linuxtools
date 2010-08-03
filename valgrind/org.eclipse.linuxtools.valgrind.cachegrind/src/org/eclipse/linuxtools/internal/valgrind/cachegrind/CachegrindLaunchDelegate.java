@@ -25,10 +25,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.valgrind.cachegrind.model.CachegrindOutput;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
+import org.osgi.framework.Version;
 
 public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 	protected static final String OUT_PREFIX = "cachegrind_"; //$NON-NLS-1$
@@ -43,6 +42,7 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final String EQUALS = "="; //$NON-NLS-1$
 	private static final String NO = "no"; //$NON-NLS-1$
 	private static final String YES = "yes"; //$NON-NLS-1$
+	private CachegrindOutput[] outputs;
 	
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException {
 		try {
@@ -62,23 +62,16 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 	}
 
 	protected void parseOutput(File[] cachegrindOutputs, IProgressMonitor monitor) throws IOException {
-		CachegrindOutput[] outputs = new CachegrindOutput[cachegrindOutputs.length];
+		outputs = new CachegrindOutput[cachegrindOutputs.length];
 		
 		for (int i = 0; i < cachegrindOutputs.length; i++) {
 			outputs[i] = new CachegrindOutput();
 			CachegrindParser.getParser().parse(outputs[i], cachegrindOutputs[i]);
 		}
 		monitor.worked(2);
-		
-		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
-		IValgrindToolView cachegrindPart = view.getDynamicView();
-		if (cachegrindPart instanceof CachegrindViewPart) {
-			((CachegrindViewPart) cachegrindPart).setOutputs(outputs);
-		}
-		monitor.worked(1);
 	}
 	
-	public String[] getCommandArray(ILaunchConfiguration config, IPath logDir) throws CoreException {
+	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		
 		opts.add(CachegrindCommandConstants.OPT_CACHEGRIND_OUTFILE + EQUALS + logDir.append(OUT_FILE).toOSString());
@@ -102,6 +95,14 @@ public class CachegrindLaunchDelegate implements IValgrindLaunchDelegate {
 		return opts.toArray(new String[opts.size()]);
 	}
 	
+	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor)
+			throws CoreException {
+		if (view instanceof CachegrindViewPart) {
+			((CachegrindViewPart) view).setOutputs(outputs);
+		}
+		monitor.worked(1);
+	}
+
 	/**
 	 * Throws a core exception with an error status object built from the given
 	 * message, lower level exception, and error code.

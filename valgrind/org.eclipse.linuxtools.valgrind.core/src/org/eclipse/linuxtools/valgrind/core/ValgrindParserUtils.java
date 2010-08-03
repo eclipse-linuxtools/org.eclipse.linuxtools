@@ -8,20 +8,20 @@
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.internal.valgrind.core;
+package org.eclipse.linuxtools.valgrind.core;
 
 import java.io.IOException;
 
+import org.eclipse.linuxtools.internal.valgrind.core.Messages;
 import org.eclipse.osgi.util.NLS;
 
-public abstract class AbstractValgrindTextParser {
-
+/**
+ * Class containing convenient methods common to Valgrind
+ * parsers.
+ */
+public final class ValgrindParserUtils {
 	private static final String DOT = "."; //$NON-NLS-1$
-	protected static final String COLON = ":"; //$NON-NLS-1$
-	protected static final String SPACE = " "; //$NON-NLS-1$
-	protected static final String EQUALS = "="; //$NON-NLS-1$
-	protected static final String DASH = "-"; //$NON-NLS-1$
-	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	/**
 	 * Retrieves ARGUMENT portion of [OPTION][DELIMITER][ARGUMENT]
@@ -31,7 +31,7 @@ public abstract class AbstractValgrindTextParser {
 	 * @return Long value of ARGUMENT
 	 * @throws IOException
 	 */
-	protected Long parseLongValue(String line, String delim)
+	public static Long parseLongValue(String line, String delim)
 	throws IOException {
 		Long result = null;
 		String[] parts = line.split(delim, 2);
@@ -52,7 +52,7 @@ public abstract class AbstractValgrindTextParser {
 	 * @return String value of ARGUMENT
 	 * @throws IOException
 	 */
-	protected String parseStrValue(String line, String delim)
+	public static String parseStrValue(String line, String delim)
 	throws IOException {
 		String result = null;
 		String[] parts = line.split(delim, 2);
@@ -72,7 +72,7 @@ public abstract class AbstractValgrindTextParser {
 	 * @return - the PID portion of the filename as an Integer
 	 * @throws IOException
 	 */
-	protected Integer parsePID(String filename, String prefix) throws IOException {
+	public static Integer parsePID(String filename, String prefix) throws IOException {
 		String pidstr = filename.substring(prefix.length(), filename.lastIndexOf(DOT));
 		if (isNumber(pidstr)) {
 			return new Integer(pidstr);
@@ -87,7 +87,7 @@ public abstract class AbstractValgrindTextParser {
 	 * @param line - line that parsing failed
 	 * @throws IOException
 	 */
-	protected void fail(String line) throws IOException {
+	public static void fail(String line) throws IOException {
 		throw new IOException(NLS.bind(Messages.getString("AbstractValgrindTextParser.Parsing_output_failed"), line)); //$NON-NLS-1$
 	}
 
@@ -96,7 +96,7 @@ public abstract class AbstractValgrindTextParser {
 	 * @param string - argument to test
 	 * @return - true if argument is a number
 	 */
-	protected boolean isNumber(String string) {
+	public static boolean isNumber(String string) {
 		boolean result = true;
 		char[] chars = string.toCharArray();
 		for (int i = 0; i < chars.length; i++) {
@@ -113,7 +113,7 @@ public abstract class AbstractValgrindTextParser {
 	 * @param line - String with the above criteria
 	 * @return a tuple of [String filename, Integer line] 
 	 */
-	protected Object[] parseFilename(String line) {
+	public static Object[] parseFilename(String line) {
 		String filename = null;
 		int lineNo = 0;
 	

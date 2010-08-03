@@ -13,8 +13,8 @@ package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.tm.tcf.protocol.IChannel;
@@ -27,9 +27,9 @@ import org.eclipse.tm.tcf.services.IStreams;
 public class ValgrindRemoteCommand extends ValgrindCommand {
 	private IChannel channel;
 	private Map<String, String> streamIds;
-	private LinkedList<RemoteLaunchStep> launchSteps;
+	private Queue<RemoteLaunchStep> launchSteps;
 
-	public ValgrindRemoteCommand(IChannel channel, LinkedList<RemoteLaunchStep> launchSteps) {
+	public ValgrindRemoteCommand(IChannel channel, Queue<RemoteLaunchStep> launchSteps) {
 		this.channel = channel;
 		this.launchSteps = launchSteps;
 		streamIds = new HashMap<String, String>();
@@ -45,6 +45,7 @@ public class ValgrindRemoteCommand extends ValgrindCommand {
 		final IStreams.StreamsListener streamsListener = new IStreams.StreamsListener() {
 
 			public void disposed(String stream_type, String stream_id) {
+				streamIds.remove(stream_id);
 			}
 
 			public void created(String stream_type, String stream_id, String context_id) {
@@ -52,7 +53,7 @@ public class ValgrindRemoteCommand extends ValgrindCommand {
 			}
 		};
 		
-		new RemoteLaunchStep(launchSteps, channel) {
+		new RemoteLaunchStep(launchSteps, channel, "Streams Subscribe") { //$NON-NLS-1$
 			
 			@Override
 			public void start() throws Exception {
@@ -71,7 +72,7 @@ public class ValgrindRemoteCommand extends ValgrindCommand {
 			}
 		};
 		
-		new RemoteLaunchStep(launchSteps, channel) {
+		new RemoteLaunchStep(launchSteps, channel, "Processes Start") { //$NON-NLS-1$
 			
 			@SuppressWarnings("unchecked")
 			@Override
@@ -84,21 +85,10 @@ public class ValgrindRemoteCommand extends ValgrindCommand {
 							channel.terminate(error);
 						}
 						else {
-							final ValgrindRemoteProcess remoteProcess = new ValgrindRemoteProcess(context, channel, launchSteps);
+							final ValgrindRemoteProcess remoteProcess = new ValgrindRemoteProcess(context, channel);
 							process = remoteProcess;
 
-							// Register as a listener to retrieve exit code
-							ProcessesListener listener = new ProcessesListener() {					
-								public void exited(String process_id, int exit_code) {
-									if (process_id.equals(context.getID())) {
-										remoteProcess.setExitCode(exit_code);
-										remoteProcess.setTerminated(true);
-										
-										done();
-									}			
-								}
-							};
-							procService.addListener(listener);
+							// Connect I/O streams
 							final String stdinID = (String) context.getProperties().get(IProcesses.PROP_STDIN_ID);
 							final String stdoutID = (String) context.getProperties().get(IProcesses.PROP_STDOUT_ID);
 							final String stderrID = (String) context.getProperties().get(IProcesses.PROP_STDERR_ID);
@@ -110,12 +100,28 @@ public class ValgrindRemoteCommand extends ValgrindCommand {
 									remoteProcess.connectInputStream(stdoutID);
 								}
 								else if (id.equals(stderrID)) {
+									// FIXME Not receiving stderr stream
 									remoteProcess.connectErrorStream(stderrID);
 								}
 								else {
 									disconnectStream(id);
 								}
 							}
+							
+							// Register as a listener to retrieve exit code
+							ProcessesListener listener = new ProcessesListener() {					
+								public void exited(String process_id, int exit_code) {
+									if (process_id.equals(context.getID())) {
+										// Disconnect input stream
+										disconnectStream(stdinID);
+										remoteProcess.setExitCode(exit_code);
+										remoteProcess.setTerminated(true);
+									}			
+								}
+							};
+							procService.addListener(listener);
+							
+							done();
 						}
 					}
 				});

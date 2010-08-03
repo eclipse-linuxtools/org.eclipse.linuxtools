@@ -10,31 +10,45 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
-import java.util.LinkedList;
+import java.util.Queue;
 
 import org.eclipse.tm.tcf.protocol.IChannel;
 
 
 public abstract class RemoteLaunchStep {
 	
-	private LinkedList<RemoteLaunchStep> steps;
+	private Queue<RemoteLaunchStep> steps;
 	private IChannel channel;
+//	private String name;
+//	private static int indent = 0;
 	
-	public RemoteLaunchStep(LinkedList<RemoteLaunchStep> steps, IChannel channel) {
+	public RemoteLaunchStep(Queue<RemoteLaunchStep> steps, IChannel channel, String name) {
 		this.steps = steps;
 		this.channel = channel;
+//		this.name = name;
+
 		steps.add(this);
 	}
 	
 	public abstract void start() throws Exception;
 	
 	public void done() {
+//		indent--;
+//		printSpaces();
+//		System.out.println("End: " + name);
+		
 		if (channel.getState() != IChannel.STATE_OPEN) {
 			return;
 		}
         try {
         	if (!steps.isEmpty()) {
-        		steps.removeFirst().start();
+        		RemoteLaunchStep step = steps.remove();
+        		
+//        		printSpaces();
+//				indent++;
+//        		System.out.println("Begin: " + step.name);
+        		
+				step.start();
         	}
         }
         catch (Throwable x) {
@@ -42,4 +56,9 @@ public abstract class RemoteLaunchStep {
         }
 	}
 
+//	private void printSpaces() {
+//		for (int i = 0; i < indent; i++) {
+//			System.out.print("-");
+//		}
+//	}
 }

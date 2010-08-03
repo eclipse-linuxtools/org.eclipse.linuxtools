@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Spinner;
+import org.osgi.framework.Version;
 
 public class MassifToolPage extends AbstractLaunchConfigurationTab
 		implements IValgrindToolPage {
@@ -349,6 +350,10 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL);
 	}
 	
+	public void setValgrindVersion(Version ver) {
+		// Not used
+	}
+
 	protected void createHorizontalSpacer(Composite comp, int numlines) {
 		Label lbl = new Label(comp, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);

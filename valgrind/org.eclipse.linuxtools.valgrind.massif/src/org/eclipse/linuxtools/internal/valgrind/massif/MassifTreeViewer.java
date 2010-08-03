@@ -21,8 +21,6 @@ import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.linuxtools.internal.valgrind.ui.CollapseAction;
-import org.eclipse.linuxtools.internal.valgrind.ui.ExpandAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;

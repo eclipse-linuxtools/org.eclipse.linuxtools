@@ -14,7 +14,14 @@ public final class RemoteLaunchConstants {
 	
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.launch.remote"; //$NON-NLS-1$
 	
+	public static final String ATTR_REMOTE_PEERID = PLUGIN_ID + ".REMOTE_PEERID"; //$NON-NLS-1$
+	public static final String ATTR_REMOTE_VALGRINDLOC = PLUGIN_ID + ".REMOTE_VALGRINDLOC"; //$NON-NLS-1$
+	public static final String ATTR_REMOTE_DESTDIR = PLUGIN_ID + ".REMOTE_DESTDIR"; //$NON-NLS-1$
 	public static final String ATTR_REMOTE_OUTPUTDIR = PLUGIN_ID + ".REMOTE_OUTPUTDIR"; //$NON-NLS-1$
 
+	public static final String DEFAULT_REMOTE_PEERID = null;
+	public static final String DEFAULT_REMOTE_VALGRINDLOC = "/usr/bin/valgrind"; //$NON-NLS-1$
+	public static final String DEFAULT_REMOTE_DESTDIR = null;
 	public static final String DEFAULT_REMOTE_OUTPUTDIR = "/tmp"; //$NON-NLS-1$
+	
 }

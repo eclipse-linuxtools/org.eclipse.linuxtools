@@ -15,6 +15,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
+import org.osgi.framework.Version;
 
 /**
  * Interface for declaring a tool-specific delegate for a Valgrind
@@ -34,15 +36,28 @@ public interface IValgrindLaunchDelegate {
 	 * @throws CoreException - if this method fails
 	 */
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath logDir, IProgressMonitor monitor) throws CoreException;
+	
+	/**
+	 * Called after handleLaunch returns control to the main Valgrind launch
+	 * delegate, and initializes the Valgrind view. This method is responsible
+	 * for initializing the tool-specific portion of the Valgrind view with tool-specific
+	 * output from the launch.
+	 * @param view - the tool-specific part of the Valgrind view contributed via extension point
+	 * @param contentDescription - String describing the launch that populated the view
+	 * @param monitor - to report progress
+	 * @throws CoreException - if this method fails
+	 */
+	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException;
 
 	/**
 	 * Parses attributes of an <code>ILaunchConfiguration</code> into an array
 	 * of arguments to be passed to Valgrind
 	 * @param config - the <code>ILaunchConfiguration</code>
+	 * @param ver - the version of Valgrind, or null if version checking should not be performed
 	 * @param logDir - directory to store Valgrind log output files
 	 * @return an array of arguments that can appended to a <code>valgrind</code> command
 	 * @throws CoreException - retrieving attributes from config failed
 	 */
-	public String[] getCommandArray(ILaunchConfiguration config, IPath logDir) throws CoreException;
+	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException;
 	
 }

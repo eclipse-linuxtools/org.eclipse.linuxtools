@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.cachegrind;
 
-import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,7 +24,7 @@ public class CachegrindPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static CachegrindPlugin plugin;
 	
-	public static final String TOOL_ID = PluginConstants.LAUNCH_PLUGIN_ID + ".cachegrind"; //$NON-NLS-1$
+	public static final String TOOL_ID = "org.eclipse.linuxtools.valgrind.launch.cachegrind";
 	
 	/**
 	 * The constructor

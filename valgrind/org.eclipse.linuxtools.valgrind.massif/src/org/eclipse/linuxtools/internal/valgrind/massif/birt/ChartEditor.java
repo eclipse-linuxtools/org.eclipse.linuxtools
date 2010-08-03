@@ -63,7 +63,7 @@ public class ChartEditor extends EditorPart {
 		top.setLayoutData(new GridData(GridData.FILL_BOTH));
 		ChartEditorInput input = (ChartEditorInput) getEditorInput();
 		Chart chart = input.getChart();
-		control = new ChartControl(top, chart, SWT.NONE);
+		control = new ChartControl(top, chart, input.getView(), SWT.NONE);
 	}
 
 	public ChartControl getControl() {

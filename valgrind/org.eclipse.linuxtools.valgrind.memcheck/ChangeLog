@@ -1,3 +1,16 @@
+2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Remove internal deps.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/MemcheckLaunchDelegate.java (getCommandArray): API changes. 
+	(initializeView): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/MemcheckPlugin.java: Remove internals use. 
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/MemcheckToolPage.java (createControl): Version is now passed to page.
+	(initializeFrom): Likewise.
+	(performApply): Likewise.
+	(isValid): Likewise.
+	(setDefaults): Likewise.
+	(setValgrindVersion): Likewise.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.7.0.

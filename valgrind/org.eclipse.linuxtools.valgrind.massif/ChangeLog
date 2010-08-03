@@ -1,3 +1,28 @@
+2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/CollapseAction.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/ExpandAction.java: New file.
+	* META-INF/MANIFEST.MF: Remove internal deps.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/birt/ChartControl.java: Pass MassifViewPart.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/birt/ChartEditor.java (createPartControl): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/birt/ChartEditorInput.java: Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/birt/ChartSVG.java: Pass MassifViewPart.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifLaunchDelegate.java (parseOutput): API changes. 
+	(getCommandArray): Likewise.
+	(initializeView): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifParser.java (MassifParser): Moved superclass to utils class. 
+	(parseTree): Likewise.
+	(parseFunction): Likewise. 
+	(parseNumBytes): Likewise.
+	(parseNumChildren): Likewise.
+	(parseSnapshotType): Likewise.
+	(parseTimeUnit): Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifPlugin.java: Remove internals use. 
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifToolPage.java (setValgrindVersion): API changes. 
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifTreeViewer.java: Remove internals use.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifViewPart.java: Pass MassifViewPart, obtain chart name
+	from delegate. 
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.7.0.

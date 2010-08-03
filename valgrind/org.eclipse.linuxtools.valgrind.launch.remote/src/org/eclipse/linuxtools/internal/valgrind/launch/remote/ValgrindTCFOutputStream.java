@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
 
 import org.eclipse.tm.tcf.protocol.IChannel;
 import org.eclipse.tm.tcf.protocol.IToken;
@@ -20,17 +19,13 @@ import org.eclipse.tm.tcf.services.IStreams;
 import org.eclipse.tm.tcf.services.IStreams.DoneWrite;
 
 public class ValgrindTCFOutputStream extends OutputStream {
-	private IChannel channel;
-	private LinkedList<RemoteLaunchStep> launchSteps;
 	private IStreams streamsService;
 	private String streamId;
-	private boolean done;
+	private transient boolean done;
 	private Exception ex;
 	
-	public ValgrindTCFOutputStream(IChannel channel, String streamId, LinkedList<RemoteLaunchStep> launchSteps) {
-		this.channel = channel;
+	public ValgrindTCFOutputStream(IChannel channel, String streamId) {
 		this.streamId = streamId;
-		this.launchSteps = launchSteps;
 		streamsService = channel.getRemoteService(IStreams.class);
 	}
 
@@ -44,24 +39,18 @@ public class ValgrindTCFOutputStream extends OutputStream {
 	private void write1(final byte[] b, final int off, final int len) throws IOException {
 		done = false;
 		ex = null;
-		
-		new RemoteLaunchStep(launchSteps, channel) {
-			
-			@Override
-			public void start() throws Exception {
-				streamsService.write(streamId, b, off, len, new DoneWrite() {
-					
-					public void doneWrite(IToken token, Exception error) {
-						if (error != null) {
-							ex = null;
-						}
-						else {
-							done();
-						}
-					}
-				});
+
+		streamsService.write(streamId, b, off, len, new DoneWrite() {
+
+			public void doneWrite(IToken token, Exception error) {
+				if (error != null) {
+					ex = null;
+				}
+				else {
+					done = true;
+				}
 			}
-		};
+		});
 		
 		try {
 			while (!done) {

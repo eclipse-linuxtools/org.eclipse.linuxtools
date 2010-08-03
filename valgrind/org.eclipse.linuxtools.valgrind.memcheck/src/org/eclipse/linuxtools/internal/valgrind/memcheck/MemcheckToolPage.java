@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -35,6 +34,7 @@ import org.osgi.framework.Version;
 public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements IValgrindToolPage {
 	public static final String MEMCHECK = "memcheck"; //$NON-NLS-1$
 	public static final String PLUGIN_ID = MemcheckPlugin.PLUGIN_ID;
+	private static final Version VER_3_4_0 = new Version(3, 4, 0);
 	
 	// MEMCHECK controls
 	protected Button leakCheckButton;
@@ -51,6 +51,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	protected Button trackOriginsButton;
 	
 	protected boolean isInitializing = false;
+	protected Version valgrindVersion;
 	protected CoreException ex = null;
 	
 	protected SelectionListener selectListener = new SelectionAdapter() {
@@ -112,17 +113,11 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		undefValueButton.setText(Messages.getString("MemcheckToolPage.undef_value_errors")); //$NON-NLS-1$
 		undefValueButton.addSelectionListener(selectListener);
 
-		// 3.4.0 specific
-		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				trackOriginsButton = new Button(top, SWT.CHECK);
-				trackOriginsButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-				trackOriginsButton.setText(Messages.getString("MemcheckToolPage.Track_origins")); //$NON-NLS-1$
-				trackOriginsButton.addSelectionListener(selectListener);
-			}
-		} catch (CoreException e) {
-			ex = e;
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
+			trackOriginsButton = new Button(top, SWT.CHECK);
+			trackOriginsButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			trackOriginsButton.setText(Messages.getString("MemcheckToolPage.Track_origins")); //$NON-NLS-1$
+			trackOriginsButton.addSelectionListener(selectListener);
 		}
 		
 		gccWorkaroundButton = new Button(top, SWT.CHECK);
@@ -174,8 +169,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 			alignmentSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL));
 			
 			// 3.4.0 specific
-			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+			if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 				trackOriginsButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS));
 			}
 		} catch (CoreException e) {
@@ -195,14 +189,8 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, alignmentButton.getSelection());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, alignmentSpinner.getSelection());
 		
-		// 3.4.0 specific
-		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, trackOriginsButton.getSelection());
-			}
-		} catch (CoreException e) {
-			ex = e;
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
+			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, trackOriginsButton.getSelection());
 		}
 	}
 
@@ -220,8 +208,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 			}
 			else {
 				// 3.4.0 specific
-				Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-				if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
+				if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 					// check track-origins
 					boolean trackOrigins = launchConfig.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
 					if (trackOrigins) {
@@ -254,17 +241,15 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_BOOL);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL);
 		
-		// 3.4.0 specific
-		try {
-			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-				configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
-			}
-		} catch (CoreException e) {
-			ex = e;
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
+			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
 		}
 	}
 		
+	public void setValgrindVersion(Version ver) {
+		valgrindVersion = ver;
+	}
+
 	protected void createHorizontalSpacer(Composite comp, int numlines) {
 		Label lbl = new Label(comp, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);

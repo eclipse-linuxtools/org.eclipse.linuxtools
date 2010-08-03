@@ -12,7 +12,6 @@ package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
 
 import org.eclipse.tm.tcf.protocol.IChannel;
 import org.eclipse.tm.tcf.protocol.IToken;
@@ -20,52 +19,62 @@ import org.eclipse.tm.tcf.services.IStreams;
 import org.eclipse.tm.tcf.services.IStreams.DoneRead;
 
 public class ValgrindTCFInputStream extends InputStream {
-	private LinkedList<RemoteLaunchStep> launchSteps;
-	private IChannel channel;
 	private IStreams streamsService;
 	private String streamId;
-	private boolean done;
+	private transient boolean done;
+	private boolean eos;
 	private byte[] buf;
 	private Exception ex;
 	
-	public ValgrindTCFInputStream(IChannel channel, String streamId, LinkedList<RemoteLaunchStep> launchSteps) {
-		this.channel = channel;
+	public ValgrindTCFInputStream(IChannel channel, String streamId) {
 		this.streamId = streamId;
-		this.launchSteps = launchSteps;
 		streamsService = channel.getRemoteService(IStreams.class);
 	}
 
 	@Override
 	public int read() throws IOException {
+		if (eos) {
+			return -1;
+		}
+		
 		read1(1);
+		
+		// Check again if we read EOS
+		if (eos) {
+			return -1;
+		}
 		
 		return buf[0];
 	}
 
-	private void read1(final int size) throws IOException {
+	private void read1(final int size) throws IOException {		
 		done = false;
 		ex = null;
 		buf = null;
-		
-		new RemoteLaunchStep(launchSteps, channel) {
-			@Override
-			public void start() throws Exception {
-				streamsService.read(streamId, size, new DoneRead() {
-					
-					public void doneRead(IToken token, Exception error, int lost_size,
-							byte[] data, boolean eos) {
-						if (error != null) {
-							ex = error;
-						}
-						else {
-							buf = data;
-						}
-						done = true;
-						done();
+
+		streamsService.read(streamId, size, new DoneRead() {
+
+			public void doneRead(IToken token, Exception error, int lost_size,
+					byte[] data, boolean eos) {
+				if (error != null) {
+					ex = error;
+				}
+				else {
+					buf = data;
+					if (eos) {
+						ValgrindTCFInputStream.this.eos = true;
+						streamsService.disconnect(streamId, new IStreams.DoneDisconnect() {
+							public void doneDisconnect(IToken token, Exception error) {
+								if (error != null) {
+									ex = error;
+								}
+							}
+						});
 					}
-				});
+				}
+				done = true;
 			}
-		};
+		});
 		
 		try {
 			while (!done) {
@@ -94,7 +103,16 @@ public class ValgrindTCFInputStream extends InputStream {
 			return 0;
 		}
 		
+		if (eos) {
+			return -1;
+		}
+		
 		read1(len);
+		
+		// Check again if we read EOS
+		if (eos) {
+			return -1;
+		}
 		
 		// Did we read less than requested?
 		if (buf.length < len) {

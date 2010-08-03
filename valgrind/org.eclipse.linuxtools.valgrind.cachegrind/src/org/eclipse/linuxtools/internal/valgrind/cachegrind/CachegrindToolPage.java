@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
+import org.osgi.framework.Version;
 
 public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		implements IValgrindToolPage {
@@ -286,6 +287,10 @@ public class CachegrindToolPage extends AbstractLaunchConfigurationTab
 		return result;
 	}
 	
+	public void setValgrindVersion(Version ver) {
+		// Not used
+	}
+
 	protected void createHorizontalSpacer(Composite comp, int numlines) {
 		Label lbl = new Label(comp, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);

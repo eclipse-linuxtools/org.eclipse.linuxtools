@@ -29,18 +29,23 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifSnapshot;
 import org.eclipse.linuxtools.internal.valgrind.massif.MassifViewPart;
-import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
+import org.eclipse.linuxtools.valgrind.ui.ValgrindUIConstants;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 public class ChartSVG implements ICallBackNotifier {
 
 	protected Chart cm = null;
-
 	protected GeneratedChartState state = null;
-
 	protected IDeviceRenderer deviceRenderer = null;
+	
+	private MassifViewPart view;
 
-	public ChartSVG(Chart chart) {
+	public ChartSVG(Chart chart, MassifViewPart view) {
+		this.view = view;
 		cm = chart;
 	}
 
@@ -65,11 +70,10 @@ public class ChartSVG implements ICallBackNotifier {
 
 	public void callback(Object event, Object source, CallBackValue value) {
 		// give Valgrind view focus
-		ValgrindUIPlugin.getDefault().showView();
+		showView();
 		MouseEvent mEvent = (MouseEvent) event;
 		
 		DataPointHints point = ((DataPointHints)((WrappedStructureSource)source).getSource());
-		MassifViewPart view = (MassifViewPart) ValgrindUIPlugin.getDefault().getView().getDynamicView();
 		// select the corresponding snapshot in the TableViewer
 		TableViewer viewer = view.getTableViewer();
 		view.setTopControl(viewer.getControl());
@@ -108,6 +112,22 @@ public class ChartSVG implements ICallBackNotifier {
 	}
 
 	public void repaintChart() {
+	}
+	
+	/**
+	 * Shows the Valgrind view in the active page and gives it focus.
+	 */
+	public void showView() {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				try {
+					IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					activePage.showView(ValgrindUIConstants.VIEW_ID);
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
+			}			
+		});
 	}
 	
 }
