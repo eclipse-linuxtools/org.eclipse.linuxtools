@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
-import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
-import org.eclipse.cdt.utils.pty.PTY;
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -38,10 +35,11 @@ import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
 import org.eclipse.linuxtools.oprofile.launch.configuration.OprofileCounter;
 import org.eclipse.linuxtools.oprofile.ui.OprofileUiPlugin;
 import org.eclipse.linuxtools.oprofile.ui.view.OprofileView;
+import org.eclipse.linuxtools.profiling.launch.ProfileLaunchConfigurationDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public abstract class AbstractOprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
+public abstract class AbstractOprofileLaunchConfigurationDelegate extends ProfileLaunchConfigurationDelegate {
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
@@ -84,7 +82,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 			String[] commandArray = (String[])command.toArray( new String[command.size()] );
 			boolean usePty = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL, ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
 			Process process;
-			process = exec( commandArray, getEnvironment( config ), wd, usePty );
+			process = execute( commandArray, getEnvironment( config ), wd, usePty );
 			DebugPlugin.newProcess( launch, process, renderProcessLabel( commandArray[0] ) );
 
 			postExec(options, daemonEvents, launch, process);
@@ -96,42 +94,6 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);
 
 	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process);
-
-	/**
-	 * This code was adapted from code written by QNX Software Systems and others 
-	 * and was originally in the CDT under LocalCDILaunchDelegate::exec
-	 * 
-	 * @param cmdLine
-	 *            the command line
-	 * @param workingDirectory
-	 *            the working directory, or <code>null</code>
-	 * @return the resulting process or <code>null</code> if the exec is
-	 *         cancelled
-	 * @see Runtime
-	 */
-	protected Process exec( String[] cmdLine, String[] environ, File workingDirectory, boolean usePty ) throws CoreException, IOException {
-		Process p = null;
-		try {
-			if ( workingDirectory == null ) {
-				p = ProcessFactory.getFactory().exec( cmdLine, environ );
-			}
-			else {
-				if ( usePty && PTY.isSupported() ) {
-					p = ProcessFactory.getFactory().exec( cmdLine, environ, workingDirectory, new PTY() );
-				}
-				else {
-					p = ProcessFactory.getFactory().exec( cmdLine, environ, workingDirectory );
-				}
-			}
-		}
-		catch( IOException e ) {
-			if ( p != null ) {
-				p.destroy();
-			}
-			throw e;
-		}
-		return p;
-	}
 
 	@Override
 	protected String getPluginID() {
