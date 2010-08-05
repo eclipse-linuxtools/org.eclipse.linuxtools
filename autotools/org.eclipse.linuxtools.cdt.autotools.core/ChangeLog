@@ -1,3 +1,7 @@
+2010-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.properties: Change provider to Eclipse Linux Tools.
+
 2010-06-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #315652
