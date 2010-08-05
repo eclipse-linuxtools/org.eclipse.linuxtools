@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Man viewer and service (Incubation)
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.man;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.man.Activator
@@ -12,4 +12,4 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.linuxtools.man, 
   org.eclipse.linuxtools.man.views, 
   org.eclipse.linuxtools.man.parser
-Bundle-Vendor: Eclipse
+Bundle-Vendor: %Bundle-Vendor

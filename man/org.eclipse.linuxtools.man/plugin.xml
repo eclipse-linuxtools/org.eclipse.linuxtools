@@ -5,14 +5,14 @@
          point="org.eclipse.ui.views">
       <category
             id="org.eclipse.linuxtools.man"
-            name="Man pages">
+            name="%category.name">
       </category>
       <view
             category="org.eclipse.linuxtools.man"
             class="org.eclipse.linuxtools.man.views.ManView"
             icon="icons/sample.gif"
             id="org.eclipse.linuxtools.man.views.ManView"
-            name="Man Page View">
+            name="%view.name">
       </view>
    </extension>
    <extension
@@ -20,7 +20,7 @@
       <page
             class="org.eclipse.linuxtools.man.preferences.ManPathPage"
             id="org.eclipse.linuxtools.man.preferences.ManPathPage"
-            name="Man pages">
+            name="%page.name">
       </page>
    </extension>
    <extension
