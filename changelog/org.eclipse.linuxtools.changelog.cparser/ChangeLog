@@ -1,3 +1,9 @@
+2010-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: New file.  Externalized strings.
+	* build.properties: Add bundle.properties to binary build.
+	* META-INF/MANIFEST.MF: Externalize provider and bundle name.
+
 2010-06-01  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #315263
