@@ -1,3 +1,7 @@
+2010-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: Change provider to Eclipse Linux Tools.
+
 2010-03-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: Remove redundant New.
