@@ -13,7 +13,6 @@ package org.eclipse.linuxtools.internal.profiling.launch.remote;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.eclipse.cdt.launch.ui.CArgumentsTab;
 import org.eclipse.cdt.launch.ui.CMainTab;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
@@ -28,7 +27,7 @@ public abstract class ProfileRemoteLaunchConfigurationTabGroup extends
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ArrayList<AbstractLaunchConfigurationTab> tabs = new ArrayList<AbstractLaunchConfigurationTab>();
 		tabs.add(new CMainTab(true));
-		tabs.add(new CArgumentsTab());
+		tabs.add(new RemoteArgumentsTab());
 		
 		tabs.addAll(Arrays.asList(getProfileTabs()));
 		

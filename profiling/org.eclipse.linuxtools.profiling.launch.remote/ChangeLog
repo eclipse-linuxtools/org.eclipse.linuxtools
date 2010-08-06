@@ -1,3 +1,12 @@
+2010-08-06  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* icons/arguments_tab.gif: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/RemoteArgumentsTab.java: New file.
+	* build.properties: Add icons folder.
+	* META-INF/MANIFEST.MF: New deps.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/ProfileRemoteLaunchConfigurationTabGroup.java (createTabs): Use RemoteArgumentsTab. 
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/ProfileRemoteLaunchPlugin.java (PLUGIN_ID): Fix plugin ID.
+
 2010-08-01  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* .project: Remove "internal" from project name.
