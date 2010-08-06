@@ -1,3 +1,7 @@
+2010-08-06  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Switch to using Junit3.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.7.0.
