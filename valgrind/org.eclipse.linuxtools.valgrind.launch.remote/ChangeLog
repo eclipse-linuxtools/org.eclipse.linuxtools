@@ -1,3 +1,15 @@
+2010-08-06  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchStep.java (RemoteLaunchStep): Store name. 
+	(toString): Use launch step name.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java (launch): Reset process to null, since delegate
+	can be reused by caller.
+	(disconnect): Actually disconnect if channel is not closed.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchTabGroup.java (getProfileTabs): Arguments
+	Working Directory problem has been fixed in superclass.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteTab.java (refreshPeerViewer): Ensure content provider is set.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java (.doneRead): Added FIXME: Problems with losing data.
+
 2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* icons/tcf.gif: New file.

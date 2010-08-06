@@ -19,7 +19,6 @@ public class ValgrindRemoteLaunchTabGroup extends
 
 	@Override
 	public AbstractLaunchConfigurationTab[] getProfileTabs() {
-		// FIXME Arguments Tab W.D.
 		return new AbstractLaunchConfigurationTab[] { new ValgrindRemoteTab(), new ValgrindOptionsTab(false) };
 	}
 

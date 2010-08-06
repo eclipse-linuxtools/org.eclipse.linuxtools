@@ -19,13 +19,13 @@ public abstract class RemoteLaunchStep {
 	
 	private Queue<RemoteLaunchStep> steps;
 	private IChannel channel;
-//	private String name;
+	private String name;
 //	private static int indent = 0;
 	
 	public RemoteLaunchStep(Queue<RemoteLaunchStep> steps, IChannel channel, String name) {
 		this.steps = steps;
 		this.channel = channel;
-//		this.name = name;
+		this.name = name;
 
 		steps.add(this);
 	}
@@ -54,6 +54,11 @@ public abstract class RemoteLaunchStep {
         catch (Throwable x) {
             channel.terminate(x);
         }
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 
 //	private void printSpaces() {

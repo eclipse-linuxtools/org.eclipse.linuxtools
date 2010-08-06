@@ -101,7 +101,7 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	}
 	
 	public void initializeView(IValgrindToolView view, String contentDescription, IProgressMonitor monitor) throws CoreException {
-		if (view instanceof MassifViewPart) {
+		if (output != null && view instanceof MassifViewPart) {
 			((MassifViewPart) view).setChartName(contentDescription);
 			((MassifViewPart) view).setOutput(output);
 			// initialize to first pid

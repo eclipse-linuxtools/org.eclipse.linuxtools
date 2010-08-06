@@ -76,6 +76,9 @@ ValgrindLaunchConfigurationDelegate {
 			m = new NullProgressMonitor();
 		}
 		launchSteps = new ConcurrentLinkedQueue<RemoteLaunchStep>();
+		
+		// Clear process as we wait on it to be instantiated
+		process = null;
 
 		monitor = SubMonitor
 		.convert(
@@ -376,6 +379,9 @@ ValgrindLaunchConfigurationDelegate {
 		if (fsService != null) {
 			// Delete files, don't try to copy
 			cleanup(t);
+		}
+		if (channel.getState() != IChannel.STATE_CLOSED) {
+			channel.terminate(t);
 		}
 	}
 

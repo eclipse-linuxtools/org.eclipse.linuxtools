@@ -1,3 +1,8 @@
+2010-08-06  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifLaunchDelegate.java (initializeView): Check that output is not null.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifViewPart.java (getInputName): Modify substring expression.
+
 2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/massif/CollapseAction.java: New file.

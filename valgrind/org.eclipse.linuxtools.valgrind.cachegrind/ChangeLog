@@ -1,3 +1,7 @@
+2010-08-06  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CachegrindLaunchDelegate.java (initializeView): Check that outputs are not null.
+
 2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/cachegrind/CollapseAction.java: New file.

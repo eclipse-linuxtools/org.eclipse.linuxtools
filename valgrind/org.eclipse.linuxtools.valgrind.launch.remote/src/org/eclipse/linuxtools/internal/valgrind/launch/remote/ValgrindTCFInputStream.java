@@ -61,7 +61,7 @@ public class ValgrindTCFInputStream extends InputStream {
 				}
 				else {
 					buf = data;
-					if (eos) {
+					if (eos) { // FIXME We are getting EOS too soon, and losing data
 						ValgrindTCFInputStream.this.eos = true;
 						streamsService.disconnect(streamId, new IStreams.DoneDisconnect() {
 							public void doneDisconnect(IToken token, Exception error) {

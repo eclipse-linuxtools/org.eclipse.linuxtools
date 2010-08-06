@@ -308,7 +308,7 @@ public class ValgrindRemoteTab extends AbstractLaunchConfigurationTab {
 	}
 	
 	private void refreshPeerViewer() {
-		if (tableViewer != null) {
+		if (tableViewer != null && tableViewer.getContentProvider() != null) {
 			tableViewer.setInput(peers.values().toArray(new IPeer[peers.size()]));
 			tableViewer.refresh();
 		}
