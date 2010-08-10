@@ -14,11 +14,11 @@ package org.eclipse.linuxtools.profiling.tests;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import junit.framework.TestCase;
-
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigNature;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.index.IIndexManager;
@@ -27,9 +27,11 @@ import org.eclipse.cdt.core.testplugin.CProjectHelper;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -63,16 +65,128 @@ public abstract class AbstractTest extends TestCase {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
 
-	protected ICProject createProjectAndBuild(Bundle bundle, String projname) throws CoreException, URISyntaxException,
+	/**
+	 * Create a CDT project outside the default workspace.
+	 * 
+	 * @param bundle			The plug-in bundle.
+	 * @param projname			The name of the project.
+	 * @param absProjectPath	Absolute path to the directory to which the project should be mapped
+	 * 							outside the workspace.
+	 * @return					A new external CDT project.
+	 * @throws CoreException
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws InvocationTargetException
+	 * @throws InterruptedException
+	 */
+	protected IProject createExternalProject(Bundle bundle,
+			final String projname, final Path absProjectPath)
+			throws CoreException, URISyntaxException, IOException,
+			InvocationTargetException, InterruptedException {
+		
+		IProject externalProject;
+		// Turn off auto-building
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceDescription wspDesc = workspace.getDescription();
+		wspDesc.setAutoBuilding(false);
+		workspace.setDescription(wspDesc);
+
+		// Create external project
+		IWorkspaceRoot root = workspace.getRoot();
+		externalProject = root.getProject(projname);
+		IProjectDescription description = workspace
+				.newProjectDescription(projname);
+		URI fileProjectURL = new URI("file://" + absProjectPath.toString());
+		description.setLocationURI(fileProjectURL);
+		externalProject = CCorePlugin.getDefault().createCDTProject(
+				description, externalProject, new NullProgressMonitor());
+		assertNotNull(externalProject);
+		externalProject.open(null);
+
+		try {
+			// CDT opens the Project with BACKGROUND_REFRESH enabled which causes the
+			// refresh manager to refresh the project 200ms later. This Job interferes
+			// with the resource change handler firing see: bug 271264
+			Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, null);
+		} catch (Exception e) {
+			// Ignore
+		}
+		assertTrue(externalProject.isOpen());
+
+		// Import boiler-plate files which can then be built and profiled
+		URL location = FileLocator.find(bundle, new Path(
+				"resources/" + projname), null); //$NON-NLS-1$
+		File testDir = new File(FileLocator.toFileURL(location).toURI());
+		ImportOperation op = new ImportOperation(externalProject.getFullPath(),
+				testDir, FileSystemStructureProvider.INSTANCE,
+				new IOverwriteQuery() {
+					public String queryOverwrite(String pathString) {
+						return ALL;
+					}
+				});
+		op.setCreateContainerStructure(false);
+		op.run(null);
+
+		IStatus status = op.getStatus();
+		if (!status.isOK()) {
+			throw new CoreException(status);
+		}
+		// Make sure import went well
+		assertNotNull(externalProject.findMember(BIN_DIR));
+
+		// Index the project
+		IIndexManager indexMgr = CCorePlugin.getIndexManager();
+		indexMgr.joinIndexer(IIndexManager.FOREVER, new NullProgressMonitor());
+
+		// These natures must be enabled at this point to continue
+		assertTrue(externalProject
+				.isNatureEnabled(ScannerConfigNature.NATURE_ID));
+		assertTrue(externalProject
+				.isNatureEnabled(ManagedCProjectNature.MNG_NATURE_ID));
+
+		return externalProject;
+	}
+
+	/**
+	 * Create and build a project outside the default workspace
+	 * 
+	 * @param bundle			The plug-in bundle.
+	 * @param projname			The name of the project.
+	 * @param absProjectPath	Absolute path to the directory to which the project should be mapped
+	 * 							outside the workspace.
+	 * @return					A new external CDT project with binaries built.
+	 * @throws CoreException
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws InvocationTargetException
+	 * @throws InterruptedException
+	 */
+	protected IProject createExternalProjectAndBuild(Bundle bundle,
+			String projname, Path absProjectPath) throws CoreException,
+			URISyntaxException, InvocationTargetException,
+			InterruptedException, IOException {
+		IProject proj = createExternalProject(bundle, projname, absProjectPath);
+		buildProject(proj);
+		return proj;
+	}
+
+	protected ICProject createProjectAndBuild(Bundle bundle, String projname)
+			throws CoreException, URISyntaxException,
 			InvocationTargetException, InterruptedException, IOException {
 		ICProject proj = createProject(bundle, projname);
 		buildProject(proj);
 		return proj;
 	}
 
-	protected void buildProject(ICProject proj) throws CoreException {
+	// Wrapper to allow ICProject parameters, since buildProject doesn't really use
+	// ICProject specifics.
+	protected void buildProject(ICProject project) throws CoreException {
+		buildProject(project.getProject());
+	}
+	
+	protected void buildProject(IProject proj) throws CoreException {
 		IWorkspace wsp = ResourcesPlugin.getWorkspace();
-		final IProject curProject = proj.getProject();
+		final IProject curProject = proj;
 		ISchedulingRule rule = wsp.getRuleFactory().buildRule();
 		Job buildJob = new Job("project build job") { //$NON-NLS-1$
 			protected IStatus run(IProgressMonitor monitor) {

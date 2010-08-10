@@ -1,3 +1,10 @@
+2010-08-10  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/tests/AbstractTest.java
+		(createExternalProject): Create an external project.
+		(createExternalProjectAndBuild): Build the external project.
+		(buildProject): Wrapper for building an ICProject.
+
 2010-08-06  Roland Grunberg  <rgrunber@redhat.com>
 
 	* META-INF/MANIFEST.MF: Switch to using Junit3.
