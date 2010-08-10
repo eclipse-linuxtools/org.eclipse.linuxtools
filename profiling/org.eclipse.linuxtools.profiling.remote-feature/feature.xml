@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.linuxtools.profiling.remote"
+      label="%featureName"
+      version="0.7.0.qualifier"
+      provider-name="%featureProvider">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
+   </url>
+
+   <requires>
+      <import feature="org.eclipse.linuxtools.profiling" version="0.7.0.qualifier" match="greaterOrEqual"/>
+      <import feature="org.eclipse.tm.tcf.feature" version="0.3.0.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.cdt.debug.core"/>
+      <import plugin="org.eclipse.cdt.debug.ui"/>
+      <import plugin="org.eclipse.cdt.launch.remote"/>
+      <import plugin="org.eclipse.cdt.launch"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.linuxtools.profiling.launch"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.linuxtools.profiling.launch.remote"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
