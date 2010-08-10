@@ -22,6 +22,7 @@ public class AllLaunchTests {
 			suite.addTestSuite(TestLaunching.class);
 			suite.addTestSuite(TestManualLaunching.class);
 			suite.addTestSuite(TestSetup.class);
+			suite.addTestSuite(TestLaunchingExternalProject.class);
 		}
 		
 		suite.addTestSuite(TestDummy.class);

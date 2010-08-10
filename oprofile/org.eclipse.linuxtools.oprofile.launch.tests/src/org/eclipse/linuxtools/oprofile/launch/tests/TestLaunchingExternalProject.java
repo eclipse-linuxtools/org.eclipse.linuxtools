@@ -11,7 +11,10 @@
 
 package org.eclipse.linuxtools.oprofile.launch.tests;
 
+import java.io.File;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -29,17 +32,27 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class TestLaunching extends AbstractTest {
+public class TestLaunchingExternalProject extends AbstractTest {
 	
-	
-	protected ILaunchConfiguration config;
-	protected Shell testShell;
+	private final Path EXTERNAL_PROJECT_PATH = new Path("/tmp/eclipse-oprofile-ext_project_test");
+	private final String PROJECT_NAME = "primeTest";
+	private ILaunchConfiguration config;
+	private Shell testShell;
+	private IProject externalProject;	// external project to work with
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		proj = createProjectAndBuild(LaunchTestsPlugin.getDefault().getBundle(), "primeTest"); //$NON-NLS-1$
-		config = createConfiguration(proj.getProject());
+		// Setup a temporary workspace external path
+		File tempExternalProjectPath = EXTERNAL_PROJECT_PATH.toFile();
+		// create directory if not existing
+		if (!tempExternalProjectPath.exists()) {
+			tempExternalProjectPath.mkdir();
+		}
+		externalProject = createExternalProjectAndBuild(LaunchTestsPlugin
+				.getDefault().getBundle(),
+				PROJECT_NAME, EXTERNAL_PROJECT_PATH); //$NON-NLS-1$
+		config = createConfiguration(externalProject);
 		testShell = new Shell(Display.getDefault());
 		testShell.setLayout(new GridLayout());
 	}
@@ -47,15 +60,22 @@ public class TestLaunching extends AbstractTest {
 	@Override
 	protected void tearDown() throws Exception {
 		testShell.dispose();
-		deleteProject(proj);
+		externalProject.delete(true, null); // delete project
+		// cleanup temporary directory
+		File tempExternalProjectPath = EXTERNAL_PROJECT_PATH.toFile();
+		if (tempExternalProjectPath.exists()) {
+			tempExternalProjectPath.delete();
+		}
 		super.tearDown();
 	}
 
+	// Implemented abstract method of AbstractTest
 	@Override
 	protected ILaunchConfigurationType getLaunchConfigType() {
 		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE);
 	}
 
+	// Implemented abstract method of AbstractTest
 	@Override
 	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException {
 		OprofileEventConfigTab configTab = new OprofileEventConfigTab();
@@ -64,12 +84,18 @@ public class TestLaunching extends AbstractTest {
 		setupTab.setDefaults(wc);
 	}
 	
-	public void testDefaultLaunch() throws CoreException {
+	/**
+	 * Testcase for Eclipse BugZilla 321905/RedHat BZ
+	 * 
+	 * @throws CoreException
+	 */
+	public void testLaunchExternalProject() throws CoreException {		
+		LaunchOptions options = new LaunchOptions();
+		options.loadConfiguration(config);
+		
 		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
 		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
 		
-		LaunchOptions options = new LaunchOptions();
-		options.loadConfiguration(config);
 		assertTrue(options.isValid());
 		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
 		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
@@ -79,39 +105,6 @@ public class TestLaunching extends AbstractTest {
 		assertTrue(delegate.eventsIsNull);
 		assertNotNull(delegate._options);
 		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
-		assertEquals(0, delegate._options.getCallgraphDepth());
-		assertFalse(delegate._options.getVerboseLogging());
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
-	}
-	
-	public void testEventLaunch() throws CoreException {
-		TestingOprofileLaunchConfigurationDelegate delegate = new TestingOprofileLaunchConfigurationDelegate();
-		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
-		
-		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false);
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(0), true);
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(0), 100000);
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(0),	"FAKE_EVENT"); //$NON-NLS-1$
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(0), true);
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(0), true);
-		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(0), 0);
-		wc.doSave();
-		LaunchOptions options = new LaunchOptions();
-		options.loadConfiguration(config);
-		assertTrue(options.isValid());
-		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
-		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
-
-		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
-		assertFalse(delegate.eventsIsNull);
-		assertNotNull(delegate._options);
-		assertTrue(delegate._options.getBinaryImage().length() > 0);
-		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
-		assertEquals(0, delegate._options.getCallgraphDepth());
-		assertFalse(delegate._options.getVerboseLogging());
-		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
+		assertEquals(EXTERNAL_PROJECT_PATH.toOSString() + Path.SEPARATOR + "Debug" + Path.SEPARATOR + PROJECT_NAME, delegate._options.getBinaryImage());
 	}
 }
