@@ -23,14 +23,11 @@
    </url>
 
    <requires>
-      <import feature="org.eclipse.linuxtools.valgrind" version="0.7.0.qualifier" match="greaterOrEqual"/>
-      <import feature="org.eclipse.linuxtools.profiling.remote" version="0.7.0.qualifier" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.cdt.core"/>
       <import plugin="org.eclipse.cdt.debug.core"/>
       <import plugin="org.eclipse.cdt.launch"/>
-      <import plugin="org.eclipse.cdt.launch.remote"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.debug.core"/>
@@ -41,6 +38,8 @@
       <import plugin="org.eclipse.linuxtools.valgrind.ui"/>
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
       <import plugin="org.eclipse.tm.tcf.core"/>
+      <import feature="org.eclipse.linuxtools.valgrind" version="0.7.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.linuxtools.profiling.remote" version="0.7.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

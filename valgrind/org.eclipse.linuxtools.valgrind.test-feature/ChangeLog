@@ -1,3 +1,7 @@
+2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* feature.xml: Added org.eclipse.test and org.eclipse.ant.optional.junit.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* feature.xml: Bump version to 0.7.0, recompute dependencies.
