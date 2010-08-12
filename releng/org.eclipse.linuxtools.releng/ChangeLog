@@ -1,3 +1,7 @@
+2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* build.properties: Added TM/RSE dependency.
+
 2010-07-29  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Update SDK dependency URL for SWTBOT to point to archived version
