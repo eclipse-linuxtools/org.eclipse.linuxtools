@@ -1,6 +1,6 @@
 2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
 
-	* feature.xml: Remove unnecessary dependency.
+	* feature.xml: Remove qualifier from min version, remove unnecessary dependency.
 
 2010-08-10  Elliott Baron  <ebaron@fedoraproject.org>
 
