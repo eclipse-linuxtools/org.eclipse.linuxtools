@@ -1,3 +1,7 @@
+2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* feature.xml: Remove unnecessary dependency.
+
 2010-08-10  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* .project: New file.
