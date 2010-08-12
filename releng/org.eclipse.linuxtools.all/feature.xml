@@ -89,4 +89,12 @@
          id="org.eclipse.linuxtools.gcov"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.linuxtools.valgrind.remote"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.linuxtools.profiling.remote"
+         version="0.0.0"/>
+
 </feature>
