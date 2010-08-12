@@ -1,5 +1,8 @@
 2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java (read1): Used Java 6 constructor for IOException.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFOutputStream.java (.doneWrite): Actually save error. 
+	(write1): Used Java 6 constructor for IOException.
 	* META-INF/MANIFEST.MF: Removed unnecessary dependency.
 
 2010-08-06  Elliott Baron  <ebaron@fedoraproject.org>

@@ -44,7 +44,7 @@ public class ValgrindTCFOutputStream extends OutputStream {
 
 			public void doneWrite(IToken token, Exception error) {
 				if (error != null) {
-					ex = null;
+					ex = error;
 				}
 				else {
 					done = true;
@@ -60,7 +60,9 @@ public class ValgrindTCFOutputStream extends OutputStream {
 		}
 		
 		if (ex != null) {
-			throw new IOException(ex);
+			IOException ioe = new IOException("Write failed");
+			ioe.initCause(ex);
+			throw ioe;
 		}
 	}
 

@@ -84,7 +84,9 @@ public class ValgrindTCFInputStream extends InputStream {
 		}
 		
 		if (ex != null) {
-			throw new IOException(ex);
+			IOException ioe = new IOException("Read failed");
+			ioe.initCause(ex);
+			throw ioe;
 		}
 	}
 	
