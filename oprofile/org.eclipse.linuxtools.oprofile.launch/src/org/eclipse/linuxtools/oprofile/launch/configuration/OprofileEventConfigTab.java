@@ -586,16 +586,18 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 */
 		private void _handleEventListSelectionChange() {
 			int index = _eventList.getList().getSelectionIndex();
-			OpEvent event = (OpEvent) _eventList.getElementAt(index);
-			_counter.setEvent(event);
-			_eventDescText.setText(event.getTextDescription());
-			_unitMaskViewer.displayEvent(event);
-
-			// Check the min count to update the error message (events can have
-			// different minimum reset counts)
-			int min = _counter.getEvent().getMinCount();
-			if (_counter.getCount() < min) {
-				setErrorMessage(getMinCountErrorMessage(min));
+			if (index != -1){
+				OpEvent event = (OpEvent) _eventList.getElementAt(index);
+				_counter.setEvent(event);
+				_eventDescText.setText(event.getTextDescription());
+				_unitMaskViewer.displayEvent(event);
+				
+				// Check the min count to update the error message (events can have
+				// different minimum reset counts)
+				int min = _counter.getEvent().getMinCount();
+				if (_counter.getCount() < min) {
+					setErrorMessage(getMinCountErrorMessage(min));
+				}
 			}
 
 			updateLaunchConfigurationDialog();
