@@ -72,6 +72,7 @@ plugin@org.eclipse.linuxtools.callgraph.launch=SVN,trunk,svn://dev.eclipse.org/s
 plugin@org.eclipse.linuxtools.callgraph=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph
 plugin@org.eclipse.linuxtools.callgraph.launch.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.launch.tests
 plugin@org.eclipse.linuxtools.callgraph.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.tests
+plugin@org.eclipse.linuxtools.callgraph.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.docs
 feature@org.eclipse.linuxtools.callgraph=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph-feature
 feature@org.eclipse.linuxtools.callgraph.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.tests-feature
 

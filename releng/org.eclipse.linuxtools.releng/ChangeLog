@@ -1,3 +1,7 @@
+2010-08-19  Charley Wang  <chwang@redhat.com>
+
+	* linuxtools.map: Added Callgraph docs plugin
+
 2010-08-12  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* category.xml: Added remote Valgrind feature. 
