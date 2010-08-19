@@ -1,0 +1,248 @@
+<?xml version='1.0' ?><!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book>
+	<title>Callgraph Reference</title>
+	<chapter id="Overview">
+		<title>Overview</title>
+		<para>The Eclipse-Callgraph plug-in provides a visual function trace of a program. This allows you to view a visualization of selected (or even all) functions used by the profiled application. </para>
+		<para>This plug-in allows you to profile C/C++ projects directly within the Eclipse IDE, providing various runtime details such as: </para>
+		<itemizedlist>
+			<listitem>
+				<para>The relationship between function calls </para>
+			</listitem>
+			<listitem>
+				<para>Number of times each function was called </para>
+			</listitem>
+			<listitem>
+				<para>Time taken by each instance of a function (relative to the program's execution time) </para>
+			</listitem>
+			<listitem>
+				<para>Time taken by all instances of a function (relative to program's execution time)</para>
+			</listitem>
+		</itemizedlist>
+		<para>Eclipse-Callgraph uses SystemTap to perform function traces. For more information about SystemTap, refer to the 
+			<ulink url="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/">SystemTap Beginner's Guide</ulink>. 
+		</para>
+	</chapter>
+	<chapter id="Installation">
+		<title>Installation</title>
+		<para>Performing visual function traces with Eclipse-Callgraph requires three components: </para>
+		<itemizedlist>
+			<listitem>
+				<para>the Eclipse-Callgraph package </para>
+			</listitem>
+			<listitem>
+				<para>SystemTap </para>
+			</listitem>
+			<listitem>
+				<para>the kernel information packages required by SystemTap</para>
+			</listitem>
+		</itemizedlist>
+		<para>You can install all of these items through 
+			<emphasis role="bold">yum</emphasis>. To install Eclipse-Callgraph and SystemTap, run: 
+		</para>
+		<literallayout>yum install eclipse-callgraph systemtap systemtap-runtime -y
+</literallayout>
+		<para>The required kernel information packages are the matching 
+			<emphasis role="italic">'-devel</emphasis>', 
+			<emphasis role="italic">'-debuginfo</emphasis>', and 
+			<emphasis role="italic">'-debuginfo-common</emphasis>' packages of the kernel you wish to profile. You can use 
+			<emphasis role="bold">yum</emphasis> or 
+			<emphasis role="bold">debuginfo-install</emphasis> to install these packages. For more details about installing SystemTap, refer to 
+			<ulink url="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/using-systemtap.html#using-setup">Installation and Setup</ulink> from the 
+			<ulink url="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/">SystemTap Beginner's Guide</ulink>.
+		</para>
+	</chapter>
+	<chapter id="General_Usage">
+		<title>General Usage</title>
+		<para>All the profiling plugins (including Eclipse-Callgraph) are accessible from the C/C++ perspective. To start using Eclipse-Callgraph, right-click on a project then navigate to  
+			<emphasis role="bold">Profile As &gt; Function callgraph</emphasis>. 
+<center>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="Profile-screen.png"/>
+				</imageobject>
+			</mediaobject>
+</center>
+		</para>
+		<para>This will open a dialog from which you can select an executable to profile.
+<center>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="eclipsecallgraph-profilewhich.png"/>
+				</imageobject>
+			</mediaobject>
+</center>
+		</para>
+		<para>After selecting an executable to profile, Eclipse-Callgraph will ask which files to probe. By default, all source files in the project will be selected. 
+<center>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="Selectfilestoprobe.png"/>
+				</imageobject>
+			</mediaobject>
+</center>
+		</para>
+	</chapter>
+	<chapter id="Callgraph_Perspectives">
+		<title>Callgraph Perspectives</title>
+		<para>The 
+			<emphasis role="bold">Callgraph</emphasis> view's toolbar allows you to select a perspective and perform other functions. 
+		</para>
+		<section id="Radial_View">
+			<title>Radial View</title>
+			<para>The 
+				<emphasis role="bold">Radial View</emphasis> displays all functions branching out from 
+				<emphasis role="bold">main()</emphasis>, with each function represented as a node. A purple node means that the program terminates at the function. A green node signifies that the function call has nested functions, whereas gray nodes signify otherwise. Double-clicking on a node will show its parent (colored pink) and children. The lines connecting different nodes also display how many times 
+				<emphasis role="bold">main()</emphasis> called each function.
+<center>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="eclipsecallgraph-radialview.png"/>
+					</imageobject>
+				</mediaobject>
+</center>
+			</para>
+			<para>The left window of the 
+				<emphasis role="bold">Radial View</emphasis> lists all of the functions shown in the view. This window also allows you to view nested functions, if any. A green bullet point means the program either starts or terminates at that function. 
+			</para>
+		</section>
+		<section id="Tree_View">
+			<title>Tree View</title>
+			<para>The 
+				<emphasis role="bold">Tree View</emphasis> is similar to the 
+				<emphasis role="bold">Radial View</emphasis>, except that it only displays all descendants of a selected node (
+				<emphasis role="bold">Radial View</emphasis> only displays functions one call depth away from a selected node). The top left of 
+				<emphasis role="bold">Tree View</emphasis> also includes a thumbnail viewer to help you navigate through different call depths of the function tree.
+<center>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="eclipsecallgraph-treeview.png"/>
+					</imageobject>
+				</mediaobject>
+</center>
+			</para>
+		</section>
+		<section id="Level_View">
+			<title>Level View</title>
+			<para>
+				<emphasis role="bold">Level View</emphasis> displays all function calls and any nested function calls branching out from a selected node. However, 
+				<emphasis role="bold">Level View</emphasis>  groups all functions of the same call depth together, giving a clearer visualization of a program's function call execution sequences. 
+<center>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="eclipsecallgraph-levelview.png"/>
+					</imageobject>
+				</mediaobject>
+</center>
+			</para>
+			<para>
+				<emphasis role="bold">Level View</emphasis> also lets you navigate through different call depths using the thumbnail viewer's 
+				<emphasis role="bold">More nodes above</emphasis> and 
+				<emphasis role="bold">More nodes below</emphasis> buttons. 
+<center>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="eclipsecallgraph-thumb.png"/>
+					</imageobject>
+				</mediaobject>
+</center>
+			</para>
+		</section>
+		<section id="Aggregate_View">
+			<title>Aggregate View</title>
+			<para>The 
+				<emphasis role="bold">Aggregate View</emphasis> depicts all functions as boxes; the size of each box represents a function's execution time relative  to the total running time of the program. Darker-colored boxes represent functions that are called more times relative to others; for example, in the following figure, the 
+				<emphasis role="bold">CallThisThirtyTimes</emphasis> function is called the most number of times (150). 
+<center>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="eclipsecallgraph-agg.png"/>
+					</imageobject>
+				</mediaobject>
+</center>
+			</para>
+		</section>
+	</chapter>
+	<chapter id="General_Usage_2">
+		<title>General Usage</title>
+		<para>Most of the Eclipse-Callgraph's general functions are available through the 
+			<emphasis role="bold">Callgraph</emphasis> view's toolbar and 
+			<emphasis role="bold">View Menu</emphasis>.
+		</para>
+		<section id="Collapse_Mode">
+			<title>Collapse Mode</title>
+			<para>The 
+				<emphasis role="bold">Callgraph</emphasis> view's toolbar also features a 
+				<emphasis role="bold">Collapse Mode</emphasis>  button. This button groups all identical functions (i.e. those with identical names and call histories) together into one node. Doing so can be helpful in reducing screen clutter for programs where many functions get called multiple times. 
+<center>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="eclipsecallgraph-collapse.png"/>
+					</imageobject>
+				</mediaobject>
+</center>
+			</para>
+		</section>
+		<section id="Watching_function_calls_in_chronological_order">
+			<title>Watching function calls in chronological order</title>
+			<para>To play a visual representation of a function trace, click the 
+				<emphasis role="bold">View Menu</emphasis> button then navigate to 
+				<emphasis role="bold">Goto</emphasis>. This menu will allow you to pause, step through, or mark each function as it executes. 
+<center>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Callgraph_goto_menu.png"/>
+					</imageobject>
+				</mediaobject></center> 
+			</para>
+		</section>
+		<section id="Code_link">
+			<title>Code link</title>
+			<para>The graph views are linked to the source code as well. To navigate to where a function is called in the code, hold 
+				<emphasis role="bold">Ctrl</emphasis> while double-clicking on a function's node (in any view except 
+				<emphasis role="bold">Aggregate View</emphasis>). Doing so will open the corresponding source file in the Eclipse editor and highlight the function call.
+			</para>
+			<para>To navigate to a function's definition in the source, hold 
+				<emphasis role="bold">Ctrl</emphasis> while double-clicking on a function's node in the 
+				<emphasis role="bold">Aggregate View</emphasis>. Doing so will open the corresponding source file in the Eclipse editor and highlight the function definition.
+			</para>
+		</section>
+		<section id="Save.2Fload_profile_runs">
+			<title>Save/load profile runs</title>
+			<para>Large projects may take longer to render; as such, Eclipse-Callgraph allows you to save the data collected from a profile run. Loading the data file and attempting to render it will take a much shorter time than attempting to go through the full process of profiling a project. </para>
+			<para>To save or load data from a profile run, navigate to 
+				<emphasis role="bold">File</emphasis> (under the 
+				<emphasis role="bold">View Menu</emphasis>); this will display different options relating to saving and loading profile runs.
+<center>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Callgraph_file_menu.png"/>
+					</imageobject>
+				</mediaobject></center>
+			</para>
+			<para><center>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Example.jpg"/>
+					</imageobject>
+				</mediaobject></center>
+			</para>
+		</section>
+	</chapter>
+	<chapter id="Updating_This_Document">
+		<title>Updating This Document</title>
+		<para>This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit 
+
+			<ulink url="http://wiki.eclipse.org/Linux_Tools_Project/Callgraph/User_Guide">http://wiki.eclipse.org/Linux_Tools_Project/Callgraph/User_Guide</ulink>
+		</para>
+	</chapter>
+</book>

@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Callgraph Reference - General Usage</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">General Usage</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Callgraph-Perspectives.html" title="Callgraph Perspectives">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Callgraph Perspectives</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="General_Usage_2">General Usage</h1>
+		<p>Most of the Eclipse-Callgraph's general functions are available through the 
+			<b>Callgraph</b> view's toolbar and 
+			<b>View Menu</b>.
+		</p>
+		<h2 id="Collapse_Mode">Collapse Mode</h2>
+		<p>The 
+			<b>Callgraph</b> view's toolbar also features a 
+			<b>Collapse Mode</b>  button. This button groups all identical functions (i.e. those with identical names and call histories) together into one node. Doing so can be helpful in reducing screen clutter for programs where many functions get called multiple times. 
+<center>
+
+			<img border="0" src="images/eclipsecallgraph-collapse.png"/>
+</center>
+		</p>
+		<h2 id="Watching_function_calls_in_chronological_order">Watching function calls in chronological order</h2>
+		<p>To play a visual representation of a function trace, click the 
+			<b>View Menu</b> button then navigate to 
+			<b>Goto</b>. This menu will allow you to pause, step through, or mark each function as it executes. 
+<center>
+			<img border="0" src="images/Callgraph_goto_menu.png"/></center> 
+		</p>
+		<h2 id="Code_link">Code link</h2>
+		<p>The graph views are linked to the source code as well. To navigate to where a function is called in the code, hold 
+			<b>Ctrl</b> while double-clicking on a function's node (in any view except 
+			<b>Aggregate View</b>). Doing so will open the corresponding source file in the Eclipse editor and highlight the function call.
+		</p>
+		<p>To navigate to a function's definition in the source, hold 
+			<b>Ctrl</b> while double-clicking on a function's node in the 
+			<b>Aggregate View</b>. Doing so will open the corresponding source file in the Eclipse editor and highlight the function definition.
+		</p>
+		<h2 id="Save.2Fload_profile_runs">Save/load profile runs</h2>
+		<p>Large projects may take longer to render; as such, Eclipse-Callgraph allows you to save the data collected from a profile run. Loading the data file and attempting to render it will take a much shorter time than attempting to go through the full process of profiling a project. </p>
+		<p>To save or load data from a profile run, navigate to 
+			<b>File</b> (under the 
+			<b>View Menu</b>); this will display different options relating to saving and loading profile runs.
+<center>
+			<img border="0" src="images/Callgraph_file_menu.png"/></center>
+		</p>
+		<p><center>
+			<img border="0" src="images/Example.jpg"/></center>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Callgraph-Perspectives.html" title="Callgraph Perspectives">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="Callgraph Reference.html" title="Callgraph Reference">
+						<img alt="Callgraph Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Callgraph Perspectives</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>

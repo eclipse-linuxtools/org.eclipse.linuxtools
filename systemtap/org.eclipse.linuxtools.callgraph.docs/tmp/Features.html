@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Callgraph Reference - Features</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Features</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">General Usage</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Features">Features</h1>
+		<h2 id="Call_Graph">Call Graph</h2>
+		<p>Renders a visual function trace of the program, tracking selected or all functions.</p>
+		<p>This feature comes with a few different display options and various other information such as :</p>
+		<ul>
+			<li>function parent/children relationships</li>
+			<li>number of times a function is called</li>
+			<li>time spent in an instance of a function</li>
+			<li>time spent in all instances of a function</li>
+		</ul>
+		<p><center>
+			<img border="0" src="images/Stapgraph_menu.png"/></center>
+		</p>
+		<p>The following types of views are available to see the call hierarchy of the functions belonging to the executable.</p>
+		<p>
+			<img border="0" src="images/Radial_view.png"/>
+
+			<img border="0" src="images/Tree_view.png"/>
+
+			<img border="0" src="images/Box_view.png"/>
+
+			<img border="0" src="images/Aggregate_view.png"/>
+		</p>
+		<h2 id="Linkage_To_Source_Code">Linkage To Source Code</h2>
+		<p>The graph views are linked to their source code -- hold CTRL and double-click any function in a non-aggregate view to be taken to where that function was called. Doing the same for an aggregate node will take you to where that function is defined.</p>
+		<h2 id="Function_Calls_In_Chronological_Order">Function Calls In Chronological Order</h2>
+		<p>Using the "Go To" menu, one can step through functions in chronological order, using the Previous/Next options.</p>
+		<p><center>
+			<img border="0" src="images/Callgraph_goto_menu.png"/></center>
+		</p>
+		<h2 id="Open_.2F_Save_Call_Graphs">Open / Save Call Graphs</h2>
+		<p>Certain large projects might take longer to render, and so users have the ability to save the data collected from having profiled their project. Loading the data file and attempting to render that will take a much shorter time than attempting to go through the full process of profiling a project.</p>
+		<p><center>
+			<img border="0" src="images/Callgraph_file_menu.png"/></center>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="Callgraph Reference.html" title="Callgraph Reference">
+						<img alt="Callgraph Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">General Usage</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
