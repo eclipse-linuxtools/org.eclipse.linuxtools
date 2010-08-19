@@ -1,3 +1,7 @@
+2010-05-18  Charley Wang  <chwang@redhat.com>
+
+	* feature.xml: Add callgraph.docs plugin
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Fix provider name.
