@@ -46,17 +46,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-#check for opxml executable, make sure it is u+x
-ALLOPXML=`find ../../../../org.eclipse.linuxtools.oprofile.core.linux.* -name opxml -type f | wc -l`
-EXECOPXML=`find ../../../../org.eclipse.linuxtools.oprofile.core.linux.* -name opxml -type f -perm -u+x | wc -l`
-if [ $ALLOPXML -eq 0 ]; then
-  echo Error: cannot find opxml binary, required plugin missing
-  exit 1
-elif [ $EXECOPXML -ne $ALLOPXML ]; then
-  #they exist, but aren't executable, run chmod u+x on them
-  find ../../../.. -name opxml -type f -exec chmod u+x '{}' \;
-fi
-
 ##this will have to be loaded every time the user restarts their
 ##computer anyway, should load it now?
 #load the oprofile module 

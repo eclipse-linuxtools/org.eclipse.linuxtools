@@ -30,4 +30,5 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.jface.text.source,
  org.eclipse.linuxtools.oprofile.core,
  org.eclipse.linuxtools.oprofile.core.model,
+ org.eclipse.linuxtools.oprofile.core.opxml.sessions,
  org.eclipse.linuxtools.profiling.ui

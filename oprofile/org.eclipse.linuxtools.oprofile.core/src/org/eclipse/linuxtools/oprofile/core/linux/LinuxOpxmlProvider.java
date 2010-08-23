@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.oprofile.core.IOpxmlProvider;
-import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.daemon.OpInfo;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelEvent;
 import org.eclipse.linuxtools.oprofile.core.model.OpModelImage;
@@ -29,18 +27,7 @@ import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionsProcessor;
 /**
  * A class which implements the IOpxmlProvider interface for running opxml.
  */
-public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
-	private String _pathToOpxml;
-	
-	public LinuxOpxmlProvider() throws OpxmlException {
-		_pathToOpxml = _getOpxmlPath();
-		
-		if (_pathToOpxml == null) {
-			throw new OpxmlException(OprofileCorePlugin.createErrorStatus("opxmlProvider", null)); //$NON-NLS-1$
-		}
-	}
-	
-	public abstract String _getOpxmlPath();
+public class LinuxOpxmlProvider implements IOpxmlProvider {
 	
 	public IRunnableWithProgress info(final OpInfo info) {
 		return new OpInfoRunner(info);
@@ -61,7 +48,7 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 		}
 		
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-			OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
+			OpxmlRunner runner = new OpxmlRunner();
 			String[] args = new String[] {
 				OpxmlConstants.OPXML_INFO
 			};
@@ -72,7 +59,7 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 	public IRunnableWithProgress modelData(final String eventName, final String sessionName, final OpModelImage image) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {	
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
+				OpxmlRunner runner = new OpxmlRunner();
 
 				String[] args = new String[] {
 						OpxmlConstants.OPXML_MODELDATA,
@@ -91,7 +78,7 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 	public IRunnableWithProgress checkEvents(final int ctr, final int event, final int um, final int[] eventValid) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
-				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
+				OpxmlRunner runner = new OpxmlRunner();
 				String[] args = new String[] {
 					OpxmlConstants.CHECKEVENTS_TAG,
 					Integer.toString(ctr),
@@ -109,7 +96,7 @@ public abstract class LinuxOpxmlProvider implements IOpxmlProvider {
 		
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
-				OpxmlRunner runner = new OpxmlRunner(_pathToOpxml);
+				OpxmlRunner runner = new OpxmlRunner();
 				String[] args = new String[] {
 					OpxmlConstants.OPXML_SESSIONS,
 				};

@@ -1,0 +1,638 @@
+<help_events>
+<header  title="oprofile: available events for CPU type &quot;Core 2&quot;
+
+" schemaversion="1.0" doc="See Intel Architecture Developer's Manual Volume 3B, Appendix A and
+Intel Architecture Optimization Reference Manual (730795-001)
+
+"/>
+<event  event_name="CPU_CLK_UNHALTED" desc="Clock cycles when not halted" counter_mask="3" min_count="6000">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="Unhalted core cycles"/>
+<unit_mask  mask="1" desc="Unhalted bus cycles"/>
+<unit_mask  mask="2" desc="Unhalted bus cycles of this core while the other core is halted"/>
+</unit_masks>
+</event>
+<event  event_name="INST_RETIRED_ANY_P" desc="number of instructions retired" counter_mask="3" min_count="6000"/>
+<event  event_name="L2_RQSTS" desc="number of L2 cache requests" counter_mask="3" min_count="500">
+<unit_masks  default="127">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="48" desc="prefetch: all inclusive"/>
+<unit_mask  mask="16" desc="prefetch: Hardware prefetch only"/>
+<unit_mask  mask="0" desc="prefetch: exclude hardware prefetch"/>
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="LLC_MISSES" desc="L2 cache demand requests from this core that missed the L2" counter_mask="3" min_count="6000">
+<unit_masks  default="65">
+<unit_mask  mask="65" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="LLC_REFS" desc="L2 cache demand requests from this core" counter_mask="3" min_count="6000">
+<unit_masks  default="79">
+<unit_mask  mask="79" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="LOAD_BLOCK" desc="events pertaining to loads" counter_mask="3" min_count="500">
+<unit_masks  default="62">
+<unit_mask  mask="2" desc="STA  Loads blocked by a preceding store with unknown address."/>
+<unit_mask  mask="4" desc="STD  Loads blocked by a preceding store with unknown data."/>
+<unit_mask  mask="8" desc="OVERLAP_STORE  Loads that partially overlap an earlier store, or 4K aliased with a previous store."/>
+<unit_mask  mask="16" desc="UNTIL_RETIRE  Loads blocked until retirement."/>
+<unit_mask  mask="32" desc="L1D  Loads blocked by the L1 data cache."/>
+</unit_masks>
+</event>
+<event  event_name="STORE_BLOCK" desc="events pertaining to stores" counter_mask="3" min_count="500">
+<unit_masks  default="11">
+<unit_mask  mask="1" desc="SB_DRAIN_CYCLES	Cycles while stores are blocked due to store buffer drain."/>
+<unit_mask  mask="2" desc="ORDER	Cycles while store is waiting for a preceding store to be globally observed."/>
+<unit_mask  mask="8" desc="NOOP	A store is blocked due to a conflict with an external or internal snoop."/>
+</unit_masks>
+</event>
+<event  event_name="MISALIGN_MEM_REF" desc="number of misaligned data memory references" counter_mask="3" min_count="500"/>
+<event  event_name="SEGMENT_REG_LOADS" desc="number of segment register loads" counter_mask="3" min_count="500"/>
+<event  event_name="SSE_PRE_EXEC" desc="number of SSE pre-fetch/weakly ordered insns retired" counter_mask="3" min_count="500">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="prefetch NTA instructions executed."/>
+<unit_mask  mask="1" desc="prefetch T1 instructions executed."/>
+<unit_mask  mask="2" desc="prefetch T1 and T2 instructions executed."/>
+<unit_mask  mask="3" desc="SSE weakly-ordered stores"/>
+</unit_masks>
+</event>
+<event  event_name="DTLB_MISSES" desc="DTLB miss events" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="1" desc="ANY	Memory accesses that missed the DTLB."/>
+<unit_mask  mask="2" desc="MISS_LD	DTLB misses due to load operations."/>
+<unit_mask  mask="4" desc="L0_MISS_LD L0 DTLB misses due to load operations."/>
+<unit_mask  mask="8" desc="MISS_ST	TLB misses due to store operations."/>
+</unit_masks>
+</event>
+<event  event_name="MEMORY_DISAMBIGUATION" desc="Memory disambiguation reset cycles." counter_mask="3" min_count="1000">
+<unit_masks  default="1">
+<unit_mask  mask="1" desc="RESET	Memory disambiguation reset cycles."/>
+<unit_mask  mask="2" desc="SUCCESS	Number of loads that were successfully disambiguated."/>
+</unit_masks>
+</event>
+<event  event_name="PAGE_WALKS" desc="Page table walk events" counter_mask="3" min_count="500">
+<unit_masks  default="2">
+<unit_mask  mask="1" desc="COUNT	Number of page-walks executed."/>
+<unit_mask  mask="2" desc="CYCLES	Duration of page-walks in core cycles."/>
+</unit_masks>
+</event>
+<event  event_name="FLOPS" desc="number of FP computational micro-ops executed" counter_mask="3" min_count="3000"/>
+<event  event_name="FP_ASSIST" desc="number of FP assists" counter_mask="3" min_count="500"/>
+<event  event_name="MUL" desc="number of multiplies" counter_mask="3" min_count="1000"/>
+<event  event_name="DIV" desc="number of divides" counter_mask="3" min_count="500"/>
+<event  event_name="CYCLES_DIV_BUSY" desc="cycles divider is busy" counter_mask="3" min_count="1000"/>
+<event  event_name="IDLE_DURING_DIV" desc="cycles divider is busy and all other execution units are idle." counter_mask="3" min_count="1000"/>
+<event  event_name="DELAYED_BYPASS" desc="Delayed bypass events" counter_mask="3" min_count="1000">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="FP		Delayed bypass to FP operation."/>
+<unit_mask  mask="1" desc="SIMD	Delayed bypass to SIMD operation."/>
+<unit_mask  mask="2" desc="LOAD	Delayed bypass to load operation."/>
+</unit_masks>
+</event>
+<event  event_name="L2_ADS" desc="Cycles the L2 address bus is in use." counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="All cores"/>
+<unit_mask  mask="64" desc="This core"/>
+</unit_masks>
+</event>
+<event  event_name="L2_DBUS_BUSY_RD" desc="Cycles the L2 transfers data to the core." counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="All cores"/>
+<unit_mask  mask="64" desc="This core"/>
+</unit_masks>
+</event>
+<event  event_name="L2_LINES_IN" desc="number of allocated lines in L2" counter_mask="3" min_count="500">
+<unit_masks  default="112">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="48" desc="prefetch: all inclusive"/>
+<unit_mask  mask="16" desc="prefetch: Hardware prefetch only"/>
+<unit_mask  mask="0" desc="prefetch: exclude hardware prefetch"/>
+</unit_masks>
+</event>
+<event  event_name="L2_M_LINES_IN" desc="number of modified lines allocated in L2" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="All cores"/>
+<unit_mask  mask="64" desc="This core"/>
+</unit_masks>
+</event>
+<event  event_name="L2_LINES_OUT" desc="number of recovered lines from L2" counter_mask="3" min_count="500">
+<unit_masks  default="112">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="48" desc="prefetch: all inclusive"/>
+<unit_mask  mask="16" desc="prefetch: Hardware prefetch only"/>
+<unit_mask  mask="0" desc="prefetch: exclude hardware prefetch"/>
+</unit_masks>
+</event>
+<event  event_name="L2_M_LINES_OUT" desc="number of modified lines removed from L2" counter_mask="3" min_count="500">
+<unit_masks  default="112">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="48" desc="prefetch: all inclusive"/>
+<unit_mask  mask="16" desc="prefetch: Hardware prefetch only"/>
+<unit_mask  mask="0" desc="prefetch: exclude hardware prefetch"/>
+</unit_masks>
+</event>
+<event  event_name="L2_IFETCH" desc="number of L2 cacheable instruction fetches" counter_mask="3" min_count="500">
+<unit_masks  default="79">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L2_LD" desc="number of L2 data loads" counter_mask="3" min_count="500">
+<unit_masks  default="127">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="48" desc="prefetch: all inclusive"/>
+<unit_mask  mask="16" desc="prefetch: Hardware prefetch only"/>
+<unit_mask  mask="0" desc="prefetch: exclude hardware prefetch"/>
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L2_ST" desc="number of L2 data stores" counter_mask="3" min_count="500">
+<unit_masks  default="79">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L2_LOCK" desc="number of locked L2 data accesses" counter_mask="3" min_count="500">
+<unit_masks  default="79">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L2_REJECT_BUSQ" desc="Rejected L2 cache requests" counter_mask="3" min_count="500">
+<unit_masks  default="127">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="48" desc="prefetch: all inclusive"/>
+<unit_mask  mask="16" desc="prefetch: Hardware prefetch only"/>
+<unit_mask  mask="0" desc="prefetch: exclude hardware prefetch"/>
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L2_NO_REQ" desc="Cycles no L2 cache requests are pending" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="All cores"/>
+<unit_mask  mask="64" desc="This core"/>
+</unit_masks>
+</event>
+<event  event_name="EIST_TRANS_ALL" desc="Intel(tm) Enhanced SpeedStep(r) Technology transitions" counter_mask="3" min_count="500"/>
+<event  event_name="THERMAL_TRIP" desc="Number of thermal trips" counter_mask="3" min_count="500">
+<unit_masks  default="192">
+<unit_mask  mask="192" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_CACHE_LD" desc="L1 cacheable data read operations" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_CACHE_ST" desc="L1 cacheable data write operations" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_CACHE_LOCK" desc="L1 cacheable lock read operations" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="8" desc="(M)ESI: Modified"/>
+<unit_mask  mask="4" desc="M(E)SI: Exclusive"/>
+<unit_mask  mask="2" desc="ME(S)I: Shared"/>
+<unit_mask  mask="1" desc="MES(I): Invalid"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_CACHE_LOCK_DURATION" desc="Duration of L1 data cacheable locked operations" counter_mask="3" min_count="500">
+<unit_masks  default="16">
+<unit_mask  mask="16" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_ALL_REF" desc="All references to the L1 data cache" counter_mask="3" min_count="500">
+<unit_masks  default="16">
+<unit_mask  mask="16" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_ALL_CACHE_REF" desc="L1 data cacheable reads and writes" counter_mask="3" min_count="500">
+<unit_masks  default="2">
+<unit_mask  mask="2" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_REPL" desc="Cache lines allocated in the L1 data cache" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="15" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="L1D_M_REPL" desc="Modified cache lines allocated in the L1 data cache" counter_mask="3" min_count="500"/>
+<event  event_name="L1D_M_EVICT" desc="Modified cache lines evicted from the L1 data cache" counter_mask="3" min_count="500"/>
+<event  event_name="L1D_PEND_MISS" desc="Total number of outstanding L1 data cache misses at any cycle" counter_mask="3" min_count="500"/>
+<event  event_name="L1D_SPLIT" desc="Cache line split load/stores" counter_mask="3" min_count="500">
+<unit_masks  default="1">
+<unit_mask  mask="1" desc="split loads"/>
+<unit_mask  mask="2" desc="split stores"/>
+</unit_masks>
+</event>
+<event  event_name="SSE_PREF_MISS" desc="SSE instructions that missed all caches" counter_mask="3" min_count="500">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="PREFETCHNTA"/>
+<unit_mask  mask="1" desc="PREFETCHT0"/>
+<unit_mask  mask="2" desc="PREFETCHT1/PREFETCHT2"/>
+</unit_masks>
+</event>
+<event  event_name="LOAD_HIT_PRE" desc="Load operations conflicting with a software prefetch to the same address" counter_mask="3" min_count="500"/>
+<event  event_name="L1D_PREFETCH" desc="L1 data cache prefetch requests" counter_mask="3" min_count="500">
+<unit_masks  default="16">
+<unit_mask  mask="16" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_REQ_OUTSTANDING" desc="Outstanding cacheable data read bus requests duration" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_BNR_DRV" desc="Number of Bus Not Ready signals asserted" counter_mask="3" min_count="500">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="this agent"/>
+<unit_mask  mask="32" desc="include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_DRDY_CLOCKS" desc="Bus cycles when data is sent on the bus" counter_mask="3" min_count="500">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="this agent"/>
+<unit_mask  mask="32" desc="include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_LOCK_CLOCKS" desc="Bus cycles when a LOCK signal is asserted" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_DATA_RCV" desc="Bus cycles while processor receives data" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_BRD" desc="Burst read bus transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_RFO" desc="number of completed read for ownership transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_WB" desc="number of explicit writeback bus transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_IFETCH" desc="number of instruction fetch transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_INVAL" desc="number of invalidate transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_PWR" desc="number of partial write bus transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRANS_P" desc="number of partial bus transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRANS_IO" desc="number of I/O bus transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRANS_DEF" desc="number of completed defer transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_BURST" desc="number of completed burst transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_MEM" desc="number of completed memory transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_TRAN_ANY" desc="number of any completed bus transactions" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="EXT_SNOOP" desc="External snoops" counter_mask="3" min_count="500">
+<unit_masks  default="11">
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+<unit_mask  mask="8" desc="snoop: HITM snoops"/>
+<unit_mask  mask="2" desc="snoop: HIT snoops"/>
+<unit_mask  mask="1" desc="snoop: CLEAN snoops"/>
+</unit_masks>
+</event>
+<event  event_name="CMP_SNOOP" desc="L1 data cache is snooped by other core" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="1" desc="snoop: CMP2I snoops"/>
+<unit_mask  mask="2" desc="snoop: CMP2S snoops"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_HIT_DRV" desc="HIT signal asserted" counter_mask="3" min_count="500">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="this agent"/>
+<unit_mask  mask="32" desc="include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_HITM_DRV" desc="HITM signal asserted" counter_mask="3" min_count="500">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="this agent"/>
+<unit_mask  mask="32" desc="include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUSQ_EMPTY" desc="Bus queue is empty" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="All cores"/>
+<unit_mask  mask="64" desc="This core"/>
+</unit_masks>
+</event>
+<event  event_name="SNOOP_STALL_DRV" desc="Bus stalled for snoops" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="core: all cores"/>
+<unit_mask  mask="64" desc="core: this core"/>
+<unit_mask  mask="0" desc="bus: this agent"/>
+<unit_mask  mask="32" desc="bus: include all agents"/>
+</unit_masks>
+</event>
+<event  event_name="BUS_IO_WAIT" desc="IO requests waiting in the bus queue" counter_mask="3" min_count="500">
+<unit_masks  default="64">
+<unit_mask  mask="192" desc="All cores"/>
+<unit_mask  mask="64" desc="This core"/>
+</unit_masks>
+</event>
+<event  event_name="L1I_READS" desc="number of instruction fetches" counter_mask="3" min_count="500"/>
+<event  event_name="L1I_MISSES" desc="number of instruction fetch misses" counter_mask="3" min_count="500"/>
+<event  event_name="ITLB" desc="number of ITLB misses" counter_mask="3" min_count="500">
+<unit_masks  default="18">
+<unit_mask  mask="2" desc="ITLB small page misses"/>
+<unit_mask  mask="16" desc="ITLB large page misses"/>
+<unit_mask  mask="64" desc="ITLB flushes"/>
+</unit_masks>
+</event>
+<event  event_name="INST_QUEUE_FULL" desc="cycles during which the instruction queue is full" counter_mask="3" min_count="500">
+<unit_masks  default="2">
+<unit_mask  mask="2" desc="No unit mask"/>
+</unit_masks>
+</event>
+<event  event_name="IFU_MEM_STALL" desc="cycles instruction fetch pipe is stalled" counter_mask="3" min_count="500"/>
+<event  event_name="ILD_STALL" desc="cycles instruction length decoder is stalled" counter_mask="3" min_count="500"/>
+<event  event_name="BR_INST_EXEC" desc="Branch instructions executed (not necessarily retired)" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_MISSP_EXEC" desc="Branch instructions executed that were mispredicted at execution" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_BAC_MISSP_EXEC" desc="Branch instructions executed that were mispredicted at Front End (BAC)" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_CND_EXEC" desc="Conditional Branch instructions executed" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_CND_MISSP_EXEC" desc="Conditional Branch instructions executed that were mispredicted" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_IND_EXEC" desc="Indirect Branch instructions executed" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_IND_MISSP_EXEC" desc="Indirect Branch instructions executed that were mispredicted" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_RET_EXEC" desc="Return Branch instructions executed" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_RET_MISSP_EXEC" desc="Return Branch instructions executed that were mispredicted at Execution" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_RET_BAC_MISSP_EXEC" desc="Branch instructions executed that were mispredicted at Front End (BAC)" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_CALL_EXEC" desc="CALL instruction executed" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_CALL_MISSP_EXEC" desc="CALL instruction executed and miss predicted" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_IND_CALL_EXEC" desc="Indirect CALL instruction executed" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_TKN_BUBBLE_1" desc="Branch predicted taken with bubble 1" counter_mask="3" min_count="3000"/>
+<event  event_name="BR_TKN_BUBBLE_2" desc="Branch predicted taken with bubble 2" counter_mask="3" min_count="3000"/>
+<event  event_name="RS_UOPS_DISPATCHED" desc="Micro-ops dispatched for execution" counter_mask="3" min_count="1000"/>
+<event  event_name="RS_UOPS_DISPATCHED_NONE" desc="No Micro-ops dispatched for execution" counter_mask="3" min_count="1000"/>
+<event  event_name="MACRO_INSTS" desc="instructions decoded" counter_mask="3" min_count="500">
+<unit_masks  default="9">
+<unit_mask  mask="1" desc="Instructions decoded"/>
+<unit_mask  mask="8" desc="CISC Instructions decoded"/>
+</unit_masks>
+</event>
+<event  event_name="ESP" desc="ESP register events" counter_mask="3" min_count="500">
+<unit_masks  default="1">
+<unit_mask  mask="1" desc="ESP register content synchronizations"/>
+<unit_mask  mask="2" desc="ESP register automatic additions"/>
+</unit_masks>
+</event>
+<event  event_name="SIMD_UOPS_EXEC" desc="SIMD micro-ops executed (excluding stores)" counter_mask="3" min_count="500"/>
+<event  event_name="SIMD_SAT_UOP_EXEC" desc="number of SIMD saturating instructions executed" counter_mask="3" min_count="3000"/>
+<event  event_name="SIMD_UOP_TYPE_EXEC" desc="number of SIMD packing instructions" counter_mask="3" min_count="3000">
+<unit_masks  default="63">
+<unit_mask  mask="1" desc="SIMD packed multiplies"/>
+<unit_mask  mask="2" desc="SIMD packed shifts"/>
+<unit_mask  mask="4" desc="SIMD pack operations"/>
+<unit_mask  mask="8" desc="SIMD unpack operations"/>
+<unit_mask  mask="16" desc="SIMD packed logical"/>
+<unit_mask  mask="32" desc="SIMD packed arithmetic"/>
+<unit_mask  mask="63" desc="all of the above"/>
+</unit_masks>
+</event>
+<event  event_name="INST_RETIRED" desc="number of instructions retired" counter_mask="3" min_count="6000">
+<unit_masks  default="0">
+<unit_mask  mask="0" desc="Any"/>
+<unit_mask  mask="1" desc="Loads"/>
+<unit_mask  mask="2" desc="Stores"/>
+<unit_mask  mask="4" desc="Other"/>
+</unit_masks>
+</event>
+<event  event_name="X87_OPS_RETIRED" desc="number of computational FP operations retired" counter_mask="3" min_count="500">
+<unit_masks  default="254">
+<unit_mask  mask="1" desc="FXCH instructions retired"/>
+<unit_mask  mask="254" desc="Retired floating-point computational operations (precise)"/>
+</unit_masks>
+</event>
+<event  event_name="UOPS_RETIRED" desc="number of UOPs retired" counter_mask="3" min_count="6000">
+<unit_masks  default="15">
+<unit_mask  mask="1" desc="Fused load+op or load+indirect branch retired"/>
+<unit_mask  mask="2" desc="Fused store address + data retired"/>
+<unit_mask  mask="4" desc="Retired instruction pairs fused into one micro-op"/>
+<unit_mask  mask="7" desc="Fused micro-ops retired"/>
+<unit_mask  mask="8" desc="Non-fused micro-ops retired"/>
+<unit_mask  mask="15" desc="Micro-ops retired"/>
+</unit_masks>
+</event>
+<event  event_name="MACHINE_NUKES_SMC" desc="number of pipeline flushing events" counter_mask="3" min_count="500">
+<unit_masks  default="5">
+<unit_mask  mask="1" desc="Self-Modifying Code detected"/>
+<unit_mask  mask="4" desc="Execution pipeline restart due to memory ordering conflict or memory disambiguation misprediction"/>
+</unit_masks>
+</event>
+<event  event_name="BR_INST_RETIRED" desc="number of branch instructions retired" counter_mask="3" min_count="500">
+<unit_masks  default="10">
+<unit_mask  mask="1" desc="predicted not-taken"/>
+<unit_mask  mask="2" desc="mispredicted not-taken"/>
+<unit_mask  mask="4" desc="predicted taken"/>
+<unit_mask  mask="8" desc="mispredicted taken"/>
+</unit_masks>
+</event>
+<event  event_name="BR_MISS_PRED_RETIRED" desc="number of mispredicted branches retired (precise)" counter_mask="3" min_count="500"/>
+<event  event_name="CYCLES_INT_MASKED" desc="cycles interrupts are disabled" counter_mask="3" min_count="500">
+<unit_masks  default="2">
+<unit_mask  mask="1" desc="Interrupts disabled"/>
+<unit_mask  mask="2" desc="Interrupts pending and disabled"/>
+</unit_masks>
+</event>
+<event  event_name="SIMD_INST_RETIRED" desc="SSE/SSE2 instructions retired" counter_mask="3" min_count="500">
+<unit_masks  default="31">
+<unit_mask  mask="1" desc="Retired SSE packed-single instructions"/>
+<unit_mask  mask="2" desc="Retired SSE scalar-single instructions"/>
+<unit_mask  mask="4" desc="Retired SSE2 packed-double instructions"/>
+<unit_mask  mask="8" desc="Retired SSE2 scalar-double instructions"/>
+<unit_mask  mask="16" desc="Retired SSE2 vector integer instructions"/>
+<unit_mask  mask="31" desc="Retired Streaming SIMD instructions (precise event)"/>
+</unit_masks>
+</event>
+<event  event_name="HW_INT_RCV" desc="number of hardware interrupts received" counter_mask="3" min_count="500"/>
+<event  event_name="ITLB_MISS_RETIRED" desc="Retired instructions that missed the ITLB" counter_mask="1" min_count="500"/>
+<event  event_name="SIMD_COMP_INST_RETIRED" desc="Retired computational SSE/SSE2 instructions" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="1" desc="Retired computational SSE packed-single instructions"/>
+<unit_mask  mask="2" desc="Retired computational SSE scalar-single instructions"/>
+<unit_mask  mask="4" desc="Retired computational SSE2 packed-double instructions"/>
+<unit_mask  mask="8" desc="Retired computational SSE2 scalar-double instructions"/>
+</unit_masks>
+</event>
+<event  event_name="MEM_LOAD_RETIRED" desc="Retired loads" counter_mask="1" min_count="500">
+<unit_masks  default="1">
+<unit_mask  mask="1" desc="Retired loads that miss the L1 data cache (precise event)"/>
+<unit_mask  mask="2" desc="L1 data cache line missed by retired loads (precise event)"/>
+<unit_mask  mask="4" desc="Retired loads that miss the L2 cache (precise event)"/>
+<unit_mask  mask="8" desc="L2 cache line missed by retired loads (precise event)"/>
+<unit_mask  mask="16" desc="Retired loads that miss the DTLB (precise event)"/>
+</unit_masks>
+</event>
+<event  event_name="FP_MMX_TRANS" desc="MMX-floating point transitions" counter_mask="3" min_count="3000">
+<unit_masks  default="3">
+<unit_mask  mask="1" desc="float-&gt;MMX transitions"/>
+<unit_mask  mask="2" desc="MMX-&gt;float transitions"/>
+</unit_masks>
+</event>
+<event  event_name="MMX_ASSIST" desc="number of EMMS instructions executed" counter_mask="3" min_count="500"/>
+<event  event_name="SIMD_INSTR_RET" desc="number of SIMD instructions retired" counter_mask="3" min_count="500"/>
+<event  event_name="SIMD_SAT_INSTR_RET" desc="number of saturated arithmetic instructions retired" counter_mask="3" min_count="500"/>
+<event  event_name="RAT_STALLS" desc="Partial register stall cycles" counter_mask="3" min_count="6000">
+<unit_masks  default="15">
+<unit_mask  mask="1" desc="ROB read port"/>
+<unit_mask  mask="2" desc="Partial register"/>
+<unit_mask  mask="4" desc="Flag"/>
+<unit_mask  mask="8" desc="FPU status word"/>
+<unit_mask  mask="15" desc="All RAT"/>
+</unit_masks>
+</event>
+<event  event_name="SEG_RENAME_STALLS" desc="Segment rename stalls" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="1" desc="ES"/>
+<unit_mask  mask="2" desc="DS"/>
+<unit_mask  mask="4" desc="FS"/>
+<unit_mask  mask="8" desc="GS"/>
+</unit_masks>
+</event>
+<event  event_name="SEG_RENAMES" desc="Segment renames" counter_mask="3" min_count="500">
+<unit_masks  default="15">
+<unit_mask  mask="1" desc="ES"/>
+<unit_mask  mask="2" desc="DS"/>
+<unit_mask  mask="4" desc="FS"/>
+<unit_mask  mask="8" desc="GS"/>
+</unit_masks>
+</event>
+<event  event_name="RESOURCE_STALLS" desc="Cycles during which resource stalls occur" counter_mask="3" min_count="3000">
+<unit_masks  default="15">
+<unit_mask  mask="1" desc="when the ROB is full"/>
+<unit_mask  mask="2" desc="during which the RS is full"/>
+<unit_mask  mask="4" desc="during which the pipeline has exceeded the load or store limit or is waiting to commit all stores"/>
+<unit_mask  mask="8" desc="due to FPU control word write"/>
+<unit_mask  mask="16" desc="due to branch misprediction"/>
+</unit_masks>
+</event>
+<event  event_name="BR_INST_DECODED" desc="number of branch instructions decoded" counter_mask="3" min_count="500"/>
+<event  event_name="BR_BOGUS" desc="number of bogus branches" counter_mask="3" min_count="500"/>
+<event  event_name="BACLEARS" desc="number of times BACLEAR is asserted" counter_mask="3" min_count="500"/>
+<event  event_name="PREF_RQSTS_UP" desc="Number of upward prefetches issued" counter_mask="3" min_count="3000"/>
+<event  event_name="PREF_RQSTS_DN" desc="Number of downward prefetches issued" counter_mask="3" min_count="3000"/>
+</help_events>

@@ -13,16 +13,12 @@
 package org.eclipse.linuxtools.oprofile.core;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
+import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.BundleContext;
 
@@ -31,7 +27,6 @@ import org.osgi.framework.BundleContext;
  */
 public class OprofileCorePlugin extends Plugin {
 	private static final String PLUGIN_ID = "org.eclipse.linuxtools.oprofile.core"; //$NON-NLS-1$
-	private static final String OPXMLPROVIDER_XPT_NAME = "OpxmlProvider"; //$NON-NLS-1$
 
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
@@ -79,34 +74,8 @@ public class OprofileCorePlugin extends Plugin {
 	 * @throws OpxmlException
 	 */
 	public IOpxmlProvider getOpxmlProvider() throws OpxmlException {
-		Exception except = null;
-		
-		if (_opxmlProvider == null) {
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IExtensionPoint extension = registry.getExtensionPoint(PLUGIN_ID, OPXMLPROVIDER_XPT_NAME);
-			if (extension != null) {
-				IExtension[] extensions = extension.getExtensions();
-				for (IExtension e : extensions) {
-					IConfigurationElement[] configElements = e.getConfigurationElements();
-					if (configElements.length != 0) {
-						try {
-							_opxmlProvider = (IOpxmlProvider) configElements[0].createExecutableExtension("class"); //$NON-NLS-1$
-							if (_opxmlProvider != null)
-								break;
-						} catch (CoreException ce) {
-							except = ce;
-						}
-					}
-				}
-			}
-		}
-		
-		// If there was a problem finding opxml, throw an exception
-		if (_opxmlProvider == null) {
-			throw new OpxmlException(createErrorStatus("opxmlProvider", except)); //$NON-NLS-1$
-		} else {
-			return _opxmlProvider;
-		}
+		_opxmlProvider = new LinuxOpxmlProvider();
+		return _opxmlProvider;
 	}
 	
 	/**

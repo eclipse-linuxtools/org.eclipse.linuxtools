@@ -79,6 +79,7 @@ public class OprofileView extends ViewPart {
 		manager.add(new OprofileViewLogReaderAction());
 		manager.add(new OprofileViewRefreshAction());
 		manager.add(new OprofileViewSaveDefaultSessionAction());
+		manager.add(new OprofileViewDeleteSessionAction(getTreeViewer()));
 	}
 	
 	private TreeViewer getTreeViewer() {

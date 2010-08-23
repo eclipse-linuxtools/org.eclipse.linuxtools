@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.oprofile.core.linux;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -26,6 +27,7 @@ import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
+import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
 
 /**
  * A class which encapsulates running opcontrol.
@@ -143,9 +145,25 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	 * @throws OpcontrolException
 	 */
 	public void saveSession(String name) throws OpcontrolException {
-		ArrayList<String> cmd = new ArrayList<String>();
-		cmd.add(_OPD_SAVE_SESSION + name);
-		_runOpcontrol(cmd);
+		SessionManager sessMan;
+		try {
+			sessMan = new SessionManager(SessionManager.SESSION_LOCATION);
+			for (String event : sessMan.getSessionEvents(SessionManager.CURRENT)){
+				sessMan.addSession(name, event);
+				String oldFile = SessionManager.OPXML_PREFIX + SessionManager.MODEL_DATA + event + SessionManager.CURRENT;
+				String newFile = SessionManager.OPXML_PREFIX + SessionManager.MODEL_DATA + event + name;
+				Process p = Runtime.getRuntime().exec("cp " + oldFile + " " + newFile);
+				p.waitFor();
+			}
+			sessMan.write();
+		} catch (FileNotFoundException e) {
+			//intentionally blank
+			//during a save, the session file will exist
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
