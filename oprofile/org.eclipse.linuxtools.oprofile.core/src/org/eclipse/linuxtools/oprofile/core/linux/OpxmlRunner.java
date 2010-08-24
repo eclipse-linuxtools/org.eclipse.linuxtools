@@ -83,9 +83,6 @@ public class OpxmlRunner {
 			
 			//handle the opxml_session file
 			if (args[0].equals(SessionManager.SESSIONS)){
-				if (! file.exists()){
-					file.createNewFile();
-				}
 				SessionManager sessManNew = new SessionManager(SessionManager.SESSION_LOCATION);
 				populateWithCurrentSession(sessManNew);
 				sessManNew.write();
@@ -172,6 +169,9 @@ public class OpxmlRunner {
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec("opreport -X --details event:" + args[1]); //$NON-NLS-1$
+			if (p.waitFor() != 0){
+				return false;
+			}
 			ModelDataAdapter mda = new ModelDataAdapter(p.getInputStream());
 			if (! mda.isParseable()){
 				return false;
@@ -180,6 +180,8 @@ public class OpxmlRunner {
 			BufferedReader bi = new BufferedReader(new InputStreamReader(mda.getInputStream()));
 			saveOpxmlToFile(bi, args);
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return true;

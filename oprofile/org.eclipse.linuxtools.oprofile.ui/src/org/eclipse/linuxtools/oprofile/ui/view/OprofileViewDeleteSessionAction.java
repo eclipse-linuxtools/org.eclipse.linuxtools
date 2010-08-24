@@ -40,7 +40,8 @@ public class OprofileViewDeleteSessionAction extends Action {
 			sessMan.removeSession(sessionName, eventName);
 			sessMan.write();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			// intentionally left blank
+			// the file will be created if it does not exist
 		}
 	}
 }

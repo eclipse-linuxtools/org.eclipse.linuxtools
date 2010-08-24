@@ -44,30 +44,34 @@ public class SessionManager {
 	public Element root;
 	public String absfilePath;
 	
-	public SessionManager(String filePath) throws FileNotFoundException {
-		this(new FileInputStream(new File(filePath)));
+	public SessionManager(String filePath) throws FileNotFoundException{
+		this(new File(filePath));
 		absfilePath = filePath;
 		write();
 	}
 	
-	public SessionManager(InputStream is){
+	public SessionManager(File file) throws FileNotFoundException{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		try {
 			builder = factory.newDocumentBuilder();
-			try {
-				doc = builder.parse(is);
-				Element elem = (Element) doc.getElementsByTagName(SESSIONS).item(0);
-				root = elem;
-			} catch (SAXException e) {
+			if (! file.exists()){
+				file.createNewFile();
 				doc = builder.newDocument();
 				root = doc.createElement(SESSIONS);
 				doc.appendChild(root);
-			} catch (IOException e) {
-				e.printStackTrace();
+			}else{
+				InputStream is = new FileInputStream(file);
+				doc = builder.parse(is);
+				Element elem = (Element) doc.getElementsByTagName(SESSIONS).item(0);
+				root = elem;
 			}
-		} catch (ParserConfigurationException e1) {
-			e1.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
