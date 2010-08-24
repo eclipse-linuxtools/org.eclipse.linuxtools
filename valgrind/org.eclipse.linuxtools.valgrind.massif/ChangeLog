@@ -1,3 +1,7 @@
+2010-08-24  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Remove import package on org.mozilla.javascript.
+
 2010-08-06  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/massif/MassifLaunchDelegate.java (initializeView): Check that output is not null.

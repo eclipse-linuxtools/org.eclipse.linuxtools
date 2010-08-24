@@ -47,7 +47,6 @@ Import-Package: org.eclipse.birt.chart.device,
  org.eclipse.linuxtools.valgrind.core,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui,
- org.eclipse.ui,
- org.mozilla.javascript
+ org.eclipse.ui
 Export-Package: org.eclipse.linuxtools.internal.valgrind.massif,
  org.eclipse.linuxtools.internal.valgrind.massif.birt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets,org.eclipse.birt.chart.model"

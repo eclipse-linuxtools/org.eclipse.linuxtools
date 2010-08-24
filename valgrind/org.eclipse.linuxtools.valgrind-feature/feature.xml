@@ -31,6 +31,7 @@
       <import plugin="org.eclipse.cdt.debug.core"/>
       <import plugin="org.eclipse.cdt.launch"/>
       <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.core.variables"/>
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
@@ -47,8 +48,6 @@
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.linuxtools.profiling.ui"/>
-      <import plugin="org.mozilla.rhino"/>
-      <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.cdt.ui"/>
       <import plugin="org.eclipse.help"/>
