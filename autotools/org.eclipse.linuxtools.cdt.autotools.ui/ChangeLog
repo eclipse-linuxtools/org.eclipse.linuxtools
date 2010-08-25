@@ -1,3 +1,11 @@
+2010-08-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Patch from Marc-Andre Laperle  <malaperle@omnialabs.net>
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/AutotoolsBuildWizard.java (EMPTY_PROJECT): Switch
+	to use local messages. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/AutotoolsWizardMessages.properties: Add some
+	messages that were formerly fetched from the CDT. 
+
 2010-07-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #314334
