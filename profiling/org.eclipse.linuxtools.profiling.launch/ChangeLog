@@ -1,3 +1,7 @@
+2010-08-25  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.6.1.
+
 2009-12-08  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/ProfileLaunchConfigurationDelegate.java:
