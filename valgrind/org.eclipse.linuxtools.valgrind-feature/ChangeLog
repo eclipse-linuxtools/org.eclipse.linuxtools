@@ -1,3 +1,9 @@
+2010-08-25  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #323049
+	* feature.xml: Regenerate dependencies, bump version to 0.6.1. Ensure
+	org.mozilla.{rhino,javascript} are not listed.
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Fix provider name.
