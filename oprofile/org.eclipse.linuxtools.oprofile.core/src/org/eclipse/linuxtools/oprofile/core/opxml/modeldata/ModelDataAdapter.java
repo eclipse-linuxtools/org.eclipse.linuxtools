@@ -44,6 +44,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	public final static String SETUP = "setup"; //$NON-NLS-1$
 	public final static String EVENT_SETUP = "eventsetup"; //$NON-NLS-1$
 	public final static String SETUP_COUNT = "setupcount"; //$NON-NLS-1$
+	public final static String EVENT_NAME = "eventname"; //$NON-NLS-1$
 	
 	public final static String PROFILE = "profile"; //$NON-NLS-1$
 	public final static String MODEL_DATA = "model-data"; //$NON-NLS-1$

@@ -93,7 +93,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	private static final String _OPD_RESET = "--reset"; //$NON-NLS-1$
 	
 	// Save data from the current session
-	private static final String _OPD_SAVE_SESSION = "--save="; //$NON-NLS-1$
+//	private static final String _OPD_SAVE_SESSION = "--save="; //$NON-NLS-1$
 	
 	// Unload the oprofile kernel module and oprofilefs
 	private static final String _OPD_DEINIT_MODULE = "--deinit"; //$NON-NLS-1$

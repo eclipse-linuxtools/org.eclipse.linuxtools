@@ -14,24 +14,29 @@ package org.eclipse.linuxtools.oprofile.core.linux;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.opxml.AbstractDataAdapter;
-import org.eclipse.linuxtools.oprofile.core.opxml.EventIdCache;
 import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
 import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -181,6 +186,7 @@ public class OpxmlRunner {
 			saveOpxmlToFile(bi, args);
 		} catch (IOException e) {
 			e.printStackTrace();
+			OprofileCorePlugin.showErrorDialog("opxmlParse", null); //$NON-NLS-1$
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -193,65 +199,51 @@ public class OpxmlRunner {
 	 * @param session the session manager to populate
 	 */
 	private void populateWithCurrentSession (SessionManager session){
-		int MAX_COUNT = Integer.MAX_VALUE;
 		session.removeAllCurrentSessions();
-		for (int i = 0; i < MAX_COUNT; i++){
-			if (isCounterEnabled(i)){
-				String eventName = getEventName(i);
-				session.addSession(SessionManager.CURRENT, eventName);
-			}else{
-				break;
+		String[] eventName = getEventNames();
+		if (eventName != null) {
+			for (int i = 0; i < eventName.length; i++) {
+				session.addSession(SessionManager.CURRENT, eventName[i]);
 			}
 		}
 	}
 
 	/**
-	 * @param i the counter number
-	 * @return the name of the event used on counter i
+	 * @return the name of the events used on the current session
 	 */
-	private String getEventName(int i) {
-		String ret = null;
-		File file = new File (InfoAdapter.DEV_OPROFILE + i + "/event");
-		if (file.exists()){
-			try {
-				BufferedReader bi = new BufferedReader(new FileReader(file));
-				String val = bi.readLine();
-				int id = Integer.parseInt(val);
-				ret =  EventIdCache.getInstance().getEventNameWithID(id);
-			} catch (FileNotFoundException e) {
-				// the file is checked for existence
-			} catch (IOException e) {
-				e.printStackTrace();
+	private String[] getEventNames (){
+		String [] ret = null;
+		try {
+			Process p = Runtime.getRuntime().exec("opreport -X --details");
+			InputStream is = p.getInputStream();
+			if (p.waitFor() == 0){
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder;
+				builder = factory.newDocumentBuilder();
+				Document doc = builder.parse(is);
+				Element root = (Element) doc.getElementsByTagName(ModelDataAdapter.PROFILE).item(0);
+
+				Element setupTag = (Element) root.getElementsByTagName(ModelDataAdapter.SETUP).item(0);
+				NodeList eventSetupList = setupTag.getElementsByTagName(ModelDataAdapter.EVENT_SETUP);
+
+				// get the event names for the current session
+				ret = new String[eventSetupList.getLength()];
+				for (int i = 0; i < eventSetupList.getLength(); i++) {
+					Element elm = (Element) eventSetupList.item(i);
+					ret[i] = elm.getAttribute(ModelDataAdapter.EVENT_NAME);
+				}
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			OprofileCorePlugin.showErrorDialog("opxmlParse", null); //$NON-NLS-1$
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+			OprofileCorePlugin.showErrorDialog("opxmlSAXParseException", null); //$NON-NLS-1$
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		return ret;
 	}
-
-	/**
-	 * @param i the counter number
-	 * @return true if the counter is enabled, and false otherwise
-	 */
-	private boolean isCounterEnabled(int i) {
-		File file = new File (InfoAdapter.DEV_OPROFILE + i + "/enabled");
-		if (file.exists()){
-			try {
-				BufferedReader bi = new BufferedReader(new FileReader(file));
-				String val = bi.readLine();
-				int bit = Integer.parseInt(val);
-				if (bit == 0){
-					return false;
-				}else if (bit == 1){
-					return true;
-				}else{
-					throw new RuntimeException("An unexpected counter enabled value was detected");
-				}
-			} catch (FileNotFoundException e) {
-				// the file is checked for existence
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-	
 }
