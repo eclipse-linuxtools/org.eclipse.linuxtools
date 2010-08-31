@@ -1,3 +1,11 @@
+2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Move to using commands framework.
+	* plugin.xml: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Make actions command handlers.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyFeatureAction.java (execute): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyPomAction.java (execute): Likewise.
+
 2010-05-31   Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateJavadocSubpackage): Add missing Requires to javadoc subpackage. (bz#312865)
