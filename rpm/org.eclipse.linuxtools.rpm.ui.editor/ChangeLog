@@ -1,3 +1,8 @@
+2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/DownloadJob.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileDownloadHyperlink.java: Extract download job to separate class. 
+
 2010-07-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileMarkerHandler.java (removeExistingMarkers): Don't
