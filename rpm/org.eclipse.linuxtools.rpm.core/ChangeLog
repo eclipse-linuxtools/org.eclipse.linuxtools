@@ -1,5 +1,11 @@
 2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildAll): Do not call prep, rpmbuild is cleaning itself and prep may fail if clean wasn't run before it.
+	(buildBinaryRPM): Likewise.
+	(buildSourceRPM): Likewise.
+	
+2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/core/RPMConfiguration.java (initialize): SOURCES and SPECS folder should not be set as derived.
 	Fix deprecated setDerived usage.
 

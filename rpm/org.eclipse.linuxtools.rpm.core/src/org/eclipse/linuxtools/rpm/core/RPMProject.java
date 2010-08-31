@@ -116,7 +116,6 @@ public class RPMProject {
 	}
 
 	public void buildAll(OutputStream outStream) throws CoreException {
-		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		 rpmbuild.buildAll(getSpecFile(), outStream);
 
@@ -129,7 +128,6 @@ public class RPMProject {
 	}
 
 	public void buildBinaryRPM(OutputStream out) throws CoreException {
-		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		rpmbuild.buildBinary(getSpecFile(), out);
 
@@ -140,7 +138,6 @@ public class RPMProject {
 	}
 
 	public void buildSourceRPM(OutputStream out) throws CoreException {
-		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		rpmbuild.buildSource(getSpecFile(), out);
 
