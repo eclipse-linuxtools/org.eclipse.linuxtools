@@ -24,7 +24,7 @@ public class ManView extends ViewPart {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "org.eclipse.linuxtools.man.views.ManView";
+	public static final String ID = "org.eclipse.linuxtools.man.views.ManView"; //$NON-NLS-1$
 
 	private ManTextViewer viewer;
 
@@ -36,8 +36,11 @@ public class ManView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		viewer = new ManTextViewer(parent);
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(),
-				"org.eclipse.linuxtools.man.viewer");
+		PlatformUI
+				.getWorkbench()
+				.getHelpSystem()
+				.setHelp(viewer.getControl(),
+						"org.eclipse.linuxtools.man.viewer"); //$NON-NLS-1$
 	}
 
 	/**

@@ -29,7 +29,7 @@ public class ManPathPage extends FieldEditorPreferencePage implements
 	public ManPathPage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Man page viewer preference");
+		setDescription(Messages.ManPathPage_0);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class ManPathPage extends FieldEditorPreferencePage implements
 	@Override
 	public void createFieldEditors() {
 		addField(new FileFieldEditor(PreferenceConstants.P_PATH,
-				"Man executable path:", getFieldEditorParent()));
+				Messages.ManPathPage_1, getFieldEditorParent()));
 	}
 
 	/*

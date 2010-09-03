@@ -28,7 +28,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceConstants.P_PATH, "/usr/bin/man");
+		store.setDefault(PreferenceConstants.P_PATH, "/usr/bin/man"); //$NON-NLS-1$
 	}
 
 }

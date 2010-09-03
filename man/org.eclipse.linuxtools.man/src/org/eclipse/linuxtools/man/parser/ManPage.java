@@ -34,15 +34,15 @@ public class ManPage {
 		StringBuilder sb = new StringBuilder();
 		sb.append(rawManPage);
 
-		while (sb.indexOf("_\b") != -1) {
-			int index = sb.indexOf("_\b");
-			sb.replace(index, index + 3, "<u>"
-					+ sb.substring(index + 2, index + 3) + "</u>");
+		while (sb.indexOf("_\b") != -1) { //$NON-NLS-1$
+			int index = sb.indexOf("_\b"); //$NON-NLS-1$
+			sb.replace(index, index + 3,
+					"<u>" + sb.substring(index + 2, index + 3) + "</u>"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		while (sb.indexOf("\b") != -1) {
-			int index = sb.indexOf("\b");
-			sb.replace(index - 1, index + 2, "<b>"
-					+ sb.substring(index - 1, index) + "</b>");
+		while (sb.indexOf("\b") != -1) { //$NON-NLS-1$
+			int index = sb.indexOf("\b"); //$NON-NLS-1$
+			sb.replace(index - 1, index + 2,
+					"<b>" + sb.substring(index - 1, index) + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		rawContent = sb;
 	}
@@ -55,7 +55,7 @@ public class ManPage {
 	 */
 	public StringBuilder getHtmlPage() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<pre>").append(rawContent).append("</pre>");
+		sb.append("<pre>").append(rawContent).append("</pre>"); //$NON-NLS-1$ //$NON-NLS-2$
 		return sb;
 	}
 
@@ -71,18 +71,16 @@ public class ManPage {
 	public StringBuilder getStrippedHtmlPage() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(rawContent);
-		if (sb.indexOf("<b>N</b>") != -1) {
-			sb.delete(0, sb.indexOf("<b>N</b>"));
+		if (sb.indexOf("<b>N</b>") != -1) { //$NON-NLS-1$
+			sb.delete(0, sb.indexOf("<b>N</b>")); //$NON-NLS-1$
 		}
-		if (sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>") != -1) {
-			sb
-					.delete(
-							sb
-									.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>"),
-							sb.length());
+		if (sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>") != -1) { //$NON-NLS-1$
+			sb.delete(
+					sb.indexOf("<b>A</b><b>U</b><b>T</b><b>H</b><b>O</b><b>R</b>"), //$NON-NLS-1$
+					sb.length());
 		}
-		sb.insert(0, "<pre>");
-		sb.append("</pre>");
+		sb.insert(0, "<pre>"); //$NON-NLS-1$
+		sb.append("</pre>"); //$NON-NLS-1$
 		return sb;
 	}
 }

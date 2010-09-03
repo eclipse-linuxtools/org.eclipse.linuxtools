@@ -49,7 +49,7 @@ public class ManParser {
 			String line = null;
 			try {
 				while ((line = reader.readLine()) != null) {
-					sb.append(line + "\n");
+					sb.append(line + "\n"); //$NON-NLS-1$
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -10,14 +10,27 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.man.preferences;
 
+import org.eclipse.osgi.util.NLS;
+
 /**
- * Constant definitions for plug-in preferences
+ * Message constants.
+ * 
  */
-public class PreferenceConstants {
-
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.man.preferences.messages"; //$NON-NLS-1$
 	/**
-	 * Path preference constant.
+	 * Preference page title.
 	 */
-	public static final String P_PATH = "pathPreference"; //$NON-NLS-1$
+	public static String ManPathPage_0;
+	/**
+	 * Preference page label.
+	 */
+	public static String ManPathPage_1;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	}
 
+	private Messages() {
+	}
 }

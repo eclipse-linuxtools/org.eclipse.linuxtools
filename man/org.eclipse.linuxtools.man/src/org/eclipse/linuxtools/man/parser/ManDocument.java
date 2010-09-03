@@ -21,6 +21,7 @@ import org.eclipse.jface.text.Document;
 // TODO consider bold and underline symbols to handle ranges.
 public class ManDocument extends Document {
 
+	private static final String BOLD = "\b"; //$NON-NLS-1$
 	private List<Integer> boldSymbols = new ArrayList<Integer>();
 	private List<Integer> underlineSymbols = new ArrayList<Integer>();
 
@@ -33,15 +34,15 @@ public class ManDocument extends Document {
 	 */
 	public ManDocument(String manPage) {
 		StringBuilder sb = new ManParser().getRawManPage(manPage);
-		while (sb.indexOf("\b") != -1) {
-			int index = sb.indexOf("\b");
+		while (sb.indexOf(BOLD) != -1) {
+			int index = sb.indexOf(BOLD);
 			if (sb.charAt(index - 1) == '_') {
-				sb.replace(index - 1, index + 2, sb.substring(index + 1,
-						index + 2));
+				sb.replace(index - 1, index + 2,
+						sb.substring(index + 1, index + 2));
 				underlineSymbols.add(index - 1);
 			} else {
-				sb.replace(index - 1, index + 1, sb.substring(index - 1,
-						index - 1));
+				sb.replace(index - 1, index + 1,
+						sb.substring(index - 1, index - 1));
 				boldSymbols.add(index - 1);
 			}
 		}

@@ -1,3 +1,21 @@
+2010-09-03  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/man/preferences/Messages.java: New file.
+	* src/org/eclipse/linuxtools/man/preferences/messages.properties: New file.
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/man/Activator.java (PLUGIN_ID): Add missing non-nls.
+	* src/org/eclipse/linuxtools/man/parser/ManDocument.java (ManDocument): Likewise.
+	* src/org/eclipse/linuxtools/man/parser/ManPage.java (parse): Likewise.
+	(getHtmlPage): Likewise.
+	(getStrippedHtmlPage): Likewise.
+	* src/org/eclipse/linuxtools/man/parser/ManParser.java (getRawManPage): Likewise.
+	* src/org/eclipse/linuxtools/man/preferences/ManPathPage.java (ManPathPage): Externalize strings.
+	(createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/man/preferences/PreferenceConstants.java (P_PATH): Add missing non-nls.
+	* src/org/eclipse/linuxtools/man/preferences/PreferenceInitializer.java (initializeDefaultPreferences): Likewise. 
+	* src/org/eclipse/linuxtools/man/views/ManView.java (ID): Likewise.
+	(createPartControl): Likewise.
+
 2010-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: New file.  Externalized strings.
