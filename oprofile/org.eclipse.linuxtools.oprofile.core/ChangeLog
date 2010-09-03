@@ -1,3 +1,34 @@
+2010-07-27  Andrew Overholt  <overholt@redhat.com>
+
+	* natives/linux/opxml/imageheader.cc: Update license to be EDL.
+	* natives/linux/opxml/imageheader.h: Likewise.
+	* natives/linux/opxml/opinfo.cc: Likewise.
+	* natives/linux/opxml/opinfo.h: Likewise.
+	* natives/linux/opxml/oprofiledb.cc: Likewise.
+	* natives/linux/opxml/oprofiledb.h: Likewise.
+	* natives/linux/opxml/opxml.cc: Likewise.
+	* natives/linux/opxml/oxmlstream.h: Likewise.
+	* natives/linux/opxml/profileimage.cc: Likewise.
+	* natives/linux/opxml/profileimage.h: Likewise.
+	* natives/linux/opxml/sample.cc: Likewise.
+	* natives/linux/opxml/sample.h: Likewise.
+	* natives/linux/opxml/samplefile.cc: Likewise.
+	* natives/linux/opxml/samplefile.h: Likewise.
+	* natives/linux/opxml/session.cc: Likewise.
+	* natives/linux/opxml/session.h: Likewise.
+	* natives/linux/opxml/sevent.cc: Likewise.
+	* natives/linux/opxml/sevent.h: Likewise.
+	* natives/linux/opxml/stable.cc: Likewise.
+	* natives/linux/opxml/stable.h: Likewise.
+	* natives/linux/opxml/symbol.cc: Likewise.
+	* natives/linux/opxml/symbol.h: Likewise.
+	* natives/linux/opxml/xmlbuf.cc: Likewise.
+	* natives/linux/opxml/xmlbuf.h: Likewise.
+	* natives/linux/opxml/xmlfmt.cc: Likewise.
+	* natives/linux/opxml/xmlfmt.h: Likewise.
+	* natives/linux/opxml/xmltag.cc: Likewise.
+	* natives/linux/opxml/xmltag.h: Likewise.
+
 2010-07-08  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #314737
