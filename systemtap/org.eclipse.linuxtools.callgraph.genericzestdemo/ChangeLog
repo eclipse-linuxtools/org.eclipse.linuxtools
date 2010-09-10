@@ -1,0 +1,4 @@
+2010-09-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add zest plug-in dependencies rather than import packages
+	within them.
