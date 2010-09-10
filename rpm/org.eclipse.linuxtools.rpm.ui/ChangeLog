@@ -1,3 +1,21 @@
+2010-09-10  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (SRPMImportOperation): Fix javadoc.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (NewProjectListener): Format.
+	(sourceSRPM): Likewise.
+	(SRPMImportPage): Likewise.
+	(getSelectedProjectName): Likewise.
+	(getSelectedSRPM): Support http urls.
+	(createSourceRPMCombo): Format.
+	(.modifyText): Likewise.
+	(.handleEvent): Likewise.
+	(createProjectBox): Likewise.
+	(handleEvent): Likewise.
+	(canFinish): Support http urls.
+	(finish): Format. 
+	(getNewProject): Format.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportWizard.java (performFinish): Do not catch no longer thrown exception.
+
 2010-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: Change provider to Eclipse Linux Tools.

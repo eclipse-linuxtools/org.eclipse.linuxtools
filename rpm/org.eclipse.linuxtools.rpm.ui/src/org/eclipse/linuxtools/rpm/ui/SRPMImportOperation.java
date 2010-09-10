@@ -42,10 +42,8 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 
 	/**
 	 * Method SRPMImportOperation.
-	 * @param name - (IProject) name
-	 * @param srpm_name - name of input srpm
-	 * @param applyPatchesFlag - Apply patches on import
-	 * @param runAutoConfFlag - Run autoconf on import
+	 * @param project The project to import into.
+	 * @param sourceRPM The source rpm to import.
 	 */
 	public SRPMImportOperation(IProject project, File sourceRPM) {
 		this.project = project;
