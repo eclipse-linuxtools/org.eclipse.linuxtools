@@ -1,3 +1,9 @@
+2010-09-10  Alexander Kurtakov  <akurtako@redhat.com>
+    Add a utility job for downloading file.
+	* src/org/eclipse/linuxtools/rpm/core/utils/DownloadJob.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/utils/messages.properties: New file.
+
 2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildAll): Do not call prep, rpmbuild is cleaning itself and prep may fail if clean wasn't run before it.
