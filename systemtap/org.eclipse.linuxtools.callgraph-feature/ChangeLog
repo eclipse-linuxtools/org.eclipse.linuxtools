@@ -1,3 +1,7 @@
+2010-09-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Put things back to just requiring the zest and draw2d plug-ins.
+
 2010-09-09  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Add requirement for org.eclipse.zest as feature instead of plug-ins needed.
