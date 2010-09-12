@@ -1,3 +1,7 @@
+2010-09-12  francois  <francois@sushi>
+
+	* src/org/eclipse/linuxtools/tmf/ui/widgets/TmfVirtualTable.java (handleTableKeyEvent): Fixed table scrolling issues
+
 2010-07-28  Francois Chouinard  <fchouinard@gmail.com>
 
 	* src/org/eclipse/linuxtools/tmf/ui/widgets/TMFTable.java: Removed.
