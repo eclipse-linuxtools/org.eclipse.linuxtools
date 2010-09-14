@@ -1,3 +1,9 @@
+2010-09-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #325194
+	* plugin.xml: Add enable restrictions for Autotools General and Configure Settings
+	property pages.
+
 2010-08-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Patch from Marc-Andre Laperle  <malaperle@omnialabs.net>
