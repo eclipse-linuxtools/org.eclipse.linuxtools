@@ -1,3 +1,12 @@
+2010-09-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (RPMProject): Add set for storing missing dependencies.
+	(buildPrep): Verify closing streams.
+	(addMissingDependency): Simple way to add missing dependency.
+	(getMissingDependencies): Retrieve missing dependencies.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (.run): Verify streams are closing.
+	(runCommand): Likewise.
+
 2010-09-10  Alexander Kurtakov  <akurtako@redhat.com>
 	Another job to store to java.io.File.
 	* src/org/eclipse/linuxtools/rpm/core/utils/FileDownloadJob.java: New file.
