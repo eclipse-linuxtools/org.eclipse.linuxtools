@@ -45,7 +45,8 @@ public class ValgrindCoreParser {
 			String line;
 			while ((line = br.readLine()) != null) {
 				// remove PID string
-				line = line.replaceFirst("==\\d+==", EMPTY_STRING); //$NON-NLS-1$
+				// might encounter warnings also #325130
+				line = line.replaceFirst("==\\d+==|\\*\\*\\d+\\*\\*", EMPTY_STRING); //$NON-NLS-1$
 
 				int indent;
 				for (indent = 0; indent < line.length()

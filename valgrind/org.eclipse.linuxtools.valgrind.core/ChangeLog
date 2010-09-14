@@ -1,3 +1,8 @@
+2010-09-13  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCoreParser.java (ValgrindCoreParser): Handle
+	warning messages.
+
 2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/core/AbstractValgrindTextParser.java: Removed.
