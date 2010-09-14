@@ -116,6 +116,14 @@
             <test property="org.eclipse.ui.console.consoleTypeTest" value="rpmbuild"/>
          </enablement>
       </consolePatternMatchListener>
+       <consolePatternMatchListener
+            class="org.eclipse.linuxtools.rpm.ui.ErrorLineMatcher"
+            id="org.eclipse.linuxtools.rpm.ui.ErrorLineMatcher"
+            regex=".*(error):\W(line)\W\d{1,}:.*">
+         <enablement>
+            <test property="org.eclipse.ui.console.consoleTypeTest" value="rpmbuild"/>
+         </enablement>
+      </consolePatternMatchListener>
    </extension>
  
 </plugin>
