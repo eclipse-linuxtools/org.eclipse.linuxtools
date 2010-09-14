@@ -1,3 +1,14 @@
+2010-09-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/MissingDependencyMatcher.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/RpmConsole.java: New file.
+	* plugin.xml: Add pattern handler.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (RPMExportOperation): Add javadoc.
+	(run): Use IOConsole not MessageConsole.
+	(findConsole): No need to have name parameter, we are using RpmConsole.ID now.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java (performFinish): RPMExportOperation is proper job now.
+	(.done): Likewise.
+
 2010-09-10  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (SRPMImportOperation): Fix javadoc.
