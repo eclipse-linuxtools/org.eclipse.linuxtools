@@ -300,6 +300,18 @@
                name="projectNature"
                value="org.eclipse.linuxtools.cdt.autotools.core.autotoolsNatureV2">
           </filter>
+          <enabledWhen>
+             <or>
+		       <instanceof value="org.eclipse.core.resources.IProject"/>
+		       <instanceof value="org.eclipse.cdt.core.model.ICProject"/>
+		     
+		       <instanceof value="org.eclipse.core.resources.IFolder"/>
+		       <instanceof value="org.eclipse.cdt.core.model.ICContainer"/>
+
+         	   <instanceof value="org.eclipse.cdt.core.model.ITranslationUnit"/>
+	           <instanceof value="org.eclipse.core.resources.IFile"/>
+		     </or>          
+          </enabledWhen>
        </page>
        <page
             category="org.eclipse.linuxtools.cdt.autotools.ui.propertypage"
@@ -310,6 +322,12 @@
                name="projectNature"
                value="org.eclipse.linuxtools.cdt.autotools.core.autotoolsNatureV2">
           </filter>
+          <enabledWhen>
+             <or>
+		       <instanceof value="org.eclipse.core.resources.IProject"/>
+		       <instanceof value="org.eclipse.cdt.core.model.ICProject"/>
+		     </or>          
+          </enabledWhen>
       </page>
     </extension>
    <extension
