@@ -60,7 +60,9 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	final protected boolean  fLogData;
 	final protected boolean  fLogError;
 
+	public static final int DEFAULT_BLOCK_SIZE = 5000;
 	public static final int DEFAULT_QUEUE_SIZE = 1000;
+
 	protected final int fQueueSize;
 	protected final BlockingQueue<T> fDataQueue;
 	protected final TmfRequestExecutor fExecutor;
@@ -189,10 +191,10 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
 	// ------------------------------------------------------------------------
 
 	private void dispatchRequest(final ITmfDataRequest<T> request) {
-		if (request.getExecType() == ExecutionType.SHORT)
+		if (request.getExecType() == ExecutionType.FOREGROUND)
 			queueRequest(request);
 		else
-			queueLongRequest(request);
+			queueBackgroundRequest(request, DEFAULT_BLOCK_SIZE, true);
 	}
 
 	protected void queueRequest(final ITmfDataRequest<T> request) {
@@ -268,8 +270,8 @@ public abstract class TmfDataProvider<T extends TmfData> extends TmfComponent im
         if (Tracer.isRequestTraced()) Tracer.traceRequest(request, "queued");
 	}
 
-	// By default, same behavior as a short request
-	protected void queueLongRequest(final ITmfDataRequest<T> request) {
+	// By default, same behavior as a foreground request
+	protected void queueBackgroundRequest(final ITmfDataRequest<T> request, final int blockSize, boolean indexing) {
 		queueRequest(request);
 	}
 
