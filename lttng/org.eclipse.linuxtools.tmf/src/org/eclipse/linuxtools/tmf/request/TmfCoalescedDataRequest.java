@@ -92,7 +92,6 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
 
 		boolean ok = request.getIndex() == getIndex();
 		ok &= request.getNbRequested()  == getNbRequested();
-		ok &= request.getBlockize()     == getBlockize();
 		ok &= request.getExecType()     == getExecType();
 		
 		return ok;
@@ -103,14 +102,19 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
     // ------------------------------------------------------------------------
 
     @Override
-	public void handleData() {
-    	for (ITmfDataRequest<T> request : fRequests) {
-    		request.setData(getData());
-    		request.handleData();
-    	}
+	public void handleData(T data) {
+		super.handleData(data);
+    	// Don't call sub-requests handleData() unless this is a
+		// TmfCoalescedDataRequest; extended classes should call
+		// the sub-requests handleData().
+		if (getClass() == TmfCoalescedDataRequest.class) {
+	    	for (ITmfDataRequest<T> request : fRequests) {
+	    		request.handleData(data);
+	    	}
+		}
     }
 
-    @Override
+	@Override
     public void done() {
     	for (ITmfDataRequest<T> request : fRequests) {
     		request.done();
@@ -159,7 +163,7 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
     @Override
     public String toString() {
 		return "[TmfCoalescedDataRequest(" + getRequestId() + "," + getDataType().getSimpleName() 
-			+ "," + getIndex() + "," + getNbRequested() + "," + getBlockize() + ")]";
+			+ "," + getIndex() + "," + getNbRequested() + ")]";
     }
 
 }

@@ -1,3 +1,18 @@
+2010-09-17  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/tests/component/TmfEventProviderTest.java: Adjusted unit test 
+	* src/org/eclipse/linuxtools/tmf/tests/experiment/TmfExperimentTest.java: Adjusted to new handleData() API  
+	* src/org/eclipse/linuxtools/tmf/tests/experiment/TmfMultiTraceExperimentTest.java:Adjusted to new handleData() API  
+	* src/org/eclipse/linuxtools/tmf/tests/request/TmfCoalescedDataRequestTest.java: Adjusted to new handleData() API 
+	* src/org/eclipse/linuxtools/tmf/tests/request/TmfCoalescedEventRequestTest.java: Adjusted to new handleData() API 
+	* src/org/eclipse/linuxtools/tmf/tests/request/TmfDataRequestTest.java: Adjusted to new handleData() API 
+	* src/org/eclipse/linuxtools/tmf/tests/request/TmfEventRequestTest.java: Adjusted to new handleData() API 
+	* src/org/eclipse/linuxtools/tmf/tests/trace/TmfExperimentTest.java: Adjusted to new handleData() API 
+	* src/org/eclipse/linuxtools/tmf/tests/trace/TmfTraceTest.java: Adjusted to new handleData() API 
+	* stubs/org/eclipse/linuxtools/tmf/component/TmfSyntheticEventProviderStub.java: Adjusted to new handleData() API 
+	* stubs/org/eclipse/linuxtools/tmf/request/TmfDataRequestStub.java: Adjusted to new handleData() API 
+	* stubs/org/eclipse/linuxtools/tmf/request/TmfEventRequestStub.java: Adjusted to new handleData() API 
+
 2010-09-09  Francois Chouinard  <fchouinard@gmail.com>
 
     * src/org/eclipse/linuxtools/tmf/tests/experiment/TmfExperimentTest.java: Added a few checks
