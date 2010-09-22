@@ -1,3 +1,7 @@
+2010-09-22  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Depend on x86_64 sdk.
+
 2010-08-19  Charley Wang  <chwang@redhat.com>
 
 	* linuxtools.map: Added Callgraph docs plugin
