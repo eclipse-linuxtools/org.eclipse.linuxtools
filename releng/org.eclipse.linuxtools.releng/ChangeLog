@@ -1,3 +1,7 @@
+2010-09-23  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Do not override pack200 home.
+
 2010-09-22  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Depend on x86_64 sdk.
