@@ -1,3 +1,7 @@
+2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Use 3.6 basebuilder.
+
 2010-09-23  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Do not override pack200 home.
