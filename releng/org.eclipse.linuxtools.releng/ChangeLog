@@ -1,5 +1,9 @@
 2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Override pack200 home.
+
+2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Override default java home.
 	
 2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
