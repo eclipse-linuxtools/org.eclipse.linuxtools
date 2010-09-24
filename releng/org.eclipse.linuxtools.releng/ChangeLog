@@ -1,5 +1,9 @@
 2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Override default java home.
+	
+2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Use 3.6 basebuilder.
 
 2010-09-23  Alexander Kurtakov  <akurtako@redhat.com>
