@@ -1,5 +1,9 @@
 2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Fix update site url.
+
+2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Switch to using update site.
 
 2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
