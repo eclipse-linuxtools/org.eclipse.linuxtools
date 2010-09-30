@@ -1,5 +1,9 @@
 2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Add zest feature IU.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Fix birt feature IU.
 
 2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
