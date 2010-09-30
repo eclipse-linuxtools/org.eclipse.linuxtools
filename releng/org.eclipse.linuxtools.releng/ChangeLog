@@ -1,5 +1,9 @@
 2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Fix cdt feature IU.
+	
+2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Add swtbot update site.
 
 2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
