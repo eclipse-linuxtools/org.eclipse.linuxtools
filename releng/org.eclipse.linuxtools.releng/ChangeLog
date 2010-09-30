@@ -1,6 +1,10 @@
 2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
 
-	* build.properties: Add cdt update site.
+	* build.properties: Install org.eclipse.cdt.testing.feature.group.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add cdt update site.org.eclipse.cdt.testing.feature.group
 
 2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
 
