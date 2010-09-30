@@ -1,5 +1,9 @@
 2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Add cdt update site.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Add org.eclipse.cdt.debug.edc feature IU.
 
 2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
