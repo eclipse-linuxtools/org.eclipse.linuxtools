@@ -56,22 +56,15 @@ import org.eclipse.swt.widgets.Display;
  * @author alvaro
  * 
  */
-public abstract class AbsTimeUpdateView extends TmfView implements
-		IRequestStatusListener {
+public abstract class AbsTimeUpdateView extends TmfView implements IRequestStatusListener {
 
 	// ========================================================================
 	// Data
 	// ========================================================================
-	/**
-	 * One second in nanoseconds
-	 */
-	private static final long INITIAL_WINDOW_OFFSET = 1000000000L; /*
-																	 * 1 sec //
-																	 * in ns //
-																	 */
-	// private static final long INITIAL_WINDOW_OFFSET = 100000000L; /* 100 ms
-	// in ns */
-	/**
+
+	 private static final long INITIAL_WINDOW_OFFSET = (1L * 100 * 1000 * 1000); // .1sec
+
+	 /**
 	 * Number of events before a GUI refresh
 	 */
 	private static final Long INPUT_CHANGED_REFRESH = 3000L;
