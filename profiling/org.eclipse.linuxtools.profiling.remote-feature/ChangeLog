@@ -1,3 +1,7 @@
+2010-10-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* feature.xml: Do not import org.eclipse.tm.tcf.feature.
+
 2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* feature.xml: Remove qualifier from min version, remove unnecessary dependency.

@@ -31,7 +31,6 @@
       <import plugin="org.eclipse.debug.ui"/>
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
       <import feature="org.eclipse.linuxtools.profiling" version="0.7.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.tm.tcf.feature" version="0.3.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
