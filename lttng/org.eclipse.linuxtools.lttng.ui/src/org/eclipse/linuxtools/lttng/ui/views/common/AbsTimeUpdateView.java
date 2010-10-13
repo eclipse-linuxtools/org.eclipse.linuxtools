@@ -62,7 +62,10 @@ public abstract class AbsTimeUpdateView extends TmfView implements IRequestStatu
 	// Data
 	// ========================================================================
 
-	 private static final long INITIAL_WINDOW_OFFSET = (1L * 100 * 1000 * 1000); // .1sec
+//	 private static final long INITIAL_WINDOW_OFFSET = (1L * 1    * 1000 * 1000); // .001sec
+//	 private static final long INITIAL_WINDOW_OFFSET = (1L * 10   * 1000 * 1000); // .01sec
+	 private static final long INITIAL_WINDOW_OFFSET = (1L * 100  * 1000 * 1000); // .1sec
+//	 private static final long INITIAL_WINDOW_OFFSET = (1L * 1000 * 1000 * 1000); // 1sec
 
 	 /**
 	 * Number of events before a GUI refresh

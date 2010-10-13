@@ -60,7 +60,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 	private ITmfDataRequest<LttngSyntheticEvent> fmainRequest = null;
 	private final Map<IStateTraceManager, LttngBaseEventRequest> fEventProviderRequests = new HashMap<IStateTraceManager, LttngBaseEventRequest>();
 	private final LttngSyntheticEvent fStatusEvent;
-	private final LttngSyntheticEvent fStatusEventAck;
 	private int fMainReqEventCount = 0;
 	volatile boolean startIndSent = false;
 	private LTTngTreeNode fExperiment = null;
@@ -89,10 +88,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 		fStatusEvent = new LttngSyntheticEvent(null, statusTimeStamp, source,
 				dtype, null, null, null);
 		fStatusEvent.setSequenceInd(SequenceInd.STARTREQ);
-
-		fStatusEventAck = new LttngSyntheticEvent(null, statusTimeStamp,
-				source, dtype, null, null, null);
-		fStatusEventAck.setSequenceInd(SequenceInd.ACK);
 	}
 
 	// ========================================================================
@@ -170,7 +165,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 					0, TmfEventRequest.ALL_DATA, BLOCK_SIZE, traceModel, ITmfDataRequest.ExecutionType.FOREGROUND, trace) {
 
 				private LttngSyntheticEvent syntheticEvent = null;
-				private LttngSyntheticEvent syntheticAckIndicator = null;
 				long subEventCount = 0L;
 
 				private final long fDispatchTime = getDispatchTime().getValue();
@@ -225,7 +219,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 						// Before update
 						syntheticEvent.setSequenceInd(SequenceInd.BEFORE);
 						fmainRequest.handleData(syntheticEvent);
-						fmainRequest.handleData(syntheticAckIndicator);
 
 						// Update state locally
 						syntheticEvent.setSequenceInd(SequenceInd.UPDATE);
@@ -234,7 +227,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 						// After Update
 						syntheticEvent.setSequenceInd(SequenceInd.AFTER);
 						fmainRequest.handleData(syntheticEvent);
-						fmainRequest.handleData(syntheticAckIndicator);
 
 						// increment once per dispatch
 						incrementSynEvenCount();
@@ -263,8 +255,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 					if (syntheticEvent == null
 							|| syntheticEvent.getBaseEvent() != e) {
 						syntheticEvent = new LttngSyntheticEvent(e);
-						syntheticAckIndicator = new LttngSyntheticEvent(e);
-						syntheticAckIndicator.setSequenceInd(SequenceInd.ACK);
 					}
 
 					// Trace model needed by application handlers
@@ -308,7 +298,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 
 		// Notify application
 		fmainRequest.handleData(startIndEvent);
-		fmainRequest.handleData(fStatusEventAck);
 
 		// Notify state event processor
 		fstateUpdateProcessor.process(startIndEvent, null);
@@ -343,7 +332,6 @@ public class LttngSyntheticEventProvider extends TmfEventProvider<LttngSynthetic
 		finishEvent.setTraceModel(traceModel);
 
 		fmainRequest.handleData(finishEvent);
-		fmainRequest.handleData(fStatusEventAck);
 		fmainRequest.done();
 	}
 
