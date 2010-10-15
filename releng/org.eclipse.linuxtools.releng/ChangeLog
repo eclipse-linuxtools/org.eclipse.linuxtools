@@ -1,3 +1,8 @@
+2010-10-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* testing.properties: Add MaxPermSize setting so tests will run without
+	out of memory error.
+
 2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Install org.eclipse.cdt.testing.feature.group.
