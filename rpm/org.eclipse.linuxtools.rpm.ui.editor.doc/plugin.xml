@@ -14,9 +14,5 @@
    <extension
          point="org.eclipse.help.toc">
       <toc file="toc.xml" primary="true" />
-      <toc
-            file="userguide/SpecfileEditorReference-toc.xml"
-            primary="false">
-      </toc>
    </extension>
 </plugin>
