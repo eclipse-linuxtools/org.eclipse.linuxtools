@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.changelog.parsers.java;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.internal.ui.javaeditor.ICompilationUnitDocumentProvider;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.ITextSelection;
@@ -29,6 +30,7 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 /**
  * @author pmuldoon (Phil Muldoon)
  */
+@SuppressWarnings("restriction")
 public class JavaParser implements IParserChangeLogContrib {
 
 	/**
@@ -44,8 +46,13 @@ public class JavaParser implements IParserChangeLogContrib {
 		IWorkingCopyManager manager = JavaUI.getWorkingCopyManager();
 		manager.connect(input);
 
+		// We do the following which uses an internal interface because the
+		// WorkingCopyManager won't find a working copy for a StorageEditorInput.
+		// The document provider is actually an ICompilationUnitDocumentProvider and
+		// it handles such requests which occur when a method is deleted or renamed.
+		ICompilationUnitDocumentProvider x = (ICompilationUnitDocumentProvider)JavaUI.getDocumentProvider();
 		// Retrieve the Java Element in question.
-		ICompilationUnit workingCopy = manager.getWorkingCopy(input);
+		ICompilationUnit workingCopy = x.getWorkingCopy(input);
 		
 		if (workingCopy == null)
 			return "";
