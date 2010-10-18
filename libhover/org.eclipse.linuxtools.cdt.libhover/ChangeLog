@@ -1,7 +1,7 @@
 2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLibrary.java (getHoverInfo): Don't
-	print out stack trace for a time-out exception.
+	print out stack trace for a time-out exception.  Set read time-out to be 5 seconds.
 
 2010-03-17  Jeff Johnston  <jjohnstn@redhat.com>
 

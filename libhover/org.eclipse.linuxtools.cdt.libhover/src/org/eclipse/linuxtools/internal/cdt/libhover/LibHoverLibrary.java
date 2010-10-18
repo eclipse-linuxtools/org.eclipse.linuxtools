@@ -16,9 +16,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import org.eclipse.core.filesystem.URIUtil;
@@ -99,7 +101,9 @@ public class LibHoverLibrary {
 				InputStream docStream = null;
 				if (p == null) {
 					URL url = acDoc.toURL();
-					docStream = url.openStream();
+					URLConnection c = url.openConnection();
+					c.setReadTimeout(5000); // pick a timeout value less than 15s (default)
+					docStream = c.getInputStream();
 				} else {
 					try {
 						// Try to open the file as local to this plug-in.
@@ -119,6 +123,8 @@ public class LibHoverLibrary {
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (ConnectException e) {
+				// Do nothing..time-out exception
+			} catch (SocketTimeoutException e) {
 				// Do nothing..time-out exception
 			} catch (IOException e) {
 				e.printStackTrace();
