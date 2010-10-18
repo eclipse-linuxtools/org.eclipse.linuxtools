@@ -1,3 +1,9 @@
+2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (guessFunctionNames): 
+	Add check for out-of-range using appropriate document boundaries depending on whether the change is
+	marked as being to the local file or remote file in repository.
+
 2010-06-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java: Fix warnings.

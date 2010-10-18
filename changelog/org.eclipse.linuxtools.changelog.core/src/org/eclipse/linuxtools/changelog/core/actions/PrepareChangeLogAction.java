@@ -549,28 +549,30 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			// for all the ranges
 			for (PatchRangeElement tpre: patchFileInfo.getRanges()) {
 
-					for (int j = tpre.ffromLine; j <= tpre.ftoLine; j++) {
+				for (int j = tpre.ffromLine; j <= tpre.ftoLine; j++) {
 
+					String functionGuess = "";
+					// add func that determines type of file.
+					// right now it assumes it's java file.
+					if (tpre.isLocalChange()) {
 						if ((j < 0) || (j > doc.getNumberOfLines() - 1))
 							continue; // ignore out of bound lines
-
-						String functionGuess = "";
-						// add func that determines type of file.
-						// right now it assumes it's java file.
-						if (tpre.isLocalChange())
-							functionGuess = parseCurrentFunctionAtOffset(
-									editorName, fei, doc.getLineOffset(j));
-						else
-							functionGuess = parseCurrentFunctionAtOffset(
-									editorName, sei, olddoc.getLineOffset(j));
-
-						// putting it in hashmap will eliminate duplicate
-						// guesses.  We use a list to keep track of ordering which
-						// is helpful when trying to document a large set of changes.
-						if (functionNamesMap.get(functionGuess) == null)
-							nameList.add(functionGuess);
-						functionNamesMap.put(functionGuess, functionGuess);
+						functionGuess = parseCurrentFunctionAtOffset(
+								editorName, fei, doc.getLineOffset(j));
+					} else {
+						if ((j < 0) || (j > olddoc.getNumberOfLines() - 1))
+							continue; // ignore out of bound lines
+						functionGuess = parseCurrentFunctionAtOffset(
+								editorName, sei, olddoc.getLineOffset(j));
 					}
+
+					// putting it in hashmap will eliminate duplicate
+					// guesses.  We use a list to keep track of ordering which
+					// is helpful when trying to document a large set of changes.
+					if (functionNamesMap.get(functionGuess) == null)
+						nameList.add(functionGuess);
+					functionNamesMap.put(functionGuess, functionGuess);
+				}
 			}
 
 			// dump all unique func. guesses in the order found
