@@ -1,3 +1,9 @@
+2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/java/JavaParser.java (parseCurrentFunction): Add
+	internal accesses to ICompilationUnitManager so we can get ICompilationUnit for a StorageEditorInput
+	which occurs when we have a deleted method.
+
 2010-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: New file.  Externalized strings.
