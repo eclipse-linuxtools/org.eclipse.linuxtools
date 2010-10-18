@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>Autotools Plugin-in User Guide - Invoking Autotools</title>
-		<link type="text/css" rel="stylesheet" href="book.css"/>
+		<title>Autotools Plug-in User Guide - Invoking Autotools</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
@@ -13,13 +13,13 @@
 			<tr>
 				<td style="width: 20%" align="left">
 					<a href="Configuration.html" title="Configuration">
-						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
 					<a href="Special-Editors.html" title="Special Editors">
-						<img alt="Next" border="0" src="images/images/next.gif"/>
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
@@ -30,7 +30,7 @@
 			</tr>
 		</table><hr/>
 		<h1 id="Invoking_Autotools">Invoking Autotools</h1>
-		<p>To invoke the Autotools, a special menu item has been added to the Project menu.  Under Project -> Invoke Autotools there are a set of menu items to invoke the various Autotools for your project.  The output of the tool invocation is presented in a special Autotools Console.  Like the Configure and C-Build Consoles, the Autotools console is per-project and is not saved across Eclipse sessions.  The console, if present, can be accessed via the "Display Selected Console" button in the Console View.</p>
+		<p>To invoke the Autotools, a special menu item has been added to the Project menu.  Under Project -&gt; Invoke Autotools there are a set of menu items to invoke the various Autotools for your project.  The output of the tool invocation is presented in a special Autotools Console.  Like the Configure and C-Build Consoles, the Autotools console is per-project and is not saved across Eclipse sessions.  The console, if present, can be accessed via the "Display Selected Console" button in the Console View.</p>
 		<p>
 			<img border="0" src="images/Linuxtools-AutotoolsAutotoolsConsole.png"/>
 		</p>
@@ -81,15 +81,18 @@
 			</li>
 			<li>Invoke Libtoolize
 				<ul>
-					<li>The libtoolize tool is run from the current directory for the file or folder selected in the project.  The tool is used to add libtool support to a package.  Libtool provides macros to allow a package to create a shared library without having to know all the details required for the current platform.  This might include special compiler flags or linker options or special tools.  A dialog is presented to allow specification of options. 
-						<img border="0" src="images/Linuxtools-AutotoolsLibtoolize.png"/> 
-						<br/>For details on libtoolize, enter --help as an option.
+					<li>The libtoolize tool is run from the current directory for the file or folder selected in the project.  A dialog is presented to allow specification of options.  
+						<img border="0" src="images/Linuxtools-AutotoolsLibtoolize.png"/>.  
+						<br/>The tool is used to add libtool support to a package.  Libtool provides macros to allow a package to create a shared library without having to know all the details required for the current platform.  This might include special compiler flags or linker options or special tools.  For details on libtoolize, enter --help as an option.
 						<br/>
 					</li>
 				</ul>
 			</li>
 		</ol>
-		<p>By default, the autotools are invoked simply by their names; expecting that the path has been set up appropriately.  In some instances, you might want to specify a specific location for the autotools.  For example, your project may require old versions of the tools which you have installed locally, but do not wish to be on your path.  To set these for your project, select your project or a file/folder within it and go to Project -> Properties -> Autotools -> General and select the Tool Settings tab.</p>
+		<p>
+			<br/>
+			By default, the autotools are invoked simply by their names; expecting that the path has been set up appropriately.  In some instances, you might want to specify a specific location for the autotools.  For example, your project may require old versions of the tools which you have installed locally, but do not wish to be on your path.  To set these for your project, select your project or a file/folder within it and go to Project -&gt; Properties -&gt; Autotools -&gt; General and select the Tool Settings tab.
+		</p>
 		<p>
 			<img border="0" src="images/Linuxtools-AutotoolsToolSettings.png"/>
 		</p><hr/>
@@ -97,17 +100,17 @@
 			<tr>
 				<td style="width: 20%" align="left">
 					<a href="Configuration.html" title="Configuration">
-						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center">
-					<a href="Autotools Plugin-in User Guide.html" title="Autotools Plugin-in User Guide">
-						<img alt="Autotools Plugin-in User Guide" border="0" src="images/images/home.gif"/>
+					<a href="User-Guide.html" title="Autotools Plug-in User Guide">
+						<img alt="Autotools Plug-in User Guide" border="0" src="../../../images/home.gif"/>
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
 					<a href="Special-Editors.html" title="Special Editors">
-						<img alt="Next" border="0" src="images/images/next.gif"/>
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>

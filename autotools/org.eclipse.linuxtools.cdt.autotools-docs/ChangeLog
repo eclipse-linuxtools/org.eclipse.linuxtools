@@ -1,3 +1,88 @@
+2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/doc/anttask/MediaWikiImageFetcher.java: Removed.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/doc/anttask/tasks.properties: Removed.
+	* userguide/Autotools\ Plugin-in\ User\ Guide-toc.xml: Removed.
+	* userguide/Autotools\ Plugin-in\ User\ Guide.html: Removed.
+	* userguide/Building.html: Removed.
+	* userguide/Configuration.html: Removed.
+	* userguide/Creating-an-Autotools-Project.html: Removed.
+	* userguide/images/Linuxtool-AutotoolsMakeTargetsMenu.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAclocal.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutoconfEditor.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutoconfEditorPrefs.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutoheader.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutomake.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutomakeEditor.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutoreconf.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutotools.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsAutotoolsConsole.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsBuilders.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsBuildLocation.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsCheckout.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsConfsettings.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsConsolePrefs.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsConsoleSelect.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsConvAutotoolsWizard.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsConvertWizard.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsCProjectWizard.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsCreateConf.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsEditorsTab.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsLibtoolize.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsMakeTargetBuild.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsMakeTargetCreate.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsMakeTargetEdit.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsManageConfs.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsNewOther.png: Removed.
+	* userguide/images/Linuxtools-AutotoolsToolSettings.png: Removed.
+	* userguide/Invoking-Autotools.html: Removed.
+	* userguide/Make-Targets.html: Removed.
+	* userguide/Special-Editors.html: Removed.
+	* userguide/Supported-Environments.html: Removed.
+	* userguide/Updating-This-Document.html: Removed.
+	* Linux_Tools_Project/Autotools/User_Guide/Building.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/Configuration.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/Creating-an-Autotools-Project.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtool-AutotoolsMakeTargetsMenu.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAclocal.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutoconfEditor.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutoconfEditorPrefs.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutoheader.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutomake.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutomakeEditor.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutoreconf.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutotools.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsAutotoolsConsole.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsBuilders.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsBuildLocation.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsCheckout.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsConfsettings.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsConsolePrefs.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsConsoleSelect.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsConvAutotoolsWizard.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsConvertWizard.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsCProjectWizard.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsCreateConf.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsEditorsTab.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsLibtoolize.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsMakeTargetBuild.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsMakeTargetCreate.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsMakeTargetEdit.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsManageConfs.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsNewOther.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/images/Linuxtools-AutotoolsToolSettings.png: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/Invoking-Autotools.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/Make-Targets.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/Special-Editors.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/Supported-Environments.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/Updating-This-Document.html: New file.
+	* Linux_Tools_Project/Autotools/User_Guide/User-Guide.html: New file.
+	* .classpath: Updated.
+	* build-helper.xml: Rewritten to match rpm ui editor which uses media-wiki anttasks rather
+	than extracting images manually.
+	* build.properties: Remove directories that no longer exist and add new ones.
+	* toc.xml: Replaced.
+
 2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #315852

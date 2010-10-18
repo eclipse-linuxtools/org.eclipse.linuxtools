@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>Autotools Plugin-in User Guide - Configuration</title>
-		<link type="text/css" rel="stylesheet" href="book.css"/>
+		<title>Autotools Plug-in User Guide - Configuration</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
@@ -13,13 +13,13 @@
 			<tr>
 				<td style="width: 20%" align="left">
 					<a href="Creating-an-Autotools-Project.html" title="Creating an Autotools Project">
-						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
 					<a href="Invoking-Autotools.html" title="Invoking Autotools">
-						<img alt="Next" border="0" src="images/images/next.gif"/>
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
@@ -31,7 +31,7 @@
 		</table><hr/>
 		<h1 id="Configuration">Configuration</h1>
 		<p>Prior to running a build, the Autotools plug-in runs the configure script.  Parameters to be passed to configure may be
-			entered via the Project -> Properties -> Autotools -> Configure Settings UI shown below:</p>
+			entered via the Project -&gt; Properties -&gt; Autotools -&gt; Configure Settings UI shown below:</p>
 		<p>
 			<img border="0" src="images/Linuxtools-AutotoolsConfsettings.png"/>
 		</p>
@@ -80,9 +80,9 @@
 			</li>
 		</ol>
 		<p>If after all of this, the top-level Makefile is not created, an error is generated and building stops.  </p>
-		<p>The configure process can be manually forced for a project via the Project -> Reconfigure Project menu item.  A reconfigure runs the configure script even if a config.status file is found indicating a prior configuration was successful.</p>
+		<p>The configure process can be manually forced for a project via the Project -&gt; Reconfigure Project menu item.  A reconfigure runs the configure script even if a config.status file is found indicating a prior configuration was successful.</p>
 		<p>The entire configuration step is performed by a special builder that is added when an Autotools project is created or converted from another project.  The special builder runs the configure step and is positioned to run prior to the Makefile builder.</p>
-		<p>From the Project -> Properties -> Builders tab for a project you will see:</p>
+		<p>From the Project -&gt; Properties -&gt; Builders tab for a project you will see:</p>
 		<p>
 			<img border="0" src="images/Linuxtools-AutotoolsBuilders.png"/>
 		</p>
@@ -93,7 +93,7 @@
 			<img border="0" src="images/Linuxtools-AutotoolsConsoleSelect.png"/>
 		</p>
 		<p>Note that the configure console output is per project and shows configuration output for the last build of the project.  It is not saved between Eclipse sessions.</p>
-		<p>The Autotools console is an instance of a CDT Build console so the console preferences set in Window -> Preferences -> C/C++ -> Build Console apply as well.</p>
+		<p>The Autotools console is an instance of a CDT Build console so the console preferences set in Window -&gt; Preferences -&gt; C/C++ -&gt; Build Console apply as well.</p>
 		<p>
 			<img border="0" src="images/Linuxtools-AutotoolsConsolePrefs.png"/>
 		</p><hr/>
@@ -101,17 +101,17 @@
 			<tr>
 				<td style="width: 20%" align="left">
 					<a href="Creating-an-Autotools-Project.html" title="Creating an Autotools Project">
-						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center">
-					<a href="Autotools Plugin-in User Guide.html" title="Autotools Plugin-in User Guide">
-						<img alt="Autotools Plugin-in User Guide" border="0" src="images/images/home.gif"/>
+					<a href="User-Guide.html" title="Autotools Plug-in User Guide">
+						<img alt="Autotools Plug-in User Guide" border="0" src="../../../images/home.gif"/>
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
 					<a href="Invoking-Autotools.html" title="Invoking Autotools">
-						<img alt="Next" border="0" src="images/images/next.gif"/>
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
