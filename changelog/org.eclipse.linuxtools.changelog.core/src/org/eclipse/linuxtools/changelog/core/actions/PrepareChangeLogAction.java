@@ -553,18 +553,20 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 					for (int j = tpre.ffromLine; j <= tpre.ftoLine; j++) {
 
-						if ((j < 0) || (j > doc.getNumberOfLines() - 1))
-							continue; // ignore out of bound lines
-
 						String functionGuess = "";
 						// add func that determines type of file.
 						// right now it assumes it's java file.
-						if (tpre.isLocalChange())
+						if (tpre.isLocalChange()) {
+							if ((j < 0) || (j > doc.getNumberOfLines() - 1))
+								continue; // ignore out of bound lines
 							functionGuess = parseCurrentFunctionAtOffset(
 									editorName, fei, doc.getLineOffset(j));
-						else
+						} else {
+							if ((j < 0) || (j > olddoc.getNumberOfLines() - 1))
+								continue; // ignore out of bound lines
 							functionGuess = parseCurrentFunctionAtOffset(
 									editorName, sei, olddoc.getLineOffset(j));
+						}
 
 						// putting it in hashmap will eliminate duplicate
 						// guesses.  We use a list to keep track of ordering which
