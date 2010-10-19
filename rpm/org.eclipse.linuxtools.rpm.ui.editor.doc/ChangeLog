@@ -1,3 +1,7 @@
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Remove not needed src and output.
+
 2010-10-18  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Add images and Linux_Tools_Project directories to binary builds.
