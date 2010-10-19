@@ -1,5 +1,9 @@
 2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build-helper.xml: Fix pageAppendum to point to the right wiki page.
+	
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Remove not needed src and output.
 
 2010-10-18  Alexander Kurtakov  <akurtako@redhat.com>

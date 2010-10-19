@@ -30,16 +30,16 @@
 	<target name="all" description="Generate Eclipse help content for the Linux Tools Specfile Editor user guide">
 		<mediawiki-to-eclipse-help wikiBaseUrl="${specfile.help.doc.url.base}" title="Specfile Editor User Guide" formatoutput="true" dest="." templateExcludes="*eclipseproject*">
 
-			<path name="Linux_Tools_Project/SpecfileEditor/User_Guide" title="Specfile Editor User Guide" generateToc="false"/>
+			<path name="Linux_Tools_Project/SpecfileEditor/User_Guide" title="Specfile Editor User Guide" generateToc="false" />
 			<stylesheet url="book.css" />
 			<pageAppendum>
 = Updating This Document =
 
 This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit 
-https://fedoraproject.org/wiki/Eclipse_Fedora_Packager_User_Guide
+http://wiki.eclipse.org/Linux_Tools_Project/SpecfileEditor/User_Guide .
 		                         </pageAppendum>
 		</mediawiki-to-eclipse-help>
-	    <antcall target="test" />
+		<antcall target="test" />
 	</target>
 
 	<target name="test" description="verify that all of the HTML files are well-formed XML">
@@ -66,6 +66,6 @@ or inadvertently starting a line with a space character (in MediaWiki this start
 			</fileset>
 			<dtd publicid="-//W3C//DTD XHTML 1.0 Transitional//EN" location="${basedir}/tmp/__empty.dtd" />
 		</xmlvalidate>
-		<delete dir="tmp"/>
+		<delete dir="tmp" />
 	</target>
 </project>
