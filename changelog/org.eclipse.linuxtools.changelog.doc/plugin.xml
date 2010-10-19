@@ -4,8 +4,10 @@
 <!-- Configure the help contribution for this plugin -->
    <extension point="org.eclipse.help.toc">
       <toc
+            file="toc-doc.xml"
+            primary="true" />
+      <toc
             file="toc.xml"
-            primary="true">
-      </toc>
+            primary="false" />
    </extension>
 </plugin>
