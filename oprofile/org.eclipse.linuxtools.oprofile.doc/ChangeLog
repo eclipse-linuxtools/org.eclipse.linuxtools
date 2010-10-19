@@ -1,3 +1,46 @@
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src: Removed.
+	* userguide: Removed.
+	* images/home.gif: New file.
+	* images/next.gif: New file.
+	* images/prev.gif: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/Example-Project.html: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Icon-oprofile_dependent.gif: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Icon-oprofile_event.gif: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Icon-oprofile_image.gif: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Icon-oprofile_sample.gif: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Icon-oprofile_session.gif: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Icon-oprofile_symbol.gif: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Oprofile_manual_dialog.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Oprofile_manual_shortcut.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-global_config.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-installscript_error_dialog.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-one-click_launch.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-opcontrol_consolehelper.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-oprofile_event_timer.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-oprofile_eventconfig.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-oprofile_global_differences.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-oprofile_save_session.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-oprofile_view_full.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/images/Screenshot-oprofiled_log_reader.png: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/Installation-and-Set-Up.html: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/Launching-A-Profile.html: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/OProfile-View.html: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/Profiling-Configuration.html: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/Troubleshooting.html: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/Updating-This-Document.html: New file.
+	* Linux_Tools_Project/OProfile/User_Guide/User-Guide.html: New file.
+	* toc-doc.xml: New file.
+	* .classpath: No longer a java project.
+	* .project: Likewise.
+	* build-helper.xml: Use mediawiki-to-eclipse-help task directly.
+	* build.properties: Ship new names of generated files.
+	* META-INF/MANIFEST.MF: Don't require ant.
+	* plugin.xml: One more toc file.
+	* toc.xml: Generated toc.
+	
+
 2009-04-15  Andrew Overholt  <overholt@redhat.com>
 
 	* doc/notices.html: Use copyright symbol.
