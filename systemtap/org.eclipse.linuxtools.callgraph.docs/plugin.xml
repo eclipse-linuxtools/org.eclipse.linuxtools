@@ -3,14 +3,7 @@
 <plugin>
    <extension
          point="org.eclipse.help.toc">
-      <toc
-            file="toc.xml"
-            primary="true">
-      </toc>
-      <toc
-            file="userguide/Callgraph Reference-toc.xml"
-            primary="true">
-      </toc>
+      <toc file="toc-doc.xml" primary="true" />
+      <toc file="toc.xml"  primary="false" />
    </extension>
-
 </plugin>
