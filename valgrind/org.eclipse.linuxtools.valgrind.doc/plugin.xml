@@ -6,14 +6,8 @@
          id="org.eclipse.linuxtools.valgrind.doc.helpDocs"
          name="%extension.name.0"
          point="org.eclipse.help.toc">
-      <toc
-            file="toc.xml"
-            primary="true">
-      </toc>
-      <toc
-            file="userguide/Valgrind Reference-toc.xml"
-            primary="true">
-      </toc>
+      <toc file="toc-doc.xml" primary="true" />
+      <toc file="toc.xml" primary="false" />
    </extension>
 
 </plugin>

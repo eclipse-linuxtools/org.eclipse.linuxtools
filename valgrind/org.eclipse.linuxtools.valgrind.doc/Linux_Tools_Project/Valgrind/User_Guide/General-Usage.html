@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<title>Valgrind Reference - General Usage</title>
-		<link type="text/css" rel="stylesheet" href="book.css"/>
+		<title>Valgrind User Guide - General Usage</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
 	</head>
 	<body>
 		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
@@ -13,13 +13,13 @@
 			<tr>
 				<td style="width: 20%" align="left">
 					<a href="Installing.html" title="Installing">
-						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center"></td>
 				<td style="width: 20%" align="right">
 					<a href="Using-Memcheck.html" title="Using Memcheck">
-						<img alt="Next" border="0" src="images/images/next.gif"/>
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
@@ -35,13 +35,13 @@
 			<i>binary</i> name in the 
 			<b>
 				<i>Project Explorer</i>
-			</b> window and navigate to <u>Profile As</u> > <u>Profile With Valgrind</u>. If a source file belonging to that program is available on any open editor, you can also right-click inside the editor to navigate to the one-click launch.
+			</b> window and navigate to <u>Profile As</u> &gt; <u>Profile With Valgrind</u>. If a source file belonging to that program is available on any open editor, you can also right-click inside the editor to navigate to the one-click launch.
 
 			<br/>
 			<img border="0" src="images/Shortcut.png"/>
 		</p>
 		<h2 id="Configuring_a_Profile_Run">Configuring a Profile Run</h2>
-		<p>To configure a Valgrind profile run, navigate to <u>Profile As</u> > <u>Profile Configurations</u> to access the 
+		<p>To configure a Valgrind profile run, navigate to <u>Profile As</u> &gt; <u>Profile Configurations</u> to access the 
 			<b>
 				<i>Profile Configurations</i>
 			</b> menu. 
@@ -139,7 +139,7 @@
 			</b> wizard menu. To access the 
 			<b>
 				<i>Export</i>
-			</b> wizard menu, navigate to <u>File</u> > <u>Export</u> and select <u>Valgrind Log Files</u> under the category <u>Other</u>. 
+			</b> wizard menu, navigate to <u>File</u> &gt; <u>Export</u> and select <u>Valgrind Log Files</u> under the category <u>Other</u>. 
 		</p>
 		<p>
 			<br/>
@@ -179,11 +179,10 @@
 		<h3 id="x86_64_Mac_OS">x86_64 Mac OS</h3>
 		<p>Valgrind is only compatible with x86 binaries on Mac OS, so if you have x86_64 you'll need to ensure that x86 binaries are being built. To do this, right click on the project and select Properties. </p>
 		<p>Within the Properties window, select C/C++ Build then add '-m32' to the Command field for the MacOS X C++ Linker, GCC C++ Compiler and GCC C Compiler. This will cause x86 binaries to be created.</p>
-		<h3 id="Other_Mac_OS">Other Mac OS</h3>
-		<p>Ensure you have a release of the Valgrind command-line tool installed. See 
-			<a href="http://valgrind.org/">http://valgrind.org/</a>.
+		<h3 id="All_Mac_OS">All Mac OS</h3>
+		<p>First ensure you have a release of the Valgrind command-line tool installed. See 
+			<a href="http://valgrind.org/">http://valgrind.org/</a> and see above for special Valgrind instructions. After installing, you will need to create a symlink to /usr/bin/valgrind so the Valgrind plugin can find it. 
 		</p>
-		<p>After installing, you will need to create a symlink to /usr/bin/valgrind. </p>
 		<p>Use <code>which valgrind</code> to find the install location of the Valgrind binary. </p>
 		<p><code>ln -s /usr/bin/valgrind /location/of/valgrind</code> will create the symlink.</p>
 		<p>After that, the Eclipse Valgrind plugin should work as specified in other parts of this wiki page.</p><hr/>
@@ -191,17 +190,17 @@
 			<tr>
 				<td style="width: 20%" align="left">
 					<a href="Installing.html" title="Installing">
-						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
 					</a>
 				</td>
 				<td style="width: 60%" align="center">
-					<a href="Valgrind Reference.html" title="Valgrind Reference">
-						<img alt="Valgrind Reference" border="0" src="images/images/home.gif"/>
+					<a href="User-Guide.html" title="Valgrind User Guide">
+						<img alt="Valgrind User Guide" border="0" src="../../../images/home.gif"/>
 					</a>
 				</td>
 				<td style="width: 20%" align="right">
 					<a href="Using-Memcheck.html" title="Using Memcheck">
-						<img alt="Next" border="0" src="images/images/next.gif"/>
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
 					</a>
 				</td>
 			</tr>
