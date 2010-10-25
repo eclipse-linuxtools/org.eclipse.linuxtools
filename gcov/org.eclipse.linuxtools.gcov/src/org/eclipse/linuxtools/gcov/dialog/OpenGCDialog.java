@@ -125,14 +125,14 @@ public class OpenGCDialog extends Dialog {
     	/* first line */
         Group c = new Group(composite, SWT.NONE);
         c.setText("Binary File");
-        c.setToolTipText("Please enter here the binary file who produced this gcov trace.");
+        c.setToolTipText("Please enter here the binary file which produced the coverage data.");
         GridLayout layout = new GridLayout(2,false);
         c.setLayout(layout);
         GridData data = new GridData(GridData.FILL_BOTH);
         c.setLayoutData(data);
         
         Label binLabel = new Label(c,SWT.NONE);
-        binLabel.setText("Please enter here the binary file who produced gcov trace");
+        binLabel.setText("Please enter here the binary file which produced the coverage data.");
         data = new GridData();
         data.horizontalSpan = 2;
         binLabel.setLayoutData(data);
