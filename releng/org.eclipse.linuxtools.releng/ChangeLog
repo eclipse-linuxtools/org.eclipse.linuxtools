@@ -1,3 +1,7 @@
+2010-10-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* testing.properties: Change XULRunnerPath to something that will run on x86_64.
+
 2010-10-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* testing.properties: Add MaxPermSize setting so tests will run without
