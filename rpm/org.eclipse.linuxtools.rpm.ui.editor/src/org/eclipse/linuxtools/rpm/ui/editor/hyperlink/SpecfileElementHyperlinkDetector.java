@@ -23,6 +23,7 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileSpecialSymbols;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
@@ -45,17 +46,21 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	private static final String PATCH_IDENTIFIER = "%patch"; //$NON-NLS-1$
 	private static final String SOURCE_IDENTIFIER = "%{SOURCE"; //$NON-NLS-1$
 	private Specfile specfile;
-
-	public SpecfileElementHyperlinkDetector(Specfile specfile) {
-		super();
-		this.specfile = specfile;
-	}
-
+	
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion region, boolean canShowMultipleHyperlinks) {
-
+		
 		if (region == null || textViewer == null) {
 			return null;
+		}
+		
+		if (specfile == null) {
+			SpecfileEditor a = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+			if (a != null) {
+				specfile = a.getSpecfile();
+			} else {
+				return null;
+			}
 		}
 
 		IDocument document = textViewer.getDocument();
@@ -156,5 +161,9 @@ public class SpecfileElementHyperlinkDetector extends AbstractHyperlinkDetector 
 	private IHyperlink[] prepareHyperlink(IRegion lineInfo, String line,
 			String word, SpecfileElement source) {
 		return prepareHyperlink(lineInfo, line, word, source, 0);
+	}
+	
+	public void setSpecfile(Specfile specfile) {
+		this.specfile = specfile;
 	}
 }

@@ -17,6 +17,7 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.hyperlink.URLHyperlink;
 import org.eclipse.jface.text.hyperlink.URLHyperlinkDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 
@@ -30,18 +31,19 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 
 	private Specfile specfile;
 	
-	/**
-	 * Creates a new URL hyperlink with macro detector.
-	 */
-	public URLHyperlinkWithMacroDetector(Specfile specfile) {
-		this.specfile= specfile;
-	}
-	
 	/*
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer, org.eclipse.jface.text.IRegion, boolean)
 	 */
 	@Override
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
+		if (specfile == null) {
+			SpecfileEditor a = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+			if (a != null) {
+				specfile = a.getSpecfile();
+			} else {
+				return null;
+			}
+		}
 		IHyperlink[] returned = super.detectHyperlinks(textViewer, region, canShowMultipleHyperlinks);
 		if (returned != null && returned.length > 0) {
 		IHyperlink hyperlink = returned[0];
@@ -52,6 +54,10 @@ public class URLHyperlinkWithMacroDetector extends URLHyperlinkDetector {
 			}
 		}
 		return returned;
+	}
+	
+	public void setSpecfile(Specfile specfile) {
+		this.specfile = specfile;
 	}
 
 }

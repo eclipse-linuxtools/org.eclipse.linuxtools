@@ -1,3 +1,17 @@
+2010-10-26  Alexander Kurtakov  <akurtako@redhat.com>
+    Allow bug hyperlinking and use extension point. (Modified patch by Charley Wang bug#316380).
+	* plugin.xml: Use extension point for hyperlinks.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/MailHyperlinkDetector.java (detectHyperlinks): Locate specfile editor.
+	(setEditor): Set specfile editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Locate specfile editor.
+	(setEditor): Set specfile editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (detectHyperlinks): Locate specfile editor.
+	(setSpecfile): Set specfile editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/URLHyperlinkWithMacroDetector.java (detectHyperlinks): Locate specfile editor.
+	(setSpecfile): Set specfile editor.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java (getHyperlinkDetectors): Simplify thanks to using extension.
+	(getHyperlinkDetectorTargets): Likewise.
+
 2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/DownloadJob.java: New file.

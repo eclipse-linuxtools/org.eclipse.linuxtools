@@ -36,11 +36,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 
 	private SpecfileEditor editor;
-
-	public MailHyperlinkDetector(SpecfileEditor editor) {
-		this.editor = editor;
-	}
-
+	
 	/*
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
 	 *      org.eclipse.jface.text.IRegion, boolean)
@@ -48,6 +44,12 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
 		if (region == null || textViewer == null)
 			return null;
+		if (editor == null) {
+			editor = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+			if (editor == null) {
+				return null;
+			}
+		}
 
 		IDocument document= textViewer.getDocument();
 
@@ -214,4 +216,7 @@ public class MailHyperlinkDetector extends AbstractHyperlinkDetector {
 		return body;
 	}
 
+	public void setEditor(SpecfileEditor editor) {
+		this.editor = editor;
+	}
 }
