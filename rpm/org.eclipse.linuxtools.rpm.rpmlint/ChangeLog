@@ -1,3 +1,7 @@
+2010-10-26  Alexander Kurtakov  <akurtako@redhat.com>
+    Apply patch from #316648. Thanks to Charley Wang.
+	* plugin.xml: Run rpmlint on spec files only.
+
 2010-07-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (execute):  Add support
