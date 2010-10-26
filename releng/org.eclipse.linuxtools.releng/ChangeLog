@@ -1,5 +1,6 @@
 2010-10-26  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* build.properties: Try adding org.eclipse.cdt.gnu.build.feature.group.
 	* testing.properties: Change XULRunnerPath to something that will run on x86_64.
 
 2010-10-15  Jeff Johnston  <jjohnstn@redhat.com>
