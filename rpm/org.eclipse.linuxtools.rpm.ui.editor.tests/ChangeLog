@@ -1,3 +1,13 @@
+2010-10-26  Alexander Kurtakov  <akurtako@redhat.com>
+	
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/MailHyperlinkDetectorTest.java (testDetectHyperlinks): Adapt to API changes.
+	(testDetectHyperlinksNoRegionAndTextViewer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/SourcesFileHyperlinkDetectorTest.java (testDetectHyperlinks): Likewise.
+	(testDetectHyperlinksNoRegionAndTextViewer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/SpecfileElementHyperlinkDetectorTest.java (testDetectHyperlinks): Likewise.
+	(testDetectHyperlinksNoRegionAndTextViewer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/URLHyperlinkWithMacroDetectorTest.java (testDetectHyperlinks): Likewise.
+
 2010-07-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestFailure.java: New file.

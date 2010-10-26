@@ -30,7 +30,8 @@ public class URLHyperlinkWithMacroDetectorTest extends FileTestCase {
 	public void testDetectHyperlinks() throws PartInitException {
 		String testText = "Name: eclipse\nURL: http://www.%{name}.org/";
 		newFile(testText);
-		macroDetector = new URLHyperlinkWithMacroDetector(specfile);
+		macroDetector = new URLHyperlinkWithMacroDetector();
+		macroDetector.setSpecfile(specfile);
 		IRegion region = new Region(20, 0);
 		IEditorPart openEditor = IDE
 				.openEditor(Activator.getDefault().getWorkbench()

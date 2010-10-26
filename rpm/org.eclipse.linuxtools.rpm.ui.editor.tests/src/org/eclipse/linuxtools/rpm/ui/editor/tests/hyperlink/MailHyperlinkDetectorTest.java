@@ -40,7 +40,8 @@ public class MailHyperlinkDetectorTest extends FileTestCase {
 
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();
-		elementDetector = new MailHyperlinkDetector(editor);
+		elementDetector = new MailHyperlinkDetector();
+		elementDetector.setEditor(editor);
 		// test mail
 		IRegion region = new Region(38, 0);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(editor
@@ -56,7 +57,8 @@ public class MailHyperlinkDetectorTest extends FileTestCase {
 	}
 
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
-		elementDetector = new MailHyperlinkDetector(editor);
+		elementDetector = new MailHyperlinkDetector();
+		elementDetector.setEditor(editor);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null,
 				false);
 		assertNull(returned);
