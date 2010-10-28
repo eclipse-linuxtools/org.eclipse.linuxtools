@@ -1,3 +1,8 @@
+2010-10-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java (getHyperlinkPresenter): Remove. We need MultipleHyperlinkPresenter to show mylyn bug links properly.
+	(getHyperlinkDetectorTargets): Register DefaultTextEditor as target.
+
 2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (guessFunctionNames): 

@@ -106,16 +106,6 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 //		return new IHyperlinkDetector[] { linkDetector };
 	}
 
-	/**
-	 * Hyperlink presenter (decorator).
-	 * 
-	 * @return default presenter.
-	 */
-	@Override
-	public IHyperlinkPresenter getHyperlinkPresenter(ISourceViewer sourceViewer) {
-		return new DefaultHyperlinkPresenter(DEFAULT_HYPERLINK_COLOR);
-	}
-	
 	/*
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getConfiguredDocumentPartitioning(org.eclipse.jface.text.source.ISourceViewer)
 	 */
@@ -193,5 +183,6 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
 		Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
 		targets.put("org.eclipse.changelog.editor.target", parentEditor); //$NON-NLS-1$
+		targets.put("org.eclipse.ui.DefaultTextEditor", parentEditor); //$NON-NLS-1$
 		return targets;
 	}}
