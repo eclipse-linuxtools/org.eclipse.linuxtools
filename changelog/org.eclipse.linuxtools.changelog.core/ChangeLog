@@ -1,5 +1,10 @@
 2010-10-28  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* META-INF/MANIFEST.MF: Remove LazyStart obsoleted by ActivationPolicy.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java: Remove now unneeded field.
+
+2010-10-28  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java (getHyperlinkPresenter): Remove. We need MultipleHyperlinkPresenter to show mylyn bug links properly.
 	(getHyperlinkDetectorTargets): Register DefaultTextEditor as target.
 

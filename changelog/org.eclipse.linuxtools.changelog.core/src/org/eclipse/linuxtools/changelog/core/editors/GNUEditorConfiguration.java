@@ -17,9 +17,7 @@ import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.formatter.ContentFormatter;
 import org.eclipse.jface.text.formatter.IContentFormatter;
-import org.eclipse.jface.text.hyperlink.DefaultHyperlinkPresenter;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
-import org.eclipse.jface.text.hyperlink.IHyperlinkPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
@@ -28,7 +26,6 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib;
 import org.eclipse.linuxtools.changelog.core.IEditorChangeLogContrib2;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
@@ -46,8 +43,6 @@ public class GNUEditorConfiguration extends TextSourceViewerConfiguration implem
 	private GNUElementScanner scanner;
 
 	private ColorManager colorManager;
-
-	private final RGB DEFAULT_HYPERLINK_COLOR = new RGB(127, 0, 0);
 
 	private TextEditor parentEditor;
 

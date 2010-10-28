@@ -6,7 +6,6 @@ Bundle-Version: 2.6.7.qualifier
 Bundle-Activator: org.eclipse.linuxtools.changelog.core.ChangelogPlugin
 Bundle-Localization: plugin
 Bundle-Vendor: %providerName
-Eclipse-LazyStart: true
 Require-Bundle: org.eclipse.team.ui,
  org.eclipse.ui.ide,
  org.eclipse.jface.text;bundle-version="3.3.0",
