@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2006 QNX Software Systems and others.
+ * Copyright (c) 2000, 2006, 2010 QNX Software Systems and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,14 +13,18 @@ package org.eclipse.linuxtools.internal.cdt.autotools.core;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.IMarkerGenerator;
 import org.eclipse.cdt.core.ProblemMarkerInfo;
-import org.eclipse.cdt.core.model.ICModelMarker;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 
-public abstract class MarkerGenerator implements IMarkerGenerator {
+public abstract class MarkerGenerator {
+
+	static final int SEVERITY_INFO = IMarkerGenerator.SEVERITY_INFO;
+	static final int SEVERITY_WARNING = IMarkerGenerator.SEVERITY_WARNING;
+	static final int SEVERITY_ERROR_RESOURCE = IMarkerGenerator.SEVERITY_ERROR_RESOURCE;
+	static final int SEVERITY_ERROR_BUILD = IMarkerGenerator.SEVERITY_ERROR_BUILD;
 
 	/**
 	 * Constructor for MarkerGenerator
@@ -35,7 +39,7 @@ public abstract class MarkerGenerator implements IMarkerGenerator {
 	public void addMarker(IResource file, int lineNumber, String errorDesc, int severity, String errorVar) {
 
 		try {
-			IMarker[] cur = file.findMarkers(ICModelMarker.C_MODEL_PROBLEM_MARKER, false, IResource.DEPTH_ONE);
+			IMarker[] cur = file.findMarkers(IAutotoolsMarker.AUTOTOOLS_PROBLEM_MARKER, false, IResource.DEPTH_ONE);
 			/*
 			 * Try to find matching markers and don't put in duplicates
 			 */
@@ -50,7 +54,7 @@ public abstract class MarkerGenerator implements IMarkerGenerator {
 				}
 			}
 
-			IMarker marker = file.createMarker(ICModelMarker.C_MODEL_PROBLEM_MARKER);
+			IMarker marker = file.createMarker(IAutotoolsMarker.AUTOTOOLS_PROBLEM_MARKER);
 			marker.setAttribute(IMarker.LOCATION, lineNumber);
 			marker.setAttribute(IMarker.MESSAGE, errorDesc);
 			marker.setAttribute(IMarker.SEVERITY, mapMarkerSeverity(severity));
@@ -58,7 +62,7 @@ public abstract class MarkerGenerator implements IMarkerGenerator {
 			marker.setAttribute(IMarker.CHAR_START, -1);
 			marker.setAttribute(IMarker.CHAR_END, -1);
 			if (errorVar != null) {
-				marker.setAttribute(ICModelMarker.C_MODEL_MARKER_VARIABLE, errorVar);
+				marker.setAttribute(IAutotoolsMarker.MARKER_VARIABLE, errorVar);
 			}
 		}
 		catch (CoreException e) {
@@ -68,17 +72,30 @@ public abstract class MarkerGenerator implements IMarkerGenerator {
 	}
 	
 	public abstract IProject getProject();
+	
+	public boolean hasMarkers(IResource file) {
+		IMarker[] markers;
+		try {
+			markers = file.findMarkers(IAutotoolsMarker.AUTOTOOLS_PROBLEM_MARKER, false, IResource.DEPTH_ONE);
+		} catch (CoreException e) {
+			return false;
+		}
+		return markers.length > 0;
+	}
 
 	/*
 	 * callback from Output Parser
 	 */
-	public void addMarker(ProblemMarkerInfo problemMarkerInfo) {
+	public void addMarker(AutotoolsProblemMarkerInfo info) {
+		ProblemMarkerInfo problemMarkerInfo = info.getProblemMarkerInfo();
+//		ProblemMarkerInfo problemMarkerInfo = info;
 		try {
 			IResource markerResource = problemMarkerInfo.file ;
 			if (markerResource==null)  {
 				markerResource = getProject();
 			}
-			IMarker[] cur = markerResource.findMarkers(ICModelMarker.C_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ONE);
+			IMarker[] cur = markerResource.findMarkers(IAutotoolsMarker.AUTOTOOLS_PROBLEM_MARKER, true, IResource.DEPTH_ONE);
+//			IMarker[] cur = markerResource.findMarkers(ICModelMarker.C_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ONE);
 			/*
 			 * Try to find matching markers and don't put in duplicates
 			 */
@@ -93,7 +110,8 @@ public abstract class MarkerGenerator implements IMarkerGenerator {
 				}
 			}
 
-			IMarker marker = markerResource.createMarker(ICModelMarker.C_MODEL_PROBLEM_MARKER);
+			IMarker marker = markerResource.createMarker(IAutotoolsMarker.AUTOTOOLS_PROBLEM_MARKER);
+//			IMarker marker = markerResource.createMarker(ICModelMarker.C_MODEL_PROBLEM_MARKER);
 			marker.setAttribute(IMarker.LOCATION, problemMarkerInfo.lineNumber);
 			marker.setAttribute(IMarker.MESSAGE, problemMarkerInfo.description);
 			marker.setAttribute(IMarker.SEVERITY, mapMarkerSeverity(problemMarkerInfo.severity));
@@ -101,10 +119,13 @@ public abstract class MarkerGenerator implements IMarkerGenerator {
 			marker.setAttribute(IMarker.CHAR_START, -1);
 			marker.setAttribute(IMarker.CHAR_END, -1);
 			if (problemMarkerInfo.variableName != null) {
-				marker.setAttribute(ICModelMarker.C_MODEL_MARKER_VARIABLE, problemMarkerInfo.variableName);
+				marker.setAttribute(IAutotoolsMarker.MARKER_VARIABLE, problemMarkerInfo.variableName);
 			}
 			if (problemMarkerInfo.externalPath != null) {
-				marker.setAttribute(ICModelMarker.C_MODEL_MARKER_EXTERNAL_LOCATION, problemMarkerInfo.externalPath.toOSString());
+				marker.setAttribute(IAutotoolsMarker.MARKER_EXTERNAL_LOCATION, problemMarkerInfo.externalPath.toOSString());
+			}
+			if (info.libraryInfo != null) {
+				marker.setAttribute(IAutotoolsMarker.MARKER_LIBRARY_INFO, info.libraryInfo);
 			}
 		}
 		catch (CoreException e) {
@@ -138,7 +159,8 @@ public abstract class MarkerGenerator implements IMarkerGenerator {
 		IWorkspace workspace = project.getWorkspace();
 		IMarker[] markers;
 		try {
-			markers = project.findMarkers(ICModelMarker.C_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE);
+			markers = project.findMarkers(IAutotoolsMarker.AUTOTOOLS_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE);
+//			markers = project.findMarkers(ICModelMarker.C_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
 			// Handled just about every case in the sanity check
 			return;

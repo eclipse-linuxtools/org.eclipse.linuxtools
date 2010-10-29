@@ -532,4 +532,25 @@
              file-names="autogen.sh">
        </file-association>
     </extension>
+    <extension
+          id="problem"
+          name="%AutotoolsProblemMarker.name"
+          point="org.eclipse.core.resources.markers">
+       <super
+             type="org.eclipse.cdt.core.problem">
+       </super>
+       <persistent
+             value="true">
+       </persistent>
+       <attribute
+             name="libraryInfo">
+       </attribute>
+    </extension>
+    <extension
+          point="org.eclipse.ui.ide.markerResolution">
+       <markerResolutionGenerator
+             class="org.eclipse.linuxtools.internal.cdt.autotools.core.MarkerResolutionGenerator"
+             markerType="org.eclipse.linuxtools.cdt.autotools.core.problem">
+       </markerResolutionGenerator>
+    </extension>
 </plugin>

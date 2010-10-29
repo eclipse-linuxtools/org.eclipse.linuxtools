@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,6 +54,7 @@ import org.eclipse.cdt.managedbuilder.macros.BuildMacroException;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.newmake.core.IMakeCommonBuildInfo;
 import org.eclipse.cdt.ui.CUIPlugin;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -802,14 +804,14 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			env = (String[]) envList.toArray(new String[envList.size()]);
 		}
 
-		// // Hook up an error parser manager
-		// String[] errorParsers =
-		// info.getDefaultConfiguration().getErrorParserList();
-		// ErrorParserManager epm = new ErrorParserManager(project, topBuildDir,
-		// this, errorParsers);
-		// epm.setOutputStream(consoleOutStream);
-		OutputStream stdout = consoleOutStream;
-		OutputStream stderr = consoleOutStream;
+		// Hook up an error parser manager
+		URI uri = URIUtil.toURI(runPath);
+		ErrorParserManager epm = new ErrorParserManager(project, uri, this, new String[] {ErrorParser.ID});
+		epm.setOutputStream(consoleOutStream);
+		epm.addErrorParser(ErrorParser.ID, new ErrorParser());
+	
+		OutputStream stdout = epm.getOutputStream();
+		OutputStream stderr = stdout;
 
 		launcher.showCommand(true);
 		Process proc = launcher.execute(commandPath, configTargets, env,
@@ -888,10 +890,8 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		// epm.reportProblems();
 		consoleOutStream.close();
 		
-		// TODO: For now, add a marker with our generated error message.
-		// In the future, we might add an error parser to do this properly
-		// and give the actual error line, etc..
-		if (rc == IStatus.ERROR) {
+		// If we have an error and no specific error markers, use the default error marker.
+		if (rc == IStatus.ERROR && !hasMarkers(project)) {
 			addMarker(project, -1, errMsg, SEVERITY_ERROR_BUILD, null);
 		}
 		
@@ -1016,14 +1016,14 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			env = (String[]) envList.toArray(new String[envList.size()]);
 		}
 
-		// // Hook up an error parser manager
-		// String[] errorParsers =
-		// info.getDefaultConfiguration().getErrorParserList();
-		// ErrorParserManager epm = new ErrorParserManager(project, topBuildDir,
-		// this, errorParsers);
-		// epm.setOutputStream(consoleOutStream);
-		OutputStream stdout = consoleOutStream;
-		OutputStream stderr = consoleOutStream;
+		// Hook up an error parser manager
+		URI uri = URIUtil.toURI(runPath);
+		ErrorParserManager epm = new ErrorParserManager(project, uri, this, new String[] {ErrorParser.ID});
+		epm.setOutputStream(consoleOutStream);
+		epm.addErrorParser(ErrorParser.ID, new ErrorParser());
+		
+		OutputStream stdout = epm.getOutputStream();
+		OutputStream stderr = stdout;
 
 		launcher.showCommand(true);
 		// Run the shell script via shell command.
@@ -1103,10 +1103,8 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		// epm.reportProblems();
 		consoleOutStream.close();
 		
-		// TODO: For now, add a marker with our generated error message.
-		// In the future, we might add an error parser to do this properly
-		// and give the actual error line, etc..
-		if (rc == IStatus.ERROR) {
+		// If we have an error and no specific error markers, use the default error marker.
+		if (rc == IStatus.ERROR && !hasMarkers(project)) {
 			addMarker(project, -1, errMsg, SEVERITY_ERROR_BUILD, null);
 		}
 		

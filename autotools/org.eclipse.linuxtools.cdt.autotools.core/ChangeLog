@@ -1,3 +1,24 @@
+2010-10-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsProblemMarkerInfo.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParser.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParserManager.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/IAutotoolsMarker.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerResolutionGenerator.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/PkgconfigErrorResolution.java: New file.
+	* plugin.properties: Add new strings for new extensions added.
+	* plugin.xml: Add a new marker for configuration errors.  Also add an error resolution
+	generator for this new type of marker.
+	* src/org/eclipse/linuxtools/cdt/autotools/core/Resources.properties: Add new messages. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (runCommand): Add
+	ErrorParserManager to parse errors from configuration. 
+	(runScript): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerGenerator.java: Rewritten to
+	not extend IMarkerGenerator. 
+	(addMarker): Accept an AutotoolsProblemMarkerInfo.
+	(hasMarkers): New method.
+	(removeAllMarkers): Remove Autotools markers rather than C/C++ ones.
+
 2010-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* plugin.properties: Change provider to Eclipse Linux Tools.
