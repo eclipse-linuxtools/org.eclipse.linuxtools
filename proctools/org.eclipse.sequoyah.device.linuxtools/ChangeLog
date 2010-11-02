@@ -1,0 +1,11 @@
+2010-11-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Initial check-in and refactoring.
+	* plugin.properties: Ditto.
+	* META-INF/MANIFEST.MF: Ditto.
+	* icons/*.gif: Ditto.
+	* src/*.java: Ditto.
+	* about.ini: Ditto.
+	* dsdp32.png: Ditto.
+	* build.properties: Ditto.
+	
