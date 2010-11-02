@@ -11,7 +11,7 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.memorymap;
+package org.eclipse.linuxtools.sequoyah.device.tools.memorymap;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;

@@ -11,21 +11,21 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.cpuload;
+package org.eclipse.linuxtools.sequoyah.device.tools.cpuload;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
+import org.eclipse.linuxtools.sequoyah.device.LinuxToolsPlugin;
+import org.eclipse.linuxtools.sequoyah.device.network.IConnectionProvider;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.CommandCode;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode;
+import org.eclipse.linuxtools.sequoyah.device.tools.AbstractNotifier;
+import org.eclipse.linuxtools.sequoyah.device.tools.IListener;
+import org.eclipse.linuxtools.sequoyah.device.tools.INotifier;
 import org.eclipse.sequoyah.device.common.utilities.logger.ILogger;
-import org.eclipse.sequoyah.device.linuxtools.LinuxToolsPlugin;
-import org.eclipse.sequoyah.device.linuxtools.network.IConnectionProvider;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.CommandCode;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode;
-import org.eclipse.sequoyah.device.linuxtools.tools.AbstractNotifier;
-import org.eclipse.sequoyah.device.linuxtools.tools.IListener;
-import org.eclipse.sequoyah.device.linuxtools.tools.INotifier;
 
 /**
  * @author Otavio Ferranti
@@ -70,7 +70,7 @@ public class CpuLoadProcessor extends AbstractNotifier implements IListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IListener#notify(org.eclipse.sequoyah.device.linuxtools.network.INotifier, org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode, java.lang.Object)
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IListener#notify(org.eclipse.linuxtools.sequoyah.device.network.INotifier, org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode, java.lang.Object)
 	 */
 	public void notify(INotifier notifier,
 						EventCode event,

@@ -11,25 +11,25 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.cpuload;
+package org.eclipse.linuxtools.sequoyah.device.tools.cpuload;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.sequoyah.device.linuxtools.LinuxToolsPlugin;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.OperationCode;
-import org.eclipse.sequoyah.device.linuxtools.tools.IListener;
-import org.eclipse.sequoyah.device.linuxtools.tools.INotifier;
-import org.eclipse.sequoyah.device.linuxtools.tools.ITool;
-import org.eclipse.sequoyah.device.linuxtools.ui.DialogLogin;
-import org.eclipse.sequoyah.device.linuxtools.ui.IToolViewPart;
-import org.eclipse.sequoyah.device.linuxtools.ui.ViewActionConnect;
-import org.eclipse.sequoyah.device.linuxtools.ui.ViewActionDisconnect;
-import org.eclipse.sequoyah.device.linuxtools.ui.ViewActionPause;
-import org.eclipse.sequoyah.device.linuxtools.ui.ViewActionRun;
+import org.eclipse.linuxtools.sequoyah.device.LinuxToolsPlugin;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.OperationCode;
+import org.eclipse.linuxtools.sequoyah.device.tools.IListener;
+import org.eclipse.linuxtools.sequoyah.device.tools.INotifier;
+import org.eclipse.linuxtools.sequoyah.device.tools.ITool;
+import org.eclipse.linuxtools.sequoyah.device.ui.DialogLogin;
+import org.eclipse.linuxtools.sequoyah.device.ui.IToolViewPart;
+import org.eclipse.linuxtools.sequoyah.device.ui.ViewActionConnect;
+import org.eclipse.linuxtools.sequoyah.device.ui.ViewActionDisconnect;
+import org.eclipse.linuxtools.sequoyah.device.ui.ViewActionPause;
+import org.eclipse.linuxtools.sequoyah.device.ui.ViewActionRun;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -235,7 +235,7 @@ public class CpuLoadView extends ViewPart implements IToolViewPart, IListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.ui.IToolView#getTool()
+	 * @see org.eclipse.linuxtools.sequoyah.device.ui.IToolView#getTool()
 	 */
 	public ITool getTool() {
 		if(null == tool) {
@@ -246,7 +246,7 @@ public class CpuLoadView extends ViewPart implements IToolViewPart, IListener {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IListener#notify(org.eclipse.sequoyah.device.linuxtools.network.INotifier, org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode, java.lang.Object)
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IListener#notify(org.eclipse.linuxtools.sequoyah.device.network.INotifier, org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode, java.lang.Object)
 	 */
 	public void notify(INotifier notifier, EventCode event, Object result) {
 		if (notifier == this.tool) {

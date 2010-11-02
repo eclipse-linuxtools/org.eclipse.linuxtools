@@ -11,7 +11,7 @@
  * Otavio Ferranti - Eldorado Research Institute - Bug 255255 [tml][proctools] Add extension points 
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.network.telnet;
+package org.eclipse.linuxtools.sequoyah.device.network.telnet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +23,7 @@ import org.apache.commons.net.telnet.InvalidTelnetOptionException;
 import org.apache.commons.net.telnet.SuppressGAOptionHandler;
 import org.apache.commons.net.telnet.TelnetClient;
 import org.apache.commons.net.telnet.TerminalTypeOptionHandler;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.OperationCode;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.OperationCode;
 
 /**
  * @author Ot�vio Ferranti
@@ -70,7 +70,7 @@ public class TelnetWrapper {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IConnectionWrapper#connect(java.lang.String, int)
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IConnectionWrapper#connect(java.lang.String, int)
 	 */
 	public OperationCode connect(String host, int port) throws IOException {
 		OperationCode retVal;
@@ -90,7 +90,7 @@ public class TelnetWrapper {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IConnectionWrapper#disconnect()
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IConnectionWrapper#disconnect()
 	 */
 	public void disconnect() throws IOException {
 		if (null != client) {
@@ -100,7 +100,7 @@ public class TelnetWrapper {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IConnectionWrapper#login(java.lang.String, java.lang.String)
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IConnectionWrapper#login(java.lang.String, java.lang.String)
 	 */
 	public OperationCode login(String user, String password) throws IOException {
 		OperationCode retVal = OperationCode.UNEXPECTED_RESULT;
@@ -138,14 +138,14 @@ public class TelnetWrapper {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IConnectionWrapper#getLastResponde()
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IConnectionWrapper#getLastResponde()
 	 */
 	public StringBuffer getLastResponde() {
 		return lastResponse;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IConnectionWrapper#sendCommand(java.lang.String)
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IConnectionWrapper#sendCommand(java.lang.String)
 	 */
 	public String sendCommand(String command) throws IOException {
 		sendData (command);
@@ -153,7 +153,7 @@ public class TelnetWrapper {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IConnectionWrapper#sendData(java.lang.String)
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IConnectionWrapper#sendData(java.lang.String)
 	 */
 	public void sendData(String out) {
 		if (null != outStream) {
@@ -163,7 +163,7 @@ public class TelnetWrapper {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.network.IConnectionWrapper#setResponseLength(int)
+	 * @see org.eclipse.linuxtools.sequoyah.device.network.IConnectionWrapper#setResponseLength(int)
 	 */
 	public void setResponseLength(int maxLength) {
 		maxResponseDataLength = maxLength;

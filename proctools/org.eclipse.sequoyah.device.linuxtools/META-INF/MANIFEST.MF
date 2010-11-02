@@ -4,11 +4,11 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.sequoyah.device.linuxtools;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Localization: plugin
-Bundle-Activator: org.eclipse.sequoyah.device.linuxtools.LinuxToolsPlugin
+Bundle-Activator: org.eclipse.linuxtools.sequoyah.device.LinuxToolsPlugin
 Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.sequoyah.device.linuxtools.base,
+Require-Bundle: org.eclipse.linuxtools.sequoyah.device.base,
  org.eclipse.sequoyah.device.common.utilities,
  org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -17,5 +17,5 @@ Require-Bundle: org.eclipse.sequoyah.device.linuxtools.base,
  org.eclipse.rse.core,
  org.eclipse.rse.subsystems.files.core,
  org.eclipse.rse.services
-Export-Package: org.eclipse.sequoyah.device.linuxtools.network.tcf,
- org.eclipse.sequoyah.device.linuxtools.network.telnet
+Export-Package: org.eclipse.linuxtools.sequoyah.device.network.tcf,
+ org.eclipse.linuxtools.sequoyah.device.network.telnet

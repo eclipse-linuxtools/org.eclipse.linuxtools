@@ -11,7 +11,7 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.cpuload;
+package org.eclipse.linuxtools.sequoyah.device.tools.cpuload;
 
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;

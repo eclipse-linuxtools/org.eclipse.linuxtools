@@ -11,7 +11,7 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.cpuload;
+package org.eclipse.linuxtools.sequoyah.device.tools.cpuload;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -20,7 +20,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME =
-			"org.eclipse.sequoyah.device.linuxtools.tools.cpuload.messages"; //$NON-NLS-1$
+			"org.eclipse.linuxtools.sequoyah.device.tools.cpuload.messages"; //$NON-NLS-1$
 	public static String CpuLoadProcessor_Msg_Executing_the_command;
 	public static String CpuLoadProcessor_Msg_Got_The_Result;
 	public static String CpuLoadView_Action_Connect;

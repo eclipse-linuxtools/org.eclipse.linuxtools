@@ -11,11 +11,11 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.cpuload;
+package org.eclipse.linuxtools.sequoyah.device.tools.cpuload;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.sequoyah.device.linuxtools.ui.IToolViewPart;
+import org.eclipse.linuxtools.sequoyah.device.ui.IToolViewPart;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;

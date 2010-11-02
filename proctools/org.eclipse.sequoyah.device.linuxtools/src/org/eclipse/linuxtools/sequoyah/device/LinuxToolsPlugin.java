@@ -11,7 +11,7 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools;
+package org.eclipse.linuxtools.sequoyah.device;
 
 import org.eclipse.sequoyah.device.common.utilities.BasePlugin;
 import org.osgi.framework.BundleContext;
@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class LinuxToolsPlugin extends BasePlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.sequoyah.device.linuxtools"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.sequoyah.device"; //$NON-NLS-1$
 
 	// Common icons
 	public static final String ICON_RUN = "run.gif"; //$NON-NLS-1$

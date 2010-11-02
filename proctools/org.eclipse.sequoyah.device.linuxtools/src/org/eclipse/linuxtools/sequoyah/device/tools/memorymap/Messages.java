@@ -11,23 +11,30 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools;
+package org.eclipse.linuxtools.sequoyah.device.tools.memorymap;
 
 import org.eclipse.osgi.util.NLS;
 
 /**
  * @author Otavio Ferranti
- *
  */
 public class Messages extends NLS {
+	private static final String BUNDLE_NAME =
+			"org.eclipse.linuxtools.sequoyah.device.tools.memorymap.messages"; //$NON-NLS-1$
 
-	private static String BUNDLE_NAME = "org.eclipse.sequoyah.device.linuxtools.messages"; //$NON-NLS-1$
-	public static String TML_Plugin_Name;
-	public static String TML_Error;
-	public static String TML_Resource_Not_Available;
-	
+	public static String MemoryMapProcessor_Msg_Executing_The_Command;
+	public static String MemoryMapProcessor_Msg_Got_The_Result;
+	public static String MemoryMapView_Action_Refresh;
+	public static String MemoryMapView_Action_Disconnect;
+	public static String MemoryMapView_Action_Connect;
+	public static String MemoryMapView_Col_Label_Address_End;
+	public static String MemoryMapView_Col_Label_Address_Start;
+	public static String MemoryMapView_Col_label_Region;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}	
+	}
+
+	private Messages() {
+	}
 }

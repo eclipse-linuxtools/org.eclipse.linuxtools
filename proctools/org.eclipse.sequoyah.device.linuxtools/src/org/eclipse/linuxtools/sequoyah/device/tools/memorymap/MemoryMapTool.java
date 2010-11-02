@@ -11,20 +11,20 @@
  * Otavio Ferranti - Eldorado Research Institute - Bug 255255 [tml][proctools] Add extension points 
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.memorymap;
+package org.eclipse.linuxtools.sequoyah.device.tools.memorymap;
 
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.sequoyah.device.linuxtools.network.IConnectionProvider;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.OperationCode;
-import org.eclipse.sequoyah.device.linuxtools.tools.AbstractNotifier;
-import org.eclipse.sequoyah.device.linuxtools.tools.IListener;
-import org.eclipse.sequoyah.device.linuxtools.tools.INotifier;
-import org.eclipse.sequoyah.device.linuxtools.tools.ITool;
-import org.eclipse.sequoyah.device.linuxtools.utilities.Extensions;
-import org.eclipse.sequoyah.device.linuxtools.utilities.ProtocolDescriptor;
+import org.eclipse.linuxtools.sequoyah.device.network.IConnectionProvider;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.OperationCode;
+import org.eclipse.linuxtools.sequoyah.device.tools.AbstractNotifier;
+import org.eclipse.linuxtools.sequoyah.device.tools.IListener;
+import org.eclipse.linuxtools.sequoyah.device.tools.INotifier;
+import org.eclipse.linuxtools.sequoyah.device.tools.ITool;
+import org.eclipse.linuxtools.sequoyah.device.utilities.Extensions;
+import org.eclipse.linuxtools.sequoyah.device.utilities.ProtocolDescriptor;
 
 /**
  * @author Otavio Ferranti
@@ -37,7 +37,7 @@ public class MemoryMapTool extends AbstractNotifier implements IListener, ITool 
 	private String[] requiredCapabilities = {"GET_FILE"}; //$NON-NLS-1$
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.memorymap.iTool#createInstance(java.lang.String, int, java.lang.String)
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.memorymap.iTool#createInstance(java.lang.String, int, java.lang.String)
 	 */
 	public void connect (String host,
 								int port,
@@ -64,7 +64,7 @@ public class MemoryMapTool extends AbstractNotifier implements IListener, ITool 
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.ITool#closeConnection()
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.ITool#closeConnection()
 	 */
 	public void disconnect() {
 		if (null != connectionProvider) {
@@ -77,7 +77,7 @@ public class MemoryMapTool extends AbstractNotifier implements IListener, ITool 
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.memorymap.iTool#login(java.lang.String, java.lang.String)
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.memorymap.iTool#login(java.lang.String, java.lang.String)
 	 */
 	public void login (String user, String password) {
 		try {
@@ -93,7 +93,7 @@ public class MemoryMapTool extends AbstractNotifier implements IListener, ITool 
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.IListener#notify(org.eclipse.sequoyah.device.linuxtools.tools.INotifier, org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode, java.lang.Object)
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.IListener#notify(org.eclipse.linuxtools.sequoyah.device.tools.INotifier, org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode, java.lang.Object)
 	 */
 	public void notify(INotifier notifier, EventCode event, Object result) {
 		try {
@@ -160,7 +160,7 @@ public class MemoryMapTool extends AbstractNotifier implements IListener, ITool 
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.ITool#getRefreshDelay()
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.ITool#getRefreshDelay()
 	 */
 	public int getRefreshDelay() {
 		// TODO Auto-generated method stub
@@ -168,7 +168,7 @@ public class MemoryMapTool extends AbstractNotifier implements IListener, ITool 
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.ITool#setRefreshDelay(int)
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.ITool#setRefreshDelay(int)
 	 */
 	public void setRefreshDelay(int delay) {
 		// TODO Auto-generated method stub

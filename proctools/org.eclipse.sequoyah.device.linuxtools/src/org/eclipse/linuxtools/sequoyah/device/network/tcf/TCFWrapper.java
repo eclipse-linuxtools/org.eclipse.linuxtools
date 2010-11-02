@@ -11,12 +11,13 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.network.tcf;
+package org.eclipse.linuxtools.sequoyah.device.network.tcf;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.OperationCode;
 import org.eclipse.rse.core.IRSECoreRegistry;
 import org.eclipse.rse.core.IRSESystemType;
 import org.eclipse.rse.core.RSECorePlugin;
@@ -25,7 +26,6 @@ import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.rse.services.clientserver.messages.SystemMessageException;
 import org.eclipse.rse.subsystems.files.core.model.RemoteFileUtility;
 import org.eclipse.rse.subsystems.files.core.subsystems.IRemoteFileSubSystem;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.OperationCode;
 
 public class TCFWrapper {
 

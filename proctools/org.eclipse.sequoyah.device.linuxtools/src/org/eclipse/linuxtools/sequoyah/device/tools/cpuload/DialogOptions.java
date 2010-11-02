@@ -11,10 +11,10 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools.cpuload;
+package org.eclipse.linuxtools.sequoyah.device.tools.cpuload;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.sequoyah.device.linuxtools.tools.ITool;
+import org.eclipse.linuxtools.sequoyah.device.tools.ITool;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;

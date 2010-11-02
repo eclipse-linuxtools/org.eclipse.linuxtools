@@ -11,17 +11,17 @@
  * {Name} (company) - description of contribution.
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.network.tcf;
+package org.eclipse.linuxtools.sequoyah.device.network.tcf;
 
 import java.io.IOException;
 
+import org.eclipse.linuxtools.sequoyah.device.LinuxToolsPlugin;
+import org.eclipse.linuxtools.sequoyah.device.network.IConnectionProvider;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.CommandCode;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.OperationCode;
+import org.eclipse.linuxtools.sequoyah.device.tools.AbstractNotifier;
 import org.eclipse.sequoyah.device.common.utilities.logger.ILogger;
-import org.eclipse.sequoyah.device.linuxtools.LinuxToolsPlugin;
-import org.eclipse.sequoyah.device.linuxtools.network.IConnectionProvider;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.CommandCode;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode;
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.OperationCode;
-import org.eclipse.sequoyah.device.linuxtools.tools.AbstractNotifier;
 
 public class TCFProvider extends AbstractNotifier implements
 		IConnectionProvider {
