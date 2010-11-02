@@ -11,18 +11,18 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.ui;
+package org.eclipse.linuxtools.sequoyah.device.ui;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.linuxtools.sequoyah.device.tools.ITool;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Otavio Ferranti
  */
-public class ViewActionConnect implements IViewActionDelegate {
+public class ViewActionDisconnect implements IViewActionDelegate {
 
 	private IViewPart targetPart;
 	
@@ -37,10 +37,11 @@ public class ViewActionConnect implements IViewActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		final DialogConnect dialog = new DialogConnect(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				((IToolViewPart) this.targetPart).getTool());
-		dialog.open();
+		IToolViewPart toolView = ((IToolViewPart) this.targetPart);
+		ITool tool =((ITool) toolView.getTool());
+		if (null != tool) {
+			tool.disconnect();
+		}
 	}
 
 	/* (non-Javadoc)

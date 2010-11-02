@@ -11,21 +11,21 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.ui;
+package org.eclipse.linuxtools.sequoyah.device.ui;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.sequoyah.device.linuxtools.tools.ITool;
+import org.eclipse.linuxtools.sequoyah.device.tools.ITool;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
 /**
  * @author Otavio Ferranti
  */
-public class ViewActionDisconnect implements IViewActionDelegate {
+public class ViewActionRun implements IViewActionDelegate {
 
 	private IViewPart targetPart;
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IViewActionDelegate#init(org.eclipse.ui.IViewPart)
 	 */
@@ -38,9 +38,10 @@ public class ViewActionDisconnect implements IViewActionDelegate {
 	 */
 	public void run(IAction action) {
 		IToolViewPart toolView = ((IToolViewPart) this.targetPart);
-		ITool tool =((ITool) toolView.getTool());
+		ITool tool = toolView.getTool();
+		
 		if (null != tool) {
-			tool.disconnect();
+			tool.start();
 		}
 	}
 
@@ -48,5 +49,6 @@ public class ViewActionDisconnect implements IViewActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
+		// TODO Auto-generated method stub
 	}
 }

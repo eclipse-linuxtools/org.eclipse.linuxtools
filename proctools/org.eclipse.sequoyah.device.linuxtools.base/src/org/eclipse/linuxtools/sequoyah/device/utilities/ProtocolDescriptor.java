@@ -12,9 +12,9 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah 
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.utilities;
+package org.eclipse.linuxtools.sequoyah.device.utilities;
 
-import org.eclipse.sequoyah.device.linuxtools.network.IConnectionProvider;
+import org.eclipse.linuxtools.sequoyah.device.network.IConnectionProvider;
 
 public class ProtocolDescriptor {
 

@@ -11,10 +11,10 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.ui;
+package org.eclipse.linuxtools.sequoyah.device.ui;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.sequoyah.device.linuxtools.tools.ITool;
+import org.eclipse.linuxtools.sequoyah.device.tools.ITool;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;

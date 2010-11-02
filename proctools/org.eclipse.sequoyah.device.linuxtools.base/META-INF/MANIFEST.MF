@@ -7,10 +7,10 @@ Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.sequoyah.device.linuxtools.network,
- org.eclipse.sequoyah.device.linuxtools.tools,
- org.eclipse.sequoyah.device.linuxtools.ui,
- org.eclipse.sequoyah.device.linuxtools.utilities
+Export-Package: org.eclipse.linuxtools.sequoyah.device.network,
+ org.eclipse.linuxtools.sequoyah.device.tools,
+ org.eclipse.linuxtools.sequoyah.device.ui,
+ org.eclipse.linuxtools.sequoyah.device.utilities
 Require-Bundle: org.eclipse.sequoyah.device.common.utilities,
  org.eclipse.ui,
  org.eclipse.core.runtime

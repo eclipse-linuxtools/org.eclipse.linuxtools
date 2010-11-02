@@ -11,12 +11,12 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.network;
+package org.eclipse.linuxtools.sequoyah.device.network;
 
 import java.io.IOException;
 
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.CommandCode;
-import org.eclipse.sequoyah.device.linuxtools.tools.INotifier;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.CommandCode;
+import org.eclipse.linuxtools.sequoyah.device.tools.INotifier;
 
 /**
  * @author Otavio Ferranti

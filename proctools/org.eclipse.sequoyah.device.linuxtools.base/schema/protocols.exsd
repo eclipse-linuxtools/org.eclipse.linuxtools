@@ -65,7 +65,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.sequoyah.device.linuxtools.network.IConnectionProvider"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.sequoyah.device.network.IConnectionProvider"/>
                </appInfo>
             </annotation>
          </attribute>

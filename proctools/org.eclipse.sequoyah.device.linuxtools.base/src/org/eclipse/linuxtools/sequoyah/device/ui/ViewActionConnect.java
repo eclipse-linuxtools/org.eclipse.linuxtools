@@ -11,21 +11,21 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.ui;
+package org.eclipse.linuxtools.sequoyah.device.ui;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.sequoyah.device.linuxtools.tools.ITool;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Otavio Ferranti
  */
-public class ViewActionPause implements IViewActionDelegate {
-	
-	private IViewPart targetPart;
+public class ViewActionConnect implements IViewActionDelegate {
 
+	private IViewPart targetPart;
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IViewActionDelegate#init(org.eclipse.ui.IViewPart)
 	 */
@@ -37,18 +37,15 @@ public class ViewActionPause implements IViewActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		IToolViewPart toolView = ((IToolViewPart) this.targetPart);
-		ITool tool = toolView.getTool();
-		
-		if (null != tool) {
-			tool.stop();
-		}
+		final DialogConnect dialog = new DialogConnect(
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				((IToolViewPart) this.targetPart).getTool());
+		dialog.open();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
-		// TODO Auto-generated method stub
 	}
 }

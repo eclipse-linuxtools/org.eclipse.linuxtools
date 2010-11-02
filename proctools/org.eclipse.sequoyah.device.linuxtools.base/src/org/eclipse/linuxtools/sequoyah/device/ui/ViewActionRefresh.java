@@ -11,21 +11,21 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.ui;
+package org.eclipse.linuxtools.sequoyah.device.ui;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.sequoyah.device.linuxtools.tools.ITool;
+import org.eclipse.linuxtools.sequoyah.device.tools.ITool;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
 /**
  * @author Otavio Ferranti
  */
-public class ViewActionRun implements IViewActionDelegate {
+public class ViewActionRefresh implements IViewActionDelegate {
 
 	private IViewPart targetPart;
-
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IViewActionDelegate#init(org.eclipse.ui.IViewPart)
 	 */
@@ -41,7 +41,7 @@ public class ViewActionRun implements IViewActionDelegate {
 		ITool tool = toolView.getTool();
 		
 		if (null != tool) {
-			tool.start();
+			tool.refresh();
 		}
 	}
 

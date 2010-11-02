@@ -11,21 +11,41 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools;
+package org.eclipse.linuxtools.sequoyah.device.tools;
 
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode;
+import java.util.List;
+
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode;
 
 /**
  * @author Otavio Ferranti
  */
-public interface IListener {
+public interface INotifier {
 
 	/**
-	 * @param notifier
+	 * @param listener
+	 */
+	public void addListener(IListener listener);
+	
+	/**
+	 * @return
+	 */
+	public List<IListener> listeners();
+
+	/**
 	 * @param event
 	 * @param result
 	 */
-	public void notify (INotifier notifier,
-						EventCode event,
-						Object result);
+	public void notifyListeners (EventCode event, Object result);
+
+	/**
+	 * 
+	 */
+	public void removeAllListeners ();
+	
+	/**
+	 * @param listener
+	 */
+	public void removeListener (IListener listener);
+	
 }

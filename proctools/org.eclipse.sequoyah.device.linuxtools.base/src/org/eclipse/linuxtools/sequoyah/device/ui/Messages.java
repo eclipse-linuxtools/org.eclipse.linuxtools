@@ -11,7 +11,7 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.ui;
+package org.eclipse.linuxtools.sequoyah.device.ui;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -19,7 +19,7 @@ import org.eclipse.osgi.util.NLS;
  * @author Otavio Ferranti
  */
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.sequoyah.device.linuxtools.ui.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.sequoyah.device.ui.messages"; //$NON-NLS-1$
 	public static String LoginDialog_Label_Password;
 	public static String LoginDialog_Label_User;
 	public static String LoginDialog_Msg_Login_Invalid;

@@ -12,7 +12,7 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah 
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.utilities;
+package org.eclipse.linuxtools.sequoyah.device.utilities;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,8 +21,8 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.linuxtools.sequoyah.device.network.IConnectionProvider;
 import org.eclipse.sequoyah.device.common.utilities.PluginUtils;
-import org.eclipse.sequoyah.device.linuxtools.network.IConnectionProvider;
 
 public class Extensions {
 

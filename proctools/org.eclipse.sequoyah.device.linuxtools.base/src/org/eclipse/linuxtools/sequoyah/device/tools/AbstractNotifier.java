@@ -11,12 +11,12 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.tools;
+package org.eclipse.linuxtools.sequoyah.device.tools;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.sequoyah.device.linuxtools.network.IConstants.EventCode;
+import org.eclipse.linuxtools.sequoyah.device.network.IConstants.EventCode;
 
 /**
  * @author Otavio Ferranti
@@ -35,7 +35,7 @@ public class AbstractNotifier implements INotifier{
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.INotifier#listeners()
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.INotifier#listeners()
 	 */
 	public List<IListener> listeners() {
 		return listeners;
@@ -51,14 +51,14 @@ public class AbstractNotifier implements INotifier{
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.INotifier#removeAllListeners()
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.INotifier#removeAllListeners()
 	 */
 	public void removeAllListeners() {
 		listeners.clear();
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.sequoyah.device.linuxtools.tools.INotifier#removeListener(org.eclipse.sequoyah.device.linuxtools.tools.IListener)
+	 * @see org.eclipse.linuxtools.sequoyah.device.tools.INotifier#removeListener(org.eclipse.linuxtools.sequoyah.device.tools.IListener)
 	 */
 	public void removeListener(IListener listener) {
 		listeners.remove(listener);

@@ -11,7 +11,7 @@
  * Daniel Pastore (Eldorado) - [289870] Moving and renaming Tml to Sequoyah
  ********************************************************************************/
 
-package org.eclipse.sequoyah.device.linuxtools.network;
+package org.eclipse.linuxtools.sequoyah.device.network;
 
 /**
  * @author Otavio Ferranti
