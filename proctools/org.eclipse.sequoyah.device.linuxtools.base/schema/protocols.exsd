@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.sequoyah.device.linuxtools.base" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.linuxtools.sequoyah.device.base" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.sequoyah.device.linuxtools.base" id="org.eclipse.sequoyah.device.linuxtools.base.protocols" name="Linux Tools protocols"/>
+         <meta.schema plugin="org.eclipse.linuxtools.sequoyah.device.base" id="org.eclipse.linuxtools.sequoyah.device.base.protocols" name="Linux Tools protocols"/>
       </appInfo>
       <documentation>
          
@@ -94,7 +94,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="identifier" basedOn="org.eclipse.sequoyah.device.linuxtools.base.capabilities/capability/@id"/>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.linuxtools.sequoyah.device.base.capabilities/capability/@id"/>
                </appInfo>
             </annotation>
          </attribute>
