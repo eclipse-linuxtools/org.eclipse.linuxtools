@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.sequoyah.device.linuxtools.feature"
+      id="org.eclipse.linuxtools.sequoyah.device.feature"
       label="%featureName"
       version="0.5.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.sequoyah.device.linuxtools">
+      plugin="org.eclipse.linuxtools.sequoyah.device">
 
    <description>
       %description
@@ -19,19 +19,18 @@
    </license>
 
    <url>
-      <update label="%sequoyahUpdateSiteName" url="http://download.eclipse.org/sequoyah/updates/0.5/"/>
       <discovery label="%sequoyahUpdateSiteName" url="http://download.eclipse.org/sequoyah/updates/0.5/"/>
    </url>
 
    <plugin
-         id="org.eclipse.sequoyah.device.linuxtools"
+         id="org.eclipse.linuxtools.sequoyah.device"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.sequoyah.device.linuxtools.base"
+         id="org.eclipse.linuxtools.sequoyah.device.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
