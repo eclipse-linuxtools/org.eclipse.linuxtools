@@ -1,3 +1,9 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com> 
+   
+	Bz 315846
+	* plugin.properties: New file.
+	* META-INF/MANIFEST.MF: 
+
 2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/structures/validators/MultiValidatorTest.java: 
