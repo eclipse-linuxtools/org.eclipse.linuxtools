@@ -33,6 +33,7 @@ public class DashboardModule {
 	public String[] labels;
 	public IDataSetParser parser;
 	public GraphData[] graphs;
+	@SuppressWarnings("unchecked")
 	public ArrayList[] filters;
 	public String location;
 	

@@ -110,6 +110,7 @@ public abstract class ConsoleAction extends Action implements IWorkbenchWindowAc
 		listener = null;
 	}
 	
+	@SuppressWarnings("unused")
 	private IAction act;
 	private IPropertyListener listener = new IPropertyListener() {
 		public void propertyChanged(Object o, int i) {

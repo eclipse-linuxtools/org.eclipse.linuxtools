@@ -50,12 +50,13 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAP
  * 
  * @author Qi Liang
  */
+@SuppressWarnings("deprecation")
 public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
 	protected IDeviceRenderer render = null;
     protected ChartWithoutAxes chart = null;
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
-    private boolean bFirstPaint = true;
+   // private boolean bFirstPaint = true;
     
     public PieChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
     super(adapter, parent, style);
@@ -228,7 +229,7 @@ public class PieChartBuilder extends AbstractChartWithoutAxisBuilder {
    try{
         int starting = 0;
         if (data.length > xSeriesTicks ) starting = data.length - xSeriesTicks;
-        int yseriescount = adapter.getSeriesCount();
+    //    int yseriescount = adapter.getSeriesCount();
         NumberDataSet orthoValuesDataSet;
         PieSeries ps1;
         SeriesDefinition sdY; 

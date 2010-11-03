@@ -25,7 +25,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.IOConsole;
 
 
 
@@ -36,7 +36,7 @@ import org.eclipse.ui.console.MessageConsole;
  * running.
  * @author Ryan Morse
  */
-public class ScriptConsole extends MessageConsole {
+public class ScriptConsole extends IOConsole {
 	/**
 	 * This method is used to get a reference to a <code>ScriptConsole</code>.  If there
 	 * is already an console that has the same name as that provided it will be stopped, 

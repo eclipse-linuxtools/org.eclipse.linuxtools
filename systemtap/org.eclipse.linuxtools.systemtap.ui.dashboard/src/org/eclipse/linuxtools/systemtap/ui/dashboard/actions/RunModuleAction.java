@@ -45,7 +45,7 @@ import org.eclipse.linuxtools.systemtap.ui.dashboard.structures.DashboardModule;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.ActiveModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.views.DashboardModuleBrowserView;
 import org.eclipse.linuxtools.systemtap.ui.graphicalrun.structures.ChartStreamDaemon2;
-import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentVariablesPreferencePage;
+
 
 /**
  * This action is used to run the selected dashboard module.  
@@ -53,6 +53,8 @@ import org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentV
  * are also added to the main window the the user to monitor.
  * @author Ryan Morse
  */
+
+@SuppressWarnings("deprecation")
 public class RunModuleAction extends Action implements IViewActionDelegate, IWorkbenchWindowActionDelegate {
 //	public RunModuleAction(){
 	//	buildEnablementChecks();
@@ -162,9 +164,9 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 		((ActiveModuleBrowserView)ivp).add(display, amd);
 	}
 	
-	private String[] getEnvironmentVariables() {
+	/*private String[] getEnvironmentVariables() {
 		return EnvironmentVariablesPreferencePage.getEnvironmentVariables();
-	}
+	}*/
 	
 	private void runScript(DashboardModule module)
 	{
@@ -294,6 +296,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	 * is pressed.
 	 * @param listener The class interested in knowing when scripts are run
 	 */
+	@SuppressWarnings("unchecked")
 	public static void addActionListener(IActionListener listener) {
 		listeners.add(listener);
 	}
@@ -406,6 +409,7 @@ public class RunModuleAction extends Action implements IViewActionDelegate, IWor
 	}
 	
 	private IViewPart view;
+	@SuppressWarnings("unchecked")
 	private static ArrayList listeners = new ArrayList();
 	private String fileName = null;
 	protected IWorkbenchWindow fWindow = null;

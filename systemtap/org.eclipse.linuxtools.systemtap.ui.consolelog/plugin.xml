@@ -40,8 +40,8 @@
 		point="org.eclipse.ui.preferencePages">
 		<page
 			name="%preference.consoleLog.name"
-			id="com.qualityeclipse.systemtap.prefs.consoleLog"
+			id="org.eclipse.linuxtools.systemtap.prefs.consoleLog"
 			class="org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.view"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
 	</extension>
 </plugin>

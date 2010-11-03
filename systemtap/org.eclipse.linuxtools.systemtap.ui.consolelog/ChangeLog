@@ -1,3 +1,24 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Bug #324405
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/ConsoleAction.java (act): 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/ClientSession.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/dialogs/SCPDetails.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/dialogs/SelectServerDialog.java (open): 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/internal/ConsoleLogPlugin.java (start): 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/ScpClient.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/ScpExec.java (ScpExec): 
+	(start): 
+	(getInputStreamListeners): 
+	(getErrorStreamListeners): 
+	(command): 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/ConsoleStreamDaemon.java (ConsoleStreamDaemon): 
+	(pushData): 
+	(dispose): 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/DMRequest.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/ScriptConsole.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/ScriptConsole2.java (createErrorDaemon): 
+
 2010-06-08  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/StopScriptAction.java (selectionChanged): 

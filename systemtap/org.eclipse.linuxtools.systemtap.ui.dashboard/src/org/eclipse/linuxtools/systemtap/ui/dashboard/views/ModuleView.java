@@ -124,7 +124,7 @@ public class ViewLabelProvider extends LabelProvider
 
 	public Font getFont(Object element) {
 		Font font = Display.getCurrent().getSystemFont();
-		TreeNode parent = ((TreeNode)element);
+		//TreeNode parent = ((TreeNode)element);
 		/*if (parent.getChildCount()>0) {
 			font = registry.getBold(Display.getCurrent().getSystemFont().g);
 		}*/
@@ -132,7 +132,7 @@ public class ViewLabelProvider extends LabelProvider
 	}
 
 	public Color getBackground(Object element) {
-		TreeNode parent = ((TreeNode)element);
+	//	TreeNode parent = ((TreeNode)element);
 		Color c = null;
 	//	if (parent.getChildCount()>0) {
 	//	c = new Color(Display.getCurrent(), IGraphColorConstants.COLORS[j]);

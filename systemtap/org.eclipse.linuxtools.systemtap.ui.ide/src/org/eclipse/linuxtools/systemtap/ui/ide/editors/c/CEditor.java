@@ -30,7 +30,6 @@ import org.eclipse.linuxtools.systemtap.ui.ide.internal.IDEPlugin;
 import org.eclipse.linuxtools.systemtap.ui.ide.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
-import org.eclipse.linuxtools.systemtap.ui.structures.runnable.Command;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -49,6 +48,7 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
  * @author Henry Hughes
  * @author Ryan Morse
  */
+@SuppressWarnings("deprecation")
 public class CEditor extends AbstractDecoratedTextEditor {
 	private ColorManager colorManager;
 	/**
@@ -230,36 +230,6 @@ public class CEditor extends AbstractDecoratedTextEditor {
 		setSourceViewerConfiguration(new CConfiguration(colorManager));
 		setDocumentProvider(new CDocumentProvider());
 		LogManager.logDebug("End internal_init", this);
-	}
-	
-	/**
-	 * Runs the probe passed to it as a single-line SystemTap script. Used as a helper method
-	 * by the <code>RulerDoubleClickHandler</code> class to check locations in the current file.
-	 * @param probe	the systemtap probe to test for validity
-	 * @return	true when the probe is a valid probe
-	 */
-	private boolean checkProbe(String probe) {
-		LogManager.logDebug("Start checkProbe: probe-" + probe, this);
-		String[] stap = new String[4];
-		stap[0] = "stap";
-		stap[1] = "-p2";
-		stap[2] = "-e";
-		stap[3] = probe;
-		LogManager.logDebug("running " + probe, this);
-
-		Command cmd = new Command(stap, null, null, 0);
-		cmd.start();
-    	while(cmd.isRunning()) {
-    		try {
-    			Thread.sleep(100);
-    		} catch(InterruptedException e) {
-    			LogManager.logCritical("InterruptedException runStap: " + e.getMessage(), this);
-    		}
-    	}
-		boolean success = cmd.getReturnValue() == 0;
-		cmd.dispose();
-		LogManager.logDebug("End checkProbe:", this);
-    	return success;
 	}
 	
 	public void dispose() {

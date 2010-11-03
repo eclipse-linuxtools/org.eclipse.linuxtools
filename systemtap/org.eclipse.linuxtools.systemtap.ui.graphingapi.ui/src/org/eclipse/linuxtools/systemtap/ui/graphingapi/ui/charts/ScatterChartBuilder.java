@@ -62,6 +62,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAP
  * 
  * @author Qi Liang
  */
+@SuppressWarnings("deprecation")
 public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
 
     /**
@@ -76,7 +77,7 @@ public class ScatterChartBuilder extends AbstractChartWithAxisBuilder {
     protected ChartWithAxes chart = null;
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
-    private boolean bFirstPaint = true;
+ //   private boolean bFirstPaint = true;
     
     public ScatterChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
     super(adapter, parent, style);

@@ -77,54 +77,54 @@
 		point="org.eclipse.ui.preferencePages">
 		<page
 			name="%preference.ide.name"
-			id="com.qualityeclipse.systemtap.prefs.ide"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.view"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
 		<page
 			name="%preference.editor.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.editor"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.editor"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.EditorPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 		<page
 			name="%preference.codeAssist.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.codeassist"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.codeassist"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.CodeAssistPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide.editor"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.conditionalFilter.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.conditionalfilters"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.conditionalfilters"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.ConditionalFilterPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide.editor"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.syntaxColor.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.syntaxcoloring"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.syntaxcoloring"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.SyntaxColoringPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide.editor"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.typeing.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.typeing"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.typeing"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.TypeingPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide.editor"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
 		<page
 			name="%preference.path.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.path"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.path"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.PathPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 		<page
 			name="%preference.stap.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.stap"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.stap"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.StapPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
 		<!--page
 			name="%preference.stapOptions.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.stapoptions"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.stapoptions"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.StapOptionsPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.view/com.qualityeclipse.systemtap.prefs.ide/com.qualityeclipse.systemtap.prefs.ide.stap"/-->
+			category="org.eclipse.linuxtools.systemtap.prefs.view/org.eclipse.linuxtools.systemtap.prefs.ide/org.eclipse.linuxtools.systemtap.prefs.ide.stap"/-->
 		<page
 			name="%preference.tapsets.name"
-			id="com.qualityeclipse.systemtap.prefs.ide.tapsets"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.tapsets"
 			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.TapsetsPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.ide.stap"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.stap"/>
 	</extension>
 
 	<extension

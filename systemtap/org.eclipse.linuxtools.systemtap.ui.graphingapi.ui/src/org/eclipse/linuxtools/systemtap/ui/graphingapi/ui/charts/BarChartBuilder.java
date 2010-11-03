@@ -58,6 +58,8 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAP
  * 
  * @author Qi Liang
  */
+
+@SuppressWarnings("deprecation")
 public class BarChartBuilder extends AbstractChartWithAxisBuilder {
 
     /**
@@ -86,7 +88,7 @@ public class BarChartBuilder extends AbstractChartWithAxisBuilder {
     protected ChartWithAxes chart = null;
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
-    private boolean bFirstPaint = true;
+    
     
     public BarChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
     super(adapter, parent, style);

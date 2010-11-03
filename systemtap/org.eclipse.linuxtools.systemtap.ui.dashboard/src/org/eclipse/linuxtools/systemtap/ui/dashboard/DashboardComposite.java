@@ -58,7 +58,7 @@ public class DashboardComposite {
 	 * Queue at the end of the list. When there are 8 objects rendering and a 9th object is added, 
 	 * it is placed on this queue and displayed when an internal composite is released.
 	 */
-	private final ArrayList externalQueue = new ArrayList();
+	private final ArrayList<DashboardAdapter> externalQueue = new ArrayList<DashboardAdapter>();
 	/**
 	 * The actual rendering surface.
 	 */

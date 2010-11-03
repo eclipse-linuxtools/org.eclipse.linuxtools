@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.systemtap.ui.graphicalrun.actions;
 
 import org.eclipse.jface.wizard.WizardDialog;
 
+
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -44,6 +45,7 @@ import org.eclipse.linuxtools.systemtap.ui.ide.structures.StapErrorParser;
  * and send the output to both the <code>ScriptConsole</code> window and a <code>DataSet</code>.
  * @author Ryan Morse
  */
+@SuppressWarnings("deprecation")
 public class RunScriptChartAction extends RunScriptAction implements IWorkbenchWindowActionDelegate {
 	public RunScriptChartAction() {
 		super();
@@ -151,7 +153,14 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 		
 	}
 	
-	private boolean useOptions = false;
+	 /* protected String getFilePath() {
+	
+		  IEditorPart ed = fWindow.getActivePage().getActiveEditor();
+	      return ((PathEditorInput)ed.getEditorInput()).getPath().toString();
+    
+	  }*/
+	
+	//private boolean useOptions = false;
 	private IDataSet dataSet = null;
 	private IDataSetParser parser = null;
 

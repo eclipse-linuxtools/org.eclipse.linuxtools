@@ -11,6 +11,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPref
 
 import java.io.*;
 
+@SuppressWarnings("deprecation")
 public class ScpClient{
 	
 	private Session session;

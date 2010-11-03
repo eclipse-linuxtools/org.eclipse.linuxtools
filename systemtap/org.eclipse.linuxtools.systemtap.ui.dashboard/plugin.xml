@@ -166,9 +166,9 @@
 		point="org.eclipse.ui.preferencePages">
 		<page
 			name="%preference.dashboard.name"
-			id="com.qualityeclipse.systemtap.prefs.dashboard"
+			id="org.eclipse.linuxtools.systemtap.prefs.dashboard"
 			class="org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferencePage"
-			category="com.qualityeclipse.systemtap.prefs.view"/>
+			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
 	</extension>
 
 	<extension

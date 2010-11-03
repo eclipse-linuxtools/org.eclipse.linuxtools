@@ -22,7 +22,6 @@ import org.eclipse.birt.chart.factory.Generator;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
-import org.eclipse.birt.chart.util.PluginSettings;
 import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -40,14 +39,14 @@ public class ChartCanvas extends Canvas{
     protected Chart chart = null;
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
-    private boolean bFirstPaint = true;
+ //   private boolean bFirstPaint = true;
 
     public ChartCanvas(Composite parent, int style) {
      super(parent, style | SWT.V_SCROLL | SWT.H_SCROLL);
      try {
      // INITIALIZE THE SWT RENDERING DEVICE
     	 //ChartEngine ce = ChartEngine.instance();
-     PluginSettings ps = PluginSettings.instance();
+ //    PluginSettings ps = PluginSettings.instance();
      
      
      PlatformConfig pf = new PlatformConfig();

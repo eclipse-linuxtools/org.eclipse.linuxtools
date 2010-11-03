@@ -76,6 +76,7 @@ public class DashboardMetaData {
 	 * and populates the DashboardModule structure from it.
 	 * @return boolean representing whether or not the meta data was succesfuly read
 	 */
+	@SuppressWarnings("unchecked")
 	private boolean readData() {
 		if(null == metaFile)
 			return false;

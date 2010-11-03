@@ -55,6 +55,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Ryan Morse
  */
 public class GraphDisplaySet {
+	@SuppressWarnings("unchecked")
 	public GraphDisplaySet(Composite parent, IDataSet data) {
 		LogManager.logDebug("Start GraphSelectorView:", this);
 		LogManager.logInfo("Initializing", this);
@@ -202,6 +203,7 @@ public class GraphDisplaySet {
 	 */
 	public class ButtonClickListener implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent event) {}
+		@SuppressWarnings("unchecked")
 		public void widgetSelected(SelectionEvent event) {
 			CTabFolder folder = (CTabFolder)event.getSource();
 
@@ -240,6 +242,7 @@ public class GraphDisplaySet {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void addTabListener(ITabListener listener) {
 		tabListeners.add(listener);
 	}
@@ -268,8 +271,10 @@ public class GraphDisplaySet {
 	private CTabFolder folder;
 	private ButtonClickListener listener;
 	private UpdateManager updater;
+	@SuppressWarnings("unchecked")
 	private ArrayList tabListeners;
 	
 //	private ArrayList graphs;
+	@SuppressWarnings("unchecked")
 	private ArrayList builders;
 }

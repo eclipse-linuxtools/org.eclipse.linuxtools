@@ -54,6 +54,8 @@ import org.eclipse.ui.ide.ResourceUtil;
  * This <code>Action</code> is used to run a SystemTap script that is currently open in the editor.
  * @author Ryan Morse
  */
+
+@SuppressWarnings("deprecation")
 public class RunScriptAction extends Action implements IWorkbenchWindowActionDelegate {
 	public RunScriptAction() {
 		super();
@@ -199,7 +201,7 @@ public class RunScriptAction extends Action implements IWorkbenchWindowActionDel
 	 * Adds the tapsets that the user has added in preferences to the input <code>ArrayList</code>
 	 * @param cmdList The list to add the user-specified tapset locations to.
 	 */
-	@SuppressWarnings("deprecation")
+	
 	protected void getImportedTapsets(ArrayList<String> cmdList) {
 		Preferences pref = IDEPlugin.getDefault().getPluginPreferences();
 		String[] tapsets = pref.getString(IDEPreferenceConstants.P_TAPSETS).split(File.pathSeparator);

@@ -136,6 +136,7 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	 * is pressed.
 	 * @param listener The class interested in knowing when scripts are paused
 	 */
+	@SuppressWarnings("unchecked")
 	public static void addActionListener(IActionListener listener) {
 		listeners.add(listener);
 	}
@@ -225,5 +226,6 @@ public class PauseModuleAction extends Action implements IViewActionDelegate, IW
 	
 	private IViewPart view;
 	private IAction act;
+	@SuppressWarnings("unchecked")
 	private static ArrayList listeners = new ArrayList();
 }

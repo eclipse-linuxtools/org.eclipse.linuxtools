@@ -21,7 +21,6 @@ Require-Bundle: org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui;visibility
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.forms,
- org.eclipse.birt.chart.engine
+ org.eclipse.birt.chart.engine;bundle-version="2.5.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Import-Package: org.eclipse.birt.chart.model.component

@@ -64,7 +64,7 @@ public class MeterChartBuilder extends AbstractChartWithoutAxisBuilder {
     protected DialChart chart = null;
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
-    private boolean bFirstPaint = true;
+ //   private boolean bFirstPaint = true;
     
     public MeterChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
     super(adapter, parent, style);
@@ -236,7 +236,7 @@ public class MeterChartBuilder extends AbstractChartWithoutAxisBuilder {
    try{
         int starting = 0;
         if (data.length > xSeriesTicks ) starting = data.length - xSeriesTicks;
-        int yseriescount = adapter.getSeriesCount();
+     //   int yseriescount = adapter.getSeriesCount();
         NumberDataSet orthoValuesDataSet;
         DialSeries ds1;
         SeriesDefinition sdY; 

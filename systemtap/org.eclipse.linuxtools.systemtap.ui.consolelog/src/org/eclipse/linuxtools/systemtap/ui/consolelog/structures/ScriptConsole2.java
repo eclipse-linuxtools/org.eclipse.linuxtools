@@ -19,7 +19,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.IOConsole;
 
 import org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.internal.Localization;
@@ -35,7 +35,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.Subscription;
  * running.
  * @author Ryan Morse
  */
-public class ScriptConsole2 extends MessageConsole {
+public class ScriptConsole2 extends IOConsole {
 	/**
 	 * This method is used to get a reference to a <code>ScriptConsole</code>.  If there
 	 * is already an console that has the same name as that provided it will be stopped, 
@@ -134,6 +134,7 @@ public class ScriptConsole2 extends MessageConsole {
 	 * <code>LoggedCommand</code>'s ErrorStream to the Console and ErrorView.
 	 */
 	protected void createErrorDaemon(IErrorParser parser) {
+		@SuppressWarnings("unused")
 		ErrorView errorView = null;
 		try {
 			IViewPart ivp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ErrorView.ID);

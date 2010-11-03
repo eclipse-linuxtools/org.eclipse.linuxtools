@@ -1,3 +1,12 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Bug #324405
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getImportedTapsets): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/c/CEditor.java (dispose): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPDocumentProvider.java (setupDocument): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPMetadataSingleton.java (build): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/views/KernelBrowserView.java: 
+
 2010-06-08  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getFilePath): 

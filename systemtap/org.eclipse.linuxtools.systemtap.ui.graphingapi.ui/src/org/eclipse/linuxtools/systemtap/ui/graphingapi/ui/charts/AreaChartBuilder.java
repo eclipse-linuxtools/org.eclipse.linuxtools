@@ -60,6 +60,7 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.preferences.GraphingAP
  * 
  * @author Qi Liang
  */
+@SuppressWarnings("deprecation")
 public class AreaChartBuilder extends AbstractChartWithAxisBuilder {
 
     /**
@@ -88,7 +89,6 @@ public class AreaChartBuilder extends AbstractChartWithAxisBuilder {
     protected ChartWithAxes chart = null;
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
-    private boolean bFirstPaint = true;
     
     public AreaChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
     super(adapter, parent, style);

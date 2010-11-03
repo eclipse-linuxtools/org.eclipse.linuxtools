@@ -22,7 +22,7 @@ import org.eclipse.linuxtools.systemtap.ui.editor.SimpleDocumentProvider;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 public class STPDocumentProvider extends SimpleDocumentProvider {
-	private IDocument document;
+	//private IDocument document;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider#getDocument(java.lang.Object)

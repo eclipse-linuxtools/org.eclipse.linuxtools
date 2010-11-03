@@ -1,3 +1,13 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Bug #324405
+	* src/org/eclipse/linuxtools/systemtap/ui/graphing/structures/GraphDisplaySet.java (GraphDisplaySet): 
+	(ButtonClickListener): 
+	(ButtonClickListener.widgetSelected): 
+	(addTabListener): 
+	(tabListeners): 
+	(builders): 
+
 2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
 
 	* plugin.xml: Fix BZ #315223. Identical ActionSet in GraphicalRun

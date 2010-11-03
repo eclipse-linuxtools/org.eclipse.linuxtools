@@ -26,7 +26,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.LineChartBuilde
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.MeterChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.PieChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.ScatterChartBuilder;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.BarGraph;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.PieChart;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.GraphingAPIUIPlugin;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.internal.Localization;
@@ -73,7 +72,7 @@ public final class GraphFactory {
 	};
 
 	public static String[] getAvailableGraphs(IDataSet data) {
-		LinkedList ids = new LinkedList();
+		LinkedList<String> ids = new LinkedList<String>();
 		if(data instanceof IHistoricalDataSet) {
 			ids.add(ScatterChartBuilder.ID);
 			ids.add(LineChartBuilder.ID);
@@ -152,8 +151,7 @@ public final class GraphFactory {
 				builder = new LineChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				break;
 			case 2:
-				BarGraph g;
-				if(!(data instanceof IBlockDataSet) || (null != gd.key))
+			if(!(data instanceof IBlockDataSet) || (null != gd.key))
 					//g = new BarGraph(comp, SWT.NONE, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));
 				{
 					builder = new BarChartBuilder(comp, style, gd.title, new ScrollAdapter((IHistoricalDataSet)data, gd.xSeries, gd.ySeries, gd.key));

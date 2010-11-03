@@ -15,7 +15,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.SelectionEvent;
 
 
-
+@SuppressWarnings("deprecation")
 public class SCPDetails extends Dialog {
 	private Text userText;
 	private Text passwordText;

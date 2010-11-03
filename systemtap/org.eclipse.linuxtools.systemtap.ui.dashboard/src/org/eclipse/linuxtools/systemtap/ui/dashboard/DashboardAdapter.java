@@ -284,7 +284,7 @@ public class DashboardAdapter {
 				Control[] children = c.getChildren();
 				for(int i = 0; i < children.length; i++) {
 					if(children[i] instanceof GraphComposite) {
-						GraphComposite gc = (GraphComposite)children[i];
+		//				GraphComposite gc = (GraphComposite)children[i];
 							if(!maximized)
 						{
 						composite.maximize(shim);

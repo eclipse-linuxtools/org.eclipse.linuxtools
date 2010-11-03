@@ -1,3 +1,23 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Bug #324405
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/PauseModuleAction.java (addActionListener): 
+	(listeners): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/RunModuleAction.java (runScript): 
+	(addActionListener): 
+	(listeners): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/StopModuleAction.java (addActionListener): 
+	(listeners): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardAdapter.java (DashboardShimButtonController.widgetSelected): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardComposite.java (externalQueue): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardSessionSettings.java (allmodules): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardMetaData.java (readData): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModule.java (filters): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/ActiveModuleBrowserView.java (add): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/DashboardGraphsBrowserView.java (add): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/ModuleView.java (ViewLabelProvider.getFont): 
+	(ViewLabelProvider.getBackground): 
+
 2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* plugin.xml: Removing invalid Menu Extensions

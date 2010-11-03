@@ -86,6 +86,7 @@ public class DashboardGraphsBrowserView extends GraphsView {
 		super.makeActions();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void add(String display, ActiveModuleData data) {
 		TreeNode root = (TreeNode)viewer.getInput();
 		ActiveModuleTreeNode child = new ActiveModuleTreeNode(data, display, true);

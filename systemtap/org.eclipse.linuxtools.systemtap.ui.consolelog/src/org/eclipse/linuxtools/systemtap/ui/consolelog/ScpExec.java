@@ -9,14 +9,15 @@ import com.jcraft.jsch.*;
 import java.io.*;
 import java.util.ArrayList;
 
+@SuppressWarnings("deprecation")
 public class ScpExec implements Runnable {
 	
 	private Session session;
 	private Channel channel;
-	private String moduleName;
+//	private String moduleName;
   
 	public ScpExec(String cmd[], String moduleName) {
-		this.moduleName = moduleName;
+	//	this.moduleName = moduleName;
 		this.command = new String();
 		
 		try{
@@ -46,7 +47,7 @@ public class ScpExec implements Runnable {
 			t.start();
 		} else {
 			stop();
-			returnVal = Integer.MIN_VALUE;
+		//	returnVal = Integer.MIN_VALUE;
 		}
 	}
 	
@@ -197,6 +198,7 @@ public class ScpExec implements Runnable {
 	 * Returns the list of everything that is listening the the InputStream
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList getInputStreamListeners() {
 		if(null != inputGobbler)
 			return inputListeners;
@@ -208,6 +210,7 @@ public class ScpExec implements Runnable {
 	 * Returns the list of everything that is listening the the ErrorStream
 	 * @return List of all <code>IGobblerListeners</code> that are monitoring the stream.
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList getErrorStreamListeners() {
 		if(null != errorGobbler)
 			return errorListeners;
@@ -292,7 +295,7 @@ public class ScpExec implements Runnable {
 	private StreamGobbler errorGobbler = null;
 	private ArrayList<IGobblerListener> inputListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
 	private ArrayList<IGobblerListener> errorListeners = new ArrayList<IGobblerListener>();	//Only used to allow adding listeners before creating the StreamGobbler
-	private int returnVal = Integer.MAX_VALUE;
+	//private int returnVal = Integer.MAX_VALUE;
 	private String command;
 
 	

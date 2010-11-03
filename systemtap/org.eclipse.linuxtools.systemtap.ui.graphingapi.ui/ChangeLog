@@ -1,3 +1,23 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* META-INF/MANIFEST.MF: 
+	* plugin.xml: 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/chart/widget/ChartCanvas.java (ChartCanvas): 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/charts/AreaChartBuilder.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/charts/BarChartBuilder.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/charts/LineChartBuilder.java (LineChartBuilder): 
+	(buildXSeries): 
+	(buildYSeries): 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/charts/MeterChartBuilder.java (MeterChartBuilder): 
+	(buildYSeries): 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/charts/PieChartBuilder.java (PieChartBuilder): 
+	(buildYSeries): 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/charts/ScatterChartBuilder.java (ScatterChartBuilder): 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/graphs/AGraph.java: 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/widgets/GraphComposite.java (GraphComposite): 
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/ui/wizards/graph/GraphFactory.java (getAvailableGraphs): 
+	(createGraph): 
+
 2010-06-04  Andrew Overholt  <overholt@redhat.com>
 
 	Bug #282039

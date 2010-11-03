@@ -88,8 +88,6 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
     protected ChartWithAxes chart = null;
     protected AbstractChartBuilder builder = null;
     protected GeneratedChartState state = null;
-    private boolean bFirstPaint = true;
-    
     public LineChartBuilder(Composite parent, int style, String title,IAdapter adapter) {
     super(adapter, parent, style);
     this.title = title;
@@ -237,7 +235,8 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
      * 
      * @see com.ibm.examples.chart.widget.chart.AbstractChartBuilder#buildXSeries()
      */
-    protected void buildXSeries() {
+    @SuppressWarnings("deprecation")
+	protected void buildXSeries() {
     	
           data = adapter.getData();
           
@@ -272,7 +271,8 @@ public class LineChartBuilder extends AbstractChartWithAxisBuilder {
      * 
      * @see com.ibm.examples.chart.widget.AbstractChartBuilder#buildYSeries()
      */
-    protected void buildYSeries() {
+    @SuppressWarnings("deprecation")
+	protected void buildYSeries() {
    try{
        
        //NumberDataSet orthoValuesDataSet1 = NumberDataSetImpl.create(new double[] { 4, 5, 6, 7});

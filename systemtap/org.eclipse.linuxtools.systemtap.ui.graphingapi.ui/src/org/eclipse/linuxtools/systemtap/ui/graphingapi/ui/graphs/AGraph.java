@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Button;
 
 
 
+@SuppressWarnings("deprecation")
 public abstract class AGraph extends AChart implements IGraph {
 	public AGraph(GraphComposite parent, int style, String title, IAdapter adapt) {
 		super(parent, style, title, adapt);

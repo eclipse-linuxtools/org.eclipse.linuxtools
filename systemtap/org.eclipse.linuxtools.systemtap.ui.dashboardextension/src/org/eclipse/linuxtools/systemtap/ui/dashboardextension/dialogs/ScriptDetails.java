@@ -28,6 +28,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.internal.DashboardPlugin;
 import org.eclipse.linuxtools.systemtap.ui.dashboard.preferences.DashboardPreferenceConstants;
 
+@SuppressWarnings("deprecation")
 public class ScriptDetails extends Dialog {
 	private Text dirText;
 	private Text scriptText;

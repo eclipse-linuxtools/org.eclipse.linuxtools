@@ -28,6 +28,7 @@ public class SelectServerDialog extends Dialog {
 		super(parent);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void open() {
 		if (ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)) {
 			return;
