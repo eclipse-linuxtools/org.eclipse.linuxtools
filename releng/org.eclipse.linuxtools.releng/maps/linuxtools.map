@@ -55,6 +55,7 @@ feature@org.eclipse.linuxtools.systemtap.backup=SVN,trunk,svn://dev.eclipse.org/
 plugin@org.eclipse.linuxtools.systemtap.ui.consolelog=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.consolelog
 plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.editor
 feature@org.eclipse.linuxtools.systemtap=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap-feature
+plugin@org.eclipse.linuxtools.systemtap.ui.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.doc
 plugin@org.eclipse.linuxtools.systemtap.ui.graphing=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphing
 plugin@org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui
 plugin@org.eclipse.linuxtools.systemtap.ui.graphingapi.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphingapi.ui
