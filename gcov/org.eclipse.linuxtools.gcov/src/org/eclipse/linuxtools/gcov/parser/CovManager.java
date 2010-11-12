@@ -322,6 +322,13 @@ public class CovManager implements Serializable {
 			while ((line =lnr.readLine()) != null) {
 				if (line.endsWith(".gcda"))
 				{
+					// absolute .gcda filepaths retrieved using the "strings" tool may
+					// be prefixed by random printable characters so strip leading
+					// characters until the filepath starts with "X:/", "X:\", "/"  or "\"
+					// FIXME: need a more robust mechanism to locate .gcda files [Bugzilla 329710]
+					while ((line.length() > 6) && !line.matches("^([A-Za-z]:)?[/\\\\].*")) {
+						line = line.substring(1);
+					}
 					IPath p = new Path(line);
 					String filename = p.toString();
 					if (!list.contains(filename)) list.add(filename);
