@@ -249,11 +249,11 @@ public class ProfileUIUtils {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			} catch (DOMException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
-			}finally{
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally{
 				index.releaseReadLock();
 			}
 		   return files;

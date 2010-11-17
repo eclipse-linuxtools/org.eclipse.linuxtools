@@ -1,3 +1,9 @@
+2010-11-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java (findFunctionsInProject): 
+	Add a catchall for any type of java.lang.Exception and remove the catch for
+	DomException to allow the code to work both in CDT 8.0.0 and prior releases of CDT.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.7.0.
