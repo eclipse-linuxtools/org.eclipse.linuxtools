@@ -298,7 +298,7 @@ public class LibHover implements ICHelpProvider {
         	} catch (IllegalArgumentException e) {
         		// TODO Auto-generated catch block
         		e.printStackTrace();
-        	} catch (DOMException e) {
+        	} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

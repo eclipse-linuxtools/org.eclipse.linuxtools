@@ -1,3 +1,8 @@
+2010-11-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getFunctionInfo): Look for
+	Exception instead of DOMException so code can work in CDT 8.0.0 and prior CDT releases.
+
 2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLibrary.java (getHoverInfo): Don't
