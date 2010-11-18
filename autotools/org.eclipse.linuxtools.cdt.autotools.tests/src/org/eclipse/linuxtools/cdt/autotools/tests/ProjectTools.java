@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.zip.ZipFile;
 
+import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.CommandLauncher;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -19,6 +20,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -171,13 +173,18 @@ public class ProjectTools {
 		if (testProject == null) {
 			return null;
         }
+		IProjectDescription description = workspace.newProjectDescription(name);
 		try {
 			testProject.create(monitor);
 			testProject.open(monitor);
+//			IProjectDescription description = workspace.newProjectDescription(name);
+//			if(location != null)
+//				description.setLocationURI(location);
+			IProject newProject = CCorePlugin.getDefault().createCDTProject(description, testProject, new SubProgressMonitor(monitor,25));
 			ConvertToAutotoolsProjectWizardTest wizard = new ConvertToAutotoolsProjectWizardTest();
 			wizard.addPages();
 			ConvertToAutotoolsProjectWizardPage page = new ConvertToAutotoolsProjectWizardPage("test", wizard);
-			page.convertProject(testProject, monitor, wizard.getProjectID());
+			page.convertProject(newProject, monitor, wizard.getProjectID());
 		} catch (CoreException e) {
 			testProject = null;
 		}

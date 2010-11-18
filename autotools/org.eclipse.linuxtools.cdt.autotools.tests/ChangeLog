@@ -1,3 +1,10 @@
+2010-11-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java (createProject): Try creating a project
+	description and then creating a CDT project from the initial handle.  Use that handle to
+	convert to an Autotools Project.  This is being done to try and remove the current random
+	bug under Hudson builds.
+
 2010-05-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/AutotoolsTestsPlugin.java: Fix plugin id.
