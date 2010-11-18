@@ -1,3 +1,7 @@
+2010-11-18  francois  <fchopuinard@gmail.com>
+
+	* psfs/lttng.psf: Added lttng.jni to the psf file
+
 2010-10-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Try adding org.eclipse.cdt.gnu.build.feature.group.
