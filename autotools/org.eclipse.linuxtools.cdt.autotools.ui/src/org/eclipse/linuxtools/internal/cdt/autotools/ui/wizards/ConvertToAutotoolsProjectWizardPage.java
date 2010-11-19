@@ -123,7 +123,9 @@ public class ConvertToAutotoolsProjectWizardPage extends ConvertProjectWizardPag
 			AutotoolsNewProjectNature.addAutotoolsBuilder(project, new SubProgressMonitor(monitor,1));
 			// FIXME: Default scanner property: make -w - eventually we want to use Make core's build scanner
 			project.setPersistentProperty(AutotoolsPropertyConstants.SCANNER_USE_MAKE_W, AutotoolsPropertyConstants.TRUE);
-			CCorePlugin.getDefault().mapCProjectOwner(project, projectID, true);
+			// Specify false for override in next call as override can cause the method to throw an
+			// exception.
+			CCorePlugin.getDefault().mapCProjectOwner(project, projectID, false);
 			// Add the ManagedProject to the project
 			IManagedProject newManagedProject = null;
 			IManagedBuildInfo info = null;
