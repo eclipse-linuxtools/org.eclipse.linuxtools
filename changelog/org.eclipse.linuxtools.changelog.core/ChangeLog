@@ -1,3 +1,9 @@
+2010-11-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #331244
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java (mergeChangelog): Add
+	defaultContent for last entry which may contain "New file" or "Removed file".
+
 2010-10-28  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Remove LazyStart obsoleted by ActivationPolicy.

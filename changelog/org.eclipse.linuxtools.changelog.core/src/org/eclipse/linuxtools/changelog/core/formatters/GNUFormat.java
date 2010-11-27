@@ -188,11 +188,11 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				if (changelog_doc.getLength() > 0)
 					changelog_doc.replace(0, 0, "\n\n"); //$NON-NLS-1$
 				changelog_doc.replace(0, 0, dateLine + TAB + "* " + fileDetail // $NON-NLS-1$
-						+ functionSpacer+function+functionSpacer);
+						+ functionSpacer+function+functionSpacer+defaultContent);
 				
 				ITextEditor edit = (ITextEditor) changelog;
 				edit.selectAndReveal(dateLine.length() + fileDetail.length()
-						+ function.length() + functionSpacer.length()*2 + 3, 0);
+						+ function.length() + functionSpacer.length()*2 + 3 + defaultContent.length(), 0);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 				
