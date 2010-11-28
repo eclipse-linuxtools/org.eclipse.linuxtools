@@ -1,3 +1,7 @@
+2010-11-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* maps/linuxtools.map: Removing remote features. Not ready for 0.7.
+
 2010-11-18  francois  <fchopuinard@gmail.com>
 
 	* psfs/lttng.psf: Added lttng.jni to the psf file
