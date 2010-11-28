@@ -43,9 +43,6 @@
    <feature url="features/org.eclipse.linuxtools.valgrind_${org.eclipse.linuxtools.valgrind.version}.jar" id="org.eclipse.linuxtools.valgrind" version="${org.eclipse.linuxtools.valgrind.version}">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.valgrind.remote_${org.eclipse.linuxtools.valgrind.remote.version}.jar" id="org.eclipse.linuxtools.valgrind.remote" version="${org.eclipse.linuxtools.valgrind.remote.version}">
-      <category name="Linux Tools"/>
-   </feature>
    <feature url="features/org.eclipse.linuxtools.lttng_${org.eclipse.linuxtools.lttng.version}.jar" id="org.eclipse.linuxtools.lttng" version="${org.eclipse.linuxtools.lttng.version}" os="linux">
       <category name="Linux Tools"/>
    </feature>
