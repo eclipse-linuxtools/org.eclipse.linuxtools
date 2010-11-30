@@ -1,5 +1,9 @@
 2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Add buildServerUser to try fixing signing.
+	
+2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* build.properties: Change version to 0.7.0
 	
 2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
