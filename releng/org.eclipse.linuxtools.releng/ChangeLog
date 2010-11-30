@@ -1,5 +1,9 @@
 2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* build.properties: Change version to 0.7.0
+	
+2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* maps/linuxtools.map: Change branches path.
 
 2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
