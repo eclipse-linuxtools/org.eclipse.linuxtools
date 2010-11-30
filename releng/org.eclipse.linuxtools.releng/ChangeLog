@@ -1,5 +1,9 @@
 2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* maps/linuxtools.map: Change branches path.
+
+2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* maps/linuxtools.map: Switch to branches 0.7.
 	* psfs/autotools.psf: Likewise.
 	* psfs/callgraph.psf: Likewise.
