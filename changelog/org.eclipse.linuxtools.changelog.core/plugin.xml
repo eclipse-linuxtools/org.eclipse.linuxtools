@@ -75,9 +75,13 @@
                menubarPath="project/"
                tooltip="%prepChangeLog.tooltip">
             <enablement>
+               <and>
                <or>
                   <objectClass
                         name="org.eclipse.core.resources.IResource">
+                  </objectClass>
+                  <objectClass
+                        name="org.eclipse.jdt.core.IJavaElement">
                   </objectClass>
                   <objectClass
                         name="org.eclipse.team.ui.synchronize.ISynchronizeModelElement">
@@ -87,6 +91,17 @@
                         value="org.eclipse.cdt.core.cnature">
                   </objectState>
                </or>
+               <or>
+                   <objectState
+                        name="projectPersistentProperty"
+                        value="org.eclipse.team.core.repository=org.eclipse.team.svn.core.svnnature">
+                  </objectState>
+                  <objectState
+                        name="projectPersistentProperty"
+                        value="org.eclipse.team.core.repository=org.eclipse.team.cvs.core.cvsnature">
+                  </objectState>
+               </or>
+               </and>
             </enablement>
          </action>
          <action

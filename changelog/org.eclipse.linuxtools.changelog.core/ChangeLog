@@ -1,3 +1,9 @@
+2010-11-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #331243
+	* plugin.xml: Add enablement options for Prepare ChangeLog under Project menu so that
+	project must have been checked out of CVS or SVN.
+
 2010-11-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #331244
