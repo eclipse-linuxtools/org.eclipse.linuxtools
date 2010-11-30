@@ -1,3 +1,24 @@
+2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* maps/linuxtools.map: Switch to branches 0.7.
+	* psfs/autotools.psf: Likewise.
+	* psfs/callgraph.psf: Likewise.
+	* psfs/changelog.psf: Likewise.
+	* psfs/eclipse-build.psf: Likewise.
+	* psfs/gcov.psf: Likewise.
+	* psfs/gprof.psf: Likewise.
+	* psfs/libhover.psf: Likewise.
+	* psfs/linuxtools.psf: Likewise.
+	* psfs/lttng.psf: Likewise.
+	* psfs/manviewer.psf: Likewise.
+	* psfs/oprofile.psf: Likewise.
+	* psfs/oprofiledocs.psf: Likewise.
+	* psfs/rpm-editor.psf: Likewise.
+	* psfs/rpmstubby.psf: Likewise.
+	* psfs/systemtap.psf: Likewise.
+	* psfs/valgrind-tests.psf: Likewise.
+	* psfs/valgrind.psf: Likewise.
+
 2010-11-28  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* maps/linuxtools.map: Removing remote features. Not ready for 0.7.
