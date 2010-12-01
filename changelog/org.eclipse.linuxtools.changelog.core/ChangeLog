@@ -1,3 +1,8 @@
+2010-12-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #331243
+	* plugin.xml: Add enablement for subclipse as well for Prepare ChangeLog.
+
 2010-11-29  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #331243
