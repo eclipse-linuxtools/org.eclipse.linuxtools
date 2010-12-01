@@ -1,3 +1,7 @@
+2010-12-01  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Change build user to akurtakov.
+
 2010-11-30  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Add buildServerUser to try fixing signing.
