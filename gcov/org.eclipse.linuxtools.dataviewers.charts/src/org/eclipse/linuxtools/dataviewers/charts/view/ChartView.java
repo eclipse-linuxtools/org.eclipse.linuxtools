@@ -98,7 +98,7 @@ public class ChartView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		try {
-			paintCanvas = new Canvas( parent, SWT.BORDER );
+			paintCanvas = new Canvas( parent, SWT.NONE );
 			paintCanvas.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 			paintCanvas.setBackground( Display.getDefault( )
 					.getSystemColor( SWT.COLOR_WHITE ) );
