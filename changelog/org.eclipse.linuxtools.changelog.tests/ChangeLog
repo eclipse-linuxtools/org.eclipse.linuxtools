@@ -1,0 +1,14 @@
+2010-12-01  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/formatters/tests/GNUFormatTest.java: New file.
+	JUnit plug-in tests for GNUFormat. 
+	* src/org/eclipse/linuxtools/changelog/core/tests/AllTests.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/tests/ChangeLogWriterTest.java: New file.
+	JUnit plug-in tests for ChangeLogWriterTest.
+	* src/org/eclipse/linuxtools/changelog/core/tests/TestsPluginActivator.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/fixtures/ChangeLogTestProject.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/fixtures/TestChangeLogTestProject.java: New file. 
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/EditorHelper.java: New File. 
+	* build.properties: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* ChangeLog: New file.
