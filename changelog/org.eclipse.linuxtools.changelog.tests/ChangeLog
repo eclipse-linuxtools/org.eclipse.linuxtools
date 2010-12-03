@@ -1,10 +1,12 @@
 2010-12-03  Severin Gehwolf  <sgehwolf@redhat.com>
 
+	* src/org/eclipse/linuxtools/changelog/core/tests/AllTests.java: Fix copyright.
 	* src/org/eclipse/linuxtools/changelog/parsers/tests/JavaParserTest.java (canIdentifyMethodWithinNestedClass): New test.
 	(canIdentifyFieldWithinNestedClass): Ditto.
 	(canIdentifyStaticInitializerWhenInStaticClassInitializer): Ditto.
 	(canIdentifyStaticInitializerWhenInStaticInstanceInitializer): Ditto.
 	(canParseSelectedField): Ditto.
+	(canDetermineThatSelectionIsJustInClass): Ditto. 
 
 2010-12-02  Severin Gehwolf  <sgehwolf@redhat.com>
 

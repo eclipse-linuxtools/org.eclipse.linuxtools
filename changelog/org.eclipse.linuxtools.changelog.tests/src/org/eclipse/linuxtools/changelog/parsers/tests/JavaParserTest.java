@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2010 Red Hat Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 package org.eclipse.linuxtools.changelog.parsers.tests;
 
 import static org.junit.Assert.assertEquals;
@@ -404,5 +411,59 @@ public class JavaParserTest {
 		final String actualFunctionName = javaParser.parseCurrentFunction(javaSourceEditorPart);
 		
 		assertEquals(expectedFunctionName, actualFunctionName);
+	}
+	
+	/**
+	 * Given an IEditorPart and current selection is inside a class but not within a
+	 * method, not selecting a field and not in a nested class (somewhere else in the
+	 * class) it should return an empty string for the function.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void canDetermineThatSelectionIsJustInClass() throws Exception {
+		// Apparently comments don't show up in the compilation units. Makes
+		// sense, right? But we can't use the OFFSET_MARKER trick in this case.
+		final String javaSourceCode = "public class JavaParserExampleClass {\n"
+		 	+ "private String someStrVariable = null;\n"
+		 	+ "\n" // want to select this line indexOf(';') + 2
+		 	+ "\n"
+			+ "private void someMethod(String param) {\n"
+				+ "// empty \n"
+				+ "}\n"
+			+ "}\n";
+
+		assertNull(project.getTestProject().findMember( new Path(
+								"/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+
+		// Add JavaParserExampleClass.java to project
+		InputStream newFileInputStream = new ByteArrayInputStream(
+				javaSourceCode.getBytes());
+		IFile javaSourceFile = project.addFileToProject(
+				"/src/org/eclipse/changelog/tests",
+				"JavaParserExampleClass.java", newFileInputStream);
+
+		assertNotNull(project.getTestProject().findMember( new Path(
+								"/src/org/eclipse/changelog/tests/JavaParserExampleClass.java")));
+		
+		// Open a source file and get the IEditorPart
+		javaSourceEditorPart = openEditor(javaSourceFile);
+		// make sure changelog editor content is right before merging
+		assertEquals(javaSourceCode, getContent(javaSourceEditorPart));
+		
+		// make sure we have the proper editor type
+		assertTrue( javaSourceEditorPart instanceof AbstractDecoratedTextEditor );
+
+		// Select the right point
+		int selectionStart = javaSourceCode.indexOf(';') + 2;
+		assertTrue(selectionStart >= 2);
+		int selectionLength = 0;
+		AbstractDecoratedTextEditor javaEditor = (AbstractDecoratedTextEditor) javaSourceEditorPart;		
+		javaEditor.getSelectionProvider().setSelection(
+				new TextSelection(selectionStart, selectionLength));
+		
+		final String actualFunctionName = javaParser.parseCurrentFunction(javaSourceEditorPart);
+		
+		assertEquals("" /* expect empty string */, actualFunctionName);
 	}
 }
