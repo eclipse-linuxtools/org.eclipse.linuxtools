@@ -1,3 +1,20 @@
+2010-12-03  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/tests/JavaParserTest.java (canIdentifyMethodWithinNestedClass): New test.
+	(canIdentifyFieldWithinNestedClass): Ditto.
+	(canIdentifyStaticInitializerWhenInStaticClassInitializer): Ditto.
+	(canIdentifyStaticInitializerWhenInStaticInstanceInitializer): Ditto.
+	(canParseSelectedField): Ditto.
+
+2010-12-02  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/tests/JavaParserTest.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/EditorHelper.java (getContent): Method moved from
+	GNUFormatTest.java
+	* src/org/eclipse/linuxtools/changelog/core/formatters/tests/GNUFormatTest.java (getContent): Removed. Now
+	in EditorHelper.
+	* META-INF/MANIFEST.MF: Import package for JavaParser.
+
 2010-12-01  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/formatters/tests/GNUFormatTest.java: New file.

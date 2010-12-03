@@ -18,7 +18,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.changelog.core.formatters.GNUFormat;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
-import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
+import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -67,7 +69,7 @@ public class GNUFormatTest {
 			changelogEditorPart.doSave(null);
 			// Also close open editor in order for default content to work.
 			// I.e. avoid spill over from previous test runs
-			EditorHelper.closeEditor(changelogEditorPart);
+			closeEditor(changelogEditorPart);
 		}
 		project.getTestProject().delete(true, true, null); // dispose
 	}
@@ -137,7 +139,7 @@ public class GNUFormatTest {
 		assertNotNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
 		
 		// Open a document and get the IEditorPart
-		changelogEditorPart = EditorHelper.openEditor(changelogFile);
+		changelogEditorPart = openEditor(changelogFile);
 		// make sure changelog editor content is right before merging
 		assertEquals(content, getContent(changelogEditorPart));
 		
@@ -190,7 +192,7 @@ public class GNUFormatTest {
 		IFile changelogFile = project.addFileToProject( changelogPath, "ChangeLog",
 				newFileInputStream);
 		// Open a document and get the IEditorPart
-		changelogEditorPart = EditorHelper.openEditor(changelogFile);
+		changelogEditorPart = openEditor(changelogFile);
 
 		// entry file path (needs overlap with changelogPath)
 		String fileEntryRelPath = "eclipse/example/test/NewCoffeeMaker.java";
@@ -253,7 +255,7 @@ public class GNUFormatTest {
 		IFile changelogFile = project.addFileToProject( "/path/to", "ChangeLog",
 				newFileInputStream);
 		// Open a document and get the IEditorPart
-		changelogEditorPart = EditorHelper.openEditor(changelogFile);
+		changelogEditorPart = openEditor(changelogFile);
 		
 		// make sure changelog editor content is empty
 		assertEquals(content, getContent(changelogEditorPart));
@@ -324,7 +326,7 @@ public class GNUFormatTest {
 		IFile changelogFile = project.addFileToProject( "/path/example", "ChangeLog",
 				newFileInputStream);
 		// Open a document and get the IEditorPart
-		changelogEditorPart = EditorHelper.openEditor(changelogFile);
+		changelogEditorPart = openEditor(changelogFile);
 		
 		// make sure changelog editor content is empty
 		assertEquals(content, getContent(changelogEditorPart));
@@ -389,7 +391,7 @@ public class GNUFormatTest {
 		IFile changelogFile = project.addFileToProject( "/test/example", "ChangeLog",
 				newFileInputStream);
 		// Open a document and get the IEditorPart
-		changelogEditorPart = EditorHelper.openEditor(changelogFile);
+		changelogEditorPart = openEditor(changelogFile);
 		
 		assertEquals(content, getContent(changelogEditorPart));
 
@@ -436,18 +438,6 @@ public class GNUFormatTest {
 									  content /* orig. content */; 
 		
 		assertEquals(expectedResult, actualMergeResult);
-	}
-	
-	/**
-	 * Return the content of the given IEditorPart as String.
-	 * @param editorPart
-	 * @return Content of editorPart.
-	 */
-	private static synchronized String getContent(IEditorPart editorPart) {
-		AbstractTextEditor castEditor = (AbstractTextEditor) editorPart;
-		IDocumentProvider provider = castEditor.getDocumentProvider();
-		IDocument document = provider.getDocument(castEditor.getEditorInput());
-		return document.get();
 	}
 
 }

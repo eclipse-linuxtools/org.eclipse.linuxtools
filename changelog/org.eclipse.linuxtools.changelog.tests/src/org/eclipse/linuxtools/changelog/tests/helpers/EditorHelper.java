@@ -8,11 +8,14 @@
 package org.eclipse.linuxtools.changelog.tests.helpers;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.texteditor.AbstractTextEditor;
+import org.eclipse.ui.texteditor.IDocumentProvider;
 
 public class EditorHelper {
 
@@ -50,5 +53,17 @@ public class EditorHelper {
 				}
 			});
 		}
+	}
+	
+	/**
+	 * Return the content of the given IEditorPart as String.
+	 * @param editorPart
+	 * @return Content of editorPart.
+	 */
+	public static String getContent(IEditorPart editorPart) {
+		AbstractTextEditor castEditor = (AbstractTextEditor) editorPart;
+		IDocumentProvider provider = castEditor.getDocumentProvider();
+		IDocument document = provider.getDocument(castEditor.getEditorInput());
+		return document.get();
 	}
 }

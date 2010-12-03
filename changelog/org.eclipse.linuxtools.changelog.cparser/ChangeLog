@@ -1,3 +1,8 @@
+2010-12-02  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* META-INF/MANIFEST.MF: Added Export-Package header with xfriends
+	org.eclipse.linuxtools.changelog.tests. 
+
 2010-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: New file.  Externalized strings.

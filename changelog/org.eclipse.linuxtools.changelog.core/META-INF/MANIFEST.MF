@@ -64,3 +64,4 @@ Export-Package: org.eclipse.linuxtools.changelog.core;
    org.eclipse.core.resources.mapping"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true

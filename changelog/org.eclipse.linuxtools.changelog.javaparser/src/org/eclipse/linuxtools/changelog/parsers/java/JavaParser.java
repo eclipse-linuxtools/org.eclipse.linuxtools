@@ -32,6 +32,8 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
  */
 @SuppressWarnings("restriction")
 public class JavaParser implements IParserChangeLogContrib {
+	
+	public static final String STATIC_INITIALIZER_NAME = "static initializer";
 
 	/**
 	 * @see IParserChangeLogContrib#parseCurrentFunction(IEditorPart)
@@ -83,7 +85,7 @@ public class JavaParser implements IParserChangeLogContrib {
 		case IJavaElement.COMPILATION_UNIT:
 		    return "";
 		case IJavaElement.INITIALIZER:
-		    return "static initializer";
+		    return STATIC_INITIALIZER_NAME;
 
 		// So it's not a method, field, type, or static initializer. Where are we?
 		default:
