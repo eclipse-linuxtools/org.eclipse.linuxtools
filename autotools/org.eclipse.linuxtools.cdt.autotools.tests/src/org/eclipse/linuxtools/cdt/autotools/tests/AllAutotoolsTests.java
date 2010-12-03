@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.tests;
 
+import org.eclipse.linuxtools.cdt.autotools.tests.autoconf.AutoconfTests;
+import org.eclipse.linuxtools.cdt.autotools.tests.editors.EditorTests;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -23,6 +26,8 @@ public class AllAutotoolsTests {
 		suite.addTestSuite(AutotoolsProjectNatureTest.class);
 		suite.addTestSuite(AutotoolsProjectTest1.class);
 		suite.addTestSuite(AutotoolsProjectTest2.class);
+		suite.addTest(AutoconfTests.suite());
+		suite.addTest(EditorTests.suite());
 		//$JUnit-END$
 		return suite;
 	}

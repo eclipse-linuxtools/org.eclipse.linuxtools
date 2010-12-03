@@ -43,7 +43,8 @@ public class AutomakeEditorTests extends TestCase {
 		
 		project.open(new NullProgressMonitor());
 		
-		IFile makefileAmFile = tools.createEmptyFile(project, "Makefile.am");
+		IFile makefileAmFile = tools.createFile(project, "Makefile.am", "");
+		assertTrue(makefileAmFile.exists());
 		
 		IWorkbench workbench = AutotoolsTestsPlugin.getDefault().getWorkbench();
 
