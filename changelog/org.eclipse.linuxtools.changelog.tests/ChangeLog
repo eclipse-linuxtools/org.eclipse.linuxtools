@@ -1,3 +1,7 @@
+2010-12-04  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up version to 2.7.0 in order to match changelog.core.
+
 2010-12-03  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/tests/AllTests.java: Fix copyright.
