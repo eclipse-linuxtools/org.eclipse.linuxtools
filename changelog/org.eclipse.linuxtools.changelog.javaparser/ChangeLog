@@ -1,3 +1,8 @@
+2010-12-06  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/parsers/java/JavaParser.java (STATIC_INITIALIZER_NAME): Added constant.
+	* META-INF/MANIFEST.MF: Added Export-Package header with xfriends org.eclipse.linuxtools.changelog.tests.
+
 2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/parsers/java/JavaParser.java (parseCurrentFunction): Add
