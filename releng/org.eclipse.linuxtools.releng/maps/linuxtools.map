@@ -3,6 +3,7 @@ plugin@org.eclipse.linuxtools.changelog.core=SVN,,svn://dev.eclipse.org/svnroot/
 fragment@org.eclipse.linuxtools.changelog.cparser=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.7,,org.eclipse.linuxtools.changelog.cparser
 plugin@org.eclipse.linuxtools.changelog.doc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.7,,org.eclipse.linuxtools.changelog.doc
 fragment@org.eclipse.linuxtools.changelog.parsers.java=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.7,,org.eclipse.linuxtools.changelog.javaparser
+plugin@org.eclipse.linuxtools.changelog.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.7,,org.eclipse.linuxtools.changelog.tests
 feature@org.eclipse.linuxtools.changelog=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.7,,org.eclipse.linuxtools.changelog-feature
 
 !*** rpm
