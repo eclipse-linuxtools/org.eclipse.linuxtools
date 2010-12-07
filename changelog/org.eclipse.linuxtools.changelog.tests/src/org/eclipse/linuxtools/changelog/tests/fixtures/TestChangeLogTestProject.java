@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.eclipse.cdt.core.model.CoreModel;
 
 /**
  * @author Redhat Inc.
@@ -114,6 +115,36 @@ public class TestChangeLogTestProject {
 		IJavaProject javaProject = this.project.addJavaNature();
 		assertNotNull(javaProject);
 		assertTrue(javaProject instanceof IJavaProject);
+	}
+	
+	/**
+	 * We should be able to add a C nature to a project.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void canAddCNature() throws Exception {
+		IProject cProject = this.project.getTestProject();
+		assertTrue(!CoreModel.hasCNature(cProject));
+		// Add C nature
+		this.project.addCNature();
+		cProject = this.project.getTestProject();
+		assertTrue(CoreModel.hasCNature(cProject));
+	}
+	
+	/**
+	 * We should be able to add a C++ nature to a project.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void canAddCCNature() throws Exception {
+		IProject ccProject = this.project.getTestProject();
+		assertTrue(!CoreModel.hasCCNature(ccProject));
+		// Add C++ nature
+		this.project.addCCNature();
+		ccProject = this.project.getTestProject();
+		assertTrue(CoreModel.hasCCNature(ccProject));
 	}
 
 }

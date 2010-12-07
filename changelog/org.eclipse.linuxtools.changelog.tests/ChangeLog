@@ -1,3 +1,17 @@
+2010-12-07  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/tests/AllTests.java: Added CParserTest.
+	* src/org/eclipse/linuxtools/changelog/parsers/tests/CParserTest.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/fixtures/CStringStorage.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/fixtures/CStringStorageInput.java: New file.
+	* META-INF/MANIFEST.MF: Import packages required for CParserTest
+	* src/org/eclipse/linuxtools/changelog/parsers/tests/JavaParserTest.java: Removed unnecessary comment. 
+	* src/org/eclipse/linuxtools/changelog/tests/fixtures/ChangeLogTestProject.java (addCNature): New method.
+	(addCCNature): New method.
+	* src/org/eclipse/linuxtools/changelog/tests/fixtures/TestChangeLogTestProject.java (canAddCNature): New test for
+	new method.
+	(canAddCCNature): New test for new method.
+
 2010-12-06  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/parsers/tests/JavaParserTest.java: New file.
