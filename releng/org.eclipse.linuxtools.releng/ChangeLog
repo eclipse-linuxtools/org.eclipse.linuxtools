@@ -1,3 +1,7 @@
+2010-12-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix signing.
+
 2010-12-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* maps/linuxtools.map: Add ChangeLog tests plugin.
