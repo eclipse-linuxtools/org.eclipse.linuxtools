@@ -74,13 +74,6 @@ public class JavaParserTest {
 	}
 
 	/**
-	 * scenarios:
-	 * 
-	 * - nested class
-	 * 
-	 */
-
-	/**
 	 * Given an IEditorPart we should be able to retrieve the current function
 	 * we are in.
 	 * 

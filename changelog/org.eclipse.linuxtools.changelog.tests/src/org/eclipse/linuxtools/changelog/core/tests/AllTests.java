@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.tests;
 import org.eclipse.linuxtools.changelog.core.formatters.tests.GNUFormatTest;
+import org.eclipse.linuxtools.changelog.parsers.tests.CParserTest;
 import org.eclipse.linuxtools.changelog.parsers.tests.JavaParserTest;
 import org.eclipse.linuxtools.changelog.tests.fixtures.TestChangeLogTestProject;
 import org.junit.runners.Suite;
@@ -18,6 +19,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ChangeLogWriterTest.class,
 	GNUFormatTest.class,
 	JavaParserTest.class,
+	CParserTest.class,
 	// A small test for the fixture
 	TestChangeLogTestProject.class,
 	}

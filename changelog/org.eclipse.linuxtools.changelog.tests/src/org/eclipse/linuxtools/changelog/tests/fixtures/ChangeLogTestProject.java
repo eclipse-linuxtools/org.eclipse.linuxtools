@@ -9,6 +9,7 @@ package org.eclipse.linuxtools.changelog.tests.fixtures;
 
 import java.io.InputStream;
 
+import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -110,6 +111,24 @@ public class ChangeLogTestProject {
 		description.setNatureIds(newNatures);
 		this.testProject.setDescription(description, null);
 		return JavaCore.create(this.testProject);
+	}
+
+	/**
+	 * Add the C nature to this project. I.e. make it a C project.
+	 * @throws CoreException 
+	 */
+	public void addCNature() throws CoreException {
+		this.testProject = CCorePlugin.getDefault().createCDTProject(
+				testProject.getDescription(), testProject, null);
+	}
+	
+	/**
+	 * Add the C++ nature to this project. I.e. make it a C++ project.
+	 * @throws CoreException
+	 */
+	public void addCCNature() throws CoreException {
+		addCNature();
+		CCorePlugin.getDefault().convertProjectFromCtoCC(testProject, null);
 	}
 
 	/**
