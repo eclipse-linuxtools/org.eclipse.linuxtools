@@ -271,8 +271,10 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 			return false;
 		// Otherwise, try and find the old id to copy the configuration from
 		// or punt if not found
+		IAConfiguration oldCfg = null;
 		Map <String, IAConfiguration> savedList = getSavedConfigs(p);
-		IAConfiguration oldCfg = savedList.get(oldId);
+		if (savedList != null)
+			oldCfg = savedList.get(oldId);
 		if (oldCfg != null) {
 			IAConfiguration newCfg = oldCfg.copy(cfgd.getId());
 			tmpList.put(cfgd.getId(), newCfg);

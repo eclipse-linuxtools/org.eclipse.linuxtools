@@ -1,3 +1,9 @@
+2010-12-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #331735
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfigurationManager.java (cloneCfg): Add
+	a check for getSavedConfigs returning null.
+
 2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump up version to 1.0.1 for 0.7 release.
