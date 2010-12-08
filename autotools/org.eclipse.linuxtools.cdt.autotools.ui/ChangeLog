@@ -1,3 +1,7 @@
+2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up version to 1.0.1 for release 0.7.
+
 2010-11-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/ConvertToAutotoolsProjectWizardPage.java (convertProject): 
