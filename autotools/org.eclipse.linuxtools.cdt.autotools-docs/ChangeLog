@@ -1,3 +1,7 @@
+2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up version to 2.0.2 for 0.7 release.
+
 2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/doc/anttask/MediaWikiImageFetcher.java: Removed.
