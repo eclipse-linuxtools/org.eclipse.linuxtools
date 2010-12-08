@@ -1,3 +1,7 @@
+2010-12-08  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* maps/linuxtools.map: Removing remote features.
+
 2010-12-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* build.properties: Try setting signingDir.

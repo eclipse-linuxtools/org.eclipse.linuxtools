@@ -80,7 +80,6 @@ feature@org.eclipse.linuxtools.callgraph.tests=SVN,,svn://dev.eclipse.org/svnroo
 
 !*** profiling framework
 plugin@org.eclipse.linuxtools.profiling.launch=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.7,,org.eclipse.linuxtools.profiling.launch
-plugin@org.eclipse.linuxtools.profiling.launch.remote=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.7,,org.eclipse.linuxtools.profiling.launch.remote
 plugin@org.eclipse.linuxtools.profiling.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.7,,org.eclipse.linuxtools.profiling.tests
 plugin@org.eclipse.linuxtools.profiling.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.7,,org.eclipse.linuxtools.profiling.ui
 feature@org.eclipse.linuxtools.profiling=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.7,,org.eclipse.linuxtools.profiling-feature
@@ -107,7 +106,6 @@ plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,,svn://dev.eclipse.o
 plugin@org.eclipse.linuxtools.valgrind.core=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.7,,org.eclipse.linuxtools.valgrind.core
 plugin@org.eclipse.linuxtools.valgrind.doc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.7,,org.eclipse.linuxtools.valgrind.doc
 plugin@org.eclipse.linuxtools.valgrind.launch=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.7,,org.eclipse.linuxtools.valgrind.launch
-plugin@org.eclipse.linuxtools.valgrind.launch.remote=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.7,,org.eclipse.linuxtools.valgrind.launch.remote
 plugin@org.eclipse.linuxtools.valgrind.massif=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.7,,org.eclipse.linuxtools.valgrind.massif
 plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.7,,org.eclipse.linuxtools.valgrind.massif.tests
 plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.7,,org.eclipse.linuxtools.valgrind.memcheck
