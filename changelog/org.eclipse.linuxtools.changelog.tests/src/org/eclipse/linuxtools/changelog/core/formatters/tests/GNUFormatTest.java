@@ -18,6 +18,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.changelog.core.formatters.GNUFormat;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
+import org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper;
+
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.closeEditor;
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.openEditor;
 import static org.eclipse.linuxtools.changelog.tests.helpers.EditorHelper.getContent;
@@ -96,6 +98,79 @@ public class GNUFormatTest {
 											  "\n\n";
 		assertEquals(expectedDateFormatting,
 				gnuFormatter.formatDateLine(authorName, authorEmail));
+	}
+
+	/**
+	 * Assume the following initial content of ChangeLog:
+	 * 
+	 * <code>
+	 * 2010-11-26  Severin Gehwolf  <sgehwolf@redhat.com>
+	 *
+	 *   * src/org/eclipse/linuxtools/changelog/parsers/java/HelloWorld.java (test): New Method\n\t\n
+	 * </code>
+	 * 
+	 * Note the trailing new-line, tab, new-line combination. If another change in the same file but
+	 * in a different method (or function) is merged, the empty line containing a tab only should be
+	 * removed.
+	 * 
+	 */
+	@Test
+	public void twoChangesInSameFileAreProperlyMergedWhenThereIsATrailingTabNewLine() throws Exception {
+		// set date/author line
+		String authorName = "Test Foo";
+		String email = "test@example.com";
+		final String dateLine = gnuFormatter.formatDateLine(authorName, email);
+	
+		// full absolute path to ChangeLog file (relative to project root)
+		String changelogPath = "/" + project.getTestProject().getName() + "/path/to";
+		final String changelogFilePath = changelogPath + "/ChangeLog";
+		
+		// entry file path (need overlap with changelogPath)
+		String fileEntryRelPath = "eclipse/example/test/NewCoffeeMaker.java";
+		final String entryFilePath = changelogPath + "/" + fileEntryRelPath;
+	
+		final String firstMethodName = "main";
+		final String firstChangeComment = "Fix args parsing.";
+		// Setup proper pre-existing content
+		String content = dateLine + NEW_LINE + NEW_LINE + TAB + FILE_ENTRY_START_MARKER +
+						 fileEntryRelPath + SPACE + FUNCTION_START_MARKER + 
+						 firstMethodName + FUNCTION_END_MARKER + FILE_ENTRY_END_MARKER +
+						 firstChangeComment + NEW_LINE +
+						 TAB + NEW_LINE; // produces an empty line which should be removed
+		
+		assertNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+		
+		// add a ChangeLog file to our test project
+		InputStream newFileInputStream = new ByteArrayInputStream(
+				content.getBytes());
+		IFile changelogFile = project.addFileToProject( "/path/to", "ChangeLog",
+				newFileInputStream);
+		
+		assertNotNull(project.getTestProject().findMember(new Path("/path/to/ChangeLog")));
+		
+		// Open a document and get the IEditorPart
+		changelogEditorPart = EditorHelper.openEditor(changelogFile);
+		
+		// make sure changelog editor content is right before merging
+		assertEquals(content, getContent(changelogEditorPart));
+		
+		final String secondMethodName = "toString";
+		
+		// Do the merge with the existing content
+		gnuFormatter.mergeChangelog(dateLine, secondMethodName,
+				"" /* no default content */, changelogEditorPart,
+				changelogFilePath, entryFilePath);
+	 
+		final String actualMergeResult = getContent(changelogEditorPart);		
+		
+		// Expect trailing tab+newline combination to not show up in merge
+		final String expectedResult = dateLine + NEW_LINE + NEW_LINE + TAB + FILE_ENTRY_START_MARKER +
+		 							  fileEntryRelPath + SPACE + FUNCTION_START_MARKER + 
+		 							  firstMethodName + FUNCTION_END_MARKER + FILE_ENTRY_END_MARKER +
+		 							  firstChangeComment + NEW_LINE + TAB + FUNCTION_START_MARKER +
+		 							  secondMethodName + FUNCTION_END_MARKER + FILE_ENTRY_END_MARKER +
+		 							  NEW_LINE + NEW_LINE;
+		assertEquals(expectedResult, actualMergeResult);
 	}
 	
 	/**

@@ -1,3 +1,11 @@
+2010-12-10  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java (mergeChangelog): Added call
+	to removeWhitespaceOnlyLines.
+	(removeWhitespaceOnlyLines): New method. Lines containing whitespace only are removed by next merge.
+	This happens only if entries of the same file with changes in different functions happen to
+	contain whitespace only lines. See Eclipse BZ #331688 for more info.
+
 2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump up version to 2.7.0 for 0.7 release.

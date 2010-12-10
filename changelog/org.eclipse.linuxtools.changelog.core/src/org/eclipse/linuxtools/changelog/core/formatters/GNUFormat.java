@@ -111,8 +111,9 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 										"\t") // $NON-NLS-1$
 										|| changelog_doc.get(
 												nextFunctLoc + foundFunc, 1)
-												.equals("\n")) // $NON-NLS-1$
+												.equals("\n")) { // $NON-NLS-1$
 									foundFunc--;
+								}
 							} catch (BadLocationException e2) {
 								// TODO Auto-generated catch block
 								e2.printStackTrace();
@@ -133,6 +134,8 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 				if (functLogEntry >= nextChangeEntry) {
 					functLogEntry = nextChangeEntry - 1;
 					try {
+						// Get rid of some potential lines containing whitespace only.
+						functLogEntry = removeWhitespaceOnlyLines(changelog_doc, functLogEntry);
 						while (changelog_doc.get(functLogEntry, 1).equals("\n")) // $NON-NLS-1$
 							functLogEntry--;
 					} catch (BadLocationException e) {
@@ -204,6 +207,51 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 		
 	}
 	
+	/**
+	 * Remove any empty lines (i.e. lines only containing whitespace) between
+	 * <code>offset</code> and index backed-up until a '\n' preceded by some non-whitespace
+	 * character is reached. Whitespace will be merged to '\n\n'. For example
+	 * consider the following string "(main): Removed.\n\t\ \n\n\t\n" and
+	 * <code>offset</code> pointing to the last '\n'. This string would be
+	 * changed to: "(main): Removed.\n\n".
+	 * 
+	 * @param changelog_doc
+	 * @param offset
+	 * @return The new offset.
+	 */
+	private int removeWhitespaceOnlyLines(IDocument changelog_doc, int offset) {
+		int initialOffset = offset;
+		int backedUpOffset = offset;
+		char charAtOffset;
+		try {
+			charAtOffset = changelog_doc.get(offset, 1).charAt(0);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+			return offset;
+		}
+		while( backedUpOffset > 0 && (charAtOffset == '\n' || charAtOffset == '\t' || charAtOffset == ' ') ) {
+			backedUpOffset--;
+			try {
+			charAtOffset = changelog_doc.get(backedUpOffset, 1).charAt(0);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+				break;
+			}
+		}
+		if ( (initialOffset - backedUpOffset) > 2 ) {
+			try {
+				int replaceLength = (initialOffset - backedUpOffset - 2);
+				changelog_doc.replace(backedUpOffset + 2, replaceLength, "");
+				// change offset accordingly
+				offset -= replaceLength;
+			} catch (BadLocationException e) {
+				// exception should have been thrown earlier if that's
+				// really a bad location...
+			}
+		}
+		return offset;
+	}
+
 	private IWorkspaceRoot getWorkspaceRoot() {
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
