@@ -1,6 +1,7 @@
 2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/ui/tests: Package removed.
+	* src/org/eclipse/linuxtools/changelog/ui: Removed.
 
 2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
    
