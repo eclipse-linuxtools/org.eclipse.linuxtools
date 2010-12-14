@@ -7,14 +7,7 @@ Bundle-Activator: org.eclipse.linuxtools.changelog.core.tests.TestsPluginActivat
 Bundle-Vendor: Eclipse.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.junit4;bundle-version="4.8.1",
- org.eclipse.swtbot.eclipse.core,
- org.eclipse.swtbot.eclipse.finder,
- org.eclipse.swtbot.junit4_x,
- org.hamcrest,
- org.apache.log4j,
- org.eclipse.swtbot.go
-Eclipse-RegisterBuddy: org.apache.log4j
+ org.junit4;bundle-version="4.8.1"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.cdt.core,
@@ -43,3 +36,5 @@ Import-Package: org.eclipse.cdt.core,
  org.eclipse.ui.ide,
  org.eclipse.ui.part,
  org.eclipse.ui.texteditor
+Export-Package: org.eclipse.linuxtools.changelog.tests.fixtures;x-friends:=org.eclipse.linuxtools.changelog.tests.ui,
+ org.eclipse.linuxtools.changelog.tests.helpers;x-friends:=org.eclipse.linuxtools.changelog.tests.ui

@@ -1,4 +1,22 @@
 2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
+   
+	* src/log4j.xml: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/ContextMenuHelper.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/ProjectExplorer.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/ProjectExplorerTreeItemAppearsCondition.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/SVNProject.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/SVNProjectCreatedCondition.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/SVNReporsitoriesView.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/TableAppearsCondition.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/tests/helpers/TreeItemAppearsCondition.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/swtbot/AddChangelogEntrySWTBotTest.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/swtbot/AllSWTBotTests.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/swtbot/CreateChangeLogFromHistorySWTBotTest.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/swtbot/DisabledPrepareChangelogSWTBotTest.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/swtbot/FormatChangeLogSWTBotTest.java: Removed.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/swtbot/PrepareChangelogSWTBotTest.java: Removed.
+
+2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/log4j.xml: New file.
 	* src/org/eclipse/linuxtools/changelog/tests/helpers/ContextMenuHelper.java: New file.
