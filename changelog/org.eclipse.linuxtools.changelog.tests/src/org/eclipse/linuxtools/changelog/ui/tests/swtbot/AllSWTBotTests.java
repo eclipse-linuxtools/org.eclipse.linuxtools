@@ -5,30 +5,26 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.core.tests;
-import org.eclipse.linuxtools.changelog.core.formatters.tests.GNUFormatTest;
-import org.eclipse.linuxtools.changelog.parsers.tests.CParserTest;
-import org.eclipse.linuxtools.changelog.parsers.tests.JavaParserTest;
-import org.eclipse.linuxtools.changelog.tests.fixtures.TestChangeLogTestProject;
+package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
+
 import org.junit.runners.Suite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Run this suite as JUnit plug-in test.
+ * Run as SWTBot test.
  *
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	ChangeLogWriterTest.class,
-	GNUFormatTest.class,
-	JavaParserTest.class,
-	CParserTest.class,
-	// A small test for the fixture
-	TestChangeLogTestProject.class,
+		AddChangelogEntrySWTBotTest.class,
+		PrepareChangelogSWTBotTest.class,
+		DisabledPrepareChangelogSWTBotTest.class,
+		CreateChangeLogFromHistorySWTBotTest.class,
+		FormatChangeLogSWTBotTest.class
 	}
 )
 
-public class AllTests {
+public class AllSWTBotTests {
 	// empty
 }
