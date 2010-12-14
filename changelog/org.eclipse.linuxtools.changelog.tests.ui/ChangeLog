@@ -1,0 +1,25 @@
+2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	Added org.eclipse.linuxtools.changelog.tests.ui plug-in.
+	* .classpath: New file.
+	* .project: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* build.properties: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* screenshots/canFormatChangeLogFile\(org.eclipse.linuxtools.changelog.tests.ui.swtbot.FormatChangeLogSWTBotTest\).jpeg: New file.
+	* screenshots/canPrepareChangeLogFromSVNHistory\(org.eclipse.linuxtools.changelog.tests.ui.swtbot.FormatChangeLogSWTBotTest\).jpeg: New file.
+	* src/log4j.xml: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/ContextMenuHelper.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/ProjectExplorer.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/ProjectExplorerTreeItemAppearsCondition.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/SVNProject.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/SVNProjectCreatedCondition.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/SVNReporsitoriesView.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/TableAppearsCondition.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/utils/TreeItemAppearsCondition.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/swtbot/AddChangelogEntrySWTBotTest.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/swtbot/AllSWTBotTests.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/swtbot/CreateChangeLogFromHistorySWTBotTest.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/swtbot/DisabledPrepareChangelogSWTBotTest.java: New file.
+	* src/org/eclipse/linuxtools/changelog/tests/ui/swtbot/FormatChangeLogSWTBotTest.java: New file. 
+	* src/org/eclipse/linuxtools/changelog/tests/ui/swtbot/PrepareChangelogSWTBotTest.java: New file.
