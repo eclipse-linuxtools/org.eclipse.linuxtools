@@ -1,4 +1,8 @@
 2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/ui/tests: Package removed.
+
+2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
    
 	* src/log4j.xml: Removed.
 	* src/org/eclipse/linuxtools/changelog/tests/helpers/ContextMenuHelper.java: Removed.
