@@ -9,15 +9,17 @@ package org.eclipse.linuxtools.changelog.tests.ui.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.ProjectExplorerTreeItemAppearsCondition;
+import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
 import org.eclipse.linuxtools.changelog.tests.ui.utils.ProjectExplorer;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.SVNProject;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.SVNProjectCreatedCondition;
+import org.eclipse.linuxtools.changelog.tests.ui.utils.ProjectExplorerTreeItemAppearsCondition;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
@@ -47,13 +49,9 @@ public class FormatChangeLogSWTBotTest {
  
 	private static SWTWorkbenchBot bot;
 	private static SWTBotTree projectExplorerViewTree;
-	private IProject  project;
-	private SVNProject subversionProject;
+	private ChangeLogTestProject project;
 	// The name of the test project, we create
-	private final String PROJECT_NAME = "org.eclipse.linuxtools.changelog.tests";
-	// An available SVN repo
-	private final String SVN_PROJECT_URL = "svn://dev.eclipse.org/svnroot/technology/" +
-		"org.eclipse.linuxtools/changelog/trunk";
+	private final String PROJECT_NAME = "org.eclipse.linuxtools.changelog.ui.formattestproject";
  
 	@BeforeClass
 	public static void beforeClass() throws Exception {
@@ -72,22 +70,13 @@ public class FormatChangeLogSWTBotTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		// Do an SVN checkout of the changelog.tests plugin
-		subversionProject = new SVNProject(bot);
-		project = subversionProject.setProjectName(PROJECT_NAME).setRepoURL(SVN_PROJECT_URL).checkoutProject();
-		bot.waitUntil(new SVNProjectCreatedCondition(PROJECT_NAME));
+		project = new ChangeLogTestProject(PROJECT_NAME);
 		ProjectExplorer.openView();
 	}
  
 	@After
 	public void tearDown() throws Exception {
-		this.project.delete(true, null);
-		// discard existing repo from previous test runs
-		try {
-			subversionProject.discardRepositoryLocation();
-		} catch (WidgetNotFoundException e) {
-			// Ignore case if repository not existing
-		}
+		this.project.getTestProject().delete(true, null);
 	}
 
 	/**
@@ -98,8 +87,23 @@ public class FormatChangeLogSWTBotTest {
 	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void canFormatChangeLogFile() throws Exception {
+		// add a ChangeLog file
+		assertNull(project.getTestProject().findMember(new Path("/ChangeLog")));
+		final String changelogContent = "2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>\n\n" +
+			"\tAdded org.eclipse.linuxtools.changelog.tests.ui plug-in.\n" +
+			"\t* .classpath: New file.\n" +
+			"\t* .project: New file.\n" +
+			"\t* .settings/org.eclipse.jdt.core.prefs: New file.\n" +
+			"\t* build.properties: New file.\n" +
+			"\t* src/log4j.xml: New file.\n" +
+			"\t* src/org/eclipse/linuxtools/changelog/tests/ui/utils/ContextMenuHelper.java: New file.\n" +
+			"\t* src/org/eclipse/linuxtools/changelog/tests/ui/utils/ProjectExplorer.java: New file.\n" +
+			"\t* src/org/eclipse/linuxtools/changelog/tests/ui/utils/ProjectExplorerTreeItemAppearsCondition.java: New file.\n";
+		project.addFileToProject("/", "ChangeLog", new ByteArrayInputStream(changelogContent.getBytes()));
+		assertNotNull(project.getTestProject().findMember(new Path("/ChangeLog")));
+		
 		// select ChangeLog file
-		String teamProviderString = "[changelog/trunk/" + PROJECT_NAME + "]";
+		String teamProviderString = "n/a";
 		SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME, teamProviderString);
 		long oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = 5000;
