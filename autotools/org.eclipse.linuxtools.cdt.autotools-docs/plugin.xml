@@ -7,7 +7,7 @@
             file="toc.xml"
             primary="true"/>
       <toc
-            file="userguide/Autotools Plugin-in User Guide-toc.xml"
+            file="tools.xml"
             primary="true">
       </toc>
    </extension>
