@@ -1,3 +1,9 @@
+2010-12-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* tools.xml: New file.
+	* plugin.xml: Restore help contents for GNU Tools that were overwritten by switching to
+	using media-wiki to generate documentation.
+
 2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump up version to 2.0.2 for 0.7 release.
