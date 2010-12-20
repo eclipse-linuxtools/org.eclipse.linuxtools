@@ -15,4 +15,5 @@ Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.eclipse.core.resources,
  org.eclipse.linuxtools.changelog.tests.fixtures,
  org.eclipse.jdt.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: J2SE-1.5,
+ JavaSE-1.6

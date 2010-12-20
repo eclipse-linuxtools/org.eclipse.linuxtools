@@ -1,7 +1,13 @@
 2010-12-20  Severin Gehwolf  <sgehwolf@redhat.com>
 
+	* META-INF/MANIFEST.MF: Add Java 5 to list of execution environments.
+	* javaCompiler...args: Removed.
+	
+2010-12-20  Severin Gehwolf  <sgehwolf@redhat.com>
+
 	* build.xml: New file. Added for build support with upstream eclipse.
 	* javaCompiler...args: New file.
+	
 
 2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
 
