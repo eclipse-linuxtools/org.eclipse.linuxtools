@@ -77,7 +77,7 @@ Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
     +-;func_074;0;1;0ns;0.0
     +-;func_075;0;1;0ns;0.0
     +-;func_076;0;1;0ns;0.0
-    +-;func_077;1;1;10.0ms;33.333332
+    +-;func_077;1;1;10.000ms;33.333332
     | +-;func_077 (bigtest.c:16297);1;;;33.333332
     |   +-;0x8071b9c;1;;;33.333332
     +-;func_078;0;1;0ns;0.0
@@ -580,7 +580,7 @@ Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
     +-;func_575;0;1;0ns;0.0
     +-;func_576;0;1;0ns;0.0
     +-;func_577;0;1;0ns;0.0
-    +-;func_578;1;1;10.0ms;33.333332
+    +-;func_578;1;1;10.000ms;33.333332
     | +-;func_578 (bigtest.c:7663);1;;;33.333332
     |   +-;0x80584c0;1;;;33.333332
     +-;func_579;0;1;0ns;0.0
@@ -935,7 +935,7 @@ Hierarchy;Name (location);Samples;Calls;Time/Call;%Time
     +-;func_928;0;1;0ns;0.0
     +-;func_929;0;1;0ns;0.0
     +-;func_930;0;1;0ns;0.0
-    +-;func_931;1;1;10.0ms;33.333332
+    +-;func_931;1;1;10.000ms;33.333332
     | +-;func_931 (bigtest.c:13313);1;;;33.333332
     |   +-;0x80641ac;1;;;33.333332
     +-;func_932;0;1;0ns;0.0

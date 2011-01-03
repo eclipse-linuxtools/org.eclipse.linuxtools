@@ -1,5 +1,5 @@
 Hierarchy;Name (location);Time;Calls;Time/Call;%Time
-+-;Summary;30.0ms;;;100.0
++-;Summary;30.000ms;;;100.0
   +-;func_001;0ns;1;0ns;0.0
   | +-;children;0ns;10;0ns;0.0
   | | +-;func_010 (bigtest.c:14408);0ns;1;0ns;0.0
@@ -85,7 +85,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | +-;parents;0ns;1;0ns;0.0
   |   +-;main (bigtest.c:17177);0ns;1;0ns;0.0
   +-;func_007;0ns;1;0ns;0.0
-  | +-;children;10.0ms;10;1.0ms;33.333332
+  | +-;children;10.000ms;10;1.000ms;33.333332
   | | +-;func_070 (bigtest.c:16088);0ns;1;0ns;0.0
   | | +-;func_071 (bigtest.c:16116);0ns;1;0ns;0.0
   | | +-;func_072 (bigtest.c:16144);0ns;1;0ns;0.0
@@ -93,7 +93,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | | +-;func_074 (bigtest.c:16200);0ns;1;0ns;0.0
   | | +-;func_075 (bigtest.c:16228);0ns;1;0ns;0.0
   | | +-;func_076 (bigtest.c:16256);0ns;1;0ns;0.0
-  | | +-;func_077 (bigtest.c:16284);10.0ms;1;10.0ms;33.333332
+  | | +-;func_077 (bigtest.c:16284);10.000ms;1;10.000ms;33.333332
   | | +-;func_078 (bigtest.c:16312);0ns;1;0ns;0.0
   | | +-;func_079 (bigtest.c:16340);0ns;1;0ns;0.0
   | +-;parents;0ns;1;0ns;0.0
@@ -785,7 +785,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_005 (bigtest.c:17051);0ns;1;0ns;0.0
   +-;func_057;0ns;1;0ns;0.0
-  | +-;children;10.0ms;10;1.0ms;33.333332
+  | +-;children;10.000ms;10;1.000ms;33.333332
   | | +-;func_570 (bigtest.c:7528);0ns;1;0ns;0.0
   | | +-;func_571 (bigtest.c:7544);0ns;1;0ns;0.0
   | | +-;func_572 (bigtest.c:7560);0ns;1;0ns;0.0
@@ -794,7 +794,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | | +-;func_575 (bigtest.c:7608);0ns;1;0ns;0.0
   | | +-;func_576 (bigtest.c:7624);0ns;1;0ns;0.0
   | | +-;func_577 (bigtest.c:7640);0ns;1;0ns;0.0
-  | | +-;func_578 (bigtest.c:7656);10.0ms;1;10.0ms;33.333332
+  | | +-;func_578 (bigtest.c:7656);10.000ms;1;10.000ms;33.333332
   | | +-;func_579 (bigtest.c:7672);0ns;1;0ns;0.0
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_005 (bigtest.c:17053);0ns;1;0ns;0.0
@@ -1064,7 +1064,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | | +-;func_769 (bigtest.c:10712);0ns;1;0ns;0.0
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_007 (bigtest.c:17105);0ns;1;0ns;0.0
-  +-;func_077;10.0ms;1;10.0ms;33.333332
+  +-;func_077;10.000ms;1;10.000ms;33.333332
   | +-;children;0ns;10;0ns;0.0
   | | +-;func_770 (bigtest.c:10728);0ns;1;0ns;0.0
   | | +-;func_771 (bigtest.c:10744);0ns;1;0ns;0.0
@@ -1289,9 +1289,9 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_009 (bigtest.c:17151);0ns;1;0ns;0.0
   +-;func_093;0ns;1;0ns;0.0
-  | +-;children;10.0ms;10;1.0ms;33.333332
+  | +-;children;10.000ms;10;1.000ms;33.333332
   | | +-;func_930 (bigtest.c:13288);0ns;1;0ns;0.0
-  | | +-;func_931 (bigtest.c:13304);10.0ms;1;10.0ms;33.333332
+  | | +-;func_931 (bigtest.c:13304);10.000ms;1;10.000ms;33.333332
   | | +-;func_932 (bigtest.c:13320);0ns;1;0ns;0.0
   | | +-;func_933 (bigtest.c:13336);0ns;1;0ns;0.0
   | | +-;func_934 (bigtest.c:13352);0ns;1;0ns;0.0
@@ -2820,7 +2820,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   +-;func_577;0ns;1;0ns;0.0
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_057 (bigtest.c:15742);0ns;1;0ns;0.0
-  +-;func_578;10.0ms;1;10.0ms;33.333332
+  +-;func_578;10.000ms;1;10.000ms;33.333332
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_057 (bigtest.c:15744);0ns;1;0ns;0.0
   +-;func_579;0ns;1;0ns;0.0
@@ -3397,35 +3397,35 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_076 (bigtest.c:16278);0ns;1;0ns;0.0
   +-;func_770;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16288);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16288);10.000ms;1;10.000ms;33.333332
   +-;func_771;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16290);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16290);10.000ms;1;10.000ms;33.333332
   +-;func_772;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16292);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16292);10.000ms;1;10.000ms;33.333332
   +-;func_773;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16294);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16294);10.000ms;1;10.000ms;33.333332
   +-;func_774;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16296);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16296);10.000ms;1;10.000ms;33.333332
   +-;func_775;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16298);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16298);10.000ms;1;10.000ms;33.333332
   +-;func_776;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16300);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16300);10.000ms;1;10.000ms;33.333332
   +-;func_777;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16302);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16302);10.000ms;1;10.000ms;33.333332
   +-;func_778;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16304);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16304);10.000ms;1;10.000ms;33.333332
   +-;func_779;0ns;1;0ns;0.0
-  | +-;parents;10.0ms;1;10.0ms;33.333332
-  |   +-;func_077 (bigtest.c:16306);10.0ms;1;10.0ms;33.333332
+  | +-;parents;10.000ms;1;10.000ms;33.333332
+  |   +-;func_077 (bigtest.c:16306);10.000ms;1;10.000ms;33.333332
   +-;func_780;0ns;1;0ns;0.0
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_078 (bigtest.c:16316);0ns;1;0ns;0.0
@@ -3879,7 +3879,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   +-;func_930;0ns;1;0ns;0.0
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_093 (bigtest.c:16736);0ns;1;0ns;0.0
-  +-;func_931;10.0ms;1;10.0ms;33.333332
+  +-;func_931;10.000ms;1;10.000ms;33.333332
   | +-;parents;0ns;1;0ns;0.0
   |   +-;func_093 (bigtest.c:16738);0ns;1;0ns;0.0
   +-;func_932;0ns;1;0ns;0.0

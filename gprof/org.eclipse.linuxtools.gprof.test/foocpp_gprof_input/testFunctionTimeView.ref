@@ -1,16 +1,16 @@
 Hierarchy;Name (location);Time;Calls;Time/Call;%Time
-+-;Summary;30.0ms;;;100.0
++-;Summary;30.000ms;;;100.0
   +-;A::foocpp::foocpp();0ns;2;0ns;0.0
-  +-;A::foocpp::func_a(int);10.0ms;2;5.0ms;33.333332
-  | +-;A::foocpp::func_a(int) (foox.cpp:60);10.0ms;;;33.333332
-  |   +-;0x8048b84;10.0ms;;;33.333332
+  +-;A::foocpp::func_a(int);10.000ms;2;5.000ms;33.333332
+  | +-;A::foocpp::func_a(int) (foox.cpp:60);10.000ms;;;33.333332
+  |   +-;0x8048b84;10.000ms;;;33.333332
   +-;A::foocpp::func_f(int);0ns;2;0ns;0.0
   +-;A::foocpp::~foocpp();0ns;2;0ns;0.0
   +-;B::foocpp::foocpp();0ns;1;0ns;0.0
-  +-;B::foocpp::func_b(int);20.0ms;1;20.0ms;66.666664
-  | +-;B::foocpp::func_b(int) (foox.cpp:93);10.0ms;;;33.333332
-  | | +-;0x8048978;10.0ms;;;33.333332
-  | +-;B::foocpp::func_b(int) (foox.cpp:97);10.0ms;;;33.333332
-  |   +-;0x8048a28;10.0ms;;;33.333332
+  +-;B::foocpp::func_b(int);20.000ms;1;20.000ms;66.666664
+  | +-;B::foocpp::func_b(int) (foox.cpp:93);10.000ms;;;33.333332
+  | | +-;0x8048978;10.000ms;;;33.333332
+  | +-;B::foocpp::func_b(int) (foox.cpp:97);10.000ms;;;33.333332
+  |   +-;0x8048a28;10.000ms;;;33.333332
   +-;B::foocpp::~foocpp();0ns;1;0ns;0.0
   +-;main;0ns;0;;0.0

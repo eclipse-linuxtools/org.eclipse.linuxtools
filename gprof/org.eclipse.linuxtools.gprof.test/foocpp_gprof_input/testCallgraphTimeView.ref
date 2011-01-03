@@ -1,18 +1,18 @@
 Hierarchy;Name (location);Time;Calls;Time/Call;%Time
-+-;Summary;30.0ms;;;100.0
++-;Summary;30.000ms;;;100.0
   +-;A::foocpp::foocpp();0ns;2;0ns;0.0
   | +-;parents;0ns;2;0ns;0.0
   |   +-;B::foocpp::foocpp() (foox.cpp:82);0ns;1;0ns;0.0
   |   +-;main (foox.cpp:110);0ns;1;0ns;0.0
-  +-;A::foocpp::func_a(int);10.0ms;2;5.0ms;33.333332
+  +-;A::foocpp::func_a(int);10.000ms;2;5.000ms;33.333332
   | +-;children;0ns;2;0ns;0.0
   | | +-;A::foocpp::func_f(int) (foox.cpp:47);0ns;2;0ns;0.0
-  | +-;parents;20.0ms;2;10.0ms;66.666664
-  |   +-;B::foocpp::func_b(int) (foox.cpp:95);20.0ms;1;20.0ms;66.666664
+  | +-;parents;20.000ms;2;10.000ms;66.666664
+  |   +-;B::foocpp::func_b(int) (foox.cpp:95);20.000ms;1;20.000ms;66.666664
   |   +-;main (foox.cpp:112);0ns;1;0ns;0.0
   +-;A::foocpp::func_f(int);0ns;2;0ns;0.0
-  | +-;parents;10.0ms;2;5.0ms;33.333332
-  |   +-;A::foocpp::func_a(int) (foox.cpp:59);10.0ms;2;5.0ms;33.333332
+  | +-;parents;10.000ms;2;5.000ms;33.333332
+  |   +-;A::foocpp::func_a(int) (foox.cpp:59);10.000ms;2;5.000ms;33.333332
   +-;A::foocpp::~foocpp();0ns;2;0ns;0.0
   | +-;parents;0ns;2;0ns;0.0
   |   +-;B::foocpp::~foocpp() (foox.cpp:87);0ns;1;0ns;0.0
@@ -22,9 +22,9 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | | +-;A::foocpp::foocpp() (foox.cpp:42);0ns;1;0ns;0.0
   | +-;parents;0ns;1;0ns;0.0
   |   +-;main (foox.cpp:109);0ns;1;0ns;0.0
-  +-;B::foocpp::func_b(int);20.0ms;1;20.0ms;66.666664
-  | +-;children;10.0ms;1;10.0ms;33.333332
-  | | +-;A::foocpp::func_a(int) (foox.cpp:54);10.0ms;1;10.0ms;33.333332
+  +-;B::foocpp::func_b(int);20.000ms;1;20.000ms;66.666664
+  | +-;children;10.000ms;1;10.000ms;33.333332
+  | | +-;A::foocpp::func_a(int) (foox.cpp:54);10.000ms;1;10.000ms;33.333332
   | +-;parents;0ns;1;0ns;0.0
   |   +-;main (foox.cpp:115);0ns;1;0ns;0.0
   +-;B::foocpp::~foocpp();0ns;1;0ns;0.0
@@ -33,10 +33,10 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   | +-;parents;0ns;1;0ns;0.0
   |   +-;main (foox.cpp:119);0ns;1;0ns;0.0
   +-;main;0ns;0;;0.0
-    +-;children;30.0ms;6;5.0ms;100.0
+    +-;children;30.000ms;6;5.000ms;100.0
       +-;A::foocpp::foocpp() (foox.cpp:42);0ns;1;0ns;0.0
-      +-;A::foocpp::func_a(int) (foox.cpp:54);10.0ms;1;10.0ms;33.333332
+      +-;A::foocpp::func_a(int) (foox.cpp:54);10.000ms;1;10.000ms;33.333332
       +-;A::foocpp::~foocpp() (foox.cpp:44);0ns;1;0ns;0.0
       +-;B::foocpp::foocpp() (foox.cpp:81);0ns;1;0ns;0.0
-      +-;B::foocpp::func_b(int) (foox.cpp:91);20.0ms;1;20.0ms;66.666664
+      +-;B::foocpp::func_b(int) (foox.cpp:91);20.000ms;1;20.000ms;66.666664
       +-;B::foocpp::~foocpp() (foox.cpp:86);0ns;1;0ns;0.0
