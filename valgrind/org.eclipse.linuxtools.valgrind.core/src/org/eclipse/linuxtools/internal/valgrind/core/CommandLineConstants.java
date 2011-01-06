@@ -32,6 +32,9 @@ public final class CommandLineConstants {
 	
 	// 3.4.0 specific
 	public static final String OPT_MAINSTACK = "--main-stacksize"; //$NON-NLS-1$
+	
+	// 3.6.0 specific
+	public static final String OPT_DSYMUTIL = "--dsymutil"; //$NON-NLS-1$
 
 	public static final String LOG_PREFIX = "valgrind_"; //$NON-NLS-1$
 }

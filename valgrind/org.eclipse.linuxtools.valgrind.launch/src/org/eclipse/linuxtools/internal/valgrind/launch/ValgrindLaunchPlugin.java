@@ -63,6 +63,9 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyC
 	public static final Version VER_3_3_1 = new Version(3, 3, 1);
 	public static final Version VER_3_4_0 = new Version(3, 4, 0);
 	public static final Version VER_3_4_1 = new Version(3, 4, 1);
+	public static final Version VER_3_5_0 = new Version(3, 5, 0);
+	public static final Version VER_3_6_0 = new Version(3, 6, 0);
+	
 	private static final Version MIN_VER = VER_3_3_0;
 	private static final String VERSION_PREFIX = "valgrind-"; //$NON-NLS-1$
 	private static final char VERSION_DELIMITER = '-';

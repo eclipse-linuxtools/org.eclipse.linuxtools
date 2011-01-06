@@ -1,3 +1,9 @@
+2011-01-06  Elliott Baron  <ebaron@fedoraproject.org>
+
+	Bug #333640
+	* src/org/eclipse/linuxtools/internal/valgrind/core/LaunchConfigurationConstants.java (ATTR_GENERAL_DSYMUTIL): Added dsymutil option.
+	(DEFAULT_GENERAL_DSYMUTIL): Likewise.
+
 2010-09-13  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCoreParser.java (ValgrindCoreParser): Handle

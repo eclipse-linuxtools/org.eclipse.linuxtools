@@ -69,6 +69,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Spinner maxStackFrameSpinner;
 	protected Button mainStackSizeButton;
 	protected Spinner mainStackSizeSpinner;
+	protected Button dSymUtilButton;
 	protected List suppFileList;
 
 	protected String tool;
@@ -321,6 +322,13 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			mainStackSizeSpinner.addModifyListener(modifyListener);
 			mainStackSizeSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		}
+		
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
+			dSymUtilButton = new Button(errorTop, SWT.CHECK);
+			dSymUtilButton.setText(Messages.getString("ValgrindOptionsTab.dsymutil")); //$NON-NLS-1$
+			dSymUtilButton.addSelectionListener(selectListener);
+			dSymUtilButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
 	}
 
 	protected void createSuppressionsOption(Composite top) {
@@ -490,6 +498,11 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 				mainStackSizeSpinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK));
 				checkMainStackEnablement();
 			}
+			
+			// 3.6.0 specific
+			if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
+				dSymUtilButton.setSelection(configuration.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL));
+			}
 		} catch (CoreException e) {
 			ex = e;
 		}
@@ -549,6 +562,12 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, mainStackSizeButton.getSelection());
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, mainStackSizeSpinner.getSelection());
 		}
+		
+		// 3.6.0 specific
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
+			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, dSymUtilButton.getSelection());
+		}
+		
 		if (dynamicTab != null) {
 			dynamicTab.performApply(configuration);
 		}
@@ -572,6 +591,11 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK_BOOL, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK_BOOL);
 			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_MAINSTACK, LaunchConfigurationConstants.DEFAULT_GENERAL_MAINSTACK);
+		}
+		
+		// 3.6.0 specific
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
+			configuration.setAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL);
 		}
 		
 		if (dynamicTab != null) {
