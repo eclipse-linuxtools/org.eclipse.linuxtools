@@ -1,3 +1,7 @@
+2011-01-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Add ChangeLog tests.
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Fix provider name.
