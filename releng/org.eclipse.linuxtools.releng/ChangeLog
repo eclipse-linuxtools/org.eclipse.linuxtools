@@ -1,3 +1,7 @@
+2011-01-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* maps/linuxtools.map: Add ChangeLog ui tests plugin.
+
 2010-12-08  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* maps/linuxtools.map: Removing remote features.
