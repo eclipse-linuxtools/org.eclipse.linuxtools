@@ -1,3 +1,7 @@
+2011-01-10  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* .project: Rename plug-in to org.eclipse.linuxtools.changelog.ui.tests.
+
 2010-12-20  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add Java 5 to list of execution environments.

@@ -37,5 +37,5 @@ Import-Package: org.eclipse.cdt.core,
  org.eclipse.ui.ide,
  org.eclipse.ui.part,
  org.eclipse.ui.texteditor
-Export-Package: org.eclipse.linuxtools.changelog.tests.fixtures;x-friends:=org.eclipse.linuxtools.changelog.tests.ui,
- org.eclipse.linuxtools.changelog.tests.helpers;x-friends:=org.eclipse.linuxtools.changelog.tests.ui
+Export-Package: org.eclipse.linuxtools.changelog.tests.fixtures;x-friends:="org.eclipse.linuxtools.changelog.ui.tests",
+ org.eclipse.linuxtools.changelog.tests.helpers;x-friends:="org.eclipse.linuxtools.changelog.ui.tests"

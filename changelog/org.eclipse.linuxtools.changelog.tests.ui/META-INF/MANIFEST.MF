@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Linuxtools ChangeLog UI SWTBot tests
-Bundle-SymbolicName: org.eclipse.linuxtools.changelog.tests.ui
+Bundle-SymbolicName: org.eclipse.linuxtools.changelog.ui.tests
 Bundle-Version: 2.7.0.qualifier
 Bundle-Vendor: Eclipse.org
 Require-Bundle: org.eclipse.swtbot.eclipse.core,
