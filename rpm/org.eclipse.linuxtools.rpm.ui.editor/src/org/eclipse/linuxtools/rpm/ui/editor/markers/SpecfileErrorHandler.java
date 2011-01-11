@@ -104,8 +104,8 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 			// do nothing
 		}
 		
-		Integer charStart = new Integer(lineOffset + e.getStartColumn());
-		Integer charEnd = new Integer(lineOffset + e.getEndColumn());
+		Integer charStart = Integer.valueOf(lineOffset + e.getStartColumn());
+		Integer charEnd = Integer.valueOf(lineOffset + e.getEndColumn());
 		String annotationType = ANNOTATION_INFO;
 		if (e.getSeverity() == IMarker.SEVERITY_ERROR)
 			annotationType = ANNOTATION_ERROR;
@@ -132,7 +132,7 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 	private AnnotationModel getAnnotationModel() {
 		return (AnnotationModel)SpecfileEditor.getSpecfileDocumentProvider().getAnnotationModel(input);
 	}
-	@SuppressWarnings("unchecked")
+	
 	public void removeExistingMarkers(int offset, int length)
 	{	
 		fAnnotationModel = getAnnotationModel();
@@ -140,11 +140,13 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 		while (i.hasNext()) {
 			Annotation annotation = (Annotation)i.next();
 			Position p = fAnnotationModel.getPosition(annotation);
-			int pStart = p.getOffset();
-			if (pStart >= offset && pStart < (offset + length)) {
-				// Remove directly from model instead of using
-				// iterator so position will be removed from document.
-				fAnnotationModel.removeAnnotation(annotation);
+			if (p != null) {
+				int pStart = p.getOffset();
+				if (pStart >= offset && pStart < (offset + length)) {
+					// Remove directly from model instead of using
+					// iterator so position will be removed from document.
+					fAnnotationModel.removeAnnotation(annotation);
+				}
 			}
 		}
 	}

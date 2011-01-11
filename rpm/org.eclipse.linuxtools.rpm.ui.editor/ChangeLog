@@ -1,3 +1,8 @@
+2011-01-11  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/markers/SpecfileErrorHandler.java (removeExistingMarkers): Fix NPE.
+	(handleError): Use more effective Integer parser.
+
 2010-10-26  Alexander Kurtakov  <akurtako@redhat.com>
     Allow bug hyperlinking and use extension point. (Modified patch by Charley Wang bug#316380).
 	* plugin.xml: Use extension point for hyperlinks.
