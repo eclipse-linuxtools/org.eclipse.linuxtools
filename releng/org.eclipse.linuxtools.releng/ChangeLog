@@ -1,3 +1,8 @@
+2011-01-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* maps/linuxtools.map: Remove ChangeLog ui tests plugin
+	which doesn't exist in branch.
+
 2011-01-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* maps/linuxtools.map: Add ChangeLog ui tests plugin.
