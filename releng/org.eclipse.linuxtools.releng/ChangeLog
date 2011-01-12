@@ -1,3 +1,7 @@
+2011-01-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* psfs/changelog.psf: Add ChangeLog tests.
+
 2011-01-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* maps/linuxtools.map: Add ChangeLog ui tests plugin.
