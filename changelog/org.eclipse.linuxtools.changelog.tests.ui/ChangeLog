@@ -1,3 +1,7 @@
+2011-01-13  Andrew Overholt  <overholt@redhat.com>
+
+	* src/: Re-naming directories to account for refactoring.
+
 2011-01-10  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* .project: Rename plug-in to org.eclipse.linuxtools.changelog.ui.tests.
@@ -11,7 +15,6 @@
 
 	* build.xml: New file. Added for build support with upstream eclipse.
 	* javaCompiler...args: New file.
-	
 
 2010-12-14  Severin Gehwolf  <sgehwolf@redhat.com>
 

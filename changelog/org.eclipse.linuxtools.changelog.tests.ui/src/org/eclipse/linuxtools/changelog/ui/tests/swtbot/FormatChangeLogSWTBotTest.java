@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.tests.ui.swtbot;
+package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.junit.Assert.assertEquals;
@@ -18,8 +18,8 @@ import java.io.ByteArrayInputStream;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.linuxtools.changelog.tests.fixtures.ChangeLogTestProject;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.ProjectExplorer;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.ProjectExplorerTreeItemAppearsCondition;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorerTreeItemAppearsCondition;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;

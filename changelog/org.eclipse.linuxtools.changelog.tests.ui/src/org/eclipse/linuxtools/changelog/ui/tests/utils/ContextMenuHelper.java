@@ -10,7 +10,7 @@
  *    Stefan Seelmann - initial implementation posted to
  *    http://www.eclipse.org/forums/index.php?t=msg&th=11863&start=2
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.tests.ui.utils;
+package org.eclipse.linuxtools.changelog.ui.tests.utils;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
 import static org.hamcrest.Matchers.allOf;

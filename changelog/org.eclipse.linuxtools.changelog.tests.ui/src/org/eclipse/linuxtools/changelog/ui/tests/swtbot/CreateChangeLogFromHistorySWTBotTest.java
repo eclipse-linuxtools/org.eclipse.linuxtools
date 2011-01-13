@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.tests.ui.swtbot;
+package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory.withPartName;
 import static org.junit.Assert.assertEquals;
@@ -19,18 +19,23 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.ProjectExplorer;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.ProjectExplorerTreeItemAppearsCondition;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.SVNProject;
-import org.eclipse.linuxtools.changelog.tests.ui.utils.SVNProjectCreatedCondition;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ContextMenuHelper;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorer;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.ProjectExplorerTreeItemAppearsCondition;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.SVNProject;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.SVNProjectCreatedCondition;
+import org.eclipse.linuxtools.changelog.ui.tests.utils.TableAppearsCondition;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
@@ -43,20 +48,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 /**
- * 
- * UI tests for "Prepare ChangeLog" (CTRL+ALT+P) and the clipboard magic
- * (CTRL+ALT+V).
+ * UI tests for creating changelogs from SVN history (commit messages).
  *
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class PrepareChangelogSWTBotTest {
+public class CreateChangeLogFromHistorySWTBotTest {
  
 	private static SWTWorkbenchBot bot;
 	private static SWTBotTree projectExplorerViewTree;
-	private SVNProject subversionProject;
 	private IProject  project;
+	private SVNProject subversionProject;
 	// The name of the test project, we create
 	private final String PROJECT_NAME = "org.eclipse.linuxtools.changelog.tests";
 	// An available SVN repo
@@ -99,61 +101,13 @@ public class PrepareChangelogSWTBotTest {
 	}
 
 	/**
-	 * Basic prepare changelog test.
+	 * Create changelog from SVN history (commit messages).
 	 * 
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	@Test
-	public void canPrepareChangeLog() throws Exception {
-		// Find manifest file
-		IResource manifest = project.findMember(new Path("/META-INF/MANIFEST.MF"));
-		assertNotNull(manifest);
-		// delete it
-		manifest.delete(true, null);
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		
-		// select ChangeLog file
-		String teamProviderString = "[changelog/trunk/" + PROJECT_NAME + "]";
-		SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME, teamProviderString);
-		SWTBotTreeItem changeLogItem = ProjectExplorer.getProjectItem(projectItem, "ChangeLog");
-		changeLogItem.select();
-		bot.menu("Prepare ChangeLog").click(); // Should be unique
-		
-		long oldTimeout = SWTBotPreferences.TIMEOUT;
-		SWTBotPreferences.TIMEOUT = 3 * 5000;
-		// Wait for ChangeLog editor to open
-		Matcher<?> editorMatcher = Matchers.allOf(
-				IsInstanceOf.instanceOf(IEditorReference.class),
-				withPartName("ChangeLog")
-				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
-		SWTBotPreferences.TIMEOUT = oldTimeout;
-		
-		SWTBotEditor swtBoteditor = bot.activeEditor();
-		swtBoteditor.save(); // save to avoid "save changes"-pop-up
-		assertEquals("ChangeLog", swtBoteditor.getTitle());
-		SWTBotEclipseEditor eclipseEditor = swtBoteditor.toTextEditor();
-		// make sure expected entry has been added.
-		assertTrue(matchHead(eclipseEditor.getText(), "\t* META-INF/MANIFEST.MF:", 3));
-	}
-	
-	/**
-	 * Should be able to save changes to ChangeLog file in clipboard.
-	 * Tests CTRL + ALT + V functionality.
-	 * 
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-	@Test
-	public void canPrepareChangeLogAndSaveChangesInChangeLogFileToClipboard() throws Exception {
-		// Find manifest file
-		IResource manifest = project.findMember(new Path("/META-INF/MANIFEST.MF"));
-		assertNotNull(manifest);
-		// delete it
-		manifest.delete(true, null);
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		
+	public void canPrepareChangeLogFromSVNHistory() throws Exception {
 		// select ChangeLog file
 		String teamProviderString = "[changelog/trunk/" + PROJECT_NAME + "]";
 		SWTBotTreeItem projectItem = ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME, teamProviderString);
@@ -163,28 +117,26 @@ public class PrepareChangelogSWTBotTest {
 		SWTBotPreferences.TIMEOUT = oldTimeout;
 		SWTBotTreeItem changeLogItem = ProjectExplorer.getProjectItem(projectItem, "ChangeLog");
 		changeLogItem.select();
-		// CTRL + ALT + P
-		bot.activeShell().pressShortcut(Keystrokes.CTRL, Keystrokes.ALT, KeyStroke.getInstance("P"));
 		
+		// open history for ChangeLog file
+		clickOnShowHistory(projectExplorerViewTree);
+		SWTBot historyViewBot = bot.viewByTitle("History").bot();
+		// wait for SVN revision table to appear
 		oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = 3 * 5000;
-		// Wait for ChangeLog editor to open
-		Matcher<?> editorMatcher = Matchers.allOf(
-				IsInstanceOf.instanceOf(IEditorReference.class),
-				withPartName("ChangeLog")
-				);
-		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));		
-		SWTBotEditor swtBoteditor = bot.activeEditor();
-		swtBoteditor.save(); // save to avoid "save changes"-pop-up
-		assertEquals("ChangeLog", swtBoteditor.getTitle());
-		SWTBotEclipseEditor eclipseEditor = swtBoteditor.toTextEditor();
-		// make sure expected entry has been added.
-		assertTrue(matchHead(eclipseEditor.getText(), "\t* META-INF/MANIFEST.MF:", 3));
-		eclipseEditor.selectLine(0); // select first line
-		final String expectedFirstLineContent = eclipseEditor.getSelection();  
+		historyViewBot.waitUntil(new TableAppearsCondition());
+		SWTBotPreferences.TIMEOUT = oldTimeout;
+		SWTBotTable historyTable = historyViewBot.table();
+		historyTable.select(0); // select the first row
 		
-		// save changes to clipboard: CTRL + ALT + V
-		eclipseEditor.pressShortcut(Keystrokes.CTRL, Keystrokes.ALT, KeyStroke.getInstance("V"));
+		// right-click => Generate Changelog...
+		clickOnGenerateChangeLog(historyTable);
+		bot.waitUntil(Conditions.shellIsActive("Generate ChangeLog"));
+		SWTBotShell shell = bot.shell("Generate ChangeLog");
+		
+		SWTBot generateChangelogBot = shell.bot();
+		generateChangelogBot.radio("Clipboard").click();
+		generateChangelogBot.button("OK").click();
 		
 		// create and open a new file for pasting
 		String pasteFile = "newFile";
@@ -196,55 +148,51 @@ public class PrepareChangelogSWTBotTest {
 		
 		ProjectExplorer.expandProject(projectExplorerViewTree, PROJECT_NAME,
 				teamProviderString).expandNode(pasteFile).select().doubleClick();
-		//bot.activeShell().pressShortcut(Keystrokes.F3); // open file
-		editorMatcher = Matchers.allOf(
+		Matcher<?> editorMatcher = Matchers.allOf(
 				IsInstanceOf.instanceOf(IEditorReference.class),
 				withPartName(pasteFile)
 				);
 		bot.waitUntil(Conditions.waitForEditor((Matcher<IEditorReference>) editorMatcher));
+		oldTimeout = SWTBotPreferences.TIMEOUT;
 		SWTBotPreferences.TIMEOUT = oldTimeout;
-		swtBoteditor = bot.activeEditor();
+		SWTBotEditor swtBoteditor = bot.activeEditor();
 		assertEquals(pasteFile, swtBoteditor.getTitle());
-		eclipseEditor = swtBoteditor.toTextEditor();
+		SWTBotEclipseEditor eclipseEditor = swtBoteditor.toTextEditor();
 		
 		// go to beginning of editor
 		eclipseEditor.selectRange(0, 0, 0);
 		// paste
 		eclipseEditor.pressShortcut(Keystrokes.CTRL, KeyStroke.getInstance("V"));
 		swtBoteditor.save();
-		// make sure proper content was pasted
-		assertTrue(matchHead(eclipseEditor.getText(), "\t* META-INF/MANIFEST.MF:", 3));
-		eclipseEditor.selectLine(0); // select first line
-		final String actualFirstLineContent = eclipseEditor.getSelection();
-		assertEquals(expectedFirstLineContent, actualFirstLineContent);
+		// make sure some changelog like text was pasted
+		String text = eclipseEditor.getText();
+		assertTrue(!text.equals(""));
+		// FIXME: Add a better assertion. Not sure what would be a good one.
+//		eclipseEditor.selectLine(2); // select third line
+//		final String actualThirdLineContent = eclipseEditor.getSelection();
+//		System.out.println(actualThirdLineContent);
+//		System.out.println(text);
+//		assertTrue(actualThirdLineContent.contains("\t* "));
 	}
 	
 	/**
-	 * Determine if first <code>i</code> lines in <code>text</code> contain
-	 * the string <code>matchText</code>.
+	 * Helper method for right-clicking => Generate ChangeLog in History
+	 * view table.
 	 * 
-	 * @param text The text to compare to.
-	 * @param matchText The match string to look for.
-	 * @param i The number of lines in text to consider.
-	 * @return
-	 * 
-	 * @throws IllegalArgumentException if <code>i</code> is invalid.
+	 * Pre: History view table row selected.
 	 */
-	private boolean matchHead(String text, String matchText, int i) throws IllegalArgumentException {
-		if ( i < 0 ) {
-			throw new IllegalArgumentException();
-		}
-		String[] lines = text.split("\n");
-		if ( lines.length < i ) {
-			throw new IllegalArgumentException();
-		}
-		// arguments appear to be good
-		for (int j = 0; j < i; j++) {
-			if (lines[j].contains(matchText)) {
-				return true;
-			}
-		}
-		return false; // no match
+	private void clickOnGenerateChangeLog(SWTBotTable table) {
+		String menuItem = "Generate ChangeLog...";
+		ContextMenuHelper.clickContextMenu(table, menuItem);
+	}
+
+	/**
+	 * Helper method for right-click => Team => Show History. 
+	 */
+	private void clickOnShowHistory(SWTBotTree tree) {
+		String menuItem = "Team";
+		String subMenuItem = "Show History";
+		ContextMenuHelper.clickContextMenu(tree, menuItem, subMenuItem);
 	}
  
 }

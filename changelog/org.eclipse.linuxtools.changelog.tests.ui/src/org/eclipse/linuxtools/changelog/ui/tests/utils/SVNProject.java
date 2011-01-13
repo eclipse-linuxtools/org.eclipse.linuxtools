@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.tests.ui.utils;
+package org.eclipse.linuxtools.changelog.ui.tests.utils;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -15,7 +15,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.changelog.tests.ui.swtbot.PrepareChangelogSWTBotTest;
+import org.eclipse.linuxtools.changelog.ui.tests.swtbot.PrepareChangelogSWTBotTest;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.linuxtools.changelog.tests.ui.swtbot;
+package org.eclipse.linuxtools.changelog.ui.tests.swtbot;
 
 import org.junit.runners.Suite;
 import org.junit.runner.RunWith;
