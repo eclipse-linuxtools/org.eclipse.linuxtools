@@ -1,3 +1,7 @@
+2011-01-13  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add required minimum for CDT dependency plugins.
+
 2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump up version to 2.7.0 for 0.7 release.
