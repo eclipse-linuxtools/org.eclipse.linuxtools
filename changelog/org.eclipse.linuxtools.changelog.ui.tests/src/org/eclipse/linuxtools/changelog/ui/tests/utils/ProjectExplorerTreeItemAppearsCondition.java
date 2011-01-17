@@ -32,7 +32,6 @@ public class ProjectExplorerTreeItemAppearsCondition implements ICondition {
 		this.projectExplorerTree = projectExplorerTree;
 	}
 	
-	@Override
 	public boolean test() throws Exception {
 		treeItem = ProjectExplorer.expandProject(projectExplorerTree, parent, teamDirt);
 		for (SWTBotTreeItem i : treeItem.getItems()) {
@@ -43,12 +42,10 @@ public class ProjectExplorerTreeItemAppearsCondition implements ICondition {
 		return false;
 	}
 
-	@Override
 	public void init(SWTBot bot) {
 		// no initialization
 	}
 
-	@Override
 	public String getFailureMessage() {
 		return null;
 	}
