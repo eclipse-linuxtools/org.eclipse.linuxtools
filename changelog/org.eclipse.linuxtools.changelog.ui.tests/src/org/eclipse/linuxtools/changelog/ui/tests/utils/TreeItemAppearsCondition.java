@@ -29,7 +29,6 @@ public class TreeItemAppearsCondition implements ICondition {
 		this.parent = parent;
 	}
 	
-	@Override
 	public boolean test() throws Exception {
 		for (SWTBotTreeItem i : treeItem.getItems()) {
 			if (i.getText().contains(itemName)) {
@@ -39,13 +38,11 @@ public class TreeItemAppearsCondition implements ICondition {
 		return false;
 	}
 
-	@Override
 	public void init(SWTBot bot) {
 		this.bot = bot;
 		treeItem = this.bot.tree().expandNode(parent);
 	}
 
-	@Override
 	public String getFailureMessage() {
 		return null;
 	}

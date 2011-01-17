@@ -28,7 +28,6 @@ public class SVNProjectCreatedCondition implements ICondition {
 		this.projectName = projectName;
 	}
 	
-	@Override
 	public boolean test() throws Exception {
 		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = (IProject)wsRoot.findMember(new Path(projectName));
@@ -38,12 +37,10 @@ public class SVNProjectCreatedCondition implements ICondition {
 			return true;
 	}
 
-	@Override
 	public void init(SWTBot bot) {
 		// no initialization; don't need bot
 	}
 
-	@Override
 	public String getFailureMessage() {
 		return null;
 	}

@@ -20,7 +20,6 @@ public class TableAppearsCondition implements ICondition {
 
 	private SWTBot bot;
 	
-	@Override
 	public boolean test() throws Exception {
 		try {
 			SWTBotTable table = bot.table();
@@ -35,12 +34,10 @@ public class TableAppearsCondition implements ICondition {
 		return false;
 	}
 
-	@Override
 	public void init(SWTBot bot) {
 		this.bot = bot;
 	}
 
-	@Override
 	public String getFailureMessage() {
 		return null;
 	}

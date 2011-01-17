@@ -4,6 +4,15 @@
 	Remove extraneous override directive.
 	(init): Ditto.
 	(getFailureMessage): Ditto. 
+	* src/org/eclipse/linuxtools/changelog/ui/tests/utils/SVNProjectCreatedCondition.java (test): Ditto.
+	(init): Ditto. 
+	(getFailureMessage): Ditto.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/utils/TableAppearsCondition.java (test): Ditto. 
+	(init): Ditto.
+	(getFailureMessage): Ditto.
+	* src/org/eclipse/linuxtools/changelog/ui/tests/utils/TreeItemAppearsCondition.java (test): Ditto. 
+	(init): Ditto.
+	(getFailureMessage): Ditto. 
 
 2011-01-13  Andrew Overholt  <overholt@redhat.com>
 
