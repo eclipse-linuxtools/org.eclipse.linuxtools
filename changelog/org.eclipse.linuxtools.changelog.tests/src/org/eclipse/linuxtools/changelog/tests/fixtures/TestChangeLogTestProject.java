@@ -91,6 +91,7 @@ public class TestChangeLogTestProject {
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				new FileInputStream(createdFile.getLocation().toFile())));
 		String actualContent = br.readLine();
+		br.close();
 		assertEquals(fileContent, actualContent);
 		
 		// this should throw an IllegalStateException
