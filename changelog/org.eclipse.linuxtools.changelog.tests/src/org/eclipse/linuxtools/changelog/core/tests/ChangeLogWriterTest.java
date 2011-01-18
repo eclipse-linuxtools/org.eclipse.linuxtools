@@ -227,6 +227,7 @@ public class ChangeLogWriterTest {
 		}
 		// Assert proper content has been added
 		assertEquals(expectedContent, actualContent.toString());
+		br.close();
 	}
 
 	@Test

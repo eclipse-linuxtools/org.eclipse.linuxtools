@@ -1,5 +1,7 @@
 2011-01-18  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/changelog/core/tests/ChangeLogWriterTest.java (testWriteChangeLog): Close
+	stream when done with test. 
 	* build.properties: Add test.xml.
 
 2011-01-17  Jeff Johnston  <jjohnstn@redhat.com>
