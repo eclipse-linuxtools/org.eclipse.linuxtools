@@ -225,6 +225,7 @@ public class ChangeLogWriterTest {
 		while ( (line = br.readLine()) != null ) {
 			actualContent.append(line + "\n");
 		}
+		br.close();
 		// Assert proper content has been added
 		assertEquals(expectedContent, actualContent.toString());
 	}
@@ -291,6 +292,7 @@ public class ChangeLogWriterTest {
 		while ( (line = br.readLine()) != null ) {
 			actualContent.append(line + "\n");
 		}
+		br.close();
 		// Assert proper content has been added
 		assertEquals(expectedChangeLogEntry, actualContent.toString());
 	}

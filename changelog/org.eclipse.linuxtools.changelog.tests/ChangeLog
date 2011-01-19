@@ -1,3 +1,10 @@
+2011-01-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/tests/ChangeLogWriterTest.java (testWriteChangeLog): Close
+	stream when done with it. 
+	(canWriteChangeLogToEmptyChangeLogButWithSomeDefaultContent): Ditto. 
+	* src/org/eclipse/linuxtools/changelog/tests/fixtures/TestChangeLogTestProject.java (testAddFileToProject): Ditto. 
+
 2011-01-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* test.xml: New file.
