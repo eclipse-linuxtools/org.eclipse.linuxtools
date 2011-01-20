@@ -14,28 +14,36 @@ package org.eclipse.linuxtools.binutils.utils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.IAddress;
 import org.eclipse.cdt.core.IBinaryParser;
-import org.eclipse.cdt.core.ICExtension;
-import org.eclipse.cdt.core.ICExtensionReference;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryFile;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.cdt.core.IBinaryParser.ISymbol;
 import org.eclipse.cdt.core.model.CModelException;
 import org.eclipse.cdt.core.model.CoreModel;
+import org.eclipse.cdt.core.model.CoreModelUtil;
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.utils.Addr2line;
 import org.eclipse.cdt.utils.CPPFilt;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.binutils.Activator;
 
@@ -458,14 +466,15 @@ public class STSymbolManager {
 	 */
 	public IBinaryObject getBinaryObject(IPath path, IBinaryParser defaultparser) {
 		IFile c = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+		List<IBinaryParser> parsers;
 		if (c != null) {
 			IBinaryObject object = getAlreadyExistingBinaryObject(c);
-			if (isBinaryParserCompatible(object, defaultparser)) {
-				return object;
-			} else if (defaultparser == null) {
-				defaultparser = getBinaryParser(c.getProject());
-			}
+			if (object != null) return object;
+			parsers = getBinaryParser(c.getProject());
+		} else {
+			parsers = new LinkedList<IBinaryParser>();
 		}
+		
 		if (defaultparser == null) {
 			try {
 				defaultparser = CCorePlugin.getDefault().getDefaultBinaryParser();
@@ -473,27 +482,21 @@ public class STSymbolManager {
 				Activator.getDefault().getLog().log(_.getStatus());
 			}
 		}
-		return buildBinaryObject(path, defaultparser);
+		if (defaultparser != null) {
+			parsers.add(defaultparser);
+		}
+		return buildBinaryObject(path, parsers);
 	}
 	
-	private boolean isBinaryParserCompatible(IBinaryObject o, IBinaryParser parser) {
-		if (o == null) return false;
-		if (parser == null) return true;
-		IBinaryParser p = o.getBinaryParser();
-		return (p.getClass().equals(parser.getClass()));
-	}
-
-
-	private IBinaryObject buildBinaryObject(IPath path, IBinaryParser parser) {
-		if (parser == null) return null;
-		IBinaryFile bf = null;
-		try {
-			bf = parser.getBinary(path);
-		} catch (IOException _) {
-			// do nothing ?
-		}
-		if (bf instanceof IBinaryObject) {
-			IBinaryObject object = (IBinaryObject) bf;
+	/**
+	 * Validate the binary file.
+	 * In particular, verify that this binary file can be decoded.
+	 * @param o
+	 * @return the binary object, or null.
+	 */
+	private IBinaryObject validateBinary(IBinaryFile o) {
+		if (o instanceof IBinaryObject) {
+			IBinaryObject object = (IBinaryObject) o;
 			String s = null;
 			try {
 				s = object.getCPU(); // 
@@ -505,7 +508,32 @@ public class STSymbolManager {
 		return null;
 	}
 
+	private IBinaryObject buildBinaryObject(IPath path, List<IBinaryParser> parsers) {
+		for (IBinaryParser iBinaryParser : parsers) {
+			IBinaryObject o = buildBinaryObject(path, iBinaryParser);
+			if (o != null) return o;
+		}
+		return null;
+	}
+	
+	/**
+	 * Build a binary object with the given file and parser.
+	 * Also verify that the builded binary object is valid (@see #validateBinary)
+	 */
+	private IBinaryObject buildBinaryObject(IPath path, IBinaryParser parser) {
+		if (parser == null) return null;
+		IBinaryFile bf = null;
+		try {
+			bf = parser.getBinary(path);
+		} catch (IOException _) {
+			// do nothing ?
+		}
+		return validateBinary(bf);
+	}
 
+	/**
+	 * Ask the workbench to find if a binary object already exist for the given file
+	 */
 	private IBinaryObject getAlreadyExistingBinaryObject(IFile c) {
 		IProject project = c.getProject();
 		if (project != null && project.exists()) {
@@ -515,8 +543,10 @@ public class STSymbolManager {
 					IBinary[] b = cproject.getBinaryContainer()
 					.getBinaries();
 					for (IBinary binary : b) {
-						if (binary.getResource().equals(c) && binary instanceof IBinaryObject) {
-							return ((IBinaryObject)binary);
+						IResource r = binary.getResource();
+						if (r.equals(c)) {
+							IBinaryObject binaryObject = (IBinaryObject) binary.getAdapter(IBinaryObject.class);
+							return validateBinary(binaryObject);
 						}
 					}
 				} catch (CModelException _) {
@@ -526,22 +556,35 @@ public class STSymbolManager {
 		return null;
 	}
 
-	private IBinaryParser getBinaryParser(IProject project) {
-		try {
-			ICExtensionReference[] parserRefs = CCorePlugin.getDefault().getBinaryParserExtensions(project);
-			for (ICExtensionReference parserRef: parserRefs) {
-				ICExtension extension = parserRef.createExtension();
-				if (extension instanceof IBinaryParser) {
-					return (IBinaryParser) extension;
+	/**
+	 * Retrieve the list of binary parsers defined for the given project
+	 */
+	private List<IBinaryParser> getBinaryParser(IProject project) {
+		List<IBinaryParser> parsers = new LinkedList<IBinaryParser>();
+		
+		ICProjectDescription projDesc = CCorePlugin.getDefault().getProjectDescription(project);
+		if (projDesc == null) return parsers;
+		ICConfigurationDescription[] cfgs = projDesc.getConfigurations();
+		String[] binaryParserIds = CoreModelUtil.getBinaryParserIds(cfgs);
+		
+		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(CCorePlugin.PLUGIN_ID, CCorePlugin.BINARY_PARSER_SIMPLE_ID);
+		for (String id : binaryParserIds) {
+			IExtension extension = extensionPoint.getExtension(id);
+			if (extension != null) {
+				IConfigurationElement element[] = extension.getConfigurationElements();
+				for (IConfigurationElement element2 : element) {
+					if (element2.getName().equalsIgnoreCase("cextension")) { //$NON-NLS-1$
+						try {
+							IBinaryParser parser = (IBinaryParser) element2.createExecutableExtension("run"); //$NON-NLS-1$
+							if (parser != null) parsers.add(parser);
+						} catch (CoreException _) {
+							// TODO: handle exception ?
+						}
+					}
 				}
 			}
-		} catch (CoreException _) {
-			Activator.getDefault().getLog().log(_.getStatus());
-		} catch (Exception _) {
-			Status s = new Status(Status.ERROR, Activator.PLUGIN_ID, _.getMessage(), _);
-			Activator.getDefault().getLog().log(s);
 		}
-		return null;
+		return parsers;
 	}
 
 
