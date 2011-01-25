@@ -1,3 +1,7 @@
+2011-01-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* maps/linuxtools.map: Change to use tag R0_7_0.
+
 2011-01-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* maps/linuxtools.map: Remove ChangeLog ui tests plugin
