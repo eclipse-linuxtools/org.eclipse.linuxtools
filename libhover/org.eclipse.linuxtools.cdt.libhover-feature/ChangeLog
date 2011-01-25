@@ -1,3 +1,8 @@
+2011-01-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Remove libstdc++ from plugins list.  Bump to 0.3.0.
+	Do not unpack glibc plugin.
+
 2010-05-18  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Fix provider name.
