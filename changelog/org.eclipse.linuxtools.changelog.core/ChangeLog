@@ -1,3 +1,9 @@
+2011-01-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #332621
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java (getDocumentLocation): 
+	Use the location of the ChangeLog directly rather than calculating from the workspace-root.
+
 2010-12-10  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java (mergeChangelog): Added call

@@ -183,8 +183,7 @@ public class GNUHyperlinkDetector extends AbstractHyperlinkDetector {
 			IFileEditorInput test = (IFileEditorInput) cc;
 			IFile loc = test.getFile();
 
-			IPath docLoc = new Path(WorkspaceRoot
-					+ loc.getFullPath().toOSString());
+			IPath docLoc = loc.getLocation();
 			docLoc = docLoc.removeLastSegments(1);
 			return docLoc;
 
