@@ -61,6 +61,9 @@ public class AddChangelogEntrySWTBotTest {
 		bot = new SWTWorkbenchBot();
 		try {
 			bot.viewByTitle("Welcome").close();
+			// hide Subclipse Usage stats popup if present/installed
+			bot.shell("Subclipse Usage").activate();
+			bot.button("Cancel").click();
 		} catch (WidgetNotFoundException e) {
 			// ignore
 		}
