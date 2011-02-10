@@ -1,3 +1,7 @@
+2011-02-10  Severin Gehwolf <sgehwolf@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Eclipse-BundleShape: dir.
+
 2010-07-27  Andrew Overholt  <overholt@redhat.com>
 
 	* natives/linux/opxml/imageheader.cc: Update license to be EDL.

@@ -20,3 +20,4 @@ Export-Package: org.eclipse.linuxtools.oprofile.core,
  org.eclipse.linuxtools.oprofile.core.opxml.modeldata,
  org.eclipse.linuxtools.oprofile.core.opxml.sessions
 Bundle-Localization: plugin
+Eclipse-BundleShape: dir
