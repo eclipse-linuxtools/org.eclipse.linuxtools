@@ -87,12 +87,14 @@ public class OprofileManualLaunchConfigurationDelegate extends AbstractOprofileL
 				final OprofiledControlDialog dlg = new OprofiledControlDialog();
 				ILaunchManager lmgr = DebugPlugin.getDefault().getLaunchManager();
 				
-				//possible for the launched process to have terminated before opening the dialog
-				if (!fLaunch.isTerminated()) {
-					dlg.setBlockOnOpen(false);
-					dlg.open();
-					lmgr.addLaunchListener(new LaunchTerminationDialogCloser(fLaunch, dlg));
-				}
+				// This was earlier in an if (!fLaunch.isTerminated()) {} block. From a
+				// usability perspective I think it's better to show the oprofile control
+				// dialog regardless, since it might not show up at all if the launch
+				// has already be terminated. Anyhow, I think it's better this way.
+				// --Severin, 2011-02-11
+				dlg.setBlockOnOpen(false);
+				dlg.open();
+				lmgr.addLaunchListener(new LaunchTerminationDialogCloser(fLaunch, dlg));
 			} 
 		});
 	}
