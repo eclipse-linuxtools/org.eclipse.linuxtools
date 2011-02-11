@@ -1,3 +1,37 @@
+2011-02-11  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* natives/linux/opxml: Remove opxml sources.
+	* natives/linux/opxml/.svnignore: Removed.
+	* natives/linux/opxml/imageheader.cc: Removed.
+	* natives/linux/opxml/imageheader.h: Removed.
+	* natives/linux/opxml/move_opxml.sh: Removed.
+	* natives/linux/opxml/opinfo.cc: Removed.
+	* natives/linux/opxml/opinfo.h: Removed.
+	* natives/linux/opxml/oprofiledb.cc: Removed.
+	* natives/linux/opxml/oprofiledb.h: Removed.
+	* natives/linux/opxml/opxml.cc: Removed.
+	* natives/linux/opxml/oxmlstream.h: Removed.
+	* natives/linux/opxml/profileimage.cc: Removed.
+	* natives/linux/opxml/profileimage.h: Removed.
+	* natives/linux/opxml/sample.cc: Removed.
+	* natives/linux/opxml/sample.h: Removed.
+	* natives/linux/opxml/samplefile.cc: Removed.
+	* natives/linux/opxml/samplefile.h: Removed.
+	* natives/linux/opxml/session.cc: Removed.
+	* natives/linux/opxml/session.h: Removed.
+	* natives/linux/opxml/sevent.cc: Removed.
+	* natives/linux/opxml/sevent.h: Removed.
+	* natives/linux/opxml/stable.cc: Removed.
+	* natives/linux/opxml/stable.h: Removed.
+	* natives/linux/opxml/symbol.cc: Removed.
+	* natives/linux/opxml/symbol.h: Removed.
+	* natives/linux/opxml/xmlbuf.cc: Removed.
+	* natives/linux/opxml/xmlbuf.h: Removed.
+	* natives/linux/opxml/xmlfmt.cc: Removed.
+	* natives/linux/opxml/xmlfmt.h: Removed.
+	* natives/linux/opxml/xmltag.cc: Removed.
+	* natives/linux/opxml/xmltag.h: 
+
 2010-07-27  Andrew Overholt  <overholt@redhat.com>
 
 	* natives/linux/opxml/imageheader.cc: Update license to be EDL.
