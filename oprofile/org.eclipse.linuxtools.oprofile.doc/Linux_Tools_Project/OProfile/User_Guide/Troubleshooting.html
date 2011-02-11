@@ -86,14 +86,17 @@ fi
 		<p>The <code>
 			<i>install.sh</i></code> script is fixed in the most recent version of the OProfile plug-in for Eclipse, but not in the 0.2.0 release.
 		</p>
-		<h3 id="Error:_cannot_find_opxml_binary.2C_required_plugin_missing">Error: cannot find opxml binary, required plugin missing</h3>
+		<h3 id="Error:_cannot_find_opxml_binary.2C_required_plugin_missing_.28Deprecated.29">Error: cannot find opxml binary, required plugin missing (Deprecated)</h3>
+		<p>
+			<b>NOTE: As of Linux Tools version 0.7.0 opxml is NOT required anymore.</b>
+		</p>
 		<p>This can occur if the native binary <code>
-			<i>opxml</i></code> is not found. This binary is required for proper operation of the plug-in.
+			<i>opxml</i></code> is not found. This binary is required for proper operation of the oprofile plug-in version &lt; 0.7.0 plug-in. <code>opxml</code> is not required for oprofile &gt;= 0.7.0.
 		</p>
 		<p>Solution: If the <code>
 			<i>org.eclipse.linuxtools.oprofile.core.linux.{x86,x86_64,ppc}</i></code> directories exist (in the Eclipse <code>
 			<i>plugins</i></code> directory), refer to the 
-			<a href="Troubleshooting.html#Rebuilding_opxml">Rebuilding opxml</a> section for instructions on rebuilding the binary and placing it in the proper directory. Otherwise, re-install the plug-in.
+			<a href="#Rebuilding_opxml_(Deprecated)">Rebuilding opxml</a> section for instructions on rebuilding the binary and placing it in the proper directory. Otherwise, re-install the plug-in.
 		</p>
 		<h2 id="No_Samples_From_A_Profile">No Samples From A Profile</h2>
 		<p>It is possible for a profile run of a program to return no samples, resulting in no <code>current</code> session displayed. This is not always indicative of a problem with either OProfile or the profiled program. OProfile is a system-wide profiling tool; hence, other active processes running on your system may overshadow your program. This is particularly true if the profiled program is not CPU intensive. </p>
@@ -123,19 +126,17 @@ fi
 		<p>If the OProfile daemon log file is too large, the log reader may hang and possibly cause the OProfile plug-in to crash. This occurs when the 
 			<i>verbosity</i> option is set to <code>all</code>, which results in several hundred MiB of text in the log over several profile runs. If you do require all this data in the log file, do not launch the log reader. Delete or backup the log file before running the log reader again.
 		</p>
-		<h2 id="Errors_Related_to_opxml">Errors Related to opxml</h2>
+		<h2 id="Errors_Related_to_opxml_.28Deprecated.29">Errors Related to opxml (Deprecated)</h2>
+		<p>
+			<b>NOTE: As of Linux Tools version 0.7.0 opxml is NOT required anymore.</b>
+		</p>
 		<p><code>opxml</code> is the native program that bridges OProfile and the OProfile plug-in for Eclipse. In some cases, some errors may be caused by problems with <code>opxml</code>. To verify if this is the case, run <code>opxml</code>.</p>
 		<p><code>opxml</code> is normally located in the Eclipse <code>
 			<i>plugins</i></code> directory, similar to the install scripts described in 
 			<a href="Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</a>. However, depending on your platform, the location of <code>opxml</code> will be different. To determine what your platform is, run the following command at a terminal:
 		</p>
-		<dl>
-			<dd>
-				<dl>
-					<dd><code>uname -m</code></dd>
-				</dl>
-			</dd>
-		</dl>
+		<pre> uname -m
+</pre>
 		<p>Depending on the output, locate the following directory in the same manner as 
 			<a href="Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</a>, and change into that directory:
 		</p>
@@ -162,33 +163,31 @@ fi
 			</tr>
 		</table>
 		<p>For example, if you are running Eclipse on a 64bit machine (i.e. x86_64), you should run the following command to find the location of <code>opxml</code>:</p>
-		<dl>
-			<dd><code>$ find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core.linux.x86_64_*'</code></dd>
-		</dl>
+		<pre> $ find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core.linux.x86_64_*'
+</pre>
 		<p>This will display the following output (or similar):</p>
-		<dl>
-			<dd><code>/home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514</code></dd>
-		</dl>
+		<pre> /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514
+</pre>
 		<p>Navigate into that directory:</p>
-		<dl>
-			<dd><code>$ cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514/os/linux/x86_64</code></dd>
-		</dl>
+		<pre> $ cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514/os/linux/x86_64
+</pre>
 		<p>Once you have navigated to the right directory, run the following command:</p>
-		<dl>
-			<dd><code>./opxml info</code></dd>
-		</dl>
+		<pre> ./opxml info
+</pre>
 		<p>Check that the paths in the <code>defaults</code> section are correct. If the output is similar to the output of the command <code>ophelp</code>, but formatted as XML, then this might not be the problem. However, if running <code>opxml</code> produces an error, it may be the root cause. A common error on some systems is that they use an older version of the C runtime libraries (i.e. <code>glibc</code>). Refer to 
-			<a href="Troubleshooting.html#Rebuilding_opxml">Rebuilding opxml</a> for a solution to this error.
+			<a href="#Rebuilding_opxml_(Deprecated)">Rebuilding opxml</a> for a solution to this error.
 		</p>
 		<p>In any case, if there is an error please look for an 
 			<a href="https://bugs.eclipse.org/bugs/buglist.cgi?query_format=advanced&amp;short_desc_type=allwordssubstr&amp;short_desc=&amp;classification=Technology&amp;product=Linux+Tools&amp;component=OProfile&amp;long_desc_type=allwordssubstr&amp;long_desc=&amp;bug_file_loc_type=allwordssubstr&amp;bug_file_loc=&amp;status_whiteboard_type=allwordssubstr&amp;status_whiteboard=&amp;keywords_type=allwords&amp;keywords=&amp;emailtype1=substring&amp;email1=&amp;emailtype2=substring&amp;email2=&amp;bugidtype=include&amp;bug_id=&amp;votes=&amp;chfieldfrom=&amp;chfieldto=Now&amp;chfieldvalue=&amp;cmdtype=doit&amp;order=Reuse+same+sort+as+last+time&amp;field0-0-0=noop&amp;type0-0-0=noop&amp;value0-0-0=">existing bug</a> or if one does not exist, 
 			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=&amp;version=0.2">file a new bug</a>.
 		</p>
-		<h2 id="Rebuilding_opxml">Rebuilding opxml</h2>
+		<h2 id="Rebuilding_opxml_.28Deprecated.29">Rebuilding opxml (Deprecated)</h2>
+		<p>
+			<b>NOTE: As of Linux Tools version 0.7.0 opxml is NOT required anymore.</b>
+		</p>
 		<p>You will need to rebuild the <code>opxml</code> binary if running it returns an error similar to the following:</p>
-		<dl>
-			<dd><code>opxml: /some/path/libc.so.6: version `GLIBC_2.8' not found (required by opxml)</code></dd>
-		</dl>
+		<pre> opxml: /some/path/libc.so.6: version `GLIBC_2.8' not found (required by opxml)
+</pre>
 		<p>
 			<b>Warning:</b> this is rarely necessary; in some cases, rebuilding the <code>opxml</code> binary may break an otherwise working OProfile plug-in installation. You should only rebuild the <code>opxml</code> binary if you are sure that doing so is the only remaining option in fixing the OProfile plug-in for Eclipse.
 		</p>
@@ -245,7 +244,7 @@ fi
 			</li>
 		</ol>
 		<p>The required libraries should now be in the proper place for compiling. Continue the steps in the 
-			<a href="Troubleshooting.html#Rebuilding_opxml">Rebuilding opxml</a> section.
+			<a href="#Rebuilding_opxml_(Deprecated)">Rebuilding opxml</a> section.
 		</p>
 		<p>
 			<b>Note:</b> The procedure for building the OProfile development libraries for Ubuntu (described in this section) was tested on Ubuntu 10.04 with Eclipse, the CDT, oprofile and all its dependencies already installed via <code>apt</code>.

@@ -48,21 +48,17 @@
 		<ul>
 			<li>If you are using a distro-supplied version of Eclipse and installed the plug-in via the update site, the plug-in directory will most likely be under 
 				<i><code>~/.eclipse</code></i>. To find the exact location of the plug-in directory in this case, use the following command:
-				<dl>
-					<dd><code>find ~/.eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></dd>
-				</dl>
 			</li>
+			<li><code>find ~/.eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></li>
 			<li>Alternatively, if you are using an extracted tarball of Eclipse (i.e. you downloaded a 
 				<i><code>.tar.gz</code></i> from 
 				<a href="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</a>), then the plug-in will most likely be in the <code>plugins</code> sub-directory of where you extracted it.
-				<dl>
-					<dd>For example, if you extracted the tarball to <code>
-						<i>/home/ksebasti</i></code>, your Eclipse installation would be in <code>
-						<i>/home/ksebasti/eclipse</i></code>. In this case, you should use the following command to find the exact location of the plug-in directory:
-					</dd>
-					<dd><code>find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></dd>
-				</dl>
 			</li>
+			<li>For example, if you extracted the tarball to <code>
+				<i>/home/ksebasti</i></code>, your Eclipse installation would be in <code>
+				<i>/home/ksebasti/eclipse</i></code>. In this case, you should use the following command to find the exact location of the plug-in directory:
+			</li>
+			<li><code>find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></li>
 		</ul>
 		<p>
 			<b>Note:</b> In both cases, the quotes (') and asterisk (*) are necessary.
@@ -73,8 +69,9 @@
 </pre>
 		<p>Once you find the plug-in directory, navigate to its <code>
 			<i>natives/linux/scripts</i></code> subdirectory. Using our previous example:
-			<br/><code>cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core_0.2.0.200904131051/natives/linux/scripts</code>
 		</p>
+		<pre>$ cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core_0.2.0.200904131051/natives/linux/scripts
+</pre>
 		<p>The <code>
 			<i>natives/linux/scripts</i></code> subdirectory contains the installation scripts you will need to run in order to allow OProfile to run as root.
 		</p>
@@ -103,9 +100,8 @@
 			<i><code>natives/linux/scripts</code></i> subdirectory of the plug-in directory (as in 
 			<a href="Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</a>), run your selected install script:
 		</p>
-		<dl>
-			<dd><code>./install.sh</code></dd>
-		</dl>
+		<pre> # ./install.sh
+</pre>
 		<p>Successful output will look like this:</p>
 		<pre>./install.sh
 Eclipse-OProfile plugin install successful.
@@ -115,9 +111,8 @@ Eclipse-OProfile plugin install successful.
 			<i><code>/etc</code></i> subdirectories, while 
 			<i><code>install-noconsolehelper.sh</code></i> runs the command <code>visudo</code>. If you wish to simply run either install script without logging in as root, use:
 		</p>
-		<dl>
-			<dd><code>su -c './install.sh'</code></dd>
-		</dl>
+		<pre> su -c './install.sh'
+</pre>
 		<p>This command will run only the install script as the root user, then return control to the regular user. Note that you will still need to enter the root password to make this work. If you receive an error message, refer to the 
 			<a href="Troubleshooting.html#Troubleshooting">Troubleshooting</a> section.
 		</p>
