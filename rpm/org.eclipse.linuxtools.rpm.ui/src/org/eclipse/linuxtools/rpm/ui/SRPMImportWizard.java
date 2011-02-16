@@ -24,7 +24,6 @@ import org.eclipse.ui.IWorkbench;
  */
 public class SRPMImportWizard extends Wizard implements IImportWizard {
 	private IWorkbench workbench;
-	private IStructuredSelection selection;
 	private SRPMImportPage mainPage;
 
 	/**
@@ -32,7 +31,6 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection currentSelection) {
 		this.workbench = workbench;
-		selection = currentSelection;
 		setWindowTitle(Messages.getString("SRPMImportwizard.Import_an_SRPM")); //$NON-NLS-1$
 		setNeedsProgressMonitor(true);
 	}
@@ -65,7 +63,7 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
 	// Add the SRPMImportPage as the only page in this wizard.
 	@Override
 	public void addPages() {
-		mainPage = new SRPMImportPage(workbench, selection);
+		mainPage = new SRPMImportPage(workbench);
 		addPage(mainPage);
 		super.addPages();
 	}

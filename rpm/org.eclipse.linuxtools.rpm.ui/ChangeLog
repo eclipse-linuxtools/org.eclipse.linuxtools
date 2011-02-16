@@ -1,3 +1,16 @@
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+    Remove the ability to import into existing project. It was too errorprone and crying for troubles.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (SRPMImportPage): Remove unneeded parameter.
+	(getSelectedSRPM): Add non-nls.
+	(createControl): Do not create the projects box.
+	(.modifyText): Invoke canFinish directly.
+	(createSourceRPMCombo): Likewise.
+	(canFinish): Do not show error on empty srpm text.
+	(finish): Remove projects listing related parts.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportWizard.java (init): Remove not needed parts.
+	(addPages): Likewise.
+
 2010-09-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/ErrorLineMatcher.java: New file.

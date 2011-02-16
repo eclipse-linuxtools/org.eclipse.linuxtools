@@ -17,7 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
@@ -25,21 +24,17 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.utils.FileDownloadJob;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,7 +43,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -61,7 +55,7 @@ import org.eclipse.ui.PlatformUI;
  * events)
  * 
  */
-public class SRPMImportPage extends WizardPage implements Listener {
+public class SRPMImportPage extends WizardPage {
 
 	/**
 	 * This is a copy of
@@ -98,10 +92,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 
 	// GUI Control variables
 	private Combo sourceSRPM;
-	private Button intoConfigured;
-	private Button intoExisting;
-	private List projectList;
-	private IStructuredSelection selection;
 
 	static private Vector<String> srpmVector;
 
@@ -111,11 +101,8 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	 *      Constructor for SRPMImportPage class
 	 * @param aWorkbench
 	 *            - Workbench
-	 * @param currentSelection
-	 *            - IStructuredSelection
 	 */
-	public SRPMImportPage(IWorkbench aWorkbench,
-			IStructuredSelection currentSelection) {
+	public SRPMImportPage(IWorkbench aWorkbench) {
 		super(
 				Messages.getString("SRPMImportPage.Import_SRPM"), //$NON-NLS-1$
 				Messages.getString("SRPMImportPage.Select_project_to_import"), null); //$NON-NLS-1$
@@ -123,15 +110,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		setPageComplete(false);
 		setDescription(Messages
 				.getString("SRPMImportPage.Select_project_to_import")); //$NON-NLS-1$
-		selection = currentSelection;
-	}
-
-	private String getSelectedProjectName() {
-		String[] selections = projectList.getSelection();
-		if (selections.length > 0) {
-			return selections[0];
-		}
-		return null;
 	}
 
 	private File getSelectedSRPM() {
@@ -139,7 +117,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		if (srpmName == null || srpmName.equals("")) { //$NON-NLS-1$
 			return null;
 		}
-		if (srpmName.startsWith("http://")) {
+		if (srpmName.startsWith("http://")) { //$NON-NLS-1$
 			try {
 				URL url = new URL(srpmName);
 				URLConnection content = url.openConnection();
@@ -182,7 +160,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 
 		// Create contols on the page
 		createSourceRPMCombo(composite);
-		createProjectBox(composite);
 	}
 
 	private void createSourceRPMCombo(Composite parent) {
@@ -213,8 +190,10 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		sourceSRPM.setLayoutData(gridData);
 		sourceSRPM.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				handleEvent(null);
+				setPageComplete(canFinish());
 			}
+
+			
 		});
 
 		Button srpmBrowse = new Button(sourceSpecComposite, SWT.PUSH);
@@ -233,141 +212,8 @@ public class SRPMImportPage extends WizardPage implements Listener {
 				}
 			}
 		});
-		srpmBrowse.addListener(SWT.FocusOut, this);
 	}
 
-	/**
-	 * Method createProjectBox.
-	 * 
-	 * @param parent
-	 *            - parent widget
-	 * 
-	 *            Create a list box and populate it with the list of current
-	 *            projects in the workspace along with adding the option for a
-	 *            configured project
-	 */
-	private void createProjectBox(Composite parent) {
-		// Creates a control that enumerates all the projects in the current
-		// Workspace and places them in a listbox.
-		// Give the option of importing into an existing project or creating a
-		// new one
-
-		// Declare an array of IProject;
-		IProject[] internalProjectList;
-
-		// Get the current workspace root.
-		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace()
-				.getRoot();
-
-		// Create a group and set up the layout, we want to seperate
-		// project selection from the other widgets on the wizard dialog box
-		Group group = new Group(parent, SWT.NONE);
-		group.setLayout(new GridLayout());
-		group.setText(Messages.getString("SRPMImportPage.import_srpm_into")); //$NON-NLS-1$
-		group.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
-		intoExisting = new Button(group, SWT.RADIO);
-		intoExisting.setText(Messages.getString("RPMPage.Select_a_project")); //$NON-NLS-1$
-
-		// Create a new SWT listbox. Only allow single selection of items
-		// Set up the layout data
-		projectList = new List(group, SWT.SINGLE | SWT.BORDER | SWT.V_SCROLL);
-		projectList.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
-		projectList.setToolTipText(Messages
-				.getString("SRPMImportPage.toolTip_project_destination")); //$NON-NLS-1$
-
-		intoConfigured = new Button(group, SWT.RADIO);
-		intoConfigured.setText(Messages
-				.getString("SRPMImportPage.Configured_New_Project")); //$NON-NLS-1$
-
-		// Set the height to 4 elements high
-		GridData projectLayout = new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL);
-		projectLayout.heightHint = projectList.getItemHeight() * 4;
-		projectList.setLayoutData(projectLayout);
-
-		// From the current Workspace root, get a list of all current projects
-		// This should come back to us as an array of IProject.
-		internalProjectList = workspaceRoot.getProjects();
-
-		// Stuff the listbox with the text name of the projects
-		// using the getName() method
-		// Find the first selected project in the workspace
-
-		Iterator iter = selection.iterator();
-		Object selectedObject = null;
-		IProject selectedProject = null;
-		boolean isSelection = false;
-		if (iter.hasNext()) {
-			selectedObject = iter.next();
-			if (selectedObject instanceof IResource) {
-				selectedProject = ((IResource) selectedObject).getProject();
-				isSelection = true;
-			}
-		}
-
-		// Stuff the listbox with the text names of the projects
-		// using the getName() method and select the selected
-		// project if available
-
-		for (int a = 0; a < internalProjectList.length; a++) {
-			projectList.add(internalProjectList[a].getName());
-			if (isSelection && internalProjectList[a].equals(selectedProject)) {
-				projectList.setSelection(a);
-			}
-		}
-
-		if (projectList.getItemCount() == 0) // there were no projects
-		{
-			projectList.add(Messages
-					.getString("SRPMImportPage.No_projects_found")); //$NON-NLS-1$
-			intoExisting.setEnabled(false); // Can't very well import into an
-											// existing
-			projectList.setEnabled(false); // project now can we?
-			intoConfigured.setSelection(true);
-			isSelection = true; // we don't want select the
-								// "RPMPage.No_c/c++_projects_found_2"
-		} else {
-			intoExisting.setSelection(true);
-		}
-
-		if (!isSelection) { // if none is selected select first project
-			projectList.setSelection(0);
-		} else {
-			projectList.addSelectionListener(new SelectionListener() {
-				public void widgetSelected(SelectionEvent e) {
-					handleEvent(null);
-				}
-
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-			});
-		}
-
-		intoExisting.addListener(SWT.Selection, this);
-		intoConfigured.addListener(SWT.Selection, this);
-		projectList.addListener(SWT.FocusOut, this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.
-	 * Event)
-	 */
-	public void handleEvent(Event event) {
-		if (event != null) {
-			if (event.widget == intoExisting && intoExisting.getSelection()) {
-				projectList.setEnabled(true);
-			} else if (event.widget == intoConfigured
-					&& intoConfigured.getSelection()) {
-				projectList.setEnabled(false);
-			}
-		}
-		setPageComplete(canFinish());
-	}
 
 	/**
 	 * canFinish()
@@ -378,21 +224,14 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	 * @return boolean. true if finish can be activated
 	 */
 	public boolean canFinish() {
-		// Make sure project has been selected or the user
-		// has decided to configure a new one instead
-
-		if (getSelectedProjectName() == null && !intoConfigured.getSelection()) {
-			return false;
-		}
-
 		// Make sure an srpm name has been provided
 		String sourceSRPMName = sourceSRPM.getText();
-		if (sourceSRPM.getText().lastIndexOf(".src.rpm") == -1) //$NON-NLS-1$
+		if (!sourceSRPMName.isEmpty() && sourceSRPM.getText().lastIndexOf(".src.rpm") == -1) //$NON-NLS-1$
 		{
 			setErrorMessage(Messages.getString("SRPMImportPage.No_src_rpm_ext")); //$NON-NLS-1$
 			return false;
 		}
-		if (sourceSRPMName.startsWith("http://")) {
+		if (sourceSRPMName.startsWith("http://")) { //$NON-NLS-1$
 			try {
 				URL url = new URL(sourceSRPMName);
 				if (HttpURLConnection.HTTP_NOT_FOUND == ((HttpURLConnection) url
@@ -432,26 +271,11 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	public boolean finish() {
 		IProject detailedProject;
 
-		// Get the handle to the current activate Workspace
-		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-
 		// User chooses an existing project or make a new project
-		if (intoExisting.getSelection()) {
-			// Get the current selected member from the list box (projectList)
-			String[] selectedProject = projectList.getSelection();
-
-			// As we only allow a single selection in the listbox, and the
-			// listbox always
-			// comes with the first element selected, we can assume the first
-			// element
-			// in the returned array is valid.
-			detailedProject = workspaceRoot.getProject(selectedProject[0]);
-		} else {
 			detailedProject = getNewProject();
 			if (detailedProject == null) {
 				return false;
 			}
-		}
 		// Add this SRPM to srpmList
 		for (int i = 0; i < srpmVector.size(); i++) { // There can only be one
 														// occurance
@@ -487,7 +311,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 
 		return true;
 	}
-
+	
 	/**
 	 * Get a new project that is configured by the new project wizard. This is
 	 * currently the only way to do this. This is a copy of
