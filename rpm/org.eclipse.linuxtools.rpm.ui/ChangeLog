@@ -1,5 +1,10 @@
 2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (createSourceRPMCombo): Remove empty lines.
+	(finish): Remove dead code.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
     Remove the ability to import into existing project. It was too errorprone and crying for troubles.
 	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (SRPMImportPage): Remove unneeded parameter.
 	(getSelectedSRPM): Add non-nls.

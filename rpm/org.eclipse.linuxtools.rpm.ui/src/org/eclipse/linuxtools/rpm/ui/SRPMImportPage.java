@@ -192,8 +192,6 @@ public class SRPMImportPage extends WizardPage {
 			public void modifyText(ModifyEvent e) {
 				setPageComplete(canFinish());
 			}
-
-			
 		});
 
 		Button srpmBrowse = new Button(sourceSpecComposite, SWT.PUSH);
@@ -269,13 +267,7 @@ public class SRPMImportPage extends WizardPage {
 	 * @return boolean
 	 */
 	public boolean finish() {
-		IProject detailedProject;
-
-		// User chooses an existing project or make a new project
-			detailedProject = getNewProject();
-			if (detailedProject == null) {
-				return false;
-			}
+		IProject detailedProject = getNewProject();
 		// Add this SRPM to srpmList
 		for (int i = 0; i < srpmVector.size(); i++) { // There can only be one
 														// occurance
