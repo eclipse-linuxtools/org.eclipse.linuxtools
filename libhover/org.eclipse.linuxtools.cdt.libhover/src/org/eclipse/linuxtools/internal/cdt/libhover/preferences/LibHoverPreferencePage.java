@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.libhover.preferences;
 
-import org.eclipse.jface.preference.*;
-import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.IWorkbench;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.linuxtools.cdt.libhover.LibhoverPlugin;
-import org.eclipse.linuxtools.internal.cdt.libhover.LibHover;
 import org.eclipse.linuxtools.internal.cdt.libhover.LibHoverMessages;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
  * This class represents a preference page that
@@ -35,6 +35,9 @@ public class LibHoverPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 	
+	private final static String CACHE_EXT = "Libhover.CachePreference.msg"; //$NON-NLS-1$
+	private final static String LOAD_ON_STARTUP = "Libhover.LoadOnStartup.msg"; //$NON-NLS-1$
+
 	public LibHoverPreferencePage() {
 		super(GRID);
 		setPreferenceStore(LibhoverPlugin.getDefault().getPreferenceStore());
@@ -47,27 +50,17 @@ public class LibHoverPreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
-		addField(new CheckboxFieldEditor(LibHover.LIBHOVER_DOC_EXTENSION,
-				PreferenceConstants.P_LIBHOVER,
-				LibHoverMessages.getString("LibhoverPreferences.title"),
-				getFieldEditorParent()));
-//		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, 
-//				"&Directory preference:", getFieldEditorParent()));
-//		addField(
-//			new BooleanFieldEditor(
-//				PreferenceConstants.P_BOOLEAN,
-//				"&An example of a boolean preference",
-//				getFieldEditorParent()));
-//
-//		addField(new RadioGroupFieldEditor(
-//				PreferenceConstants.P_CHOICE,
-//			"An example of a multiple-choice preference",
-//			1,
-//			new String[][] { { "&Choice 1", "choice1" }, {
-//				"C&hoice 2", "choice2" }
-//		}, getFieldEditorParent()));
-//		addField(
-//			new StringFieldEditor(PreferenceConstants.P_STRING, "A &text preference:", getFieldEditorParent()));
+		addField(
+				new BooleanFieldEditor(
+						PreferenceConstants.CACHE_EXT_LIBHOVER,
+						LibHoverMessages.getString(CACHE_EXT),
+						getFieldEditorParent()));
+		addField(
+				new BooleanFieldEditor(
+						PreferenceConstants.LAZY_LOAD,
+						LibHoverMessages.getString(LOAD_ON_STARTUP),
+						getFieldEditorParent()));
+
 	}
 
 	/* (non-Javadoc)

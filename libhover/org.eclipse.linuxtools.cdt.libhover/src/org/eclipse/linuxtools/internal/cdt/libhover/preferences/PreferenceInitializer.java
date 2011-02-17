@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,11 +27,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = LibhoverPlugin.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceConstants.P_LIBHOVER, "");
-//		store.setDefault(PreferenceConstants.P_BOOLEAN, true);
-//		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
-//		store.setDefault(PreferenceConstants.P_STRING,
-//				"Default value");
+		store.setDefault(PreferenceConstants.CACHE_EXT_LIBHOVER, true);
+		store.setDefault(PreferenceConstants.LAZY_LOAD, false);
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import org.eclipse.cdt.utils.Platform;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -31,21 +32,24 @@ import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
 import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.eclipse.linuxtools.cdt.libhover.LibhoverPlugin;
 import org.eclipse.linuxtools.cdt.libhover.TypedefInfo;
+import org.osgi.framework.Bundle;
 
 public class LibHoverLibrary {
 	private String name;
 	private String location;
 	private String docs;
+	private String nameSpace;
 	private boolean isCPP;
 	private LibHoverInfo hoverInfo = new LibHoverInfo();
 	private boolean haveReadHoverInfo = false;
 
 	public LibHoverLibrary(String name, String location, String docs, 
-			boolean isCPP) {
+			String nameSpace, boolean isCPP) {
 		this.name = name;
 		this.location = location;
 		this.docs = docs;
 		this.isCPP = isCPP;
+		this.nameSpace = nameSpace;
 	}
 	
 	/**
@@ -74,6 +78,33 @@ public class LibHoverLibrary {
 	public String getDocs() {
 		return docs;
 	}
+
+	/**
+	 * Set the browser help documentation URL for this library
+	 * 
+	 * @param the name of the help documentation URL
+	 */
+	public void setDocs(String docs) {
+		this.docs = docs;
+	}
+
+	/**
+	 * Get the name space of the library hover extension
+	 * 
+	 * @return the name space of the library extension
+	 */
+	public String getNameSpace() {
+		return nameSpace;
+	}
+
+	/**
+	 * Set the name space of the extension used to specify this library
+	 * 
+	 * @param the name space string
+	 */
+	public void setNameSpace(String nameSpace) {
+		this.nameSpace = nameSpace;
+	}
 	
 	/**
 	 * Is this library a C++ library?
@@ -89,7 +120,7 @@ public class LibHoverLibrary {
 	 * 
 	 * @return the library hover info for this library
 	 */
-	public LibHoverInfo getHoverInfo() {
+	public synchronized LibHoverInfo getHoverInfo() {
 		// We lazily get the hover info for this library since it is possible
 		// the user will never access or ultimately need it if another library
 		// supplies the information first.
@@ -106,8 +137,14 @@ public class LibHoverLibrary {
 					docStream = c.getInputStream();
 				} else {
 					try {
-						// Try to open the file as local to this plug-in.
-						docStream = FileLocator.openStream(LibhoverPlugin.getDefault().getBundle(), p, false);
+						// Try to open the file local to the plug-in declaring the
+						// extension...or fall back to the libhover plug-in itself
+						// if no name space for the plug-in is stored.
+						Bundle bundle = LibhoverPlugin.getDefault().getBundle();
+						String nameSpace = getNameSpace();
+						if (nameSpace != null)
+							bundle = Platform.getBundle(nameSpace);
+						docStream = FileLocator.openStream(bundle, p, false);
 					} catch (IOException e) {
 						// File is not local to plug-in, try file system.
 						docStream = new FileInputStream(p.toFile());
@@ -127,7 +164,7 @@ public class LibHoverLibrary {
 			} catch (SocketTimeoutException e) {
 				// Do nothing..time-out exception
 			} catch (IOException e) {
-				e.printStackTrace();
+				// Do nothing as empty devhelp causes this
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -140,7 +177,7 @@ public class LibHoverLibrary {
 	 * 
 	 * @param hoverInfo the library hover info to set
 	 */
-	public void setHoverinfo(LibHoverInfo hoverInfo) {
+	public synchronized void setHoverinfo(LibHoverInfo hoverInfo) {
 		this.hoverInfo = hoverInfo;
 	}
 	

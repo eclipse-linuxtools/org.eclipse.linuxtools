@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.internal.cdt.libhover.preferences;
  */
 public class PreferenceConstants {
 
-	public static String P_LIBHOVER = "libhoverPreference"; //$NON-NLS-1$
+	public static String CACHE_EXT_LIBHOVER = "org.eclipse.linuxtools.cdt.libhover.cacheExtLibhover"; //$NON-NLS-1$
+	public static String LAZY_LOAD = "org.eclipse.linuxtools.cdt.libhover.lazyLoad"; //$NON-NLS-1$
 	
 }

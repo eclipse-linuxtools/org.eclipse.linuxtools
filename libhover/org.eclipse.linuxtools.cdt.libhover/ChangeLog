@@ -1,3 +1,40 @@
+2011-02-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #328655
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/properties/LibHoverPropertyPage.java: Removed.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLoadJob.java: New file.
+	* META-INF/MANIFEST.MF: Bump version to 1.1.0.
+	* plugin.xml: Add extensions to support preferences page.
+	* src/org/eclipse/linuxtools/cdt/libhover/LibhoverPlugin.java (start): Add code to
+	start job which loads all library hover info data.  Also add a save participant that
+	will cache library hover info on workspace save.
+	(save): New method to save library hover info.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (constructTypes): Fix format.
+	(getLibraries): New static method to get the known libraries.
+	(saveLibraries): New static method to save libraries in cache location.
+	(getLibHoverDocs): Add support for cached library info and also store plug-in name space
+	information with LibHoverLibrary.
+	library info data local to their own plug-in instead of being local to this plug-in.
+	(getTransformedName): New method. 
+	(getCleanName): Ditto.
+	(getCachedLibraries): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverLibrary.java (LibHoverLibrary): Add
+	plug-in name space field. 
+	(setDocs): New method.
+	(getNameSpace): New method.
+	(setNameSpace): Ditto.
+	(getHoverInfo): Add code to read library info local to a plug-in using the library
+	extension and remove the code that assumed the data was local to this plug-in.
+	(setHoverinfo): New method.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverMessages.java: Rewritten. 
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHoverMessages.properties: Updated.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/preferences/LibHoverPreferencePage.java (createFieldEditors): Rewritten
+	to add caching and lazy-loading preferences via field editors.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/preferences/PreferenceConstants.java: Add new constants
+	for caching and lazy loading.
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/preferences/PreferenceInitializer.java (initializeDefaultPreferences): 
+	Initialize defaults for new preferences. 
+
 2010-11-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (getFunctionInfo): Look for

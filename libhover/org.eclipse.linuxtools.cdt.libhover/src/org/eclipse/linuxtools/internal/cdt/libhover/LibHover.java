@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2006, 2007, 2008 Red Hat, Inc.
+ * Copyright (c) 2004, 2006, 2007, 2008, 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,14 +20,18 @@
 
 package org.eclipse.linuxtools.internal.cdt.libhover;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.Map.Entry;
 
 import org.eclipse.cdt.core.dom.ast.DOMException;
 import org.eclipse.cdt.core.dom.ast.IASTName;
@@ -52,12 +56,18 @@ import org.eclipse.cdt.ui.IRequiredInclude;
 import org.eclipse.cdt.ui.text.ICHelpInvocationContext;
 import org.eclipse.cdt.ui.text.IHoverHelpInvocationContext;
 import org.eclipse.cdt.ui.text.SharedASTJob;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.IFileSystem;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.help.IHelpResource;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.linuxtools.cdt.libhover.ClassInfo;
 import org.eclipse.linuxtools.cdt.libhover.FunctionInfo;
@@ -65,6 +75,7 @@ import org.eclipse.linuxtools.cdt.libhover.HelpBook;
 import org.eclipse.linuxtools.cdt.libhover.LibHoverInfo;
 import org.eclipse.linuxtools.cdt.libhover.LibhoverPlugin;
 import org.eclipse.linuxtools.cdt.libhover.MemberInfo;
+import org.eclipse.linuxtools.internal.cdt.libhover.preferences.PreferenceConstants;
 
 
 public class LibHover implements ICHelpProvider {
@@ -76,7 +87,7 @@ public class LibHover implements ICHelpProvider {
     
 	private static HashMap<ICHelpBook, LibHoverLibrary> libraries = new HashMap<ICHelpBook, LibHoverLibrary>();
 	
-    static final String  constructTypes[] ={
+    static final String  constructTypes[] = {
     	"dtype", // $NON-NLS-1$
     	"enum",  // $NON-NLS-1$
     	"function", // $NON-NLS-1$
@@ -95,14 +106,70 @@ public class LibHover implements ICHelpProvider {
     static final int unionIndex         = 6;
 
     private static ArrayList<ICHelpBook> helpBooks = new ArrayList<ICHelpBook>();
+    private static Map<String, ICHelpBook> helpBooksMap = new HashMap<String, ICHelpBook>();
     public static boolean docsFetched = false;
 
+    public static Collection<LibHoverLibrary> getLibraries() {
+    	return libraries.values();
+    }
+    
+    public static void saveLibraries() {
+    	// If user preference is to cache libhover data, then save any un-saved
+    	// library hover data.
+    	IPreferenceStore ps = LibhoverPlugin.getDefault().getPreferenceStore();
+    	if (ps.getBoolean(PreferenceConstants.CACHE_EXT_LIBHOVER)) {
+    		IPath locationBase = LibhoverPlugin.getDefault().getStateLocation();
+    		for (Iterator<LibHoverLibrary> i = libraries.values().iterator(); i.hasNext();) {
+    			LibHoverLibrary l = i.next();
+    			try {
+    				// Now, output the LibHoverInfo for caching later
+    				IPath locationDir = locationBase;
+    				if (l.isCPP())
+    					locationDir = locationBase.append("CPP"); //$NON-NLS-1$
+    				else
+    					locationDir = locationBase.append("C"); //$NON-NLS-1$
+    				File lDir = new File(locationDir.toOSString());
+    				lDir.mkdir();
+    				IPath location = locationDir.append(getTransformedName(l.getName()) + ".libhover"); //$NON-NLS-1$
+    				File target = new File(location.toOSString()); //$NON-NLS-1$
+    				if (!target.exists()) {
+    					FileOutputStream f = new FileOutputStream(locationDir.append("tmpFile").toOSString()); //$NON-NLS-1$
+    					ObjectOutputStream out = new ObjectOutputStream(f);
+    					out.writeObject(l.getHoverInfo());
+    					out.close();
+    					File tmp = new File(locationDir.append("tmpFile").toOSString()); //$NON-NLS-1$
+    					tmp.renameTo(target);
+    				}
+    			} catch(Exception e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+    }
+    
 	public static synchronized void getLibHoverDocs() {
 		if (docsFetched)
 			return;
 //		System.out.println("getlibhoverdocs");
 		libraries.clear();
 		helpBooks.clear();
+		helpBooksMap.clear();
+		// Check if caching of library info is enabled and if so, get any
+		// cached library hover info.
+		IPreferenceStore ps = LibhoverPlugin.getDefault().getPreferenceStore();
+		if (ps.getBoolean(PreferenceConstants.CACHE_EXT_LIBHOVER)) {
+			// Look for cached libhover files in the plugin state location
+			IPath stateLocation = LibhoverPlugin.getDefault().getStateLocation();
+			IFileSystem fs = EFS.getLocalFileSystem();
+			IPath CLibraryLocation = stateLocation.append("C"); //$NON-NLS-1$
+			IPath CPPLibraryLocation = stateLocation.append("CPP"); //$NON-NLS-1$
+			IFileStore cDir = fs.getStore(CLibraryLocation);
+			if (cDir.fetchInfo().exists())
+				getCachedLibraries(cDir, "C"); //$NON-NLS-1$
+			IFileStore cppDir = fs.getStore(CPPLibraryLocation);
+			if (cppDir.fetchInfo().exists())
+				getCachedLibraries(cppDir, "C++"); //$NON-NLS-1$
+		}
 		IExtensionRegistry x = RegistryFactory.getRegistry();
 		IConfigurationElement[] ces = x.getConfigurationElementsFor(LIBHOVER_DOC_EXTENSION);
 		for (int i = 0; i < ces.length; ++i) {
@@ -117,13 +184,57 @@ public class LibHover implements ICHelpProvider {
 				String name = ce.getAttribute("name"); //$NON-NLS-1$
 				String helpdocs = ce.getAttribute("docs"); //$NON-NLS-1$
 				String type = ce.getAttribute("type"); //$NON-NLS-1$
-				HelpBook h = new HelpBook(name, type);
-				helpBooks.add(h);
-				LibHoverLibrary l = new LibHoverLibrary(name, location, helpdocs, 
-						true);
-				libraries.put(h, l);
+				String nameSpace = ce.getContributor().getName();
+				// If library not already cached, create it
+				ICHelpBook book = helpBooksMap.get(name);
+				if (book == null) {
+					HelpBook h = new HelpBook(name, type);
+					helpBooks.add(h);
+					helpBooksMap.put(name, h);
+					LibHoverLibrary l = new LibHoverLibrary(name, location, helpdocs, nameSpace, 
+							"C++".equals(type)); //$NON-NLS-1$
+					libraries.put(h, l);
+				} else {
+					LibHoverLibrary l = libraries.get(book);
+					if (l != null)
+						l.setDocs(helpdocs);
+				}
 				docsFetched = true;
 			}
+		}
+	}
+
+	private static String getTransformedName(String name) {
+		return name.replaceAll("\\s", "_");
+	}
+	
+	private static String getCleanName(String name) {
+		return name.replaceAll("_", " ");
+	}
+	
+	private static void getCachedLibraries(IFileStore dir, String type) {
+		try {
+			boolean isCPP = type.equals("C++"); //$NON-NLS-1$
+			IFileStore[] files = dir.childStores(EFS.NONE, null);
+			for (int i = 0; i < files.length; ++i) {
+				IFileStore file = files[i];
+				String fileName = file.fetchInfo().getName();
+				if (fileName.endsWith(".libhover")) { //$NON-NLS-1$
+					File f = file.toLocalFile(EFS.NONE, null);
+					if (f != null) {
+						String name = getCleanName(fileName.substring(0,fileName.length()-9));
+						HelpBook h = new HelpBook(name, type); //$NON-NLS-1$
+						helpBooks.add(h);
+						helpBooksMap.put(name, h);
+						String location = file.toURI().toString();
+						LibHoverLibrary l = new LibHoverLibrary(name, location, null, null, isCPP); 
+						libraries.put(h, l);
+					}
+				}
+			}
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
