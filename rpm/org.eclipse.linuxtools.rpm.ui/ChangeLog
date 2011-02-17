@@ -1,5 +1,20 @@
 2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/Messages.java (getString): Add javadoc.
+	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: More externalized strings.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMNewProject.java (createProject): Use utility from core plugin
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (getSelectedSRPM): Format.
+	(.run): Likewise.
+	(createControl): New controls on the page.
+	(createProjectDetails): Likewise.
+	(createSourceRPMCombo): Likewise.
+	(changeProjectSettings): Modify the shown project path.
+	(getProjectName): Get the project name from the srpm name.
+	(canFinish): Format.
+	(getNewProject): Use util class from core plugin for creation of the project.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (getStatus): Add javadoc. 
 	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (canFinish): Proper return and error messages.
 	
