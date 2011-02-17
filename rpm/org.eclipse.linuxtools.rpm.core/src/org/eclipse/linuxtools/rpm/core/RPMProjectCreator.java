@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.Platform;
  */
 public class RPMProjectCreator {
 	private RPMProjectLayout layout;
+	private IProject latest;
 
 	/**
 	 * Creates the utility class and sets the layout that will be used.
@@ -67,9 +68,18 @@ public class RPMProjectCreator {
 			if (layout.equals(RPMProjectLayout.RPMBUILD)) {
 				createDirs(monitor, project);
 			}
+			latest=project;
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Returns the latest project created.
+	 * @return The last created project.
+	 */
+	public IProject getLatestProject(){
+		return latest;
 	}
 
 	private void createDirs(IProgressMonitor monitor, IProject project)

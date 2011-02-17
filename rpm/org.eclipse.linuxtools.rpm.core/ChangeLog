@@ -1,5 +1,10 @@
 2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectCreator.java (create): Store reference to the latest created project.
+	(getLatestProject): Add API for retrieving the latest created project.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/core/RPMProjectCreator.java (RPMProjectCreator): One more constructor to ease default.
 
 2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
