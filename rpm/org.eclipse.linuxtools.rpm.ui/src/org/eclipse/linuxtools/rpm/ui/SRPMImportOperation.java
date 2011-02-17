@@ -80,6 +80,9 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	}
 
 
+	/**
+	 * @return The result of the operation.
+	 */
 	public MultiStatus getStatus() {
 	IStatus[] errors = new IStatus[rpm_errorTable.size()];
 	Iterator<Exception> count = rpm_errorTable.iterator();

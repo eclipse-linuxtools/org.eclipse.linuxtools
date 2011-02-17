@@ -1,5 +1,10 @@
 2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
 
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (getStatus): Add javadoc. 
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (canFinish): Proper return and error messages.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
 	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (createSourceRPMCombo): Remove empty lines.
 	(finish): Remove dead code.
 	

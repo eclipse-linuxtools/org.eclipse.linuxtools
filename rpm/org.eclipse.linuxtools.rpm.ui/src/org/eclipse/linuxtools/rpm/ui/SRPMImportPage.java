@@ -234,15 +234,18 @@ public class SRPMImportPage extends WizardPage {
 				URL url = new URL(sourceSRPMName);
 				if (HttpURLConnection.HTTP_NOT_FOUND == ((HttpURLConnection) url
 						.openConnection()).getResponseCode()) {
-					setErrorMessage("HTTP not found!!!");
+					setErrorMessage(Messages
+							.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
 					return false;
 				}
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				setErrorMessage(Messages
+						.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
+				return false;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				setErrorMessage(Messages
+						.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
+				return false;
 			}
 		} else {
 			if (sourceSRPMName.equals("")) { //$NON-NLS-1$
