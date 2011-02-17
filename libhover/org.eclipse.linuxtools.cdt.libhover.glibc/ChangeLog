@@ -1,3 +1,12 @@
+2011-02-17  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* data/glibc-2.7-2.libhover: New file to eliminate need for external web
+	access.
+	* data/license.html: GFDL 1.1 license which applies to glibc-2.7-2.libhover.
+	* build.properties: Add data directory.
+	* META-INF/MANIFEST.MF: Bump to 1.1.0.
+	* plugin.xml: Point to data directory for library hover location.
+
 2009-08-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #285867
