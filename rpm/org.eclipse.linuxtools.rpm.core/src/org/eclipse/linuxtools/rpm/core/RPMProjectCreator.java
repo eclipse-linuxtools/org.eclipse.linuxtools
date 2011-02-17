@@ -36,6 +36,13 @@ public class RPMProjectCreator {
 	public RPMProjectCreator(RPMProjectLayout layout) {
 		this.layout = layout;
 	}
+	
+	/**
+	 * Creates the utility class with the default(RPMBuild) layout.
+	 */
+	public RPMProjectCreator() {
+		this(RPMProjectLayout.RPMBUILD);
+	}
 
 	/**
 	 * Creates a project with the given name in the given location.

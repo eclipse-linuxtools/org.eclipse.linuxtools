@@ -1,4 +1,8 @@
 2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectCreator.java (RPMProjectCreator): One more constructor to ease default.
+
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
 	Add utility class for creating rpm projects.
 	* src/org/eclipse/linuxtools/rpm/core/RPMProjectCreator.java: New file.
 	* src/org/eclipse/linuxtools/rpm/core/RPMProjectLayout.java: New file.
