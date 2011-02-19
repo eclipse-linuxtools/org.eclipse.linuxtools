@@ -1,3 +1,12 @@
+2011-02-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (sourceSRPM): Drop the combo and the backing list there is no point in it.
+	(SRPMImportPage): Likewise.
+	(createProjectDetails): Likewise.
+	(createSourceRPMCombo): Likewise.
+	(finish): Likewise.
+	(getNewProject): Likewise.
+
 2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/Messages.java (getString): Add javadoc.

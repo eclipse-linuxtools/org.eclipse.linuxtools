@@ -17,7 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Vector;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -61,10 +60,8 @@ import org.eclipse.ui.IWorkbench;
 public class SRPMImportPage extends WizardPage {
 
 	// GUI Control variables
-	private Combo sourceSRPM;
+	private Text sourceSRPM;
 	private Text locationPath;
-
-	static private Vector<String> srpmVector;
 
 	/**
 	 * @see java.lang.Object#Object()
@@ -183,7 +180,8 @@ public class SRPMImportPage extends WizardPage {
 		typeLabel.setEnabled(false);
 		final Combo combo = new Combo(specGrid, SWT.NULL);
 
-		String[] types = new String[] { Messages.getString("SRPMImportPage.5"), Messages.getString("SRPMImportPage.6") }; //$NON-NLS-1$ //$NON-NLS-2$
+		String[] types = new String[] {
+				Messages.getString("SRPMImportPage.5"), Messages.getString("SRPMImportPage.6") }; //$NON-NLS-1$ //$NON-NLS-2$
 		for (String type : types)
 			combo.add(type);
 		combo.select(0);
@@ -205,14 +203,10 @@ public class SRPMImportPage extends WizardPage {
 		sourceSpecComposite.setLayoutData(new GridData(
 				GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
 
-		sourceSRPM = new Combo(sourceSpecComposite, SWT.BORDER);
+		sourceSRPM = new Text(sourceSpecComposite, SWT.BORDER);
 		sourceSRPM.setToolTipText(Messages
 				.getString("SRPMImportPage.toolTip_SRPM_Name")); //$NON-NLS-1$
 
-		if (srpmVector == null)
-			srpmVector = new Vector<String>();
-		for (int i = srpmVector.size(); i > 0; i--)
-			sourceSRPM.add((srpmVector.elementAt(i - 1)));
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -318,16 +312,6 @@ public class SRPMImportPage extends WizardPage {
 	 */
 	public boolean finish() {
 		IProject detailedProject = getNewProject();
-		// Add this SRPM to srpmList
-		for (int i = 0; i < srpmVector.size(); i++) { // There can only be one
-														// occurance
-			if (srpmVector.elementAt(i).equals(sourceSRPM.getText())) {
-				srpmVector.remove(i);
-				break;
-			}
-		}
-		srpmVector.add((sourceSRPM.getText()));
-
 		SRPMImportOperation srpmImportOp = null;
 		try {
 			srpmImportOp = new SRPMImportOperation(detailedProject,
@@ -355,15 +339,13 @@ public class SRPMImportPage extends WizardPage {
 	}
 
 	/**
-	 * Get a new project that is configured by the new project wizard. This is
-	 * currently the only way to do this. This is a copy of
-	 * org.eclipse.team.internal
-	 * .ccvs.ui.wizards.CheckoutAsWizard.getNewProject()
+	 * Creates a new project.
 	 */
 	private IProject getNewProject() {
 		IPath path = Path.fromOSString(locationPath.getText());
 		RPMProjectCreator projectCreator = new RPMProjectCreator();
-		projectCreator.create(getProjectName(path.lastSegment()), path.removeLastSegments(1), new NullProgressMonitor());
+		projectCreator.create(getProjectName(path.lastSegment()),
+				path.removeLastSegments(1), new NullProgressMonitor());
 		return projectCreator.getLatestProject();
 	}
 }
