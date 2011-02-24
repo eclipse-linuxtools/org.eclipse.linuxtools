@@ -112,8 +112,9 @@
      &lt;library
            name=&quot;GTK&quot;
            location=&quot;http://mywebsite/libhover/xml/gtk.xml&quot;
-           docs=&quot;http;//gtk.org/docs/gtk.html&quot;/&gt;
-  &lt;/extension&gt;
+           type=&quot;C&quot;
+           docs=&quot;http://gtk.org/docs/gtk.html&quot;/&gt;
+&lt;/extension&gt;
       </documentation>
    </annotation>
 

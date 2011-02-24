@@ -1,3 +1,8 @@
+2011-02-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Allow tests to access internal classes.
+	* schema/org.eclipse.linuxtools.cdt.libhover.library.exsd: Update schema description.
+
 2011-02-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #328655
