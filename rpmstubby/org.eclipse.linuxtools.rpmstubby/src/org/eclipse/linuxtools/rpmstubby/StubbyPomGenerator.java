@@ -87,8 +87,6 @@ public class StubbyPomGenerator {
 		buffer.append("License:        " + model.getLicense() + "\n");
 		buffer.append("URL:            " + model.getURL() + "\n");
 		buffer.append("Source0:        #FIXME\n");
-		buffer
-				.append("BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)\n\n");
 		buffer.append("BuildArch: noarch\n\n");
 		generateRequires(buffer);
 		buffer.append("\n%description\n" + model.getDescription() + "\n\n");
@@ -97,7 +95,6 @@ public class StubbyPomGenerator {
 		generateBuildSection(buffer);
 		generateInstallSection(buffer);
 		generatePostPostun(buffer);
-		generateCleanSection(buffer);
 		generateFilesSections(buffer);
 		generateChangelog(buffer);
 
@@ -137,24 +134,12 @@ public class StubbyPomGenerator {
 		buffer.append("#FIXME\n");
 	}
 
-	private void generateCleanSection(StringBuilder buffer) {
-		buffer.append("%clean\n");
-		buffer.append("rm -rf %{buildroot}\n\n");
-	}
-
 	private void generateInstallSection(StringBuilder buffer) {
 		buffer.append("%install\n");
-		buffer.append("rm -rf %{buildroot}\n\n");
-
 		buffer.append("# jars\n");
 		buffer.append("install -d -m 0755 %{buildroot}%{_javadir}\n");
 		buffer
-				.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}-%{version}.jar\n\n");
-
-		buffer
-				.append("(cd %{buildroot}%{_javadir} && for jar in *-%{version}*; \\\n");
-		buffer
-				.append("    do ln -sf ${jar} `echo $jar| sed \"s|-%{version}||g\"`; done)\n\n");
+				.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}\n\n");
 
 		buffer.append("%add_to_maven_depmap " + model.getGroupId() + " "
 				+ model.getArtifactId() + " %{version} JPP "
@@ -169,11 +154,9 @@ public class StubbyPomGenerator {
 
 		buffer.append("# javadoc\n");
 		buffer
-				.append("install -d -m 0755 %{buildroot}%{_javadocdir}/%{name}-%{version}\n");
+				.append("install -d -m 0755 %{buildroot}%{_javadocdir}/%{name}\n");
 		buffer
-				.append("cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{name}-%{version}/\n");
-		buffer
-				.append("ln -s %{name}-%{version} %{buildroot}%{_javadocdir}/%{name}\n");
+				.append("cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{name}/\n");
 		buffer.append("rm -rf target/site/api*\n\n");
 	}
 
@@ -186,7 +169,6 @@ public class StubbyPomGenerator {
 
 		buffer.append("%files javadoc\n");
 		buffer.append("%defattr(-,root,root,-)\n");
-		buffer.append("%{_javadocdir}/%{name}-%{version}\n");
 		buffer.append("%{_javadocdir}/%{name}\n\n");
 	}
 
@@ -197,11 +179,8 @@ public class StubbyPomGenerator {
 
 	private void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
-		buffer.append("export MAVEN_REPO_LOCAL=$(pwd)/.m2/repository\n");
-		buffer.append("mvn-jpp \\\n");
+		buffer.append("mvn-rpmbuild \\\n");
 		buffer.append("        -e \\\n");
-		buffer.append("        -Dmaven2.jpp.mode=true \\\n");
-		buffer.append("        -Dmaven.repo.local=$MAVEN_REPO_LOCAL \\\n");
 		buffer.append("        install javadoc:javadoc\n\n");
 	}
 

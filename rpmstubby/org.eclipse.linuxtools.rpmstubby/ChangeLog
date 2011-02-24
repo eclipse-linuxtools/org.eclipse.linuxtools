@@ -1,3 +1,10 @@
+2011-02-24  Alexander Kurtakov  <akurtako@redhat.com>
+	Adapt to current packaging guidelines.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateSpecfile): Drop buildroot.
+	(generateInstallSection): Drop symlinks.
+	(generateFilesSections): Likewise.
+	(generateBuildSection): Invoke mvn-rpmbuld.
+
 2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* META-INF/MANIFEST.MF: Move to using commands framework.
