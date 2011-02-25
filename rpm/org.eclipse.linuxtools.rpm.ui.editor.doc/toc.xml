@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Specfile Editor">
+	<topic label="User's guide"  href="html/toc.html" >
+		<topic label="Creating new spec file"  href="html/generic.html" />
+		<topic label="Rpmlint warnings and quick fixes" href="html/rpmlint.html" />
+		<topic label="Customizing editor" href="html/settings.html">
+			<topic label="RPM macros completion" href="html/macro_settings.html" />
+			<topic label="Package completion" href="html/package_settings.html" />
+		</topic>
+	</topic> 
+	<topic label="Support and development"  href="html/support.html" />
+</toc>

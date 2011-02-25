@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.linuxtools.rpm"
+      label="%featureName"
+      version="3.0.0"
+      provider-name="Eclipse.org">
+   <install-handler/>
+
+   <description url="[Enter Feature URL here.]">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="[Enter Copyright URL here.]">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="[Enter License URL here.]">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.text"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.linuxtools.rpm.core"
+         download-size="0"
+         install-size="0"
+         version="3.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.rpm.doc"
+         download-size="0"
+         install-size="0"
+         version="3.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.rpm.ui"
+         download-size="0"
+         install-size="0"
+         version="3.0.0"/>
+
+</feature>

@@ -1,0 +1,50 @@
+2009-01-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* html/images/settings_rpms_details.png: New file.
+	* html/images/settings_rpms_generic.png: New file.
+	* html/images/Unti.xcf: New file.
+	* html/package_settings.html: Fill packages setting page.
+	* html/images/macros_long.png: New file.
+	* html/images/macros_short.png: New file.
+	* html/images/settings_macros.png: New file.
+	* html/macro_settings.html: Fill macro settings page.
+	* html/images/settings_changelog.png: New file.
+	* html/images/settings_rpmlint.png: New file.
+	* html/images/settings_tasks.png: New file.
+	* html/images/settings_templates.png: New file.
+	* html/settings.html: Fill the settings documentation page.
+	* html/support.html: Fill the support documentation page.
+	* html/images/rpmlint_fix_after.png: New file.
+	* html/images/rpmlint_fix_before.png: New file.
+	* html/images/enable_rpmlint.png: New file.
+	* html/images/problems_rpmlint.png: New file.
+	* html/images/rpmlint_quickfix.png: New file.
+	* html/images/warnings_rpmlint.png: New file.
+	* html/rpmlint.html: Fill the documentation for rpmlint integration.
+
+2009-01-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* html/images/new_from_template.png: New file.
+	* html/images/generic.png: New file.
+	* html/images/wizard.png: New file.
+	* html/generic.html: Starting editing and creating a new specfile described.
+	
+
+2009-01-23  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* html/toc.html: TOC with basic intro created.
+
+2009-01-16  Alexander Kurtakov  <akurtako@redhat.com>
+	Stubs for the documentation.
+	* .project: New file.
+	* build.properties: New file.
+	* html/generic.html: New file.
+	* html/macro_settings.html: New file.
+	* html/package_settings.html: New file.
+	* html/rpmlint.html: New file.
+	* html/settings.html: New file.
+	* html/support.html: New file.
+	* html/toc.html: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* plugin.xml: New file.
+	* toc.xml: New file.

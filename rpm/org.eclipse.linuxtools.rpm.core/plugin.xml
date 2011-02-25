@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="rpmnature"
+         name="RPM Project Nature"
+         point="org.eclipse.core.resources.natures">
+         <runtime>
+         	<run class="org.eclipse.linuxtools.rpm.core.RPMProjectNature"></run>
+         </runtime>
+   </extension>
+
+</plugin>

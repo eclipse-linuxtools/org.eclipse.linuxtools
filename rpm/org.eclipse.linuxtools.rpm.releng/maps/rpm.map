@@ -1,0 +1,4 @@
+plugin@org.eclipse.cdt.rpm.core=HEAD,:pserver:anonymous@dev.eclipse.org:/home/tools/,,org.eclipse.cdt-contrib/org.eclipse.cdt.rpm/org.eclipse.cdt.rpm.core
+plugin@org.eclipse.cdt.rpm.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/home/tools/,,org.eclipse.cdt-contrib/org.eclipse.cdt.rpm/org.eclipse.cdt.rpm.ui
+plugin@org.eclipse.cdt.rpm.doc=HEAD,:pserver:anonymous@dev.eclipse.org:/home/tools/,,org.eclipse.cdt-contrib/org.eclipse.cdt.rpm/org.eclipse.cdt.rpm.doc
+feature@org.eclipse.cdt.rpm=HEAD,:pserver:anonymous@dev.eclipse.org:/home/tools/,,org.eclipse.cdt-contrib/org.eclipse.cdt.rpm/org.eclipse.cdt.rpm-feature
