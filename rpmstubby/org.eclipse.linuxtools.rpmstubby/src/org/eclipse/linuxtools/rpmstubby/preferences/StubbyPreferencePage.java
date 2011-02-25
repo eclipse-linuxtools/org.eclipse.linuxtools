@@ -40,8 +40,6 @@ public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 		addField(new BooleanFieldEditor(
 				PreferenceConstants.P_STUBBY_INTERACTIVE,
 				"Stubby interactive mode", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(PreferenceConstants.P_STUBBY_WITH_GCJ,
-				"Add GCJ support to the specfile", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(
 				PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT,
 				"Include a fetch script", getFieldEditorParent()));

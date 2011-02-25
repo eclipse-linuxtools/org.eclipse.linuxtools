@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.popup.actions;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -23,7 +24,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * Base class for the different stubify actions.
  *
  */
-public abstract class StubifyAction implements IObjectActionDelegate {
+public abstract class StubifyAction extends AbstractHandler implements IObjectActionDelegate  {
 
 	protected ISelection selection;
 

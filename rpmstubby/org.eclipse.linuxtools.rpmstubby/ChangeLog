@@ -1,3 +1,48 @@
+2011-02-24  Alexander Kurtakov  <akurtako@redhat.com>
+	Adapt to current packaging guidelines.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateSpecfile): Drop buildroot.
+	(generateInstallSection): Drop symlinks.
+	(generateFilesSections): Likewise.
+	(generateBuildSection): Invoke mvn-rpmbuld.
+
+2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Move to using commands framework.
+	* plugin.xml: Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyAction.java: Make actions command handlers.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyFeatureAction.java (execute): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/popup/actions/StubifyPomAction.java (execute): Likewise.
+
+2010-05-31   Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateJavadocSubpackage): Add missing Requires to javadoc subpackage. (bz#312865)
+
+2010-05-31  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateCleanSection): Fix rm call (bug 312864).
+
+2010-02-11  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateInstallSection): Proper install for jars in a <packaging>pom</packaging> project and use %{_mavenpomdir} macro.
+
+2010-01-26  Alexander Kurtakov  <akurtako@redhat.com>
+    Drop ability to generate gcj specific parts. Use %global not %define.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceConstants.java: Remove gcj parts.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/PreferenceInitializer.java (initializeDefaultPreferences): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/preferences/StubbyPreferencePage.java (createFieldEditors): Likewise.
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (getPackageFiles): Likewise.
+	(generateFilesSections): Likewise.
+	(StubbyGenerator): Likewise.
+	(generateSpecfile): Likewise. Replace %define with %global.
+
+2009-12-03  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Fix duplicated popup menu ids.
+
+2009-11-04  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/model/PomModel.java (getVersion): Return inherited parent version if one wasn't defined.
+
 2009-09-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpmstubby/model/PomModel.java (xpathEvalNodes): Format.
