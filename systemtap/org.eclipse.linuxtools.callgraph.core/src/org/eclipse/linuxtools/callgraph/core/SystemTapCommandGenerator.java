@@ -13,61 +13,36 @@ package org.eclipse.linuxtools.callgraph.core;
 
 import java.util.ArrayList;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-
-
 /**
- * This <code>Action</code> is used to run a SystemTap script that is currently open in the editor.
- * @author Ryan Morse
+ * Contains methods for generating a stap command
+ * @author chwang
+ *
  */
-public class SystemTapCommandGenerator extends Action implements IWorkbenchWindowActionDelegate {	
+public class SystemTapCommandGenerator {	
 	
-	private boolean needsToSendCommand;
-	private boolean needsArguments;
-	protected String arguments;
-	protected String scriptPath;
-	protected String commands;
-	protected boolean isGuru;
-	private String binaryPath = null;
-	protected IWorkbenchWindow actionWindow = null;
-	private IAction act;
-	private String executeCommand;
-	private String binaryArguments;
+	private static boolean needsToSendCommand;
+	private static boolean needsArguments;
+	protected static String arguments;
+	protected static String scriptPath;
+	protected static String flags;
+	protected static boolean isGuru;
+	private static String binaryPath = null;
+	private static String binaryArguments;
+	private static String command;
 
-	
-	public SystemTapCommandGenerator() {		
-		super();
-	}
 
-	public void dispose() {
-		actionWindow= null;
-	}
-
-	public void init(IWorkbenchWindow window) {
-		actionWindow= window;
-	}
-
-	public void run(IAction action) {
-		System.out.println("Not implemented"); //$NON-NLS-1$
-	}
-
-	public void run() {
-		System.out.println("Calling run() without parameters not implemented"); //$NON-NLS-1$
-	}
-	
-	public String generateCommand(String scrPath, String binPath, String cmds, boolean needBinary, boolean needsArgs, String arg, String binArguments) {
+	public static String generateCommand(String scrPath, String binPath, String opts, boolean needBinary, boolean needsArgs, String arg, String binArguments,
+			String cmdTarget) {
 		needsToSendCommand = needBinary;
 		needsArguments = needsArgs;
 		binaryPath = binPath;
 		scriptPath = scrPath;
 		isGuru = false;
 		arguments = arg;
-		commands = cmds;
+		flags = opts;
 		binaryArguments = binArguments;
+		command = cmdTarget;
+		
 		
 		String[] script = buildScript();
 		
@@ -76,7 +51,6 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 			cmd = cmd + script[i] + " "; //$NON-NLS-1$
 		cmd = cmd + script[script.length-1];
 
-		this.executeCommand = cmd;
 		return cmd;
 	}
 	
@@ -85,14 +59,14 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 	 * Parses the data created from generateCommand
 	 * @return An array of strings to be joined and executed by the shell
 	 */
-	protected String[] buildScript() {
+	protected static String[] buildScript() {
 		//TODO: Take care of this in the next release. For now only the guru mode is sent
 		ArrayList<String> cmdList = new ArrayList<String>();
 		String[] script;
 
 		//getImportedTapsets(cmdList);
-		if (commands.length() > 0){
-			cmdList.add(commands);	
+		if (flags.length() > 0){
+			cmdList.add(flags);	
 		}
 		
 		//Execute a binary
@@ -100,7 +74,7 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 			if (binaryArguments.length() < 1){	
 				cmdList.add("-c '" + binaryPath + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 			}else{				
-				cmdList.add("-c '" + binaryPath + " " + binaryArguments +"'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				cmdList.add("-c \"" + binaryPath + " " + binaryArguments +"\""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 		
@@ -114,7 +88,7 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 			script[script.length-1] = scriptPath;
 		}
 		
-		script[0] = PluginConstants.STAP_PATH; //$NON-NLS-1$
+		script[0] = command; //$NON-NLS-1$
 
 		for(int i=0; i< cmdList.size(); i++) {
 			if (cmdList.get(i) != null)
@@ -125,27 +99,4 @@ public class SystemTapCommandGenerator extends Action implements IWorkbenchWindo
 		
 	}
 
-	
-	public void selectionChanged(IAction act, ISelection select) {
-		this.act = act;
-		setEnablement(false);
-		//buildEnablementChecks();
-	}
-
-	private void setEnablement(boolean enabled) {
-		act.setEnabled(enabled);
-	}
-	
-	public String getExecuteCommand(){
-		return this.executeCommand;
-	}
-
-	
-	/**
-	 * Convenience method to return the current window
-	 */
-	public IWorkbenchWindow getWindow() {
-		return actionWindow;
-	}
-	
 }

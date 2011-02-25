@@ -19,11 +19,10 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.linuxtools.systemtap.ui.editor.SimpleDocumentProvider;
-import org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPPartitioner;
 import org.eclipse.linuxtools.systemtap.ui.logging.LogManager;
 
 public class STPDocumentProvider extends SimpleDocumentProvider {
-	private IDocument document;
+	//private IDocument document;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.editors.text.TextFileDocumentProvider#getDocument(java.lang.Object)

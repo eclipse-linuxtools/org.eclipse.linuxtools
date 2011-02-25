@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.callgraph.tests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 
@@ -35,7 +36,11 @@ public class StapGraphParserTest extends TestCase {
 		
 		//SAME NUMBER OF NODES ENTRIES
 		assertEquals(grph.serialMap.size(),grph.timeMap.size());
-		assertEquals(grph.serialMap.size(),grph.outNeighbours.size());
+		int nsize = 0;
+		for (int key : grph.neighbourMaps.keySet())
+			if (grph.neighbourMaps.get(key)!= null)
+				nsize+=grph.neighbourMaps.get(key).size();
+		assertEquals(grph.serialMap.size(),nsize);
 		//ALL UNIQUE FUNCTIONS HAVE A TIME
 		//ALL FUNCTIONS HAVE A CUMULATIVE TIME
 		for (int val : grph.serialMap.keySet()){
@@ -61,17 +66,21 @@ public class StapGraphParserTest extends TestCase {
 		//ALL NODES MUST HAVE A PARENT EXCEPT THE ROOT
 		for (int key : grph.serialMap.keySet()){
 			hasParent = false;
-			for (ArrayList<Integer> list : grph.outNeighbours.values()){
-				if (list.contains(key)){
-					hasParent = true;
-					break;
+			for (int k:grph.neighbourMaps.keySet()) {
+				HashMap<Integer, ArrayList<Integer>> outNeighbours = grph.neighbourMaps.get(k);
+				if (outNeighbours != null && outNeighbours.size() > 0)
+				for (ArrayList<Integer> list : outNeighbours.values()){
+					if (list.contains(key)){
+						hasParent = true;
+						break;
+					}
 				}
-			}
-			
-			if (!hasParent){
-				for (int other : grph.serialMap.keySet()){
-					if (key > other){
-						fail(key + " " + grph.serialMap.get(key) + " had no parent");						
+				
+				if (!hasParent){
+					for (int other : grph.serialMap.keySet()){
+						if (key > other){
+							fail(key + " " + grph.serialMap.get(key) + " had no parent");						
+						}
 					}
 				}
 			}

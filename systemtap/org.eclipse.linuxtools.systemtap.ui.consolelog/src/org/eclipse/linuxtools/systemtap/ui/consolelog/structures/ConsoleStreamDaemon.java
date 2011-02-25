@@ -11,8 +11,10 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.structures;
 
+import java.io.IOException;
+
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IGobblerListener;
-import org.eclipse.ui.console.MessageConsoleStream;
+import org.eclipse.ui.console.IOConsoleOutputStream;
 
 
 
@@ -24,7 +26,7 @@ public class ConsoleStreamDaemon implements IGobblerListener {
 	public ConsoleStreamDaemon(ScriptConsole console) {
 		this.console = console;
 		if(null != console)
-			msgConsole = console.newMessageStream();
+			ioConsole = console.newOutputStream();
 		disposed = false;
 	}
 	
@@ -32,8 +34,13 @@ public class ConsoleStreamDaemon implements IGobblerListener {
 	 * Prints out the new output data to the console
 	 */
 	protected void pushData() {
-		if(null != msgConsole)
-			msgConsole.print(output);
+		if(null != ioConsole)
+			try {
+				ioConsole.write(output);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	/**
@@ -60,12 +67,12 @@ public class ConsoleStreamDaemon implements IGobblerListener {
 			disposed = true;
 			output = null;
 			console = null;
-			msgConsole = null;
+			ioConsole = null;
 		}
 	}
 
 	protected String output;
 	protected ScriptConsole console;
-	protected MessageConsoleStream msgConsole;
+	protected IOConsoleOutputStream ioConsole;
 	private boolean disposed;
 }

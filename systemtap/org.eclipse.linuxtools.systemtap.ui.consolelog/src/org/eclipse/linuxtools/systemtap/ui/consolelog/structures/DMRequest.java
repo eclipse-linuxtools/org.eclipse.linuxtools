@@ -21,6 +21,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPref
  * @author patrickm
  * 
  */
+@SuppressWarnings("deprecation")
 public class DMRequest extends DMPacket {
 
 	// packet size

@@ -9,8 +9,9 @@
 	<extension
 		point="org.eclipse.ui.preferencePages">
 		<page
-			name="%preference.logging.name"
-			id="com.qualityeclipse.generic.prefs.logging"
-			class="org.eclipse.linuxtools.systemtap.ui.logging.preferences.LoggingPreferencePage"/>
+        category="org.eclipse.linuxtools.systemtap.prefs.view"
+        class="org.eclipse.linuxtools.systemtap.ui.logging.preferences.LoggingPreferencePage"
+        id="org.eclipse.linuxtools.generic.prefs.logging"
+        name="%preference.logging.name"/>
 	</extension>
 </plugin>

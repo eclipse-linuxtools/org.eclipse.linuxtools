@@ -43,6 +43,7 @@ public class StapGraphMouseListener implements MouseListener {
 	public void mouseDoubleClick(MouseEvent e) {
 		if (e.stateMask == SWT.CONTROL) {
 			controlDoubleClick();
+			return;
 		}
 		
 		
@@ -117,6 +118,10 @@ public class StapGraphMouseListener implements MouseListener {
 			callees = graph.getNodeData(id).collapsedChildren;
 		else
 			callees = graph.getNodeData(id).children;
+		
+		if (callees == null)
+			return;
+		
 		for (int subID : callees) {
 			if (graph.getNode(subID) != null)
 				graph.getNode(subID).unhighlight();
@@ -165,34 +170,34 @@ public class StapGraphMouseListener implements MouseListener {
 		return node;
 	}
 	
-	public String controlDoubleClick() {
-		String output = null;
+	public void controlDoubleClick() {
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
 			GraphNode node = getAggregateNodeFromSelection();
 			
 			if (node == null)
-				return null;
+				return;
 			
 			String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
-			output= FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+			FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+			node.unhighlight();
 		} else {
 			StapNode node = getNodeFromSelection();
 			
 			if (node == null)
-				return null;
+				return;
 
-			int caller = node.getData().parent;
+			int caller = node.getData().id;
 
 			if (caller < graph.getFirstUsefulNode()) {
 				// The only node that satisfies this condition should be
 				// main
 				caller = graph.getFirstUsefulNode();
 			}
-			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getNodeData(caller).name);
+			FileFinderOpener.findAndOpen(graph.getProject(), graph.getNodeData(caller).name);
+			node.unhighlight();
 		}
 
 		graph.setSelection(null);
-		return output;
 	}
 	
 	public void mouseDownEvent(int x, int y) {
@@ -277,7 +282,7 @@ public class StapGraphMouseListener implements MouseListener {
 //				unhighlightall(n);
 //			}
 //		}
-
+//
 //		graph.setSelection(null);
 	}
 };

@@ -128,6 +128,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 	private Button OKButton;
 	private boolean testMode = false;
+	protected String secondaryID = ""; //$NON-NLS-1$
 
 	/**
 	 * Provides access to the Profiling Frameworks' launch method
@@ -145,8 +146,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	public void initialize() {
 		name = ""; //$NON-NLS-1$
-		dirPath = ResourcesPlugin.getWorkspace().getRoot().getLocation()
-				.toString();
+		dirPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		binaryPath = LaunchConfigurationConstants.DEFAULT_BINARY_PATH;
 		arguments = LaunchConfigurationConstants.DEFAULT_ARGUMENTS;
 		outputPath = PluginConstants.getDefaultIOPath();
@@ -154,6 +154,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		generatedScript = LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT;
 		needToGenerate = false;
 		useColours = false;
+		secondaryID = ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -244,28 +245,20 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				e1.printStackTrace();
 			}
 
-			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,
-					scriptPath);
+			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,scriptPath);
 
 			if (!invalid(binaryPath))
-				wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,
-						binaryPath);
+				wc.setAttribute(LaunchConfigurationConstants.BINARY_PATH,binaryPath);
 
-			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,
-					outputPath);
+			wc.setAttribute(LaunchConfigurationConstants.OUTPUT_PATH,outputPath);
 			wc.setAttribute(LaunchConfigurationConstants.ARGUMENTS, arguments);
-			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT,
-					generatedScript);
-			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE,
-					needToGenerate);
+			wc.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT,generatedScript);
+			wc.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE,needToGenerate);
 			wc.setAttribute(LaunchConfigurationConstants.OVERWRITE, overwrite);
-			wc
-					.setAttribute(LaunchConfigurationConstants.USE_COLOUR,
-							useColours);
-			wc
-					.setAttribute(LaunchConfigurationConstants.PARSER_CLASS,
-							parserID);
+			wc.setAttribute(LaunchConfigurationConstants.USE_COLOUR,useColours);
+			wc.setAttribute(LaunchConfigurationConstants.PARSER_CLASS,parserID);
 			wc.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewID);
+			wc.setAttribute(LaunchConfigurationConstants.SECONDARY_VIEW_ID, setSecondaryViewID());
 
 			try {
 				config = wc.doSave();
@@ -317,12 +310,9 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		if (invalid(parserID))
 			parserID = setParserID();
 		if (invalid(parserID)) {
-			// Setting the variable didn't work, do not launch.
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
-					Messages
-							.getString("SystemTapLaunchShortcut.InvalidParser1"), //$NON-NLS-1$
-					Messages
-							.getString("SystemTapLaunchShortcut.InvalidParser2"), Messages.getString("SystemTapLaunchShortcut.InvalidParser3")); //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("SystemTapLaunchShortcut.InvalidParser1"), //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchShortcut.InvalidParser2"), Messages.getString("SystemTapLaunchShortcut.InvalidParser3")); //$NON-NLS-1$ //$NON-NLS-2$
 			mess.schedule();
 			return false;
 		}
@@ -391,7 +381,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 								getLaunchManager()
 										.generateUniqueLaunchConfigurationNameFrom(
 												Messages
-														.getString("SystemTapLaunchShortcut.0"))); //$NON-NLS-1$
+														.getString("SystemTapLaunchShortcut.Invalid"))); //$NON-NLS-1$
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
@@ -445,18 +435,10 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 								.generateUniqueLaunchConfigurationNameFrom(
 										name + " - " + bin.getElementName())); //$NON-NLS-1$
 
-				wc.setAttribute(
-						ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,
-						projectName);
-				wc.setAttribute(
-						ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin
-								.getCProject().getElementName());
-				wc.setMappedResources(new IResource[] { bin.getResource(),
-						bin.getResource().getProject() });
-				wc
-						.setAttribute(
-								ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
-								(String) null);
+				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,projectName);
+				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin.getCProject().getElementName());
+				wc.setMappedResources(new IResource[] { bin.getResource(),bin.getResource().getProject() });
+				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,(String) null);
 
 				setDefaultProfileAttributes(wc);
 
@@ -591,8 +573,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			if (numberOfFiles == 1) {
 				for (ICContainer c : list) {
 					for (ITranslationUnit e : c.getTranslationUnits()) {
-						if (e.getElementName().endsWith(".c") || //$NON-NLS-1$
-								e.getElementName().endsWith(".cpp")) { //$NON-NLS-1$
+						if (validElement(e)) {
 							e.accept(v);
 							funcs += v.getFunctions();
 						}
@@ -643,13 +624,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		RuledTreeSelectionDialog dialog = new RuledTreeSelectionDialog(
 				getActiveWorkbenchShell(), new WorkbenchLabelProvider(), prov);
 
-		dialog.setTitle(Messages.getString("SystemTapLaunchShortcut.8")); //$NON-NLS-1$
-		dialog.setMessage(Messages.getString("SystemTapLaunchShortcut.9")); //$NON-NLS-1$
+		dialog.setTitle(Messages.getString("SystemTapLaunchShortcut.SelectFiles")); //$NON-NLS-1$
+		dialog.setMessage(Messages.getString("SystemTapLaunchShortcut.SelectFilesMsg")); //$NON-NLS-1$
 		dialog.setInput(list);
 		dialog.setHelpAvailable(false);
 		dialog.setStatusLineAboveButtons(false);
 		dialog.setEmptyListMessage(Messages
-				.getString("SystemTapLaunchShortcut.10")); //$NON-NLS-1$
+				.getString("SystemTapLaunchShortcut.NoFiles")); //$NON-NLS-1$
 		dialog.setContainerMode(true);
 
 		Object[] topLevel = prov.findElements(list);
@@ -671,8 +652,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 					if (obj instanceof ICContainer) {
 						ICElement[] array = ((ICContainer) obj).getChildren();
 						for (ICElement c : array) {
-							if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
-							c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
+							if (!(validElement(c))) //$NON-NLS-1$
 								continue;
 							if (c.getElementName().contains("main") && !output.contains(c)) //$NON-NLS-1$
 								output.add(c);
@@ -704,16 +684,13 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 				if (obj instanceof ICContainer) {
 					ICElement[] array = ((ICContainer) obj).getChildren();
 					for (ICElement c : array) {
-						if (!(c.getElementName().endsWith(".c") || //$NON-NLS-1$
-						c.getElementName().endsWith(".cpp"))) //$NON-NLS-1$
+						if (!(validElement(c))) //$NON-NLS-1$
 							continue;
 						if (!output.contains(c))
 							output.add(c);
 					}
 				} else if (obj instanceof ICElement) {
-					if (((ICElement) obj).getElementName().endsWith(".c") //$NON-NLS-1$
-							|| ((ICElement) obj).getElementName().endsWith(
-									".cpp")) { //$NON-NLS-1$
+					if (validElement((ICElement) obj)) { //$NON-NLS-1$
 						if (!output.contains(obj)) {
 							output.add(obj);
 						}
@@ -743,14 +720,12 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 								.getChildren());
 					}
 					if (ele instanceof ICElement) {
-						if (ele.getElementName().endsWith(".c") || //$NON-NLS-1$
-								ele.getElementName().endsWith(".cpp")) //$NON-NLS-1$
+						if (validElement(ele))
 							output++;
 					}
 				}
 			} else if (parent instanceof ICElement) {
-				if (((ICElement) parent).getElementName().endsWith(".c") || //$NON-NLS-1$
-						((ICElement) parent).getElementName().endsWith(".cpp")) //$NON-NLS-1$
+				if (validElement((ICElement) parent))
 					output++;
 			}
 		}
@@ -907,6 +882,21 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			return functionList;
 		}
 	}
+	
+
+	/**
+	 * Set the parserID variable. ParserID should point to the ID of an
+	 * extension extending the org.eclipse.linuxtools.callgraph.core.parser
+	 * extension point. This function must return the parserID to be set.
+	 * 
+	 * If not declared, the parserID will be set to the default SystemTap
+	 * Text parser with colour support
+	 * 
+	 * @return a valid parserID
+	 */
+	public String setParserID() {
+		return PluginConstants.DEFAULT_PARSER_ID; 
+	}
 
 	public String getScript() {
 		return generatedScript;
@@ -931,21 +921,66 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	public String setViewID() {
 		return PluginConstants.DEFAULT_VIEW_ID;
 	}
+	
+	public static boolean validElement(ICElement e) {
+		return e.getElementName().endsWith(".c") || //$NON-NLS-1$
+		e.getElementName().endsWith(".cpp") || //$NON-NLS-1$
+		e.getElementName().endsWith(".h"); //$NON-NLS-1$ 
+	}
+
 
 	/**
-	 * Set the parserID variable. ParserID should point to the ID of an
-	 * extension extending the org.eclipse.linuxtools.callgraph.core.parser
-	 * extension point. This function must return the parserID to be set.
-	 * 
-	 * @return a valid parserID
+	 * Default implementation of launch. It will run stap with the selected binary
+	 * as an argument and set the output path to <code>PluginConstants.getDefaultIOPath()</code>.
+	 * <br>
+	 * The name of the created launch will be 'DefaultSystemTapLaunch' 
 	 */
-	public abstract String setParserID();
+	public void launch(IBinary bin, String mode) {
+		initialize();
+		this.bin = bin;
+		binName = getName(bin);
+		name = "DefaultSystemTapLaunch";  //$NON-NLS-1$
+		
+		try {
+			 
+			config = createConfiguration(bin, name);
+			binaryPath = bin.getResource().getLocation().toString();
+			arguments = binaryPath;
+			outputPath = PluginConstants.getDefaultIOPath();
+			finishLaunch(name, mode);
 
-
+		} catch (IOException e) {
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
+					"LaunchShortcutScriptGen",  //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErr"),   //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErrMsg"));  //$NON-NLS-1$
+			mess.schedule();
+			e.printStackTrace();
+		} catch (CoreException e1) {
+			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			resourceToSearchFor = ""; //$NON-NLS-1$
+			searchForResource = false;
+		}
+		
+		
+	}
+	
 
 	/**
 	 * Each launch class should define its own script path. Must return the
 	 * correct script path or launch will fail.
 	 */
 	public abstract String setScriptPath();
+	
+	/**
+	 * Overwrite to return a non-empty string if you want to be able to create
+	 * multiple views.
+	 * @return
+	 */
+	public String setSecondaryViewID() {
+		return ""; //$NON-NLS-1$
+	}
 }

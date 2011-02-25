@@ -24,6 +24,7 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.DMResponse;
  * @author patrickm
  *
  */
+@SuppressWarnings("deprecation")
 public final class ClientSession extends Thread {
 	
 	private static ClientSession instance = null;

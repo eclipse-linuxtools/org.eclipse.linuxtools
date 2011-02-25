@@ -65,9 +65,10 @@ public class Helper {
 			out.write(content);
 			out.close();
 		} catch (Exception e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
+			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
 		}
@@ -86,9 +87,10 @@ public class Helper {
 			out.append(content);
 			out.close();
 		} catch (Exception e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
+			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
 		}
@@ -119,33 +121,24 @@ public class Helper {
 		return null;
 	}
 	
-	private static BufferedWriter bw;
-	
-	public void setBufferedWriter(String absoluteFilePath) {
+	public static BufferedWriter setBufferedWriter(String absoluteFilePath) {
 		try {
 			File f = new File(absoluteFilePath);
 			f.delete();
 			f.createNewFile();
 			FileWriter fstream;
 			fstream = new FileWriter(absoluteFilePath, true);
-			bw = new BufferedWriter(fstream);
+			return new BufferedWriter(fstream);
 		} catch (Exception e) {
-			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages.getString("SystemTapView.31"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.32"), //$NON-NLS-1$ 
-					Messages.getString("SystemTapView.33")); //$NON-NLS-1$
+			SystemTapUIErrorMessages err = new SystemTapUIErrorMessages
+					(Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErr"), //$NON-NLS-1$ 
+					Messages.getString("SystemTapView.FileIOErrMsg")); //$NON-NLS-1$
 			err.schedule();
 			e.printStackTrace();
+			return null;
 		}
 	}
-	
-	public void appendToExistingFile(String content) throws IOException {
-		bw.append(content);
-	}
-	
-	public void closeBufferedWriter() throws IOException {
-		bw.close();
-	}
-	
 	
 }
  

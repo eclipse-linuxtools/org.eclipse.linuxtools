@@ -50,12 +50,13 @@ public final class LaunchConfigurationConstants {
 	public static final String BINARY_ARGUMENTS = PLUGIN_ID + ".BINARY_ARGUMENTS"; //$NON-NLS-1$
 	public static final String PARSER_CLASS = PLUGIN_ID + ".PARSER_CLASS"; //$NON-NLS-1$
 	public static final String VIEW_CLASS = PLUGIN_ID + ".VIEW_CLASS";   //$NON-NLS-1$
+	public static final String SECONDARY_VIEW_ID = PLUGIN_ID + ".SECONDARY_VIEW_ID"; //$NON-NLS-1$ 
 
 
 	public static final String GENERATED_SCRIPT = PLUGIN_ID + ".GENERATED_SCRIPT"; //$NON-NLS-1$
 	public static final String NEED_TO_GENERATE =  PLUGIN_ID + ".NEED_TO_GENERATE"; //$NON-NLS-1$
 	public static final String USE_COLOUR = PLUGIN_ID + ".USE_COLOUR"; //$NON-NLS-1$
-
+	public static final String COMMAND = ".COMMAND"; //$NON-NLS-1$
 	
 	//Defaults	
 	public static final boolean DEFAULT_COMMAND_VERBOSE = false;
@@ -90,5 +91,6 @@ public final class LaunchConfigurationConstants {
 	
 	public static final String DEFAULT_PARSER_CLASS = INVALID;
 	public static final String DEFAULT_VIEW_CLASS = INVALID;
+	public static final String DEFAULT_SECONDARY_VIEW_ID = INVALID; 
 
 }

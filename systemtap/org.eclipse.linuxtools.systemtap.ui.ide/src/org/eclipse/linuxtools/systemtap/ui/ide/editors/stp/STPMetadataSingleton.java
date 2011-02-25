@@ -12,19 +12,15 @@
 
 package org.eclipse.linuxtools.systemtap.ui.ide.editors.stp;
 
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.ResourceBundle;
+
 
 /**
  * 
@@ -181,19 +177,20 @@ public class STPMetadataSingleton {
 		return data.substring(data.indexOf('.') + 1, data.length());
 	}
 
+	
 	/**
 	 * 
 	 * Decide whether cached metadata exists on disk.
 	 * 
 	 * @return - whether metadata exists.
 	 */
-	private boolean haveMetadata(String location) {
+	/*private boolean haveMetadata(String location) {
 		File fileExists = new File(location);
 		if ((fileExists.canRead()) && fileExists.exists())
 			return true; 
 
 		return false;
-	}
+	}*/
 
 	/**
 	 * 
@@ -203,7 +200,7 @@ public class STPMetadataSingleton {
 	 * @throws FileNotFoundException 
 	 * 
 	 */
-	private void buildCompletionMetadata(String location) throws FileNotFoundException {
+	/*private void buildCompletionMetadata(String location) throws FileNotFoundException {
 		String[] tapsets = { "syscall", "signal", "netdev", "ioblock",
 				"ioscheduler", "nd_syscall", "vm", "nfsd", "process", "sunrpc",
 				"scheduler", "scsi", "socket", "tcp", "udp", "generic.fop" };
@@ -244,7 +241,7 @@ public class STPMetadataSingleton {
 			out.println(line.toString().trim());
 		}
 		out.close();
-	}
+	}*/
 
 	/**
 	 * 
@@ -258,7 +255,7 @@ public class STPMetadataSingleton {
 	// and be tolerant of faults. As it is we ship default meta-data
 	// so this should never be executed in the user context. But eventually
 	// an option will be made available to the user to regenerate the data.
-	private StringBuffer[] executeSystemTap(String tapset) {
+	/*private StringBuffer[] executeSystemTap(String tapset) {
 
 		ArrayList<StringBuffer> data = new ArrayList<StringBuffer>();
 
@@ -291,7 +288,7 @@ public class STPMetadataSingleton {
 	//	System.out.println(bundle.containsKey("syscall"));
 	//	System.out.println(bundle.containsKey("syscall."));
 		System.out.println(bundle.getKeys());
-	}
+	}*/
 
 	public void build(URL fileURL) {
 		try {

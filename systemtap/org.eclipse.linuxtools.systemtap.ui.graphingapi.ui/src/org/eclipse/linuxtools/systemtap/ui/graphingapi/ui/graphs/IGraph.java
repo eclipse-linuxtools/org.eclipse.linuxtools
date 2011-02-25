@@ -12,16 +12,15 @@
 package org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs;
 
 import org.eclipse.linuxtools.systemtap.ui.structures.listeners.IUpdateListener;
-import org.eclipse.swt.graphics.Color;
 
 
 
 public interface IGraph extends IUpdateListener {
-	public boolean isMultiGraph();
-	public void repaint();
-	public void dispose();
-	public void setBackground(Color c);
-	public void setForeground(Color c);
-	public void setLayoutData(Object layout);
-	public void setScale(double scale);
+	//public boolean isMultiGraph();
+	//public void repaint();
+	//public void dispose();
+	//public void setBackground(Color c);
+	//public void setForeground(Color c);
+	//public void setLayoutData(Object layout);
+	//public void setScale(double scale);
 }

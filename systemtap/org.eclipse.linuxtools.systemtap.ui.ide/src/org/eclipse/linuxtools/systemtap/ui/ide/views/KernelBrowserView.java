@@ -38,6 +38,8 @@ import org.eclipse.ui.PlatformUI;
  * @author Henry Hughes
  * @author Ryan Morse
  */
+
+@SuppressWarnings("deprecation")
 public class KernelBrowserView extends BrowserView {
 	public KernelBrowserView() {
 		super();

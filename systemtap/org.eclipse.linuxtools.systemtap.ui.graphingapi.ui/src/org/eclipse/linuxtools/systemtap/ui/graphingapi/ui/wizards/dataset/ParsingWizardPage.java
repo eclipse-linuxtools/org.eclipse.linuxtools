@@ -38,10 +38,10 @@ public abstract class ParsingWizardPage extends WizardPage {
 	protected void createColumnSelector(Composite parent) {
 		Label lblSeries = new Label(parent, SWT.NONE);
 		lblSeries.setText(Localization.getString("ParsingWizardPage.NumberOfColumns"));
-		lblSeries.setBounds(0, 5, 120, 25);
+		lblSeries.setBounds(0, 5, 130, 25);
 		
 		txtSeries = new Text(parent, SWT.BORDER);
-		txtSeries.setBounds(125, 0, 100, 25);
+		txtSeries.setBounds(135, 0, 100, 25);
 		txtSeries.setText("2"); //$NON-NLS-1$
 		txtSeries.setTextLimit(2);
 		txtSeries.addModifyListener(new ModifyListener() {

@@ -49,18 +49,18 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	}
 
 	/**
-	 * Make final changes to the appearance of the nodes
+	 * Called at the end of the layout algorithm -- change the size and colour
+	 * of each node according to times called/total time
 	 */
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
-		Long time;
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, 
+			InternalRelationship[] relationshipsToConsider) {
 		final int minimumSize = 40;
-		double percent;
 		double xcursor = 0.0;
 		double ycursor = 0.0;
 
 		for (InternalNode sn : entitiesToLayout) {
-			time = list.remove(0);
-			percent = (double) time / (double) totalTime;
+			Long time = list.remove(0);
+			double percent = (double) time / (double) totalTime;
 			double snWidth = (sn.getInternalWidth() * percent) + minimumSize;
 			double snHeight = (sn.getInternalHeight() * percent) + minimumSize;
 

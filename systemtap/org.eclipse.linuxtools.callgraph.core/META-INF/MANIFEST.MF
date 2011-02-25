@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Callgraph Core (Incubation)
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.core;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.callgraph.core.CallgraphCorePlugin
@@ -9,14 +9,11 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.eclipse.linuxtools.callgraph.core
-Import-Package: org.eclipse.cdt.core,
- org.eclipse.cdt.core.dom.ast,
- org.eclipse.cdt.core.index,
- org.eclipse.cdt.core.model,
- org.eclipse.core.filesystem,
+Import-Package: org.eclipse.cdt.core.model,
+ org.eclipse.debug.ui.sourcelookup,
  org.eclipse.jface.text,
+ org.eclipse.linuxtools.profiling.ui,
  org.eclipse.ui,
- org.eclipse.ui.console,
- org.eclipse.ui.ide,
- org.eclipse.ui.texteditor
-Bundle-Vendor: Eclipse
+ org.eclipse.ui.console
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Localization: plugin

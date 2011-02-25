@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SystemTap ConsoleLog Plug-in (Incubation)
+Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.consolelog;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.consolelog.internal.ConsoleLogPlugin
-Bundle-Vendor: Eclipse
+Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Export-Package: org.eclipse.linuxtools.systemtap.ui.consolelog,
  org.eclipse.linuxtools.systemtap.ui.consolelog.actions,
@@ -22,3 +22,4 @@ Require-Bundle: org.eclipse.ui,
  com.jcraft.jsch;bundle-version="0.1.37"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: org.eclipse.linuxtools.systemtap.ui.editor

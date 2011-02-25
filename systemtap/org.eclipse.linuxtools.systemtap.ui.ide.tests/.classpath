@@ -3,7 +3,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="/home/anithra/eclipse/plugins/emma.jar"/>
-	<classpathentry kind="lib" path="/home/anithra/eclipse/plugins/emma_ant.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

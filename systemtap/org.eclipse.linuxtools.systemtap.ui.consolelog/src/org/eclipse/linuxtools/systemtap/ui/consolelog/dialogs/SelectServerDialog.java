@@ -18,7 +18,6 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class SelectServerDialog extends Dialog {
 	private Text hostText;
-	private Text portText;
 	private Text userText;
 	private Text passwordText;
 	private Button rememberButton;
@@ -29,6 +28,7 @@ public class SelectServerDialog extends Dialog {
 		super(parent);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void open() {
 		if (ConsoleLogPlugin.getDefault().getPluginPreferences().getBoolean(ConsoleLogPreferenceConstants.REMEMBER_SERVER)) {
 			return;
@@ -58,21 +58,7 @@ public class SelectServerDialog extends Dialog {
 		hostText = new Text(shell, SWT.SINGLE | SWT.BORDER);
 		hostText.setLayoutData(data);
 		hostText.setText(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.HOST_NAME));
-		
-		data = new GridData();
-		data.grabExcessHorizontalSpace = false;
-		data.horizontalAlignment = SWT.LEFT;
-		Label portLabel = new Label(shell, SWT.NONE);
-		portLabel.setText("Port: ");
-		portLabel.setLayoutData(data);
-		
-		data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = SWT.FILL;
-		portText = new Text(shell, SWT.SINGLE | SWT.BORDER);
-		portText.setLayoutData(data);
-		portText.setText(ConsoleLogPlugin.getDefault().getPluginPreferences().getString(ConsoleLogPreferenceConstants.PORT_NUMBER));
-		
+			
 		data = new GridData();
 		data.grabExcessHorizontalSpace = false;
 		data.horizontalAlignment = SWT.LEFT;
@@ -142,7 +128,6 @@ public class SelectServerDialog extends Dialog {
 				// FIXME: no error handling is done, should probably be
 				// pushed down to the connection level
 				// Set the preferences to this new info.
-				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.PORT_NUMBER, portText.getText());
 				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.HOST_NAME, hostText.getText());
 				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.REMEMBER_SERVER, rememberButton.getSelection());
 				ConsoleLogPlugin.getDefault().getPreferenceStore().setValue(ConsoleLogPreferenceConstants.SCP_PASSWORD, passwordText.getText());

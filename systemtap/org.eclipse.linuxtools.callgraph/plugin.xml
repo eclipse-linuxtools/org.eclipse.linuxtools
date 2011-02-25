@@ -17,14 +17,14 @@
    
       <extension
             id="org.eclipse.linuxtools.callgraph.callgraphview"
-            name="Callgraph View"
+            name="%extension.name"
             point="org.eclipse.ui.views">
       <view
             category="org.eclipse.cdt.ui.views"
             class="org.eclipse.linuxtools.callgraph.CallgraphView"
             icon="icons/genericregister_obj.gif"
             id="org.eclipse.linuxtools.callgraph.callgraphview"
-            name="Call Graph"
+            name="%view.name"
             restorable="true">
       </view>
    </extension>
@@ -84,7 +84,7 @@
     </extension>-->
     <extension
           id="org.eclipse.linuxtools.callgraph.graphparser"
-          name="GraphParser"
+          name="%extension.name.0"
           point="org.eclipse.linuxtools.callgraph.core.parser">
        <parser
              class="org.eclipse.linuxtools.callgraph.StapGraphParser"

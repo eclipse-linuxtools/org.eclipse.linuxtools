@@ -29,7 +29,6 @@ public class SystemTapTextParser extends SystemTapParser{
 
 	@Override
 	protected void initialize() {
-		System.out.println("INITIALIZING");
 	}
 
 	@Override
@@ -45,9 +44,11 @@ public class SystemTapTextParser extends SystemTapParser{
 			while ((line = buff.readLine()) != null) {
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
-				text.append(line);
+				text.append(line + "\n"); //$NON-NLS-1$
 			}
 			setData(text.toString());
+			if (text.length() > 0)
+				System.out.println(text.toString());
 			view.update();
 		} catch (IOException e) {
 			e.printStackTrace();

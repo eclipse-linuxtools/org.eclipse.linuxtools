@@ -19,42 +19,19 @@ import java.util.TreeMap;
  *
  */
 public class StapData {
-	public boolean expandable;
 	public static final int NOT_PART_OF_COLLAPSED_NODE = -10;
-	public boolean noCaller;
-	public boolean hasCollapsedChildren;
-	public boolean isCollapsed;
-	public boolean onlyChildWithThisName;
-    public int id;		//id of the StapNode
+	public boolean hasCollapsedChildren, isCollapsed, marked;
+	public boolean onlyChildWithThisName; //Should show up as collapsed and uncollapsed
+    public int id;
     public int timesCalled, parent, style;
     public int levelOfRecursion;
-    public int collapsedParent;
-    public int uncollapsedPiece;	//An uncollapsed piece of this node
+    public int collapsedParent, uncollapsedPiece, partOfCollapsedNode;
     private long time;	//execution time of this node
     public String markedMessage;	//alt text for this node
     public String name;		//text to be displayed
-    public List<Integer> children;
-    public List<Integer> collapsedChildren;
-    
-    private int partOfCollapsedNode;
+    public List<Integer> children, collapsedChildren;
+    private StapGraph graph;		//Store a reference to the parent graph
 
-    private StapGraph graph;
-    private boolean marked;
-
-    public boolean isPartOfCollapsedNode() {
-		return (partOfCollapsedNode != NOT_PART_OF_COLLAPSED_NODE);
-	}
-
-
-    /**
-     * Compare to StapData.NOT_PART_OF_COLLAPSED_NODE to verify, or check
-     * isPartOfCollapseNode first.
-     * 
-     * @return The collapsed node this node is a part of (if any)
-     */
-    public int getPartOfCollapsedNode() {
-    	return partOfCollapsedNode;
-    }
 	
 	/**
 	 * Initialize StapData object. This object is not intended to be called by users.
@@ -73,7 +50,6 @@ public class StapData {
         this.time = time;
         this.style = style;
         this.timesCalled = called;
-        this.expandable = false;
         children = new ArrayList<Integer>();
         collapsedChildren = new ArrayList<Integer>();
         this.id = currentID;
@@ -107,9 +83,6 @@ public class StapData {
 		//Keep track of the lowest level of recursion
 		if (levelOfRecursion > graphModel.getLowestLevelOfNodesAdded())
 			graphModel.setLowestLevelOfNodesAdded(levelOfRecursion);
-        
-
-        this.noCaller = (parent == -1) ? true : false;
     }
 
     
@@ -257,5 +230,25 @@ public class StapData {
 		this.marked = true;
 		return this;
 	}
+
+	/**
+	 * Return true if <code>partOfCollapseNode!= StapData.NOT_PART_OF_COLLAPSED_NODE</code
+	 * @return
+	 */
+    public boolean isPartOfCollapsedNode() {
+		return (partOfCollapsedNode != NOT_PART_OF_COLLAPSED_NODE);
+	}
+
+
+    /**
+     * Compare to StapData.NOT_PART_OF_COLLAPSED_NODE to verify, or check
+     * isPartOfCollapseNode first. May return a negative number if invalid.
+     * 
+     * @return The collapsed node this node is a part of (if any)
+     */
+    public int getPartOfCollapsedNode() {
+    	return partOfCollapsedNode;
+    }
+
 
 }

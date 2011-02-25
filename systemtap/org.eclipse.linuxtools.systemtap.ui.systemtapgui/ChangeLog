@@ -1,3 +1,24 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* aboutImage.gif: Removed.
+	* splash2.bmp: Removed.
+	* build.properties: 
+	* plugin.xml: 
+
+2010-06-08  Roland Grunberg  <rgrunber@redhat.com>
+
+	Bug #315303
+	
+	* plugin.properties: Change format for plugin.properties
+	to avoid parsing issues.
+
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #282039
+
+	* plugin.properties: Externalize bundle name and provider.
+	* plugin.xml: Likewise.
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix Bundle-Name.

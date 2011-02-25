@@ -1,3 +1,9 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	Bz 315846
+	* plugin.properties: New file.
+	* META-INF/MANIFEST.MF: 
+
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Make version 0.3.0.qualifier.

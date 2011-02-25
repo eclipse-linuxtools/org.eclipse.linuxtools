@@ -1,6 +1,13 @@
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #282039
+
+	* plugin.properties: Externalize bundle name and provider.
+	* plugin.xml: Likewise.
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
-	* META-INF/MANIFEST.MF: Fix Bundle-Name.
+	* META-INF/MANIFEST.MF: Fix bundle name.
 
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 

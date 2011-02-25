@@ -163,7 +163,7 @@ public class StreamGobbler implements Runnable {
 	 */
 	public void addDataListener(IGobblerListener l) {
 		
-		if(!listeners.contains(l))
+		if(l != null && !listeners.contains(l))
 		{
 			
 			listeners.add(l);

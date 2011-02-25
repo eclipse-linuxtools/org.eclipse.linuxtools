@@ -48,7 +48,7 @@ import org.eclipse.zest.layouts.LayoutStyles;
 
 public class StapGraph extends Graph {
 
-	public static final String CONSTANT_TOP_NODE_NAME = Messages.getString("StapGraph.0"); //$NON-NLS-1$
+	public static final String CONSTANT_TOP_NODE_NAME = Messages.getString("StapGraph.StartNode"); //$NON-NLS-1$
 	public static final int CONSTANT_HORIZONTAL_SPACING = 50; 
 	public static final int CONSTANT_DRAWMODE_LEVEL = 0;
 	public static final int CONSTANT_DRAWMODE_RADIAL = 1;
@@ -84,8 +84,8 @@ public class StapGraph extends Graph {
 	//Node management
 	private int idOfLastNode;	
 	private int idOfLastCollapsedNode;
-	private HashMap<Integer, StapNode> nodeMap; 				// HashMap of current nodes
-	private HashMap<Integer, StapData> nodeDataMap; 			// HashMap of all data
+	public HashMap<Integer, StapNode> nodeMap; 				// HashMap of current nodes
+	public HashMap<Integer, StapData> nodeDataMap; 			// HashMap of all data
 	//The negative side of nodeDataMap is collapsed, the positive side is uncollapsed
 	
 	public List<GraphNode> aggregateNodes;
@@ -124,17 +124,18 @@ public class StapGraph extends Graph {
 	//Zooming factor
 	public double scale;
 	
-	private int counter; 		//All purpose counting variable
 
 	
 	private ArrayList<Integer> callOrderList;
 	private int lastFunctionCalled;
-	private Canvas thumbCanvas;
-	
-	
-	private ICProject project;
-	
 	private int treeLevelFromRoot;
+	private Canvas thumbCanvas;
+	private ICProject project;
+	private boolean threaded;
+	private int counter; 		//All purpose counting variable
+	
+	
+	
 	public StapGraphMouseListener getMouseListener() {
 		return mListener;
 	}
@@ -283,46 +284,7 @@ public class StapGraph extends Graph {
 			idOfLastNode = id;
 		return id;
 	}
-
-	/**
-	 * Create a new StapData object with the given parameters. If the id is larger
-	 * than the current idOfLastNode, then idOfLastNode is set to id.
-	 * 
-	 * @param style
-	 * @param id
-	 * @param txt
-	 * @param time
-	 * @param called
-	 * @param caller
-	 * @return
-	 */
-	public int loadData(int style, int id, String txt, long time, int called,
-			int caller, boolean isMarked) {
-		//-------------Invalid function catching
-		// Catches some random C/C++ directive functions
-		if (id < 10 && killInvalidFunctions) {
-			if (txt.contains(")")) { //$NON-NLS-1$
-				return -1;
-			} else if (txt.contains(".")) { //$NON-NLS-1$
-				return -1;
-			} else if (txt.contains("\"")) { //$NON-NLS-1$
-				return -1;
-			}
-		} 
 		
-		//-------------Add node to appropriate map/list
-		StapData n = new StapData(this, style, txt, time, called, 
-				id, caller, isMarked);
-		if (isMarked)
-			markedNodes.add(id);
-		nodeDataMap.put(id, n);
-
-		// Make no assumptions about the order that data is input
-		if (id > idOfLastNode)
-			idOfLastNode = id;
-		return id;
-	}
-	
 	public void insertMessage(int id, String message) {
 		StapData temp = nodeDataMap.get(id);
 		if (temp == null) return;
@@ -343,9 +305,10 @@ public class StapGraph extends Graph {
 	 * @param centerNode
 	 */
 	public void drawRadial(int centerNode) {
-		int radius = Math.min(this.getBounds().width,
+		int radius = Math.max(CONSTANT_VERTICAL_INCREMENT,
+				Math.min(this.getBounds().width,
 				this.getBounds().height)
-				/ 2 - CONSTANT_VERTICAL_INCREMENT;
+				/ 2 - 2*CONSTANT_VERTICAL_INCREMENT);
 
 		rootVisibleNodeNumber = centerNode;
 		StapData nodeData = getNodeData(centerNode);
@@ -364,7 +327,7 @@ public class StapGraph extends Graph {
 		// Draw node in center
 		StapNode n = nodeMap.get(centerNode);
 		int x = this.getBounds().width / 2 - n.getSize().width/2;
-		int y = this.getBounds().height / 2 - n.getSize().height;
+		int y = this.getBounds().height / 2;
 		n.setLocation(x, y);
 		
 		if (getNodeData(centerNode).isMarked())
@@ -459,11 +422,11 @@ public class StapGraph extends Graph {
 			}
 			
 			StapNode subN = nodeMap.get(subID);
+			
 			if (radius != 0) {
-				yOffset = (int) (radius * Math.cos(angle * i));
-				xOffset = (int) (radius * Math.sin(angle * i) + StapNode.getNodeSize()*Math.sin(angle*i)*3);
+				yOffset = (int) (radius * Math.cos((float) angle * i));
+				xOffset = (int) (radius * Math.sin((float) angle * i)) - subN.getSize().width/2 + getNode(id).getSize().width/2;
 			}
-
 
 			if (hasChildren(subID))
 				subN.setBackgroundColor(CONSTANT_HAS_CHILDREN);
@@ -562,9 +525,9 @@ public class StapGraph extends Graph {
 				n.setHighlightColor(c);
 				n.setForegroundColor(new Color(this.getDisplay(),255,255,255));
 				n.setTooltip(new Label(
-						Messages.getString("StapGraph.2")+ key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-						+ Messages.getString("StapGraph.3") + num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						+ Messages.getString("StapGraph.1") + aggregateCount.get(key)		 //$NON-NLS-1$
+						Messages.getString("StapGraph.Func")+ key + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+						+ Messages.getString("StapGraph.Time") + num.format((float)percentage_time) + "%" + "\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						+ Messages.getString("StapGraph.NumOfCalls") + aggregateCount.get(key)		 //$NON-NLS-1$
 				));
 				n.setBorderWidth(2);
 		}
@@ -719,6 +682,22 @@ public class StapGraph extends Graph {
 		treeLevelFromRoot--;		
 	}
 	
+
+	/**
+	 * Draws the next node, unless the next node does not exist.
+	 */
+	public void drawNextNode() {
+		if (isCollapseMode()) {
+			setCollapseMode(false);
+		}
+		int toDraw = getNextCalledNode(getRootVisibleNodeNumber());
+		if (toDraw != -1)
+			draw(toDraw);
+		 else
+			proj.pause();
+	}
+
+	
 	/**
 	 * Moves all nodes to the point x,y
 	 * @param x
@@ -729,13 +708,6 @@ public class StapGraph extends Graph {
 			nodeMap.get(i).setLocation(x,y);
 		}
 	}
-
-	/*
-	 * Partially functional draw functions
-	 * 
-	 * -Box (drawFromBottomToTop)
-	 * 	Breaks when switching modes??
-	 */
 
 
 	/**
@@ -789,6 +761,7 @@ public class StapGraph extends Graph {
 		if (id == getFirstUsefulNode())
 			nodeMap.get(id).setLocation(150 + (MaxLevelPixelWidth/2),y);
 	}
+	
 	
 	public void drawFromBottomToTop(int level, int height,
 			int MaxLevelPixelWidth) {
@@ -1028,7 +1001,7 @@ public class StapGraph extends Graph {
 	 * Convenience method to redraw everything.
 	 */
 	public void draw() {
-		draw(getFirstUsefulNode());
+		draw(getRootVisibleNodeNumber());
 	}
 	
 	/**
@@ -1316,6 +1289,10 @@ public class StapGraph extends Graph {
 		
 		// Name, id
 		HashMap<String, Integer> newNodeMap = new HashMap<String, Integer>();
+		
+		for (int collapsedID : nodeDataMap.get(id).collapsedChildren) {
+			newNodeMap.put(getNodeData(collapsedID).name, collapsedID);
+		}
 		// id of 'collapsed' node, id of its uncollapsed twin
 		HashMap<Integer, Integer> collapsedNodesWithOnlyOneNodeInThem = new HashMap<Integer, Integer>();
 		int size = nodeDataMap.get(id).children.size();
@@ -1501,7 +1478,10 @@ public class StapGraph extends Graph {
 	 * @return First node that is not the dummy first node
 	 */
 	public int getFirstUsefulNode() {
+		if (threaded)
+			return 0;
 		int id = 0;
+		
 		if (nodeDataMap.get(id).name == CONSTANT_TOP_NODE_NAME) {
 			id++;
 		}
@@ -1768,7 +1748,8 @@ public class StapGraph extends Graph {
 		
 		if (isCollapseMode()) {
 			setCollapseMode(false);
-			draw(getRootVisibleNodeNumber());
+			//Redraw the current graph in uncollapsed mode if currently collapsed
+			draw();
 		}
 		
 		for (int count = callOrderList.indexOf((Integer)id) + 1;
@@ -1940,32 +1921,25 @@ public class StapGraph extends Graph {
 		maxNodes = val;
 	}
 
-
 	public ArrayList<Integer> getCallOrderList() {
 		return callOrderList;
 	}
-
 
 	public void setCallOrderList(ArrayList<Integer> callOrderList) {
 		this.callOrderList = callOrderList;
 	}
 
-
 	public int getLastFunctionCalled() {
 		return lastFunctionCalled;
 	}
-
 
 	public void setLastFunctionCalled(int lastFunctionCalled) {
 		this.lastFunctionCalled = lastFunctionCalled;
 	}
 
-
-
 	public ICProject getProject() {
 		return project;
 	}
-
 
 	public Projectionist getProjectionist() {
 		return proj;
@@ -1979,19 +1953,6 @@ public class StapGraph extends Graph {
 		return callgraphView;
 	}
 
-
-
-	public void drawNextNode() {
-		if (isCollapseMode()) {
-			setCollapseMode(false);
-		}
-		int toDraw = getNextCalledNode(getRootVisibleNodeNumber());
-		if (toDraw != -1)
-			draw(toDraw);
-		 else
-			proj.pause();
-	}
-
 	public void setEndTime(long val) {
 		endTime = val;
 	}
@@ -2003,5 +1964,18 @@ public class StapGraph extends Graph {
 	public void setStartTime(long val) {
 		startTime = val;		
 	}
+
+	public void setThreaded() {
+		threaded = true;		
+	}
 	
+	public boolean getCollapseMode() {
+		return collapse_mode;
+	}
+
+
+
+	public void addCalled(int idChild) {
+		getNodeData(idChild).timesCalled++;
+	}
 }

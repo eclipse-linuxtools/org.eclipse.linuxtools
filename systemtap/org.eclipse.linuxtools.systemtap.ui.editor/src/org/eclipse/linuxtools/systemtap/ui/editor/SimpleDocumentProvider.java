@@ -66,24 +66,12 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 */
 	private boolean setDocumentContent(IDocument document, IEditorInput input) throws CoreException {
 		Reader reader;
-		String inputClassName = input.getClass().getName();
 		try {
-			if (input instanceof IPathEditorInput){
+			if (input instanceof IPathEditorInput)
 				reader= new FileReader(((IPathEditorInput)input).getPath().toFile());
+			else {
+				return false;
 			}
-			else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-	                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
-	            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-	            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-	            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-	            // opening a file from the menu File > Open... in Eclipse 3.3.x
-	            {
-	                reader = new FileReader( new File( input.getToolTipText() ) );
-	            }
-	            else
-	            {
-	                return false;
-	            }
 		} catch (FileNotFoundException e) {
 			// return empty document and save later
 			return true;
@@ -141,23 +129,11 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	 * @see org.eclipse.ui.texteditor.AbstractDocumentProvider#doSaveDocument(org.eclipse.core.runtime.IProgressMonitor, java.lang.Object, org.eclipse.jface.text.IDocument, boolean)
 	 */
 	protected void doSaveDocument(IProgressMonitor monitor, Object element, IDocument document, boolean overwrite) throws CoreException {
-		String elementClassName = element.getClass().getName();
-		File file = null;
 		if (element instanceof IPathEditorInput) {
 			IPathEditorInput pei= (IPathEditorInput) element;
 			IPath path= pei.getPath();
-			file= path.toFile();
-		}
-		   else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-		            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
-		        // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-		        // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-		        // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-		        // opening a file from the menu File > Open... in Eclipse 3.3.x
-		        {
-		            file = new File( ( ( IEditorInput ) element ).getToolTipText() );
-		        }
-		if (file!=null){
+			File file= path.toFile();
+			
 			try {
 				file.createNewFile();
 
@@ -202,35 +178,20 @@ public class SimpleDocumentProvider extends AbstractDocumentProvider {
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isModifiable(java.lang.Object)
 	 */
-	public boolean isModifiable( Object element )
-    {
-        String elementClassName = element.getClass().getName();
-        if ( element instanceof IPathEditorInput )
-        {
-            IPathEditorInput pei = ( IPathEditorInput ) element;
-            File file = pei.getPath().toFile();
-            return file.canWrite() || !file.exists(); // Allow to edit new files
-        }
-        else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
-        // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-        // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-        // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-        // opening a file from the menu File > Open... in Eclipse 3.3.x
-        {
-            File file = new File( ( ( IEditorInput ) element ).getToolTipText() );
-            return file.canWrite() || !file.exists(); // Allow to edit new files
-        }
-        
-        return false;
-    }
-
+	public boolean isModifiable(Object element) {
+		if (element instanceof IPathEditorInput) {
+			IPathEditorInput pei= (IPathEditorInput) element;
+			File file= pei.getPath().toFile();
+			return file.canWrite() || !file.exists(); // Allow to edit new files
+		}
+		return false;
+	}
 	
 	/*
 	 * @see org.eclipse.ui.texteditor.IDocumentProviderExtension#isReadOnly(java.lang.Object)
 	 */
 	public boolean isReadOnly(Object element) {
-		return false;
+		return !isModifiable(element);
 	}
 	
 	/*

@@ -47,7 +47,6 @@ public class StapTreeDoubleClickListener implements IDoubleClickListener {
         	graph.getNode(data.id).unhighlight();
         }
         
-        graph.getCallgraphView().maximizeIfUnmaximized();
         graph.setFocus();
 	}
 

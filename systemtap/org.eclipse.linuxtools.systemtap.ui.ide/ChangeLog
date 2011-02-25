@@ -1,6 +1,68 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Bug #324405
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getImportedTapsets): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/c/CEditor.java (dispose): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPDocumentProvider.java (setupDocument): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPMetadataSingleton.java (build): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/views/KernelBrowserView.java: 
+
+2010-06-08  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getFilePath): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/views/BrowserView.java (ViewUpdater.handleUpdateEvent): 
+	
+	Bug #315988
+	Bug #304206
+
+2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Removing RunwithChart action
+	
+	Bug #315225 
+
+2010-06-05  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/internal/localization.properties: 
+	
+	Bug #315650
+
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #282039
+
+	* plugin.properties: Externalize bundle name and provider.
+	* plugin.xml: Likewise.
+
+2010-03-15  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getFilePath): Bz 304206
+
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptChartAction.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/hidden/FunctionBrowserAction.java (run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/hidden/ProbeAliasAction.java (run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getImportedTapsets): 
+	(isValidFile): 
+	(buildStandardScript): 
+	(isValid): 
+	(run): 
+	(getFilePath): 
+	(createClientSession): 
+	(isValidDirectory): 
+	(finalizeScript): 
+	(getImportedTapsets): 
+	(isValidFile): 
+	(buildStandardScript): 
+	(isValidDirectory): 
+	(finalizeScript): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/c/CEditor.java (checkProbe): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPDocumentProvider.java: 
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
-	* META-INF/MANIFEST.MF: Fix Bundle-Name.
+	* META-INF/MANIFEST.MF: Fix bundle name.
 
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 

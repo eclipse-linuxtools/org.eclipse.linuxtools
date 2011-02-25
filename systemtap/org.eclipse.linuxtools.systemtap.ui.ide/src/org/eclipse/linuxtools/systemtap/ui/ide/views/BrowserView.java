@@ -157,11 +157,16 @@ public abstract class BrowserView extends ViewPart {
 	
 	protected class ViewUpdater implements IUpdateListener {
 		public void handleUpdateEvent() {
+			try {
 			viewer.getControl().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					refresh();
 				}
 			});
+			}catch(Exception e)
+			{
+				//TO FIX: BUG 315988
+			}
 		}
 	}
 }

@@ -1,3 +1,17 @@
+2010-05-18  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Fix provider name.
+
+2010-04-26  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+	* license.html: New file.  HTML version of SUA (bug #306627).
+	* build.properties: Include license.html.
+
+2010-04-12  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+
 2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
 
 	* feature.xml:renaming to systemtap.backup 

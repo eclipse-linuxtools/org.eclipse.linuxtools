@@ -11,6 +11,8 @@
 
 package org.eclipse.linuxtools.systemtap.ui.consolelog.actions;
 
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.linuxtools.systemtap.ui.consolelog.structures.ScriptConsole;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -43,17 +45,23 @@ public class StopScriptAction extends ConsoleAction {
 		});
 	}
 	
+	public void selectionChanged(IAction a, ISelection s) {
+				a.setEnabled(anyRunning());
+			}
+		
+	
 	/**
 	 * This method will stop the i'th <code>ScriptConsole</code> if it is running.
 	 * @param i The index value of the console that will be stopped.
 	 */
 	public void run(int i) {
 		IConsole ic[] = ConsolePlugin.getDefault().getConsoleManager().getConsoles();
-		ScriptConsole console = (ScriptConsole)ic[i];
-
-		if(console.isRunning())
-			console.stop();
-	
+		if (ic[i] instanceof ScriptConsole){
+			ScriptConsole console = (ScriptConsole)ic[i];
+			
+			if(console.isRunning())
+				console.stop();
+		}
 	}
 
 	/**
@@ -64,9 +72,11 @@ public class StopScriptAction extends ConsoleAction {
 		ScriptConsole console;
 		
 		for(int i=0; i<ic.length; i++) {
-			console = (ScriptConsole)ic[i];
-			if(console.isRunning())
-				console.stop();
+			if (ic[i] instanceof ScriptConsole){
+				console = (ScriptConsole)ic[i];
+				if(console.isRunning())
+					console.stop();
+			}
 		}
 	}
 	
@@ -79,9 +89,11 @@ public class StopScriptAction extends ConsoleAction {
 		ScriptConsole console;
 		
 		for(int i=0; i<ic.length; i++) {
-			console = (ScriptConsole)ic[i];
-			if(console.isRunning())
-				return true;
+			if (ic[i] instanceof ScriptConsole){
+				console = (ScriptConsole)ic[i];
+				if(console.isRunning())
+					return true;
+			}
 		}
 		return false;
 	}

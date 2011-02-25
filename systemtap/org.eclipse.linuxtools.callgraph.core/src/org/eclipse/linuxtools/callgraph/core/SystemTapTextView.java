@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 public class SystemTapTextView extends SystemTapView {
-	private SystemTapParser parser;
 	private StyledText viewer;
 
 	private Display display;
@@ -194,28 +193,21 @@ public class SystemTapTextView extends SystemTapView {
 	}
 
 	@Override
-	public boolean setParser(SystemTapParser p) {
-		parser = p;
-		return true;
-	}
-
-	@Override
 	public void createPartControl(Composite parent) {
 		createViewer(parent);
 	
 		addKillButton();
 		addFileMenu();
-		addErrorMenu();
 		addHelpMenu();
 		ViewFactory.addView(this);
 	}
 
 	@Override
 	public void updateMethod() {
-		if (parser.getData() instanceof String) {
-			String data = (String) parser.getData();
+		if (getParser().getData() instanceof String) {
+			String data = (String) getParser().getData();
 			if (data.length() > 0)
-				prettyPrintln((String) parser.getData());
+				prettyPrintln((String) getParser().getData());
 		}
 	}
 
@@ -234,11 +226,5 @@ public class SystemTapTextView extends SystemTapView {
 		return false;
 	}
 
-	@Override
-	public SystemTapParser getParser() {
-		return parser;
-	}
-	
-	
 
 }
