@@ -10,31 +10,35 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.MessageConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
+import org.eclipse.ui.console.IOConsole;
+import org.eclipse.ui.console.IOConsoleOutputStream;
 
-public class RPMExportOperation implements IRunnableWithProgress {
+/**
+ * Job for handling rpm exports.
+ *
+ */
+public class RPMExportOperation extends Job {
 	private IProgressMonitor monitor;
-	private ArrayList<Exception> rpm_errorTable;
 	private RPMProject rpmProject;
 	private BuildType exportType;
 
+	/**
+	 * Creates the job for exporting rpms.
+	 * @param rpmProject The project to use as base for the export operation.
+	 * @param exportType The export type.
+	 */
 	public RPMExportOperation(RPMProject rpmProject, BuildType exportType) {
+		super(Messages.getString("RPMExportWizard.0")); //$NON-NLS-1$
 		this.rpmProject = rpmProject;
 		this.exportType = exportType;
 	}
@@ -43,21 +47,18 @@ public class RPMExportOperation implements IRunnableWithProgress {
 	 * @see org.eclipse.jface.operation.IRunnableWithProgress#run(IProgressMonitor)
 	 * 
 	 */
-	public void run(IProgressMonitor progressMonitor)
-			throws InvocationTargetException {
+	@Override
+	public IStatus run(IProgressMonitor progressMonitor) {
 		int totalWork = 2;
 
 		monitor = progressMonitor;
-
-		// We keep a all our reported errors in an ArrayList.
-		rpm_errorTable = new ArrayList<Exception>();
 
 		// Start progress
 		monitor.beginTask(Messages.getString("RPMExportOperation.Starting"), //$NON-NLS-1$
 				totalWork);
 		monitor.worked(1);
-		MessageConsole myConsole = findConsole("rpmbuild"); //$NON-NLS-1$
-		MessageConsoleStream out = myConsole.newMessageStream();
+		IOConsole myConsole = findConsole(); 
+		IOConsoleOutputStream out = myConsole.newOutputStream();
 		myConsole.clearConsole();
 		myConsole.activate();
 		switch (exportType) {
@@ -66,8 +67,8 @@ public class RPMExportOperation implements IRunnableWithProgress {
 				monitor.setTaskName(Messages
 						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 				rpmProject.buildAll(out);
-			} catch (Exception e) {
-				rpm_errorTable.add(e);
+			} catch (CoreException e) {
+				return new Status(IStatus.ERROR, RPMUIPlugin.ID, e.getMessage(), e);
 			}
 			break;
 
@@ -76,8 +77,8 @@ public class RPMExportOperation implements IRunnableWithProgress {
 					.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
 			try {
 				rpmProject.buildBinaryRPM(out);
-			} catch (Exception e) {
-				rpm_errorTable.add(e);
+			} catch (CoreException e) {
+				return new Status(IStatus.ERROR, RPMUIPlugin.ID, e.getMessage(), e);
 			}
 			break;
 
@@ -86,50 +87,25 @@ public class RPMExportOperation implements IRunnableWithProgress {
 					.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
 			try {
 				rpmProject.buildSourceRPM(out);
-			} catch (Exception e) {
-				rpm_errorTable.add(e);
+			} catch (CoreException e) {
+				return new Status(IStatus.ERROR, RPMUIPlugin.ID, e.getMessage(), e);
 			}
 			break;
 		}
 		monitor.worked(1);
+		monitor.done();
+		return Status.OK_STATUS;
 	}
 
-	public MultiStatus getStatus() {
-		IStatus[] errors = new IStatus[rpm_errorTable.size()];
-		Iterator<Exception> count = rpm_errorTable.iterator();
-		int iCount = 0;
-		String error_message = Messages.getString("RPMExportOperation.0"); //$NON-NLS-1$
-		while (count.hasNext()) {
-
-			Object anonErrorObject = count.next();
-			if (anonErrorObject instanceof Throwable) {
-				Throwable errorObject = (Throwable) anonErrorObject;
-				error_message = errorObject.getMessage();
-
-			} else if (anonErrorObject instanceof Status) {
-				Status errorObject = (Status) anonErrorObject;
-				error_message = errorObject.getMessage();
-			}
-			IStatus error = new Status(IStatus.ERROR, "RPM Plugin", IStatus.OK, //$NON-NLS-1$
-					error_message, null);
-			errors[iCount] = error;
-			iCount++;
-		}
-
-		return new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, errors,
-				Messages.getString("RPMExportOperation.Open_SRPM_Errors"), //$NON-NLS-1$
-				null);
-	}
-
-	private MessageConsole findConsole(String name) {
+	private IOConsole findConsole() {
 		ConsolePlugin plugin = ConsolePlugin.getDefault();
 		IConsoleManager conMan = plugin.getConsoleManager();
 		IConsole[] existing = conMan.getConsoles();
 		for (int i = 0; i < existing.length; i++)
-			if (name.equals(existing[i].getName()))
-				return (MessageConsole) existing[i];
+			if (RpmConsole.ID.equals(existing[i].getName()))
+				return (RpmConsole) existing[i];
 		// no console found, so create a new one
-		MessageConsole myConsole = new MessageConsole(name, null);
+		RpmConsole myConsole = new RpmConsole(rpmProject);
 		conMan.addConsoles(new IConsole[] { myConsole });
 		return myConsole;
 	}

@@ -10,22 +10,22 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.progress.IProgressConstants;
 
+/**
+ * Wizard to handle rpm exports.
+ *
+ */
 public class RPMExportWizard extends Wizard implements IExportWizard {
 	private RPMExportPage mainPage;
 	private IStructuredSelection selection;
@@ -48,26 +48,22 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 		// Create a new instance of the RPMExportOperation runnable
 		final RPMExportOperation rpmExport = new RPMExportOperation(mainPage
 				.getSelectedRPMProject(), mainPage.getExportType());
-
 		// Run the export
-		Job job = new Job(Messages.getString("RPMExportWizard.0")) { //$NON-NLS-1$
+		rpmExport.addJobChangeListener(new JobChangeAdapter() {
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				setProperty(IProgressConstants.KEEP_PROPERTY, Boolean.TRUE);
-				try {
-					rpmExport.run(monitor);
-				} catch (InvocationTargetException e) {
-					return Status.CANCEL_STATUS;
+			public void done(IJobChangeEvent event) {
+				if (event.getResult().equals(Status.OK_STATUS)) {
+				event.getResult();
+				System.out.println(mainPage.getSelectedRPMProject()
+						.getMissingDependencies());
 				}
-				return rpmExport.getStatus();
 			}
-		};
-		job.setUser(true);
-		job.schedule();
-
-		// Need to return some meaninful status. Should only return true if the
-		// wizard completed
-		// successfully.
+		});
+		rpmExport.setUser(true);
+		rpmExport.schedule();
+		
+		// Need to return some meaningful status. Should only return true if the
+		// wizard completed successfully.
 		return true;
 	}
 

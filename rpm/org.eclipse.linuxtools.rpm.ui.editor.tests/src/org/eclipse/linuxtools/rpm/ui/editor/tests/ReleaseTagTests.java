@@ -11,7 +11,6 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import org.eclipse.core.resources.IMarker;
 
 public class ReleaseTagTests extends FileTestCase {
 
@@ -38,12 +37,12 @@ public class ReleaseTagTests extends FileTestCase {
 		String testText = "Release:	";
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Release declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Release declaration without value.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testNullReleaseTag2() {
@@ -51,35 +50,35 @@ public class ReleaseTagTests extends FileTestCase {
 
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Release declaration without value.", marker.getAttribute(
-				IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Release declaration without value.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testMultipleReleasesTag() {
 		String testText = "Release: blah bleh";
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Release cannot have multiple values.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Release cannot have multiple values.",
+				failure.getAnnotation().getText());
 	}
 
 	public void testMultipleReleasesTag2() {
 		String testText = "Release: 	blah bleh";
 		newFile(testText);
 
-		IMarker marker = getFailureMarkers()[0];
-		assertEquals(0, marker.getAttribute(IMarker.CHAR_START, 0));
-		assertEquals(testText.length(), marker
-				.getAttribute(IMarker.CHAR_END, 0));
-		assertEquals("Release cannot have multiple values.", marker
-				.getAttribute(IMarker.MESSAGE, ""));
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Release cannot have multiple values.",
+				failure.getAnnotation().getText());
 	}
 }

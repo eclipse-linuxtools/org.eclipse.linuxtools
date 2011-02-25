@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
+ * Copyright (c) 2000, 2003, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,9 @@ package org.eclipse.linuxtools.rpm.speceditor.rcp;
 import org.eclipse.linuxtools.rpm.speceditor.rcp.actions.RPMEditorActionBarAdvisor;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -35,10 +38,22 @@ public class RPMEditorWorkbenchAdvisor extends WorkbenchAdvisor {
     	return new WorkbenchWindowAdvisor(configurer) {
 			public void preWindowOpen() {
 				super.preWindowOpen();
-		        getWindowConfigurer().setInitialSize(new Point(600, 450));
+		        getWindowConfigurer().setInitialSize(new Point(800, 600));
 		        getWindowConfigurer().setShowCoolBar(true);
 		        getWindowConfigurer().setShowStatusLine(true);
-		        getWindowConfigurer().setTitle("RPM Specfile Editor"); //$NON-NLS-1$
+		        getWindowConfigurer().setTitle(RPMMessages.EditorTitle);
+			}
+			
+			public void postWindowOpen() {
+				super.postWindowOpen();
+				IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
+				for (int i = 0; i < windows.length; ++i) {
+					IWorkbenchPage page = windows[i].getActivePage();
+					if (page != null) {
+						page.hideActionSet("org.eclipse.ui.actionSet.openFiles");
+						page.hideActionSet("org.eclipse.search.searchActionSet");
+					}
+				}
 			}
 			
 			public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer abConfigurer) {

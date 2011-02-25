@@ -1,3 +1,47 @@
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectCreator.java (create): Store reference to the latest created project.
+	(getLatestProject): Add API for retrieving the latest created project.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectCreator.java (RPMProjectCreator): One more constructor to ease default.
+
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+	Add utility class for creating rpm projects.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectCreator.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectLayout.java: New file.
+
+2010-09-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (RPMProject): Add set for storing missing dependencies.
+	(buildPrep): Verify closing streams.
+	(addMissingDependency): Simple way to add missing dependency.
+	(getMissingDependencies): Retrieve missing dependencies.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (.run): Verify streams are closing.
+	(runCommand): Likewise.
+
+2010-09-10  Alexander Kurtakov  <akurtako@redhat.com>
+	Another job to store to java.io.File.
+	* src/org/eclipse/linuxtools/rpm/core/utils/FileDownloadJob.java: New file.
+
+2010-09-10  Alexander Kurtakov  <akurtako@redhat.com>
+    Add a utility job for downloading file.
+	* src/org/eclipse/linuxtools/rpm/core/utils/DownloadJob.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/utils/messages.properties: New file.
+
+2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildAll): Do not call prep, rpmbuild is cleaning itself and prep may fail if clean wasn't run before it.
+	(buildBinaryRPM): Likewise.
+	(buildSourceRPM): Likewise.
+	
+2010-08-31  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMConfiguration.java (initialize): SOURCES and SPECS folder should not be set as derived.
+	Fix deprecated setDerived usage.
+
 2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java: Removed not needed methods.

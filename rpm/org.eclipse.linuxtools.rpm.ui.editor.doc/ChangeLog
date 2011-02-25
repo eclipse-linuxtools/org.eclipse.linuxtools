@@ -1,3 +1,90 @@
+2010-10-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/Updating-This-Document.html: Properly regenerated.
+
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+    Add legal page to hel
+	* toc-doc.xml: New file.
+	* build.properties: One more toc to ship.
+	* plugin.xml: Likewise.
+	
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build-helper.xml: Fix pageAppendum to point to the right wiki page.
+	
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Remove not needed src and output.
+
+2010-10-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add images and Linux_Tools_Project directories to binary builds.
+	* src/org/eclipse/linuxtools/internal/rpm/ui/editor/doc/anttask/MediaWikiImageFetcher.java: Removed.
+	* src/org/eclipse/linuxtools/internal/rpm/ui/editor/doc/anttask/tasks.properties: Removed.
+	* userguide/Configuring-Specfile-Editor-Settings.html: Removed.
+	* userguide/General-Usage.html: Removed.
+	* userguide/images/Screenshot-edittemplate.png: Removed.
+	* userguide/images/Screenshot-taskscreenshot.png: Removed.
+	* userguide/images/Specfile_enable_rpmlint.png: Removed.
+	* userguide/images/Specfile_generic.png: Removed.
+	* userguide/images/Specfile_macros_content.png: Removed.
+	* userguide/images/Specfile_macros_description.png: Removed.
+	* userguide/images/Specfile_new_from_template.png: Removed.
+	* userguide/images/Specfile_new_wizard.png: Removed.
+	* userguide/images/Specfile_problems_rpmlint.png: Removed.
+	* userguide/images/Specfile_rpmlint_fix_after.png: Removed.
+	* userguide/images/Specfile_rpmlint_fix_before.png: Removed.
+	* userguide/images/Specfile_rpmlint_quickfix.png: Removed.
+	* userguide/images/Specfile_settings_changelog.png: Removed.
+	* userguide/images/Specfile_settings_macros.png: Removed.
+	* userguide/images/Specfile_settings_rpmlint.png: Removed.
+	* userguide/images/Specfile_settings_rpms_details.png: Removed.
+	* userguide/images/Specfile_settings_rpms_generic.png: Removed.
+	* userguide/images/Specfile_settings_tasks.png: Removed.
+	* userguide/images/Specfile_settings_templates.png: Removed.
+	* userguide/Installing.html: Removed.
+	* userguide/SpecfileEditorReference-toc.xml: Removed.
+	* userguide/SpecfileEditorReference.html: Removed.
+	* userguide/Updating-This-Document.html: Removed.
+	* images/home.gif: New file.
+	* images/next.gif: New file.
+	* images/prev.gif: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/Configuring-Specfile-Editor-Settings.html: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/General-Usage.html: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Screenshot-edittemplate.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Screenshot-taskscreenshot.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_enable_rpmlint.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_export_dialog.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_export_error.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_export_menu.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_generic.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_import_select_srpm.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_import_srpm.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_macros_content.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_macros_description.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_new_from_template.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_new_wizard.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_problems_rpmlint.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_rpmlint_fix_after.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_rpmlint_fix_before.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_rpmlint_quickfix.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_settings_changelog.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_settings_macros.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_settings_rpmlint.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_settings_rpms_details.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_settings_rpms_generic.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_settings_tasks.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/images/Specfile_settings_templates.png: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/Import-src-rpm-and-export-rpm-and-src-rpm.html: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/Installing.html: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/Updating-This-Document.html: New file.
+	* Linux_Tools_Project/SpecfileEditor/User_Guide/User-Guide.html: New file.
+	* .classpath: Removed java nature.
+	* .project: Likewise.
+	* build-helper.xml: Simplify to use mediawiki-to-eclipse-help task.
+	* plugin.xml: No need to add 2 different tocs.
+	* toc.xml: Regenerated.
+
 2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.

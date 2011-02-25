@@ -14,6 +14,10 @@ package org.eclipse.linuxtools.rpm.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * I18n messages.
+ *
+ */
 public class Messages {
 
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.ui.rpm_strings"; //$NON-NLS-1$
@@ -23,6 +27,11 @@ public class Messages {
 	private Messages() {
 	}
 
+	/**
+	 * Returns the string for the given key.
+	 * @param key The key we are looking for.
+	 * @return The found value.
+	 */
 	public static String getString(String key) {
 		try {
 			return RESOURCE_BUNDLE.getString(key);

@@ -225,18 +225,18 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		if (sourceViewer == null)
 			return null;
-		return new IHyperlinkDetector[] {
-				new URLHyperlinkWithMacroDetector(editor.getSpecfile()),
-				new SpecfileElementHyperlinkDetector(editor.getSpecfile()), new MailHyperlinkDetector(editor), new SourcesFileHyperlinkDetector(editor)};
+		return getRegisteredHyperlinkDetectors(sourceViewer);
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
         Map<String, Object> targets= super.getHyperlinkDetectorTargets(sourceViewer);
-        targets.put("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", editor); //$NON-NLS-1$
+        targets.put("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditorTarget", editor); //$NON-NLS-1$
+        targets.put("org.eclipse.ui.DefaultTextEditor", editor); //$NON-NLS-1$
         return targets;
     }
 

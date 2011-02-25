@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009, 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,25 +12,21 @@ package org.eclipse.linuxtools.rpm.ui;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
+import org.eclipse.linuxtools.rpm.core.RPMProjectCreator;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
+/**
+ * Use RPMProjectCreator for the actual work.
+ *
+ */
 public class RPMNewProject extends Wizard implements INewWizard {
 	WizardNewProjectCreationPage namePage;
 
@@ -66,28 +62,8 @@ public class RPMNewProject extends Wizard implements INewWizard {
 	}
 
 	protected void createProject(IProgressMonitor monitor) {
-		try {
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			IProject project = root.getProject(namePage.getProjectName());
-			IProjectDescription description = ResourcesPlugin.getWorkspace()
-					.newProjectDescription(project.getName());
-			if (!Platform.getLocation().equals(namePage.getLocationPath()))
-				description.setLocation(namePage.getLocationPath());
-			description
-					.setNatureIds(new String[] { RPMProjectNature.RPM_NATURE_ID });
-			project.create(description, monitor);
-			monitor.worked(10);
-			project.open(monitor);
-			project.getFolder(IRPMConstants.SPECS_FOLDER).create(true, true, monitor);
-			project.getFolder(IRPMConstants.SOURCES_FOLDER).create(true, true, monitor);
-			IFolder buildFolder = project.getFolder(IRPMConstants.BUILD_FOLDER);
-			buildFolder.create(true, true, monitor);
-			buildFolder.setHidden(true);
-			project.getFolder(IRPMConstants.RPMS_FOLDER).create(true, true, monitor);
-			project.getFolder(IRPMConstants.SRPMS_FOLDER).create(true, true, monitor);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		RPMProjectCreator rpmProjectCreator = new RPMProjectCreator();
+		rpmProjectCreator.create(namePage.getProjectName(), namePage.getLocationPath(), monitor);
 	}
 
 }

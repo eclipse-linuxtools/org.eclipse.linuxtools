@@ -10,12 +10,9 @@ package org.eclipse.linuxtools.rpm.speceditor.rcp;
  *     IBM Corporation - initial API and implementation
  ******************************************************************************/
 
+import java.io.File;
 import java.util.ArrayList;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileInfo;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -56,7 +53,6 @@ public class DelayedEventsProcessor implements Listener {
 			return;
 		// If we start supporting events that can arrive on a non-UI thread, the following
 		// line will need to be in a "synchronized" block:
-		System.out.println("handleEvent adding " + path.toString());
 		filesToOpen.add(path); 
 	}
 	
@@ -85,22 +81,18 @@ public class DelayedEventsProcessor implements Listener {
 				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				if (window == null)
 					return;
-				IFileStore fileStore = EFS.getLocalFileSystem().getStore(new Path(path));
-				IFileInfo fetchInfo = fileStore.fetchInfo();
-				if (!fetchInfo.isDirectory() && fetchInfo.exists()) {
-					IWorkbenchPage page = window.getActivePage();
+				File f = new File(path);
+				if (!f.isDirectory()) {
 					try {
-						IDE.openEditorOnFileStore(page, fileStore);
+						IWorkbenchPage page = window.getActivePage();
+						IDE.openEditor(page, f.toURI(), "org.eclipse.linuxtools.rpm.rcp.editor1", true); // $NON-NLS-1$
 					} catch (PartInitException e) {
-						String msg = "Error on open of: " +	fileStore.getName();
-						MessageDialog.open(MessageDialog.ERROR, window.getShell(),
-								"Initial Open",
-								msg, SWT.SHEET);
+						
 					}
 				} else {
-					String msg = "File not found: " + path.toString();
+					String msg = RPMMessages.CannotOpen + path.toString();
 					MessageDialog.open(MessageDialog.ERROR, window.getShell(),
-							"Initial Open",
+							RPMMessages.InitialOpen,
 							msg, SWT.SHEET);
 				}
 			}

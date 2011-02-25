@@ -1,3 +1,90 @@
+2011-02-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (sourceSRPM): Drop the combo and the backing list there is no point in it.
+	(SRPMImportPage): Likewise.
+	(createProjectDetails): Likewise.
+	(createSourceRPMCombo): Likewise.
+	(finish): Likewise.
+	(getNewProject): Likewise.
+
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/Messages.java (getString): Add javadoc.
+	* src/org/eclipse/linuxtools/rpm/ui/rpm_strings.properties: More externalized strings.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMNewProject.java (createProject): Use utility from core plugin
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (getSelectedSRPM): Format.
+	(.run): Likewise.
+	(createControl): New controls on the page.
+	(createProjectDetails): Likewise.
+	(createSourceRPMCombo): Likewise.
+	(changeProjectSettings): Modify the shown project path.
+	(getProjectName): Get the project name from the srpm name.
+	(canFinish): Format.
+	(getNewProject): Use util class from core plugin for creation of the project.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (getStatus): Add javadoc. 
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (canFinish): Proper return and error messages.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (createSourceRPMCombo): Remove empty lines.
+	(finish): Remove dead code.
+	
+2011-02-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+    Remove the ability to import into existing project. It was too errorprone and crying for troubles.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (SRPMImportPage): Remove unneeded parameter.
+	(getSelectedSRPM): Add non-nls.
+	(createControl): Do not create the projects box.
+	(.modifyText): Invoke canFinish directly.
+	(createSourceRPMCombo): Likewise.
+	(canFinish): Do not show error on empty srpm text.
+	(finish): Remove projects listing related parts.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportWizard.java (init): Remove not needed parts.
+	(addPages): Likewise.
+
+2010-09-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/ErrorLineMatcher.java: New file.
+	* META-INF/MANIFEST.MF: We depend on o.e.debug.ui now.
+	* plugin.xml: Add one more console output matcher.
+	* src/org/eclipse/linuxtools/rpm/ui/RpmConsole.java (getSpecfile): Add method to retrieve the spec file.
+	
+2010-09-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/MissingDependencyMatcher.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/RpmConsole.java: New file.
+	* plugin.xml: Add pattern handler.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportOperation.java (RPMExportOperation): Add javadoc.
+	(run): Use IOConsole not MessageConsole.
+	(findConsole): No need to have name parameter, we are using RpmConsole.ID now.
+	* src/org/eclipse/linuxtools/rpm/ui/RPMExportWizard.java (performFinish): RPMExportOperation is proper job now.
+	(.done): Likewise.
+
+2010-09-10  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportOperation.java (SRPMImportOperation): Fix javadoc.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportPage.java (NewProjectListener): Format.
+	(sourceSRPM): Likewise.
+	(SRPMImportPage): Likewise.
+	(getSelectedProjectName): Likewise.
+	(getSelectedSRPM): Support http urls.
+	(createSourceRPMCombo): Format.
+	(.modifyText): Likewise.
+	(.handleEvent): Likewise.
+	(createProjectBox): Likewise.
+	(handleEvent): Likewise.
+	(canFinish): Support http urls.
+	(finish): Format. 
+	(getNewProject): Format.
+	* src/org/eclipse/linuxtools/rpm/ui/SRPMImportWizard.java (performFinish): Do not catch no longer thrown exception.
+
+2010-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: Change provider to Eclipse Linux Tools.
+
 2010-03-14  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* OSGI-INF/l10n/bundle.properties: Remove redundant New.

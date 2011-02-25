@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Specfile Editor User Guide - General Usage</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">General Usage</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Installing.html" title="Installing">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Import-src-rpm-and-export-rpm-and-src-rpm.html" title="Import src.rpm and export rpm and src.rpm">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Installing</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Import src.rpm and export rpm and src.rpm</td>
+			</tr>
+		</table><hr/>
+		<h1 id="General_Usage">General Usage</h1>
+		<p>To fully benefit from all the features offered by the Specfile Editor, ensure that your 
+			<i><code>.spec</code></i> file is part of a project inside the Eclipse workspace. <code>rpmlint</code> integration, file hyperlinks, and some auto-completion features are not available otherwise. The following screenshot provides an impression of the full interface benefits provided by the Specfile Editor plug-in:
+			<br/>
+			<img border="0" src="images/Specfile_generic.png"/>
+		</p>
+		<h2 id="Creating_a_New_RPM_project">Creating a New RPM project</h2>
+		<h2 id="Creating_a_New_Specfile">Creating a New Specfile</h2>
+		<p>The Specfile Editor plug-in provides a wizard for creating new 
+			<i><code>.spec</code></i> files. To use this wizard, navigate first to <u>File</u> &gt; <u>New</u> &gt; <u>Other...</u> ; then, expand the <u>RPM Wizards</u> entry to select <u>New specfile based on a template</u>.
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_new_wizard.png"/>
+		</p>
+		<p>This will open the Specfile Creation wizard, which provides an interface for generating the basic contents of a 
+			<i><code>.spec</code></i> file.
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_new_from_template.png"/>
+		</p>
+		<p>The Specfile Creation wizard contains the following fields:</p>
+		<dl>
+			<dt>Project</dt>
+			<dd>This field associates the generated 
+				<i><code>.spec</code></i> with a project in the current workspace, which ultimately specifies where the 
+				<i><code>.spec</code></i> will be saved. The 
+				<b>
+					<i>Select a project...</i>
+				</b> button allows you to select a specific project for this field with ease. By default, the Specfile Editor plug-in specifies the last active project when you invoked the Specfile Creation wizard.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Select a template </dt>
+			<dd>This drop-down list allows you to select a 
+				<i><code>.spec</code></i> template to use. You can install templates provided by <code>rpmdevtools</code>, which is available 
+				<a href="https://fedorahosted.org/rpmdevtools">https://fedorahosted.org/rpmdevtools</a> .
+			</dd>
+		</dl>
+		<dl>
+			<dt>Version </dt>
+			<dd>This fills in the <code>Version:</code> line of the 
+				<i><code>.spec</code></i> file.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Summary </dt>
+			<dd>This fills in the <code>Summary:</code> line of the 
+				<i><code>.spec</code></i> file.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Group </dt>
+			<dd>This drop-down list allows you to select a package group to which the project belongs.</dd>
+		</dl>
+		<dl>
+			<dt>License </dt>
+			<dd>This fills in the <code>License:</code> line of the 
+				<i><code>.spec</code></i> file.
+			</dd>
+		</dl>
+		<dl>
+			<dt>URL </dt>
+			<dd>This fills in the <code>URL:</code> line of the 
+				<i><code>.spec</code></i> file, which typically specifies the public home page of the project.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Source0 </dt>
+			<dd>This field specifies the source archive from which the package is built.</dd>
+		</dl>
+		<h2 id="rpmlint">rpmlint</h2>
+		<p>To enable <code>rpmlint</code> warnings, right-click on the project containing the 
+			<i><code>.spec</code></i> file. Then, select <u>Add/Remove rpmlint warnings</u> from the context menu. You can use this menu selection to disable <code>rpmlint</code> warnings as well.
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_enable_rpmlint.png"/>
+		</p>
+		<p>Enabling <code>rpmlint</code> warnings will add a new <code>rpmlint</code> builder to the project. This <code>rpmlint</code> builder checks the 
+			<i><code>.spec</code></i> file during each project build or clean. Afterwards, the builder displays any appropriate warnings and errors in the 
+			<b>
+				<i>Problems</i>
+			</b> pane. Each warning/error is plotted in the 
+			<i><code>.spec</code></i> file as well; clicking an <code>rpmlint</code> warning/error in the 
+			<b>
+				<i>Problems</i>
+			</b> pane will automatically place the insertion point on the corresponding section in the 
+			<i><code>.spec</code></i> file.
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_problems_rpmlint.png"/>
+		</p>
+		<h3 id="Quick_Fixes">Quick Fixes</h3>
+		<p>You can also directly resolve several warnings and errors through the 
+			<b>
+				<i>Quick Fix</i>
+			</b> menu. To access this menu, right-click on a warning or error from the 
+			<b>
+				<i>Problems</i>
+			</b> pane and select <u>Quick Fix</u>.
+		</p>
+		<p>As the name suggests, the 
+			<b>
+				<i>Quick Fix</i>
+			</b> menu provides you with quick solutions to common 
+			<i><code>.spec</code></i> file errors and problems. For example, <code>rpmlint</code> detected a <code>no-cleaning-of-buildroot</code> error in the following <code>%install</code> section from the <code>.spec</code> file:
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_rpmlint_fix_before.png"/>
+		</p>
+		<p>If the 
+			<b>
+				<i>Quick Fix</i>
+			</b> menu can provide a solution for a particular error, it will be available in the menu. To apply it, simply select the solution (from the 
+			<b>
+				<i>Select a fix:</i>
+			</b> area) and the corresponding problem (from the 
+			<b>
+				<i>Problems:</i>
+			</b> area), then click the <u>Finish</u> button. 
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_rpmlint_quickfix.png"/>
+		</p>
+		<p>The following screenshot shows the revisions to the <code>%install</code> section applied by the 
+			<b>
+				<i>Quick Fix</i>
+			</b> menu:
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_rpmlint_fix_after.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Installing.html" title="Installing">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Specfile Editor User Guide">
+						<img alt="Specfile Editor User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Import-src-rpm-and-export-rpm-and-src-rpm.html" title="Import src.rpm and export rpm and src.rpm">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Installing</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Import src.rpm and export rpm and src.rpm</td>
+			</tr>
+		</table>
+	</body>
+</html>

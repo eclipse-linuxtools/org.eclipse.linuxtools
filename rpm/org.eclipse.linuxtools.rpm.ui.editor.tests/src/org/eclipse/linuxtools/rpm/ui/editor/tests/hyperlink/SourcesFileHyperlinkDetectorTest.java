@@ -36,7 +36,8 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();
-		elementDetector = new SourcesFileHyperlinkDetector(editor);
+		elementDetector = new SourcesFileHyperlinkDetector();
+		elementDetector.setEditor(editor);
 		// test source element
 		IRegion region = new Region(10, 0);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(editor
@@ -51,7 +52,8 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 	}
 
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
-		elementDetector = new SourcesFileHyperlinkDetector(editor);
+		elementDetector = new SourcesFileHyperlinkDetector();
+		elementDetector.setEditor(editor);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null,
 				false);
 		assertNull(returned);
