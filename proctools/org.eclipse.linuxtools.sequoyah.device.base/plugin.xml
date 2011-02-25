@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension-point id="org.eclipse.linuxtools.sequoyah.device.base.protocols" name="Linux Tools protocols" schema="schema/protocols.exsd" />
+<extension-point id="org.eclipse.linuxtools.sequoyah.device.base.capabilities" name="Linux Tools capabilities" schema="schema/capabilities.exsd"/> 
+<extension
+      point="org.eclipse.linuxtools.sequoyah.device.base.capabilities">
+ <capability
+       id="GET_FILE"
+       name="Get file"/> 
+ <capability
+       id="PUT_FILE"
+       name="Create/store file"/> 
+ <capability
+       id="REMOVE_FILE"
+       name="Remove file"/> 
+ <capability
+       id="LIST_DIR"
+       name="List directories"/> 
+ <capability
+       id="PUT_DIR"
+       name="Create directories"/> 
+ <capability
+       id="REMOVE_DIR"
+       name="Remove directories"/> 
+ <capability
+       id="START_PROCESS"
+       name="Start process"/> 
+ <capability
+       id="KILL_PROCESS"
+       name="Kill process"/> 
+ <capability
+       id="LIST_PROCESS"
+       name="List process"/> 
+</extension>
+</plugin>
