@@ -77,13 +77,11 @@ public class ConfigurationTest extends TestCase{
 			SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
 			del.launch(config, "profile", null, null);
 			
-			System.out.println(del.getCommand());
-			 
 			assertEquals("stap -v -p" + testPass + " -k -g -P -u -w -b -t -s" 
 						+ testBuffer + " -x" + testPid + " " 
 						+ testCDirectives + " -F --skip-badvars --ignore-dwarf -q " + "-o " 
 						+ testOutputPath + " -c '" 
-						+ testBinaryPath + "' " + testScriptPath + " " + testArguments, del.getCommand());
+						+ testBinaryPath + "' " + testScriptPath + " " + testArguments, del.generateCommand(config));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

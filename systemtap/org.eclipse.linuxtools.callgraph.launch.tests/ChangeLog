@@ -1,0 +1,25 @@
+2009-12-24  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapErrorHandlerTest.java (testUprobesError):
+		Update message to reflect new error message.
+
+2009-12-16  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapErrorHandlerTest.java:
+		New File. Basic class to test the error handling.
+
+2009-12-08  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/ConfigurationTest.java: Call generateCommand directly
+
+2009-11-27  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapCommandGeneratorTest.java: Add functions to use the new command option in the CommandGenerator class.
+
+2009-11-16  Roland Grunberg  <rgrunber@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Eclipse to Provider field.
+
+2009-11-16  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapCommandGeneratorTest.java: Reflect change to static in SystemTapCommandGenerator

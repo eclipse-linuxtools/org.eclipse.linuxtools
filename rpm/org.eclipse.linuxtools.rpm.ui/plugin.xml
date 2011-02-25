@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <wizard
+            name="Source/Binary RPM"
+            icon="icons/rpm.gif"
+            class="org.eclipse.linuxtools.rpm.ui.RPMExportWizard"
+            id="org.eclipse.cdt.rpm.ui.RPMExportWizard">
+         <description>
+            Export an RPM
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <wizard
+            name="Source RPM"
+            icon="icons/rpm.gif"
+            class="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard"
+            id="org.eclipse.cdt.rpm.ui.SRPMImportWizard">
+         <description>
+            Imports a Source RPM to a project
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+      </wizard>
+   </extension>
+   <extension
+   				point="org.eclipse.ui.views">
+   		<category
+   				name="RPM Log File"
+   				id="org.eclipse.cdt.rpm.ui.logviewer">
+   		</category>
+   <view
+   			name="RPM Log Viewer"
+   			icon="icons/rpm.gif"
+   			class="org.eclipse.linuxtools.rpm.ui.logviewer.RPMLogViewer"
+   			id="org.eclipse.cdt.rpm.ui.logviewer.RPMLogViewer"
+   			category="org.eclipse.cdt.rpm.ui.logviewer">
+   	</view>
+   		</extension>
+	
+	<extension
+      point = "org.eclipse.ui.preferencePages">
+       <page id="org.eclipse.cdt.rpm.ui.preferences.Page1"
+	      class="org.eclipse.linuxtools.rpm.ui.preferences.RPMPluginPreferencesPage"
+            name="RPM">
+       </page>
+	</extension>
+	
+	<extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
+            id="rg.eclipse.cdt.rpm.ui.propertypage.SpecFileHeaderPage"
+            name="Spec File Header"
+            nameFilter="*.rpm"
+            objectClass="org.eclipse.core.resources.IFile">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
+            id="org.eclipse.cdt.rpm.ui.propertypage.ChangelogPage"
+            name="Changelog Entries"
+            nameFilter="*.rpm"
+            objectClass="org.eclipse.core.resources.IFile">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
+            id="org.eclipse.cdt.rpm.ui.propertypage.TargetPage"
+            name="Target"
+            nameFilter="*.rpm"
+            objectClass="org.eclipse.core.resources.IFile">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
+            id="org.eclipse.cdt.rpm.ui.propertypage.InstallScriptsPage"
+            name="Install/Uninstall Scripts"
+            nameFilter="*.rpm"
+            objectClass="org.eclipse.core.resources.IFile">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
+            id="org.eclipse.cdt.rpm.ui.propertypage.ProvidesPage"
+            name="Files Package Provides"
+            nameFilter="*.rpm"
+            objectClass="org.eclipse.core.resources.IFile">
+      </page>
+   </extension>
+</plugin>

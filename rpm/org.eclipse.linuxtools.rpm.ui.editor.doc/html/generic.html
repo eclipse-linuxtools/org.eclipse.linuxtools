@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Creating and editing a <i><b>spec</b></i> file</title>
+</head>
+
+<body>
+<h1>Start editing</h1>
+<p>Starting editing should be as simple as double click on any of
+the spec files in your projects or going through the File/Open File
+procedure and select your spec file.</p>
+<p><b>Note:</b> It is strongly recommended that you always have your
+spec file in a project inside Eclipse workspace to take the most of the
+editor. Rpmlint integration, some auto-completion and hyperlink are not
+available when you are editing external (for the workspace) file.</p>
+At this stage you should see something nice looking like this:
+<center><img src="images/generic.png"></center>
+<h1>Create new spec file</h1>
+<p>Part of the plugin is a wizard for creating new specfile. It can
+be invoked from the menu File/New/Other which should bring the following
+dialog where you can select "New specfile based on a template".</p>
+<center><img src="images/wizard.png"></center>
+<p>Dialog providing options and interface for filling the data in
+the spec file should appear at this stage.</p>
+<center><img src="images/new_from_template.png"></center>
+<p>Description of the fields:
+<ul>
+	<li><b>Project:</b> This is simply the place where generated spec
+	file will be stored and this should be a project in this workspace. For
+	convenience it is auto-filled with the active project when you started
+	the wizard.</li>
+	<li><b>Select a template:</b> Template functionality is based on
+	the templates provided by <a
+		href="https://fedorahosted.org/rpmdevtools/">rpmdevtools</a>. Check
+	its home page or just try the provided templates to see whether they
+	suits you. The names are clear enough to not need further explanations
+	- perl, ruby, python, etc.</li>
+	<li><b>Version:</b> The version of the software the spec file is
+	for.</li>
+	<li><b>Summary:</b> One line description of the packaged software.</li>
+	<li><b>Group:</b> Drop down menu for selecting the RPM Group this
+	package belongs to. The values in this drop down are filled from the
+	GROUPS file which is part of the RPM documentation package. This file
+	usually resist in a place like /usr/share/doc/rpm-*/GROUPS.</li>
+	<li><b>License:</b> The license of the packaged software.</li>
+	<li><b>URL:</b> The URL pointing to the home page of the packaged
+	software.</li>
+	<li><b>Source0:</b> The name of the source archive the package is
+	builded from.</li>
+</ul>
+</p>
+</body>
+</html>
