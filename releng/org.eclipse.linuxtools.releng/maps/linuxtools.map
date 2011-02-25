@@ -1,0 +1,154 @@
+!*** changelog
+plugin@org.eclipse.linuxtools.changelog.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog,,org.eclipse.linuxtools.changelog.core
+fragment@org.eclipse.linuxtools.changelog.cparser=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog,,org.eclipse.linuxtools.changelog.cparser
+plugin@org.eclipse.linuxtools.changelog.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog,,org.eclipse.linuxtools.changelog.doc
+fragment@org.eclipse.linuxtools.changelog.parsers.java=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog,,org.eclipse.linuxtools.changelog.javaparser
+plugin@org.eclipse.linuxtools.changelog.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog,,org.eclipse.linuxtools.changelog.tests
+plugin@org.eclipse.linuxtools.changelog.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog,,org.eclipse.linuxtools.changelog.ui.tests
+feature@org.eclipse.linuxtools.changelog=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog,,org.eclipse.linuxtools.changelog-feature
+
+!*** rpm
+plugin@org.eclipse.linuxtools.rpm.rpmlint=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.rpmlint
+plugin@org.eclipse.linuxtools.rpm.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.ui.editor
+plugin@org.eclipse.linuxtools.rpm.ui.editor.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.ui.editor.doc
+plugin@org.eclipse.linuxtools.rpm.ui.editor.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.ui.editor.tests
+feature@org.eclipse.linuxtools.rpm.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.ui.editor-feature
+plugin@org.eclipse.linuxtools.rpm.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.core
+plugin@org.eclipse.linuxtools.rpm.core.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.core.tests
+plugin@org.eclipse.linuxtools.rpm.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm.ui
+feature@org.eclipse.linuxtools.rpm=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm,,org.eclipse.linuxtools.rpm-feature
+
+!*** rpmstubby
+plugin@org.eclipse.linuxtools.rpmstubby=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby,,org.eclipse.linuxtools.rpmstubby
+feature@org.eclipse.linuxtools.rpmstubby=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby,,org.eclipse.linuxtools.rpmstubby-feature
+
+!*** autotools
+plugin@org.eclipse.linuxtools.cdt.autotools=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools
+plugin@org.eclipse.linuxtools.cdt.autotools.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools.core
+plugin@org.eclipse.linuxtools.cdt.autotools.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools.ui
+plugin@org.eclipse.linuxtools.cdt.autotools_docs=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools-docs
+plugin@org.eclipse.linuxtools.cdt.autotools.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools.tests
+plugin@org.eclipse.linuxtools.cdt.autotools.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools.ui.tests
+feature@org.eclipse.linuxtools.cdt.autotools=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools,,org.eclipse.linuxtools.cdt.autotools-feature
+
+!*** gprof
+plugin@org.eclipse.linuxtools.binutils=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof,,org.eclipse.linuxtools.binutils
+plugin@org.eclipse.linuxtools.dataviewers=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof,,org.eclipse.linuxtools.dataviewers
+plugin@org.eclipse.linuxtools.gprof=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof,,org.eclipse.linuxtools.gprof
+fragment@org.eclipse.linuxtools.gprof.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof,,org.eclipse.linuxtools.gprof.test
+feature@org.eclipse.linuxtools.gprof=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof,,org.eclipse.linuxtools.gprof-feature
+
+!*** libhover
+plugin@org.eclipse.linuxtools.cdt.libhover=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover
+plugin@org.eclipse.linuxtools.cdt.libhover.glibc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover.glibc
+plugin@org.eclipse.linuxtools.cdt.libhover.newlib=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover.newlib
+plugin@org.eclipse.linuxtools.cdt.libhover.library_docs=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover.library-docs
+plugin@org.eclipse.linuxtools.cdt.libhover.libstdcxx=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover.libstdcxx
+feature@org.eclipse.linuxtools.cdt.libhover=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover-feature
+feature@org.eclipse.linuxtools.cdt.libhover.newlib=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover,,org.eclipse.linuxtools.cdt.libhover.newlib-feature
+
+!*** man
+plugin@org.eclipse.linuxtools.man=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/man,,org.eclipse.linuxtools.man
+feature@org.eclipse.linuxtools.man=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/man,,org.eclipse.linuxtools.man-feature
+
+!*** systemtap
+plugin@org.eclipse.linuxtools.systemtap.backup.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.backup.ui.editor
+feature@org.eclipse.linuxtools.systemtap.backup=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.backup-feature
+plugin@org.eclipse.linuxtools.systemtap.ui.consolelog=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.consolelog
+plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.editor
+feature@org.eclipse.linuxtools.systemtap=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap-feature
+plugin@org.eclipse.linuxtools.systemtap.ui.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.doc
+plugin@org.eclipse.linuxtools.systemtap.ui.graphing=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphing
+plugin@org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui
+plugin@org.eclipse.linuxtools.systemtap.ui.graphingapi.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphingapi.ui
+plugin@org.eclipse.linuxtools.systemtap.ui.ide=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.ide
+plugin@org.eclipse.linuxtools.systemtap.ui.logging=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.logging
+plugin@org.eclipse.linuxtools.systemtap.ui.structures=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.structures
+plugin@org.eclipse.linuxtools.systemtap.ui.systemtapgui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.systemtapgui
+plugin@org.eclipse.linuxtools.systemtap.ui.dashboard=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.dashboard
+plugin@org.eclipse.linuxtools.systemtap.ui.dashboardextension=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.dashboardextension
+plugin@org.eclipse.linuxtools.systemtap.ui.graphicalrun=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.systemtap.ui.graphicalrun
+
+!*** callgraph
+plugin@org.eclipse.linuxtools.callgraph.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.core
+plugin@org.eclipse.linuxtools.callgraph.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.launch
+plugin@org.eclipse.linuxtools.callgraph=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph
+plugin@org.eclipse.linuxtools.callgraph.launch.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.launch.tests
+plugin@org.eclipse.linuxtools.callgraph.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.tests
+plugin@org.eclipse.linuxtools.callgraph.docs=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.docs
+feature@org.eclipse.linuxtools.callgraph=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph-feature
+feature@org.eclipse.linuxtools.callgraph.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap,,org.eclipse.linuxtools.callgraph.tests-feature
+
+!*** profiling framework
+plugin@org.eclipse.linuxtools.profiling.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.launch
+plugin@org.eclipse.linuxtools.profiling.launch.remote=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.launch.remote
+plugin@org.eclipse.linuxtools.profiling.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.tests
+plugin@org.eclipse.linuxtools.profiling.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.ui
+feature@org.eclipse.linuxtools.profiling=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling-feature
+feature@org.eclipse.linuxtools.profiling.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling,,org.eclipse.linuxtools.profiling.test-feature
+
+!*** oprofile
+plugin@org.eclipse.linuxtools.oprofile.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.core
+plugin@org.eclipse.linuxtools.oprofile.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.doc
+plugin@org.eclipse.linuxtools.oprofile.core.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.core.tests
+fragment@org.eclipse.linuxtools.oprofile.core.linux.ppc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.core.linux.ppc
+fragment@org.eclipse.linuxtools.oprofile.core.linux.x86=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.core.linux.x86
+fragment@org.eclipse.linuxtools.oprofile.core.linux.x86_64=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.core.linux.x86_64
+plugin@org.eclipse.linuxtools.oprofile.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.launch
+plugin@org.eclipse.linuxtools.oprofile.launch.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.launch.tests
+plugin@org.eclipse.linuxtools.oprofile.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.tests
+plugin@org.eclipse.linuxtools.oprofile.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.ui
+plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.ui.tests
+feature@org.eclipse.linuxtools.oprofile=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile-feature
+feature@org.eclipse.linuxtools.oprofile.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile,,org.eclipse.linuxtools.oprofile.test-feature
+
+!*** valgrind
+plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.cachegrind
+plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.cachegrind.tests
+plugin@org.eclipse.linuxtools.valgrind.core=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.core
+plugin@org.eclipse.linuxtools.valgrind.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.doc
+plugin@org.eclipse.linuxtools.valgrind.launch=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.launch
+plugin@org.eclipse.linuxtools.valgrind.launch.remote=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.launch.remote
+plugin@org.eclipse.linuxtools.valgrind.massif=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.massif
+plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.massif.tests
+plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.memcheck
+plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.memcheck.tests
+plugin@org.eclipse.linuxtools.valgrind.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.tests
+plugin@org.eclipse.linuxtools.valgrind.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.ui
+plugin@org.eclipse.linuxtools.valgrind.ui.editor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.ui.editor
+feature@org.eclipse.linuxtools.valgrind=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind-feature
+feature@org.eclipse.linuxtools.valgrind.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind,,org.eclipse.linuxtools.valgrind.test-feature
+
+!*** tmf
+plugin@org.eclipse.linuxtools.tmf=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf
+plugin@org.eclipse.linuxtools.tmf.doc=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.doc
+plugin@org.eclipse.linuxtools.tmf.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.tests
+plugin@org.eclipse.linuxtools.tmf.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui
+plugin@org.eclipse.linuxtools.tmf.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.ui.tests
+feature@org.eclipse.linuxtools.tmf=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf-feature
+feature@org.eclipse.linuxtools.tmf.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.tmf.test-feature
+
+!*** lttng
+plugin@org.eclipse.linuxtools.lttng=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng
+plugin@org.eclipse.linuxtools.lttng.jni=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.jni
+plugin@org.eclipse.linuxtools.lttng.help=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.help
+plugin@org.eclipse.linuxtools.lttng.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.tests
+plugin@org.eclipse.linuxtools.lttng.ui=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.ui
+plugin@org.eclipse.linuxtools.lttng.ui.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.ui.tests
+feature@org.eclipse.linuxtools.lttng=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng-feature
+feature@org.eclipse.linuxtools.lttng.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng,,org.eclipse.linuxtools.lttng.test-feature
+
+!*** gcov
+plugin@org.eclipse.linuxtools.dataviewers.annotatedsourceeditor=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov,,org.eclipse.linuxtools.dataviewers.annotatedsourceeditor
+plugin@org.eclipse.linuxtools.dataviewers.charts=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov,,org.eclipse.linuxtools.dataviewers.charts
+plugin@org.eclipse.linuxtools.gcov=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov,,org.eclipse.linuxtools.gcov
+fragment@org.eclipse.linuxtools.gcov.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov,,org.eclipse.linuxtools.gcov.test
+feature@org.eclipse.linuxtools.gcov=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov,,org.eclipse.linuxtools.gcov-feature
+
+feature@org.eclipse.linuxtools.all=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.all
+feature@org.eclipse.linuxtools.test=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.test-feature
+plugin@org.eclipse.linuxtools.tests=SVN,trunk,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng,,org.eclipse.linuxtools.tests
+
+!*** used for tests
+plugin@org.eclipse.test=v20080313,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
+fragment@org.eclipse.ant.optional.junit=v20070202,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,

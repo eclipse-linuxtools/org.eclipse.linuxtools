@@ -1,0 +1,529 @@
+2011-01-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* psfs/changelog.psf: Add ChangeLog tests.
+
+2011-01-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* maps/linuxtools.map: Add ChangeLog ui tests plugin.
+
+2010-12-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix signing.
+
+2010-12-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* maps/linuxtools.map: Add ChangeLog tests plugin.
+	* testing.properties: Add ChangeLog tests.
+
+2010-11-28  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* maps/linuxtools.map: Removing remote features. Not ready for 0.7.
+
+2010-11-18  francois  <fchopuinard@gmail.com>
+
+	* psfs/lttng.psf: Added lttng.jni to the psf file
+
+2010-10-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Try adding org.eclipse.cdt.gnu.build.feature.group.
+	* testing.properties: Change XULRunnerPath to something that will run on x86_64.
+
+2010-10-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* testing.properties: Add MaxPermSize setting so tests will run without
+	out of memory error.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Install org.eclipse.cdt.testing.feature.group.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add cdt update site.org.eclipse.cdt.testing.feature.group
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add org.eclipse.cdt.debug.edc feature IU.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add tm.tcf feature IU.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add zest feature IU.
+
+2010-09-30  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix birt feature IU.
+
+2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix cdt feature IU.
+	
+2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Add swtbot update site.
+
+2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix update site url.
+
+2010-09-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Switch to using update site.
+
+2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Override pack200 home.
+
+2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Override default java home.
+	
+2010-09-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Use 3.6 basebuilder.
+
+2010-09-23  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Do not override pack200 home.
+
+2010-09-22  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Depend on x86_64 sdk.
+
+2010-08-19  Charley Wang  <chwang@redhat.com>
+
+	* linuxtools.map: Added Callgraph docs plugin
+	* callgraph.psf: Added Callgraph docs plugin
+
+2010-08-12  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* category.xml: Added remote Valgrind feature. 
+
+2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* build.properties: Added TM/RSE dependency.
+
+2010-07-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Update SDK dependency URL for SWTBOT to point to archived version
+	last known to work with Autotools UI tests.
+
+2010-07-29  Francois Chouinard  <fchouinard@gmail.com>
+
+    * build.properties: Update SDK dependency URL for SWTBOT
+
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* psfs/valgrind-tests.psf: Updated Valgrind PSF. 
+	* psfs/valgrind.psf: Likewise.
+	
+
+2010-07-02  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update to final helios dependencies.
+
+2010-06-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Try out 3.6RC3 dependencies.
+
+2010-05-26  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Try out 3.6RC1 and RC2 dependencies.
+
+2010-05-20  Charley Wang  <chwang@redhat.com>
+
+	* build.properties: Revert back to 3.6M4 so the build doesn't keep 
+	failing, switch versions of swtbot to a non-broken link for swtbot
+	3.6 
+						
+
+2010-05-18  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Try reverting to 3.6M4 and other deps to see if
+	tests "install".
+
+2010-05-18  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Use trunk for test plugins that were previously
+	using Helios branches.
+
+2010-05-17  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update to latest Helios drops of dependencies.
+	* lots: Merge Helios branch to trunk.
+
+2010-05-17  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Make release 0.5.1.
+
+2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* psfs/autotools.psf: Add ui.tests.
+	* maps/linuxtools.map: Add org.eclipse.linuxtools.cdt.autotools.ui.tests plugin.
+
+2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add swtbot eclipse plugins as dependency.
+
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* maps/linuxtools.map: Add new dashboard plugins for SystemTap
+	* psfs/linuxtools.psf: Add new dashboard plugins for SystemTap
+	* psfs/systemtap.psf: Add new dashboard plugins for SystemTap
+
+2010-01-28  Charley Wang  <chwang@redhat.com>
+
+	* psfs/callgraph.psf: Add profiling framework to callgraph.psf
+
+2010-01-25  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/gcov.psf: New file.
+	* psfs/linuxtools.psf: Add GCov contribution.
+
+2010-01-20  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/athena.psf: Remove extraneous tags.
+
+2010-01-19  Charley Wang  <chwang@redhat.com>
+
+	* build.properties: Remove trailing ,\ from dependencyURLs
+
+2010-01-19  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Add missing DTP dep (of BIRT). 
+
+2010-01-19  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Add gcov.
+	* category.xml: Likewise.
+
+2010-01-18  Francois Chouinard  <fchouinard@gmail.com>
+
+	* testing.properties: Added LTTng/TMF tests.
+
+2010-01-18  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Fix TMF SVN location.
+
+2010-01-18  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Fix TMF and LTTng feature IDs.
+
+2010-01-17  Francois Chouinard  <fchouinard@gmail.com>
+
+	* psfs/lttng.psf: New file.
+	* psfs/linuxtools.psf: Add LTTng.
+	* psfs/athena.psf: Fix format.
+	* maps/linuxtools.map: Add LTTng.
+	* category.xml: Add LTTng.
+
+2010-01-13  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtoolsupdatesite-helios.sh: New file.  Helios update site
+	updater.
+	* tools/linuxtoolsupdatesite-galileo.sh: Update for new Hudson location.
+	Rename from -trunk.sh.
+
+2010-01-12  Francois Chouinard  <fchouinard@gmail.com>
+
+	* psfs/lttng.psf: New file.
+	* psfs/linuxtools.psf: Add LTTng.
+	* psfs/athena.psf: Fix format.
+	* maps/linuxtools.map: Add LTTng.
+	* category.xml: Add LTTng.
+
+2009-12-16  Charley Wang  <chwang@redhat.com>
+
+	* build.properties: Update reference to GEF-ALL to point to the correct location
+
+2009-11-24  Andrew Overholt  <overholt@redhat.com>
+
+	* testing.properties: Add temporary workaround for bug #295394.
+
+2009-11-24  Alexander Kurakov  <akurtakov@redhat.com>
+
+	* psfs/manviewer.psf: New file.
+	* category.xml: Add man viewer.
+	* maps/linuxtools.map: Likewise.
+
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/eclipse-build.psf: Correct eclipse-build URLs.
+	* psfs/linuxtools.psf: Likewise.
+
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+ 
+	* psfs/linuxtoolsAndAthena.psf: Removed.
+	* psfs/athena.psf: New file.  PSF for Athena for local builds.
+	* psfs/linuxtools.psf: Update cdt.test dependency version.
+
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/callgraph.psf: Fix typos.
+	* psfs/autotools.psf: Likewise.
+	* psfs/linuxtools.psf: Change "http" to "svn".  Add "anonymous@" for CVS
+	modules.
+
+2009-11-09  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/systemtap.local.psf: Removed.  Renamed to callgraph.psf.
+	* psfs/callgraph.psf: New file.
+	* maps/linuxtools.map: Merged and renamed a few sections.
+	* psfs/autotools.psf: Reflect re-written plugins.
+	* psfs/libhover.psf: Add libstdc++.
+	* psfs/linuxtools.psf: Merge changes in smaller .psf files.  Add
+	dependencies.
+	* psfs/rpm-editor.psf: Add new feature.
+
+2009-11-04  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update dependency versions (SDK 3.5.1, CDT 6.0.1,
+	GEF 3.5.1, BIRT 2.5.1).
+
+2009-11-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* maps/linuxtools.map: Add autotools.core and autotools.ui plugins.
+
+2009-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Add GProf feature.
+
+2009-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Set noclean=false (bug #292911).
+
+2009-10-29  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Change map for GProf test plugin to be a fragment.
+
+2009-10-08  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Add GProf feature.
+
+2009-10-08  Andrew Overholt  <overholt@redhat.com>
+
+	* testing.properties: Add GProf tests.
+
+2009-10-07  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/eclipse-build.psf: Add -config and -feature.
+
+2009-10-06  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Update to new map syntax.
+
+2009-09-24  Roland Grunberg  <rgrunber@redhat.com>
+
+	* testing.properties: Add callgraph.tests to the hudson build.
+	* psfs/systemtap.local.psf: Remove username from svn path.
+
+2009-09-21  Roland Grunberg  <rgrunber@redhat.com>
+
+	* build.properties: Change JAVA_HOME to JAVA60_HOME.
+
+2009-09-18  Roland Grunberg  <rgrunber@redhat.com>
+
+	* testing.properties: Add local.launch to test plugins to run.
+
+2009-09-18  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Fix typo  in systemtap.local version variable.
+
+2009-09-18  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Move to GEF-ALL since new SystemTap stuff needs Zest.
+
+2009-09-08  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtoolsupdatesite-trunk.sh: Don't worry about *.xml; use *.jar instead.
+	* tools/index.php: Initial checkin of downloads index page.
+
+2009-08-06  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Linux Tools Features -> Linux Tools; alphabetize.
+
+2009-08-06  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Add "Additional Library API Hoverhelp" category.
+
+2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* maps/linuxtools.map: Update with new systemtap package names
+	* psfs/linuxtools.psf: Likewise.
+	* psfs/linuxtoolsAndAthena.psf:  Likewise.
+	* psfs/systemtap.psf:  Likewise.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Update autotools and systemtap feature IDs.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Update for renamed features (removing ".feature").
+	* psfs/autotools.psf: Likewise.
+	* psfs/linuxtools.psf: Likewise.
+	* psfs/linuxtoolsAndAthena.psf:  Likewise.
+	* psfs/systemtap.psf:  Likewise.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Fix a few more typos in libhover variable names.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Remove GProf feature.  Add newlib feature.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Re-add.
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Try entire build with 1.5 JDK instead of 1.6 (IBM 1.6
+	seems to have issues generating metadata with categories).
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/linuxtoolsAndAthena.psf: Update for new libhover feature names.
+	* maps/linuxtools.map: Likewise.
+	* psfs/linuxtools.psf: Likewise.
+	* psfs/libhover.psf: Likewise.
+	* build.properties: Revert basebuilder version switch (it didn't help).
+
+2009-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #285616
+
+	* build.properties: Try to see if using an earlier basebuilder fixes things.
+
+2009-08-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #285616
+
+	* category.xml: Remove (can't figure out why it's not generating site.xml
+	properly.
+
+2009-08-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #285616
+
+	* category.xml: Add pack200=true.  Remove category for non-user-visible
+	stuff.  Remove profiling feature (it will still be present on the update
+	site).
+
+2009-08-04  Elliott Baron  <ebaron@redhat.com>
+
+	* build.properties: Add JAVA40_HOME and J2SE-1.4 properties.
+
+2009-07-31  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Add GProf feature.
+	* maps/linuxtools.map: Likewise.
+
+2009-07-31  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Remove valgrind.history.
+
+2009-07-21  Elliott Baron  <ebaron@redhat.com>
+
+	* maps/linuxtools.map: Added valgrind.ui.editor.
+	* psfs/linuxtools.psf: Likewise.
+	* psfs/linuxtoolsAndAthena.psf: Likewise.
+	* psfs/valgrind.psf: Likewise.
+
+2009-07-20  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Add RPM feature.
+
+2009-07-20  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* maps/linuxtools.map: Format to match other plugins.
+
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* maps/linuxtools.map: Fix typo.
+
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* maps/linuxtools.map: Add o.e.l.rpm building feature and plugins.
+
+2009-06-29  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/linuxtools.psf: Add GProf and SystemTapGUI contributions.
+	* maps/linuxtools.map: Likewise.
+	* psfs/linuxtoolsAndAthena.psf: Likewise.  Update basebuilder to 3.5 tag.
+	* build.properties: Use basebuilder 3.5.
+
+2009-06-25  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update dependencies to Galileo releases.
+
+2009-06-08  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Fix some feature names (bug #272991).
+
+2009-06-05  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Update to newer Galileo dependencies.
+
+2009-06-05  Andrew Overholt  <overholt@redhat.com>
+
+	* category.xml: Rename from site.xml (bug #272991).
+
+2009-06-05  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Use Galileo dependencies.
+	* tools/linuxtoolsupdatesite-trunk.sh: Pull from Galileo builds.
+
+2009-05-29  Elliott Baron  <ebaron@redhat.com>
+
+	* psfs/valgrind.psf: Added org.eclipse.birt.chart plugin.
+
+2009-05-20  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Modify features for removed ".feature" suffix.
+
+2009-05-14  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/linuxtoolswebsite.psf: Initial checkin.
+	* psfs/oprofiledocs.psf: Likewise.
+
+2009-04-27  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Build against Ganymede SR2 dependencies.
+
+2009-04-22  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtoolsupdatesite-trunk.sh: Use Update zips instead of Master
+	zips.
+
+2009-04-20  Andrew Overholt  <overholt@redhat.com>
+
+	* site.xml: Initial check-in.  Will be used by Athena to generate p2
+	categories.
+
+2009-04-17  Andrew Overholt  <overholt@redhat.com>
+
+	* psfs/linuxtools.psf: Add releng project.
+
+2009-04-16  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtoolsupdatesite-trunk.sh: chmod and chown to fix bug #272328.
+
+2009-04-16  Andrew Overholt  <overholt@redhat.com>
+
+	* tools/linuxtools_build.eclipse.org_hudson.sh: Switch back to trunk for the
+	releng project.
+
+2009-04-14  Andrew Overholt  <overholt@redhat.com>
+
+	* maps/linuxtools.map: Switch back to trunk for everything.
+
+2009-04-14  Andrew Overholt  <overholt@redhat.com>
+
+	* build.properties: Increment version to 0.3.0 now that 0.2.0 is finished.
+	* tools/linuxtools_build.eclipse.org_hudson.sh: Likewise.
+	* tools/linuxtoolsupdatesite-trunk.sh: Update drops location.
