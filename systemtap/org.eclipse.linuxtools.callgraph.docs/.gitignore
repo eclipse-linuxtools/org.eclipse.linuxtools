@@ -1,1 +1,4 @@
-/tmp
+bin
+@dot
+javaCompiler...args
+build.xml
