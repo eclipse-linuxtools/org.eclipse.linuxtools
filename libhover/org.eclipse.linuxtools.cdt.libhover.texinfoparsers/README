@@ -1,0 +1,12 @@
+This project contains texinfo parsers used to create xml files for the purpose 
+of use with the Linux Tools plug-ins.  The parsers here were used to create the
+ xml files for glibc and newlib libhover and for autotools hover help for the 
+autoconf editor.  The glibc and newlib xml files were fed to the libhover 
+plugin BuildFunctionInfos java executable found in the libhover plugin: 
+
+ org.eclipse.linuxtools.cdt.libhover.utils/BuildFunctionInfos.java
+
+to create the libhover binary files used in the glibc and newlib libhover 
+plugins.
+
+To build, right-click on the build.xml file and run as -> Ant Build.
