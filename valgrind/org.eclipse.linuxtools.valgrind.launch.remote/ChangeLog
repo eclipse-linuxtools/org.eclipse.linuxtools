@@ -1,0 +1,67 @@
+2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java (read1): Used Java 6 constructor for IOException.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFOutputStream.java (.doneWrite): Actually save error. 
+	(write1): Used Java 6 constructor for IOException.
+	* META-INF/MANIFEST.MF: Removed unnecessary dependency.
+
+2010-08-06  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchStep.java (RemoteLaunchStep): Store name. 
+	(toString): Use launch step name.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java (launch): Reset process to null, since delegate
+	can be reused by caller.
+	(disconnect): Actually disconnect if channel is not closed.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchTabGroup.java (getProfileTabs): Arguments
+	Working Directory problem has been fixed in superclass.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteTab.java (refreshPeerViewer): Ensure content provider is set.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java (.doneRead): Added FIXME: Problems with losing data.
+
+2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* icons/tcf.gif: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteTab.java: New file.
+	* META-INF/MANIFEST.MF: New dep.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/Messages.java: New keys. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchConstants.java: New constants.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchStep.java: Added debugging code. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteCommand.java: Disconnect stdin on exit.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java: Refactoring, improvements
+	to cleanup.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchTabGroup.java (getProfileTabs): Don't check version.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteProcess.java: Removed launch steps.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java: Don't use launch step,
+	disconnect stream on EOS.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFOutputStream.java: Don't use launch step.
+
+2010-08-01  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* .project: Remove "internal" from project name.
+
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* .classpath: New file.
+	* .project: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* about.html: New file.
+	* build.properties: New file.
+	* icons/valgrind-icon.png: New file.
+	* OSGI-INF/l10n/bundle.properties: New file.
+	* plugin.xml: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/Messages.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/messages.properties: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchConstants.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchPlugin.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchStep.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteCommand.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchShortcut.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchTabGroup.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteProcess.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFOutputStream.java: New file.
+	* src/org/eclipse/linuxtools/valgrind/launch/remote: New file.
+	* META-INF/MANIFEST.MF: New file.
+	
+	

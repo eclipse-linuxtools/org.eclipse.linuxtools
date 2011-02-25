@@ -1,0 +1,68 @@
+2010-08-05  Andrew Overholt  <overholt@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: Change provider to Eclipse Linux Tools.
+
+2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* META-INF/MANIFEST.MF: Bump version to 0.7.0. 
+
+2009-08-11  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/valgrind: Removed.
+	* META-INF/MANIFEST.MF: Export wizards package.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/Messages.java: Fix header. 
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/NewSuppressionWizard.java: Likewise. 
+
+2009-08-10  Elliott Baron  <ebaron@redhat.com>
+	
+	#285919, #285920
+	* icons/newsupp_wiz.png: New file.
+	* src/org/eclipse/linuxtools/valgrind/ui: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/Messages.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/messages.properties: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/wizards/NewSuppressionWizard.java: New file.
+	* META-INF/MANIFEST.MF: New dependencies.
+	* OSGI-INF/l10n/bundle.properties: New keys.
+	* plugin.xml: Extension for new file wizard.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor/SuppressionsContentAssistProcessor.java (completionWord): Fixed
+	off-by-one #285920. 
+	(getCompletionStrings): Don't show "Memcheck:" after "Memcheck:". 
+	(getToolName): Fixed off-by-one #285920.
+
+2009-08-05  Elliott Baron  <ebaron@redhat.com>
+
+	* META-INF/MANIFEST.MF: Properly spell "qualifier".
+
+2009-07-30  Elliott Baron  <ebaron@redhat.com>
+
+	* src/org/eclipse/linuxtools/valgrind/ui/editor: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/editor: New package. 
+	* .project: Added API analysis.
+	* META-INF/MANIFEST.MF: Export internal package.
+	* plugin.xml: Update class references.
+
+2009-07-13  Elliott Baron  <ebaron@redhat.com>
+
+	* .classpath: New file.
+	* .project: New file.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* build.properties: New file.
+	* icons/valgrind-supp-icon.png: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* OSGI-INF/l10n/bundle.properties: New file.
+	* plugin.xml: New file.
+	* ColorManager.java: New file.
+	* ISuppressionsColorConstants.java: New file.
+	* Messages.java: New file.
+	* messages.properties: New file.
+	* SuppressionKindRule.java: New file.
+	* SuppressionsConfiguration.java: New file.
+	* SuppressionsContentAssistProcessor.java: New file.
+	* SuppressionsDocumentProvider.java: New file.
+	* SuppressionsEditor.java: New file.
+	* SuppressionsElementScanner.java: New file.
+	* SuppressionsPartitionScanner.java: New file.
+	* SuppressionsReconcilingStrategy.java: New file.
+	* SuppressionToolRule.java: New file.
+	* ValgrindEditorPlugin.java: New file.
+	

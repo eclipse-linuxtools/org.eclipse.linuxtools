@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Valgrind User Guide - General Usage</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">General Usage</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Installing.html" title="Installing">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Using-Memcheck.html" title="Using Memcheck">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Installing</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Using Memcheck</td>
+			</tr>
+		</table><hr/>
+		<h1 id="General_Usage">General Usage</h1>
+		<p>You can use the Valgrind plug-in's "one-click launch" shortcut to run a default profile. Doing so is similar to running <code>valgrind ./<i>program_name</i></code> from the command line. To use the one-click launch shortcut, right-click on the 
+			<i>project</i> or 
+			<i>binary</i> name in the 
+			<b>
+				<i>Project Explorer</i>
+			</b> window and navigate to <u>Profile As</u> &gt; <u>Profile With Valgrind</u>. If a source file belonging to that program is available on any open editor, you can also right-click inside the editor to navigate to the one-click launch.
+
+			<br/>
+			<img border="0" src="images/Shortcut.png"/>
+		</p>
+		<h2 id="Configuring_a_Profile_Run">Configuring a Profile Run</h2>
+		<p>To configure a Valgrind profile run, navigate to <u>Profile As</u> &gt; <u>Profile Configurations</u> to access the 
+			<b>
+				<i>Profile Configurations</i>
+			</b> menu. 
+			<br/>
+			<img border="0" src="images/Screenshot-ProfileConfigurations.png"/>
+		</p>
+		<p>The 
+			<b>
+				<i>Profile Configurations</i>
+			</b> menu allows you to configure a profile run with some basic Valgrind profiling options, along with the most useful options for each Valgrind tool. These settings can be configured in the 
+			<b>
+				<i>Valgrind Options</i>
+			</b> tab of a specific profile run.
+
+			<br/>
+			<img border="0" src="images/Screenshot-ProfileConfigurations-valgrind-options-tab.png"/>
+		</p>
+		<h3 id="General_Options">General Options</h3>
+		<p>The 
+			<b>
+				<i>General Options</i>
+			</b> tab allows you to configure the following options:
+		</p>
+		<ul>
+			<li>
+				<b>
+					<i>Tool to run</i>
+				</b> allows you to choose between 
+				<a href="Using-Memcheck.html#Using_Memcheck">Memcheck</a>, 
+				<a href="Using-Massif.html#Using_Massif">Massif</a>, and 
+				<a href="Using-Cachegrind.html#Using_Cachegrind">Cachegrind</a> in your profile run. By default, using the one-click shortcut will run the 
+				<a href="Using-Memcheck.html#Using_Memcheck">Memcheck</a> tool.  
+			</li>
+			<li>
+				<b>
+					<i>Trace children on exec</i>
+				</b> configures whether or not to trace into sub-processes initiated via the <code>exec</code> system call. This is identical to using the <code>--trace-children=</code> option. This is disabled by default.
+				<br/>For more details on the use of the 
+				<b>
+					<i>Trace children on exec</i>
+				</b> option for each Valgrind tool, refer to 
+				<a href="Special-Cases.html#Profiling_Child_Processes">Profiling Child Processes</a>.
+			</li>
+			<li>
+				<b>
+					<i>Run __libc_freeres on exit</i>
+				</b> configures whether or not to run a <code>__libc_freeres</code> routine after the profile run exits. This routine instructs <code>glibc</code> to release all memory it has allocated, and is similar to using the <code>--run-libc-freeres=</code> option. This is enabled by default.
+			</li>
+			<li>
+				<b>
+					<i>Child silent after fork</i>
+				</b> is enabled by default, and in most cases cannot be configured. This option disables any debugging or logging output from child processes created from a <code>fork</code> call.  
+			</li>
+			<li>
+				<b>
+					<i>Demangle C++ names</i>
+				</b> allows Valgrind to translate encoded C++ names ("mangled" by <code>g++</code> during compilation) back to something similar to their original form. This is enabled by default.
+			</li>
+			<li>
+				<b>
+					<i>Limit errors reported</i>
+				</b> instructs Valgrind to stop reporting errors after a total of 10,000,000 actual errors or 1,000 unique errors have been detected. This is enabled by default. 
+			</li>
+			<li>
+				<b>
+					<i>Callers in stack trace</i>
+				</b> configures how many levels of function call names Valgrind should use to identify program locations. By default, Valgrind uses 12 levels.
+			</li>
+			<li>
+				<b>
+					<i>Show errors below main</i>
+				</b> configures stack traces for errors should show any functions that appear beneath <code>main()</code>. This is disabled by default. 
+			</li>
+			<li>
+				<b>
+					<i>Max stack frame size</i>
+				</b> is the maximum size of a stack frame, and is set to 2000000 by default. 
+			</li>
+		</ul>
+		<p>For more information about these options, refer to <code>man valgrind</code>.</p>
+		<h3 id="Suppressions">Suppressions</h3>
+		<p>You can also configure your profile run to use a suppressions file (similar to the <code>--suppressions=</code> option. To do this, click the 
+			<b>
+				<i>Suppressions</i>
+			</b> tab.
+
+			<br/>
+			<img border="0" src="images/Screenshot-Suppressions.png"/>
+		</p>
+		<p>The <u>Workspace</u> button allows you to select a resource from the workspace as your suppressions file. To use a suppressions file outisde of the workspace, use the <u>File System</u> button.</p>
+		<h2 id="Exporting_Valgrind_Data">Exporting Valgrind Data</h2>
+		<p>To export the raw data collected during a Valgrind profile run, use the 
+			<b>
+				<i>Export</i>
+			</b> wizard menu. To access the 
+			<b>
+				<i>Export</i>
+			</b> wizard menu, navigate to <u>File</u> &gt; <u>Export</u> and select <u>Valgrind Log Files</u> under the category <u>Other</u>. 
+		</p>
+		<p>
+			<br/>
+			<img border="0" src="images/ValgrindExportWizard.png"/>
+		</p>
+		<p>Alternatively, you can also use the <u>Export Valgrind Log Files</u> icon ( 
+			<img border="0" src="images/Exportbuttonvalgrindview.gif"/> ) on the Valgrind view toolbar to access the 
+			<b>
+				<i>Export</i>
+			</b> wizard menu.
+		</p>
+		<h2 id="Other_Operating_Systems">Other Operating Systems</h2>
+		<p>The Valgrind Eclipse plugins were designed and tested on Linux systems only. However, the Valgrind tools are also available on Mac OS X and so too are the Linux Tools Eclipse Valgrind plugins. The plugins are not officially supported on Mac OS X, but here are instructions to get it working.</p>
+		<h3 id="Mac_OS_X_10.6">Mac OS X 10.6</h3>
+		<p>As of Apr 19, 2010 the official release of the Valgrind tool does not work on 10.6. However, there are patches available to make it work.</p>
+		<p>Brief instructions to compile the Valgrind tool is here: 
+			<a href="http://code.google.com/p/data-race-test/wiki/ValgrindOnSnowLeopard">http://code.google.com/p/data-race-test/wiki/ValgrindOnSnowLeopard</a>
+		</p>
+		<p>Essentially, you need to run the following script. (Ensure you have wget installed)</p>
+		<pre> svn co -r 11104 svn://svn.valgrind.org/valgrind/trunk valgrind
+ cd valgrind
+ wget http://bugs.kde.org/attachment.cgi?id=40091 -O snow-leopard.patch
+ wget http://bugsfiles.kde.org/attachment.cgi?id=40900 -O arc4random.patch
+ wget http://bugsfiles.kde.org/attachment.cgi?id=42530 -O sidt.patch 
+ wget http://bugsfiles.kde.org/attachment.cgi?id=42892 -O signal.patch
+ patch -p0 &lt; snow-leopard.patch
+ patch -p0 &lt; arc4random.patch
+ patch -p1 &lt; signal.patch
+ cd VEX; patch -p0 &lt; ../sidt.patch ; cd ..
+ touch darwin10-drd.supp
+ touch darwin10.supp
+ ./autogen.sh || autoreconf -fvi
+ ./configure --prefix=`pwd`/inst
+ make -j 8 &amp;&amp; make install
+</pre>
+		<p>Once this is done, see instructions below for other Mac OS's</p>
+		<h3 id="x86_64_Mac_OS">x86_64 Mac OS</h3>
+		<p>Valgrind is only compatible with x86 binaries on Mac OS, so if you have x86_64 you'll need to ensure that x86 binaries are being built. To do this, right click on the project and select Properties. </p>
+		<p>Within the Properties window, select C/C++ Build then add '-m32' to the Command field for the MacOS X C++ Linker, GCC C++ Compiler and GCC C Compiler. This will cause x86 binaries to be created.</p>
+		<h3 id="All_Mac_OS">All Mac OS</h3>
+		<p>First ensure you have a release of the Valgrind command-line tool installed. See 
+			<a href="http://valgrind.org/">http://valgrind.org/</a> and see above for special Valgrind instructions. After installing, you will need to create a symlink to /usr/bin/valgrind so the Valgrind plugin can find it. 
+		</p>
+		<p>Use <code>which valgrind</code> to find the install location of the Valgrind binary. </p>
+		<p><code>ln -s /usr/bin/valgrind /location/of/valgrind</code> will create the symlink.</p>
+		<p>After that, the Eclipse Valgrind plugin should work as specified in other parts of this wiki page.</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Installing.html" title="Installing">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Valgrind User Guide">
+						<img alt="Valgrind User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Using-Memcheck.html" title="Using Memcheck">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Installing</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Using Memcheck</td>
+			</tr>
+		</table>
+	</body>
+</html>

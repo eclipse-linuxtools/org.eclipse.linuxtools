@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.linuxtools.internal.valgrind.launch.remote.ValgrindRemoteLaunchDelegate"
+            id="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType"
+            modes="profile"
+            name="%launchConfigurationType.name"
+            public="true"
+            sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.linuxtools.internal.valgrind.launch.remote.ValgrindRemoteLaunchTabGroup"
+            description="%launchConfigurationTabGroup.description"
+            id="org.eclipse.linuxtools.valgrind.launch.remote.tabGroup"
+            type="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationType"
+            icon="icons/valgrind-icon.png"
+            id="org.eclipse.linuxtools.valgrind.launch.remote.launchConfigurationTypeImage1">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.eclipse.linuxtools.internal.valgrind.launch.remote.ValgrindRemoteLaunchShortcut"
+            icon="icons/valgrind-icon.png"
+            id="org.eclipse.linuxtools.valgrind.launch.remote.shortcut"
+            label="%shortcut.label"
+            modes="profile">
+      </shortcut>
+   </extension>
+
+</plugin>
