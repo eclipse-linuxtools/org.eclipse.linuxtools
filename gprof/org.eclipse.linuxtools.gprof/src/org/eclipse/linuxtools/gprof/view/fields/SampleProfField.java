@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.gprof.view.fields;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
+import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
 import org.eclipse.linuxtools.gprof.parser.GmonDecoder;
 import org.eclipse.linuxtools.gprof.parser.HistogramDecoder;
 import org.eclipse.linuxtools.gprof.view.GmonView;
@@ -28,7 +29,7 @@ import org.eclipse.swt.graphics.Color;
  *
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
-public class SampleProfField extends AbstractSTDataViewersField {
+public class SampleProfField extends AbstractSTDataViewersField implements IChartField{
 
 	private boolean samples = true;
 	protected final AbstractSTTreeViewer viewer;
@@ -119,22 +120,33 @@ public class SampleProfField extends AbstractSTDataViewersField {
 	{
 		long timeInNs = (long) (i/prof_rate);
 		long ns = timeInNs%1000;
-
 		
 		long timeInUs = timeInNs/1000;
 		if (timeInUs == 0) return ns + "ns";
 		long us = timeInUs%1000;
 		
 		long timeInMs = timeInUs/1000;
-		if (timeInMs == 0) return us + "." + ns + "us";
+		if (timeInMs == 0) {
+			String ns_s = "" + ns;
+			while (ns_s.length() < 3) ns_s = "0" + ns_s;
+			return us + "." + ns_s + "us";
+		}
 		long ms = timeInMs%1000;
 		
 		long timeInS = timeInMs/1000;
-		if (timeInS == 0) return ms + "." + us + "ms";
+		if (timeInS == 0) {
+			String us_s = "" + us;
+			while (us_s.length() < 3) us_s = "0" + us_s;
+			return ms + "." + us_s + "ms";
+		}
 		long s = timeInS%60;
 		
 		long timeInMin = timeInS/60;
-		if (timeInMin == 0) return s + "." + ms + "s";
+		if (timeInMin == 0) {
+			String ms_s = "" + ms;
+			while (ms_s.length() < 3) ms_s = "0" + ms_s;
+			return s + "." + ms_s + "s";
+		}
 		long min = timeInMin%60;
 		
 		long timeInHour = timeInMin/60;

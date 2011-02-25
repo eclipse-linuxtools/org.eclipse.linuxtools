@@ -1,20 +1,20 @@
 Hierarchy;Name (location);Time;Calls;Time/Call;%Time
-+-;Summary;0ns;;;0.0
-  +-;func_a;0ns;2;0ns;0.0
-  | +-;children;0ns;2;0ns;0.0
-  | | +-;func_f (foox.c:29);0ns;2;0ns;0.0
-  | +-;parents;0ns;2;0ns;0.0
-  |   +-;func_b (foox.c:53);0ns;1;0ns;0.0
++-;Summary;90.000ms;;;100.0
+  +-;func_a;50.000ms;2;25.000ms;55.555557
+  | +-;children;20.000ms;2;10.000ms;22.222221
+  | | +-;func_f (foox.c:29);20.000ms;2;10.000ms;22.222221
+  | +-;parents;20.000ms;2;10.000ms;22.222221
+  |   +-;func_b (foox.c:53);20.000ms;1;20.000ms;22.222221
   |   +-;main (foox.c:62);0ns;1;0ns;0.0
-  +-;func_b;0ns;1;0ns;0.0
-  | +-;children;0ns;1;0ns;0.0
-  | | +-;func_a (foox.c:36);0ns;1;0ns;0.0
+  +-;func_b;20.000ms;1;20.000ms;22.222221
+  | +-;children;50.000ms;1;50.000ms;55.555557
+  | | +-;func_a (foox.c:36);50.000ms;1;50.000ms;55.555557
   | +-;parents;0ns;1;0ns;0.0
   |   +-;main (foox.c:64);0ns;1;0ns;0.0
-  +-;func_f;0ns;2;0ns;0.0
-  | +-;parents;0ns;2;0ns;0.0
-  |   +-;func_a (foox.c:41);0ns;2;0ns;0.0
+  +-;func_f;20.000ms;2;10.000ms;22.222221
+  | +-;parents;50.000ms;2;25.000ms;55.555557
+  |   +-;func_a (foox.c:41);50.000ms;2;25.000ms;55.555557
   +-;main;0ns;0;;0.0
-    +-;children;0ns;2;0ns;0.0
-      +-;func_a (foox.c:36);0ns;1;0ns;0.0
-      +-;func_b (foox.c:50);0ns;1;0ns;0.0
+    +-;children;70.000ms;2;35.000ms;77.77778
+      +-;func_a (foox.c:36);50.000ms;1;50.000ms;55.555557
+      +-;func_b (foox.c:50);20.000ms;1;20.000ms;22.222221

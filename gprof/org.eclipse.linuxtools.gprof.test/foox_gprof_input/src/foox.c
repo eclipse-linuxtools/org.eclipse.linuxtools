@@ -5,7 +5,7 @@ int func_b(int pb);
 int func_a(int pa);
 int dead_func(int pf);
 
-#define TIMEBASE 1
+#define TIMEBASE 300
 
 #define TEMPO(TJ,TI, IN, OUT) { \
   volatile double d1 = 0;\
