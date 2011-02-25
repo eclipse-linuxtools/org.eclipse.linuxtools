@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.gprof.view.fields;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTDataViewersField;
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTTreeViewer;
+import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
 import org.eclipse.linuxtools.gprof.parser.GmonDecoder;
 import org.eclipse.linuxtools.gprof.parser.HistogramDecoder;
 import org.eclipse.linuxtools.gprof.view.GmonView;
@@ -28,7 +29,7 @@ import org.eclipse.swt.graphics.Color;
  *
  * @author Xavier Raynaud <xavier.raynaud@st.com>
  */
-public class SampleProfField extends AbstractSTDataViewersField {
+public class SampleProfField extends AbstractSTDataViewersField implements IChartField{
 
 	private boolean samples = true;
 	protected final AbstractSTTreeViewer viewer;

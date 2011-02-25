@@ -1,6 +1,6 @@
 #include <math.h>
 
-#define TIMEBASE 1
+#define TIMEBASE 100
 
 #define TEMPO(TJ,TI, IN, OUT) { \
   volatile double d1 = 0;\

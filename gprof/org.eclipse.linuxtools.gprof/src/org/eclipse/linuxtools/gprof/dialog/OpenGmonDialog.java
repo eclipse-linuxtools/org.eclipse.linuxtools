@@ -109,14 +109,14 @@ public class OpenGmonDialog extends Dialog {
     	/* first line */
         Group c = new Group(composite, SWT.NONE);
         c.setText("Binary File");
-        c.setToolTipText("Please enter here the binary file who produced the trace.");
+        c.setToolTipText("Please enter here the binary file which produced the profile data.");
         GridLayout layout = new GridLayout(2,false);
         c.setLayout(layout);
         GridData data = new GridData(GridData.FILL_BOTH);
         c.setLayoutData(data);
         
         Label binLabel = new Label(c,SWT.NONE);
-        binLabel.setText("Please enter here the binary file who produced the trace");
+        binLabel.setText("Please enter here the binary file which produced the profile data.");
         data = new GridData();
         data.horizontalSpan = 2;
         binLabel.setLayoutData(data);

@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractPercentageDrawerField;
+import org.eclipse.linuxtools.dataviewers.charts.provider.IChartField;
 import org.eclipse.linuxtools.gprof.view.histogram.TreeElement;
 
 
@@ -23,7 +24,7 @@ import org.eclipse.linuxtools.gprof.view.histogram.TreeElement;
  *
  * @author Mohamed Korbosli
  */
-public class RatioProfField extends AbstractPercentageDrawerField {
+public class RatioProfField extends AbstractPercentageDrawerField implements IChartField{
 	
 	/** Format to use to display percentages */
 	public final static NumberFormat nf = new DecimalFormat("##0.0#");

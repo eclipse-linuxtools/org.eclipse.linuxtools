@@ -6,8 +6,8 @@ tag 0
 Histogram Header : 
 
   Base pc address of sample buffer = 0x804852c
-  Max pc address of sampled buffer = 0x8048ee8
-  Number of histogram samples      = 623
+  Max pc address of sampled buffer = 0x8048e6c
+  Number of histogram samples      = 592
   Profiling clock rate             = 100
   Physical dimension abreviation : 's' for "seconds"  'm' for "milliseconds" = s
 
@@ -17,8 +17,8 @@ Histogram Header :
 Histogram Header : 
 
   Base pc address of sample buffer = 0x804852c
-  Max pc address of sampled buffer = 0x8048ee8
-  Number of histogram samples      = 623
+  Max pc address of sampled buffer = 0x8048e6c
+  Number of histogram samples      = 592
   Profiling clock rate             = 100
   Physical dimension abreviation : 's' for "seconds"  'm' for "milliseconds" = s
 -- gmon Results --

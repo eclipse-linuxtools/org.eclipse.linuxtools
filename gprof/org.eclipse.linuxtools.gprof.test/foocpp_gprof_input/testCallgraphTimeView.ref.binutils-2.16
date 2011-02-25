@@ -24,7 +24,7 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   |   +-;main (foox.cpp:109);0ns;1;0ns;0.0
   +-;B::foocpp::func_b(int);20.0ms;1;20.0ms;66.666664
   | +-;children;10.0ms;1;10.0ms;33.333332
-  | | +-;A::foocpp::func_a(int) (foox.cpp:54);10.0ms;1;10.0ms;33.333332
+  | | +-;A::foocpp::func_a(int) (foox.cpp:99);10.0ms;1;10.0ms;33.333332
   | +-;parents;0ns;1;0ns;0.0
   |   +-;main (foox.cpp:115);0ns;1;0ns;0.0
   +-;B::foocpp::~foocpp();0ns;1;0ns;0.0
@@ -35,8 +35,8 @@ Hierarchy;Name (location);Time;Calls;Time/Call;%Time
   +-;main;0ns;0;;0.0
     +-;children;30.0ms;6;5.0ms;100.0
       +-;A::foocpp::foocpp() (foox.cpp:42);0ns;1;0ns;0.0
-      +-;A::foocpp::func_a(int) (foox.cpp:54);10.0ms;1;10.0ms;33.333332
+      +-;A::foocpp::func_a(int) (foox.cpp:99);10.0ms;1;10.0ms;33.333332
       +-;A::foocpp::~foocpp() (foox.cpp:44);0ns;1;0ns;0.0
-      +-;B::foocpp::foocpp() (foox.cpp:81);0ns;1;0ns;0.0
-      +-;B::foocpp::func_b(int) (foox.cpp:91);20.0ms;1;20.0ms;66.666664
+      +-;B::foocpp::foocpp() (foox.cpp:42);0ns;1;0ns;0.0
+      +-;B::foocpp::func_b(int) (foox.cpp:44);20.0ms;1;20.0ms;66.666664
       +-;B::foocpp::~foocpp() (foox.cpp:86);0ns;1;0ns;0.0

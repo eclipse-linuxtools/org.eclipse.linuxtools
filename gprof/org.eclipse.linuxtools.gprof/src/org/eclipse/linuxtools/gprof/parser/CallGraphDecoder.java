@@ -31,7 +31,7 @@ import org.eclipse.linuxtools.gprof.view.histogram.HistRoot;
  */
 public class CallGraphDecoder {
 
-	private final GmonDecoder decoder;
+	protected final GmonDecoder decoder;
 	
 	
 	private final Map<ISymbol, CallGraphNode> nodes = new HashMap<ISymbol, CallGraphNode>();
@@ -54,6 +54,8 @@ public class CallGraphDecoder {
 		int _self_pc = stream.readInt();
 		long from_pc = _from_pc & 0xFFFFFFFFL;
 		long self_pc = _self_pc & 0xFFFFFFFFL;
+		//long from_pc = stream.readLong();
+		//long self_pc = stream.readLong();
 		int count    = stream.readInt();
 		IBinaryObject program = decoder.getProgram();
 		IAddressFactory addressFactory = program.getAddressFactory();
@@ -67,7 +69,7 @@ public class CallGraphDecoder {
 		addCallArc(parentSymbol, parentAddress, childSymbol, count);
 	}
 	
-	private void addCallArc(ISymbol parent, IAddress parentAddress, ISymbol child, int count)
+	public void addCallArc(ISymbol parent, IAddress parentAddress, ISymbol child, int count)
 	{
 		CallGraphNode parentNode = nodes.get(parent);
 		CallGraphNode childNode  = nodes.get(child);
