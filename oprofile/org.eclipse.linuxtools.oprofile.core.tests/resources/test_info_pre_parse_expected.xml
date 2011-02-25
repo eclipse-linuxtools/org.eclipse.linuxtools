@@ -1,0 +1,5048 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+	<num-counters>2</num-counters>
+	<cpu-frequency>1995</cpu-frequency>
+	<defaults>
+		<sample-dir>/var/lib/oprofile/samples/</sample-dir>
+		<lock-file>/var/lib/oprofile/lock</lock-file>
+		<log-file>/var/lib/oprofile/samples/oprofiled.log</log-file>
+		<dump-status>/var/lib/oprofile/complete_dump</dump-status>
+	</defaults>
+	<timer-mode>false</timer-mode>
+	<event-list counter="0">
+		<event>
+			<name>CPU_CLK_UNHALTED</name>
+			<description>Clock cycles when not halted</description>
+			<value>60</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>Unhalted core cycles</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>Unhalted bus cycles</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Unhalted bus cycles of this core while the other core is halted</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>INST_RETIRED_ANY_P</name>
+			<description>number of instructions retired</description>
+			<value>192</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_RQSTS</name>
+			<description>number of L2 cache requests</description>
+			<value>46</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>127</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LLC_MISSES</name>
+			<description>L2 cache demand requests from this core that missed the L2</description>
+			<value>46</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>65</default>
+				<mask>
+					<value>65</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LLC_REFS</name>
+			<description>L2 cache demand requests from this core</description>
+			<value>46</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>79</default>
+				<mask>
+					<value>79</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LOAD_BLOCK</name>
+			<description>events pertaining to loads</description>
+			<value>3</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>62</default>
+				<mask>
+					<value>2</value>
+					<description>STA  Loads blocked by a preceding store with unknown address.</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>STD  Loads blocked by a preceding store with unknown data.</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>OVERLAP_STORE  Loads that partially overlap an earlier store, or 4K aliased with a previous store.</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>UNTIL_RETIRE  Loads blocked until retirement.</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>L1D  Loads blocked by the L1 data cache.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>STORE_BLOCK</name>
+			<description>events pertaining to stores</description>
+			<value>4</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>11</default>
+				<mask>
+					<value>1</value>
+					<description>SB_DRAIN_CYCLES	Cycles while stores are blocked due to store buffer drain.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ORDER	Cycles while store is waiting for a preceding store to be globally observed.</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>NOOP	A store is blocked due to a conflict with an external or internal snoop.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MISALIGN_MEM_REF</name>
+			<description>number of misaligned data memory references</description>
+			<value>5</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SEGMENT_REG_LOADS</name>
+			<description>number of segment register loads</description>
+			<value>6</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SSE_PRE_EXEC</name>
+			<description>number of SSE pre-fetch/weakly ordered insns retired</description>
+			<value>7</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>prefetch NTA instructions executed.</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>prefetch T1 instructions executed.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>prefetch T1 and T2 instructions executed.</description>
+				</mask>
+				<mask>
+					<value>3</value>
+					<description>SSE weakly-ordered stores</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>DTLB_MISSES</name>
+			<description>DTLB miss events</description>
+			<value>8</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ANY	Memory accesses that missed the DTLB.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>MISS_LD	DTLB misses due to load operations.</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>L0_MISS_LD L0 DTLB misses due to load operations.</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>MISS_ST	TLB misses due to store operations.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MEMORY_DISAMBIGUATION</name>
+			<description>Memory disambiguation reset cycles.</description>
+			<value>9</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>RESET	Memory disambiguation reset cycles.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>SUCCESS	Number of loads that were successfully disambiguated.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>PAGE_WALKS</name>
+			<description>Page table walk events</description>
+			<value>12</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>2</default>
+				<mask>
+					<value>1</value>
+					<description>COUNT	Number of page-walks executed.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>CYCLES	Duration of page-walks in core cycles.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>FLOPS</name>
+			<description>number of FP computational micro-ops executed</description>
+			<value>16</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>FP_ASSIST</name>
+			<description>number of FP assists</description>
+			<value>17</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MUL</name>
+			<description>number of multiplies</description>
+			<value>18</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>DIV</name>
+			<description>number of divides</description>
+			<value>19</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>CYCLES_DIV_BUSY</name>
+			<description>cycles divider is busy</description>
+			<value>20</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>IDLE_DURING_DIV</name>
+			<description>cycles divider is busy and all other execution units are idle.</description>
+			<value>24</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>DELAYED_BYPASS</name>
+			<description>Delayed bypass events</description>
+			<value>25</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>FP		Delayed bypass to FP operation.</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>SIMD	Delayed bypass to SIMD operation.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>LOAD	Delayed bypass to load operation.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_ADS</name>
+			<description>Cycles the L2 address bus is in use.</description>
+			<value>33</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_DBUS_BUSY_RD</name>
+			<description>Cycles the L2 transfers data to the core.</description>
+			<value>35</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LINES_IN</name>
+			<description>number of allocated lines in L2</description>
+			<value>36</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>112</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_M_LINES_IN</name>
+			<description>number of modified lines allocated in L2</description>
+			<value>37</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LINES_OUT</name>
+			<description>number of recovered lines from L2</description>
+			<value>38</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>112</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_M_LINES_OUT</name>
+			<description>number of modified lines removed from L2</description>
+			<value>39</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>112</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_IFETCH</name>
+			<description>number of L2 cacheable instruction fetches</description>
+			<value>40</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>79</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LD</name>
+			<description>number of L2 data loads</description>
+			<value>41</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>127</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_ST</name>
+			<description>number of L2 data stores</description>
+			<value>42</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>79</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LOCK</name>
+			<description>number of locked L2 data accesses</description>
+			<value>43</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>79</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_REJECT_BUSQ</name>
+			<description>Rejected L2 cache requests</description>
+			<value>48</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>127</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_NO_REQ</name>
+			<description>Cycles no L2 cache requests are pending</description>
+			<value>50</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>EIST_TRANS_ALL</name>
+			<description>Intel(tm) Enhanced SpeedStep(r) Technology transitions</description>
+			<value>58</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>THERMAL_TRIP</name>
+			<description>Number of thermal trips</description>
+			<value>59</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>192</default>
+				<mask>
+					<value>192</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_LD</name>
+			<description>L1 cacheable data read operations</description>
+			<value>64</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_ST</name>
+			<description>L1 cacheable data write operations</description>
+			<value>65</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_LOCK</name>
+			<description>L1 cacheable lock read operations</description>
+			<value>66</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_LOCK_DURATION</name>
+			<description>Duration of L1 data cacheable locked operations</description>
+			<value>66</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>16</default>
+				<mask>
+					<value>16</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_ALL_REF</name>
+			<description>All references to the L1 data cache</description>
+			<value>67</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>16</default>
+				<mask>
+					<value>16</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_ALL_CACHE_REF</name>
+			<description>L1 data cacheable reads and writes</description>
+			<value>67</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>2</default>
+				<mask>
+					<value>2</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_REPL</name>
+			<description>Cache lines allocated in the L1 data cache</description>
+			<value>69</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>15</default>
+				<mask>
+					<value>15</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_M_REPL</name>
+			<description>Modified cache lines allocated in the L1 data cache</description>
+			<value>70</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_M_EVICT</name>
+			<description>Modified cache lines evicted from the L1 data cache</description>
+			<value>71</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_PEND_MISS</name>
+			<description>Total number of outstanding L1 data cache misses at any cycle</description>
+			<value>72</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_SPLIT</name>
+			<description>Cache line split load/stores</description>
+			<value>73</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>split loads</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>split stores</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SSE_PREF_MISS</name>
+			<description>SSE instructions that missed all caches</description>
+			<value>75</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>PREFETCHNTA</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>PREFETCHT0</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>PREFETCHT1/PREFETCHT2</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LOAD_HIT_PRE</name>
+			<description>Load operations conflicting with a software prefetch to the same address</description>
+			<value>76</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_PREFETCH</name>
+			<description>L1 data cache prefetch requests</description>
+			<value>78</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>16</default>
+				<mask>
+					<value>16</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_REQ_OUTSTANDING</name>
+			<description>Outstanding cacheable data read bus requests duration</description>
+			<value>96</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_BNR_DRV</name>
+			<description>Number of Bus Not Ready signals asserted</description>
+			<value>97</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_DRDY_CLOCKS</name>
+			<description>Bus cycles when data is sent on the bus</description>
+			<value>98</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_LOCK_CLOCKS</name>
+			<description>Bus cycles when a LOCK signal is asserted</description>
+			<value>99</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_DATA_RCV</name>
+			<description>Bus cycles while processor receives data</description>
+			<value>100</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_BRD</name>
+			<description>Burst read bus transactions</description>
+			<value>101</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_RFO</name>
+			<description>number of completed read for ownership transactions</description>
+			<value>102</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_WB</name>
+			<description>number of explicit writeback bus transactions</description>
+			<value>103</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_IFETCH</name>
+			<description>number of instruction fetch transactions</description>
+			<value>104</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_INVAL</name>
+			<description>number of invalidate transactions</description>
+			<value>105</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_PWR</name>
+			<description>number of partial write bus transactions</description>
+			<value>106</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRANS_P</name>
+			<description>number of partial bus transactions</description>
+			<value>107</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRANS_IO</name>
+			<description>number of I/O bus transactions</description>
+			<value>108</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRANS_DEF</name>
+			<description>number of completed defer transactions</description>
+			<value>109</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_BURST</name>
+			<description>number of completed burst transactions</description>
+			<value>110</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_MEM</name>
+			<description>number of completed memory transactions</description>
+			<value>111</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_ANY</name>
+			<description>number of any completed bus transactions</description>
+			<value>112</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>EXT_SNOOP</name>
+			<description>External snoops</description>
+			<value>119</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>11</default>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>snoop: HITM snoops</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>snoop: HIT snoops</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>snoop: CLEAN snoops</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>CMP_SNOOP</name>
+			<description>L1 data cache is snooped by other core</description>
+			<value>120</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>snoop: CMP2I snoops</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>snoop: CMP2S snoops</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_HIT_DRV</name>
+			<description>HIT signal asserted</description>
+			<value>122</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_HITM_DRV</name>
+			<description>HITM signal asserted</description>
+			<value>123</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUSQ_EMPTY</name>
+			<description>Bus queue is empty</description>
+			<value>125</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SNOOP_STALL_DRV</name>
+			<description>Bus stalled for snoops</description>
+			<value>126</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_IO_WAIT</name>
+			<description>IO requests waiting in the bus queue</description>
+			<value>127</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1I_READS</name>
+			<description>number of instruction fetches</description>
+			<value>128</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1I_MISSES</name>
+			<description>number of instruction fetch misses</description>
+			<value>129</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>ITLB</name>
+			<description>number of ITLB misses</description>
+			<value>130</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>18</default>
+				<mask>
+					<value>2</value>
+					<description>ITLB small page misses</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>ITLB large page misses</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>ITLB flushes</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>INST_QUEUE_FULL</name>
+			<description>cycles during which the instruction queue is full</description>
+			<value>131</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>2</default>
+				<mask>
+					<value>2</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>IFU_MEM_STALL</name>
+			<description>cycles instruction fetch pipe is stalled</description>
+			<value>134</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>ILD_STALL</name>
+			<description>cycles instruction length decoder is stalled</description>
+			<value>135</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_INST_EXEC</name>
+			<description>Branch instructions executed (not necessarily retired)</description>
+			<value>136</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_MISSP_EXEC</name>
+			<description>Branch instructions executed that were mispredicted at execution</description>
+			<value>137</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_BAC_MISSP_EXEC</name>
+			<description>Branch instructions executed that were mispredicted at Front End (BAC)</description>
+			<value>138</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CND_EXEC</name>
+			<description>Conditional Branch instructions executed</description>
+			<value>139</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CND_MISSP_EXEC</name>
+			<description>Conditional Branch instructions executed that were mispredicted</description>
+			<value>140</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_IND_EXEC</name>
+			<description>Indirect Branch instructions executed</description>
+			<value>141</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_IND_MISSP_EXEC</name>
+			<description>Indirect Branch instructions executed that were mispredicted</description>
+			<value>142</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_RET_EXEC</name>
+			<description>Return Branch instructions executed</description>
+			<value>143</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_RET_MISSP_EXEC</name>
+			<description>Return Branch instructions executed that were mispredicted at Execution</description>
+			<value>144</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_RET_BAC_MISSP_EXEC</name>
+			<description>Branch instructions executed that were mispredicted at Front End (BAC)</description>
+			<value>145</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CALL_EXEC</name>
+			<description>CALL instruction executed</description>
+			<value>146</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CALL_MISSP_EXEC</name>
+			<description>CALL instruction executed and miss predicted</description>
+			<value>147</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_IND_CALL_EXEC</name>
+			<description>Indirect CALL instruction executed</description>
+			<value>148</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_TKN_BUBBLE_1</name>
+			<description>Branch predicted taken with bubble 1</description>
+			<value>151</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_TKN_BUBBLE_2</name>
+			<description>Branch predicted taken with bubble 2</description>
+			<value>152</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RS_UOPS_DISPATCHED</name>
+			<description>Micro-ops dispatched for execution</description>
+			<value>160</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RS_UOPS_DISPATCHED_NONE</name>
+			<description>No Micro-ops dispatched for execution</description>
+			<value>25165984</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MACRO_INSTS</name>
+			<description>instructions decoded</description>
+			<value>170</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>9</default>
+				<mask>
+					<value>1</value>
+					<description>Instructions decoded</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>CISC Instructions decoded</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>ESP</name>
+			<description>ESP register events</description>
+			<value>171</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>ESP register content synchronizations</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ESP register automatic additions</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_UOPS_EXEC</name>
+			<description>SIMD micro-ops executed (excluding stores)</description>
+			<value>176</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_SAT_UOP_EXEC</name>
+			<description>number of SIMD saturating instructions executed</description>
+			<value>177</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_UOP_TYPE_EXEC</name>
+			<description>number of SIMD packing instructions</description>
+			<value>179</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>63</default>
+				<mask>
+					<value>1</value>
+					<description>SIMD packed multiplies</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>SIMD packed shifts</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>SIMD pack operations</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>SIMD unpack operations</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>SIMD packed logical</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>SIMD packed arithmetic</description>
+				</mask>
+				<mask>
+					<value>63</value>
+					<description>all of the above</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>INST_RETIRED</name>
+			<description>number of instructions retired</description>
+			<value>192</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>Any</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>Loads</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Stores</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Other</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>X87_OPS_RETIRED</name>
+			<description>number of computational FP operations retired</description>
+			<value>193</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>254</default>
+				<mask>
+					<value>1</value>
+					<description>FXCH instructions retired</description>
+				</mask>
+				<mask>
+					<value>254</value>
+					<description>Retired floating-point computational operations (precise)</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>UOPS_RETIRED</name>
+			<description>number of UOPs retired</description>
+			<value>194</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>Fused load+op or load+indirect branch retired</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Fused store address + data retired</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Retired instruction pairs fused into one micro-op</description>
+				</mask>
+				<mask>
+					<value>7</value>
+					<description>Fused micro-ops retired</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>Non-fused micro-ops retired</description>
+				</mask>
+				<mask>
+					<value>15</value>
+					<description>Micro-ops retired</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MACHINE_NUKES_SMC</name>
+			<description>number of pipeline flushing events</description>
+			<value>195</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>5</default>
+				<mask>
+					<value>1</value>
+					<description>Self-Modifying Code detected</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Execution pipeline restart due to memory ordering conflict or memory disambiguation misprediction</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_INST_RETIRED</name>
+			<description>number of branch instructions retired</description>
+			<value>196</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>10</default>
+				<mask>
+					<value>1</value>
+					<description>predicted not-taken</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>mispredicted not-taken</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>predicted taken</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>mispredicted taken</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_MISS_PRED_RETIRED</name>
+			<description>number of mispredicted branches retired (precise)</description>
+			<value>197</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>CYCLES_INT_MASKED</name>
+			<description>cycles interrupts are disabled</description>
+			<value>198</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>2</default>
+				<mask>
+					<value>1</value>
+					<description>Interrupts disabled</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Interrupts pending and disabled</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_INST_RETIRED</name>
+			<description>SSE/SSE2 instructions retired</description>
+			<value>199</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>31</default>
+				<mask>
+					<value>1</value>
+					<description>Retired SSE packed-single instructions</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Retired SSE scalar-single instructions</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Retired SSE2 packed-double instructions</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>Retired SSE2 scalar-double instructions</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>Retired SSE2 vector integer instructions</description>
+				</mask>
+				<mask>
+					<value>31</value>
+					<description>Retired Streaming SIMD instructions (precise event)</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>HW_INT_RCV</name>
+			<description>number of hardware interrupts received</description>
+			<value>200</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>ITLB_MISS_RETIRED</name>
+			<description>Retired instructions that missed the ITLB</description>
+			<value>201</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_COMP_INST_RETIRED</name>
+			<description>Retired computational SSE/SSE2 instructions</description>
+			<value>202</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>Retired computational SSE packed-single instructions</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Retired computational SSE scalar-single instructions</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Retired computational SSE2 packed-double instructions</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>Retired computational SSE2 scalar-double instructions</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MEM_LOAD_RETIRED</name>
+			<description>Retired loads</description>
+			<value>203</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>Retired loads that miss the L1 data cache (precise event)</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>L1 data cache line missed by retired loads (precise event)</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Retired loads that miss the L2 cache (precise event)</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>L2 cache line missed by retired loads (precise event)</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>Retired loads that miss the DTLB (precise event)</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>FP_MMX_TRANS</name>
+			<description>MMX-floating point transitions</description>
+			<value>204</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>3</default>
+				<mask>
+					<value>1</value>
+					<description>float-&gt;MMX transitions</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>MMX-&gt;float transitions</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MMX_ASSIST</name>
+			<description>number of EMMS instructions executed</description>
+			<value>205</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_INSTR_RET</name>
+			<description>number of SIMD instructions retired</description>
+			<value>206</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_SAT_INSTR_RET</name>
+			<description>number of saturated arithmetic instructions retired</description>
+			<value>207</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RAT_STALLS</name>
+			<description>Partial register stall cycles</description>
+			<value>210</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ROB read port</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Partial register</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Flag</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>FPU status word</description>
+				</mask>
+				<mask>
+					<value>15</value>
+					<description>All RAT</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SEG_RENAME_STALLS</name>
+			<description>Segment rename stalls</description>
+			<value>212</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ES</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>DS</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>FS</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>GS</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SEG_RENAMES</name>
+			<description>Segment renames</description>
+			<value>213</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ES</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>DS</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>FS</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>GS</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RESOURCE_STALLS</name>
+			<description>Cycles during which resource stalls occur</description>
+			<value>220</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>when the ROB is full</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>during which the RS is full</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>during which the pipeline has exceeded the load or store limit or is waiting to commit all stores</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>due to FPU control word write</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>due to branch misprediction</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_INST_DECODED</name>
+			<description>number of branch instructions decoded</description>
+			<value>224</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_BOGUS</name>
+			<description>number of bogus branches</description>
+			<value>228</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BACLEARS</name>
+			<description>number of times BACLEAR is asserted</description>
+			<value>230</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>PREF_RQSTS_UP</name>
+			<description>Number of upward prefetches issued</description>
+			<value>240</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>PREF_RQSTS_DN</name>
+			<description>Number of downward prefetches issued</description>
+			<value>248</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+	</event-list>
+	<event-list counter="1">
+		<event>
+			<name>CPU_CLK_UNHALTED</name>
+			<description>Clock cycles when not halted</description>
+			<value>60</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>Unhalted core cycles</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>Unhalted bus cycles</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Unhalted bus cycles of this core while the other core is halted</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>INST_RETIRED_ANY_P</name>
+			<description>number of instructions retired</description>
+			<value>192</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_RQSTS</name>
+			<description>number of L2 cache requests</description>
+			<value>46</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>127</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LLC_MISSES</name>
+			<description>L2 cache demand requests from this core that missed the L2</description>
+			<value>46</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>65</default>
+				<mask>
+					<value>65</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LLC_REFS</name>
+			<description>L2 cache demand requests from this core</description>
+			<value>46</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>79</default>
+				<mask>
+					<value>79</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LOAD_BLOCK</name>
+			<description>events pertaining to loads</description>
+			<value>3</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>62</default>
+				<mask>
+					<value>2</value>
+					<description>STA  Loads blocked by a preceding store with unknown address.</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>STD  Loads blocked by a preceding store with unknown data.</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>OVERLAP_STORE  Loads that partially overlap an earlier store, or 4K aliased with a previous store.</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>UNTIL_RETIRE  Loads blocked until retirement.</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>L1D  Loads blocked by the L1 data cache.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>STORE_BLOCK</name>
+			<description>events pertaining to stores</description>
+			<value>4</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>11</default>
+				<mask>
+					<value>1</value>
+					<description>SB_DRAIN_CYCLES	Cycles while stores are blocked due to store buffer drain.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ORDER	Cycles while store is waiting for a preceding store to be globally observed.</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>NOOP	A store is blocked due to a conflict with an external or internal snoop.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MISALIGN_MEM_REF</name>
+			<description>number of misaligned data memory references</description>
+			<value>5</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SEGMENT_REG_LOADS</name>
+			<description>number of segment register loads</description>
+			<value>6</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SSE_PRE_EXEC</name>
+			<description>number of SSE pre-fetch/weakly ordered insns retired</description>
+			<value>7</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>prefetch NTA instructions executed.</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>prefetch T1 instructions executed.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>prefetch T1 and T2 instructions executed.</description>
+				</mask>
+				<mask>
+					<value>3</value>
+					<description>SSE weakly-ordered stores</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>DTLB_MISSES</name>
+			<description>DTLB miss events</description>
+			<value>8</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ANY	Memory accesses that missed the DTLB.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>MISS_LD	DTLB misses due to load operations.</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>L0_MISS_LD L0 DTLB misses due to load operations.</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>MISS_ST	TLB misses due to store operations.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MEMORY_DISAMBIGUATION</name>
+			<description>Memory disambiguation reset cycles.</description>
+			<value>9</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>RESET	Memory disambiguation reset cycles.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>SUCCESS	Number of loads that were successfully disambiguated.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>PAGE_WALKS</name>
+			<description>Page table walk events</description>
+			<value>12</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>2</default>
+				<mask>
+					<value>1</value>
+					<description>COUNT	Number of page-walks executed.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>CYCLES	Duration of page-walks in core cycles.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>FLOPS</name>
+			<description>number of FP computational micro-ops executed</description>
+			<value>16</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>FP_ASSIST</name>
+			<description>number of FP assists</description>
+			<value>17</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MUL</name>
+			<description>number of multiplies</description>
+			<value>18</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>DIV</name>
+			<description>number of divides</description>
+			<value>19</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>CYCLES_DIV_BUSY</name>
+			<description>cycles divider is busy</description>
+			<value>20</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>IDLE_DURING_DIV</name>
+			<description>cycles divider is busy and all other execution units are idle.</description>
+			<value>24</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>DELAYED_BYPASS</name>
+			<description>Delayed bypass events</description>
+			<value>25</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>FP		Delayed bypass to FP operation.</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>SIMD	Delayed bypass to SIMD operation.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>LOAD	Delayed bypass to load operation.</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_ADS</name>
+			<description>Cycles the L2 address bus is in use.</description>
+			<value>33</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_DBUS_BUSY_RD</name>
+			<description>Cycles the L2 transfers data to the core.</description>
+			<value>35</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LINES_IN</name>
+			<description>number of allocated lines in L2</description>
+			<value>36</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>112</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_M_LINES_IN</name>
+			<description>number of modified lines allocated in L2</description>
+			<value>37</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LINES_OUT</name>
+			<description>number of recovered lines from L2</description>
+			<value>38</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>112</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_M_LINES_OUT</name>
+			<description>number of modified lines removed from L2</description>
+			<value>39</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>112</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_IFETCH</name>
+			<description>number of L2 cacheable instruction fetches</description>
+			<value>40</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>79</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LD</name>
+			<description>number of L2 data loads</description>
+			<value>41</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>127</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_ST</name>
+			<description>number of L2 data stores</description>
+			<value>42</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>79</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LOCK</name>
+			<description>number of locked L2 data accesses</description>
+			<value>43</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>79</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_REJECT_BUSQ</name>
+			<description>Rejected L2 cache requests</description>
+			<value>48</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>127</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_NO_REQ</name>
+			<description>Cycles no L2 cache requests are pending</description>
+			<value>50</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>EIST_TRANS_ALL</name>
+			<description>Intel(tm) Enhanced SpeedStep(r) Technology transitions</description>
+			<value>58</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>THERMAL_TRIP</name>
+			<description>Number of thermal trips</description>
+			<value>59</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>192</default>
+				<mask>
+					<value>192</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_LD</name>
+			<description>L1 cacheable data read operations</description>
+			<value>64</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_ST</name>
+			<description>L1 cacheable data write operations</description>
+			<value>65</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_LOCK</name>
+			<description>L1 cacheable lock read operations</description>
+			<value>66</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>8</value>
+					<description>(M)ESI: Modified</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>M(E)SI: Exclusive</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ME(S)I: Shared</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>MES(I): Invalid</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_CACHE_LOCK_DURATION</name>
+			<description>Duration of L1 data cacheable locked operations</description>
+			<value>66</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>16</default>
+				<mask>
+					<value>16</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_ALL_REF</name>
+			<description>All references to the L1 data cache</description>
+			<value>67</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>16</default>
+				<mask>
+					<value>16</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_ALL_CACHE_REF</name>
+			<description>L1 data cacheable reads and writes</description>
+			<value>67</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>2</default>
+				<mask>
+					<value>2</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_REPL</name>
+			<description>Cache lines allocated in the L1 data cache</description>
+			<value>69</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>15</default>
+				<mask>
+					<value>15</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_M_REPL</name>
+			<description>Modified cache lines allocated in the L1 data cache</description>
+			<value>70</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_M_EVICT</name>
+			<description>Modified cache lines evicted from the L1 data cache</description>
+			<value>71</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_PEND_MISS</name>
+			<description>Total number of outstanding L1 data cache misses at any cycle</description>
+			<value>72</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_SPLIT</name>
+			<description>Cache line split load/stores</description>
+			<value>73</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>split loads</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>split stores</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SSE_PREF_MISS</name>
+			<description>SSE instructions that missed all caches</description>
+			<value>75</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>PREFETCHNTA</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>PREFETCHT0</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>PREFETCHT1/PREFETCHT2</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>LOAD_HIT_PRE</name>
+			<description>Load operations conflicting with a software prefetch to the same address</description>
+			<value>76</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1D_PREFETCH</name>
+			<description>L1 data cache prefetch requests</description>
+			<value>78</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>16</default>
+				<mask>
+					<value>16</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_REQ_OUTSTANDING</name>
+			<description>Outstanding cacheable data read bus requests duration</description>
+			<value>96</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_BNR_DRV</name>
+			<description>Number of Bus Not Ready signals asserted</description>
+			<value>97</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_DRDY_CLOCKS</name>
+			<description>Bus cycles when data is sent on the bus</description>
+			<value>98</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_LOCK_CLOCKS</name>
+			<description>Bus cycles when a LOCK signal is asserted</description>
+			<value>99</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_DATA_RCV</name>
+			<description>Bus cycles while processor receives data</description>
+			<value>100</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_BRD</name>
+			<description>Burst read bus transactions</description>
+			<value>101</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_RFO</name>
+			<description>number of completed read for ownership transactions</description>
+			<value>102</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_WB</name>
+			<description>number of explicit writeback bus transactions</description>
+			<value>103</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_IFETCH</name>
+			<description>number of instruction fetch transactions</description>
+			<value>104</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_INVAL</name>
+			<description>number of invalidate transactions</description>
+			<value>105</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_PWR</name>
+			<description>number of partial write bus transactions</description>
+			<value>106</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRANS_P</name>
+			<description>number of partial bus transactions</description>
+			<value>107</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRANS_IO</name>
+			<description>number of I/O bus transactions</description>
+			<value>108</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRANS_DEF</name>
+			<description>number of completed defer transactions</description>
+			<value>109</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_BURST</name>
+			<description>number of completed burst transactions</description>
+			<value>110</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_MEM</name>
+			<description>number of completed memory transactions</description>
+			<value>111</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_TRAN_ANY</name>
+			<description>number of any completed bus transactions</description>
+			<value>112</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>EXT_SNOOP</name>
+			<description>External snoops</description>
+			<value>119</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>11</default>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>snoop: HITM snoops</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>snoop: HIT snoops</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>snoop: CLEAN snoops</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>CMP_SNOOP</name>
+			<description>L1 data cache is snooped by other core</description>
+			<value>120</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>snoop: CMP2I snoops</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>snoop: CMP2S snoops</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_HIT_DRV</name>
+			<description>HIT signal asserted</description>
+			<value>122</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_HITM_DRV</name>
+			<description>HITM signal asserted</description>
+			<value>123</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUSQ_EMPTY</name>
+			<description>Bus queue is empty</description>
+			<value>125</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SNOOP_STALL_DRV</name>
+			<description>Bus stalled for snoops</description>
+			<value>126</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>bus: this agent</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>bus: include all agents</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BUS_IO_WAIT</name>
+			<description>IO requests waiting in the bus queue</description>
+			<value>127</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1I_READS</name>
+			<description>number of instruction fetches</description>
+			<value>128</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L1I_MISSES</name>
+			<description>number of instruction fetch misses</description>
+			<value>129</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>ITLB</name>
+			<description>number of ITLB misses</description>
+			<value>130</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>18</default>
+				<mask>
+					<value>2</value>
+					<description>ITLB small page misses</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>ITLB large page misses</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>ITLB flushes</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>INST_QUEUE_FULL</name>
+			<description>cycles during which the instruction queue is full</description>
+			<value>131</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>2</default>
+				<mask>
+					<value>2</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>IFU_MEM_STALL</name>
+			<description>cycles instruction fetch pipe is stalled</description>
+			<value>134</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>ILD_STALL</name>
+			<description>cycles instruction length decoder is stalled</description>
+			<value>135</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_INST_EXEC</name>
+			<description>Branch instructions executed (not necessarily retired)</description>
+			<value>136</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_MISSP_EXEC</name>
+			<description>Branch instructions executed that were mispredicted at execution</description>
+			<value>137</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_BAC_MISSP_EXEC</name>
+			<description>Branch instructions executed that were mispredicted at Front End (BAC)</description>
+			<value>138</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CND_EXEC</name>
+			<description>Conditional Branch instructions executed</description>
+			<value>139</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CND_MISSP_EXEC</name>
+			<description>Conditional Branch instructions executed that were mispredicted</description>
+			<value>140</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_IND_EXEC</name>
+			<description>Indirect Branch instructions executed</description>
+			<value>141</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_IND_MISSP_EXEC</name>
+			<description>Indirect Branch instructions executed that were mispredicted</description>
+			<value>142</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_RET_EXEC</name>
+			<description>Return Branch instructions executed</description>
+			<value>143</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_RET_MISSP_EXEC</name>
+			<description>Return Branch instructions executed that were mispredicted at Execution</description>
+			<value>144</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_RET_BAC_MISSP_EXEC</name>
+			<description>Branch instructions executed that were mispredicted at Front End (BAC)</description>
+			<value>145</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CALL_EXEC</name>
+			<description>CALL instruction executed</description>
+			<value>146</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_CALL_MISSP_EXEC</name>
+			<description>CALL instruction executed and miss predicted</description>
+			<value>147</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_IND_CALL_EXEC</name>
+			<description>Indirect CALL instruction executed</description>
+			<value>148</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_TKN_BUBBLE_1</name>
+			<description>Branch predicted taken with bubble 1</description>
+			<value>151</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_TKN_BUBBLE_2</name>
+			<description>Branch predicted taken with bubble 2</description>
+			<value>152</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RS_UOPS_DISPATCHED</name>
+			<description>Micro-ops dispatched for execution</description>
+			<value>160</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RS_UOPS_DISPATCHED_NONE</name>
+			<description>No Micro-ops dispatched for execution</description>
+			<value>25165984</value>
+			<minimum>1000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MACRO_INSTS</name>
+			<description>instructions decoded</description>
+			<value>170</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>9</default>
+				<mask>
+					<value>1</value>
+					<description>Instructions decoded</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>CISC Instructions decoded</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>ESP</name>
+			<description>ESP register events</description>
+			<value>171</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>ESP register content synchronizations</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>ESP register automatic additions</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_UOPS_EXEC</name>
+			<description>SIMD micro-ops executed (excluding stores)</description>
+			<value>176</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_SAT_UOP_EXEC</name>
+			<description>number of SIMD saturating instructions executed</description>
+			<value>177</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_UOP_TYPE_EXEC</name>
+			<description>number of SIMD packing instructions</description>
+			<value>179</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>63</default>
+				<mask>
+					<value>1</value>
+					<description>SIMD packed multiplies</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>SIMD packed shifts</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>SIMD pack operations</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>SIMD unpack operations</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>SIMD packed logical</description>
+				</mask>
+				<mask>
+					<value>32</value>
+					<description>SIMD packed arithmetic</description>
+				</mask>
+				<mask>
+					<value>63</value>
+					<description>all of the above</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>INST_RETIRED</name>
+			<description>number of instructions retired</description>
+			<value>192</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>Any</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>Loads</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Stores</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Other</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>X87_OPS_RETIRED</name>
+			<description>number of computational FP operations retired</description>
+			<value>193</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>254</default>
+				<mask>
+					<value>1</value>
+					<description>FXCH instructions retired</description>
+				</mask>
+				<mask>
+					<value>254</value>
+					<description>Retired floating-point computational operations (precise)</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>UOPS_RETIRED</name>
+			<description>number of UOPs retired</description>
+			<value>194</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>Fused load+op or load+indirect branch retired</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Fused store address + data retired</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Retired instruction pairs fused into one micro-op</description>
+				</mask>
+				<mask>
+					<value>7</value>
+					<description>Fused micro-ops retired</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>Non-fused micro-ops retired</description>
+				</mask>
+				<mask>
+					<value>15</value>
+					<description>Micro-ops retired</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MACHINE_NUKES_SMC</name>
+			<description>number of pipeline flushing events</description>
+			<value>195</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>5</default>
+				<mask>
+					<value>1</value>
+					<description>Self-Modifying Code detected</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Execution pipeline restart due to memory ordering conflict or memory disambiguation misprediction</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_INST_RETIRED</name>
+			<description>number of branch instructions retired</description>
+			<value>196</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>10</default>
+				<mask>
+					<value>1</value>
+					<description>predicted not-taken</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>mispredicted not-taken</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>predicted taken</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>mispredicted taken</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_MISS_PRED_RETIRED</name>
+			<description>number of mispredicted branches retired (precise)</description>
+			<value>197</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>CYCLES_INT_MASKED</name>
+			<description>cycles interrupts are disabled</description>
+			<value>198</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>2</default>
+				<mask>
+					<value>1</value>
+					<description>Interrupts disabled</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Interrupts pending and disabled</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_INST_RETIRED</name>
+			<description>SSE/SSE2 instructions retired</description>
+			<value>199</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>31</default>
+				<mask>
+					<value>1</value>
+					<description>Retired SSE packed-single instructions</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Retired SSE scalar-single instructions</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Retired SSE2 packed-double instructions</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>Retired SSE2 scalar-double instructions</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>Retired SSE2 vector integer instructions</description>
+				</mask>
+				<mask>
+					<value>31</value>
+					<description>Retired Streaming SIMD instructions (precise event)</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>HW_INT_RCV</name>
+			<description>number of hardware interrupts received</description>
+			<value>200</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_COMP_INST_RETIRED</name>
+			<description>Retired computational SSE/SSE2 instructions</description>
+			<value>202</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>Retired computational SSE packed-single instructions</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Retired computational SSE scalar-single instructions</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Retired computational SSE2 packed-double instructions</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>Retired computational SSE2 scalar-double instructions</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>FP_MMX_TRANS</name>
+			<description>MMX-floating point transitions</description>
+			<value>204</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>3</default>
+				<mask>
+					<value>1</value>
+					<description>float-&gt;MMX transitions</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>MMX-&gt;float transitions</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>MMX_ASSIST</name>
+			<description>number of EMMS instructions executed</description>
+			<value>205</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_INSTR_RET</name>
+			<description>number of SIMD instructions retired</description>
+			<value>206</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SIMD_SAT_INSTR_RET</name>
+			<description>number of saturated arithmetic instructions retired</description>
+			<value>207</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RAT_STALLS</name>
+			<description>Partial register stall cycles</description>
+			<value>210</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ROB read port</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Partial register</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>Flag</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>FPU status word</description>
+				</mask>
+				<mask>
+					<value>15</value>
+					<description>All RAT</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SEG_RENAME_STALLS</name>
+			<description>Segment rename stalls</description>
+			<value>212</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ES</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>DS</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>FS</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>GS</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>SEG_RENAMES</name>
+			<description>Segment renames</description>
+			<value>213</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ES</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>DS</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>FS</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>GS</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>RESOURCE_STALLS</name>
+			<description>Cycles during which resource stalls occur</description>
+			<value>220</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>when the ROB is full</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>during which the RS is full</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>during which the pipeline has exceeded the load or store limit or is waiting to commit all stores</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>due to FPU control word write</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>due to branch misprediction</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_INST_DECODED</name>
+			<description>number of branch instructions decoded</description>
+			<value>224</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BR_BOGUS</name>
+			<description>number of bogus branches</description>
+			<value>228</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>BACLEARS</name>
+			<description>number of times BACLEAR is asserted</description>
+			<value>230</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>PREF_RQSTS_UP</name>
+			<description>Number of upward prefetches issued</description>
+			<value>240</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>PREF_RQSTS_DN</name>
+			<description>Number of downward prefetches issued</description>
+			<value>248</value>
+			<minimum>3000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+	</event-list>
+</info>

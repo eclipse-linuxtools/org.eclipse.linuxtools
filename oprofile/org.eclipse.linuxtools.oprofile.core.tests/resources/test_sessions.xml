@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sessions>
+	<event name="BR_INST_EXEC">
+		<session name="current">
+		</session>
+	</event>
+	<event name="CPU_CLK_UNHALTED">
+		<session name="saved">
+		</session>
+	</event>
+	<event name="UOPS_RETIRED">
+		<session name="current">
+		</session>
+		<session name="&quot;&lt;&gt;&amp;&apos;">
+		</session>
+	</event>
+</sessions>
+				

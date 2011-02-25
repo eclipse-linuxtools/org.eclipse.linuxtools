@@ -1,0 +1,4 @@
+2011-02-11  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* META-INF/MANIFEST.MF:  Bump version to 0.3.1.
+	* ChangeLog: New file.

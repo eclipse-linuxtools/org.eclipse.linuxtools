@@ -1,0 +1,140 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Kent Sebastian <ksebasti@redhat.com> - initial API and implementation
+ *******************************************************************************/
+
+package org.eclipse.linuxtools.oprofile.launch.tests;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.Launch;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
+import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
+import org.eclipse.linuxtools.oprofile.launch.OprofileLaunchPlugin;
+import org.eclipse.linuxtools.oprofile.launch.configuration.LaunchOptions;
+import org.eclipse.linuxtools.oprofile.launch.configuration.OprofileEventConfigTab;
+import org.eclipse.linuxtools.oprofile.launch.configuration.OprofileSetupTab;
+import org.eclipse.linuxtools.oprofile.launch.launching.OprofileManualLaunchConfigurationDelegate;
+import org.eclipse.linuxtools.profiling.tests.AbstractTest;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+public class TestManualLaunching extends AbstractTest {
+	private class testingOprofileLaunchConfigurationDelegate extends OprofileManualLaunchConfigurationDelegate {
+		public boolean eventsIsNull;
+		public OprofileDaemonOptions _options;  
+		protected void oprofileDumpSamples() { return; }
+		protected void oprofileReset() { return; }
+		protected void oprofileShutdown() { return; }
+		protected void oprofileStartCollection() { return; }
+		protected void oprofileSetupDaemon(OprofileDaemonOptions options, OprofileDaemonEvent[] events) { 
+			_options = options; 
+			eventsIsNull = events == null ? true : false; 
+			return; 
+		}
+		@Override
+		protected void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process) {
+			super.postExec(options, daemonEvents, launch, process);
+			
+			try {
+				process.waitFor();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	protected ILaunchConfiguration config;
+	protected Shell testShell;
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		proj = createProjectAndBuild(LaunchTestsPlugin.getDefault().getBundle(), "sleepTest"); //$NON-NLS-1$
+		config = createConfiguration(proj.getProject());
+		testShell = new Shell(Display.getDefault());
+		testShell.setLayout(new GridLayout());
+	}
+
+	@Override
+	protected void tearDown() throws Exception {
+		testShell.dispose();
+		deleteProject(proj);
+		super.tearDown();
+	}
+
+	@Override
+	protected ILaunchConfigurationType getLaunchConfigType() {
+		return getLaunchManager().getLaunchConfigurationType(OprofileLaunchPlugin.ID_LAUNCH_PROFILE_MANUAL);
+	}
+
+	@Override
+	protected void setProfileAttributes(ILaunchConfigurationWorkingCopy wc) throws CoreException {
+		OprofileEventConfigTab configTab = new OprofileEventConfigTab();
+		OprofileSetupTab setupTab = new OprofileSetupTab();
+		configTab.setDefaults(wc);
+		setupTab.setDefaults(wc);
+	}
+	
+	public void testDefaultLaunch() throws CoreException {
+		testingOprofileLaunchConfigurationDelegate delegate = new testingOprofileLaunchConfigurationDelegate();
+		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+		
+		LaunchOptions options = new LaunchOptions();
+		options.loadConfiguration(config);
+		assertTrue(options.isValid());
+		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
+		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
+		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
+		
+		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
+		assertTrue(delegate.eventsIsNull);
+		assertNotNull(delegate._options);
+		assertTrue(delegate._options.getBinaryImage().length() > 0);
+		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
+		assertEquals(0, delegate._options.getCallgraphDepth());
+		assertFalse(delegate._options.getVerboseLogging());
+		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
+	}
+	
+	public void testEventLaunch() throws CoreException {
+		testingOprofileLaunchConfigurationDelegate delegate = new testingOprofileLaunchConfigurationDelegate();
+		ILaunch launch = new Launch(config, ILaunchManager.PROFILE_MODE, null);
+		
+		ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+		wc.setAttribute(OprofileLaunchPlugin.ATTR_USE_DEFAULT_EVENT, false);
+		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_ENABLED(0), true);
+		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_COUNT(0), 100000);
+		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_EVENT(0),	"FAKE_EVENT"); //$NON-NLS-1$
+		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_KERNEL(0), true);
+		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_PROFILE_USER(0), true);
+		wc.setAttribute(OprofileLaunchPlugin.ATTR_COUNTER_UNIT_MASK(0), 0);
+		wc.doSave();
+		LaunchOptions options = new LaunchOptions();
+		options.loadConfiguration(config);
+		assertTrue(options.isValid());
+		assertEquals("", options.getBinaryImage()); //$NON-NLS-1$
+		assertEquals("", options.getKernelImageFile()); //$NON-NLS-1$
+		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, options.getSeparateSamples());
+
+		delegate.launch(config, ILaunchManager.PROFILE_MODE, launch, null);
+		assertFalse(delegate.eventsIsNull);
+		assertNotNull(delegate._options);
+		assertTrue(delegate._options.getBinaryImage().length() > 0);
+		assertEquals("", delegate._options.getKernelImageFile()); //$NON-NLS-1$
+		assertEquals(0, delegate._options.getCallgraphDepth());
+		assertFalse(delegate._options.getVerboseLogging());
+		assertEquals(OprofileDaemonOptions.SEPARATE_NONE, delegate._options.getSeparateProfilesMask());
+	}
+}

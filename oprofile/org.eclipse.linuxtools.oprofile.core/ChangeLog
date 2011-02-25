@@ -1,0 +1,99 @@
+2011-02-11  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* natives/linux/opxml: Remove opxml.
+	* natives/linux/opxml/.svnignore: Removed.
+	* natives/linux/opxml/imageheader.cc: Removed.
+	* natives/linux/opxml/imageheader.h: Removed.
+	* natives/linux/opxml/Makefile: Removed.
+	* natives/linux/opxml/move_opxml.sh: Removed.
+	* natives/linux/opxml/opinfo.cc: Removed.
+	* natives/linux/opxml/opinfo.h: Removed.
+	* natives/linux/opxml/oprofiledb.cc: Removed.
+	* natives/linux/opxml/oprofiledb.h: Removed.
+	* natives/linux/opxml/opxml.cc: Removed.
+	* natives/linux/opxml/oxmlstream.h: Removed.
+	* natives/linux/opxml/profileimage.cc: Removed.
+	* natives/linux/opxml/profileimage.h: Removed.
+	* natives/linux/opxml/README: Removed.
+	* natives/linux/opxml/sample.cc: Removed.
+	* natives/linux/opxml/sample.h: Removed.
+	* natives/linux/opxml/samplefile.cc: Removed.
+	* natives/linux/opxml/samplefile.h: Removed.
+	* natives/linux/opxml/session.cc: Removed.
+	* natives/linux/opxml/session.h: Removed.
+	* natives/linux/opxml/sevent.cc: Removed.
+	* natives/linux/opxml/sevent.h: Removed.
+	* natives/linux/opxml/stable.cc: Removed.
+	* natives/linux/opxml/stable.h: Removed.
+	* natives/linux/opxml/symbol.cc: Removed.
+	* natives/linux/opxml/symbol.h: Removed.
+	* natives/linux/opxml/xmlbuf.cc: Removed.
+	* natives/linux/opxml/xmlbuf.h: Removed.
+	* natives/linux/opxml/xmlfmt.cc: Removed.
+	* natives/linux/opxml/xmlfmt.h: Removed.
+	* natives/linux/opxml/xmltag.cc: Removed.
+	* natives/linux/opxml/xmltag.h: 
+
+2011-02-10  Severin Gehwolf <sgehwolf@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Eclipse-BundleShape: dir.
+
+2010-07-27  Andrew Overholt  <overholt@redhat.com>
+
+	* natives/linux/opxml/imageheader.cc: Update license to be EDL.
+	* natives/linux/opxml/imageheader.h: Likewise.
+	* natives/linux/opxml/opinfo.cc: Likewise.
+	* natives/linux/opxml/opinfo.h: Likewise.
+	* natives/linux/opxml/oprofiledb.cc: Likewise.
+	* natives/linux/opxml/oprofiledb.h: Likewise.
+	* natives/linux/opxml/opxml.cc: Likewise.
+	* natives/linux/opxml/oxmlstream.h: Likewise.
+	* natives/linux/opxml/profileimage.cc: Likewise.
+	* natives/linux/opxml/profileimage.h: Likewise.
+	* natives/linux/opxml/sample.cc: Likewise.
+	* natives/linux/opxml/sample.h: Likewise.
+	* natives/linux/opxml/samplefile.cc: Likewise.
+	* natives/linux/opxml/samplefile.h: Likewise.
+	* natives/linux/opxml/session.cc: Likewise.
+	* natives/linux/opxml/session.h: Likewise.
+	* natives/linux/opxml/sevent.cc: Likewise.
+	* natives/linux/opxml/sevent.h: Likewise.
+	* natives/linux/opxml/stable.cc: Likewise.
+	* natives/linux/opxml/stable.h: Likewise.
+	* natives/linux/opxml/symbol.cc: Likewise.
+	* natives/linux/opxml/symbol.h: Likewise.
+	* natives/linux/opxml/xmlbuf.cc: Likewise.
+	* natives/linux/opxml/xmlbuf.h: Likewise.
+	* natives/linux/opxml/xmlfmt.cc: Likewise.
+	* natives/linux/opxml/xmlfmt.h: Likewise.
+	* natives/linux/opxml/xmltag.cc: Likewise.
+	* natives/linux/opxml/xmltag.h: Likewise.
+
+2010-07-08  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #314737
+
+	* build.properties: JAR core classes. 
+	* META-INF/MANIFEST.MF: Likewise.  Add to bundle classpath.
+
+2010-05-07  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Fix typo
+	with \find instead of \nfind. 
+
+2010-05-05  Andrew Overholt  <overholt@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Clean up
+	build/install instructions.
+
+2009-12-07  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #297007
+
+	* natives/linux/opxml/move_opxml.sh: Fix release number.
+
+2009-10-29  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #292172
+
+	* natives/linux/opxml/move_opxml.sh: Update release number. 
