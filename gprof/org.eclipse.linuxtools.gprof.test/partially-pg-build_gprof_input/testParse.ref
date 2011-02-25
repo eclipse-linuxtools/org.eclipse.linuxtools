@@ -1,0 +1,23 @@
+-- gmon Results --
+cookie gmon
+gmon_version 1
+tag 0
+ 
+Histogram Header : 
+
+  Base pc address of sample buffer = 0x80483c8
+  Max pc address of sampled buffer = 0x80486c0
+  Number of histogram samples      = 190
+  Profiling clock rate             = 100
+  Physical dimension abreviation : 's' for "seconds"  'm' for "milliseconds" = s
+
+ ==  HISTOGRAM RECORDS  == 
+ ========================= 
+ 
+Histogram Header : 
+
+  Base pc address of sample buffer = 0x80483c8
+  Max pc address of sampled buffer = 0x80486c0
+  Number of histogram samples      = 190
+  Profiling clock rate             = 100
+  Physical dimension abreviation : 's' for "seconds"  'm' for "milliseconds" = s
