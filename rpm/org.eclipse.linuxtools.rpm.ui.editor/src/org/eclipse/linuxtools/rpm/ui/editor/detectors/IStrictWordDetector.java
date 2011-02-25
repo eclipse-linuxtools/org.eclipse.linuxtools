@@ -14,5 +14,5 @@ package org.eclipse.linuxtools.rpm.ui.editor.detectors;
 import org.eclipse.jface.text.rules.IWordDetector;
 
 public interface IStrictWordDetector extends IWordDetector {
-	public boolean isEndingCharacter(char c);
+	boolean isEndingCharacter(char c);
 }

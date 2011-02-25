@@ -41,7 +41,7 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 		IRegion region = new Region(10, 0);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(editor
 				.getSpecfileSourceViewer(), region, false);
-		assertEquals(1, returned.length);
+		assertEquals(2, returned.length);
 		
 		//test empty
 		region = new Region(4, 0);

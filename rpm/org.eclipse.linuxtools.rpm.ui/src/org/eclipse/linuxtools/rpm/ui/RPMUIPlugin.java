@@ -1,9 +1,13 @@
-/* 
- * (c) 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2005-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
-*/
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
 import java.util.MissingResourceException;
@@ -39,6 +43,7 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	/**
 	 * This method is called upon plug-in activation
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
@@ -46,6 +51,7 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		plugin = null;
@@ -78,7 +84,7 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		try {
 			if (resourceBundle == null)
-				resourceBundle = ResourceBundle.getBundle("rpmui.RpmuiPluginResources");
+				resourceBundle = ResourceBundle.getBundle("rpmui.RpmuiPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -93,7 +99,7 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("rpmui", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("rpmui", path); //$NON-NLS-1$
 	}
 	
 	public void log(Throwable e) {

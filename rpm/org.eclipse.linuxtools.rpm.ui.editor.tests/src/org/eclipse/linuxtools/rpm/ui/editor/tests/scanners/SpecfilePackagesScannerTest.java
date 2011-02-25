@@ -14,7 +14,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
@@ -35,18 +34,11 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	private SpecfilePackagesScanner scanner;
 
 	public SpecfilePackagesScannerTest() {
-		scanner = new SpecfilePackagesScanner(new ColorManager());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest#setUp()
-	 */
-	@Override
-	protected void setUp() throws CoreException {
 		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
+		Activator.getDefault().getPreferenceStore().setValue(
+				PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
+		
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(
 					"/tmp/pkglist"));
@@ -55,7 +47,9 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
-		super.setUp();
+		// we ensure that proposals are rebuild
+		Activator.packagesList = null;
+		scanner = new SpecfilePackagesScanner(new ColorManager());
 	}
 
 	/*
@@ -89,46 +83,39 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	}
 
 	/**
-	 * Test package and BTW we test a package with a undercore. see bug:
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 printscreen:
-	 * https://bugs.eclipse.org/bugs/attachment.cgi?id=63725
+	 * We test a package with a underscore. see bug:
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 
 	 */
-	// FIXME: Don't see why packages or not correctly scanned here,
-	// I will re-examine this with a fresh head ;-)
-	// public void testPackage() {
-	// try {
-	// token0 = getToken(3);
-	// assertTrue(token0 instanceof Token);
-	// assertEquals(15, rulesBasedScanner.getTokenLength());
-	// assertEquals(10, rulesBasedScanner.getTokenOffset());
-	// token = (Token) token0;
-	// ta = (TextAttribute) token.getData();
-	// assertEquals(((Color) ta.getForeground()).getRGB(),
-	// ISpecfileColorConstants.PACKAGES);
-	// } catch (Exception e) {
-	// fail();
-	// }
-	// }
-	// FIXME: Don't see why macro or not correctly scanned here,
-	// I will re-examine this with a fresh head ;-)
-	// public void testMacro() {
-	// try {
-	// token0 = getToken(5);
-	// assertTrue(token0 instanceof Token);
-	// assertEquals(7, rulesBasedScanner.getTokenLength());
-	// assertEquals(26, rulesBasedScanner.getTokenOffset());
-	// token = (Token) token0;
-	// ta = (TextAttribute) token.getData();
-	// assertEquals(((Color) ta.getForeground()).getRGB(),
-	// ISpecfileColorConstants.MACROS);
-	// } catch (Exception e) {
-	// fail();
-	// }
-	// }
+	public void testPackage() {
+		try {
+			token = getToken(2);
+			assertTrue(token instanceof Token);
+			assertEquals(16, rulesBasedScanner.getTokenLength());
+			assertEquals(9, rulesBasedScanner.getTokenOffset());
+			ta = (TextAttribute) token.getData();
+			assertEquals((ta.getForeground()).getRGB(),
+					ISpecfileColorConstants.PACKAGES);
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+	public void testMacro() {
+		try {
+			token = getToken(4);
+			assertTrue(token instanceof Token);
+			assertEquals(7, rulesBasedScanner.getTokenLength());
+			assertEquals(26, rulesBasedScanner.getTokenOffset());
+			ta = (TextAttribute) token.getData();
+			assertEquals((ta.getForeground()).getRGB(),
+					ISpecfileColorConstants.MACROS);
+		} catch (Exception e) {
+			fail();
+		}
+	}
 	/**
 	 * Check that comments are not handle with the package scanner. See bug:
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 printscreen:
-	 * https://bugs.eclipse.org/bugs/attachment.cgi?id=63721
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 
 	 */
 	public void testComment() {
 		token = getToken(6);

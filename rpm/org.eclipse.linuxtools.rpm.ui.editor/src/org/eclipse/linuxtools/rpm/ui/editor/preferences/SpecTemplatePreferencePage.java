@@ -11,8 +11,10 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.ui.texteditor.templates.TemplatePreferencePage;
+import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * Templates preference page
@@ -24,6 +26,7 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage {
 	 * Default constructor
 	 */
 	public SpecTemplatePreferencePage() {
+		super();
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setTemplateStore(Activator.getDefault().getTemplateStore());
 		setContextTypeRegistry(Activator.getDefault().getContextTypeRegistry());
@@ -38,13 +41,18 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage {
 	}
 
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.ui.texteditor.templates.TemplatePreferencePage#performOk()
 	 */
 	@Override
 	public boolean performOk() {
 		boolean ok= super.performOk();
-		Activator.getDefault().savePluginPreferences();
+		try {
+			new InstanceScope().getNode(Activator.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			//Error while saving.
+			ok = false;
+		}
 		return ok;
 	}
 

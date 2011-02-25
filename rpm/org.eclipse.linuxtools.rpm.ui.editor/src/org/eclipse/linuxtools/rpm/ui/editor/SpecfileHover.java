@@ -106,11 +106,11 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 					&& offset <= selectedRange.x + selectedRange.y)
 				return new Region(selectedRange.x, selectedRange.y);
 			else {
-				IRegion ret =  findWord(textViewer.getDocument(), offset);
-				if (ret.equals(new Region(offset, 0))) {
-					ret = findPackages(textViewer.getDocument(), offset);
+				IRegion region = findWord(textViewer.getDocument(), offset);
+				if (region.equals(new Region(offset, 0))) {
+					region = findPackages(textViewer.getDocument(), offset);
 				}
-				return ret;
+				return region;
 			}
 		}
 		return null;
@@ -176,7 +176,7 @@ public class SpecfileHover implements ITextHover, ITextHoverExtension {
 		} catch (BadLocationException x) {
 		}
 
-		if (start > -1 && end > -1) {
+		if (start >= -1 && end > -1) {
 			if (start == offset)
 				return new Region(start, end - start);
 			else

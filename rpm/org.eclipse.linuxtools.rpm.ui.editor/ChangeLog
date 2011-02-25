@@ -1,6 +1,430 @@
-2009-04-03  Alexander Kurtakov  <akurtako@redhat.com>
+2010-04-09  Alexander Kurtakov  <akurtako@redhat.com>
 
-	* plugin.xml: Disable form editor for linuxtools 0.2 release.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (createFieldEditors): Store field editor in a member.
+	(propertyChange): Erase package proposals on tools change.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (setPackagesList): Regenerate package list if file is missing.
+
+2010-03-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Externalize strings.
+	* plugin.xml: Likewise.
+
+2010-03-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Fix direct definitions split. (Charley Wang bz#305421)
+	
+2010-03-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDoubleClickStrategy.java: Fix line ending check. (Charley Wang bz#294555)	
+
+2010-02-25  Alexander Kurtakov  <akurtako@redhat.com>
+    Add ability to download sources if they are hyperlinks.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileDownloadHyperlink.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/Messages.java: Add more messages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Add download hyperlink.
+	(SourcesFileHyperlinkDetector): Format.
+
+2010-02-01  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseDirectDefinition): Show error when missing value.
+	(parseDefine): Likewise.
+
+2010-01-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Fix StringIndexOutOfBounds.
+
+2010-01-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Fix stackoverflow when recursive define is used.
+	(SpecfileElement): Format.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseDirectDefinition): Fix parsing defines without value.
+
+2010-01-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Fix documentProviders file extensions.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (SpecfileEditor): Do not set document provider, correctly done with the extension.
+
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/UiUtils.java: New file.
+	* .settings/org.moreunit.prefs: Fix configuration.
+	* META-INF/MANIFEST.MF: Require o.e.linuxtools.rpm.core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java (formatDateLine): Use Utils from core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java (start): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/HTMLTextPresenter.java (adaptTextPresentation): Remove dead variable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (MainPackagePage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Use UiUtils instead of Utils which is now in core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/URLHyperlinkWithMacroDetector.java (detectHyperlinks): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SourceComparator.java: Implement Serializable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (addDefine): Use UiUtils instead of Utils which is now in core.
+	(getDefine): Likewise.
+	(modifyDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (simpleSections): Make declarations final.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java: Remove dead variable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/RpmProposalsPreferencePage.java (rpmtoolsRadioGroupFieldEditor): Use UiUtils instead of Utils which is now in core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java (getMacroEval): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (getRpmInfo): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (ProposalComparator): Implement Serializable.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java (SpecfileReconcilingStrategy): Remove dead store.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/NoExecutableWizardPage.java (createControl): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java: Use UiUtils instead of Utils which is now in core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java (setTextItem): Remove dead store.
+	(runRpmdevNewSpec): Use utils from core.
+	(createControl): Remove dead store.
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Preference store should not be set to the editor if you want to inherit configurations like showing line numbers and etc.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Remove not needed import.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (SpecfileEditor): Do not set preference store. 
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Switch from the current commands and actions mixture to only commands.
+	* plugin.xml: Replace all actions with commands.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorOrganizePatchesActionDelegate.java : Rewrite it to be AbstractHandler.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorShowOutlineActionDelegate.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileEditorToggleCommentActionDelegate.java: Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java (getActiveEditor): Removed, not needed. 
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Replace our custom tab-to-space implementation with org.eclipse.jface.text.TabToSpacesConverter.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTabConverter.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java (getAutoEditStrategies): New method.
+	(getTabSize): Likewise.
+	(isTabConversionEnabled): Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (getAdapter): Drop references to all old tab replacing code.
+	(createPartControl): Likewise.
+	(doSetInput): Likewise.
+	
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java: Remove not needed member.
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+	Use default annotation hover instead of our copied and staled one.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/AnnotationHover.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java (getAnnotationHover): Removed. 
+
+2010-01-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/derived/LineBreakingReader.java (readLine): Fix javadoc.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/Messages.java: Add copyright header.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (RpmTagText): Externalize string.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSection.java (getContents): Add NON-NLS.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java (MacroListEditor.selectionChanged): Add @Override.
+
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Format.
+	(parseMacro): Likewise.
+	(complexDefinitions): Likewise.
+	(parseDirectDefinition): Likewise.
+	(parseLine): Likewise.
+	(parseBuildRequire): Likewise
+	(directValuesDefinitions): Likewise
+	(parseSection): Likewise.
+	(simpleDefinitions): Remove buildroot.
+	(directDefinitions): Add buildroot.
+	
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Remove false warning for Release tag.
+
+2009-10-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseLine): Make sure that when trying to parse Source or Patch they are really such.
+
+2009-10-24  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseDefine): %define and %global shouldn't be associated with a subpackage.
+
+2009-10-23  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/Messages.java (Messages): Fix issues found by pmd.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogParser.java (parseCurrentFunction): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java (Activator): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/compare/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/detectors/IStrictWordDetector.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (SpecfileFormEditor): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SourcesFileHyperlinkDetector.java (detectHyperlinks): Likewise.
+	(SourcesFileHyperlinkDetector): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (SpecfileElementHyperlinkDetector): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileContentProvider.java (getChildren): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/outline/SpecfileLabelProvider.java (addListener): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Messages.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileDefine.java (SpecfileDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Likewise.
+	(setName): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (setPackageName): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackageContainer.java (getLineEndPosition): Likewise.
+	(SpecfilePackageContainer): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (toString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MacroProposalsPreferencePage.java (MacroListEditor.MacroListEditor): Likewise.
+	(MacroListEditor.getListControl): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java (PreferenceConstants): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java (performOk): Likewise.
+	(SpecTemplatePreferencePage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/TaskTagsPreferencePage.java (TasksListEditor.parseString): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmMacroProposalsList.java (buildMacroList): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (update): Likewise.
+	(setPropertyChangeListener): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/AuthorEmailRule.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/StringWithEndingRule.java (StringWithEndingRule): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/rules/VersionReleaseRule.java (evaluate): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileChangelogScanner.java (SpecfileChangelogScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePackagesScanner.java (SpecfilePackagesScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java (SpecfileScanner): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileCompletionProcessor.java (computeTemplateProposals): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileConfiguration.java (SpecfileConfiguration): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileDocumentProvider.java (getDocument): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (getParser): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileFoldingStructureProvider.java (updateFoldingRegions): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileLog.java (SpecfileLog): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java (doOperation): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileReconcilingStrategy.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/Messages.java (Messages): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizardPage.java (setDefaultValues): Likewise.
+	(getContent): Likewise.
+	(.modifyText): Likewise.
+	(createControl): Likewise.
+
+2009-10-22  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java (setSpecfile): Remove parts that are autodone in 3.5.
+
+2009-08-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/NoExecutableWizardPage.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/Messages.java: Aditional string for NoExecutableWizardPage.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/wizards/SpecfileNewWizard.java (performFinish): Format.
+	(addPages): Conditionalize pages added.
+	(throwCoreException): Format.
+	(doFinish): Likewise.
+	(.run): Likewise.
+
+2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
+
+2009-07-08  Alphonse Van Assche  <alcapcom@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileChangelogScanner.java (SpecfileChangelogScanner): Don't do unneeded stuff.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePackagesScanner.java: Remove unneded code + typo cleanups.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfilePartitionScanner.java: Use private static final + typo.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/scanners/SpecfileScanner.java: : Likewike.
+
+2009-07-07  Alphonse Van Assche  <alcapcom@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java: Remove unneeded comments (we target 3.5 now).
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogAction.java: Removed unused action.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/Messages.java: Remove no more needed messages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/actions/SpecfileChangelogFormatter.java (formatDateLine): Resolve defines on the right place.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/hyperlink/SpecfileElementHyperlinkDetector.java (getDefineName): Fix null pointer exception.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Use of Utils.resolveDefines
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileHover.java (findWord): Fix hover bug on specfiles that begin with a define.
+	(getHoverRegion): Use better var name.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java: Typo cleanups.
+
+2009-06-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmSectionPage.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Add pages for %prep/%build/%install.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getSection): Add method for getting a section by name.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileSection.java (setContents): New method for changing contents of the section.
+	(getContents): New method for retrieving the content of the section.
+
+2009-06-04  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/messages.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Activator.java: Removed double ;.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Externalize strings. 
+	(MainPackagePage): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Likewise.
+
+2009-06-03  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setTagType): Remove it is auto handled now. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Do not set tag type it's auto set now.
+
+2009-06-03  Alexander Kurtakov  <akurtako@redhat.com>
+	Support BuildRequires/Requires in the form editor and parser.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Add BuildRequires/Requires fields.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (.modifyText): New constructor.
+	(RpmTagText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (addRequire): Add BuildRequires/Requires fields.
+	(getRequires): Likewise.
+	(getBuildRequires): Likewise.
+	(addBuildRequire): Likewise.
+	(Specfile): Likewise.
+	(modifyDefine): New method.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileElement.java (resolve): Remove not needed try/catch.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (addRequire): Add requires member and accessors.
+	(SpecfilePackage): Likewise.
+	(getRequires): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Use constants.
+	(parseDirectDefinition): Likewise.
+	(parseLine): Support Requires parsing.
+	(parseComplexDefinition): Use constants.
+	(parseBuildRequire): New method.
+
+2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
+	Remove deprecated Preferences usage.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java: Correct constant types.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/SpecTemplatePreferencePage.java (performOk): Don't use deprecated Preferences.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (update): Likewise.
+	(.preferenceChange): Likewise.
+	(setPropertyChangeListener): Likewise.
+
+2009-05-26  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getBuildRequires): Add buildrequires member.
+	(setBuildRequires): Likewise. 
+	(Specfile): Likewise.
+	(modifyDefine): Add NON-NLS.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageBuildProposalsJob.java (retrievePackageList): Guard /bin/sh execution.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmPackageProposalsList.java (setPackagesList): Read .pkglist only when available.
+
+2009-05-20  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (RpmTagText): Fix defines handling.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Support BuildArch and BuildRoot.
+	(parseLine): Likewisel
+	(simpleDefinitions): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setValue): Set correct type.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java (getPackageDefineId): Fix lower casing.
+
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (modifyDefine): Adapt to SpecfileTag API simplification.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileDefine.java (SpecfileDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Likewise.
+	(packageLevelDefinitions): Remove fixed todo.
+	(parseSection): Remove unneeded cast.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setValue): Simplify API.
+	
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Put more meaningful names. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (.modifyText): Support for package specific tags.
+	(RpmTagText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (addDefine): Likewise.
+	(getDefine): Likewise.
+	(modifyDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileDefine.java (SpecfileDefine): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (isMainPackage): Utility method to determine the main package.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Suppport for package specific tags.
+	(packageLevelDefinitions): Likewise.
+	(parseDirectDefinition): Likewise.
+	(parseDefine): Likewise.
+	(parseLine): Likewise.
+	(simpleDefinitions): Likewise.
+	(parseSection): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileTag.java (setParent): Likewise.
+	(getParent): Likewise.
+	(SpecfileTag): Likewise.
+	(getIntValue): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/RpmTags.java: Add missing tags.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/Utils.java (getPackageDefineId): Method to create a package specific define id.
+	
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (getGroup): Add group and summary fields and accessors.
+	(getSummary): Likewise.
+	(setGroup): Likewise.
+	(setSummary): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Fix NON-NLS.
+	(parseDefine): Likewise.
+	(parseComplexDefinition): Likewise. 
+	(parsePatch): Likewise.
+	(parseSection): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java (removeTextConverter): Use IAutoEditStrategy instead of our own interface.
+	(customizeDocumentCommand): Likewise.
+	(addTextConverter): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTabConverter.java: Likewise.
+	
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Show fields for subpackages Summary and Group.
+
+2009-05-18  Alexander Kurtakov  <akurtako@redhat.com>
+	Initial support for subpackages in the form editor. Only names for now.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Display sections for all the subpackages.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfilePackage.java (getFullPackageName): New method for returning the full name of a package.
+
+2009-05-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Simplify.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java (.modifyText): Make the text responsible for all the data.
+	(RpmTagText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (doSaveAs): Add comment. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (getDefine): Make sure that define name is lower case.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java (parseSimpleDefinition): Extract constant.
+	(parseDefine): Likewise.
+	(parseComplexDefinition): Likewise.
+	(parsePatch): Likewise.
+	(parseSection): Likewise.
+
+2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/RpmTagText.java: New file. Add Copyright header.
+	* META-INF/MANIFEST.MF: Bump release.
+
+2009-05-13  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Remove commented code. 
+	(.modifyText): Connect with the document.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Remove all dirty handling.
+	(isDirty): Likewise.
+	(doSave): Likewise.
+	(SpecfileFormEditor): Likewise. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/Specfile.java (modifyDefine): Useful method for manipulating define's value.
+
+2009-05-08  Alphonse Van Assche <alcapcom@fedoraproject.org>
+	Remove 'No value name after define.' parsing error, this error is now 
+	throw by RPM parser through rpmlint.
+	
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/SpecfileParser.java: Remove no more needed code. 
+	* src/org/eclipse/linuxtools/rpm/ui/editor/parser/message.properties Remove above message string.
+
+2009-05-06  Alphonse Van Assche <alcapcom@fedoraproject.org>
+    Convert tab by space (https://bugs.eclipse.org/bugs/show_bug.cgi?id=185227)
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileProjectionViewer.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileTabConverter.java: New file.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/MainPreferencePage.java: Add a checkbox.  
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceConstants.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/PreferenceInitializer.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/Messages.java: Externalize strings.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/preferences/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/SpecfileEditor.java: add convert tab by space capability.
+
+2009-04-15  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .project: Add apianalysis nature.
+	* plugin.properties: Better name.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/MainPackagePage.java (createFormContent): Clean old code. 
+	(MainPackagePage): Likewise.
+	(.modifyText): Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/forms/SpecfileFormEditor.java (addPages): Likewise.
+	(isDirty): Likewise.
+	(doSaveAs): Likewise.
+	(doSave): Likewise.
+	(SpecfileFormEditor): Likewise.
+	(createToolkit): Likewise.
 
 2009-03-28  Alexander Kurtakov  <akurtako@redhat.com>
 

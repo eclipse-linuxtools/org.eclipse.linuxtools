@@ -1,17 +1,19 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
-
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
-import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,18 +22,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class ProvidesPage extends PropertyPage {
-	
-	private static final String RPM_QL = Messages.getString("ProvidesPage.Provides"); //$NON-NLS-1$
 
-	private static final int NAME_FIELD_WIDTH = 20;
+	private static final String RPM_QL = Messages
+			.getString("ProvidesPage.Provides"); //$NON-NLS-1$
 
 	private static final int QL_FIELD_WIDTH = 80;
 
 	private static final int QL_FIELD_HEIGHT = 40;
-
-	private Text rpm_nameText;
 
 	private Text rpm_qlText;
 
@@ -57,15 +58,12 @@ public class ProvidesPage extends PropertyPage {
 		rpm_qlText.setLayoutData(gdQL);
 
 		// Populate RPM text fields
-		String rpm_path = ((IResource) getElement()).getRawLocation()
-				.toString();
-		
 		try {
 			String rpm_ql = RPMQuery.getProvides((IFile) getElement());
 			rpm_qlText.setText(rpm_ql);
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
+					StatusManager.LOG | StatusManager.SHOW);
 		}
 
 	}
@@ -73,6 +71,7 @@ public class ProvidesPage extends PropertyPage {
 	/**
 	 * @see PreferencePage#createContents(Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -97,15 +96,6 @@ public class ProvidesPage extends PropertyPage {
 		composite.setLayoutData(data);
 
 		return composite;
-	}
-
-	protected void performDefaults() {
-
-	}
-
-	public boolean performOk() {
-
-		return true;
 	}
 
 }

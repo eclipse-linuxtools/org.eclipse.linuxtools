@@ -17,7 +17,10 @@ import java.util.List;
 public class SpecfilePackage extends SpecfileSection {
 	private String description;
 	private List<SpecfileSection> sections;
-	private String packageName;
+	private List<SpecfileTag> requires;
+ 	private String packageName;
+	private String summary;
+	private String group;
 
 	public SpecfilePackage(String packageName, Specfile specfile) {
 		super("package", specfile); //$NON-NLS-1$
@@ -25,6 +28,7 @@ public class SpecfilePackage extends SpecfileSection {
 		setPackageName(packageName);
         setPackage(this);
         sections = new ArrayList<SpecfileSection>();
+        requires = new ArrayList<SpecfileTag>();
 	}
 
 	public String getDescription() {
@@ -65,8 +69,66 @@ public class SpecfilePackage extends SpecfileSection {
 	public String getPackageName() {
 		return resolve(this.packageName);
 	}
+	
+	/**
+	 * Returns the full package name. 
+	 * 
+	 * @return The name of the package with the common part appended in front.
+	 */
+	public String getFullPackageName() {
+		if (getSpecfile().getName().equals(getPackageName())){
+			return getPackageName();
+		}
+		return getSpecfile().getName()+"-" + getPackageName(); //$NON-NLS-1$
+	}
 
-	public void setPackageName(String packageName) {
+	public final void setPackageName(String packageName) {
 		this.packageName = packageName;
+	}
+
+	/**
+	 * @param summary the summary to set
+	 */
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	/**
+	 * @return the summary
+	 */
+	public String getSummary() {
+		return summary;
+	}
+
+	/**
+	 * @param group the group to set
+	 */
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	/**
+	 * @return the group
+	 */
+	public String getGroup() {
+		return group;
+	}
+
+	public boolean isMainPackage() {
+		if (getSpecfile().getName().equals(getPackageName())){
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param require the require to add
+	 */
+	public void addRequire(SpecfileTag require) {
+		requires.add(require);
+	}
+
+	public List<SpecfileTag> getRequires() {
+		return requires;
 	}
 }

@@ -33,7 +33,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
+import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -76,7 +76,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 
 	private Text licenseText;
 
-	private Text URLText;
+	private Text urlText;
 
 	private Text source0Text;
 
@@ -173,7 +173,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 							setTemplateTagValue(licenseText, line);
 						}
 						if (line.startsWith("URL:")) { //$NON-NLS-1$
-							setTemplateTagValue(URLText, line);
+							setTemplateTagValue(urlText, line);
 						}
 						if (line.startsWith("Source0:")) { //$NON-NLS-1$
 							setTemplateTagValue(source0Text, line);
@@ -201,13 +201,13 @@ public class SpecfileNewWizardPage extends WizardPage {
 		groupCombo = new Combo(container, SWT.NULL);
 		populateGroupCombo(groupCombo);
 		// empty label for the last row.
-		label = new Label(container, SWT.NULL);
+		new Label(container, SWT.NULL);
 
 		// Package License
 		licenseText = setTextItem(container, Messages.SpecfileNewWizardPage_18);
 
 		// Package URL
-		URLText = setTextItem(container, Messages.SpecfileNewWizardPage_19);
+		urlText = setTextItem(container, Messages.SpecfileNewWizardPage_19);
 
 		// Package Source0
 		source0Text = setTextItem(container, Messages.SpecfileNewWizardPage_20);
@@ -228,7 +228,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 			}
 		});
 		// empty label for the last row.
-		label = new Label(container, SWT.NULL);
+		new Label(container, SWT.NULL);
 		return text;
 	}
 
@@ -276,7 +276,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 					line = "License:" + "        " + licenseText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				if (line.startsWith("URL:")) { //$NON-NLS-1$
-					line = "URL:" + "            " + URLText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
+					line = "URL:" + "            " + urlText.getText(); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				if (line.startsWith("Source0:")) { //$NON-NLS-1$
 					line = "Source0:" + "        " + source0Text.getText(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -387,7 +387,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		summaryText.setText(SUMMARY);
 		groupCombo.setText(GROUP);
 		licenseText.setText(LICENSE);
-		URLText.setText(URL);
+		urlText.setText(URL);
 		source0Text.setText(SOURCE0);
 	}
 
@@ -424,7 +424,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		BufferedInputStream in = null;
 		// Here we assuming that the rpmdevtools package is installed.
 		try {
-			in = Utils.runCommandToInputStream("rpmdev-newspec", "-o", "-", "-t", template ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			in = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToInputStream("rpmdev-newspec", "-o", "-", "-t", template ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		} catch (IOException e) {
 			// FIXME: rpmdev-newspec is not in the system $PATH, what should we do here?.
 			SpecfileLog.logError(e);
