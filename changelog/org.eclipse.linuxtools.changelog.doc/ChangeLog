@@ -1,3 +1,29 @@
+2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up version to 2.7.0 for 0.7 release.
+
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+	Add legal page to help.
+	* toc-doc.xml: New file.
+	* build.properties: One more toc.
+	* META-INF/MANIFEST.MF: Help plugin requires o.e.help.
+	* plugin.xml: One more toc.
+	
+2010-10-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src: Removed.
+	* userguide: Removed.
+	* images/home.gif: New file.
+	* images/next.gif: New file.
+	* images/prev.gif: New file.
+	* Linux_Tools_Project: New file.
+	* .classpath: No longer a java project.
+	* .project: Likewise.
+	* build-helper.xml: Use mediawiki ant tasks directly.
+	* build.properties: Fix bin.includes.
+	* plugin.xml: There is just one generated toc.xml.
+	* toc.xml: Likewise.
+
 2009-08-07  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add Bundle-Localization.

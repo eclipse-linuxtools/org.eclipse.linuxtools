@@ -147,6 +147,8 @@ public class InsertChangeLogKeyHandler extends ChangeLogAction implements
 
 		// select changelog
 		clw.setChangelog(getChangelog());
+		if (clw.getChangelog() == null)
+			return null;
 
 		// write to changelog
 		clw.setDateLine(clw.getFormatter().formatDateLine(pref_AuthorName,

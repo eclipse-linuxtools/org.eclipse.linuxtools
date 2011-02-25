@@ -1,3 +1,163 @@
+2011-01-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #332621
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java (getDocumentLocation): 
+	Use the location of the ChangeLog directly rather than calculating from the workspace-root.
+
+2010-12-10  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java (mergeChangelog): Added call
+	to removeWhitespaceOnlyLines.
+	(removeWhitespaceOnlyLines): New method. Lines containing whitespace only are removed by next merge.
+	This happens only if entries of the same file with changes in different functions happen to
+	contain whitespace only lines. See Eclipse BZ #331688 for more info.
+
+2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump up version to 2.7.0 for 0.7 release.
+
+2010-12-02  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add "Eclipse-ExtensibleAPI: true" header,
+	since fragments export new packages.
+
+2010-12-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #331243
+	* plugin.xml: Add enablement for subclipse as well for Prepare ChangeLog.
+
+2010-11-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #331243
+	* plugin.xml: Add enablement options for Prepare ChangeLog under Project menu so that
+	project must have been checked out of CVS or SVN.
+
+2010-11-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #331244
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java (mergeChangelog): Add
+	defaultContent for last entry which may contain "New file" or "Removed file".
+
+2010-10-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Remove LazyStart obsoleted by ActivationPolicy.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java: Remove now unneeded field.
+
+2010-10-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java (getHyperlinkPresenter): Remove. We need MultipleHyperlinkPresenter to show mylyn bug links properly.
+	(getHyperlinkDetectorTargets): Register DefaultTextEditor as target.
+
+2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (guessFunctionNames): 
+	Add check for out-of-range using appropriate document boundaries depending on whether the change is
+	marked as being to the local file or remote file in repository.
+
+2010-06-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java: Fix warnings.
+	* src/org/eclipse/linuxtools/changelog/core/actions/StorageEditorInput.java (getAdapter): Ditto. 
+
+2010-06-24  Charley Wang  <chwang@redhat.com>
+
+	Bug #317639
+	* plugin.xml: Add hyperlink target and hyperlink detector for hyperlinking ChangeLog file
+	names.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUEditorConfiguration.java: Change to
+	base on TextSourceViewerConfiguration.
+	(getHyperlinkDetectors): Get the registered hyperlink detectors from extensions rather than
+	creating one so as to get additional detectors such as bugzilla bug number detector. 
+	(getHyperlinkDetectorTargets): New override method.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUHyperlinkDetector.java (GNUHyperlinkDetector): Add
+	default constructor. 
+	(detectHyperlinks): Ensure document location is calculated.
+
+2010-06-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #315976
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (outputMultipleEntryChangeLog): For
+	inline ChangeLog, we cannot assume the editor is already open so we must open it.
+
+2010-06-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java (askChangeLogLocation): Don't continue
+	if the given_resource ends up null.
+	* src/org/eclipse/linuxtools/changelog/core/actions/InsertChangeLogKeyHandler.java (execute): Don't continue
+	if the result of getChangeLog is null. 
+
+2010-05-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogAction.java
+	(getDocumentLocation): Add support for FileStoreEditorInput.  Do not assume
+	loc is non-null at end of method.
+	
+2010-03-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #306247
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (outputMultipleEntryChangeLog): Make
+	a check for inline formatter before searching for a ChangeLog file.  If the file does not have an inline formatter,
+	do not create a ChangeLog.
+
+2010-03-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #304185
+	* META-INF/MANIFEST.MF: Change dependency on org.eclipse.core.resources to not have specific versions.
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogContainerContentProvider.java (getChildren): Add specific
+	check for ChangeLogRootContainer which is no longer an IContainer.
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogContainerSelectionGroup.java (createTreeViewer): Change
+	call to ChangeLogRootContainer constructor which now takes the project as input.  
+	* src/org/eclipse/linuxtools/changelog/core/actions/ChangeLogRootContainer.java (ChangeLogRootContainer): Do not
+	implement IContainer which is not meant to be implemented externally and instead just create a simple class.  Also
+	take the project as a constructor parameter. 
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java (performOk): Add deprecation annotation to
+	remove warning. 
+
+2010-02-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #299974
+	* src/org/eclipse/linuxtools/changelog/core/actions/SourceEditorInput.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/actions/StorageEditorInput.java: New file.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java (addLineRange): New
+	parameter that reveals whether patch is to local file or ancestor.
+	(getStorage): New method.
+	(setStorage): Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchRangeElement.java (equals): Modified
+	to compare local change field instead of patch field which is never used and has been
+	removed. 
+	(PatchRangeElement): Add new boolean which is set to true if patch is to local file.
+	Remove setting of patch text which is never used.
+	(isLocalChange): New method.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (guessFunctionNames): Add
+	support for finding function names for changes to ancestor file which will be backed only by storage
+	and not a local file.
+	(MyStorageDocumentProvider): New private class.
+	(getChangedLines): Add changes to ancestor file and save the storage we get back to later
+	guess function names.
+
+2010-01-27  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPreferenceInitializer.java: New file.
+	* plugin.xml: Register preferenceInitializer.
+	* src/org/eclipse/linuxtools/changelog/core/ChangelogPlugin.java: Remove parts that belong to the preference initializer. 
+	* src/org/eclipse/linuxtools/changelog/core/ChangeLogPreferencesPage.java (createTextField): Don't register modify listener.
+	(getHostName): Removed.
+	(getUserEmail): Removed.
+	(getUserName): Removed.
+	(getUserRealName): Removed.
+	(init): Do not initialize properties.
+	(initializeDefaultPreferences): Removed.
+	(modifyText): Removed.
+	(widgetDefaultSelected): Removed.
+	(widgetSelected): Removed.
+		 
+2010-01-27  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUFileEntryDamagerRepairer.java (getDamageRegion): Add missing @Override.
+	(createPresentation): Remove dead variables.
+	* src/org/eclipse/linuxtools/changelog/core/editors/GNUPartitionScanner.java (nextToken): Add missing @Override.
+	* src/org/eclipse/linuxtools/changelog/core/editors/MultilineRuleDamagerRepairer.java (getDamageRegion): Likewise.
+
 2009-12-22  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix o.e.c.resources bundle version range.

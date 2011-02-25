@@ -45,6 +45,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
@@ -164,6 +165,9 @@ public abstract class ChangeLogAction extends Action {
 
 		IResource given_resource = myWorkspaceRoot.findMember(editorLoc);
 
+		if (given_resource == null)
+			return null;
+		
 		ChangeLogContainerSelectionDialog dialog = new ChangeLogContainerSelectionDialog(ws
 				.getActiveWorkbenchWindow().getShell(), given_resource
 				.getParent(), false, Messages
@@ -289,24 +293,23 @@ public abstract class ChangeLogAction extends Action {
 		String WorkspaceRoot;
 
 		try {
-		IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
-		WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
-		
-		if (currentEditor instanceof MultiPageEditorPart) {
-			Object ed = ((MultiPageEditorPart) currentEditor).getSelectedPage();
-			if (ed instanceof IEditorPart) 
-				cc = ((IEditorPart) ed).getEditorInput();
-			if (cc instanceof FileEditorInput)
-				return (appendRoot) ? WorkspaceRoot + ((FileEditorInput) cc).getFile().getFullPath().toOSString() :
-					((FileEditorInput) cc).getFile().getFullPath().toOSString();
-		}
-		
-		
-		cc = currentEditor.getEditorInput();
+			IWorkspaceRoot myWorkspaceRoot = getWorkspaceRoot();
+			WorkspaceRoot = myWorkspaceRoot.getLocation().toOSString();
+
+			if (currentEditor instanceof MultiPageEditorPart) {
+				Object ed = ((MultiPageEditorPart) currentEditor).getSelectedPage();
+				if (ed instanceof IEditorPart) 
+					cc = ((IEditorPart) ed).getEditorInput();
+				if (cc instanceof FileEditorInput)
+					return (appendRoot) ? WorkspaceRoot + ((FileEditorInput) cc).getFile().getFullPath().toOSString() :
+						((FileEditorInput) cc).getFile().getFullPath().toOSString();
+			}
+			
+			cc = currentEditor.getEditorInput();
+			
 		} catch(Exception e) {
 			return "";
 		}
-		
 
 		if (cc == null)
 			return "";
@@ -319,7 +322,7 @@ public abstract class ChangeLogAction extends Action {
 				return "";
 			} else if (test.getCompareResult() instanceof ICompareInput) {
 				ITypedElement leftCompare = ((ICompareInput) test.getCompareResult())
-						.getLeft();
+				.getLeft();
 				if (leftCompare instanceof IResourceProvider){
 					String localPath = ((IResourceProvider)leftCompare).getResource().getFullPath().toString();
 					if (appendRoot) {
@@ -332,20 +335,24 @@ public abstract class ChangeLogAction extends Action {
 					return WorkspaceRoot + test.getCompareResult().toString();
 				return test.getCompareResult().toString();
 			}
+		} else if (cc instanceof FileStoreEditorInput) {
+			return ((FileStoreEditorInput)cc).getName();
 		}
 
 
-		
+
 		if (appendRoot) {
 			return WorkspaceRoot + loc.getFullPath().toOSString();
-		} else {
+		} else if (loc != null) {
 			return loc.getFullPath().toOSString();
+		} else {
+			return "";
 		}
 	}
 
 	protected void loadPreferences() {
 		IPreferenceStore store = ChangelogPlugin.getDefault()
-				.getPreferenceStore();
+		.getPreferenceStore();
 
 		pref_AuthorName = store.getString("IChangeLogConstants.AUTHOR_NAME"); //$NON-NLS-1$
 		pref_AuthorEmail = store.getString("IChangeLogConstants.AUTHOR_EMAIL"); //$NON-NLS-1$

@@ -32,6 +32,7 @@ public class GNUFileEntryDamagerRepairer extends DefaultDamagerRepairer {
 	/*
 	 * @see IPresentationDamager#getDamageRegion(ITypedRegion, DocumentEvent, boolean)
 	 */
+	@Override
 	public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent e, boolean documentPartitioningChanged) {
 		// In the case of a partition with multiline rules, we will punt to
 		// reparse the entire partition because we don't know if the line being
@@ -46,10 +47,6 @@ public class GNUFileEntryDamagerRepairer extends DefaultDamagerRepairer {
 	 */
 	@Override
 	public void createPresentation(TextPresentation presentation, ITypedRegion region) {
-
-		int offset = region.getOffset();
-		int length = region.getLength();
-		
 		super.createPresentation(presentation, region);
 	}
 }

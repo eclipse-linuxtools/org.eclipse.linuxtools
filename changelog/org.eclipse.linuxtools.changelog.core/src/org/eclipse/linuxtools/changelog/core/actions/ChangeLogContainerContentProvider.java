@@ -76,8 +76,18 @@ public class ChangeLogContainerContentProvider implements ITreeContentProvider {
                     // this should never happen because we call #isAccessible before invoking #members
                 }
             }
+        } else if (element instanceof ChangeLogRootContainer) {
+        	ChangeLogRootContainer container = (ChangeLogRootContainer) element;
+        	List<IResource> children = new ArrayList<IResource>();
+        	IResource[] members = container.members();
+        	for (int i = 0; i < members.length; i++) {
+        		if (members[i].getType() != IResource.FILE) {
+        			children.add(members[i]);
+        		}
+        	}
+        	return children.toArray();
         }
-        return new Object[0];
+      return new Object[0];
     }
 
     /*

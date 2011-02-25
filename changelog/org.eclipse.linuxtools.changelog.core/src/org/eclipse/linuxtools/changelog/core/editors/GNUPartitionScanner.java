@@ -48,6 +48,7 @@ public class GNUPartitionScanner extends RuleBasedPartitionScanner {
 		setPredicateRules(result);
 	}
 	
+	@Override
 	public IToken nextToken() {
 		return super.nextToken();
 	}

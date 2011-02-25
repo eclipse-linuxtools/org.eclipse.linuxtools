@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="3.0"?><!--
+    Copyright (c) 2010 Red Hat, Inc.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        Alexander Kurtakov (Red Hat) - initial API and implementation
+ -->
+
 <plugin>
 
     <extension-point id="parserContribution" 
@@ -65,9 +75,13 @@
                menubarPath="project/"
                tooltip="%prepChangeLog.tooltip">
             <enablement>
+               <and>
                <or>
                   <objectClass
                         name="org.eclipse.core.resources.IResource">
+                  </objectClass>
+                  <objectClass
+                        name="org.eclipse.jdt.core.IJavaElement">
                   </objectClass>
                   <objectClass
                         name="org.eclipse.team.ui.synchronize.ISynchronizeModelElement">
@@ -77,6 +91,21 @@
                         value="org.eclipse.cdt.core.cnature">
                   </objectState>
                </or>
+               <or>
+                   <objectState
+                        name="projectPersistentProperty"
+                        value="org.eclipse.team.core.repository=org.eclipse.team.svn.core.svnnature">
+                  </objectState>
+                  <objectState
+                        name="projectPersistentProperty"
+                        value="org.eclipse.team.core.repository=org.eclipse.team.cvs.core.cvsnature">
+                  </objectState>
+                  <objectState
+                        name="projectPersistentProperty"
+                        value="org.eclipse.team.core.repository=org.tigris.subversion.subclipse.core.svnnature">
+                  </objectState>
+               </or>
+               </and>
             </enablement>
          </action>
          <action
@@ -208,4 +237,28 @@
              fileNames="ChangeLog">
        </participant>
     </extension>
+    <extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="org.eclipse.linuxtools.changelog.core.ChangelogPreferenceInitializer" />
+	</extension>
+	
+	<extension 
+	point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+<target id="org.eclipse.changelog.editor.target" 
+	name="Changelog Editor">
+<context type="org.eclipse.ui.texteditor.ITextEditor"/>
+</target>
+</extension>
+
+	
+	<extension
+  point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+  <hyperlinkDetector
+    id="org.eclipse.linuxtools.changelog.GNUHyperlinkDetector"
+    targetId="org.eclipse.changelog.editor.target"
+    class="org.eclipse.linuxtools.changelog.core.editors.GNUHyperlinkDetector"
+    name="Changelog Detector">
+  </hyperlinkDetector>
+</extension>
+	
 </plugin>

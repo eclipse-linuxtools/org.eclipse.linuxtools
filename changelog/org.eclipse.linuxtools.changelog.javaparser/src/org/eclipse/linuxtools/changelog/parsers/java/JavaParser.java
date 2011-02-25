@@ -15,6 +15,7 @@ package org.eclipse.linuxtools.changelog.parsers.java;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.internal.ui.javaeditor.ICompilationUnitDocumentProvider;
 import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.ITextSelection;
@@ -29,7 +30,10 @@ import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 /**
  * @author pmuldoon (Phil Muldoon)
  */
+@SuppressWarnings("restriction")
 public class JavaParser implements IParserChangeLogContrib {
+	
+	public static final String STATIC_INITIALIZER_NAME = "static initializer";
 
 	/**
 	 * @see IParserChangeLogContrib#parseCurrentFunction(IEditorPart)
@@ -45,7 +49,17 @@ public class JavaParser implements IParserChangeLogContrib {
 		manager.connect(input);
 
 		// Retrieve the Java Element in question.
-		ICompilationUnit workingCopy = manager.getWorkingCopy(input);
+		// The following internal access is done because the getWorkingCopy() method
+		// for the WorkingCopyManager returns null for StorageEditorInput, however,
+		// there is a working copy available through the ICompilationUnitDocumentProvider.
+//		ICompilationUnit workingCopy = manager.getWorkingCopy(input);
+		ICompilationUnitDocumentProvider x = (ICompilationUnitDocumentProvider)JavaUI.getDocumentProvider();
+		// Retrieve the Java Element in question.
+		ICompilationUnit workingCopy = x.getWorkingCopy(input);
+		
+		if (workingCopy == null)
+			return "";
+		
 		IJavaElement method = workingCopy.getElementAt(offset);
 		
 		manager.disconnect(input);
@@ -71,7 +85,7 @@ public class JavaParser implements IParserChangeLogContrib {
 		case IJavaElement.COMPILATION_UNIT:
 		    return "";
 		case IJavaElement.INITIALIZER:
-		    return "static initializer";
+		    return STATIC_INITIALIZER_NAME;
 
 		// So it's not a method, field, type, or static initializer. Where are we?
 		default:
