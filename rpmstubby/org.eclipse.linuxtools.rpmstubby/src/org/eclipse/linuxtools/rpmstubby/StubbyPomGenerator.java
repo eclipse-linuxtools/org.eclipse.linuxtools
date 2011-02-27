@@ -116,7 +116,8 @@ public class StubbyPomGenerator {
 	private void generateJavadocSubpackage(StringBuilder buffer) {
 		buffer.append("%package javadoc\n");
 		buffer.append("Group:          Documentation\n");
-		buffer.append("Summary:        Javadoc for %{name}\n\n");
+		buffer.append("Summary:        Javadoc for %{name}\n");
+		buffer.append("Requires:       jpackage-utils\n\n");
 
 		buffer.append("%description javadoc\n");
 		buffer.append("API documentation for %{name}.\n\n");
@@ -138,7 +139,7 @@ public class StubbyPomGenerator {
 
 	private void generateCleanSection(StringBuilder buffer) {
 		buffer.append("%clean\n");
-		buffer.append("%{__rm} -rf %{buildroot}\n\n");
+		buffer.append("rm -rf %{buildroot}\n\n");
 	}
 
 	private void generateInstallSection(StringBuilder buffer) {
@@ -146,12 +147,12 @@ public class StubbyPomGenerator {
 		buffer.append("rm -rf %{buildroot}\n\n");
 
 		buffer.append("# jars\n");
-		buffer.append("install -d -m 0755 %{buildroot}%{_javadir}/%{name}\n");
+		buffer.append("install -d -m 0755 %{buildroot}%{_javadir}\n");
 		buffer
-				.append("install -m 644 #TODO jars   %{buildroot}%{_javadir}/%{name}/\n\n");
+				.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}-%{version}.jar\n\n");
 
 		buffer
-				.append("(cd %{buildroot}%{_javadir}/%{name} && for jar in *-%{version}*; \\\n");
+				.append("(cd %{buildroot}%{_javadir} && for jar in *-%{version}*; \\\n");
 		buffer
 				.append("    do ln -sf ${jar} `echo $jar| sed \"s|-%{version}||g\"`; done)\n\n");
 
@@ -161,10 +162,10 @@ public class StubbyPomGenerator {
 
 		buffer.append("# poms\n");
 		buffer
-				.append("install -d -m 755 %{buildroot}%{_datadir}/maven2/poms\n");
+				.append("install -d -m 755 %{buildroot}%{_mavenpomdir}\n");
 		buffer.append("install -pm 644 pom.xml \\\n");
 		buffer
-				.append("    %{buildroot}%{_datadir}/maven2/poms/JPP.%{name}.pom\n\n");
+				.append("    %{buildroot}%{_mavenpomdir}/JPP.%{name}.pom\n\n");
 
 		buffer.append("# javadoc\n");
 		buffer
@@ -179,8 +180,8 @@ public class StubbyPomGenerator {
 	private void generateFilesSections(StringBuilder buffer) {
 		buffer.append("%files\n");
 		buffer.append("%defattr(-,root,root,-)\n");
-		buffer.append("%{_javadir}/%{name}\n");
-		buffer.append("%{_datadir}/maven2/poms/*\n");
+		buffer.append("%{_javadir}/*\n");
+		buffer.append("%{_mavenpomdir}/*\n");
 		buffer.append("%{_mavendepmapfragdir}/*\n\n");
 
 		buffer.append("%files javadoc\n");
@@ -191,9 +192,7 @@ public class StubbyPomGenerator {
 
 	private void generatePrepSection(StringBuilder buffer) {
 		buffer.append("\n%prep\n");
-		buffer.append("%setup -q -n FIXME\n\n");
-		buffer.append("mkdir external_repo\n");
-		buffer.append("ln -s %{_javadir} external_repo/JPP\n\n");
+		buffer.append("%setup -q #You may need to update this according to your Source0\n\n");
 	}
 
 	private void generateBuildSection(StringBuilder buffer) {
