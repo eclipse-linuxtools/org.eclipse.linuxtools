@@ -1,0 +1,12 @@
+2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* feature.xml: Remove unnecessary dependency.
+
+2010-08-10  Elliott Baron  <ebaron@fedoraproject.org>
+
+	* .project: New file.
+	* build.properties: New file.
+	* epl-v10.html: New file.
+	* feature.properties: New file.
+	* feature.xml: New file.
+	* license.html: New file.
