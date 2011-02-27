@@ -75,6 +75,9 @@ public class Utils {
 					while ((i = in.read()) != -1) {
 						outStream.write(i);
 					}
+					outStream.flush();
+					outStream.close();
+					in.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 					return Status.CANCEL_STATUS;
@@ -84,8 +87,10 @@ public class Utils {
 
 		};
 		readinJob.schedule();
+		
 		try {
 			child.waitFor();
+			readinJob.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

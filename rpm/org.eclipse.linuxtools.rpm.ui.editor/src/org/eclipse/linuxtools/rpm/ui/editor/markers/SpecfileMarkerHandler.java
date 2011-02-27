@@ -40,7 +40,7 @@ public abstract class SpecfileMarkerHandler {
 	}
 
 	public void removeExistingMarkers() {
-		if (file == null) {
+		if (file == null || !file.exists()) {
 			return;
 		}
 

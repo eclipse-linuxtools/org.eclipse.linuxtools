@@ -32,7 +32,8 @@ public class SpecfileElementHyperlinkDetectorTest extends FileTestCase {
 		String testText = "%define smth other\nSource0: test.zip\nPatch0: first.patch\n"
 				+ "%build\n %{SOURCE0}\n%patch0\n%{smth}\n";
 		newFile(testText);
-		elementDetector = new SpecfileElementHyperlinkDetector(specfile);
+		elementDetector = new SpecfileElementHyperlinkDetector();
+		elementDetector.setSpecfile(specfile);
 
 		IEditorPart openEditor = IDE
 				.openEditor(Activator.getDefault().getWorkbench()
@@ -73,7 +74,8 @@ public class SpecfileElementHyperlinkDetectorTest extends FileTestCase {
 	}
 	
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
-		elementDetector = new SpecfileElementHyperlinkDetector(specfile);
+		elementDetector = new SpecfileElementHyperlinkDetector();
+		elementDetector.setSpecfile(specfile);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null, false);
 		assertNull(returned);
 	}

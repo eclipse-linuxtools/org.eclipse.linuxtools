@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Specfile Editor User Guide - Configuring Specfile Editor Settings</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Configuring Specfile Editor Settings</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Import-src-rpm-and-export-rpm-and-src-rpm.html" title="Import src.rpm and export rpm and src.rpm">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Import src.rpm and export rpm and src.rpm</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Configuring_Specfile_Editor_Settings">Configuring Specfile Editor Settings</h1>
+		<p>To configure Specfile Editor settings, navigate to <u>Window</u> / <u>Preferences</u>. Then, from the left pane of the 
+			<b>
+				<i>Preferences</i>
+			</b> menu, select 
+			<b>
+				<i>Specfile Editor</i>
+			</b>. 
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_changelog.png"/>
+		</p>
+		<p>Upon selecting the 
+			<b>
+				<i>Specfile Editor</i>
+			</b> menu, you can configure the format and locale of Changelog entries. To edit the actual content of your Changelogs, click the <u>ChangeLog</u> hyperlink in the menu, or use 
+			<b>Ctrl</b>+'
+			<i>Alt</i>'+'
+			<i>C'</i> (outside of the 
+			<b>
+				<i>Preferences</i>
+			</b> menu).
+		</p>
+		<h2 id="Macro_Completion">Macro Completion</h2>
+		<p>Macro definitions enable the Specfile Editor to properly highlight and autocompile 
+			<i>.spec</i> files.  The 
+			<b>
+				<i>Macro Completion</i>
+			</b> sub-menu allows you to add/remove macro definitions and configure how the Specfile Editor should present macro values during mouse hovers. 
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_macros.png"/>
+		</p>
+		<p>The 
+			<b>
+				<i>Macro Definitions</i>
+			</b> section shows what macros the Specfile Editor is using. You can add, delete, and reorder macros using the buttons to the left of this section.
+		</p>
+		<p>The 
+			<b>
+				<i>Mouse hover content</i>
+			</b> section enables you to specify what kind of information about a macro value whenever you hover your mouse over it. You can choose whether to display the contents or description of a macro value. The following screenshots illustrate the difference between both options:
+		</p>
+		<dl>
+			<dt>Show macro descriptions </dt>
+			<dd>
+				<img border="0" src="images/Specfile_macros_description.png"/>
+			</dd>
+			<dt>Show macro contents </dt>
+			<dd>
+				<img border="0" src="images/Specfile_macros_content.png"/>
+			</dd>
+		</dl>
+		<h2 id="RPM_Completions">RPM Completions</h2>
+		<p>The 
+			<b>
+				<i>RPM Completions</i>
+			</b> section allows you to configure generic package list settings. This section allows you to use distribution-specific references which supplement auto-completion in editing 
+			<i><code>.spec</code></i> files. These distribution-specific references include a list of installed RPM packages as well as online repositories. 
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_rpms_generic.png"/>
+		</p>
+		<p>
+			<b>
+				<i>RPM Completions</i>
+			</b> configures the following settings:
+		</p>
+		<ul>
+			<li>Whether to use <code>rpm</code> or <code>yum</code> to build the package list</li>
+			<li>The path to the package list file </li>
+			<li>Whether or not to automatically build the RPM packages proposals list</li>
+			<li>When to refresh package list (
+				<b>
+					<i>Proposals RPM list build rate</i>
+				</b>)
+			</li>
+		</ul>
+		<p>The Specfile Editor can use package management tools to build the package list. Currently, the Specfile Editor only supports <code>yum</code> and <code>urpmi</code>. If neither package management tools are present in the system, the Specfile Editor will use <code>rpm</code> to build the package list.</p>
+		<h3 id="Package_Information">Package Information</h3>
+		<p>This sub-section of 
+			<b>
+				<i>RPM Completions</i>
+			</b> allows you to configure what package details (i.e. RPM tags) to display during mouse hovers over appropriate values. 
+			<b>
+				<i>Package Information</i>
+			</b> also lets you set the number of packages to show details for. 
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_rpms_details.png"/>
+		</p>
+		<p>
+			<b>
+				<i>Package Information</i>
+			</b> contains a checklist of RPM tags (e.g. 
+			<b>
+				<i>Name</i>
+			</b>, 
+			<b>
+				<i>Version</i>
+			</b>, 
+			<b>
+				<i>Release</i>
+			</b>). The Specfile Editor displays these tags during mouse hovers on package information in the 
+			<i><code>.spec</code></i> file. You can also set a threshold for the number of proposals that enables the Specfile Editor to display this information. By default, the threshold is 10.
+		</p>
+		<h2 id="Rpmlint">Rpmlint</h2>
+		<p>The 
+			<b>
+				<i>Rpmlint</i>
+			</b> section allows you to configure where <code>rpmlint</code> is installed, which is useful if it is installed somewhere other than the default 
+			<i><code>/usr/bin/rpmlint</code></i>. This section also allows you to set whether warnings should be used for tabs or spaces, which is useful if you use both in the 
+			<i><code>.spec</code></i> file.
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_rpmlint.png"/>
+		</p>
+		<h2 id="Task_Tags">Task Tags</h2>
+		<p>The 
+			<b>
+				<i>Task Tags</i>
+			</b> section allows the Specfile Editor to identify specific strings as 
+			<i>task tags</i>. The Specfile Editor will only search for these strings in comments. By default, the Specfile Editor identifies the strings <code>TODO</code> and 
+			<i><code>FIXME</code></i> as task tags.
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_tasks.png"/>
+		</p>
+		<p>Whenever the Specfile Editor finds a task tag in the 
+			<i><code>.spec</code></i> file, it adds the tag to the 
+			<b>
+				<i>Tasks</i>
+			</b> view and plots an appropriate marker in the editor. Clicking the tag in the 
+			<b>
+				<i>Tasks</i>
+			</b> view will automatically place the insertion point on the corresponding string in the 
+			<i><code>.spec</code></i> file.
+		</p>
+		<p>
+			<img border="0" src="images/Screenshot-taskscreenshot.png"/>
+		</p>
+		<h2 id="Templates">Templates</h2>
+		<p>The 
+			<b>
+				<i>Templates</i>
+			</b> section allows you to share and manage different 
+			<i><code>.spec</code></i> file directive/section templates for all contexts. 
+		</p>
+		<p>
+			<img border="0" src="images/Specfile_settings_templates.png"/>
+		</p>
+		<p>The <u>Import</u> and <u>Export</u> functions allow you to share templates with other developers who may also be working on the same package. The <u>New</u> and <u>Edit</u> buttons open a menu for adding or revising templates; they both contain the same options.</p>
+		<p>
+			<img border="0" src="images/Screenshot-edittemplate.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Import-src-rpm-and-export-rpm-and-src-rpm.html" title="Import src.rpm and export rpm and src.rpm">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Specfile Editor User Guide">
+						<img alt="Specfile Editor User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Import src.rpm and export rpm and src.rpm</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>

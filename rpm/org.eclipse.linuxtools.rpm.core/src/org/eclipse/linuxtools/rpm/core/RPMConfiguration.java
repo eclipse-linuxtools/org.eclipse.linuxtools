@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.core;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 
 public class RPMConfiguration {
@@ -51,7 +52,6 @@ public class RPMConfiguration {
 			if(!sourcesFolder.exists()) {
 				sourcesFolder.create(false, true, null);
 			}
-			sourcesFolder.setDerived(true);
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SOURCES_FOLDER), 
 	                sourcesFolder.getName());
         } else {
@@ -68,7 +68,7 @@ public class RPMConfiguration {
 			if(!srpmsFolder.exists()) {
 				srpmsFolder.create(false, true, null);
 			}
-			srpmsFolder.setDerived(true);
+			srpmsFolder.setDerived(true, new NullProgressMonitor());
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SRPMS_FOLDER),
 					srpmsFolder.getName());
         } else {
@@ -85,7 +85,7 @@ public class RPMConfiguration {
             if(!buildFolder.exists()) {
 				buildFolder.create(false, true, null);
 			}
-			buildFolder.setDerived(true);
+			buildFolder.setDerived(true, new NullProgressMonitor());
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.BUILD_FOLDER), 
 					buildFolder.getName());
         } else {
@@ -102,7 +102,7 @@ public class RPMConfiguration {
 			if(!rpmsFolder.exists()) {
 				rpmsFolder.create(false, true, null);
 			}
-			rpmsFolder.setDerived(true);
+			rpmsFolder.setDerived(true, new NullProgressMonitor());
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.RPMS_FOLDER), 
 	                rpmsFolder.getName());
         } else {
@@ -119,7 +119,6 @@ public class RPMConfiguration {
             if(!specsFolder.exists()) {
 				specsFolder.create(false, true, null);
 			}
-			specsFolder.setDerived(true);
 			project.setPersistentProperty(new QualifiedName(pluginID, IRPMConstants.SPECS_FOLDER),
 					specsFolder.getName());
         } else {

@@ -114,38 +114,6 @@
             name="changelogSection"/>
       <include file="templates/templates.xml"/>
    </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MainPreferencePage"
-            id="org.eclipse.linuxtools.rpm.speceditor.rcp.mainpage"
-            name="%page.name"/>
-      <page
-            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
-            id="org.eclipse.linuxtools.rpm.speceditor.rcp.preferences.RpmProposalsPreferencePage"
-            name="%page.name.0"/>
-      <page
-            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
-            id="org.eclipse.linuxtools.rpm.speceditor.rcp.preferences.MacroProposalsPreferencePage"
-            name="%page.name.1"/>
-      <page
-            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
-            id="org.eclipse.linuxtools.rpm.speceditor.rcp.preferences.SpecTemplatePreferencePage"
-            name="%page.name.2"/>
-      <page
-            category="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
-            id="org.eclipse.linuxtools.rpm.speceditor.rcp.preferences.RpmInformationsPreferencePage"
-            name="%page.name.3"/>
-      <page
-            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
-            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.TaskTagsPreferencePage"
-            id="org.eclipse.linuxtools.rpm.speceditor.rcp.preferences.TaskTagsPreferencePage"
-            name="%page.name.4"/>
-   </extension>
 
    <extension
          point="org.eclipse.core.runtime.preferences">
@@ -187,75 +155,6 @@
             name="%wizard.name">
       </wizard>
    </extension>
-   <!-- Commands -->
-   <extension
-         point="org.eclipse.ui.commands">
-         <category
-            name="%category.name.0"
-            description="%category.description"
-            id="rpmEditor.category"/>
-         <command
-            categoryId="rpmEditor.category"
-            name="%command.name"
-            id="rpmEditor.toggleComment.command"/>
-         <command
-            categoryId="rpmEditor.category"
-            name="%command.name.0"
-            id="rpmEditor.organizePatches.command"/>
-         <command
-         	categoryId="rpmEditor.category"
-            id="rpmEditor.showOutline.command"
-            name="%command.name.1"/>
-   </extension>
-   <extension point="org.eclipse.ui.handlers">
-    	<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
-         	commandId="rpmEditor.toggleComment.command" />
-   		<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
-         	commandId="rpmEditor.organizePatches.command" />
-   		<handler
-         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
-         	commandId="rpmEditor.showOutline.command" />
-   </extension>
-   <!-- Key bindings -->
-   <extension
-     point="org.eclipse.ui.bindings">
-      <key
-           sequence="Ctrl+Shift+C"
-           commandId="rpmEditor.toggleComment.command"
-           contextId="org.eclipse.ui.textEditorScope"
-           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
-      <key
-           sequence="Ctrl+Shift+O"
-           commandId="rpmEditor.organizePatches.command"
-           contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
-           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
-      <key
-      	   sequence="Ctrl+O"
-           commandId="rpmEditor.showOutline.command"
-           contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
-           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
-   </extension>
-   <!-- Editor menu actions -->
-   <extension
-         point="org.eclipse.ui.menus">
-         <menuContribution
-            locationURI="popup:#TextEditorContext?after=additions">
-         <command
-               commandId="rpmEditor.toggleComment.command"
-               label="%command.label"
-               tooltip="%command.tooltip" />
-         <command
-               commandId="rpmEditor.organizePatches.command"
-               label="%command.label.0"
-               tooltip="%command.tooltip.0" />
-         <command
-               commandId="rpmEditor.showOutline.command"
-               label="%command.label.1"
-               tooltip="%command.tooltip.1" />
-      </menuContribution>
-   </extension>
    <!-- Compare support-->
    <extension point="org.eclipse.compare.contentMergeViewers">
 	  <viewer
@@ -294,6 +193,44 @@
                value="icons/rpm.gif">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.ui.category.file"
+            description="Open a file"
+            id="org.eclipse.linuxtools.rpm.speceditor.rcp.commands.OpenFile"
+            name="Open"/>
+   </extension>
+  
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.linuxtools.rpm.speceditor.rcp.commands.OpenFile"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+O"/>
+   </extension>
+  
+   <!-- must come after the command definition above -->
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            label="File Action Set"
+            visible="true"
+            id="org.eclipse.linuxtools.rpm.speceditor.rcp.fileActionSet">
+         <action
+               id="org.eclipse.linuxtools.rpm.speceditor.rcp.actions.OpenFile"
+               icon="icons/open.gif"
+               label="%openAction.name"
+               tooltip="Open a File"
+               toolbarPath="org.eclipse.ui.workbench.file/open.ext"
+               menubarPath="file/new.ext"
+               class="org.eclipse.linuxtools.rpm.speceditor.rcp.actions.OpenFileAction"
+               definitionId="org.eclipse.linuxtools.rpm.speceditor.rcp.commands.OpenFile"
+               style="push"
+               state="false"/>
+      </actionSet>
    </extension>
 
 </plugin>

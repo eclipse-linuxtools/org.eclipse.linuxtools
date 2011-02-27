@@ -33,17 +33,6 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 	private static final String SOURCE_IDENTIFIER = "Source"; //$NON-NLS-1$
 
 	/**
-	 * Creates the detector.
-	 * 
-	 * @param editor
-	 *            Reference to the specfile editor.
-	 */
-	public SourcesFileHyperlinkDetector(SpecfileEditor editor) {
-		super();
-		this.editor = editor;
-	}
-
-	/**
 	 * @see org.eclipse.jface.text.hyperlink.IHyperlinkDetector#detectHyperlinks(org.eclipse.jface.text.ITextViewer,
 	 *      org.eclipse.jface.text.IRegion, boolean)
 	 */
@@ -51,6 +40,13 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 			IRegion region, boolean canShowMultipleHyperlinks) {
 		if (region == null || textViewer == null) {
 			return null;
+		}
+		
+		if (editor == null) {
+			editor = ((SpecfileEditor) this.getAdapter(SpecfileEditor.class));
+			if (editor == null) {
+				return null;
+			}
 		}
 
 		IDocument document = textViewer.getDocument();
@@ -91,5 +87,9 @@ public class SourcesFileHyperlinkDetector extends AbstractHyperlinkDetector {
 		}
 
 		return null;
+	}
+	
+	public void setEditor(SpecfileEditor editor) {
+		this.editor = editor;
 	}
 }

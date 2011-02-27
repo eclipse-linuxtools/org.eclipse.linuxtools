@@ -10,11 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
-import org.eclipse.core.runtime.CoreException;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -48,11 +45,7 @@ public class SRPMImportWizard extends Wizard implements IImportWizard {
 	//the default and point to SRPMImport finish()
 	@Override
 	public boolean performFinish() {
-		try {
-			return mainPage.finish();
-		} catch (CoreException e) {
-			return false;
-		}
+		return mainPage.finish();
 	}
 
 	/**

@@ -73,7 +73,9 @@
             <test property="org.eclipse.core.resources.name" value="*.spec"/> 
          </or>
       </adapt>
-      <adapt type="org.eclipse.jface.text.ITextSelection" />
+      <with variable="activeEditorId">
+	       <equals value="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"/>
+      </with>
     </or>
    </iterate>
 </visibleWhen>

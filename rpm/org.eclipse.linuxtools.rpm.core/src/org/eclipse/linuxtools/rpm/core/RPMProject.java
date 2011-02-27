@@ -13,7 +13,11 @@ package org.eclipse.linuxtools.rpm.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -31,10 +35,12 @@ public class RPMProject {
 	private IProject project;
 	private SourceRPM sourceRPM;
 	private RPMConfiguration rpmConfig;
+	private HashSet<String> missingDependencies;
 
 	public RPMProject(IProject project) throws CoreException {
 		this.project = project;
 		rpmConfig = new RPMConfiguration(this.project);
+		this.missingDependencies = new HashSet<String>();
 	}
 
 	public IProject getProject() {
@@ -116,7 +122,6 @@ public class RPMProject {
 	}
 
 	public void buildAll(OutputStream outStream) throws CoreException {
-		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		 rpmbuild.buildAll(getSpecFile(), outStream);
 
@@ -129,7 +134,6 @@ public class RPMProject {
 	}
 
 	public void buildBinaryRPM(OutputStream out) throws CoreException {
-		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		rpmbuild.buildBinary(getSpecFile(), out);
 
@@ -140,7 +144,6 @@ public class RPMProject {
 	}
 
 	public void buildSourceRPM(OutputStream out) throws CoreException {
-		prepareExport();
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
 		rpmbuild.buildSource(getSpecFile(), out);
 
@@ -152,7 +155,13 @@ public class RPMProject {
 
 	public void buildPrep() throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildPrep(getSpecFile());
+		InputStream in = rpmbuild.buildPrep(getSpecFile());
+		try {
+			in.close();
+		} catch (IOException e) {
+			// TODO Do we really need the input stream here?
+			e.printStackTrace();
+		}
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 	}
@@ -195,6 +204,14 @@ public class RPMProject {
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getSpecsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
+	}
+
+	public void addMissingDependency(String missingRpm) {
+		missingDependencies.add(missingRpm);
+	}
+
+	public Set<String> getMissingDependencies() {
+		return missingDependencies;
 	}
 
 }
