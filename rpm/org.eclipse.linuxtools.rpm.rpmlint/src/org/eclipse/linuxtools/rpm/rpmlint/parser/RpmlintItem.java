@@ -22,9 +22,9 @@ public class RpmlintItem {
 
 	private String id;
 
-	private String referedContent;
+	private String refferedContent;
 
-	private String referedSection;
+	private String refferedSection;
 
 	private String message;
 	
@@ -62,27 +62,27 @@ public class RpmlintItem {
 		this.message = message;
 	}
 
-	public String getReferedContent() {
-		return referedContent;
+	public String getRefferedContent() {
+		return refferedContent;
 	}
 
-	public void setReferedContent(String referedContent) {
+	public void setRefferedContent(String refferedContent) {
 		for (int i = 0; i < sections.length; i++) {
-			if (referedContent.startsWith(sections[i])) {
-				this.referedContent = referedContent.trim();
-				if (this.referedContent.equals("")) //$NON-NLS-1$
-					this.referedContent = sections[i];
-				this.referedSection = sections[i];
+			if (refferedContent.startsWith(sections[i])) {
+				this.refferedContent = refferedContent.trim();
+				if (this.refferedContent.equals("")) //$NON-NLS-1$
+					this.refferedContent = sections[i];
+				this.refferedSection = sections[i];
 				i = sections.length;
 			} else {
-				this.referedContent = referedContent;
-				this.referedSection = ""; //$NON-NLS-1$
+				this.refferedContent = refferedContent;
+				this.refferedSection = ""; //$NON-NLS-1$
 			}
 		}
 	}
 
-	public String getReferedSection() {
-		return referedSection;
+	public String getrefferedSection() {
+		return refferedSection;
 	}
 
 	public int getSeverity() {
@@ -119,7 +119,7 @@ public class RpmlintItem {
 		stringBuilder.append("\nId: "); //$NON-NLS-1$
 		stringBuilder.append(this.id);
 		stringBuilder.append("\nrefered content: "); //$NON-NLS-1$
-		stringBuilder.append(this.referedContent);
+		stringBuilder.append(this.refferedContent);
 		stringBuilder.append("\nmessage: "); //$NON-NLS-1$
 		stringBuilder.append(this.getMessage());
 		stringBuilder.append("\n"); //$NON-NLS-1$

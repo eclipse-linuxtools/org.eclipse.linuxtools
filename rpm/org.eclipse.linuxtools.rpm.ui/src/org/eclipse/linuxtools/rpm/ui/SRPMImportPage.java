@@ -1,18 +1,13 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
-*/
-
-/**
- * @author pmuldoon
- * @version 1.0
- *
- * RPM GUI import  page. Defines the page the is shown to the user when they choose
- * to export to and RPM. Defines the UI elements shown, and the basic validation (need to add to
- * this)
- */
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
 import java.io.File;
@@ -27,10 +22,10 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -49,9 +44,11 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.actions.NewProjectAction;
 
 /**
+ * RPM GUI import  page. Defines the page the is shown to the user when they choose
+ * to export to and RPM. Defines the UI elements shown, and the basic validation (need to add to
+ * this)
  * SRPMImportPage. Called by SRPMImportwizard.  Class can not be subclassed
  * extends WizardPage and implements Listener (for events)
  *
@@ -88,8 +85,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		}
 	}
 
-	private IWorkbench workbench;
-
 	// GUI Control variables	
 	private Combo sourceSRPM;
 	private Button intoConfigured;
@@ -97,7 +92,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	private List projectList;
 	private IStructuredSelection selection;
 
-	static private Vector srpmVector;
+	static private Vector<String> srpmVector;
 	
 	/**
 	 * @see java.lang.Object#Object()
@@ -108,9 +103,8 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	 */
 	public SRPMImportPage(IWorkbench aWorkbench, IStructuredSelection currentSelection) {
 		super(Messages.getString("SRPMImportPage.Import_SRPM"), //$NON-NLS-1$
-			Messages.getString("SRPMImportPage.Select_project_to_import"), null); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getString("SRPMImportPage.Select_project_to_import"), null); //$NON-NLS-1$
 
-		this.workbench = aWorkbench;
 		setPageComplete(false);
 		setDescription(Messages.getString(
 				"SRPMImportPage.Select_project_to_import")); //$NON-NLS-1$
@@ -128,7 +122,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	
 	private File getSelectedSRPM() {
 		String srpmName = sourceSRPM.getText();
-		if(srpmName.equals("") || srpmName == null) { //$NON-NLS-1$
+		if(srpmName == null || srpmName.equals("")) { //$NON-NLS-1$
 			return null;
 		}
 		return new File(sourceSRPM.getText());
@@ -171,9 +165,9 @@ public class SRPMImportPage extends WizardPage implements Listener {
 				"SRPMImportPage.toolTip_SRPM_Name")); //$NON-NLS-1$
 
 		if (srpmVector == null)
-			srpmVector = new Vector();
+			srpmVector = new Vector<String>();
 		for (int i = srpmVector.size(); i > 0; i--)
-			sourceSRPM.add((String)(srpmVector.elementAt(i - 1)));
+			sourceSRPM.add((srpmVector.elementAt(i - 1)));
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -220,7 +214,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		
 		// Declare an array of IProject;
 		IProject[] internalProjectList;
-		String Proj_Enum;
 
 		//Get the current workspace root.
 		final IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace()
@@ -358,12 +351,12 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		}
 		File srpm = new File(sourceSRPM.getText());
 		if (!srpm.isFile()){
-			setErrorMessage(Messages.getString("SRPMImportPage.Source_not_Valid"));
+			setErrorMessage(Messages.getString("SRPMImportPage.Source_not_Valid")); //$NON-NLS-1$
 			return false;
 		}
-		if (sourceSRPM.getText().lastIndexOf(".src.rpm") == -1)
+		if (sourceSRPM.getText().lastIndexOf(".src.rpm") == -1) //$NON-NLS-1$
 		{
-			setErrorMessage(Messages.getString("SRPMImportPage.No_src_rpm_ext"));
+			setErrorMessage(Messages.getString("SRPMImportPage.No_src_rpm_ext")); //$NON-NLS-1$
 			return false;
 		}
   
@@ -378,7 +371,6 @@ public class SRPMImportPage extends WizardPage implements Listener {
 	 * @throws CoreException
 	 * 	 */
 	public boolean finish() throws CoreException {
-		IPath detailedProjectLocation = null;
 		IProject detailedProject;
 			
 		// Get the handle to the current activate Workspace	    
@@ -409,7 +401,7 @@ public class SRPMImportPage extends WizardPage implements Listener {
 				break;
 			}
 		}
-		srpmVector.add((String)(sourceSRPM.getText()));
+		srpmVector.add((sourceSRPM.getText()));
 		
 		SRPMImportOperation srpmImportOp = null;
 		try {
@@ -446,9 +438,13 @@ public class SRPMImportPage extends WizardPage implements Listener {
 		NewProjectListener listener = new NewProjectListener();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener,
 				IResourceChangeEvent.POST_CHANGE);
-		(new NewProjectAction(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow())).run();
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
+		RPMNewProject wizard = new RPMNewProject();
+		wizard.init(PlatformUI.getWorkbench(), null);
+	    // Instantiates the wizard container with the wizard and opens it
+	    WizardDialog dialog = new WizardDialog(getShell(), wizard);
+	    dialog.create();
+	    dialog.open();
+	    ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
 		IProject project = listener.getNewProject();
 		return project;
 	}

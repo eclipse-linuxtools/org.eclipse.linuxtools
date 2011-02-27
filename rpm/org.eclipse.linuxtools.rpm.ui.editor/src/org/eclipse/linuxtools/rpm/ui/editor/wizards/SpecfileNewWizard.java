@@ -11,21 +11,35 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.wizards;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.core.runtime.*;
-import org.eclipse.jface.operation.*;
-import java.lang.reflect.InvocationTargetException;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.CoreException;
-import java.io.*;
-import org.eclipse.ui.*;
+import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 public class SpecfileNewWizard extends Wizard implements INewWizard {
@@ -45,8 +59,12 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	 */
 	@Override
 	public void addPages() {
-		page = new SpecfileNewWizardPage(selection);
-		addPage(page);
+		if (!Utils.fileExist("/usr/bin/rpmdev-newspec")) { //$NON-NLS-1$
+			addPage(new NoExecutableWizardPage());
+		} else {
+			page = new SpecfileNewWizardPage(selection);
+			addPage(page);
+		}
 	}
 
 	/**
@@ -60,7 +78,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 		final InputStream contentInputStream = openContentStream();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor)
-			throws InvocationTargetException {
+					throws InvocationTargetException {
 				try {
 					doFinish(containerName, fileName, contentInputStream,
 							monitor);
@@ -78,8 +96,8 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 		} catch (InvocationTargetException e) {
 			SpecfileLog.logError(e);
 			Throwable realException = e.getTargetException();
-			MessageDialog.openError(getShell(), Messages.SpecfileNewWizard_0, realException
-					.getMessage());
+			MessageDialog.openError(getShell(), Messages.SpecfileNewWizard_0,
+					realException.getMessage());
 			return false;
 		}
 		return true;
@@ -92,7 +110,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	 */
 	private void doFinish(String projectName, String fileName,
 			InputStream contentInputStream, IProgressMonitor monitor)
-	throws CoreException {
+			throws CoreException {
 		monitor.beginTask(Messages.SpecfileNewWizard_1 + fileName, 2);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource resource = root.findMember(new Path(projectName));
@@ -117,7 +135,7 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
+						.getActiveWorkbenchWindow().getActivePage();
 				try {
 					IDE.openEditor(page, file, true);
 				} catch (PartInitException e) {
@@ -136,9 +154,8 @@ public class SpecfileNewWizard extends Wizard implements INewWizard {
 	}
 
 	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR,
-				Activator.PLUGIN_ID, IStatus.OK, message,
-				null);
+		IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+				IStatus.OK, message, null);
 		throw new CoreException(status);
 	}
 

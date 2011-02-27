@@ -23,7 +23,7 @@ public class RpmlintMarkerResolutionGenerator implements IMarkerResolutionGenera
 	public static final String RPMLINT_ERROR_ID = "rpmlintErrorId"; //$NON-NLS-1$
 	
 	// rpmlint refered  text
-	public static final String RPMLINT_REFERED_CONTENT = "rpmlintReferedContent"; //$NON-NLS-1$
+	public static final String RPMLINT_REFFERED_CONTENT = "rpmlintrefferedContent"; //$NON-NLS-1$
 	
 	
 	/* (non-Javadoc)

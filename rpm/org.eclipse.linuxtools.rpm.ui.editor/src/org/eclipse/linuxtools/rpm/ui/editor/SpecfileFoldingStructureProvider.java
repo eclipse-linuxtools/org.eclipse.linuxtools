@@ -69,7 +69,7 @@ public class SpecfileFoldingStructureProvider {
 		Set<Position> structure = createFoldingStructure(sEditor.getSpecfile());
 		Annotation[] deletions = computeDifferences(model, structure);
 		Map<Annotation,Position> additions = computeAdditions(structure);
-		if ((deletions.length != 0 || additions.size() != 0)
+		if ((deletions.length != 0 || !additions.isEmpty())
 				&& (sProgressMonitor == null || !sProgressMonitor.isCanceled()))
 			model.modifyAnnotations(deletions, additions, EMPTY);
 	}

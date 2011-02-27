@@ -1,3 +1,294 @@
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java: Removed not needed methods.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (importSourceRPM): Assign directly to the variable.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (fileExist): New method.
+	(copyFile): Likewise.
+	(inputStreamToString): Concatenate with StringBuilder.
+	(runCommandToString): Fix javadoc.
+
+2010-01-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (install): Fix javadoc.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (buildAll): Likewise.
+	(buildBinary): Likewise.
+	(buildPrep): Likewise.
+	(buildSource): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (runCommandToInputStream): Likewise.
+	(inputStreamToString): Likewise.
+	(runCommand): Likewise.
+
+2010-01-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildSourceRPM): Make it void which writes to the passed OutputStream.
+	(buildBinaryRPM): Likewise.
+	(buildAll): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (buildAll): Likewise.
+	(buildBinary): Likewise.
+	(buildSource): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (runCommandToInputStream): Remove not needed try/catch.
+	(inputStreamToString): Javadoc format.
+	(runCommand): New method.
+
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.ui.prefs: New file.
+	
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (setSpecFile): Store directly, there is no need to keep local variable.
+
+2009-12-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMCoreInitializer.java: New file.
+	* plugin.xml: Add preference Initializer.
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java (initializeDefaultPreferences): Remove deprecated message override. 
+
+2009-08-13  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (buildPrep): Don't set sources folder.
+	(generateFileCheckSum): Removed.
+	(generateProjectChecksum): Removed.
+	(prepareExport): Do not store checksums.
+	(importSourceRPM): Likewise.
+	(getSpecFile): Return first member of SPECS folder.
+
+2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
+
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectFactory.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/RPMConfiguration.java (initialize): Don't try to create existing folders.
+
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/internal/Messages.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/rpm_strings.properties: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMConfiguration.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SourceRPM.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConfiguration.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/ISourceRPM.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/Messages.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/rpm_strings.properties: New file.
+	* src/org/eclipse/linuxtools/rpm/core/RPMConfiguration.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/SourceRPM.java: New file.
+	* META-INF/MANIFEST.MF: Remove package export.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConstants.java: Fix imports.
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java (getSourceRPM): Use implementations.
+	(setSourceRPM): Likewise.
+	(getConfiguration): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectFactory.java (getRPMProject): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (RPMBuild): Likewise. 
+	
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProject.java: New file.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectFactory.java (getRPMProject): Use the implementation directly.
+
+2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* license.html: New file.
+	* build.properties: Add license.html to bin.includes.
+	
+2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Sync version with other rpm plugins.
+	* plugin.properties: Fix Copyright.
+	* src/org/eclipse/linuxtools/rpm/core/internal/Messages.java: Fix Copyright.
+
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Simplify build.
+	* META-INF/MANIFEST.MF: Likewise.
+	
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java (runCommandToInputStream): Don't use Java 1.6 API.
+	
+2009-07-16  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/Command.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/ShellScript.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/StreamReaderThread.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Utils.java: New file.
+	* META-INF/MANIFEST.MF: Don't export o.e.l.rpm.core.internal.util.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (buildSourceRPM): Return InputStream.
+	(buildBinaryRPM): Likewise.
+	(buildAll): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (install): Invoke directly instead of creating shell scripts.
+	(RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (buildAll): Likewise.
+	(buildBinary): Likewise.
+	(buildPrep): Likewise.
+	(rebuild): Likewise.
+	(buildSource): Likewise.
+	(RPMBuild): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java (getBuildTime): Likewise.
+	(getHeaderInfo): Likewise.
+	(getArch): Likewise.
+	(query): Likewise.
+	(getPostInstallScript): Likewise.
+	(getPreInstallScript): Likewise.
+	(getPlatform): Likewise.
+	(getBuildHost): Likewise.
+	(getChangelog): Likewise.
+	(getPreUninstallScript): Likewise.
+	(getProvides): Likewise.
+	(getPostUninstallScript): Likewise.
+	(getOS): Likewise.
+
+2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/ShellScript.java (exec): Fix NON-NLS warning.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/StreamReaderThread.java (run): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConstants.java (RPM_DISPLAYED_LOG_NAME): Remove not needed constants.
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java (getHostName): Removed.
+	(getWorkspace): Likewise.
+	(start): Likewise.
+	(stop): Likewise.
+	(initializeDefaultPreferences): Remove not needed constants.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java (Diff): Add missing NON-NLS.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (RPMBuild): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java (query): Likewise.
+
+2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: New file.
+	* build.properties: Externalize strings.
+	* META-INF/MANIFEST.MF: Likewise.
+	* plugin.xml: Likewise.
+
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix for #281480.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (importSourceRPM): Do not  build on import. 
+	This prevents importing srpms that are not buildable for some reason. 
+
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+	Fix for #179156.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/Command.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/ShellScript.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/StreamReaderThread.java: Removed.
+	* build.properties: Remove reference to non-existing file.
+	* META-INF/MANIFEST.MF: Fix package name.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/Command.java: Fix internal package names.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/ShellScript.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/utils/StreamReaderThread.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java: Likewise.
+	
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Removed.
+	* build.properties: Fix copyright header.
+	* plugin.xml: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/Messages.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/rpm_strings.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMConfiguration.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SourceRPM.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConfiguration.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConstants.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/ISourceRPM.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectFactory.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectNature.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/Command.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/ShellScript.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/StreamReaderThread.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java: Likewise.
+
+2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/IRPMConfiguration.java: Add TODO.
+	
+2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/RPMExportDelta.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (buildSourceRPM): Adapt to RPMExportDelta removal.
+	(buildBinaryRPM): Likewise.
+	(buildAll): Likewise.
+	(prepareExport): Likewise.
+	(importSourceRPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java: Likewise.
+
+2009-06-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/internal/Patch.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SpecFile.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SpecFileParser.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/IPatch.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/ISpecFile.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (setSpecFile): Remove not needed parts.
+	(buildBinaryRPM): Likewise.
+	(buildSourceRPM): Likewise.
+	(buildAll): Likewise.
+	(importSourceRPM): Likewise.
+	(buildPrep): Likewise.
+	(copySources): Likewise.
+	(getSpecFile): Likewise.
+	(getSourceRPM): Likewise.
+	(RPMProject): Likewise.
+	(setSourceRPM): Likewise.
+	(prepareExport): Likewise.
+	(generateFileCheckSum): Likewise.
+	(generateProjectChecksum): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/IRPMProject.java (getProject): No more ISpecFile, use IFile.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectFactory.java (getRPMProject): Likewise.
+
+2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .classpath: J2SE-1.5.
+	* src/org/eclipse/linuxtools/rpm/core/utils/Diff.java (Diff): Remove deprecated usage.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (RPMBuild): Likewise. 
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMQuery.java (query): Likewise.
+
+2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* META-INF/MANIFEST.MF: BREE J2SE-1.5
+	* src/org/eclipse/linuxtools/rpm/core/RPMCorePlugin.java (stop): Add @Override.
+	(start): Likewise.
+	(initializeDefaultPreferences): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/StreamReaderThread.java (run): Likewise.
+
+2009-05-28  Alexander Kurtakov  <akurtako@redhat.com>
+	Modernize.
+	* plugin.properties: New file.
+	* build.properties: Include plugin.properties.
+	* src/org/eclipse/linuxtools/rpm/core/internal/RPMProject.java (findExcludedFiles): Modernize.
+	(find): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/SpecFileParser.java (getNumPatches): Likewise.
+	(getLastPatchMacroLine): Likewise.
+	(parseDefine): Likewise.
+	(getSetupLine): Likewise.
+	(parseNameVerRel): Likewise.
+	(getUniquePatchId): Likewise.
+	(parse): Likewise.
+	(getLastSourceLine): Likewise.
+	(parseConfigureArgs): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/RPMProjectNature.java (removeNature): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/internal/Command.java (exec): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPM.java (RPM): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/utils/RPMBuild.java (RPMBuild): Likewise.
+
 2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
 
 	* META-INF/MANIFEST.MF: Replace deprecated Eclipse-LazyStart usage.
