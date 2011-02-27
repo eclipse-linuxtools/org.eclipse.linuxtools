@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Callgraph User Guide - Callgraph Perspectives</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Callgraph Perspectives</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="General-Usage2.html" title="General Usage">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">General Usage</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">General Usage</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Callgraph_Perspectives">Callgraph Perspectives</h1>
+		<p>The 
+			<b>Callgraph</b> view's toolbar allows you to select a perspective and perform other functions. 
+		</p>
+		<h2 id="Radial_View">Radial View</h2>
+		<p>The 
+			<b>Radial View</b> displays all functions branching out from 
+			<b>main()</b>, with each function represented as a node. A purple node means that the program terminates at the function. A green node signifies that the function call has nested functions, whereas gray nodes signify otherwise. Double-clicking on a node will show its parent (colored pink) and children. The lines connecting different nodes also display how many times 
+			<b>main()</b> called each function.
+<center>
+
+			<img border="0" src="images/eclipsecallgraph-radialview.png"/>
+</center>
+		</p>
+		<p>The left window of the 
+			<b>Radial View</b> lists all of the functions shown in the view. This window also allows you to view nested functions, if any. A green bullet point means the program either starts or terminates at that function. 
+		</p>
+		<h2 id="Tree_View">Tree View</h2>
+		<p>The 
+			<b>Tree View</b> is similar to the 
+			<b>Radial View</b>, except that it only displays all descendants of a selected node (
+			<b>Radial View</b> only displays functions one call depth away from a selected node). The top left of 
+			<b>Tree View</b> also includes a thumbnail viewer to help you navigate through different call depths of the function tree.
+<center>
+
+			<img border="0" src="images/eclipsecallgraph-treeview.png"/>
+</center>
+		</p>
+		<h2 id="Level_View">Level View</h2>
+		<p>
+			<b>Level View</b> displays all function calls and any nested function calls branching out from a selected node. However, 
+			<b>Level View</b>  groups all functions of the same call depth together, giving a clearer visualization of a program's function call execution sequences. 
+<center>
+
+			<img border="0" src="images/eclipsecallgraph-levelview.png"/>
+</center>
+		</p>
+		<p>
+			<b>Level View</b> also lets you navigate through different call depths using the thumbnail viewer's 
+			<b>More nodes above</b> and 
+			<b>More nodes below</b> buttons. 
+<center>
+
+			<img border="0" src="images/eclipsecallgraph-thumb.png"/>
+</center>
+		</p>
+		<h2 id="Aggregate_View">Aggregate View</h2>
+		<p>The 
+			<b>Aggregate View</b> depicts all functions as boxes; the size of each box represents a function's execution time relative  to the total running time of the program. Darker-colored boxes represent functions that are called more times relative to others; for example, in the following figure, the 
+			<b>CallThisThirtyTimes</b> function is called the most number of times (150). 
+<center>
+
+			<img border="0" src="images/eclipsecallgraph-agg.png"/>
+</center>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Callgraph User Guide">
+						<img alt="Callgraph User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="General-Usage2.html" title="General Usage">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">General Usage</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">General Usage</td>
+			</tr>
+		</table>
+	</body>
+</html>

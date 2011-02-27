@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.callgraph.launch;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -32,6 +33,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
+import org.eclipse.linuxtools.callgraph.core.SystemTapView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusEvent;
@@ -87,11 +89,14 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected Text button_D_text;
 	protected Text binaryArguments;
 	protected Text parser;
+	protected Text viewer;
 //	protected Text commandFile;
 	
 	protected Button fileBrowseButton;
 	protected Button workspaceBrowseButton;
 	protected Button parserButton;
+	protected Button viewerButton;
+
 
 	protected Button button_v;
 	protected Button button_k;
@@ -149,7 +154,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				scriptFile.setEnabled(false);
 				workspaceBrowseButton.setEnabled(false);
 				fileBrowseButton.setEnabled(false);
-				scriptFile.setText(PluginConstants.PLUGIN_LOCATION+"parse_function.stp"); //$NON-NLS-1$
+				scriptFile.setText(PluginConstants.getPluginLocation()+"parse_function.stp"); //$NON-NLS-1$
 			}else{
 				scriptFile.setEnabled(true);
 				workspaceBrowseButton.setEnabled(true);
@@ -307,7 +312,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		
 		
 		/*
-		 * Parser folder -- Tab for selecting a parser to use
+		 * Parser folder -- Tab for selecting a parser and viewer to use
 		 */
 		parserFolder = new TabFolder(top, SWT.BORDER);
 		parserFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -367,7 +372,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		browseTop.setLayoutData(browseData);
 		
 		Label suppFileLabel = new Label(browseTop, SWT.NONE);
-		suppFileLabel.setText("Parser");
+		suppFileLabel.setText("Parser"); //$NON-NLS-1$
 		
 		parser = new Text(browseTop, SWT.BORDER);
 		parser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -393,6 +398,46 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				}
 			}
 		});
+		
+		
+		viewer = new Text(browseTop, SWT.BORDER);
+		viewer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		viewer.addModifyListener(modifyListener);
+
+		viewerButton = createPushButton(browseTop, 
+				"Find viewers", null);  //$NON-NLS-1$
+		viewerButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), 
+						new ListLabelProvider());
+				dialog.setTitle("Select viewer");  //$NON-NLS-1$
+				dialog.setMessage("Select viewer to use.");  //$NON-NLS-1$
+				IExtensionRegistry reg = Platform.getExtensionRegistry();
+				IConfigurationElement[] extensions = reg
+						.getConfigurationElementsFor(PluginConstants.VIEW_RESOURCE, 
+								PluginConstants.VIEW_NAME);
+				ArrayList<IConfigurationElement> ext = new ArrayList<IConfigurationElement>();
+				for (IConfigurationElement el : extensions) {
+					if (!el.getNamespaceIdentifier().contains("org.eclipse.linuxtools")) //$NON-NLS-1$
+						continue;
+					//TODO: Rough hack to get all the objects. We restrict to id's containing org.eclipse.linuxtools, then see if the class extends SystemTapView
+					try {
+						if (el.createExecutableExtension(PluginConstants.ATTR_CLASS) 
+								instanceof SystemTapView) {
+							ext.add(el);
+						}
+					} catch (CoreException e1) {
+					}
+				}
+				
+				dialog.setElements(ext.toArray());
+				if (dialog.open() == IDialogConstants.OK_ID) {
+					String arg = getUsefulLabel(dialog.getFirstResult());
+					viewer.setText(arg);
+				}
+			}
+		});
+		
 	}
 
 	protected void createGeneratedScriptOption(Composite generatedScriptTop) {
@@ -757,7 +802,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		Label button_D_label = new Label(buttonsTop, SWT.NONE);
 		button_D_label.setText(Messages.getString("SystemTapOptionsTab.PreprocessorDirective")); //$NON-NLS-1$
 		button_D_text = new Text(buttonsTop, SWT.BORDER);
-		button_D_text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_D_text.setLayoutData(new GridData(200,15));
 		button_D_text.addModifyListener(modifyListener);
 		button_D_label.setToolTipText(
 					  Messages.getString("SystemTapOptionsTab.42") + //$NON-NLS-1$
@@ -807,6 +852,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			binaryArguments.setText(configuration.getAttribute(LaunchConfigurationConstants.BINARY_ARGUMENTS, LaunchConfigurationConstants.DEFAULT_BINARY_ARGUMENTS));
 			
 			parser.setText(configuration.getAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS));
+			viewer.setText(configuration.getAttribute(LaunchConfigurationConstants.VIEW_CLASS, LaunchConfigurationConstants.DEFAULT_VIEW_CLASS));
 			
 			if (generatedScript != null){
 				generatedScript.setText(configuration.getAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT));
@@ -845,6 +891,8 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, button_x_Spinner.getSelection());
 		
 		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parser.getText());
+		configuration.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewer.getText());
+
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES, button_D_text.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.BINARY_PATH, binaryFile.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH, scriptFile.getText());
@@ -912,6 +960,8 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.GENERATED_SCRIPT, LaunchConfigurationConstants.DEFAULT_GENERATED_SCRIPT);
 		configuration.setAttribute(LaunchConfigurationConstants.NEED_TO_GENERATE, LaunchConfigurationConstants.DEFAULT_NEED_TO_GENERATE);
 		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, LaunchConfigurationConstants.DEFAULT_PARSER_CLASS);
+		configuration.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, LaunchConfigurationConstants.DEFAULT_VIEW_CLASS);
+
 
 		
 		configuration.setAttribute(LaunchConfigurationConstants.USE_COLOUR, LaunchConfigurationConstants.DEFAULT_USE_COLOUR);
@@ -962,7 +1012,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				return e.getUniqueIdentifier();
 			}							
 	}
-	return "Invalid";
+	return Messages.getString("SystemTapOptionsTab.1"); //$NON-NLS-1$
 
 	}
 	
@@ -987,7 +1037,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				}
 								
 		}
-		return "No name -- set name attribute of extension";		}
+		return Messages.getString("SystemTapOptionsTab.46");		} //$NON-NLS-1$
 
 		@Override
 		public void addListener(ILabelProviderListener listener) {

@@ -1,0 +1,213 @@
+/*******************************************************************************
+ * Copyright (c) 2006 IBM Corporation.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - Jeff Briggs, Henry Hughes, Ryan Morse, Anithra P J
+ *******************************************************************************/
+
+package org.eclipse.linuxtools.systemtap.ui.dashboard.structures;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.XMLMemento;
+
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetFactory;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.filter.AvailableFilterTypes;
+import org.eclipse.linuxtools.systemtap.ui.systemtapgui.SystemTapGUISettings;
+
+/**
+ * This class handles retreiving information from the metadata contained in a Dashboard module.
+ * It will read through the metadata and create a new DashboardModule data set to contain
+ * all of the information contained in the XML Memento file.
+ * @author Ryan Morse
+ */
+public class DashboardMetaData {
+	public DashboardMetaData(String file) {
+		this(new File(file));
+	}
+
+	public DashboardMetaData(File file) {
+		module = null;
+		metaFile = file;
+		if(file.exists())
+			readData();
+	}
+	
+	public DashboardModule getModule() {
+		return module;
+	}
+	
+	/**
+	 * This method checks to see if there is an available module for the specified kernel version.
+	 * @param kernelVersion String for the specific kernel to try to get a module for.
+	 * @return boolean representing whether or there is an existing module for the provided kernel
+	 */
+	public boolean isModuleAvailable(String kernelVersion) {
+		for(int i=0; i<module.kernelVersions.length; i++)
+			if(module.kernelVersions[i].equals(kernelVersion))
+				return true;
+		return false;
+	}
+	
+	/**
+	 * This method tries to retreive the module for the provided kernel version.
+	 * @param kernelVersion String for the specific kernel to try to get a module for
+	 * @return File that represents the module for the requested kernel version.
+	 */
+	public File getKernelModule(String kernelVersion) {
+		for(int i=0; i<module.kernelVersions.length; i++)
+			if(module.kernelVersions[i].equals(kernelVersion))
+				return module.kernelModules[i];
+		return null;
+	}
+
+	/**
+	 * This is the main method for this class. It reads the contents of the meta file
+	 * and populates the DashboardModule structure from it.
+	 * @return boolean representing whether or not the meta data was succesfuly read
+	 */
+	@SuppressWarnings("unchecked")
+	private boolean readData() {
+		if(null == metaFile)
+			return false;
+
+		try {
+			module = new DashboardModule();
+			FileReader reader = new FileReader(metaFile);
+			if(!reader.ready())
+				return false;
+
+			XMLMemento data = XMLMemento.createReadRoot(reader, XMLDashboardItem);
+
+			//Get main module information
+			module.display = data.getString(XMLdDisplay);
+			module.category = data.getString(XMLdCategory);
+			module.description = data.getString(XMLdDescription);
+			module.dataSetID = data.getString(XMLdDataset);
+			module.location = data.getString(XMLdLocation);
+			module.scriptFileName = data.getString(XMLdScriptFileName);
+			File temp = null;
+			//Get the script
+			if ((module.location ==null) || (module.location.equalsIgnoreCase("local")))
+			{
+			if(!tempScriptFolder.exists())
+				tempScriptFolder.mkdirs();
+			temp = new File(metaFile.getParentFile() + data.getString(XMLdScript));
+			module.script = new File(tempScriptFolder.getAbsolutePath() + "/" + module.hashCode() + ".stp");
+			temp.renameTo(module.script);
+			}
+			else
+				module.script = new File(module.location + "/" + module.scriptFileName);
+			//Get the column names
+			IMemento[] children = data.getChild(XMLParsingExpressions).getChildren(XMLpColumn);
+			module.labels = new String[children.length];
+			int i;
+			for(i=0; i<children.length; i++)
+				module.labels[i] = children[i].getString(XMLpName);
+			
+			//Get the parser
+			module.parser = DataSetFactory.createParserXML(module.dataSetID, data.getChild(XMLParsingExpressions).getChild(XMLpParser));
+
+			//Get all graph information
+			IMemento[] children2;
+			children = data.getChild(XMLGraphDisplays).getChildren(XMLgGraph);
+			module.graphs = new GraphData[children.length];
+			module.filters = new ArrayList[children.length];
+			int j, ys;
+			for(i=0; i<children.length; i++) {
+				module.graphs[i] = new GraphData();
+				module.graphs[i].graphID = children[i].getString(XMLgId);
+				module.graphs[i].title = children[i].getString(XMLgTitle);
+				
+				//Get all filters for the graph
+				children2 = children[i].getChildren(XMLgFilter);
+				module.filters[i] = new ArrayList();
+				for(j=0; j<children2.length; j++) {
+					module.filters[i].add(AvailableFilterTypes.getDataSetFilter(children2[j]));
+				}
+				
+				//Get all x & y series for the graph
+				children2 = children[i].getChildren(XMLgSeries);
+				module.graphs[i].ySeries = new int[children2.length-1];
+
+				for(j=0, ys=0; j<children2.length; j++) {
+					if(XMLgAxisX.equals(children2[j].getString(XMLgAxis)))
+						module.graphs[i].xSeries = children2[j].getInteger(XMLgColumn).intValue();
+					else if(XMLgAxisY.equals(children2[j].getString(XMLgAxis))) {
+						module.graphs[i].ySeries[ys] = children2[j].getInteger(XMLgColumn).intValue();
+						ys++;
+					}
+				}
+			}
+			
+			//Retreive any kernel module data.
+			children = data.getChildren(XMLKernelModule);
+			module.kernelVersions = new String[children.length];
+			module.kernelModules = new File[children.length];
+			if(!tempModuleFolder.exists())
+				tempModuleFolder.mkdirs();
+			for(i=0; i<children.length; i++) {
+				module.kernelVersions[i] = children[i].getString(XMLkVersion);
+
+				temp = new File(metaFile.getParentFile() + children[i].getString(XMLkModule));
+				module.kernelModules[i] = new File(tempModuleFolder.getAbsolutePath() + module.hashCode() + temp.getName());
+				temp.renameTo(module.kernelModules[i]);
+			}
+
+			reader.close();
+		} catch(FileNotFoundException fnfe) {
+			return false;
+		} catch(WorkbenchException we) {
+			return false;
+		} catch(Exception e) {
+			return false;
+		}
+
+		return true;
+	}
+		
+	private static File metaFile;
+	private DashboardModule module;
+	public static final File tempScriptFolder = new File(SystemTapGUISettings.tempDirectory + "scripts/");
+	public static final File tempModuleFolder = new File(SystemTapGUISettings.tempDirectory + "modules/");
+	
+	public static final String XMLDashboardItem = "DashboardItem";
+	public static final String XMLdDisplay = "display";
+	public static final String XMLdCategory = "category";
+	public static final String XMLdDescription = "description";
+	public static final String XMLdDataset = "dataset";
+	public static final String XMLdScript = "script";
+	public static final String XMLdScriptFileName = "scriptFileName";
+	public static final String XMLdLocation = "location";
+	
+
+	public static final String XMLParsingExpressions = "ParsingExpressions";
+	public static final String XMLpColumn = "Column";
+	public static final String XMLpName = "name";
+	public static final String XMLpParser = "Parser";
+
+	public static final String XMLGraphDisplays = "GraphDisplays";
+	public static final String XMLgGraph = "Graph";
+	public static final String XMLgId = "id";
+	public static final String XMLgTitle = "title";
+	public static final String XMLgColumn = "column";
+	public static final String XMLgAxis = "axis";
+	public static final String XMLgAxisX = "x";
+	public static final String XMLgAxisY = "y";
+	public static final String XMLgSeries = "Series";
+	public static final String XMLgFilter = "Filter";
+
+	public static final String XMLKernelModule = "KernelModule";
+	public static final String XMLkVersion = "version";
+	public static final String XMLkModule = "module";
+}

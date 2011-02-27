@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.graphing.tests
+Bundle-Version: 0.3.0.qualifier
+Bundle-Vendor: %bundleProvider
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.graphing.tests.GraphingPlugin
+Bundle-Localization: plugin
+Bundle-ActivationPolicy: lazy
+Import-Package: junit.framework
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

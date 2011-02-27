@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.eclipse.linuxtools.callgraph.core.parser" name="SystemTapParserPoint" schema="schema/org.eclipse.linuxtools.callgraph.core.parser.exsd"/>
+   <extension-point id="org.eclipse.linuxtools.callgraph.core.parser" name="%systemtapparserextensionpoint" schema="schema/org.eclipse.linuxtools.callgraph.core.parser.exsd"/>
+   
+   <extension
+               id="org.eclipse.linuxtools.callgraph.core.systemtaptextview"
+               name="%systemtaptextviewname"
+               point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.cdt.ui.views"
+            class="org.eclipse.linuxtools.callgraph.core.SystemTapTextView"
+            id="org.eclipse.linuxtools.callgraph.core.staptextview"
+            name="%view.name"
+            restorable="true"
+			icon="icons/12446.monitorOn.gif"
+            allowMultiple="true">
+      </view>
+   </extension>
+
+ <extension
+       id="org.eclipse.linuxtools.callgraph.core.systemtaptextparser"
+       name="%systemtapsleepingthreadparser"
+       point="org.eclipse.linuxtools.callgraph.core.parser">
+    <parser
+          class="org.eclipse.linuxtools.callgraph.core.SystemTapTextParser"
+          realtime="true">
+    </parser>
+ </extension>
+ 
 
 </plugin>

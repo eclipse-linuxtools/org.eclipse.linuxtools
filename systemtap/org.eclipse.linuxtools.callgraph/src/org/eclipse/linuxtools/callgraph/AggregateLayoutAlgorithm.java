@@ -25,36 +25,46 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  */
 public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 	
-	protected ArrayList<Long> sortedAggregateTimes;
+	protected ArrayList<Long> list;
 	protected Long totalTime;
 	protected int graphWidth;
 	
+	
+	/**
+	 * Layout algorithm for the Aggregate View in Eclipse Callgraph, based on the GridLayoutAlgorithm in Zest.
+	 * @param styles
+	 * @param entries
+	 * @param time
+	 * @param width
+	 */
 	public AggregateLayoutAlgorithm(int styles, TreeSet<Entry<String, Long>> entries, Long time, int width){
 		super(styles);
 		
-		this.sortedAggregateTimes = new ArrayList<Long>();
-		for (Entry<String,Long> val : entries){
-			this.sortedAggregateTimes.add(val.getValue());
-		}
+		list = new ArrayList<Long>();
+		for (Entry<String, Long> ent : entries)
+			list.add(ent.getValue());
 		
 		this.totalTime = time;
 		this.graphWidth = width;
 	}
-	
-	//THIS METHOD OVERRIDES THE PARENT'S IMPLEMENTATION (WHICH IS EMPTY ANYWAYS)
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
-		Long time;
+
+	/**
+	 * Called at the end of the layout algorithm -- change the size and colour
+	 * of each node according to times called/total time
+	 */
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, 
+			InternalRelationship[] relationshipsToConsider) {
 		final int minimumSize = 40;
-		double percent;
 		double xcursor = 0.0;
 		double ycursor = 0.0;
 
 		for (InternalNode sn : entitiesToLayout) {
-			time = sortedAggregateTimes.remove(0);
-			percent = (double) time / (double) totalTime;
+			Long time = list.remove(0);
+			double percent = (double) time / (double) totalTime;
 			double snWidth = (sn.getInternalWidth() * percent) + minimumSize;
 			double snHeight = (sn.getInternalHeight() * percent) + minimumSize;
 
+			
 			sn.setSize(snWidth, snHeight);
 			if (xcursor + snWidth > graphWidth) {
 				//reaching the end of row, move to lower column
@@ -66,7 +76,6 @@ public class AggregateLayoutAlgorithm extends GridLayoutAlgorithm{
 				xcursor += snWidth;
 			}
 		}
-		
 	}
 
 }

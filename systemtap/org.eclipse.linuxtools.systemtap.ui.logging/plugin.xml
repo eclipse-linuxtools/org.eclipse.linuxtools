@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+		point="org.eclipse.core.runtime.preferences">
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.logging.preferences.PreferenceInitializer"/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.ui.preferencePages">
+		<page
+        category="org.eclipse.linuxtools.systemtap.prefs.view"
+        class="org.eclipse.linuxtools.systemtap.ui.logging.preferences.LoggingPreferencePage"
+        id="org.eclipse.linuxtools.generic.prefs.logging"
+        name="%preference.logging.name"/>
+	</extension>
+</plugin>

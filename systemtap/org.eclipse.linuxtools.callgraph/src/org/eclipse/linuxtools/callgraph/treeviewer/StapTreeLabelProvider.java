@@ -23,15 +23,15 @@ public class StapTreeLabelProvider implements ILabelProvider {
 	public Image getImage(Object element) {
 		Image im = null;
 		if ( ((StapData) element).isMarked())
-			im = new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "/icons/public_co.gif"); //$NON-NLS-1$
+			im = new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "/icons/public_co.gif"); //$NON-NLS-1$
 		else
-			im = new Image(Display.getCurrent(), CallGraphConstants.PLUGIN_LOCATION + "/icons/compare_method.gif"); //$NON-NLS-1$
+			im = new Image(Display.getCurrent(), CallGraphConstants.getPluginLocation() + "/icons/compare_method.gif"); //$NON-NLS-1$
 		return im;
 	}
 
 	@Override
 	public String getText(Object element) {
-		return ((StapData) element).called + ": " + ((StapData) element).name; //$NON-NLS-1$
+		return ((StapData) element).timesCalled + ": " + ((StapData) element).name; //$NON-NLS-1$
 	}
 
 	@Override

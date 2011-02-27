@@ -1,0 +1,171 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Bug #324405
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/PauseModuleAction.java (addActionListener): 
+	(listeners): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/RunModuleAction.java (runScript): 
+	(addActionListener): 
+	(listeners): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/StopModuleAction.java (addActionListener): 
+	(listeners): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardAdapter.java (DashboardShimButtonController.widgetSelected): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardComposite.java (externalQueue): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardSessionSettings.java (allmodules): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardMetaData.java (readData): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModule.java (filters): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/ActiveModuleBrowserView.java (add): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/DashboardGraphsBrowserView.java (add): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/ModuleView.java (ViewLabelProvider.getFont): 
+	(ViewLabelProvider.getBackground): 
+
+2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Removing invalid Menu Extensions
+	
+	Bug #315440
+	
+
+2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModuleLocator.java 
+		(getModuleLocations): Fix BZ #314873
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModuleTreeBuilder.java
+		(scanNextLevel): Fix BZ #314873
+
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #282039
+
+	* plugin.properties: Externalize bundle name and provider.
+	* plugin.xml: Likewise.
+
+2010-02-11  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/DashboardCloseMonitor.java:
+		Fix NPE by proceeding only when the view exists.
+
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/ImportModuleLocationAction.java:
+	(run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/DashboardCloseMonitor.java:
+	(preShutdown):
+	
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+	
+	* .classpath: New file.
+	* .project: New file.
+	* bin: New file.
+	* build.properties: New file.
+	* documentation/html/concepts/activeModulesBrowser.html: New file.
+	* documentation/html/concepts/concepts.html: New file.
+	* documentation/html/concepts/modules.html: New file.
+	* documentation/html/concepts/modulesBrowser.html: New file.
+	* documentation/html/gettingstarted/dashboardTutorial.html: New file.
+	* documentation/html/gettingstarted/gettingStarted.html: New file.
+	* documentation/html/gettingstarted/images/activeModules.png: New file.
+	* documentation/html/gettingstarted/images/closeButton.png: New file.
+	* documentation/html/gettingstarted/images/expandButton.png: New file.
+	* documentation/html/gettingstarted/images/graphExpanded.png: New file.
+	* documentation/html/gettingstarted/images/moduleBrowser.png: New file.
+	* documentation/html/gettingstarted/images/multipleRunningModules.png: New file.
+	* documentation/html/gettingstarted/images/rightleft.png: New file.
+	* documentation/html/gettingstarted/images/runningDashboard.png: New file.
+	* documentation/html/gettingstarted/images/smallGraph.png: New file.
+	* documentation/html/reference/frequentlyAskedQuestions.html: New file.
+	* documentation/html/reference/images/menu/preferencesbox1.png: New file.
+	* documentation/html/reference/images/menu/viewbox1.png: New file.
+	* documentation/html/reference/images/toolbars/dash.png: New file.
+	* documentation/html/reference/images/toolbars/graphing.png: New file.
+	* documentation/html/reference/images/toolbars/ide.png: New file.
+	* documentation/html/reference/images/toolbars/import_wiz.gif: New file.
+	* documentation/html/reference/images/toolbars/mod_obj.gif: New file.
+	* documentation/html/reference/images/toolbars/pause_script.gif: New file.
+	* documentation/html/reference/images/toolbars/start_script.gif: New file.
+	* documentation/html/reference/images/toolbars/stop_obj.gif: New file.
+	* documentation/html/reference/menus.html: New file.
+	* documentation/html/reference/preferences.html: New file.
+	* documentation/html/reference/reference.html: New file.
+	* documentation/html/reference/toolbars.html: New file.
+	* documentation/html/tasks/creatingModules.html: New file.
+	* documentation/html/tasks/graphInteraction.html: New file.
+	* documentation/html/tasks/images/addedModule.png: New file.
+	* documentation/html/tasks/images/closeButton.png: New file.
+	* documentation/html/tasks/images/expandButton.png: New file.
+	* documentation/html/tasks/images/exportScript.png: New file.
+	* documentation/html/tasks/images/importDialogue.png: New file.
+	* documentation/html/tasks/images/rightleft.png: New file.
+	* documentation/html/tasks/images/script_details.gif: New file.
+	* documentation/html/tasks/images/zoom.png: New file.
+	* documentation/html/tasks/importModules.html: New file.
+	* documentation/html/tasks/runningModules.html: New file.
+	* documentation/html/tasks/tasks.html: New file.
+	* documentation/html/toc.html: New file.
+	* documentation/tocconcepts.xml: New file.
+	* documentation/tocgettingstarted.xml: New file.
+	* documentation/tocreference.xml: New file.
+	* documentation/toctasks.xml: New file.
+	* icons/actions/bomb.png: New file.
+	* icons/actions/graph/close.gif: New file.
+	* icons/actions/graph/collapse.gif: New file.
+	* icons/actions/graph/expand.gif: New file.
+	* icons/actions/graph/maximize.gif: New file.
+	* icons/actions/graph/restore.gif: New file.
+	* icons/actions/import_wiz.gif: New file.
+	* icons/actions/pause_script.gif: New file.
+	* icons/actions/start_script.gif: New file.
+	* icons/actions/stop_script.gif: New file.
+	* icons/misc/graph_act.gif: New file.
+	* icons/misc/graph_dis.gif: New file.
+	* icons/misc/module_obj.gif: New file.
+	* icons/perspective_obj.gif: New file.
+	* icons/views/active_mod_obj.gif: New file.
+	* icons/views/dashboard_obj.gif: New file.
+	* icons/views/mod_obj.gif: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* modules/IO.Cumulative_IO_Activity.dash: New file.
+	* modules/IO.IO_Activity_by_Process.dash: New file.
+	* modules/Network.Processwise_Network_Traffic.dash: New file.
+	* modules/Process.Profile_Kernel_functions.dash: New file.
+	* modules/Profiling.Functions_profile.dash: New file.
+	* modules/Profiling.Unnecessary_Polling_Operations.dash: New file.
+	* plugin.properties: New file.
+	* plugin.xml: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/ActivateGraphAction.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/CustomAction.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/hidden/GetSelectedModule.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/ImportModuleLocationAction.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/PauseModuleAction.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/RunModuleAction.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/StopGraphAction.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/actions/StopModuleAction.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardAdapter.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardComposite.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardPerspective.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/DashboardSessionSettings.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/DashboardCloseMonitor.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/DashboardPlugin.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/Localization.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/internal/localization.properties: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/preferences/DashboardPreferenceConstants.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/preferences/DashboardPreferencePage.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/preferences/PreferenceInitializer.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/ActiveModuleData.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/ActiveModuleTreeNode.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardGraphData.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardGraphsLocator.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardGraphsTreeBuilder.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardMetaData.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModule.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModuleFileFilter.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModuleLocator.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/DashboardModuleTreeBuilder.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/GraphTreeNode.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/structures/ModuleTreeNode.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/ActiveModuleBrowserView.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/DashboardGraphsBrowserView.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/DashboardModuleBrowserView.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/DashboardView.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/GraphsView.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/dashboard/views/ModuleView.java: New file.
+	* toc.xml: 

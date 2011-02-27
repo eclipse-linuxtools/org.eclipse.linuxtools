@@ -16,7 +16,6 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.linuxtools.callgraph.CallgraphView;
 import org.eclipse.linuxtools.callgraph.StapData;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 
@@ -48,7 +47,6 @@ public class StapTreeDoubleClickListener implements IDoubleClickListener {
         	graph.getNode(data.id).unhighlight();
         }
         
-        CallgraphView.maximizeIfUnmaximized();
         graph.setFocus();
 	}
 

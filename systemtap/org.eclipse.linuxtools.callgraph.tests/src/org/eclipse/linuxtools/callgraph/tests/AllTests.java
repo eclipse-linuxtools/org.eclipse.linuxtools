@@ -25,7 +25,8 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(StapGraphParserTest.class);
 		suite.addTestSuite(SystemTapGraphViewTest.class);
-		suite.addTestSuite(SystemTapGraphTest.class);
+//		suite.addTestSuite(SystemTapGraphTest.class);
+//		suite.addTestSuite(MouseListenerTest.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.ide.tests
+Bundle-Version: 0.3.0.qualifier
+Bundle-Vendor: %bundleProvider
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.ide.tests.IDEPlugin
+Bundle-Localization: plugin
+Bundle-ActivationPolicy: lazy
+Import-Package: junit.framework,
+ org.eclipse.linuxtools.systemtap.ui.ide,
+ org.eclipse.linuxtools.systemtap.ui.ide.actions,
+ org.eclipse.linuxtools.systemtap.ui.ide.structures,
+ org.eclipse.linuxtools.systemtap.ui.structures
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

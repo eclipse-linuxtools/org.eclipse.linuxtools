@@ -45,7 +45,7 @@ public class StapGraphMouseWheelListener implements MouseWheelListener {
 			return;
 		}
 		
-		if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_BOX && 
+		if (graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_LEVEL && 
 				graph.getDrawMode() != StapGraph.CONSTANT_DRAWMODE_TREE)
 			return;
 				

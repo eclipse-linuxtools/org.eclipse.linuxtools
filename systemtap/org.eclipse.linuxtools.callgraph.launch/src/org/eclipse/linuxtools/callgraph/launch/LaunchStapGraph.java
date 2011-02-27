@@ -24,48 +24,17 @@ import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
 
 public class LaunchStapGraph extends SystemTapLaunchShortcut {
-	/*
-	 * The following protected parameters are provided by
-	 * SystemTapLaunchShortcut:
-	 * 
-	 * Optional customization parameters: protected String name; protected
-	 * String binaryPath; protected String arguments; protected String
-	 * outputPath; protected String dirPath; protected String generatedScript;
-	 * protected boolean needToGenerate; protected boolean overwrite;
-	 * 
-	 * Mandatory: protected String scriptPath; protected ILaunchConfiguration
-	 * config;
-	 */
 
-	/**
-	 * Launch method for a generated script that executes on a binary
-	 * 
-	 * MUST specify (String) scriptPath and call config =
-	 * createConfiguration(bin)!
-	 * 
-	 * Noteworthy defaults: name defaults to "", but please set it (for
-	 * usability) overwrite defaults to true - don't change it unless you really
-	 * have to.
-	 * 
-	 * To create new launches: -Copy shortcut code in xml, changing class name
-	 * and label accordingly -Create a class that extends
-	 * SystemTapLaunchShortcut with a function launch(IBinary bin, String mode)
-	 * -Call super.Init() -Set name (this is shortcut-specific) -If a binary is
-	 * used, call binName = getName(bin) -Call createConfiguration(bin, name)
-	 * 
-	 * -Specify whichever of the optional parameters you need -Set scriptPath
-	 * -Set an ILaunchConfiguration -Call finishLaunch or
-	 * finishLaunchWithoutBinary
-	 */
-	
+
+	//TODO: Do not let this class persist, or otherwise change it so persistence doesn't matter.
 	private String partialScriptPath;
 	private String funcs;
 	private ArrayList<String> exclusions;
 	private String projectName;
+	protected static final String ATTR_PARSER = "org.eclipse.linuxtools.callgraph.graphparser"; //$NON-NLS-1$
+	protected static final String ATTR_VIEWER = "org.eclipse.linuxtools.callgraph.callgraphview";  //$NON-NLS-1$
 	
-	public void setProjectName(String val) {
-		projectName = val;
-	}
+	
 	
 	public LaunchStapGraph() {
 		funcs = null;
@@ -85,51 +54,39 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	}
 	
 	public void launch(IBinary bin, String mode) {
-		super.Init();
+		super.initialize();
 		this.bin = bin;
 		name = "SystemTapGraph";  //$NON-NLS-1$
 		binName = getName(bin);
 		partialScriptPath = PluginConstants.getPluginLocation()
 				+ "parse_function_partial.stp";  //$NON-NLS-1$
 
-		scriptPath = PluginConstants.DEFAULT_OUTPUT 
-				+ "callgraphGen.stp";  //$NON-NLS-1$
-		
-		parserID = "org.eclipse.linuxtools.callgraph.graphparser";
+		viewID = "org.eclipse.linuxtools.callgraph.callgraphview"; //$NON-NLS-1$
 		
 
 		
-		if (projectName == null || projectName.length() < 1)
-			projectName = bin.getCProject().getElementName();
+		projectName = bin.getCProject().getElementName();
 		
 		try {
 			 
 			config = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
-			outputPath = PluginConstants.STAP_GRAPH_DEFAULT_IO_PATH;
+			outputPath = PluginConstants.getDefaultIOPath();
 			
-			writeFunctionListToScript(resourceToSearchFor);
+			if (writeFunctionListToScript(resourceToSearchFor) == null)
+				return;
 			if (funcs == null || funcs.length() < 0)
 				return;
-			generatedScript = generateScript();
-			if (generatedScript == null || generatedScript.length() < 0)
-				return;
 
-			generatedScript+= "probe syscall.exit {\n" +
-								"if (pid() == target()) {\n" + 
-								"finalTime = gettimeofday_ns()\n" +
-								"}\n" + 
-								"}\n";
 			needToGenerate = true;
-			
 			finishLaunch(name, mode);
 
 		} catch (IOException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
 					"LaunchShortcutScriptGen",  //$NON-NLS-1$
-					Messages.getString("LaunchStapGraph.0"),   //$NON-NLS-1$
-					Messages.getString("LaunchStapGraph.6"));  //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErr"),   //$NON-NLS-1$
+					Messages.getString("LaunchStapGraph.ScriptGenErrMsg"));  //$NON-NLS-1$
 			mess.schedule();
 			e.printStackTrace();
 		} catch (CoreException e1) {
@@ -154,14 +111,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	 * @return
 	 */
 	private String generateProbe(String function) {
-		String output = "probe process(@1).function(\"" +  //$NON-NLS-1$
-				        function + "\").call{" +  //$NON-NLS-1$
-				        "\tcallFunction(probefunc())\t" +  //$NON-NLS-1$
-						"}\t" +  //$NON-NLS-1$
-						"probe process(@1).function(\"" +  //$NON-NLS-1$
-				        function + "\").return{\t" +  //$NON-NLS-1$
-				        "\treturnFunction(probefunc())\t" +  //$NON-NLS-1$
-						"}\n";  //$NON-NLS-1$
+		String output = "probe process(@1).function(\"" + function + "\").call ? {	if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) { callFunction(probefunc(),tid()) } 	}	probe process(@1).function(\"" + function + "\").return ? {		if ( ! isinstr(probefunc(), \"___STAP_MARKER___\")) returnFunction(probefunc(),tid())	else { printf(\"?%d,,%s\\n\", tid(), user_string(strtol(tokenize($$return, \"return=\"),16)))}}\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return output;
 	}
 	
@@ -204,7 +154,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	private String writeFromPartialScript(String projectName) throws IOException {
 		String toWrite = "";  //$NON-NLS-1$
 		String temp = ""; //$NON-NLS-1$
-		toWrite += "probe begin{\n" + //$NON-NLS-1$
+		toWrite += "\nprobe begin{\n" + //$NON-NLS-1$
 					"printf(\"\\nPROBE_BEGIN\\n\")\n" +  //$NON-NLS-1$
 					"serial=1\n" +  //$NON-NLS-1$
 					"startTime = 0;\n" + //$NON-NLS-1$
@@ -226,45 +176,41 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		exclusions = e;
 	}
 
-	
-	/**
-	 * Writes global variables for the StapGraph script to the BufferedWriter.
-	 * Should be called first.
-	 * 
-	 * @param bw
-	 * @return
-	 * @throws IOException
-	 */
-	private String writeGlobalVariables() throws IOException {
-		String toWrite = "global serial\n" + //$NON-NLS-1$
-						 "global startTime\n " + //$NON-NLS-1$
-						 "global finalTime\n"; //$NON-NLS-1$
-		
-		return toWrite;
-	}
-	
 	@Override
 	public String generateScript() throws IOException {
 		
 		String scriptContents = "";  //$NON-NLS-1$
 
 
-		scriptContents += writeGlobalVariables();
 //		scriptContents += writeStapMarkers();
 
 		scriptContents += funcs;
 		
 		scriptContents += writeFromPartialScript(projectName);
 		
-//		BufferedWriter bw = new BufferedWriter(new FileWriter(scriptFile));
-////		bw.write("probe begin { printf(\"HELLO\") }");
-//		bw.write(scriptContents);
-//		bw.close();
 		return scriptContents;
 	}
 
 	public void setPartialScriptPath(String val) {
 		partialScriptPath = val;
+	}
+
+	@Override
+	public String setScriptPath() {
+		scriptPath = PluginConstants.getDefaultOutput() 
+				+ "callgraphGen.stp";  //$NON-NLS-1$
+		return scriptPath;
+	}
+
+	@Override
+	public String setParserID() {
+		parserID = ATTR_PARSER;
+		return parserID;
+	}
+
+	@Override
+	public String setViewID() {
+		return ATTR_VIEWER;
 	}
 	
 //	/**

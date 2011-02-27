@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-
-   
-      <extension
-         point="org.eclipse.ui.views">
-      <view
-            category="org.eclipse.cdt.ui.views"
-            class="org.eclipse.linuxtools.callgraph.CallgraphView"
-            icon="icons/genericregister_obj.gif"
-            id="org.eclipse.linuxtools.callgraph.callgraphview"
-            name="Call Graph"
-            restorable="true">
-      </view>
-   </extension>
    
       <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -27,8 +14,23 @@
       </perspectiveExtension>
    </extension>
 
+   
+      <extension
+            id="org.eclipse.linuxtools.callgraph.callgraphview"
+            name="%extension.name"
+            point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.cdt.ui.views"
+            class="org.eclipse.linuxtools.callgraph.CallgraphView"
+            icon="icons/genericregister_obj.gif"
+            id="org.eclipse.linuxtools.callgraph.callgraphview"
+            name="%view.name"
+            restorable="true">
+      </view>
+   </extension>
 
 
+<!--
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
@@ -79,14 +81,14 @@
              id="org.eclipse.linuxtools.callgraph.command4"
              name="Remove stap marker function">
        </command>
-    </extension>
+    </extension>-->
     <extension
           id="org.eclipse.linuxtools.callgraph.graphparser"
-          name="GraphParser"
+          name="%extension.name.0"
           point="org.eclipse.linuxtools.callgraph.core.parser">
        <parser
              class="org.eclipse.linuxtools.callgraph.StapGraphParser"
-             realtime="false">
+             realtime="true">
        </parser>
     </extension>
 </plugin>

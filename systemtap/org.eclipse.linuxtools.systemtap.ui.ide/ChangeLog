@@ -1,0 +1,133 @@
+2010-11-03  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Bug #324405
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getImportedTapsets): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/c/CEditor.java (dispose): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPDocumentProvider.java (setupDocument): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPMetadataSingleton.java (build): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/views/KernelBrowserView.java: 
+
+2010-06-08  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getFilePath): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/views/BrowserView.java (ViewUpdater.handleUpdateEvent): 
+	
+	Bug #315988
+	Bug #304206
+
+2010-06-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* plugin.xml: Removing RunwithChart action
+	
+	Bug #315225 
+
+2010-06-05  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/internal/localization.properties: 
+	
+	Bug #315650
+
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #282039
+
+	* plugin.properties: Externalize bundle name and provider.
+	* plugin.xml: Likewise.
+
+2010-03-15  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getFilePath): Bz 304206
+
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptChartAction.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/hidden/FunctionBrowserAction.java (run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/hidden/ProbeAliasAction.java (run): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (getImportedTapsets): 
+	(isValidFile): 
+	(buildStandardScript): 
+	(isValid): 
+	(run): 
+	(getFilePath): 
+	(createClientSession): 
+	(isValidDirectory): 
+	(finalizeScript): 
+	(getImportedTapsets): 
+	(isValidFile): 
+	(buildStandardScript): 
+	(isValidDirectory): 
+	(finalizeScript): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/c/CEditor.java (checkProbe): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPDocumentProvider.java: 
+
+2009-11-16  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Fix bundle name.
+
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Make version 0.3.0.qualifier.
+
+2009-08-07  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Change provider from IBM to Eclipse.
+
+2009-08-06  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/editors/stp/STPMetadataSingleton.java (parse): 
+
+2009-07-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* ChangeLog:Replacing all /org/eclipse/linuxtools/systemtap/ui/ide/editors/stp 
+				files with Phil's editor code  
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/actions/RunScriptAction.java (isValidFile): 
+	(isValid): 
+	(getFilePath): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/internal/IDEPlugin.java (PLUGIN_ID): 
+	(getImageDescriptor): 
+	* src/org/eclipse/linuxtools/systemtap/ui/ide/preferences/PreferenceInitializer.java (initializeDefaultPreferences): 
+	
+2009-07-07  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* ChangeLog:Refactoring. Renaming all packages directories from *.systemtapgui.
+	
+	2009-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+
+2009-01-09  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* build.properties: Add completion/ folder to binary
+	build.
+
+2008-12-09  Andrew Overholt  <overholt@redhat.com>
+
+	* plugin.xml: Remove erroneous metadata element under <plugin>.
+
+2008-11-03  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Bundle-ActivationPolicy.
+
+2008-10-31  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Use plugin.properties.
+	* plugin.properties: Initial checkin.
+
+2008-10-28  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #252489
+	* META-INF/MANIFEST.MF: Set BREE to 1.6 (STPMetadataSingleton.parse uses
+	ResourceBundle.containsKey).
+
+2009-09-13  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* META-INF/MANIFEST.MF: Update to reflect
+	import specifications.
+	* plugin.xml: Likewise.
+
+2008-09-11  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* .classpath: Add.
+
+	* Initial import of Systemtap editor
+  

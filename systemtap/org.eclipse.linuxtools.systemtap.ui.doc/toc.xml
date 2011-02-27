@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Systemtap Development User Guide" topic="Linux_Tools_Project/SystemTap/User_Guide/User-Guide.html">
+   <topic label="Introduction and Links" href="Linux_Tools_Project/SystemTap/User_Guide/gettingstarted/gettingStarted.html">
+      <anchor id="gettingstarted"/>
+   </topic>
+   <topic label="Installation" href="Linux_Tools_Project/SystemTap/User_Guide/gettingstarted/installation.html">
+      <anchor id="installation"/>
+   </topic>
+</toc>

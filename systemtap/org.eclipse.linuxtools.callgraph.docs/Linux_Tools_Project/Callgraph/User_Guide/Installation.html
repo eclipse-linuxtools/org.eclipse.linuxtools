@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Callgraph User Guide - Installation</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Installation</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="Callgraph User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Callgraph User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">General Usage</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Installation">Installation</h1>
+		<p>Performing visual function traces with Eclipse-Callgraph requires three components: </p>
+		<ul>
+			<li>the Eclipse-Callgraph package </li>
+			<li>SystemTap </li>
+			<li>the kernel information packages required by SystemTap</li>
+		</ul>
+		<p>You can install all of these items through 
+			<b>yum</b>. To install Eclipse-Callgraph and SystemTap, run: 
+		</p>
+		<pre>yum install eclipse-callgraph systemtap systemtap-runtime -y
+</pre>
+		<p>The required kernel information packages are the matching 
+			<i>'-devel</i>', 
+			<i>'-debuginfo</i>', and 
+			<i>'-debuginfo-common</i>' packages of the kernel you wish to profile. You can use 
+			<b>yum</b> or 
+			<b>debuginfo-install</b> to install these packages. For more details about installing SystemTap, refer to 
+			<a href="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/using-systemtap.html#using-setup">Installation and Setup</a> from the 
+			<a href="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/">SystemTap Beginner's Guide</a>.
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="User-Guide.html" title="Callgraph User Guide">
+						<img alt="Previous" border="0" src="../../../images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="User-Guide.html" title="Callgraph User Guide">
+						<img alt="Callgraph User Guide" border="0" src="../../../images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="General-Usage.html" title="General Usage">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Callgraph User Guide</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">General Usage</td>
+			</tr>
+		</table>
+	</body>
+</html>

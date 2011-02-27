@@ -1,0 +1,81 @@
+global var
+global tagmap
+global taglimit = 100
+global stillopen = 0
+
+
+function opentag:long(s:string) {
+	if (var == taglimit) return -1
+	var++
+	tagmap[var] = tokenize(s," ")
+	if (stillopen == 1)
+		printf(">") 
+	indentless()	
+	printf("<%s", s)
+	stillopen = 1
+	return 1
+}
+
+function openclosetag(s:string) {
+	opentag(s)
+	printf("/>")
+	var--
+}
+
+function addlong:long(s:string, l:long) {
+	if (var < 1)
+		return -1
+	indent()
+	printf("%s=%d", s,l);
+	
+}
+
+function addstr:long(s:string, s1:string) {
+	if (var < 1)
+		return -1
+	indent()
+	printf("%s=%s", s, s1)
+}
+
+function addtext:long(s:string) {
+	if (stillopen == 1) {
+		printf(">")
+	}
+	stillopen = 0
+	if (var < 1)
+		return -1
+	indent()
+	printf("%s", s)	
+}
+
+function indent() {
+	printf("\n")
+	for (i = 0; i < var; i++) printf("\t")
+}
+
+function indentless() {
+	printf("\n")
+	for (i = 1; i < var; i++) printf("\t")
+}
+
+function closetag(s:string) {
+	if (stillopen == 1) {
+		printf(">")
+	}
+	stillopen = 0
+	indentless()
+	printf("</%s>", s)
+	var--
+}
+
+function closecurrent() {
+	closetag(tagmap[var])
+}
+
+function setLimit(v:long) {
+	taglimit = v
+}
+
+function closeall() {
+	for (i = 0; i <= var; i ++) closecurrent()
+}

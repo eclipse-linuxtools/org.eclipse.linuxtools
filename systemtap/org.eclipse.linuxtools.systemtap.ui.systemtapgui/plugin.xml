@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+		id="application"
+		point="org.eclipse.core.runtime.applications">
+		<application>
+			<run class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.Application"/>
+		</application>
+	</extension>
+
+
+	<extension
+		id="systemtapGUI"
+		point="org.eclipse.core.runtime.products">
+		<product
+			application="org.eclipse.linuxtools.systemtap.ui.systemtapgui.application"
+			name="systemtapgui">
+			<property name="aboutImage" value="aboutImage.gif"/>
+			<property
+         name="aboutText"
+         value="System Tap GUI&#x0A;Version 1.0.rc1&#x0A;Build ID:&#x0A;Copywrite: At some point we will&#x0A;have a real copywrite info here.&#x0A;&#x0A;Buit on the Eclipse framework."/>
+			<property name="preferenceCustomization" value="plugin_customization.ini"/>
+   <property
+         name="appName"
+         value="systemtapgui">
+   </property>
+		</product>
+	</extension>
+
+	<extension
+		point="org.eclipse.help.toc">
+		<toc
+			file="toc.xml"
+			primary="true"/>
+		<toc file="documentation/tocgettingstarted.xml"/>
+	</extension>
+
+	<extension
+		point="org.eclipse.ui.preferencePages">
+		<page
+			name="%preference.systemTap.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.view"
+			class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.SystemTapPreferencePage"/>
+		<page
+			name="%preference.envVars.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.environmentvariables"
+			class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.EnvironmentVariablesPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.core.runtime.preferences">
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.systemtapgui.preferences.PreferenceInitializer"/>
+	</extension>
+</plugin>

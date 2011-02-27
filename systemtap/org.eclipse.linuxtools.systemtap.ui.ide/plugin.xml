@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+		point="org.eclipse.ui.perspectives">
+		<perspective
+			name="%perspective.ide.name"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"
+			icon="icons/perspective_obj.gif"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.ui.views">
+		<view
+        allowMultiple="true"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
+        icon="icons/views/func_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"
+        name="%view.function.name"/>
+		<view
+        allowMultiple="true"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
+        icon="icons/views/kernel_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"
+        name="%view.kernel.name"/>
+		<view
+        allowMultiple="true"
+        category="org.eclipse.linuxtools.systemtap.ui"
+        class="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+        icon="icons/views/probe_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+        name="%view.probe.name"/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.help.toc">
+		<toc
+			file="toc.xml"
+			primary="true"/>
+		<toc file="documentation/tocconcepts.xml"/>
+		<toc file="documentation/tocgettingstarted.xml"/>
+		<toc file="documentation/tocreference.xml"/>
+		<toc file="documentation/toctasks.xml"/>
+	</extension>
+	
+	<extension
+		point="org.eclipse.ui.editors">
+		<editor
+        class="org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor"
+        contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+        default="true"
+        extensions="stp"
+        icon="icons/views/page_obj.gif"
+        id="org.eclipse.linuxtools.systemtap.ui.ide.editors.stp.STPEditor"
+        name="%editor.stp.name"/>
+		<editor
+			name="%editor.simple.name"
+			id="org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor"
+			class="org.eclipse.linuxtools.systemtap.ui.editor.SimpleEditor"
+			icon="icons/views/page_obj.gif"
+			contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+			default="true"/>
+		<editor
+			name="%editor.c.name"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.editors.c.CEditor"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.editors.c.CEditor"
+			contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+			icon="icons/views/page_obj.gif"
+			default="false"
+			extensions="c,h,cpp"/>
+	</extension>
+
+	<extension
+		point="org.eclipse.ui.preferencePages">
+		<page
+			name="%preference.ide.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.IDEPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.view"/>
+		<page
+			name="%preference.editor.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.editor"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.EditorPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
+		<page
+			name="%preference.codeAssist.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.codeassist"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.CodeAssistPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
+		<page
+			name="%preference.conditionalFilter.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.conditionalfilters"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.ConditionalFilterPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
+		<page
+			name="%preference.syntaxColor.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.syntaxcoloring"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.SyntaxColoringPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
+		<page
+			name="%preference.typeing.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.typeing"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.TypeingPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.editor"/>
+		<page
+			name="%preference.path.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.path"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.PathPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
+		<page
+			name="%preference.stap.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.stap"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.StapPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide"/>
+		<!--page
+			name="%preference.stapOptions.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.stapoptions"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.StapOptionsPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.view/org.eclipse.linuxtools.systemtap.prefs.ide/org.eclipse.linuxtools.systemtap.prefs.ide.stap"/-->
+		<page
+			name="%preference.tapsets.name"
+			id="org.eclipse.linuxtools.systemtap.prefs.ide.tapsets"
+			class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.TapsetsPreferencePage"
+			category="org.eclipse.linuxtools.systemtap.prefs.ide.stap"/>
+	</extension>
+
+	<extension
+		point="org.eclipse.core.runtime.preferences">
+		<initializer class="org.eclipse.linuxtools.systemtap.ui.ide.preferences.PreferenceInitializer"/>
+	</extension>
+
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			name="%command.import.name"
+			description="%command.import.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.file"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"/>
+		<!--command
+			name="%command.runOptions.name"
+			description="%command.runOptions.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScriptOptions"/-->
+		<command
+			name="%command.run.name"
+			description="%command.run.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"/>
+		<command
+			name="%command.stop.name"
+			description="%command.stop.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.run"
+			id="org.eclipse.linuxtools.systemtap.ui.consolelog.commands.StopScript"/>
+		
+		
+		<command
+			name="%command.insertProbe.name"
+			description="%command.insertProbe.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.probealiasaction"/>
+		<command
+			name="%command.insertFunction.name"
+			description="%command.insertFunction.desc"
+			categoryId="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.commands.functionaction"/>
+			
+		<category
+			name="%category.file.name"
+			description="%category.file.desc"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.category.file"/>
+		<category
+			name="%category.run.name"
+			description="%category.run.desc"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.category.run"/>
+		<category
+			name="%category.popup.name"
+			description="%category.popup.desc"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.category.popup"/>
+	</extension>
+	
+	
+
+	<extension
+		point="org.eclipse.ui.actionSets">
+		<actionSet
+			label="%actionset.file.name"
+			visible="false"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.FileActionSet">
+			<action
+				label="%action.import.name"
+				tooltip="%action.import.desc"
+				id="org.eclipse.linuxtools.systemtap.ui.ide.actions.ImportTapset"
+				icon="icons/actions/import_wiz.gif"
+				toolbarPath="org.eclipse.ui.workbench.file/import.ext"
+				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.ImportTapsetAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.ImportTapset"
+				style="push"
+				state="false"/>
+		</actionSet>
+		<actionSet
+			label="%actionset.run.name"
+			visible="false"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet">
+			<!--action
+				label="%action.runOptions.name"
+				tooltip="%action.runOptions.desc"
+				id="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptOptions"
+				icon="icons/actions/run/run_tool.gif"
+				toolbarPath="org.eclipse.ui.workbench.file/build.group"
+				menubarPath="launch/wbStart"
+				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptOptionsAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScriptOptions"
+				style="push"
+				state="false"/-->
+			<action
+				label="%action.run.name"
+				tooltip="%action.run.desc"
+				id="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScript"
+				icon="icons/actions/run/run_exc.gif"
+				toolbarPath="org.eclipse.ui.workbench.file/build.group"
+				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.RunScriptAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.ide.commands.RunScript"
+				style="push"
+				state="false"/>
+			<action
+				label="%action.stop.name"
+				tooltip="%action.stop.desc"
+				id="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScript"
+				icon="icons/actions/terminate_co.gif"
+				toolbarPath="org.eclipse.ui.workbench.file/stop.ext"
+				class="org.eclipse.linuxtools.systemtap.ui.consolelog.actions.StopScriptAction"
+				definitionId="org.eclipse.linuxtools.systemtap.ui.consolelog.commands.StopScript"
+				style="push"
+				state="false"/>
+		</actionSet>
+	</extension>
+
+	<extension
+		point="org.eclipse.ui.popupMenus">
+		<objectContribution
+			adaptable="false"
+			id="org.eclipse.linuxtools.systemtap.ui.ide.definitionMenu"
+			objectClass="org.eclipse.linuxtools.systemtap.ui.structures.TreeDefinitionNode">
+			<action
+				label="%action.viewDefinition.name"
+				class="org.eclipse.linuxtools.systemtap.ui.ide.actions.DefinitionAction"
+				icon="icons/misc/file_obj.gif"
+				id="org.eclipse.linuxtools.systemtap.ui.ide.definitionAction"
+				style="push"/>
+		</objectContribution>
+	</extension>
+
+	<extension
+		point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension
+			targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
+			<actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
+			<actionSet id="org.eclipse.linuxtools.systemtap.ui.editor.FileActionSet"/>
+			<actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.FileActionSet"/>
+
+		</perspectiveExtension>
+		<perspectiveExtension
+           targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
+           <actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
+                        <view
+                                ratio="0.40f"
+                                relative="org.eclipse.linuxtools.systemtap.ui.graphing.views.GraphSelectorView"
+                                relationship="bottom"
+                                id="org.eclipse.ui.console.ConsoleView"/>
+                        <viewShortcut id="org.eclipse.ui.console.ConsoleView"/>
+                       
+         </perspectiveExtension>
+		
+		<perspectiveExtension
+			targetID="org.eclipse.linuxtools.systemtap.ui.graphing.GraphingPerspective">
+			<perspectiveShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective"/>
+		</perspectiveExtension>
+		<perspectiveExtension
+           targetID="org.eclipse.linuxtools.systemtap.ui.ide.IDEPerspective">
+           <actionSet id="org.eclipse.linuxtools.systemtap.ui.ide.RunActionSet"/>
+                        <view
+                                ratio="1.00f"
+                                relative="org.eclipse.ui.navigator.ProjectExplorer"
+                                relationship="left"
+                                id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
+                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"/>
+                        <view
+                                ratio="0.33f"
+                                relative="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+                                relationship="right"
+                                id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"/>
+                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.views.KernelBrowserView"/>
+                        <view
+                                ratio="0.33f"
+                                relative="org.eclipse.linuxtools.systemtap.ui.ide.views.ProbeAliasBrowserView"
+                                relationship="left"
+                                id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"/>
+                        <viewShortcut id="org.eclipse.linuxtools.systemtap.ui.ide.views.FunctionBrowserView"/>
+                       
+         </perspectiveExtension>
+	</extension>
+</plugin>
