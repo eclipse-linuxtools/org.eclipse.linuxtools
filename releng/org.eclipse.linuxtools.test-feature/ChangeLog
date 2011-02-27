@@ -1,0 +1,55 @@
+2011-01-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Add ChangeLog tests.
+
+2010-05-18  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Fix provider name.
+
+2010-04-28  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Fix reference of autotools ui tests to be plugin, not feature.
+
+2010-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Fix typo for autotools ui tests plug-in.
+
+2010-04-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* feature.xml: Add autotools ui tests.
+
+2010-04-26  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).  Update
+	copyright year.
+	* license.html: New file.  HTML version of SUA (bug #306627).
+	* build.properties: Include license.html.
+	* feature.xml: Use licenseURL property.
+
+2010-04-12  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Match consistent license text (bug #306627).
+
+2010-01-18  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add gcov tests.
+
+2010-01-17  Francois Chouinard  <fchouinard@gmail.com>
+
+	* feature.xml: Add LTTng/TMF test plugins.
+
+2009-10-08  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add GProf test plugin.
+
+2009-07-22  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Remove trailing "-feature" on OProfile test feature.
+
+2009-07-21  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Add OProfile launch tests (bug #283623).
+
+2009-05-20  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.xml: Remove ".feature" from feature IDs that changed.

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.7/org.eclipse.linuxtools.cdt.libhover,org.eclipse.linuxtools.cdt.libhover"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.7/org.eclipse.linuxtools.cdt.libhover-feature,org.eclipse.linuxtools.cdt.libhover-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.7/org.eclipse.linuxtools.cdt.libhover.glibc,org.eclipse.linuxtools.cdt.libhover.glibc"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.7/org.eclipse.linuxtools.cdt.libhover.libstdcxx,org.eclipse.linuxtools.cdt.libhover.libstdcxx"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.7/org.eclipse.linuxtools.cdt.libhover.library-docs,org.eclipse.linuxtools.cdt.libhover.library-docs"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.7/org.eclipse.linuxtools.cdt.libhover.newlib,org.eclipse.linuxtools.cdt.libhover.newlib"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.7/org.eclipse.linuxtools.cdt.libhover.newlib-feature,org.eclipse.linuxtools.cdt.libhover.newlib-feature"/>
+</provider>
+</psf>
