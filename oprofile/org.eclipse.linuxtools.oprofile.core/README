@@ -1,0 +1,23 @@
+An extra step is required to install the plugin (due to OProfile's lack of a user-space mode):
+
+* Run the install script in the natives/linux/scripts directory (must be as root):
+
+		# ./install
+		
+  * This will ensure all the necessary programs are installed, and create a wrapper for opcontrol
+    which prompts for the root password (since OProfile must be run as root). It will also load the
+    OProfile kernel module, however it is not loaded persistently. Hence, after the computer is 
+    restarted and any functions of the plugin are used, there will be an extra prompt to run 
+    opcontrol that would not normally appear.
+  
+  * If there are any programs missing or an error occurs, the script will fail and display the error.
+    If there are no errors, you will see the message:
+    	
+    	Eclipse-OProfile plugin install successful.
+    
+    
+* To uninstall the plugin, run the uninstall script in the natives/linux/scripts (must be root):
+
+		# ./uninstall
+		
+  * This will simply remove the same files the install script created.
