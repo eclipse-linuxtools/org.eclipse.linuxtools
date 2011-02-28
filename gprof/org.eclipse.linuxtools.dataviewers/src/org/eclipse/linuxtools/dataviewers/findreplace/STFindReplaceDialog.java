@@ -16,8 +16,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.fieldassist.ComboContentAdapter;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.resource.JFaceColors;
+import org.eclipse.jface.text.TextUtilities;
+import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerRow;
+import org.eclipse.linuxtools.dataviewers.STDataViewersActivator;
+import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -36,30 +46,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.resource.JFaceColors;
-
-import org.eclipse.jface.text.TextUtilities;
-import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.viewers.ViewerRow;
-import org.eclipse.linuxtools.dataviewers.abstractviewers.AbstractSTViewer;
-
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
-import org.eclipse.ui.internal.texteditor.NLSUtility;
-import org.eclipse.ui.internal.texteditor.SWTUtil;
-import org.eclipse.ui.internal.texteditor.TextEditorPlugin;
 import org.eclipse.ui.texteditor.IAbstractTextEditorHelpContextIds;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
-import org.eclipse.ui.texteditor.IFindReplaceTargetExtension2;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 
@@ -153,8 +146,8 @@ class STFindReplaceDialog extends Dialog {
 	 */
 	boolean fIsRegExInit;
 
-	private List fFindHistory;
-	private List fReplaceHistory;
+	private List<String> fFindHistory;
+	private List<String> fReplaceHistory;
 	
 	private boolean fIsTargetEditable;
 	private ISTFindReplaceTarget fTarget;
@@ -216,8 +209,8 @@ class STFindReplaceDialog extends Dialog {
 		fTarget= null;
 
 		fDialogPositionInit= null;
-		fFindHistory= new ArrayList(HISTORY_SIZE - 1);
-		fReplaceHistory= new ArrayList(HISTORY_SIZE - 1);
+		fFindHistory= new ArrayList<String>(HISTORY_SIZE - 1);
+		fReplaceHistory= new ArrayList<String>(HISTORY_SIZE - 1);
 
 		fWrapInit= false;
 		fCaseInit= false;
@@ -894,7 +887,7 @@ class STFindReplaceDialog extends Dialog {
 	 * Returns the dialog's history.
 	 * @return the dialog's history
 	 */
-	private List getFindHistory() {
+	private List<String> getFindHistory() {
 		return fFindHistory;
 	}
 
@@ -915,7 +908,7 @@ class STFindReplaceDialog extends Dialog {
 	 * Returns the dialog's replace history.
 	 * @return the dialog's replace history
 	 */
-	private List getReplaceHistory() {
+	private List<String> getReplaceHistory() {
 		return fReplaceHistory;
 	}
 
@@ -1228,101 +1221,6 @@ class STFindReplaceDialog extends Dialog {
 	}
 
 	/**
-	 * Replaces all occurrences of the user's findString with
-	 * the replace string.  Indicate to the user the number of replacements
-	 * that occur.
-	 */
-	private void performReplaceAll() {
-
-		int replaceCount= 0;
-		final String replaceString= getReplaceString();
-		final String findString= getFindString();
-
-		if (findString != null && findString.length() > 0) {
-
-			class ReplaceAllRunnable implements Runnable {
-				public int numberOfOccurrences;
-				public void run() {
-					numberOfOccurrences= replaceAll(findString, replaceString == null ? "" : replaceString, isForwardSearch(), isCaseSensitiveSearch(), isWrapSearch(), isWholeWordSearch(), isRegExSearchAvailableAndChecked());	//$NON-NLS-1$
-				}
-			}
-
-			try {
-				ReplaceAllRunnable runnable= new ReplaceAllRunnable();
-				BusyIndicator.showWhile(fActiveShell.getDisplay(), runnable);
-				replaceCount= runnable.numberOfOccurrences;
-
-				if (replaceCount != 0) {
-					if (replaceCount == 1) { // not plural
-						statusMessage(EditorMessages.FindReplace_Status_replacement_label);
-					} else {
-						String msg= EditorMessages.FindReplace_Status_replacements_label;
-						msg= NLSUtility.format(msg, String.valueOf(replaceCount));
-						statusMessage(msg);
-					}
-				} else {
-					statusMessage(EditorMessages.FindReplace_Status_noMatch_label);
-				}
-			} catch (PatternSyntaxException ex) {
-				statusError(ex.getLocalizedMessage());
-			} catch (IllegalStateException ex) {
-				// we don't keep state in this dialog
-			}
-		}
-		writeSelection();
-		updateButtonState();
-	}
-
-	/**
-	 * Validates the state of the find/replace target.
-	 * @return <code>true</code> if target can be changed, <code>false</code> otherwise
-	 * @since 2.1
-	 */
-	private boolean validateTargetState() {
-
-		if (fTarget instanceof IFindReplaceTargetExtension2) {
-			IFindReplaceTargetExtension2 extension= (IFindReplaceTargetExtension2) fTarget;
-			if (!extension.validateTargetState()) {
-				statusError(EditorMessages.FindReplaceDialog_read_only);
-				updateButtonState();
-				return false;
-			}
-		}
-		return isEditable();
-	}
-
-	/**
-	 * Replaces the current selection of the target with the user's
-	 * replace string.
-	 *
-	 * @return <code>true</code> if the operation was successful
-	 */
-	private boolean performReplaceSelection() {
-
-		if (!validateTargetState())
-			return false;
-
-		String replaceString= getReplaceString();
-		if (replaceString == null)
-			replaceString= ""; //$NON-NLS-1$
-
-		boolean replaced;
-		try {
-			replaceSelection(replaceString, isRegExSearchAvailableAndChecked());
-			replaced= true;
-			writeSelection();
-		} catch (PatternSyntaxException ex) {
-			statusError(ex.getLocalizedMessage());
-			replaced= false;
-		} catch (IllegalStateException ex) {
-			replaced= false;
-		}
-
-		updateButtonState();
-		return replaced;
-	}
-
-	/**
 	 * Locates the user's findString in the text of the target.
 	 */
 	private void performSearch() {
@@ -1367,28 +1265,9 @@ class STFindReplaceDialog extends Dialog {
 		updateButtonState(!somethingFound);
 	}
 
-	/**
-	 * Replaces all occurrences of the user's findString with
-	 * the replace string.  Returns the number of replacements
-	 * that occur.
-	 *
-	 * @param findString the string to search for
-	 * @param replaceString the replacement string
-	 * @param forwardSearch	the search direction
-	 * @param caseSensitive should the search be case sensitive
-	 * @param wrapSearch	should search wrap to start/end if end/start is reached
-	 * @param wholeWord does the search string represent a complete word
-	 * @param regExSearch if <code>true</code> findString represents a regular expression
-	 * @return the number of occurrences
-	 *
-	 * @since 3.0
-	 */
-	private int replaceAll(String findString, String replaceString, boolean forwardSearch, boolean caseSensitive, boolean wrapSearch, boolean wholeWord, boolean regExSearch) {
-			return 0;
-	}
 
 	// ------- UI creation ---------------------------------------
-
+	
 	/**
 	 * Attaches the given layout specification to the <code>component</code>.
 	 *
@@ -1401,8 +1280,8 @@ class STFindReplaceDialog extends Dialog {
 	private void setGridData(Control component, int horizontalAlignment, boolean grabExcessHorizontalSpace, int verticalAlignment, boolean grabExcessVerticalSpace) {
 		GridData gd;
 		if (component instanceof Button && (((Button)component).getStyle() & SWT.PUSH) != 0) {
-			SWTUtil.setButtonDimensionHint((Button)component);
 			gd= (GridData)component.getLayoutData();
+			gd.horizontalAlignment = GridData.FILL;
 		} else {
 			gd= new GridData();
 			component.setLayoutData(gd);
@@ -1443,12 +1322,6 @@ class STFindReplaceDialog extends Dialog {
 	 */
 	private void updateButtonState(boolean disableReplace) {
 		if (okToUse(getShell()) && okToUse(fFindNextButton)) {
-
-			boolean selection= false;
-			if (fTarget != null) {
-				String selectedText= fTarget.getSelectionText(index);
-				selection= (selectedText != null && selectedText.length() > 0);
-			}
 			boolean enable= fTarget != null && (fActiveShell == fParentShell || fActiveShell == getShell());
 			String str= getFindString();
 			boolean findString= str != null && str.length() > 0;
@@ -1486,7 +1359,7 @@ class STFindReplaceDialog extends Dialog {
 	 * @param combo combo to be updated
 	 * @param content to be put into the combo
 	 */
-	private void updateCombo(Combo combo, List content) {
+	private void updateCombo(Combo combo, List<String> content) {
 		combo.removeAll();
 		for (int i= 0; i < content.size(); i++) {
 			combo.add(content.get(i).toString());
@@ -1495,16 +1368,6 @@ class STFindReplaceDialog extends Dialog {
 
 	// ------- open / reopen ---------------------------------------
 
-	/**
-	 * Called after executed find/replace action to update the history.
-	 */
-	private void updateFindAndReplaceHistory() {
-		updateFindHistory();
-		if (okToUse(fReplaceField)) {
-			updateHistory(fReplaceField, fReplaceHistory);
-		}
-
-	}
 
 	/**
 	 * Called after executed find action to update the history.
@@ -1522,7 +1385,7 @@ class STFindReplaceDialog extends Dialog {
 	 * @param combo to be updated
 	 * @param history to be put into the combo
 	 */
-	private void updateHistory(Combo combo, List history) {
+	private void updateHistory(Combo combo, List<String> history) {
 		String findString= combo.getText();
 		int index= history.indexOf(findString);
 		if (index != 0) {
@@ -1627,7 +1490,7 @@ class STFindReplaceDialog extends Dialog {
 	 * @return the dialog settings to be used
 	 */
 	private IDialogSettings getDialogSettings() {
-		IDialogSettings settings= TextEditorPlugin.getDefault().getDialogSettings();
+		IDialogSettings settings= STDataViewersActivator.getDefault().getDialogSettings();
 		fDialogSettings= settings.getSection(getClass().getName());
 		if (fDialogSettings == null)
 			fDialogSettings= settings.addNewSection(getClass().getName());
@@ -1640,7 +1503,7 @@ class STFindReplaceDialog extends Dialog {
 	 */
 	protected IDialogSettings getDialogBoundsSettings() {
 		String sectionName= getClass().getName() + "_dialogBounds"; //$NON-NLS-1$
-		IDialogSettings settings= TextEditorPlugin.getDefault().getDialogSettings();
+		IDialogSettings settings= STDataViewersActivator.getDefault().getDialogSettings();
 		IDialogSettings section= settings.getSection(sectionName);
 		if (section == null)
 			section= settings.addNewSection(sectionName);
@@ -1670,7 +1533,7 @@ class STFindReplaceDialog extends Dialog {
 
 		String[] findHistory= s.getArray("findhistory"); //$NON-NLS-1$
 		if (findHistory != null) {
-			List history= getFindHistory();
+			List<String> history= getFindHistory();
 			history.clear();
 			for (int i= 0; i < findHistory.length; i++)
 				history.add(findHistory[i]);
@@ -1678,7 +1541,7 @@ class STFindReplaceDialog extends Dialog {
 
 		String[] replaceHistory= s.getArray("replacehistory"); //$NON-NLS-1$
 		if (replaceHistory != null) {
-			List history= getReplaceHistory();
+			List<String> history= getReplaceHistory();
 			history.clear();
 			for (int i= 0; i < replaceHistory.length; i++)
 				history.add(replaceHistory[i]);
@@ -1697,7 +1560,7 @@ class STFindReplaceDialog extends Dialog {
 		s.put("incremental", fIncrementalInit); //$NON-NLS-1$
 		s.put("isRegEx", fIsRegExInit); //$NON-NLS-1$
 		
-		List history= getFindHistory();
+		List<String> history= getFindHistory();
 		String findString= getFindString();
 		if (findString.length() > 0)
 			history.add(0, findString);
@@ -1718,11 +1581,11 @@ class STFindReplaceDialog extends Dialog {
 	 * @param sectionName the section name
 	 * @since 3.2
 	 */
-	private void writeHistory(List history, IDialogSettings settings, String sectionName) {
+	private void writeHistory(List<String> history, IDialogSettings settings, String sectionName) {
 		int itemCount= history.size();
-		Set distinctItems= new HashSet(itemCount);
+		Set<String> distinctItems= new HashSet<String>(itemCount);
 		for (int i= 0; i < itemCount; i++) {
-			String item= (String)history.get(i);
+			String item= history.get(i);
 			if (distinctItems.contains(item)) {
 				history.remove(i--);
 				itemCount--;

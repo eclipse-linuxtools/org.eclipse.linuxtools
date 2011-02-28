@@ -25,7 +25,6 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.IOutputEntry;
 import org.eclipse.cdt.core.model.ISourceRoot;
 import org.eclipse.cdt.debug.core.CDebugCorePlugin;
-import org.eclipse.cdt.debug.internal.core.sourcelookup.CSourceLookupDirector;
 import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.cdt.utils.Addr64;
 import org.eclipse.core.filesystem.EFS;
@@ -39,6 +38,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.jface.text.BadLocationException;
@@ -457,7 +457,7 @@ public class STLink2SourceSupport {
 	private IEditorInput findFileInCommonSourceLookup(IPath path)
 	{
 		try {
-			CSourceLookupDirector director = CDebugCorePlugin.getDefault().getCommonSourceLookupDirector();
+			AbstractSourceLookupDirector director = CDebugCorePlugin.getDefault().getCommonSourceLookupDirector();
 			ISourceContainer[] c = director.getSourceContainers();
 			for (ISourceContainer sourceContainer : c) {
 				Object[] o = sourceContainer.findSourceElements(path.toOSString());

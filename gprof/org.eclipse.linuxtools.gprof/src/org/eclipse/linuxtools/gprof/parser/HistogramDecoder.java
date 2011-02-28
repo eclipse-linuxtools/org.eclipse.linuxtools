@@ -26,30 +26,29 @@ import org.eclipse.linuxtools.gprof.view.histogram.HistRoot;
 public class HistogramDecoder {
 
 	/** the decoder */
-	private final GmonDecoder decoder;
+	protected final GmonDecoder decoder;
 
 	// histogram header
 	/** Base pc address of sampled buffer */
-	private long lowpc;
+	protected long lowpc;
 	/** Max pc address of sampled buffer */
-	private long highpc;
+	protected long highpc;
 	/** Profiling clock rate */
-	private int prof_rate;
+	protected int prof_rate;
 	/** physical dimension - usually "seconds" */
-	private String dimen;
+	protected String dimen;
 	/** usually 's' for seconds, 'm' for milliseconds... */
-	private char dimen_abbrev;
+	protected char dimen_abbrev;
 	/** used when aggregate several gmon files */
-	private boolean initialized = false;
+	protected boolean initialized = false;
 
 
 	/** Histogram samples (shorts in the file!). */
-	private int[] hist_sample;
+	protected int[] hist_sample;
 	/** Total time for all routines.  */
-	private double total_time;
-	private double scale;
+	protected double total_time;
 
-	private long bucketSize;
+	protected long bucketSize;
 
 
 	/**
@@ -79,7 +78,7 @@ public class HistogramDecoder {
 	 * @param stream
 	 * @throws IOException
 	 */
-	public void decodeAll(DataInput stream) throws IOException {
+	protected void decodeAll(DataInput stream) throws IOException {
 		decodeHeader(stream);
 		decodeHistRecord(stream);
 		AssignSamplesSymbol();
@@ -96,6 +95,8 @@ public class HistogramDecoder {
 		long lowpc        = (_lowpc & 0xFFFFFFFFL);
 		int _highpc       = stream.readInt();
 		long highpc       = (_highpc & 0xFFFFFFFFL);
+		//long lowpc = stream.readLong();
+		//long highpc = stream.readLong();
 		int hist_num_bins = stream.readInt();
 		int prof_rate     = stream.readInt();
 		byte[] bytes      = new byte[15];
@@ -113,9 +114,8 @@ public class HistogramDecoder {
 		hist_sample    = new int[hist_num_bins]; // Impl note: JVM sets all integers to 0
 		dimen          = new String(bytes);
 		dimen_abbrev   = (char) b;
-		scale          = (highpc - lowpc)/(double)hist_num_bins;
-		bucketSize     = (highpc - lowpc)/(hist_num_bins - 1);
-		if (bucketSize > scale) scale = bucketSize;
+		long temp = highpc - lowpc;
+		bucketSize = Math.round(temp/(double)hist_num_bins);
 	}
 
 	/**
@@ -185,16 +185,13 @@ public class HistogramDecoder {
 		printHistHeader(ps);
 
 		/*ps.println(" \nHistogram Samples : ");
-        ISymbol[] symbols = this.program.getSymbols();
-        for (int i = 0 ; i< symbols.length; i++) {
-        	if (buckets[i] != null) {
-            	System.out.println(symbols[i].getName());
-        		for (Bucket b : buckets[i]) {
-        			System.out.println("  " + b.start_addr + " :: " + b.time);
-        		}
-        	}
-		}*/
-
+        ISymbol[] symbols = this.decoder.getProgram().getSymbols();
+        for (ISymbol iSymbol : symbols) {
+			ps.println(iSymbol.getName() + "\t" + iSymbol.getAddress());
+		}
+        for (int i = 0; i<hist_sample.length; i++) {
+        	ps.println("histSample[" + i + "]\t" + hist_sample[i]);
+        }*/
 	}
 
 	/**
@@ -212,8 +209,8 @@ public class HistogramDecoder {
 			int ccnt = hist_sample[i];
 			if (ccnt != 0)
 			{
-				long pcl = lowpc + (long) (scale*i);
-				long pch = lowpc + (long) (scale * (i+1));
+				long pcl = lowpc + (bucketSize*i);
+				long pch = pcl+bucketSize;
 				total_time += ccnt;
 				long svalue0;
 				long svalue1 = symblist[j-1].getAddress().getValue().longValue();
@@ -234,7 +231,7 @@ public class HistogramDecoder {
 						long overlap = end_addr - start_addr;
 						if(overlap > 0)
 						{
-							int time = (int) ((overlap * ccnt) / scale);
+							int time = (int) ((overlap * ccnt) / bucketSize);
 							Bucket   bck = new Bucket(start_addr, end_addr, time);
 							addBucket(bck,symblist[j]);
 						}

@@ -42,7 +42,7 @@ public class STCopyAction extends Action {
 		Clipboard cb = new Clipboard(Display.getDefault());
 		ISTDataViewersField[] fields = stViewer.getAllFields();
 		IStructuredSelection selections = (IStructuredSelection)stViewer.getViewer().getSelection();
-		Iterator iterator = selections.iterator();
+		Iterator<?> iterator = selections.iterator();
 		StringBuilder sb = new StringBuilder();
 			
 		for(int i=0;iterator.hasNext();i++){
