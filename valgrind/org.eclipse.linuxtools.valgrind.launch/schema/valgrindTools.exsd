@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.linuxtools.valgrind.launch" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.linuxtools.valgrind.launch" id="valgrindTool" name="Valgrind Tool"/>
+      </appinfo>
+      <documentation>
+         This extension point provides Valgrind tools the ability to contribute options to the Valgrind &lt;code&gt;ILaunchConfigurationTab&lt;/code&gt; and to deploy UI to the Valgrind view.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="tool"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="tool">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identifier for this tool
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of this tool as Valgrind expects it as an argument to &lt;code&gt;--tool&lt;/code&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="page" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Class to contribute controls used to add options for this tool in the &lt;code&gt;ILaunchConfigurationTab&lt;/code&gt; for Valgrind.
+Must implement &lt;code&gt;IValgrindToolPage&lt;/code&gt;
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="delegate" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class that will receive control from the &lt;code&gt;ValgrindLaunchConfigurationDelegate&lt;/code&gt; once Valgrind has launched.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         0.1
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;pre&gt;
+&lt;extension point=&quot;org.eclipse.linuxtools.valgrind.launch.valgrindTools&quot;&gt;
+    &lt;tool delegate=&quot;org.eclipse.linuxtools.valgrind.memcheck.MemcheckLaunchDelegate&quot;
+          id=&quot;org.eclipse.linuxtools.valgrind.launch.memcheck&quot;
+          name=&quot;memcheck&quot;
+          page=&quot;org.eclipse.linuxtools.valgrind.memcheck.MemcheckToolPage&quot;&gt;
+    &lt;/tool&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         Plug-ins that want to extend this extension point must implement &lt;samp&gt;org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate&lt;/samp&gt; and &lt;samp&gt;org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage&lt;/samp&gt; interfaces.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         org.eclipse.linuxtools.valgrind.memcheck
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2008, 2009 Red Hat, Inc.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+
+Contributors:
+ Elliott Baron &lt;ebaron@redhat.com&gt; - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>

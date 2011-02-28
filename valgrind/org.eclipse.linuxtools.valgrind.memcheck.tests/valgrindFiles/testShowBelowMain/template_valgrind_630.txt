@@ -1,0 +1,36 @@
+==630== Invalid read of size 1
+==630==    at 0x4004E2: main (test.c:16)
+==630==    by 0x3AC0C1EA2C: __libc_start_main (in /lib64/libc-2.10.1.so)
+==630==    by 0x400408: ??? (in XXXXXXXXXXXX/basicTest/Debug/basicTest)
+==630==    by 0x7FF000607: ???
+==630==    by 0x1B: ???
+==630==  Address 0x4c2104a is 0 bytes after a block of size 10 alloc'd
+==630==    at 0x4A05E5D: malloc (vg_replace_malloc.c:195)
+==630==    by 0x4004D5: main (test.c:15)
+==630==    by 0x3AC0C1EA2C: __libc_start_main (in /lib64/libc-2.10.1.so)
+==630==    by 0x400408: ??? (in XXXXXXXXXXXX/basicTest/Debug/basicTest)
+==630==    by 0x7FF000607: ???
+==630==    by 0x1B: ???
+==630== 
+==630== Invalid write of size 1
+==630==    at 0x4004F3: main (test.c:17)
+==630==    by 0x3AC0C1EA2C: __libc_start_main (in /lib64/libc-2.10.1.so)
+==630==    by 0x400408: ??? (in XXXXXXXXXXXX/basicTest/Debug/basicTest)
+==630==    by 0x7FF000607: ???
+==630==    by 0x1B: ???
+==630==  Address 0x4c2104a is 0 bytes after a block of size 10 alloc'd
+==630==    at 0x4A05E5D: malloc (vg_replace_malloc.c:195)
+==630==    by 0x4004D5: main (test.c:15)
+==630==    by 0x3AC0C1EA2C: __libc_start_main (in /lib64/libc-2.10.1.so)
+==630==    by 0x400408: ??? (in XXXXXXXXXXXX/basicTest/Debug/basicTest)
+==630==    by 0x7FF000607: ???
+==630==    by 0x1B: ???
+==630== 
+==630== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==630==    at 0x4A05E5D: malloc (vg_replace_malloc.c:195)
+==630==    by 0x4004D5: main (test.c:15)
+==630==    by 0x3AC0C1EA2C: __libc_start_main (in /lib64/libc-2.10.1.so)
+==630==    by 0x400408: ??? (in XXXXXXXXXXXX/basicTest/Debug/basicTest)
+==630==    by 0x7FF000607: ???
+==630==    by 0x1B: ???
+==630== 

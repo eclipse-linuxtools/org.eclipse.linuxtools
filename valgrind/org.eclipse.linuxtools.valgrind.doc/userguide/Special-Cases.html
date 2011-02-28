@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Valgrind Reference - Special Cases</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Special Cases</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Using-Cachegrind.html" title="Using Cachegrind">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Using Cachegrind</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Special_Cases">Special Cases</h1>
+		<h2 id="Encountering_Errors">Encountering Errors</h2>
+		<p>If the profiled application contains any errors or if any Valgrind options you selected result in an error, these errors will be reported in the 
+			<i>Core Messages</i> pane of the Valgrind View. The Memcheck tool outputs all of its profile results on this pane. 
+			<br/>
+			<img border="0" src="images/ValgrindSegfault.png"/>
+		</p>
+		<p>For other tools, it is possible to switch between the Core Messages pane and the tool's output in the Valgrind view menu. 
+			<br/>
+			<img border="0" src="images/SwitchCoreTool.png"/>
+		</p>
+		<h2 id="Profiling_Child_Processes">Profiling Child Processes</h2>
+		<p>To profile child processes during a profile run, enable the 
+			<b>
+				<i>Trace children on exec</i>
+			</b> option in the 
+			<b>
+				<i>General Options</i>
+			</b> tab (of the 
+			<b>
+				<i>Valgrind Options</i>
+			</b> tab). Memcheck's results will list the process ID (PID) for each reported error in the Valgrind view.
+		</p>
+		<p>Massif, on the other hand, will present each process separately and allow you to switch between processes with the <u>Select Process ID</u> dropdown icon ( 
+			<img border="0" src="images/Thread.gif"/> ) in the Valgrind view toolbar.
+		</p>
+		<p>Cachegrind will report each PID separately as a top-level element in its output tree.</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Using-Cachegrind.html" title="Using Cachegrind">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="Valgrind Reference.html" title="Valgrind Reference">
+						<img alt="Valgrind Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Using Cachegrind</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
