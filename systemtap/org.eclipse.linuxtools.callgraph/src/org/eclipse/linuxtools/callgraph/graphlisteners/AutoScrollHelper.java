@@ -18,10 +18,10 @@ public class AutoScrollHelper {
 	
 	public static void scrollUp(StapGraph graph) {
 
-		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
-			int parent = graph.getNodeData(graph.getRootVisibleNodeNumber()).caller;
+		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_LEVEL) {
+			int parent = graph.getNodeData(graph.getRootVisibleNodeNumber()).parent;
 			if (graph.isCollapseMode())
-				parent = graph.getNodeData(graph.getRootVisibleNodeNumber()).collapsedCaller;
+				parent = graph.getNodeData(graph.getRootVisibleNodeNumber()).collapsedParent;
 			
 			if (graph.getNodeData(parent) != null && graph.getNodeData(parent).levelOfRecursion > 0 ) {
 				int animMode = graph.getAnimationMode();
@@ -34,7 +34,7 @@ public class AutoScrollHelper {
 	}
 	
 	public static void scrollDown(StapGraph graph) {
-		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
+		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_LEVEL) {
 			if (graph.getTopLevel() + StapGraph.levelBuffer < 
 					graph.getLowestLevelOfNodesAdded()) {
 				int newLevel = graph.getTopLevel() + 1;

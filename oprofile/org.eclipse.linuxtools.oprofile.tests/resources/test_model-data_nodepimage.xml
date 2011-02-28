@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model-data>
+	<image name="/test/path/for/image" count="200000">
+		<symbols>
+			<symbol name="TestFunction1(int)" file="/test/path/for/src/image.cpp" count="180000">
+				<sample>
+					<count>130000</count>
+					<line>42</line>
+				</sample>
+				<sample>
+					<count>40000</count>
+					<line>36</line>
+				</sample>
+				<sample>
+					<count>9999</count>
+					<line>31</line>
+				</sample>
+				<sample>
+					<count>1</count>
+					<line>39</line>
+				</sample>
+			</symbol>
+			<symbol name="TestFunction2(int, int)" file="/test/path/for/src/image2.cpp" count="20000">
+				<sample>
+					<count>19998</count>
+					<line>94</line>
+				</sample>
+				<sample>
+					<count>1</count>
+					<line>12</line>
+				</sample>
+				<sample>
+					<count>1</count>
+					<line>55</line>
+				</sample>
+			</symbol>
+		</symbols>
+	</image>
+</model-data>

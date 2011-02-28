@@ -11,8 +11,6 @@
 package org.eclipse.linuxtools.callgraph;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.eclipse.draw2d.Label;
@@ -26,9 +24,7 @@ public class StapNode extends GraphNode{
 	private static int nodeSize = 20;
 	public int id;
 	public GraphConnection connection;		//Each node should have only one connection (to its caller)
-	private boolean hasButtons;				//Has buttons already attached
-	public List<Integer> buttons;
-	private static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
+	static NumberFormat numberFormat = NumberFormat.getInstance(Locale.CANADA);
 
 	public StapNode(StapGraph graphModel, int style, StapData data) {
 		
@@ -38,8 +34,6 @@ public class StapNode extends GraphNode{
 		if (Display.getCurrent().getPrimaryMonitor().getBounds().width < 1000)
 			nodeSize = 10;
 		
-		
-		
 		if (data.name == StapGraph.CONSTANT_TOP_NODE_NAME)
 			this.setText(StapGraph.CONSTANT_TOP_NODE_NAME);
 		else  {
@@ -47,18 +41,18 @@ public class StapNode extends GraphNode{
 			if (data.name.length() > nodeSize)
 				 shortName = data.name.substring(0, nodeSize - 3) + "...";   //$NON-NLS-1$
 			this.setText(shortName + ": " +  //$NON-NLS-1$
-				numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+				numberFormat.format((float) data.getTime()/graphModel.getTotalTime() * 100) 
 				+ "%"); //$NON-NLS-1$
 		}
 		
-		if (data.markedMessage.length() != 0) {
+		if (data.markedMessage != null && data.markedMessage.length() != 0) {
 			Label tooltip = new Label(data.name + ": " +  //$NON-NLS-1$
-					numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+					numberFormat.format((float) data.getTime()/graphModel.getTotalTime() * 100) 
 					+ "%" + "\n  " + data.markedMessage); //$NON-NLS-1$ //$NON-NLS-2$
 			this.setTooltip(tooltip);
 		} else if (data.name.length() > nodeSize) {
 			Label tooltip = new Label(data.name + ": " +  //$NON-NLS-1$
-					numberFormat.format((float) data.time/graphModel.getTotalTime() * 100) 
+					numberFormat.format((float) data.getTime()/graphModel.getTotalTime() * 100) 
 					+ "%"); //$NON-NLS-1$
 			this.setTooltip(tooltip);
 		}
@@ -66,32 +60,19 @@ public class StapNode extends GraphNode{
 		
 		this.id = data.id;
 		this.connection = null;
-		hasButtons = false;
-		buttons = new ArrayList<Integer>();
 		
 
-		if (graphModel.getNode(data.caller) != null) {
+		if (graphModel.getNode(data.parent) != null) {
 			this.connection = new GraphConnection( graphModel, style, 
-					this, graphModel.getNode(data.caller));
+					this, graphModel.getNode(data.parent));
 			if (graphModel.isCollapseMode())
-				connection.setText("" + data.called); //$NON-NLS-1$
-		}
-		
-		if (graphModel.getNode(data.collapsedCaller) != null) {
+				connection.setText("" + data.timesCalled); //$NON-NLS-1$
+		} else if (graphModel.getNode(data.collapsedParent) != null) {
 			this.connection = new GraphConnection( graphModel, style, 
-					this, graphModel.getNode(data.collapsedCaller));
+					this, graphModel.getNode(data.collapsedParent));
 			if (graphModel.isCollapseMode())
-				connection.setText("" + data.called); //$NON-NLS-1$
-		}
-	}
-
-	
-	public void setHasButtons(boolean value) {
-		hasButtons = value;
-	}
-	
-	public boolean getHasButtons() {
-		return hasButtons;
+				connection.setText("" + data.timesCalled); //$NON-NLS-1$
+		} //else do not create any connections (this should usually never happen)
 	}
 	
 	/**

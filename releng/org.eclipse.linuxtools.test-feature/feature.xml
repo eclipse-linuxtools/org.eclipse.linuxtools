@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.linuxtools.test"
+      label="%featureName"
+      version="0.1.0.qualifier"
+      provider-name="%provider">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <includes
+         id="org.eclipse.linuxtools.profiling.test"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.linuxtools.valgrind.test"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.linuxtools.oprofile.test"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.linuxtools.callgraph.tests"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.linuxtools.lttng.tests"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.linuxtools.tmf.tests"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.cdt.autotools.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.rpm.ui.editor.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.gprof.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.gcov.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.ant.optional.junit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.linuxtools.cdt.autotools.ui.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.structures;singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-Activator: org.eclipse.linuxtools.systemtap.ui.structures.internal.StructuresPlugin
+Bundle-Vendor: %bundleProvider
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.linuxtools.systemtap.ui.structures,
+ org.eclipse.linuxtools.systemtap.ui.structures.listeners,
+ org.eclipse.linuxtools.systemtap.ui.structures.runnable,
+ org.eclipse.linuxtools.systemtap.ui.structures.ui,
+ org.eclipse.linuxtools.systemtap.ui.structures.validators
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Localization: plugin

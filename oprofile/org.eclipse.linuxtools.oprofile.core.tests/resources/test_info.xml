@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+	<num-counters>2</num-counters>
+	<cpu-frequency>800</cpu-frequency>
+	<defaults>
+		<sample-dir>/var/lib/oprofile/samples/</sample-dir>
+		<lock-file>/var/lib/oprofile/lock</lock-file>
+		<log-file>/var/lib/oprofile/samples/oprofiled.log</log-file>
+		<dump-status>/var/lib/oprofile/complete_dump</dump-status>
+	</defaults>
+	<timer-mode>true</timer-mode>
+	<event-list counter="0">
+		<event>
+			<name>CPU_CLK_UNHALTED</name>
+			<description>Clock cycles when not halted</description>
+			<value>60</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>Unhalted core cycles</description>
+				</mask>
+				<mask>
+					<value>1</value>
+					<description>Unhalted bus cycles</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>Unhalted bus cycles of this core while the other core is halted</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>INST_RETIRED_ANY_P</name>
+			<description>number of instructions retired</description>
+			<value>192</value>
+			<minimum>6000</minimum>
+			<unit-mask>
+				<type>mandatory</type>
+				<default>0</default>
+				<mask>
+					<value>0</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>DTLB_MISSES</name>
+			<description>DTLB miss events</description>
+			<value>8</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>15</default>
+				<mask>
+					<value>1</value>
+					<description>ANY	Memory accesses that missed the DTLB.</description>
+				</mask>
+				<mask>
+					<value>2</value>
+					<description>MISS_LD	DTLB misses due to load operations.</description>
+				</mask>
+				<mask>
+					<value>4</value>
+					<description>L0_MISS_LD L0 DTLB misses due to load operations.</description>
+				</mask>
+				<mask>
+					<value>8</value>
+					<description>MISS_ST	TLB misses due to store operations.</description>
+				</mask>
+			</unit-mask>
+		</event>
+	</event-list>
+	<event-list counter="1">
+		<event>
+			<name>L2_M_LINES_IN</name>
+			<description>number of modified lines allocated in L2</description>
+			<value>37</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>exclusive</type>
+				<default>64</default>
+				<mask>
+					<value>192</value>
+					<description>All cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>This core</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>L2_LINES_OUT</name>
+			<description>number of recovered lines from L2</description>
+			<value>38</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>bitmask</type>
+				<default>112</default>
+				<mask>
+					<value>192</value>
+					<description>core: all cores</description>
+				</mask>
+				<mask>
+					<value>64</value>
+					<description>core: this core</description>
+				</mask>
+				<mask>
+					<value>48</value>
+					<description>prefetch: all inclusive</description>
+				</mask>
+				<mask>
+					<value>16</value>
+					<description>prefetch: Hardware prefetch only</description>
+				</mask>
+				<mask>
+					<value>0</value>
+					<description>prefetch: exclude hardware prefetch</description>
+				</mask>
+			</unit-mask>
+		</event>
+		<event>
+			<name>EIST_TRANS_ALL</name>
+			<description>Intel(tm) Enhanced SpeedStep(r) Technology transitions</description>
+			<value>58</value>
+			<minimum>500</minimum>
+			<unit-mask>
+				<type>notavalidtype</type>
+				<default>1</default>
+				<mask>
+					<value>1</value>
+					<description>No unit mask</description>
+				</mask>
+			</unit-mask>
+		</event>
+	</event-list>
+</info>

@@ -38,7 +38,6 @@ public class RuledTreeSelectionDialog extends CheckedTreeSelectionDialog {
     public RuledTreeSelectionDialog(Shell parent, ILabelProvider labelProvider,
 			ITreeContentProvider contentProvider) {
 		super(parent, labelProvider, contentProvider);
-		// TODO Auto-generated constructor stub
 	}
 
 	/*

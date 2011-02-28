@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.callgraph.graphlisteners;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.linuxtools.callgraph.StapGraph;
 import org.eclipse.linuxtools.callgraph.StapNode;
@@ -19,6 +20,7 @@ import org.eclipse.linuxtools.callgraph.core.FileFinderOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 @SuppressWarnings("unused")
@@ -41,6 +43,7 @@ public class StapGraphMouseListener implements MouseListener {
 	public void mouseDoubleClick(MouseEvent e) {
 		if (e.stateMask == SWT.CONTROL) {
 			controlDoubleClick();
+			return;
 		}
 		
 		
@@ -56,6 +59,7 @@ public class StapGraphMouseListener implements MouseListener {
 			int id = node.getData().id;
 
 			graph.scale = 1;
+//			graph.setCollapseMode(true);
 			// Redraw in the current mode with the new id as the center
 			// The x,y parameters to draw() are irrelevant for radial mode
 			graph.draw(id);
@@ -63,7 +67,7 @@ public class StapGraphMouseListener implements MouseListener {
 			// Unhighlight the center node and give it a normal colour
 			node = graph.getNode(id);
 			node.unhighlight();
-			if (graph.getData(id).isMarked())
+			if (graph.getNodeData(id).isMarked())
 				node.setBackgroundColor(StapGraph.CONSTANT_MARKED);
 			else
 				node.setBackgroundColor(graph.DEFAULT_NODE_COLOR);
@@ -76,8 +80,7 @@ public class StapGraphMouseListener implements MouseListener {
 			
 			unhighlightall(node);
 			graph.setSelection(null);
-			graph.getTreeViewer().expandToLevel(node.getData(), 0);
-			graph.getTreeViewer().setSelection(new StructuredSelection(node.getData()));
+
 			// Draw in current modes with 'id' at the top
 			int id = node.getData().id;
 			graph.draw(id);
@@ -89,6 +92,9 @@ public class StapGraphMouseListener implements MouseListener {
 
 	@Override
 	public void mouseDown(MouseEvent e) {
+		if (graph.getProjectionist() != null) {
+			graph.getProjectionist().pause();
+		}
 //		MP.println("You clicked: " + e.x + ", " + e.y); //$NON-NLS-1$ //$NON-NLS-2$
 //		MP.println("Convert to control: " + graph.toControl(e.x, e.y).x + ", " //$NON-NLS-1$ //$NON-NLS-2$
 //				+ graph.toControl(e.x, e.y).y);
@@ -109,9 +115,13 @@ public class StapGraphMouseListener implements MouseListener {
 		List<Integer> callees = null;
 
 		if (graph.isCollapseMode())
-			callees = graph.getData(id).collapsedCallees;
+			callees = graph.getNodeData(id).collapsedChildren;
 		else
-			callees = graph.getData(id).callees;
+			callees = graph.getNodeData(id).children;
+		
+		if (callees == null)
+			return;
+		
 		for (int subID : callees) {
 			if (graph.getNode(subID) != null)
 				graph.getNode(subID).unhighlight();
@@ -160,34 +170,34 @@ public class StapGraphMouseListener implements MouseListener {
 		return node;
 	}
 	
-	public String controlDoubleClick() {
-		String output = null;
+	public void controlDoubleClick() {
 		if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_AGGREGATE) {
 			GraphNode node = getAggregateNodeFromSelection();
 			
 			if (node == null)
-				return null;
+				return;
 			
 			String functionName = (String) node.getData("AGGREGATE_NAME"); //$NON-NLS-1$
-			output= FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+			FileFinderOpener.findAndOpen(graph.getProject(), functionName);
+			node.unhighlight();
 		} else {
 			StapNode node = getNodeFromSelection();
 			
 			if (node == null)
-				return null;
+				return;
 
-			int caller = node.getData().caller;
+			int caller = node.getData().id;
 
 			if (caller < graph.getFirstUsefulNode()) {
 				// The only node that satisfies this condition should be
 				// main
 				caller = graph.getFirstUsefulNode();
 			}
-			output = FileFinderOpener.findAndOpen(graph.getProject(), graph.getData(caller).name);
+			FileFinderOpener.findAndOpen(graph.getProject(), graph.getNodeData(caller).name);
+			node.unhighlight();
 		}
 
 		graph.setSelection(null);
-		return output;
 	}
 	
 	public void mouseDownEvent(int x, int y) {
@@ -232,7 +242,7 @@ public class StapGraphMouseListener implements MouseListener {
 
 			// ------------Highlighting
 			if (graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_TREE 
-					|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_BOX) {
+					|| graph.getDrawMode() == StapGraph.CONSTANT_DRAWMODE_LEVEL) {
 				for (StapNode n : (List<StapNode>) graph.getNodes()) {
 					unhighlightall(n);
 				}
@@ -240,9 +250,9 @@ public class StapGraphMouseListener implements MouseListener {
 				List<Integer> callees = null;
 
 				if (graph.isCollapseMode())
-					callees = graph.getData(id).collapsedCallees;
+					callees = graph.getNodeData(id).collapsedChildren;
 				else
-					callees = graph.getData(id).callees;
+					callees = graph.getNodeData(id).children;
 
 				for (int subID : callees) {
 					if (graph.getNode(subID) != null)
@@ -272,7 +282,7 @@ public class StapGraphMouseListener implements MouseListener {
 //				unhighlightall(n);
 //			}
 //		}
-
+//
 //		graph.setSelection(null);
 	}
 };

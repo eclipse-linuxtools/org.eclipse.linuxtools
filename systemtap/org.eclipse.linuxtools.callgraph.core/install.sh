@@ -4,7 +4,7 @@ num=1
 
 #CREATE A BACKUP FILE WITHOUT OVERWRITING ANYTHING
 while [ -e "${FILE}.bak${num}" ]; do
-	num=`expr ${num} + 1`
+	num=$[ ${num} + 1 ]
 done
 
 USEREXISTS=`grep stapdev ${FILE}| grep ${USER}`
