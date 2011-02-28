@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
+import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchConfigurationDelegate;
-import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchShortcut;
 
 public class ConfigurationTest extends TestCase{
 	
@@ -33,7 +33,7 @@ public class ConfigurationTest extends TestCase{
 	public void testConfig() {
 		
 		System.out.println("\n\nLaunching ConfigurationTest\n");
-		SystemTapLaunchShortcut shortcut = new SystemTapLaunchShortcut();
+		LaunchStapGraph shortcut = new LaunchStapGraph();
 		
 		try {
 			String testCDirectives = "-DRandomjunk -DMoreJunk";
@@ -77,13 +77,11 @@ public class ConfigurationTest extends TestCase{
 			SystemTapLaunchConfigurationDelegate del = new SystemTapLaunchConfigurationDelegate();
 			del.launch(config, "profile", null, null);
 			
-			System.out.println(del.getCommand());
-			 
 			assertEquals("stap -v -p" + testPass + " -k -g -P -u -w -b -t -s" 
 						+ testBuffer + " -x" + testPid + " " 
 						+ testCDirectives + " -F --skip-badvars --ignore-dwarf -q " + "-o " 
 						+ testOutputPath + " -c '" 
-						+ testBinaryPath + "' " + testScriptPath + " " + testArguments, del.getCommand());
+						+ testBinaryPath + "' " + testScriptPath + " " + testArguments, del.generateCommand(config));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

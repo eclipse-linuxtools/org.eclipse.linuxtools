@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.launch.tests;
 
-//import org.eclipse.jface.dialogs.MessageDialog;
-//import org.eclipse.swt.widgets.Shell;
-
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 
 import junit.framework.Test;

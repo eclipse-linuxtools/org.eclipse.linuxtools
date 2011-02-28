@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.linuxtools.callgraph.launch.SystemTapLaunchShortcut;
+import org.eclipse.linuxtools.callgraph.launch.LaunchStapGraph;
 import org.eclipse.linuxtools.callgraph.launch.SystemTapOptionsTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -29,7 +29,7 @@ public class SystemTapTabTest extends TestCase{
 		Shell sh = new Shell();
 		Composite cmp = new Composite(sh, SWT.NONE);
 		
-		SystemTapLaunchShortcut shortCut = new SystemTapLaunchShortcut();
+		LaunchStapGraph shortCut = new LaunchStapGraph();
 		SystemTapOptionsTab stp = new SystemTapOptionsTab();
 		stp.createControl(cmp);
 		ILaunchConfiguration configuration;

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.eclipse.linuxtools.gcov"
+            name="%gcovCategory">
+      </category>
+      <view
+            allowMultiple="true"
+            category="org.eclipse.linuxtools.gcov"
+            class="org.eclipse.linuxtools.gcov.view.CovView"
+            icon="icons/toggle.gif"
+            id="org.eclipse.linuxtools.gcov.view"
+            name="%gcov"
+            restorable="false">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.linuxtools.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor"
+            icon="icons/src_file_obj.gif"
+            id="org.eclipse.linuxtools.gcov.view.annotatedsource.STAnnotatedSourceNotFoundEditor"
+            name="Source Not Found">
+      </editor>
+      <editor
+            extensions="gcda, gcno"
+            icon="icons/toggle.gif"
+            id="org.eclipse.linuxtools.gcov.editor"
+            launcher="org.eclipse.linuxtools.gcov.action.OpenGCAction"
+            name="%gcovEditor">
+      </editor>
+   </extension>
+
+
+</plugin>

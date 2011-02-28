@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Launch and Core Test
+Bundle-Name: Callgraph Launch Tests (Incubation)
 Bundle-SymbolicName: org.eclipse.linuxtools.callgraph.launch.tests
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.callgraph.launch.tests.Activator
@@ -19,3 +19,4 @@ Import-Package: org.eclipse.cdt.core.model,
  org.eclipse.linuxtools.profiling.launch,
  org.eclipse.linuxtools.profiling.tests,
  org.eclipse.linuxtools.callgraph.launch
+Bundle-Vendor: Eclipse

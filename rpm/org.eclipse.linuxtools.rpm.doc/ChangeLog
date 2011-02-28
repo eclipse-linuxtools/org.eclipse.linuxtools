@@ -1,0 +1,87 @@
+2007-05-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #185598
+	* plugin.xml: Add "Incubation" to Bundle-Name.
+
+2007-01-29  Andrew Overholt  <overholt@redhat.com>
+
+	* build.xml: Re-namespace from cdt to linuxtools.
+	* plugin.properties: Likewise.
+	* plugin.xml: Likewise.
+	* raw/rpmguide/RPM_Plugin.htm: Likewise.
+
+2005-05-27  Jeremy Handcock  <handcock@redhat.com>
+
+	* plugin.xml: Bump version to 3.0.
+
+2005-01-25  Rick Moseley  <rmoseley@redhat.com>
+	* bz#84229
+
+2005-01-25  Rick Moseley  <rmoseley@redhat.com>
+
+	* RPM_Plugin.htm: bz#83661
+	* 05_eclipse_rpm_srpm_import.png: bz#83661
+
+2004-11-11  Rick Moseley  <rmoseley@redhat.com>
+
+	* RPM_Plugin.htm: some massaging by the docs guy
+
+2004-11-11  Rick Moseley  <rmoseley@redhat.com>
+
+	* plugin.xml: change version to 1.2
+
+2004-11-09  Rick Moseley  <rmoseley@redhat.com>
+
+	* RPM_Plugin.htm: updated with new screenshot for Prefs Page, added verbage
+	   describing new fields, point users to eclipse.org to post bugs/feature 
+	   requests
+	* Change name in docs from "Developers Guide" to "Users Guide"
+
+2004-07-20  Ben Konrath  <bkonrath@redhat.com>
+ 
+ 	* add new screenshots and documentation
+ 	* remove old screenshots and documentation
+
+2004-07-15  Rick Moseley  <rmoseley@redhat.com>
+
+	* build.xml: changed version to 1.1
+	* plugin.xml: changed verison to 1.1
+
+2004-07-14  Rick Moseley  <rmoseley@redhat.com>
+
+	* build.properties: added custom=true
+
+
+2004-04-05  Jeremy Handcock  <handcock@redhat.com>
+
+	* raw/RPMPlugin/RPMVersion3U1.htm: File bugs in Red Hat Bugzilla, not
+	eclipse.org.		
+
+2003-9-10   Phil Muldoon <pmuldoon@redhat.com>
+
+	* raw/hglegal2002.htm: Added
+
+	   build.xml: Rewrote gather.bin.parts to not use excludes
+	   	
+	   plugin.xml: Changed version to match build.xml. Removed
+	   					  context help extensions
+	   
+	   build.properties: Changed incorrect comments		
+
+	   plugin.properties: Changed provider and title
+
+2003-9-10	Phil Muldoon <pmuldoon@redhat.com>
+
+	* Removed doc.zip
+
+2003-08-27  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* build.xml(zip.plugin): Removed parent dir in doc.zip
+
+2003-08-27  Phil Muldoon  <pmuldoon@redhat.com>
+
+	* Added build.xml
+
+2003-08-27  Phil Muldoon  <pmuldoon@@redhat.com>
+
+	* Imported Red Hat RPM Documentation files

@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: RPM Core Plug-in (Incubation)
+Bundle-SymbolicName: org.eclipse.linuxtools.rpm.core;singleton:=true
+Bundle-Version: 3.0.0
+Bundle-Activator: org.eclipse.linuxtools.rpm.core.RPMCorePlugin
+Bundle-Localization: plugin
+Bundle-Vendor: Eclipse.org
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-Classpath: RPMCore.jar
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.ui
+Export-Package: 
+ org.eclipse.linuxtools.rpm.core,
+ org.eclipse.linuxtools.rpm.core.internal;x-internal:=true,
+ org.eclipse.linuxtools.rpm.core.utils,
+ org.eclipse.linuxtools.rpm.core.utils.internal;x-internal:=true
