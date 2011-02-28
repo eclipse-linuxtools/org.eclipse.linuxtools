@@ -37,7 +37,7 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
      * Default constructor
      */
     public TmfCoalescedDataRequest(Class<T> dataType) {
-        this(dataType, 0, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+        this(dataType, 0, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.FOREGROUND);
     }
 
     public TmfCoalescedDataRequest(Class<T> dataType, ExecutionType execType) {
@@ -48,7 +48,7 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
      * @param nbRequested
      */
     public TmfCoalescedDataRequest(Class<T> dataType, int index) {
-        this(dataType, index, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+        this(dataType, index, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.FOREGROUND);
     }
 
     public TmfCoalescedDataRequest(Class<T> dataType, int index, ExecutionType execType) {
@@ -60,7 +60,7 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
      * @param nbRequested
      */
     public TmfCoalescedDataRequest(Class<T> dataType, int index, int nbRequested) {
-        this(dataType, index, nbRequested, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+        this(dataType, index, nbRequested, DEFAULT_BLOCK_SIZE, ExecutionType.FOREGROUND);
     }
 
     public TmfCoalescedDataRequest(Class<T> dataType, int index, int nbRequested, ExecutionType execType) {
@@ -73,7 +73,7 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
      * @param blockSize
      */
     public TmfCoalescedDataRequest(Class<T> dataType, int index, int nbRequested, int blockSize) {
-        super(dataType, index, nbRequested, blockSize, ExecutionType.SHORT);
+        super(dataType, index, nbRequested, blockSize, ExecutionType.FOREGROUND);
     }
 
     public TmfCoalescedDataRequest(Class<T> dataType, int index, int nbRequested, int blockSize, ExecutionType execType) {
@@ -92,7 +92,6 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
 
 		boolean ok = request.getIndex() == getIndex();
 		ok &= request.getNbRequested()  == getNbRequested();
-		ok &= request.getBlockize()     == getBlockize();
 		ok &= request.getExecType()     == getExecType();
 		
 		return ok;
@@ -103,14 +102,19 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
     // ------------------------------------------------------------------------
 
     @Override
-	public void handleData() {
-    	for (ITmfDataRequest<T> request : fRequests) {
-    		request.setData(getData());
-    		request.handleData();
-    	}
+	public void handleData(T data) {
+		super.handleData(data);
+    	// Don't call sub-requests handleData() unless this is a
+		// TmfCoalescedDataRequest; extended classes should call
+		// the sub-requests handleData().
+		if (getClass() == TmfCoalescedDataRequest.class) {
+	    	for (ITmfDataRequest<T> request : fRequests) {
+	    		request.handleData(data);
+	    	}
+		}
     }
 
-    @Override
+	@Override
     public void done() {
     	for (ITmfDataRequest<T> request : fRequests) {
     		request.done();
@@ -159,7 +163,7 @@ public class TmfCoalescedDataRequest<T extends TmfData> extends TmfDataRequest<T
     @Override
     public String toString() {
 		return "[TmfCoalescedDataRequest(" + getRequestId() + "," + getDataType().getSimpleName() 
-			+ "," + getIndex() + "," + getNbRequested() + "," + getBlockize() + ")]";
+			+ "," + getIndex() + "," + getNbRequested() + ")]";
     }
 
 }

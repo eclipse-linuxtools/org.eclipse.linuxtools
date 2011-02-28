@@ -12,6 +12,8 @@
 
 package org.eclipse.linuxtools.tmf.request;
 
+import java.util.concurrent.CountDownLatch;
+
 import org.eclipse.linuxtools.tmf.Tracer;
 import org.eclipse.linuxtools.tmf.event.TmfData;
 
@@ -90,17 +92,15 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
     private final int      		fRequestId;  	// A unique request ID
     private final int      		fIndex;      	// The index (rank) of the requested event
     private final int      		fNbRequested;	// The number of requested events (ALL_DATA for all)
-    private final int      		fBlockSize;     // The maximum number of events per chunk
-    protected     int      		fNbRead;        // The number of reads so far
+    private       int      		fNbRead;        // The number of reads so far
 
-    private final   Object lock;
+    private CountDownLatch startedLatch   = new CountDownLatch(1);
+    private CountDownLatch completedLatch = new CountDownLatch(1);
     private boolean fRequestRunning   = false;
     private boolean fRequestCompleted = false;
     private boolean fRequestFailed    = false;
     private boolean fRequestCanceled  = false;
 
-    private T[] fData;	// Data object
-    
     // ------------------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------------------
@@ -118,7 +118,7 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param dataType the requested data type
      */
     public TmfDataRequest(Class<T> dataType) {
-        this(dataType, 0, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+        this(dataType, 0, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.FOREGROUND);
     }
 
     public TmfDataRequest(Class<T> dataType, ExecutionType execType) {
@@ -130,7 +130,7 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param nbRequested the number of data items requested
      */
     public TmfDataRequest(Class<T> dataType, int index) {
-        this(dataType, index, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+        this(dataType, index, ALL_DATA, DEFAULT_BLOCK_SIZE, ExecutionType.FOREGROUND);
     }
 
     public TmfDataRequest(Class<T> dataType, int index, ExecutionType execType) {
@@ -143,7 +143,7 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param blockSize the number of data items per block
      */
     public TmfDataRequest(Class<T> dataType, int index, int nbRequested) {
-        this(dataType, index, nbRequested, DEFAULT_BLOCK_SIZE, ExecutionType.SHORT);
+        this(dataType, index, nbRequested, DEFAULT_BLOCK_SIZE, ExecutionType.FOREGROUND);
     }
 
     public TmfDataRequest(Class<T> dataType, int index, int nbRequested, ExecutionType execType) {
@@ -157,7 +157,7 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      * @param blockSize the number of data items per block
      */
     public TmfDataRequest(Class<T> dataType, int index, int nbRequested, int blockSize) {
-        this(dataType, index, nbRequested, blockSize, ExecutionType.SHORT);
+        this(dataType, index, nbRequested, blockSize, ExecutionType.FOREGROUND);
     }
 
     public TmfDataRequest(Class<T> dataType, int index, int nbRequested, int blockSize, ExecutionType execType) {
@@ -165,10 +165,8 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
     	fDataType    = dataType;
     	fIndex       = index;
     	fNbRequested = nbRequested;
-    	fBlockSize   = blockSize;
     	fExecType    = execType;
     	fNbRead      = 0;
-        lock         = new Object();
         if (Tracer.isRequestTraced()) Tracer.traceRequest(this, "created");
     }
 
@@ -210,13 +208,6 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      */
     public int getNbRequested() {
         return fNbRequested;
-    }
-
-    /**
-     * @return the block size
-     */
-    public int getBlockize() {
-        return fBlockSize;
     }
 
     /**
@@ -268,20 +259,9 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
     /** 
      * Sets the data object to specified value. To be called by the 
      * asynchronous method implementor.
+     * 
      * @param data Data value to set.
      */
-    public synchronized void setData(T[] data) {
-    	fNbRead += data.length;
-    	fData = data;
-    }
-    
-    /**
-     * Returns the data value, null if not set.
-     */
-    public synchronized T[] getData() {
-    	return fData;
-    }
-    
     /**
      * Handle a block of incoming data. This method is called every time
      * a block of data becomes available.
@@ -295,9 +275,13 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      *   (or a copy) if some persistence is needed between invocations.
      * - When there is no more data, done() is called. 
      *
-     * @param events - an array of events
+     * @param events - an events
      */
-    public abstract void handleData();
+    public void handleData(T data) {
+        if (data != null) {
+        	fNbRead++;
+        }
+    }
 
     public void handleStarted() {
     }
@@ -337,16 +321,27 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
     }
 
     /**
+     * To suspend the client thread until the request starts (or is
+     * canceled).
+     * 
+     * @throws InterruptedException 
+     */
+    public void waitForStart() throws InterruptedException {
+		while (!fRequestRunning) {
+			startedLatch.await();
+		}
+    }
+
+    /**
      * To suspend the client thread until the request completes (or is
      * canceled).
      * 
      * @throws InterruptedException 
      */
     public void waitForCompletion() throws InterruptedException {
-        synchronized (lock) {
-            while (!fRequestCompleted)
-            	lock.wait();
-        }
+		while (!fRequestCompleted) {
+			completedLatch.await();
+		}
     }
 
     /**
@@ -354,11 +349,11 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      */
     public void start() {
         if (Tracer.isRequestTraced()) Tracer.traceRequest(this, "starting");
-        synchronized(lock) {
+        synchronized(this) {
             fRequestRunning = true;
-            lock.notify();
         }
         handleStarted();
+        startedLatch.countDown();
         if (Tracer.isRequestTraced()) Tracer.traceRequest(this, "started");
     }
 
@@ -367,34 +362,30 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
      */
     public void done() {
         if (Tracer.isRequestTraced()) Tracer.traceRequest(this, "completing");
-        synchronized(lock) {
+        synchronized(this) {
         	if (!fRequestCompleted) {
             	fRequestRunning   = false;
                 fRequestCompleted = true;
             }
-            handleCompleted();
-            lock.notify();
         }
+		handleCompleted();
+		completedLatch.countDown();
     }
 
     /**
      * Called by the request processor upon failure.
      */
-    public void fail() {
-        synchronized(lock) {
-            fRequestFailed = true;
-            done();
-        }
+    public synchronized void fail() {
+        fRequestFailed = true;
+        done();
     }
 
     /**
      * Called by the request processor upon cancellation.
      */
-    public void cancel() {
-        synchronized(lock) {
-            fRequestCanceled = true;
-            done();
-        }
+    public synchronized void cancel() {
+		fRequestCanceled = true;
+		done();
     }
 
     // ------------------------------------------------------------------------
@@ -420,8 +411,7 @@ public abstract class TmfDataRequest<T extends TmfData> implements ITmfDataReque
 
     @Override
     public String toString() {
-		return "[TmfDataRequest(" + fRequestId + "," + fDataType.getSimpleName() 
-			+ "," + fIndex + "," + fNbRequested + "," + fBlockSize + ")]";
+		return "[TmfDataRequest(" + fRequestId + "," + fDataType.getSimpleName() + 
+			"," + fIndex + "," + fNbRequested + ")]";
     }
-
 }

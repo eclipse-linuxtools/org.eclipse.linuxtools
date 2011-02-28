@@ -403,18 +403,20 @@ class AsyncCanvasRedrawer {
 	 * 
 	 */
 	public void asynchronousRedraw() {
-		if (parentCanvas != null) {
+		if ((parentCanvas != null) && (!parentCanvas.isDisposed())) {
 			Display display = parentCanvas.getDisplay();
 			display.asyncExec(new Runnable() {
 				public void run() {
-					parentCanvas.redraw();
+					if ((parentCanvas != null) && (!parentCanvas.isDisposed())) {
+						parentCanvas.redraw();
+					}
 				}
 			});
 		}
 	}
 	
 	/**
-	 * Function to asynchonously notify the parent of the related canvas that the window changed.<p>
+	 * Function to asynchronously notify the parent of the related canvas that the window changed.<p>
 	 * 
 	 * Basically, it just run "notifyParentSelectionWindowChanged()" in asyncExec.
 	 * 
@@ -440,11 +442,13 @@ class AsyncCanvasRedrawer {
 	 * 
 	 */
 	public void asynchronousNotifyParentUpdatedInformation() {
-		if(parentCanvas != null) {
+		if((parentCanvas != null) && (!parentCanvas.isDisposed())) {
 			Display display = parentCanvas.getDisplay();
 			display.asyncExec(new Runnable() {
 				public void run() {
-					parentCanvas.notifyParentUpdatedInformation();
+					if((parentCanvas != null) && (!parentCanvas.isDisposed())) {
+						parentCanvas.notifyParentUpdatedInformation();
+					}
 				}
 			});
 		}

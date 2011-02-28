@@ -53,7 +53,7 @@ public class LttngSyntEventRequest extends TmfEventRequest<LttngSyntheticEvent>
 			int maxBlockSize, IRequestStatusListener listener,
 			TmfTimeRange experimentTimeRange, ITransEventProcessor processor) {
 		
-		this(range, offset, nbEvents, maxBlockSize, listener, experimentTimeRange, processor, ExecutionType.SHORT);
+		this(range, offset, nbEvents, maxBlockSize, listener, experimentTimeRange, processor, ExecutionType.FOREGROUND);
 	}
 
 	/**
@@ -68,7 +68,6 @@ public class LttngSyntEventRequest extends TmfEventRequest<LttngSyntheticEvent>
 			TmfTimeRange experimentTimeRange, ITransEventProcessor processor, ExecutionType execType) {
 		
 		super(LttngSyntheticEvent.class, range, nbEvents, maxBlockSize, execType);
-		//super(0, nbEvents, maxBlockSize);
 		fExperimentTimeRange = experimentTimeRange;
 		addListener(listener);
 
@@ -170,7 +169,8 @@ public class LttngSyntEventRequest extends TmfEventRequest<LttngSyntheticEvent>
 	 * @see org.eclipse.linuxtools.lttng.request.ILttngEventRequest#handleData()
 	 */
 	@Override
-	public void handleData() {
+	public void handleData(LttngSyntheticEvent event) {
+		super.handleData(event);
 	}
 
 

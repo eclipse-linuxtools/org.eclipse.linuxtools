@@ -46,8 +46,6 @@ import org.eclipse.swt.widgets.TableItem;
  */
 public class TmfEventsTable extends TmfComponent {
 
-//    private Shell fShell;
-    
     // ------------------------------------------------------------------------
     // Table data
     // ------------------------------------------------------------------------
@@ -144,17 +142,23 @@ public class TmfEventsTable extends TmfComponent {
                     return;
                 }
 
+                fCacheStartIndex = index;
+                fCacheEndIndex = index;
+
                 TmfDataRequest<TmfEvent> request = new TmfDataRequest<TmfEvent>(TmfEvent.class, index, fCacheSize) {
-                    @Override
-                    public void handleData() {
-                        TmfEvent[] tmpEvent = getData();
-                        if ((tmpEvent != null) && (tmpEvent.length > 0)) {
-                            fCache = tmpEvent;
-                            fCacheStartIndex = index;
-                            fCacheEndIndex = index + tmpEvent.length;
+                	private int count = 0;
+
+                	@Override
+                    public void handleData(TmfEvent event) {
+                		super.handleData(event);
+                        if (event != null) {
+                            fCache[count++] = event.clone();
+                            fCacheEndIndex++;
                         }
                     }
+
                 };
+
                 ((ITmfDataProvider<TmfEvent>) fTrace).sendRequest(request);
                 try {
                     request.waitForCompletion();
@@ -265,7 +269,7 @@ public class TmfEventsTable extends TmfComponent {
     
     @TmfSignalHandler
     public void experimentUpdated(TmfExperimentUpdatedSignal signal) {
-        if (signal.getExperiment() != fTrace) return;
+        if ((signal.getExperiment() != fTrace) || fTable.isDisposed()) return;
         // Perform the refresh on the UI thread
         fTable.getDisplay().asyncExec(new Runnable() {
             public void run() {
@@ -279,7 +283,7 @@ public class TmfEventsTable extends TmfComponent {
     
     @TmfSignalHandler
     public void traceUpdated(TmfTraceUpdatedSignal signal) {
-        if (signal.getTrace() != fTrace) return;
+        if ((signal.getTrace() != fTrace ) || fTable.isDisposed()) return;
         // Perform the refresh on the UI thread
         fTable.getDisplay().asyncExec(new Runnable() {
             public void run() {
@@ -295,7 +299,7 @@ public class TmfEventsTable extends TmfComponent {
     private boolean fRefreshPending = false;
     @TmfSignalHandler
     public synchronized void rangeSynched(TmfRangeSynchSignal signal) {
-        if (!fRefreshPending) {
+        if (!fRefreshPending && !fTable.isDisposed()) {
             // Perform the refresh on the UI thread
             fRefreshPending = true;
             fTable.getDisplay().asyncExec(new Runnable() {
@@ -311,7 +315,7 @@ public class TmfEventsTable extends TmfComponent {
     
     @TmfSignalHandler
     public void currentTimeUpdated(final TmfTimeSynchSignal signal) {
-        if (signal.getSource() != fTable && fTrace != null) {
+        if (signal.getSource() != fTable && fTrace != null && !fTable.isDisposed()) {
             Job job = new Job("seeking...") {
                 @Override
                 protected IStatus run(IProgressMonitor monitor) {
@@ -319,6 +323,9 @@ public class TmfEventsTable extends TmfComponent {
                     // Perform the updates on the UI thread
                     fTable.getDisplay().asyncExec(new Runnable() {
                         public void run() {
+                        	// Return if table is disposed
+                        	if (fTable.isDisposed()) return;
+                        	
                             fTable.setSelection(index);
                             // The timestamp might not correspond to an actual event
                             // and the selection will point to the next experiment event.

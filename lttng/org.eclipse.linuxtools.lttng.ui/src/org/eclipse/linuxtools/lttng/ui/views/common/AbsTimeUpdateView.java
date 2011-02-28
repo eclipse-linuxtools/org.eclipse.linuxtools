@@ -26,7 +26,6 @@ import org.eclipse.linuxtools.lttng.request.RequestStartedSignal;
 import org.eclipse.linuxtools.lttng.state.evProcessor.ITransEventProcessor;
 import org.eclipse.linuxtools.lttng.ui.TraceDebug;
 import org.eclipse.linuxtools.lttng.ui.model.trange.ItemContainer;
-import org.eclipse.linuxtools.tmf.event.TmfEvent;
 import org.eclipse.linuxtools.tmf.event.TmfTimeRange;
 import org.eclipse.linuxtools.tmf.event.TmfTimestamp;
 import org.eclipse.linuxtools.tmf.experiment.TmfExperiment;
@@ -57,22 +56,18 @@ import org.eclipse.swt.widgets.Display;
  * @author alvaro
  * 
  */
-public abstract class AbsTimeUpdateView extends TmfView implements
-		IRequestStatusListener {
+public abstract class AbsTimeUpdateView extends TmfView implements IRequestStatusListener {
 
 	// ========================================================================
 	// Data
 	// ========================================================================
-	/**
-	 * One second in nanoseconds
-	 */
-	private static final long INITIAL_WINDOW_OFFSET = 1000000000L; /*
-																	 * 1 sec //
-																	 * in ns //
-																	 */
-	// private static final long INITIAL_WINDOW_OFFSET = 100000000L; /* 100 ms
-	// in ns */
-	/**
+
+//	 private static final long INITIAL_WINDOW_OFFSET = (1L * 1    * 1000 * 1000); // .001sec
+//	 private static final long INITIAL_WINDOW_OFFSET = (1L * 10   * 1000 * 1000); // .01sec
+	 private static final long INITIAL_WINDOW_OFFSET = (1L * 100  * 1000 * 1000); // .1sec
+//	 private static final long INITIAL_WINDOW_OFFSET = (1L * 1000 * 1000 * 1000); // 1sec
+
+	 /**
 	 * Number of events before a GUI refresh
 	 */
 	private static final Long INPUT_CHANGED_REFRESH = 3000L;
@@ -206,7 +201,7 @@ public abstract class AbsTimeUpdateView extends TmfView implements
 				}
 
 				// Clearing of process data is configurable
-				dataRequest(trange, experiment.getTimeRange(), clearingData, ExecutionType.SHORT);
+				dataRequest(trange, experiment.getTimeRange(), clearingData, ExecutionType.FOREGROUND);
 			}
 		}
 	}
@@ -373,26 +368,30 @@ public abstract class AbsTimeUpdateView extends TmfView implements
 			 * org.eclipse.linuxtools.lttng.request.LttngSyntEventRequest#handleData
 			 * ()
 			 */
-//			int handleDataCount = 0;
-//			int handleDataValidCount = 0;
+////			int handleDataCount = 0;
+////			int handleDataValidCount = 0;
+//			@Override
+//			public void handleData() {
+//				LttngSyntheticEvent[] result = getData();
+//	
+//				TmfEvent evt = (result.length > 0) ? result[0] : null;
+////				handleDataCount++;
+
 			@Override
-			public void handleData() {
-				LttngSyntheticEvent[] result = getData();
-	
-				TmfEvent evt = (result.length > 0) ? result[0] : null;
-//				handleDataCount++;
-				if (evt != null) {
+			public void handleData(LttngSyntheticEvent event) {
+				super.handleData(event);
+				if (event != null) {
 //					handleDataValidCount++;
-					LttngSyntheticEvent synEvent = (LttngSyntheticEvent) evt;
+					LttngSyntheticEvent synEvent = (LttngSyntheticEvent) event;
 					// process event
 					SequenceInd indicator = synEvent.getSynType();
 					if (indicator == SequenceInd.BEFORE
 							|| indicator == SequenceInd.AFTER) {
-						processor.process(evt, synEvent.getTraceModel());
+						processor.process(event, synEvent.getTraceModel());
 					} else if (indicator == SequenceInd.STARTREQ) {
 						handleRequestStarted();
 					} else if (indicator == SequenceInd.ENDREQ) {
-						processor.process(evt, synEvent.getTraceModel());
+						processor.process(event, synEvent.getTraceModel());
 						// handleCompleted();
 					}
 	
@@ -403,7 +402,7 @@ public abstract class AbsTimeUpdateView extends TmfView implements
 							modelInputChanged(this, false);
 	
 							if (TraceDebug.isDEBUG()) {
-								frunningTimeStamp = evt.getTimestamp();
+								frunningTimeStamp = event.getTimestamp();
 								TraceDebug.debug("handled: " + fCount + " sequence: " + synEvent.getSynType());
 							}
 	
@@ -481,13 +480,15 @@ public abstract class AbsTimeUpdateView extends TmfView implements
 	 * @param waitInd
 	 */
 	protected void waitCursor(final boolean waitInd) {
-		if (tsfviewer != null) {
+		if ((tsfviewer != null) && (!tsfviewer.getControl().isDisposed())) {
 			Display display = tsfviewer.getControl().getDisplay();
 
 			// Perform the updates on the UI thread
 			display.asyncExec(new Runnable() {
 				public void run() {
-					tsfviewer.waitCursor(waitInd);
+					if ((tsfviewer != null) && (!tsfviewer.getControl().isDisposed())) {
+						tsfviewer.waitCursor(waitInd);
+					}
 				}
 			});
 		}
@@ -597,14 +598,16 @@ public abstract class AbsTimeUpdateView extends TmfView implements
 		if (complete) {
 			// reselect to original time
 			ParamsUpdater paramUpdater = getParamsUpdater();
-			if (paramUpdater != null && tsfviewer != null) {
+			if ((paramUpdater != null) && (tsfviewer != null) && (!tsfviewer.getControl().isDisposed())) {
 				final Long selTime = paramUpdater.getSelectedTime();
 				if (selTime != null) {
 					TraceDebug.debug("View: " + getName() + "\n\t\tRestoring the selected time to: " + selTime);
 					Display display = tsfviewer.getControl().getDisplay();
 					display.asyncExec(new Runnable() {
 						public void run() {
-							tsfviewer.setSelectedTime(selTime, false, this);
+							if ((tsfviewer != null) && (!tsfviewer.getControl().isDisposed())) {
+								tsfviewer.setSelectedTime(selTime, false, this);
+							}
 						}
 					});
 				}

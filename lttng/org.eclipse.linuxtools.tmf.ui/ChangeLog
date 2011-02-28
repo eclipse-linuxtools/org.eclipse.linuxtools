@@ -1,3 +1,20 @@
+2010-10-15  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/ui/viewers/events/TmfEventsTable.java: Small cleanup 
+
+2010-10-13  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/ui/viewers/events/TmfEventsTable.java: Added checks for disposed widget
+	* src/org/eclipse/linuxtools/tmf/ui/viewers/events/TmfEventsTable.java: Fixed comments
+
+2010-09-17  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/ui/viewers/events/TmfEventsTable.java: Adjusted to new handleData() API   
+
+2010-09-12  francois  <francois@sushi>
+
+	* src/org/eclipse/linuxtools/tmf/ui/widgets/TmfVirtualTable.java (handleTableKeyEvent): Fixed table scrolling issues
+
 2010-07-28  Francois Chouinard  <fchouinard@gmail.com>
 
 	* src/org/eclipse/linuxtools/tmf/ui/widgets/TMFTable.java: Removed.

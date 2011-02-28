@@ -493,7 +493,7 @@ public class StatisticsView extends AbsTimeUpdateView {
 	 */
 	@Override
 	protected void waitCursor(final boolean waitInd) {
-		if (treeViewer == null) {
+		if ((treeViewer == null) || (treeViewer.getTree().isDisposed())) {
 			return;
 		}
 
@@ -505,11 +505,13 @@ public class StatisticsView extends AbsTimeUpdateView {
 		// Perform the updates on the UI thread
 		display.asyncExec(new Runnable() {
 			public void run() {
-				Cursor cursor = null; /* indicates default */
-				if (waitInd) {
-					cursor = fwaitCursor;
+				if ((treeViewer != null) && (!treeViewer.getTree().isDisposed())) {
+					Cursor cursor = null; /* indicates default */
+					if (waitInd) {
+						cursor = fwaitCursor;
+					}
+					treeViewer.getControl().setCursor(cursor);
 				}
-				treeViewer.getControl().setCursor(cursor);
 			}
 		});
 	}
@@ -517,12 +519,13 @@ public class StatisticsView extends AbsTimeUpdateView {
 	@Override
 	public void ModelUpdatePrep(TmfTimeRange timeRange, boolean clearAllData) {
 		Object input = treeViewer.getInput();
-		if (input != null && input instanceof StatisticsTreeNode) {
+		if ((input != null) && (input instanceof StatisticsTreeNode) && (!treeViewer.getTree().isDisposed())) {
 			((StatisticsTreeNode) input).reset();
 			treeViewer.getTree().getDisplay().asyncExec(new Runnable() {
 				// @Override
 				public void run() {
-					treeViewer.refresh();
+					if (!treeViewer.getTree().isDisposed())
+						treeViewer.refresh();
 				}
 			});
 		}
@@ -530,13 +533,17 @@ public class StatisticsView extends AbsTimeUpdateView {
 
 	@Override
 	public void modelInputChanged(ILttngSyntEventRequest request, boolean complete) {
+		// Ignore update if disposed
+		if (treeViewer.getTree().isDisposed()) return;
+		
 		treeViewer.getTree().getDisplay().asyncExec(new Runnable() {
 			// @Override
 			public void run() {
-				treeViewer.refresh();
+				if (!treeViewer.getTree().isDisposed())
+					treeViewer.refresh();
 			}
 		});
-	}
+		}
 
 	/*
 	 * (non-Javadoc)
@@ -617,7 +624,7 @@ public class StatisticsView extends AbsTimeUpdateView {
 			TmfTimeRange experimentTRange = experiment.getTimeRange();
 
 			// send the initial request, to start filling up model
-			dataRequest(experimentTRange, experimentTRange, true, ExecutionType.LONG);
+			dataRequest(experimentTRange, experimentTRange, true, ExecutionType.BACKGROUND);
 		} else {
 			TraceDebug.debug("No selected experiment information available");
 		}

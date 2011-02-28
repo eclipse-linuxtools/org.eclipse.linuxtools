@@ -12,13 +12,12 @@
 
 package org.eclipse.linuxtools.tmf.event;
 
-
 /**
  * <b><u>TmfEventContent</u></b>
  * <p>
  * The event content.
  */
-public class TmfEventContent {
+public class TmfEventContent implements Cloneable {
 
     // ------------------------------------------------------------------------
     // Attributes
@@ -125,6 +124,13 @@ public class TmfEventContent {
     // ------------------------------------------------------------------------
 
 	/**
+	 * @param event
+	 */
+	public void setEvent(TmfEvent event) {
+		fParentEvent = event;
+	}
+
+	/**
 	 * Parse the content into fields. By default, a single field (the raw
 	 * content) is returned. 
 	 * Should be overridden.
@@ -166,4 +172,18 @@ public class TmfEventContent {
     	return result.toString();
     }
 
+	@Override
+	public TmfEventContent clone() {
+		TmfEventContent clone = null;
+		try {
+			clone = (TmfEventContent) super.clone();
+			clone.fParentEvent = fParentEvent;
+			clone.fRawContent = null;
+			clone.fFields = null;
+		}
+		catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return clone;
+	}
 }

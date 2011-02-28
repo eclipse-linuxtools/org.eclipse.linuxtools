@@ -1,3 +1,53 @@
+2010-10-15  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/event/LttngEvent.java: Implement cloning
+	* src/org/eclipse/linuxtools/lttng/event/LttngEventContent.java: Implement cloning 
+	* src/org/eclipse/linuxtools/lttng/event/LttngEventField.java: Implement cloning
+	* src/org/eclipse/linuxtools/lttng/event/LttngEventReference.java (clone): Implement cloning
+	* src/org/eclipse/linuxtools/lttng/event/LttngEventSource.java (clone): Implement cloning
+	* src/org/eclipse/linuxtools/lttng/event/LttngEventType.java (clone): Implement cloning
+	* src/org/eclipse/linuxtools/lttng/event/LttngTimestamp.java (clone): Implement cloning
+	* src/org/eclipse/linuxtools/lttng/state/experiment/StateExperimentManager.java: (StateExperimentManager): Counter fix 
+	(buildCheckPoints):  Proper timestamp cloning
+	(.handleData): Per-trace event counter (bug...)
+	* src/org/eclipse/linuxtools/lttng/trace/LTTngTrace.java (currentLttngEvent): Make the event unique (single)
+	(LTTngTrace): Fix the trace time range to start at first event
+
+2010-10-14  Francois Chouinard  <fchouinard@gmail.com>
+
+    * src/org/eclipse/linuxtools/lttng/control/LttngSyntheticEventProvider.java: Handle processing through a coalesced request
+    * src/org/eclipse/linuxtools/lttng/request/LttngBaseEventRequest.java: Removed references to trace and trace model
+    * src/org/eclipse/linuxtools/lttng/state/experiment/StateExperimentManager.java: Replaced map key from trace path (String) to actual trace (ITmfTrace)
+
+2010-10-13  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/control/LttngSyntheticEventProvider.java: Removed unecessary ACK event
+	* src/org/eclipse/linuxtools/lttng/event/LttngSyntheticEvent.java: Removed unecessary ACK event
+	* src/org/eclipse/linuxtools/lttng/state/model/LttngExecutionState.java (toString): Added 
+	* src/org/eclipse/linuxtools/lttng/state/model/LttngProcessState.java (toString): Added
+	* src/org/eclipse/linuxtools/lttng/trace/LTTngTrace.java: Cleanup comment 
+
+2010-09-17  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/control/LttngSyntheticEventProvider.java: Adjusted to new handleData() API
+	* src/org/eclipse/linuxtools/lttng/event/LttngEvent.java: Adjusted to new handleData() API
+	* src/org/eclipse/linuxtools/lttng/request/LttngSyntEventRequest.java: Adjusted to new handleData() API
+	* src/org/eclipse/linuxtools/lttng/state/experiment/StateExperimentManager.java: Adjusted to new handleData() API
+	* src/org/eclipse/linuxtools/lttng/state/trace/StateTraceManager.java: Adjusted to new handleData() API
+	* src/org/eclipse/linuxtools/lttng/trace/LTTngTrace.java: Adjusted to new handleData() API
+
+2010-09-15  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/trace/LTTngExperiment.java: ExecutionType update
+	* src/org/eclipse/linuxtools/lttng/state/experiment/StateExperimentManager.java: ExecutionType update
+	* src/org/eclipse/linuxtools/lttng/request/LttngSyntEventRequest.java: ExecutionType update
+	* src/org/eclipse/linuxtools/lttng/control/LttngSyntheticEventProvider.java: ExecutionType update
+
+2010-09-09  Francois Chouinard  <fchouinard@gmail.com>
+
+    * src/org/eclipse/linuxtools/lttng/trace/LTTngTrace.java: Fixed a ranking problem on a seek()
+    * src/org/eclipse/linuxtools/lttng/trace/LTTngExperiment.java: New class
+
 2010-07-29  Francois Chouinard  <fchouinard@gmail.com>
 
     * src/org/eclipse/linuxtools/lttng/state/evProcessor/state/StateUpdateHandlers.java: Fixed state of running process

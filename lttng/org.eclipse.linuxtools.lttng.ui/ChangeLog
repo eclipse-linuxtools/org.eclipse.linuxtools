@@ -1,3 +1,62 @@
+2010-10-15  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramCanvas.java (asynchronousNotifyParentUpdatedInformation): Fixed typo
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramCanvasControlListener.java (controlMoved): Check for NPE
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramView.java: Cosmetic adjustemnts
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/TimeTextGroup.java: Cosmetic adjustemnts
+
+2010-10-13  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/common/AbsTimeUpdateView.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/controlflow/ControlFlowView.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramCanvas.java : Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/ParentHistogramCanvas.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/TimeTextGroup.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/project/ProjectView.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/resources/ResourcesView.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/statistics/StatisticsView.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/timeframe/SpinnerGroup.java: Added checks for disposed widget  
+	* src/org/eclipse/linuxtools/lttng/ui/views/timeframe/TimeFrameView.java: Added checks for disposed widget  
+	* .options: TraceDebug options file
+	* src/org/eclipse/linuxtools/lttng/ui/LTTngUiPlugin.java (stop): Closes the trace log file 
+	* src/org/eclipse/linuxtools/lttng/ui/model/trange/TimeRangeComponent.java (toString): Added
+	* src/org/eclipse/linuxtools/lttng/ui/model/trange/TimeRangeComposite.java (toString): Added
+	* src/org/eclipse/linuxtools/lttng/ui/model/trange/TimeRangeEventProcess.java (toString): Added
+	* src/org/eclipse/linuxtools/lttng/ui/model/trange/TimeRangeEventResource.java (toString): Added
+	* src/org/eclipse/linuxtools/lttng/ui/TraceDebug.java: Support for new traces (CFV/RV) 
+	* src/org/eclipse/linuxtools/lttng/ui/views/common/AbsTimeUpdateView.java: Fixed a few constants 
+	* src/org/eclipse/linuxtools/lttng/ui/views/common/AbsTRangeUpdate.java (getPixelsPerNs): Adjusted field type 
+	* src/org/eclipse/linuxtools/lttng/ui/views/controlflow/evProcessor/AbsFlowTRangeUpdate.java: Added debug tracing 
+	* src/org/eclipse/linuxtools/lttng/ui/views/resources/evProcessor/AbsResourcesTRangeUpdate.java: Added debug tracing 
+	* src/org/eclipse/linuxtools/lttng/ui/views/resources/ResourcesView.java: Use default pixels/ns
+
+2010-10-06  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/common/AbsTimeUpdateView.java: Fixed initial time window size (0.1s)
+
+2010-09-17  Francois Chouinard  <fchouinard@gmail.com>
+
+	* plugin.xml: Fixed perspective ID
+	* src/org/eclipse/linuxtools/lttng/ui/views/common/AbsTimeUpdateView.java: Adjusted to new handleData() API 
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramRequest.java: Adjusted to new handleData() API
+	* src/org/eclipse/linuxtools/lttng/ui/views/PerspectiveFactory.java: Fixed perspective ID
+
+2010-09-15  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/statistics/StatisticsView.java: ExecutionType update
+	* src/org/eclipse/linuxtools/lttng/ui/views/resources/ResourcesView.java: ExecutionType update
+	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/HistogramView.java: ExecutionType update
+	* src/org/eclipse/linuxtools/lttng/ui/views/controlflow/ControlFlowView.java: ExecutionType update
+	* src/org/eclipse/linuxtools/lttng/ui/views/common/AbsTimeUpdateView.java: ExecutionType update
+
+2010-09-12  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/events/EventsView.java: Fixed the events cache size
+
+2010-09-09  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/lttng/ui/views/project/ProjectView.java: Hook to LTTngExperiment
+
 2010-07-30  Francois Chouinard  <fchouinard@gmail.com>
 
 	* src/org/eclipse/linuxtools/lttng/ui/views/histogram/ChildrenHistogramCanvas.java: 

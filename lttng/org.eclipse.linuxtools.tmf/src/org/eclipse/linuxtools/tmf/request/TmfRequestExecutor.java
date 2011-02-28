@@ -35,7 +35,7 @@ public class TmfRequestExecutor implements Executor {
 		public int compare(TmfThread o1, TmfThread o2) {
 			if (o1.getExecType() == o2.getExecType())
 				return 0;
-			if (o1.getExecType() == ExecutionType.SHORT)
+			if (o1.getExecType() == ExecutionType.BACKGROUND)
 				return 1;
 			return -1;
 		}
@@ -67,7 +67,7 @@ public class TmfRequestExecutor implements Executor {
 	/**
 	 * @return the shutdown state (i.e. if it is accepting new requests)
 	 */
-	public boolean isShutdown() {
+	public synchronized boolean isShutdown() {
 		return fExecutor.isShutdown();
 	}
 	
@@ -115,7 +115,8 @@ public class TmfRequestExecutor implements Executor {
 	 */
 	protected synchronized void scheduleNext() {
 		if ((fCurrentRequest = fRequestQueue.poll()) != null) {
-			fExecutor.execute(fCurrentRequest);
+			if (!fExecutor.isShutdown())
+				fExecutor.execute(fCurrentRequest);
 		}
 	}
 
