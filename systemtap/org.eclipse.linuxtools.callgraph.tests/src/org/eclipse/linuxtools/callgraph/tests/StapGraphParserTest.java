@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.callgraph.tests;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import junit.framework.TestCase;
-import org.eclipse.core.runtime.NullProgressMonitor;
+
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
 
 public class StapGraphParserTest extends TestCase {
@@ -21,21 +22,31 @@ public class StapGraphParserTest extends TestCase {
 	//RENDER THE GRAPH
 	public  static StapGraphParser initializeGraph(String filePath){
 		StapGraphParser grph = new StapGraphParser();
-		grph.setFile(filePath);
-		grph.testRun(new NullProgressMonitor());
+		grph.setSourcePath(filePath);
+		grph.nonRealTimeParsing();
 		return grph;
 	}
 	
 	public static void assertSanity(StapGraphParser grph){
+		/*if (grph.serialMap.size() == 0 || grph.timeMap.size() == 0 
+				|| grph.outNeighbours.size() == 0 || grph.countMap.size() == 0
+				|| grph.aggregateTimeMap.size() == 0){
+			fail("Parsing Error : One or more data structures were empty.");
+		}*/
+		
 		//SAME NUMBER OF NODES ENTRIES
 		assertEquals(grph.serialMap.size(),grph.timeMap.size());
-		assertEquals(grph.serialMap.size(),grph.outNeighbours.size());
+		int nsize = 0;
+		for (int key : grph.neighbourMaps.keySet())
+			if (grph.neighbourMaps.get(key)!= null)
+				nsize+=grph.neighbourMaps.get(key).size();
+		assertEquals(grph.serialMap.size(),nsize);
 		//ALL UNIQUE FUNCTIONS HAVE A TIME
 		//ALL FUNCTIONS HAVE A CUMULATIVE TIME
 		for (int val : grph.serialMap.keySet()){
 			String fname = grph.serialMap.get(val);
 			assertTrue(grph.timeMap.get(val) != null);
-			assertTrue(grph.cumulativeTimeMap.get(fname) != null);
+			assertTrue(grph.aggregateTimeMap.get(fname) != null);
 		}
 	}
 	
@@ -45,7 +56,7 @@ public class StapGraphParserTest extends TestCase {
 		for (int val : grph.serialMap.keySet()){
 			String fname = grph.serialMap.get(val);
 			assertTrue(grph.totalTime >= grph.timeMap.get(val));
-			assertTrue(grph.totalTime >= grph.cumulativeTimeMap.get(fname));
+			assertTrue(grph.totalTime >= grph.aggregateTimeMap.get(fname));
 		}
 	}
 	
@@ -55,17 +66,21 @@ public class StapGraphParserTest extends TestCase {
 		//ALL NODES MUST HAVE A PARENT EXCEPT THE ROOT
 		for (int key : grph.serialMap.keySet()){
 			hasParent = false;
-			for (ArrayList<Integer> list : grph.outNeighbours.values()){
-				if (list.contains(key)){
-					hasParent = true;
-					break;
+			for (int k:grph.neighbourMaps.keySet()) {
+				HashMap<Integer, ArrayList<Integer>> outNeighbours = grph.neighbourMaps.get(k);
+				if (outNeighbours != null && outNeighbours.size() > 0)
+				for (ArrayList<Integer> list : outNeighbours.values()){
+					if (list.contains(key)){
+						hasParent = true;
+						break;
+					}
 				}
-			}
-			
-			if (!hasParent){
-				for (int other : grph.serialMap.keySet()){
-					if (key > other){
-						fail(key + " " + grph.serialMap.get(key) + " had no parent");						
+				
+				if (!hasParent){
+					for (int other : grph.serialMap.keySet()){
+						if (key > other){
+							fail(key + " " + grph.serialMap.get(key) + " had no parent");						
+						}
 					}
 				}
 			}
@@ -74,8 +89,7 @@ public class StapGraphParserTest extends TestCase {
 	}
 	
 	
-	File tmpfile = new File("");
-	public final String currentPath = tmpfile.getAbsolutePath();
+	public final String currentPath = Activator.PLUGIN_LOCATION;
 	public String graphDataPath= "";
 	
 	//FOR TESTING THE GRAPH PARSING
@@ -87,20 +101,34 @@ public class StapGraphParserTest extends TestCase {
 	}
 	
 
+	public void testJustMain(){
+		graphDataPath = currentPath+"main.graph";
+		executeGraphTests();	
+	}
+	
 	public void testCallGraphRunBasic(){
-		graphDataPath = currentPath+"/basic.graph";
+		graphDataPath = currentPath+"basic.graph";
 		executeGraphTests();
 	}
 	
 	public void testCallGraphRunRecursive(){
-		graphDataPath = currentPath+"/catlan.graph";
+		graphDataPath = currentPath+"catlan.graph";
 		executeGraphTests();
 	}
 	
 	public void testManyFuncs(){
-		graphDataPath = currentPath+"/eag.graph";
+		graphDataPath = currentPath+"eag.graph";
 		executeGraphTests();
 	}
 	
+	public void testComprehensive(){
+		graphDataPath = currentPath+"comprehensive.graph";
+		executeGraphTests();
+	}
+	
+	public void testHeavy(){
+		graphDataPath = currentPath+"heavy.graph";
+		executeGraphTests();
+	}
 	
 }

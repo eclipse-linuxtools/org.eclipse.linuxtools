@@ -1,6 +1,8 @@
 global serial
 global startTime
 global finalTime
+global currentDepth
+
 
 probe process(@1).function("*"){
 	callFunction(probefunc())
@@ -10,34 +12,31 @@ probe process(@1).function("*").return{
 	returnFunction(probefunc())
 }
 
-probe begin {
-	printf("PROBE_BEGIN\n");
-	printf("testing\n");
-}
 
 function callFunction(probefunc) {
 	if (startTime == 0) {
 		startTime = gettimeofday_ns()
-		printf("<%s,,%d,,%d;", probefunc, serial, startTime)
+		printf("<%s,,%d,,%d;\n", probefunc, serial, startTime)
 	} else
-	    printf("<%s,,%d,,%d;", probefunc, serial, gettimeofday_ns())
+	    printf("<%s,,%d,,%d;\n", probefunc, serial, gettimeofday_ns())
+	currentDepth++
 	serial++
 }
 
-
 function returnFunction(probefunc) {
 	finalTime = gettimeofday_ns()
-	printf(">%s,,%d;", probefunc, finalTime)
+	printf(">%s,,%d;\n", probefunc, finalTime)
+	currentDepth--
 }
 
-probe syscall.exit {
-	if (pid() == target()) {
-		finalTime = gettimeofday_ns()
-	}
-}
 
 probe end {
-	printf("\n%d",finalTime);
-	printf("\n%d",finalTime - startTime);
+	printf("-%d\n",finalTime);
+	printf("+%d\n",finalTime - startTime);
     exit()
+}
+probe syscall.exit {
+if (pid() == target()) {
+finalTime = gettimeofday_ns()
+}
 }

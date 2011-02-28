@@ -16,20 +16,13 @@ import java.util.ArrayList;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.linuxtools.callgraph.CallGraphConstants;
 import org.eclipse.linuxtools.callgraph.CallgraphView;
-import org.eclipse.linuxtools.callgraph.GraphUIJob;
 import org.eclipse.linuxtools.callgraph.StapGraphParser;
-import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.linuxtools.callgraph.core.StapUIJob;
+import org.eclipse.linuxtools.callgraph.core.ViewFactory;
 
 public class SystemTapGraphTest extends TestCase {	
 	
@@ -41,40 +34,19 @@ public class SystemTapGraphTest extends TestCase {
 		launch.launch(bin, mode);
 		checkScript(launch);
 	}*/
-	private  ArrayList<Button> list = new ArrayList<Button>();
 	private boolean manual = false;
-	
-	private class ButtonSelectionListener implements SelectionListener {
-		private Action action;
-
-		public ButtonSelectionListener(Action action) {
-			this.action = action;
-		}
-		
-		@Override
-		public void widgetDefaultSelected(SelectionEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			action.run();
-		}
-		
-	}
 	
 	public void testGraphLoading() throws InterruptedException {
 
 		StapGraphParser parse = new StapGraphParser();
-		parse.setFile(Activator.PLUGIN_LOCATION+"eag.graph");
+		parse.setSourcePath(Activator.PLUGIN_LOCATION+"eag.graph");
 //		parse.setTestMode(true);
-		parse.testRun(new NullProgressMonitor());
+		assertEquals(Status.OK_STATUS, parse.testRun(new NullProgressMonitor(), true));
 		
-		CallgraphView.forceDisplay();
 		
-		GraphUIJob j = new GraphUIJob("Test Graph UI Job", parse);
+		StapUIJob j = new StapUIJob("Test Graph UI Job", parse, CallGraphConstants.viewID);
 		j.runInUIThread(new NullProgressMonitor());
+		CallgraphView cView = (CallgraphView)  ViewFactory.createView(CallGraphConstants.viewID);
 		 
 		if (!manual) {
 			ArrayList<String> tasks = new ArrayList<String>();
@@ -107,44 +79,44 @@ public class SystemTapGraphTest extends TestCase {
 				case 1:
 					break;
 				case 2:
-					act = CallgraphView.getView_refresh();
+					act = cView.getView_refresh();
 					break;
 				case 3:
-					act = CallgraphView.getView_treeview();
+					act = cView.getView_treeview();
 					break;
 				case 4:
-					act = CallgraphView.getView_aggregateview();
+					act = cView.getView_aggregateview();
 					break;
 				case 5:
-					act = CallgraphView.getView_boxview();
+					act = cView.getView_levelview();
 					break;
 				case 6:
-					act = CallgraphView.getAnimation_fast();
+					act = cView.getAnimation_fast();
 					break;
 				case 7:
 				case 8:
-					act = CallgraphView.getMode_collapsednodes();
+					act = cView.getMode_collapsednodes();
 					break;
 				case 9:
-					act = CallgraphView.getView_radialview();
+					act = cView.getView_radialview();
 					break;
 				case 10:
-					act = CallgraphView.getMode_collapsednodes();
+					act = cView.getMode_collapsednodes();
 					break;
 				case 14:
 					String tempLocation = Activator.PLUGIN_LOCATION+"eag.graph2"; 
 					File temp = new File(tempLocation);
 					temp.delete();
-					parse.saveData(tempLocation);
+					cView.saveData(tempLocation);
 					temp.delete();
 					break;
 				case 15:
 					StapGraphParser new_parser = new StapGraphParser();
-					new_parser.setFile(Activator.PLUGIN_LOCATION+"eag.graph");
-					new_parser.testRun(new NullProgressMonitor());	
+					new_parser.setSourcePath(Activator.PLUGIN_LOCATION+"eag.graph");
+					new_parser.testRun(new NullProgressMonitor(), true);	
 					break;
 				case 16:
-					CallgraphView.maximizeIfUnmaximized();
+					cView.maximizeIfUnmaximized();
 					break;
 				default:
 					break;
@@ -156,105 +128,105 @@ public class SystemTapGraphTest extends TestCase {
 			return;
 		}
 			
-		//TODO: Figure out how to make the graph display at the same time as the dialog
-		SystemTapUIErrorMessages testRadial = new SystemTapUIErrorMessages("Test graph", "Opening graph", 
-				"Testing Graph. Press OK, then go through the list of tasks.");
-		testRadial.schedule();
-
-		testRadial.cancel();
-
-		ArrayList<String> tasks = new ArrayList<String>();
-		
-
-		tasks.add("(Manually) Maximize CallgraphView");
-		tasks.add("Refresh");
-		tasks.add("Tree View");
-		tasks.add("Aggregate View");
-		tasks.add("Box View");
-		tasks.add("Animation->Fast");
-		tasks.add("Collapse");
-		tasks.add("Uncollapse");
-		tasks.add("Radial View");
-		tasks.add("Collapse.");
-		tasks.add("(Manually) Double-click node with no children in TreeViewer");
-		tasks.add("(Manually) Expand an arrow in the TreeViewer");
-		tasks.add("(Manually) Collapse an arrow in the TreeViewer");
-		tasks.add("Save file");
-		tasks.add("Reload file");
-		tasks.add("Check Version");
-		
-		
-		final Shell sh = new Shell(SWT.SHELL_TRIM);
-		sh.setSize(450,tasks.size()*38);
-		sh.setText("Tasklist - press Finished when finished.");
-		sh.setLayout(new GridLayout(1, false));
-		sh.setAlpha(150);
-		
-		ScrolledComposite testComp = new ScrolledComposite(sh, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-	
-		
-		Composite buttons = new Composite(testComp, SWT.NONE);
-		testComp.setContent(buttons);
-		buttons.setLayout(new GridLayout(1, false));
-	    testComp.setExpandHorizontal(true);
-	    testComp.setExpandVertical(true);
-
-	    int taskNumber = 0;
-		for (String task : tasks) {
-			taskNumber++;
-
-			
-			Button checkBox = new Button(buttons, SWT.CHECK);
-			list.add(checkBox);
-			checkBox.setText(task);
-			Action act = null;
-			switch (taskNumber) {
-			case 1:
-				break;
-			case 2:
-				act = CallgraphView.getView_refresh();
-				break;
-			case 3:
-				act = CallgraphView.getView_treeview();
-				break;
-			case 4:
-				act = CallgraphView.getView_aggregateview();
-				break;
-			case 5:
-				act = CallgraphView.getView_boxview();
-				break;
-			case 6:
-				act = CallgraphView.getAnimation_fast();
-				break;
-			case 7:
-			case 8:
-				act = CallgraphView.getMode_collapsednodes();
-				break;
-			case 9:
-				act = CallgraphView.getView_radialview();
-				break;
-			case 10:
-				act = CallgraphView.getMode_collapsednodes();
-				break;
-			case 14:
-				act = CallgraphView.getSave_callgraph();
-				break;
-			case 15:
-				act = CallgraphView.getOpen_callgraph();
-				break;
-			case 16:
-				act = CallgraphView.getHelp_version();
-				break;
-			default:
-				break;
-			}
-			if (act != null) {
-				ButtonSelectionListener bl = new ButtonSelectionListener(act);
-				checkBox.addSelectionListener(bl);
-			}
-			
-			
-		}
+//		//TODO: Figure out how to make the graph display at the same time as the dialog
+//		SystemTapUIErrorMessages testRadial = new SystemTapUIErrorMessages("Test graph", "Opening graph", 
+//				"Testing Graph. Press OK, then go through the list of tasks.");
+//		testRadial.schedule();
+//
+//		testRadial.cancel();
+//
+//		ArrayList<String> tasks = new ArrayList<String>();
+//		
+//
+//		tasks.add("(Manually) Maximize CallgraphView");
+//		tasks.add("Refresh");
+//		tasks.add("Tree View");
+//		tasks.add("Aggregate View");
+//		tasks.add("Box View");
+//		tasks.add("Animation->Fast");
+//		tasks.add("Collapse");
+//		tasks.add("Uncollapse");
+//		tasks.add("Radial View");
+//		tasks.add("Collapse.");
+//		tasks.add("(Manually) Double-click node with no children in TreeViewer");
+//		tasks.add("(Manually) Expand an arrow in the TreeViewer");
+//		tasks.add("(Manually) Collapse an arrow in the TreeViewer");
+//		tasks.add("Save file");
+//		tasks.add("Reload file");
+//		tasks.add("Check Version");
+//		
+//		
+//		final Shell sh = new Shell(SWT.SHELL_TRIM);
+//		sh.setSize(450,tasks.size()*38);
+//		sh.setText("Tasklist - press Finished when finished.");
+//		sh.setLayout(new GridLayout(1, false));
+//		sh.setAlpha(150);
+//		
+//		ScrolledComposite testComp = new ScrolledComposite(sh, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+//	
+//		
+//		Composite buttons = new Composite(testComp, SWT.NONE);
+//		testComp.setContent(buttons);
+//		buttons.setLayout(new GridLayout(1, false));
+//	    testComp.setExpandHorizontal(true);
+//	    testComp.setExpandVertical(true);
+//
+//	    int taskNumber = 0;
+//		for (String task : tasks) {
+//			taskNumber++;
+//
+//			
+//			Button checkBox = new Button(buttons, SWT.CHECK);
+//			list.add(checkBox);
+//			checkBox.setText(task);
+//			Action act = null;
+//			switch (taskNumber) {
+//			case 1:
+//				break;
+//			case 2:
+//				act = cView.getView_refresh();
+//				break;
+//			case 3:
+//				act = cView.getView_treeview();
+//				break;
+//			case 4:
+//				act = cView.getView_aggregateview();
+//				break;
+//			case 5:
+//				act = cView.getView_levelview();
+//				break;
+//			case 6:
+//				act = cView.getAnimation_fast();
+//				break;
+//			case 7:
+//			case 8:
+//				act = cView.getMode_collapsednodes();
+//				break;
+//			case 9:
+//				act = cView.getView_radialview();
+//				break;
+//			case 10:
+//				act = cView.getMode_collapsednodes();
+//				break;
+//			case 14:
+//				act = cView.getSave_file();
+//				break;
+//			case 15:
+//				act = cView.getOpen_file();
+//				break;
+//			case 16:
+//				act = cView.getHelp_version();
+//				break;
+//			default:
+//				break;
+//			}
+//			if (act != null) {
+//				ButtonSelectionListener bl = new ButtonSelectionListener(act);
+//				checkBox.addSelectionListener(bl);
+//			}
+//			
+//			
+//		}
 		
 //		Button finish = new Button(buttons, SWT.PUSH);
 //		finish.setText("Finish");
@@ -272,20 +244,20 @@ public class SystemTapGraphTest extends TestCase {
 //		});
 //		
 		
-		sh.open();
+//		sh.open();
 		
-		
-		boolean doneTasks =MessageDialog.openConfirm(new Shell(SWT.ON_TOP), "Check Graph", 
-							"Press OK if all "+ tasks.size() + " boxes in the checklist have been checked.\n" +
-									"Hit Cancel if any test fails."); 
-		assertEquals(true, doneTasks);
+//		
+//		boolean doneTasks =MessageDialog.openConfirm(new Shell(SWT.ON_TOP), "Check Graph", 
+//							"Press OK if all "+ tasks.size() + " boxes in the checklist have been checked.\n" +
+//									"Hit Cancel if any test fails."); 
+//		assertEquals(true, doneTasks);
 
-		for (Button b : list) {
-			if (!b.getSelection()) {
-				fail("Task failed: " + b.getText());
-			}
-			assertEquals(true, b.getSelection());
-		}
+//		for (Button b : list) {
+//			if (!b.getSelection()) {
+//				fail("Task failed: " + b.getText());
+//			}
+//			assertEquals(true, b.getSelection());
+//		}
 		
 		
 		
