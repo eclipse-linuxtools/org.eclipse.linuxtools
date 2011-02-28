@@ -6,7 +6,7 @@
 
 	<!-- The property ${eclipse-home} should be passed into this script -->
 	<!-- Set a meaningful default value for when it is not. -->
-	<property name="eclipse-home" value="${basedir}/../../eclipse/" />
+	<property name="eclipse-home" value="${basedir}/../../" />
 
 	<property name="library-file" value="${eclipse-home}/dropins/${subProjectName2}/plugins/org.eclipse.test/library.xml" />
 
