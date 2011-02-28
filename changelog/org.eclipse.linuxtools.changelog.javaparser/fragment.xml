@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<fragment>
+   <extension
+         point="org.eclipse.linuxtools.changelog.core.parserContribution">
+      <parser
+            class="org.eclipse.linuxtools.changelog.parsers.java.JavaParser"
+            editor="CompilationUnitEditor"
+            name="Java Parser">
+      </parser>
+   </extension>
+
+</fragment>
