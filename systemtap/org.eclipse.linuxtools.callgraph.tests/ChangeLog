@@ -1,3 +1,8 @@
+2010-09-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Remove imported packages for zest and draw2d and instead require the
+	appropriate plug-ins that supply them.
+
 2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/tests/MouseListenerTest.java: Remove printline call.

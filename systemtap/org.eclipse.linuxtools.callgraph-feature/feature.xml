@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.callgraph"
       label="%featureName"
-      version="0.0.1.qualifier"
+      version="0.0.2.qualifier"
       provider-name="%featureProvider"
       os="linux">
 
@@ -32,10 +32,10 @@
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.draw2d"/>
-      <import plugin="org.eclipse.zest.layouts"/>
-      <import plugin="org.eclipse.zest.core"/>
       <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.zest.core"/>
+      <import plugin="org.eclipse.zest.layouts"/>
+      <import plugin="org.eclipse.draw2d"/>
    </requires>
 
    <plugin
