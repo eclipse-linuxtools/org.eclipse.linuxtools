@@ -1,6 +1,16 @@
+2010-07-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Update SDK dependency URL for SWTBOT to point to archived version
+	last known to work with Autotools UI tests.
+
+2010-07-29  Francois Chouinard  <fchouinard@gmail.com>
+
+    * build.properties: Update SDK dependency URL for SWTBOT
+    * build.properties: Removed commented out line...
+
 2010-07-02  Andrew Overholt  <overholt@redhat.com>
 
-	* maps/linuxtools.map: Update for 0.6.0 final.
+	* build.properties: Update URLs for final Helios builds of dependencies.
 
 2010-06-14  Andrew Overholt  <overholt@redhat.com>
 
