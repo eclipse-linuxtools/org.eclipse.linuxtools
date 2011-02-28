@@ -49,7 +49,7 @@ public class STJunitUtils {
 		STDataViewersCSVExporter exporter = new STDataViewersCSVExporter(view.getSTViewer());
 		exporter.exportTo(dumpFullFileName, new NullProgressMonitor());
 		// compare with ref
-		compareIgnoreEOL(dumpFullFileName, refFullFileName, true);
+		compareCSVIgnoreEOL(dumpFullFileName, refFullFileName, true);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class STJunitUtils {
 			else {
 				System.out.println(message +  "... successful");
 			}
-			// delete dump only for sucessful tests
+			// delete dump only for successful tests
 			if (equals && deleteDumpFileIfOk)  
 				new File(dumpFile).delete();
 		}catch (FileNotFoundException _) {
@@ -98,13 +98,13 @@ public class STJunitUtils {
 	public static boolean compareIgnoreEOL(String dumpFile, String refFile, boolean deleteDumpFileIfOk) {
 		String message = "Comparing ref file ("+refFile+ ")and dump file (" + 
 		  dumpFile+")";
-		boolean equals = false;
+		boolean equals = false;		
 		try {
 		LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
 		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile));
 			do {
 				String line1 = is1.readLine();
-				String line2 = is2.readLine();
+				String line2 = is2.readLine();				
 				if (line1 == null) {
 					if (line2 == null) {
 						equals = true;
@@ -112,16 +112,76 @@ public class STJunitUtils {
 					break;
 				} else if (line2 == null || !line1.equals(line2)) {
 					break;
-				}
+				}				
 			} while (true);
-
+			
+			if (!equals) {
+ 				junit.framework.Assert.assertEquals(message + ": not correspond ", true, false);
+			}
+			
+			is1.close();
+			is2.close();
+			// delete dump only for successful tests
+			if (equals && deleteDumpFileIfOk) {
+				new File(dumpFile).delete();
+			}
+		}catch (FileNotFoundException _) {
+			message += "... FAILED: One of these files may not exist";
+			junit.framework.Assert.assertNull(message, _);
+		}
+		catch (Exception _) {
+			message += ": exception raised ... FAILED";
+			junit.framework.Assert.assertNull(message, _);
+		}
+		return equals;
+	}
+	
+	/**
+	 * Utility method to compare exported CSV files
+	 * @param dumpFile
+	 * @param refFile
+	 * @return
+	 */
+	public static boolean compareCSVIgnoreEOL(String dumpFile, String refFile, boolean deleteDumpFileIfOk) {
+		String message = "Comparing ref file ("+refFile+ ")and dump file (" + 
+		  dumpFile+")";
+		boolean equals = false;
+		String str = "[in-charge]"; // this string can be dumped according to binutils version installed on local machine
+		
+		try {
+		LineNumberReader is1 = new LineNumberReader(new FileReader(dumpFile));
+		LineNumberReader is2 = new LineNumberReader(new FileReader(refFile));
+			do {
+				String line1 = is1.readLine();
+				String line2 = is2.readLine();
+				int length = str.length();				
+				if (line1 == null) {
+					if (line2 == null) {
+						equals = true;
+					}
+					break;
+				} else if (line1.contains(str)){
+					int idx = line1.indexOf("[in-charge]");
+					char c = line1.charAt(idx -1);
+					if (c == ' ' ){
+						idx--;
+						length++;
+					}
+					line1 = line1.substring(0, idx) + line1.substring(idx+length, line1.length());
+					if (!line1.equals(line2))
+						break;
+				} else if (line2 == null || !line1.equals(line2)) {
+					break;
+				} 				
+			} while (true);
+			
 			if (!equals) {
  				junit.framework.Assert.assertEquals(message + ": not correspond ", true, false);
 			}
 
 			is1.close();
 			is2.close();
-			// delete dump only for sucessful tests
+			// delete dump only for successful tests
 			if (equals && deleteDumpFileIfOk) {
 				new File(dumpFile).delete();
 			}

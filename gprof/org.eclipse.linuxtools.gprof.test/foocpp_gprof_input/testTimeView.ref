@@ -1,11 +1,11 @@
 Hierarchy;Name (location);Time;Calls;Time/Call;%Time
 +-;Summary;0ns;;;0.0
   +-;foox.cpp;0ns;;;0.0
-    +-;A::foocpp::foocpp[in-charge]();0ns;2;0ns;0.0
+    +-;A::foocpp::foocpp();0ns;2;0ns;0.0
     +-;A::foocpp::func_a(int);0ns;2;0ns;0.0
     +-;A::foocpp::func_f(int);0ns;2;0ns;0.0
-    +-;A::foocpp::~foocpp [in-charge]();0ns;2;0ns;0.0
-    +-;B::foocpp::foocpp[in-charge]();0ns;1;0ns;0.0
+    +-;A::foocpp::~foocpp();0ns;2;0ns;0.0
+    +-;B::foocpp::foocpp();0ns;1;0ns;0.0
     +-;B::foocpp::func_b(int);0ns;1;0ns;0.0
-    +-;B::foocpp::~foocpp [in-charge]();0ns;1;0ns;0.0
+    +-;B::foocpp::~foocpp();0ns;1;0ns;0.0
     +-;main;0ns;0;;0.0
