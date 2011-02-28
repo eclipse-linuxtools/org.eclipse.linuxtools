@@ -34,7 +34,7 @@
 			</visibility>
 		</objectContribution>
 		<objectContribution objectClass="org.eclipse.core.resources.IFile"
-			nameFilter="pom.xml" id="org.eclipse.linuxtools.rpmstubby.contribution1">
+			nameFilter="pom.xml" id="org.eclipse.linuxtools.rpmstubby.contribution3">
 			<menu label="%menu.label" path="additions"
 				id="org.eclipse.linuxtools.rpmstubby.menu1" />
 			<action label="%action.label"
