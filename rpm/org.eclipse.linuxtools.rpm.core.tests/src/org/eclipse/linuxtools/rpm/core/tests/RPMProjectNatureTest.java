@@ -1,10 +1,13 @@
-/*
- * (c) 2007 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
-
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core.tests;
 
 import junit.framework.TestCase;
@@ -27,7 +30,8 @@ public class RPMProjectNatureTest extends TestCase {
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception {
+    @Override
+	protected void setUp() throws Exception {
         super.setUp();
         IWorkspaceDescription desc;
         workspace = ResourcesPlugin.getWorkspace();
@@ -48,9 +52,6 @@ public class RPMProjectNatureTest extends TestCase {
 		IProject testProject = root.getProject("testProject");
 		testProject.create(monitor);
 		testProject.open(monitor);
-		if(testProject == null) {
-            fail("Unable to create test project");
-        }
 		RPMProjectNature.addRPMNature(testProject, monitor);
 		assertTrue(testProject.hasNature(RPMProjectNature.RPM_NATURE_ID));
 		testProject.delete(true, false, monitor);

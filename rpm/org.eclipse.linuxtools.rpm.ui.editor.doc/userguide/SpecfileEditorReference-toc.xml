@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="userguide/SpecfileEditorReference.html" label="SpecfileEditorReference">
+	<topic href="userguide/SpecfileEditorReference.html" label="Overview"></topic>
+	<topic href="userguide/Installing.html" label="Installing"></topic>
+	<topic href="userguide/General-Usage.html" label="General Usage">
+		<topic href="userguide/General-Usage.html#Creating_a_New_Specfile" label="Creating a New Specfile"></topic>
+		<topic href="userguide/General-Usage.html#rpmlint" label="rpmlint">
+			<topic href="userguide/General-Usage.html#Quick_Fixes" label="Quick Fixes"></topic>
+		</topic>
+	</topic>
+	<topic href="userguide/Configuring-Specfile-Editor-Settings.html" label="Configuring Specfile Editor Settings">
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Macro_Completion" label="Macro Completion"></topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#RPM_Completions" label="RPM Completions">
+			<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Package_Information" label="Package Information"></topic>
+		</topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Rpmlint" label="Rpmlint"></topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Task_Tags" label="Task Tags"></topic>
+		<topic href="userguide/Configuring-Specfile-Editor-Settings.html#Templates" label="Templates"></topic>
+	</topic>
+	<topic href="userguide/Updating-This-Document.html" label="Updating This Document"></topic>
+</toc>

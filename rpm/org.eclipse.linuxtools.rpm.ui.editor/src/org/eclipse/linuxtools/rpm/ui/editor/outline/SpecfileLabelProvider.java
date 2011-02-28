@@ -29,10 +29,6 @@ public class SpecfileLabelProvider implements ILabelProvider {
 	private static final String PACKAGES_ICON="icons/packages_obj.gif"; //$NON-NLS-1$
 	private static final String PACKAGE_ICON="icons/package_obj.gif"; //$NON-NLS-1$
 	
-	public SpecfileLabelProvider() {
-		super();
-	}
-	
 	public void addListener(ILabelProviderListener listener) {
 	}
 

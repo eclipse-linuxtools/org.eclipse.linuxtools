@@ -1,3 +1,40 @@
+2010-03-01  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/SourcesFileHyperlinkDetectorTest.java (testDetectHyperlinks): Fix number of hyperlink detectors.
+
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Require core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java: Use Utils from core.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmPackageProposalsListTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/SpecfileTestProject.java: Likewise.
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+    Remove an empty test class now that it's AbstractHandler not an ActionDelegate.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/SpecfileEditorShowOutlineActionDelegateTest.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/actions/ActionsAllTests.java (suite): Remove action delegate test.
+
+2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
+
+2009-07-08  Alphonse Van Assche  <alcapcom@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/scanners/SpecfilePackagesScannerTest.java : Fix disabled tests.  
+
+2009-05-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileDefineTest.java (testResolve): Fix compile.
+
+2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Sync release with the feature 0.4.3.
+
+2009-05-08  Alphonse Van Assche <alcapcom@fedoraproject.org>
+
+	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/parser/SpecfileDefineTest.java: Disable test define 
+	without value, because of the fact that this error is no more managed by our internal parser.  
+
 2009-04-02  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/RpmMacroProposalsListTest.java (testGetMacroEval): Fix %_libdir expectation.

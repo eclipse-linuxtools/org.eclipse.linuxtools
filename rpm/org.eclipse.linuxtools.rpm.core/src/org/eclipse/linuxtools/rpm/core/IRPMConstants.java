@@ -1,13 +1,15 @@
-/*
- * (c) 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2005, 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
-
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
-import org.eclipse.linuxtools.rpm.core.internal.Messages;
 
 public interface IRPMConstants {
 
@@ -28,18 +30,6 @@ public interface IRPMConstants {
 	 * the path to the system's <code>diff</code> binary.
 	 */
 	public static final String DIFF_CMD = "DIFF_CMD"; //$NON-NLS-1$
-	
-	/**
-	 * Contains the name of the preference store key for storing and retrieving
-	 * the author's name.
-	 */
-	public static final String AUTHOR_NAME = "AUTHOR_NAME"; //$NON-NLS-1$
-	
-	/**
-	 * Contains the name of the preference store key for storing and retrieving
-	 * the author's email address.
-	 */
-	public static final String AUTHOR_EMAIL = "AUTHOR_EMAIL"; //$NON-NLS-1$
 	
 	/**
 	 * Contains the name of the preference store key for storing and retrieving

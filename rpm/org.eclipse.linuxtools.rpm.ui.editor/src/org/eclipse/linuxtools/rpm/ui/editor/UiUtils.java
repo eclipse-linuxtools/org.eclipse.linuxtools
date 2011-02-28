@@ -65,10 +65,7 @@ public class UiUtils {
 			Matcher variableMatcher = variablePattern.matcher(stringToResolve);
 			while (variableMatcher.find()) {
 				define = specfile.getDefine(variableMatcher.group(1));
-				if (define != null)
-					stringToResolve = stringToResolve.replaceAll(variableMatcher.group(1), define.getStringValue());
-				else
-					return originalString;
+				stringToResolve = stringToResolve.replaceAll(variableMatcher.group(1), define.getStringValue());
 			}
 			if (!stringToResolve.equals(originalString))
 				stringToResolve = stringToResolve.replaceAll("\\%\\{|\\}", ""); //$NON-NLS-1$ //$NON-NLS-2$

@@ -11,6 +11,7 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.preferences;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -18,8 +19,9 @@ import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,6 +39,8 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 		implements IWorkbenchPreferencePage {
 
+	private FieldEditor rpmtools;
+
 	/*
 	 * default constructor
 	 */
@@ -52,7 +56,8 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	 */
 	@Override
 	public void createFieldEditors() {
-		addField(rpmtoolsRadioGroupFieldEditor());	
+		rpmtools = rpmtoolsRadioGroupFieldEditor();
+		addField(rpmtools);	
 		// FIXME: there is validations problem when a FileFieldEditor is used, so 
 		// as a quick fix, StringFieldEditor is used.
 		StringFieldEditor rpmListFieldEditor = new StringFieldEditor(PreferenceConstants.P_RPM_LIST_FILEPATH,
@@ -88,7 +93,7 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 								PreferenceConstants.DP_RPMTOOLS_RPM });
 		/*
 		 * Show only installed tools.
-		 * Don't forgot to add sanity check in Utils.pluginSanityCheck().
+		 * Don't forgot to add sanity check in UiUtils.pluginSanityCheck().
 		 */ 
 		if (Utils.fileExist("/usr/bin/yum"))  //$NON-NLS-1$
 			list.add(new String[] { Messages.RpmProposalsPreferencePage_4,
@@ -130,6 +135,25 @@ public class RpmProposalsPreferencePage extends FieldEditorPreferencePage
 	 */
 	public void init(IWorkbench workbench) {
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		super.propertyChange(event);
+		if (event.getSource().equals(rpmtools)) {
+			if (!event.getOldValue().equals(event.getNewValue())) {
+				String rpmpkgsFile = Activator.getDefault()
+						.getPreferenceStore().getString(
+								PreferenceConstants.P_RPM_LIST_FILEPATH);
+				if (Utils.fileExist(rpmpkgsFile)) {
+					new File(rpmpkgsFile).delete();
+				}
+				Activator.packagesList = null;
+			}
+		}
 	}
 
 }

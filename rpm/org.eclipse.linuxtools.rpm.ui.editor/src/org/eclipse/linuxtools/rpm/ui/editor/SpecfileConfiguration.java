@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * Copyright (c) 2007, 2009, 2010 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,14 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.DefaultLineTracker;
+import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
+import org.eclipse.jface.text.TabsToSpacesConverter;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -31,14 +34,13 @@ import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.linuxtools.rpm.ui.editor.derived.AnnotationHover;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
+import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePartitionScanner;
@@ -54,9 +56,9 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	private ColorManager colorManager;
 	private SpecfileHover specfileHover;
 	private SpecfileEditor editor;
-	private IAnnotationHover annotationHover;
 
 	public SpecfileConfiguration(ColorManager colorManager, SpecfileEditor editor) {
+		super();
 		this.colorManager = colorManager;
 		this.editor = editor;
 	}
@@ -229,17 +231,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAnnotationHover(org.eclipse.jface.text.source.ISourceViewer)
-	 */
-	@Override
-	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {
-		if (annotationHover == null)
-			annotationHover = new AnnotationHover();
-		return annotationHover;
-	}
-	
-
-	/* (non-Javadoc)
 	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
 	 */
 	@Override
@@ -248,5 +239,34 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
         targets.put("org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", editor); //$NON-NLS-1$
         return targets;
     }
+
+	private int getTabSize() {
+		return Activator.getDefault().getPreferenceStore().getInt(
+				PreferenceConstants.P_NBR_OF_SPACES_FOR_TAB);
+	}
+
+	private boolean isTabConversionEnabled() {
+		return Activator.getDefault().getPreferenceStore().getBoolean(
+				PreferenceConstants.P_SPACES_FOR_TABS);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies
+	 * (org.eclipse.jface.text.source.ISourceViewer, java.lang.String)
+	 */
+	@Override
+	public IAutoEditStrategy[] getAutoEditStrategies(
+			ISourceViewer sourceViewer, String contentType) {
+		if (isTabConversionEnabled()) {
+			TabsToSpacesConverter tabsConverter = new TabsToSpacesConverter();
+			tabsConverter.setLineTracker(new DefaultLineTracker());
+			tabsConverter.setNumberOfSpacesPerTab(getTabSize());
+			return new IAutoEditStrategy[] { tabsConverter };
+		}
+		return null;
+	}
 		
 }

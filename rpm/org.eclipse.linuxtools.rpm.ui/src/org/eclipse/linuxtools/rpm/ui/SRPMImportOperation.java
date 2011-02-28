@@ -1,9 +1,13 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
-*/
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
 import java.io.File;
@@ -18,8 +22,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.linuxtools.rpm.core.IRPMProject;
-import org.eclipse.linuxtools.rpm.core.RPMProjectFactory;
+import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -35,7 +38,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	// Progressmonitor
 	private IProgressMonitor monitor;
 
-	private List rpm_errorTable;
+	private List<Exception> rpm_errorTable;
 
 	/**
 	 * Method SRPMImportOperation.
@@ -60,14 +63,14 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 		int totalWork = 2;
 
 		monitor = progressMonitor;
-		rpm_errorTable = new ArrayList();
+		rpm_errorTable = new ArrayList<Exception>();
 
 		monitor.beginTask(Messages.getString("SRPMImportOperation.Starting"), //$NON-NLS-1$
-		totalWork); //$NON-NLS-1$
+		totalWork);
 
 		// Try to create an instance of the build class. 
 		try {
-			IRPMProject rpmProject = RPMProjectFactory.getRPMProject(project);
+			RPMProject rpmProject = new RPMProject(project);
 			monitor.worked(1);
 			monitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
 			rpmProject.importSourceRPM(sourceRPM);
@@ -81,7 +84,7 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 
 	public MultiStatus getStatus() {
 	IStatus[] errors = new IStatus[rpm_errorTable.size()];
-	Iterator count = rpm_errorTable.iterator();
+	Iterator<Exception> count = rpm_errorTable.iterator();
 	int iCount = 0;
 	String error_message=Messages.getString("SRPMImportOperation.0"); //$NON-NLS-1$
 	while (count.hasNext()) {
@@ -104,8 +107,8 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 			}
 		IStatus error =
 			new Status(
-				Status.ERROR,
-				"RPM Plugin",Status.OK, //$NON-NLS-1$
+				IStatus.ERROR,
+				"RPM Plugin",IStatus.OK, //$NON-NLS-1$
 				error_message,
 				null);
 		errors[iCount] = error;

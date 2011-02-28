@@ -1,17 +1,19 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
-
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
-import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,19 +22,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class ChangelogPage extends PropertyPage {
 
-	private static final String RPM_CHANGELOG_ENTRIES = 
-		Messages.getString("ChangelogPage.entries"); //$NON-NLS-1$
-
-	private static final int NAME_FIELD_WIDTH = 20;
+	private static final String RPM_CHANGELOG_ENTRIES = Messages
+			.getString("ChangelogPage.entries"); //$NON-NLS-1$
 
 	private static final int CL_ENTRIES_FIELD_WIDTH = 80;
 
 	private static final int CL_ENTRIES_FIELD_HEIGHT = 50;
-
-	private Text rpm_nameText;
 
 	private Text rpm_ChangelogEntriesText;
 
@@ -58,11 +58,12 @@ public class ChangelogPage extends PropertyPage {
 		rpm_ChangelogEntriesText.setLayoutData(gdEntries);
 
 		try {
-			String rpm_ChangelogEntries = RPMQuery.getChangelog((IFile) getElement());
+			String rpm_ChangelogEntries = RPMQuery
+					.getChangelog((IFile) getElement());
 			rpm_ChangelogEntriesText.setText(rpm_ChangelogEntries);
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
+					StatusManager.LOG | StatusManager.SHOW);
 		}
 
 	}
@@ -70,6 +71,7 @@ public class ChangelogPage extends PropertyPage {
 	/**
 	 * @see PreferencePage#createContents(Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -95,14 +97,4 @@ public class ChangelogPage extends PropertyPage {
 
 		return composite;
 	}
-
-	protected void performDefaults() {
-
-	}
-
-	public boolean performOk() {
-
-		return true;
-	}
-
 }

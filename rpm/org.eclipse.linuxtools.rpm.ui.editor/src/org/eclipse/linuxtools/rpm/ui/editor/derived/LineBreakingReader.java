@@ -60,7 +60,7 @@ public class LineBreakingReader {
 	 * width.
 	 * 
 	 * @return the next line 
-	 * @throws IOException 
+	 * @throws IOException  If an I/O error occurs.
 	 */
 	public String readLine() throws IOException {
 		if (fLine == null) {

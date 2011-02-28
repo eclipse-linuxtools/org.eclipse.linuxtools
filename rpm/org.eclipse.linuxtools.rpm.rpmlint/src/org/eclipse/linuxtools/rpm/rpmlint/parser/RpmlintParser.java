@@ -23,12 +23,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.linuxtools.rpm.rpmlint.RpmlintLog;
 import org.eclipse.linuxtools.rpm.rpmlint.builder.RpmlintBuilder;
 import org.eclipse.linuxtools.rpm.rpmlint.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.rpmlint.resolutions.RpmlintMarkerResolutionGenerator;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 
 public class RpmlintParser {
 	
@@ -73,7 +73,7 @@ public class RpmlintParser {
 	}
 	
 	public void addMarker(IFile file, String message, int lineNumber, int charStart, int charEnd,
-			int severity, String rpmlintID, String rpmlintReferedContent) {
+			int severity, String rpmlintID, String rpmlintrefferedContent) {
 		try {
 			IMarker marker = file
 					.createMarker(RpmlintBuilder.MARKER_ID);
@@ -84,7 +84,7 @@ public class RpmlintParser {
 			marker.setAttribute(IMarker.CHAR_START, charStart);
 			marker.setAttribute(IMarker.CHAR_END, charEnd);
 			marker.setAttribute(RpmlintMarkerResolutionGenerator.RPMLINT_ERROR_ID, rpmlintID);
-			marker.setAttribute(RpmlintMarkerResolutionGenerator.RPMLINT_REFERED_CONTENT, rpmlintReferedContent);
+			marker.setAttribute(RpmlintMarkerResolutionGenerator.RPMLINT_REFFERED_CONTENT, rpmlintrefferedContent);
 
 		} catch (CoreException e) {
 			RpmlintLog.logError(e);
@@ -92,7 +92,7 @@ public class RpmlintParser {
 	}
 	
 	public void addMarker(IFile file, String message, int severity,
-			String rpmlintID, String rpmlintReferedContent) {
+			String rpmlintID, String rpmlintrefferedContent) {
 		try {
 			IMarker marker = file.createMarker(RpmlintBuilder.MARKER_ID);
 			marker
@@ -104,8 +104,8 @@ public class RpmlintParser {
 					RpmlintMarkerResolutionGenerator.RPMLINT_ERROR_ID,
 					rpmlintID);
 			marker.setAttribute(
-					RpmlintMarkerResolutionGenerator.RPMLINT_REFERED_CONTENT,
-					rpmlintReferedContent);
+					RpmlintMarkerResolutionGenerator.RPMLINT_REFFERED_CONTENT,
+					rpmlintrefferedContent);
 
 		} catch (CoreException e) {
 			RpmlintLog.logError(e);
@@ -133,13 +133,13 @@ public class RpmlintParser {
 		ArrayList<RpmlintItem> rpmlintItems = new ArrayList<RpmlintItem>();
 		LineNumberReader reader = new LineNumberReader(new InputStreamReader(in));
 		String line;
-		boolean firtItemLine = true;
+		boolean isFirtItemLine = true;
 		String[] lineItems;
 		String description = EMPTY_STRING;
 		try {
 			while ((line = reader.readLine()) != null) {
-				if (firtItemLine) {
-					firtItemLine=false;
+				if (isFirtItemLine) {
+					isFirtItemLine = false;
 					lineItems = line.split(COLON, 4);
 					item.setFileName(lineItems[0]);
 					int lineNbr;
@@ -173,23 +173,33 @@ public class RpmlintParser {
 					} 
 					item.setLineNbr(lineNbr);					
 					item.setId(lineItems[0]);
-					// get content
-					if (lineItems.length > 1)
-						item.setReferedContent(lineItems[1]);
-					else
-						item.setReferedContent(EMPTY_STRING);
+					if (lineItems.length > 1) {
+						// Maybe this error occur when rpmlint execute 'rpm -q --qf=
+						// --specfile file.spec' command
+						RpmlintItem tmpItem = parseRpmOutput(item, lineItems[1]) ;
+						if (tmpItem == null) {
+							item.setRefferedContent(lineItems[1]);
+						} else {
+							item = tmpItem;
+						}
+					} else {
+						item.setRefferedContent(EMPTY_STRING);
+					}
 				} else {
 					description += line + '\n';
 				}
 				
 				if (line.equals(EMPTY_STRING)) {
-					item.setMessage(description.substring(0, description.length() - 2));
-					int useOfTabsAndSpaces = getMixedUseOfTabsAndSpaces(item.getReferedContent());
+					if (item.getMessage() == null)
+						item.setMessage(description.substring(0, description.length() - 2));
+					int useOfTabsAndSpaces = getMixedUseOfTabsAndSpaces(item.getRefferedContent());
 					if (useOfTabsAndSpaces != -1) 
 						item.setLineNbr(useOfTabsAndSpaces);
 					rpmlintItems.add(item);
 					item = new RpmlintItem();
-					firtItemLine=true;
+					
+					// Reinitialize parser for the next item
+					isFirtItemLine=true;
 					description = EMPTY_STRING;
 				}
 
@@ -200,6 +210,33 @@ public class RpmlintParser {
 			RpmlintLog.logError(e);
 		}
 		return rpmlintItems;
+	}
+	
+	private RpmlintItem parseRpmOutput(RpmlintItem item, String line) {
+		String[] rpmErrorItems = line.split(COLON, 4);
+		if (item.getId().equalsIgnoreCase("specfile-error")) { //$NON-NLS-1$
+			// set severity
+			item.setSeverity("E"); //$NON-NLS-1$
+		} else {
+			return null;
+		}
+		// set line number
+		try {
+			if (rpmErrorItems[1].matches(" line [0-9]+$")) { //$NON-NLS-1$
+				item.setLineNbr(Integer.parseInt(
+						rpmErrorItems[1].replace(" line ", ""))); //$NON-NLS-1$ //$NON-NLS-2$
+				item.setMessage(rpmErrorItems[2]);
+				item.setRefferedContent(rpmErrorItems[3]);
+			} else {
+				item.setLineNbr(-1);
+				item.setMessage(rpmErrorItems[1]);
+				item.setRefferedContent(""); //$NON-NLS-1$
+			}
+		} catch (NumberFormatException e) {
+			return null;
+		}
+		
+		return item;
 	}
 	
 	/**
@@ -261,14 +298,14 @@ public class RpmlintParser {
 		return ret;
 	}
 	
-	private int getMixedUseOfTabsAndSpaces(String referedContent){
+	private int getMixedUseOfTabsAndSpaces(String refferedContent){
 		int lineNbr = -1;
-		if (referedContent.indexOf("(spaces: line") > -1) { //$NON-NLS-1$
+		if (refferedContent.indexOf("(spaces: line") > -1) { //$NON-NLS-1$
 			String tabsAndSpacesPref = Activator
 			.getDefault()
 			.getPreferenceStore()
 			.getString(PreferenceConstants.P_RPMLINT_TABS_AND_SPACES);
-			String[] spacesAndTabs = referedContent.split("line"); //$NON-NLS-1$
+			String[] spacesAndTabs = refferedContent.split("line"); //$NON-NLS-1$
 			if (tabsAndSpacesPref == PreferenceConstants.P_RPMLINT_SPACES)
 				lineNbr = Integer.parseInt(spacesAndTabs[1]
 				                                         .split(",")[0].trim()); //$NON-NLS-1$

@@ -1,10 +1,13 @@
-/*
- * (c) 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2005, 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
-
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core;
 
 import java.util.ArrayList;
@@ -98,9 +101,9 @@ public class RPMProjectNature implements IProjectNature {
 	private static void removeNature(IProject project, String natureId, IProgressMonitor monitor) throws CoreException {
 		IProjectDescription description = project.getDescription();
 		String[] prevNatures = description.getNatureIds();
-		List newNatures = new ArrayList(Arrays.asList(prevNatures));
+		List<String> newNatures = new ArrayList<String>(Arrays.asList(prevNatures));
 		newNatures.remove(natureId);
-		description.setNatureIds((String[]) newNatures.toArray(new String[newNatures.size()]));
+		description.setNatureIds(newNatures.toArray(new String[newNatures.size()]));
 		project.setDescription(description, monitor);
 	}
 	
