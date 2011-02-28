@@ -40,6 +40,7 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	
 	// Setup daemon collection arguments
 	private static final String _OPD_SETUP = "--setup"; //$NON-NLS-1$
+	private static final String _OPD_HELP = "--help"; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE = "--separate="; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_SEPARATOR = ","; //$NON-NLS-1$
 	private static final String _OPD_SETUP_SEPARATE_NONE = "none"; //$NON-NLS-1$
@@ -200,17 +201,30 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 	public void stopCollection() throws OpcontrolException {
 		_runOpcontrol(_OPD_STOP_COLLECTION);
 	}
+
+	/**
+	 * Check status. returns true if any status was returned
+	 * @throws OpcontrolException
+	 */
+	public boolean status() throws OpcontrolException {
+		return _runOpcontrol(_OPD_HELP);
+	}
 	
 	// Convenience function
-	private void _runOpcontrol(String cmd) throws OpcontrolException {
+	private boolean _runOpcontrol(String cmd) throws OpcontrolException {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(cmd);
-		_runOpcontrol(list);
+		return _runOpcontrol(list);
 	}
 	
 	// Will add opcontrol program to beginning of args
 	// args: list of opcontrol arguments (not including opcontrol program itself)
-	private void _runOpcontrol(ArrayList<String> args) throws OpcontrolException {
+	/**
+	 * @return true if any output was produced on the error stream. Unfortunately
+	 * this appears to currently be the only way we can tell if user correctly
+	 * entered the password
+	 */
+	private boolean _runOpcontrol(ArrayList<String> args) throws OpcontrolException {
 		args.add(0, OPCONTROL_PROGRAM);
 		// Verbosity hack. If --start or --start-daemon, add verbosity, if set
 		String cmd = (String) args.get(1);
@@ -234,10 +248,10 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		}
 		
 		if (p != null) {
-			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			BufferedReader errout = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			String output = "", s; //$NON-NLS-1$
 			try {
-				while ((s = stdout.readLine()) != null) {
+				while ((s = errout.readLine()) != null) {
 					output += s;
 				}
 				
@@ -246,12 +260,18 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 					System.out.println(output);
 					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
 				}
+				
+				if (output.length() != 0) {
+					return true;
+				}
+				
 			} catch (IOException ioe) { 
 				ioe.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		return false;
 	}
 	
 	private static String _findOpcontrol() throws OpcontrolException {
@@ -319,4 +339,5 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		//callgraph depth
 		args.add(_OPD_CALLGRAPH_DEPTH + options.getCallgraphDepth());
 	}
+
 }

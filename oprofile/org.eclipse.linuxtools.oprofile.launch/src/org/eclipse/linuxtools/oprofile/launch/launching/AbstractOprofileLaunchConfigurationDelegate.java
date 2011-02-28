@@ -23,11 +23,9 @@ import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.cdt.utils.pty.PTY;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -45,18 +43,11 @@ import org.eclipse.ui.PlatformUI;
 
 public abstract class AbstractOprofileLaunchConfigurationDelegate extends AbstractCLaunchDelegate {
 	public void launch(ILaunchConfiguration config, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
-		//FIXME: this assumes that project names are always the directory names in the workspace.
-		//this assumption may be wrong, but a shallow lookup seems ok
-		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-		String imagePath = workspacePath
-				+ Path.SEPARATOR
-				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, "") //$NON-NLS-1$
-				+ Path.SEPARATOR
-				+ config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, ""); //$NON-NLS-1$
-		
+
 		LaunchOptions options = new LaunchOptions();		//default options created in the constructor
 		options.loadConfiguration(config);
-		options.setBinaryImage(imagePath);
+		IPath exePath = verifyProgramPath( config );
+		options.setBinaryImage(exePath.toOSString());
 
 		//if daemonEvents null or zero size, the default event will be used
 		OprofileDaemonEvent[] daemonEvents = null;
@@ -74,7 +65,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 			events.toArray(daemonEvents);
 		}
 		
-		preExec(options, daemonEvents);
+		if (!preExec(options, daemonEvents)) return;
 
 		/* 
 		 * this code written by QNX Software Systems and others and was 
@@ -82,7 +73,6 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 		 */
 		//set up and launch the local c/c++ program
 		try {
-			IPath exePath = verifyProgramPath( config );
 			File wd = getWorkingDirectory( config );
 			if ( wd == null ) {
 				wd = new File( System.getProperty( "user.home", "." ) ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -103,7 +93,7 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 		}
 	}
 	
-	protected abstract void preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);
+	protected abstract boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents);
 
 	protected abstract void postExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents, ILaunch launch, Process process);
 
@@ -184,5 +174,16 @@ public abstract class AbstractOprofileLaunchConfigurationDelegate extends Abstra
 	
 	protected void oprofileDumpSamples() throws OpcontrolException {
 		OprofileCorePlugin.getDefault().getOpcontrolProvider().dumpSamples();
+	}
+	
+	/**
+	 * Runs opcontrol --help. Returns true if there was any output, false 
+	 * otherwise. Return value can be used to tell if the user successfully
+	 * entered a password.
+	 * @return true if opcontrol --help was run correctly. False otherwise
+	 * @throws OpcontrolException
+	 */
+	protected boolean oprofileStatus() throws OpcontrolException {
+		return OprofileCorePlugin.getDefault().getOpcontrolProvider().status();
 	}
 }

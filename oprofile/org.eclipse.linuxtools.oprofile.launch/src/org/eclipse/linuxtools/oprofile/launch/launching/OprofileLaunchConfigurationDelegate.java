@@ -23,9 +23,12 @@ import org.eclipse.swt.widgets.Display;
 public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchConfigurationDelegate {
 
 	@Override
-	protected void preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
+	protected boolean preExec(LaunchOptions options, OprofileDaemonEvent[] daemonEvents) {
 		//set up and launch the oprofile daemon
 		try {
+			if (!oprofileStatus())
+				return false;
+			
 			//kill the daemon (it shouldn't be running already, but to be safe)
 			oprofileShutdown();
 			
@@ -43,8 +46,9 @@ public class OprofileLaunchConfigurationDelegate extends AbstractOprofileLaunchC
 			oprofileStartCollection();
 		} catch (OpcontrolException oe) {
 			OprofileCorePlugin.showErrorDialog("opcontrolProvider", oe); //$NON-NLS-1$
-			return;
+			return false;
 		}
+		return true;
 	}
 
 	@Override
