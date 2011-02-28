@@ -187,7 +187,7 @@ public class StapGraphMouseListener implements MouseListener {
 			if (node == null)
 				return null;
 
-			int caller = node.getData().parent;
+			int caller = node.getData().id;
 
 			if (caller < graph.getFirstUsefulNode()) {
 				// The only node that satisfies this condition should be

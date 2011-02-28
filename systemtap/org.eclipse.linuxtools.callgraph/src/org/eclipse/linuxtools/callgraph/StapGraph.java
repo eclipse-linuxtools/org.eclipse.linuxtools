@@ -284,46 +284,7 @@ public class StapGraph extends Graph {
 			idOfLastNode = id;
 		return id;
 	}
-
-	/**
-	 * Create a new StapData object with the given parameters. If the id is larger
-	 * than the current idOfLastNode, then idOfLastNode is set to id.
-	 * 
-	 * @param style
-	 * @param id
-	 * @param txt
-	 * @param time
-	 * @param called
-	 * @param caller
-	 * @return
-	 */
-	public int loadData(int style, int id, String txt, long time, int called,
-			int caller, boolean isMarked) {
-		//-------------Invalid function catching
-		// Catches some random C/C++ directive functions
-		if (id < 10 && killInvalidFunctions) {
-			if (txt.contains(")")) { //$NON-NLS-1$
-				return -1;
-			} else if (txt.contains(".")) { //$NON-NLS-1$
-				return -1;
-			} else if (txt.contains("\"")) { //$NON-NLS-1$
-				return -1;
-			}
-		} 
 		
-		//-------------Add node to appropriate map/list
-		StapData n = new StapData(this, style, txt, time, called, 
-				id, caller, isMarked);
-		if (isMarked)
-			markedNodes.add(id);
-		nodeDataMap.put(id, n);
-
-		// Make no assumptions about the order that data is input
-		if (id > idOfLastNode)
-			idOfLastNode = id;
-		return id;
-	}
-	
 	public void insertMessage(int id, String message) {
 		StapData temp = nodeDataMap.get(id);
 		if (temp == null) return;
@@ -344,9 +305,10 @@ public class StapGraph extends Graph {
 	 * @param centerNode
 	 */
 	public void drawRadial(int centerNode) {
-		int radius = Math.min(this.getBounds().width,
+		int radius = Math.max(CONSTANT_VERTICAL_INCREMENT,
+				Math.min(this.getBounds().width,
 				this.getBounds().height)
-				/ 2 - CONSTANT_VERTICAL_INCREMENT;
+				/ 2 - 2*CONSTANT_VERTICAL_INCREMENT);
 
 		rootVisibleNodeNumber = centerNode;
 		StapData nodeData = getNodeData(centerNode);
@@ -365,7 +327,7 @@ public class StapGraph extends Graph {
 		// Draw node in center
 		StapNode n = nodeMap.get(centerNode);
 		int x = this.getBounds().width / 2 - n.getSize().width/2;
-		int y = this.getBounds().height / 2 - n.getSize().height;
+		int y = this.getBounds().height / 2;
 		n.setLocation(x, y);
 		
 		if (getNodeData(centerNode).isMarked())
@@ -460,11 +422,11 @@ public class StapGraph extends Graph {
 			}
 			
 			StapNode subN = nodeMap.get(subID);
+			
 			if (radius != 0) {
-				yOffset = (int) (radius * Math.cos(angle * i));
-				xOffset = (int) (radius * Math.sin(angle * i) + StapNode.getNodeSize()*Math.sin(angle*i)*3);
+				yOffset = (int) (radius * Math.cos((float) angle * i));
+				xOffset = (int) (radius * Math.sin((float) angle * i)) - subN.getSize().width/2 + getNode(id).getSize().width/2;
 			}
-
 
 			if (hasChildren(subID))
 				subN.setBackgroundColor(CONSTANT_HAS_CHILDREN);
@@ -747,13 +709,6 @@ public class StapGraph extends Graph {
 		}
 	}
 
-	/*
-	 * Partially functional draw functions
-	 * 
-	 * -Box (drawFromBottomToTop)
-	 * 	Breaks when switching modes??
-	 */
-
 
 	/**
 	 * Draws a tree roughly starting from node id
@@ -806,6 +761,7 @@ public class StapGraph extends Graph {
 		if (id == getFirstUsefulNode())
 			nodeMap.get(id).setLocation(150 + (MaxLevelPixelWidth/2),y);
 	}
+	
 	
 	public void drawFromBottomToTop(int level, int height,
 			int MaxLevelPixelWidth) {
@@ -1965,32 +1921,25 @@ public class StapGraph extends Graph {
 		maxNodes = val;
 	}
 
-
 	public ArrayList<Integer> getCallOrderList() {
 		return callOrderList;
 	}
-
 
 	public void setCallOrderList(ArrayList<Integer> callOrderList) {
 		this.callOrderList = callOrderList;
 	}
 
-
 	public int getLastFunctionCalled() {
 		return lastFunctionCalled;
 	}
-
 
 	public void setLastFunctionCalled(int lastFunctionCalled) {
 		this.lastFunctionCalled = lastFunctionCalled;
 	}
 
-
-
 	public ICProject getProject() {
 		return project;
 	}
-
 
 	public Projectionist getProjectionist() {
 		return proj;
@@ -2020,11 +1969,13 @@ public class StapGraph extends Graph {
 		threaded = true;		
 	}
 	
-	public boolean isThreaded() {
-		return threaded;
-	}
-	
 	public boolean getCollapseMode() {
 		return collapse_mode;
+	}
+
+
+
+	public void addCalled(int idChild) {
+		getNodeData(idChild).timesCalled++;
 	}
 }

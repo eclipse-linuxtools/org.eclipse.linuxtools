@@ -20,8 +20,9 @@ import org.eclipse.linuxtools.systemtap.ui.graphing.internal.Localization;
 import org.eclipse.linuxtools.systemtap.ui.graphing.preferences.GraphingPreferenceConstants;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.datasets.IDataSet;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.structures.GraphData;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.chart.widget.ChartCanvas;
+import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.charts.AbstractChartBuilder;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.datadisplay.DataGrid;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.graphs.IGraph;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.widgets.GraphComposite;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.dataset.DataSetFactory;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.ui.wizards.graph.GraphFactory;
@@ -72,8 +73,9 @@ public class GraphDisplaySet {
 	//	}
 		createPartControl(parent);
 		
-		graphs = new ArrayList<IGraph>();
-		tabListeners = new ArrayList<ITabListener>();
+		builders = new ArrayList();
+	//	graphs = new ArrayList();
+		tabListeners = new ArrayList();
 		LogManager.logDebug("End GraphSelectorView:", this);
 	}
 	
@@ -123,8 +125,8 @@ public class GraphDisplaySet {
 			public void close(CTabFolderEvent e) {
 				int selected = folder.indexOf((CTabItem)e.item)-2;
 				if(null != updater)
-					updater.removeUpdateListener((IGraph)graphs.get(selected));
-				graphs.remove(selected);
+					updater.removeUpdateListener((AbstractChartBuilder)builders.get(selected));
+				builders.remove(selected);
 				fireTabCloseEvent();
 			}
 		});
@@ -162,10 +164,10 @@ public class GraphDisplaySet {
 	 * Finds the graph that is open in the current tab
 	 * @return The graph that is currently visible on the screen
 	 */
-	public IGraph getActiveGraph() {
-		if(0 == graphs.size() || folder.getSelectionIndex() < 2)
+	public ChartCanvas getActiveGraph() {
+		if(0 == builders.size() || folder.getSelectionIndex() < 2)
 			return null;
-		return (IGraph)graphs.get(folder.getSelectionIndex()-2);
+		return (ChartCanvas)builders.get(folder.getSelectionIndex()-2);
 	}
 	
 	public void setFocus() {}
@@ -221,13 +223,13 @@ public class GraphDisplaySet {
 					gc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 					folder.setSelection(item);
 					
-					IGraph g = gc.getGraph();
+					AbstractChartBuilder g = gc.getCanvas();
 					item.setControl(gc);
 					
 					if(null != g) {
 						if(null != updater)
 							updater.addUpdateListener(g);
-						graphs.add(g);
+						builders.add(g);
 					}
 				}
 				wizard.dispose();
@@ -266,7 +268,8 @@ public class GraphDisplaySet {
 	private CTabFolder folder;
 	private ButtonClickListener listener;
 	private UpdateManager updater;
-	private ArrayList<ITabListener> tabListeners;
+	private ArrayList tabListeners;
 	
-	private ArrayList<IGraph> graphs;
+//	private ArrayList graphs;
+	private ArrayList builders;
 }

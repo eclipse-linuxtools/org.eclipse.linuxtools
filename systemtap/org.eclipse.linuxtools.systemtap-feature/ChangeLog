@@ -1,3 +1,11 @@
+2010-02-08  Andrew Overholt  <overholt@redhat.com>
+
+	* feature.properties: Capitalize feature name.
+
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* feature.xml: Add new dashboard plugins for SystemTap
+
 2009-08-06  Andrew Overholt  <overholt@redhat.com>
 
 	* feature.properties: Remove trailing period.

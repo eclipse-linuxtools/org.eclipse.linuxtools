@@ -1,7 +1,6 @@
 package org.eclipse.linuxtools.systemtap.ui.structures.validators;
 
 import junit.framework.TestCase;
-import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.linuxtools.systemtap.ui.structures.validators.ConditionalExpressionValidator;
 import org.eclipse.linuxtools.systemtap.ui.structures.validators.DirectoryValidator;
 import org.eclipse.linuxtools.systemtap.ui.structures.validators.IntegerValidator;

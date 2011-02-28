@@ -1,3 +1,26 @@
+2010-03-05  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Stop passsing a useless argument to finishLaunch
+
+2010-03-02  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java (launch): Toss out a message dialog if output path is broken.
+
+2010-02-26  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java:
+		Cleanup code.
+
+2010-02-23  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Change cancellation language/checks
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph.java: Add tid to marker functions
+
+2009-12-22  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchConfigurationDelegate.java: Only display error popup if there is something to say -- use isErrorRecognized instead of message length.
+																								
+
 2009-12-17  rgrunber  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties: Externalize Strings and cleanup.

@@ -1,3 +1,8 @@
+2009-12-24  rgrunber  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapErrorHandlerTest.java (testUprobesError):
+		Update message to reflect new error message.
+
 2009-12-16  rgrunber  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/tests/SystemTapErrorHandlerTest.java:

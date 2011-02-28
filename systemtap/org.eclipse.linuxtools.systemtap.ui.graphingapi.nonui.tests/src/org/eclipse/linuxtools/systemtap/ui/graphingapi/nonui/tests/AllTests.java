@@ -31,7 +31,6 @@ import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters.Range
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters.SortFilterTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.filters.UniqueFilterTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.ChartStreamDaemonTest;
-import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.ChartStreamDaemonTest2;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.DataPointTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.GraphDataTest;
 import org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests.structures.NumberTypeTest;
@@ -77,7 +76,7 @@ public class AllTests {
 
 		//Structures
 		suite.addTestSuite(ChartStreamDaemonTest.class);
-		suite.addTestSuite(ChartStreamDaemonTest2.class);
+	//	suite.addTestSuite(ChartStreamDaemonTest2.class);
 		suite.addTestSuite(DataPointTest.class);
 		suite.addTestSuite(GraphDataTest.class);
 		suite.addTestSuite(NumberTypeTest.class);

@@ -34,17 +34,14 @@ public abstract class SystemTapParser extends Job {
 	protected Object internalData;
 	private String secondaryID = ""; //$NON-NLS-1$
 
-	public boolean isDone;
+	public boolean done;
 	
-	private RunTimeJob job;
-	private boolean jobCancelled;
-
 	public SystemTapParser() {
 		super("Parsing data"); //$NON-NLS-1$
 		this.sourcePath = PluginConstants.getDefaultIOPath();
 		this.viewID = null;
 		initialize();
-		isDone = false;
+		done = false;
 		
 		//PURELY FOR TESTING
 		if (monitor == null){
@@ -64,8 +61,7 @@ public abstract class SystemTapParser extends Job {
 		initialize();
 	}
 
-
-
+	
 	/**
 	 * Initialize will be called in the constructors for this class. Use this
 	 * method to initialize variables.
@@ -85,8 +81,6 @@ public abstract class SystemTapParser extends Job {
 	public abstract IStatus nonRealTimeParsing();
 
 
-	
-	
 	/**
 	 * Implement this method if your parser is to execute in realtime. This method 
 	 * will be called as part of a while loop in a separate Job. Use the setInternalData
@@ -163,22 +157,41 @@ public abstract class SystemTapParser extends Job {
 		if (this.monitor == null) {
 			this.monitor = new NullProgressMonitor();
 		}
-		makeView();
 		
-		if (realTime && (job == null || job.getResult()==null)) {
-			job = new RunTimeJob("RealTimeParser"); //$NON-NLS-1$
-			job.schedule();
+		makeView();
+		if (realTime) {
+        	try {
+				setInternalData();
+	            while (!done){
+	            	returnStatus = realTimeParsing();
+	            	if (monitor.isCanceled() || returnStatus == Status.CANCEL_STATUS) {
+	            		done = true;
+	            		return Status.CANCEL_STATUS;
+	            	}
+	            	
+	            	Thread.sleep(500);
+	            }
+	            if (!monitor.isCanceled()) returnStatus = realTimeParsing();
+	            done = true;
+				return returnStatus;
+        	} catch (Exception e) {
+        		SystemTapUIErrorMessages m = new SystemTapUIErrorMessages(
+        				Messages.getString("SystemTapParser.InternalData"), //$NON-NLS-1$ 
+        				Messages.getString("SystemTapParser.FailedToSetData"), //$NON-NLS-1$ 
+        				Messages.getString("SystemTapParser.FailedToSetDataMessage")); //$NON-NLS-1$
+        		m.schedule();
+        		return Status.CANCEL_STATUS;
+        	}
 		} else {
 			returnStatus = nonRealTimeParsing();
-		}
-				
-	
-		if (!returnStatus.isOK()){
+			if (!returnStatus.isOK()){
+				return returnStatus;
+			}
+			
+			setData(this);
 			return returnStatus;
 		}
-		
-		setData(this);
-		return returnStatus;
+	
 	}
 	
 	public void printArrayListMap(HashMap<Integer, ArrayList<Integer>> blah) {
@@ -222,6 +235,7 @@ public abstract class SystemTapParser extends Job {
 		}
 		return Status.CANCEL_STATUS;
 	}
+	
 
 	public void launchFileErrorDialog() {
 		SystemTapUIErrorMessages err = new SystemTapUIErrorMessages(Messages
@@ -233,37 +247,18 @@ public abstract class SystemTapParser extends Job {
 	}
 
 
-
-	
-	private class RunTimeJob extends Job {
-		public RunTimeJob(String name) {
-			super(name);
-		}
-
-		@Override
-		public IStatus run(IProgressMonitor monitor) {
-			IStatus returnStatus = Status.CANCEL_STATUS;       
-	        try {
-	        	setInternalData();
-	            while (!isDone){
-	            	returnStatus = realTimeParsing();
-	            	if (monitor.isCanceled() || returnStatus == Status.CANCEL_STATUS)
-	            		return Status.CANCEL_STATUS;
-	            }
-	            returnStatus = realTimeParsing();
-		    } catch (Exception e) {
-		       	e.printStackTrace();
-	        }
-			return returnStatus;
-		}
-	}
-	
 	/**
-	 * Return the Data object.
-	 * @return
+	 * @return the Data object
 	 */
 	public Object getData() {
 		return data;
+	}
+	
+	/**
+	 * @return the internal data object
+	 */
+	public Object getInternalData(){
+		return internalData;
 	}
 	
 	
@@ -298,8 +293,7 @@ public abstract class SystemTapParser extends Job {
 	public String getFile() {
 		return sourcePath;
 	}
-	
-	
+
 	/**
 	 * Sets the file to read from
 	 * 
@@ -308,24 +302,20 @@ public abstract class SystemTapParser extends Job {
 	public void setSourcePath(String source) {
 		this.sourcePath = source;
 	}
-	
 
 	/**
-	 * Slightly more graceful termination than cancelJob.
-	 * Setting to true will cause the parser's RunTimeJob to terminate at the end
-	 * of its current iteration. Does not offer as solid a guarantee
-	 * of termination, however.
+	 * Will terminate the parser at the next opportunity (~once every 0.5s)s
+	 * 
 	 * @param val
 	 */
 	public void setDone(boolean val) {
-		isDone = val;
+		done = val;
 	}
 
-	
 	public void setMonitor(IProgressMonitor m) {
 		this.monitor = m;
 	}
-	
+
 	/**
 	 * Set whether or not this parser runs in real time. If viewID has already
 	 * been set, this will also attempt to open the view.
@@ -336,7 +326,7 @@ public abstract class SystemTapParser extends Job {
 		realTime = val;
 
 	}
-	
+
 	/**
 	 * Set the viewID to use for this parser -- see the callgraph.core view
 	 * extension point. If realTime is set to true, this will also attempt to
@@ -351,56 +341,40 @@ public abstract class SystemTapParser extends Job {
 	/**
 	 * Called at the end of a non-realtime run. 
 	 * Feel free to override this method if using non-realtime functions.
-	 * The setData method will be called after executeParsing() is run. The getData() method
-	 * will be used by the SystemTapView to get the data associated with this parser.
+	 * The setData method will be called after executeParsing() is run.
+	 * The getData() method will be used by the SystemTapView to get the 
+	 * data associated with this parser.
 	 * <br><br>
-	 * Alternatively, you can cast the parser within SystemTapView to your own parser class and access
-	 * its data structures that way. 
+	 * Alternatively, you can cast the parser within SystemTapView to your
+	 * own parser class and access its data structures that way. 
 	 */
 	public void setData(Object obj) {
 		data = obj;
 	}
 	
 	/**
-	 * Cancels the RunTimeJob affiliated with this parser. Returns the result
-	 * of job.cancel() if job is not null, or false if job is null.
+	 * Sends a message to cancel the job. Job may not terminate immediately.
 	 */
-	public boolean cancelJob() {
-		if (job != null) {
-			jobCancelled = true;
-			return job.cancel();
-		}
-		return false;
-	}
-	
-	/**
-	 * Returns true if job is not null and the job's last result was CANCEL_STATUS.
-	 *  False otherwise.
-	 */
-	public boolean isJobCancelled() {
-		if ((job != null && job.getResult() == Status.CANCEL_STATUS)
-				|| jobCancelled) {
-			return true;
-		}
-		return false;
+	public void cancelJob() {
+		done = true;
 	}
 
-	
+	public boolean isDone() {
+		return done;
+	}
+
 	public void setKillButtonEnabled(boolean val) {
-		if (view != null) 
+		if (view != null)
 			view.setKillButtonEnabled(val);
-		
 	}
 
 	public boolean isRealTime() {
 		return realTime;
 	}
 
-
 	public void setSecondaryID(String secondaryID) {
 		this.secondaryID = secondaryID;
 	}
-
 
 	public String getSecondaryID() {
 		return secondaryID;

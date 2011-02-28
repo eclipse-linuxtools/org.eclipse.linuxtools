@@ -112,7 +112,7 @@ public class FunctionBrowserAction extends Action implements IWorkbenchAction, I
 				IEditorInput input;
 				IEditorPart ed = page.getActiveEditor();
 				if(ed == null) {
-					NewFileAction action = new NewFileAction(page.getWorkbenchWindow());
+					NewFileAction action = new NewFileAction();
 					//action.init(page.getWorkbenchWindow());
 					action.run();
 					ed = page.getWorkbenchWindow().getActivePage().getActiveEditor();

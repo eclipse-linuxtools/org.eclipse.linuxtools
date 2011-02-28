@@ -41,7 +41,6 @@ public class StapGraphParser extends SystemTapParser {
 	
 	public  HashMap<Integer, Long> timeMap;
 	public  TreeMap<Integer, String> serialMap;
-//	public  HashMap<Integer, ArrayList<Integer>> outNeighbours;
 	public  HashMap<Integer, HashMap<Integer, ArrayList<Integer>>> neighbourMaps;
 	public  HashMap<String, Long> aggregateTimeMap;
 	public  HashMap<String, Integer> countMap;
@@ -51,7 +50,6 @@ public class StapGraphParser extends SystemTapParser {
 	public int validator;
 	public Long endingTimeInNS;
 	public long totalTime;
-//	public int lastFunctionCalled;
 	public  HashMap<Integer, Integer> lastFunctionMap;
 	public ICProject project;
 	private static final String DELIM = ",,"; //$NON-NLS-1$
@@ -59,8 +57,6 @@ public class StapGraphParser extends SystemTapParser {
 	private boolean encounteredMain = false;
 	private ArrayList<Integer> shouldGetEndingTimeForID = new ArrayList <Integer>();
 	
-//	private ArrayList<String> nameList = new ArrayList<String>();
-//	private ArrayList<Integer> idList = new ArrayList<Integer>();
 	private  HashMap<Integer, ArrayList<String>> nameMaps;
 	private  HashMap<Integer, ArrayList<Integer>> idMaps;
 	private boolean skippedDirectives = false; 			
@@ -87,7 +83,7 @@ public class StapGraphParser extends SystemTapParser {
 		project = null;
 		startTime = -1;
 	}
-
+	
 	
 	public IStatus nonRealTimeParsing(){
 		//Clear maps (in case a previous execution left values hanging)
@@ -184,16 +180,18 @@ public class StapGraphParser extends SystemTapParser {
 		/*
 		 * Append message
 		 */
-		for (int key : idMaps.keySet()) {
-			ArrayList<Integer> idList = idMaps.get(key);
-			if (msg.length() < 1 || idList.size() < 1)
-				continue;
-			int id = idList.get(idList.size() -1);
-			if (msg.equals("<unknown>")) { //$NON-NLS-1$
-				msg = msg + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
-			}
-			markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + msg); //$NON-NLS-1$
-			}
+		String[] parsed = msg.split(",,", 2);
+		
+		int key = Integer.parseInt(parsed[0]);
+		
+		ArrayList<Integer> idList = idMaps.get(key);
+		if (idList == null || msg.length() < 1 || idList.size() < 1)
+			return;
+		int id = idList.get(idList.size() -1);
+		if (parsed[1].equals("<unknown>")) { //$NON-NLS-1$
+			parsed[1] = parsed[1] + Messages.getString("StapGraphParser.UnknownMarkers"); //$NON-NLS-1$
+		}
+		markedMap.put(id, (markedMap.get(id) == null ? "" : markedMap.get(id)) + parsed[1]); //$NON-NLS-1$
 	}
 	
 	private IStatus parse(String s) {
@@ -385,7 +383,114 @@ public class StapGraphParser extends SystemTapParser {
 		}
 		return Status.OK_STATUS;
 	}
+
 	
+	private IStatus parseDotFile() {
+		if (!(internalData instanceof BufferedReader))
+			return Status.CANCEL_STATUS;
+
+		BufferedReader buff = (BufferedReader) internalData;
+		
+		HashMap <Integer, ArrayList<Integer>> outNeighbours= new HashMap<Integer, ArrayList<Integer>>();
+		ArrayList<String> nameList = new ArrayList<String>();
+		ArrayList<Integer> idList = new ArrayList<Integer>();
+		endingTimeInNS =0l;
+		totalTime=10000l;
+		try {
+			String line;
+			while ((line = buff.readLine()) != null) {
+				if (line.equals("}")) //$NON-NLS-1$
+					break;
+				if (monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+				if (line.length() < 1)
+					continue;
+				
+				String[] args = new String[2];
+				args = line.split(" ", 2); //$NON-NLS-1$
+				if (args[0].contains("->")) { //$NON-NLS-1$
+					//connection
+					int[] ids = new int[2];
+					int called = 1;
+					try {
+						ids[0] = Integer.parseInt(args[0].split("->")[0]); //$NON-NLS-1$
+						ids[1] = Integer.parseInt(args[0].split("->")[1]); //$NON-NLS-1$
+						int index1 = args[1].indexOf("=\""); //$NON-NLS-1$
+						int index2 = args[1].indexOf("\"]"); //$NON-NLS-1$
+						called = Integer.parseInt(args[1].substring(index1 + 2,index2));
+					} catch (NumberFormatException e) {
+						SystemTapUIErrorMessages m = new SystemTapUIErrorMessages(
+								Messages.getString("StapGraphParser.idOrLabel"), Messages.getString("StapGraphParser.idOrLabel"),  //$NON-NLS-1$ //$NON-NLS-2$ 
+								Messages.getString("StapGraphParser.nonNumericLabel")); //$NON-NLS-1$
+						m.schedule();
+						return Status.CANCEL_STATUS;
+					}
+					
+					//Set neighbour
+					ArrayList<Integer> tmpList = outNeighbours.get(ids[0]);
+					if (tmpList == null)
+						tmpList = new ArrayList<Integer>();
+					
+					for (int i = 0; i < called; i++)
+						tmpList.add(ids[1]);
+					
+					outNeighbours.put(ids[0], tmpList);
+				} else {
+					//node
+					try {
+						int id = Integer.parseInt(args[0]);
+						if (firstNode == -1) {
+							firstNode = id;
+						}
+						int index = args[1].indexOf("=\""); //$NON-NLS-1$
+						String name = args[1].substring(index + 2, args[1].indexOf(" ", index)); //$NON-NLS-1$
+						double dtime = 0.0;
+						dtime = Double.parseDouble(args[1].substring(args[1].indexOf(" ") + 1, args[1].indexOf("%"))); //$NON-NLS-1$ //$NON-NLS-2$
+						long time = (long) (dtime*100); 
+	
+						nameList.add(name);
+						idList.add(id);
+						timeMap.put(id, time);
+						serialMap.put(id, name);
+						if (countMap.get(name) == null){
+							countMap.put(name, 0);
+						}
+						countMap.put(name, countMap.get(name) + 1);
+						
+						long cumulativeTime = (aggregateTimeMap.get(name) != null ? aggregateTimeMap.get(name) : 0) + time;
+						aggregateTimeMap.put(name, cumulativeTime);
+					} catch (NumberFormatException e) {
+						SystemTapUIErrorMessages m = new SystemTapUIErrorMessages(
+								Messages.getString("StapGraphParser.idOrTime"), Messages.getString("StapGraphParser.idOrTime"),  //$NON-NLS-1$ //$NON-NLS-2$
+						Messages.getString("StapGraphParser.nonNumericTime")); //$NON-NLS-1$
+						m.schedule();
+						return Status.CANCEL_STATUS;
+					}
+					
+				}
+				
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				buff.close();
+			} catch (IOException e) {
+				//Do nothing
+			}
+		}
+		neighbourMaps.put(0, outNeighbours);
+		nameMaps.put(0, nameList);
+		idMaps.put(0, idList);
+		try {
+			view.update();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		return Status.OK_STATUS;
+	}
 
 	@Override
 	public IStatus realTimeParsing() {
@@ -396,12 +501,17 @@ public class StapGraphParser extends SystemTapParser {
 
 		String line;
 		boolean draw = false;
+		boolean first = true;
 		try {
 			while ((line = buff.readLine()) != null) {
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 				if (line.length() < 1)
 					continue;
+				if (first && (line.contains(Messages.getString("StapGraphParser.17")))) { //$NON-NLS-1$
+					return parseDotFile();
+				}
+				first = false;
 				
 				draw = true; 
 				if (line.equals("PROBE_BEGIN")) { //$NON-NLS-1$
@@ -454,5 +564,6 @@ public class StapGraphParser extends SystemTapParser {
 				Messages.getString("StapGraphParser.ActualTime") + time/1000000  //$NON-NLS-1$
 				+ Messages.getString("StapGraphParser.TimeUnits")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+
 
 }

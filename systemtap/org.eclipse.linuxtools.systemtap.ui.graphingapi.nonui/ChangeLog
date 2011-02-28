@@ -1,3 +1,8 @@
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/nonui/structures/ChartStreamDaemon2.java: Removed.
+	* src/org/eclipse/linuxtools/systemtap/ui/graphingapi/nonui/IGraphColorConstants.java (COLORS): 
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix bundle name.

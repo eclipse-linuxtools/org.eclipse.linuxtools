@@ -26,7 +26,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(GraphingAPIPreferenceConstants.P_JUMP_NEW_TABLE_ENTRY, false);
 		store.setDefault(GraphingAPIPreferenceConstants.P_VIEWABLE_DATA_ITEMS, 100);
 		store.setDefault(GraphingAPIPreferenceConstants.P_MAX_DATA_ITEMS, 250);
-		store.setDefault(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS, 8);
+		store.setDefault(GraphingAPIPreferenceConstants.P_X_SERIES_TICKS, 10);
 		store.setDefault(GraphingAPIPreferenceConstants.P_Y_SERIES_TICKS, 4);
 	}
 }

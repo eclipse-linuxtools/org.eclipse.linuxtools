@@ -173,10 +173,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 
 		// check for cancellation
 		if ( !testOutput(outputPath) || monitor.isCanceled() ) {
+			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(Messages.getString("SystemTapLaunchConfigurationDelegate.0"),  //$NON-NLS-1$
+					Messages.getString("SystemTapLaunchConfigurationDelegate.1"), Messages.getString("SystemTapLaunchConfigurationDelegate.2") + outputPath +  //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("SystemTapLaunchConfigurationDelegate.3")); //$NON-NLS-1$
+			mess.schedule();
 			return;
 		}
 
-		finishLaunch(launch, config, partialCommand, m, true);
+		finishLaunch(launch, config, m, true);
 	}
 
 	
@@ -192,7 +196,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 	}
 	
 
-	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, String options,
+	private void finishLaunch(ILaunch launch, ILaunchConfiguration config, 
 			IProgressMonitor monitor, boolean retry) {
 
 		try {
@@ -259,7 +263,7 @@ public class SystemTapLaunchConfigurationDelegate extends
 			
 			while (!process.isTerminated()) {
 				Thread.sleep(100);
-				if ((monitor != null && monitor.isCanceled()) || parser.isJobCancelled()) {
+				if ((monitor != null && monitor.isCanceled()) || parser.isDone()) {
 					parser.cancelJob();
 					process.terminate();
 					return;
@@ -309,11 +313,14 @@ public class SystemTapLaunchConfigurationDelegate extends
 				}*/
 				
 				errorHandler.finishHandling(monitor, scriptPath);
-				SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages
+				if (errorHandler.isErrorRecognized()) {
+					SystemTapUIErrorMessages errorDialog = new SystemTapUIErrorMessages
 						(Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
 						Messages.getString("SystemTapLaunchConfigurationDelegate.CallGraphGenericError"),  //$NON-NLS-1$
 						errorHandler.getErrorMessage());
-				errorDialog.schedule();
+				
+					errorDialog.schedule();
+				}
 				return;
 			}
 			

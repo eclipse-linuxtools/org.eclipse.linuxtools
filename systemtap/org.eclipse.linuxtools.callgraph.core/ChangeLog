@@ -1,3 +1,57 @@
+2010-02-26  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java:
+		Clean up code and add getter for internal data field.
+
+2010-02-23  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Add a Thread.sleep() to stop abusing CPU cycles so much
+	Get rid of extraneous parsing job as a further optimization
+
+2010-02-12  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Create default implementations of getParser and setParser using a private SystemTapParser variable.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextView.java: Get rid of getParser and setParser functions.
+
+2010-02-11  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextParser.java: Properly grab new lines in text parser.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Call makeView earlier so SystemTapTextView will stop breaking.
+
+2010-02-02  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapCommandGenerator.java: Fix binary argument handling.
+
+2010-02-01  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Remove unused externalized string.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Remove Callgraph Version string.
+
+2010-01-28  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Clean up unnecessary code.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextView.java: Same as above.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Same as above.
+
+2010-01-26  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapParser.java: Fix settings for nonrealtimeparsing.
+
+2010-01-22  Roland Grunberg  <rgrunber@redhat.com>
+
+	* errors.prop: Add case for when uprobes.ko built for a previous kernel, and must be updated.
+	* src/org/eclipse/linuxtools/callgraph/core/messages.properties: Remove Error Log externalized strings.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java:
+		(writeToLog): Output logged errors using the Eclipse Error Log.
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapTextView.java:
+		(createPartControl): remove the Error Log from being displayed. 
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapView.java: Remove the Error Log window.
+
+2009-12-22  Charley Wang  <chwang@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/core/SystemTapErrorHandler.java: Remove extraneous logic
+	* errors.prop: Re-add uprobes error after slight modification to popup error
+
 2009-12-21  Charley Wang  <chwang@redhat.com>
 
 	* errors.prop: Get rid of error for uprobes -- the stap output is pretty descriptive. The popup box is just annoying.

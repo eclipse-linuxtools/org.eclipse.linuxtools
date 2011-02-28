@@ -1,3 +1,43 @@
+2010-03-11  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/ConsoleAction.java (buildEnablementChecks): Fix for BZ #304208
+
+2010-02-11  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/ConsoleAction.java: Fix for BZ #293207
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/StopScriptAction.java: Fix for BZ #293207
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/ScriptConsole.java: Fix for BZ #293207
+	
+		Consoles within ConsoleManger are only guaranteed to implement IConsole, so to cast to
+		ScriptConsole requires a check first.
+
+2010-02-04  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* META-INF/MANIFEST.MF: removed version dependency for org.eclipse.ui bundle
+
+2010-01-29  Anithra P Janakiraman  <anithra@linux.vnet.ibm.com>
+
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/LoggedCommand2.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/ScpExec.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/ScriptConsole2.java: New file.
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/actions/ConsoleAction.java (selectionChanged): 
+	(.propertyChanged): 
+	(isRunning): 
+	(dispose): 
+	(getActive): 
+	(buildEnablementChecks): 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/dialogs/SelectServerDialog.java (.widgetSelected): 
+	(open): 
+	* src/org/eclipse/linuxtools/systemtap/ui/consolelog/structures/ScriptConsole.java (run): 
+	(ScriptConsole): 
+	(createErrorDaemon): 
+	(createConsoleDaemon): 
+	(saveStream): 
+	(isRunning): 
+	(dispose): 
+	(stop): 
+	(getCommand): 
+
 2009-11-16  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix Bundle-Name.
