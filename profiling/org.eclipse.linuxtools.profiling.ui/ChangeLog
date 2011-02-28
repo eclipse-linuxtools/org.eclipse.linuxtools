@@ -1,32 +1,3 @@
-2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
-
-	* META-INF/MANIFEST.MF: Bump version to 0.7.0.
-
-2010-05-28  Elliott Baron  <ebaron@fedoraproject.org>
-
-	Bug #314680
-	* META-INF/MANIFEST.MF: Added new dependency.
-	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java (openEditorAndSelect): Account
-		for source lookup returning LocalFileStorage.
-
-2010-05-06  Roland Grunberg  <rgrunber@redhat.com>
-
-	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java (findFunctionsInProject):
-		Use a stronger comparison when determining if two files have the same path.
-
-2010-04-08  Roland Grunberg  <rgrunber@redhat.com>
-
-	* META-INF/MANIFEST.MF: Added imports needed for using CDT Indexer.
-	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java
-		(findCProjectWithAbsolutePath): New, for purpose of locating an ICProject.
-		(findFunctionsInProject): New, for purpose of finding data needed to link
-		to source code of a function call.
-
-2010-03-22  Roland Grunberg  <rgrunber@redhat.com>
-
-	* src/org/eclipse/linuxtools/profiling/ui/ProfileUIUtils.java:
-		(openEditorAndSelect): Overload to take an offset and length.
-
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.3.0.

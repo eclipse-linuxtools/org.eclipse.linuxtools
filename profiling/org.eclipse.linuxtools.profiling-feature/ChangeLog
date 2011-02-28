@@ -1,26 +1,3 @@
-2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
-
-	* feature.xml: Bump version, require CDT 7.
-
-2010-05-28  Elliott Baron  <ebaron@fedoraproject.org>
-
-	* feature.xml: Regenerated dependencies.
-
-2010-05-18  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.properties: Fix provider name.
-
-2010-04-26  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.properties: Match consistent license text (bug #306627).  Update
-	copyright year.
-	* license.html: New file.  HTML version of SUA (bug #306627).
-	* build.properties: Include license.html.
-
-2010-04-12  Andrew Overholt  <overholt@redhat.com>
-
-	* feature.properties: Match consistent license text (bug #306627).
-
 2009-08-11  Elliott Baron  <ebaron@redhat.com>
 
 	* feature.xml: Remove redundant feature dependencies, set CDT version >= 6.0.0.
