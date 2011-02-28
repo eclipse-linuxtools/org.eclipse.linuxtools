@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2009 Red Hat, Inc.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        Red Hat - initial API and implementation
+ -->
 <feature
       id="org.eclipse.linuxtools.rpm"
       label="%featureName"
-      version="3.0.0"
-      provider-name="Eclipse.org">
-   <install-handler/>
+      version="0.4.3.qualifier"
+      provider-name="%provider">
 
-   <description url="[Enter Feature URL here.]">
-      [Enter Feature Description here.]
+   <description url="http://www.eclipse.org/linuxtools/projectPages/specfile/">
+      %description
    </description>
 
-   <copyright url="[Enter Copyright URL here.]">
-      [Enter Copyright Description here.]
+   <copyright>
+      %copyright
    </copyright>
 
-   <license url="[Enter License URL here.]">
-      [Enter License Description here.]
+   <license url="%licenseURL">
+      %license
    </license>
+
+   <url>
+      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
+   </url>
 
    <requires>
       <import plugin="org.eclipse.core.resources"/>
@@ -33,18 +46,14 @@
          id="org.eclipse.linuxtools.rpm.core"
          download-size="0"
          install-size="0"
-         version="3.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
-   <plugin
-         id="org.eclipse.linuxtools.rpm.doc"
-         download-size="0"
-         install-size="0"
-         version="3.0.0"/>
-
-   <plugin
+     <plugin
          id="org.eclipse.linuxtools.rpm.ui"
          download-size="0"
          install-size="0"
-         version="3.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

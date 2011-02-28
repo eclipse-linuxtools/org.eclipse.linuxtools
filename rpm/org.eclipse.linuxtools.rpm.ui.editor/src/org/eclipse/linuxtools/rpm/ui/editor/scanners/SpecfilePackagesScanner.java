@@ -29,13 +29,11 @@ import org.eclipse.linuxtools.rpm.ui.editor.rules.MacroRule;
 import org.eclipse.swt.SWT;
 
 /**
- * This class is used specifically for syntax coloring of the Requires 
- * and BuildRquires, etc... tags of a spec file.
+ * This class is specifically used for syntax coloring of Requires,
+ * BuildRquires, etc... tags of a specfile.
  * 
  */
 public class SpecfilePackagesScanner extends RuleBasedScanner {
-
-	private IToken fLastToken;
 
 	protected static final String[] PACKAGES_TAGS = {
 			"BuildRequires", "BuildConflicts", //$NON-NLS-1$ //$NON-NLS-2$
@@ -44,6 +42,7 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 			"Obsoletes", "Prereq" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	public SpecfilePackagesScanner(ColorManager manager) {
+		super();
 		IToken packageToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.PACKAGES), null, SWT.NONE));
 
@@ -80,15 +79,5 @@ public class SpecfilePackagesScanner extends RuleBasedScanner {
 		IRule[] result = new IRule[rules.size()];
 		rules.toArray(result);
 		setRules(result);
-	}
-
-	protected IToken getLastToken() {
-		return fLastToken;
-	}
-
-	@Override
-	public IToken nextToken() {
-		fLastToken = super.nextToken();
-		return fLastToken;
 	}
 }

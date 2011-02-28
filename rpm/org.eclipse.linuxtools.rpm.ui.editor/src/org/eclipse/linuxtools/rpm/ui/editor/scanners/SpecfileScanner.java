@@ -74,26 +74,27 @@ import org.eclipse.swt.SWT;
 
 public class SpecfileScanner extends RuleBasedScanner {
 
-	private static String[] sections = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
+	private static final String[] SECTIONS = { PREP_SECTION, BUILD_SECTION, INSTALL_SECTION,
 		PRETRANS_SECTION, PRE_SECTION, PREUN_SECTION, POST_SECTION, FILES_SECTION, CHANGELOG_SECTION,
 		PACKAGE_SECTION, DESCRIPTION_SECTION, POSTUN_SECTION, POSTTRANS_SECTION, CLEAN_SECTION, 
 		CHECK_SECTION };
 
-	public static String[] DEFINED_MACROS = {
+	public static final String[] DEFINED_MACROS = {
 			"%define", "%global", "%make", "%setup", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			"%attrib", "%defattr", "%attr", "%dir", "%config", "%docdir", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 			"%doc", "%lang", "%verify", "%ghost" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-	private static String[] keywords = { "%if", "%ifarch", "%ifnarch", "%else", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private static final String[] KEYWORDS = { "%if", "%ifarch", "%ifnarch", "%else", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			"%endif" }; //$NON-NLS-1$
 
-	private static String[] TAGS = { SUMMARY, NAME, VERSION, PACKAGER, ICON,
+	private static final String[] TAGS = { SUMMARY, NAME, VERSION, PACKAGER, ICON,
 			URL, PREFIX, GROUP, LICENSE, RELEASE, BUILD_ROOT, DISTRIBUTION,
 			VENDOR, PROVIDES, EXCLUSIVE_ARCH, EXCLUDE_ARCH, EXCLUDE_OS,
 			BUILD_ARCH, BUILD_ARCHITECTURES, AUTO_REQUIRES, AUTO_REQ,
 			AUTO_REQ_PROV, AUTO_PROV, EPOCH };
 
 	public SpecfileScanner(ColorManager manager) {
+		super();
 		IToken sectionToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
 
@@ -128,14 +129,14 @@ public class SpecfileScanner extends RuleBasedScanner {
 
 		// %if, %else ...
 		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (String keyword : keywords) {
+		for (String keyword : KEYWORDS) {
 			wordRule.addWord(keyword, keywordToken);
 		}
 		rules.add(wordRule);
 
 		// %prep, %build, ...
 		wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (String section : sections) {
+		for (String section : SECTIONS) {
 			wordRule.addWord(section, sectionToken);
 		}
 		rules.add(wordRule);

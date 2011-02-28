@@ -40,4 +40,9 @@ public interface RpmTags {
 	String AUTO_REQ_PROV = "AutoReqProv"; //$NON-NLS-1$
 	String AUTO_PROV = "AutoProv"; //$NON-NLS-1$
 	String EPOCH = "Epoch"; //$NON-NLS-1$
+	String OBSOLETES = "Obsoletes"; //$NON-NLS-1$
+	String REQUIRES = "Requires";  //$NON-NLS-1$
+	String REQUIRES_PRE = "Requires(pre)"; //$NON-NLS-1$
+	String REQUIRES_POST = "Requires(post)"; //$NON-NLS-1$
+	String REQUIRES_POSTUN = "Requires(postun)"; //$NON-NLS-1$
 }

@@ -1,17 +1,19 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
-
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
-import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,24 +22,26 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class InstallScriptsPage extends PropertyPage {
 
-	private static final String RPM_PRE_INSTALL = Messages.getString("InstallScriptsPage.PreinstallScript"); //$NON-NLS-1$
+	private static final String RPM_PRE_INSTALL = Messages
+			.getString("InstallScriptsPage.PreinstallScript"); //$NON-NLS-1$
 
-	private static final String RPM_POST_INSTALL = Messages.getString("InstallScriptsPage.PostinstallScript"); //$NON-NLS-1$
+	private static final String RPM_POST_INSTALL = Messages
+			.getString("InstallScriptsPage.PostinstallScript"); //$NON-NLS-1$
 
-	private static final String RPM_PRE_UNINSTALL = Messages.getString("InstallScriptsPage.PreuninstallScript"); //$NON-NLS-1$
+	private static final String RPM_PRE_UNINSTALL = Messages
+			.getString("InstallScriptsPage.PreuninstallScript"); //$NON-NLS-1$
 
-	private static final String RPM_POST_UNINSTALL = Messages.getString("InstallScriptsPage.PostuninstallScript"); //$NON-NLS-1$
-
-	private static final int NAME_FIELD_WIDTH = 20;
+	private static final String RPM_POST_UNINSTALL = Messages
+			.getString("InstallScriptsPage.PostuninstallScript"); //$NON-NLS-1$
 
 	private static final int SCRIPT_ENTRIES_FIELD_WIDTH = 80;
 
 	private static final int SCRIPT_ENTRIES_FIELD_HEIGHT = 20;
-
-	private Text rpm_nameText;
 
 	private Text rpm_PreInstallText;
 
@@ -53,7 +57,7 @@ public class InstallScriptsPage extends PropertyPage {
 	public InstallScriptsPage() {
 		super();
 	}
-	
+
 	private void addScriptFields(Composite parent) {
 		Composite composite = createDefaultComposite(parent);
 
@@ -100,18 +104,18 @@ public class InstallScriptsPage extends PropertyPage {
 			IFile rpmFile = (IFile) getElement();
 			String rpm_PreInstall = RPMQuery.getPreInstallScript(rpmFile);
 			rpm_PreInstallText.setText(rpm_PreInstall);
-			
+
 			String rpm_PostInstall = RPMQuery.getPostInstallScript(rpmFile);
 			rpm_PostInstallText.setText(rpm_PostInstall);
-			
+
 			String rpm_PreUnInstall = RPMQuery.getPreUninstallScript(rpmFile);
 			rpm_PreUnInstallText.setText(rpm_PreUnInstall);
-			
+
 			String rpm_PostUnInstall = RPMQuery.getPostUninstallScript(rpmFile);
 			rpm_PostUnInstallText.setText(rpm_PostUnInstall);
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
+					StatusManager.LOG | StatusManager.SHOW);
 		}
 
 	}
@@ -119,6 +123,7 @@ public class InstallScriptsPage extends PropertyPage {
 	/**
 	 * @see PreferencePage#createContents(Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -143,15 +148,6 @@ public class InstallScriptsPage extends PropertyPage {
 		composite.setLayoutData(data);
 
 		return composite;
-	}
-
-	protected void performDefaults() {
-
-	}
-
-	public boolean performOk() {
-
-		return true;
 	}
 
 }

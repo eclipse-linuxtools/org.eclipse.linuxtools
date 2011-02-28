@@ -18,9 +18,9 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.RpmPackageProposalsList;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 
 public class RpmPackageProposalsListTest extends TestCase {

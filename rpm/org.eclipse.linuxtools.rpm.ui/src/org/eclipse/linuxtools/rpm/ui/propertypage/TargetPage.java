@@ -1,18 +1,19 @@
-/*
- * (c) 2004, 2005 Red Hat, Inc.
+/*******************************************************************************
+ * Copyright (c) 2004-2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * This program is open source software licensed under the 
- * Eclipse Public License ver. 1
- */
-
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
-import org.eclipse.linuxtools.rpm.ui.util.ExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,20 +21,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.statushandlers.StatusAdapter;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class TargetPage extends PropertyPage {
-	
-	private static final String RPM_ARCH = Messages.getString("TargetPage.Architecture"); //$NON-NLS-1$
 
-	private static final String RPM_PLATFORM = Messages.getString("TargetPage.Platform"); //$NON-NLS-1$
+	private static final String RPM_ARCH = Messages
+			.getString("TargetPage.Architecture"); //$NON-NLS-1$
+
+	private static final String RPM_PLATFORM = Messages
+			.getString("TargetPage.Platform"); //$NON-NLS-1$
 
 	private static final String RPM_OS = Messages.getString("TargetPage.OS"); //$NON-NLS-1$
 
-	private static final String RPM_HOST = Messages.getString("TargetPage.BuildHost"); //$NON-NLS-1$
+	private static final String RPM_HOST = Messages
+			.getString("TargetPage.BuildHost"); //$NON-NLS-1$
 
-	private static final String RPM_TIME = Messages.getString("TargetPage.BuildTime"); //$NON-NLS-1$
-
-	private static final int NAME_FIELD_WIDTH = 20;
+	private static final String RPM_TIME = Messages
+			.getString("TargetPage.BuildTime"); //$NON-NLS-1$
 
 	private static final int ARCH_FIELD_WIDTH = 8;
 
@@ -44,8 +49,6 @@ public class TargetPage extends PropertyPage {
 	private static final int HOST_FIELD_WIDTH = 40;
 
 	private static final int TIME_FIELD_WIDTH = 35;
-
-	private Label rpm_nameText;
 
 	private Label rpm_archText;
 
@@ -107,8 +110,6 @@ public class TargetPage extends PropertyPage {
 		// Populate RPM text fields
 		try {
 			IFile rpmFile = (IFile) getElement();
-			String rpm_path = ((IResource) getElement()).getRawLocation()
-			.toString();
 			String rpm_arch = RPMQuery.getArch(rpmFile);
 			rpm_archText.setText(rpm_arch);
 			String rpm_platform = RPMQuery.getPlatform(rpmFile);
@@ -119,9 +120,9 @@ public class TargetPage extends PropertyPage {
 			rpm_hostText.setText(rpm_host);
 			String rpm_time = RPMQuery.getBuildTime(rpmFile);
 			rpm_timeText.setText(rpm_time);
-		} catch(CoreException e) {
-			ExceptionHandler.handle(e, getShell(),
-					Messages.getString("ErrorDialog.title"), e.getMessage());
+		} catch (CoreException e) {
+			StatusManager.getManager().handle(new StatusAdapter(e.getStatus()),
+					StatusManager.LOG | StatusManager.SHOW);
 		}
 
 	}
@@ -129,6 +130,7 @@ public class TargetPage extends PropertyPage {
 	/**
 	 * @see PreferencePage#createContents(Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -154,14 +156,4 @@ public class TargetPage extends PropertyPage {
 
 		return composite;
 	}
-
-	protected void performDefaults() {
-
-	}
-
-	public boolean performOk() {
-
-		return true;
-	}
-
 }

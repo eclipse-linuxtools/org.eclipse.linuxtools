@@ -82,7 +82,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					
 					lineNumber = item.getLineNbr();
 					if (lineNumber == -1) {
-						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, item.getReferedContent());
+						lineNumber = RpmlintParser.getInstance().getRealLineNbr(specContent, item.getRefferedContent());
 						if (lineNumber == -1) {
 							lineNumber = 1;
 						}
@@ -101,7 +101,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					RpmlintParser.getInstance().addMarker((IFile) resource, item.getId() + ": " //$NON-NLS-1$
 							+ item.getMessage(), lineNumber, charStart, charEnd,
 							item.getSeverity(), item.getId(),
-							item.getReferedContent());
+							item.getRefferedContent());
 				}
 			}
 		} else if (Activator.RPMFILE_EXTENSION.equals(resource
@@ -129,7 +129,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 					RpmlintParser.getInstance().addMarker((IFile) resource,
 							item.getId() + ": " //$NON-NLS-1$
 									+ item.getMessage(), item.getSeverity(),
-							item.getId(), item.getReferedContent());
+							item.getId(), item.getRefferedContent());
 			}
 		}
 		return true;

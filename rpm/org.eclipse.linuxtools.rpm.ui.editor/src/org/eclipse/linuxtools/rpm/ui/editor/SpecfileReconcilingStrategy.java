@@ -30,13 +30,11 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 	private SpecfileFoldingStructureProvider sFoldingStructureProvider;
 	
 	SpecfileContentOutlinePage outline;
-	int lastRegionOffset;
 	SpecfileEditor editor;
 	IDocumentProvider documentProvider;
 
 	public SpecfileReconcilingStrategy(SpecfileEditor editor) {
 		outline= editor.getOutlinePage();
-		lastRegionOffset = Integer.MAX_VALUE;
 		this.editor = editor;
 		documentProvider = editor.getDocumentProvider();
 		sFoldingStructureProvider= new SpecfileFoldingStructureProvider(editor);
@@ -86,7 +84,6 @@ public class SpecfileReconcilingStrategy implements IReconcilingStrategy, IRecon
 				}
 			});
 		}
-		return;
 	}
 
 	private void updateFolding() {

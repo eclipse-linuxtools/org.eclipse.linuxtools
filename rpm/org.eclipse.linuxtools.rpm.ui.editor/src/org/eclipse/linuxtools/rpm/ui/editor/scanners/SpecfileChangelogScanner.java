@@ -35,10 +35,10 @@ import org.eclipse.swt.SWT;
  */
 public class SpecfileChangelogScanner extends RuleBasedScanner {
 
-	private static String[] sections = { RpmSections.CHANGELOG_SECTION };
 	private IToken fLastToken;
 	
 	public SpecfileChangelogScanner(ColorManager manager) {
+		super();
 		IToken sectionToken = new Token(new TextAttribute(manager
 				.getColor(ISpecfileColorConstants.SECTIONS), null, SWT.ITALIC));
 		
@@ -52,11 +52,8 @@ public class SpecfileChangelogScanner extends RuleBasedScanner {
 
 		// %prep, %build, ...
 		WordRule wordRule = new WordRule(new KeywordWordDetector(), Token.UNDEFINED);
-		for (String section : sections) {
-			wordRule.addWord(section, sectionToken);
-		}
+		wordRule.addWord(RpmSections.CHANGELOG_SECTION, sectionToken);
 		rules.add(wordRule);
-
 	
 		AuthorEmailRule emailRule= new AuthorEmailRule(authorEmail);
 		rules.add(emailRule);

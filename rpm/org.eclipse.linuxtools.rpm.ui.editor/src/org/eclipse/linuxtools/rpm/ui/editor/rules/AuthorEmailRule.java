@@ -24,21 +24,21 @@ public class AuthorEmailRule implements IPredicateRule {
 	/** The success token */
 	IToken token;
 
-	char START_CHAR = '<';
+	protected final static char START_CHAR = '<';
 
-	char END_CHAR = '>';
+	protected final static char END_CHAR = '>';
 
-	char[] INTER_CHARS = { '@', '.' };
+	protected final static char[] INTER_CHARS = { '@', '.' };
 
-	int STATE_START = 0;
+	protected final static int STATE_START = 0;
 
-	int STATE_OPENED = 1;
+	protected final static int STATE_OPENED = 1;
 
-	int STATE_AT = 2;
+	protected final static int STATE_AT = 2;
 
-	int STATE_PERIOD = 3;
+	protected final static int STATE_PERIOD = 3;
 
-	int STATE_DONE = 4;
+	protected final static int STATE_DONE = 4;
 
 	public AuthorEmailRule(IToken token) {
 		this.token = token;

@@ -20,7 +20,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.linuxtools.rpm.ui.editor.Utils;
+import org.eclipse.linuxtools.rpm.core.utils.Utils;
 
 public class SpecfileTestProject {
 	private IProject project;

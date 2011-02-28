@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><!--
+    Copyright (c) 2009 Red Hat, Inc.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+    
+    Contributors:
+        Red Hat - initial API and implementation
+ -->
+
+<templates>
+
+<!-- PREAMBLE SECTION TEMPLATES -->
+<template id="prep" name="%prep" description="%prep template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">%prep
+</template>
+<template id="define" name="%define" description="%define template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">%define ${key} ${value}</template>
+<template id="name" name="Name:" description="Name template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Name: ${package_name}</template>
+<template id="url" name="URL:" description="Url template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Url: ${package_url}</template>
+<template id="license" name="License:" description="License template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">License: ${package_name}</template>
+<template id="group" name="Group:" description="Group template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Group: ${package_group}</template>
+<template id="version" name="Version:" description="Version template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Version: ${package_name}</template>
+<template id="release" name="Release:" description="Release template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Release: ${package_name}%{?dist}</template>
+<template id="summary" name="Summary:" description="Summary template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Summary: ${package_name}</template>
+<template id="buildRoot" name="BuildRoot:" description="BuildRoot template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)</template>
+<template id="excludeArch" name="ExcludeArch:" description="ExcludeArch template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">ExcludeArch: ${exluded_arches}</template>
+<template id="requires" name="Requires" description="Requires template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Requires: ${package_name}</template>
+<template id="requiresPre" name="Requires" description="Requires(pre) template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Requires(pre): ${package_name}</template>
+<template id="requiresPost" name="Requires" description="Requires(post) template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Requires(post): ${package_name}</template>
+<template id="buildRequires" name="BuildRequires:" description="BuildRequires template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">BuildRequires: ${package_name}</template>
+<template id="source" name="Source:" description="Source template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Source${src_number}: ${source_filename}</template>
+<template id="sourceZero" name="Source0:" description="Source0 template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Source0: %{name}-%{version}.tar.${bz2}</template>
+<template id="patch" name="Patch:" description="Patch template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">Patch${patch_number}: ${path_filename}</template>
+<template id="description" name="%description" description="%description main package template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">%description
+${package_description}
+</template>
+<template id="package" name="%package template" description="Add a package template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">%package ${package_name}</template>
+<template id="develPackage" name="%package devel template" description="Add a devel package template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">%package devel
+Summary: Development packages for %{name}.
+Group: Development/Libraries
+Requires: %{name} = %{version}-%{release}
+Requires: ${package_name}
+</template>
+<template id="develDescription" name="%description devel" description="Add a devel package template" context="org.eclipse.linuxtools.rpm.ui.editor.preambleSection" enabled="true">%description devel
+The %{name}-devel package includes the header files
+and developer docs for the %{name} package.
+${more_dev_informations_on_this_devel_package}
+</template>
+
+<!-- PRE SECTION TEMPLATES -->
+<template id="build" name="%build" description="%build template" context="org.eclipse.linuxtools.rpm.ui.editor.preSection" enabled="true">%build
+</template>
+<template id="setup" name="%setup" description="setup -q template" context="org.eclipse.linuxtools.rpm.ui.editor.preSection" enabled="true">%setup -q</template>
+<template id="setupName" name="%setup" description="setup -q -n template" context="org.eclipse.linuxtools.rpm.ui.editor.preSection" enabled="true">%setup -q -n ${dir_name}</template>
+<template id="simplePatch" name="%patch" description="Add a simple patch entry" context="org.eclipse.linuxtools.rpm.ui.editor.preSection" enabled="true">%patch${patch_nbr} -b .${bkup_name}</template>
+<template id="levelPatch" name="%patch" description="Add a patch entry with source level" context="org.eclipse.linuxtools.rpm.ui.editor.preSection" enabled="true">%patch${patch_nbr} -p${src_level} -b .${bkup_name}</template>
+
+
+<!-- BUILD SECTION TEMPLATES -->
+<template id="install" name="%install" description="%install template" context="org.eclipse.linuxtools.rpm.ui.editor.buildSection" enabled="true">%install
+</template>
+<template id="configure" name="%configure" description="%configure template" context="org.eclipse.linuxtools.rpm.ui.editor.buildSection" enabled="true">%configure ${param}</template>
+<template id="make" name="make" description="make template" context="org.eclipse.linuxtools.rpm.ui.editor.buildSection" enabled="true">make</template>
+<template id="makeSmpFlag" name="make %{?_smp_mflags}" description="make template with smp macro" context="org.eclipse.linuxtools.rpm.ui.editor.buildSection" enabled="true">make %{?_smp_mflags}</template>
+
+<!-- INSTALL SECTION TEMPLATES -->
+<template id="changelog" name="%changelog" description="%changelog template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%changelog</template>
+<template id="defattr" name="%defattr" description="%defattr template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%defattr(-, root, root, -)</template>
+<template id="doc" name="%doc" description="%doc template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%doc ${COPYING} ${AUTHORS} ${INSTALL} ${README}</template>
+<template id="post" name="%post" description="%post section template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%post</template>
+<template id="pre" name="%pre" description="%pre section template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%pre</template>
+<template id="preun" name="%preun" description="%preun section template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%preun</template>
+<template id="clean" name="%clean" description="%clean section template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%clean
+rm -rf %{buildroot}
+</template>
+<template id="files" name="%files" description="%files section template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%files
+%defattr(-, root, root, -)
+</template>
+<template id="filesDevel" name="%files devel" description="%files devel section template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">%files devel
+%defattr(-, root, root, -)
+</template>
+<template id="rm" name="rm" description="remove command template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">rm</template>
+<template id="rmBuildRoot" name="rm" description="rm -rf ${buildroot} template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">rm -rf %{buildroot}</template>
+<template id="makeInstall" name="make DESTDIR=" description="make DESTDIR" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">make DESTDIR=%{buildroot} install || exit 1</template>
+<template id="desktopFileInstall" name="desktop-file-install" description="desktop-file-install template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">desktop-file-install --vendor ${vendor} \
+	--dir %{buildroot}%{_datadir}/applications \
+	--add-category ${app_category} \
+	%{buildroot}%{_datadir}/applications/${desktopfile_name}.desktop
+</template>
+<template id="updateDesktopDB" name="update-desktop-database" description="desktop-file-install template" context="org.eclipse.linuxtools.rpm.ui.editor.installSection" enabled="true">update-desktop-database -q %{_datadir}/applications</template>
+
+<!-- CHANGELOG SECTION TEMPLATES -->
+<template id="fix" name="fix" description="fix changelog message template" context="org.eclipse.linuxtools.rpm.ui.editor.changelogSection" enabled="true">fix: ${fix_msg} (#${bz_id})</template>
+<template id="bump" name="bump" description="bump changelog message template" context="org.eclipse.linuxtools.rpm.ui.editor.changelogSection" enabled="true">bump to ${versions} version.</template>
+
+</templates>

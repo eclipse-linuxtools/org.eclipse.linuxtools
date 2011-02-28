@@ -1,3 +1,71 @@
+2010-05-31  Alexander Kurtakov  <akurtako@redhat.com>
+    Fix for bz#309188 (rpmlint doesn't run from within editor).
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (runRpmlint): New method.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (execute): Run on the editor input if it's not structured selection.
+
+2010-06-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #315304
+
+	* plugin.properties: Externalize menu items, category names, etc.
+	* plugin.xml: Likewise.
+
+2010-01-19  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Require o.e.l.rpm.core.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java: Use Utils from core.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java: Likewise.
+
+2010-01-18  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Switch to commands.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java: Make it AbstractHandler. 
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java: Likewise. 
+
+2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.properties: Fix provider to be Eclipse not Eclipse.org.
+
+2009-06-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/Messages.java: New messages for missing rpmlint error.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/messages.properties: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Show error dialog when rpmlint is not found.
+
+2009-05-29  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/RunRpmlintAction.java (run): Add javadoc.
+	(selectionChanged): Likewise.
+	(setActivePart): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/actions/ToggleRpmlintNatureAction.java (run): Likewise.
+	(selectionChanged): Likewise.
+	(setActivePart): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/Activator.java (stop): Likewise.
+	(SPECFILE_EXTENSION): Likewise.
+	(start): Likewise.
+	(PLUGIN_ID): Likewise.
+	(RPMFILE_EXTENSION): Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintBuilder.java (MARKER_ID): Likewise.
+	(MAX_WORKS): Likewise.
+	(BUILDER_ID): Likewise.
+	(getSpecfileTaskHandler): Make it protected.
+
+2009-05-14  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: Bump release 0.4.3.
+
+2009-05-08  Alphonse Van Assche  <alcapcom@fedoraproject.org>
+	Add support for the new 'specfile-error' rpmlint error. This error is 
+	returned by rpmlint when it cannot parse a given .spec file using 
+	'rpm -q --qf= --specfile file.spec' command. The output of the RPM parser 
+	give us some useful information about many .spec file syntax errors.  
+
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java: Parse rpm parser error message.
+	* plugin.xml: Fix typo.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintMarkerVisitor.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintItem.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/rpmlint/resolutions/RpmlintMarkerResolutionGenerator.java: Likewise.
+
 2009-03-24  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* plugin.xml: Add popup menu item for running rpmlint on spec files.
@@ -130,7 +198,7 @@
 	* src/org/eclipse/linuxtools/rpm/rpmlint/builder/RpmlintNature.java: Likewise.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintItem.java (setSeverity): Likewise. 
 	(toString): Likewise.
-	(setReferedContent): Likewise.
+	(setRefferedContent): Likewise.
 	* src/org/eclipse/linuxtools/rpm/rpmlint/parser/RpmlintParser.java (getRealLineNbr): Likewise.
 	(parseRpmlintOurput): Likewise.
 	(runRpmlintCommand): Likewise.
