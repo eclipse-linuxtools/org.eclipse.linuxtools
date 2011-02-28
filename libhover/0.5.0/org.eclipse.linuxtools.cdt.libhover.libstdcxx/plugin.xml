@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="library"
+         name="Libstdc++ Library"
+         point="org.eclipse.linuxtools.cdt.libhover.library">
+      <library
+            docs="http://gcc.gnu.org/onlinedocs/libstdc++/manual/spine.html"
+            location="http://www.sourceware.org/eclipse/libhover/libstdc++-v3.libhover"
+            name="libstdc++ library"
+            type="C++">
+      </library>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="false">
+      </toc>
+   </extension>
+
+</plugin>

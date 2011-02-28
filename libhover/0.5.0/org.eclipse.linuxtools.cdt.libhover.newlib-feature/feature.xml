@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.linuxtools.cdt.libhover.newlib"
+      label="%featureName"
+      version="1.0.0.qualifier"
+      provider-name="%provider">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="epl-v10.php">
+      %license
+   </license>
+
+   <url>
+      <update label="Linux Tools Update Site" url="http://download.eclipse.org/technology/linuxtools/update"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.linuxtools.cdt.libhover.library_docs" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.linuxtools.cdt.libhover.newlib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>
