@@ -1,0 +1,4 @@
+<associateSites>
+<associateSite label="Ganymede Update Site" url="http://download.eclipse.org/releases/ganymede/"/>
+<associateSite label="BIRT 2.3 Update Site" url="http://download.eclipse.org/birt/update-site/2.3/"/>
+</associateSites>
