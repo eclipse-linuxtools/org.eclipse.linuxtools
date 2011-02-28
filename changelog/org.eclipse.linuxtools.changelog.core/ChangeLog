@@ -1,3 +1,9 @@
+2010-10-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (guessFunctionNames): Add
+	proper check for out-of-range by using the appropriate document according to whether change is local or
+	remote.
+
 2010-06-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #315976
