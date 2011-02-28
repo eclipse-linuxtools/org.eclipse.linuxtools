@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.eclipse.linuxtools.valgrind.massif;singleton:=true
-Bundle-Version: 0.4.0.qualifier
+Bundle-Version: 0.6.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.massif.MassifPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
@@ -49,7 +49,6 @@ Import-Package: org.eclipse.birt.chart.device,
  org.eclipse.linuxtools.profiling.ui,
  org.eclipse.linuxtools.valgrind.launch,
  org.eclipse.linuxtools.valgrind.ui,
- org.eclipse.ui,
- org.mozilla.javascript
+ org.eclipse.ui
 Export-Package: org.eclipse.linuxtools.internal.valgrind.massif,
  org.eclipse.linuxtools.internal.valgrind.massif.birt;uses:="org.eclipse.swt.events,org.eclipse.swt.widgets,org.eclipse.birt.chart.model"
