@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="userguide/Autotools Plugin-in User Guide.html" label="Autotools Plugin-in User Guide">
+	<topic href="userguide/Autotools Plugin-in User Guide.html" label="Introduction"></topic>
+	<topic href="userguide/Supported-Environments.html" label="Supported Environments"></topic>
+	<topic href="userguide/Creating-an-Autotools-Project.html" label="Creating an Autotools Project"></topic>
+	<topic href="userguide/Configuration.html" label="Configuration"></topic>
+	<topic href="userguide/Invoking-Autotools.html" label="Invoking Autotools"></topic>
+	<topic href="userguide/Special-Editors.html" label="Special Editors"></topic>
+	<topic href="userguide/Building.html" label="Building"></topic>
+	<topic href="userguide/Make-Targets.html" label="Make Targets"></topic>
+	<topic href="userguide/Updating-This-Document.html" label="Updating This Document"></topic>
+</toc>
