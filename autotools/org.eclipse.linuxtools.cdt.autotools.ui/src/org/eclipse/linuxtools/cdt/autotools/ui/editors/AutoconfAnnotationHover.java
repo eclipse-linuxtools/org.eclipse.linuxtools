@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000 2005 IBM Corporation and others.
+ * Copyright (c) 2000 2005 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.IAnnotationHoverExtension;
 import org.eclipse.jface.text.source.IAnnotationModel;
@@ -30,7 +30,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.LineRange;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.HTMLPrinter;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.texteditor.MarkerAnnotation;
 
 
 public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHoverExtension {
@@ -58,15 +57,14 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 	 * Selects a set of markers from the two lists. By default, it just returns
 	 * the set of exact matches.
 	 */
-	protected List<IMarker> select(List<IMarker> exactMatch, List<IMarker> including) {
+	protected List<Annotation> select(List<Annotation> exactMatch, List<Annotation> including) {
 		return exactMatch;
 	}
 
 	/**
 	 * Returns one marker which includes the ruler's line of activity.
 	 */
-	@SuppressWarnings("unchecked")
-	protected List<IMarker> getMarkersForLine(ISourceViewer viewer, int line) {
+	protected List<Annotation> getAnnotationsForLine(ISourceViewer viewer, int line) {
 		
 		IDocument document= viewer.getDocument();
 		IAnnotationModel model= viewer.getAnnotationModel();
@@ -74,20 +72,21 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 		if (model == null)
 			return null;
 			
-		List<IMarker> exact= new ArrayList<IMarker>();
-		List<IMarker> including= new ArrayList<IMarker>();
+		List<Annotation> exact= new ArrayList<Annotation>();
+		List<Annotation> including= new ArrayList<Annotation>();
 		
+		@SuppressWarnings("unchecked")
 		Iterator e= model.getAnnotationIterator();
 		while (e.hasNext()) {
 			Object o= e.next();
-			if (o instanceof MarkerAnnotation) {
-				MarkerAnnotation a= (MarkerAnnotation) o;
+			if (o instanceof Annotation) {
+				Annotation a= (Annotation) o;
 				switch (compareRulerLine(model.getPosition(a), document, line)) {
 					case 1:
-						exact.add(a.getMarker());
+						exact.add(a);
 						break;
 					case 2:
-						including.add(a.getMarker());
+						including.add(a);
 						break;
 				}
 			}
@@ -100,14 +99,14 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 	 * @see IVerticalRulerHover#getHoverInfo(ISourceViewer, int)
 	 */
 	public String getHoverInfo(ISourceViewer sourceViewer, int lineNumber) {
-		List<IMarker> markers= getMarkersForLine(sourceViewer, lineNumber);
-		if (markers != null && markers.size() > 0) {
+		List<Annotation> annotations = getAnnotationsForLine(sourceViewer, lineNumber);
+		if (annotations != null && annotations.size() > 0) {
 			
-			if (markers.size() == 1) {
+			if (annotations.size() == 1) {
 				
 				// optimization
-				IMarker marker= (IMarker) markers.get(0);
-				String message= marker.getAttribute(IMarker.MESSAGE, (String) null);
+				Annotation annotation = (Annotation) annotations.get(0);
+				String message= annotation.getText();
 				if (message != null && message.trim().length() > 0)
 					return formatSingleMessage(message);
 					
@@ -115,10 +114,10 @@ public class AutoconfAnnotationHover implements IAnnotationHover, IAnnotationHov
 					
 				List<String> messages= new ArrayList<String>();
 				
-				Iterator<IMarker> e= markers.iterator();
+				Iterator<Annotation> e= annotations.iterator();
 				while (e.hasNext()) {
-					IMarker marker= (IMarker) e.next();
-					String message= marker.getAttribute(IMarker.MESSAGE, (String) null);
+					Annotation annotation = (Annotation) e.next();
+					String message= annotation.getText();
 					if (message != null && message.trim().length() > 0)
 						messages.add(message.trim());
 				}

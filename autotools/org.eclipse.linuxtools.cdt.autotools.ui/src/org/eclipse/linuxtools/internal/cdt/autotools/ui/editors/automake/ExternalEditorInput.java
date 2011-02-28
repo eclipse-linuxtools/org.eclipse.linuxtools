@@ -63,7 +63,7 @@ public class ExternalEditorInput implements ITranslationUnitEditorInput, IPersis
 	/*
 	* @see IAdaptable#getAdapter(Class)
 	*/
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	public Object getAdapter(Class adapter) {
 		if (ILocationProvider.class.equals(adapter)) {
 			return this;

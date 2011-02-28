@@ -42,7 +42,6 @@ public class AutoconfContentOutlinePage extends ContentOutlinePage {
 		update();
 	}
 
-	@SuppressWarnings("unchecked")
 	protected ISelection updateSelection(ISelection sel) {
 		ArrayList<AutoconfElement> newSelection= new ArrayList<AutoconfElement>();
 		if (sel instanceof IStructuredSelection) {

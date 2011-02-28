@@ -1,3 +1,154 @@
+2010-08-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Patch from Marc-Andre Laperle  <malaperle@omnialabs.net>
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/AutotoolsBuildWizard.java (EMPTY_PROJECT): Switch
+	to use local messages. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/AutotoolsWizardMessages.properties: Add some
+	messages that were formerly fetched from the CDT. 
+
+2010-07-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #314334
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AddBuildTargetAction.java: Removed.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileContentOutlinePage.java (MakefileContentOutlinePage): Remove
+	AddBuildTargetAction which wasn't being used and illegally instantiated MakeTargetDialog. 
+	(contextMenuAboutToShow): Ditto.
+
+2010-07-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeErrorHandler.java: 
+	(AutomakeAnnotation.setQuickFixable): Remove unnecessary override statement.
+	(AutomakeAnnotation.isQuickFixableStateSet): Ditto.
+	(AutomakeAnnotation.isQuickFixable): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfErrorHandler.java: 
+	(AutoconfAnnotation.setQuickFixable): Remove unnecessary override statement.
+	(AutoconfAnnotation.isQuickFixableStateSet): Ditto.
+	(AutoconfAnnotation.isQuickFixable): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (shutdown): Remove use of rawtypes
+	Java annotation which doesn't exist in J2SE-1.5.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/outline/AutoconfContentOutlinePage.java (updateSelection): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/autoconf/ProjectionFileUpdater.java (createAnnotationMap): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AddBuildTargetAction.java (getTargetRules): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeDocumentProvider.java (shutdown): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeEditor.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ExternalEditorInput.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileEditor.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/OpenIncludeAction.java (getIncludeStatement): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ProjectionMakefileUpdater.java (initialize): Ditto.
+	(createAnnotationMap): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ResourceMarkerAnnotationModel.java (batchedUpdate): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/SelectionStatusDialog.java (getPrimaryInitialSelection): Ditto.
+	(setInitialSelection): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/HTMLTextPresenter.java (adaptTextPresentation): Ditto.
+	
+2010-07-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Fix for bug #314348
+	* plugin.xml: Make AutomakeEditor default for .am and Makefile.in files.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfAnnotationHover.java (select): Use
+	Annotations rather than IMarkers. 
+	(getAnnotationsForLine): New method.
+	(getHoverInfo): Change logic to get annotations and get messages as opposed to using
+	markers.
+	(getAnnotationsForLine): 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java (getAdapter): Fix warning.
+	(getAdapter): 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfErrorHandler.java (AutoconfAnnotation): New class. 
+	(AutoconfAnnotation.AutoconfAnnotation): New method.
+	(AutoconfAnnotation.setQuickFixable): Ditto.
+	(AutoconfAnnotation.isQuickFixableStateSet): Ditto. 
+	(AutoconfAnnotation.isQuickFixable): Ditto.
+	(handleError): Instead of adding a hacked up IMarker and creating a MarkerAnnotation, create
+	a normal annotation and add it to the annotation model.
+	(removeExistingMarkers): Fix warning.
+	(removeExistingMarkers): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeErrorHandler.java (AutomakeAnnotation):
+	New class.
+	(checkChildren): Add an AutomakeAnnotation to the annotation model rather than a MarkerAnnotation which requires us to
+	make up our own IMarker implementation. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileAnnotationHover.java: Add
+	implements IAnnotationHoverExtension. 
+	(fEditor): Mark	unused for now.
+	(compareRulerLine): New method.
+	(select): Ditto.
+	(getAnnotationsForLine): Ditto.  
+	(getHoverInfo): Change to get annotations and fetch the annotation text.
+	(formatSingleMessage): New method.
+	(formatMultipleMessages): Ditto.
+	(getHoverControlCreator): Ditto.
+	(.createInformationControl): New internal class.
+	(canHandleMouseCursor): New method. 
+	(getHoverLineRange): Ditto.
+	(getAnnotationsForLine): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileDocumentProvider.java (MakefileAnnotationModel): 
+	(MakefileAnnotationModel.MakefileAnnotationModel): 
+	(shutdown): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileMessages.java (getResourceBundle): New static
+	method.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakeFileMessages.properties: Add message for bad directive.
+	Currently unused because of problem loading resource bundle. 
+
+2010-07-06  Andrew Overholt  <overholt@redhat.com>
+
+	* about.html: Add missing file.
+	* build.properties: Likewise.
+
+2010-06-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #314358
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java: Remove AdaptedSourceViewer class. 
+	(createSourceViewer): Return ProjectionViewer.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileEditor.java (createSourceViewer): Ditto.
+	 
+2010-06-25  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #314359
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/MessageLine.java (MessageLine): Rewritten to not extend CLabel but
+	instead to have an internal CLabel field because CLabel is nonextend.
+	(setErrorMessage): New method.
+	(setMessage): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MessageLine.java (MessageLine): Rewritten to
+	not extend CLabel which is nonextend.
+	(setErrorMessage): New method.
+	(setMessage): Ditto.
+	(isDisposed): Ditto.
+	(setAlignment): Ditto.
+	(setLayoutData): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfAnnotationHover.java (getMarkersForLine): Fix warnings. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfDocumentProvider.java (shutdown): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java (getAdapter): Ditto. 
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfErrorHandler.java (AutoconfMarker): Ditto. 
+	(AutoconfMarker.getAdapter): Ditto.
+	(AutoconfMarker.setAttributes): Ditto.
+	(removeExistingMarkers): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/outline/AutoconfContentOutlinePage.java (updateSelection):  
+	Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/autoconf/ProjectionFileUpdater.java (createAnnotationMap): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AddBuildTargetAction.java (getTargetRules): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeDocumentProvider.java (shutdown): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeEditor.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakeErrorHandler.java (AutomakeMarker): Ditto. 
+	(AutomakeMarker.getAdapter): Ditto.
+	(AutomakeMarker.getAttributes): Ditto.
+	(AutomakeMarker.setAttributes): Ditto.
+	(createMarker): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ExternalEditorInput.java (getAdapter): Ditto. 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileDocumentProvider.java (shutdown): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/MakefileEditor.java (getAdapter): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/OpenIncludeAction.java (getIncludeStatement): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ProjectionMakefileUpdater.java (initialize): 
+	(createAnnotationMap): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/ResourceMarkerAnnotationModel.java (batchedUpdate): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/SelectionStatusDialog.java (getPrimaryInitialSelection): 
+	(setInitialSelection): 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/HTMLTextPresenter.java (adaptTextPresentation): 
+
+2010-06-22  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #317345
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/InvokeLibtoolizeAction.java (run): Fix typo for property
+	to load.
+
 2010-05-25  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/editors/automake/AutomakefileContentOutlinePage.java: Remove

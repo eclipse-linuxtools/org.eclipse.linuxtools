@@ -28,7 +28,6 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.ITextViewerExtension2;
 import org.eclipse.jface.text.ITextViewerExtension4;
 import org.eclipse.jface.text.ITextViewerExtension5;
@@ -42,7 +41,6 @@ import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.IAnnotationHoverExtension;
 import org.eclipse.jface.text.source.ILineRange;
-import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.ISourceViewerExtension3;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -120,32 +118,6 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
     	super();
     }
 
-	/**
-	 * Adapted source viewer for CEditor
-	 */
-
-	public class AdaptedSourceViewer extends ProjectionViewer implements ITextViewerExtension {
-
-
-		public AdaptedSourceViewer(Composite parent, IVerticalRuler ruler,
-			IOverviewRuler overviewRuler, boolean showsAnnotation, int styles) {
-			super(parent, ruler, overviewRuler, showsAnnotation, styles);
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.text.source.ISourceViewer#setRangeIndication(int, int, boolean)
-		 */
-		public void setRangeIndication(int offset, int length, boolean moveCursor) {
-			// Fixin a bug in the ProjectViewer implemenation
-			// PR: https://bugs.eclipse.org/bugs/show_bug.cgi?id=72914
-			if (isProjectionMode()) {
-				super.setRangeIndication(offset, length, moveCursor);
-			} else {
-				super.setRangeIndication(offset, length, false);
-			}
-		}
-	}
-
     protected void initializeEditor() {
     	super.initializeEditor();
     	setDocumentProvider(getAutoconfDocumentProvider());
@@ -213,7 +185,7 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
 		}
 	}
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked" })
 	public Object getAdapter(Class required) {
 		if (ProjectionAnnotationModel.class.equals(required)) {
 			if (fProjectionSupport != null) {
@@ -733,7 +705,7 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
     }
 
     protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
-    	ISourceViewer viewer = new AdaptedSourceViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
+    	ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
 
     	// ensure decoration support has been created and configured.
     	getSourceViewerDecorationSupport(viewer);

@@ -22,7 +22,6 @@ import org.eclipse.cdt.managedbuilder.core.BuildListComparator;
 import org.eclipse.cdt.managedbuilder.core.IProjectType;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
-import org.eclipse.cdt.managedbuilder.ui.properties.Messages;
 import org.eclipse.cdt.managedbuilder.ui.wizards.AbstractCWizard;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSWizardHandler;
 import org.eclipse.cdt.ui.newui.CDTPrefUtil;
@@ -33,13 +32,13 @@ import org.eclipse.jface.wizard.IWizard;
  *
  */
 public class AutotoolsBuildWizard extends AbstractCWizard {
-	public static final String OTHERS_LABEL = Messages.getString("CNewWizard.0");  //$NON-NLS-1$
+	public static final String OTHERS_LABEL = AutotoolsWizardMessages.getResourceString("AutotoolsBuildWizard.1"); //$NON-NLS-1$
 	public static final String AUTOTOOLS_PROJECTTYPE_ID = "org.eclipse.linuxtools.cdt.autotools.core.projectType"; //$NON-NLS-1$
 	
 	/**
 	 * @since 5.1
 	 */
-	public static final String EMPTY_PROJECT = Messages.getString("AbstractCWizard.0");  //$NON-NLS-1$
+	public static final String EMPTY_PROJECT = AutotoolsWizardMessages.getResourceString("AutotoolsBuildWizard.2"); //$NON-NLS-1$
 	/**
 	 * Creates and returns an array of items to be displayed 
 	 */

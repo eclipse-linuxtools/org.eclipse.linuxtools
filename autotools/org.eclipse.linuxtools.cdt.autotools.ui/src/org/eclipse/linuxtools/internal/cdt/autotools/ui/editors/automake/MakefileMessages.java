@@ -24,6 +24,10 @@ public class MakefileMessages {
     private MakefileMessages() {
     }
 
+	public static ResourceBundle getResourceBundle() {
+		return RESOURCE_BUNDLE;
+	}
+	
 	/**
 	 * Returns the string from the plugin's resource bundle,
 	 * or 'key' if not found.

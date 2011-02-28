@@ -24,9 +24,7 @@ import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
-import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.rules.IWordDetector;
-import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -69,32 +67,6 @@ public class MakefileEditor extends TextEditor implements ISelectionChangedListe
 	 * @since 3.0
 	 */
 	private ListenerList fReconcilingListeners= new ListenerList(ListenerList.IDENTITY);
-
-	/**
-	 * Adapted source viewer for CEditor
-	 */
-
-	public class AdaptedSourceViewer extends ProjectionViewer implements ITextViewerExtension {
-
-
-		public AdaptedSourceViewer(Composite parent, IVerticalRuler ruler,
-			IOverviewRuler overviewRuler, boolean showsAnnotation, int styles) {
-			super(parent, ruler, overviewRuler, showsAnnotation, styles);
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.text.source.ISourceViewer#setRangeIndication(int, int, boolean)
-		 */
-		public void setRangeIndication(int offset, int length, boolean moveCursor) {
-			// Fixin a bug in the ProjectViewer implemenation
-			// PR: https://bugs.eclipse.org/bugs/show_bug.cgi?id=72914
-			if (isProjectionMode()) {
-				super.setRangeIndication(offset, length, moveCursor);
-			} else {
-				super.setRangeIndication(offset, length, false);
-			}
-		}
-	}
 
 
 	MakefileSourceConfiguration getMakefileSourceConfiguration() {
@@ -183,7 +155,7 @@ public class MakefileEditor extends TextEditor implements ISelectionChangedListe
 	}
 
 	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
-		ISourceViewer viewer = new AdaptedSourceViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
+		ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
 
 		// ensure decoration support has been created and configured.
 		getSourceViewerDecorationSupport(viewer);
@@ -194,8 +166,7 @@ public class MakefileEditor extends TextEditor implements ISelectionChangedListe
 	/* (non-Javadoc)
 	 * Method declared on IAdaptable
 	 */
-	@SuppressWarnings("unchecked")
-	public Object getAdapter(Class key) {
+	public Object getAdapter(@SuppressWarnings("unchecked") Class key) {
 		if (ProjectionAnnotationModel.class.equals(key)) {
 			if (projectionSupport != null) {
 				Object result = projectionSupport.getAdapter(getSourceViewer(), key);
