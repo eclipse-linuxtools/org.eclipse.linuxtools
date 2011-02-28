@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile-feature,org.eclipse.linuxtools.oprofile-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.core,org.eclipse.linuxtools.oprofile.core"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.core.tests,org.eclipse.linuxtools.oprofile.core.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.core.linux.ppc,org.eclipse.linuxtools.oprofile.core.linux.ppc"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.core.linux.x86,org.eclipse.linuxtools.oprofile.core.linux.x86"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.core.linux.x86_64,org.eclipse.linuxtools.oprofile.core.linux.x86_64"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.launch,org.eclipse.linuxtools.oprofile.launch"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.launch.tests,org.eclipse.linuxtools.oprofile.launch.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.tests,org.eclipse.linuxtools.oprofile.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.test-feature,org.eclipse.linuxtools.oprofile.test-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.ui,org.eclipse.linuxtools.oprofile.ui"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0/org.eclipse.linuxtools.oprofile.ui.tests,org.eclipse.linuxtools.oprofile.ui.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling-feature,org.eclipse.linuxtools.profiling-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.launch,org.eclipse.linuxtools.profiling.launch"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.test-feature,org.eclipse.linuxtools.profiling.test-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.tests,org.eclipse.linuxtools.profiling.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.ui,org.eclipse.linuxtools.profiling.ui"/>
+</provider>
+</psf>

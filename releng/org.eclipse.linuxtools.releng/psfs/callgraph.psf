@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0/org.eclipse.linuxtools.callgraph-feature,org.eclipse.linuxtools.callgraph-feature"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0/org.eclipse.linuxtools.callgraph,org.eclipse.linuxtools.callgraph"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0/org.eclipse.linuxtools.callgraph.tests,org.eclipse.linuxtools.callgraph.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0/org.eclipse.linuxtools.callgraph.core,org.eclipse.linuxtools.callgraph.core"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0/org.eclipse.linuxtools.callgraph.launch,org.eclipse.linuxtools.callgraph.launch"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0/org.eclipse.linuxtools.callgraph.launch.tests,org.eclipse.linuxtools.callgraph.launch.tests"/>
+<project reference="0.9.3,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0/org.eclipse.linuxtools.callgraph.tests-feature,org.eclipse.linuxtools.callgraph.tests-feature"/>
+<project reference="0.9.3,http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling-feature,org.eclipse.linuxtools.profiling-feature"/>
+<project reference="0.9.3,http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.launch,org.eclipse.linuxtools.profiling.launch"/>
+<project reference="0.9.3,http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.test-feature,org.eclipse.linuxtools.profiling.test-feature"/>
+<project reference="0.9.3,http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.tests,org.eclipse.linuxtools.profiling.tests"/>
+<project reference="0.9.3,http://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0/org.eclipse.linuxtools.profiling.ui,org.eclipse.linuxtools.profiling.ui"/>
+</provider>
+</psf>

@@ -1,0 +1,147 @@
+!*** changelog
+plugin@org.eclipse.linuxtools.changelog.core=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.5.0,,org.eclipse.linuxtools.changelog.core
+fragment@org.eclipse.linuxtools.changelog.cparser=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.5.0,,org.eclipse.linuxtools.changelog.cparser
+plugin@org.eclipse.linuxtools.changelog.doc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.5.0,,org.eclipse.linuxtools.changelog.doc
+fragment@org.eclipse.linuxtools.changelog.parsers.java=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.5.0,,org.eclipse.linuxtools.changelog.javaparser
+feature@org.eclipse.linuxtools.changelog=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/changelog/branches/0.5.0,,org.eclipse.linuxtools.changelog-feature
+
+!*** rpm
+plugin@org.eclipse.linuxtools.rpm.rpmlint=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.rpmlint
+plugin@org.eclipse.linuxtools.rpm.ui.editor=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.ui.editor
+plugin@org.eclipse.linuxtools.rpm.ui.editor.doc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.ui.editor.doc
+plugin@org.eclipse.linuxtools.rpm.ui.editor.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.ui.editor.tests
+feature@org.eclipse.linuxtools.rpm.ui.editor=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.ui.editor-feature
+plugin@org.eclipse.linuxtools.rpm.core=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.core
+plugin@org.eclipse.linuxtools.rpm.core.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.core.tests
+plugin@org.eclipse.linuxtools.rpm.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm.ui
+feature@org.eclipse.linuxtools.rpm=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpm/branches/0.5.0,,org.eclipse.linuxtools.rpm-feature
+
+!*** rpmstubby
+plugin@org.eclipse.linuxtools.rpmstubby=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/branches/0.5.0,,org.eclipse.linuxtools.rpmstubby
+feature@org.eclipse.linuxtools.rpmstubby=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/rpmstubby/branches/0.5.0,,org.eclipse.linuxtools.rpmstubby-feature
+
+!*** autotools
+plugin@org.eclipse.linuxtools.cdt.autotools=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/branches/0.5.0,,org.eclipse.linuxtools.cdt.autotools
+plugin@org.eclipse.linuxtools.cdt.autotools.core=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/branches/0.5.0,,org.eclipse.linuxtools.cdt.autotools.core
+plugin@org.eclipse.linuxtools.cdt.autotools.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/branches/0.5.0,,org.eclipse.linuxtools.cdt.autotools.ui
+plugin@org.eclipse.linuxtools.cdt.autotools_docs=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/branches/0.5.0,,org.eclipse.linuxtools.cdt.autotools-docs
+plugin@org.eclipse.linuxtools.cdt.autotools.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/branches/0.5.0,,org.eclipse.linuxtools.cdt.autotools.tests
+feature@org.eclipse.linuxtools.cdt.autotools=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/autotools/branches/0.5.0,,org.eclipse.linuxtools.cdt.autotools-feature
+
+!*** gprof
+plugin@org.eclipse.linuxtools.binutils=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/branches/0.5.0,,org.eclipse.linuxtools.binutils
+plugin@org.eclipse.linuxtools.dataviewers=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/branches/0.5.0,,org.eclipse.linuxtools.dataviewers
+plugin@org.eclipse.linuxtools.gprof=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/branches/0.5.0,,org.eclipse.linuxtools.gprof
+fragment@org.eclipse.linuxtools.gprof.test=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/branches/0.5.0,,org.eclipse.linuxtools.gprof.test
+feature@org.eclipse.linuxtools.gprof=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gprof/branches/0.5.0,,org.eclipse.linuxtools.gprof-feature
+
+!*** libhover
+plugin@org.eclipse.linuxtools.cdt.libhover=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.5.0,,org.eclipse.linuxtools.cdt.libhover
+plugin@org.eclipse.linuxtools.cdt.libhover.glibc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.5.0,,org.eclipse.linuxtools.cdt.libhover.glibc
+plugin@org.eclipse.linuxtools.cdt.libhover.newlib=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.5.0,,org.eclipse.linuxtools.cdt.libhover.newlib
+plugin@org.eclipse.linuxtools.cdt.libhover.library_docs=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.5.0,,org.eclipse.linuxtools.cdt.libhover.library-docs
+plugin@org.eclipse.linuxtools.cdt.libhover.libstdcxx=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.5.0,,org.eclipse.linuxtools.cdt.libhover.libstdcxx
+feature@org.eclipse.linuxtools.cdt.libhover=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.5.0,,org.eclipse.linuxtools.cdt.libhover-feature
+feature@org.eclipse.linuxtools.cdt.libhover.newlib=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/libhover/branches/0.5.0,,org.eclipse.linuxtools.cdt.libhover.newlib-feature
+
+!*** man
+plugin@org.eclipse.linuxtools.man=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/man/branches/0.5.0,,org.eclipse.linuxtools.man
+feature@org.eclipse.linuxtools.man=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/man/branches/0.5.0,,org.eclipse.linuxtools.man-feature
+
+!*** systemtap
+plugin@org.eclipse.linuxtools.systemtap.backup.ui.editor=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.backup.ui.editor
+feature@org.eclipse.linuxtools.systemtap.backup=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.backup-feature
+plugin@org.eclipse.linuxtools.systemtap.ui.consolelog=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.consolelog
+plugin@org.eclipse.linuxtools.systemtap.ui.editor=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.editor
+feature@org.eclipse.linuxtools.systemtap=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap-feature
+plugin@org.eclipse.linuxtools.systemtap.ui.graphing=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.graphing
+plugin@org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui
+plugin@org.eclipse.linuxtools.systemtap.ui.graphingapi.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.graphingapi.ui
+plugin@org.eclipse.linuxtools.systemtap.ui.ide=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.ide
+plugin@org.eclipse.linuxtools.systemtap.ui.logging=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.logging
+plugin@org.eclipse.linuxtools.systemtap.ui.structures=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.structures
+plugin@org.eclipse.linuxtools.systemtap.ui.systemtapgui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.systemtapgui
+plugin@org.eclipse.linuxtools.systemtap.ui.dashboard=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.dashboard
+plugin@org.eclipse.linuxtools.systemtap.ui.dashboardextension=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.dashboardextension
+plugin@org.eclipse.linuxtools.systemtap.ui.graphicalrun=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.systemtap.ui.graphicalrun
+
+!*** callgraph
+plugin@org.eclipse.linuxtools.callgraph.core=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.callgraph.core
+plugin@org.eclipse.linuxtools.callgraph.launch=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.callgraph.launch
+plugin@org.eclipse.linuxtools.callgraph=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.callgraph
+plugin@org.eclipse.linuxtools.callgraph.launch.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.callgraph.launch.tests
+plugin@org.eclipse.linuxtools.callgraph.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.callgraph.tests
+feature@org.eclipse.linuxtools.callgraph=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.callgraph-feature
+feature@org.eclipse.linuxtools.callgraph.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/systemtap/branches/0.5.0,,org.eclipse.linuxtools.callgraph.tests-feature
+
+!*** profiling framework
+plugin@org.eclipse.linuxtools.profiling.launch=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0,,org.eclipse.linuxtools.profiling.launch
+plugin@org.eclipse.linuxtools.profiling.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0,,org.eclipse.linuxtools.profiling.tests
+plugin@org.eclipse.linuxtools.profiling.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0,,org.eclipse.linuxtools.profiling.ui
+feature@org.eclipse.linuxtools.profiling=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0,,org.eclipse.linuxtools.profiling-feature
+feature@org.eclipse.linuxtools.profiling.test=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/profiling/branches/0.5.0,,org.eclipse.linuxtools.profiling.test-feature
+
+!*** oprofile
+plugin@org.eclipse.linuxtools.oprofile.core=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.core
+plugin@org.eclipse.linuxtools.oprofile.doc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.doc
+plugin@org.eclipse.linuxtools.oprofile.core.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.core.tests
+fragment@org.eclipse.linuxtools.oprofile.core.linux.ppc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.core.linux.ppc
+fragment@org.eclipse.linuxtools.oprofile.core.linux.x86=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.core.linux.x86
+fragment@org.eclipse.linuxtools.oprofile.core.linux.x86_64=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.core.linux.x86_64
+plugin@org.eclipse.linuxtools.oprofile.launch=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.launch
+plugin@org.eclipse.linuxtools.oprofile.launch.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.launch.tests
+plugin@org.eclipse.linuxtools.oprofile.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.tests
+plugin@org.eclipse.linuxtools.oprofile.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.ui
+plugin@org.eclipse.linuxtools.oprofile.ui.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.ui.tests
+feature@org.eclipse.linuxtools.oprofile=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile-feature
+feature@org.eclipse.linuxtools.oprofile.test=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/oprofile/branches/0.5.0,,org.eclipse.linuxtools.oprofile.test-feature
+
+!*** valgrind
+plugin@org.eclipse.linuxtools.valgrind.cachegrind=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.cachegrind
+plugin@org.eclipse.linuxtools.valgrind.cachegrind.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.cachegrind.tests
+plugin@org.eclipse.linuxtools.valgrind.core=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.core
+plugin@org.eclipse.linuxtools.valgrind.doc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.doc
+plugin@org.eclipse.linuxtools.valgrind.launch=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.launch
+plugin@org.eclipse.linuxtools.valgrind.massif=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.massif
+plugin@org.eclipse.linuxtools.valgrind.massif.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.massif.tests
+plugin@org.eclipse.linuxtools.valgrind.memcheck=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.memcheck
+plugin@org.eclipse.linuxtools.valgrind.memcheck.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.memcheck.tests
+plugin@org.eclipse.linuxtools.valgrind.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.tests
+plugin@org.eclipse.linuxtools.valgrind.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.ui
+plugin@org.eclipse.linuxtools.valgrind.ui.editor=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.ui.editor
+feature@org.eclipse.linuxtools.valgrind=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind-feature
+feature@org.eclipse.linuxtools.valgrind.test=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/valgrind/branches/0.5.0,,org.eclipse.linuxtools.valgrind.test-feature
+
+!*** tmf
+plugin@org.eclipse.linuxtools.tmf=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.tmf
+plugin@org.eclipse.linuxtools.tmf.doc=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.tmf.doc
+plugin@org.eclipse.linuxtools.tmf.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.tmf.tests
+plugin@org.eclipse.linuxtools.tmf.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.tmf.ui
+plugin@org.eclipse.linuxtools.tmf.ui.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.tmf.ui.tests
+feature@org.eclipse.linuxtools.tmf=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.tmf-feature
+feature@org.eclipse.linuxtools.tmf.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.tmf.test-feature
+
+!*** lttng
+plugin@org.eclipse.linuxtools.lttng=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng
+plugin@org.eclipse.linuxtools.lttng.jni=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng.jni
+plugin@org.eclipse.linuxtools.lttng.help=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng.help
+plugin@org.eclipse.linuxtools.lttng.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng.tests
+plugin@org.eclipse.linuxtools.lttng.ui=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng.ui
+plugin@org.eclipse.linuxtools.lttng.ui.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng.ui.tests
+feature@org.eclipse.linuxtools.lttng=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng-feature
+feature@org.eclipse.linuxtools.lttng.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/lttng/branches/0.5.0,,org.eclipse.linuxtools.lttng.test-feature
+
+!*** gcov
+plugin@org.eclipse.linuxtools.dataviewers.annotatedsourceeditor=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/branches/0.5.0,,org.eclipse.linuxtools.dataviewers.annotatedsourceeditor
+plugin@org.eclipse.linuxtools.dataviewers.charts=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/branches/0.5.0,,org.eclipse.linuxtools.dataviewers.charts
+plugin@org.eclipse.linuxtools.gcov=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/branches/0.5.0,,org.eclipse.linuxtools.gcov
+fragment@org.eclipse.linuxtools.gcov.test=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/branches/0.5.0,,org.eclipse.linuxtools.gcov.test
+feature@org.eclipse.linuxtools.gcov=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/gcov/branches/0.5.0,,org.eclipse.linuxtools.gcov-feature
+
+feature@org.eclipse.linuxtools.all=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/branches/0.5.0,,org.eclipse.linuxtools.all
+feature@org.eclipse.linuxtools.test=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/branches/0.5.0,,org.eclipse.linuxtools.test-feature
+plugin@org.eclipse.linuxtools.tests=SVN,,svn://dev.eclipse.org/svnroot/technology/org.eclipse.linuxtools/releng/branches/0.5.0,,org.eclipse.linuxtools.tests
+
+!*** used for tests
+plugin@org.eclipse.test=v20080313,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
+fragment@org.eclipse.ant.optional.junit=v20070202,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,
