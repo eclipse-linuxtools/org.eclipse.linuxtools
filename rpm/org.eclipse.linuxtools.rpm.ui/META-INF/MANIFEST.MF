@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name.0
+Bundle-SymbolicName: org.eclipse.linuxtools.rpm.ui;singleton:=true
+Bundle-Version: 0.4.3.qualifier
+Bundle-Activator: org.eclipse.linuxtools.rpm.ui.RPMUIPlugin
+Bundle-Vendor: %Bundle-Vendor.0
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.ui.ide,
+ org.eclipse.jface.text,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui,
+ org.eclipse.swt,
+ org.eclipse.jface,
+ org.eclipse.text,
+ org.eclipse.linuxtools.rpm.core,
+ org.eclipse.ui.console
+Export-Package: 
+ org.eclipse.linuxtools.rpm.ui,
+ org.eclipse.linuxtools.rpm.ui.propertypage

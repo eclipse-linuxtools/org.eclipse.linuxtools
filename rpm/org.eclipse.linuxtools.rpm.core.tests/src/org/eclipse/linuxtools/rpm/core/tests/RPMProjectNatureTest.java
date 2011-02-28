@@ -1,0 +1,60 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2009 Red Hat, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.linuxtools.rpm.core.tests;
+
+import junit.framework.TestCase;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
+
+public class RPMProjectNatureTest extends TestCase {
+
+	IWorkspace workspace;
+    IWorkspaceRoot root;
+    NullProgressMonitor monitor;
+    String pluginRoot;
+    
+    /*
+     * @see TestCase#setUp()
+     */
+    @Override
+	protected void setUp() throws Exception {
+        super.setUp();
+        IWorkspaceDescription desc;
+        workspace = ResourcesPlugin.getWorkspace();
+        root = workspace.getRoot();
+        monitor = new NullProgressMonitor();
+        if(workspace == null) {
+            fail("Workspace was not setup");
+        }
+        if(root == null) {
+            fail("Workspace root was not setup");
+        }
+        desc = workspace.getDescription();
+        desc.setAutoBuilding(false);
+        workspace.setDescription(desc);
+    }
+	
+	public void testAddRPMProjectNature() throws Exception {
+		IProject testProject = root.getProject("testProject");
+		testProject.create(monitor);
+		testProject.open(monitor);
+		RPMProjectNature.addRPMNature(testProject, monitor);
+		assertTrue(testProject.hasNature(RPMProjectNature.RPM_NATURE_ID));
+		testProject.delete(true, false, monitor);
+	}
+	
+}

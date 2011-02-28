@@ -1,0 +1,150 @@
+2010-01-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (testBuildSourceRPMHelloWorld): Adapt to api changes.
+
+2009-09-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (testImportHelloWorld): Drop checks not needed.
+
+2009-08-07  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: Fix provider to be Eclipse not Eclipse.org.
+
+2009-07-22  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Enable more warnings.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectNatureTest.java (setUp): Add missing @Override.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (setUp): Likewise.
+	(suite): Removed as it is not needed.
+
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/AllTests.java (suite): Remove nonexisting test.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java (testBuildPrepHelloWorld): Create RPMProject directly.
+	(testImportHelloWorld): Likewise.
+	(testBuildSourceRPMHelloWorld): Likewise.
+
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* META-INF/MANIFEST.MF: No need to export packages.
+
+2009-07-21  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/cdt/rpm/core: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestsPlugin.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestSuite.java: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectTest.java: New file.
+	* META-INF/MANIFEST.MF: Remove not needed Require-Bundle and Bundle-Activator.
+	* src/org/eclipse/linuxtools/rpm/core/tests/AllTests.java (suite): Add tests directly.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java (testGetNewProject): Use RPMProject directly.
+
+2009-07-17  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* OSGI-INF/l10n/bundle.properties: New file.
+	* build.properties: Simplify build.
+	* META-INF/MANIFEST.MF: Don't export any package and externalize strings.
+
+2009-06-25  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* build.properties: Fix copyright header.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/AllTests.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestsPlugin.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMCoreTestSuite.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectNatureTest.java: Likewise.
+
+2009-06-09  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java (testImportHelloWorld): Adapt to API changes.
+	(testBuildSourceRPMHelloWorld): Likewise.
+
+2009-06-08  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* plugin.xml: Removed.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/SpecFileParserTest.java: Removed.
+	* .settings/org.eclipse.jdt.core.prefs: New file.
+	* .classpath: J2SE-1.5.
+	* build.properties: Likewise.
+	* META-INF/MANIFEST.MF: Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMCoreInternalTestSuite.java (suite): Remove test not present anymore.
+	* src/org/eclipse/linuxtools/rpm/core/internal/tests/RPMProjectTest.java (testIsChangedHelloWorld1): Remove code testing old implementation.
+	(setUp): Likewise.
+	(testBuildPrepHelloWorld): Likewise.
+	(testImportHelloWorld): Likewise.
+	(testIsChangedHelloWorld): Likewise.
+	(testBuildSourceRPMHelloWorld): Likewise.
+	(suite): Likewise.
+	(testBuildSourceRPMHelloWorld1): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectFactoryTest.java (testGetNewProject): Likewise.
+	* src/org/eclipse/linuxtools/rpm/core/tests/RPMProjectNatureTest.java (testAddRPMProjectNature): Likewise.
+
+2008-11-01  Alexander Kurtakov  <akurtakov@gmail.com>
+
+	* META-INF/MANIFEST.MF: Replace deprecated Eclipse-LazyStart usage.
+
+2007-05-04  Andrew Overholt  <overholt@redhat.com>
+
+	Bug #185598
+	* META-INF/MANIFEST.MF: Add "Incubation" to Bundle-Name.
+
+2007-04-05  Remy Suen  <remy.suen@gmail.com>
+
+	Bug #181249
+	* .classpath: Set required EE.
+	* META-INF/MANIFEST.MF: Initial commit.
+	* build.properties: Include MANIFEST.MF.
+	* plugin.xml: Declare dependency and runtime information in an OSGi
+	manifest.
+
+2007-01-30  Andrew Overholt  <overholt@redhat.com>
+
+	* : Re-namespace from cdt to linuxtools.
+
+2005-05-27  Jeremy Handcock  <handcock@redhat.com>
+
+	* plugin.xml: Bump version to 3.0.
+
+2005-05-18  Jeremy Handcock  <handcock@redhat.com>
+
+	Eclipse.org Bugzilla #82195:
+
+	* plugin.xml (requires): Remove CDT core dependency.
+	* build.properties (src.includes): Correct.
+
+	* resources/specs/helloworld.spec: New.
+
+	* src/org/eclipse/cdt/rpm/core/internal/RPMCoreInternalTestSuite.java:
+	New.
+	* src/org/eclipse/cdt/rpm/core/internal/RPMProjectTest.java: New.
+	* src/org/eclipse/cdt/rpm/core/internal/SpecFileParserTest.java: New.
+
+	* src/org/eclipse/cdt/rpm/core/AllTests.java
+	(suite): Add RPMCoreInternalTestSuite.
+	* src/org/eclipse/cdt/rpm/core/CProjectHelper.java: Remove.
+	* src/org/eclipse/cdt/rpm/core/RPMCoreTestSuite.java
+	(suite): Remove old tests; add new tests.
+	* src/org/eclipse/cdt/rpm/core/RPMExportTests.java: Remove.
+	* src/org/eclipse/cdt/rpm/core/RPMProjetFactoryTests.java: New.
+	* src/org/eclipse/cdt/rpm/core/RPMProjectNatureTests.java: New.
+	* src/org/eclipse/cdt/rpm/core/SRPMExportTests.java: Remove.
+	* src/org/eclipse/cdt/rpm/core/SRPMImportTests.java: Remove.
+
+2004-12-10  Jeremy Handcock  <handcock@redhat.com>
+
+	* plugin.xml (requires): Remove org.eclipse.cdt.core.tests dependency.
+	* src/org/eclipse/cdt/rpm/tests/AllTests.java: Move ...
+	* src/org/eclipse/cdt/rpm/core/tests/AllTests.java: ... to here.
+	* src/org/eclipse/cdt/rpm/core/tests/CProjectHelper.java: New file.
+	* src/org/eclipse/cdt/rpm/core/tests/RPMExportTests.java: Don't catch
+	exceptions; let the test harness handle them.
+	* src/org/eclipse/cdt/rpm/core/tests/SRPMExportTests.java: Ditto.
+	* src/org/eclipse/cdt/rpm/core/tests/SRPMImportTests.java: Ditto.
+
+2004-12-03  Aaron Luchko <aluchko@redhat.com>
+
+	* Initial Import

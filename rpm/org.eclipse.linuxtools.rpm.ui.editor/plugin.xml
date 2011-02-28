@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?><!--
+    Copyright (c) 2009 Red Hat, Inc.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+    
+    Contributors:
+        Red Hat - initial API and implementation
+ -->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.contexts">
+      <context
+            name="%context.name"
+            id="org.eclipse.linuxtools.rpm.ui.specEditorScope"
+            parentId="org.eclipse.ui.textEditorScope">
+      </context>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="%editor.name"
+            extensions="spec"
+            icon="icons/rpm.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor"
+            id="org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor">
+      </editor>
+      <editor
+            name="%editor.name.0"
+            extensions="spec"
+            icon="icons/rpm.gif"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor"
+            id="org.eclipse.linuxtools.rpm.ui.editor.forms.SpecfileFormEditor">
+      </editor>
+   </extension>
+   
+   <extension
+	   id="specfileerror"
+	   point="org.eclipse.core.resources.markers"
+	   name="%extension.name">
+	   <super type="org.eclipse.core.resources.problemmarker"/>
+	   <super type="org.eclipse.core.resources.textmarker"/>
+	   <persistent value="true"/>
+	</extension>
+	 <extension
+	   id="specfiletask"
+	   point="org.eclipse.core.resources.markers"
+	   name="%extension.name.0">
+	   <super type="org.eclipse.core.resources.taskmarker"/>
+	   <persistent value="true"/>
+	</extension>
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+      <provider
+      		extensions="spec"
+            class="org.eclipse.linuxtools.rpm.ui.editor.SpecfileDocumentProvider"
+            id="org.eclipse.linuxtools.rpm.ui.editor.specfileDocumentProvider">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.changelog.core.parserContribution">
+      <parser
+            class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogParser"
+            editor="SpecfileEditor"
+            name="SpecfileChangelogParser"/>
+   </extension>
+   <extension
+         point="org.eclipse.linuxtools.changelog.core.formatterContribution">
+      <formatter
+            class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogFormatter"
+            id="org.eclipse.linuxtools.rpm.ui.editor.actions.specfilechangelogformatter"
+            inFile="true"
+            name="SpecfileChangelogFormatter">
+         <filePattern pattern=".*\.spec"/>
+      </formatter>
+   </extension>
+  
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            name="preSection"
+            id="org.eclipse.linuxtools.rpm.ui.editor.preSection"/>
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            name="buildSection"
+            id="org.eclipse.linuxtools.rpm.ui.editor.buildSection"/>
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            name="preambleSection"
+            id="org.eclipse.linuxtools.rpm.ui.editor.preambleSection"/>
+      <include file="templates/templates.xml"/>
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            id="org.eclipse.linuxtools.rpm.ui.editor.installSection"
+            name="fileSection"/>
+      <contextType
+            class="org.eclipse.jface.text.templates.TemplateContextType"
+            id="org.eclipse.linuxtools.rpm.ui.editor.changelogSection"
+            name="changelogSection"/>
+      <include file="templates/templates.xml"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MainPreferencePage"
+            id="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
+            name="%page.name"/>
+      <page
+            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
+            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
+            id="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
+            name="%page.name.0"/>
+      <page
+            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
+            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
+            id="org.eclipse.linuxtools.rpm.ui.editor.preferences.MacroProposalsPreferencePage"
+            name="%page.name.1"/>
+      <page
+            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
+            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
+            id="org.eclipse.linuxtools.rpm.ui.editor.preferences.SpecTemplatePreferencePage"
+            name="%page.name.2"/>
+      <page
+            category="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmProposalsPreferencePage"
+            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
+            id="org.eclipse.linuxtools.rpm.ui.editor.preferences.RpmInformationsPreferencePage"
+            name="%page.name.3"/>
+      <page
+            category="org.eclipse.linuxtools.rpm.ui.editor.mainpage"
+            class="org.eclipse.linuxtools.rpm.ui.editor.preferences.TaskTagsPreferencePage"
+            id="org.eclipse.linuxtools.rpm.ui.editor.preferences.TaskTagsPreferencePage"
+            name="%page.name.4"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceInitializer"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.eclipse.linuxtools.rpm.ui.editor.highlightannotation"
+            verticalRulerPreferenceKey="highlight.rulers.vertical"
+            textPreferenceKey="highlight.text"
+            colorPreferenceKey="highlight.color"
+            highlightPreferenceKey="highlight.background"
+            textPreferenceValue="false"
+            textStylePreferenceValue="UNDERLINE"
+            overviewRulerPreferenceKey="highlight.rulers.overview"
+            presentationLayer="4"
+            highlightPreferenceValue="true"
+            label="Macro"
+            icon="icons/occurrence_obj.gif"
+            colorPreferenceValue="253,255,155"
+            verticalRulerPreferenceValue="true"
+            overviewRulerPreferenceValue="true"
+            textStylePreferenceKey="highlight.text.style">
+      </specification>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.linuxtools.rpm.ui.editor"
+            name="%category.name">
+      </category>
+      <wizard
+            category="org.eclipse.linuxtools.rpm.ui.editor"
+            class="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
+            icon="icons/rpm.gif"
+            id="org.eclipse.linuxtools.rpm.ui.editor.wizards.SpecfileNewWizard"
+            name="%wizard.name">
+      </wizard>
+   </extension>
+   <!-- Commands -->
+   <extension
+         point="org.eclipse.ui.commands">
+         <category
+            name="%category.name.0"
+            description="%category.description"
+            id="rpmEditor.category"/>
+         <command
+            categoryId="rpmEditor.category"
+            name="%command.name"
+            id="rpmEditor.toggleComment.command"/>
+         <command
+            categoryId="rpmEditor.category"
+            name="%command.name.0"
+            id="rpmEditor.organizePatches.command"/>
+         <command
+         	categoryId="rpmEditor.category"
+            id="rpmEditor.showOutline.command"
+            name="%command.name.1"/>
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+    	<handler
+         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorToggleCommentActionDelegate"
+         	commandId="rpmEditor.toggleComment.command" />
+   		<handler
+         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorOrganizePatchesActionDelegate"
+         	commandId="rpmEditor.organizePatches.command" />
+   		<handler
+         	class="org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileEditorShowOutlineActionDelegate"
+         	commandId="rpmEditor.showOutline.command" />
+   </extension>
+   <!-- Key bindings -->
+   <extension
+     point="org.eclipse.ui.bindings">
+      <key
+           sequence="Ctrl+Shift+C"
+           commandId="rpmEditor.toggleComment.command"
+           contextId="org.eclipse.ui.textEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+           sequence="Ctrl+Shift+O"
+           commandId="rpmEditor.organizePatches.command"
+           contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+      <key
+      	   sequence="Ctrl+O"
+           commandId="rpmEditor.showOutline.command"
+           contextId="org.eclipse.linuxtools.rpm.ui.specEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+   <!-- Editor menu actions -->
+   <extension
+         point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:#TextEditorContext?after=additions">
+         <command
+               commandId="rpmEditor.toggleComment.command"
+               label="%command.label"
+               tooltip="%command.tooltip" />
+         <command
+               commandId="rpmEditor.organizePatches.command"
+               label="%command.label.0"
+               tooltip="%command.tooltip.0" />
+         <command
+               commandId="rpmEditor.showOutline.command"
+               label="%command.label.1"
+               tooltip="%command.tooltip.1" />
+      </menuContribution>
+   </extension>
+   <!-- Compare support-->
+   <extension point="org.eclipse.compare.contentMergeViewers">
+	  <viewer
+		id="org.eclipse.linuxtools.rpm.ui.editor.SpecMergeViewer"
+		extensions="spec"
+		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecMergeViewerCreator">
+	  </viewer>
+   </extension>
+   <extension point="org.eclipse.compare.structureMergeViewers">
+	  <viewer
+		id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureMergeViewer"
+		extensions="spec"
+		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecStructureMergeViewerCreator">
+	  </viewer>
+   </extension>
+   <extension point ="org.eclipse.compare.structureCreators">
+ 		<structureCreator id="org.eclipse.linuxtools.rpm.ui.editor.SpecStructureCreator" 
+		class="org.eclipse.linuxtools.rpm.ui.editor.compare.SpecStructureCreator" extensions="spec"/>
+   </extension>
+</plugin>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?><!--
+    Copyright (c) 2009 Red Hat, Inc.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        Red Hat - initial API and implementation
+ -->
+
+<plugin>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <category
+            id="org.eclipse.linuxtools.rpm.ui"
+            name="%category.name.0">
+      </category>
+      <wizard
+            name="%wizard.name.0"
+            icon="icons/rpm.gif"
+            class="org.eclipse.linuxtools.rpm.ui.RPMExportWizard"
+            category="org.eclipse.linuxtools.rpm.ui"
+            id="org.eclipse.linuxtools.rpm.ui.RPMExportWizard">
+         <description>
+            %wizard.description.0
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IResource" />
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <category
+            id="org.eclipse.linuxtools.rpm.ui"
+            name="%category.name.0">
+      </category>
+      <wizard
+            name="%wizard.name.1"
+            icon="icons/rpm.gif"
+            class="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard" 
+            category="org.eclipse.linuxtools.rpm.ui"
+            id="org.eclipse.linuxtools.rpm.ui.SRPMImportWizard">
+         <description>
+            %wizard.description.1
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+      </wizard>
+   </extension>
+	<extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
+            id="rg.eclipse.linuxtools.rpm.ui.propertypage.SpecFileHeaderPage"
+            name="%page.name.0"
+            nameFilter="*.rpm">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
+            id="org.eclipse.linuxtools.rpm.ui.propertypage.ChangelogPage"
+            name="%page.name.1"
+            nameFilter="*.rpm">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
+            id="org.eclipse.linuxtools.rpm.ui.propertypage.TargetPage"
+            name="%page.name.2"
+            nameFilter="*.rpm">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
+            id="org.eclipse.linuxtools.rpm.ui.propertypage.InstallScriptsPage"
+            name="%page.name.3"
+            nameFilter="*.rpm">
+      </page>
+      <page
+            class="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
+            id="org.eclipse.linuxtools.rpm.ui.propertypage.ProvidesPage"
+            name="%page.name.4"
+            nameFilter="*.rpm">
+      </page>
+   </extension>
+ <extension
+       point="org.eclipse.ui.newWizards">
+       <category
+            id="org.eclipse.linuxtools.rpm.ui"
+            name="%category.name.0">
+      </category>
+      <wizard
+      		project="true"
+            category="org.eclipse.linuxtools.rpm.ui.editor"
+            class="org.eclipse.linuxtools.rpm.ui.RPMNewProject"
+            icon="icons/rpm.gif"
+            id="org.eclipse.linuxtools.rpm.ui.RPMNewProject"
+            name="%wizard.name.2">
+      </wizard>
+ </extension>
+ <extension
+       point="org.eclipse.ui.ide.projectNatureImages">
+    <image
+          icon="icons/rpm.gif"
+          id="org.eclipse.linuxtools.rpm.ui.image"
+          natureId="org.eclipse.linuxtools.rpm.core.rpmnature">
+    </image>
+ </extension>
+</plugin>
