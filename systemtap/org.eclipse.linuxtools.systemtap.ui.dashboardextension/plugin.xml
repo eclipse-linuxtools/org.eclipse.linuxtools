@@ -19,19 +19,19 @@
 			categoryId="org.eclipse.linuxtools.systemtap.ui.dashboard.category.file"
 			id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.CreateModuleAction"/>
 	</extension>
-	<extension
+	<!--<extension
 		point="org.eclipse.ui.bindings">
 		<key
 			commandId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.ExportScript"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M1+X"/>
+			sequence="M1+1"/>
 		<key
 			commandId="org.eclipse.linuxtools.systemtap.ui.dashboardextension.commands.CreateModuleAction"
 			contextId="org.eclipse.ui.contexts.window"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M1+Y"/>
-	</extension>
+			sequence="M1+2"/>
+	</extension>-->
 	<extension
 		point="org.eclipse.ui.actionSets">
 		<actionSet
@@ -93,7 +93,7 @@
          menubarPath="file.ext"
          style="push">
    </action>-->
-   ,<!--<action
+   <!--<action
          class="org.eclipse.linuxtools.systemtap.ui.dashboardextension.actions.DeleteScriptAction"
          icon="icons/actions/file_obj.gif"
          id="org.eclipse.linuxtools.systemtap.ui.dashboardextension.DeleteScriptAction"
