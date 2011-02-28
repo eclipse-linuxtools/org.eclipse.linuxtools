@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>OProfile Reference - OProfile View</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">OProfile View</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Profiling-Configuration.html" title="Profiling Configuration">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Example-Project.html" title="Example Project">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Profiling Configuration</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Example Project</td>
+			</tr>
+		</table><hr/>
+		<h1 id="OProfile_View">OProfile View</h1>
+		<p>The OProfile view is the central point of interaction of the plug-in with the results of profiling.</p>
+		<p>
+			<img border="0" src="images/Screenshot-oprofile_view_full.png"/>
+		</p>
+		<p>The tree structure displayed above describes one or more profiles of one or more events in the following manner:</p>
+		<ul>
+			<li>
+				<img border="0" src="images/Icon-oprofile_event.gif"/> Events -- the name of the profiling event used by OProfile (e.g. <code>CPU_CLK_UNHALTED</code>)
+				<ul>
+					<li>
+						<img border="0" src="images/Icon-oprofile_session.gif"/> Session -- the name of the session the profile is stored in (e.g. <code>run1</code>)
+						<ul>
+							<li>
+								<img border="0" src="images/Icon-oprofile_image.gif"/> Image -- the binary being profiled (e.g. 
+								<i><code>/notnfs/ksebasti/oprofile/plugin/factorial/Debug/factorial</code></i>)
+								<ul>
+									<li>
+										<img border="0" src="images/Icon-oprofile_symbol.gif"/> Symbol -- symbols gathered from the binary's debug information (e.g. <code>factorial2</code>)
+										<ul>
+											<li>
+												<img border="0" src="images/Icon-oprofile_sample.gif"/> Sample -- individual OProfile samples correlated to line numbers of source code
+											</li>
+										</ul>
+									</li>
+									<li>
+										<img border="0" src="images/Icon-oprofile_dependent.gif"/> Dependent Images -- other binaries related to the run of the program; shared libraries or kernel modules
+										<ul>
+											<li>
+												<img border="0" src="images/Icon-oprofile_image.gif"/> Image -- the dependent binary 
+												<ul>
+													<li>
+														<img border="0" src="images/Icon-oprofile_symbol.gif"/> Symbol -- same as above
+														<ul>
+															<li>
+																<img border="0" src="images/Icon-oprofile_sample.gif"/> Sample -- same as above
+															</li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<p>If source code is not available, some symbols (including source file name) may be shown, but no samples. This is normally the case with programs that use shared libraries. Also, depending on the 
+			<a href="Profiling-Configuration.html#Global_Settings">Global Settings</a>, a profile may have no dependent images.
+		</p>
+		<p>Note that after Eclipse is restarted, there will be no data shown in the OProfile view. Data from past profiles will still be on the system, if not touched otherwise, and can be re-read with the <u>Refresh View</u> menu action (refer to the 
+			<a href="OProfile-View.html#View_Menu">View Menu</a> section for more details).
+		</p>
+		<h2 id="Features">Features</h2>
+		<p>This section describes the features of the plug-in exposed through the view.</p>
+		<h3 id="View_Tree">View Tree</h3>
+		<p>Double-clicking on a 
+			<img border="0" src="images/Icon-oprofile_sample.gif"/>sample will open the source file in an editor and place the insertion point at the corresponding line in code.
+		</p>
+		<p>
+			<b>Note:</b> For this to work, the source code must be available and it must be in the correct directory (as described in the debug info of the binary).
+		</p>
+		<h3 id="View_Menu">View Menu</h3>
+		<dl>
+			<dt>Open OProfile Daemon Log</dt>
+			<dd>This will launch a dialog showing the contents of the OProfile daemon log. 
+				<br/>
+				<img border="0" src="images/Screenshot-oprofiled_log_reader.png"/>
+				<br/>By default, the OProfile daemon log is in <code>
+				<i>/var/lib/oprofile/samples/oprofiled.log</i></code>
+			</dd>
+		</dl>
+		<dl>
+			<dt>Refresh View</dt>
+			<dd>This will re-read the OProfile data on the system, re-create the internal data model and re-display the profile tree. Doing so allows you to display data already on the system without launching a profile (e.g. when Eclipse first starts up).</dd>
+		</dl>
+		<dl>
+			<dt>Save Default Session</dt>
+			<dd>The default session, named <code>current</code>, is overwritten on each launch of a profile if it is not saved. If you wish to keep a profile for later viewing, this menu action will allow you to save the session to a different name.
+				<br/>Since the samples are in a system directory, this operation requires root privileges; hence, you will be prompted for the root password. The 
+				<b>
+					<i>Save Session</i>
+				</b> dialog is shown below:
+			</dd>
+		</dl>
+		<p>
+			<img border="0" src="images/Screenshot-oprofile_save_session.png"/>
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Profiling-Configuration.html" title="Profiling Configuration">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="OProfile Reference.html" title="OProfile Reference">
+						<img alt="OProfile Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Example-Project.html" title="Example Project">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Profiling Configuration</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Example Project</td>
+			</tr>
+		</table>
+	</body>
+</html>

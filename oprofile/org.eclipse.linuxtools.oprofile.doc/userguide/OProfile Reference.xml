@@ -1,0 +1,959 @@
+<?xml version='1.0' ?><!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book>
+	<title>OProfile Reference</title>
+	<chapter id="Overview">
+		<title>Overview</title>
+		<para>OProfile is a system-wide Linux profiler, capable of running at low overhead. It consists of a kernel driver and a daemon for collecting raw sample data, along with a suite of tools for parsing that data into meaningful information. OProfile is generally used by developers to determine which sections of code consume the most amount of CPU time, and why.</para>
+		<para>The OProfile plug-in allows Eclipse users to seamlessly include OProfile capabilities into their development workflow, regardless of their experience in using OProfile. Users with little experience in OProfile can use the 
+			<link linkend="One-Click_Launch">One-Click Launch</link> to run a default OProfile view. Experienced users can perform the same OProfile functions they would on the command line, but with a much richer visualization of the results.
+		</para>
+		<para>For more details on OProfile, visit the project homepage at 
+			<ulink url="http://oprofile.sourceforge.net/news/">http://oprofile.sourceforge.net/news/</ulink>.
+		</para>
+	</chapter>
+	<chapter id="Installation_and_Set-Up">
+		<title>Installation and Set-Up</title>
+		<para>The easiest way to install the OProfile plug-in for Eclipse is through the 
+			<emphasis role="bold">''Software Updates and Add-ons '</emphasis>' menu. For information on how to use this menu, refer to 
+			<ulink url="http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site">http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site</ulink>.
+		</para>
+		<para>Unlike most Eclipse plug-ins, the OProfile plug-in requires some configuration after installation. Note that this configuration process takes only a few simple steps, and only needs to be done once.</para>
+		<para>After the plug-in is first installed, performing a profile run with OProfile will bring up a dialog similar to the following:</para>
+		<para>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="Screenshot-installscript_error_dialog.png"/>
+				</imageobject>
+			</mediaobject>
+		</para>
+		<para>As the dialog suggests, you must run the supplied install script; this script will allow the OProfile plug-in to perform OProfile tasks as root (since OProfile cannot be run as an unprivileged user). The steps below are the same as the dialog but described in more detail.</para>
+		<section id="Step_1_-_Locate_the_Installation_Scripts">
+			<title>Step 1 - Locate the Installation Scripts</title>
+			<para>Open up a terminal and locate the 
+				<emphasis role="italic"><code>natives/linux/scripts</code></emphasis> subdirectory, which is found in the 
+				<emphasis role="italic"><code>org.eclipse.linuxtools.oprofile.core</code></emphasis> plug-in directory. The location of this plug-in directory depends on how you installed Eclipse.
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>If you are using a distro-supplied version of Eclipse and installed the plug-in via the update site, the plug-in directory will most likely be under 
+						<emphasis role="italic"><code>~/.eclipse</code></emphasis>. To find the exact location of the plug-in directory in this case, use the following command:
+					</para>
+					<variablelist>
+						<listitem>
+							<para><code>find ~/.eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></para>
+						</listitem>
+					</variablelist>
+				</listitem>
+				<listitem>
+					<para>Alternatively, if you are using an extracted tarball of Eclipse (i.e. you downloaded a 
+						<emphasis role="italic"><code>.tar.gz</code></emphasis> from 
+						<ulink url="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</ulink>), then the plug-in will most likely be in the <code>plugins</code> sub-directory of where you extracted it.
+					</para>
+					<variablelist>
+						<listitem>
+							<para>For example, if you extracted the tarball to <code>
+								<emphasis role="italic">/home/ksebasti</emphasis></code>, your Eclipse installation would be in <code>
+								<emphasis role="italic">/home/ksebasti/eclipse</emphasis></code>. In this case, you should use the following command to find the exact location of the plug-in directory:
+							</para>
+						</listitem>
+						<listitem>
+							<para><code>find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></para>
+						</listitem>
+					</variablelist>
+				</listitem>
+			</itemizedlist>
+			<para>
+				<emphasis role="bold">Note:</emphasis> In both cases, the quotes (') and asterisk (*) are necessary.
+			</para>
+			<para>Sample output will look like this:</para>
+			<literallayout>$ find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'
+/home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core_0.2.0.200904131051
+</literallayout>
+			<para>Once you find the plug-in directory, navigate to its <code>
+				<emphasis role="italic">natives/linux/scripts</emphasis></code> subdirectory. Using our previous example:
+<code>				cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core_0.2.0.200904131051/natives/linux/scripts</code>
+			</para>
+			<para>The <code>
+				<emphasis role="italic">natives/linux/scripts</emphasis></code> subdirectory contains the installation scripts you will need to run in order to allow OProfile to run as root.
+			</para>
+		</section>
+		<section id="Step_2_-_Choose_Which_Installation_Script_To_Run">
+			<title>Step 2 - Choose Which Installation Script To Run</title>
+			<para>The 
+				<emphasis role="italic"><code>natives/linux/scripts</code></emphasis> subdirectory contains two scripts: 
+				<emphasis role="italic"><code>install.sh</code></emphasis> and 
+				<emphasis role="italic"><code>install-noconsolehelper.sh</code></emphasis>. Both scripts perform sanity checks to ensure OProfile is installed and that <code>opxml</code>, a C++ program required to interface with OProfile, exists and can be run. The difference is in how root authentication with the plug-in is set up. 
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						<emphasis role="italic"><code>install.sh</code></emphasis> uses the pluggable authentication modules (PAM) mechanism. This is the default and recommended method for root authentication. When an OProfile task is required, you will be presented with this dialog to enter the root password:
+
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="Screenshot-opcontrol_consolehelper.png"/>
+							</imageobject>
+						</mediaobject>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="italic"><code>install-noconsolehelper.sh</code></emphasis> can be used when <code>consolehelper</code> is not present on the system, or if required PAM modules are not on the system. It uses the sudo mechanism and a small wrapper script. The install script will describe the text which should be written in the 
+						<emphasis role="italic"><code>sudoers</code></emphasis> file, then run the command <code>visudo</code> to edit it. 
+						'
+						<emphasis role="italic">Warning:</emphasis>' The 
+						<emphasis role="italic"><code>sudoers</code></emphasis> file is a sensitive system file and altering it in other ways may lead to system instability. Only users with enough knowledge of running a Linux system should use this method. For these reasons, this method of root authentication is discouraged. However, it may be the only option available to some users and it has been tested to work by developers and users of the plug-in.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+		<section id="Step_3_-_Running_The_Install_Script">
+			<title>Step 3 - Running The Install Script</title>
+			<para>Once you have selected an install script, log in as root. Assuming you are in the 
+				<emphasis role="italic"><code>natives/linux/scripts</code></emphasis> subdirectory of the plug-in directory (as in 
+				<link linkend="Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</link>), run your selected install script:
+			</para>
+			<variablelist>
+				<listitem>
+					<para><code>./install.sh</code></para>
+				</listitem>
+			</variablelist>
+			<para>Successful output will look like this:</para>
+			<literallayout>./install.sh
+Eclipse-OProfile plugin install successful.
+</literallayout>
+			<para>Either install script should be run as the root user since both scripts perform some actions that require elevated privileges: 
+				<emphasis role="italic"><code>install.sh</code></emphasis> places files in 
+				<emphasis role="italic"><code>/etc</code></emphasis> subdirectories, while 
+				<emphasis role="italic"><code>install-noconsolehelper.sh</code></emphasis> runs the command <code>visudo</code>. If you wish to simply run either install script without logging in as root, use:
+			</para>
+			<variablelist>
+				<listitem>
+					<para><code>su -c './install.sh'</code></para>
+				</listitem>
+			</variablelist>
+			<para>This command will run only the install script as the root user, then return control to the regular user. Note that you will still need to enter the root password to make this work. If you receive an error message, refer to the 
+				<link linkend="Troubleshooting">Troubleshooting</link> section.
+			</para>
+		</section>
+		<section id="Step_4_-_Restart_Eclipse">
+			<title>Step 4 - Restart Eclipse</title>
+			<para>After running the install script, restart Eclipse using <u>File</u> > <u>Restart</u>. </para>
+			<para>If you need to uninstall the plug-in, run the 
+				<emphasis role="italic"><code>uninstall.sh</code></emphasis> or 
+				<emphasis role="italic"><code>uninstall-noconsolehelper.sh</code></emphasis> script before uninstalling it from within Eclipse. These scripts are also located in the 
+				<emphasis role="italic"><code>natives/linux/scripts</code></emphasis> subdirectory of the OProfile core plug-in directory (i.e. the same directory where the install scripts are found).
+			</para>
+		</section>
+	</chapter>
+	<chapter id="Launching_A_Profile">
+		<title>Launching A Profile</title>
+		<para>The purpose of the OProfile plug-in is to provide useful profile information in a user-friendly manner. To do this, it first gathers the required information. The plug-in hooks into the Eclipse and CDT's launching facilities; in doing so, profiling becomes as easy as a normal run of your program. </para>
+		<para>During a profile run, the OProfile plug-in will start, stop and perform other OProfile tasks in the background as needed, while the binary being profiled runs as normal. Currently, it is possible to start profiling when a user binary is run and stop after the binary has returned as well as the ability to start/stop profiling at arbitrary times.</para>
+		<section id="One-Click_Launch">
+			<title>One-Click Launch</title>
+			<para>Most users are interested in profiling where a program spends the most CPU time during execution. The OProfile plug-in for Eclipse includes a 
+				<emphasis role="italic">one-click launch</emphasis> feature which profiles this. The one-click launch sets appropriate defaults for a profile configuration using the 
+				<emphasis role="italic">execution time</emphasis> event, and launches the profile with no further required user intervention.
+			</para>
+			<para>To use the one-click launch, right click on the 
+				<emphasis role="italic">project</emphasis>, the 
+				<emphasis role="italic">binary</emphasis> or in an 
+				<emphasis role="italic">open editor</emphasis> for a source file belonging to that project. Then, navigate to <u>Profile As</u> and click <u>Profile With OProfile</u> to start the launch.
+			</para>
+			<para>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Screenshot-one-click_launch.png"/>
+					</imageobject>
+				</mediaobject>
+			</para>
+		</section>
+		<section id="Launching_a_Customized_Profile">
+			<title>Launching a Customized Profile</title>
+			<para>The OProfile plug-in allows you to configure a profile run using several available OProfile options. These options are exposed via the launch configuration in a user-friendly manner, allowing for a more complex profile. </para>
+			<para>To customize a profile, right click on the 
+				<emphasis role="italic">project</emphasis>, the 
+				<emphasis role="italic">binary</emphasis> or in an 
+				<emphasis role="italic">open editor</emphasis> for a source file belonging to that project. Then, navigate to <u>Profile As</u> > <u>Profile Configurations...</u> to open the 
+				<emphasis role="bold">
+					<emphasis role="italic">Profile Configurations</emphasis>
+				</emphasis> menu. Refer to the 
+				<link linkend="Profiling_Configuration">Profiling Configuration</link> section for more information about configuring a profile. 
+			</para>
+			<para>After configuring a profile, click the <u>Profile</u> button to launch the profile.</para>
+		</section>
+		<section id="Manual_Profile">
+			<title>Manual Profile</title>
+			<para>As of the 0.3.0 release, users can profile their applications in two ways: an automatic or manual profile. Automatic is the previously described method whereby the OProfile daemon is started before the binary is launched and stopped after the binary returns. A manual profile configures the daemon with the appropriate settings, but instead a control dialog is available which the user can use to start or stop the OProfile daemon at will. Each mode has their own configuration type and icon, as to disambiguate the type of profile an entry in the profile history. A feedback list in the dialog assures the user that the operations have been received, since at times an operation may take a few seconds to complete. This feature is most useful to profile applications which halt on input, or large applications for which it is undesirable to launch and return several times. It is not recommended to use this feature to only profile when you believe your application is spending time; the statistical nature of OProfile will account for this.</para>
+			<para>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Oprofile_manual_dialog.png"/>
+					</imageobject>
+				</mediaobject>
+			</para>
+			<para>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Oprofile_manual_shortcut.png"/>
+					</imageobject>
+				</mediaobject>
+			</para>
+		</section>
+	</chapter>
+	<chapter id="Profiling_Configuration">
+		<title>Profiling Configuration</title>
+		<para>OProfile has many configuration options, the amount of which can be overwhelming. For more information about these options, refer to 
+			<ulink url="http://oprofile.sourceforge.net/doc/controlling.html">http://oprofile.sourceforge.net/doc/controlling.html</ulink>. The 
+			<emphasis role="bold">
+				<emphasis role="italic">Profile Configurations</emphasis>
+			</emphasis> menu provided by the OProfile plug-in aims to make relevant, commonly-used OProfile configuration options easily accessible to users of all experience levels. Currently, the 
+			<emphasis role="bold">
+				<emphasis role="italic">Profile Configurations</emphasis>
+			</emphasis> menu provides two configuration tabs to the standard CDT launch configuration: 
+			<link linkend="Global_Settings">Global Settings</link> and 
+			<link linkend="Event_Configuration">Event Configuration</link>.
+		</para>
+		<section id="Global_Settings">
+			<title>Global Settings</title>
+			<para>The 
+				<emphasis role="bold">
+					<emphasis role="italic">Global Settings</emphasis>
+				</emphasis> tab configures how the OProfile daemon gathers profiling information. Each option is described below.
+
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Screenshot-global_config.png"/>
+					</imageobject>
+				</mediaobject>
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term>Kernel Image File (optional)</term>
+					<listitem>
+						<para>To collect more detailed information about the operation of a program in the Linux kernel, use the <u>Browse</u> button specify the location of your running kernel's 
+							<emphasis role="italic"><code>vmlinux</code></emphasis> file. A kernel's 
+							<emphasis role="italic"><code>vmlinux</code></emphasis> file contains debugging information required by OProfile. Note that the compressed 
+							<emphasis role="italic">vmlinux</emphasis> file, often named 
+							<emphasis role="italic"><code>vmlinuz</code></emphasis>, cannot be used for this purpose. 
+							 Note: For this option to have any effect, you must enable the 
+							<emphasis role="bold">
+								<emphasis role="italic">Include dependent kernel modules</emphasis>
+							</emphasis> option.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<variablelist>
+				<varlistentry>
+					<term>Include dependent shared libraries</term>
+					<listitem>
+						<para>This option will make OProfile include samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results.</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<variablelist>
+				<varlistentry>
+					<term>Include dependent kernel modules</term>
+					<listitem>
+						<para>This option will make OProfile include samples related to running in the kernel. If the 
+							<emphasis role="italic"><code>vmlinux</code></emphasis> file is specified, the profile will include details of the specific kernel modules in use. Otherwise, kernel samples will be grouped under the name <code>no-vmlinux</code>.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>The differences between the options are illustrated in the following OProfile view screenshot:</para>
+			<para>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="Screenshot-oprofile_global_differences.png"/>
+					</imageobject>
+				</mediaobject>
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para><code>incl_library</code> was run with only the 
+						<emphasis role="bold">
+							<emphasis role="italic">Include dependent shared libraries</emphasis>
+						</emphasis> checked
+					</para>
+				</listitem>
+				<listitem>
+					<para><code>incl_vmlinux</code> was run with the 
+						<emphasis role="italic"><code>vmlinux</code></emphasis> file specified; both 
+						<emphasis role="bold">
+							<emphasis role="italic">Include dependent shared libraries</emphasis>
+						</emphasis> and 
+						<emphasis role="bold">
+							<emphasis role="italic">Include dependent kernel modules</emphasis>
+						</emphasis> checked
+					</para>
+				</listitem>
+				<listitem>
+					<para><code>no_vmlinux</code> was run without any 
+						<emphasis role="italic"><code>vmlinux</code></emphasis> file specified; both 
+						<emphasis role="bold">
+							<emphasis role="italic">Include dependent shared libraries</emphasis>
+						</emphasis> and 
+						<emphasis role="bold">
+							<emphasis role="italic">Include dependent kernel modules</emphasis>
+						</emphasis> checked
+					</para>
+				</listitem>
+				<listitem>
+					<para><code>novmlinux_noseparate</code> was run with none of the options checked</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+		<section id="Event_Configuration">
+			<title>Event Configuration</title>
+			<para>Your system processor's hardware profiling registers often contain a large number of options. The 
+				<emphasis role="bold">
+					<emphasis role="italic">Event Configuration</emphasis>
+				</emphasis> tab condenses these options to a more manageable amount.
+			</para>
+			<section id="Timer_Interrupt_Mode">
+				<title>Timer Interrupt Mode</title>
+				<para>If your processor (or kernel) does not support the hardware profiling registers OProfile uses, OProfile will run in 
+					<emphasis role="italic">timer-interrupt mode</emphasis>. This mode has no user-configurable events. For more information about 
+					<emphasis role="italic">timer-interrupt mode</emphasis>, refer to 
+					<ulink url="http://oprofile.sourceforge.net/doc/detailed-parameters.html#timer">http://oprofile.sourceforge.net/doc/detailed-parameters.html#timer</ulink>.
+				</para>
+				<para>The event configuration tab will then look like the screenshot below:</para>
+				<para>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="Screenshot-oprofile_event_timer.png"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+			</section>
+			<section id="Regular_Mode">
+				<title>Regular Mode</title>
+				<para>If your processor (or kernel) supports hardware profiling registers, there are several configuration options available to you. The availability of these configuration options depend on your processor model or kernel version. With proper support, the 
+					<emphasis role="bold">
+						<emphasis role="italic">Events</emphasis>
+					</emphasis> configuration tab will look like the following screenshot:
+				</para>
+				<para>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="Screenshot-oprofile_eventconfig.png"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+				<para>In 
+					<emphasis role="italic">regular mode</emphasis>, the 
+					<emphasis role="bold">
+						<emphasis role="italic">Events</emphasis>
+					</emphasis> configuration tab can contain any of the following options:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term>Use default event</term>
+						<listitem>
+							<para>This option is enabled by default when creating a new profile configuration, or when a profile configuration is created through the 
+								<link linkend="One-Click_Launch">one-click launch</link>. 
+								<emphasis role="bold">
+									<emphasis role="italic">Use default event</emphasis>
+								</emphasis> is a shortcut to use an event based on processor execution time, with a reasonable value for the 
+								<emphasis role="bold">
+									<emphasis role="italic">Count</emphasis>
+								</emphasis> option. Using this option will prevent you from configuring the counters any further.
+								 For a list of default events for various processors, refer to 
+								<ulink url="http://oprofile.sourceforge.net/doc/controlling.html#eventspec">http://oprofile.sourceforge.net/doc/controlling.html#eventspec</ulink>.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Counter Tabs (
+							<emphasis role="bold">
+								<emphasis role="italic">Ctr 0</emphasis>
+							</emphasis>, 
+							<emphasis role="bold">
+								<emphasis role="italic">Ctr 1</emphasis>
+							</emphasis>, 
+							<emphasis role="bold">
+								<emphasis role="italic">Ctr 2</emphasis>
+							</emphasis>, and so on)
+						</term>
+						<listitem>
+							<para>A processor may have 1 to 8 hardware profiling registers (also called counters). Each one may be programmed separately to profile many events simultaneously. Each tabs labelled 
+								<emphasis role="italic">Ctr</emphasis> represents one counter and exposes the same options.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Enabled</term>
+						<listitem>
+							<para>This option (located in each counter tab) disables or enables a counter.</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Event List</term>
+						<listitem>
+							<para>A list of the events available for profiling on a given counter.</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Event Description</term>
+						<listitem>
+							<para>When you select an event from the events list, this field provides a short description of that event's function. OProfile provides the content for this field.</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Profile Kernel and Profile user binaries</term>
+						<listitem>
+							<para>Instructs OProfile to profile binaries in the selected spaces. Keeping both checked is recommended (even if other 
+								<link linkend="Global_Settings">Global Settings</link> are not specified).
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Count</term>
+						<listitem>
+							<para>Specifies a reset count for the hardware counter. In most cases, the default value (based on the CPU clock frequency) is sufficient. Each event has a minimum value, but it is recommended to use a value many orders of magnitude larger.
+								 
+								<emphasis role="bold">WARNING</emphasis>: if you specify a value that is too low, the profiled program may take much longer to return or your system may hang.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Unit Mask</term>
+						<listitem>
+							<para>Many events have a 
+								<emphasis role="italic">unit mask</emphasis> which allows further narrowing of the scope of the event. If in doubt, use the default value (specified by OProfile). There are three types of unit masks:
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<itemizedlist>
+					<listitem>
+						<para>Mandatory -- no selection necessary; a single required value</para>
+					</listitem>
+					<listitem>
+						<para>Exclusive -- several possible values; a single required value</para>
+					</listitem>
+					<listitem>
+						<para>Bitmask -- several possible values; a combination of several values</para>
+					</listitem>
+				</itemizedlist>
+			</section>
+		</section>
+	</chapter>
+	<chapter id="OProfile_View">
+		<title>OProfile View</title>
+		<para>The OProfile view is the central point of interaction of the plug-in with the results of profiling.</para>
+		<para>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="Screenshot-oprofile_view_full.png"/>
+				</imageobject>
+			</mediaobject>
+		</para>
+		<para>The tree structure displayed above describes one or more profiles of one or more events in the following manner:</para>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="Icon-oprofile_event.gif"/>
+						</imageobject>
+					</mediaobject> Events -- the name of the profiling event used by OProfile (e.g. <code>CPU_CLK_UNHALTED</code>)
+				</para>
+				<itemizedlist>
+					<listitem>
+						<para>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="Icon-oprofile_session.gif"/>
+								</imageobject>
+							</mediaobject> Session -- the name of the session the profile is stored in (e.g. <code>run1</code>)
+						</para>
+						<itemizedlist>
+							<listitem>
+								<para>
+									<mediaobject>
+										<imageobject>
+											<imagedata fileref="Icon-oprofile_image.gif"/>
+										</imageobject>
+									</mediaobject> Image -- the binary being profiled (e.g. 
+									<emphasis role="italic"><code>/notnfs/ksebasti/oprofile/plugin/factorial/Debug/factorial</code></emphasis>)
+								</para>
+								<itemizedlist>
+									<listitem>
+										<para>
+											<mediaobject>
+												<imageobject>
+													<imagedata fileref="Icon-oprofile_symbol.gif"/>
+												</imageobject>
+											</mediaobject> Symbol -- symbols gathered from the binary's debug information (e.g. <code>factorial2</code>)
+										</para>
+										<itemizedlist>
+											<listitem>
+												<para>
+													<mediaobject>
+														<imageobject>
+															<imagedata fileref="Icon-oprofile_sample.gif"/>
+														</imageobject>
+													</mediaobject> Sample -- individual OProfile samples correlated to line numbers of source code
+												</para>
+											</listitem>
+										</itemizedlist>
+									</listitem>
+									<listitem>
+										<para>
+											<mediaobject>
+												<imageobject>
+													<imagedata fileref="Icon-oprofile_dependent.gif"/>
+												</imageobject>
+											</mediaobject> Dependent Images -- other binaries related to the run of the program; shared libraries or kernel modules
+										</para>
+										<itemizedlist>
+											<listitem>
+												<para>
+													<mediaobject>
+														<imageobject>
+															<imagedata fileref="Icon-oprofile_image.gif"/>
+														</imageobject>
+													</mediaobject> Image -- the dependent binary 
+												</para>
+												<itemizedlist>
+													<listitem>
+														<para>
+															<mediaobject>
+																<imageobject>
+																	<imagedata fileref="Icon-oprofile_symbol.gif"/>
+																</imageobject>
+															</mediaobject> Symbol -- same as above
+														</para>
+														<itemizedlist>
+															<listitem>
+																<para>
+																	<mediaobject>
+																		<imageobject>
+																			<imagedata fileref="Icon-oprofile_sample.gif"/>
+																		</imageobject>
+																	</mediaobject> Sample -- same as above
+																</para>
+															</listitem>
+														</itemizedlist>
+													</listitem>
+												</itemizedlist>
+											</listitem>
+										</itemizedlist>
+									</listitem>
+								</itemizedlist>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+				</itemizedlist>
+			</listitem>
+		</itemizedlist>
+		<para>If source code is not available, some symbols (including source file name) may be shown, but no samples. This is normally the case with programs that use shared libraries. Also, depending on the 
+			<link linkend="Global_Settings">Global Settings</link>, a profile may have no dependent images.
+		</para>
+		<para>Note that after Eclipse is restarted, there will be no data shown in the OProfile view. Data from past profiles will still be on the system, if not touched otherwise, and can be re-read with the <u>Refresh View</u> menu action (refer to the 
+			<link linkend="View_Menu">View Menu</link> section for more details).
+		</para>
+		<section id="Features">
+			<title>Features</title>
+			<para>This section describes the features of the plug-in exposed through the view.</para>
+			<section id="View_Tree">
+				<title>View Tree</title>
+				<para>Double-clicking on a 
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="Icon-oprofile_sample.gif"/>
+						</imageobject>
+					</mediaobject>sample will open the source file in an editor and place the insertion point at the corresponding line in code.
+				</para>
+				<para>
+					<emphasis role="bold">Note:</emphasis> For this to work, the source code must be available and it must be in the correct directory (as described in the debug info of the binary).
+				</para>
+			</section>
+			<section id="View_Menu">
+				<title>View Menu</title>
+				<variablelist>
+					<varlistentry>
+						<term>Open OProfile Daemon Log</term>
+						<listitem>
+							<para>This will launch a dialog showing the contents of the OProfile daemon log. 
+
+								<mediaobject>
+									<imageobject>
+										<imagedata fileref="Screenshot-oprofiled_log_reader.png"/>
+									</imageobject>
+								</mediaobject>
+								By default, the OProfile daemon log is in <code>
+								<emphasis role="italic">/var/lib/oprofile/samples/oprofiled.log</emphasis></code>
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Refresh View</term>
+						<listitem>
+							<para>This will re-read the OProfile data on the system, re-create the internal data model and re-display the profile tree. Doing so allows you to display data already on the system without launching a profile (e.g. when Eclipse first starts up).</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<variablelist>
+					<varlistentry>
+						<term>Save Default Session</term>
+						<listitem>
+							<para>The default session, named <code>current</code>, is overwritten on each launch of a profile if it is not saved. If you wish to keep a profile for later viewing, this menu action will allow you to save the session to a different name.
+								Since the samples are in a system directory, this operation requires root privileges; hence, you will be prompted for the root password. The 
+								<emphasis role="bold">
+									<emphasis role="italic">Save Session</emphasis>
+								</emphasis> dialog is shown below:
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="Screenshot-oprofile_save_session.png"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+			</section>
+		</section>
+	</chapter>
+	<chapter id="Example_Project">
+		<title>Example Project</title>
+		<para>If you wish to try the documented steps in this article with a test project, you can download the same sample project used to create the screenshots at the following link:</para>
+		<para>
+			<ulink url="http://wiki.eclipse.org/images/7/77/Eclipse-oprofile_testproj_factorial.zip">http://wiki.eclipse.org/images/7/77/Eclipse-oprofile_testproj_factorial.zip</ulink>
+		</para>
+		<para>To import the project into the Eclipse workspace, navigate to <u>File</u> > <u>Import</u> > <u>General</u> > <u>Existing Projects into Workspace</u>. Then, choose <u>Select archive file</u> and use the <u>Browse</u> button to point to the location of the sample project on your file system.</para>
+	</chapter>
+	<chapter id="Troubleshooting">
+		<title>Troubleshooting</title>
+		<para>Various problems and their solutions are described here. If you encounter a problem not described here, please 
+			<ulink url="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=">file a bug</ulink>.
+		</para>
+		<section id="Install_Script_Errors">
+			<title>Install Script Errors</title>
+			<para>This section describes different errors that could occur from running the install scripts (i.e. <code>
+				<emphasis role="italic">install.sh</emphasis></code> or <code>
+				<emphasis role="italic">install-noconsolehelper.sh</emphasis></code>) 
+			</para>
+			<section id="Error:_script_must_be_run_as_the_root_user">
+				<title>Error: script must be run as the root user</title>
+				<para>You attempted to run the script as an ordinary, non-root user. You must be the root user to run the install script, as the scripts edit files located in root-owned directories. </para>
+				<para>Solution: Run the command <code>su -</code> to become the root user, or run the script as the root user with <code>su -c './install.sh'</code>.</para>
+			</section>
+			<section id="Error:_script_must_be_run_with_pwd_in_script_dir">
+				<title>Error: script must be run with pwd in script dir</title>
+				<para>Your current working directory must be the <code>
+					<emphasis role="italic">natives/linux/scripts</emphasis></code> subdirectory of the OProfile core plug-in; running the script relative from another location will not work. 
+				</para>
+				<para>Solution: Simply follow the steps on 
+					<link linkend="Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</link> to find the <code>
+					<emphasis role="italic">natives/linux/scripts</emphasis></code> subdirectory of the OProfile core plug-in.
+				</para>
+			</section>
+			<section id="Error:_required_binaries_do_not_exist.2C_OProfile_not_installed.3F">
+				<title>Error: required binaries do not exist, OProfile not installed?</title>
+				<para>The OProfile plug-in could not find the <code>
+					<emphasis role="italic">oprofiled</emphasis></code> and <code>
+					<emphasis role="italic">opcontrol</emphasis></code> binaries. This could mean they are not in their default directory (<code>
+					<emphasis role="italic">/usr/bin</emphasis></code>), or they do not exist at all.
+				</para>
+				<para>Solution: If the binaries are on your system (and in your <code>PATH</code>) but not in those directories, you can either remove these checks from the install script or create symlinks in the <code>
+					<emphasis role="italic">/usr/bin</emphasis></code> directory. Of course, if the binaries do not exist on your system, then install the <code>
+					<emphasis role="italic">oprofile</emphasis></code> package.
+				</para>
+			</section>
+			<section id="Error:_.2Fusr.2Fbin.2Fconsolehelper_does_not_exist.2C_run_install-noconsolehelper.sh_instead">
+				<title>Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead</title>
+				<para>You ran the <code>
+					<emphasis role="italic">install.sh</emphasis></code> script, but <code>consolehelper</code> was not installed on your system.
+					As described in 
+					<link linkend="Step_2_-_Choose_Which_Installation_Script_To_Run">Step 2 - Choose Which Installation Script To Run</link>, if <code>consolehelper</code> is not installed, then you will need to use a root authentication mode that uses the <code>sudo</code> mechanism.
+				</para>
+				<para>Solution: Run the <code>
+					<emphasis role="italic">install-noconsolehelper.sh</emphasis></code> script instead.
+				</para>
+			</section>
+			<section id="Error:_cannot_create_opcontrol_wrapper_in_.3Cdirectory.3E">
+				<title>Error: cannot create opcontrol wrapper in &lt;directory></title>
+				<para>The <code>ln</code> command reports that the symlink could not be created. This can occur if the <code>
+					<emphasis role="italic">natives/linux/scripts</emphasis></code> subdirectory is located on an NFS mount; the NFS server will not allow the local root user to create files in the directory.
+				</para>
+				<para>Solution: Before running the <code>
+					<emphasis role="italic">install.sh</emphasis></code> script, first create the symlink as a regular user by running the command <code>ln -s /usr/bin/consolehelper opcontrol</code>. Then, remove the following section from the <code>
+					<emphasis role="italic">install.sh</emphasis></code> script:
+				</para>
+				<literallayout>#create the sym link to consolehelper
+test -L ./opcontrol || { rm -f ./opcontrol &amp;&amp; ln -s /usr/bin/consolehelper opcontrol ; }
+if [ $? -ne 0 ]; then
+  echo Error: cannot create opcontrol wrapper in `pwd`
+  exit 1
+fi
+</literallayout>
+				<para>The <code>
+					<emphasis role="italic">install.sh</emphasis></code> script is fixed in the most recent version of the OProfile plug-in for Eclipse, but not in the 0.2.0 release.
+				</para>
+			</section>
+			<section id="Error:_cannot_find_opxml_binary.2C_required_plugin_missing">
+				<title>Error: cannot find opxml binary, required plugin missing</title>
+				<para>This can occur if the native binary <code>
+					<emphasis role="italic">opxml</emphasis></code> is not found. This binary is required for proper operation of the plug-in.
+				</para>
+				<para>Solution: If the <code>
+					<emphasis role="italic">org.eclipse.linuxtools.oprofile.core.linux.{x86,x86_64,ppc}</emphasis></code> directories exist (in the Eclipse <code>
+					<emphasis role="italic">plugins</emphasis></code> directory), refer to the 
+					<link linkend="Rebuilding_opxml">Rebuilding opxml</link> section for instructions on rebuilding the binary and placing it in the proper directory. Otherwise, re-install the plug-in.
+				</para>
+			</section>
+		</section>
+		<section id="No_Samples_From_A_Profile">
+			<title>No Samples From A Profile</title>
+			<para>It is possible for a profile run of a program to return no samples, resulting in no <code>current</code> session displayed. This is not always indicative of a problem with either OProfile or the profiled program. OProfile is a system-wide profiling tool; hence, other active processes running on your system may overshadow your program. This is particularly true if the profiled program is not CPU intensive. </para>
+			<para>In addition, the 
+				<emphasis role="italic">Event</emphasis> you choose (selected through the 
+				<emphasis role="bold">
+					<emphasis role="italic">Events</emphasis>
+				</emphasis> tab, as described in 
+				<link linkend="Regular_Mode">Regular Mode</link>) could cause a profile to return no samples; for example the event 
+				<emphasis role="italic">BR_CND_MISSP_EXEC</emphasis> will only provide samples if a branch was mispredicted by the processor. Note also that due to the statistical nature of OProfile, profiling is neither deterministic nor consistent; two subsequent runs may output very different results. In some cases, one run can result in no samples, while another run on the same program can result in many samples. The OProfile online documentation has other useful information 
+				<ulink url="http://oprofile.sourceforge.net/doc/results.html#no-results">here</ulink>.
+			</para>
+			<para>Solution: The following suggestions could help you generate more samples from a profile run:</para>
+			<itemizedlist>
+				<listitem>
+					<para>run your program with a larger input</para>
+				</listitem>
+				<listitem>
+					<para>halt or kill as many other non-essential processes as possible </para>
+				</listitem>
+				<listitem>
+					<para>reduce the 
+						<emphasis role="italic">Count</emphasis> in the 
+						<link linkend="Event_Configuration">Event Configuration</link> tab
+					</para>
+				</listitem>
+				<listitem>
+					<para>launch a profile several times </para>
+				</listitem>
+			</itemizedlist>
+			<para>If you are unsure whether your configuration is working correctly, try profiling the sample project in the 
+				<link linkend="Example_Project">Example Project</link> section.
+			</para>
+		</section>
+		<section id="Log_Reader_Hangs">
+			<title>Log Reader Hangs</title>
+			<para>If the OProfile daemon log file is too large, the log reader may hang and possibly cause the OProfile plug-in to crash. This occurs when the 
+				<emphasis role="italic">verbosity</emphasis> option is set to <code>all</code>, which results in several hundred MiB of text in the log over several profile runs. If you do require all this data in the log file, do not launch the log reader. Delete or backup the log file before running the log reader again.
+			</para>
+		</section>
+		<section id="Errors_Related_to_opxml">
+			<title>Errors Related to opxml</title>
+			<para><code>opxml</code> is the native program that bridges OProfile and the OProfile plug-in for Eclipse. In some cases, some errors may be caused by problems with <code>opxml</code>. To verify if this is the case, run <code>opxml</code>.</para>
+			<para><code>opxml</code> is normally located in the Eclipse <code>
+				<emphasis role="italic">plugins</emphasis></code> directory, similar to the install scripts described in 
+				<link linkend="Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</link>. However, depending on your platform, the location of <code>opxml</code> will be different. To determine what your platform is, run the following command at a terminal:
+			</para>
+			<variablelist>
+				<listitem>
+					<para></para>
+					<variablelist>
+						<listitem>
+							<para><code>uname -m</code></para>
+						</listitem>
+					</variablelist>
+				</listitem>
+			</variablelist>
+			<para>Depending on the output, locate the following directory in the same manner as 
+				<link linkend="Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</link>, and change into that directory:
+			</para>
+			<informaltable>
+				<tr>
+					<th>Output from <code>uname -m</code></th>
+					<th>Directory to use in <code>find</code> command</th>
+					<th>Sub-directory to change to</th>
+				</tr>
+				<tr>
+					<td>i386, i468, i568, i686, x86</td>
+					<td>org.eclipse.linuxtools.oprofile.core.linux.x86</td>
+					<td>os/linux/x86</td>
+				</tr>
+				<tr>
+					<td>x86_64</td>
+					<td>org.eclipse.linuxtools.oprofile.core.linux.x86_64</td>
+					<td>os/linux/x86_64</td>
+				</tr>
+				<tr>
+					<td>ppc, ppc64</td>
+					<td>org.eclipse.linuxtools.oprofile.core.linux.ppc</td>
+					<td>os/linux/ppc</td>
+				</tr>
+			</informaltable>
+			<para>For example, if you are running Eclipse on a 64bit machine (i.e. x86_64), you should run the following command to find the location of <code>opxml</code>:</para>
+			<variablelist>
+				<listitem>
+					<para><code>$ find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core.linux.x86_64_*'</code></para>
+				</listitem>
+			</variablelist>
+			<para>This will display the following output (or similar):</para>
+			<variablelist>
+				<listitem>
+					<para><code>/home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514</code></para>
+				</listitem>
+			</variablelist>
+			<para>Navigate into that directory:</para>
+			<variablelist>
+				<listitem>
+					<para><code>$ cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core.linux.x86_64_0.2.0.200904201514/os/linux/x86_64</code></para>
+				</listitem>
+			</variablelist>
+			<para>Once you have navigated to the right directory, run the following command:</para>
+			<variablelist>
+				<listitem>
+					<para><code>./opxml info</code></para>
+				</listitem>
+			</variablelist>
+			<para>Check that the paths in the <code>defaults</code> section are correct. If the output is similar to the output of the command <code>ophelp</code>, but formatted as XML, then this might not be the problem. However, if running <code>opxml</code> produces an error, it may be the root cause. A common error on some systems is that they use an older version of the C runtime libraries (i.e. <code>glibc</code>). Refer to 
+				<link linkend="Rebuilding_opxml">Rebuilding opxml</link> for a solution to this error.
+			</para>
+			<para>In any case, if there is an error please look for an 
+				<ulink url="https://bugs.eclipse.org/bugs/buglist.cgi?query_format=advanced&amp;short_desc_type=allwordssubstr&amp;short_desc=&amp;classification=Technology&amp;product=Linux+Tools&amp;component=OProfile&amp;long_desc_type=allwordssubstr&amp;long_desc=&amp;bug_file_loc_type=allwordssubstr&amp;bug_file_loc=&amp;status_whiteboard_type=allwordssubstr&amp;status_whiteboard=&amp;keywords_type=allwords&amp;keywords=&amp;emailtype1=substring&amp;email1=&amp;emailtype2=substring&amp;email2=&amp;bugidtype=include&amp;bug_id=&amp;votes=&amp;chfieldfrom=&amp;chfieldto=Now&amp;chfieldvalue=&amp;cmdtype=doit&amp;order=Reuse+same+sort+as+last+time&amp;field0-0-0=noop&amp;type0-0-0=noop&amp;value0-0-0=">existing bug</ulink> or if one does not exist, 
+				<ulink url="https://bugs.eclipse.org/bugs/enter_bug.cgi?assigned_to=ksebasti%40redhat.com&amp;blocked=&amp;bug_file_loc=http%3A%2F%2F&amp;bug_severity=normal&amp;bug_status=NEW&amp;comment=&amp;component=OProfile&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;dependson=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-4=X&amp;flag_type-6=X&amp;flag_type-7=X&amp;flag_type-8=X&amp;form_name=enter_bug&amp;keywords=&amp;op_sys=Linux&amp;priority=P3&amp;product=Linux%20Tools&amp;qa_contact=&amp;rep_platform=PC&amp;short_desc=&amp;version=0.2">file a new bug</ulink>.
+			</para>
+		</section>
+		<section id="Rebuilding_opxml">
+			<title>Rebuilding opxml</title>
+			<para>You will need to rebuild the <code>opxml</code> binary if running it returns an error similar to the following:</para>
+			<variablelist>
+				<listitem>
+					<para><code>opxml: /some/path/libc.so.6: version `GLIBC_2.8' not found (required by opxml)</code></para>
+				</listitem>
+			</variablelist>
+			<para>
+				<emphasis role="bold">Warning:</emphasis> this is rarely necessary; in some cases, rebuilding the <code>opxml</code> binary may break an otherwise working OProfile plug-in installation. You should only rebuild the <code>opxml</code> binary if you are sure that doing so is the only remaining option in fixing the OProfile plug-in for Eclipse.
+			</para>
+			<para>To rebuild the <code>opxml</code> binary, perform the following steps</para>
+			<orderedlist>
+				<listitem>
+					<para>Follow the exact same steps as 
+						<link linkend="Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</link>, except instead of changing to the <code>
+						<emphasis role="italic">natives/linux/scripts</emphasis></code> sub-directory, change to the <code>
+						<emphasis role="italic">natives/linux/opxml</emphasis></code> sub-directory of the core plugin. The source files for the <code>opxml</code> binary should be located here.
+					</para>
+				</listitem>
+				<listitem>
+					<para>Rebuilding <code>opxml</code> requires <code>make</code>, <code>g++</code>, the <code>libbfd</code> libraries and the OProfile development libraries. In Fedora, the <code>oprofile-devel</code> package contains the OProfile development libraries; for information about the OProfile development libraries in Ubuntu, refer to 
+						<link linkend="Ubuntu_-_Extra_Requirements">Ubuntu - Extra Requirements</link>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>Run <code>make</code> to build the binary.</para>
+				</listitem>
+				<listitem>
+					<para>Run <code>make install</code> to install the binary into the correct plug-in directory.</para>
+				</listitem>
+				<listitem>
+					<para>Run <code>make clean</code> to remove the extra files created during the build process.</para>
+				</listitem>
+			</orderedlist>
+			<section id="Ubuntu_-_Extra_Requirements">
+				<title>Ubuntu - Extra Requirements</title>
+				<para>Ubuntu and other Debian-based systems do not provide the OProfile development libraries in their packaging management system, so we must build them by hand. To do so, perform the following steps:</para>
+				<orderedlist>
+					<listitem>
+						<para>Install the packages <code>binutils-dev</code> and <code>libpopt-dev</code>.</para>
+						<itemizedlist>
+							<listitem>
+								<para><code>sudo apt-get install binutils-dev libpopt-dev</code></para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Download the OProfile source.</para>
+						<itemizedlist>
+							<listitem>
+								<para><code>apt-get source oprofile</code></para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Unpack the OProfile source tarball.</para>
+						<itemizedlist>
+							<listitem>
+								<para><code>cd oprofile-0.9.3 ; tar -zxf oprofile_0.9.3-1.1ubuntu2.tar.gz</code></para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Run the <code>configure</code> tool.</para>
+						<itemizedlist>
+							<listitem>
+								<para><code>cd oprofile-0.9.3 ; ./configure --without-kernel-support</code></para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Compile the required libraries.</para>
+						<itemizedlist>
+							<listitem>
+								<para><code>make</code></para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Move the libraries into the include path.</para>
+						<itemizedlist>
+							<listitem>
+								<para><code>sudo mv libutil/op_types.h libop/op_sample_file.h libutil/op_list.h libop/op_events.h libop/op_cpu_type.h libop/op_config.h libdb/odb.h /usr/include</code></para>
+							</listitem>
+							<listitem>
+								<para><code>sudo mv libop/libop.a libdb/libodb.a /usr/lib</code></para>
+							</listitem>
+							<listitem>
+								<para><code>sudo mv libabi/libabi.a /usr/lib/libopabi.a</code></para>
+							</listitem>
+							<listitem>
+								<para><code>sudo mv libutil/libutil.a /usr/lib/liboputil.a</code></para>
+							</listitem>
+							<listitem>
+								<para><code>sudo mv libutil++/libutil++.a /usr/lib/liboputil++.a</code></para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+				</orderedlist>
+				<para>The required libraries should now be in the proper place for compiling. Continue the steps in the 
+					<link linkend="Rebuilding_opxml">Rebuilding opxml</link> section.
+				</para>
+				<para>
+					<emphasis role="bold">Note:</emphasis> The procedure for building the OProfile development libraries for Ubuntu (described in this section) was tested on Ubuntu 8.04 with Eclipse, the CDT, oprofile and all its dependencies already installed via <code>apt</code>.
+				</para>
+			</section>
+		</section>
+	</chapter>
+	<chapter id="Updating_This_Document">
+		<title>Updating This Document</title>
+		<para>This document is maintained in a collaborative wiki.  If you wish to update or modify this document please visit 
+
+			<ulink url="http://wiki.eclipse.org/Linux_Tools_Project/OProfile/User_Guide">http://wiki.eclipse.org/Linux_Tools_Project/OProfile/User_Guide</ulink>
+		</para>
+	</chapter>
+</book>

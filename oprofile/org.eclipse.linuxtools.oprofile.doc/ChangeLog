@@ -1,0 +1,44 @@
+2009-04-15  Andrew Overholt  <overholt@redhat.com>
+
+	* doc/notices.html: Use copyright symbol.
+
+2009-04-15  Andrew Overholt  <overholt@redhat.com>
+
+	* build-helper.xml: Add comment about checking WikiText out into your workspace.
+
+2009-04-14  Andrew Overholt  <overholt@redhat.com>
+
+	* build-helper.xml: Get rid of Phoenix extension (to have common side navigation
+	bar) in resulting HTML.
+
+2009-04-14  Andrew Overholt  <overholt@redhat.com>
+
+	* userguide/OProfile Reference.html: Newly-generated to include image.
+	* userguide/images/LinuxTools-0.2.0-OProfile-Screenshot.png: Initial checkin.
+
+2009-04-14  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add .qualifier.  Set bundle localization.
+	* plugin.xml: Set id on toc extension.  Add generated toc.
+	* toc.xml: Get rid of extraneous stuff.  We can re-add if we feel we need it.
+
+2009-04-14  Andrew Overholt  <overholt@redhat.com>
+
+	* about.html: Initial checkin.
+	* build-helper.xml: Likewise.
+	* build.properties: Likewise.
+	* ChangeLog: Likewise.
+	* .classpath: Likewise.
+	* doc/notices.html: Likewise.
+	* extract-markup.xsl: Likewise.
+	* META-INF/MANIFEST.MF: Likewise.
+	* plugin.properties: Likewise.
+	* plugin.xml: Likewise.
+	* .project: Likewise.
+	* .settings/org.eclipse.jdt.core.prefs: Likewise.
+	* src/org/eclipse/linuxtools/internal/oprofile/doc/anttask/MediaWikiImageFetcher.java: Likewise.
+	* src/org/eclipse/linuxtools/internal/oprofile/doc/anttask/tasks.properties: Likewise.
+	* toc.xml: Likewise.
+	* userguide/OProfile Reference.html: Likewise.
+	* userguide/OProfile Reference-toc.xml: Likewise.
+	* userguide/Updating-This-Document.html: Likewise.

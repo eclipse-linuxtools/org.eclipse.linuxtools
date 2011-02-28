@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>OProfile Reference - Installation and Set-Up</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Installation and Set-Up</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="OProfile Reference.html" title="Overview">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Launching-A-Profile.html" title="Launching A Profile">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Overview</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Launching A Profile</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Installation_and_Set-Up">Installation and Set-Up</h1>
+		<p>The easiest way to install the OProfile plug-in for Eclipse is through the 
+			<b>''Software Updates and Add-ons '</b>' menu. For information on how to use this menu, refer to 
+			<a href="http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site">http://wiki.eclipse.org/Linux_Tools_Project/PluginInstallHelp#Installing_Updates_From_the_Linux_Tools_Update_Site</a>.
+		</p>
+		<p>Unlike most Eclipse plug-ins, the OProfile plug-in requires some configuration after installation. Note that this configuration process takes only a few simple steps, and only needs to be done once.</p>
+		<p>After the plug-in is first installed, performing a profile run with OProfile will bring up a dialog similar to the following:</p>
+		<p>
+			<img border="0" src="images/Screenshot-installscript_error_dialog.png"/>
+		</p>
+		<p>As the dialog suggests, you must run the supplied install script; this script will allow the OProfile plug-in to perform OProfile tasks as root (since OProfile cannot be run as an unprivileged user). The steps below are the same as the dialog but described in more detail.</p>
+		<h2 id="Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</h2>
+		<p>Open up a terminal and locate the 
+			<i><code>natives/linux/scripts</code></i> subdirectory, which is found in the 
+			<i><code>org.eclipse.linuxtools.oprofile.core</code></i> plug-in directory. The location of this plug-in directory depends on how you installed Eclipse.
+		</p>
+		<ul>
+			<li>If you are using a distro-supplied version of Eclipse and installed the plug-in via the update site, the plug-in directory will most likely be under 
+				<i><code>~/.eclipse</code></i>. To find the exact location of the plug-in directory in this case, use the following command:
+				<dl>
+					<dd><code>find ~/.eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></dd>
+				</dl>
+			</li>
+			<li>Alternatively, if you are using an extracted tarball of Eclipse (i.e. you downloaded a 
+				<i><code>.tar.gz</code></i> from 
+				<a href="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</a>), then the plug-in will most likely be in the <code>plugins</code> sub-directory of where you extracted it.
+				<dl>
+					<dd>For example, if you extracted the tarball to <code>
+						<i>/home/ksebasti</i></code>, your Eclipse installation would be in <code>
+						<i>/home/ksebasti/eclipse</i></code>. In this case, you should use the following command to find the exact location of the plug-in directory:
+					</dd>
+					<dd><code>find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'</code></dd>
+				</dl>
+			</li>
+		</ul>
+		<p>
+			<b>Note:</b> In both cases, the quotes (') and asterisk (*) are necessary.
+		</p>
+		<p>Sample output will look like this:</p>
+		<pre>$ find /home/ksebasti/eclipse -name 'org.eclipse.linuxtools.oprofile.core_*'
+/home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core_0.2.0.200904131051
+</pre>
+		<p>Once you find the plug-in directory, navigate to its <code>
+			<i>natives/linux/scripts</i></code> subdirectory. Using our previous example:
+			<br/><code>cd /home/ksebasti/eclipse/plugins/org.eclipse.linuxtools.oprofile.core_0.2.0.200904131051/natives/linux/scripts</code>
+		</p>
+		<p>The <code>
+			<i>natives/linux/scripts</i></code> subdirectory contains the installation scripts you will need to run in order to allow OProfile to run as root.
+		</p>
+		<h2 id="Step_2_-_Choose_Which_Installation_Script_To_Run">Step 2 - Choose Which Installation Script To Run</h2>
+		<p>The 
+			<i><code>natives/linux/scripts</code></i> subdirectory contains two scripts: 
+			<i><code>install.sh</code></i> and 
+			<i><code>install-noconsolehelper.sh</code></i>. Both scripts perform sanity checks to ensure OProfile is installed and that <code>opxml</code>, a C++ program required to interface with OProfile, exists and can be run. The difference is in how root authentication with the plug-in is set up. 
+		</p>
+		<ul>
+			<li>
+				<i><code>install.sh</code></i> uses the pluggable authentication modules (PAM) mechanism. This is the default and recommended method for root authentication. When an OProfile task is required, you will be presented with this dialog to enter the root password:
+				<br/>
+				<img border="0" src="images/Screenshot-opcontrol_consolehelper.png"/>
+			</li>
+			<li>
+				<i><code>install-noconsolehelper.sh</code></i> can be used when <code>consolehelper</code> is not present on the system, or if required PAM modules are not on the system. It uses the sudo mechanism and a small wrapper script. The install script will describe the text which should be written in the 
+				<i><code>sudoers</code></i> file, then run the command <code>visudo</code> to edit it. 
+				<br/>'
+				<i>Warning:</i>' The 
+				<i><code>sudoers</code></i> file is a sensitive system file and altering it in other ways may lead to system instability. Only users with enough knowledge of running a Linux system should use this method. For these reasons, this method of root authentication is discouraged. However, it may be the only option available to some users and it has been tested to work by developers and users of the plug-in.
+			</li>
+		</ul>
+		<h2 id="Step_3_-_Running_The_Install_Script">Step 3 - Running The Install Script</h2>
+		<p>Once you have selected an install script, log in as root. Assuming you are in the 
+			<i><code>natives/linux/scripts</code></i> subdirectory of the plug-in directory (as in 
+			<a href="Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts">Step 1 - Locate the Installation Scripts</a>), run your selected install script:
+		</p>
+		<dl>
+			<dd><code>./install.sh</code></dd>
+		</dl>
+		<p>Successful output will look like this:</p>
+		<pre>./install.sh
+Eclipse-OProfile plugin install successful.
+</pre>
+		<p>Either install script should be run as the root user since both scripts perform some actions that require elevated privileges: 
+			<i><code>install.sh</code></i> places files in 
+			<i><code>/etc</code></i> subdirectories, while 
+			<i><code>install-noconsolehelper.sh</code></i> runs the command <code>visudo</code>. If you wish to simply run either install script without logging in as root, use:
+		</p>
+		<dl>
+			<dd><code>su -c './install.sh'</code></dd>
+		</dl>
+		<p>This command will run only the install script as the root user, then return control to the regular user. Note that you will still need to enter the root password to make this work. If you receive an error message, refer to the 
+			<a href="Troubleshooting.html#Troubleshooting">Troubleshooting</a> section.
+		</p>
+		<h2 id="Step_4_-_Restart_Eclipse">Step 4 - Restart Eclipse</h2>
+		<p>After running the install script, restart Eclipse using <u>File</u> > <u>Restart</u>. </p>
+		<p>If you need to uninstall the plug-in, run the 
+			<i><code>uninstall.sh</code></i> or 
+			<i><code>uninstall-noconsolehelper.sh</code></i> script before uninstalling it from within Eclipse. These scripts are also located in the 
+			<i><code>natives/linux/scripts</code></i> subdirectory of the OProfile core plug-in directory (i.e. the same directory where the install scripts are found).
+		</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="OProfile Reference.html" title="Overview">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="OProfile Reference.html" title="OProfile Reference">
+						<img alt="OProfile Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="Launching-A-Profile.html" title="Launching A Profile">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Overview</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Launching A Profile</td>
+			</tr>
+		</table>
+	</body>
+</html>

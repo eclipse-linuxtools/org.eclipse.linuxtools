@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>OProfile Reference - Profiling Configuration</title>
+		<link type="text/css" rel="stylesheet" href="book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Profiling Configuration</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Launching-A-Profile.html" title="Launching A Profile">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="OProfile-View.html" title="OProfile View">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Launching A Profile</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">OProfile View</td>
+			</tr>
+		</table><hr/>
+		<h1 id="Profiling_Configuration">Profiling Configuration</h1>
+		<p>OProfile has many configuration options, the amount of which can be overwhelming. For more information about these options, refer to 
+			<a href="http://oprofile.sourceforge.net/doc/controlling.html">http://oprofile.sourceforge.net/doc/controlling.html</a>. The 
+			<b>
+				<i>Profile Configurations</i>
+			</b> menu provided by the OProfile plug-in aims to make relevant, commonly-used OProfile configuration options easily accessible to users of all experience levels. Currently, the 
+			<b>
+				<i>Profile Configurations</i>
+			</b> menu provides two configuration tabs to the standard CDT launch configuration: 
+			<a href="Profiling-Configuration.html#Global_Settings">Global Settings</a> and 
+			<a href="Profiling-Configuration.html#Event_Configuration">Event Configuration</a>.
+		</p>
+		<h2 id="Global_Settings">Global Settings</h2>
+		<p>The 
+			<b>
+				<i>Global Settings</i>
+			</b> tab configures how the OProfile daemon gathers profiling information. Each option is described below.
+
+			<img border="0" src="images/Screenshot-global_config.png"/>
+		</p>
+		<dl>
+			<dt>Kernel Image File (optional)</dt>
+			<dd>To collect more detailed information about the operation of a program in the Linux kernel, use the <u>Browse</u> button specify the location of your running kernel's 
+				<i><code>vmlinux</code></i> file. A kernel's 
+				<i><code>vmlinux</code></i> file contains debugging information required by OProfile. Note that the compressed 
+				<i>vmlinux</i> file, often named 
+				<i><code>vmlinuz</code></i>, cannot be used for this purpose. 
+				<br/> Note: For this option to have any effect, you must enable the 
+				<b>
+					<i>Include dependent kernel modules</i>
+				</b> option.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Include dependent shared libraries</dt>
+			<dd>This option will make OProfile include samples from shared libraries that are used by the profiled binary/program. These samples will then be aggregated in the profile results.</dd>
+		</dl>
+		<dl>
+			<dt>Include dependent kernel modules</dt>
+			<dd>This option will make OProfile include samples related to running in the kernel. If the 
+				<i><code>vmlinux</code></i> file is specified, the profile will include details of the specific kernel modules in use. Otherwise, kernel samples will be grouped under the name <code>no-vmlinux</code>.
+			</dd>
+		</dl>
+		<p>The differences between the options are illustrated in the following OProfile view screenshot:</p>
+		<p>
+			<img border="0" src="images/Screenshot-oprofile_global_differences.png"/>
+		</p>
+		<ul>
+			<li><code>incl_library</code> was run with only the 
+				<b>
+					<i>Include dependent shared libraries</i>
+				</b> checked
+			</li>
+			<li><code>incl_vmlinux</code> was run with the 
+				<i><code>vmlinux</code></i> file specified; both 
+				<b>
+					<i>Include dependent shared libraries</i>
+				</b> and 
+				<b>
+					<i>Include dependent kernel modules</i>
+				</b> checked
+			</li>
+			<li><code>no_vmlinux</code> was run without any 
+				<i><code>vmlinux</code></i> file specified; both 
+				<b>
+					<i>Include dependent shared libraries</i>
+				</b> and 
+				<b>
+					<i>Include dependent kernel modules</i>
+				</b> checked
+			</li>
+			<li><code>novmlinux_noseparate</code> was run with none of the options checked</li>
+		</ul>
+		<h2 id="Event_Configuration">Event Configuration</h2>
+		<p>Your system processor's hardware profiling registers often contain a large number of options. The 
+			<b>
+				<i>Event Configuration</i>
+			</b> tab condenses these options to a more manageable amount.
+		</p>
+		<h3 id="Timer_Interrupt_Mode">Timer Interrupt Mode</h3>
+		<p>If your processor (or kernel) does not support the hardware profiling registers OProfile uses, OProfile will run in 
+			<i>timer-interrupt mode</i>. This mode has no user-configurable events. For more information about 
+			<i>timer-interrupt mode</i>, refer to 
+			<a href="http://oprofile.sourceforge.net/doc/detailed-parameters.html#timer">http://oprofile.sourceforge.net/doc/detailed-parameters.html#timer</a>.
+		</p>
+		<p>The event configuration tab will then look like the screenshot below:</p>
+		<p>
+			<img border="0" src="images/Screenshot-oprofile_event_timer.png"/>
+		</p>
+		<h3 id="Regular_Mode">Regular Mode</h3>
+		<p>If your processor (or kernel) supports hardware profiling registers, there are several configuration options available to you. The availability of these configuration options depend on your processor model or kernel version. With proper support, the 
+			<b>
+				<i>Events</i>
+			</b> configuration tab will look like the following screenshot:
+		</p>
+		<p>
+			<img border="0" src="images/Screenshot-oprofile_eventconfig.png"/>
+		</p>
+		<p>In 
+			<i>regular mode</i>, the 
+			<b>
+				<i>Events</i>
+			</b> configuration tab can contain any of the following options:
+		</p>
+		<dl>
+			<dt>Use default event</dt>
+			<dd>This option is enabled by default when creating a new profile configuration, or when a profile configuration is created through the 
+				<a href="Launching-A-Profile.html#One-Click_Launch">one-click launch</a>. 
+				<b>
+					<i>Use default event</i>
+				</b> is a shortcut to use an event based on processor execution time, with a reasonable value for the 
+				<b>
+					<i>Count</i>
+				</b> option. Using this option will prevent you from configuring the counters any further.
+				<br/> For a list of default events for various processors, refer to 
+				<a href="http://oprofile.sourceforge.net/doc/controlling.html#eventspec">http://oprofile.sourceforge.net/doc/controlling.html#eventspec</a>.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Counter Tabs (
+				<b>
+					<i>Ctr 0</i>
+				</b>, 
+				<b>
+					<i>Ctr 1</i>
+				</b>, 
+				<b>
+					<i>Ctr 2</i>
+				</b>, and so on)
+			</dt>
+			<dd>A processor may have 1 to 8 hardware profiling registers (also called counters). Each one may be programmed separately to profile many events simultaneously. Each tabs labelled 
+				<i>Ctr</i> represents one counter and exposes the same options.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Enabled</dt>
+			<dd>This option (located in each counter tab) disables or enables a counter.</dd>
+		</dl>
+		<dl>
+			<dt>Event List</dt>
+			<dd>A list of the events available for profiling on a given counter.</dd>
+		</dl>
+		<dl>
+			<dt>Event Description</dt>
+			<dd>When you select an event from the events list, this field provides a short description of that event's function. OProfile provides the content for this field.</dd>
+		</dl>
+		<dl>
+			<dt>Profile Kernel and Profile user binaries</dt>
+			<dd>Instructs OProfile to profile binaries in the selected spaces. Keeping both checked is recommended (even if other 
+				<a href="Profiling-Configuration.html#Global_Settings">Global Settings</a> are not specified).
+			</dd>
+		</dl>
+		<dl>
+			<dt>Count</dt>
+			<dd>Specifies a reset count for the hardware counter. In most cases, the default value (based on the CPU clock frequency) is sufficient. Each event has a minimum value, but it is recommended to use a value many orders of magnitude larger.
+				<br/> 
+				<b>WARNING</b>: if you specify a value that is too low, the profiled program may take much longer to return or your system may hang.
+			</dd>
+		</dl>
+		<dl>
+			<dt>Unit Mask</dt>
+			<dd>Many events have a 
+				<i>unit mask</i> which allows further narrowing of the scope of the event. If in doubt, use the default value (specified by OProfile). There are three types of unit masks:
+			</dd>
+		</dl>
+		<ul>
+			<li>Mandatory -- no selection necessary; a single required value</li>
+			<li>Exclusive -- several possible values; a single required value</li>
+			<li>Bitmask -- several possible values; a combination of several values</li>
+		</ul><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left">
+					<a href="Launching-A-Profile.html" title="Launching A Profile">
+						<img alt="Previous" border="0" src="images/images/prev.gif"/>
+					</a>
+				</td>
+				<td style="width: 60%" align="center">
+					<a href="OProfile Reference.html" title="OProfile Reference">
+						<img alt="OProfile Reference" border="0" src="images/images/home.gif"/>
+					</a>
+				</td>
+				<td style="width: 20%" align="right">
+					<a href="OProfile-View.html" title="OProfile View">
+						<img alt="Next" border="0" src="images/images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top">Launching A Profile</td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">OProfile View</td>
+			</tr>
+		</table>
+	</body>
+</html>

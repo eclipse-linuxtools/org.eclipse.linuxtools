@@ -1,0 +1,15 @@
+opxml.o
+stable.o
+oprofiledb.o
+symbol.o
+sample.o
+session.o
+samplefile.o
+imageheader.o
+opinfo.o
+xmlfmt.o
+xmlbuf.o
+xmltag.o
+sevent.o
+profileimage.o
+opxml

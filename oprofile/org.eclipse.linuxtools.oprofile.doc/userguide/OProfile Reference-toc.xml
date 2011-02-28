@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="userguide/OProfile Reference.html" label="OProfile Reference">
+	<topic href="userguide/OProfile Reference.html" label="Overview"></topic>
+	<topic href="userguide/Installation-and-Set-Up.html" label="Installation and Set-Up">
+		<topic href="userguide/Installation-and-Set-Up.html#Step_1_-_Locate_the_Installation_Scripts" label="Step 1 - Locate the Installation Scripts"></topic>
+		<topic href="userguide/Installation-and-Set-Up.html#Step_2_-_Choose_Which_Installation_Script_To_Run" label="Step 2 - Choose Which Installation Script To Run"></topic>
+		<topic href="userguide/Installation-and-Set-Up.html#Step_3_-_Running_The_Install_Script" label="Step 3 - Running The Install Script"></topic>
+		<topic href="userguide/Installation-and-Set-Up.html#Step_4_-_Restart_Eclipse" label="Step 4 - Restart Eclipse"></topic>
+	</topic>
+	<topic href="userguide/Launching-A-Profile.html" label="Launching A Profile">
+		<topic href="userguide/Launching-A-Profile.html#One-Click_Launch" label="One-Click Launch"></topic>
+		<topic href="userguide/Launching-A-Profile.html#Launching_a_Customized_Profile" label="Launching a Customized Profile"></topic>
+		<topic href="userguide/Launching-A-Profile.html#Manual_Profile" label="Manual Profile"></topic>
+	</topic>
+	<topic href="userguide/Profiling-Configuration.html" label="Profiling Configuration">
+		<topic href="userguide/Profiling-Configuration.html#Global_Settings" label="Global Settings"></topic>
+		<topic href="userguide/Profiling-Configuration.html#Event_Configuration" label="Event Configuration">
+			<topic href="userguide/Profiling-Configuration.html#Timer_Interrupt_Mode" label="Timer Interrupt Mode"></topic>
+			<topic href="userguide/Profiling-Configuration.html#Regular_Mode" label="Regular Mode"></topic>
+		</topic>
+	</topic>
+	<topic href="userguide/OProfile-View.html" label="OProfile View">
+		<topic href="userguide/OProfile-View.html#Features" label="Features">
+			<topic href="userguide/OProfile-View.html#View_Tree" label="View Tree"></topic>
+			<topic href="userguide/OProfile-View.html#View_Menu" label="View Menu"></topic>
+		</topic>
+	</topic>
+	<topic href="userguide/Example-Project.html" label="Example Project"></topic>
+	<topic href="userguide/Troubleshooting.html" label="Troubleshooting">
+		<topic href="userguide/Troubleshooting.html#Install_Script_Errors" label="Install Script Errors">
+			<topic href="userguide/Troubleshooting.html#Error:_script_must_be_run_as_the_root_user" label="Error: script must be run as the root user"></topic>
+			<topic href="userguide/Troubleshooting.html#Error:_script_must_be_run_with_pwd_in_script_dir" label="Error: script must be run with pwd in script dir"></topic>
+			<topic href="userguide/Troubleshooting.html#Error:_required_binaries_do_not_exist.2C_OProfile_not_installed.3F" label="Error: required binaries do not exist, OProfile not installed?"></topic>
+			<topic href="userguide/Troubleshooting.html#Error:_.2Fusr.2Fbin.2Fconsolehelper_does_not_exist.2C_run_install-noconsolehelper.sh_instead" label="Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead"></topic>
+			<topic href="userguide/Troubleshooting.html#Error:_cannot_create_opcontrol_wrapper_in_.3Cdirectory.3E" label="Error: cannot create opcontrol wrapper in &lt;directory>"></topic>
+			<topic href="userguide/Troubleshooting.html#Error:_cannot_find_opxml_binary.2C_required_plugin_missing" label="Error: cannot find opxml binary, required plugin missing"></topic>
+		</topic>
+		<topic href="userguide/Troubleshooting.html#No_Samples_From_A_Profile" label="No Samples From A Profile"></topic>
+		<topic href="userguide/Troubleshooting.html#Log_Reader_Hangs" label="Log Reader Hangs"></topic>
+		<topic href="userguide/Troubleshooting.html#Errors_Related_to_opxml" label="Errors Related to opxml"></topic>
+		<topic href="userguide/Troubleshooting.html#Rebuilding_opxml" label="Rebuilding opxml">
+			<topic href="userguide/Troubleshooting.html#Ubuntu_-_Extra_Requirements" label="Ubuntu - Extra Requirements"></topic>
+		</topic>
+	</topic>
+	<topic href="userguide/Updating-This-Document.html" label="Updating This Document"></topic>
+</toc>
