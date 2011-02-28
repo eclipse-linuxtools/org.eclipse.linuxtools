@@ -23,7 +23,7 @@ public class LTTngSyntheticEventProviderTextTest extends LttngTestPreparation {
 	/**
 	 * 
 	 */
-//	public void testPlainDataRequest() {
+	public void testPlainDataRequest() {
 //		// prepare
 //		init();
 //		TmfExperiment<LttngEvent> experiment = prepareTextExperimentToTest();
@@ -43,12 +43,12 @@ public class LTTngSyntheticEventProviderTextTest extends LttngTestPreparation {
 //		boolean expected = true;
 //		assertEquals("Events received out of expected order", expected,
 //				validSequence);
-//	}
-//
-//	/**
-//	 * 
-//	 */
-//	public void testSyntheticEventRequest() {
+	}
+
+	/**
+	 * 
+	 */
+	public void testSyntheticEventRequest() {
 //		init();
 //		// make sure a synthetic event provider exists and it's registered
 //		LttngSyntheticEventProvider synProvider = LttngCoreProviderFactory
@@ -72,5 +72,5 @@ public class LTTngSyntheticEventProviderTextTest extends LttngTestPreparation {
 //
 //		// finish
 //		assertEquals("Unexpected eventCount", 15316, feventCount);
-//	}
+	}
 }

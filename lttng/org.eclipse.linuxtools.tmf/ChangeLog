@@ -1,3 +1,36 @@
+2010-07-28  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/trace/ITmfTrace.java: Added getRank() to API 
+	* src/org/eclipse/linuxtools/tmf/trace/TmfTrace.java: Provide a default implementation of getRank() + minor changes 
+
+2010-07-20  Francois Chouinard  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/component/TmfDataProvider.java:
+		- Use a specific lock object (instead of this) for synchronization
+		- Fix executor exception when request comes in immediately after dispose
+	* src/org/eclipse/linuxtools/tmf/experiment/TmfExperiment.java:
+		- Fix constructor ignoring index page size
+		- Update saved context on parse to avoid unnecessary seeks
+
+2010-07-08  francois  <fchouinard@gmail.com>
+
+	* src/org/eclipse/linuxtools/tmf/trace/TmfTrace.java: Added clone()
+	* src/org/eclipse/linuxtools/tmf/trace/ITmfContext.java: Changed constant value
+	* src/org/eclipse/linuxtools/tmf/signal/TmfExperimentUpdatedSignal.java: Removed trace from signal
+	* src/org/eclipse/linuxtools/tmf/request/TmfRequestExecutor.java: Added priority queue and tracing
+	* src/org/eclipse/linuxtools/tmf/request/TmfDataRequest.java: Fix handleCompleted() handling
+	* src/org/eclipse/linuxtools/tmf/request/TmfCoalescedEventRequest.java: Added request merging based on time range
+	* src/org/eclipse/linuxtools/tmf/experiment/TmfExperimentLocation.java: Added toString()
+	* src/org/eclipse/linuxtools/tmf/experiment/TmfExperimentContext.java: Fix for equals()
+	* src/org/eclipse/linuxtools/tmf/experiment/TmfExperiment.java: Partitionning of background requests
+	* src/org/eclipse/linuxtools/tmf/component/TmfThread.java: New file. Handles thread priorities
+	* src/org/eclipse/linuxtools/tmf/component/TmfEventProvider.java: Added tracing statements
+	* src/org/eclipse/linuxtools/tmf/component/TmfDataProvider.java: Added support for prioritized requests
+	* src/org/eclipse/linuxtools/tmf/component/TmfComponent.java: Added tracing statements
+	* src/org/eclipse/linuxtools/tmf/component/ITmfDataProvider.java: Cosmetic change
+	* src/org/eclipse/linuxtools/tmf/Tracer.java: Added support to stop tracing
+	* src/org/eclipse/linuxtools/tmf/TmfCorePlugin.java: Added Tracer handling
+
 2009-06-16  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Change provider from Ericsson to Eclipse.

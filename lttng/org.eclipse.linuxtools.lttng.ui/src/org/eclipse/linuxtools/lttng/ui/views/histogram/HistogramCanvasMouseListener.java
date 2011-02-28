@@ -8,6 +8,10 @@
  * 
  * Contributors:
  *   William Bourque - Initial API and implementation
+ *   
+ * Modifications:
+ * 2010-06-20 Yuriy Vashchuk - Selection "red square" window optimisation.
+ * 							   Null pointer exception correction.
  *******************************************************************************/
 package org.eclipse.linuxtools.lttng.ui.views.histogram;
 
@@ -24,17 +28,18 @@ import org.eclipse.swt.events.MouseWheelListener;
  */
 public class HistogramCanvasMouseListener implements MouseMoveListener, MouseListener, MouseWheelListener 
 {
-	protected DelayedMouseScroll mouseScrollListener = null;
-	protected HistogramCanvas parentCanvas = null;
+	private DelayedMouseScroll mouseScrollListener = null;
+	private ParentHistogramCanvas parentCanvas = null;
+	private int oldWindowXPositionCenter = 0;
 	
-	protected boolean isWindowMoving = false;
+	private boolean isWindowMoving = false;
 	
 	/**
 	 * HistogramCanvasMouseListener constructor
 	 * 
 	 * @param newCanvas Related canvas
 	 */
-	public HistogramCanvasMouseListener(HistogramCanvas newCanvas) {
+	public HistogramCanvasMouseListener(ParentHistogramCanvas newCanvas) {
 		parentCanvas = newCanvas;
 	}
 	
@@ -45,7 +50,8 @@ public class HistogramCanvasMouseListener implements MouseMoveListener, MouseLis
 	 * @param event  The generated mouse event when the mouse moved.
 	 */
 	public void mouseMove(MouseEvent event) {
-		if ( isWindowMoving == true ) {
+		if ( parentCanvas.getHistogramContent() != null && isWindowMoving == true ) {
+
 			parentCanvas.setWindowCenterPosition(event.x);
 		}
 	}
@@ -57,8 +63,10 @@ public class HistogramCanvasMouseListener implements MouseMoveListener, MouseLis
 	 * @param event  The generated mouse event when the mouse button was pressed.
 	 */
 	public void mouseDown(MouseEvent event) {
-		if ( event.button == 1) {
+		if ( parentCanvas.getHistogramContent() != null && event.button == 1) {
 			isWindowMoving = true;
+			
+			oldWindowXPositionCenter = parentCanvas.getCurrentWindow().getWindowXPositionCenter();
 			parentCanvas.setWindowCenterPosition(event.x);
 		}
 	}
@@ -70,9 +78,12 @@ public class HistogramCanvasMouseListener implements MouseMoveListener, MouseLis
 	 * @param event  The generated mouse event when the mouse button was released.
 	 */
 	public void mouseUp(MouseEvent event) {
-		if ( event.button == 1) {
+		if ( parentCanvas.getHistogramContent() != null && event.button == 1) {
 			isWindowMoving = false;
-			parentCanvas.notifyParentSelectionWindowChangedAsynchronously();
+
+			if( oldWindowXPositionCenter != parentCanvas.getCurrentWindow().getWindowXPositionCenter()) {
+				parentCanvas.notifyParentSelectionWindowChangedAsynchronously();
+			}
 		}
 	}
 	
@@ -114,6 +125,36 @@ public class HistogramCanvasMouseListener implements MouseMoveListener, MouseLis
 			mouseScrollListener.decrementMouseScroll();
 		}
 	}
+
+	/**
+	 * This will calculate the correct zoom time and call the canvas to resize its selection window.
+	 * 
+	 * @param nbMouseScroll
+	 * @return new window timerange
+	 */
+	public long receiveMouseScrollCount(int nbMouseScroll) {
+		
+		double ajustedTime = 0;
+		long selectedWindowSize = parentCanvas.getSelectedWindowSize();
+		
+		// If we received Negative scroll event, ZoomOut by ZOOM_OUT_FACTOR * the number of scroll events received.
+		if ( nbMouseScroll < 0 ) {
+			ajustedTime = (double)selectedWindowSize * HistogramConstant.ZOOM_OUT_FACTOR;
+			ajustedTime = ajustedTime * Math.abs(nbMouseScroll);
+			ajustedTime = selectedWindowSize + ajustedTime;
+		}
+		// If we received Positive scroll event, ZoomIn by ZOOM_IN_FACTOR * the number of scroll events received.
+		else {
+			if(selectedWindowSize > 2) {
+				ajustedTime = (double)selectedWindowSize * HistogramConstant.ZOOM_IN_FACTOR;
+				ajustedTime = ajustedTime * Math.abs(nbMouseScroll);
+				ajustedTime = selectedWindowSize - ajustedTime;
+			}
+		}
+		
+		return (long)ajustedTime;
+		
+	}	
 	
 	/**
 	 * Function that will be called at the end of the "wait time" for scroll events.<p>
@@ -121,26 +162,29 @@ public class HistogramCanvasMouseListener implements MouseMoveListener, MouseLis
 	 * 
 	 * @param nbMouseScroll
 	 */
-	public void receiveMouseScrollCount(int nbMouseScroll) {
-		mouseScrollListener = null;
+	public void receiveMouseScrollCountWithNotification(int nbMouseScroll) {
 		
-		long ajustedTime = 0;
+		if(parentCanvas.getHistogramContent() != null) { 
 		
-		// If we received Negative scroll event, ZoomOut by ZOOM_OUT_FACTOR * the number of scroll events received.
-		if ( nbMouseScroll < 0 ) {
-			ajustedTime = (long)((double)parentCanvas.getSelectedWindowSize() * HistogramConstant.ZOOM_OUT_FACTOR);
-			ajustedTime = ajustedTime * Math.abs(nbMouseScroll);
-			ajustedTime = parentCanvas.getSelectedWindowSize() + ajustedTime;
+			mouseScrollListener = null;
+			
+			// Resize the canvas selection window  
+			parentCanvas.resizeWindowByAbsoluteTime( receiveMouseScrollCount(nbMouseScroll) );
 		}
-		// If we received Positive scroll event, ZoomIn by ZOOM_IN_FACTOR * the number of scroll events received.
-		else {
-			ajustedTime = (long)((double)parentCanvas.getSelectedWindowSize() * HistogramConstant.ZOOM_IN_FACTOR);
-			ajustedTime = ajustedTime * Math.abs(nbMouseScroll);
-			ajustedTime = parentCanvas.getSelectedWindowSize() - ajustedTime;
+	}
+	
+	/**
+	 * Function that will be called on mouse scroll.<p>
+	 * This will calculate the correct zoom time and call the canvas to resize its selection window.
+	 * 
+	 * @param nbMouseScroll
+	 */
+	public void receiveMouseScrollCountWithoutNotification(int nbMouseScroll) {
+		if(parentCanvas.getHistogramContent() != null) { 
+			
+			// Resize the canvas selection window  
+			parentCanvas.resizeWindowByAbsoluteTimeWithoutNotification( receiveMouseScrollCount(nbMouseScroll) );
 		}
-		
-		// Resize the canvas selection window  
-		parentCanvas.resizeWindowByAbsoluteTime(ajustedTime);
 	}
 	
 }
@@ -195,6 +239,7 @@ class DelayedMouseScroll extends Thread {
 		// Reset the wait timer
 		lastScrollTime = System.currentTimeMillis();
 		nbScrollClick++;
+		mouseListener.receiveMouseScrollCountWithoutNotification(nbScrollClick);
 	}
 	
 	/**
@@ -207,6 +252,7 @@ class DelayedMouseScroll extends Thread {
 		// Reset the wait timer
 		lastScrollTime = System.currentTimeMillis();
 		nbScrollClick--;
+		mouseListener.receiveMouseScrollCountWithoutNotification(nbScrollClick);
 	}
 	
 	/**
@@ -228,6 +274,6 @@ class DelayedMouseScroll extends Thread {
 		}
 		
 		// Tell the mouse listener the number of click received
-		mouseListener.receiveMouseScrollCount(nbScrollClick);
+		mouseListener.receiveMouseScrollCountWithNotification(nbScrollClick);
 	}
 }

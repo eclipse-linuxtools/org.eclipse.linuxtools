@@ -9,12 +9,13 @@
  * Contributors:
  *   Yann N. Dauphin     (dhaemon@gmail.com)  - Implementation for stats
  *******************************************************************************/
+
 package org.eclipse.linuxtools.lttng.ui.views.statistics.evProcessor;
 
 import org.eclipse.linuxtools.lttng.event.LttngEvent;
 import org.eclipse.linuxtools.lttng.state.StateStrings.Events;
 import org.eclipse.linuxtools.lttng.state.model.LttngTraceState;
-import org.eclipse.linuxtools.lttng.ui.views.statistics.model.StatisticsTreeNode;
+import org.eclipse.linuxtools.lttng.ui.views.statistics.model.StatisticsData;
 
 class StatsModeEndHandler extends AbstractStatsEventHandler {
 	
@@ -26,20 +27,8 @@ class StatsModeEndHandler extends AbstractStatsEventHandler {
 	 * @see org.eclipse.linuxtools.lttng.state.evProcessor.IEventProcessing#process(org.eclipse.linuxtools.lttng.event.LttngEvent, org.eclipse.linuxtools.lttng.state.model.LttngTraceState)
 	 */
 	public boolean process(LttngEvent event, LttngTraceState traceState) {
-		StatisticsTreeNode root = getStatisticsTree(traceState);
-		
-		String[][] paths = getRelevantPaths(event, traceState);
-		
-		for (String[] path : paths) {
-			StatisticsTreeNode node = root.getOrCreateChildFromPath(path); 
-			
-			increaseCPUTime(node, event, traceState);
-			
-			increaseElapsedTime(node, event, traceState);
-			
-			increaseCumulativeCPUTime(node, event, traceState);
-		}
-		
+		StatisticsData tree = getStatisticsTree(traceState);
+		tree.increase(event, traceState, StatisticsData.Values.CPU_TIME | StatisticsData.Values.ELAPSED_TIME | StatisticsData.Values.CUMULATIVE_CPU_TIME);
 		return false;
 	}
 
