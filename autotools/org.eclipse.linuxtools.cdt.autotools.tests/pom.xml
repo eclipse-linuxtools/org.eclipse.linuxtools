@@ -36,8 +36,11 @@
             <!-- test mojo matches TestProject be default and treats it as PojoTest -->
             <exclude>**/Test*.class</exclude>
           </excludes>
-          <useUIHarness>false</useUIHarness>
+          <testSuite>org.eclipse.linuxtools.cdt.autotools.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.cdt.autotools.tests.AllAutotoolsTests</testClass>
+       	  <useUIHarness>true</useUIHarness>
           <useUIThread>false</useUIThread>
+          <product>org.eclipse.sdk.ide</product>
         </configuration>
       </plugin>
       <plugin>
