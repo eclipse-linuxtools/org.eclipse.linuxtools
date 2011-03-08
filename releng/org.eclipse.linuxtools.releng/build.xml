@@ -13,6 +13,9 @@
 	<condition property="JAVA_HOME" value="${java.home}" else="${java.home}/..">
 		<available file="${java.home}/bin/javac" type="file" />
 	</condition>
+	<condition property="PACK200_JAVA_HOME" value="${java.home}" else="${java.home}/..">
+		<available file="${java.home}/bin/pack200" type="file" />
+	</condition>
 
 	<!-- If not using date-based qualifier, comment next 4 lines -->
 	<tstamp>
@@ -39,7 +42,7 @@
 	-->
 	
 	<target name="run">
-		<!--<antcall target="getEGitFetchFactory" />-->
+		<dirname file="${basedir}/.." property="localSourceCheckoutDir"/>
 		<ant antfile="${relengCommonBuilderDir}/build.xml" />
 	</target>
 
