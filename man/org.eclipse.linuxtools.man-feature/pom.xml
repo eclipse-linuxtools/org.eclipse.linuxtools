@@ -19,7 +19,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools-feature</artifactId>
+  <artifactId>org.eclipse.linuxtools.man-feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
   <name>LinuxTools Man Feature (Incubation)</name>
