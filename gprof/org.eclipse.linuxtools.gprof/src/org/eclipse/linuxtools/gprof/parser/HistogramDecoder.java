@@ -25,6 +25,14 @@ import org.eclipse.linuxtools.gprof.view.histogram.HistRoot;
  */
 public class HistogramDecoder {
 
+	private static final int GMON_HDRSIZE_BSD44 = (3 * 4);
+
+	private static final int GMON_HDRSIZE_BSD44_32 = (4 + 4 + 4 + 4 + 4 + GMON_HDRSIZE_BSD44);
+	private static final int GMON_HDRSIZE_BSD44_64 = (8 + 8 + 4 + 4 + 4 + GMON_HDRSIZE_BSD44);
+	private static final int GMON_HDRSIZE_OLDBSD_32 = (4 + 4 + 4) ;
+	private static final int GMON_HDRSIZE_OLDBSD_64 = (8 + 8 + 4);
+
+	
 	/** the decoder */
 	protected final GmonDecoder decoder;
 
@@ -58,32 +66,15 @@ public class HistogramDecoder {
 	public HistogramDecoder(GmonDecoder decoder) {
 		this.decoder = decoder;
 	}
+	
+	protected long readAddress(DataInput stream) throws IOException {
+		long ret = stream.readInt() & 0xFFFFFFFFL;
+		return ret;
+	}
 
 	public boolean hasValues() {
 		return (this.hist_sample != null && this.hist_sample.length > 0);
 	}
-
-
-	/**
-	 * Shortcut for the following three methods:
-	 * <ul>
-	 *   <li> {@link #decodeHeader(DataInput)}
-	 *   <li> {@link #decodeHistRecord(DataInput)}
-	 *   <li> {@link #AssignSamplesSymbol()}
-	 * </ul>
-	 * 
-	 * Useful only when no aggrgation is performed
-	 * (ie when there is only one gmon file)
-	 * 
-	 * @param stream
-	 * @throws IOException
-	 */
-	protected void decodeAll(DataInput stream) throws IOException {
-		decodeHeader(stream);
-		decodeHistRecord(stream);
-		AssignSamplesSymbol();
-	}
-
 
 	/**
 	 * Decode the given stream
@@ -91,12 +82,8 @@ public class HistogramDecoder {
 	 * @throws IOException if an IO error occurs
 	 */
 	public void decodeHeader(DataInput stream) throws IOException {
-		int _lowpc        = stream.readInt();
-		long lowpc        = (_lowpc & 0xFFFFFFFFL);
-		int _highpc       = stream.readInt();
-		long highpc       = (_highpc & 0xFFFFFFFFL);
-		//long lowpc = stream.readLong();
-		//long highpc = stream.readLong();
+		long lowpc        = readAddress(stream);
+		long highpc       = readAddress(stream);
 		int hist_num_bins = stream.readInt();
 		int prof_rate     = stream.readInt();
 		byte[] bytes      = new byte[15];
@@ -117,6 +104,57 @@ public class HistogramDecoder {
 		long temp = highpc - lowpc;
 		bucketSize = Math.round(temp/(double)hist_num_bins);
 	}
+
+	/**
+	 * Decode the given stream
+	 * @param stream a DataInputStream, pointing on a histogram header in a gmon file.
+	 * @throws IOException if an IO error occurs
+	 */
+	public void decodeOldHeader(DataInput stream) throws IOException {
+		long low_pc = readAddress(stream);
+		long high_pc = readAddress(stream);
+		int ncnt = stream.readInt();
+		int version = stream.readInt();
+		int header_size;
+		int profrate = 0;
+		if (version == GmonDecoder.GMONVERSION)
+		{
+			profrate = stream.readInt();
+			stream.skipBytes(GMON_HDRSIZE_BSD44);
+			if (decoder._32_bit_platform) {
+		      header_size = GMON_HDRSIZE_BSD44_32;
+			} else {
+		      header_size = GMON_HDRSIZE_BSD44_64;
+		    }
+		} else {
+		  /* Old style BSD format.  */
+			if (decoder._32_bit_platform) {
+				header_size = GMON_HDRSIZE_OLDBSD_32;
+			} else {
+				header_size = GMON_HDRSIZE_OLDBSD_64;
+			}
+		}
+
+		int samp_bytes = ncnt - header_size;
+		int hist_num_bins = samp_bytes / 2;
+
+		if (!isCompatible(low_pc, high_pc, profrate, hist_num_bins))
+		{
+			// TODO exception to normalize
+			throw new RuntimeException("Histogram header's incompatibility among gmon files");
+		}
+
+
+		this.lowpc     = low_pc;
+		this.highpc    = high_pc;
+		this.prof_rate = profrate;
+		hist_sample    = new int[hist_num_bins]; // Impl note: JVM sets all integers to 0
+		dimen          = "s";
+		dimen_abbrev   = 's';
+		long temp = highpc - lowpc;
+		bucketSize = Math.round(temp/(double)hist_num_bins);
+	}
+	
 
 	/**
 	 * Checks whether the gmon file currently parsed is compatible with the previous one (if any).
@@ -146,8 +184,10 @@ public class HistogramDecoder {
 	public void decodeHistRecord(DataInput stream) throws IOException {
 		for (int i = 0; i<hist_sample.length; i++) {
 			short _rv = stream.readShort();
-			int hist_size = (_rv & 0xFFFF);
-			hist_sample[i] += hist_size;
+			if (_rv != 0) {
+				int hist_size = (_rv & 0xFFFF);
+				hist_sample[i] += hist_size;
+			}
 		}
 	}
 
@@ -231,9 +271,10 @@ public class HistogramDecoder {
 						long overlap = end_addr - start_addr;
 						if(overlap > 0)
 						{
+							ISymbol symbol = symblist[j];
 							int time = (int) ((overlap * ccnt) / bucketSize);
 							Bucket   bck = new Bucket(start_addr, end_addr, time);
-							addBucket(bck,symblist[j]);
+							addBucket(bck,symbol);
 						}
 					}
 				}
