@@ -81,6 +81,7 @@
   <modules>
     <module>man</module>
     <module>rpmstubby</module>
+    <module>autotools</module>
   </modules>
 
   <repositories>
