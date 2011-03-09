@@ -47,6 +47,7 @@
   <modules>
     <module>org.eclipse.linuxtools.man</module>
     <module>org.eclipse.linuxtools.man-feature</module>
+    <module>org.eclipse.linuxtools.man.source-feature</module>
   </modules>
 
 </project>
