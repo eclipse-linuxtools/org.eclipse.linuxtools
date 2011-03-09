@@ -51,12 +51,12 @@
     <module>org.eclipse.linuxtools.valgrind.doc</module>
     <module>org.eclipse.linuxtools.valgrind-feature</module>
     <module>org.eclipse.linuxtools.valgrind.launch</module>
-    <module>org.eclipse.linuxtools.valgrind.launch.remote</module>
+    <!--<module>org.eclipse.linuxtools.valgrind.launch.remote</module>-->
     <module>org.eclipse.linuxtools.valgrind.massif</module>
     <module>org.eclipse.linuxtools.valgrind.massif.tests</module>
     <module>org.eclipse.linuxtools.valgrind.memcheck</module>
     <module>org.eclipse.linuxtools.valgrind.memcheck.tests</module>
-    <module>org.eclipse.linuxtools.valgrind.remote-feature</module>
+    <!--<module>org.eclipse.linuxtools.valgrind.remote-feature</module>-->
     <module>org.eclipse.linuxtools.valgrind.test-feature</module>
     <module>org.eclipse.linuxtools.valgrind.tests</module>
     <module>org.eclipse.linuxtools.valgrind.ui</module>
