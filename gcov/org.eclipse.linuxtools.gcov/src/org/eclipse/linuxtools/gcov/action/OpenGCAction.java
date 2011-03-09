@@ -83,7 +83,7 @@ public class OpenGCAction implements IEditorLauncher {
 		}
 		String binaryPath = d.getBinaryFile();
 		if (d.isCompleteCoverageResultWanted()) {
-			CovView.displayCovResults(binaryPath);
+			CovView.displayCovResults(binaryPath, gcda.getAbsolutePath());
 		} else {
 			CovView.displayCovDetailedResult(binaryPath, gcda.getAbsolutePath());
 		}

@@ -51,7 +51,7 @@ public class GcovParserTest extends TestCase {
 			File parserRefFile, File parserDumpFile)
 	throws Exception {
 		CovManager covManager = new CovManager(binaryFile.getAbsolutePath());
-		covManager.processCovFiles(covFilesPaths);
+		covManager.processCovFiles(covFilesPaths, null);
 		covManager.dumpProcessCovFilesResult(new PrintStream(parserDumpFile));
 		STJunitUtils.compareIgnoreEOL(parserDumpFile.getAbsolutePath(), parserRefFile.getAbsolutePath(), true);
 	}
