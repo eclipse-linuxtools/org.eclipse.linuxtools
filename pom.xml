@@ -79,10 +79,12 @@
   </profiles>
 
   <modules>
-    <module>man</module>
-    <module>rpmstubby</module>
     <module>autotools</module>
     <module>changelog</module>
+    <module>gcov</module>
+    <module>gprof</module>
+    <module>man</module>
+    <module>rpmstubby</module>
   </modules>
 
   <repositories>
