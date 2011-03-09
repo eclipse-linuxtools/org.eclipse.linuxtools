@@ -85,6 +85,7 @@
     <module>gprof</module>
     <module>libhover</module>
     <module>man</module>
+    <module>rpm</module>
     <module>rpmstubby</module>
   </modules>
 
