@@ -83,6 +83,7 @@
     <module>changelog</module>
     <module>gcov</module>
     <module>gprof</module>
+    <module>libhover</module>
     <module>man</module>
     <module>rpmstubby</module>
   </modules>
