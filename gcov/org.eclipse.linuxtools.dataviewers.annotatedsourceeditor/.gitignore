@@ -2,4 +2,4 @@ bin
 @dot
 javaCompiler...args
 build.xml
-org.eclipse.linuxtools.dataviewers.annotatedsourceeditor/target
+target
