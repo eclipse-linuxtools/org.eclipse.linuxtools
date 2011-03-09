@@ -2,3 +2,6 @@ bin
 @dot
 javaCompiler...args
 build.xml
+screenshots
+swtbot_tests.log
+target
