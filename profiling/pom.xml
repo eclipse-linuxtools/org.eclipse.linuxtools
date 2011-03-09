@@ -23,12 +23,12 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.eclipse.linuxtools.gprof</groupId>
-  <artifactId>linuxtools-gprof-parent</artifactId>
+  <groupId>org.eclipse.linuxtools.profiling</groupId>
+  <artifactId>linuxtools-profiling-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools GProf Parent</name>
+  <name>Eclipse Linux Tools Valgrind Parent</name>
 
   <licenses>
     <license>
@@ -45,11 +45,12 @@
   </licenses>
 
   <modules>
-    <module>org.eclipse.linuxtools.binutils</module>
-    <module>org.eclipse.linuxtools.dataviewers</module>
-    <module>org.eclipse.linuxtools.gprof</module>
-    <module>org.eclipse.linuxtools.gprof-feature</module>
-    <module>org.eclipse.linuxtools.gprof.test</module>
+    <module>org.eclipse.linuxtools.profiling-feature</module>
+    <module>org.eclipse.linuxtools.profiling.launch</module>
+    <module>org.eclipse.linuxtools.profiling.test-feature</module>
+    <module>org.eclipse.linuxtools.profiling.tests</module>
+    <module>org.eclipse.linuxtools.profiling.ui</module>
+    <module>org.eclipse.linuxtools.profiling.ui.capability</module>
   </modules>
 
 </project>

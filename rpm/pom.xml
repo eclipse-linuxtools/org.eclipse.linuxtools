@@ -23,12 +23,12 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.eclipse.linuxtools.gprof</groupId>
-  <artifactId>linuxtools-gprof-parent</artifactId>
+  <groupId>org.eclipse.linuxtools.rpm</groupId>
+  <artifactId>linuxtools-rpm-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Eclipse Linux Tools GProf Parent</name>
+  <name>Eclipse Linux Tools RPM Parent</name>
 
   <licenses>
     <license>
@@ -45,11 +45,16 @@
   </licenses>
 
   <modules>
-    <module>org.eclipse.linuxtools.binutils</module>
-    <module>org.eclipse.linuxtools.dataviewers</module>
-    <module>org.eclipse.linuxtools.gprof</module>
-    <module>org.eclipse.linuxtools.gprof-feature</module>
-    <module>org.eclipse.linuxtools.gprof.test</module>
+    <module>org.eclipse.linuxtools.rpm.core</module>
+    <module>org.eclipse.linuxtools.rpm.core.tests</module>
+    <module>org.eclipse.linuxtools.rpm-feature</module>
+    <module>org.eclipse.linuxtools.rpm.rpmlint</module>
+    <module>org.eclipse.linuxtools.rpm.speceditor.rcp</module>
+    <module>org.eclipse.linuxtools.rpm.ui</module>
+    <module>org.eclipse.linuxtools.rpm.ui.editor</module>
+    <module>org.eclipse.linuxtools.rpm.ui.editor.doc</module>
+    <module>org.eclipse.linuxtools.rpm.ui.editor-feature</module>
+    <module>org.eclipse.linuxtools.rpm.ui.editor.tests</module>
   </modules>
 
 </project>

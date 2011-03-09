@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="Eclipse LinuxTools Man Page Plug-in">
+      Displays a man page in a view or fetching it's content for embedded display purposes.
+   </description>
+   <feature url="features/org.eclipse.linuxtools.man_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man" version="0.0.0" patch="true">
+      <category name="Eclipse Linux Tools (Incubation)"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.man.sources_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man.source" version="0.0.0" patch="true">
+      <category name="Eclipse Linux Tools (Incubation)"/>
+   </feature>
+   <category-def name="Eclipse Linux Tools (Incubation)" label="Eclipse Linux Tools (Incubation)">
+      <description>
+         Eclipse Linux Tools (Incubation)
+      </description>
+   </category-def>
+</site>

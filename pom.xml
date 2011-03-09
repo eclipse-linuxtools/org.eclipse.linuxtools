@@ -45,6 +45,7 @@
     <wikitext-site>http://download.eclipse.org/tools/mylyn/update/weekly</wikitext-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/${platform-version-name}/dev-build/update-site</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110124210048/repository</orbit-site>
+    <cdt-site>http://download.eclipse.org/tools/cdt/releases/helios/</cdt-site>
   </properties>
 
   <profiles>
@@ -85,6 +86,7 @@
     <module>gprof</module>
     <module>libhover</module>
     <module>man</module>
+    <module>rpm</module>
     <module>rpmstubby</module>
   </modules>
 
@@ -108,6 +110,11 @@
       <id>orbit</id>
       <layout>p2</layout>
       <url>${orbit-site}</url>
+    </repository>
+    <repository>
+      <id>cdt</id>
+      <layout>p2</layout>
+      <url>${cdt-site}</url>
     </repository>
   </repositories>
   
@@ -135,6 +142,28 @@
         <version>${tycho-version}</version>
         <configuration>
           <resolver>p2</resolver>
+          <environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>ppc</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>ppc64</arch>
+            </environment>
+          </environments>
         </configuration>
       </plugin>
     </plugins>
