@@ -87,7 +87,7 @@
     <module>libhover</module>
     <module>lttng</module>
     <module>man</module>
-    <!--<module>oprofile</module>-->
+    <module>oprofile</module>
     <module>profiling</module>
     <module>rpm</module>
     <module>rpmstubby</module>
