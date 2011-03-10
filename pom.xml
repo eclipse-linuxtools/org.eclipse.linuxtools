@@ -85,13 +85,13 @@
     <module>gcov</module>
     <module>gprof</module>
     <module>libhover</module>
-    <!--<module>lttng</module>-->
+    <module>lttng</module>
     <module>man</module>
     <!--<module>oprofile</module>-->
     <module>profiling</module>
     <module>rpm</module>
     <module>rpmstubby</module>
-    <!--<module>systemtap</module>-->
+    <module>systemtap</module>
     <module>valgrind</module>
   </modules>
 
