@@ -22,7 +22,7 @@
   <artifactId>org.eclipse.linuxtools.man-site</artifactId>
   <packaging>eclipse-update-site</packaging>
 
-  <name>Eclipse LinuxTools Man Site (Incubation)</name>
+  <name>Eclipse Linux Tools Man Site (Incubation)</name>
   <!-- see http://issues.sonatype.org/browse/TYCHO-313 -->
   <version>0.0.1-SNAPSHOT</version>
 

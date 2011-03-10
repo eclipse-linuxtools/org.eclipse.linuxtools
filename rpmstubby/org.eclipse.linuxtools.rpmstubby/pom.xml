@@ -22,7 +22,7 @@
   <artifactId>org.eclipse.linuxtools.rpmstubby</artifactId>
   <packaging>eclipse-plugin</packaging>
 
-  <name>LinuxTools RPM Stubby Plug-in</name>
+  <name>Linux Tools RPM Stubby Plug-in</name>
 
  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->

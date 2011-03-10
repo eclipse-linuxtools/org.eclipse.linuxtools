@@ -22,6 +22,6 @@
   <artifactId>org.eclipse.linuxtools.rpmstubby.source-feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
-  <name>LinuxTools RPMStubby Source Feature (Incubation)</name>
+  <name>Linux Tools RPMStubby Source Feature (Incubation)</name>
 
 </project>

@@ -22,6 +22,6 @@
   <artifactId>org.eclipse.linuxtools.man.source-feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
-  <name>LinuxTools Man Source Feature (Incubation)</name>
+  <name>Linux Tools Man Source Feature (Incubation)</name>
 
 </project>

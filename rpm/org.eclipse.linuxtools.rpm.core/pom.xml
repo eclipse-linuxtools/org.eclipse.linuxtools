@@ -23,7 +23,7 @@
 
   <name>Linux Tools RPM Core Plug-in</name>
 
- <build>
+  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
      <resources>
       <resource>
