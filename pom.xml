@@ -93,6 +93,7 @@
     <module>rpmstubby</module>
     <module>systemtap</module>
     <module>valgrind</module>
+    <module>releng</module>
   </modules>
 
   <repositories>
