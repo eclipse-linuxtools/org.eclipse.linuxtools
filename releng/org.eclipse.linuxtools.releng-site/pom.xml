@@ -19,7 +19,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.man-site</artifactId>
+  <artifactId>org.eclipse.linuxtools.releng-site</artifactId>
   <packaging>eclipse-update-site</packaging>
 
   <name>Eclipse Linux Tools Man Site (Incubation)</name>
