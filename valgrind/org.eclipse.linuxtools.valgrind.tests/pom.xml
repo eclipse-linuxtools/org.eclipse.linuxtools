@@ -49,14 +49,4 @@
      </plugins>
    </build>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.eclipse.linuxtools.profiling</groupId>
-      <artifactId>org.eclipse.linuxtools.profiling.tests</artifactId>
-      <version>0.7.0</version>
-      <type>eclipse-plugin</type>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
-
 </project>
