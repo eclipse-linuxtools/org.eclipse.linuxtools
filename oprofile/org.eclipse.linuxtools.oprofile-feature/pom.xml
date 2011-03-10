@@ -21,6 +21,6 @@
   <version>0.3.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
-  <name>Linux Tools Oprofile Integration Feature</name>
+  <name>Linux Tools OProfile Integration Feature</name>
 
 </project>

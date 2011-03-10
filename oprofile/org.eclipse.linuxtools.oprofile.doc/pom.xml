@@ -21,6 +21,6 @@
   <version>0.3.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
-  <name>Linux Tools Oprofile Documentation Plug-in</name>
+  <name>Linux Tools OProfile Documentation Plug-in</name>
 
 </project>

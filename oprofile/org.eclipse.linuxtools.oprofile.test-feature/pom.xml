@@ -21,6 +21,6 @@
   <version>0.3.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
-  <name>Linux Tools Oprofile Tests Feature</name>
+  <name>Linux Tools OProfile Tests Feature</name>
 
 </project>

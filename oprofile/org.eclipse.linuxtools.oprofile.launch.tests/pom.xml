@@ -21,7 +21,7 @@
   <version>0.3.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
-  <name>Linux Tools Oprofile Launch Tests Plug-in</name>
+  <name>Linux Tools OProfile Launch Tests Plug-in</name>
 
  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
