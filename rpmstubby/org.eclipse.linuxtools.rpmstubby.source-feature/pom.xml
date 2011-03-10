@@ -19,9 +19,9 @@
     <version>0.3.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.rpmstubby-feature</artifactId>
+  <artifactId>org.eclipse.linuxtools.rpmstubby.source-feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
-  <name>LinuxTools RPM Stubby Feature (Incubation)</name>
+  <name>LinuxTools RPMStubby Source Feature (Incubation)</name>
 
 </project>
