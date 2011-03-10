@@ -42,7 +42,7 @@
       <import plugin="org.eclipse.linuxtools.systemtap.ui.graphing"/>
       <import plugin="org.eclipse.linuxtools.systemtap.ui.graphing.tests"/>
       <import plugin="org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui"/>
-      <import plugin="org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests"/>
+      <!--<import plugin="org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests"/>-->
       <import plugin="org.eclipse.linuxtools.systemtap.ui.graphingapi.ui"/>
       <import plugin="org.eclipse.linuxtools.systemtap.ui.ide"/>
       <import plugin="org.eclipse.linuxtools.systemtap.ui.ide.tests"/>
@@ -67,12 +67,14 @@
          unpack="false"/>
 
 
+   <!--
    <plugin
          id="org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+   -->
 
    <plugin
          id="org.eclipse.linuxtools.systemtap.ui.ide.tests"

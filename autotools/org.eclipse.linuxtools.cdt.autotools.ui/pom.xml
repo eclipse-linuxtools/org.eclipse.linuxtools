@@ -23,7 +23,7 @@
   <version>1.0.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
-  <name>LinuxTools Autotools UI Plug-in</name>
+  <name>Linux Tools Autotools UI Plug-in</name>
 
  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->

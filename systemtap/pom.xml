@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (C) 2011, Red Hat, Inc.
+
+   All rights reserved. This program and the accompanying materials
+   are made available under the terms of the Eclipse Public License v1.0
+   which accompanies this distribution, and is available at
+   http://www.eclipse.org/legal/epl-v10.html
+-->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+
+  <parent>
+    <groupId>org.eclipse.linuxtools</groupId>
+    <artifactId>linuxtools-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.eclipse.linuxtools.systemtap</groupId>
+  <artifactId>linuxtools-systemtap-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Eclipse Linux Tools SystemTap Parent</name>
+
+  <licenses>
+    <license>
+      <name>Eclipse Public License v1.0</name>
+      <comments>
+       All rights reserved.
+
+       This program and the accompanying materials are made
+       available under the terms of the Eclipse Public License v1.0
+       which accompanies this distribution, and is available at
+       http://www.eclipse.org/legal/epl-v10.htm
+      </comments>
+    </license>
+  </licenses>
+
+  <modules>
+    <module>org.eclipse.linuxtools.callgraph</module>
+    <module>org.eclipse.linuxtools.callgraph-feature</module>
+    <module>org.eclipse.linuxtools.callgraph.core</module>
+    <module>org.eclipse.linuxtools.callgraph.docs</module>
+    <module>org.eclipse.linuxtools.callgraph.launch</module>
+    <module>org.eclipse.linuxtools.callgraph.launch.tests</module>
+    <module>org.eclipse.linuxtools.callgraph.tests</module>
+    <module>org.eclipse.linuxtools.callgraph.tests-feature</module>
+    <module>org.eclipse.linuxtools.systemtap-feature</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.consolelog</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.consolelog.tests</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.dashboard</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.dashboardextension</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.doc</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.editor</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.graphicalrun</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.graphing</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.graphing.tests</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui</module>
+    <!--<module>org.eclipse.linuxtools.systemtap.ui.graphingapi.nonui.tests</module>-->
+    <module>org.eclipse.linuxtools.systemtap.ui.graphingapi.ui</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.ide</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.ide.tests</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.logging</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.structures</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.structures.tests</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.systemtapgui</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.test-feature</module>
+    <module>org.eclipse.linuxtools.systemtap.ui.tests</module>
+    <module>org.eclipse.linuxtools.threadprofiler</module>
+    <module>org.eclipse.linuxtools.threadprofiler.feature</module>
+  </modules>
+
+</project>

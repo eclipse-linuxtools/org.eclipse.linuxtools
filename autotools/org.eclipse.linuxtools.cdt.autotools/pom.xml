@@ -22,7 +22,7 @@
   <artifactId>org.eclipse.linuxtools.cdt.autotools</artifactId>
   <packaging>eclipse-plugin</packaging>
 
-  <name>LinuxTools Autotools Plug-in</name>
+  <name>Linux Tools Autotools Plug-in</name>
 
  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->

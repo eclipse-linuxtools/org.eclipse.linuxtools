@@ -23,6 +23,6 @@
   <version>2.0.2-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
-  <name>LinuxTools Autotools Documentation Plug-in</name>
+  <name>Linux Tools Autotools Documentation Plug-in</name>
 
 </project>

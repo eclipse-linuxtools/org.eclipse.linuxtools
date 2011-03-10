@@ -22,6 +22,6 @@
   <artifactId>org.eclipse.linuxtools.rpmstubby-feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
-  <name>LinuxTools RPM Stubby Feature (Incubation)</name>
+  <name>Linux Tools RPM Stubby Feature (Incubation)</name>
 
 </project>
