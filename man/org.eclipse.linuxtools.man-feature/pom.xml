@@ -22,6 +22,6 @@
   <artifactId>org.eclipse.linuxtools.man-feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
-  <name>LinuxTools Man Feature (Incubation)</name>
+  <name>Linux Tools Man Feature (Incubation)</name>
 
 </project>

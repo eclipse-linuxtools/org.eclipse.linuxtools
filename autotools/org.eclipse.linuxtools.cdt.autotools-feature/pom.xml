@@ -23,6 +23,6 @@
   <version>2.0.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
-  <name>LinuxTools Autotools Feature</name>
+  <name>Linux Tools Autotools Feature</name>
 
 </project>

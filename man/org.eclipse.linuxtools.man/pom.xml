@@ -22,7 +22,7 @@
   <artifactId>org.eclipse.linuxtools.man</artifactId>
   <packaging>eclipse-plugin</packaging>
 
-  <name>LinuxTools Man Plug-in</name>
+  <name>Linux Tools Man Plug-in</name>
 
  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->

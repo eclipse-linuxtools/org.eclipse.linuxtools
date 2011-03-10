@@ -28,7 +28,7 @@
   <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Eclipse LinuxTools Autotools Parent</name>
+  <name>Eclipse Linux Tools Autotools Parent</name>
 
   <licenses>
     <license>

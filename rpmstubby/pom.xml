@@ -28,7 +28,7 @@
   <version>0.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Eclipse LinuxTools RPMStubby Parent</name>
+  <name>Eclipse Linux Tools RPM Stubby Parent</name>
 
   <licenses>
     <license>
@@ -47,6 +47,8 @@
   <modules>
     <module>org.eclipse.linuxtools.rpmstubby</module>
     <module>org.eclipse.linuxtools.rpmstubby-feature</module>
+    <module>org.eclipse.linuxtools.rpmstubby.source-feature</module>
+    <module>org.eclipse.linuxtools.rpmstubby-site</module>
   </modules>
 
 </project>
