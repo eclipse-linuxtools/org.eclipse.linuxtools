@@ -20,9 +20,22 @@
   </parent>
 
   <artifactId>org.eclipse.linuxtools.releng-site</artifactId>
-  <packaging>eclipse-update-site</packaging>
+  <packaging>eclipse-repository</packaging>
 
-  <name>Eclipse Linux Tools Man Site (Incubation)</name>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonatype.tycho</groupId>
+        <artifactId>tycho-p2-publisher-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <publishArtifacts>true</publishArtifacts>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <name>Eclipse Linux Tools p2 Repository (Incubation)</name>
   <!-- see http://issues.sonatype.org/browse/TYCHO-313 -->
   <version>0.0.1-SNAPSHOT</version>
 
