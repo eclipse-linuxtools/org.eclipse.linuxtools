@@ -574,10 +574,30 @@ public class LibHover implements ICHelpProvider {
  	
 	private boolean isParmMatch(MemberInfo m, String[] args, ArrayList<String> templateTypes, ClassInfo info) {
 		String[] memberParms = m.getParamTypes();
+		String className = info.getClassName();
+		int index = className.lastIndexOf("::");
+		String unqualifiedName = className.substring(index+2);
 		for (int i = 0; i < memberParms.length; ++i) {
 			String[] templateParms = info.getTemplateParms();
 			for (int j = 0; j < templateTypes.size(); ++j) {
 				memberParms[i] = memberParms[i].replaceAll(templateParms[j], templateTypes.get(j));
+			}
+			// Look for the class being passed by reference...the doc prototype will not fill in
+			// the template parms nor the qualifier so we do it here to make sure we match what
+			// is coming back from the indexer which will be fully-qualified and have template
+			// parameters specified.
+			if (memberParms[i].contains(unqualifiedName) && !memberParms[i].contains(className)) {
+				String classTemplate = new String("");
+				if (templateTypes.size() > 0) {
+					classTemplate = "<";
+					String separator = "";
+					for (int j = 0; j < templateTypes.size(); ++j) {
+						classTemplate += separator + templateTypes.get(j);
+						separator = ",";
+					}
+					classTemplate += ">";
+				}
+				memberParms[i] = memberParms[i].replaceAll(unqualifiedName, className + classTemplate);
 			}
 		}
 		return Arrays.equals(memberParms, args);
