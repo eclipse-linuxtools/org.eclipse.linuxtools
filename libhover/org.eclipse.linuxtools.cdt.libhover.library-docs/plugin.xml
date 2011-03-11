@@ -4,8 +4,12 @@
    <extension
          point="org.eclipse.help.toc">
       <toc
-            file="toc.xml"
+            file="libraries.xml"
             primary="true"/>
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>
    </extension>
 
 </plugin>
