@@ -1,9 +1,0 @@
-2009-04-20  Andrew Overholt  <overholt@redhat.com>
-
-	* updates-nightly/site.xml: Parametrize feature versions.
-	* updates-nightly/associateSites.xml: Remove as p2's content.{xml,jar} 
-	takes care of this for us.
-
-2009-04-20  Andrew Overholt  <overholt@redhat.com>
-
-	* updates-nightly/site.xml: Remove associateSites.xml now that we're using p2.
