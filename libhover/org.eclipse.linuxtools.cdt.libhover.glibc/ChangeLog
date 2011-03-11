@@ -1,3 +1,7 @@
+2011-03-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* toc.xml: Change documentation anchor to be moreclibdocs.
+
 2011-02-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* data/glibc-2.7-2.libhover: New file to eliminate need for external web
