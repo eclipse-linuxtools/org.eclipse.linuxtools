@@ -16,7 +16,6 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -41,6 +40,8 @@ public class GmonDecoder {
 	public static final int VPF_GMON_RECORD_TYPE_CALLGRAPH = 1;
 	/** Unkwown record type. */
 	public static final int VPF_GMON_RECORD_TYPE_UNKNOWN   = -1;
+	
+	public static final int GMONVERSION = 0x00051879;
 
 	// header
 	private String cookie;
@@ -48,8 +49,9 @@ public class GmonDecoder {
 	private byte[] spare;
 
 	private final IBinaryObject program;
-	private  HistogramDecoder histo;
-	private  CallGraphDecoder callGraph;
+	final boolean _32_bit_platform;
+	private HistogramDecoder histo;
+	private CallGraphDecoder callGraph;
 	private final PrintStream ps;
 	private final HistRoot rootNode = new HistRoot(this);
 	private String file;
@@ -83,8 +85,10 @@ public class GmonDecoder {
 		if ("x86_64".equals(program.getCPU())){
 			histo = new HistogramDecoder_64(this);
 			callGraph = new CallGraphDecoder_64(this);
+			_32_bit_platform = false;
 		}
 		else {
+			_32_bit_platform = true;
 			histo = new HistogramDecoder(this);
 			callGraph = new CallGraphDecoder(this);
 		}
@@ -98,22 +102,47 @@ public class GmonDecoder {
 	 */
 	public void read(String file) throws IOException {
 		this.file = file;
-		DataInputStream stream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+		DataInputStream beStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
 		if(program.isLittleEndian()){
-			LEDataInputStream s = new LEDataInputStream(stream);
-			read(s);
-		}else read(stream);
-	}
-
-	/**
-	 * Reads the given file as a stream
-	 * @param stream
-	 * @throws IOException
-	 */
-	public void read(DataInput stream) throws IOException {
-		readHeader(stream);
-		ReadGmonContent(stream);
-		((FilterInputStream)stream).close();		
+			LEDataInputStream leStream = new LEDataInputStream(beStream);
+			leStream.mark(1000);
+			boolean gmonType = readHeader(leStream);
+			if (gmonType) ReadGmonContent(leStream);
+			else {
+				leStream.reset();
+				histo.decodeOldHeader(leStream);
+				histo.decodeHistRecord(leStream);
+				try {
+					do {
+						this.callGraph.decodeCallGraphRecord(leStream, true);
+					} while (true);
+				} catch (EOFException _) {
+					// normal. End of file reached.
+				}
+				this.callGraph.populate(rootNode);
+				this.histo.AssignSamplesSymbol();	
+			}
+			leStream.close();
+		} else {
+			beStream.mark(1000);
+			boolean gmonType = readHeader(beStream);
+			if (gmonType) ReadGmonContent(beStream);
+			else {
+				beStream.reset();
+				histo.decodeOldHeader(beStream);
+				histo.decodeHistRecord(beStream);
+				try {
+					do {
+						this.callGraph.decodeCallGraphRecord(beStream, true);
+					} while (true);
+				} catch (EOFException _) {
+					// normal. End of file reached.
+				}
+				this.callGraph.populate(rootNode);
+				this.histo.AssignSamplesSymbol();	
+			}
+			beStream.close();
+		}
 	}
 
 
@@ -123,16 +152,14 @@ public class GmonDecoder {
 	 * @param stream the gmon as a stream
 	 * @throws IOException if an IO error occurs or if the stream is not a gmon file.
 	 */
-	public void readHeader(DataInput stream) throws IOException {
+	public boolean readHeader(DataInput stream) throws IOException {
 		byte[] _cookie = new byte[4];
 		stream.readFully(_cookie);
 		cookie = new String(_cookie);
-		if (!"gmon".equals(cookie)) {
-			throw new IOException("Invalid gmon file");
-		}
 		gmon_version = stream.readInt();
 		spare = new byte[12];
 		stream.readFully(spare);
+		return "gmon".equals(cookie);
 	}
 
 	/**
@@ -158,7 +185,7 @@ public class GmonDecoder {
 				histo.decodeHistRecord(stream);
 				break;
 			case VPF_GMON_RECORD_TYPE_CALLGRAPH:
-				callGraph.decodeCallGraphRecord(stream);
+				callGraph.decodeCallGraphRecord(stream, false);
 				break;
 			default:
 				throw new IOException("Error while reading GMON content : Found bad tag (file corrupted?) ");

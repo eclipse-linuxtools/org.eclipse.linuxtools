@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.debug.ui,
  org.eclipse.linuxtools.dataviewers.charts,
- org.eclipse.linuxtools.dataviewers.annotatedsourceeditor
+ org.eclipse.linuxtools.dataviewers.annotatedsourceeditor,
+ org.eclipse.cdt.debug.core
 Export-Package: org.eclipse.linuxtools.gcov.utils,
  org.eclipse.linuxtools.gcov.view
 Bundle-ActivationPolicy: lazy

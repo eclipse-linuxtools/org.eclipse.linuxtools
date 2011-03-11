@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.core.runtime.CoreException;
@@ -39,6 +40,10 @@ import org.eclipse.linuxtools.gcov.model.CovFileTreeElement;
 import org.eclipse.linuxtools.gcov.model.CovFolderTreeElement;
 import org.eclipse.linuxtools.gcov.model.CovFunctionTreeElement;
 import org.eclipse.linuxtools.gcov.model.CovRootTreeElement;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -71,6 +76,7 @@ public class CovManager implements Serializable {
 	}
 
 
+	
 	/**
 	 * parse coverage files, execute resolve graph algorithm, process counts for functions, 
 	 * lines and folders.    
@@ -78,13 +84,36 @@ public class CovManager implements Serializable {
 	 * @throws CoreException, IOException, InterruptedException
 	 */
 
-	public void processCovFiles(List<String> covFilesPaths) throws CoreException, IOException, InterruptedException {
+	public void processCovFiles(List<String> covFilesPaths, String initialGcda) throws CoreException, IOException, InterruptedException {
 		GcdaRecordsParser daRcrd = null;
 		DataInput traceFile;
+		
+		Map<File, File> sourcePath = new HashMap<File, File>();
+		
+		if (initialGcda != null) {
+			File initialGcdaFile = new File(initialGcda).getAbsoluteFile();
+			for (String s : covFilesPaths) {
+				File gcda = new File(s).getAbsoluteFile();
+				if (gcda.getName().equals(initialGcdaFile.getName()) && !gcda.equals(initialGcdaFile)) {
+					if (!sourcePath.isEmpty()) {
+						// hum... another file has the same name...
+						// sorry, we have to clean sourcePath
+						sourcePath.clear();
+						break;
+					} else {
+						addSourceLookup(sourcePath, initialGcdaFile, gcda);
+					}
+				}
+			}
+		}
+		
+		
+		
 		for (String gcdaPath: covFilesPaths) {
 			String gcnoPath = gcdaPath.replace(".gcda", ".gcno");
 			// parse GCNO file
-			traceFile = OpenTraceFileStream(gcnoPath);
+			traceFile = OpenTraceFileStream(gcnoPath, ".gcno", sourcePath);
+			if (traceFile == null) return;
 			GcnoRecordsParser noRcrd = new GcnoRecordsParser(sourceMap, allSrcs);
 			noRcrd.parseData(traceFile);
 
@@ -98,7 +127,8 @@ public class CovManager implements Serializable {
 				((DataInputStream)traceFile).close();
 
 			// parse GCDA file
-			traceFile = OpenTraceFileStream(gcdaPath);
+			traceFile = OpenTraceFileStream(gcdaPath, ".gcda", sourcePath);
+			if (traceFile == null) return;
 			if (noRcrd.getFnctns().isEmpty()){
 				String message = gcnoPath + " doesn't contain any function:\n";
 				Status status = new Status(Status.ERROR, Activator.PLUGIN_ID, message);
@@ -209,12 +239,49 @@ public class CovManager implements Serializable {
 	}
 
 	// transform String path to stream
-	private DataInput OpenTraceFileStream(String filePath) throws FileNotFoundException{
+	private DataInput OpenTraceFileStream(String filePath, String extension, Map<File, File> sourcePath) throws FileNotFoundException{
+		File f = new File(filePath).getAbsoluteFile();
+		if (f.isFile() && f.canRead()) {
+			FileInputStream fis = new FileInputStream(f);
+			InputStream inputStream = new BufferedInputStream(fis);
+			return new DataInputStream(inputStream);
+		} else {
+			String postfix = "";
+			File dir = null;
+			do {
+				if ("".equals(postfix)) postfix = f.getName();
+				else postfix = f.getName() + File.separator + postfix;
+				f = f.getParentFile();
+				if (f != null) {
+					dir = sourcePath.get(f);
+				} else break;
+			} while (dir == null);
+			
+			if (dir != null) {
+				f = new File(dir, postfix);
+				if (f.isFile() && f.canRead()) {
+					return OpenTraceFileStream(f.getAbsolutePath(), extension, sourcePath);
+				}
+			}
+			
 
-		FileInputStream fis = new FileInputStream(filePath);
-		InputStream inputStream = new BufferedInputStream(fis);
-
-		return new DataInputStream(inputStream);
+			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			FileDialog fg = new FileDialog(shell, SWT.OPEN);
+			fg.setFilterExtensions(new String[] {"*" + extension, "*.*", "*"});
+			fg.setFileName(f.getName());
+			String s = fg.open();
+			if (s == null) return null;
+			else {
+				f = new File(s).getAbsoluteFile();
+				addSourceLookup(sourcePath, f, new File(filePath).getAbsoluteFile());
+				if (f.isFile() && f.canRead()) {
+					FileInputStream fis = new FileInputStream(f);
+					InputStream inputStream = new BufferedInputStream(fis);
+					return new DataInputStream(inputStream);
+				}
+			}
+		}
+		return null;
 	}
 
 
@@ -331,6 +398,8 @@ public class CovManager implements Serializable {
 					}
 					IPath p = new Path(line);
 					String filename = p.toString();
+					
+					
 					if (!list.contains(filename)) list.add(filename);
 				}
 			}
@@ -363,4 +432,14 @@ public class CovManager implements Serializable {
 	public HashMap<String, SourceFile> getSourceMap() {
 		return sourceMap;
 	}
+	
+
+	private void addSourceLookup(Map<File, File> map, File hostPath, File compilerPath) {
+		while (hostPath.getName().equals(compilerPath.getName())) {
+			hostPath = hostPath.getParentFile();
+			compilerPath = compilerPath.getParentFile();
+		}
+		map.put(compilerPath, hostPath);
+	}
+	
 }

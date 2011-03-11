@@ -92,7 +92,7 @@ public class GcovViewTest extends TestCase {
 			File refFile, File dumpFile) throws Exception {
 		Locale.setDefault( Locale.US );
 		CovManager cvrgeMnger = new CovManager(binaryFile.getAbsolutePath());
-		cvrgeMnger.processCovFiles(covFilesPaths);
+		cvrgeMnger.processCovFiles(covFilesPaths, null);
 		// generate model for view
 		cvrgeMnger.fillGcovView();
 		//load an Eclipse view

@@ -49,14 +49,10 @@ public class CallGraphDecoder {
 	 * @param stream
 	 * @throws IOException
 	 */
-	public void decodeCallGraphRecord(DataInput stream) throws IOException {
-		int _from_pc = stream.readInt();
-		int _self_pc = stream.readInt();
-		long from_pc = _from_pc & 0xFFFFFFFFL;
-		long self_pc = _self_pc & 0xFFFFFFFFL;
-		//long from_pc = stream.readLong();
-		//long self_pc = stream.readLong();
-		int count    = stream.readInt();
+	public void decodeCallGraphRecord(DataInput stream, boolean BSDFormat) throws IOException {
+		long from_pc = readAddress(stream);
+		long self_pc = readAddress(stream);
+		int count    = BSDFormat?(int)readAddress(stream):stream.readInt();
 		IBinaryObject program = decoder.getProgram();
 		IAddressFactory addressFactory = program.getAddressFactory();
 		IAddress parentAddress = addressFactory.createAddress(Long.toString(from_pc));
@@ -68,6 +64,13 @@ public class CallGraphDecoder {
 		}
 		addCallArc(parentSymbol, parentAddress, childSymbol, count);
 	}
+	
+	
+	protected long readAddress(DataInput stream) throws IOException {
+		long ret = stream.readInt() & 0xFFFFFFFFL;
+		return ret;
+	}
+	
 	
 	public void addCallArc(ISymbol parent, IAddress parentAddress, ISymbol child, int count)
 	{
