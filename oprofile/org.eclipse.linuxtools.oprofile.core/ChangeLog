@@ -1,3 +1,8 @@
+2011-03-14  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/EventIdCache.java (buildCache):
+	Temporary fix for Eclipse Bz #338270.
+
 2011-02-11  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* natives/linux/opxml: Remove opxml.
