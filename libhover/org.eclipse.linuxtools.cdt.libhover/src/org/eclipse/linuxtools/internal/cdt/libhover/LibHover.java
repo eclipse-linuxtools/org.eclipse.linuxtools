@@ -687,7 +687,7 @@ public class LibHover implements ICHelpProvider {
 			LibHoverLibrary l = libraries.get(helpbook);
 			if (l != null) {
 				IHelpResource[] hr = new IHelpResource[1];
-				hr[0] = new HelpResource(l.getLocation(), l.getName());
+				hr[0] = new HelpResource(l.getDocs(), l.getName());
 				return hr;
 			}
 			return null;
