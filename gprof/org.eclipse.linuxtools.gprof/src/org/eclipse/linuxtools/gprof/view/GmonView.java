@@ -36,6 +36,7 @@ import org.eclipse.linuxtools.gprof.view.histogram.CGCategory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TreeColumn;
@@ -71,6 +72,15 @@ public class GmonView extends AbstractSTDataView {
 	private Action action3;
 	private Action action4;
 	private Action switchSampleTime;
+
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		GridLayout l = (GridLayout) parent.getLayout();
+		l.horizontalSpacing = 0;
+		l.verticalSpacing = 0;
+		l.marginHeight = 0;
+		l.marginWidth = 0;
+	}
 
 
 	protected void createTitle(Composite parent) {
