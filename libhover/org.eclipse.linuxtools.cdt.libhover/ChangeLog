@@ -1,3 +1,14 @@
+2011-03-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (HelpResourceDescriptor.getHelpResources): 
+	Use getDocs() rather than getLocation().
+
+2011-03-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/libhover/LibHover.java (isParmMatch): Fix to
+	allow for the case when we have a referenced version of the class were in passed as an
+	argument.
+
 2011-02-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Allow tests to access internal classes.

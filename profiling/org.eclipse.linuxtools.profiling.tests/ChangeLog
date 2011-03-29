@@ -1,3 +1,8 @@
+2011-03-14  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/tests/AbstractTest.java (createExternalProject): Fix
+	assertion. The source file should be present, not the build folder.
+
 2010-08-10  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/tests/AbstractTest.java

@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -89,21 +88,14 @@ public class EventIdCache {
 	private void buildCache() {
 		single.idMap = new HashMap<Integer, Object []> ();
 		single.nameMap = new HashMap<String, Integer> ();
-		Process p;
 		NodeList eventList = single.eventRoot.getElementsByTagName(EVENT);
-		for (int i = 0; i < eventList.getLength(); i++){
-			Element elem = (Element) eventList.item(i);
+		// FIXME: Temporary fix for Eclipse Bz 338270. Apparently
+		// there is still some dead code due to opxml removal.
+		for (int val = 0; val < eventList.getLength(); val++){
+			Element elem = (Element) eventList.item(val);
 			String eventName = elem.getAttribute(EVENT_NAME);
-			try {
-				p = Runtime.getRuntime().exec(OPHELP + " " + eventName);
-				BufferedReader bi = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				String line = bi.readLine();
-				int val = Integer.parseInt(line);
-				single.idMap.put(val, new Object [] {eventName, elem});
-				single.nameMap.put(eventName, val);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			single.idMap.put(val, new Object[] { eventName, elem });
+			single.nameMap.put(eventName, val);
 		}
 	}
 
