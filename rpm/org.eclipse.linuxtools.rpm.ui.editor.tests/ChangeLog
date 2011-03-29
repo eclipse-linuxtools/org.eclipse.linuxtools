@@ -1,3 +1,7 @@
+2011-03-29  Andrew Overholt  <overholt@redhat.com>
+
+	* pom.xml: Let Tycho figure out which tests to run.
+
 2010-10-26  Alexander Kurtakov  <akurtako@redhat.com>
 	
 	* src/org/eclipse/linuxtools/rpm/ui/editor/tests/hyperlink/MailHyperlinkDetectorTest.java (testDetectHyperlinks): Adapt to API changes.
