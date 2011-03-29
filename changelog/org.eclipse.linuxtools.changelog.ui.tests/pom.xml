@@ -37,7 +37,7 @@
           <testSuite>org.eclipse.linuxtools.changelog.ui.tests</testSuite>
           <testClass>org.eclipse.linuxtools.changelog.ui.tests.swtbot.AllSWTBotTests</testClass>
        	  <useUIHarness>true</useUIHarness>
-          <useUIThread>false</useUIThread>
+          <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
         </configuration>
       </plugin>
