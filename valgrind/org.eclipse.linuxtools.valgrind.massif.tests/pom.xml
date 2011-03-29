@@ -37,7 +37,7 @@
           <testSuite>org.eclipse.linuxtools.valgrind.massif.tests</testSuite>
           <testClass>org.eclipse.linuxtools.internal.valgrind.massif.tests.AllTests</testClass>
        	  <useUIHarness>true</useUIHarness>
-          <useUIThread>false</useUIThread>
+          <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
         </configuration>
       </plugin>
