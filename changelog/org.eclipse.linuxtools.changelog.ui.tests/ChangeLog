@@ -1,3 +1,8 @@
+2011-03-29  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add Subclipse dependencies to have complete dep. chain
+	specified.
+
 2011-01-28  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/ui/tests/swtbot/AddChangelogEntrySWTBotTest.java (beforeClass):
