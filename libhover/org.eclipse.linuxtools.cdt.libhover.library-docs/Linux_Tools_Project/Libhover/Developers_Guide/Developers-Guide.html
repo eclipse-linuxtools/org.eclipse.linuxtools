@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Libhover Developer's Guide</title>
+		<link type="text/css" rel="stylesheet" href="../../../book.css"/>
+	</head>
+	<body>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<th style="width: 100%" align="center" colspan="3">Libhover Developer's Guide</th>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left"></td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top"></td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table><hr/>
+		<h2 id="Introduction">Introduction</h2>
+		<p>The Libhover plug-in from the Linux Tools project provides a common interface for supplying C and C++ hover help for libraries. The plug-in uses a CDT (C/C++ Developer Tools) Help extension to register itself with the CDT. When a C or C++ file is presented in the editor and a hover event occurs, the CDT will call the Libhover plug-in to get information. In turn, the Libhover plug-in supplies its own extension which allows the end-user to specify a set of valid hovers to use. Each hover library can be enabled or disabled for a C/C++ project via the Project-&gt;Properties-&gt;C/C++ General-&gt;Documentation page. There a list of the valid hovers are shown and the user can check or un-check them as desired. Note that Libhover help suppliers set the language of the hover help and so a C project will ignore any C++ hover libraries. For a C++ project, both C and C++ library hovers are valid so they will all appear on the Documentation page. </p>
+		<h2 id="Libhover_Extension">Libhover Extension</h2>
+		<p>The Libhover plug-in adds a new org.eclipse.linuxtools.cdt.libhover.library extension to be used in a plug-in. Let's examine an example which specifies libhover help for the glibc C Library: </p>
+		<pre>
+&lt;extension
+    id="library"
+    name="Glibc C Library"
+    point="org.eclipse.linuxtools.cdt.libhover.library"&gt;
+    &lt;library
+          docs="http://www.gnu.org/software/libc/manual/html_node/index.html"
+          location="./data/glibc-2.7-2.libhover"
+          name="glibc library"
+          type="C"&gt;
+    &lt;/library&gt;;
+&lt;/extension&gt;;
+</pre>
+		<p>Fields are as follows: </p>
+		<ul>
+			<li>id - unique id for this extension (required)
+				<br/> 
+			</li>
+			<li>name - name of the extension (required) </li>
+			<li>library - details of the library (1 or more) 
+				<ul>
+					<li>docs - URL location of external help documentation (optional) </li>
+					<li>location - location of libhover binary data (either URL or relative location to plug-in) (required) </li>
+					<li>name - name that will appear in the C/C++ Documentation page for this hover help (required) </li>
+					<li>type - one of (C, C++, or ASM) (required)</li>
+				</ul>
+			</li>
+		</ul>
+		<p>Note that the location can be specified local to the plug-in that declares the extension. This obviously saves time when accessing the data before a hover event.</p>
+		<h2 id="Libhover_Data">Libhover Data</h2>
+		<p>So what is Libhover data? Libhover data is merely a Java serialized class that is stored in binary format. Java serialization allows one to save and restore a class to/from a file. The Libhover class is really org.eclipse.linuxtools.cdt.libhover.LibhoverInfo:
+			<br/> 
+		</p>
+		<p>
+			<br/> 
+		</p>
+		<pre>
+public class LibHoverInfo implements Serializable { 
+ 
+private static final long serialVersionUID = 1L; 
+ 
+  public HashMap&lt;String, ClassInfo&gt; classes = new HashMap&lt;String, ClassInfo&gt;(); 
+  public HashMap&lt;String, TypedefInfo&gt; typedefs = new HashMap&lt;String, TypedefInfo&gt;(); 
+  public TreeMap&lt;String, FunctionInfo&gt; functions = new TreeMap&lt;String, FunctionInfo&gt;(); 
+ 
+} 
+</pre>
+		<p>
+			<br/>The class is just a collection of Maps from name to C++ class, name to C++ typedef, and name to C function. A C library hover info will only fill in the last map whereas a C++ library hover info will typically only fill in the first two.
+		</p>
+		<h2 id="C_Library_Data">C Library Data</h2>
+		<p>The simplest form of Libhover data is for C functions.  Looking at org.eclipse.linuxtools.cdt.libhover.FunctionInfo:</p>
+		<p>
+			<br/> 
+		</p>
+		<pre>
+public class FunctionInfo implements Serializable {
+   
+  private static final long serialVersionUID = 1L;
+  private String name;
+  private String prototype;
+  private String desc;
+  private String returnType;
+  private ArrayList&lt;String&gt; headers;
+  private ArrayList&lt;FunctionInfo&gt; children; 
+  
+}
+</pre>
+		<p>
+			<br/>we see the class is made up of String fields containing the function data that will be pieced together in the hover window.  The prototype does not include the outer parentheses.  The desc field is the description of the function and can is treated as html format.  The children field is for future support of C++ overloaded functions.  This is due to the fact that we look-up a function by name in the HashMap to make it quickly referenced.  When there is overloading of function names (C++ only), then we register the first function found in the map and use the children field to store all others in no particular order.  Currently, overloaded functions are not supported by the Libhover look-up mechanism, but this functionality could be added if required.  All the fields are accessed via get and set methods (e.g. getName(), setDesc()).
+		</p>
+		<h3 id="C_Library_Hover_Utility">C Library Hover Utility</h3>
+		<p>
+			<br/>To aid in building C library hover data, a utility has been created that will take xml and create the libhover binary data in the form of a file with suffix ".libhover".  The utility is found in the org.eclipse.linuxtools.cdt.libhover plug-in as org.eclipse.linuxtools.cdt.libhover.utils.BuildFunctionInfos.java.  Run the file as a Java application (it has a static main method) and pass to it two parameters: 
+		</p>
+		<ol>
+			<li>the URL or file location of the xml file to parse</li>
+			<li>the location where the output should be placed</li>
+		</ol>
+		<p>Once finished you can place the .libhover file in your plug-in and use the Libhover Library extension to specify a local location.</p>
+		<p>XML files referenced must adhere to the following xml structure:</p>
+		<pre>
+
+&lt;!DOCTYPE descriptions [
+
+  &lt;!ELEMENT descriptions (construct)*&gt;
+
+  &lt;!ELEMENT construct (structure|function)*&gt;
+  &lt;!ATTLIST construct
+    id ID #REQUIRED
+    type CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT structure       (synopsis?, elements?)?&gt;
+
+  &lt;!ELEMENT elements     (element*)&gt;
+
+  &lt;!ELEMENT element (synopsis*)&gt;
+  &lt;!ATTLIST element
+    content CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT synopsis     (#PCDATA)*&gt;
+
+  &lt;!ELEMENT function     (prototype,headers?,synopsis)&gt;
+  &lt;!ATTLIST function
+    returntype CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT prototype    (parameter+)?&gt;
+
+  &lt;!ELEMENT parameter (#PCDATA)*&gt;
+  &lt;!ATTLIST parameter
+    content CDATA #REQUIRED
+  &gt;
+
+  &lt;!ELEMENT headers      (header+)?&gt;
+
+  &lt;!ELEMENT header (#PCDATA)*&gt;
+  &lt;!ATTLIST header
+    filename CDATA #REQUIRED
+  &gt;
+
+]&gt;
+</pre>
+		<p>Note that function ids need to be prefixed by "function-".  For example, for the C atexit function:</p>
+		<pre>
+&lt;descriptions&gt;
+  &lt;construct id="function-atexit" type="function"&gt;
+    &lt;function returntype="int"&gt;
+      &lt;prototype&gt;
+        &lt;parameter content="void (*function) (void)"/&gt;
+      &lt;/prototype&gt;
+      &lt;headers&gt;
+        &lt;header filename = "stdlib.h"/&gt;
+      &lt;/headers&gt;
+        &lt;synopsis&gt;
+        The &amp;lt;CODE&amp;gt;atexit&amp;lt;/CODE&amp;gt; function registers the function &amp;lt;VAR&amp;gt;function&amp;lt;/VAR&amp;gt; to be
+         called at normal program termination.  The &amp;lt;VAR&amp;gt;function&amp;lt;/VAR&amp;gt; is called with
+         no arguments.
+         &amp;lt;br&amp;gt;&amp;lt;br&amp;gt; The return value from &amp;lt;CODE&amp;gt;atexit&amp;lt;/CODE&amp;gt; is zero on success and nonzero if
+         the function cannot be registered.
+        &lt;/synopsis&gt;
+    &lt;/function&gt;
+  &lt;/construct&gt;
+&lt;/descriptions&gt;
+</pre>
+		<p>Also note that the synopsis is output as html.  To specify html tags, one needs to use &amp;lt; and &amp;gt; as delimeters in place of "&amp;lt" and "&amp;gt". In the previous example, VAR tags are used for variable references, CODE tags for the function name, and br tags for forcing paragraph breaks.  All of these make the hover look more interesting when displayed.</p>
+		<p>
+			<br/>For glibc, a parser was written to parse the glibc/manual directory and process the texinfo files to form the xml file format above.
+		</p>
+		<h2 id="C.2B.2B_Library_Hover">C++ Library Hover</h2>
+		<p>C++ library hover data is more complex because a member cannot be accessed just by name.  One needs to first know from which class the member is being accessed and the signature of the call since member names can be overloaded.  Additional complexities arise because the member might actually belong to a base class of the given class used in the call or the class may be a typedef of another class or a template instance.  Template instances are tricky because there is substitution that occurs for parameterized types.</p>
+		<p>A utility org.eclipse.linuxtools.cdt.libhover.libstdcxx.DoxygenCPPInfo was created to parse the Doxygen documentation output for the libstdc++ library.  If you can get your library documentation into the same format, then all you need to do is to use the utility, passing two parameters:</p>
+		<ol>
+			<li>location of the Doxygen xml input</li>
+			<li>location to place the output libhover data file</li>
+		</ol>
+		<p>Failing that, you will need to create your own library hover info.  Let's look at the fields of interest in org.eclipse.linuxtools.cdt.libhover.ClassInfo</p>
+		<pre>
+public class ClassInfo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private String templateParms[];
+	private String className;
+	private String include;
+	private ArrayList&lt;ClassInfo&gt; baseClasses;
+	private HashMap&lt;String, MemberInfo&gt; members;
+	private ArrayList&lt;ClassInfo&gt; children;
+}
+</pre>
+		<p>The following describes each field:</p>
+		<ul>
+			<li>templateParms - this is used to store the template parameters of this class (e.g. A&lt;_T, _U, Integer&gt; would store "_T" and "_U".  Real types are not part of this list.  These are needed to perform replacement in the description text (e.g. the return value of a member function may be specified as a template parameter).</li>
+			<li>className - this is the name of the class including the template specification.  Any template parameters from templateParms are replaced with a generic regex "
+				<a href="a-zA-Z0-9_:">*</a>+" which allows us to do a quick regex match on a template (e.g. A&lt;Integer, Double&gt; would match A&lt;_T, _U&gt;.
+			</li>
+			<li>include - this is the name of the header file that contains this class</li>
+			<li>baseClasses - the ClassInfo data of any base classes of this class</li>
+			<li>members - maps member names to MemberInfo (only 1 per name with MemberInfo chaining when overloading exists).</li>
+			<li>children - this is the set of template classes with the same name as this class</li>
+		</ul>
+		<p>Note that the name used to hash the ClassInfo in the LibhoverInfo class map is the class name minus any template specification.</p>
+		<p>The TypedefInfo is merely a way to find the actual class we are seeking:</p>
+		<pre>
+public class TypedefInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private String[] templates;
+	private String typedefName;
+	private String transformedType;
+	private ArrayList&lt;TypedefInfo&gt; children = null;
+};
+</pre>
+		<ul>
+			<li>typedefName - name of the typedef with any template parameters replaced with a generic regex string "
+				<a href="a-zA-Z0-9_:">*</a>+"
+			</li>
+			<li>templates - this the set of template parameters from the transformed class name</li>
+			<li>transformedType - what the typedef transforms into</li>
+			<li>children - used when there are multiple typedefs of the same name (e.g. partial templates)</li>
+		</ul>
+		<p>It is assumed that the typedef will use the same template parameters as the class it represents.  For example, if we have class A&lt;_T, _U&gt; and we could have a typedef B&lt;_T&gt; which transforms to A&lt;_T, Integer&gt;.</p>
+		<p>The MemberInfo class is much like the FunctionInfo class:</p>
+		<pre>
+public class MemberInfo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private String name;
+	private String prototype;
+	private String desc;
+	private String returnType;
+	private String[] paramTypes;
+	private ArrayList&lt;MemberInfo&gt; children;
+	
+};
+</pre>
+		<p>and contains the actual hover data of interest.  The following are the fields of interest:</p>
+		<ul>
+			<li>name - member name</li>
+			<li>prototype - prototype minus outer parentheses</li>
+			<li>desc - member description in html format</li>
+			<li>returnType - the return type of the member function</li>
+			<li>paramTypes - an array of just the parameter types of this function without template replacement.  The array is used in conjunction with template types to verify we have the correct member being used (e.g. a(_T, _U) of A&lt;_T, _U&gt; is a match for a(Integer k, Double l) of A&lt;Integer, Double&gt; class). </li>
+			<li>children - members with the same name as this (i.e. overloaded method signatures)</li>
+		</ul>
+		<h2 id="Libhover_Logic">Libhover Logic</h2>
+		<p>For C hover, Libhover is given the name of the C function to find and a list of C HelpBooks that are enabled.  These HelpBooks correspond to the Project-&gt;Properties-&gt;C/C++ General-&gt;Documentation items that are enabled and that were registered by the Libhover plug-in (these correspond to "C" type library hover infos included by the Libhover Library extension).  For each C Library info in the list, Libhover does a find of the name in the FunctionInfo map.  If any FunctionInfo is found, it is transformed into the CDT format required.  Otherwise, null is returned.</p>
+		<p>For C++, it is more complicated.  The CDT provides the location in the editor that the hover is for.  From this, Libhover consults the CDT indexer for the context of the hover which includes the class name and the member signature.  Once this is acquired, Libhover first looks for the class name in the TypdefInfo map.  If it is found and this isn't a templated typedef, the transformed name is then used as the class name.  In the case of a template, the TypedefInfo and all its children are checked one by one for a regex match of the typedef name with the given typedef.  Remember that for template parameters we substituted a generic regex string in the typedef name.  </p>
+		<p>Now we have a class name.  We use that class name to access the ClassInfo map.  If we don't match, we return null.  Otherwise, we may have to resolve templates so we perform a regex match of the class name with the class name in question, again we have substituted a generic regex string for template parameters.  If no match, we return null.</p>
+		<p>Now we have a ClassInfo and only need to find the member in question.  We start by searching the immediate members of the ClassInfo and if needed, we then start looking in base classes.  We start by accessing the MemberInfo map by name.  If we have a match, we need to check if the MemberInfo has children, indicating overloading.  If overloading has occurred, we need to check the parameter types and return type of each member to find a match.  The same check applies if we are forced to look in the base classes.  It is assumed that base classes are not typedefs themselves.  If this needs to be modified in the future, then the baseClasses list would be of type String and then a new transform would have to be performed.</p>
+		<p>Once the correct MemberInfo is located, the details are used to supply the CDT hover information.  Any template parameters are substituted in the prototype, return type, and name of the member function.  Currently, this substitution is not performed on the member description though it would be simple to add if needed.</p><hr/>
+		<table class="navigation" style="width: 100%;" border="0" summary="navigation">
+			<tr>
+				<td style="width: 20%" align="left"></td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right">
+					<a href="Updating-This-Document.html" title="Updating This Document">
+						<img alt="Next" border="0" src="../../../images/next.gif"/>
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 20%" align="left" valign="top"></td>
+				<td style="width: 60%" align="center"></td>
+				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+			</tr>
+		</table>
+	</body>
+</html>
