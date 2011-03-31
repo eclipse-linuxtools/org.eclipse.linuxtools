@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.help.toc">
+      <tocProvider
+            class="org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpTocProvider">
+      </tocProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.linuxtools.cdt.libhover.preferences1"
+            class="org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.LibHoverPreferencePage"
+            id="org.eclipse.linuxtools.cdt.libhover.devhelp.page1"
+            name="%Preferences.name">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.eclipse.linuxtools.internal.cdt.libhover.devhelp.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         id="id1"
+         name="name"
+         point="org.eclipse.linuxtools.cdt.libhover.library">
+      <library
+            location="/dev/null"
+            name="devhelp"
+            type="C">
+      </library>
+   </extension>
+   <extension
+         point="org.eclipse.help.contentProducer">
+      <contentProducer
+            producer="org.eclipse.linuxtools.internal.cdt.libhover.devhelp.DevHelpContentProducer">
+      </contentProducer>
+   </extension>
+
+</plugin>
