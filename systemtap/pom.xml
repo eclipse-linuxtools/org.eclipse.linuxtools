@@ -44,6 +44,7 @@
   </licenses>
 
   <modules>
+    <!--
     <module>org.eclipse.linuxtools.callgraph</module>
     <module>org.eclipse.linuxtools.callgraph-feature</module>
     <module>org.eclipse.linuxtools.callgraph.core</module>
@@ -52,6 +53,7 @@
     <module>org.eclipse.linuxtools.callgraph.launch.tests</module>
     <module>org.eclipse.linuxtools.callgraph.tests</module>
     <module>org.eclipse.linuxtools.callgraph.tests-feature</module>
+    -->
     <module>org.eclipse.linuxtools.systemtap-feature</module>
     <module>org.eclipse.linuxtools.systemtap.ui.consolelog</module>
     <!--
