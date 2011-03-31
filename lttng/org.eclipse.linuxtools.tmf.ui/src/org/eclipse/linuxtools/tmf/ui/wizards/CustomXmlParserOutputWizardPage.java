@@ -11,11 +11,12 @@ import java.util.List;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.tmf.trace.ITmfTrace;
 import org.eclipse.linuxtools.tmf.ui.TmfUiPlugin;
+import org.eclipse.linuxtools.tmf.ui.internal.Messages;
 import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomEventsTable;
 import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomTraceDefinition;
+import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomTraceDefinition.OutputColumn;
 import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomXmlTrace;
 import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomXmlTraceDefinition;
-import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomTraceDefinition.OutputColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -30,8 +31,8 @@ import org.eclipse.swt.widgets.Text;
 
 public class CustomXmlParserOutputWizardPage extends WizardPage {
 
-    private static final Image upImage = TmfUiPlugin.getDefault().getImageFromPath("/icons/up_button.gif"); //$NON-NLS-1$
-    private static final Image downImage = TmfUiPlugin.getDefault().getImageFromPath("/icons/down_button.gif"); //$NON-NLS-1$
+    private static final Image upImage = TmfUiPlugin.getDefault().getImageFromPath("/icons/elcl16/up_button.gif"); //$NON-NLS-1$
+    private static final Image downImage = TmfUiPlugin.getDefault().getImageFromPath("/icons/elcl16/down_button.gif"); //$NON-NLS-1$
     private CustomXmlParserWizard wizard;
     private CustomXmlTraceDefinition definition;
     ArrayList<Output> outputs = new ArrayList<Output>();
@@ -85,6 +86,7 @@ public class CustomXmlParserOutputWizardPage extends WizardPage {
         tableLayout.marginWidth = 0;
         tableContainer.setLayout(tableLayout);
         previewTable = new CustomEventsTable(new CustomXmlTraceDefinition(), tableContainer, 0);
+        previewTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         if (wizard.definition != null) {
             loadDefinition(wizard.definition);
@@ -206,6 +208,7 @@ public class CustomXmlParserOutputWizardPage extends WizardPage {
             ITmfTrace trace = new CustomXmlTrace(tmpFile.getName(), definition, tmpFile.getAbsolutePath(), MAX_NUM_ENTRIES);
             previewTable.dispose();
             previewTable = new CustomEventsTable(definition, tableContainer, MAX_NUM_ENTRIES);
+            previewTable.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
             previewTable.setTrace(trace, true);
             previewTable.getTable().setItemCount(MAX_NUM_ENTRIES); // Trigger parsing
         } catch (FileNotFoundException e) {

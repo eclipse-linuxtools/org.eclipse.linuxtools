@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.eclipse.linuxtools.tmf.ui.viewers.timeAnalysis.Messages;
+import org.eclipse.linuxtools.tmf.ui.internal.Messages;
 import org.eclipse.linuxtools.tmf.ui.viewers.timeAnalysis.widgets.Utils.Resolution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -104,6 +104,9 @@ public class TimeScaleCtrl extends TraceCtrl implements MouseListener,
                 unit = MIN_IN_NS;
             } else if (minDelta > 20 * SEC_IN_NS) {
                 unit = 30 * SEC_IN_NS;
+            } else if (minDelta <= 1) {
+                _timeDelta = 1;
+                return;
             }
         }
         double log = Math.log10((double) minDelta / unit);
@@ -198,9 +201,9 @@ public class TimeScaleCtrl extends TraceCtrl implements MouseListener,
 		_rect0.x += 4;
 		_rect0.width -= 4;
 		if (_rect0.width > 0) {
-		    Utils.drawText(gc, Messages._Timescale + ":", _rect0, true); //$NON-NLS-1$
+		    Utils.drawText(gc, Messages.TimeScaleCtrl_Timescale + ":", _rect0, true); //$NON-NLS-1$
 		}
-		int messageWidth = gc.stringExtent(Messages._Timescale + ":").x + 4; //$NON-NLS-1$
+		int messageWidth = gc.stringExtent(Messages.TimeScaleCtrl_Timescale + ":").x + 4; //$NON-NLS-1$
 		Rectangle absHeaderRect = new Rectangle(_rect0.x + messageWidth, _rect0.y, _rect0.width - messageWidth, _rect0.height);
 		_rect0.x -= 4;
 		_rect0.width += 4;

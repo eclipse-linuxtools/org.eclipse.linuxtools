@@ -1,3 +1,10 @@
+2011-03-28  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add requirements on
+	org.eclipse.ui.ide.application and
+	org.eclipse.cdt.managedbuilder.gnu.ui to make tests pass with only
+	required bundles present.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.7.0.

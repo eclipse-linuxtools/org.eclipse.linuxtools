@@ -12,13 +12,12 @@
 
 package org.eclipse.linuxtools.tmf.ui.parsers.custom;
 
-import java.io.RandomAccessFile;
-
+import org.eclipse.linuxtools.tmf.io.BufferedRandomAccessFile;
 import org.eclipse.linuxtools.tmf.trace.ITmfLocation;
 import org.eclipse.linuxtools.tmf.trace.TmfContext;
 
 public class CustomXmlTraceContext extends TmfContext {
-    public RandomAccessFile raFile;
+    public BufferedRandomAccessFile raFile;
 
     public CustomXmlTraceContext(ITmfLocation<?> location, long rank) {
         super(location, rank);

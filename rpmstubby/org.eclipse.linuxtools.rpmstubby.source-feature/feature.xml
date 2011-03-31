@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.linuxtools.rpmstubby.source"
+      label="%featureName"
+      version="0.3.0.qualifier"
+      provider-name="%provider">
+
+   <description url="http://www.eclipse.org/linuxtools/projectPages/rpmstubby/">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="org.eclipse.linuxtools.rpmstubby.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

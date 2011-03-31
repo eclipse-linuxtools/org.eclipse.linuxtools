@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="Eclipse LinuxTools RPM Stubby Plug-in">
+      Create an RPM specfile from eclipse aritfacts
+   </description>
+   <feature url="features/org.eclipse.linuxtools.rpmstubby_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpmstubby" version="0.0.0" patch="true">
+      <category name="Eclipse Linux Tools (Incubation)"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.rpmstubby.sources_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpmstubby.source" version="0.0.0" patch="true">
+      <category name="Eclipse Linux Tools (Incubation)"/>
+   </feature>
+   <category-def name="Eclipse Linux Tools (Incubation)" label="Eclipse Linux Tools (Incubation)">
+      <description>
+         Eclipse Linux Tools (Incubation)
+      </description>
+   </category-def>
+</site>

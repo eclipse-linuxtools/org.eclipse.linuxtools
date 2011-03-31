@@ -26,6 +26,32 @@
             name="%events.view.name"
             restorable="true">
       </view>
+      <view
+            category="org.eclipse.linuxtools.tmf.ui.views.category"
+            class="org.eclipse.linuxtools.tmf.ui.views.timechart.TimeChartView"
+            icon="icons/eview16/timechart_view.gif"
+            id="org.eclipse.linuxtools.tmf.ui.views.timechart"
+            name="%timechart.view.name"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.eclipse.linuxtools.tmf.ui.views.category"
+            class="org.eclipse.linuxtools.tmf.ui.views.colors.ColorsView"
+            icon="icons/eview16/colors_view.gif"
+            id="org.eclipse.linuxtools.tmf.ui.views.colors"
+            name="%colors.view.name"
+            restorable="true">
+      </view> 
+      <view
+            allowMultiple="false"
+            category="org.eclipse.linuxtools.tmf.ui.views.category"
+            class="org.eclipse.linuxtools.tmf.ui.views.filter.FilterView"
+            icon="icons/eview16/filters_view.gif"
+            id="org.eclipse.linuxtools.tmf.ui.views.filter"
+            name="%filters.view.name"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -396,6 +422,18 @@
             class="org.eclipse.linuxtools.tmf.ui.commands.ManageCustomParsersCommandHandler"
             commandId="org.eclipse.linuxtools.tmf.ui.command.managecustomparsers">
       </handler>
+      <handler
+            class="org.eclipse.linuxtools.tmf.ui.editors.handlers.AddBookmarkHandler"
+            commandId="org.eclipse.ui.edit.addBookmark">
+         <activeWhen>
+            <with
+                  variable="activeEditor">
+               <instanceof
+                     value="org.eclipse.linuxtools.tmf.ui.editors.TmfEventsEditor">
+               </instanceof>
+            </with>
+         </activeWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
@@ -406,7 +444,6 @@
    <extension
          point="org.eclipse.core.contenttype.contentTypes">
       <content-type
-            file-extensions="log"
             id="org.eclipse.linuxtools.tmf.ui.content-type.trace"
             name="%contenttype.trace"
             priority="normal">

@@ -11,8 +11,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.lttng.ui.model.trange;
 
+import java.util.Iterator;
 import java.util.Vector;
 
+import org.eclipse.linuxtools.tmf.ui.viewers.timeAnalysis.model.ITimeEvent;
 import org.eclipse.linuxtools.tmf.ui.viewers.timeAnalysis.model.ITmfTimeAnalysisEntry;
 
 public class TimeRangeComposite extends TimeRangeComponent implements
@@ -157,11 +159,31 @@ ITmfTimeAnalysisEntry {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Vector<TimeRangeComponent> getTraceEvents() {
+	@Deprecated public Vector<TimeRangeComponent> getTraceEvents() {
 		return ChildEventLeafs;
 	}
 
-	/**
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterator<TimeRangeComponent> getTraceEventsIterator() {
+		Vector<TimeRangeComponent> clone = (Vector<TimeRangeComponent>) ChildEventLeafs.clone();
+		return clone.iterator();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterator<TimeRangeComponent> getTraceEventsIterator(long startTime, long stopTime, long visibleDuration) {
+		return getTraceEventsIterator();
+	}
+
+	@Override
+	public void addTraceEvent(ITimeEvent event) {
+		if (event instanceof TimeRangeComponent) {
+			ChildEventLeafs.add((TimeRangeComponent) event);
+		}
+	}
+
+    /**
 	 * @return
 	 */
 	public Vector<TimeRangeComponent> getChildEventComposites() {

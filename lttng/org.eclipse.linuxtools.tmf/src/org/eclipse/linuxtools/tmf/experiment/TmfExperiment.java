@@ -15,6 +15,10 @@ package org.eclipse.linuxtools.tmf.experiment;
 import java.util.Collections;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.tmf.component.TmfEventProvider;
 import org.eclipse.linuxtools.tmf.event.TmfEvent;
 import org.eclipse.linuxtools.tmf.event.TmfTimeRange;
@@ -24,6 +28,7 @@ import org.eclipse.linuxtools.tmf.request.ITmfDataRequest.ExecutionType;
 import org.eclipse.linuxtools.tmf.request.ITmfEventRequest;
 import org.eclipse.linuxtools.tmf.request.TmfDataRequest;
 import org.eclipse.linuxtools.tmf.request.TmfEventRequest;
+import org.eclipse.linuxtools.tmf.signal.TmfExperimentDisposedSignal;
 import org.eclipse.linuxtools.tmf.signal.TmfExperimentSelectedSignal;
 import org.eclipse.linuxtools.tmf.signal.TmfExperimentUpdatedSignal;
 import org.eclipse.linuxtools.tmf.signal.TmfSignalHandler;
@@ -150,6 +155,10 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
      */
     @Override
 	public synchronized void dispose() {
+
+    	TmfExperimentDisposedSignal<T> signal = new TmfExperimentDisposedSignal<T>(this, this);
+    	broadcast(signal);
+
     	if (fTraces != null) {
     		for (ITmfTrace trace : fTraces) {
     			trace.dispose();
@@ -461,6 +470,28 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 		return context;
 	}
 
+    @Override
+    public TmfContext seekLocation(double ratio) {
+        TmfContext context = seekEvent((long) (ratio * getNbEvents()));
+        return context;
+    }
+
+	@Override
+    public double getLocationRatio(ITmfLocation<?> location) {
+	    if (location instanceof TmfExperimentLocation) {
+	        return (double) seekLocation(location).getRank() / getNbEvents();
+	    }
+        return 0;
+    }
+
+	@Override
+	public ITmfLocation<?> getCurrentLocation() {
+		if (fExperimentContext != null) {
+			return fExperimentContext.getLocation();
+		}
+		return null;
+	}
+
 	/**
 	 * Scan the next events from all traces and return the next one
 	 * in chronological order.
@@ -496,7 +527,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 
 		if (!context.equals(fExperimentContext)) {
 //    		Tracer.trace("Ctx: Restoring context");
-			seekLocation(context.getLocation());
+			fExperimentContext = seekLocation(context.getLocation());
 		}
 		
 		TmfExperimentContext expContext = (TmfExperimentContext) context;
@@ -551,6 +582,7 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 			expContext.setLastTrace(trace);
 			expContext.updateRank(1);
 			event = expContext.getEvents()[trace];
+			fExperimentContext = expContext;
 		}
 
 //		if (event != null) {
@@ -665,7 +697,23 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 //	}
 
 	@SuppressWarnings("unchecked")
-	private void indexExperiment(boolean waitForCompletion) {
+	protected void indexExperiment(boolean waitForCompletion) {
+		
+		final Job job = new Job("Indexing " + getName() + "...") { //$NON-NLS-1$ //$NON-NLS-2$
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				while (!monitor.isCanceled()) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						return Status.OK_STATUS;
+					}
+				}
+				monitor.done();
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
 
 		fCheckpoints.clear();
 		
@@ -705,7 +753,14 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 //				long average = (indexingEnd - indexingStart) / fNbEvents;
 //				System.out.println(getName() + ": start=" + startTime + ", end=" + lastTime + ", elapsed=" + (indexingEnd * 1.0 - indexingStart) / 1000000000);
 //				System.out.println(getName() + ": nbEvents=" + fNbEvents + " (" + (average / 1000) + "." + (average % 1000) + " us/evt)");
+				super.handleSuccess();
 			}
+
+            @Override
+            public void handleCompleted() {
+                job.cancel();
+	            super.handleCompleted();
+            }
 
 			private void updateExperiment() {
 				int nbRead = getNbRead();
@@ -855,4 +910,8 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 		thread.start();
 	}
 
+//	@Override
+//    protected void queueBackgroundRequest(final ITmfDataRequest<T> request, final int blockSize, final boolean adjust) {
+//		super.queueBackgroundRequest(request, fIndexPageSize, true);
+//    }
 }

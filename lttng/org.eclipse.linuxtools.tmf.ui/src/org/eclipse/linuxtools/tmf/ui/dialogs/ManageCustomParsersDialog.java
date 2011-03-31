@@ -26,6 +26,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.tmf.ui.TmfUiPlugin;
 import org.eclipse.linuxtools.tmf.ui.editors.TmfEventsEditor;
+import org.eclipse.linuxtools.tmf.ui.internal.Messages;
 import org.eclipse.linuxtools.tmf.ui.parsers.ParserProviderManager;
 import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomTraceDefinition;
 import org.eclipse.linuxtools.tmf.ui.parsers.custom.CustomTxtTrace;
@@ -59,7 +60,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 public class ManageCustomParsersDialog extends Dialog {
 
-    private static final Image image = TmfUiPlugin.getDefault().getImageFromPath("/icons/customparser_wizard.gif"); //$NON-NLS-1$
+    private static final Image image = TmfUiPlugin.getDefault().getImageFromPath("/icons/etool16/customparser_wizard.gif"); //$NON-NLS-1$
 
     Button txtButton;
     Button xmlButton;

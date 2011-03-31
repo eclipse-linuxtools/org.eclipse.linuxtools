@@ -2,3 +2,8 @@ bin
 @dot
 javaCompiler...args
 build.xml
+target
+bigtest_gprof_input/gmon.sum
+foocpp_gprof_input/gmon.sum
+foox_gprof_input/gmon.sum
+partially-pg-build_gprof_input/gmon.sum

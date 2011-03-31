@@ -6,7 +6,9 @@
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
- * Contributors: Alvaro Sanchez-Leon - Initial implementation
+ * Contributors:
+ *   Alvaro Sanchez-Leon - Initial implementation
+ *   Michel Dagenais (michel.dagenais@polymtl.ca) - Reference C implementation, used with permission
  *******************************************************************************/
 package org.eclipse.linuxtools.lttng.ui.views.controlflow;
 
@@ -39,11 +41,11 @@ import org.eclipse.linuxtools.lttng.state.evProcessor.ITransEventProcessor;
 import org.eclipse.linuxtools.lttng.ui.TraceDebug;
 import org.eclipse.linuxtools.lttng.ui.model.trange.ItemContainer;
 import org.eclipse.linuxtools.lttng.ui.model.trange.TimeRangeEventProcess;
-import org.eclipse.linuxtools.lttng.ui.model.trange.TimeRangeViewerProvider;
 import org.eclipse.linuxtools.lttng.ui.views.common.AbsTimeUpdateView;
 import org.eclipse.linuxtools.lttng.ui.views.common.ParamsUpdater;
 import org.eclipse.linuxtools.lttng.ui.views.controlflow.evProcessor.FlowEventToHandlerFactory;
 import org.eclipse.linuxtools.lttng.ui.views.controlflow.model.FlowModelFactory;
+import org.eclipse.linuxtools.lttng.ui.views.controlflow.model.FlowTimeRangeViewerProvider;
 import org.eclipse.linuxtools.tmf.event.TmfEvent;
 import org.eclipse.linuxtools.tmf.event.TmfTimeRange;
 import org.eclipse.linuxtools.tmf.experiment.TmfExperiment;
@@ -496,7 +498,7 @@ public class ControlFlowView extends AbsTimeUpdateView implements
 		int headerHeight = table.getHeaderHeight();
 		table.getVerticalBar().setVisible(false);
 
-		tsfviewer = TmfViewerFactory.createViewer(sash, new TimeRangeViewerProvider(getParamsUpdater()));
+		tsfviewer = TmfViewerFactory.createViewer(sash, new FlowTimeRangeViewerProvider(getParamsUpdater()));
 
 		// Traces shall not be grouped to allow synchronisation
 		tsfviewer.groupTraces(false);
@@ -582,7 +584,7 @@ public class ControlFlowView extends AbsTimeUpdateView implements
 
 	private void fillLocalPullDown(IMenuManager manager) {
 		manager.add(new Separator());
-		// manager.add(showLegend);
+		manager.add(showLegend);
 		manager.add(new Separator());
 		manager.add(resetScale);
 		manager.add(nextEvent);
@@ -597,14 +599,14 @@ public class ControlFlowView extends AbsTimeUpdateView implements
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		// manager.add(showLegend);
+		manager.add(showLegend);
 		manager.add(new Separator());
 		manager.add(resetScale);
 		manager.add(nextEvent);
 		manager.add(prevEvent);
 		manager.add(nextTrace);
 		manager.add(prevTrace);
-		// manager.add(showLegend);
+		manager.add(showLegend);
 		// manager.add(filterTraces);
 		manager.add(zoomIn);
 		manager.add(zoomOut);
@@ -614,7 +616,7 @@ public class ControlFlowView extends AbsTimeUpdateView implements
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		// manager.add(showLegend);
+		manager.add(showLegend);
 		manager.add(new Separator());
 		manager.add(resetScale);
 		manager.add(nextEvent);

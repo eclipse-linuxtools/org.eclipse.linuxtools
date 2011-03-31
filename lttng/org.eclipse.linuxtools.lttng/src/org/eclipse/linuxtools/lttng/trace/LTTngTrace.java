@@ -144,7 +144,7 @@ public class LTTngTrace extends TmfTrace<LttngEvent> {
 	 */
 	public LTTngTrace(String path, boolean waitForCompletion,
 			boolean bypassIndexing) throws Exception {
-		super(path, LttngEvent.class, path, CHECKPOINT_PAGE_SIZE);
+		super(path, LttngEvent.class, path, CHECKPOINT_PAGE_SIZE, false);
 		try {
 			currentJniTrace = JniTraceFactory.getJniTrace(path,
 					SHOW_LTT_DEBUG_DEFAULT);
@@ -602,6 +602,18 @@ public class LTTngTrace extends TmfTrace<LttngEvent> {
 		LttngLocation curLocation = new LttngLocation(previousLocation);
 
 		return new TmfContext(curLocation);
+	}
+
+	@Override
+	public TmfContext seekLocation(double ratio) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double getLocationRatio(ITmfLocation<?> location) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	/**
@@ -1132,6 +1144,12 @@ public class LTTngTrace extends TmfTrace<LttngEvent> {
 			System.out.print(fCheckpoints.get(pos).getTimestamp() + "\t"); //$NON-NLS-1$
 			System.out.println(fCheckpoints.get(pos).getLocation());
 		}
+	}
+
+	@Override
+	public void dispose() {
+		currentJniTrace.closeTrace();
+		super.dispose();
 	}
 
 	/**

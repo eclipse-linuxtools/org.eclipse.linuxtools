@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site
+      mirrorsURL="http://www.eclipse.org/downloads/download.php?file=/technology/linuxtools/updates-nightly/site.xml&amp;format=xml">
+   <description url="http://download.eclipse.org/technology/linuxtools/updates-nightly">
+      Nightly builds of Linux Tools project.
+   </description>
+   <feature url="features/org.eclipse.linuxtools.cdt.autotools_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.autotools" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib" version="0.0.0">
+      <category name="Linux Tools Additional Library API Hoverhelp"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.changelog_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.gprof_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gprof" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.man_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.oprofile_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.rpm_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpm" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.rpmstubby_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpmstubby" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.systemtap_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.systemtap" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.callgraph_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.callgraph" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.valgrind_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.lttng_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.lttng" version="0.0.0" os="linux">
+      <category name="Linux Tools"/>
+   </feature>
+   <feature url="features/org.eclipse.linuxtools.gcov_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gcov" version="0.0.0">
+      <category name="Linux Tools"/>
+   </feature>
+   <category-def name="Linux Tools" label="Linux Tools">
+      <description>
+         Eclipse Linux Tools
+      </description>
+   </category-def>
+   <category-def name="Linux Tools Additional Library API Hoverhelp" label="Linux Tools Additional Library API Hoverhelp">
+      <description>
+         Optional library API documentation for use with C/C++ hover help and completion
+      </description>
+   </category-def>
+</site>
