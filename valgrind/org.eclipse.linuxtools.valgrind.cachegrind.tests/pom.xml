@@ -34,6 +34,8 @@
           <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
           <argLine>-Declipse.valgrind.tests.runValgrind=no</argLine>
+          <testSuite>org.eclipse.linuxtools.valgrind.cachegrind.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.internal.valgrind.cachegrind.tests.AllTests</testClass>
         </configuration>
       </plugin>
       <plugin>
