@@ -1,3 +1,9 @@
+2011-04-01  Jeff Johnston  <jjohnstn@redhat.com>
+
+ 	Bug #341534
+	* plugin.xml: Fix conflict with CTRL+ALT+P within the ChangeLog plug-in
+	itself.
+
 2011-01-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #332621
