@@ -1,0 +1,6 @@
+2011-03-31  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Initial check-in.
+	* src/org/eclipse/linuxtools/cdt/libhover/devhelp/test/CheckDevhelp.java: Ditto.
+	* src/org/eclipse/linuxtools/cdt/libhover/devhelp/test/Activator.java: Ditto.
+	* build.properties: ditto.
