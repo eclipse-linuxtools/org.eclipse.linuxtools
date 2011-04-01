@@ -33,6 +33,7 @@
        	  <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
+          <argLine>-Declipse.valgrind.tests.runValgrind=no</argLine>
         </configuration>
       </plugin>
       <plugin>
