@@ -46,9 +46,8 @@
     <platform-version-name>helios</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <wikitext-site>http://download.eclipse.org/tools/mylyn/update/weekly</wikitext-site>
-    <swtbot-site>http://download.eclipse.org/technology/swtbot/${platform-version-name}/dev-build/update-site</swtbot-site>
+    <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110124210048/repository</orbit-site>
-    <cdt-site>http://download.eclipse.org/tools/cdt/releases/helios/</cdt-site>
     <subclipse-site>http://subclipse.tigris.org/update_1.6.x</subclipse-site>
   </properties>
 
@@ -64,7 +63,7 @@
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/helios</eclipse-site>
         <platform-version>[3.6,3.7)</platform-version>
-        <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
+        <cdt-site>http://download.eclipse.org/tools/cdt/releases/helios/</cdt-site>
       </properties>
     </profile>
     <profile>
@@ -78,7 +77,7 @@
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
         <platform-version>[3.7,3.8)</platform-version>
-        <swtbot-site>http://download.eclipse.org/technology/swtbot/indigo/dev-build/update-site</swtbot-site>
+        <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo</cdt-site>
       </properties>
     </profile>
   </profiles>
