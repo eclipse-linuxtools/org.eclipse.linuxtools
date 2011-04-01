@@ -1,3 +1,8 @@
+2011-04-01  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* META-INF/MANIFEST.MF: Use JavaHL client adapter.
+	* pom.xml: Don't run SWTBot tests in UI thread.
+
 2011-03-29  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add Subclipse dependencies to have complete dep. chain
