@@ -19,24 +19,24 @@
 
   <artifactId>org.eclipse.linuxtools.oprofile.launch.tests</artifactId>
   <version>0.3.1-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
+  <packaging>eclipse-test-plugin</packaging>
 
   <name>Linux Tools OProfile Launch Tests Plug-in</name>
 
- <build>
-     <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
-     <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.sonatype.tycho</groupId>
-        <artifactId>maven-osgi-source-plugin</artifactId>
+        <artifactId>maven-osgi-test-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+       	  <useUIHarness>true</useUIHarness>
+          <useUIThread>true</useUIThread>
+          <product>org.eclipse.sdk.ide</product>
+          <argLine>-Dorg.eclipse.linuxtools.oprofile.launch.tests.runOprofile=no</argLine>
+          <testSuite>org.eclipse.linuxtools.oprofile.launch.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.oprofile.launch.tests.AllLaunchTests</testClass>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
