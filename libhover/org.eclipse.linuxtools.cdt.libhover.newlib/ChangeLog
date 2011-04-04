@@ -1,3 +1,10 @@
+2011-04-04  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* pom.xml: Update to 1.0.3.
+	* META-INF/MANIFEST.MF: Bump up version to 1.0.3 and add dependency
+	on latest libhover plug-in.
+	* data/newlib-1.16.0.libhover: New file.
+
 2011-03-11  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* toc.xml: Change documentation anchor reference to be moreclibdocs.
