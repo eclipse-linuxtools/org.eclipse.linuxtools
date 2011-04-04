@@ -1,3 +1,8 @@
+2011-04-01  Andrew Overholt  <overholt@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add "backup" bundle symbolic name to avoid
+	conflicts.
+
 2009-08-05  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add ".qualifier" to ensure it gets updated.

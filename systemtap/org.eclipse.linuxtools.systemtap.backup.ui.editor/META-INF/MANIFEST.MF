@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.ui.editor;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.systemtap.backup.ui.editor;singleton:=true
 Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.systemtap.backup.ui.editor.activator.Activator
 Require-Bundle: org.eclipse.ui,

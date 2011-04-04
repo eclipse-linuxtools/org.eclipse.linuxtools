@@ -37,8 +37,10 @@
           <testSuite>org.eclipse.linuxtools.changelog.ui.tests</testSuite>
           <testClass>org.eclipse.linuxtools.changelog.ui.tests.swtbot.AllSWTBotTests</testClass>
        	  <useUIHarness>true</useUIHarness>
-          <useUIThread>true</useUIThread>
+          <useUIThread>false</useUIThread>
           <product>org.eclipse.sdk.ide</product>
+          <surefire.timeout>1800</surefire.timeout>
+          <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
         </configuration>
       </plugin>
       <plugin>
