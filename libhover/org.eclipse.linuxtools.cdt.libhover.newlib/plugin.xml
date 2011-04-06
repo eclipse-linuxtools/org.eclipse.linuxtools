@@ -7,7 +7,7 @@
          point="org.eclipse.linuxtools.cdt.libhover.library">
       <library
             docs="http://www.sourceware.org/newlib/libc.html"
-            location="http://www.sourceware.org/eclipse/libhover/newlib-1.16.0.libhover"
+            location="./data/newlib-1.16.0.libhover"
             name="newlib library"
             type="C">
       </library>
