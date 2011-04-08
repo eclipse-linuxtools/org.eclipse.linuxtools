@@ -69,6 +69,7 @@
     <profile>
       <id>platform-indigo</id>
       <activation>
+        <activeByDefault>true</activeByDefault>
         <property>
           <name>platform-version-name</name>
           <value>indigo</value>
