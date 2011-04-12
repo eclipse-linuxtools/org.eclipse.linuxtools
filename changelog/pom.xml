@@ -63,8 +63,6 @@
     <module>org.eclipse.linuxtools.changelog.doc</module>
     <module>org.eclipse.linuxtools.changelog.javaparser</module>
     <module>org.eclipse.linuxtools.changelog-feature</module>
-    <module>org.eclipse.linuxtools.changelog-site</module>
-
     <module>org.eclipse.linuxtools.changelog.tests</module>
     <module>org.eclipse.linuxtools.changelog.tests-feature</module>
     <!--
