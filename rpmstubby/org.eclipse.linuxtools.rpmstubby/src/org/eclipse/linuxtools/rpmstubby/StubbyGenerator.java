@@ -100,24 +100,15 @@ public class StubbyGenerator {
 		} else {
 			buffer.append("Source0:        #FIXME\n");
 		}
-		buffer
-				.append("BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)\n\n");
 			buffer.append("BuildArch: noarch\n\n");
 		buffer.append("BuildRequires: eclipse-pde >= 1:3.4.0\n");
 		buffer.append("Requires: eclipse-platform >= 3.4.0\n");
-		buffer.append(getDepsOrReqs("Requires: ", mainPackage.getRequires()));
 		buffer.append("\n%description\n" + mainPackage.getDescription() + "\n");
 		for (SubPackage subPackage : subPackages) {
 			String subPackageName = getPackageName(subPackage.getName());
 			buffer.append("\n%package  " + subPackageName + "\n");
 			buffer.append("Summary:  " + subPackage.getSummary() + "\n");
 			buffer.append("Requires: %{name} = %{version}-%{release}\n");
-			buffer
-					.append(getDepsOrReqs("Requires: ", subPackage
-							.getRequires()));
-			buffer
-					.append(getDepsOrReqs("Provides: ", subPackage
-							.getProvides()));
 			buffer.append("Group: Development/Tools\n\n");
 			buffer.append("%description " + subPackageName + "\n");
 			buffer.append(subPackage.getDescription() + "\n");
@@ -126,13 +117,10 @@ public class StubbyGenerator {
 
 		generateBuildSection(buffer);
 		buffer.append("%install\n");
-		buffer.append("%{__rm} -rf %{buildroot}\n");
 		buffer.append("install -d -m 755 %{buildroot}%{install_loc}\n\n");
 		buffer.append("%{__unzip} -q -d %{buildroot}%{install_loc} \\\n");
 		buffer.append("     build/rpmBuild/" + mainPackage.getName()
 				+ ".zip \n\n");
-		buffer.append("%clean\n");
-		buffer.append("%{__rm} -rf %{buildroot}\n\n");
 		generateFilesSections(buffer);
 		buffer.append("%changelog\n\n");
 		buffer.append("#FIXME\n");

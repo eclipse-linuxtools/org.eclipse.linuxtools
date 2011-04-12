@@ -1,3 +1,7 @@
+2011-04-12  Alexander Kurtakov  <akurtako@redhat.com>
+
+	* src/org/eclipse/linuxtools/rpmstubby/StubbyGenerator.java (generateSpecfile): Don't generate useless buildroot, clean, requires and provides.
+
 2011-02-24  Alexander Kurtakov  <akurtako@redhat.com>
 	Adapt to current packaging guidelines.
 	* src/org/eclipse/linuxtools/rpmstubby/StubbyPomGenerator.java (generateSpecfile): Drop buildroot.
