@@ -28,7 +28,6 @@
 
   <groupId>org.eclipse.linuxtools.man</groupId>
   <artifactId>linuxtools-man-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools Man Parent</name>

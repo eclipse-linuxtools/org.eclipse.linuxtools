@@ -25,7 +25,6 @@
 
   <groupId>org.eclipse.linuxtools.rpm</groupId>
   <artifactId>linuxtools-rpm-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools RPM Parent</name>
