@@ -19,12 +19,12 @@
   <parent>
     <groupId>org.eclipse.linuxtools.rpmstubby</groupId>
     <artifactId>linuxtools-rpmstubby-parent</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.8.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.rpmstubby</artifactId>
   <packaging>eclipse-plugin</packaging>
-
+  <version>0.3.0-SNAPSHOT</version>
   <name>Linux Tools RPM Stubby Plug-in</name>
 
  <build>
