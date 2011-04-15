@@ -144,7 +144,7 @@ public class RpmlintMarkerVisitor implements IResourceVisitor {
 	}
 	
 	private String fileToString(IFile file) {
-		String ret = new String(); 
+		String ret = "";  //$NON-NLS-1$
 		try {
 			InputStream in = file.getContents();
 			int nbrOfByte = in.available();
