@@ -136,16 +136,18 @@ public class SpecfileErrorHandler extends SpecfileMarkerHandler {
 	public void removeExistingMarkers(int offset, int length)
 	{	
 		fAnnotationModel = getAnnotationModel();
-		Iterator i = fAnnotationModel.getAnnotationIterator();
-		while (i.hasNext()) {
-			Annotation annotation = (Annotation)i.next();
-			Position p = fAnnotationModel.getPosition(annotation);
-			if (p != null) {
-				int pStart = p.getOffset();
-				if (pStart >= offset && pStart < (offset + length)) {
-					// Remove directly from model instead of using
-					// iterator so position will be removed from document.
-					fAnnotationModel.removeAnnotation(annotation);
+		if (fAnnotationModel != null) {
+			Iterator<Annotation> i = fAnnotationModel.getAnnotationIterator();
+			while (i.hasNext()) {
+				Annotation annotation = i.next();
+				Position p = fAnnotationModel.getPosition(annotation);
+				if (p != null) {
+					int pStart = p.getOffset();
+					if (pStart >= offset && pStart < (offset + length)) {
+						// Remove directly from model instead of using
+						// iterator so position will be removed from document.
+						fAnnotationModel.removeAnnotation(annotation);
+					}
 				}
 			}
 		}
