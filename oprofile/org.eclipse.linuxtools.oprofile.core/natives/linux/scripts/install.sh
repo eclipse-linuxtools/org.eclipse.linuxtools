@@ -25,14 +25,14 @@ RET=$(($RET + $?))
 test -x /usr/bin/opcontrol
 RET=$(($RET + $?))
 if [ $RET -ne 0 ]; then
- echo Error: required binaries do not exist, OProfile not installed?
+ echo >&2 "Error: required binaries do not exist, OProfile not installed?"
  exit 1
 fi
 
 #need consolehelper to run opcontrol as root from within eclipse
 test -x /usr/bin/consolehelper 
 if [ $? -ne 0 ]; then
-  echo Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead 
+  echo >&2 "Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead"
   exit 1
 fi
 
@@ -42,17 +42,9 @@ fi
 #create the sym link to consolehelper
 test -L ./opcontrol || { rm -f ./opcontrol && ln -s /usr/bin/consolehelper opcontrol ; }
 if [ $? -ne 0 ]; then
-  echo Error: cannot create opcontrol wrapper in `pwd`
+  echo >&2 "Error: cannot create opcontrol wrapper in `pwd`"
   exit 1
 fi
-
-##this will have to be loaded every time the user restarts their
-##computer anyway, should load it now?
-#load the oprofile module 
-#test /dev/oprofile/cpu_type
-#if [ $? -ne 0 ]; then
-#  opcontrol --init
-#fi
 
 test -f /etc/security/console.apps/opcontrol || install -D -m 644 opcontrol-wrapper.security /etc/security/console.apps/opcontrol
 test -f /etc/pam.d/opcontrol || install -D -m 644 opcontrol-wrapper.pamd /etc/pam.d/opcontrol
