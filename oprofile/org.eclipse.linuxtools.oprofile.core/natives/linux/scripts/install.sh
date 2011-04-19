@@ -29,13 +29,19 @@ if [ $RET -ne 0 ]; then
  exit 1
 fi
 
-#need consolehelper to run opcontrol as root from within eclipse
-test -x /usr/bin/consolehelper 
-if [ $? -ne 0 ]; then
-  echo >&2 "Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead"
+# need consolehelper and consolehelper-gtk to run opcontrol as
+# root from within eclipse
+if [ ! -x /usr/bin/consolehelper ]; then
+  echo >&2 "Error: /usr/bin/consolehelper does not exist, run install-noconsolehelper.sh instead."
   exit 1
 fi
-
+# consolehelper-gtk is required for consolehelper to pop up the
+# GUI dialog and ask for the root password.
+if [ ! -x /usr/bin/consolehelper-gtk ]; then
+  echo >&2 "Error: /usr/bin/consolehelper-gtk does not exist."
+  echo >&2 "On RHEL/Fedora you can install it by: yum install usermode-gtk."
+  exit 1
+fi
 
 ### install ###
 
