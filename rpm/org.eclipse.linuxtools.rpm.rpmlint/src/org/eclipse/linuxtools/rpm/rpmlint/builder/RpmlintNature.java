@@ -25,9 +25,7 @@ public class RpmlintNature implements IProjectNature {
 
 	private IProject project;
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**  
 	 * @see org.eclipse.core.resources.IProjectNature#configure()
 	 */
 	public void configure() throws CoreException {
@@ -47,9 +45,7 @@ public class RpmlintNature implements IProjectNature {
 		project.setDescription(desc, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.core.resources.IProjectNature#deconfigure()
 	 */
 	public void deconfigure() throws CoreException {
@@ -69,18 +65,14 @@ public class RpmlintNature implements IProjectNature {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.core.resources.IProjectNature#getProject()
 	 */
 	public IProject getProject() {
 		return project;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.core.resources.IProjectNature#setProject(org.eclipse.core.resources.IProject)
 	 */
 	public void setProject(IProject project) {
