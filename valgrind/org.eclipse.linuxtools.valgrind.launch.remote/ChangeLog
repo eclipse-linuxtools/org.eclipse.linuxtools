@@ -1,3 +1,8 @@
+2011-04-21  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java: Add a check to prevent infinite
+	loop from occurring if a bug occurs trying to start the process.
+
 2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream.java (read1): Used Java 6 constructor for IOException.

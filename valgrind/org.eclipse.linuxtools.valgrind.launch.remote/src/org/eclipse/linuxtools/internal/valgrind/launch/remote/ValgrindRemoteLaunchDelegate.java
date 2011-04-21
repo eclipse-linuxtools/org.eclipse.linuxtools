@@ -197,7 +197,10 @@ ValgrindLaunchConfigurationDelegate {
 				});
 			}
 
-			while (process == null || !process.isTerminated()) {
+			// Wait for the process to exist and finish but don't bother
+			// waiting if the channel has been closed
+			while (channel.getState() != IChannel.STATE_CLOSED && 
+					(process == null || !process.isTerminated())) {
 				Thread.sleep(100);
 			}
 			
