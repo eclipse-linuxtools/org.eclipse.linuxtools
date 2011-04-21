@@ -20,7 +20,7 @@ public class RpmlintPreVisitor implements IResourceVisitor {
 	
 	private ArrayList<String> paths = new ArrayList<String>();
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 	 */
 	public boolean visit(IResource resource) {

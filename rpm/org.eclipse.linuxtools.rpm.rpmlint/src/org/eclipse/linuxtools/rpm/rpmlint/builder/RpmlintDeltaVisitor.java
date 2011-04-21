@@ -22,7 +22,7 @@ public class RpmlintDeltaVisitor implements IResourceDeltaVisitor {
 
 	private ArrayList<String> paths = new ArrayList<String>();
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(org.eclipse.core.resources.IResourceDelta)
 	 */
 	public boolean visit(IResourceDelta delta) {
