@@ -1,3 +1,10 @@
+2011-04-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #343731
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (runScript): 
+	Add support for running scripts on Windows and Mac.
+	(regenerateMakefiles): Invoke autoreconf as a script instead of a command.
+
 2010-12-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #331735

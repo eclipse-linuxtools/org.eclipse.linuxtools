@@ -560,11 +560,11 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 					reconfCmd = DEFAULT_AUTORECONF;
 				IPath reconfCmdPath = new Path(reconfCmd);
 				reconfArgs[0] = "-i"; //$NON-NLS-1$
-				rc = runCommand(reconfCmdPath,
+				rc = runScript(reconfCmdPath,
 						project.getLocation().append(srcDir),
 						reconfArgs,
 						AutotoolsPlugin.getFormattedString("MakeGenerator.autoreconf", new String[]{buildDir}), //$NON-NLS-1$
-						errMsg, console, consoleStart);
+						errMsg, console, null, consoleStart);
 				consoleStart = false;
 				// Check if configure generated and if yes, run it.
 				if (rc != IStatus.ERROR) {
@@ -957,6 +957,21 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		}
         configTargets[0] = getPathString(commandPath);
 
+        // Fix for bug #343731
+        if (Platform.getOS().equals(Platform.OS_WIN32)
+                || Platform.getOS().equals(Platform.OS_MACOSX)) {
+            // Neither Mac or Windows support calling scripts directly.
+            String command = null;
+            for (String arg : configTargets) {
+                // TODO check for spaces in args
+                if (command == null)
+                    command = arg;
+                else
+                    command += " " + arg;
+            }
+            configTargets = new String[] { "-c", command };
+        }
+        
         for (int i = 0; i < configTargets.length; ++i) {
 			// try to resolve the build macros in any argument
 			try{
