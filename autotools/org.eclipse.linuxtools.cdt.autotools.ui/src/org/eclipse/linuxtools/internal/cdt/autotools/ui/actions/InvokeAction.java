@@ -26,6 +26,7 @@ import org.eclipse.cdt.core.resources.IConsole;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -342,6 +343,7 @@ public abstract class InvokeAction extends AbstractTargetAction {
 								// Get a build console for the project
 								IConsole console = CCorePlugin.getDefault().getConsole("org.eclipse.linuxtools.cdt.autotools.ui.autotoolsConsole"); //$NON-NLS-1$
 								console.start(project);
+								CUIPlugin.getDefault().startGlobalConsole();
 								ConsoleOutputStream consoleOutStream = console.getOutputStream();
 								// FIXME: we want to remove need for ManagedBuilderManager, but how do we
 								// get environment variables.

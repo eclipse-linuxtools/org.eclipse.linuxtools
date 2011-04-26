@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.actions;
 
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.cdt.ui.CUIPlugin;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -50,6 +51,7 @@ public class ReconfigureAction extends InvokeAction {
 							IProject project = getSelectedContainer().getProject();
 							AutotoolsNewMakeGenerator m = new AutotoolsNewMakeGenerator();
 							IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
+							CUIPlugin.getDefault().startGlobalConsole();
 							m.initialize(project, info, monitor);
 							try {
 								m.reconfigure();
