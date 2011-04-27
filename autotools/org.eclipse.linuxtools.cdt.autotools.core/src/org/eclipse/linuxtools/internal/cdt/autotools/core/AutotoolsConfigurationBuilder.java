@@ -5,8 +5,10 @@ import java.io.OutputStream;
 import java.util.Map;
 
 import org.eclipse.cdt.core.CCorePlugin;
+import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.resources.ACBuilder;
 import org.eclipse.cdt.core.resources.IConsole;
+import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.managedbuilder.core.IBuilder;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
@@ -37,12 +39,18 @@ public class AutotoolsConfigurationBuilder extends ACBuilder {
 		super();
 		generator = new AutotoolsNewMakeGenerator();
 	}
+	
+	protected boolean isCdtProjectCreated(IProject project){
+		ICProjectDescription des = CoreModel.getDefault().getProjectDescription(project, false);
+		return des != null && !des.isCdtProjectCreating();
+	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
+	protected IProject[] build(int kind, @SuppressWarnings("rawtypes") Map args, IProgressMonitor monitor)
 	throws CoreException {
 		IProject project = getProject();
+		if(!isCdtProjectCreated(project))
+			return project.getReferencedProjects();
 
 		boolean bPerformBuild = true;
 		IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
@@ -144,7 +152,7 @@ public class AutotoolsConfigurationBuilder extends ACBuilder {
 			builder = cfg.getEditableBuilder();
 		switch (kind) {
 		case IncrementalProjectBuilder.AUTO_BUILD :
-			return true;
+			return builder.isAutoBuildEnable();
 		case IncrementalProjectBuilder.INCREMENTAL_BUILD : // now treated as the same!
 		case IncrementalProjectBuilder.FULL_BUILD :
 			return builder.isFullBuildEnabled() | builder.isIncrementalBuildEnabled() ;

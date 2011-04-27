@@ -1,3 +1,15 @@
+2011-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #343875
+	* src/org/eclipse/linuxtools/cdt/autotools/core/AutotoolsNewProjectNature.java (.run): Add
+	code to turn on and off workspace autobuilding around our call to change the project
+	description.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsConfigurationBuilder.java (build): Add
+	check for creating a CDT project in which case do not build yet.
+	(isCdtProjectCreated): New method.
+	(shouldBuild): Do not return true for autobuild, instead let the builder tell us.
+	* plugin.xml: Make the Autotools builder configurable.
+
 2011-04-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #343731

@@ -21,6 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -123,13 +124,30 @@ public class AutotoolsNewProjectNature implements IProjectNature {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+						protected boolean savedAutoBuildingValue;
 
 						public void run(IProgressMonitor monitor) throws CoreException {
-
+							IWorkspace workspace = ResourcesPlugin.getWorkspace();
+							turnOffAutoBuild(workspace);
 							IProjectDescription description = proj.getDescription();
 							description.setBuildSpec(newCommands);
 							proj.setDescription(description, new NullProgressMonitor());
+							restoreAutoBuild(workspace);
 						}
+						
+						protected final void turnOffAutoBuild(IWorkspace workspace) throws CoreException {
+							IWorkspaceDescription workspaceDesc = workspace.getDescription();
+							savedAutoBuildingValue = workspaceDesc.isAutoBuilding();
+							workspaceDesc.setAutoBuilding(false);
+							workspace.setDescription(workspaceDesc);
+						}
+						
+						protected final void restoreAutoBuild(IWorkspace workspace) throws CoreException {
+							IWorkspaceDescription workspaceDesc = workspace.getDescription();
+							workspaceDesc.setAutoBuilding(savedAutoBuildingValue);
+							workspace.setDescription(workspaceDesc);
+						}
+
 					}, rule, IWorkspace.AVOID_UPDATE, monitor);
 				} catch (CoreException e) {
 					return e.getStatus();

@@ -465,7 +465,8 @@
          name="%Makefile.builder.name"
          point="org.eclipse.core.resources.builders">
       <builder
-            hasNature="true">
+            hasNature="true"
+            isConfigurable="true">
          <run
                class="org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsConfigurationBuilder">
          </run>
