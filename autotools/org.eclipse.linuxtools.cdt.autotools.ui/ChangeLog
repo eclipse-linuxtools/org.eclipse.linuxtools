@@ -1,3 +1,9 @@
+2011-04-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #343905
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/InvokeAction.java (..run): 
+	Add support for running autotools commands under Windows and Mac.
+
 2011-04-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/InvokeAction.java (..run): 

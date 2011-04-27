@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
@@ -52,6 +53,8 @@ import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsNewMakeGenera
 import org.eclipse.swt.widgets.Shell;
 
 public abstract class InvokeAction extends AbstractTargetAction {
+
+	public final String SHELL_COMMAND = "sh"; //$NON-NLS-1$
 
 	protected void showInformation(String title, String content) {
 
@@ -383,12 +386,38 @@ public abstract class InvokeAction extends AbstractTargetAction {
 										envList.addAll(additionalEnvs); // add any additional environment variables specified ahead of script
 									env = (String[]) envList.toArray(new String[envList.size()]);
 								}
-								OutputStream stdout = consoleOutStream;
+								
+								String[] newArgumentList;
+								
+						        // Fix for bug #343905
+								// For Windows and Mac, we cannot run a script directly (in this case, the
+								// autotools are scripts).  We need to run "sh -c command args where command
+								// plus args is represented in a single string.
+						        if (Platform.getOS().equals(Platform.OS_WIN32)
+						                || Platform.getOS().equals(Platform.OS_MACOSX)) {
+						            // Neither Mac or Windows support calling scripts directly.
+						            String command = strippedCommand;
+						            for (String arg : argumentList) {
+						            	command += " " + arg;
+						            }
+						            newArgumentList = new String[] { "-c", command };
+						        } else {
+						        	// Otherwise, we don't need the -c argument and can present the command
+						        	// name and arguments as individual arguments
+						        	if (argumentList == null)
+						        		newArgumentList = new String[1];
+						        	else
+						        		newArgumentList = new String[argumentList.length + 1];
+						        	newArgumentList[0] = strippedCommand;
+									System.arraycopy(argumentList, 0, newArgumentList, 1, argumentList.length);
+						        }
+						        
+						        OutputStream stdout = consoleOutStream;
 								OutputStream stderr = consoleOutStream;
 
 								launcher.showCommand(true);
 								// Run the shell script via shell command.
-								Process proc = launcher.execute(new Path(strippedCommand), argumentList, env,
+								Process proc = launcher.execute(new Path(SHELL_COMMAND), newArgumentList, env,
 										execDir, new NullProgressMonitor());
 								if (proc != null) {
 									try {
