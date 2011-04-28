@@ -16,8 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -35,12 +33,10 @@ public class RPMProject {
 	private IProject project;
 	private SourceRPM sourceRPM;
 	private RPMConfiguration rpmConfig;
-	private HashSet<String> missingDependencies;
 
 	public RPMProject(IProject project) throws CoreException {
 		this.project = project;
 		rpmConfig = new RPMConfiguration(this.project);
-		this.missingDependencies = new HashSet<String>();
 	}
 
 	public IProject getProject() {
@@ -164,54 +160,6 @@ public class RPMProject {
 		}
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
-	}
-
-	/**
-	 * Prepares for project export. This method updates the project model with
-	 * the given RPM project export delta by:
-	 * <ul>
-	 * <li>Parsing the given spec file and updating the model accordingly</li>
-	 * <li>Updating the spec file model and writing it to disk</li>
-	 * <li>Determining if a patch is needed and generating a patch</li>
-	 * </ul>
-	 * 
-	 * @param exportOp
-	 *            the export delta
-	 * @throws CoreException
-	 *             if:
-	 *             <ul>
-	 *             <li>The project does not have an RPM nature</li>
-	 *             <li>Parsing the spec file fails</li>
-	 *             <li>Patch generation fails</li>
-	 *             <li>Writing the spec file fails</li>
-	 *             </ul>
-	 */
-	private void prepareExport() throws CoreException {
-		/* Don't support exporting projects that have not been imported as SRPMs */
-		if (!getProject().hasNature(RPMProjectNature.RPM_NATURE_ID)) {
-			String throw_message = Messages
-					.getString("RPMCore.RPMProject.prepareExport") + //$NON-NLS-1$
-					getProject().getName();
-			IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
-					throw_message, null);
-			throw new CoreException(error);
-		}
-
-		// Do a buildPrep again to make sure the BUILD folder is pristine
-		buildPrep();
-
-		getConfiguration().getSourcesFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-		getConfiguration().getSpecsFolder().refreshLocal(
-				IResource.DEPTH_INFINITE, null);
-	}
-
-	public void addMissingDependency(String missingRpm) {
-		missingDependencies.add(missingRpm);
-	}
-
-	public Set<String> getMissingDependencies() {
-		return missingDependencies;
 	}
 
 }
