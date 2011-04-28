@@ -108,14 +108,6 @@
  </extension>
   <extension
          point="org.eclipse.ui.console.consolePatternMatchListeners">
-      <consolePatternMatchListener
-            class="org.eclipse.linuxtools.rpm.ui.MissingDependencyMatcher"
-            id="org.eclipse.linuxtools.rpm.ui.MissingDependencyMatcher"
-            regex=".*(is)\W(needed)\W(by).*">
-         <enablement>
-            <test property="org.eclipse.ui.console.consoleTypeTest" value="rpmbuild"/>
-         </enablement>
-      </consolePatternMatchListener>
        <consolePatternMatchListener
             class="org.eclipse.linuxtools.rpm.ui.ErrorLineMatcher"
             id="org.eclipse.linuxtools.rpm.ui.ErrorLineMatcher"

@@ -36,17 +36,6 @@ public class RpmConsole extends IOConsole {
 	}
 
 	/**
-	 * Provides access for <code>IPatternMatchListenerDelegate</code> to the rpm
-	 * project to add the missing dependency found.
-	 * 
-	 * @param missingRpm
-	 *            The name of the missing rpm.
-	 */
-	public void addMissingRpm(String missingRpm) {
-		rpmProject.addMissingDependency(missingRpm);
-	}
-
-	/**
 	 * Returns the spec file for this rpm project.
 	 * 
 	 * @return The spec file.
