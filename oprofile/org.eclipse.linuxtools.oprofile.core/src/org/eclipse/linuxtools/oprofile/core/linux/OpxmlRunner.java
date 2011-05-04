@@ -39,6 +39,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 
 /**
@@ -48,6 +50,9 @@ import org.xml.sax.XMLReader;
  * BFD and the oprofile plugins. 
  */
 public class OpxmlRunner {
+	
+	private static final int KB = 1024;
+	
 	private OprofileSAXHandler _handler;
 
 	/**
@@ -81,6 +86,20 @@ public class OpxmlRunner {
 		// Set content/error handlers
 		reader.setContentHandler(_handler);
 		reader.setErrorHandler(_handler);
+		
+		// Work-around for Eclipse Bugzilla #343025
+		// Set the input buffer size of the XML reader to 100kB
+		// Default is 2kb for xerces2-j (see 
+		// http://xerces.apache.org/xerces2-j/properties.html)
+		try {
+			reader.setProperty(
+					"http://apache.org/xml/properties/input-buffer-size",
+					new Integer(100 * KB));
+		} catch (SAXNotRecognizedException e1) {
+		   e1.printStackTrace();
+		} catch (SAXNotSupportedException e1) {
+		   e1.printStackTrace();
+		}
 		
 		// Run opxml
 		try {

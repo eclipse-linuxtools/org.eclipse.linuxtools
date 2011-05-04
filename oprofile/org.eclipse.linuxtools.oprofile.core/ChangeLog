@@ -1,3 +1,8 @@
+2011-05-03  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/linux/OpxmlRunner.java (run):
+	Fix for Eclipse Bz #343025. Increased input buffer size for XML reader to 100K.
+
 2011-03-14  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/opxml/EventIdCache.java (buildCache):
