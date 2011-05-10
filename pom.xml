@@ -42,13 +42,12 @@
   </licenses>
 
   <properties>
-    <tycho-version>0.11.0</tycho-version>
+    <tycho-version>0.12.0</tycho-version>
     <platform-version-name>helios</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <wikitext-site>http://download.eclipse.org/tools/mylyn/update/weekly</wikitext-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110124210048/repository</orbit-site>
-    <subclipse-site>http://subclipse.tigris.org/update_1.6.x</subclipse-site>
   </properties>
 
   <profiles>
@@ -126,23 +125,18 @@
       <layout>p2</layout>
       <url>${cdt-site}</url>
     </repository>
-    <repository>
-      <id>subclipse</id>
-      <layout>p2</layout>
-      <url>${subclipse-site}</url>
-    </repository>
   </repositories>
   
   <build>
     <plugins>
       <plugin>
-        <groupId>org.sonatype.tycho</groupId>
+        <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho-version}</version>
         <extensions>true</extensions>
       </plugin>
       <plugin>
-        <groupId>org.sonatype.tycho</groupId>
+        <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
         <version>${tycho-version}</version>
         <configuration>
@@ -185,19 +179,36 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.sonatype.tycho</groupId>
-          <artifactId>maven-osgi-compiler-plugin</artifactId>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-compiler-plugin</artifactId>
           <version>${tycho-version}</version>
           <configuration>
             <encoding>UTF-8</encoding>
           </configuration>
-        </plugin>
+	    </plugin>
+		<plugin>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>tycho-test-plugin</artifactId>
+			<version>${tycho-version}</version>
+			<configuration>
+				<useUIHarness>true</useUIHarness>
+				<useUIThread>true</useUIThread>
+				<product>org.eclipse.sdk.ide</product>
+				<bundleStartLevel>
+					<bundle>
+						<id>org.eclipse.ui.workbench</id>
+					 	<level>1</level>
+						<autoStart>true</autoStart>
+					</bundle>
+				</bundleStartLevel>
+			</configuration>
+		</plugin>
         <plugin>
           <!-- TODO remove workaround when
              https://issues.sonatype.org/browse/TYCHO-473
              is fixed -->
-          <groupId>org.sonatype.tycho</groupId>
-          <artifactId>maven-osgi-source-plugin</artifactId>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-source-plugin</artifactId>
           <version>${tycho-version}</version>
           <executions>
             <execution>
