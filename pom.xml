@@ -48,7 +48,6 @@
     <wikitext-site>http://download.eclipse.org/tools/mylyn/update/weekly</wikitext-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110124210048/repository</orbit-site>
-    <subclipse-site>http://subclipse.tigris.org/update_1.6.x</subclipse-site>
   </properties>
 
   <profiles>
@@ -125,11 +124,6 @@
       <id>cdt</id>
       <layout>p2</layout>
       <url>${cdt-site}</url>
-    </repository>
-    <repository>
-      <id>subclipse</id>
-      <layout>p2</layout>
-      <url>${subclipse-site}</url>
     </repository>
   </repositories>
   
