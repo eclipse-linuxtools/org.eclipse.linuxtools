@@ -61,7 +61,6 @@
   </build>
 
   <modules>
-    <module>org.eclipse.linuxtools.cdt.autotools</module>
     <module>org.eclipse.linuxtools.cdt.autotools.core</module>
     <module>org.eclipse.linuxtools.cdt.autotools.ui</module>
     <module>org.eclipse.linuxtools.cdt.autotools-docs</module>
