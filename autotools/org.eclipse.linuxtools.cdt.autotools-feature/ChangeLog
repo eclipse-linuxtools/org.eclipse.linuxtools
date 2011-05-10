@@ -1,3 +1,10 @@
+2011-05-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #342895
+	* feature.xml: Remove autotools compatibility plug-in.  Bump up to
+	version 3.0.0.
+	* pom.xml: Update version number.
+
 2010-12-03  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* feature.xml: Bump up version to 2.0.1 for 0.7 release.
