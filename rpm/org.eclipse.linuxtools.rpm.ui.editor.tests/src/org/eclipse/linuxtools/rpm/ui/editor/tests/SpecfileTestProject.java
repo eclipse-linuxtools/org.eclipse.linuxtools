@@ -28,7 +28,9 @@ public class SpecfileTestProject {
 	public SpecfileTestProject() throws CoreException {
 		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		project = workspaceRoot.getProject("TestSpecfileProject");
-		project.create(null);
+		if (!project.exists()) {
+			project.create(null);
+		}
 		project.open(null);
 	}
 
@@ -43,7 +45,9 @@ public class SpecfileTestProject {
 
 	public IFile createFile(String filename) throws CoreException {
 		IFile testSpecfile = project.getFile(filename);
-		testSpecfile.create(null, true, null);
+		if (!testSpecfile.exists()) {
+			testSpecfile.create(null, true, null);
+		}
 		return testSpecfile;
 	}
 
