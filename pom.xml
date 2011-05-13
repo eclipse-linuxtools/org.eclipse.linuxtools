@@ -194,13 +194,6 @@
 				<useUIHarness>true</useUIHarness>
 				<useUIThread>true</useUIThread>
 				<product>org.eclipse.sdk.ide</product>
-				<bundleStartLevel>
-					<bundle>
-						<id>org.eclipse.ui.workbench</id>
-					 	<level>1</level>
-						<autoStart>true</autoStart>
-					</bundle>
-				</bundleStartLevel>
 			</configuration>
 		</plugin>
         <plugin>
