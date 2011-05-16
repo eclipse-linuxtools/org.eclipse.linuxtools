@@ -39,6 +39,13 @@ public class OprofileSAXHandler extends DefaultHandler {
 	   for handling nested tags more efficiently. */
 	private Stack<XMLProcessor> _processorStack = new Stack<XMLProcessor>();
 	
+	// Introduced for fix of Eclipse BZ#343025
+	// As per SAX spec, SAX parsers are allowed to split character data into as many chunks as
+	// they please, and they can split the text at whichever boundaries they want. In order to 
+	// handle this properly, it is needed to accumulate the text returned in each call
+	// until it recieves a callback that isn't characters.
+	private StringBuffer charactersBuffer;
+	
 	// A convenience class for specifying XMLProcessors
 	private static class ProcessorItem {
 		public String tagName;
@@ -133,12 +140,17 @@ public class OprofileSAXHandler extends DefaultHandler {
 		// Allow the processor to deal with it's own tag as well: this way it can
 		// grab attributes from it.
 		_processor.startElement(qName, attrs, _callData);
+		
+		// Clean up the characters buffer 
+		charactersBuffer = new StringBuffer();
 	}
 	
 	/**
 	 * @see org.xml.sax.ContentHandler#endElement(String, String, String)
 	 */
 	public void endElement(String uri, String name, String qName) {
+		// Set the accumulated characters
+		_processor.characters(charactersBuffer.toString(), _callData);
 		_processor.endElement(qName, _callData);
 	}
 	
@@ -149,7 +161,8 @@ public class OprofileSAXHandler extends DefaultHandler {
 		// Ignore characters which are only whitespace
 		String str = new String(ch, start, length).trim();
 		if (str.length() > 0 && _processor != null)
-			_processor.characters(new String(ch, start, length), _callData);
+			 // Append the character to the buffer.
+			 charactersBuffer.append(str);
 	}
 	
 	/**
