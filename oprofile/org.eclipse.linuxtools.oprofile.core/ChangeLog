@@ -1,3 +1,10 @@
+2011-05-16  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/linux/OpxmlRunner.java:
+	Revert workaround fix for Eclipse BZ #343025.
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/OprofileSAXHandler.java: Applied actual fix
+	for Eclipse BZ #343025.
+
 2011-03-14  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/opxml/EventIdCache.java (buildCache):
