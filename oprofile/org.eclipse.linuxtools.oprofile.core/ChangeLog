@@ -1,5 +1,7 @@
 2011-05-16  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* META-INF/MANIFEST.MF: Bump up release to 0.4.0.
+	* pom.xml: Bump up release number.
 	* natives/linux/scripts/install.sh: Renamed to install-consolehelper.sh.
 	* natives/linux/scripts/uninstall.sh: Renamed to uninstall-consolehelper.sh.
 	* natives/linux/scripts/install.sh: Rewritten to support policyKit.
