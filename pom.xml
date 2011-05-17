@@ -50,6 +50,13 @@
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110124210048/repository</orbit-site>
   </properties>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.eclipse.org</id>
+      <url>http://maven.eclipse.org/nexus/content/repositories/nightly-indigo</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <profiles>
     <profile>
       <id>platform-helios</id>
