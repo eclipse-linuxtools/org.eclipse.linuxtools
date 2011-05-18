@@ -1,3 +1,7 @@
+2011-05-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* pom.xml: Fix id.
+
 2011-04-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* pom.xml: New file.

@@ -17,7 +17,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.cdt.libhover.devhelp</artifactId>
+  <artifactId>org.eclipse.linuxtools.cdt.libhover.devhelp-feature</artifactId>
   <version>0.7.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 
