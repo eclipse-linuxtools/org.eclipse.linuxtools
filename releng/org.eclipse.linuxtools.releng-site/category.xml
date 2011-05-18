@@ -13,6 +13,9 @@
    <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib" version="0.0.0">
       <category name="Linux Tools Additional Library API Hoverhelp"/>
    </feature>
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.devhelp_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.devhelp" version="0.0.0">
+      <category name="Linux Tools Additional Library API Hoverhelp"/>
+   </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
