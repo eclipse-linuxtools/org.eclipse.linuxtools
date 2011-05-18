@@ -1,3 +1,10 @@
+2011-05-18  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #312298
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/wizards/AutotoolsBuildWizardHandler.java (createProject): 
+	New override method to add logic post project creation that causes Scanner info to be written to the .cproject
+	file.
+
 2011-04-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #343905
