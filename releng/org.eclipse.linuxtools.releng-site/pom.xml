@@ -50,7 +50,7 @@
          <plugin>
            <groupId>org.eclipse.dash.maven</groupId>
            <artifactId>eclipse-maven-signing-plugin</artifactId>
-           <version>1.0.0.0-SNAPSHOT</version>
+           <version>1.0.0</version>
            <executions>
              <execution>
                <id>pack</id>
@@ -76,7 +76,7 @@
              <execution>
                <id>repack</id>
                <configuration>
-                 <inputFile>${project.build.directory}/org.eclipse.linuxtools.releng-site.zip</inputFile>
+                 <inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
                </configuration>
                <phase>package</phase>
                <goals>
@@ -85,9 +85,6 @@
              </execution>
              <execution>
                <id>fixCheckSums</id>
-               <configuration>
-                 <inputFile>${project.build.directory}/org.eclipse.linuxtools.releng-site.zip</inputFile>
-               </configuration>
                <phase>package</phase>
                <goals>
                  <goal>fixCheckSums</goal>
