@@ -1,3 +1,8 @@
+2011-05-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParserManager.java (outputLine): Fix
+	to use IErrorMarkeredOutputStream interface rather than reflection.
+
 2011-04-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #343875

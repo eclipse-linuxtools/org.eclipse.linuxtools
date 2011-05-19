@@ -16,8 +16,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.core;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,6 +26,7 @@ import org.eclipse.cdt.core.IErrorParser;
 import org.eclipse.cdt.core.IErrorParser2;
 import org.eclipse.cdt.core.IMarkerGenerator;
 import org.eclipse.cdt.core.ProblemMarkerInfo;
+import org.eclipse.cdt.internal.core.IErrorMarkeredOutputStream;
 import org.eclipse.cdt.utils.EFSExtensionManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -43,6 +42,7 @@ import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
+@SuppressWarnings("restriction")
 public class ErrorParserManager extends OutputStream {
 	/**
 	 * The list of error parsers stored in .project for 3.X projects
@@ -262,28 +262,12 @@ public class ErrorParserManager extends OutputStream {
 		String l = line + "\n";  //$NON-NLS-1$
 		if ( outputStream == null ) return; 
 		try {
-			Class<?> c = outputStream.getClass();
-			Method m = null;
-			try {
-				if (marker != null) {
-					m = c.getDeclaredMethod("write", String.class, ProblemMarkerInfo.class);
-					if (m != null) {
-						m.invoke(outputStream, l, marker);
-						return;
-					}
+			if (marker != null) {
+				if (outputStream instanceof IErrorMarkeredOutputStream) {
+					IErrorMarkeredOutputStream mos = (IErrorMarkeredOutputStream)outputStream;
+					mos.write(l, marker);
 				}
-			} catch (SecurityException e) {
-				// do nothing
-			} catch (NoSuchMethodException e) {
-				// do nothing
-			} catch (IllegalArgumentException e) {
-				// do nothing
-			} catch (IllegalAccessException e) {
-				// do nothing
-				AutotoolsPlugin.log(e);
-			} catch (InvocationTargetException e) {
-				// do nothing
-			}		
+			}
 			byte[] b = l.getBytes();
 			outputStream.write(b, 0, b.length);			
 		} catch (IOException e) {
