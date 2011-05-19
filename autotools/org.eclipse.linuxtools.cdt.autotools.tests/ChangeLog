@@ -3,6 +3,12 @@
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeColourizationTests.java (setUp): Perform
 	any editor or active page manipulation within Display thread.
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeTextHoverTest.java (setUp): Ditto.
+	(testGetHoverForMacro2): Ditto.
+	(testGetHoverForMacro1): Ditto.
+	(testGetHoverInfoForTargetDependencies): Ditto.
+	(testGetHoverInfoForTargetDependency): Ditto.
+	(testGetHoverInfoTargetName2): Ditto.
+	(testGetHoverInfoTargetName1): Ditto.
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeEditorTests.java (testAutomakeEditorAssociation): Ditto.
 
 2010-11-18  Jeff Johnston  <jjohnstn@redhat.com>
