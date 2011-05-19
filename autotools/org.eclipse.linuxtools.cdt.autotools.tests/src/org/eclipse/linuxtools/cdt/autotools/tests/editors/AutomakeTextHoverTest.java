@@ -24,6 +24,7 @@ import org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.Automak
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.AutomakeEditor;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.AutomakeTextHover;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.AutomakefileSourceConfiguration;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 
@@ -65,33 +66,43 @@ public class AutomakeTextHoverTest extends TestCase {
 		"\t" + "echo $?" + "\n" +
 		"";
 	private IWorkbench workbench;
-	
+
 	protected void setUp() throws Exception {
-        super.setUp();
-        tools = new ProjectTools();
-        if (!ProjectTools.setup())
-        	fail("could not perform basic project workspace setup");
-        
-        project = ProjectTools.createProject("testProjectATHT");
-        
-        if(project == null) {
-        	fail("Unable to create test project");
-        }
-        
-        project.open(new NullProgressMonitor());
-        
-        makefileAmFile = tools.createFile(project, "Makefile.am", makefileAmContents);
-		workbench = AutotoolsTestsPlugin.getDefault().getWorkbench();
-		
-		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(workbench
-				.getActiveWorkbenchWindow().getActivePage(), makefileAmFile,
-				true);
-		
-		automakeEditor = (AutomakeEditor) openEditor;
-		AutomakeDocumentProvider docProvider = automakeEditor.getAutomakefileDocumentProvider();
-		automakeDocument = docProvider.getDocument(openEditor.getEditorInput());
-		AutomakefileSourceConfiguration automakeSourceViewerConfig = automakeEditor.getAutomakeSourceViewerConfiguration();
-		textHover = (AutomakeTextHover) automakeSourceViewerConfig.getTextHover(null, "");
+		super.setUp();
+		tools = new ProjectTools();
+		if (!ProjectTools.setup())
+			fail("could not perform basic project workspace setup");
+
+		project = ProjectTools.createProject("testProjectATHT");
+
+		if(project == null) {
+			fail("Unable to create test project");
+		}
+
+		project.open(new NullProgressMonitor());
+
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				try {
+					makefileAmFile = tools.createFile(project, "Makefile.am", makefileAmContents);
+					workbench = AutotoolsTestsPlugin.getDefault().getWorkbench();
+
+					IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(workbench
+							.getActiveWorkbenchWindow().getActivePage(), makefileAmFile,
+							true);
+
+					automakeEditor = (AutomakeEditor) openEditor;
+					AutomakeDocumentProvider docProvider = automakeEditor.getAutomakefileDocumentProvider();
+					automakeDocument = docProvider.getDocument(openEditor.getEditorInput());
+					AutomakefileSourceConfiguration automakeSourceViewerConfig = automakeEditor.getAutomakeSourceViewerConfiguration();
+					textHover = (AutomakeTextHover) automakeSourceViewerConfig.getTextHover(null, "");
+				} catch (Exception e) {
+					fail();
+				}
+			}
+
+		});
 	}
 	
 	protected void tearDown() throws Exception {

@@ -1,3 +1,10 @@
+2011-05-19  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeColourizationTests.java (setUp): Perform
+	any editor or active page manipulation within Display thread.
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeTextHoverTest.java (setUp): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/editors/AutomakeEditorTests.java (testAutomakeEditorAssociation): Ditto.
+
 2010-11-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/ProjectTools.java (createProject): Try creating a project
