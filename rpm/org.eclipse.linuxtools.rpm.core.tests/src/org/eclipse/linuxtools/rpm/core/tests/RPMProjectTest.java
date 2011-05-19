@@ -134,7 +134,8 @@ public class RPMProjectTest extends TestCase {
 		}
 		File foo = new File(FileLocator.toFileURL(url).getPath());
 		rpmProject.importSourceRPM(foo);
-		rpmProject.buildPrep();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		rpmProject.buildPrep(bos);
 
 		// Make sure we got everything in the build directory
 		IFolder builddir = rpmProject.getConfiguration().getBuildFolder();
