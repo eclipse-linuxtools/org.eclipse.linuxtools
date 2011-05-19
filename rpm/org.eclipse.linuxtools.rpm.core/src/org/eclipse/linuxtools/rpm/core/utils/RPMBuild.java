@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.rpm.core.utils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,18 +68,24 @@ public class RPMBuild {
 	 * 
 	 * @param specFile
 	 *            the spec file
-	 * @return The output of the `rpmbuild -bp` command.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public InputStream buildPrep(IFile specFile) throws CoreException {
+	/**
+	 * Prepares the sources for a given spec file.
+	 * 
+	 * @param specFile the spec file
+	 * @param outStream The stream to write the output to.
+	 * @throws CoreException If the operation fails.
+	 */
+	public void buildPrep(IFile specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bp"); //$NON-NLS-1$
 		command.add(specFile.getLocation().toString());
 		try {
-			return Utils.runCommandToInputStream(command
-					.toArray(new String[command.size()]));
+			Utils.runCommand(outStream,
+					command.toArray(new String[command.size()]));
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
 					e.getMessage(), e));

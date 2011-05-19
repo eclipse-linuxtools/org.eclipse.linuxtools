@@ -13,8 +13,6 @@ package org.eclipse.linuxtools.rpm.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.eclipse.core.resources.IFile;
@@ -149,15 +147,9 @@ public class RPMProject {
 				IResource.DEPTH_INFINITE, null);
 	}
 
-	public void buildPrep() throws CoreException {
+	public void buildPrep(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		InputStream in = rpmbuild.buildPrep(getSpecFile());
-		try {
-			in.close();
-		} catch (IOException e) {
-			// TODO Do we really need the input stream here?
-			e.printStackTrace();
-		}
+		rpmbuild.buildPrep(getSpecFile(), out);
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 	}
