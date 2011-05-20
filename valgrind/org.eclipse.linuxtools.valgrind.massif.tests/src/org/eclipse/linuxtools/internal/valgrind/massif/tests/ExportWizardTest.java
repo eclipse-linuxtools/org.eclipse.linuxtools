@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.internal.valgrind.massif.tests;
 
 import java.io.File;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -31,6 +32,15 @@ public class ExportWizardTest extends AbstractMassifTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$	
+		IPath launchPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+		launchPath = launchPath.append(".metadata/.plugins/org.eclipse.linuxtools.valgrind.launch"); //$NON-NLS-1$
+		File launchDir = launchPath.toFile();
+		if (launchDir.exists()) {
+			File[] files = launchDir.listFiles();
+			for (int i = 0; i < files.length; ++i) {
+				files[i].delete();
+			}
+		}
 	}
 
 	@Override

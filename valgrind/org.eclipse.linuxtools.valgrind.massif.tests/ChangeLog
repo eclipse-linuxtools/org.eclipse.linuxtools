@@ -1,3 +1,10 @@
+2011-05-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ChartTests.java (testEditorName): Be ready
+	for the editor to have a numeric qualifier as other tests don't always close the editor properly.
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ExportWizardTest.java (setUp): Remove
+	the .metadata launches before running this test.
+
 2011-03-29  Andrew Overholt  <overholt@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add requirements on
