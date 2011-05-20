@@ -1,5 +1,10 @@
 2011-05-20  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ExportWizardTest.java (testExportNoLaunch): Move
+	deletion of launch datas here and remove launch directory altogether.
+		
+2011-05-20  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ChartTests.java (testEditorName): Be ready
 	for the editor to have a numeric qualifier as other tests don't always close the editor properly.
 	* src/org/eclipse/linuxtools/internal/valgrind/massif/tests/ExportWizardTest.java (setUp): Remove

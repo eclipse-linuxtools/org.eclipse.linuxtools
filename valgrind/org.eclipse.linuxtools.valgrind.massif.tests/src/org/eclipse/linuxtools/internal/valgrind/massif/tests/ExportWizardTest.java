@@ -20,6 +20,7 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindExportWizard;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindExportWizardPage;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 public class ExportWizardTest extends AbstractMassifTest {
@@ -32,15 +33,6 @@ public class ExportWizardTest extends AbstractMassifTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		proj = createProjectAndBuild("alloctest"); //$NON-NLS-1$	
-		IPath launchPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-		launchPath = launchPath.append(".metadata/.plugins/org.eclipse.linuxtools.valgrind.launch"); //$NON-NLS-1$
-		File launchDir = launchPath.toFile();
-		if (launchDir.exists()) {
-			File[] files = launchDir.listFiles();
-			for (int i = 0; i < files.length; ++i) {
-				files[i].delete();
-			}
-		}
 	}
 
 	@Override
@@ -56,6 +48,16 @@ public class ExportWizardTest extends AbstractMassifTest {
 	
 	public void testExportNoLaunch() throws Exception {
 		// No Valgrind launch to export
+		IPath launchPath = ResourcesPlugin.getWorkspace().getRoot().getLocation();
+		launchPath = launchPath.append(".metadata/.plugins/org.eclipse.linuxtools.valgrind.launch"); //$NON-NLS-1$
+		File launchDir = launchPath.toFile();
+		if (launchDir.exists()) {
+			File[] files = launchDir.listFiles();
+			for (int i = 0; i < files.length; ++i) {
+				files[i].delete();
+			}
+			launchDir.delete();
+		}
 		createWizard();
 		
 		assertNotNull(page.getErrorMessage());
@@ -187,16 +189,24 @@ public class ExportWizardTest extends AbstractMassifTest {
 	}
 	
 	protected void createWizard() {
-		wizard = new ValgrindExportWizard();
-		wizard.init(PlatformUI.getWorkbench(), null);
-		
-		dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
-		dialog.setBlockOnOpen(false);
-		dialog.open();
-		
-		assertFalse(wizard.canFinish());
-		
-		page = (ValgrindExportWizardPage) wizard.getPages()[0];
-		assertFalse(page.isPageComplete());
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				// TODO Auto-generated method stub
+				wizard = new ValgrindExportWizard();
+				wizard.init(PlatformUI.getWorkbench(), null);
+				
+				dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
+				dialog.setBlockOnOpen(false);
+				dialog.open();
+				
+				assertFalse(wizard.canFinish());
+				
+				page = (ValgrindExportWizardPage) wizard.getPages()[0];
+				assertFalse(page.isPageComplete());
+			
+			}
+			
+		});
 	}
 }
