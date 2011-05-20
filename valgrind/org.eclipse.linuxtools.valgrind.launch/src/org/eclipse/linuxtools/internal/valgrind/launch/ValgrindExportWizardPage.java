@@ -187,11 +187,17 @@ public class ValgrindExportWizardPage extends WizardPage implements IWizardPage 
 
 	protected boolean isValid() {
 		boolean valid = false;
+		int length = -1;
 		
 		setErrorMessage(null);
 		setMessage(null);
 
-		if (viewer.getInput() == null) {
+		Object obj = viewer.getInput();
+		// Check if there are no launch files (either null because directory is missing
+		// or 0 files are found in directory)
+		if (obj instanceof File[])
+			length = ((File[])obj).length;
+		if (viewer.getInput() == null || length == 0) {
 			setErrorMessage(Messages.getString("ValgrindExportWizardPage.Err_No_Valgrind_run")); //$NON-NLS-1$
 		}
 		else if (destText.getText().equals("")) { //$NON-NLS-1$
