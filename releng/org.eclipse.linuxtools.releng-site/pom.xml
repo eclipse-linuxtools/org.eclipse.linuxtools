@@ -65,7 +65,7 @@
              <execution>
                <id>sign</id>
                <configuration>
-                 <inputFile>${project.build.directory}/org.eclipse.linuxtools.releng-site.zip</inputFile>
+                 <inputFile>${project.build.directory}/packed/org.eclipse.linuxtools.releng-site.zip</inputFile>
                  <signerInputDirectory>/home/data/httpd/download-staging.priv/technology/linuxtools</signerInputDirectory>
                </configuration>
                <phase>package</phase>
@@ -76,7 +76,7 @@
              <execution>
                <id>repack</id>
                <configuration>
-                 <inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
+                 <inputFile>${project.build.directory}/signed/org.eclipse.linuxtools.releng-site.zip</inputFile>
                </configuration>
                <phase>package</phase>
                <goals>
@@ -85,6 +85,9 @@
              </execution>
              <execution>
                <id>fixCheckSums</id>
+               <configuration>
+                 <inputFile>${project.build.directory}/packed/org.eclipse.linuxtools.releng-site.zip</inputFile>
+               </configuration>
                <phase>package</phase>
                <goals>
                  <goal>fixCheckSums</goal>
