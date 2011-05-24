@@ -3,7 +3,7 @@
       id="org.eclipse.linuxtools.rpm.ui.editor"
       label="%featureName"
       version="0.4.3.qualifier"
-      provider-name="%featureProvider"
+      provider-name="%providerName"
       plugin="org.eclipse.linuxtools.rpm.ui.editor">
 
    <description url="http://www.eclipse.org/linuxtools/">
