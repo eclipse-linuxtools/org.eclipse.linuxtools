@@ -76,7 +76,7 @@
              <execution>
                <id>repack</id>
                <configuration>
-                 <inputFile>${project.build.directory}/signed/org.eclipse.linuxtools.releng-site.zip</inputFile>
+                 <inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
                </configuration>
                <phase>package</phase>
                <goals>
@@ -86,7 +86,7 @@
              <execution>
                <id>fixCheckSums</id>
                <configuration>
-                 <inputFile>${project.build.directory}/packed/org.eclipse.linuxtools.releng-site.zip</inputFile>
+                 <inputFile>${project.build.directory}/packed/site_assembly.zip</inputFile>
                </configuration>
                <phase>package</phase>
                <goals>
