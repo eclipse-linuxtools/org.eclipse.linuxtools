@@ -1,3 +1,9 @@
+2011-05-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves #343879
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (runScript): 
+	For Windows/Mac targets, do not pass PWD environment variable forward.
+
 2011-05-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParserManager.java (outputLine): Fix

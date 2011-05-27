@@ -942,6 +942,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			NullPointerException, IOException {
 
 		int rc = IStatus.OK;
+		boolean removePWD = false;
 		
 		removeAllMarkers(project);
 		
@@ -960,6 +961,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
         // Fix for bug #343731
         if (Platform.getOS().equals(Platform.OS_WIN32)
                 || Platform.getOS().equals(Platform.OS_MACOSX)) {
+        	removePWD = true;
             // Neither Mac or Windows support calling scripts directly.
             String command = null;
             for (String arg : configTargets) {
@@ -1023,8 +1025,12 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		ArrayList<String> envList = new ArrayList<String>();
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
-				envList.add(variables[i].getName()
-						+ "=" + variables[i].getValue()); //$NON-NLS-1$
+				// For Windows/Mac, check for PWD environment variable being passed.
+				// Remove it for now as it is causing errors in configuration.
+				// Fix for bug #343879
+				if (!removePWD || !variables[i].getName().equals("PWD")) // $NON-NLS-1$
+					envList.add(variables[i].getName()
+							+ "=" + variables[i].getValue()); //$NON-NLS-1$
 			}
 			if (additionalEnvs != null)
 				envList.addAll(additionalEnvs); // add any additional environment variables specified ahead of script
