@@ -84,7 +84,7 @@
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
         <platform-version>[3.7,3.8)</platform-version>
-        <cdt-site>http://download.eclipse.org/releases/staging/</cdt-site>
+        <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
         <!-- <cdt-site>https://hudson.eclipse.org/hudson/job/cdt-nightly/lastSuccessfulBuild/artifact/update-site</cdt-site>-->
       </properties>
     </profile>
