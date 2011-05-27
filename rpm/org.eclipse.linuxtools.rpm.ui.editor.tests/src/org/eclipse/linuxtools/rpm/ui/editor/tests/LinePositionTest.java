@@ -15,7 +15,7 @@ import java.util.Collection;
 
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 
-public class LinePositionTests extends FileTestCase {
+public class LinePositionTest extends FileTestCase {
 
 	public void testLineNumber() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n"

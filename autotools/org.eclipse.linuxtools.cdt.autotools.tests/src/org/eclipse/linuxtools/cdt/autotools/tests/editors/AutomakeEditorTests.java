@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.cdt.autotools.tests.AutotoolsTestsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.tests.ProjectTools;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.AutomakeEditor;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 
@@ -43,16 +44,26 @@ public class AutomakeEditorTests extends TestCase {
 		
 		project.open(new NullProgressMonitor());
 		
-		IFile makefileAmFile = tools.createFile(project, "Makefile.am", "");
-		assertTrue(makefileAmFile.exists());
-		
-		IWorkbench workbench = AutotoolsTestsPlugin.getDefault().getWorkbench();
+		Display.getDefault().syncExec(new Runnable() {
 
-		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(workbench
-					.getActiveWorkbenchWindow().getActivePage(), makefileAmFile,
-					true);
-		assertTrue(openEditor instanceof AutomakeEditor);
-		
+			public void run() {
+				try {
+					IFile makefileAmFile = tools.createFile(project, "Makefile.am", "");
+					assertTrue(makefileAmFile.exists());
+
+					IWorkbench workbench = AutotoolsTestsPlugin.getDefault().getWorkbench();
+
+					IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(workbench
+							.getActiveWorkbenchWindow().getActivePage(), makefileAmFile,
+							true);
+					assertTrue(openEditor instanceof AutomakeEditor);
+				} catch (Exception e) {
+					fail();
+				}
+			}
+
+		});
+
 		project.delete(true, false, ProjectTools.getMonitor());
 	}
 }

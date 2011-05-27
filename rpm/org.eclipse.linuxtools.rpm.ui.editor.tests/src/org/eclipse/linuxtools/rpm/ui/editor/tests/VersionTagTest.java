@@ -12,73 +12,74 @@
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 
-public class ReleaseTagTests extends FileTestCase {
+public class VersionTagTest extends FileTestCase {
 
-	public void testResolvedSetRelease() {
-		String testText = "%define blah notblah\nRelease: %{blah}";
-
+	public void testResolvedSetVersion() {
+		String testText = "%define blah notblah\nVersion: %{blah}";
 		newFile(testText);
-		assertEquals("notblah", specfile.getRelease());
+		assertEquals("notblah", specfile.getVersion());
 	}
 
-	public void testReleaseTag() {
-		String testText = "Release: blah";
+	public void testVersionTag() {
+		String testText = "Version: blah";
 		newFile(testText);
-		assertEquals("blah", specfile.getRelease());
+		assertEquals("blah", specfile.getVersion());
 	}
 
-	public void testReleaseTag2() {
-		String testText = "Release:		blah";
+	public void testVersionTag2() {
+		String testText = "Version:		blah";
 		newFile(testText);
-		assertEquals("blah", specfile.getRelease());
+		assertEquals("blah", specfile.getVersion());
 	}
 
-	public void testNullReleaseTag() {
-		String testText = "Release:	";
-		newFile(testText);
-
-		SpecfileTestFailure failure = getFailures()[0];
-		assertEquals(0, failure.getPosition().getOffset());
-		assertEquals(testText.length(),
-				failure.getPosition().getLength());
-		assertEquals("Release declaration without value.",
-				failure.getAnnotation().getText());
-	}
-
-	public void testNullReleaseTag2() {
-		String testText = "Release:		";
-
+	public void testNullVersionTag() {
+		String testText = "Version: ";
 		newFile(testText);
 
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Release declaration without value.",
+		assertEquals("Version declaration without value.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testMultipleReleasesTag() {
-		String testText = "Release: blah bleh";
+	public void testNullVersionTag2() {
+		String testText = "Version:		";
+
 		newFile(testText);
 
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Release cannot have multiple values.",
+		assertEquals("Version declaration without value.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testMultipleReleasesTag2() {
-		String testText = "Release: 	blah bleh";
+	public void testMultipleVersionsTag() {
+		String testText = "Version: blah bleh";
 		newFile(testText);
 
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Release cannot have multiple values.",
+		assertEquals("Version cannot have multiple values.",
 				failure.getAnnotation().getText());
 	}
+
+	public void testMultipleVersionsTag2() {
+		String testText = "Version: 	blah bleh";
+
+		newFile(testText);
+
+		SpecfileTestFailure failure = getFailures()[0];
+		assertEquals(0, failure.getPosition().getOffset());
+		assertEquals(testText.length(),
+				failure.getPosition().getLength());
+		assertEquals("Version cannot have multiple values.",
+				failure.getAnnotation().getText());
+	}
+
 }

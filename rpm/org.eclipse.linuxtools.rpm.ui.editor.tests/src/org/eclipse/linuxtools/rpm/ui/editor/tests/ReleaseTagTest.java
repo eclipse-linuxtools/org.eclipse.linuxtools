@@ -12,79 +12,73 @@
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 
-public class NameTagTests extends FileTestCase {
+public class ReleaseTagTest extends FileTestCase {
 
-	public void testResolvedNameTag() {
-
-		String testText = "%define blah notblah\nName: %{blah}";
+	public void testResolvedSetRelease() {
+		String testText = "%define blah notblah\nRelease: %{blah}";
 
 		newFile(testText);
-
-		assertEquals("notblah", specfile.getName());
+		assertEquals("notblah", specfile.getRelease());
 	}
 
-	public void testResolvedSetName() {
-		String testText = "%define blah notblah\nName: %{blah}";
+	public void testReleaseTag() {
+		String testText = "Release: blah";
 		newFile(testText);
-		assertEquals("notblah", specfile.getName());
+		assertEquals("blah", specfile.getRelease());
 	}
 
-	public void testNameTag() {
-		String testText = "Name: blah";
+	public void testReleaseTag2() {
+		String testText = "Release:		blah";
 		newFile(testText);
-		assertEquals("blah", specfile.getName());
+		assertEquals("blah", specfile.getRelease());
 	}
 
-	public void testNameTag2() {
-		String testText = "Name:	blah";
+	public void testNullReleaseTag() {
+		String testText = "Release:	";
 		newFile(testText);
-		assertEquals("blah", specfile.getName());
-	}
 
-	public void testNullNameTag() {
-		String testText = "Name:	";
-		newFile(testText);
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Name declaration without value.",
+		assertEquals("Release declaration without value.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testNullNameTag2() {
-		String testText = "Name: ";
+	public void testNullReleaseTag2() {
+		String testText = "Release:		";
 
 		newFile(testText);
+
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Name declaration without value.",
+		assertEquals("Release declaration without value.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testMultipleNamesTag() {
-		String testText = "Name: blah bleh";
-
+	public void testMultipleReleasesTag() {
+		String testText = "Release: blah bleh";
 		newFile(testText);
+
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Name cannot have multiple values.",
+		assertEquals("Release cannot have multiple values.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testMultipleNamesTag2() {
-		String testText = "Name: 	blah bleh";
-
+	public void testMultipleReleasesTag2() {
+		String testText = "Release: 	blah bleh";
 		newFile(testText);
+
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Name cannot have multiple values.", 
+		assertEquals("Release cannot have multiple values.",
 				failure.getAnnotation().getText());
 	}
 }

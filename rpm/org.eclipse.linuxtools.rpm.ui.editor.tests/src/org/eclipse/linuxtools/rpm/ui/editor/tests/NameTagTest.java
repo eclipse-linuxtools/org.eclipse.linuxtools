@@ -12,74 +12,79 @@
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
 
-public class VersionTagTests extends FileTestCase {
+public class NameTagTest extends FileTestCase {
 
-	public void testResolvedSetVersion() {
-		String testText = "%define blah notblah\nVersion: %{blah}";
+	public void testResolvedNameTag() {
+
+		String testText = "%define blah notblah\nName: %{blah}";
+
 		newFile(testText);
-		assertEquals("notblah", specfile.getVersion());
+
+		assertEquals("notblah", specfile.getName());
 	}
 
-	public void testVersionTag() {
-		String testText = "Version: blah";
+	public void testResolvedSetName() {
+		String testText = "%define blah notblah\nName: %{blah}";
 		newFile(testText);
-		assertEquals("blah", specfile.getVersion());
+		assertEquals("notblah", specfile.getName());
 	}
 
-	public void testVersionTag2() {
-		String testText = "Version:		blah";
+	public void testNameTag() {
+		String testText = "Name: blah";
 		newFile(testText);
-		assertEquals("blah", specfile.getVersion());
+		assertEquals("blah", specfile.getName());
 	}
 
-	public void testNullVersionTag() {
-		String testText = "Version: ";
+	public void testNameTag2() {
+		String testText = "Name:	blah";
 		newFile(testText);
+		assertEquals("blah", specfile.getName());
+	}
 
+	public void testNullNameTag() {
+		String testText = "Name:	";
+		newFile(testText);
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Version declaration without value.",
+		assertEquals("Name declaration without value.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testNullVersionTag2() {
-		String testText = "Version:		";
+	public void testNullNameTag2() {
+		String testText = "Name: ";
 
 		newFile(testText);
-
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Version declaration without value.",
+		assertEquals("Name declaration without value.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testMultipleVersionsTag() {
-		String testText = "Version: blah bleh";
-		newFile(testText);
+	public void testMultipleNamesTag() {
+		String testText = "Name: blah bleh";
 
+		newFile(testText);
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Version cannot have multiple values.",
+		assertEquals("Name cannot have multiple values.",
 				failure.getAnnotation().getText());
 	}
 
-	public void testMultipleVersionsTag2() {
-		String testText = "Version: 	blah bleh";
+	public void testMultipleNamesTag2() {
+		String testText = "Name: 	blah bleh";
 
 		newFile(testText);
-
 		SpecfileTestFailure failure = getFailures()[0];
 		assertEquals(0, failure.getPosition().getOffset());
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
-		assertEquals("Version cannot have multiple values.",
+		assertEquals("Name cannot have multiple values.", 
 				failure.getAnnotation().getText());
 	}
-
 }

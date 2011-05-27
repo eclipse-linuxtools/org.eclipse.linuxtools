@@ -28,6 +28,7 @@ import org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.Automak
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake.AutomakefileSourceConfiguration;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.ColorManager;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 
@@ -64,22 +65,32 @@ public class AutomakeColourizationTests extends TestCase {
         
         project.open(new NullProgressMonitor());
         
-        makefileAmFile = tools.createFile(project, "Makefile.am", makefileAmContents);
-		workbench = AutotoolsTestsPlugin.getDefault().getWorkbench();
-		
-		IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(workbench
-				.getActiveWorkbenchWindow().getActivePage(), makefileAmFile,
-				true);
-		
-		AutomakeEditor automakeEditor = (AutomakeEditor) openEditor;
-		AutomakeDocumentProvider docProvider = automakeEditor.getAutomakefileDocumentProvider();
-		IDocument automakeDocument = docProvider.getDocument(openEditor.getEditorInput());
-		AutomakefileSourceConfiguration automakeSourceViewerConfig = automakeEditor.getAutomakeSourceViewerConfiguration();
-		
-		ITypedRegion region = automakeDocument.getPartition(0);
-		
-		codeScanner = automakeSourceViewerConfig.getAutomakeCodeScanner();
-		codeScanner.setRange(automakeDocument, region.getOffset(), region.getLength());
+        Display.getDefault().syncExec(new Runnable() {
+
+        	public void run() {
+        		try {
+        			makefileAmFile = tools.createFile(project, "Makefile.am", makefileAmContents);
+        			workbench = AutotoolsTestsPlugin.getDefault().getWorkbench();
+
+        			IEditorPart openEditor = org.eclipse.ui.ide.IDE.openEditor(workbench
+        					.getActiveWorkbenchWindow().getActivePage(), makefileAmFile,
+        					true);
+
+        			AutomakeEditor automakeEditor = (AutomakeEditor) openEditor;
+        			AutomakeDocumentProvider docProvider = automakeEditor.getAutomakefileDocumentProvider();
+        			IDocument automakeDocument = docProvider.getDocument(openEditor.getEditorInput());
+        			AutomakefileSourceConfiguration automakeSourceViewerConfig = automakeEditor.getAutomakeSourceViewerConfiguration();
+
+        			ITypedRegion region = automakeDocument.getPartition(0);
+        			codeScanner = automakeSourceViewerConfig.getAutomakeCodeScanner();
+        			codeScanner.setRange(automakeDocument, region.getOffset(), region.getLength());
+        		} catch (Exception e) {
+        			fail();
+        		}
+        	}
+
+        });
+
     }
     
     IToken getNextToken() {

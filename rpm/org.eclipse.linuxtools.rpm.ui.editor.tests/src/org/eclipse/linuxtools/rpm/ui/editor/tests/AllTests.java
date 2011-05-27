@@ -26,13 +26,13 @@ public class AllTests {
 				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests");
 		// $JUnit-BEGIN$
 		suite.addTestSuite(EpochTagTest.class);
-		suite.addTestSuite(ReleaseTagTests.class);
-		suite.addTestSuite(NameTagTests.class);
-		suite.addTestSuite(VersionTagTests.class);
+		suite.addTestSuite(ReleaseTagTest.class);
+		suite.addTestSuite(NameTagTest.class);
+		suite.addTestSuite(VersionTagTest.class);
 		suite.addTestSuite(HeaderRecognitionTest.class);
 		suite.addTestSuite(LicenseTagTest.class);
 		suite.addTestSuite(PatchApplicationTest.class);
-		suite.addTestSuite(LinePositionTests.class);
+		suite.addTestSuite(LinePositionTest.class);
 		suite.addTestSuite(RpmMacroProposalsListTest.class);
 		suite.addTestSuite(RpmPackageProposalsListTest.class);
 		suite.addTest(ActionsAllTests.suite());
