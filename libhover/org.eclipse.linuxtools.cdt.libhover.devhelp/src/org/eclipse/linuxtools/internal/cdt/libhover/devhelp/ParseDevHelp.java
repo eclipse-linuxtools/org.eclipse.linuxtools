@@ -338,8 +338,13 @@ public class ParseDevHelp {
 						return null;
 					monitor.setTaskName(LibHoverMessages.getFormattedString(PARSING_FMT_MSG, 
 							new String[]{name}));
-					parse(dirPath.append(name).append(name + ".devhelp").toOSString(), //$NON-NLS-1$ 
-							monitor);
+					File f = new File(dirPath.append(name).append(name + ".devhelp2").toOSString());
+					if (f.exists())
+						parse(dirPath.append(name).append(name + ".devhelp2").toOSString(), //$NON-NLS-1$ 
+								monitor);
+					else
+						parse(dirPath.append(name).append(name + ".devhelp").toOSString(), //$NON-NLS-1$ 
+								monitor);
 					monitor.worked(1);
    				}
 			} catch (CoreException e) {
@@ -348,7 +353,35 @@ public class ParseDevHelp {
 			}
 			return libhover;
 		}
-		
+
+		private void parseLink(Node link, Node name, IPath path, LibHoverInfo libhover) {
+			String linkValue = link.getNodeValue();
+			String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
+			if (linkParts.length == 2) {
+				try {
+					String nameString = name.getNodeValue();
+					nameString = nameString.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+					if (nameString.contains("::") || nameString.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
+							|| nameString.contains("\"")) //$NON-NLS-1$
+						return;
+					Reader reader = new FileReader(path.removeLastSegments(1).toOSString()
+							+ "/" + linkParts[0]); //$NON-NLS-1$
+					Parser callback = new Parser(linkParts[1], nameString);
+					new ParserDelegator().parse(reader, callback, true);
+					FunctionInfo finfo = callback.getFunctionInfo();
+					if (finfo != null) {
+						if (debug)
+							System.out.println(callback.toString());
+						libhover.functions.put(callback.getFuncName(), callback.getFunctionInfo());
+					}
+				} catch (FileNotFoundException e1) {
+					// ignore
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+		}
+
 		public void parse(String fileName, IProgressMonitor monitor) {
 			try {
 				Path path = new Path(fileName);
@@ -374,36 +407,35 @@ public class ParseDevHelp {
 					if (language != null && !language.getNodeValue().equals("c"))
 						return;
 				}
-				NodeList nl = doc.getElementsByTagName("function"); // $NON-NLS-1$
-				for (int i = 0; i < nl.getLength(); ++i) {
-					if (monitor.isCanceled())
-						return;
-					Node n = nl.item(i);
-					NamedNodeMap m = n.getAttributes();
-					Node name = m.getNamedItem("name"); // $NON-NLS-1$
-					Node link = m.getNamedItem("link"); // $NON-NLS-1$
-					if (link != null) {
-						String linkValue = link.getNodeValue();
-						String[] linkParts = linkValue.split("#"); //$NON-NLS-1$
-						if (linkParts.length == 2) {
-							try {
-								String nameString = name.getNodeValue();
-								nameString = nameString.replaceAll("\\(.*\\);+", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-								if (nameString.contains("::") || nameString.startsWith("enum ") //$NON-NLS-1$ //$NON-NLS-2$
-										|| nameString.contains("\"")) //$NON-NLS-1$
-									continue;
-								Reader reader = new FileReader(path.removeLastSegments(1).toOSString()
-										+ "/" + linkParts[0]); //$NON-NLS-1$
-								Parser callback = new Parser(linkParts[1], nameString);
-								new ParserDelegator().parse(reader, callback, true);
-								FunctionInfo finfo = callback.getFunctionInfo();
-								if (finfo != null) {
-									if (debug)
-										System.out.println(callback.toString());
-									libhover.functions.put(callback.getFuncName(), callback.getFunctionInfo());
+				if (path.lastSegment().endsWith("devhelp")) {
+					NodeList nl = doc.getElementsByTagName("function"); // $NON-NLS-1$
+					for (int i = 0; i < nl.getLength(); ++i) {
+						if (monitor.isCanceled())
+							return;
+						Node n = nl.item(i);
+						NamedNodeMap m = n.getAttributes();
+						Node name = m.getNamedItem("name"); // $NON-NLS-1$
+						Node link = m.getNamedItem("link"); // $NON-NLS-1$
+						if (link != null) {
+							parseLink(link, name, path, libhover);
+						}
+					}
+				} else if (path.lastSegment().endsWith("devhelp2")) {
+					NodeList nl = doc.getElementsByTagName("keyword"); // $NON-NLS-1$
+					for (int i = 0; i < nl.getLength(); ++i) {
+						if (monitor.isCanceled())
+							return;
+						Node n = nl.item(i);
+						NamedNodeMap m = n.getAttributes();
+						Node type = m.getNamedItem("type"); // $NON-NLS-1$
+						if (type != null) {
+							String typeName = type.getNodeValue();
+							if (typeName.equals("function")) { //$NON-NLS-1$
+								Node name = m.getNamedItem("name"); // $NON-NLS-1$
+								Node link = m.getNamedItem("link"); // $NON-NLS-1$
+								if (link != null) {
+									parseLink(link, name, path, libhover);
 								}
-							} catch (FileNotFoundException e1) {
-								// ignore
 							}
 						}
 					}
@@ -437,13 +469,13 @@ public class ParseDevHelp {
 	public static void main(String[] args) {
 		
 		String devhelpHtmlDirectory = args[0];
-		DevHelpParser p = new DevHelpParser(devhelpHtmlDirectory);
+		DevHelpParser p = new DevHelpParser(devhelpHtmlDirectory, true);
 		File dir = new File(devhelpHtmlDirectory);
 		File[] files = dir.listFiles();
 		for (int i = 0; i < files.length; ++i) {
 			File f = files[i];
 			String name = f.getName();
-			p.parse(f.getAbsolutePath() + "/" + name + ".devhelp",  //$NON-NLS-1$ //$NON-NLS-2$
+			p.parse(f.getAbsolutePath() + "/" + name + ".devhelp2",  //$NON-NLS-1$ //$NON-NLS-2$
 					new NullProgressMonitor());
 		}
 		LibHoverInfo hover = p.getLibHoverInfo();
