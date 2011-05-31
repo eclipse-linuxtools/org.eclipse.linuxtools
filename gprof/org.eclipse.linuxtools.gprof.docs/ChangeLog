@@ -1,0 +1,14 @@
+2011-05-31  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: New file.
+	* toc.xml: Ditto.
+	* META-INF/MANIFEST.MF: Ditto.
+	* images/*.gif: Ditto.
+	* Linux_Tools_Project/*: Ditto.
+	* about.html: Ditto.
+	* build-doc.xml: Ditto.
+	* build.properties: Ditto.
+	* extract-markup.xsl: Ditto.
+	* pom.xml: Ditto.
+	* toc.xml: Ditto.
+	* plugin.properties: Ditto.

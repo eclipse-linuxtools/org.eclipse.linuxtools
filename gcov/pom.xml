@@ -61,6 +61,7 @@
     <module>org.eclipse.linuxtools.dataviewers.annotatedsourceeditor</module>
     <module>org.eclipse.linuxtools.dataviewers.charts</module>
     <module>org.eclipse.linuxtools.gcov</module>
+    <module>org.eclipse.linuxtools.gcov.docs</module>
     <module>org.eclipse.linuxtools.gcov-feature</module>
     <module>org.eclipse.linuxtools.gcov.test</module>
   </modules>
