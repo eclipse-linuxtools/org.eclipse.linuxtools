@@ -256,30 +256,41 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		Process p = null;
 		try {
 			p = Runtime.getRuntime().exec(cmdArray);
-		} catch (IOException ioe) {
-			if (p != null) {
-				p.destroy();
-				p = null;
-			}
-			
+		} catch (IOException ioe) {			
 			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe)); //$NON-NLS-1$
 		}
 		
 		if (p != null) {
 			BufferedReader errout = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String errOutput = ""; //$NON-NLS-1$
 			String output = "", s; //$NON-NLS-1$
 			try {
 				while ((s = errout.readLine()) != null) {
+					errOutput += s;
+				}
+				// Unfortunately, when piped through consolehelper stderr output
+				// is redirected to stdout. Need to read stdout and do some
+				// string matching in order to give some better advice as to how to
+				// alleviate the nmi_watchdog problem. See RH BZ #694631
+				while ((s = stdout.readLine()) != null) {
 					output += s;
 				}
+				stdout.close();
+				errout.close();
 				
 				int ret = p.waitFor();
 				if (ret != 0) {
-					System.out.println(output);
-					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
+					// Red Hat BZ #694631: NMI Watchdog problem.
+					// Give better advice as to what the problem might be.
+					if (output.contains("nmi_watchdog") && output.startsWith("Error:")) { //$NON-NLS-1$ $NON-NLS-2$
+						throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNmiWatchdog", null)); //$NON-NLS-1$
+					} else {
+						throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
+					}
 				}
 				
-				if (output.length() != 0) {
+				if (errOutput.length() != 0) {
 					return true;
 				}
 				
