@@ -1,5 +1,9 @@
 2011-05-31  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* META-INF/MANIFEST.MF: Add bundle localization plugin. 
+
+2011-05-31  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* plugin.xml: New file.
 	* toc.xml: Ditto.
 	* META-INF/MANIFEST.MF: Ditto.
