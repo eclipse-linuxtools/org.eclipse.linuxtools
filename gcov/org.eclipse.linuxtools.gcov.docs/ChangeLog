@@ -1,3 +1,17 @@
+2011-06-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Regenerate from updated wiki-page.
+	* Linux_Tools_Project/GCov/User_Guide/images/gcov-binary-file.png: Removed.
+	* Linux_Tools_Project/GCov/User_Guide/images/Gcov-binary-file.png: Added.
+	* Linux_Tools_Project/GCov/User_Guide/images/gcov-sort-per-folder.png: Removed.
+	* Linux_Tools_Project/GCov/User_Guide/images/Gcov-sort-per-folder.png: Added.
+	* Linux_Tools_Project/GCov/User_Guide/images/gcovAnnotatedSource.png: Removed.
+	* Linux_Tools_Project/GCov/User_Guide/images/GcovAnnotatedSource.png: Added.
+	* Linux_Tools_Project/GCov/User_Guide/images/gcovView.png: Removed.
+	* Linux_Tools_Project/GCov/User_Guide/images/GcovView.png: Added.
+	* Linux_Tools_Project/GCov/User_Guide/Gcov-main-view.html: Regenerated.
+	* Linux_Tools_Project/GCov/User_Guide/Opening-gcov-result.html: Ditto.
+
 2011-05-31  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add bundle localization plugin. 
