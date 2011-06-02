@@ -14,6 +14,7 @@ package org.eclipse.linuxtools.oprofile.core;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -31,6 +32,8 @@ public class OprofileCorePlugin extends Plugin {
 	//The shared instance.
 	private static OprofileCorePlugin plugin;
 	private IOpxmlProvider _opxmlProvider;
+
+	public static final String DEBUG_PRINT_PREFIX = "DEBUG: "; //$NON-NLS-1$
 	
 	/**
 	 * The constructor.
@@ -142,5 +145,17 @@ public class OprofileCorePlugin extends Plugin {
 			}
 		});
 
+	}
+	
+	/**
+	 * 
+	 * @return {@code true} when platform was started in debug mode ({@code -debug} switch)
+	 * and {@code org.eclipse.linuxtools.oprofile.core/debug} is set in some .options file
+	 * either in $HOME/.options or $(pwd)/.options.
+	 */
+	public static boolean isDebugMode() {
+		return Platform.inDebugMode()
+				&& Platform.getDebugOption(OprofileCorePlugin.getId()
+						+ "/debug") != null; //$NON-NLS-1$
 	}
 }

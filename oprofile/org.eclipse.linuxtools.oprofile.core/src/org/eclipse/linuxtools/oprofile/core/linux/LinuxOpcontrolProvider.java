@@ -253,6 +253,11 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		String[] cmdArray = new String[args.size()];
 		args.toArray(cmdArray);
 		
+		// Print what is passed on to opcontrol
+		if (OprofileCorePlugin.isDebugMode()) {
+			printOpcontrolCmd(cmdArray);
+		}
+		
 		Process p = null;
 		try {
 			p = Runtime.getRuntime().exec(cmdArray);
@@ -267,17 +272,28 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 			String output = "", s; //$NON-NLS-1$
 			try {
 				while ((s = errout.readLine()) != null) {
-					errOutput += s;
+					errOutput += s + "\n"; //$NON-NLS-1$
 				}
 				// Unfortunately, when piped through consolehelper stderr output
 				// is redirected to stdout. Need to read stdout and do some
 				// string matching in order to give some better advice as to how to
 				// alleviate the nmi_watchdog problem. See RH BZ #694631
 				while ((s = stdout.readLine()) != null) {
-					output += s;
+					output += s + "\n"; //$NON-NLS-1$
 				}
 				stdout.close();
 				errout.close();
+
+				// give some hints which may be helpful for discovering the real
+				// reason of weird problems.
+				if (OprofileCorePlugin.isDebugMode()) {
+					if (!errOutput.equals("")) { //$NON-NLS-1$
+						System.err.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + errOutput);
+					}
+					if (!output.equals("")) { //$NON-NLS-1$
+						System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + output);
+					}
+				}
 				
 				int ret = p.waitFor();
 				if (ret != 0) {
@@ -301,6 +317,20 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Print to stdout what is passed on to opcontrol.
+	 * 
+	 * @param cmdArray
+	 */
+	private void printOpcontrolCmd(String[] cmdArray) {
+		StringBuffer buf = new StringBuffer();
+		for (String token: cmdArray) {
+			buf.append(token);
+			buf.append(" ");
+		}
+		System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + buf.toString());
 	}
 	
 	private static String _findOpcontrol() throws OpcontrolException {

@@ -1,3 +1,9 @@
+2011-06-01  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java (_runOpcontrol): Add print
+	statements to show what's going on on stdout/stderr of the called process if debugging is turned on.
+	This might be useful for tracing down weird bugs.
+
 2011-05-31  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java (_runOpcontrol): Do better
