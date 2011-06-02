@@ -46,7 +46,13 @@
 			<i>'-debuginfo</i>', and 
 			<i>'-debuginfo-common</i>' packages of the kernel you wish to profile. You can use 
 			<b>yum</b> or 
-			<b>debuginfo-install</b> to install these packages. For more details about installing SystemTap, refer to 
+			<b>debuginfo-install</b> to install these packages. It is advised that you add your user-id to both the 
+			<b>stapdev</b> and 
+			<b>stapusr</b> groups.  If you see error messages regarding 
+			<b>avahi</b> or if you get a message saying: "Unable to find server", this is due to your user-id not being part of the 
+			<b>stapdev</b> group.  When adding your user-id to these special groups, you will need to logout and login again for the changes to take effect.  
+		</p>
+		<p>For more details about installing SystemTap, refer to 
 			<a href="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/using-systemtap.html#using-setup">Installation and Setup</a> from the 
 			<a href="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/">SystemTap Beginner's Guide</a>.
 		</p><hr/>
