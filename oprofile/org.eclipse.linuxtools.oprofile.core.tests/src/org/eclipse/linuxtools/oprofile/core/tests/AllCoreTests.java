@@ -18,11 +18,15 @@ public class AllCoreTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.oprofile.core.tests"); //$NON-NLS-1$
 		
+		if (CoreTestsPlugin.RUN_OPROFILE) {
 		suite.addTestSuite(TestModelDataParse.class);
 		suite.addTestSuite(TestSessionsParse.class);
 		suite.addTestSuite(TestCheckEventsParse.class);
 		suite.addTestSuite(TestInfoParse.class);
 		suite.addTestSuite(TestDataModel.class);
+		}
+		
+		suite.addTestSuite(TestDummy.class);
 		
 		return suite;
 	}
