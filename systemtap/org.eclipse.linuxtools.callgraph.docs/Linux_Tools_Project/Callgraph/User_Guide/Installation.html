@@ -30,16 +30,16 @@
 			</tr>
 		</table><hr/>
 		<h1 id="Installation">Installation</h1>
-		<p>Performing visual function traces with Eclipse-Callgraph requires three components: </p>
+		<p>Performing visual function traces with Eclipse Callgraph requires three components: </p>
 		<ul>
-			<li>the Eclipse-Callgraph package </li>
+			<li>the Eclipse Callgraph plugins</li>
 			<li>SystemTap </li>
 			<li>the kernel information packages required by SystemTap</li>
 		</ul>
-		<p>You can install all of these items through 
-			<b>yum</b>. To install Eclipse-Callgraph and SystemTap, run: 
+		<p>On Fedora, you can install all of these items through 
+			<b>yum</b>. To install SystemTap, run: 
 		</p>
-		<pre>yum install eclipse-callgraph systemtap systemtap-runtime -y
+		<pre>yum -y install systemtap systemtap-runtime
 </pre>
 		<p>The required kernel information packages are the matching 
 			<i>'-devel</i>', 
