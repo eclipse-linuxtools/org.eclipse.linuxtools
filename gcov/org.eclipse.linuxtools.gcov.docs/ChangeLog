@@ -1,3 +1,9 @@
+2011-06-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Regenerate from updated wiki-page.
+	* Linux_Tools_Project/GCov/User_Guide/Installation-and-Set-Up.html: Regenerated.
+	* Linux_Tools_Project/GCov/User_Guide/Troubleshooting.html: Ditto.
+
 2011-06-02  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Regenerate from updated wiki-page.
