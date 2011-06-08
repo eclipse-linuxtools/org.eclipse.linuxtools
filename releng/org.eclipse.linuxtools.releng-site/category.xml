@@ -43,11 +43,9 @@
    <feature url="features/org.eclipse.linuxtools.systemtap_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.systemtap" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <!--
    <feature url="features/org.eclipse.linuxtools.callgraph_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.callgraph" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   -->
    <feature url="features/org.eclipse.linuxtools.valgrind_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>

@@ -1,3 +1,8 @@
+2011-05-31  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Add back key bindings for CTRL+ALT+P in text editor and
+	compare editor which reverts previous change.
+
 2011-04-01  Jeff Johnston  <jjohnstn@redhat.com>
 
  	Bug #341534

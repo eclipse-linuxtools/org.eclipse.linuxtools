@@ -59,7 +59,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.cdt.autotools_docs"
+         id="org.eclipse.linuxtools.cdt.autotools.docs"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

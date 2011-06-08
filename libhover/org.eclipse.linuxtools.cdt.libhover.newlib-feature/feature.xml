@@ -22,7 +22,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.linuxtools.cdt.libhover.library_docs" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.linuxtools.cdt.libhover.library.docs" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

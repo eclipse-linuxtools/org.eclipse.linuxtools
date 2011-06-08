@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="libstdc++ library" link_to="../org.eclipse.linuxtools.cdt.libhover.library_docs/libraries.xml#moreclibdocs">
+<toc label="libstdc++ library" link_to="../org.eclipse.linuxtools.cdt.libhover.library.docs/libraries.xml#moreclibdocs">
 	<topic href="http://gcc.gnu.org/onlinedocs/libstdc++/manual/spine.html" label="libstdc++">
  </topic>
 </toc>

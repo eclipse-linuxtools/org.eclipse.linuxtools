@@ -194,6 +194,16 @@
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
              sequence="Ctrl+Alt+P"/>
        <key
+             commandId="org.eclipse.linuxtools.changelog.core.preparechangelog2"
+             contextId="org.eclipse.ui.textEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="Ctrl+Alt+P" />
+       <key
+             commandId="org.eclipse.linuxtools.changelog.core.preparechangelog2"
+             contextId="org.eclipse.compare.compareEditorScope"
+             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+             sequence="Ctrl+Alt+P"/>
+       <key
              commandId="org.eclipse.linuxtools.changelog.core.prepareCommit"
              contextId="org.eclipse.ui.textEditorScope"
              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"

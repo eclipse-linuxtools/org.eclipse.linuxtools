@@ -30,23 +30,29 @@
 			</tr>
 		</table><hr/>
 		<h1 id="Installation">Installation</h1>
-		<p>Performing visual function traces with Eclipse-Callgraph requires three components: </p>
+		<p>Performing visual function traces with Eclipse Callgraph requires three components: </p>
 		<ul>
-			<li>the Eclipse-Callgraph package </li>
+			<li>the Eclipse Callgraph plugins</li>
 			<li>SystemTap </li>
 			<li>the kernel information packages required by SystemTap</li>
 		</ul>
-		<p>You can install all of these items through 
-			<b>yum</b>. To install Eclipse-Callgraph and SystemTap, run: 
+		<p>On Fedora, you can install all of these items through 
+			<b>yum</b>. To install SystemTap, run: 
 		</p>
-		<pre>yum install eclipse-callgraph systemtap systemtap-runtime -y
+		<pre>yum -y install systemtap systemtap-runtime
 </pre>
 		<p>The required kernel information packages are the matching 
 			<i>'-devel</i>', 
 			<i>'-debuginfo</i>', and 
 			<i>'-debuginfo-common</i>' packages of the kernel you wish to profile. You can use 
 			<b>yum</b> or 
-			<b>debuginfo-install</b> to install these packages. For more details about installing SystemTap, refer to 
+			<b>debuginfo-install</b> to install these packages. It is advised that you add your user-id to both the 
+			<b>stapdev</b> and 
+			<b>stapusr</b> groups.  If you see error messages regarding 
+			<b>avahi</b> or if you get a message saying: "Unable to find server", this is due to your user-id not being part of the 
+			<b>stapdev</b> group.  When adding your user-id to these special groups, you will need to logout and login again for the changes to take effect.  
+		</p>
+		<p>For more details about installing SystemTap, refer to 
 			<a href="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/using-systemtap.html#using-setup">Installation and Setup</a> from the 
 			<a href="http://sources.redhat.com/systemtap/SystemTap_Beginners_Guide/">SystemTap Beginner's Guide</a>.
 		</p><hr/>

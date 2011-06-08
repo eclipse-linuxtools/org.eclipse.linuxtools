@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="glibc library" link_to="../org.eclipse.linuxtools.cdt.libhover.library_docs/libraries.xml#moreclibdocs">
+<toc label="glibc library" link_to="../org.eclipse.linuxtools.cdt.libhover.library.docs/libraries.xml#moreclibdocs">
 	<topic href="http://www.gnu.org/software/libc/manual/html_node/index.html" label="glibc">
  </topic>
 </toc>

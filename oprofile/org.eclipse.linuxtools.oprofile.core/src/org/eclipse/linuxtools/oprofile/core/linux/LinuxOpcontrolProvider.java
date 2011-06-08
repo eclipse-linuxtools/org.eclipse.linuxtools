@@ -253,33 +253,60 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 		String[] cmdArray = new String[args.size()];
 		args.toArray(cmdArray);
 		
+		// Print what is passed on to opcontrol
+		if (OprofileCorePlugin.isDebugMode()) {
+			printOpcontrolCmd(cmdArray);
+		}
+		
 		Process p = null;
 		try {
 			p = Runtime.getRuntime().exec(cmdArray);
-		} catch (IOException ioe) {
-			if (p != null) {
-				p.destroy();
-				p = null;
-			}
-			
+		} catch (IOException ioe) {			
 			throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolRun", ioe)); //$NON-NLS-1$
 		}
 		
 		if (p != null) {
 			BufferedReader errout = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String errOutput = ""; //$NON-NLS-1$
 			String output = "", s; //$NON-NLS-1$
 			try {
 				while ((s = errout.readLine()) != null) {
-					output += s;
+					errOutput += s + "\n"; //$NON-NLS-1$
+				}
+				// Unfortunately, when piped through consolehelper stderr output
+				// is redirected to stdout. Need to read stdout and do some
+				// string matching in order to give some better advice as to how to
+				// alleviate the nmi_watchdog problem. See RH BZ #694631
+				while ((s = stdout.readLine()) != null) {
+					output += s + "\n"; //$NON-NLS-1$
+				}
+				stdout.close();
+				errout.close();
+
+				// give some hints which may be helpful for discovering the real
+				// reason of weird problems.
+				if (OprofileCorePlugin.isDebugMode()) {
+					if (!errOutput.equals("")) { //$NON-NLS-1$
+						System.err.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + errOutput);
+					}
+					if (!output.equals("")) { //$NON-NLS-1$
+						System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + output);
+					}
 				}
 				
 				int ret = p.waitFor();
 				if (ret != 0) {
-					System.out.println(output);
-					throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
+					// Red Hat BZ #694631: NMI Watchdog problem.
+					// Give better advice as to what the problem might be.
+					if (output.contains("nmi_watchdog") && output.startsWith("Error:")) { //$NON-NLS-1$ $NON-NLS-2$
+						throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNmiWatchdog", null)); //$NON-NLS-1$
+					} else {
+						throw new OpcontrolException(OprofileCorePlugin.createErrorStatus("opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
+					}
 				}
 				
-				if (output.length() != 0) {
+				if (errOutput.length() != 0) {
 					return true;
 				}
 				
@@ -290,6 +317,20 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Print to stdout what is passed on to opcontrol.
+	 * 
+	 * @param cmdArray
+	 */
+	private void printOpcontrolCmd(String[] cmdArray) {
+		StringBuffer buf = new StringBuffer();
+		for (String token: cmdArray) {
+			buf.append(token);
+			buf.append(" ");
+		}
+		System.out.println(OprofileCorePlugin.DEBUG_PRINT_PREFIX + buf.toString());
 	}
 	
 	private static String _findOpcontrol() throws OpcontrolException {

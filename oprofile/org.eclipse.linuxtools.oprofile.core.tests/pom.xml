@@ -19,24 +19,24 @@
 
   <artifactId>org.eclipse.linuxtools.oprofile.core.tests</artifactId>
   <version>0.3.1-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
+  <packaging>eclipse-test-plugin</packaging>
 
   <name>Linux Tools OProfile Core Tests Plug-in</name>
 
- <build>
-     <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
-     <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+       	  <useUIHarness>true</useUIHarness>
+          <useUIThread>false</useUIThread>
+          <product>org.eclipse.sdk.ide</product>
+          <argLine>-Dorg.eclipse.linuxtools.oprofile.core.tests.runOprofile=no</argLine>
+          <testSuite>org.eclipse.linuxtools.oprofile.core.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.oprofile.core.tests.AllCoreTests</testClass>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -47,6 +47,6 @@
         <artifactId>maven-pmd-plugin</artifactId>
       </plugin>
     </plugins>
-  </build>
+   </build>
 
 </project>

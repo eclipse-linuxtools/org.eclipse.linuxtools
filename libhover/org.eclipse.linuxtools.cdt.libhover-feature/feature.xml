@@ -38,7 +38,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.linuxtools.cdt.libhover.library_docs"
+         id="org.eclipse.linuxtools.cdt.libhover.library.docs"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
