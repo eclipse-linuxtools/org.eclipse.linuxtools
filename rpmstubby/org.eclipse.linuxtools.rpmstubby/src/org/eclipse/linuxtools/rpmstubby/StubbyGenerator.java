@@ -129,7 +129,6 @@ public class StubbyGenerator {
 
 	private void generateFilesSections(StringBuilder buffer) {
 		buffer.append("%files\n");
-		buffer.append("%defattr(-,root,root,-)\n");
 		buffer.append("%{install_loc}\n");
 		for (String fileName : mainPackage.getDocFiles()) {
 			buffer.append("%doc ").append(mainPackage.getDocFilesRoot())
