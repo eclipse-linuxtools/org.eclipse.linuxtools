@@ -1,3 +1,8 @@
+2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add book.css.
+	* book.css: New file.
+
 2010-10-21  Alexander Kurtakov  <akurtako@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/doc/anttask/MediaWikiImageFetcher.java: Removed.
