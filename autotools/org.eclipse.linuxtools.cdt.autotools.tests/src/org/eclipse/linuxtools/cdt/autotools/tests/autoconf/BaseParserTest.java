@@ -25,6 +25,7 @@ import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfParser;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.IAutoconfErrorHandler;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.IAutoconfMacroValidator;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.ParseException;
+import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsPropertyConstants;
 
 
 import junit.framework.TestCase;
@@ -87,7 +88,7 @@ public abstract class BaseParserTest extends TestCase {
 	 */
 	protected AutoconfElement parseNoHandlers(IDocument document) {
 		AutoconfParser parser = new AutoconfParser(null, null, null);
-		AutoconfElement root = parser.parse(document);
+		AutoconfElement root = parser.parse(document, AutotoolsPropertyConstants.AC_VERSION_2_59);
 		assertNotNull(root);
 		return root;
 	}
@@ -105,7 +106,7 @@ public abstract class BaseParserTest extends TestCase {
 		errors.clear();
 		macroNames.clear();
 		
-		AutoconfElement root = parser.parse(document);
+		AutoconfElement root = parser.parse(document, AutotoolsPropertyConstants.AC_VERSION_2_59);
 		assertNotNull(root);
 		return root;
 	}
