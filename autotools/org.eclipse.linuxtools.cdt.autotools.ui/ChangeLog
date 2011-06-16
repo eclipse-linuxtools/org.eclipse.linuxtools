@@ -1,4 +1,24 @@
 2011-06-16  Sami Wagiaalla  <swagiaal@redhat.com>
+    
+    Resolves: #348260
+   	* plugin.xml: Insert template for an autotools shared library project.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/exampleProgram/exampleProgram.c: New file.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/exampleProgram/Makefile.am: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/include/libExample.h: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/include/Makefile.am: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/libExample/libExample.c: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/libExample/Makefile.am: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/AUTHORS: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/ChangeLog: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/configure.ac: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/COPYING: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/Makefile.am: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/NEWS: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/README: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/template.properties: Ditto.
+   	* templates/projecttemplates/AutotoolsSharedLibraryProject/template.xml: Ditto.
+   	
+2011-06-16  Sami Wagiaalla  <swagiaal@redhat.com>
 
 	Resolves: #348432
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfReconcilingStrategy.java

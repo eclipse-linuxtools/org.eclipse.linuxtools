@@ -749,6 +749,11 @@
              location="templates/projecttemplates/HelloWorldCPPAutotoolsProject/template.xml"
              projectType="org.eclipse.linuxtools.cdt.autotools.core.projectType">
        </template>
+       <template
+             id="org.eclipse.linuxtools.cdt.autotools.ui.template.autotoolsSharedLibraryProject"
+             location="templates/projecttemplates/AutotoolsSharedLibraryProject/template.xml"
+             projectType="org.eclipse.linuxtools.cdt.autotools.core.projectType">
+       </template>
     </extension>
     <extension
           point="org.eclipse.cdt.ui.CDTWizard">
