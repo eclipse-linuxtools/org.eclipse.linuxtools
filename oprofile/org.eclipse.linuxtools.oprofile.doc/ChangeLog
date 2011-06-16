@@ -1,3 +1,8 @@
+2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* build.properties: Add book.css.
+	* book.css: New file.
+
 2011-02-11  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 0.3.1.
