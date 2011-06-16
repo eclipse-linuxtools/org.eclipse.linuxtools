@@ -1,5 +1,10 @@
 2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/cdt/autotools/tests/autoconf/BaseParserTest.java (parseNoHandlers):
+	Revert previous fix as it is no longer needed.
+
+2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* src/org/eclipse/linuxtools/cdt/autotools/tests/autoconf/BaseParserTest.java (parseNoHandlers): 
 	Fix to new parser API.
 
