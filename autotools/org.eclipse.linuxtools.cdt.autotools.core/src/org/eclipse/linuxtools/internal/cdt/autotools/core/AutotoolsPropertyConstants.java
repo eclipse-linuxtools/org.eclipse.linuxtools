@@ -40,6 +40,9 @@ public class AutotoolsPropertyConstants {
 	public static final QualifiedName SCANNER_INFO_DIRTY = new QualifiedName(PREFIX, "ScannerInfoDirty"); // $NON-NLSp-1$
 	
 	public static String[] fACVersions = {"2.13", "2.59", "2.61"}; // $NON-NLS-1$
+	public static final String AC_VERSION_2_13 = fACVersions[0];
+	public static final String AC_VERSION_2_59 = fACVersions[1];
+	public static final String AC_VERSION_2_61 = fACVersions[2];
 	public static final String LATEST_AC_VERSION = fACVersions[fACVersions.length - 1];
 	
 	public static String[] fAMVersions = {"1.4-p6", "1.9.5", "1.9.6"}; // $NON-NLS-1$

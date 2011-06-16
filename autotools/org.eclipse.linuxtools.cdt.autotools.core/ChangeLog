@@ -1,3 +1,10 @@
+2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: #348432
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/VersionComparator.java: New file.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsPropertyConstants.java: Add new
+	constants for various Autoconf versions.
+
 2011-05-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves #343879
