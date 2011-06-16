@@ -54,11 +54,6 @@ public class AutoconfParser {
 	private AutoconfTokenizer tokenizer;
 	private IAutoconfMacroDetector macroDetector;
 	
-	/**
-	 * The version of autotools to be used to parse the current document.
-	 */
-	private String currentVersion;
-	
 	private static final String M4_BUILTINS =
 		"define undefine defn pushdef popdef indir builtin ifdef ifelse shift reverse cond " + //$NON-NLS-1$
 		"dumpdef traceon traceoff debugmode debugfile dnl changequote changecom changeword " + //$NON-NLS-1$
@@ -88,17 +83,13 @@ public class AutoconfParser {
 
 	/**
 	 * Parse the given document and produce an AutoconfElement tree
-	 * @param errorHandler
-	 * @param macroValidator
 	 * @param document
-	 * @param version What version of Autoconf the document is intended to be
 	 * @return element tree
 	 */
-	public AutoconfElement parse(IDocument document, String version) {
-		this.currentVersion = version;
+	public AutoconfElement parse(IDocument document) {
 		return parse(document, true);
 	}
-	
+
 	/**
 	 * Parse the given document and produce an AutoconfElement tree,
 	 * and control whether the initial quoting style is m4 style (`...')
@@ -837,7 +828,7 @@ public class AutoconfParser {
 		}
 		
 		AutoconfMacroElement macro = createMacroElement(name);
-		token = parseMacro(macro, token);
+		token = parseMacro(macro, token);					
 		
 		// handle special macros here
 		if ("dnl".equals(name)) { //$NON-NLS-1$
@@ -880,12 +871,6 @@ public class AutoconfParser {
 		
 		if (macro != null) {
 			parent.addChild(macro);
-
-			try {
-				macro.validate(this.currentVersion);					
-			} catch (InvalidMacroException e) {
-				this.handleError (e);
-			}
 		}
 		
 		// now validate that the macro is properly terminated
@@ -939,6 +924,8 @@ public class AutoconfParser {
 				macroValidator.validateMacroCall(macro);
 			} catch (ParseException e) {
 				errorHandler.handleError(e);
+			} catch (InvalidMacroException e) {
+				handleError(e);
 			}
 		}
 		

@@ -13,11 +13,15 @@
 package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfMacroElement;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.IAutoconfMacroValidator;
+import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.InvalidMacroException;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.ParseException;
+import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsPropertyConstants;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutotoolsEditorPreferenceConstants;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.text.hover.AutoconfPrototype;
 import org.eclipse.linuxtools.internal.cdt.autotools.ui.text.hover.AutoconfTextHover;
@@ -40,7 +44,7 @@ public class AutoconfEditorMacroValidator implements IAutoconfMacroValidator {
 	 * @see org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.IAutoconfMacroValidator#validateMacroCall(org.eclipse.linuxtools.cdt.autotools.core.ui.editors.parser.AutoconfMacroElement)
 	 */
 	public void validateMacroCall(AutoconfMacroElement macro)
-			throws ParseException {
+			throws ParseException, InvalidMacroException {
 		AutoconfPrototype p = AutoconfTextHover.getPrototype(macro.getName(), fEditor);
 		if (p != null) {
 			boolean tooFew = false;
@@ -94,6 +98,24 @@ public class AutoconfEditorMacroValidator implements IAutoconfMacroValidator {
 							IMarker.SEVERITY_WARNING);
 				}
 			}
+			
+			IProject project = fEditor.getProject();
+			String acDocVer = AutoconfTextHover.getDefaultAutoconfMacrosVer();
+			try {
+				String acVer = project.getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION);
+				if (acVer != null)
+					acDocVer = acVer;
+				else { // look for compat project properties
+					acVer = project.getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION_COMPAT);
+					if (acVer != null)
+						acDocVer = acVer;
+				}
+			} catch (CoreException ce1) {
+				// do nothing
+			}
+			
+			macro.validate(acDocVer);
+
 		}
 
 	}

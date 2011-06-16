@@ -10,16 +10,12 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
-import org.eclipse.linuxtools.cdt.autotools.core.AutotoolsPlugin;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.outline.AutoconfContentOutlinePage;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.parser.AutoconfParser;
-import org.eclipse.linuxtools.internal.cdt.autotools.core.AutotoolsPropertyConstants;
-import org.eclipse.linuxtools.internal.cdt.autotools.ui.preferences.AutotoolsEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 
 
@@ -42,17 +38,7 @@ public class AutoconfReconcilingStrategy implements IReconcilingStrategy {
 			AutoconfParser parser = editor.getAutoconfParser();
 			((AutoconfErrorHandler)parser.getErrorHandler()).removeAllExistingMarkers();
 			
-			String version;
-			try {
-				version = editor.getProject().getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION);
-				if (version == null)
-					version = AutotoolsPlugin.getDefault().getPreferenceStore().getString(AutotoolsEditorPreferenceConstants.AUTOCONF_VERSION);
-
-			} catch (CoreException e) {
-				throw new RuntimeException(e);
-			}
-
-			editor.setRootElement(parser.parse(documentProvider.getDocument(editor.getEditorInput()), version));
+			editor.setRootElement(parser.parse(documentProvider.getDocument(editor.getEditorInput())));
 			outline.update();
 		} catch (Exception e) {
 			e.printStackTrace();

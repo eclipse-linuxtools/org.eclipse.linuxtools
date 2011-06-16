@@ -24,5 +24,5 @@ public interface IAutoconfMacroValidator {
 	 * @param element macro call, never <code>null</code>
 	 * @throws ParseException if the call doesn't match the expected number of elements 
 	 */
-	void validateMacroCall(AutoconfMacroElement element) throws ParseException;
+	void validateMacroCall(AutoconfMacroElement element) throws ParseException, InvalidMacroException;
 }

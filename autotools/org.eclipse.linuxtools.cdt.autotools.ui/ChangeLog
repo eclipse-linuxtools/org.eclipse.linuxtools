@@ -1,3 +1,17 @@
+2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/IAutoconfMacroValidator.java (validateMacroCall): Add
+	InvalidMacroException as possible throws.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/AutoconfParser.java (parse): Remove
+	version number parameter.
+	(parseMacro): Add check for InvalidMacroException.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfReconcilingStrategy.java (reconcile): Call
+	parser without a version number.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditorMacroValidator.java (validateMacroCall): Add
+	macro validate() call here and calculate autoconf version from feditor project.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java (reparseDocument): Change
+	to use parse with no version number.
+
 2011-06-16  Sami Wagiaalla  <swagiaal@redhat.com>
     
     Resolves: #348260

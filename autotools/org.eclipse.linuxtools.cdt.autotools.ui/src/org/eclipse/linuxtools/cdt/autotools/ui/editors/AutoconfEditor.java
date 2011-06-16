@@ -297,17 +297,7 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
 		AutoconfParser parser = getAutoconfParser();
 		((AutoconfErrorHandler)parser.getErrorHandler()).removeAllExistingMarkers();
 		
-		String version;
-		try {
-			version = fProject.getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION);
-			if (version == null)
-				version = AutotoolsPlugin.getDefault().getPreferenceStore().getString(AutotoolsEditorPreferenceConstants.AUTOCONF_VERSION);
-
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
-		
-		return parser.parse(document, version);
+		return parser.parse(document);
 	}
 
 	/* (non-Javadoc)
