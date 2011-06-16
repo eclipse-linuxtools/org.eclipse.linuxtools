@@ -16,18 +16,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class RemoteLaunchPlugin extends AbstractUIPlugin {
+public class ValgrindRemotePlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.launch.remote"; //$NON-NLS-1$
 
 	// The shared instance
-	private static RemoteLaunchPlugin plugin;
+	private static ValgrindRemotePlugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public RemoteLaunchPlugin() {
+	public ValgrindRemotePlugin() {
 	}
 
 	/*
@@ -53,7 +53,7 @@ public class RemoteLaunchPlugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static RemoteLaunchPlugin getDefault() {
+	public static ValgrindRemotePlugin getDefault() {
 		return plugin;
 	}
 

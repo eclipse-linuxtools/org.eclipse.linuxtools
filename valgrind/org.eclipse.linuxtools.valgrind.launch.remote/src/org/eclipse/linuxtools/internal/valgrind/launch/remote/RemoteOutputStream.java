@@ -18,13 +18,13 @@ import org.eclipse.tm.tcf.protocol.IToken;
 import org.eclipse.tm.tcf.services.IStreams;
 import org.eclipse.tm.tcf.services.IStreams.DoneWrite;
 
-public class ValgrindTCFOutputStream extends OutputStream {
+public class RemoteOutputStream extends OutputStream {
 	private IStreams streamsService;
 	private String streamId;
 	private transient boolean done;
 	private Exception ex;
 	
-	public ValgrindTCFOutputStream(IChannel channel, String streamId) {
+	public RemoteOutputStream(IChannel channel, String streamId) {
 		this.streamId = streamId;
 		streamsService = channel.getRemoteService(IStreams.class);
 	}

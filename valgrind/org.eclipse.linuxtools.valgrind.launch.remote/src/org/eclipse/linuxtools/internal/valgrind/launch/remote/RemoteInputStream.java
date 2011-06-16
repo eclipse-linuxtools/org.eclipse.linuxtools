@@ -18,7 +18,7 @@ import org.eclipse.tm.tcf.protocol.IToken;
 import org.eclipse.tm.tcf.services.IStreams;
 import org.eclipse.tm.tcf.services.IStreams.DoneRead;
 
-public class ValgrindTCFInputStream extends InputStream {
+public class RemoteInputStream extends InputStream {
 	private IStreams streamsService;
 	private String streamId;
 	private transient boolean done;
@@ -26,7 +26,7 @@ public class ValgrindTCFInputStream extends InputStream {
 	private byte[] buf;
 	private Exception ex;
 	
-	public ValgrindTCFInputStream(IChannel channel, String streamId) {
+	public RemoteInputStream(IChannel channel, String streamId) {
 		this.streamId = streamId;
 		streamsService = channel.getRemoteService(IStreams.class);
 	}
@@ -62,7 +62,7 @@ public class ValgrindTCFInputStream extends InputStream {
 				else {
 					buf = data;
 					if (eos) { // FIXME We are getting EOS too soon, and losing data
-						ValgrindTCFInputStream.this.eos = true;
+						RemoteInputStream.this.eos = true;
 						streamsService.disconnect(streamId, new IStreams.DoneDisconnect() {
 							public void doneDisconnect(IToken token, Exception error) {
 								if (error != null) {

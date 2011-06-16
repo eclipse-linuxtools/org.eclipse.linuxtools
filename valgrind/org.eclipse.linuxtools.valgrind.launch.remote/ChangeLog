@@ -1,3 +1,33 @@
+2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFInputStream: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindTCFOutputStream: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteProcess: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchPlugin: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteTab.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteUtils.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchConstants.java: Ditto.	 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteCommand.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteMessages.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/remoteMessages.properties: Ditto. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/IRemoteCaller.java: Ditto. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteProcess.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteInputStream.java: Renamed from 
+	ValgrindTCFInputStream.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteOutputStream.java: Renamed from 
+	ValgrindTCFOutputStream.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteProcess.java: Renamed from 
+	ValgrindRemoteProcess.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemotePlugin.java: Renamed from 
+	RemoteLaunchPlugin.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteCommand.java: Split common
+	functionality to RemoteCommand. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteTab.java: Split common
+	functionality to RemoteTab.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchConstants.java: Split
+	Valgrind functionality to ValgrindRemoteLaunchConstants. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java: Renamed from 
+	 
 2011-04-21  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java: Add a check to prevent infinite

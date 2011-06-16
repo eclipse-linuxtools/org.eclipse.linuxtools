@@ -11,18 +11,11 @@
 package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
@@ -58,7 +51,7 @@ import org.eclipse.tm.tcf.services.IProcesses;
 import org.eclipse.tm.tcf.services.IStreams;
 
 public class ValgrindRemoteLaunchDelegate extends
-ValgrindLaunchConfigurationDelegate {
+ValgrindLaunchConfigurationDelegate implements IRemoteCaller {
 
 	private IChannel channel;
 	private SubMonitor monitor;
@@ -69,6 +62,7 @@ ValgrindLaunchConfigurationDelegate {
 	private IPath localOutputDir;
 	private IPath remoteBinFile;
 	private IPeer peer;
+	private IRemoteCaller caller;
 
 	public void launch(final ILaunchConfiguration config, String mode,
 			final ILaunch launch, IProgressMonitor m) throws CoreException {
@@ -89,6 +83,7 @@ ValgrindLaunchConfigurationDelegate {
 			return;
 		}
 
+		caller = this;
 		this.config = config;
 		this.launch = launch;
 		try {			
@@ -130,23 +125,23 @@ ValgrindLaunchConfigurationDelegate {
 							command = new ValgrindRemoteCommand(channel, launchSteps);
 							
 							// Retrieve user-defined Valgrind binary location
-							final IPath valgrindLocation = Path.fromOSString(config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_VALGRINDLOC, RemoteLaunchConstants.DEFAULT_REMOTE_VALGRINDLOC));
+							final IPath valgrindLocation = Path.fromOSString(config.getAttribute(ValgrindRemoteLaunchConstants.ATTR_REMOTE_VALGRINDLOC, ValgrindRemoteLaunchConstants.DEFAULT_REMOTE_VALGRINDLOC));
 
 							monitor.worked(1);
 
 							// Copy binary using FileSystem service
 							final IPath exePath = CDebugUtils.verifyProgramPath(config);
-							final IPath remoteDir = Path.fromOSString(config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_DESTDIR, RemoteLaunchConstants.DEFAULT_REMOTE_DESTDIR));
+							final IPath remoteDir = Path.fromOSString(config.getAttribute(ValgrindRemoteLaunchConstants.ATTR_REMOTE_DESTDIR, ValgrindRemoteLaunchConstants.DEFAULT_REMOTE_DESTDIR));
 							remoteBinFile = remoteDir.append(exePath.lastSegment());
 							
-							IPath remoteLogDir = Path.fromOSString(config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_OUTPUTDIR, RemoteLaunchConstants.DEFAULT_REMOTE_OUTPUTDIR));
-							outputPath = remoteLogDir.append("eclipse-valgrind-" + System.currentTimeMillis());
+							IPath remoteLogDir = Path.fromOSString(config.getAttribute(ValgrindRemoteLaunchConstants.ATTR_REMOTE_OUTPUTDIR, ValgrindRemoteLaunchConstants.DEFAULT_REMOTE_OUTPUTDIR));
+							outputPath = remoteLogDir.append("eclipse-valgrind-" + System.currentTimeMillis()); //$NON-NLS-1$
 
 							try {
 								new RemoteLaunchStep(launchSteps, channel, "FileSystem Write Binary") { //$NON-NLS-1$
 									@Override
 									public void start() throws Exception {
-										writeFileToRemote(exePath, remoteBinFile, this);					
+										RemoteUtils.writeFileToRemote(fsService, caller, exePath, remoteBinFile, this);					
 									}
 								};
 								
@@ -309,7 +304,7 @@ ValgrindLaunchConfigurationDelegate {
 											new RemoteLaunchStep(launchSteps, channel, "FileSystem Write Log") { //$NON-NLS-1$
 												@Override
 												public void start() throws Exception {
-													writeFileToLocal(remotePath, localPath, this);
+													RemoteUtils.writeFileToLocal(fsService, caller, remotePath, localPath, this);
 												}
 											};
 										}
@@ -378,6 +373,10 @@ ValgrindLaunchConfigurationDelegate {
 		return ValgrindLaunchPlugin.PLUGIN_ID;
 	}
 
+	public void onError(Throwable t) {
+		disconnect(t);
+	}
+	
 	private void disconnect(Throwable t) {
 		if (fsService != null) {
 			// Delete files, don't try to copy
@@ -388,156 +387,6 @@ ValgrindLaunchConfigurationDelegate {
 		}
 	}
 
-	private void writeFileToRemote(IPath localFile, IPath remoteFile, final RemoteLaunchStep step) throws CoreException, FileNotFoundException {
-		final InputStream inp = new FileInputStream(localFile.toOSString());
-		int flags = IFileSystem.TCF_O_WRITE | IFileSystem.TCF_O_CREAT | IFileSystem.TCF_O_TRUNC;
-		fsService.open(remoteFile.toOSString(), flags, new FileAttrs(IFileSystem.ATTR_PERMISSIONS, 0, 0, 0, 
-				IFileSystem.S_IRUSR | IFileSystem.S_IWUSR | IFileSystem.S_IXUSR, 0, 0, null), new IFileSystem.DoneOpen() {
-
-			IFileHandle handle;
-			long offset = 0;
-			final Set<IToken> cmds = new HashSet<IToken>();
-			final byte[] buf = new byte[0x1000];
-
-			public void doneOpen(IToken token, FileSystemException error, IFileHandle handle) {
-				this.handle = handle;
-				if (error != null) {
-					disconnect(error);
-				}
-				else {
-					writeNext();
-				}
-			}
-
-			private void writeNext() {
-				try {
-					while (cmds.size() < 8) {
-						int rd = inp.read(buf);
-						if (rd < 0) {
-							close();
-							break;
-						}
-						cmds.add(fsService.write(handle, offset, buf, 0, rd, new IFileSystem.DoneWrite() {
-
-							public void doneWrite(IToken token, FileSystemException error) {
-								cmds.remove(token);
-								if (error != null) {
-									disconnect(error);
-								}
-								else {
-									writeNext();
-								}
-							}
-						}));
-						offset += rd;
-					}
-				}
-				catch (Throwable x) {
-					disconnect(x);
-				}
-			}
-
-			private void close() {
-				if (cmds.size() > 0) {
-					return;
-				}
-				try {
-					inp.close();
-					fsService.close(handle, new IFileSystem.DoneClose() {
-
-						public void doneClose(IToken token, FileSystemException error) {
-							if (error != null) {
-								disconnect(error);
-							}
-							else {
-								step.done();
-							}
-						}
-					});
-				}
-				catch (Throwable x) {
-					disconnect(x);
-				}
-			}
-		});
-	}
-	
-	private void writeFileToLocal(IPath remoteFile, IPath localFile, final RemoteLaunchStep step) throws CoreException, FileNotFoundException {
-		final OutputStream out = new FileOutputStream(localFile.toOSString());
-		int flags = IFileSystem.TCF_O_READ;
-		fsService.open(remoteFile.toOSString(), flags, null, new IFileSystem.DoneOpen() {
-
-			IFileHandle handle;
-			long offset = 0;
-			Set<IToken> cmds = new HashSet<IToken>();
-			static final int BUF_LENGTH = 0x1000;
-
-			public void doneOpen(IToken token, FileSystemException error, IFileHandle handle) {
-				this.handle = handle;
-				if (error != null) {
-					disconnect(error);
-				}
-				else {
-					readNext();
-				}
-			}
-
-			private void readNext() {
-				try {
-					cmds.add(fsService.read(handle, offset, BUF_LENGTH, new IFileSystem.DoneRead() {
-
-						public void doneRead(IToken token, FileSystemException error, byte[] data,
-								boolean eof) {
-							cmds.remove(token);
-							if (error != null) {
-								disconnect(error);
-							}
-							else {
-								try {
-									out.write(data);
-									offset += data.length;
-									if (eof) {
-										close();
-									}
-									else {
-										readNext();
-									}
-								} catch (IOException e) {
-									disconnect(e);
-								}
-							}
-						}
-					}));
-				}
-				catch (Throwable x) {
-					disconnect(x);
-				}
-			}
-
-			private void close() {
-				if (cmds.size() > 0) {
-					return;
-				}
-				try {
-					out.close();
-					fsService.close(handle, new IFileSystem.DoneClose() {
-
-						public void doneClose(IToken token, FileSystemException error) {
-							if (error != null) {
-								disconnect(error);
-							}
-							else {
-								step.done();
-							}
-						}
-					});
-				}
-				catch (Throwable x) {
-					disconnect(x);
-				}
-			}
-		});
-	}
 
 	private void startRemoteProcess(final ILaunchConfiguration config,
 			final ILaunch launch, final IPath valgrindLocation,

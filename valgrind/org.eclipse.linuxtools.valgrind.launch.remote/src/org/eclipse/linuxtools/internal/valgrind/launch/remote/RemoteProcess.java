@@ -18,7 +18,7 @@ import org.eclipse.tm.tcf.protocol.IToken;
 import org.eclipse.tm.tcf.services.IProcesses;
 import org.eclipse.tm.tcf.services.IProcesses.DoneCommand;
 
-public class ValgrindRemoteProcess extends Process {
+public class RemoteProcess extends Process {
 	private IProcesses.ProcessContext context;
 	private IChannel channel;
 	private Boolean terminated;
@@ -27,7 +27,7 @@ public class ValgrindRemoteProcess extends Process {
 	private InputStream inputStream;
 	private InputStream errorStream;
 	
-	public ValgrindRemoteProcess(IProcesses.ProcessContext context, IChannel channel) {
+	public RemoteProcess(IProcesses.ProcessContext context, IChannel channel) {
 		this.context = context;
 		this.channel = channel;
 		terminated = false;
@@ -59,7 +59,7 @@ public class ValgrindRemoteProcess extends Process {
 	@Override
 	public int exitValue() {
 		if (exitCode == null) {
-			throw new IllegalThreadStateException(Messages.ValgrindRemoteProcess_error_proc_not_term);
+			throw new IllegalThreadStateException(RemoteMessages.RemoteProcess_error_proc_not_term);
 		}
 		return exitCode;
 	}
@@ -89,15 +89,15 @@ public class ValgrindRemoteProcess extends Process {
 	}
 	
 	public void connectOutputStream(String id) {
-		outputStream = new ValgrindTCFOutputStream(channel, id);
+		outputStream = new RemoteOutputStream(channel, id);
 	}
 
 	public void connectInputStream(String id) {
-		inputStream = new ValgrindTCFInputStream(channel, id);
+		inputStream = new RemoteInputStream(channel, id);
 	}
 	
 	public void connectErrorStream(String id) {
-		errorStream = new ValgrindTCFInputStream(channel, id);
+		errorStream = new RemoteInputStream(channel, id);
 	}
 
 }
