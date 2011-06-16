@@ -1,3 +1,30 @@
+2011-06-16  Sami Wagiaalla  <swagiaal@redhat.com>
+
+	Resolves: #348432
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfReconcilingStrategy.java
+	(reconcile): Pass Autoconf version number to parser.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditor.java
+	(reparseDocument): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/InvalidMacroArgumentException.java:
+	New file.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/InvalidMacroException.java:
+	Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/AutoconfParser.java
+	(createMacroElement): New function.
+	(handleError): Ditto.
+	(checkMacro): Use createMacroElement.
+	(parse): Set curentVersion.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/AutoconfMacroElement.java
+	(validate): New function.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/AutoconfElement.java
+	(getLength): New function.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfMacro.java:
+	Corrected formatting.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AutoconfEditorMessages.properties:
+	Added messages for invalid for bad first, and second arguments of AC_INIT.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/AcInitElement.java: New
+	file.
+	    	
 2011-05-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #312298

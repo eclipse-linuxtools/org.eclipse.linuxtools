@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.linuxtools.cdt.autotools.ui.editors.AcInitElement;
 import org.eclipse.linuxtools.cdt.autotools.ui.editors.AutoconfEditorMessages;
 
 
@@ -53,6 +54,11 @@ public class AutoconfParser {
 	private AutoconfTokenizer tokenizer;
 	private IAutoconfMacroDetector macroDetector;
 	
+	/**
+	 * The version of autotools to be used to parse the current document.
+	 */
+	private String currentVersion;
+	
 	private static final String M4_BUILTINS =
 		"define undefine defn pushdef popdef indir builtin ifdef ifelse shift reverse cond " + //$NON-NLS-1$
 		"dumpdef traceon traceoff debugmode debugfile dnl changequote changecom changeword " + //$NON-NLS-1$
@@ -85,9 +91,11 @@ public class AutoconfParser {
 	 * @param errorHandler
 	 * @param macroValidator
 	 * @param document
+	 * @param version What version of Autoconf the document is intended to be
 	 * @return element tree
 	 */
-	public AutoconfElement parse(IDocument document) {
+	public AutoconfElement parse(IDocument document, String version) {
+		this.currentVersion = version;
 		return parse(document, true);
 	}
 	
@@ -795,6 +803,19 @@ public class AutoconfParser {
 	}
 
 	/**
+	 * Creates the appropriate macro type object depending on the
+	 * macro name.
+	 * 
+	 * @return
+	 */
+	private AutoconfMacroElement createMacroElement (String name){
+		if (name.equals("AC_INIT")){ //$NON-NLS-1$
+			return new AcInitElement(name);
+		}
+		return new AutoconfMacroElement(name);
+	}
+
+	/**
 	 * Check whether the given token is part of a macro, and parse it as such
 	 * if necessary.  
 	 * @param parent
@@ -815,7 +836,7 @@ public class AutoconfParser {
 			return token;
 		}
 		
-		AutoconfMacroElement macro = new AutoconfMacroElement(name);
+		AutoconfMacroElement macro = createMacroElement(name);
 		token = parseMacro(macro, token);
 		
 		// handle special macros here
@@ -859,6 +880,12 @@ public class AutoconfParser {
 		
 		if (macro != null) {
 			parent.addChild(macro);
+
+			try {
+				macro.validate(this.currentVersion);					
+			} catch (InvalidMacroException e) {
+				this.handleError (e);
+			}
 		}
 		
 		// now validate that the macro is properly terminated
@@ -1032,6 +1059,35 @@ public class AutoconfParser {
 					lineNumber, 
 					startColumn, endColumn,
 					severity));
+		}
+	}
+
+	/**
+	 * Figure out the error location and create a marker and message for it.
+	 * @param exception
+	 */
+	protected void handleError (InvalidMacroException exception) {
+		AutoconfElement element = exception.getBadElement();
+		
+		if (errorHandler != null) {
+			int lineNumber = 0;
+			int startColumn = 0;
+			int endColumn = 0;
+			try {
+				lineNumber = element.getDocument().getLineOfOffset(element.getStartOffset());
+				int lineOffs = element.getDocument().getLineOffset(lineNumber);
+				startColumn = element.getStartOffset() - lineOffs;
+				endColumn = startColumn + element.getLength();
+			} catch (BadLocationException e) {
+				// Don't care if we blow up trying to issue marker
+			}
+			errorHandler.handleError(new ParseException(
+					exception.getMessage(),
+					element.getStartOffset(),
+					element.getEndOffset(),
+					lineNumber, 
+					startColumn, endColumn,
+					IMarker.SEVERITY_ERROR));
 		}
 	}
 

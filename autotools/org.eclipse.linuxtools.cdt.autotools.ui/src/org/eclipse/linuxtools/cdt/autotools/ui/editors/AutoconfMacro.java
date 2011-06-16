@@ -11,27 +11,33 @@
 package org.eclipse.linuxtools.cdt.autotools.ui.editors;
 
 public class AutoconfMacro implements Comparable<Object> {
-		protected String name;
-		protected String parms;
-		
-		public AutoconfMacro(String name, String parms) {
-			this.name = name;
-			this.parms = parms;
-		}
-		public String getName() {
-			return name;
-		}
-		public String getTemplate() {
-			return name + (hasParms() ? "()" : ""); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		public String getParms() {
-			return parms;
-		}
-		public boolean hasParms() {
-			return (parms.length() > 0);
-		}
-		public int compareTo (Object x) {
-			AutoconfMacro y = (AutoconfMacro)x;
-			return getName().compareTo(y.getName());
-		}
+
+	protected String name;
+	protected String parms;
+
+	public AutoconfMacro(String name, String parms) {
+		this.name = name;
+		this.parms = parms;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getTemplate() {
+		return name + (hasParms() ? "()" : ""); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public String getParms() {
+		return parms;
+	}
+
+	public boolean hasParms() {
+		return (parms.length() > 0);
+	}
+
+	public int compareTo(Object x) {
+		AutoconfMacro y = (AutoconfMacro) x;
+		return getName().compareTo(y.getName());
+	}
 }

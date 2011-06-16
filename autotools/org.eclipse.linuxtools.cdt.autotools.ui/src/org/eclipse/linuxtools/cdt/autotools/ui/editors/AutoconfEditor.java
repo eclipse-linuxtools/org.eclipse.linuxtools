@@ -296,7 +296,18 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
 			IEditorInput editorInput) {
 		AutoconfParser parser = getAutoconfParser();
 		((AutoconfErrorHandler)parser.getErrorHandler()).removeAllExistingMarkers();
-		return parser.parse(document);
+		
+		String version;
+		try {
+			version = fProject.getPersistentProperty(AutotoolsPropertyConstants.AUTOCONF_VERSION);
+			if (version == null)
+				version = AutotoolsPlugin.getDefault().getPreferenceStore().getString(AutotoolsEditorPreferenceConstants.AUTOCONF_VERSION);
+
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return parser.parse(document, version);
 	}
 
 	/* (non-Javadoc)
@@ -754,6 +765,10 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
 		} finally {
 			projectionViewer.setRedraw(true);
 		}
+	}
+
+	public  IProject getProject() {
+		return this.fProject;
 	}
 
 }

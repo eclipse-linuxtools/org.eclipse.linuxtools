@@ -135,4 +135,12 @@ public class AutoconfElement {
 		}
 		return null;
 	}
+
+	/**
+	 * Return the length of this element.
+	 * @return the length of this element.
+	 */
+	public int getLength() {
+		return endOffset - startOffset;
+	}
 }
