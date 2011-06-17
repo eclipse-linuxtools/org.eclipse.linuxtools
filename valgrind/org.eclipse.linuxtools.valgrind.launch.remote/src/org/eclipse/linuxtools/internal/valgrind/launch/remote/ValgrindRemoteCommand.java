@@ -17,7 +17,7 @@ import java.util.Queue;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.tm.tcf.protocol.IChannel;
 
-public class ValgrindRemoteCommand extends ValgrindCommand {
+public class ValgrindRemoteCommand extends ValgrindCommand implements IRemoteProcessListener {
 	private IChannel channel;
 	private Queue<RemoteLaunchStep> launchSteps;
 
@@ -29,8 +29,11 @@ public class ValgrindRemoteCommand extends ValgrindCommand {
 	@Override
 	protected Process startProcess(final String[] commandArray, final Object env,
 			final File workDir, final String binPath, boolean usePty) throws IOException {
-		RemoteCommand rc = new RemoteCommand(channel, launchSteps);
+		RemoteCommand rc = new RemoteCommand(channel, launchSteps, this);
 		return rc.startProcess(commandArray, env, workDir, binPath, usePty);
 	}
 
+	public void newProcess(Process p) {
+		process = p;
+	}
 }

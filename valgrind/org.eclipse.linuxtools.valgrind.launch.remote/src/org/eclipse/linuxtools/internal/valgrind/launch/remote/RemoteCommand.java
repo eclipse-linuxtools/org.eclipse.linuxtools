@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Elliott Baron
+ * Copyright (c) 2010, 2011 Elliott Baron
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@fedoraproject.org> - initial API and implementation
+ *    Red Hat Inc. - split from ValgrindRemoteCommand
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
@@ -28,10 +29,13 @@ public class RemoteCommand {
 	private Map<String, String> streamIds;
 	private Queue<RemoteLaunchStep> launchSteps;
 	private Process process;
+	private IRemoteProcessListener processListener;
 
-	public RemoteCommand(IChannel channel, Queue<RemoteLaunchStep> launchSteps) {
+	public RemoteCommand(IChannel channel, Queue<RemoteLaunchStep> launchSteps,
+			IRemoteProcessListener processListener) {
 		this.channel = channel;
 		this.launchSteps = launchSteps;
+		this.processListener = processListener;
 		streamIds = new HashMap<String, String>();
 	}
 
@@ -86,6 +90,7 @@ public class RemoteCommand {
 						else {
 							final RemoteProcess remoteProcess = new RemoteProcess(context, channel);
 							process = remoteProcess;
+							processListener.newProcess(remoteProcess);
 
 							// Connect I/O streams
 							final String stdinID = (String) context.getProperties().get(IProcesses.PROP_STDIN_ID);
