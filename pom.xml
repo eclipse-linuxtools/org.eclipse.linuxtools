@@ -43,11 +43,10 @@
 
   <properties>
     <tycho-version>0.12.0</tycho-version>
-    <platform-version-name>helios</platform-version-name>
+    <platform-version-name>indigo</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
-    <wikitext-site>http://download.eclipse.org/tools/mylyn/update/weekly</wikitext-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
-    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110124210048/repository</orbit-site>
+    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository</orbit-site>
   </properties>
 
   <pluginRepositories>
@@ -74,20 +73,6 @@
 
   <profiles>
     <profile>
-      <id>platform-helios</id>
-      <activation>
-        <property>
-          <name>platform-version-name</name>
-          <value>helios</value>
-        </property>
-      </activation>
-      <properties>
-        <eclipse-site>http://download.eclipse.org/releases/helios</eclipse-site>
-        <platform-version>[3.6,3.7)</platform-version>
-        <cdt-site>http://download.eclipse.org/tools/cdt/releases/helios/</cdt-site>
-      </properties>
-    </profile>
-    <profile>
       <id>platform-indigo</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -99,8 +84,6 @@
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
         <platform-version>[3.7,3.8)</platform-version>
-        <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
-        <!-- <cdt-site>https://hudson.eclipse.org/hudson/job/cdt-nightly/lastSuccessfulBuild/artifact/update-site</cdt-site>-->
       </properties>
     </profile>
   </profiles>
@@ -124,7 +107,7 @@
 
   <repositories>
     <repository>
-      <id>helios</id>
+      <id>indigo</id>
       <layout>p2</layout>
       <url>${eclipse-site}</url>
     </repository>
@@ -134,19 +117,9 @@
       <url>${swtbot-site}</url>
     </repository>
     <repository>
-      <id>wikitext</id>
-      <layout>p2</layout>
-      <url>${wikitext-site}</url>
-    </repository>
-    <repository>
       <id>orbit</id>
       <layout>p2</layout>
       <url>${orbit-site}</url>
-    </repository>
-    <repository>
-      <id>cdt</id>
-      <layout>p2</layout>
-      <url>${cdt-site}</url>
     </repository>
   </repositories>
   
@@ -164,30 +137,6 @@
         <version>${tycho-version}</version>
         <configuration>
           <resolver>p2</resolver>
-          <!--
-          <environments>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>x86</arch>
-            </environment>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>x86_64</arch>
-            </environment>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>ppc</arch>
-            </environment>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>ppc64</arch>
-            </environment>
-          </environments>
-          -->
         </configuration>
       </plugin>
       <plugin>
@@ -220,21 +169,9 @@
 			</configuration>
 		</plugin>
         <plugin>
-          <!-- TODO remove workaround when
-             https://issues.sonatype.org/browse/TYCHO-473
-             is fixed -->
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-source-plugin</artifactId>
           <version>${tycho-version}</version>
-          <executions>
-            <execution>
-              <id>attach-source</id>
-              <phase>process-classes</phase>
-              <goals>
-                <goal>plugin-source</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
