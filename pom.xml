@@ -84,6 +84,7 @@
       <properties>
         <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
         <platform-version>[3.7,3.8)</platform-version>
+        <cdt-site>http://download.eclipse.org/tools/cdt/updates/indigo/</cdt-site>
       </properties>
     </profile>
   </profiles>
@@ -120,6 +121,11 @@
       <id>orbit</id>
       <layout>p2</layout>
       <url>${orbit-site}</url>
+    </repository>
+    <repository>
+      <id>cdt</id>
+      <layout>p2</layout>
+      <url>${cdt-site}</url>
     </repository>
   </repositories>
   
