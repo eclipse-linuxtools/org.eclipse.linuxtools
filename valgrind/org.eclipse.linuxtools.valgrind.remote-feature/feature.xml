@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.linuxtools.valgrind.remote"
       label="%featureName"
-      version="0.7.0.qualifier"
+      version="0.8.0.qualifier"
       provider-name="%featureProvider"
       os="linux,macosx">
 
@@ -38,8 +38,8 @@
       <import plugin="org.eclipse.linuxtools.valgrind.ui"/>
       <import plugin="org.eclipse.linuxtools.profiling.launch"/>
       <import plugin="org.eclipse.tm.tcf.core"/>
-      <import feature="org.eclipse.linuxtools.valgrind" version="0.7.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.linuxtools.profiling.remote" version="0.7.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.linuxtools.valgrind" version="0.8.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.linuxtools.profiling.remote" version="0.8.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
