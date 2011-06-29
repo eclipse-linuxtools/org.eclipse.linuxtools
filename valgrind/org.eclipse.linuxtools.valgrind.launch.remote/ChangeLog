@@ -1,3 +1,22 @@
+2011-06-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* icons/tcf.gif: Removed.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteUtils.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteLaunchConstants.java: Ditto.	 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteCommand.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteMessages.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/remoteMessages.properties: Ditto. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/IRemoteCaller.java: Ditto. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteProcess.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteInputStream.java: Ditto. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/RemoteOutputStream.java: Ditto.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchDelegate.java (launch): Rewritten
+	to use RemoteConnection for underlying remote tasks. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteLaunchTabGroup.java: Change imports to
+	new structure in Linux Tools profiling remote launch plugin. 
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/ValgrindRemoteTab.java(getImage): Removed.
+	* META-INF/MANIFEST.MF: Add dependency on org.eclipse.linuxtools.profiling.remote.launch.
+	 
 2011-06-17  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/launch/remote/IRemoteCaller.java: New file.

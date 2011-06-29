@@ -13,10 +13,10 @@ package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.linuxtools.profiling.launch.remote.RemoteTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -147,11 +147,6 @@ public class ValgrindRemoteTab extends RemoteTab {
 		return Messages.ValgrindRemoteTab_tab_name;
 	}
 
-	@Override
-	public Image getImage() {
-		return ValgrindRemotePlugin.imageDescriptorFromPlugin(ValgrindRemotePlugin.PLUGIN_ID, "icons/tcf.gif").createImage();
-	}
-	
 	@Override
 	protected void updateLaunchConfigurationDialog() {
 		if (!isInitializing) {

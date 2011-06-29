@@ -6,7 +6,8 @@ Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.launch.remote.ValgrindRemotePlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.linuxtools.profiling.launch.remote;bundle-version="0.7.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.linuxtools.internal.valgrind.launch.remote

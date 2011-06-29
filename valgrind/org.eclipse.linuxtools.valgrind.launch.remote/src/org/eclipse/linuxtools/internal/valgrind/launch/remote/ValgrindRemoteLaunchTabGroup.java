@@ -11,8 +11,8 @@
 package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.linuxtools.internal.profiling.launch.remote.ProfileRemoteLaunchConfigurationTabGroup;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
+import org.eclipse.linuxtools.profiling.launch.remote.ProfileRemoteLaunchConfigurationTabGroup;
 
 public class ValgrindRemoteLaunchTabGroup extends
 		ProfileRemoteLaunchConfigurationTabGroup {
