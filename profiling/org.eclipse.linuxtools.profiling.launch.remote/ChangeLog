@@ -1,3 +1,17 @@
+2011-06-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Part of rewrite of remote Valgrind to use RSE/TCF.
+	* META-INF/MANIFEST.MF: Add RSE dependencies.
+	* src/org/eclipse/linuxtools/profiling/launch/remote/ProfileRemoteLaunchConfigurationTabGroup.java: Moved from internal
+	package.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/RemoteCommandShellOperation.java: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/RemoteLaunchConstants.java: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/RemoteMessages.java: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/remoteMessages.properties: New file.
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteTab.java: New file.
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteConnectionException.java: New file.
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteConnection.java: New file.
+
 2010-08-11  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Removed unnecessary dependency.

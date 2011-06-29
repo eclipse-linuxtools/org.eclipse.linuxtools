@@ -6,7 +6,13 @@ Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.eclipse.linuxtools.internal.profiling.launch.remote.ProfileRemoteLaunchPlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.rse.core;bundle-version="3.2.0",
+ org.eclipse.rse.subsystems.files.core;bundle-version="3.2.100",
+ org.eclipse.rse;bundle-version="3.3.0",
+ org.eclipse.rse.subsystems.processes.core;bundle-version="3.1.200",
+ org.eclipse.rse.subsystems.shells.core;bundle-version="3.1.200",
+ org.eclipse.rse.services;bundle-version="3.2.100"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.cdt.debug.core,
@@ -15,5 +21,10 @@ Import-Package: org.eclipse.cdt.debug.core,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.debug.ui.sourcelookup,
- org.eclipse.linuxtools.profiling.launch
-Export-Package: org.eclipse.linuxtools.internal.profiling.launch.remote
+ org.eclipse.linuxtools.profiling.launch,
+ org.eclipse.tm.tcf.core;version="0.3.0",
+ org.eclipse.tm.tcf.protocol;version="0.3.0",
+ org.eclipse.tm.tcf.services;version="0.3.0",
+ org.eclipse.tm.tcf.util;version="0.3.0"
+Export-Package: org.eclipse.linuxtools.internal.profiling.launch.remote;x-internal:=true,
+ org.eclipse.linuxtools.profiling.launch.remote
