@@ -39,7 +39,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 
 	private static RpmPackageBuildProposalsJob job = null;
 
-	private static final IEclipsePreferences PREFERENCES = new DefaultScope().getNode(Activator.PLUGIN_ID);
+	private static final IEclipsePreferences PREFERENCES = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 
 	protected static final IEclipsePreferences.IPreferenceChangeListener PROPERTY_LISTENER = new IEclipsePreferences.IPreferenceChangeListener() {
 		public void preferenceChange(PreferenceChangeEvent event) {
