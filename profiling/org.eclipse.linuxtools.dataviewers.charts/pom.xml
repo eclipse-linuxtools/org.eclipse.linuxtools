@@ -12,8 +12,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>linuxtools-gcov-parent</artifactId>
-    <groupId>org.eclipse.linuxtools.gcov</groupId>
+    <artifactId>linuxtools-profiling-parent</artifactId>
+    <groupId>org.eclipse.linuxtools.profiling</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
