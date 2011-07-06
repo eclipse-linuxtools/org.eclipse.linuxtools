@@ -70,7 +70,7 @@ public final class PreferenceConstants {
 	 */
 
 	public static final String DP_RPM_LIST_FILEPATH = System
-			.getProperty("user.home") + System.getProperty("file.separator") + ".pkglist"; //$NON-NLS-1$ //$NON-NLS-2$
+			.getProperty("user.home") + System.getProperty("file.separator") + ".pkglist"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	public static final String DP_RPM_LIST_MAX_PROPOSALS = "10"; //$NON-NLS-1$
 	public static final String DP_RPMTOOLS_RPM = "rpm -qa --qf '%{NAME}\\n'"; //$NON-NLS-1$
 	public static final String DP_RPMTOOLS_YUM = "yum -C list all | grep - | cut -d \".\" -f 1"; //$NON-NLS-1$
