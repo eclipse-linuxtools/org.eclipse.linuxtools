@@ -13,12 +13,12 @@ package org.eclipse.linuxtools.rpm.ui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -68,6 +68,8 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	/**
 	 * Returns the string from the plugin's resource bundle,
 	 * or 'key' if not found.
+	 * @param key The key to look for.
+	 * @return The string found or the key if nothing was found.
 	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = RPMUIPlugin.getDefault().getResourceBundle();
