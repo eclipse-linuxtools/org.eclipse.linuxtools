@@ -1,3 +1,10 @@
+2011-07-06  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java (_runOpcontrol): Provide hints
+	in error log if opcontrol errors are detected.
+	* src/org/eclipse/linuxtools/oprofile/core/OprofileCorePlugin.java (log): Added logging methods.
+	
+
 2011-06-01  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java (_runOpcontrol): Add print

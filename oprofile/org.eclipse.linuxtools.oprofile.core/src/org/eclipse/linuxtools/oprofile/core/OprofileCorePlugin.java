@@ -158,4 +158,26 @@ public class OprofileCorePlugin extends Plugin {
 				&& Platform.getDebugOption(OprofileCorePlugin.getId()
 						+ "/debug") != null; //$NON-NLS-1$
 	}
+
+	/**
+	 * Log a string message with the given severity in the error log.
+	 * 
+	 * @param severity
+	 * @param msg
+	 */
+	public static void log(int severity, String msg) {
+	      plugin.getLog().log(new Status(severity, PLUGIN_ID, Status.OK, msg, null));
+	}
+	
+	/**
+	 * Log an exception in the error log.
+	 * 
+	 * @param severity
+	 * @param msg
+	 * @param cause
+	 */
+	public static void log(int severity, String msg, Throwable cause) {
+	      plugin.getLog().log(new Status(severity, PLUGIN_ID, Status.OK, msg, cause));
+	}
+
 }
