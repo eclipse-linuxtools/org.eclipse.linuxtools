@@ -42,7 +42,7 @@ public class RPM {
 	 *            the RPM configuration to use
 	 */
 	public RPM(RPMConfiguration config) {
-		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(RPMCorePlugin.ID);
 		rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
 		String[] tmpMacroDefines = {
 				rpmCmd,

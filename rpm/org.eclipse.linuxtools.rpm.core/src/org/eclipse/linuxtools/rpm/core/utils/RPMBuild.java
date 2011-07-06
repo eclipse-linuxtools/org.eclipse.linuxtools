@@ -45,7 +45,7 @@ public class RPMBuild {
 	 *            the RPM configuration to use
 	 */
 	public RPMBuild(RPMConfiguration config) {
-		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(RPMCorePlugin.ID);
 		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
 		String[] tmpMacroDefines = {
 				rpmBuildCmd,

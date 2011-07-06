@@ -90,7 +90,7 @@ public class RPMQuery {
 
 	private static String query(IFile rpmFile, String... args)
 			throws CoreException {
-		IEclipsePreferences node = new DefaultScope().getNode(RPMCorePlugin.ID);
+		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(RPMCorePlugin.ID);
 		String rpmCmd = node.get(IRPMConstants.RPM_CMD, ""); //$NON-NLS-1$
 		List<String> command = new ArrayList<String>();
 		command.add(rpmCmd);
