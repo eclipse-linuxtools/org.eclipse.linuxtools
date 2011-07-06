@@ -65,7 +65,6 @@ public class RpmPackageProposalsList {
 		int rpmpkgsMaxProposals = Activator.getDefault().getPreferenceStore()
 				.getInt(PreferenceConstants.P_RPM_LIST_MAX_PROPOSALS);
 		List<String[]> proposalsList = new ArrayList<String[]>(list.size());
-		int i = 0;
 		for (String listValue:list){
 			String item[] = new String[2];
 			item[0] = listValue;
@@ -76,7 +75,6 @@ public class RpmPackageProposalsList {
 			if (item[0].startsWith(prefix)) {
 				proposalsList.add(item);
 			}
-			i++;
 		}
 		/*
 		 * Show RPM informations only if the proposal list is less than the
