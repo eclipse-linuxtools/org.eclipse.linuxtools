@@ -159,13 +159,11 @@ public class RpmMacroProposalsList {
 	 */
 	public Map<String, String> getProposals(String prefix) {
 		Map<String, String> proposalsMap = new HashMap<String, String>(macroMap.size());
-		int i = 0;
 		for (Map.Entry<String, String> entry: macroMap.entrySet()) {
 			// Get proposals for macro begin with { char too.
 			if (entry.getKey().startsWith(prefix.replaceFirst("\\{", EMPTY_STRING))) { //$NON-NLS-1$
 				proposalsMap.put(entry.getKey(), entry.getValue());
 			}
-			i++;
 		}
 		// Sort proposals
 		Map<String, String> sortedMap = new TreeMap<String, String>(proposalsMap);
