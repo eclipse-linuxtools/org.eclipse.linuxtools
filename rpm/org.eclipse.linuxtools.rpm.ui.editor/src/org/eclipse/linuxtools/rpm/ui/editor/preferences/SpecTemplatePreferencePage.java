@@ -48,7 +48,7 @@ public class SpecTemplatePreferencePage extends TemplatePreferencePage {
 	public boolean performOk() {
 		boolean ok= super.performOk();
 		try {
-			new InstanceScope().getNode(Activator.PLUGIN_ID).flush();
+			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {
 			//Error while saving.
 			ok = false;
