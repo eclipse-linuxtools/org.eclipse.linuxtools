@@ -36,10 +36,6 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.linuxtools.rpm.ui.editor.derived.HTMLTextPresenter;
-import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.MailHyperlinkDetector;
-import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SourcesFileHyperlinkDetector;
-import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.SpecfileElementHyperlinkDetector;
-import org.eclipse.linuxtools.rpm.ui.editor.hyperlink.URLHyperlinkWithMacroDetector;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
@@ -231,7 +227,6 @@ public class SpecfileConfiguration extends TextSourceViewerConfiguration {
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.editors.text.TextSourceViewerConfiguration#getHyperlinkDetectorTargets(org.eclipse.jface.text.source.ISourceViewer)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
         Map<String, Object> targets= super.getHyperlinkDetectorTargets(sourceViewer);
