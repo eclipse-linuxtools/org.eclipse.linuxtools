@@ -114,7 +114,11 @@ public class SpecfileQuickOutlineDialog extends PopupDialog {
 		treeViewer.getControl().setRedraw(false);
 		treeViewer.refresh();
 		treeViewer.expandAll();
-		treeViewer.getTree().select(treeViewer.getTree().getItem(0));
+		if(treeViewer.getTree().getTopItem() != null && treeViewer.getTree().getTopItem().getItemCount() > 0) {
+			treeViewer.getTree().select(treeViewer.getTree().getTopItem().getItem(0));
+		} else if(treeViewer.getTree().getItemCount()>0) {
+			treeViewer.getTree().select(treeViewer.getTree().getItem(0));
+		}
 		treeViewer.getControl().setRedraw(true);
 	}
 
