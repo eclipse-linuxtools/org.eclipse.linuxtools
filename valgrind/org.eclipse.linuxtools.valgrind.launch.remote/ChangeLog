@@ -1,3 +1,7 @@
+2011-07-06  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Fix profiling remote launch dependency.
+
 2011-06-29  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* icons/tcf.gif: Removed.

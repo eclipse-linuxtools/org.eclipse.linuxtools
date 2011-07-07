@@ -12,16 +12,16 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>linuxtools-gcov-parent</artifactId>
-    <groupId>org.eclipse.linuxtools.gcov</groupId>
+    <artifactId>linuxtools-profiling-parent</artifactId>
+    <groupId>org.eclipse.linuxtools.profiling</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.dataviewers.charts</artifactId>
-  <version>4.1.0-SNAPSHOT</version>
+  <artifactId>org.eclipse.linuxtools.binutils</artifactId>
+  <version>4.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
-  <name>Linux Tools Data Viewers Birt Charts Plug-in</name>
+  <name>Linux Tools Binutils Plug-in</name>
 
  <build>
      <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->

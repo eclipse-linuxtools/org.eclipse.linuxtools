@@ -58,8 +58,6 @@
   </build>
 
   <modules>
-    <module>org.eclipse.linuxtools.binutils</module>
-    <module>org.eclipse.linuxtools.dataviewers</module>
     <module>org.eclipse.linuxtools.gprof</module>
     <module>org.eclipse.linuxtools.gprof.docs</module>
     <module>org.eclipse.linuxtools.gprof-feature</module>
