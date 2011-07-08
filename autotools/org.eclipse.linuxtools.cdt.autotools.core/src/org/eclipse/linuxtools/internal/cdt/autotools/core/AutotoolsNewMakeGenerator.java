@@ -663,6 +663,12 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		return command;
 	}
 	
+	protected IPath getConfigurePath(){
+		ArrayList<String> configureEnvs = new ArrayList<String>();
+		ArrayList<String> configureCmdParms = new ArrayList<String>();
+		return getConfigurePath(configureEnvs, configureCmdParms);		
+	}
+	
 	protected IPath getConfigurePath(ArrayList<String> envVars, ArrayList<String> cmdParms) {
 		IPath configPath;
 		IConfigureOption configOption = toolsCfg.getOption(CONFIGURE_TOOL_ID);
@@ -808,7 +814,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		URI uri = URIUtil.toURI(runPath);
 		ErrorParserManager epm = new ErrorParserManager(project, uri, this, new String[] {ErrorParser.ID});
 		epm.setOutputStream(consoleOutStream);
-		epm.addErrorParser(ErrorParser.ID, new ErrorParser());
+		epm.addErrorParser(ErrorParser.ID, new ErrorParser(getConfigurePath()));
 	
 		OutputStream stdout = epm.getOutputStream();
 		OutputStream stderr = stdout;
@@ -1041,7 +1047,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		URI uri = URIUtil.toURI(runPath);
 		ErrorParserManager epm = new ErrorParserManager(project, uri, this, new String[] {ErrorParser.ID});
 		epm.setOutputStream(consoleOutStream);
-		epm.addErrorParser(ErrorParser.ID, new ErrorParser());
+		epm.addErrorParser(ErrorParser.ID, new ErrorParser(getConfigurePath()));
 		
 		OutputStream stdout = epm.getOutputStream();
 		OutputStream stderr = stdout;

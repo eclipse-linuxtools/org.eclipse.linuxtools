@@ -1,3 +1,13 @@
+2011-07-13  Sami Wagiaalla  <swagiaal@redhat.com>
+    
+        * src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParser.java (processLine):
+        Look for failed checks.
+        (getCheckType): New.
+        * src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (getConfigurePath):
+        New.
+        (runCommand): Pass configure path when creating ErrorParser.
+        (runScript): Ditto.
+
 2011-06-22  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #349881
