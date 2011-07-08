@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.internal.valgrind.memcheck;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -26,10 +27,12 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final String EQUALS = "="; //$NON-NLS-1$
 	private static final String NO = "no"; //$NON-NLS-1$
 	private static final String YES = "yes"; //$NON-NLS-1$
+	private static final String HEX = "0x"; //$NON-NLS-1$
 
 	public void handleLaunch(ILaunchConfiguration config, ILaunch launch, IPath outDir, IProgressMonitor monitor) throws CoreException {
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String[] getCommandArray(ILaunchConfiguration config, Version ver, IPath logDir) throws CoreException {
 		ArrayList<String> opts = new ArrayList<String>();
 		
@@ -48,7 +51,18 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 		if (ver == null || ver.compareTo(VER_3_4_0) >= 0) {
 			opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
 		}
+		
+		if (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_BOOL)) {
+			opts.add(MemcheckCommandConstants.OPT_MALLOCFILL + EQUALS + HEX + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_VAL));
+		}
 
+		if (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREEFILL_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREEFILL_BOOL)) {
+			opts.add(MemcheckCommandConstants.OPT_FREEFILL + EQUALS + HEX + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREEFILL_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREEFILL_VAL));
+		}
+		List<String> ignoreRangesFns = config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_IGNORE_RANGES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_IGNORE_RANGES);
+		for (String func : ignoreRangesFns) {
+			opts.add(MemcheckCommandConstants.OPT_IGNORERANGES + EQUALS + func);
+		}
 		return opts.toArray(new String[opts.size()]);
 	}
 

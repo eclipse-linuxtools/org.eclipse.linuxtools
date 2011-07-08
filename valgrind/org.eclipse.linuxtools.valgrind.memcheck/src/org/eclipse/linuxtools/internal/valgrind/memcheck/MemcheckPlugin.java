@@ -10,6 +10,9 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.memcheck;
 
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -53,6 +56,14 @@ public class MemcheckPlugin extends AbstractUIPlugin {
 	 */
 	public static MemcheckPlugin getDefault() {
 		return plugin;
+	}
+	
+	public static FontMetrics getFontMetrics(Control control) {
+		 GC gc = new GC(control);
+		 gc.setFont(control.getFont());
+		 FontMetrics fontMetrics = gc.getFontMetrics();
+		 gc.dispose();
+		 return fontMetrics;
 	}
 
 }

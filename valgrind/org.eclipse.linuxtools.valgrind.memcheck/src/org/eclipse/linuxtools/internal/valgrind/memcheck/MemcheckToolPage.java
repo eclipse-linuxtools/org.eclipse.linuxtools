@@ -10,10 +10,15 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.memcheck;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -22,13 +27,16 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Version;
 
 public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements IValgrindToolPage {
@@ -49,6 +57,13 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	
 	// VG >= 3.4.0
 	protected Button trackOriginsButton;
+	
+	protected Button showPossiblyLostButton;
+	protected Button mallocFillButton;
+	protected Text mallocFillText;
+	protected Button freeFillButton;
+	protected Text freeFillText;
+	protected List ignoreRangesList;
 	
 	protected boolean isInitializing = false;
 	protected Version valgrindVersion;
@@ -144,16 +159,126 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		alignmentSpinner.setMinimum(0);
 		alignmentSpinner.setMaximum(4096);
 		alignmentSpinner.addModifyListener(modifyListener);
+
+		showPossiblyLostButton = new Button(top, SWT.CHECK);
+		showPossiblyLostButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		showPossiblyLostButton.setText(Messages.getString("MemcheckToolPage.Show_Possibly_Lost")); //$NON-NLS-1$
+		showPossiblyLostButton.addSelectionListener(selectListener);
+	
+		Composite mallocFillTop = new Composite(top, SWT.NONE);
+		GridLayout mallocFillLayout = new GridLayout(2, false);
+		mallocFillTop.setLayout(mallocFillLayout);
+		mallocFillTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		mallocFillButton = new Button(mallocFillTop, SWT.CHECK);
+		mallocFillButton.setText(Messages.getString("MemcheckToolPage.Malloc_Fill")); //$NON-NLS-1$
+		mallocFillButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkMallocFillEnablement();
+				updateLaunchConfigurationDialog();
+			}
+		});
+		mallocFillText = new Text(mallocFillTop, SWT.BORDER);
+		mallocFillText.setTextLimit(8);
+		mallocFillText.addModifyListener(modifyListener);
+
+
+		Composite freeFillTop = new Composite(top, SWT.NONE);
+		GridLayout freeFillLayout = new GridLayout(2, false);
+		freeFillTop.setLayout(freeFillLayout);
+		freeFillTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		freeFillButton = new Button(freeFillTop, SWT.CHECK);
+		freeFillButton.setText(Messages.getString("MemcheckToolPage.Free_Fill")); //$NON-NLS-1$
+		freeFillButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkFreeFillEnablement();
+				updateLaunchConfigurationDialog();
+			}
+		});
+		freeFillText = new Text(freeFillTop, SWT.BORDER);
+		mallocFillText.setTextLimit(8);
+		freeFillText.addModifyListener(modifyListener);
+		
+		Composite ignoreRangesTop = new Composite(top, SWT.NONE);
+		ignoreRangesTop.setLayout(new GridLayout(3, false));
+		ignoreRangesTop.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1));
+		
+		Label ignoreRangesLabel = new Label(ignoreRangesTop, SWT.NONE);
+		ignoreRangesLabel.setText(Messages.getString("MemcheckToolPage.Ignore_Ranges")); //$NON-NLS-1$
+		ignoreRangesLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
+				
+		createIgnoreRangesControls(ignoreRangesTop);
+}
+	
+	private void createIgnoreRangesControls(Composite top) {
+		
+		ignoreRangesList = new List(top, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);		
+		FontMetrics fm = MemcheckPlugin.getFontMetrics(ignoreRangesList);
+		ignoreRangesList.setLayoutData(new GridData(Dialog.convertWidthInCharsToPixels(fm, 50), Dialog.convertHeightInCharsToPixels(fm, 5)));
+		
+		Composite ignoreButtons = new Composite(top, SWT.NONE);
+		GridLayout ignoreButtonsLayout = new GridLayout();
+		ignoreButtonsLayout.marginWidth = ignoreButtonsLayout.marginHeight = 0;
+		ignoreButtons.setLayout(ignoreButtonsLayout);
+		ignoreButtons.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
+		
+		Button newButton = new Button(ignoreButtons, SWT.PUSH);
+		newButton.setText(Messages.getString("MemcheckToolPage.New")); //$NON-NLS-1$
+		newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		newButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleIgnoreNewButtonPressed();
+				updateLaunchConfigurationDialog();
+			}			
+		});
+		
+		Button removeButton = new Button(ignoreButtons, SWT.PUSH);
+		removeButton.setText(Messages.getString("MemcheckToolPage.Remove")); //$NON-NLS-1$
+		removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleIgnoreRemoveButtonPressed();
+				updateLaunchConfigurationDialog();
+			}			
+		});
+		
+	}
+		
+	protected void handleIgnoreNewButtonPressed() {
+		InputDialog dialog = new InputDialog(getShell(), Messages.getString("MemcheckToolPage.Ignore_Ranges"), Messages.getString("MemcheckToolPage.Range"), "", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (dialog.open() == Window.OK) {
+			String function = dialog.getValue();
+			if (!function.equals("")) { //$NON-NLS-1$
+				ignoreRangesList.add(function);
+			}
+		}
+	}
+
+	protected void handleIgnoreRemoveButtonPressed() {
+		int[] selections = ignoreRangesList.getSelectionIndices();
+		ignoreRangesList.remove(selections);
 	}
 
 	private void checkAlignmentEnablement() {
 		alignmentSpinner.setEnabled(alignmentButton.getSelection());
 	}
 	
+	private void checkMallocFillEnablement() {
+		mallocFillText.setEnabled(mallocFillButton.getSelection());
+	}
+	
+	private void checkFreeFillEnablement() {
+		freeFillText.setEnabled(freeFillButton.getSelection());
+	}
+	
 	public String getName() {
 		return Messages.getString("MemcheckToolPage.Memcheck_Options"); //$NON-NLS-1$
 	}
 
+	@SuppressWarnings("unchecked")
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		isInitializing = true;
 		try {
@@ -172,6 +297,18 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 			if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 				trackOriginsButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS));
 			}
+
+			showPossiblyLostButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL));
+			mallocFillButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_BOOL));
+			checkMallocFillEnablement();
+			mallocFillText.setText(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_VAL));
+			freeFillButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREEFILL_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREEFILL_BOOL));
+			checkFreeFillEnablement();
+			freeFillText.setText(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREEFILL_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_FREEFILL_VAL));
+			java.util.List<String> ignoreFns = configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_IGNORE_RANGES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_IGNORE_RANGES);
+			ignoreRangesList.setItems(ignoreFns.toArray(new String[ignoreFns.size()]));
+
+			
 		} catch (CoreException e) {
 			ex = e;
 		}
@@ -192,6 +329,13 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, trackOriginsButton.getSelection());
 		}
+		
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, showPossiblyLostButton.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_BOOL, mallocFillButton.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_VAL, mallocFillText.getText());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREEFILL_BOOL, freeFillButton.getSelection());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREEFILL_VAL, freeFillText.getText());
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_IGNORE_RANGES, Arrays.asList(ignoreRangesList.getItems()));
 	}
 
 	@Override
@@ -244,6 +388,9 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
 		}
+		
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL);
+		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_IGNORE_RANGES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_IGNORE_RANGES);
 	}
 		
 	public void setValgrindVersion(Version ver) {
@@ -314,4 +461,19 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		return trackOriginsButton;
 	}
 
+	public Button getShowPossiblyLostButton() {
+		return showPossiblyLostButton;
+	}
+	
+	public Text getMallocFillText() {
+		return mallocFillText;
+	}
+	
+	public Text getFreeFillText() {
+		return freeFillText;
+	}
+	
+	public List getIgnoreRangesList() {
+		return ignoreRangesList;
+	}
 }

@@ -23,4 +23,10 @@ public final class MemcheckCommandConstants {
 	
 	// VG >= 3.4.0
 	public static final String OPT_TRACKORIGINS = "--track-origins"; //$NON-NLS-1$
+	
+	// VG >= 3.6.0
+	public static final String OPT_SHOW_POSSIBLY_LOST = "--show-possibly-lost"; //$NON-NLS-1$
+	public static final String OPT_IGNORERANGES = "--ignore-ranges"; //$NON-NLS-1$
+	public static final String OPT_MALLOCFILL = "--malloc-fill"; //$NON-NLS-1$
+	public static final String OPT_FREEFILL = "--free-fill"; //$NON-NLS-1$
 }
