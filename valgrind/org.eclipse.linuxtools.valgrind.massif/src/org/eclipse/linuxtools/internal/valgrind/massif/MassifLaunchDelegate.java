@@ -83,10 +83,15 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 		opts.add(MassifCommandConstants.OPT_HEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP) ? YES : NO));
 		opts.add(MassifCommandConstants.OPT_HEAPADMIN + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN));
 		opts.add(MassifCommandConstants.OPT_STACKS + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, MassifLaunchConstants.DEFAULT_MASSIF_STACKS) ? YES : NO));
+		opts.add(MassifCommandConstants.OPT_PAGESASHEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, MassifLaunchConstants.DEFAULT_MASSIF_PAGESASHEAP) ? YES : NO));
 		opts.add(MassifCommandConstants.OPT_DEPTH + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DEPTH, MassifLaunchConstants.DEFAULT_MASSIF_DEPTH));
 		List<String> allocFns = config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALLOCFN, MassifLaunchConstants.DEFAULT_MASSIF_ALLOCFN);
 		for (String func : allocFns) {
 			opts.add(MassifCommandConstants.OPT_ALLOCFN + EQUALS + func);
+		}
+		List<String> ignoreFns = config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_IGNOREFN, MassifLaunchConstants.DEFAULT_MASSIF_IGNOREFN);
+		for (String func : ignoreFns) {
+			opts.add(MassifCommandConstants.OPT_IGNOREFN + EQUALS + func);
 		}
 		opts.add(MassifCommandConstants.OPT_THRESHOLD + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_THRESHOLD, MassifLaunchConstants.DEFAULT_MASSIF_THRESHOLD) / 10.0);
 		opts.add(MassifCommandConstants.OPT_PEAKINACCURACY + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PEAKINACCURACY, MassifLaunchConstants.DEFAULT_MASSIF_PEAKINACCURACY) / 10.0);

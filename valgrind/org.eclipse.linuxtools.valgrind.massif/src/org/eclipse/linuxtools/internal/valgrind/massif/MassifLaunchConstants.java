@@ -19,8 +19,10 @@ public final class MassifLaunchConstants {
 	public static final String ATTR_MASSIF_HEAP = MassifPlugin.PLUGIN_ID + ".MASSIF_HEAP"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_HEAPADMIN = MassifPlugin.PLUGIN_ID + ".MASSIF_HEAPADMIN"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_STACKS = MassifPlugin.PLUGIN_ID + ".MASSIF_STACKS"; //$NON-NLS-1$
+	public static final String ATTR_MASSIF_PAGESASHEAP = MassifPlugin.PLUGIN_ID + ".MASSIF_PAGEASHEAP"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_DEPTH = MassifPlugin.PLUGIN_ID + ".MASSIF_DEPTH"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_ALLOCFN = MassifPlugin.PLUGIN_ID + ".MASSIF_ALLOCFN"; //$NON-NLS-1$
+	public static final String ATTR_MASSIF_IGNOREFN = MassifPlugin.PLUGIN_ID + ".MASSIF_IGNOREFN"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_THRESHOLD = MassifPlugin.PLUGIN_ID + ".MASSIF_THRESHOLD"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_PEAKINACCURACY = MassifPlugin.PLUGIN_ID + ".MASSIF_PEAKINACCURACY"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_TIMEUNIT = MassifPlugin.PLUGIN_ID + ".MASSIF_TIMEUNIT"; //$NON-NLS-1$
@@ -36,8 +38,10 @@ public final class MassifLaunchConstants {
 	public static final boolean DEFAULT_MASSIF_HEAP = true;
 	public static final int DEFAULT_MASSIF_HEAPADMIN = 8;
 	public static final boolean DEFAULT_MASSIF_STACKS = false;
+	public static final boolean DEFAULT_MASSIF_PAGESASHEAP = false;
 	public static final int DEFAULT_MASSIF_DEPTH = 30;
 	public static final List<?> DEFAULT_MASSIF_ALLOCFN = Collections.EMPTY_LIST;
+	public static final List<?> DEFAULT_MASSIF_IGNOREFN = Collections.EMPTY_LIST;
 	public static final int DEFAULT_MASSIF_THRESHOLD = 10;
 	public static final int DEFAULT_MASSIF_PEAKINACCURACY = 10;
 	public static final String DEFAULT_MASSIF_TIMEUNIT = TIME_I;
