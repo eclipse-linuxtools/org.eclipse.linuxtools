@@ -39,10 +39,12 @@ public class ErrorParser extends MarkerGenerator {
 	private Pattern changingConfigDirectory = 
 			Pattern.compile("Configuring in (.*)"); //$NON-NLS-1$
 
-	private IPath configDir;
+	private IPath buildDir;
+	private IPath sourcePath;
 
-	public ErrorParser(IPath configPath) {
-		this.configDir = configPath.removeLastSegments(1);
+	public ErrorParser(IPath sourcePath, IPath buildPath) {
+		this.buildDir = buildPath;
+		this.sourcePath = sourcePath;
 	}
 
 	public boolean processLine(String line, ErrorParserManager eoParser) {
@@ -92,7 +94,7 @@ public class ErrorParser extends MarkerGenerator {
 		int lineNumber = getErrorConfigLineNumber(name);
 
 		// now open configure file.
-		File file = new File(configDir + "/configure");
+		File file = new File(sourcePath + "/configure");
 		// If the log file is not present there is nothing we can do.
 		if (!file.exists())
 			return null;
@@ -136,7 +138,7 @@ public class ErrorParser extends MarkerGenerator {
 	 */
 	private int getErrorConfigLineNumber(String name) {
 		try {
-			File file = new File(configDir + "/config.log");
+			File file = new File(buildDir + "/config.log");
 			// If the log file is not present there is nothing we can do.
 			if (!file.exists())
 				return -1;

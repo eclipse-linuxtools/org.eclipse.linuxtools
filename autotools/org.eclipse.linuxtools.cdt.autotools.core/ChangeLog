@@ -1,4 +1,13 @@
 2011-07-13  Sami Wagiaalla  <swagiaal@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (getBuildPath):
+	New.
+	(getSourcePath): New.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParser.java (getCheckType):
+	Use source directory to find configure.
+	(ErrorParser): Take sourceDir argument.
+
+2011-07-13  Sami Wagiaalla  <swagiaal@redhat.com>
     
         * src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParser.java (processLine):
         Look for failed checks.

@@ -22,12 +22,12 @@ import org.eclipse.core.runtime.IPath;
 public class AutotoolsProblemMarkerInfo {
 		
 		public String libraryInfo;
+
 		private ProblemMarkerInfo problemMarkerInfo;
 
 		public AutotoolsProblemMarkerInfo(IResource file, int lineNumber, String description, int severity, String variableName) {
 			this(file, lineNumber, description, severity, variableName, null, null);
 		}
-
 
 		public ProblemMarkerInfo getProblemMarkerInfo() {
 			return problemMarkerInfo;
