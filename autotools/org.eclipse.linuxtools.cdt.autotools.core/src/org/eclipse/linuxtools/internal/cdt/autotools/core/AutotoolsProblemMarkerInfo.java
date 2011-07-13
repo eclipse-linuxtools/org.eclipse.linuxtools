@@ -21,12 +21,16 @@ import org.eclipse.core.runtime.IPath;
  */
 public class AutotoolsProblemMarkerInfo {
 		
+		public static enum Type{PACKAGE, HEADER, PROG, FILE, GENERIC}
+
 		public String libraryInfo;
 
 		private ProblemMarkerInfo problemMarkerInfo;
 
-		public AutotoolsProblemMarkerInfo(IResource file, int lineNumber, String description, int severity, String variableName) {
-			this(file, lineNumber, description, severity, variableName, null, null);
+		private Type type;
+
+		public AutotoolsProblemMarkerInfo(IResource file, int lineNumber, String description, int severity, String variableName, Type type) {
+			this(file, lineNumber, description, severity, variableName, null, null, type);
 		}
 
 		public ProblemMarkerInfo getProblemMarkerInfo() {
@@ -34,9 +38,14 @@ public class AutotoolsProblemMarkerInfo {
 		}
 		
 		public AutotoolsProblemMarkerInfo(IResource file, int lineNumber, String description, int severity, String variableName, 
-				IPath externalPath, String libraryInfo) {
+				IPath externalPath, String libraryInfo, Type type) {
 			problemMarkerInfo = new ProblemMarkerInfo(file, lineNumber, description, severity, variableName, externalPath);
 			this.libraryInfo = libraryInfo;
+			this.type = type;
 		}
 		
+		public String getType() {
+			return type.name();
+		}
+
 }

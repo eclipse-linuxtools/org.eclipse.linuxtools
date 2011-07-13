@@ -1,5 +1,21 @@
 2011-07-13  Sami Wagiaalla  <swagiaal@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerGenerator.java (addMarker):
+	Set the markers type attribute.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/IAutotoolsMarker.java (MARKER_PROBLEM_TYPE):
+	New global constant.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParserManager.java (generateExternalMarker):
+	Take type argument.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParser.java (getCheckType):
+	Return AutotoolsProblemMarkerInfo.Type object instead of String.
+	(processLine): Pass Type to generateMarker().
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsProblemMarkerInfo.java:
+	Added Type enum.
+	(type): New instance variable.
+	(AutotoolsProblemMarkerInfo): Constructors now takes type argument.
+
+2011-07-13  Sami Wagiaalla  <swagiaal@redhat.com>
+
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (getBuildPath):
 	New.
 	(getSourcePath): New.

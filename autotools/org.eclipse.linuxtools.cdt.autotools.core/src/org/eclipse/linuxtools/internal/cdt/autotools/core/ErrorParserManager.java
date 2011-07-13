@@ -293,8 +293,9 @@ public class ErrorParserManager extends OutputStream {
 	 * @param severity - severity of the error.
 	 * @param varName - variable name.
 	 */
-	public void generateMarker(IResource file, int lineNumber, String desc, int severity, String varName) {
-		generateExternalMarker(file, lineNumber, desc, severity, varName, null, null);
+	public void generateMarker(IResource file, int lineNumber, String desc, int severity, String varName,
+			AutotoolsProblemMarkerInfo.Type type) {
+		generateExternalMarker(file, lineNumber, desc, severity, varName, null, null, type);
 	}
 
 	/**
@@ -312,9 +313,9 @@ public class ErrorParserManager extends OutputStream {
 	 * @param externalPath - external path pointing to a file outside the workspace.
 	 */
 	public void generateExternalMarker(IResource file, int lineNumber, String desc, int severity, 
-			String varName, IPath externalPath, String libraryInfo) {
+			String varName, IPath externalPath, String libraryInfo, AutotoolsProblemMarkerInfo.Type type) {
 		AutotoolsProblemMarkerInfo problemMarkerInfo = 
-			new AutotoolsProblemMarkerInfo(file, lineNumber, desc, severity, varName, externalPath, libraryInfo);
+			new AutotoolsProblemMarkerInfo(file, lineNumber, desc, severity, varName, externalPath, libraryInfo, type);
 		fErrors.add(problemMarkerInfo.getProblemMarkerInfo());
 		fMarkerGenerator.addMarker(problemMarkerInfo);
 	}

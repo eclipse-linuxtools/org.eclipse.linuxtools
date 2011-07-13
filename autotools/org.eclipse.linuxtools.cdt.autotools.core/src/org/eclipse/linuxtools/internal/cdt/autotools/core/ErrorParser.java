@@ -59,13 +59,15 @@ public class ErrorParser extends MarkerGenerator {
 			epm = eoParser;
 		m = pkgconfigError.matcher(line);
 		if (m.matches()) {
-			eoParser.generateExternalMarker(epm.getProject(), -1, m.group(1), SEVERITY_ERROR_BUILD, null, null, m.group(2));
+			eoParser.generateExternalMarker(epm.getProject(), -1, m.group(1), SEVERITY_ERROR_BUILD, null, null, m.group(2),
+					AutotoolsProblemMarkerInfo.Type.PACKAGE);
 			return true;
 		} 
 		
 		m = genconfigError.matcher(line);
 		if (m.matches()) {
-			eoParser.generateMarker(epm.getProject(), -1, m.group(1), SEVERITY_ERROR_BUILD, null);
+			eoParser.generateMarker(epm.getProject(), -1, m.group(1), SEVERITY_ERROR_BUILD, null,
+					AutotoolsProblemMarkerInfo.Type.GENERIC);
 			return true; 			
 		}
 		
@@ -73,12 +75,12 @@ public class ErrorParser extends MarkerGenerator {
 		if (m.matches()) {
 			// We know that there is a 'checking for ...' fail.
 			// Find the log file containing this check
-			String type = getCheckType(m.group(1));
+			AutotoolsProblemMarkerInfo.Type type = getCheckType(m.group(1));
 			if (type != null)
-				eoParser.generateMarker(epm.getProject(), -1, "Missing " + type + " " + m.group(1), SEVERITY_ERROR_BUILD, null);
+				eoParser.generateMarker(epm.getProject(), -1, "Missing " + type + " " + m.group(1), SEVERITY_INFO, m.group(1), type);
 			return true; 			
 		}
-		
+
 		return false;
 	}
 
@@ -90,7 +92,7 @@ public class ErrorParser extends MarkerGenerator {
 	 * @param name
 	 * @return
 	 */
-	private String getCheckType(String name) {
+	private AutotoolsProblemMarkerInfo.Type getCheckType(String name) {
 		int lineNumber = getErrorConfigLineNumber(name);
 
 		// now open configure file.
@@ -117,7 +119,15 @@ public class ErrorParser extends MarkerGenerator {
 				}
 				Matcher m = errorPattern.matcher(line);
 				if (m.matches()) {
-					return m.group(1);
+					String typeString = m.group(1);
+					if (typeString.equals("prog"))
+						return AutotoolsProblemMarkerInfo.Type.PROG;
+					if (typeString.equals("header"))
+						return AutotoolsProblemMarkerInfo.Type.HEADER;
+					if (typeString.equals("file"))
+						return AutotoolsProblemMarkerInfo.Type.FILE;
+
+					return null;
 				}
 				line = reader.readLine();
 			}

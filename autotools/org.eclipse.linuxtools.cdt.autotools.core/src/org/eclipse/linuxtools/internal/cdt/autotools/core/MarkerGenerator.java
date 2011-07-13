@@ -127,6 +127,8 @@ public abstract class MarkerGenerator {
 			if (info.libraryInfo != null) {
 				marker.setAttribute(IAutotoolsMarker.MARKER_LIBRARY_INFO, info.libraryInfo);
 			}
+			marker.setAttribute(IAutotoolsMarker.MARKER_PROBLEM_TYPE, info.getType());
+			
 		}
 		catch (CoreException e) {
 			CCorePlugin.log(e.getStatus());
