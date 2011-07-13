@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 Phil Muldoon <pkmuldoon@picobot.org>.
+ * Copyright (c) 2004, 2007, 2011 Phil Muldoon <pkmuldoon@picobot.org>.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.linuxtools.changelog.core.ChangelogPlugin;
 import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
+import org.eclipse.linuxtools.changelog.core.editors.ChangeLogEditor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -64,7 +65,18 @@ public class GNUFormat implements IFormatterChangeLogContrib {
 			int offset_start = findChangeLogEntry(changelog_doc, dateLine);
 			int offset_end = dateLine.length();
 			boolean foundFunction = false;
-			
+			boolean forceNewEntry = false;
+			//if the prepare change action determines it requires a new entry, we force
+			//a new entry by changing the offset_start and change the corresponding field
+			//of the editor back to false to prevent subsequent function change log being
+			//written to a new entry again.
+			if(changelog instanceof ChangeLogEditor) {
+				ChangeLogEditor editor = (ChangeLogEditor)changelog;
+				forceNewEntry = editor.isForceNewLogEntry();
+				editor.setForceNewLogEntry(false);
+				if (forceNewEntry)
+					offset_start = -1;
+			}
 			if (offset_start != -1) {
 				int nextChangeEntry = findChangeLogPattern(changelog_doc,
 						offset_start + dateLine.length());

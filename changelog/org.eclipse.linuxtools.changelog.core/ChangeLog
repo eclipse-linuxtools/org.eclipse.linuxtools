@@ -1,3 +1,16 @@
+2011-07-13  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #350593
+	2011-06-28  Kiu Kwan Leung  <kleung@redhat.com>
+	
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (outputMultipleEntryChangeLog): 
+	Look for dirty ChangeLog.
+	(extractSynchronizeModelInfo): Ditto.
+	* src/org/eclipse/linuxtools/changelog/core/editors/ChangeLogEditor.java (isForceNewLogEntry): New method.
+	(setForceNewLogEntry): Ditto. 
+	* src/org/eclipse/linuxtools/changelog/core/formatters/GNUFormat.java (mergeChangelog): Add
+	check for a forced new entry.
+
 2011-05-31  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Add back key bindings for CTRL+ALT+P in text editor and

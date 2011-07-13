@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Red Hat Inc. and others.
+ * Copyright (c) 2006, 2007, 2011 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,9 @@
  *
  * Contributors:
  *    Kyu Lee <klee@redhat.com> - initial API and implementation
+ *    Kiu Kwan Leung <kleung@redhat.com> - added a boolean field and its getter
+ *                                         and setter to help formater properly
+ *                                         decide when to add/delete a new line
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.editors;
 
@@ -37,6 +40,8 @@ public class ChangeLogEditor extends TextEditor {
 
 	FormatChangeLogAction fcla;
 
+	protected boolean forceNewLogEntry;
+	
 	public ChangeLogEditor() {
 		super();
 
@@ -121,6 +126,14 @@ public class ChangeLogEditor extends TextEditor {
 				ITextEditorActionConstants.SHIFT_LEFT);
 		menu.appendToGroup(ITextEditorActionConstants.GROUP_EDIT, fcla);
 
+	}
+
+	public boolean isForceNewLogEntry() {
+		return forceNewLogEntry;
+	}
+
+	public void setForceNewLogEntry(boolean forceNewLogEntry) {
+		this.forceNewLogEntry = forceNewLogEntry;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2008 Red Hat Inc. and others.
+ * Copyright (c) 2006-2008, 2011 Red Hat Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@ import org.eclipse.linuxtools.changelog.core.IFormatterChangeLogContrib;
 import org.eclipse.linuxtools.changelog.core.IParserChangeLogContrib;
 import org.eclipse.linuxtools.changelog.core.LineComparator;
 import org.eclipse.linuxtools.changelog.core.Messages;
+import org.eclipse.linuxtools.changelog.core.editors.ChangeLogEditor;
 import org.eclipse.team.core.RepositoryProvider;
 import org.eclipse.team.core.diff.IDiff;
 import org.eclipse.team.core.diff.IThreeWayDiff;
@@ -80,6 +81,9 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 	 * @author klee
 	 * 
 	 */
+
+	protected boolean changeLogModified = false;
+	protected boolean newEntryWritten = false;
 	
 	private class MyDocumentProvider extends FileDocumentProvider {
 
@@ -170,41 +174,47 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			for (IDiffElement element: d.getChildren()) {
 				if (element instanceof ISynchronizeModelElement)
 					extractSynchronizeModelInfo((ISynchronizeModelElement)element, newPath, newList, removeList, changeList);
-				else if (!(d.getName().equals("ChangeLog"))) { // $NON-NLS-1$
-					IPath finalPath = path.append(d.getName());
-					PatchFile p = new PatchFile(finalPath);
-					int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
-					if (kind == Differencer.CHANGE) {
-						changeList.add(p);
-						// Save the resource so we can later figure out what lines changed
-						p.setResource(d.getResource());
-					}
-					else if (kind == Differencer.ADDITION) {
-						p.setNewfile(true);
-						newList.add(p);
-					}
-					else if (kind == Differencer.DELETION) {
-						p.setRemovedFile(true);
-						removeList.add(p);
+				else {
+					if (!(d.getName().equals("ChangeLog"))) { //$NON-NLS-1$
+						IPath finalPath = path.append(d.getName());
+						PatchFile p = new PatchFile(finalPath);
+						int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
+						if (kind == Differencer.CHANGE) {
+							changeList.add(p);
+							// Save the resource so we can later figure out what
+							// lines changed
+							p.setResource(d.getResource());
+						} else if (kind == Differencer.ADDITION) {
+							p.setNewfile(true);
+							newList.add(p);
+						} else if (kind == Differencer.DELETION) {
+							p.setRemovedFile(true);
+							removeList.add(p);
+						}
+					} else {
+						this.changeLogModified = true;
 					}
 				}
 			}
-		} else if (!(d.getName().equals("ChangeLog"))) { // $NON-NLS-1$
-			IPath finalPath = path.append(d.getName());
-			PatchFile p = new PatchFile(finalPath);
-			int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
-			if (kind == Differencer.CHANGE) {
-				changeList.add(p);
-				// Save the resource so we can later figure out what lines changed
-				p.setResource(d.getResource());
-			}
-			else if (kind == Differencer.ADDITION) {
-				p.setNewfile(true);
-				newList.add(p);
-			}
-			else if (kind == Differencer.DELETION) {
-				p.setRemovedFile(true);
-				removeList.add(p);
+		} else {
+			if (!(d.getName().equals("ChangeLog"))) { //$NON-NLS-1$
+				IPath finalPath = path.append(d.getName());
+				PatchFile p = new PatchFile(finalPath);
+				int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
+				if (kind == Differencer.CHANGE) {
+					changeList.add(p);
+					// Save the resource so we can later figure out what lines
+					// changed
+					p.setResource(d.getResource());
+				} else if (kind == Differencer.ADDITION) {
+					p.setNewfile(true);
+					newList.add(p);
+				} else if (kind == Differencer.DELETION) {
+					p.setRemovedFile(true);
+					removeList.add(p);
+				}
+			} else {
+				this.changeLogModified = true;
 			}
 		}
 	}
@@ -333,6 +343,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 							p.setResource(info.getLocal());
 						}
 					}
+				} else {
+					this.changeLogModified = true;
 				}
 			}
 		}
@@ -459,6 +471,15 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			// to create a separate ChangeLog for the end-user.
 			if (changelog == null)
 				return;
+		}
+		if ((changelog instanceof ChangeLogEditor) && (!this.newEntryWritten)) {
+			ChangeLogEditor editor = (ChangeLogEditor) changelog;
+			// if the editor is dirty (changes added to the editor without
+			// saving), treat it as a change log modification
+			if (editor.isDirty())
+				this.changeLogModified = true;
+			editor.setForceNewLogEntry(!this.changeLogModified);
+			this.newEntryWritten = true;
 		}
 		// select changelog
 		clw.setChangelog(changelog);
