@@ -104,6 +104,10 @@
                         name="projectPersistentProperty"
                         value="org.eclipse.team.core.repository=org.tigris.subversion.subclipse.core.svnnature">
                   </objectState>
+                  <objectState
+                        name="projectPersistentProperty"
+                        value="org.eclipse.team.core.repository=org.eclipse.egit.core.GitProvider">
+                  </objectState>
                </or>
                </and>
             </enablement>

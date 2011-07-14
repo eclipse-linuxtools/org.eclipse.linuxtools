@@ -8,6 +8,7 @@
  * Contributors:
  *    Kyu Lee <klee@redhat.com> - initial API and implementation
  *    Jeff Johnston <jjohnstn@redhat.com> - remove CVS bindings, support removal
+ *    Kiu Kwan Leung <kleung@redhat.com> - fixed compatibility issue with Egit
  *******************************************************************************/
 package org.eclipse.linuxtools.changelog.core.actions;
 
@@ -22,10 +23,14 @@ import org.eclipse.compare.rangedifferencer.RangeDifference;
 import org.eclipse.compare.rangedifferencer.RangeDifferencer;
 import org.eclipse.compare.structuremergeviewer.Differencer;
 import org.eclipse.compare.structuremergeviewer.IDiffElement;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -60,9 +65,11 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 import org.eclipse.ui.editors.text.StorageDocumentProvider;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
 
@@ -75,6 +82,7 @@ import org.eclipse.ui.part.FileEditorInput;
  */
 public class PrepareChangeLogAction extends ChangeLogAction {
 
+	protected IProject currentProject;	
 	/**
 	 * Provides IDocument given editor input
 	 * 
@@ -297,7 +305,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			return;
 
 		IProject project = resource.getProject();
-
 		// Get the repository provider so we can support multiple types of
 		// code repositories without knowing exactly which (e.g. CVS, SVN, etc..).
 		RepositoryProvider r = RepositoryProvider.getProvider(project);
@@ -531,7 +538,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		if (patchFileInfo.isNewfile() || patchFileInfo.isRemovedFile()) {
 			return new String[]{""};
 		}
-
+		
 		String[] fnames = new String[0];
 		String editorName = ""; // $NON-NLS-1$
 
@@ -549,10 +556,13 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// check if the file type is supported
 
 		// get editor input for target file
-		FileEditorInput fei = new FileEditorInput(getWorkspaceRoot()
-				.getFileForLocation(
-						getWorkspaceRoot().getLocation().append(
-								patchFileInfo.getPath())));
+		IPath path = getWorkspaceRoot().getLocation().append(patchFileInfo.getPath());
+		IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
+		IFile workspaceFile = getWorkspaceFile(fileStore);
+		IURIEditorInput fei = null;
+		if (workspaceFile != null)
+			fei =  new FileEditorInput(workspaceFile);
+		fei = new FileStoreEditorInput(fileStore);
 		
 		SourceEditorInput sei = new SourceEditorInput(patchFileInfo.getStorage());
 
@@ -614,5 +624,29 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 							e.getMessage(), e));
 		}
 		return fnames;
+	}
+	
+	private static IFile getWorkspaceFile(IFileStore fileStore) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IFile[] files = root.findFilesForLocationURI(fileStore.toURI());
+		files = filterNonExistentFiles(files);
+		if (files == null || files.length == 0)
+			return null;
+
+		// for now only return the first file
+				return files[0];
+	}
+
+	private static IFile[] filterNonExistentFiles(IFile[] files) {
+		if (files == null)
+			return null;
+
+		int length = files.length;
+		ArrayList<IFile> existentFiles = new ArrayList<IFile>(length);
+		for (int i = 0; i < length; i++) {
+			if (files[i].exists())
+				existentFiles.add(files[i]);
+		}
+		return existentFiles.toArray(new IFile[existentFiles.size()]);
 	}
 }

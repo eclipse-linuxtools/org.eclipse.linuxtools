@@ -1,3 +1,13 @@
+2011-07-14  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #336255
+	2011-06-14  Chris Aniszczyk <caniszczyk@gmail.com>
+	
+	* META-INF/MANIFEST.MF: Modify dependencies to support EFS.
+	* plugin.xml: Allow git team provider.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (guessFunctionNames): Use
+	EFS since egit files are not directly in workspace.
+
 2011-07-13  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #350593

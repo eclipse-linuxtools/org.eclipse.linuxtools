@@ -16,7 +16,8 @@ Require-Bundle: org.eclipse.team.ui,
  org.eclipse.team.core,
  org.eclipse.ui.navigator,
  org.eclipse.compare,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.core.filesystem
 Export-Package: org.eclipse.linuxtools.changelog.core;
   uses:="org.eclipse.jface.text.hyperlink,
    org.eclipse.core.runtime,
