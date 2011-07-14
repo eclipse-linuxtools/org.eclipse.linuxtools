@@ -87,10 +87,9 @@ public abstract class MarkerGenerator {
 	 * callback from Output Parser
 	 */
 	public void addMarker(AutotoolsProblemMarkerInfo info) {
-		ProblemMarkerInfo problemMarkerInfo = info.getProblemMarkerInfo();
-//		ProblemMarkerInfo problemMarkerInfo = info;
+
 		try {
-			IResource markerResource = problemMarkerInfo.file ;
+			IResource markerResource = info.file ;
 			if (markerResource==null)  {
 				markerResource = getProject();
 			}
@@ -104,7 +103,7 @@ public abstract class MarkerGenerator {
 					int line = ((Integer) cur[i].getAttribute(IMarker.LOCATION)).intValue();
 					int sev = ((Integer) cur[i].getAttribute(IMarker.SEVERITY)).intValue();
 					String mesg = (String) cur[i].getAttribute(IMarker.MESSAGE);
-					if (line == problemMarkerInfo.lineNumber && sev == mapMarkerSeverity(problemMarkerInfo.severity) && mesg.equals(problemMarkerInfo.description)) {
+					if (line == info.lineNumber && sev == mapMarkerSeverity(info.severity) && mesg.equals(info.description)) {
 						return;
 					}
 				}
@@ -112,17 +111,17 @@ public abstract class MarkerGenerator {
 
 			IMarker marker = markerResource.createMarker(IAutotoolsMarker.AUTOTOOLS_PROBLEM_MARKER);
 //			IMarker marker = markerResource.createMarker(ICModelMarker.C_MODEL_PROBLEM_MARKER);
-			marker.setAttribute(IMarker.LOCATION, problemMarkerInfo.lineNumber);
-			marker.setAttribute(IMarker.MESSAGE, problemMarkerInfo.description);
-			marker.setAttribute(IMarker.SEVERITY, mapMarkerSeverity(problemMarkerInfo.severity));
-			marker.setAttribute(IMarker.LINE_NUMBER, problemMarkerInfo.lineNumber);
+			marker.setAttribute(IMarker.LOCATION, info.lineNumber);
+			marker.setAttribute(IMarker.MESSAGE, info.description);
+			marker.setAttribute(IMarker.SEVERITY, mapMarkerSeverity(info.severity));
+			marker.setAttribute(IMarker.LINE_NUMBER, info.lineNumber);
 			marker.setAttribute(IMarker.CHAR_START, -1);
 			marker.setAttribute(IMarker.CHAR_END, -1);
-			if (problemMarkerInfo.variableName != null) {
-				marker.setAttribute(IAutotoolsMarker.MARKER_VARIABLE, problemMarkerInfo.variableName);
+			if (info.variableName != null) {
+				marker.setAttribute(IAutotoolsMarker.MARKER_VARIABLE, info.variableName);
 			}
-			if (problemMarkerInfo.externalPath != null) {
-				marker.setAttribute(IAutotoolsMarker.MARKER_EXTERNAL_LOCATION, problemMarkerInfo.externalPath.toOSString());
+			if (info.externalPath != null) {
+				marker.setAttribute(IAutotoolsMarker.MARKER_EXTERNAL_LOCATION, info.externalPath.toOSString());
 			}
 			if (info.libraryInfo != null) {
 				marker.setAttribute(IAutotoolsMarker.MARKER_LIBRARY_INFO, info.libraryInfo);

@@ -316,7 +316,16 @@ public class ErrorParserManager extends OutputStream {
 			String varName, IPath externalPath, String libraryInfo, AutotoolsProblemMarkerInfo.Type type) {
 		AutotoolsProblemMarkerInfo problemMarkerInfo = 
 			new AutotoolsProblemMarkerInfo(file, lineNumber, desc, severity, varName, externalPath, libraryInfo, type);
-		fErrors.add(problemMarkerInfo.getProblemMarkerInfo());
+		addProblemMarker(problemMarkerInfo);
+	}
+
+	/**
+	 * Add the given marker to the list of error markers.
+	 * 
+	 * @param problemMarkerInfo - The marker to be added 
+	 */
+	public void addProblemMarker(AutotoolsProblemMarkerInfo problemMarkerInfo){
+		fErrors.add(problemMarkerInfo);
 		fMarkerGenerator.addMarker(problemMarkerInfo);
 	}
 

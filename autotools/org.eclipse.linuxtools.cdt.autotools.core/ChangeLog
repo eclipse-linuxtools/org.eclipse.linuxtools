@@ -1,3 +1,22 @@
+2011-07-14  Sami Wagiaalla  <swagiaal@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerGenerator.java (addMarker):
+	Use argument problemMarkerInfo.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParserManager.java (addProblemMarker):
+	New method.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParser.java:
+	Implement IErrorParser.
+	(ErrorParser): New no argument constructor.
+	Remove epm instance variable.
+	Add project instance variable.
+	(processLine): New.
+	(processLine): Use addProblemMarker.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsProblemMarkerInfo.java:
+	Extend org.eclipse.cdt.core.ProblemMarkerInfo.
+	(AutotoolsProblemMarkerInfo): Call super().
+	* plugin.xml: Added ErrorParser to org.eclipse.cdt.core.ErrorParser
+	extension point.
+
 2011-07-13  Sami Wagiaalla  <swagiaal@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerGenerator.java (addMarker):
