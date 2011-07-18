@@ -11,7 +11,6 @@
 package org.eclipse.linuxtools.profiling.launch.remote;
 
 import java.io.File;
-import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -21,8 +20,6 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteCommandShellOperation;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteLaunchConstants;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteMessages;
-import org.eclipse.rse.core.IRSESystemType;
-import org.eclipse.rse.core.RSECorePlugin;
 import org.eclipse.rse.core.model.IHost;
 import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.rse.core.model.SystemStartHere;
@@ -33,14 +30,11 @@ import org.eclipse.rse.subsystems.files.core.subsystems.IRemoteFile;
 import org.eclipse.rse.subsystems.files.core.subsystems.IRemoteFileSubSystem;
 import org.eclipse.rse.subsystems.shells.core.subsystems.IRemoteCmdSubSystem;
 import org.eclipse.rse.subsystems.shells.core.subsystems.IRemoteCommandShell;
-import org.eclipse.tm.tcf.protocol.IPeer;
-import org.eclipse.tm.tcf.protocol.Protocol;
 
 public class RemoteConnection {
 	
 	private ILaunchConfiguration config;
-	private IPeer peer;
-	private IHost tcfHost;
+	private IHost rseHost;
 	private IRemoteFileSubSystem fs;
 	private IRemoteCmdSubSystem rcs;
 
@@ -80,51 +74,31 @@ public class RemoteConnection {
 	}
 	
 	private void initialize() throws RemoteConnectionException {
-		// Open TCF Channel
-		Map<String, IPeer> peers = Protocol.getLocator().getPeers();
-		String peerID = null;
+		ISystemRegistry registry = SystemStartHere.getSystemRegistry();
+		String hostName = null;
 		try {
-			peerID = config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_PEERID, RemoteLaunchConstants.DEFAULT_REMOTE_PEERID);
-		} catch (CoreException e) {
+			hostName = config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, RemoteLaunchConstants.DEFAULT_REMOTE_HOSTID);
+		} catch (CoreException e1) {
 			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_launch_failed);
 		}
-		peer = peers.get(peerID);
-		if (peer == null) {
-			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_peers);
+		
+		if (hostName == null)
+			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host);
+		
+		IHost[] hosts = registry.getHosts();
+		for (int i = 0; i < hosts.length; ++i) {
+			IHost host = hosts[i];
+			if (host.getName().equals(hostName)) {
+				rseHost = host;
+				break;
+			}
 		}
 		
-		ISystemRegistry registry = SystemStartHere.getSystemRegistry();
-		IRSESystemType[] systemTypes = RSECorePlugin.getTheCoreRegistry().getSystemTypes();
-		IRSESystemType tcfSystemType = null;
-		for (int i = 0; i < systemTypes.length; ++i) {
-			IRSESystemType rst = systemTypes[i];
-			if (rst.getId().equals("org.eclipse.tm.tcf.rse.systemType")) { // $NON-NLS-1$
-				tcfSystemType = rst;
-			}
-		}
-		if (tcfSystemType == null) {
-			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_systemType);
-		}
-		tcfHost = null;
-		IHost[] tcfHosts = registry.getHostsBySystemType(tcfSystemType);
-		for (int i = 0; i < tcfHosts.length; ++i) {
-			IHost host = tcfHosts[i];
-			if (host.getHostName().equals(peer.getAttributes().get(IPeer.ATTR_IP_HOST))) {
-				tcfHost = host;
-			}
-		}
-//		if (tcfHost == null) {
-			try {
-				tcfHost = registry.createHost(tcfSystemType, "TCF:" + peer.getAttributes().get(IPeer.ATTR_IP_HOST), peer.getAttributes().get(IPeer.ATTR_IP_HOST), "TCF Agent");
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_launch_failed);
-			}
-//		}
+		if (rseHost == null)
+			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host);
 		
 		// Get pertinent remote RSE services
-		ISubSystem[] subSystems = registry.getSubSystems(tcfHost);
+		ISubSystem[] subSystems = registry.getSubSystems(rseHost);
 		for (int i = 0; i < subSystems.length; ++i) {
 			ISubSystem subSystem = subSystems[i];
 			if (subSystem instanceof IRemoteFileSubSystem)
@@ -148,7 +122,7 @@ public class RemoteConnection {
 	 * @return id
 	 */
 	public String getId() {
-		return tcfHost.getAliasName();
+		return rseHost.getName();
 	}
 	
 	/***

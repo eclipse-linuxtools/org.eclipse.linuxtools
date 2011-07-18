@@ -13,10 +13,12 @@ package org.eclipse.linuxtools.internal.profiling.launch.remote;
 
 public final class RemoteLaunchConstants {
 	
-	private static final String PLUGIN_ID = "org.eclipse.linuxtools.valgrind.launch.remote"; //$NON-NLS-1$
+	private static final String PLUGIN_ID = "org.eclipse.linuxtools.profiling.launch.remote"; //$NON-NLS-1$
 	
-	public static final String ATTR_REMOTE_PEERID = PLUGIN_ID + ".REMOTE_PEERID"; //$NON-NLS-1$
+	public static final String ATTR_REMOTE_HOSTID = PLUGIN_ID + ".REMOTE_HOSTID"; //$NON-NLS-1$
 
 	public static final String DEFAULT_REMOTE_PEERID = null;
+	
+	public static final String DEFAULT_REMOTE_HOSTID = null;
 	
 }

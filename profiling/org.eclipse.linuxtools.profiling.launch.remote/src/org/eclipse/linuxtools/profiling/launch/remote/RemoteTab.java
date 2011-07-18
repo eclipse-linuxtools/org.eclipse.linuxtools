@@ -11,8 +11,6 @@
  *******************************************************************************/ 
 package org.eclipse.linuxtools.profiling.launch.remote;
 
-import java.util.Map;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -30,6 +28,11 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.ProfileRemoteLaunchPlugin;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteLaunchConstants;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteMessages;
+import org.eclipse.rse.core.events.ISystemModelChangeEvent;
+import org.eclipse.rse.core.events.ISystemModelChangeListener;
+import org.eclipse.rse.core.model.IHost;
+import org.eclipse.rse.core.model.ISystemRegistry;
+import org.eclipse.rse.core.model.SystemStartHere;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -38,18 +41,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.tm.tcf.protocol.IPeer;
-import org.eclipse.tm.tcf.protocol.Protocol;
-import org.eclipse.tm.tcf.services.ILocator;
 
 public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 	
 	private TableViewer tableViewer;
 	private boolean isInitializing;
-	private Map<String, IPeer> peers;
+	private IHost[] hosts;
 	private String name;
 
-	private class RemoteLabelProvider extends LabelProvider implements ITableLabelProvider {
+	private class RemoteSystemLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
@@ -57,56 +57,33 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 
 		public String getColumnText(Object element, int columnIndex) {
 			String text = null;
-			IPeer peer = (IPeer) element;
+			IHost host = (IHost) element;
 			switch (columnIndex) {
 			case 0:
-				text = peer.getID();
+				text = host.getName();
 				break;
 			case 1:
-				text = peer.getName();
+				text = host.getHostName();
 				break;
 			case 2:
-				text = peer.getOSName();
-				break;
-			case 3:
-				text = peer.getTransportName();
+				text = host.getSystemType().getLabel();
 				break;
 			}
 			return text;
 		}
 		
 	}
-	
-	private class TCFPeerListener implements ILocator.LocatorListener {
 
-		public void peerAdded(IPeer peer) {
-			peers.put(peer.getID(), peer);
+	private class RemoteModelListener implements ISystemModelChangeListener {
+
+		public void systemModelResourceChanged(ISystemModelChangeEvent arg0) {
+			ISystemRegistry registry = SystemStartHere.getSystemRegistry();
+			hosts = registry.getHosts();
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
-					refreshPeerViewer();
+					refreshViewer();
 				}
 			});
-		}
-
-		public void peerChanged(IPeer peer) {
-			peers.put(peer.getID(), peer);
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					refreshPeerViewer();
-				}
-			});
-		}
-
-		public void peerRemoved(String id) {
-			peers.remove(id);
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					refreshPeerViewer();
-				}
-			});
-		}
-
-		public void peerHeartBeat(String id) {
 		}
 		
 	}
@@ -114,10 +91,9 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 	public RemoteTab(String name) {
 		this.name = name;
 		// Query Locator service for available peers
-		ILocator locator = Protocol.getLocator();
-		peers = locator.getPeers();
-		// Register for updates
-		locator.addListener(new TCFPeerListener());
+		ISystemRegistry registry = SystemStartHere.getSystemRegistry();
+		hosts = registry.getHosts();
+		registry.addSystemModelChangeListener(new RemoteModelListener());
 	}
 	
 	protected void localCreateControl(Composite top) {}
@@ -129,12 +105,12 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 		
 		// Create Peers table
 		Label peersLabel = new Label(top, SWT.NONE);
-		peersLabel.setText(RemoteMessages.RemoteTab_label_peers);
+		peersLabel.setText(RemoteMessages.RemoteTab_label_hosts);
 		
 		tableViewer = new TableViewer(top, SWT.BORDER | SWT.FULL_SELECTION);
 		tableViewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 		
-		String[] titles = { RemoteMessages.RemoteTab_header_ID, RemoteMessages.RemoteTab_header_name, RemoteMessages.RemoteTab_header_OS, RemoteMessages.RemoteTab_header_transport };
+		String[] titles = { RemoteMessages.RemoteTab_header_name, RemoteMessages.RemoteTab_header_hostname, RemoteMessages.RemoteTab_header_type };
 		int[] bounds = { 200, 100, 250, 100 };
 
 		for (int i = 0; i < titles.length; i++) {
@@ -149,14 +125,14 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 		table.setLinesVisible(true);
 		
 		tableViewer.setContentProvider(new ArrayContentProvider());
-		tableViewer.setLabelProvider(new RemoteLabelProvider());
+		tableViewer.setLabelProvider(new RemoteSystemLabelProvider());
 		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				updateLaunchConfigurationDialog();
 			}
 		});
 		
-		tableViewer.setInput(peers.values().toArray(new IPeer[peers.size()]));
+		tableViewer.setInput(hosts);
 		
 		localCreateControl(top);
 		
@@ -164,7 +140,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(RemoteLaunchConstants.ATTR_REMOTE_PEERID, RemoteLaunchConstants.DEFAULT_REMOTE_PEERID);
+		configuration.setAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, RemoteLaunchConstants.DEFAULT_REMOTE_HOSTID);
 	}
 
 	public void localInitializeFrom(ILaunchConfiguration configuration) throws CoreException {}
@@ -172,14 +148,14 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		isInitializing = true;
 		try {
-			String peerID = configuration.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_PEERID, RemoteLaunchConstants.DEFAULT_REMOTE_PEERID);
-			if (peerID != null) {
-				IPeer[] peers = (IPeer[]) tableViewer.getInput();
+			String hostID = configuration.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, RemoteLaunchConstants.DEFAULT_REMOTE_HOSTID);
+			if (hostID != null) {
+				IHost[] hosts = (IHost[]) tableViewer.getInput();
 				
 				// Search for corresponding peer and select in table
-				for (int i = 0; i < peers.length; i++) {
-					if (peers[i].getID().equals(peerID)) {
-						tableViewer.setSelection(new StructuredSelection(peers[i]));
+				for (int i = 0; i < hosts.length; i++) {
+					if (hosts[i].getName().equals(hostID)) {
+						tableViewer.setSelection(new StructuredSelection(hosts[i]));
 					}
 				}
 			}
@@ -193,11 +169,12 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		ISelection selected = tableViewer.getSelection();
 		if (selected == null) {
-			configuration.setAttribute(RemoteLaunchConstants.ATTR_REMOTE_PEERID, (String) null);
+			configuration.setAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, (String) null);
 		}
 		else if (selected instanceof IStructuredSelection) {
-			IPeer peer = (IPeer) ((IStructuredSelection) selected).getFirstElement();
-			configuration.setAttribute(RemoteLaunchConstants.ATTR_REMOTE_PEERID, peer.getID());
+			IHost host = (IHost) ((IStructuredSelection) selected).getFirstElement();
+			if (host != null)
+				configuration.setAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, host.getName());
 		}
 	}
 	
@@ -218,7 +195,7 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public Image getImage() {
-		return ProfileRemoteLaunchPlugin.imageDescriptorFromPlugin(ProfileRemoteLaunchPlugin.PLUGIN_ID, "icons/tcf.gif").createImage();
+		return ProfileRemoteLaunchPlugin.imageDescriptorFromPlugin(ProfileRemoteLaunchPlugin.PLUGIN_ID, "icons/system_view.gif").createImage();
 	}
 	
 	@Override
@@ -228,10 +205,11 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 		}		
 	}
 	
-	private void refreshPeerViewer() {
+	private void refreshViewer() {
 		if (tableViewer != null && tableViewer.getContentProvider() != null) {
-			tableViewer.setInput(peers.values().toArray(new IPeer[peers.size()]));
+			tableViewer.setInput(hosts);
 			tableViewer.refresh();
 		}
 	}
 }
+
