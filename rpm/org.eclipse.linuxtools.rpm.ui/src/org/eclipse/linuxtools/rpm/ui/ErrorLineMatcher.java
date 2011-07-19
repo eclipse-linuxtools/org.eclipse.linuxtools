@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.debug.ui.console.FileLink;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.ui.console.IPatternMatchListenerDelegate;
@@ -42,7 +43,7 @@ public class ErrorLineMatcher implements IPatternMatchListenerDelegate {
 			int lineNumber = Integer.parseInt(line.substring(12,
 					line.indexOf(':', line.indexOf(LINE))).trim());
 			FileLink fileLink = new FileLink(
-					console.getSpecfile(),
+					(IFile) console.getSpecfile().getAdapter(IFile.class),
 					"org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor", -1, -1, lineNumber); //$NON-NLS-1$
 			console.addHyperlink(fileLink, 7,
 					line.indexOf(':', line.indexOf(LINE)) - 7);

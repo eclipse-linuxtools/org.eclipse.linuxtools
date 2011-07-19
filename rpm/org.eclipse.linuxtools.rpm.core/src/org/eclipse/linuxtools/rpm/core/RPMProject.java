@@ -14,13 +14,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
+import java.util.List;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.rpm.core.utils.RPM;
@@ -30,11 +32,20 @@ public class RPMProject {
 
 	private IProject project;
 	private SourceRPM sourceRPM;
-	private RPMConfiguration rpmConfig;
+	private IProjectConfiguration rpmConfig;
 
-	public RPMProject(IProject project) throws CoreException {
+	public RPMProject(IProject project, RPMProjectLayout projectLayout)
+			throws CoreException {
 		this.project = project;
-		rpmConfig = new RPMConfiguration(this.project);
+		switch (projectLayout) {
+		case FLAT:
+			rpmConfig = new FlatBuildConfiguration(this.project);
+			break;
+		case RPMBUILD:
+		default:
+			rpmConfig = new RPMBuildConfiguration(this.project);
+			break;
+		}
 	}
 
 	public IProject getProject() {
@@ -54,15 +65,15 @@ public class RPMProject {
 						sourceRPM.getFile().getName());
 	}
 
-	public RPMConfiguration getConfiguration() {
+	public IProjectConfiguration getConfiguration() {
 		return rpmConfig;
 	}
 
-	public IFile getSpecFile() {
-		IFolder specsFolder = getConfiguration().getSpecsFolder();
-		IFile file = null;
+	public IResource getSpecFile() {
+		IContainer specsFolder = getConfiguration().getSpecsFolder();
+		IResource file = null;
 		try {
-			file = specsFolder.getFile(specsFolder.members()[0].getName());
+			file = specsFolder.findMember(specsFolder.members()[0].getName());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,7 +81,7 @@ public class RPMProject {
 		return file;
 	}
 
-	public void setSpecFile(IFile specFile) throws CoreException {
+	public void setSpecFile(IResource specFile) throws CoreException {
 		getProject().setPersistentProperty(
 				new QualifiedName(RPMCorePlugin.ID,
 						IRPMConstants.SPEC_FILE_PROPERTY), specFile.getName());
@@ -79,7 +90,7 @@ public class RPMProject {
 	public void importSourceRPM(File externalFile) throws CoreException {
 		// Copy original SRPM to workspace
 		IFile srpmFile = getConfiguration().getSrpmsFolder().getFile(
-				externalFile.getName());
+				new Path(externalFile.getName()));
 		try {
 			srpmFile.create(new FileInputStream(externalFile), false, null);
 		} catch (FileNotFoundException e) {
@@ -98,8 +109,10 @@ public class RPMProject {
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
 
 		// Set the spec file
-		IResource[] installedSpecs = getConfiguration().getSpecsFolder().members();
-		if (installedSpecs.length != 1) {
+		SpecfileVisitor specVisitor = new SpecfileVisitor();
+		project.accept(specVisitor);
+		List<IResource> installedSpecs = specVisitor.getSpecFiles();
+		if (installedSpecs.size() != 1) {
 			String throw_message = Messages
 					.getString("RPMCore.spec_file_ambiguous") + //$NON-NLS-1$
 					rpmConfig.getSpecsFolder().getLocation().toOSString();
@@ -107,8 +120,8 @@ public class RPMProject {
 					throw_message, null);
 			throw new CoreException(error);
 		}
-		setSpecFile(getConfiguration().getSpecsFolder().getFile(
-				installedSpecs[0].getName()));
+		setSpecFile(getConfiguration().getSpecsFolder().findMember(
+				installedSpecs.get(0).getName()));
 
 		// Set the project nature
 		RPMProjectNature.addRPMNature(getProject(), null);
@@ -117,7 +130,7 @@ public class RPMProject {
 
 	public void buildAll(OutputStream outStream) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		 rpmbuild.buildAll(getSpecFile(), outStream);
+		rpmbuild.buildAll(getSpecFile(), outStream);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);

@@ -16,14 +16,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.linuxtools.rpm.core.IProjectConfiguration;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.RPMConfiguration;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 
 /**
@@ -44,7 +44,7 @@ public class RPMBuild {
 	 * @param config
 	 *            the RPM configuration to use
 	 */
-	public RPMBuild(RPMConfiguration config) {
+	public RPMBuild(IProjectConfiguration config) {
 		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(RPMCorePlugin.ID);
 		rpmBuildCmd = node.get(IRPMConstants.RPMBUILD_CMD, ""); //$NON-NLS-1$
 		String[] tmpMacroDefines = {
@@ -78,7 +78,7 @@ public class RPMBuild {
 	 * @param outStream The stream to write the output to.
 	 * @throws CoreException If the operation fails.
 	 */
-	public void buildPrep(IFile specFile, OutputStream outStream) throws CoreException {
+	public void buildPrep(IResource specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bp"); //$NON-NLS-1$
@@ -101,7 +101,7 @@ public class RPMBuild {
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public void buildBinary(IFile specFile, OutputStream outStream) throws CoreException {
+	public void buildBinary(IResource specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bb"); //$NON-NLS-1$
@@ -124,7 +124,7 @@ public class RPMBuild {
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public void buildAll(IFile specFile, OutputStream outStream) throws CoreException {
+	public void buildAll(IResource specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-ba"); //$NON-NLS-1$
@@ -147,7 +147,7 @@ public class RPMBuild {
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public void buildSource(IFile specFile, OutputStream outStream) throws CoreException {
+	public void buildSource(IResource specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bs"); //$NON-NLS-1$

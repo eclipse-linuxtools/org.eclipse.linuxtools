@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 
-public class RPMConfiguration {
+public class RPMBuildConfiguration implements IProjectConfiguration {
 	
 	private IProject project;
 	
@@ -26,7 +26,7 @@ public class RPMConfiguration {
     private IFolder sourcesFolder;
     private IFolder buildFolder;
 	
-	public RPMConfiguration(IProject project) throws CoreException {
+	public RPMBuildConfiguration(IProject project) throws CoreException {
 		this.project = project;
 		initialize();
 	}
@@ -129,22 +129,37 @@ public class RPMConfiguration {
         }
     }
 	
+	/* (non-Javadoc)
+	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getBuildFolder()
+	 */
 	public IFolder getBuildFolder() {
 		return buildFolder;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getRpmsFolder()
+	 */
 	public IFolder getRpmsFolder() {
 		return rpmsFolder;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getSourcesFolder()
+	 */
 	public IFolder getSourcesFolder() {
 		return sourcesFolder;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getSpecsFolder()
+	 */
 	public IFolder getSpecsFolder() {
 		return specsFolder;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.linuxtools.rpm.core.IProjectConfiguration#getSrpmsFolder()
+	 */
 	public IFolder getSrpmsFolder() {
 		return srpmsFolder;
 	}

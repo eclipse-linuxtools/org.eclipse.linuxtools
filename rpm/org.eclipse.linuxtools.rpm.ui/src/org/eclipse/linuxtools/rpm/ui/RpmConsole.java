@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.ui.console.IOConsole;
 
@@ -40,7 +40,7 @@ public class RpmConsole extends IOConsole {
 	 * 
 	 * @return The spec file.
 	 */
-	public IFile getSpecfile() {
+	public IResource getSpecfile() {
 		return rpmProject.getSpecFile();
 	}
 }

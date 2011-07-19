@@ -73,11 +73,12 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 
 		// Try to create an instance of the build class. 
 		try {
-			RPMProject rpmProject = new RPMProject(project);
+			RPMProject rpmProject = new RPMProject(project, projectLayout);
 			monitor.worked(1);
 			monitor.setTaskName(Messages.getString("SRPMImportOperation.Importing_SRPM")); //$NON-NLS-1$
 			rpmProject.importSourceRPM(sourceRPM);
 		} catch (Exception e) {
+			e.printStackTrace();
 			rpm_errorTable.add(e);
 			return;
 		}

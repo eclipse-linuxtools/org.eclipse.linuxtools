@@ -352,7 +352,7 @@ public class SRPMImportPage extends WizardPage {
 	 */
 	private IProject getNewProject() {
 		IPath path = Path.fromOSString(locationPath.getText());
-		RPMProjectCreator projectCreator = new RPMProjectCreator();
+		RPMProjectCreator projectCreator = new RPMProjectCreator(getSelectedLayout());
 		projectCreator.create(getProjectName(path.lastSegment()),
 				path.removeLastSegments(1), new NullProgressMonitor());
 		return projectCreator.getLatestProject();
