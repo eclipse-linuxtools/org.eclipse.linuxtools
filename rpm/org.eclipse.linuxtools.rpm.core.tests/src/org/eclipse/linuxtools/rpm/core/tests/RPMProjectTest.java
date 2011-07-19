@@ -16,9 +16,11 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -30,6 +32,7 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.linuxtools.rpm.core.IRPMConstants;
 import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
+import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
 import org.osgi.framework.FrameworkUtil;
 
@@ -70,7 +73,7 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		RPMProject rpmProject = new RPMProject(testProject);
+		RPMProject rpmProject = new RPMProject(testProject, RPMProjectLayout.RPMBUILD);
 
 		// Find the test SRPM and install it
 		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
@@ -85,7 +88,7 @@ public class RPMProjectTest extends TestCase {
 
 		// Make sure the original SRPM got copied into the workspace
 		IFile srpm = rpmProject.getConfiguration().getSrpmsFolder().getFile(
-				"helloworld-2-2.src.rpm");
+				new Path("helloworld-2-2.src.rpm"));
 		assertTrue(srpm.exists());
 		assertNotNull(rpmProject.getProject()
 				.getPersistentProperty(
@@ -94,14 +97,14 @@ public class RPMProjectTest extends TestCase {
 
 		// Make sure everything got installed properly
 		IFile spec = rpmProject.getConfiguration().getSpecsFolder().getFile(
-				"helloworld.spec");
+				new Path("helloworld.spec"));
 		assertTrue(spec.exists());
 		IFile sourceBall = rpmProject.getConfiguration().getSourcesFolder()
-				.getFile("helloworld-2.tar.bz2");
+				.getFile(new Path("helloworld-2.tar.bz2"));
 		assertTrue(sourceBall.exists());
 
 		// Make sure we got the spec file
-		IFile specFile = rpmProject.getSpecFile();
+		IResource specFile = rpmProject.getSpecFile();
 		assertTrue(specFile != null);
 		assertNotNull(rpmProject.getProject().getPersistentProperty(
 				new QualifiedName(RPMCorePlugin.ID,
@@ -122,7 +125,7 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		RPMProject rpmProject = new RPMProject(testProject);
+		RPMProject rpmProject = new RPMProject(testProject, RPMProjectLayout.RPMBUILD);
 
 		// Find the test SRPM, install, and build-prep it
 		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
@@ -138,8 +141,8 @@ public class RPMProjectTest extends TestCase {
 		rpmProject.buildPrep(bos);
 
 		// Make sure we got everything in the build directory
-		IFolder builddir = rpmProject.getConfiguration().getBuildFolder();
-		IFolder helloworldFolder = builddir.getFolder("helloworld-2");
+		IContainer builddir = rpmProject.getConfiguration().getBuildFolder();
+		IFolder helloworldFolder = builddir.getFolder(new Path("helloworld-2"));
 		assertTrue(helloworldFolder.exists());
 
 		// Clean up
@@ -153,7 +156,7 @@ public class RPMProjectTest extends TestCase {
 		testProject.open(monitor);
 
 		// Instantiate an RPMProject
-		RPMProject rpmProject = new RPMProject(testProject);
+		RPMProject rpmProject = new RPMProject(testProject, RPMProjectLayout.RPMBUILD);
 
 		// Find the test SRPM and install it
 		URL url = FileLocator.find(FrameworkUtil.getBundle(RPMProjectTest.class), new Path(
@@ -169,7 +172,7 @@ public class RPMProjectTest extends TestCase {
 		rpmProject.buildSourceRPM(bos);
 
 		IFile foo2 = rpmProject.getConfiguration().getSrpmsFolder().getFile(
-				"helloworld-2-2.src.rpm");
+				new Path("helloworld-2-2.src.rpm"));
 		assertTrue(foo2.exists());
 
 		testProject.delete(true, false, null);
