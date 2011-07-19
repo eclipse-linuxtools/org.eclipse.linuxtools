@@ -27,8 +27,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.RPMProjectCreator;
+import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.core.utils.FileDownloadJob;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -38,7 +41,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -178,15 +180,12 @@ public class SRPMImportPage extends WizardPage {
 		Label typeLabel = new Label(specGrid, SWT.NULL);
 		typeLabel.setText(Messages.getString("SRPMImportPage.4")); //$NON-NLS-1$
 		typeLabel.setEnabled(false);
-		final Combo combo = new Combo(specGrid, SWT.NULL);
-
-		String[] types = new String[] {
-				Messages.getString("SRPMImportPage.5"), Messages.getString("SRPMImportPage.6") }; //$NON-NLS-1$ //$NON-NLS-2$
-		for (String type : types)
-			combo.add(type);
-		combo.select(0);
-		combo.setLayoutData(new GridData(GridData.CENTER));
-		combo.setEnabled(false);
+		ComboViewer typeCombo = new ComboViewer(specGrid, SWT.READ_ONLY);
+		typeCombo.setContentProvider(ArrayContentProvider.getInstance());
+		typeCombo.setInput(RPMProjectLayout.values());
+		typeCombo.getCombo().select(0);
+		//		typeCombo.setLayoutData(new GridData(GridData.CENTER));
+//		typeCombo.setEnabled(false);
 	}
 
 	private void createSourceRPMCombo(Composite parent) {
