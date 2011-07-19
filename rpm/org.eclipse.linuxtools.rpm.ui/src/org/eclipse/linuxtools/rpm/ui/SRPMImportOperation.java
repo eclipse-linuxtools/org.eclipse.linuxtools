@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
+import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -34,6 +35,7 @@ import org.eclipse.ui.PlatformUI;
 public class SRPMImportOperation implements IRunnableWithProgress {
 	private IProject project;
 	private File sourceRPM;
+	private RPMProjectLayout projectLayout;
 
 	// Progressmonitor
 	private IProgressMonitor monitor;
@@ -44,10 +46,13 @@ public class SRPMImportOperation implements IRunnableWithProgress {
 	 * Method SRPMImportOperation.
 	 * @param project The project to import into.
 	 * @param sourceRPM The source rpm to import.
+	 * @param rpmProjectLayout The required layout of the project.
 	 */
-	public SRPMImportOperation(IProject project, File sourceRPM) {
+	public SRPMImportOperation(IProject project, File sourceRPM, RPMProjectLayout rpmProjectLayout) {
 		this.project = project;
 		this.sourceRPM = sourceRPM;
+		this.projectLayout = rpmProjectLayout;
+		
 	}
 
 	/**

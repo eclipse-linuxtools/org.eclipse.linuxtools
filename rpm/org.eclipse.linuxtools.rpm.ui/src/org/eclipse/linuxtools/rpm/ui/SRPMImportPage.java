@@ -64,6 +64,8 @@ public class SRPMImportPage extends WizardPage {
 	// GUI Control variables
 	private Text sourceSRPM;
 	private Text locationPath;
+	private ComboViewer typeCombo;
+	private Button defaultSettings;
 
 	/**
 	 * @see java.lang.Object#Object()
@@ -114,6 +116,15 @@ public class SRPMImportPage extends WizardPage {
 		}
 		return new File(sourceSRPM.getText());
 	}
+	
+	private RPMProjectLayout getSelectedLayout() {
+		if(defaultSettings.getSelection()){
+			return RPMProjectLayout.RPMBUILD;
+		} else {
+			return RPMProjectLayout.valueOf(typeCombo.getCombo().getItem(typeCombo.getCombo().getSelectionIndex()));
+		}
+			
+	}
 
 	public void createControl(Composite parent) {
 		// Set Page complete to false. Don't allow the user to execute wizard
@@ -134,7 +145,7 @@ public class SRPMImportPage extends WizardPage {
 	}
 
 	private void createProjectDetails(Composite parent) {
-		final Button defaultSettings = new Button(parent, SWT.CHECK);
+		defaultSettings = new Button(parent, SWT.CHECK);
 		defaultSettings.setText(Messages.getString("SRPMImportPage.0")); //$NON-NLS-1$
 		defaultSettings.setSelection(true);
 
@@ -180,12 +191,11 @@ public class SRPMImportPage extends WizardPage {
 		Label typeLabel = new Label(specGrid, SWT.NULL);
 		typeLabel.setText(Messages.getString("SRPMImportPage.4")); //$NON-NLS-1$
 		typeLabel.setEnabled(false);
-		ComboViewer typeCombo = new ComboViewer(specGrid, SWT.READ_ONLY);
+		typeCombo = new ComboViewer(specGrid, SWT.READ_ONLY);
 		typeCombo.setContentProvider(ArrayContentProvider.getInstance());
 		typeCombo.setInput(RPMProjectLayout.values());
 		typeCombo.getCombo().select(0);
-		//		typeCombo.setLayoutData(new GridData(GridData.CENTER));
-//		typeCombo.setEnabled(false);
+		typeCombo.getCombo().setEnabled(false);
 	}
 
 	private void createSourceRPMCombo(Composite parent) {
@@ -314,7 +324,7 @@ public class SRPMImportPage extends WizardPage {
 		SRPMImportOperation srpmImportOp = null;
 		try {
 			srpmImportOp = new SRPMImportOperation(detailedProject,
-					getSelectedSRPM());
+					getSelectedSRPM(), getSelectedLayout());
 			getContainer().run(true, true, srpmImportOp);
 		} catch (Exception e) {
 			setErrorMessage(e.toString());
