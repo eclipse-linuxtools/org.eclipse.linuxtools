@@ -1,3 +1,10 @@
+2011-07-20  Severin Gehwolf  <sgehwolf@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/linux/OpxmlRunner.java (getEventNames): 
+	(handleModelData): Fix for Eclipse bug 341621.
+	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java (_runOpcontrol): Refactored due to above fix. 
+	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties: Ditto.
+
 2011-07-06  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java (_runOpcontrol): Provide hints

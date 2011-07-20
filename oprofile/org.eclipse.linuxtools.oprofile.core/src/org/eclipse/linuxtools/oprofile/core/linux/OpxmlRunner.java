@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008, 2009 Red Hat, Inc.
+ * Copyright (c) 2004, 2009-2011 Red Hat, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,19 +13,23 @@ package org.eclipse.linuxtools.oprofile.core.linux;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
+import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.OpxmlException;
 import org.eclipse.linuxtools.oprofile.core.opxml.AbstractDataAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.OprofileSAXHandler;
@@ -34,6 +38,7 @@ import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.modeldata.ModelDataAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
+import org.eclipse.osgi.util.NLS;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -173,11 +178,57 @@ public class OpxmlRunner {
 	private boolean handleModelData (String [] args){
 		Process p;
 		try {
-			p = Runtime.getRuntime().exec("opreport -X --details event:" + args[1]); //$NON-NLS-1$
+			String cmd[] = {"opreport", "-X", "--details", "event:" + args[1]};
+			p = Runtime.getRuntime().exec(cmd); //$NON-NLS-1$
+			
+			StringBuilder output = new StringBuilder();
+			StringBuilder errorOutput = new StringBuilder();
+			String s = null;
+			try {
+				BufferedReader stdInput = new BufferedReader(new InputStreamReader(
+						p.getInputStream()));
+				BufferedReader stdError = new BufferedReader(new InputStreamReader(
+						p.getErrorStream()));
+				try {
+					// Read output of opreport. We need to do this, since this might
+					// cause the plug-in to hang. See Eclipse bug 341621 for more info.
+					// FIXME: Both of those while loops should really be done in two separate
+					// threads, so that we avoid this very problem when the error input
+					// stream buffer fills up.
+					while ((s = stdInput.readLine()) != null) {
+						output.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
+					}
+					while ((s = stdError.readLine()) != null) {
+						errorOutput.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
+					}
+				} finally {
+					stdInput.close();
+					stdError.close();
+				}
+				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
+				OprofileCorePlugin
+						.log(Status.ERROR,
+								NLS.bind(
+										OprofileProperties
+												.getString("process.log.stderr"), "opreport", errorOutput.toString().trim())); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+
+			
+			// convert the string to inputstream to pass 
+			InputStream is = null;
+			try {
+				is = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+
 			if (p.waitFor() != 0){
 				return false;
 			}
-			ModelDataAdapter mda = new ModelDataAdapter(p.getInputStream());
+			ModelDataAdapter mda = new ModelDataAdapter(is);
 			if (! mda.isParseable()){
 				return false;
 			}
@@ -208,14 +259,56 @@ public class OpxmlRunner {
 		}
 	}
 
-	/**
-	 * @return the name of the events used on the current session
-	 */
 	private String[] getEventNames (){
 		String [] ret = null;
 		try {
-			Process p = Runtime.getRuntime().exec("opreport -X --details");
-			InputStream is = p.getInputStream();
+			String cmd[] = {"opreport", "-X", "-d"};
+			Process p = Runtime.getRuntime().exec(cmd);		
+			
+			StringBuilder output = new StringBuilder();
+			StringBuilder errorOutput = new StringBuilder();
+			String s = null;
+			try {
+				BufferedReader stdInput = new BufferedReader(new InputStreamReader(
+						p.getInputStream()));
+				BufferedReader stdError = new BufferedReader(new InputStreamReader(
+						p.getErrorStream()));
+				try {
+					// Read output of opreport. We need to do this, since this might
+					// cause the plug-in to hang. See Eclipse bug 341621 for more info.
+					// FIXME: Both of those while loops should really be done in two separate
+					// threads, so that we avoid this very problem when the error input
+					// stream buffer fills up.
+					while ((s = stdInput.readLine()) != null) {
+						output.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
+					}
+					while ((s = stdError.readLine()) != null) {
+						errorOutput.append(s + System.getProperty("line.separator")); //$NON-NLS-1$
+					}
+				} finally {
+					stdInput.close();
+					stdError.close();
+				}
+				if (!errorOutput.toString().trim().equals("")) { //$NON-NLS-1$
+					OprofileCorePlugin
+							.log(Status.ERROR,
+									NLS.bind(
+											OprofileProperties
+													.getString("process.log.stderr"), "opreport", errorOutput.toString().trim())); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+
+			
+			// convert the string to inputstream to pass to builder.parse
+			InputStream is = null;
+			try {
+				is = new ByteArrayInputStream(output.toString().getBytes("UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
 			if (p.waitFor() == 0){
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder builder;
