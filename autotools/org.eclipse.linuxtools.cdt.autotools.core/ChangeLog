@@ -1,3 +1,10 @@
+2011-07-20  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Resolves: bug#351660
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (addMakeTargetsToManager): 
+	Fix to always create a new MakeTarget rather than finding an existing one so that
+	modifications made do not result in events being sent to project/workspace.
+
 2011-07-14  Sami Wagiaalla  <swagiaal@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerGenerator.java (addMarker):
