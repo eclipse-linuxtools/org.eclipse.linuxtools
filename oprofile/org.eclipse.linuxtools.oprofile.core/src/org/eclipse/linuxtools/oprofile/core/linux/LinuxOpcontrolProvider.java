@@ -30,6 +30,7 @@ import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
+import org.eclipse.osgi.util.NLS;
 
 /**
  * A class which encapsulates running opcontrol.
@@ -292,19 +293,23 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 					// reason of weird problems.
 					boolean extraInfo = false;
 
-					if (!errOutput.equals("")) { //$NON-NLS-1$
+					if (!errOutput.trim().equals("")) { //$NON-NLS-1$
 						extraInfo = true;
 						OprofileCorePlugin
 								.log(Status.ERROR,
-										OprofileProperties
-												.getString("opcontrol.error.log.stderr") + ": " + errOutput); //$NON-NLS-1$
+										NLS.bind(
+												OprofileProperties
+														.getString("process.log.stderr"), "opcontrol", errOutput)); //$NON-NLS-1$ //$NON-NLS-2$
 					}
-					if (!output.equals("")) { //$NON-NLS-1$
+					if (!output.trim().equals("")) { //$NON-NLS-1$
 						extraInfo = true;
 						OprofileCorePlugin
-								.log(Status.ERROR, // log as error, since stderr output might be masked as stdout
-										OprofileProperties
-												.getString("opcontrol.error.log.stdout") + ": " + output); //$NON-NLS-1$
+								.log(Status.ERROR, // log as error, since stderr
+												   // output might be masked as
+												   // stdout
+										NLS.bind(
+												OprofileProperties
+														.getString("process.log.stdout"), "opcontrol", output)); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 
 					// Red Hat BZ #694631: NMI Watchdog problem.
