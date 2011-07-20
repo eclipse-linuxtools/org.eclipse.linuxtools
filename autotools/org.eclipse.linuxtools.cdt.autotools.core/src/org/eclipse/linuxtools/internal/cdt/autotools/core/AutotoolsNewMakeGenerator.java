@@ -1238,10 +1238,12 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			if (!isValidTarget(targetName, makeTargetManager))
 				continue;
 			try {
-				IMakeTarget makeTarget = makeTargetManager.findTarget(project, targetName);
-				if (makeTarget == null)
-					makeTarget = makeTargetManager.createTarget(
-						project, targetName, targetBuildID);
+				// Bug #351660 - always create a new MakeTarget because an
+				// existing MakeTarget will cause events to occur on every
+				// modification whereas a new MakeTarget not yet added will
+				// not cause this delay.
+				IMakeTarget makeTarget = makeTargetManager.createTarget(
+								project, targetName, targetBuildID);
 				makeTarget.setContainer(project);
 				makeTarget.setStopOnError(isStopOnError);
 				makeTarget.setRunAllBuilders(false);
