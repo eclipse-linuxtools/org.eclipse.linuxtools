@@ -24,29 +24,21 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.core.RPMProjectCreator;
-import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.core.utils.FileDownloadJob;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
@@ -63,9 +55,7 @@ public class SRPMImportPage extends WizardPage {
 
 	// GUI Control variables
 	private Text sourceSRPM;
-	private Text locationPath;
-	private ComboViewer typeCombo;
-	private Button defaultSettings;
+	private RPMDetailsPanel detailsPanel;
 
 	/**
 	 * @see java.lang.Object#Object()
@@ -116,15 +106,6 @@ public class SRPMImportPage extends WizardPage {
 		}
 		return new File(sourceSRPM.getText());
 	}
-	
-	private RPMProjectLayout getSelectedLayout() {
-		if(defaultSettings.getSelection()){
-			return RPMProjectLayout.RPMBUILD;
-		} else {
-			return RPMProjectLayout.valueOf(typeCombo.getCombo().getItem(typeCombo.getCombo().getSelectionIndex()));
-		}
-			
-	}
 
 	public void createControl(Composite parent) {
 		// Set Page complete to false. Don't allow the user to execute wizard
@@ -141,61 +122,7 @@ public class SRPMImportPage extends WizardPage {
 
 		// Create contols on the page
 		createSourceRPMCombo(composite);
-		createProjectDetails(composite);
-	}
-
-	private void createProjectDetails(Composite parent) {
-		defaultSettings = new Button(parent, SWT.CHECK);
-		defaultSettings.setText(Messages.getString("SRPMImportPage.0")); //$NON-NLS-1$
-		defaultSettings.setSelection(true);
-
-		final Group specGrid = new Group(parent, SWT.NONE);
-		defaultSettings.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (defaultSettings.getSelection()) {
-					for (Control control : specGrid.getChildren()) {
-						specGrid.setEnabled(false);
-						control.setEnabled(false);
-					}
-				} else {
-					for (Control control : specGrid.getChildren()) {
-						specGrid.setEnabled(true);
-						control.setEnabled(true);
-					}
-				}
-			}
-
-		});
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 3;
-		specGrid.setLayout(layout);
-		specGrid.setText(Messages.getString("SRPMImportPage.1")); //$NON-NLS-1$
-		specGrid.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
-		specGrid.setEnabled(false);
-		Label locationLabel = new Label(specGrid, SWT.NULL);
-		locationLabel.setText(Messages.getString("SRPMImportPage.2")); //$NON-NLS-1$
-		locationLabel.setEnabled(false);
-		locationPath = new Text(specGrid, SWT.SINGLE | SWT.BORDER);
-		locationPath.setEnabled(false);
-		locationPath.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.GRAB_HORIZONTAL));
-		Button containerBrowseButton = new Button(specGrid, SWT.PUSH);
-		containerBrowseButton.setText(Messages.getString("SRPMImportPage.3")); //$NON-NLS-1$
-		containerBrowseButton.setLayoutData(new GridData(
-				GridData.HORIZONTAL_ALIGN_FILL));
-		containerBrowseButton.setEnabled(false);
-
-		Label typeLabel = new Label(specGrid, SWT.NULL);
-		typeLabel.setText(Messages.getString("SRPMImportPage.4")); //$NON-NLS-1$
-		typeLabel.setEnabled(false);
-		typeCombo = new ComboViewer(specGrid, SWT.READ_ONLY);
-		typeCombo.setContentProvider(ArrayContentProvider.getInstance());
-		typeCombo.setInput(RPMProjectLayout.values());
-		typeCombo.getCombo().select(0);
-		typeCombo.getCombo().setEnabled(false);
+		detailsPanel = new RPMDetailsPanel(composite);
 	}
 
 	private void createSourceRPMCombo(Composite parent) {
@@ -252,7 +179,7 @@ public class SRPMImportPage extends WizardPage {
 	private void changeProjectSettings() {
 		String srpmName = sourceSRPM.getText();
 
-		locationPath.setText(ResourcesPlugin.getWorkspace().getRoot()
+		detailsPanel.setLocationPath(ResourcesPlugin.getWorkspace().getRoot()
 				.getLocation().append(getProjectName(srpmName)).toFile()
 				.getAbsolutePath());
 	}
@@ -324,7 +251,7 @@ public class SRPMImportPage extends WizardPage {
 		SRPMImportOperation srpmImportOp = null;
 		try {
 			srpmImportOp = new SRPMImportOperation(detailedProject,
-					getSelectedSRPM(), getSelectedLayout());
+					getSelectedSRPM(), detailsPanel.getSelectedLayout());
 			getContainer().run(true, true, srpmImportOp);
 		} catch (Exception e) {
 			setErrorMessage(e.toString());
@@ -351,8 +278,9 @@ public class SRPMImportPage extends WizardPage {
 	 * Creates a new project.
 	 */
 	private IProject getNewProject() {
-		IPath path = Path.fromOSString(locationPath.getText());
-		RPMProjectCreator projectCreator = new RPMProjectCreator(getSelectedLayout());
+		IPath path = detailsPanel.getLocationPath();
+		RPMProjectCreator projectCreator = new RPMProjectCreator(
+				detailsPanel.getSelectedLayout());
 		projectCreator.create(getProjectName(path.lastSegment()),
 				path.removeLastSegments(1), new NullProgressMonitor());
 		return projectCreator.getLatestProject();
