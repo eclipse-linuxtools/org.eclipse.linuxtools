@@ -13,10 +13,18 @@ package org.eclipse.linuxtools.rpm.core;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 
+/**
+ * Configuration for the flat rpm project layout.
+ *
+ */
 public class FlatBuildConfiguration implements IProjectConfiguration {
 
 	private IProject project;
 	
+	/**
+	 * Creates the configuration for the given project.
+	 * @param project The project whose configuration is represented.
+	 */
 	public FlatBuildConfiguration(IProject project) {
 		this.project = project;
 	}
