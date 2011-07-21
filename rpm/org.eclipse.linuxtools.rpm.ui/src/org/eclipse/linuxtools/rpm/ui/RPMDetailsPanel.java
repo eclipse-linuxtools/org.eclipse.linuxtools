@@ -76,7 +76,7 @@ public class RPMDetailsPanel {
 
 		});
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 3;
 		specGrid.setLayout(layout);
 		specGrid.setText(Messages.getString("SRPMImportPage.1")); //$NON-NLS-1$
 		specGrid.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
