@@ -21,14 +21,13 @@ import org.eclipse.linuxtools.rpm.core.RPMProjectCreator;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
-import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 /**
  * Use RPMProjectCreator for the actual work.
  *
  */
 public class RPMNewProject extends Wizard implements INewWizard {
-	WizardNewProjectCreationPage namePage;
+	NewProjectCreationPage namePage;
 
 	@Override
 	public boolean performFinish() {
@@ -52,7 +51,7 @@ public class RPMNewProject extends Wizard implements INewWizard {
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		super.addPages();
-		namePage = new WizardNewProjectCreationPage(Messages.getString("RPMNewProject.0")); //$NON-NLS-1$
+		namePage = new NewProjectCreationPage(Messages.getString("RPMNewProject.0")); //$NON-NLS-1$
 		namePage.setTitle(Messages.getString("RPMNewProject.1")); //$NON-NLS-1$
 		namePage
 				.setDescription(Messages.getString("RPMNewProject.2")); //$NON-NLS-1$
@@ -62,7 +61,7 @@ public class RPMNewProject extends Wizard implements INewWizard {
 	}
 
 	protected void createProject(IProgressMonitor monitor) {
-		RPMProjectCreator rpmProjectCreator = new RPMProjectCreator();
+		RPMProjectCreator rpmProjectCreator = new RPMProjectCreator(namePage.getSelectedLayout());
 		rpmProjectCreator.create(namePage.getProjectName(), namePage.getLocationPath(), monitor);
 	}
 
