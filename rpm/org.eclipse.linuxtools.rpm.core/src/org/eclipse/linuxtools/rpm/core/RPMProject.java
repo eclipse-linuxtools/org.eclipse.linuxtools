@@ -91,12 +91,6 @@ public class RPMProject {
 		return file;
 	}
 
-	public void setSpecFile(IResource specFile) throws CoreException {
-		project.setPersistentProperty(
-				new QualifiedName(RPMCorePlugin.ID,
-						IRPMConstants.SPEC_FILE_PROPERTY), specFile.getName());
-	}
-
 	public void importSourceRPM(File externalFile) throws CoreException {
 		// Copy original SRPM to workspace
 		IFile srpmFile = getConfiguration().getSrpmsFolder().getFile(
@@ -117,21 +111,6 @@ public class RPMProject {
 		RPM rpm = new RPM(getConfiguration());
 		rpm.install(getSourceRPM().getFile());
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-
-		// Set the spec file
-		SpecfileVisitor specVisitor = new SpecfileVisitor();
-		project.accept(specVisitor);
-		List<IResource> installedSpecs = specVisitor.getSpecFiles();
-		if (installedSpecs.size() != 1) {
-			String throw_message = Messages
-					.getString("RPMCore.spec_file_ambiguous") + //$NON-NLS-1$
-					rpmConfig.getSpecsFolder().getLocation().toOSString();
-			IStatus error = new Status(IStatus.ERROR, IRPMConstants.ERROR, 1,
-					throw_message, null);
-			throw new CoreException(error);
-		}
-		setSpecFile(getConfiguration().getSpecsFolder().findMember(
-				installedSpecs.get(0).getName()));
 
 		// Set the project nature
 		RPMProjectNature.addRPMNature(project, null);
