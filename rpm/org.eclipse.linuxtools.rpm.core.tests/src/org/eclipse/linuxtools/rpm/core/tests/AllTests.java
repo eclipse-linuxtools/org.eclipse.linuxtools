@@ -10,17 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestSuite{
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for org.eclipse.linuxtools.rpm.core.tests");
-		//$JUnit-BEGIN$
-		suite.addTestSuite(RPMProjectTest.class);
-		suite.addTestSuite(RPMProjectNatureTest.class);
-		//$JUnit-END$
-		return suite;
-	}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ RPMProjectTest.class, RPMProjectNatureTest.class })
+public class AllTests {
 }

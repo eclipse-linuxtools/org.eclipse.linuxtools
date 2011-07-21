@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.core.tests;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -19,35 +20,34 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-public class RPMProjectNatureTest extends TestCase {
+public class RPMProjectNatureTest {
 
-	IWorkspace workspace;
-    IWorkspaceRoot root;
-    NullProgressMonitor monitor;
-    String pluginRoot;
-    
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-	protected void setUp() throws Exception {
-        super.setUp();
-        IWorkspaceDescription desc;
-        workspace = ResourcesPlugin.getWorkspace();
-        root = workspace.getRoot();
-        monitor = new NullProgressMonitor();
-        if(workspace == null) {
-            fail("Workspace was not setup");
-        }
-        if(root == null) {
-            fail("Workspace root was not setup");
-        }
-        desc = workspace.getDescription();
-        desc.setAutoBuilding(false);
-        workspace.setDescription(desc);
-    }
-	
+	static IWorkspace workspace;
+	static IWorkspaceRoot root;
+	static NullProgressMonitor monitor;
+	String pluginRoot;
+
+	@BeforeClass
+	public static void setUp() throws Exception {
+		IWorkspaceDescription desc;
+		workspace = ResourcesPlugin.getWorkspace();
+		root = workspace.getRoot();
+		monitor = new NullProgressMonitor();
+		if (workspace == null) {
+			fail("Workspace was not setup");
+		}
+		if (root == null) {
+			fail("Workspace root was not setup");
+		}
+		desc = workspace.getDescription();
+		desc.setAutoBuilding(false);
+		workspace.setDescription(desc);
+	}
+
+	@Test
 	public void testAddRPMProjectNature() throws Exception {
 		IProject testProject = root.getProject("testProject");
 		testProject.create(monitor);
@@ -56,5 +56,5 @@ public class RPMProjectNatureTest extends TestCase {
 		assertTrue(testProject.hasNature(RPMProjectNature.RPM_NATURE_ID));
 		testProject.delete(true, false, monitor);
 	}
-	
+
 }
