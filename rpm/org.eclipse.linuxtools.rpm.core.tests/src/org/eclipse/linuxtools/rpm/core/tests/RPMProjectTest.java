@@ -28,9 +28,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.linuxtools.rpm.core.IRPMConstants;
-import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.core.RPMProjectNature;
@@ -90,10 +87,6 @@ public class RPMProjectTest extends TestCase {
 		IFile srpm = rpmProject.getConfiguration().getSrpmsFolder().getFile(
 				new Path("helloworld-2-2.src.rpm"));
 		assertTrue(srpm.exists());
-		assertNotNull(testProject
-				.getPersistentProperty(
-						new QualifiedName(RPMCorePlugin.ID,
-								IRPMConstants.SRPM_PROPERTY)));
 
 		// Make sure everything got installed properly
 		IFile spec = rpmProject.getConfiguration().getSpecsFolder().getFile(
@@ -105,10 +98,7 @@ public class RPMProjectTest extends TestCase {
 
 		// Make sure we got the spec file
 		IResource specFile = rpmProject.getSpecFile();
-		assertTrue(specFile != null);
-		assertNotNull(testProject.getPersistentProperty(
-				new QualifiedName(RPMCorePlugin.ID,
-						IRPMConstants.SPEC_FILE_PROPERTY)));
+		assertNotNull(specFile);
 
 		// Make sure the RPM nature was added
 		assertTrue(testProject.hasNature(

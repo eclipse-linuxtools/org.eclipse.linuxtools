@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.rpm.core.utils.RPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
@@ -35,7 +34,6 @@ import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
 public class RPMProject {
 
 	private IProject project;
-	private SourceRPM sourceRPM;
 	private IProjectConfiguration rpmConfig;
 
 	/**
@@ -57,18 +55,6 @@ public class RPMProject {
 			rpmConfig = new RPMBuildConfiguration(this.project);
 			break;
 		}
-	}
-
-	public SourceRPM getSourceRPM() {
-		return sourceRPM;
-	}
-
-	public void setSourceRPM(SourceRPM sourceRPM) throws CoreException {
-		this.sourceRPM = sourceRPM;
-		project.setPersistentProperty(
-						new QualifiedName(RPMCorePlugin.ID,
-								IRPMConstants.SRPM_PROPERTY),
-						sourceRPM.getFile().getName());
 	}
 
 	public IProjectConfiguration getConfiguration() {
@@ -105,11 +91,10 @@ public class RPMProject {
 					throw_message, null);
 			throw new CoreException(error);
 		}
-		setSourceRPM(new SourceRPM(srpmFile));
 
 		// Install the SRPM
 		RPM rpm = new RPM(getConfiguration());
-		rpm.install(getSourceRPM().getFile());
+		rpm.install(srpmFile);
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 
 		// Set the project nature
