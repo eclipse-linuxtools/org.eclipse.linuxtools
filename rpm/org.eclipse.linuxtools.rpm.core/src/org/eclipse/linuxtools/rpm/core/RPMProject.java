@@ -28,12 +28,23 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.rpm.core.utils.RPM;
 import org.eclipse.linuxtools.rpm.core.utils.RPMBuild;
 
+/**
+ * Basic RPM projects operations handler.
+ *
+ */
 public class RPMProject {
 
 	private IProject project;
 	private SourceRPM sourceRPM;
 	private IProjectConfiguration rpmConfig;
 
+	/**
+	 * Creates the rpm project for the given IProject and layout.
+	 * 
+	 * @param project The Eclipse project this RPMProject is represented by.
+	 * @param projectLayout The layout of the rpm project
+	 * @throws CoreException Thrown only in the RPMbuild layout case if a problem with some of the folders exist.
+	 */
 	public RPMProject(IProject project, RPMProjectLayout projectLayout)
 			throws CoreException {
 		this.project = project;
@@ -48,18 +59,13 @@ public class RPMProject {
 		}
 	}
 
-	public IProject getProject() {
-		return project;
-	}
-
 	public SourceRPM getSourceRPM() {
 		return sourceRPM;
 	}
 
 	public void setSourceRPM(SourceRPM sourceRPM) throws CoreException {
 		this.sourceRPM = sourceRPM;
-		getProject()
-				.setPersistentProperty(
+		project.setPersistentProperty(
 						new QualifiedName(RPMCorePlugin.ID,
 								IRPMConstants.SRPM_PROPERTY),
 						sourceRPM.getFile().getName());
@@ -72,8 +78,12 @@ public class RPMProject {
 	public IResource getSpecFile() {
 		IContainer specsFolder = getConfiguration().getSpecsFolder();
 		IResource file = null;
+		SpecfileVisitor specVisitor = new SpecfileVisitor();
+		
 		try {
-			file = specsFolder.findMember(specsFolder.members()[0].getName());
+			specsFolder.accept(specVisitor);
+			List<IResource> installedSpecs = specVisitor.getSpecFiles();
+			file = installedSpecs.get(0);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,7 +92,7 @@ public class RPMProject {
 	}
 
 	public void setSpecFile(IResource specFile) throws CoreException {
-		getProject().setPersistentProperty(
+		project.setPersistentProperty(
 				new QualifiedName(RPMCorePlugin.ID,
 						IRPMConstants.SPEC_FILE_PROPERTY), specFile.getName());
 	}
@@ -106,7 +116,7 @@ public class RPMProject {
 		// Install the SRPM
 		RPM rpm = new RPM(getConfiguration());
 		rpm.install(getSourceRPM().getFile());
-		getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 
 		// Set the spec file
 		SpecfileVisitor specVisitor = new SpecfileVisitor();
@@ -124,7 +134,7 @@ public class RPMProject {
 				installedSpecs.get(0).getName()));
 
 		// Set the project nature
-		RPMProjectNature.addRPMNature(getProject(), null);
+		RPMProjectNature.addRPMNature(project, null);
 
 	}
 

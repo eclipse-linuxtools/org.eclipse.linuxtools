@@ -90,7 +90,7 @@ public class RPMProjectTest extends TestCase {
 		IFile srpm = rpmProject.getConfiguration().getSrpmsFolder().getFile(
 				new Path("helloworld-2-2.src.rpm"));
 		assertTrue(srpm.exists());
-		assertNotNull(rpmProject.getProject()
+		assertNotNull(testProject
 				.getPersistentProperty(
 						new QualifiedName(RPMCorePlugin.ID,
 								IRPMConstants.SRPM_PROPERTY)));
@@ -106,12 +106,12 @@ public class RPMProjectTest extends TestCase {
 		// Make sure we got the spec file
 		IResource specFile = rpmProject.getSpecFile();
 		assertTrue(specFile != null);
-		assertNotNull(rpmProject.getProject().getPersistentProperty(
+		assertNotNull(testProject.getPersistentProperty(
 				new QualifiedName(RPMCorePlugin.ID,
 						IRPMConstants.SPEC_FILE_PROPERTY)));
 
 		// Make sure the RPM nature was added
-		assertTrue(rpmProject.getProject().hasNature(
+		assertTrue(testProject.hasNature(
 				RPMProjectNature.RPM_NATURE_ID));
 
 		// Clean up
