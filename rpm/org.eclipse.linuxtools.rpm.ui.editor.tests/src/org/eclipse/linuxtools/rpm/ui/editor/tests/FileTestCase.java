@@ -62,8 +62,8 @@ public abstract class FileTestCase extends TestCase {
 		ArrayList<SpecfileTestFailure> failures = new ArrayList<SpecfileTestFailure>();
 		try {
 			IAnnotationModel model = SpecfileEditor.getSpecfileDocumentProvider().getAnnotationModel(fei);
-			for (Iterator i = model.getAnnotationIterator(); i.hasNext(); ) {
-				Annotation annotation = (Annotation)i.next();
+			for (Iterator<Annotation> i = model.getAnnotationIterator(); i.hasNext(); ) {
+				Annotation annotation = i.next();
 				Position p = model.getPosition(annotation);
 				SpecfileTestFailure t = new SpecfileTestFailure(annotation, p);
 				failures.add(t);
