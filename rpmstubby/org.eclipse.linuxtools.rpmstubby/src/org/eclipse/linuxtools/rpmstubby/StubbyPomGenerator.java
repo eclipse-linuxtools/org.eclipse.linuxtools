@@ -94,7 +94,6 @@ public class StubbyPomGenerator {
 		generatePrepSection(buffer);
 		generateBuildSection(buffer);
 		generateInstallSection(buffer);
-		generatePostPostun(buffer);
 		generateFilesSections(buffer);
 		generateChangelog(buffer);
 
@@ -118,14 +117,6 @@ public class StubbyPomGenerator {
 
 		buffer.append("%description javadoc\n");
 		buffer.append("API documentation for %{name}.\n\n");
-
-	}
-
-	private void generatePostPostun(StringBuilder buffer) {
-		buffer.append("%post\n");
-		buffer.append("%update_maven_depmap\n\n");
-		buffer.append("%postun\n");
-		buffer.append("%update_maven_depmap\n\n");
 
 	}
 
@@ -162,13 +153,11 @@ public class StubbyPomGenerator {
 
 	private void generateFilesSections(StringBuilder buffer) {
 		buffer.append("%files\n");
-		buffer.append("%defattr(-,root,root,-)\n");
 		buffer.append("%{_javadir}/*\n");
 		buffer.append("%{_mavenpomdir}/*\n");
 		buffer.append("%{_mavendepmapfragdir}/*\n\n");
 
 		buffer.append("%files javadoc\n");
-		buffer.append("%defattr(-,root,root,-)\n");
 		buffer.append("%{_javadocdir}/%{name}\n\n");
 	}
 
