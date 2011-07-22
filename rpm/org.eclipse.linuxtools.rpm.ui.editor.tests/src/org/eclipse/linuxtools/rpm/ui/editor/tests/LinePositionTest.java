@@ -11,12 +11,16 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.Collection;
 
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
+import org.junit.Test;
 
 public class LinePositionTest extends FileTestCase {
-
+	@Test
 	public void testLineNumber() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n"
 				+ "Patch2: someotherfile.patch";
@@ -32,7 +36,7 @@ public class LinePositionTest extends FileTestCase {
 				fail();
 		}
 	}
-
+	@Test
 	public void testLineNumber2() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 

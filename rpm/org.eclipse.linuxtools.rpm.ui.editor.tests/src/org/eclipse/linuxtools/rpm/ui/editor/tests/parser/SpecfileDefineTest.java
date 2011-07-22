@@ -11,12 +11,17 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests.parser;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileDefine;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.SpecfileTestFailure;
+import org.junit.Before;
+import org.junit.Test;
 
 public class SpecfileDefineTest extends FileTestCase {
 
@@ -39,12 +44,14 @@ public class SpecfileDefineTest extends FileTestCase {
 			"%define __find_requires %{SOURCE3}";
 
 	@Override
-	protected void setUp() throws CoreException {
+	@Before
+	public void setUp() throws CoreException {
 		super.setUp();
 		newFile(testSpec);
 		specfile = parser.parse(testDocument);
 	}
 
+	@Test
 	public void testResolve() {
 		SpecfileDefine define1 = new SpecfileDefine("name", "testspec",
 				specfile, specfile.getPackages().getPackage(specfile.getName()));
@@ -52,6 +59,7 @@ public class SpecfileDefineTest extends FileTestCase {
 		assertEquals("testspec", ((SpecfileElement) define1).resolve("%{name}"));
 	}
 
+	@Test
 	public void testDefine() {
 		SpecfileDefine blahDefine = specfile.getDefine("blah");
 		assertEquals(SpecfileDefine.class, blahDefine.getClass());
@@ -59,6 +67,7 @@ public class SpecfileDefineTest extends FileTestCase {
 		assertEquals("bleh", blahDefine.getStringValue());
 	}
 
+	@Test
 	public void testDefine2() {
 		SpecfileDefine blahDefine = specfile.getDefine("blah2");
 		assertEquals(SpecfileDefine.class, blahDefine.getClass());
@@ -66,6 +75,7 @@ public class SpecfileDefineTest extends FileTestCase {
 		assertEquals("bleh", blahDefine.getStringValue());
 	}
 
+	@Test
 	public void testDefine3() {
 		SpecfileDefine blahDefine = specfile.getDefine("blah3");
 		assertEquals(SpecfileDefine.class, blahDefine.getClass());
@@ -73,6 +83,7 @@ public class SpecfileDefineTest extends FileTestCase {
 		assertEquals(1, blahDefine.getIntValue());
 	}
 
+	@Test
 	public void testDefine4() {
 		SpecfileDefine blahDefine = specfile.getDefine("blah4");
 		assertEquals(SpecfileDefine.class, blahDefine.getClass());
@@ -96,7 +107,7 @@ public class SpecfileDefineTest extends FileTestCase {
 //		if (fail)
 //			fail();
 //	}
-
+	@Test
 	public void testNonLetterDefinitionName() {
 		boolean fail = true;
 		for (SpecfileTestFailure failure : getFailures()) {
@@ -127,7 +138,7 @@ public class SpecfileDefineTest extends FileTestCase {
 		// fail();
 		// }
 	}
-
+	@Test
 	public void testNonLetterDefinitionName2() {
 		boolean fail = true;
 		for (SpecfileTestFailure failure : getFailures()) {
@@ -153,7 +164,7 @@ public class SpecfileDefineTest extends FileTestCase {
 		// fail();
 		// }
 	}
-
+	@Test
 	public void testUnderscoreDefine() {
 		SpecfileDefine blahDefine = specfile.getDefine("__find_requires");
 		assertEquals(SpecfileDefine.class, blahDefine.getClass());

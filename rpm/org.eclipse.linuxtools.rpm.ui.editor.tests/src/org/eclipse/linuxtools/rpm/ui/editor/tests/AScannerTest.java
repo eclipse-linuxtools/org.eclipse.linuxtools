@@ -16,6 +16,7 @@ import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
+import org.junit.Before;
 
 public abstract class AScannerTest extends FileTestCase {
 
@@ -27,13 +28,9 @@ public abstract class AScannerTest extends FileTestCase {
 
 	public SpecfileEditor editor;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see junit.framework.TestCase#setUp()
-	 */
 	@Override
-	protected void setUp() throws CoreException {
+	@Before
+	public void setUp() throws CoreException {
 		super.setUp();
 		newFile(getContents());
 		testProject.refresh();

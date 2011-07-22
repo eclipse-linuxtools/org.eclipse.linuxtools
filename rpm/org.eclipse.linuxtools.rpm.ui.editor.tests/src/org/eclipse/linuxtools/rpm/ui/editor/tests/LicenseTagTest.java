@@ -11,8 +11,11 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-public class LicenseTagTest extends FileTestCase {
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Test;
+public class LicenseTagTest extends FileTestCase {
+	@Test
 	public void testSingleLicenseTag() {
 		String testText = "License: EPL";
 		newFile(testText);

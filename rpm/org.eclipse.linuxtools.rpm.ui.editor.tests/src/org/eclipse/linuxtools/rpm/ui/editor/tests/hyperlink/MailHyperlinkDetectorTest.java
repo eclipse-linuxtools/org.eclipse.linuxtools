@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
@@ -21,12 +25,14 @@ import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
+import org.junit.Test;
 
 public class MailHyperlinkDetectorTest extends FileTestCase {
 
 	private SpecfileEditor editor;
 	private MailHyperlinkDetector elementDetector;
 
+	@Test
 	public void testDetectHyperlinks() throws PartInitException {
 		String testText = "Version: 0.0\n" + "Release: 0\n" + "%changelog\n"
 				+ "* Fri Feb 27 2009 Test <someone@smth.com> 3.3.2.4-6\n-\n"
@@ -56,6 +62,7 @@ public class MailHyperlinkDetectorTest extends FileTestCase {
 		assertTrue(returned[0] instanceof MailHyperlink);
 	}
 
+	@Test
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
 		elementDetector = new MailHyperlinkDetector();
 		elementDetector.setEditor(editor);

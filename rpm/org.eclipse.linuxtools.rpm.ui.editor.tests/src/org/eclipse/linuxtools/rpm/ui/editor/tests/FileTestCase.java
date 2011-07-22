@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -27,12 +27,14 @@ import org.eclipse.linuxtools.rpm.ui.editor.markers.SpecfileErrorHandler;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.Specfile;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileParser;
 import org.eclipse.ui.part.FileEditorInput;
+import org.junit.After;
+import org.junit.Before;
 
 /**
  * Test case providing all the objects needed for the rpm editor tests.
  * 
  */
-public abstract class FileTestCase extends TestCase {
+public abstract class FileTestCase {
 
 	protected SpecfileParser parser;
 	protected Specfile specfile;
@@ -43,8 +45,8 @@ public abstract class FileTestCase extends TestCase {
     FileEditorInput fei;
     SpecfileEditor editor;
 
-	@Override
-	protected void setUp() throws CoreException {
+	@Before
+	public void setUp() throws CoreException {
 		testProject = new SpecfileTestProject();
 		String fileName = "test" + this.getClass().getSimpleName() + ".spec";
 		testFile = testProject.createFile(fileName);
@@ -53,8 +55,8 @@ public abstract class FileTestCase extends TestCase {
 		specfile = new Specfile();
 	}
 
-	@Override
-	protected void tearDown() throws CoreException {
+	@After
+	public void tearDown() throws CoreException {
 		testProject.dispose();
 	}
 

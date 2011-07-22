@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.scanners;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
@@ -18,6 +21,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileChangelogScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
+import org.junit.Test;
 
 public class SpecfileChangelogScannerTest extends AScannerTest {
 
@@ -52,6 +56,7 @@ public class SpecfileChangelogScannerTest extends AScannerTest {
 		return scanner;
 	}
 
+	@Test
 	public void testSection() {
 		token = getNextToken();
 		assertTrue(token instanceof Token);
@@ -62,6 +67,7 @@ public class SpecfileChangelogScannerTest extends AScannerTest {
 				ISpecfileColorConstants.SECTIONS);
 	}
 
+	@Test
 	public void testMail() {
 		token = getToken(3);
 		assertTrue(token instanceof Token);
@@ -72,6 +78,7 @@ public class SpecfileChangelogScannerTest extends AScannerTest {
 				ISpecfileColorConstants.AUTHOR_MAIL);
 	}
 
+	@Test
 	public void testVerRel() {
 		token = getToken(4);
 		assertTrue(token instanceof Token);

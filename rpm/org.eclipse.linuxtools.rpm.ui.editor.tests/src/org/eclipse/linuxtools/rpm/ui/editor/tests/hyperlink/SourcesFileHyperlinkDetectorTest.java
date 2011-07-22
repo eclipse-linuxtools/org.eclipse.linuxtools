@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
@@ -20,11 +24,19 @@ import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
+import org.junit.Before;
+import org.junit.Test;
 
 public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 	private SpecfileEditor editor;
 	private SourcesFileHyperlinkDetector elementDetector;
+	
+	@Before
+	public void init() throws CoreException{
+		super.setUp();
+	}
 
+	@Test
 	public void testDetectHyperlinks() throws PartInitException {
 		String testText = "Source0: test.zip\n";
 		newFile(testText);
@@ -51,6 +63,7 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 		assertNull(returned);
 	}
 
+	@Test
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
 		elementDetector = new SourcesFileHyperlinkDetector();
 		elementDetector.setEditor(editor);

@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.scanners;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,6 +29,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
+import org.junit.Test;
 
 public class SpecfilePackagesScannerTest extends AScannerTest {
 
@@ -35,13 +41,13 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 
 	public SpecfilePackagesScannerTest() {
 		Activator.getDefault().getPreferenceStore().setValue(
-				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist");
+				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist1");
 		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_BACKGROUND_BUILD, false);
 		
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(
-					"/tmp/pkglist"));
+					"/tmp/pkglist1"));
 			out.write("setup\ntest_underscore\n");
 			out.close();
 		} catch (IOException e) {
@@ -73,6 +79,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 		return scanner;
 	}
 
+	@Test
 	public void testPackageTag() {
 		token = getNextToken();
 		assertTrue(token instanceof Token);
@@ -86,6 +93,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	 * We test a package with a underscore. see bug:
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 
 	 */
+	@Test
 	public void testPackage() {
 		try {
 			token = getToken(2);
@@ -100,6 +108,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 		}
 	}
 
+	@Test
 	public void testMacro() {
 		try {
 			token = getToken(4);
@@ -117,6 +126,7 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 	 * Check that comments are not handle with the package scanner. See bug:
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=182302 
 	 */
+	@Test
 	public void testComment() {
 		token = getToken(6);
 		assertTrue(token instanceof Token);

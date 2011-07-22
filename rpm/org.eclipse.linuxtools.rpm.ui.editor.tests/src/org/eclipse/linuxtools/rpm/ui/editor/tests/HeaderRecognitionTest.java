@@ -11,8 +11,12 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
+import org.junit.Test;
 
 /**
  * @author overholt
@@ -21,7 +25,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSection;
 public class HeaderRecognitionTest extends FileTestCase {
 
 	String testText;
-
+	@Test
 	public void testGetSimpleSectionName() {
 		testText = "%prep";
 		SpecfileElement element;
@@ -32,7 +36,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(testText.substring(1), ((SpecfileSection) element)
 				.getName());
 	}
-
+	@Test
 	public void testGetComplexSectionName1() {
 		testText = "%post";
 		SpecfileElement element;
@@ -44,7 +48,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(testText.substring(1), section.getName());
 		assertNull(section.getPackage());
 	}
-
+	@Test
 	public void testGetComplexSectionName2() {
 		testText = "%post -n";
 		newFile(testText);
@@ -57,7 +61,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(testText.length(),
 				failure.getPosition().getLength());
 	}
-
+	@Test
 	public void testGetComplexSectionName3() {
 		testText = "%post -n name";
 		String[] tokens = testText.split("\\s+");
@@ -70,7 +74,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(tokens[0].substring(1), section.getName());
 		assertEquals(tokens[2], section.getPackage().getPackageName());
 	}
-
+	@Test
 	public void testGetComplexSectionName4() {
 		// FIXME: check for rest of line when -p is implemented
 		// this should be an error case
@@ -85,7 +89,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(tokens[0].substring(1), section.getName());
 		assertEquals(tokens[2], section.getPackage().getPackageName());
 	}
-
+	@Test
 	public void testGetComplexSectionName5() {
 		// FIXME: check for rest of line when -p is implemented
 		// "blah bleh" should become the actual text of the section
@@ -100,7 +104,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(tokens[0].substring(1), section.getName());
 		assertEquals(tokens[2], section.getPackage().getPackageName());
 	}
-
+	@Test
 	public void testGetComplexSectionName6() {
 		testText = "%post -p blah bleh";
 		// FIXME: check for rest of line when -p is implemented
@@ -116,7 +120,7 @@ public class HeaderRecognitionTest extends FileTestCase {
 		assertEquals(tokens[0].substring(1), section.getName());
 		assertNull(section.getPackage());
 	}
-
+	@Test
 	public void testGetComplexSectionName7() {
 		testText = "%post -n -p blah";
 

@@ -11,15 +11,18 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileElement;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfilePatchMacro;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
+import org.junit.Test;
 
 public class PatchApplicationTest extends FileTestCase {
-
+	@Test
 	public void testParsePatchApplication() {
 		String specText = "Patch3: somefilesomewhere.patch\n%patch3";
 		String testText = "%patch3";
@@ -29,7 +32,7 @@ public class PatchApplicationTest extends FileTestCase {
 		assertEquals(SpecfilePatchMacro.class, element.getClass());
 		assertEquals(3, ((SpecfilePatchMacro) element).getPatchNumber());
 	}
-
+	@Test
 	public void testPatchLineNumber() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 
@@ -39,7 +42,7 @@ public class PatchApplicationTest extends FileTestCase {
 		usedList.add(Integer.valueOf(1));
 		assertEquals(thisPatch.getLinesUsed(), usedList);
 	}
-
+	@Test
 	public void testMultiplePatchLineNumbers() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3"
 				+ "\n" + "blah" + "\n" + "%patch3";

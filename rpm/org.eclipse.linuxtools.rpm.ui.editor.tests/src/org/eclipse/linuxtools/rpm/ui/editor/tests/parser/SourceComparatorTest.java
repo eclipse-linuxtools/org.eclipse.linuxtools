@@ -11,14 +11,19 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests.parser;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
+import org.junit.Test;
 
 public class SourceComparatorTest extends FileTestCase {
 
+	@Test
 	public void testPatchComparator() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n"
 				+ "Patch2: someotherfile.patch";
@@ -37,6 +42,7 @@ public class SourceComparatorTest extends FileTestCase {
 		}
 	}
 
+	@Test
 	public void testPatchComparator2() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n"
 				+ "Patch2: someotherfile.patch";

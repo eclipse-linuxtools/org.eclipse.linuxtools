@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileCompletionProcessor;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileEditor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IDE;
+import org.junit.Test;
 
 public class SpecfileCompletionProcessorTest extends FileTestCase {
 
@@ -56,14 +60,17 @@ public class SpecfileCompletionProcessorTest extends FileTestCase {
 		assertEquals(occurances, sourceComplCount);
 	}
 
+	@Test
 	public void testComputeComplProposalsOneSource() throws Exception {
 		computeCompletionProposals(ONE_SOURCE, 1);
 	}
 
+	@Test
 	public void testComputeComplProposalsNoSource() throws Exception {
 		computeCompletionProposals(NO_SOURCE, 0);
 	}
 
+	@Test
 	public void testComputeComplProposalsThreeSourceSeparated()
 			throws Exception {
 		computeCompletionProposals(THREE_SOURCE_SEPARATED, 3);

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.actions;
 
+import static org.junit.Assert.assertEquals;
+
 import java.text.MessageFormat;
 import java.util.Date;
 
@@ -19,6 +21,8 @@ import org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogFormatter;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.IDE;
+import org.junit.Before;
+import org.junit.Test;
 
 public class SpecfileChangelogFormatterTest extends FileTestCase {
 
@@ -28,7 +32,8 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 	private IEditorPart editor;
 
 	@Override
-	protected void setUp() throws CoreException {
+	@Before
+	public void setUp() throws CoreException {
 		super.setUp();
 		newFile("%changelog");
 		editor = IDE.openEditor(Activator.getDefault().getWorkbench()
@@ -37,15 +42,16 @@ public class SpecfileChangelogFormatterTest extends FileTestCase {
 		formatter = new SpecfileChangelogFormatter();
 	}
 
+	@Test
 	public void testFormatDateLine() {
 		String expectedLine = MessageFormat
-				.format(
-						"* {0} {1} <{2}> {3}{4}-{5}", SpecfileChangelogFormatter.SIMPLE_DATE_FORMAT.format(new Date()), //$NON-NLS-1$
+				.format("* {0} {1} <{2}> {3}{4}-{5}", SpecfileChangelogFormatter.SIMPLE_DATE_FORMAT.format(new Date()), //$NON-NLS-1$
 						USER_NAME, USER_MAIL, "", "0", "0");
-		assertEquals(expectedLine, formatter.formatDateLine(USER_NAME,
-				USER_MAIL));
+		assertEquals(expectedLine,
+				formatter.formatDateLine(USER_NAME, USER_MAIL));
 	}
 
+	@Test
 	public void testMergeChangelogStringStringStringIEditorPartStringString() {
 		// TODO find how to test this
 		formatter.mergeChangelog("proba", "", editor, "", "");

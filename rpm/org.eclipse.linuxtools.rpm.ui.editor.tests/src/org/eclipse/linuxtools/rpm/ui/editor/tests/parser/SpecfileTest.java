@@ -11,14 +11,19 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests.parser;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.util.List;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.linuxtools.rpm.ui.editor.parser.SpecfileSource;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
+import org.junit.Test;
 
 public class SpecfileTest extends FileTestCase {
-
+	@Test
 	public void testGetLine() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 		try {
@@ -28,7 +33,7 @@ public class SpecfileTest extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-
+	@Test
 	public void testChangeLine() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 
@@ -41,7 +46,7 @@ public class SpecfileTest extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-
+	@Test
 	public void testChangeLine2() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 
@@ -54,7 +59,7 @@ public class SpecfileTest extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-
+	@Test
 	public void testChangeLine3() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 
@@ -67,7 +72,7 @@ public class SpecfileTest extends FileTestCase {
 			fail(e.getMessage());
 		}
 	}
-
+	@Test
 	public void testOrganizePatches() {
 		String specText = "Patch3: somefilesomewhere.patch" + "\n" + "%patch3";
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink;
 
+import static org.junit.Assert.assertEquals;
+
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
@@ -21,12 +23,14 @@ import org.eclipse.linuxtools.rpm.ui.editor.tests.FileTestCase;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
+import org.junit.Test;
 
 public class URLHyperlinkWithMacroDetectorTest extends FileTestCase {
 
 	private SpecfileEditor editor;
 	private URLHyperlinkWithMacroDetector macroDetector;
 
+	@Test
 	public void testDetectHyperlinks() throws PartInitException {
 		String testText = "Name: eclipse\nURL: http://www.%{name}.org/";
 		newFile(testText);
