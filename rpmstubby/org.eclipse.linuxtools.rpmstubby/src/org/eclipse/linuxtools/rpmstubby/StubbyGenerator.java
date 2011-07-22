@@ -13,9 +13,7 @@ package org.eclipse.linuxtools.rpmstubby;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -61,8 +59,6 @@ public class StubbyGenerator {
 		this.mainPackage = mainPackage;
 		this.subPackages = subPackages;
 		store = StubbyPlugin.getDefault().getPreferenceStore();
-		this.withFetchScript = store
-				.getBoolean(PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT);
 		this.usePdebuildScript = store
 				.getBoolean(PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT);
 	}
@@ -195,48 +191,6 @@ public class StubbyGenerator {
 		buffer.append("\n\n");
 	}
 
-	/**
-	 * Generates a fetch script. The script is better suited for cvs for now. It
-	 * lists all the plugins and features and tries to export them.
-	 *
-	 * @return The generated fetch script.
-	 */
-	public String generateFetchScript() {
-		StringBuilder buffer = new StringBuilder();
-		buffer.append("#!/bin/sh\n");
-		buffer.append("usage='usage: $0 <tag>'\n");
-		buffer.append("name=eclipse-"
-				+ getPackageName(mainPackage.getName()).toLowerCase() + "\n");
-		buffer.append("tag=$1\n");
-		buffer.append("tar_name=$name-fetched-src-$tag\n\n");
-		buffer.append("# example of fetch command:\n");
-		buffer
-				.append("# fetch_cmd=cvs -d:pserver:anonymous@dev.eclipse.org:/cvsroot/dsdp \\\n");
-		buffer.append("# export -r $tag org.eclipse.tm.rse/features/$f;\n\n");
-		buffer.append("fetch_cmd=FIXME\n\n");
-		buffer.append("if [ \"x$tag\"x = 'xx' ]; then\n");
-		buffer.append("   echo >&2 \"$usage\"\n");
-		buffer.append("   exit 1\n");
-		buffer.append("fi\n\n");
-		buffer.append("rm -fr $tar_name && mkdir $tar_name\n");
-		buffer.append("pushd $tar_name\n\n");
-		buffer.append("# Fetch plugins\n");
-		buffer.append("for f in \\\n");
-		buffer.append(getProvidesBundlesString(mainPackage.getProvides()));
-		HashSet<String> uniqueProvides = new HashSet<String>();
-		for (SubPackage subPackage : subPackages) {
-			uniqueProvides = getProvidesBundles(subPackage.getProvides(),
-					uniqueProvides);
-		}
-		buffer.append(getProvidesBundlesString(uniqueProvides));
-		buffer.append("; do\n");
-		buffer.append("$fetch_cmd\n");
-		buffer.append("done\n\n");
-		buffer.append("popd\n");
-		buffer.append("# create archive\n");
-		buffer.append("tar -cjf $tar_name.tar.bz2 $tar_name\n");
-		return buffer.toString();
-	}
 
 	/**
 	 * Returns the last meaningful part of the feature id before the feature
@@ -309,39 +263,6 @@ public class StubbyGenerator {
 		IStatus status = new Status(IStatus.ERROR, StubbyPlugin.PLUGIN_ID,
 				IStatus.OK, message, null);
 		throw new CoreException(status);
-	}
-
-	private String getProvidesBundlesString(List<PackageItem> packageItems) {
-		StringBuilder toRet = new StringBuilder();
-		// Cash all the names to handle the case when plugin and feature has the
-		// same id.
-		Set<String> usedNames = new HashSet<String>();
-		for (PackageItem packageItem : packageItems) {
-			if (usedNames.contains(packageItem.getName())) {
-				toRet.append(packageItem.getName()).append("-feature");
-			} else {
-				toRet.append(packageItem.getName());
-			}
-			toRet.append(" \\\n");
-			usedNames.add(packageItem.getName());
-		}
-		return toRet.toString();
-	}
-
-	private String getProvidesBundlesString(HashSet<String> uniqueProvides) {
-		StringBuilder toRet = new StringBuilder();
-		for (String provideName : uniqueProvides) {
-			toRet.append(provideName).append(" \\\n");
-		}
-		return toRet.toString();
-	}
-
-	private HashSet<String> getProvidesBundles(List<PackageItem> packageItems,
-			HashSet<String> uniqueProvides) {
-		for (PackageItem packageItem : packageItems) {
-			uniqueProvides.add(packageItem.getName());
-		}
-		return uniqueProvides;
 	}
 
 	private String getPackageFiles(List<PackageItem> packageItems) {

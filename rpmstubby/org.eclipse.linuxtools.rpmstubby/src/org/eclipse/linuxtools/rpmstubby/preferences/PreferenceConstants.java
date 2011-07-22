@@ -19,13 +19,11 @@ public class PreferenceConstants {
 	 * keys
 	 */
 	public static final String P_STUBBY_INTERACTIVE = "StubbyInteractive";
-	public static final String P_STUBBY_WITH_FETCH_SCRIPT = "StrubbyWithFetchScript";
 	public static final String P_STUBBY_USE_PDEBUILD_SCRIPT = "StubbyUsePdebuildScript";
 	
 	/*
 	 * default values
 	 */
 	public static final boolean DP_STUBBY_INTERACTIVE = true;
-	public static final boolean DP_STUBBY_WITH_FETCH_SCRIPT = false;
 	public static final boolean DP_STUBBY_USE_PDEBUILD_SCRIPT = true;
 }

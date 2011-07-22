@@ -28,7 +28,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = StubbyPlugin.getDefault().getPreferenceStore();
 		store.setDefault(PreferenceConstants.P_STUBBY_INTERACTIVE, PreferenceConstants.DP_STUBBY_INTERACTIVE);		
-		store.setDefault(PreferenceConstants.P_STUBBY_WITH_FETCH_SCRIPT, PreferenceConstants.DP_STUBBY_WITH_FETCH_SCRIPT);	
 		store.setDefault(PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT, PreferenceConstants.DP_STUBBY_USE_PDEBUILD_SCRIPT);
 	}
 
