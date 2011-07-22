@@ -311,17 +311,6 @@ public class StubbyGenerator {
 		throw new CoreException(status);
 	}
 
-	private String getDepsOrReqs(String preString,
-			List<PackageItem> packageItems) {
-		StringBuilder toRet = new StringBuilder();
-		for (PackageItem packageItem : packageItems) {
-			toRet.append(preString).append(packageItem.getName()).append(" ")
-					.append(packageItem.getOperator()).append(" ").append(
-							packageItem.getVersion()).append("\n");
-		}
-		return toRet.toString();
-	}
-
 	private String getProvidesBundlesString(List<PackageItem> packageItems) {
 		StringBuilder toRet = new StringBuilder();
 		// Cash all the names to handle the case when plugin and feature has the
