@@ -10,25 +10,28 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.actions;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.linuxtools.rpm.ui.editor.actions.SpecfileChangelogParser;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-public class SpecfileChangelogParserTest extends TestCase {
+public class SpecfileChangelogParserTest {
 
-	private SpecfileChangelogParser parser;
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	private static SpecfileChangelogParser parser;
+
+	@BeforeClass
+	public static void setUp() {
 		parser = new SpecfileChangelogParser();
 	}
 
+	@Test
 	public void testParseCurrentFunctionIEditorPart() throws CoreException {
 		assertEquals("", parser.parseCurrentFunction(null));
 	}
 
+	@Test
 	public void testParseCurrentFunctionIEditorInputInt() throws CoreException {
 		assertEquals("", parser.parseCurrentFunction(null, 0));
 	}
