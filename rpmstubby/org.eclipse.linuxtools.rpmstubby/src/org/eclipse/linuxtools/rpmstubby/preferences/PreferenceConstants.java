@@ -15,13 +15,4 @@ package org.eclipse.linuxtools.rpmstubby.preferences;
  * Constant definitions for stubby plug-in preferences.
  */
 public class PreferenceConstants {
-	/*
-	 * keys
-	 */
-	public static final String P_STUBBY_USE_PDEBUILD_SCRIPT = "StubbyUsePdebuildScript";
-	
-	/*
-	 * default values
-	 */
-	public static final boolean DP_STUBBY_USE_PDEBUILD_SCRIPT = true;
 }

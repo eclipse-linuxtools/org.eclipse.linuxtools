@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpmstubby.preferences;
 
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.linuxtools.rpmstubby.StubbyPlugin;
 import org.eclipse.ui.IWorkbench;
@@ -37,9 +36,6 @@ public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 	 */
 	@Override
 	public void createFieldEditors() {
-		addField(new BooleanFieldEditor(
-				PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT,
-				"Use the pdebuild script for building", getFieldEditorParent()));
 	}
 
 	/**

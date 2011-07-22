@@ -12,8 +12,6 @@
 package org.eclipse.linuxtools.rpmstubby.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.rpmstubby.StubbyPlugin;
 
 
 /**
@@ -26,8 +24,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 */
 	@Override
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = StubbyPlugin.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT, PreferenceConstants.DP_STUBBY_USE_PDEBUILD_SCRIPT);
 	}
 
 }

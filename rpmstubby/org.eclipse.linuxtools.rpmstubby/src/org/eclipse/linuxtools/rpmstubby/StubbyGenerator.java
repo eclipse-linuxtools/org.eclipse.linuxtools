@@ -24,11 +24,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.rpmstubby.model.MainPackage;
 import org.eclipse.linuxtools.rpmstubby.model.PackageItem;
 import org.eclipse.linuxtools.rpmstubby.model.SubPackage;
-import org.eclipse.linuxtools.rpmstubby.preferences.PreferenceConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -37,19 +35,17 @@ import org.eclipse.ui.ide.IDE;
 /**
  * Generates the RPM specfile and the fetch script based on the feature and user
  * preferences.
- *
+ * 
  */
 public class StubbyGenerator {
 
 	private MainPackage mainPackage;
 	private List<SubPackage> subPackages;
 	private boolean withFetchScript;
-	private boolean usePdebuildScript;
-	private IPreferenceStore store;
 
 	/**
 	 * Creates the specfile and fetch script generator for the given packages.
-	 *
+	 * 
 	 * @param mainPackage
 	 *            The main feature.
 	 * @param subPackages
@@ -58,14 +54,11 @@ public class StubbyGenerator {
 	public StubbyGenerator(MainPackage mainPackage, List<SubPackage> subPackages) {
 		this.mainPackage = mainPackage;
 		this.subPackages = subPackages;
-		store = StubbyPlugin.getDefault().getPreferenceStore();
-		this.usePdebuildScript = store
-				.getBoolean(PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT);
 	}
 
 	/**
 	 * Generates a RPM specfile based on the parsed data from the feature.xml.
-	 *
+	 * 
 	 * @return The generated specfile.
 	 */
 	public String generateSpecfile() {
@@ -89,14 +82,13 @@ public class StubbyGenerator {
 		if (withFetchScript) {
 			String fetchScriptName = "%{name}-fetch-src.sh";
 			buffer.append("## sh ").append(fetchScriptName).append("\n");
-			buffer
-					.append("Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2\n");
-			buffer.append("Source1:        ").append(fetchScriptName).append(
-					"\n");
+			buffer.append("Source0:        %{name}-fetched-src-%{src_repo_tag}.tar.bz2\n");
+			buffer.append("Source1:        ").append(fetchScriptName)
+					.append("\n");
 		} else {
 			buffer.append("Source0:        #FIXME\n");
 		}
-			buffer.append("BuildArch: noarch\n\n");
+		buffer.append("BuildArch: noarch\n\n");
 		buffer.append("BuildRequires: eclipse-pde >= 1:3.4.0\n");
 		buffer.append("Requires: eclipse-platform >= 3.4.0\n");
 		buffer.append("\n%description\n" + mainPackage.getDescription() + "\n");
@@ -140,8 +132,7 @@ public class StubbyGenerator {
 					+ subPackage.getName() + "_*/*.html\n");
 			buffer.append("%{eclipse_base}/features/" + subPackage.getName()
 					+ "_*/feature.*\n");
-			buffer.append(getPackageFiles(subPackage.getProvides())
-					+ "\n");
+			buffer.append(getPackageFiles(subPackage.getProvides()) + "\n");
 		}
 	}
 
@@ -152,50 +143,22 @@ public class StubbyGenerator {
 		if (withFetchScript) {
 			buffer.append("%setup -q -c\n\n");
 		} else {
-			buffer
-					.append("#FIXME Replace FIXME with the root directory name in Source0\n");
+			buffer.append("#FIXME Replace FIXME with the root directory name in Source0\n");
 			buffer.append("%setup -q -n FIXME\n\n");
-		}
-		if (!usePdebuildScript) {
-			buffer
-					.append("/bin/sh -x %{eclipse_base}/buildscripts/copy-platform SDK %{eclipse_base}\n");
-			buffer.append("mkdir home\n\n");
 		}
 	}
 
 	private void generateBuildSection(StringBuilder buffer) {
 		buffer.append("%build\n");
-		if (!usePdebuildScript) {
-			buffer.append("SDK=$(cd SDK > /dev/null && pwd)\n");
-			buffer.append("homedir=$(cd home > /dev/null && pwd)\n");
-			buffer.append("java -cp $SDK/startup.jar \\\n");
-			buffer
-					.append("     -Dosgi.sharedConfiguration.area=%{_libdir}/eclipse/configuration \\\n");
-			buffer.append("      org.eclipse.core.launcher.Main \\\n");
-			buffer
-					.append("     -application org.eclipse.ant.core.antRunner \\\n");
-			buffer.append("     -Dtype=feature \\\n");
-			buffer.append("     -Did=" + mainPackage.getName() + "\\\n");
-			buffer.append("     -DbaseLocation=$SDK \\\n");
-			buffer.append("     -DsourceDirectory=$(pwd) \\\n");
-			buffer.append("     -DbuildDirectory=$(pwd)/build \\\n");
-			buffer
-					.append("     -Dbuilder=%{eclipse_base}/plugins/org.eclipse.pde.build/templates/package-build \\\n");
-			buffer
-					.append("     -f %{eclipse_base}/plugins/org.eclipse.pde.build/scripts/build.xml \\\n");
-			buffer.append("     -vmargs -Duser.home=$homedir");
-		} else {
-			buffer.append("%{eclipse_base}/buildscripts/pdebuild -f ").append(
-					mainPackage.getName());
-		}
+		buffer.append("%{eclipse_base}/buildscripts/pdebuild -f ").append(
+				mainPackage.getName());
 		buffer.append("\n\n");
 	}
-
 
 	/**
 	 * Returns the last meaningful part of the feature id before the feature
 	 * substring.
-	 *
+	 * 
 	 * @param packageName
 	 *            The feature id from which to extract the name.
 	 * @return The part of the feature id to be used for package name.
@@ -212,7 +175,7 @@ public class StubbyGenerator {
 	/**
 	 * Writes the given contents to a file with the given fileName in the
 	 * specified project.
-	 *
+	 * 
 	 * @param projectName
 	 *            The name of the project to put the file into.
 	 * @param fileName
@@ -224,8 +187,8 @@ public class StubbyGenerator {
 	 */
 	public void writeContent(String projectName, String fileName,
 			String contents) throws CoreException {
-		InputStream contentInputStream = new ByteArrayInputStream(contents
-				.getBytes());
+		InputStream contentInputStream = new ByteArrayInputStream(
+				contents.getBytes());
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource resource = root.findMember(new Path(projectName));
 		if (!resource.exists() || !(resource instanceof IContainer)) {
@@ -245,8 +208,8 @@ public class StubbyGenerator {
 		} catch (IOException e) {
 			StubbyLog.logError(e);
 		}
-		StubbyPlugin.getActiveWorkbenchShell().getDisplay().asyncExec(
-				new Runnable() {
+		StubbyPlugin.getActiveWorkbenchShell().getDisplay()
+				.asyncExec(new Runnable() {
 					public void run() {
 						IWorkbenchPage page = PlatformUI.getWorkbench()
 								.getActiveWorkbenchWindow().getActivePage();
@@ -268,8 +231,8 @@ public class StubbyGenerator {
 	private String getPackageFiles(List<PackageItem> packageItems) {
 		StringBuilder toRet = new StringBuilder();
 		for (PackageItem packageItem : packageItems) {
-			toRet.append("%{eclipse_base}/plugins/").append(
-					packageItem.getName()).append("_*.jar\n");
+			toRet.append("%{eclipse_base}/plugins/")
+					.append(packageItem.getName()).append("_*.jar\n");
 		}
 		return toRet.toString();
 	}
