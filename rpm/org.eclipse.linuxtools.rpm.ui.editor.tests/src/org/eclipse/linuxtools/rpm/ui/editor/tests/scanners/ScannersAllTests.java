@@ -10,15 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.scanners;
 
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class ScannersAllTests extends TestSuite {
-	public static TestSuite suite() {
-		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests.scanners");
-		suite.addTestSuite(SpecfileChangelogScannerTest.class);
-		suite.addTestSuite(SpecfilePackagesScannerTest.class);
-		suite.addTestSuite(SpecfileScannerTest.class);
-		return suite;
-	}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ SpecfileChangelogScannerTest.class,
+		SpecfilePackagesScannerTest.class, SpecfileScannerTest.class })
+public class ScannersAllTests {
 }

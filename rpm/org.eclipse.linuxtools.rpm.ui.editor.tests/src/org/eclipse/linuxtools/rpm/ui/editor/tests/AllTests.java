@@ -11,37 +11,20 @@
 
 package org.eclipse.linuxtools.rpm.ui.editor.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.eclipse.linuxtools.rpm.ui.editor.tests.actions.ActionsAllTests;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink.HyperlinkAllTests;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.parser.ParserAllTests;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.scanners.ScannersAllTests;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ EpochTagTest.class, ReleaseTagTest.class,
+		NameTagTest.class, VersionTagTest.class, HeaderRecognitionTest.class,
+		LicenseTagTest.class, PatchApplicationTest.class,
+		LinePositionTest.class, RpmMacroProposalsListTest.class,
+		RpmPackageProposalsListTest.class, ActionsAllTests.class,
+		ScannersAllTests.class, ParserAllTests.class, HyperlinkAllTests.class,
+		SpecfileCompletionProcessorTest.class })
 public class AllTests {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests");
-		// $JUnit-BEGIN$
-		suite.addTestSuite(EpochTagTest.class);
-		suite.addTestSuite(ReleaseTagTest.class);
-		suite.addTestSuite(NameTagTest.class);
-		suite.addTestSuite(VersionTagTest.class);
-		suite.addTestSuite(HeaderRecognitionTest.class);
-		suite.addTestSuite(LicenseTagTest.class);
-		suite.addTestSuite(PatchApplicationTest.class);
-		suite.addTestSuite(LinePositionTest.class);
-		suite.addTestSuite(RpmMacroProposalsListTest.class);
-		suite.addTestSuite(RpmPackageProposalsListTest.class);
-		suite.addTest(ActionsAllTests.suite());
-		suite.addTest(ScannersAllTests.suite());
-		suite.addTest(ParserAllTests.suite());
-		suite.addTest(HyperlinkAllTests.suite());
-		suite.addTestSuite(SpecfileCompletionProcessorTest.class);
-		// $JUnit-END$
-		return suite;
-	}
-
 }

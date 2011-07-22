@@ -10,15 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.parser;
 
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class ParserAllTests extends TestSuite {
-	public static TestSuite suite() {
-		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests.parser");
-		suite.addTestSuite(SourceComparatorTest.class);
-		suite.addTestSuite(SpecfileDefineTest.class);
-		suite.addTestSuite(SpecfileTest.class);
-		return suite;
-	}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ SourceComparatorTest.class, SpecfileDefineTest.class,
+		SpecfileTest.class })
+public class ParserAllTests {
 }

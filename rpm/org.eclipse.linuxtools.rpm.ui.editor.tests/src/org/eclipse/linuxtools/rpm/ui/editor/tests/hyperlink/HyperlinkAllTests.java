@@ -10,16 +10,13 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink;
 
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class HyperlinkAllTests extends TestSuite {
-	public static TestSuite suite() {
-		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests.hyperlink");
-		suite.addTestSuite(MailHyperlinkDetectorTest.class);
-		suite.addTestSuite(SourcesFileHyperlinkDetectorTest.class);
-		suite.addTestSuite(SpecfileElementHyperlinkDetectorTest.class);
-		suite.addTestSuite(URLHyperlinkWithMacroDetectorTest.class);
-		return suite;
-	}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ MailHyperlinkDetectorTest.class,
+		SourcesFileHyperlinkDetectorTest.class,
+		SpecfileElementHyperlinkDetectorTest.class,
+		URLHyperlinkWithMacroDetectorTest.class })
+public class HyperlinkAllTests {
 }

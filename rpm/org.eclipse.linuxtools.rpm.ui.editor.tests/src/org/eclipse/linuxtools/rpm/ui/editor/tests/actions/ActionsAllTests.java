@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.rpm.ui.editor.tests.actions;
 
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ SpecfileChangelogFormatterTest.class,
+		SpecfileChangelogParserTest.class })
 public class ActionsAllTests {
-	public static TestSuite suite() {
-		TestSuite suite = new TestSuite(
-				"Test for org.eclipse.linuxtools.rpm.ui.editor.tests.actions");
-		suite.addTestSuite(SpecfileChangelogFormatterTest.class);
-		suite.addTestSuite(SpecfileChangelogParserTest.class);
-		return suite;
-	}
 }
