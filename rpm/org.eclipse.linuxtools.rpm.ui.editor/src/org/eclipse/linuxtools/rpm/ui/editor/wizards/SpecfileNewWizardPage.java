@@ -33,7 +33,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.linuxtools.rpm.ui.editor.Activator;
 import org.eclipse.linuxtools.rpm.ui.editor.SpecfileLog;
-import org.eclipse.linuxtools.rpm.ui.editor.UiUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -93,7 +92,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 	/**
 	 * Constructor for SpecfileNewWizardPage.
 	 * 
-	 * @param selection The selection to put the new spec file in.
+	 * @param selection
+	 *            The selection to put the new spec file in.
 	 */
 	public SpecfileNewWizardPage(ISelection selection) {
 		super("wizardPage"); //$NON-NLS-1$
@@ -353,16 +353,14 @@ public class SpecfileNewWizardPage extends WizardPage {
 		}
 
 		/*
-		 * Current RPM doc content (4.4.2):
-		 * Names must not include whitespace and may include a hyphen '-'
-		 * (unlike version and releasetags). Names should not include any
-		 * numeric operators ('<', '>','=') as future versions of rpm may need
-		 * to reserve characters other than '-'.
-		 * 
+		 * Current RPM doc content (4.4.2): Names must not include whitespace
+		 * and may include a hyphen '-' (unlike version and releasetags). Names
+		 * should not include any numeric operators ('<', '>','=') as future
+		 * versions of rpm may need to reserve characters other than '-'.
 		 */
 		String packageName = nameText.getText();
 		if (packageName.indexOf(" ") != -1 || packageName.indexOf("<") != -1 //$NON-NLS-1$ //$NON-NLS-2$
-				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1){ //$NON-NLS-1$ //$NON-NLS-2$
+				|| packageName.indexOf(">") != -1 || packageName.indexOf("=") != -1) { //$NON-NLS-1$ //$NON-NLS-2$
 			updateStatus(Messages.SpecfileNewWizardPage_26
 					+ Messages.SpecfileNewWizardPage_27);
 			return;
@@ -391,7 +389,8 @@ public class SpecfileNewWizardPage extends WizardPage {
 		source0Text.setText(SOURCE0);
 	}
 
-	private void populateTemplateCombo(Combo templateCombo) throws CoreException {
+	private void populateTemplateCombo(Combo templateCombo)
+			throws CoreException {
 		// get a list of all files in a directory
 		File dir = new File("/etc/rpmdevtools"); //$NON-NLS-1$
 		String[] files = dir.list();
@@ -404,10 +403,10 @@ public class SpecfileNewWizardPage extends WizardPage {
 							+ ","; //$NON-NLS-1$
 			}
 			String[] templates = templateCSV.split(","); //$NON-NLS-1$
-			for (String template: templates) {
+			for (String template : templates) {
 				templateCombo.add(template);
 			}
-			templateCombo.setText(selectedTemplate);			
+			templateCombo.setText(selectedTemplate);
 		} else {
 			throwCoreException(Messages.SpecfileNewWizardPage_29);
 		}
@@ -424,18 +423,20 @@ public class SpecfileNewWizardPage extends WizardPage {
 		BufferedInputStream in = null;
 		// Here we assuming that the rpmdevtools package is installed.
 		try {
-			in = org.eclipse.linuxtools.rpm.core.utils.Utils.runCommandToInputStream("rpmdev-newspec", "-o", "-", "-t", template ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			in = org.eclipse.linuxtools.rpm.core.utils.Utils
+					.runCommandToInputStream(
+							"rpmdev-newspec", "-o", "-", "-t", template); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		} catch (IOException e) {
-			// FIXME: rpmdev-newspec is not in the system $PATH, what should we do here?.
+			// FIXME: rpmdev-newspec is not in the system $PATH, what should we
+			// do here?.
 			SpecfileLog.logError(e);
 		}
 		return in;
 	}
-	
+
 	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR,
-				Activator.PLUGIN_ID, IStatus.OK, message,
-				null);
+		IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+				IStatus.OK, message, null);
 		throw new CoreException(status);
 	}
 
