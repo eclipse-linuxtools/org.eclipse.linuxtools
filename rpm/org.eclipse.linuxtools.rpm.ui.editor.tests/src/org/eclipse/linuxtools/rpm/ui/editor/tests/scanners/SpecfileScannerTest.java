@@ -21,6 +21,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.ColorManager;
 import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfileScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SpecfileScannerTest extends AScannerTest {
@@ -29,9 +30,10 @@ public class SpecfileScannerTest extends AScannerTest {
 
 	private TextAttribute ta;
 
-	private SpecfileScanner scanner;
+	private static SpecfileScanner scanner;
 
-	public SpecfileScannerTest() {
+	@BeforeClass
+	public static void init() {
 		scanner = new SpecfileScanner(new ColorManager());
 	}
 

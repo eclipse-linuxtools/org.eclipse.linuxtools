@@ -29,6 +29,7 @@ import org.eclipse.linuxtools.rpm.ui.editor.ISpecfileColorConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.linuxtools.rpm.ui.editor.scanners.SpecfilePackagesScanner;
 import org.eclipse.linuxtools.rpm.ui.editor.tests.AScannerTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SpecfilePackagesScannerTest extends AScannerTest {
@@ -37,9 +38,10 @@ public class SpecfilePackagesScannerTest extends AScannerTest {
 
 	private TextAttribute ta;
 
-	private SpecfilePackagesScanner scanner;
+	private static SpecfilePackagesScanner scanner;
 
-	public SpecfilePackagesScannerTest() {
+	@BeforeClass
+	public static void init() {
 		Activator.getDefault().getPreferenceStore().setValue(
 				PreferenceConstants.P_RPM_LIST_FILEPATH, "/tmp/pkglist1");
 		Activator.getDefault().getPreferenceStore().setValue(
