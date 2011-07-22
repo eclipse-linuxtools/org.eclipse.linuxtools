@@ -43,7 +43,7 @@ public abstract class FileTestCase {
 	SpecfileErrorHandler errorHandler;
 	SpecfileTestProject testProject;
     FileEditorInput fei;
-    SpecfileEditor editor;
+    protected SpecfileEditor editor;
 
 	@Before
 	public void setUp() throws CoreException {

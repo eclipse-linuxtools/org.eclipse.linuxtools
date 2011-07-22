@@ -27,14 +27,11 @@ import org.junit.Test;
 
 public class URLHyperlinkWithMacroDetectorTest extends FileTestCase {
 
-	private SpecfileEditor editor;
-	private URLHyperlinkWithMacroDetector macroDetector;
-
 	@Test
 	public void testDetectHyperlinks() throws PartInitException {
 		String testText = "Name: eclipse\nURL: http://www.%{name}.org/";
 		newFile(testText);
-		macroDetector = new URLHyperlinkWithMacroDetector();
+		URLHyperlinkWithMacroDetector macroDetector = new URLHyperlinkWithMacroDetector();
 		macroDetector.setSpecfile(specfile);
 		IRegion region = new Region(20, 0);
 		IEditorPart openEditor = IDE

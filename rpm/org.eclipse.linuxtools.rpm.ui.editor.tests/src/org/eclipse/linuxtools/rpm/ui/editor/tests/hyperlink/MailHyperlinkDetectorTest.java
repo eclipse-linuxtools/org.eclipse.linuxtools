@@ -29,9 +29,6 @@ import org.junit.Test;
 
 public class MailHyperlinkDetectorTest extends FileTestCase {
 
-	private SpecfileEditor editor;
-	private MailHyperlinkDetector elementDetector;
-
 	@Test
 	public void testDetectHyperlinks() throws PartInitException {
 		String testText = "Version: 0.0\n" + "Release: 0\n" + "%changelog\n"
@@ -46,25 +43,25 @@ public class MailHyperlinkDetectorTest extends FileTestCase {
 
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();
-		elementDetector = new MailHyperlinkDetector();
+		MailHyperlinkDetector elementDetector = new MailHyperlinkDetector();
 		elementDetector.setEditor(editor);
 		// test mail
 		IRegion region = new Region(38, 0);
-		IHyperlink[] returned = elementDetector.detectHyperlinks(editor
-				.getSpecfileSourceViewer(), region, false);
+		IHyperlink[] returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
 		assertEquals(1, returned.length);
 		assertTrue(returned[0] instanceof MailHyperlink);
-		
+
 		region = new Region(124, 0);
-		returned = elementDetector.detectHyperlinks(editor
-				.getSpecfileSourceViewer(), region, false);
+		returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
 		assertEquals(1, returned.length);
 		assertTrue(returned[0] instanceof MailHyperlink);
 	}
 
 	@Test
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
-		elementDetector = new MailHyperlinkDetector();
+		MailHyperlinkDetector elementDetector = new MailHyperlinkDetector();
 		elementDetector.setEditor(editor);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null,
 				false);

@@ -28,11 +28,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
-	private SpecfileEditor editor;
-	private SourcesFileHyperlinkDetector elementDetector;
-	
 	@Before
-	public void init() throws CoreException{
+	public void init() throws CoreException {
 		super.setUp();
 	}
 
@@ -48,24 +45,24 @@ public class SourcesFileHyperlinkDetectorTest extends FileTestCase {
 
 		editor = (SpecfileEditor) openEditor;
 		editor.doRevertToSaved();
-		elementDetector = new SourcesFileHyperlinkDetector();
+		SourcesFileHyperlinkDetector elementDetector = new SourcesFileHyperlinkDetector();
 		elementDetector.setEditor(editor);
 		// test source element
 		IRegion region = new Region(10, 0);
-		IHyperlink[] returned = elementDetector.detectHyperlinks(editor
-				.getSpecfileSourceViewer(), region, false);
+		IHyperlink[] returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
 		assertEquals(2, returned.length);
-		
-		//test empty
+
+		// test empty
 		region = new Region(4, 0);
-		returned = elementDetector.detectHyperlinks(editor
-				.getSpecfileSourceViewer(), region, false);
+		returned = elementDetector.detectHyperlinks(
+				editor.getSpecfileSourceViewer(), region, false);
 		assertNull(returned);
 	}
 
 	@Test
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
-		elementDetector = new SourcesFileHyperlinkDetector();
+		SourcesFileHyperlinkDetector elementDetector = new SourcesFileHyperlinkDetector();
 		elementDetector.setEditor(editor);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null,
 				false);

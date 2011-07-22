@@ -30,15 +30,13 @@ import org.eclipse.ui.ide.IDE;
 import org.junit.Test;
 
 public class SpecfileElementHyperlinkDetectorTest extends FileTestCase {
-	private SpecfileEditor editor;
-	private SpecfileElementHyperlinkDetector elementDetector;
 
 	@Test
 	public void testDetectHyperlinks() throws PartInitException {
 		String testText = "%define smth other\nSource0: test.zip\nPatch0: first.patch\n"
 				+ "%build\n %{SOURCE0}\n%patch0\n%{smth}\n";
 		newFile(testText);
-		elementDetector = new SpecfileElementHyperlinkDetector();
+		SpecfileElementHyperlinkDetector elementDetector = new SpecfileElementHyperlinkDetector();
 		elementDetector.setSpecfile(specfile);
 
 		IEditorPart openEditor = IDE
@@ -81,7 +79,7 @@ public class SpecfileElementHyperlinkDetectorTest extends FileTestCase {
 	
 	@Test
 	public void testDetectHyperlinksNoRegionAndTextViewer() {
-		elementDetector = new SpecfileElementHyperlinkDetector();
+		SpecfileElementHyperlinkDetector elementDetector = new SpecfileElementHyperlinkDetector();
 		elementDetector.setSpecfile(specfile);
 		IHyperlink[] returned = elementDetector.detectHyperlinks(null, null, false);
 		assertNull(returned);
