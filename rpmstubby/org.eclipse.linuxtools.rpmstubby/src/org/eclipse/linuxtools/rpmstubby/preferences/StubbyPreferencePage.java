@@ -38,9 +38,6 @@ public class StubbyPreferencePage extends FieldEditorPreferencePage implements
 	@Override
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
-				PreferenceConstants.P_STUBBY_INTERACTIVE,
-				"Stubby interactive mode", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(
 				PreferenceConstants.P_STUBBY_USE_PDEBUILD_SCRIPT,
 				"Use the pdebuild script for building", getFieldEditorParent()));
 	}

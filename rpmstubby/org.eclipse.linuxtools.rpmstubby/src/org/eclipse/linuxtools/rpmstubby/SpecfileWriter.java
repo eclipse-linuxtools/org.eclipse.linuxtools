@@ -19,7 +19,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.linuxtools.rpmstubby.model.MainPackage;
 import org.eclipse.linuxtools.rpmstubby.model.SubPackage;
-import org.eclipse.linuxtools.rpmstubby.preferences.PreferenceConstants;
 
 /**
  * Utility class used for writing the generated specfile to a file.
@@ -75,12 +74,8 @@ public class SpecfileWriter {
 					+ "' feature was not found.\n\n"
 					+ "Please, add these feature somewhere in your workspace.\n";
 			}
-			if (store.getBoolean(PreferenceConstants.P_STUBBY_INTERACTIVE)) {
 				MessageDialog.openError(StubbyPlugin.getActiveWorkbenchShell(),
 						null, message);
-			} else {
-				System.err.println(message);
-			}
 		} else {
 			// Write generated files to the main feature project
 			StubbyGenerator generator = new StubbyGenerator(mainPackage,
