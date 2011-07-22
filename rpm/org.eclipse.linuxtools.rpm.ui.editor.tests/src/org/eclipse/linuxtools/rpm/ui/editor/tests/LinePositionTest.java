@@ -33,7 +33,7 @@ public class LinePositionTest extends FileTestCase {
 			else if (patch.getNumber() == 3)
 				assertEquals(0, patch.getLineNumber());
 			else
-				fail();
+				fail("Found patch with number different from the expected numbers (2 or 3).");
 		}
 	}
 	@Test
@@ -47,7 +47,7 @@ public class LinePositionTest extends FileTestCase {
 				assertEquals(0, patch.getLineNumber());
 				assertEquals(1, patch.getLinesUsed().get(0).intValue());
 			} else
-				fail();
+				fail("Found patch with number different from the expected 3.");
 		}
 	}
 
