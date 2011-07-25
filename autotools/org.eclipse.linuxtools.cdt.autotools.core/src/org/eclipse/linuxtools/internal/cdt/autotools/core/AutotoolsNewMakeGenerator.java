@@ -1245,6 +1245,16 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		IPath buildCommand = buildInfo.getBuildCommand();
 		String defaultBuildCommand = buildCommand.toString();
 		String buildArguments = buildInfo.getBuildArguments();
+		
+		// Bug #351660 - reset targets to a single dummy target so that
+		// we will never be able to find any of the new targets we are about to
+		// create and thus avoid an extraneous event notification on a change to
+		// the MakeTarget.  The dummy target should have an invalid name for
+		// a normal make target.
+		IMakeTarget dummyTarget = makeTargetManager.createTarget(
+				project, "\ndummyTarget\n", targetBuildID); //$NON-NLS-1$
+		makeTargetManager.setTargets(project, new IMakeTarget[]{dummyTarget});
+		
 		for (int i = 0; i < targets.length; i++) {
 			target = targets[i].getTarget();
 			String targetName = target.toString();
@@ -1264,7 +1274,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 				makeTarget.setBuildAttribute(IMakeTarget.BUILD_ARGUMENTS, buildArguments);
 				makeTarget.setBuildAttribute(IMakeTarget.BUILD_COMMAND, defaultBuildCommand);
 
-				makeTarget.setBuildAttribute(GENERATED_TARGET, "true");
+				makeTarget.setBuildAttribute(GENERATED_TARGET, "true"); //$NON-NLS-1$
 				makeTarget.setBuildAttribute(IMakeTarget.BUILD_TARGET,
 						targetName);
 
