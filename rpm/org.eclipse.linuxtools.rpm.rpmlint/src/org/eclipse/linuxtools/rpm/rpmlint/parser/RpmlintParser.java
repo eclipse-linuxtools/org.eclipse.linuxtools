@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -58,18 +57,10 @@ public class RpmlintParser {
 	 * 		a <code>RpmlintItem</code> ArrayList.
 	 */
 	public ArrayList<RpmlintItem> parseVisisted(ArrayList<String> visitedResources) {
-		ArrayList<RpmlintItem> retList = new ArrayList<RpmlintItem>();
-		// workaround "Argument list too long" xargs limitation. 
-		ArrayList<List<String>> commandsList = splitArrayList(visitedResources, 500);
-		Iterator<List<String>> iterator = commandsList.iterator();
-		while (iterator.hasNext()) {
-			if (commandsList.size() > 1)
-				retList.addAll(parseRpmlintOutput(runRpmlintCommand(iterator.next())));
-			else
-				return parseRpmlintOutput(runRpmlintCommand(visitedResources));
+		if(visitedResources.isEmpty()) {
+			return new ArrayList<RpmlintItem>();
 		}
-		return retList;
-
+		return parseRpmlintOutput(runRpmlintCommand(visitedResources));
 	}
 	
 	public void addMarker(IFile file, String message, int lineNumber, int charStart, int charEnd,
@@ -253,9 +244,8 @@ public class RpmlintParser {
 		String[] cmd = new String[visitedResources.size() + i];
 		cmd[0] = Activator.getRpmlintPath();
 		cmd[1] = "-i"; //$NON-NLS-1$
-		Iterator<String> iterator = visitedResources.iterator();
-		while(iterator.hasNext()) {
-			cmd[i] = iterator.next();
+		for(String resource: visitedResources){
+			cmd[i] = resource;
 			i++;
 		}
 		try {
@@ -316,26 +306,4 @@ public class RpmlintParser {
 		return lineNbr;
 	}
 	
-	private ArrayList<List<String>> splitArrayList(ArrayList<String> list, int listSize) {
-		ArrayList<List<String>> resultList = new ArrayList<List<String>>();
-		if (list.size() <= listSize) {
-			resultList.add(list);
-			return resultList;
-		}
-		for (int i = 0; i < getNumberOfIterations(list, listSize); i++) {
-			int maxLength = ((i + 1) * listSize > list.size()) ? list
-					.size() : (i + 1) * listSize;
-			List<List<String>> sublist = new ArrayList<List<String>>();
-			sublist.add(list.subList(i * listSize, maxLength));
-			resultList.addAll(sublist);
-		}
-		return resultList;		
-	}
- 
-	private int getNumberOfIterations(List<String> list, int subCollectionSize) {
-		return list.size() % subCollectionSize == 0 ? list.size()
-				/ subCollectionSize : (list.size() / subCollectionSize) + 1;
-	}
-
-
 }
