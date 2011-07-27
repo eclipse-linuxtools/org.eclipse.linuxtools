@@ -60,6 +60,8 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
+	 * 
+	 * @return The instance of this singleton.
 	 */
 	public static RPMUIPlugin getDefault() {
 		return plugin;
@@ -81,7 +83,9 @@ public class RPMUIPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the plugin's resource bundle,
+	 * Returns the plugin's resource bundle.
+	 * 
+	 * @return The resource container.
 	 */
 	public ResourceBundle getResourceBundle() {
 		try {
