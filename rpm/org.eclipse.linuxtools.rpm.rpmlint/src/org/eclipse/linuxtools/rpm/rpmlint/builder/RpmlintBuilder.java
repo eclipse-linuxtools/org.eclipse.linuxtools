@@ -60,7 +60,7 @@ public class RpmlintBuilder extends IncrementalProjectBuilder {
 	 *      java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	@Override
-	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
+	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor)
 			throws CoreException {
 		// TODO: handle the monitor in a more clean way.
 		monitor.beginTask(Messages.RpmlintBuilder_0, MAX_WORKS);
