@@ -374,7 +374,7 @@ public class StubbyPackageModel {
 	 */
 	private String getBundleValue(String bundleID, String bundleKey) {
 		try {
-			return (String) Platform.getBundle(bundleID).getHeaders().get(
+			return Platform.getBundle(bundleID).getHeaders().get(
 					bundleKey);
 		} catch (NullPointerException exception) {
 			return null;
