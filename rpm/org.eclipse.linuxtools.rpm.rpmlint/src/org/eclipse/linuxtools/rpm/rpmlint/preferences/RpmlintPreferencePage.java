@@ -17,6 +17,10 @@ import org.eclipse.linuxtools.rpm.rpmlint.Activator;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+/**
+ * Preference page for setting rpmlint specific preferences.
+ *
+ */
 public class RpmlintPreferencePage extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
 
@@ -28,13 +32,12 @@ public class RpmlintPreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
 	 * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
 	 */
 	@Override
-	public void createFieldEditors() {
+	protected void createFieldEditors() {
 		FileFieldEditor rpmlintFileFieldEditor = new FileFieldEditor(
 				PreferenceConstants.P_RPMLINT_PATH, Messages.RpmlintPreferencePage_0,
 				getFieldEditorParent());
@@ -51,9 +54,7 @@ public class RpmlintPreferencePage extends FieldEditorPreferencePage implements
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
