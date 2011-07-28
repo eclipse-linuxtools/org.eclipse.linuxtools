@@ -21,9 +21,7 @@ import org.eclipse.linuxtools.rpm.rpmlint.Activator;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
 	 */
 	@Override
