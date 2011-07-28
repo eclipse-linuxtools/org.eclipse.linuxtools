@@ -12,20 +12,16 @@ package org.eclipse.linuxtools.rpm.ui.propertypage;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.linuxtools.rpm.core.utils.RPMQuery;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-public class InstallScriptsPage extends PropertyPage {
+public class InstallScriptsPage extends AbstractRPMPropertyPage {
 
 	private static final String RPM_PRE_INSTALL = Messages
 			.getString("InstallScriptsPage.PreinstallScript"); //$NON-NLS-1$
@@ -51,14 +47,8 @@ public class InstallScriptsPage extends PropertyPage {
 
 	private Text rpm_PostUnInstallText;
 
-	/**
-	 * Constructor for RPMPropertyPage.
-	 */
-	public InstallScriptsPage() {
-		super();
-	}
-
-	private void addScriptFields(Composite parent) {
+	@Override
+	protected void addFields(Composite parent) {
 		Composite composite = createDefaultComposite(parent);
 
 		// RPM labels and text fields setup
@@ -118,36 +108,6 @@ public class InstallScriptsPage extends PropertyPage {
 					StatusManager.LOG | StatusManager.SHOW);
 		}
 
-	}
-
-	/**
-	 * @see PreferencePage#createContents(Composite)
-	 */
-	@Override
-	protected Control createContents(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		composite.setLayout(layout);
-		GridData data = new GridData(GridData.FILL);
-		data.grabExcessHorizontalSpace = true;
-		composite.setLayoutData(data);
-
-		addScriptFields(composite);
-		return composite;
-	}
-
-	private Composite createDefaultComposite(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NULL);
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		composite.setLayout(layout);
-
-		GridData data = new GridData();
-		data.verticalAlignment = GridData.FILL;
-		data.horizontalAlignment = GridData.FILL;
-		composite.setLayoutData(data);
-
-		return composite;
 	}
 
 }
