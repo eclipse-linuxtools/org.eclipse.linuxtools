@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.rpm.core;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("javadoc")
 public class Messages {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.core.rpm_strings"; //$NON-NLS-1$
 

@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.rpm.rpmlint.builder;
 
 import org.eclipse.osgi.util.NLS;
 
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.rpmlint.builder.messages"; //$NON-NLS-1$
 	public static String RpmlintBuilder_0;

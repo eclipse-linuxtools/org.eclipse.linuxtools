@@ -12,6 +12,7 @@ package org.eclipse.linuxtools.rpm.rpmlint.actions;
 
 import org.eclipse.osgi.util.NLS;
 
+@SuppressWarnings("javadoc")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.linuxtools.rpm.rpmlint.actions.messages"; //$NON-NLS-1$
 	public static String RunRpmlintAction_0;
