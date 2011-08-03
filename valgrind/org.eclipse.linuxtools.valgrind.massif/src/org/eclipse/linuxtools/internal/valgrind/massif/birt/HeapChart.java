@@ -101,7 +101,6 @@ public class HeapChart extends ChartWithAxesImpl {
 			dataTotal[i] = dataUseful[i] + dataExtra[i];
 			if (isStack) {
 				dataStacks[i] = snapshots[i].getStacks() / yScaling;
-				dataStacks[i] += dataStacks[i];
 			}
 		}
 
