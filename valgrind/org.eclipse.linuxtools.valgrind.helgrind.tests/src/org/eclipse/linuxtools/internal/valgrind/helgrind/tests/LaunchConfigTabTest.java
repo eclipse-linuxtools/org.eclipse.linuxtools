@@ -73,7 +73,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 	
 	public void testDefaults() throws Exception {		
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		ILaunch launch = saveAndLaunch(wc, "testDefaults"); //$NON-NLS-1$
+		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -96,7 +96,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		tab.performApply(wc);
 		wc.doSave();
 		
-		ILaunch launch = saveAndLaunch(wc, "testTrackLockorders"); //$NON-NLS-1$
+		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -114,7 +114,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		tab.performApply(wc);
 		wc.doSave();
 		
-		ILaunch launch = saveAndLaunch(wc, "testHistoryNone"); //$NON-NLS-1$
+		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -132,7 +132,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		tab.performApply(wc);
 		wc.doSave();
 		
-		ILaunch launch = saveAndLaunch(wc, "testHistoryApprox"); //$NON-NLS-1$
+		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);
@@ -151,7 +151,7 @@ public class LaunchConfigTabTest extends AbstractHelgrindTest {
 		tab.performApply(wc);
 		wc.doSave();
 		
-		ILaunch launch = saveAndLaunch(wc, "testConflictCacheSize"); //$NON-NLS-1$
+		ILaunch launch = saveAndLaunch(wc, "testHelgrindGeneric"); //$NON-NLS-1$
 		IProcess[] p = launch.getProcesses();
 		if (p.length > 0) {
 			String cmd = p[0].getAttribute(IProcess.ATTR_CMDLINE);

@@ -23,4 +23,30 @@
 
   <name>Linux Tools Helgrind Tests Plug-in</name>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+       	  <useUIHarness>true</useUIHarness>
+          <useUIThread>true</useUIThread>
+          <product>org.eclipse.sdk.ide</product>
+          <argLine>-Declipse.valgrind.tests.runValgrind=no</argLine>
+          <testSuite>org.eclipse.linuxtools.valgrind.helgrind.tests</testSuite>
+          <testClass>org.eclipse.linuxtools.internal.valgrind.helgrind.tests.AllTests</testClass>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

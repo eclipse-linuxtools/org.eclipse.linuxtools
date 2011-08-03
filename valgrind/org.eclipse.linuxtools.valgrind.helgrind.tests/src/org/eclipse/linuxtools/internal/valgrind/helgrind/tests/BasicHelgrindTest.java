@@ -28,7 +28,7 @@ public class BasicHelgrindTest extends AbstractHelgrindTest {
 	
 	public void testNumErrors() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testNumErrors"); //$NON-NLS-1$
+		doLaunch(config, "testHelgrindGeneric"); //$NON-NLS-1$
 				
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		assertEquals(3, view.getMessages().length);
