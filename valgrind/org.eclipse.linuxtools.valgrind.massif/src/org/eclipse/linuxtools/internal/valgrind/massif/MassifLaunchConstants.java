@@ -19,7 +19,6 @@ public final class MassifLaunchConstants {
 	public static final String ATTR_MASSIF_HEAP = MassifPlugin.PLUGIN_ID + ".MASSIF_HEAP"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_HEAPADMIN = MassifPlugin.PLUGIN_ID + ".MASSIF_HEAPADMIN"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_STACKS = MassifPlugin.PLUGIN_ID + ".MASSIF_STACKS"; //$NON-NLS-1$
-	public static final String ATTR_MASSIF_PAGESASHEAP = MassifPlugin.PLUGIN_ID + ".MASSIF_PAGEASHEAP"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_DEPTH = MassifPlugin.PLUGIN_ID + ".MASSIF_DEPTH"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_ALLOCFN = MassifPlugin.PLUGIN_ID + ".MASSIF_ALLOCFN"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_IGNOREFN = MassifPlugin.PLUGIN_ID + ".MASSIF_IGNOREFN"; //$NON-NLS-1$
@@ -31,6 +30,9 @@ public final class MassifLaunchConstants {
 	public static final String ATTR_MASSIF_ALIGNMENT_BOOL = MassifPlugin.PLUGIN_ID + ".MASSIF_ALIGNMENT_BOOL"; //$NON-NLS-1$
 	public static final String ATTR_MASSIF_ALIGNMENT_VAL = MassifPlugin.PLUGIN_ID + ".MASSIF_ALIGNMENT_VAL"; //$NON-NLS-1$
 	
+	// VG >= 3.6.0
+	public static final String ATTR_MASSIF_PAGESASHEAP = MassifPlugin.PLUGIN_ID + ".MASSIF_PAGEASHEAP"; //$NON-NLS-1$
+	
 	public static final String TIME_I = "i"; //$NON-NLS-1$
 	public static final String TIME_MS = "ms"; //$NON-NLS-1$
 	public static final String TIME_B = "B"; //$NON-NLS-1$
@@ -38,7 +40,6 @@ public final class MassifLaunchConstants {
 	public static final boolean DEFAULT_MASSIF_HEAP = true;
 	public static final int DEFAULT_MASSIF_HEAPADMIN = 8;
 	public static final boolean DEFAULT_MASSIF_STACKS = false;
-	public static final boolean DEFAULT_MASSIF_PAGESASHEAP = false;
 	public static final int DEFAULT_MASSIF_DEPTH = 30;
 	public static final List<?> DEFAULT_MASSIF_ALLOCFN = Collections.EMPTY_LIST;
 	public static final List<?> DEFAULT_MASSIF_IGNOREFN = Collections.EMPTY_LIST;
@@ -49,4 +50,7 @@ public final class MassifLaunchConstants {
 	public static final int DEFAULT_MASSIF_MAXSNAPSHOTS = 100;
 	public static final boolean DEFAULT_MASSIF_ALIGNMENT_BOOL = false;
 	public static final int DEFAULT_MASSIF_ALIGNMENT_VAL = 0;
+	
+	// VG >= 3.6.0
+	public static final boolean DEFAULT_MASSIF_PAGESASHEAP = false;	
 }

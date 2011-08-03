@@ -16,7 +16,6 @@ public final class MassifCommandConstants {
 	public static final String OPT_HEAP = "--heap"; //$NON-NLS-1$
 	public static final String OPT_HEAPADMIN = "--heap-admin"; //$NON-NLS-1$
 	public static final String OPT_STACKS = "--stacks"; //$NON-NLS-1$
-	public static final String OPT_PAGESASHEAP = "--pages-as-heap"; //no|yes $NON-NLS-1$
 	public static final String OPT_DEPTH = "--depth"; //$NON-NLS-1$
 	public static final String OPT_ALLOCFN = "--alloc-fn"; //$NON-NLS-1$
 	public static final String OPT_IGNOREFN = "--ignore-fn"; //<name> $NON-NLS-1$
@@ -26,4 +25,7 @@ public final class MassifCommandConstants {
 	public static final String OPT_DETAILEDFREQ = "--detailed-freq"; //$NON-NLS-1$
 	public static final String OPT_MAXSNAPSHOTS = "--max-snapshots"; //$NON-NLS-1$
 	public static final String OPT_ALIGNMENT = "--alignment"; //$NON-NLS-1$
+	
+	// VG >= 3.6.0
+	public static final String OPT_PAGESASHEAP = "--pages-as-heap"; //$NON-NLS-1$
 }

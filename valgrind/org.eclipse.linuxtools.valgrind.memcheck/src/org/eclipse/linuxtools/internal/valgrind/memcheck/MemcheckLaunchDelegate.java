@@ -24,6 +24,7 @@ import org.osgi.framework.Version;
 
 public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final Version VER_3_4_0 = new Version(3, 4, 0);
+	private static final Version VER_3_6_0 = new Version(3, 6, 0);
 	private static final String EQUALS = "="; //$NON-NLS-1$
 	private static final String NO = "no"; //$NON-NLS-1$
 	private static final String YES = "yes"; //$NON-NLS-1$
@@ -47,9 +48,14 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 			opts.add(MemcheckCommandConstants.OPT_ALIGNMENT + EQUALS + config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL));
 		}
 		
-		// 3.4.0 specific
+		// VG >= 3.4.0
 		if (ver == null || ver.compareTo(VER_3_4_0) >= 0) {
 			opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
+		}
+		
+		// VG >= 3.6.0
+		if (ver == null || ver.compareTo(VER_3_6_0) >= 0) {
+			opts.add(MemcheckCommandConstants.OPT_SHOW_POSSIBLY_LOST + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL) ? YES : NO));
 		}
 		
 		if (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_BOOL)) {

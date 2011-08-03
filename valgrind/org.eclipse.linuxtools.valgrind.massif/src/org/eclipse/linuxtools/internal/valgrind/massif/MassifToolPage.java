@@ -44,10 +44,10 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	public static final String TIME_I_STRING = Messages.getString("MassifToolPage.instructions"); //$NON-NLS-1$
 	public static final String MASSIF = "massif"; //$NON-NLS-1$
 	public static final String PLUGIN_ID = MassifPlugin.PLUGIN_ID;
+	private static final Version VER_3_6_0 = new Version(3, 6, 0);
 		
 	// Massif controls
 	protected Button heapButton;
-	protected Button pagesasheapButton;
 	protected Spinner heapAdminSpinner;
 	protected Button stacksButton;
 	protected Spinner depthSpinner;
@@ -61,7 +61,12 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 	protected Button alignmentButton;
 	protected Spinner alignmentSpinner;
 	
+	// VG >= 3.6.0
+	protected Button pagesasheapButton;
+	
 	protected boolean isInitializing = false;
+	protected Version valgrindVersion;
+	
 	protected SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
@@ -105,13 +110,15 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		stacksButton.setText(Messages.getString("MassifToolPage.profile_stack")); //$NON-NLS-1$
 		stacksButton.addSelectionListener(selectListener);
 
-		Composite pagesasheapTop = new Composite(top, SWT.NONE);
-		pagesasheapTop.setLayout(new GridLayout(2, false));
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {			
+			Composite pagesasheapTop = new Composite(top, SWT.NONE);
+			pagesasheapTop.setLayout(new GridLayout(2, false));
+			
+			pagesasheapButton = new Button(pagesasheapTop, SWT.CHECK);
+			pagesasheapButton.setText(Messages.getString("MassifToolPage.profile_pagesasheap")); //$NON-NLS-1$
+			pagesasheapButton.addSelectionListener(selectListener);		
+		}
 		
-		pagesasheapButton = new Button(pagesasheapTop, SWT.CHECK);
-		pagesasheapButton.setText(Messages.getString("MassifToolPage.profile_pagesasheap")); //$NON-NLS-1$
-		pagesasheapButton.addSelectionListener(selectListener);		
-
 		Composite depthTop = new Composite(top, SWT.NONE);
 		depthTop.setLayout(new GridLayout(2, false));
 		
@@ -333,7 +340,6 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 			heapButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP));
 			heapAdminSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN));
 			stacksButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, MassifLaunchConstants.DEFAULT_MASSIF_STACKS));
-			pagesasheapButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, MassifLaunchConstants.DEFAULT_MASSIF_PAGESASHEAP));
 			depthSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DEPTH, MassifLaunchConstants.DEFAULT_MASSIF_DEPTH));
 			java.util.List<String> allocFns = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALLOCFN, MassifLaunchConstants.DEFAULT_MASSIF_ALLOCFN);
 			allocFnList.setItems(allocFns.toArray(new String[allocFns.size()]));
@@ -341,6 +347,7 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 			ignoreFnList.setItems(ignoreFns.toArray(new String[ignoreFns.size()]));
 			thresholdSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_THRESHOLD, MassifLaunchConstants.DEFAULT_MASSIF_THRESHOLD));
 			peakInaccuracySpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PEAKINACCURACY, MassifLaunchConstants.DEFAULT_MASSIF_PEAKINACCURACY));
+			
 			String timeUnit = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_TIMEUNIT, MassifLaunchConstants.DEFAULT_MASSIF_TIMEUNIT);
 			if (timeUnit.equals(MassifLaunchConstants.TIME_I)) {
 				timeUnitCombo.select(0);
@@ -351,12 +358,18 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 			else {
 				timeUnitCombo.select(2);
 			}
+			
 			detailedFreqSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DETAILEDFREQ, MassifLaunchConstants.DEFAULT_MASSIF_DETAILEDFREQ));
 			maxSnapshotsSpinner.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS));
 			alignmentButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_BOOL));
 			checkAlignmentEnablement();
 			int alignment = configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL);
 			alignmentSpinner.setSelection(alignment);
+			
+			// VG >= 3.6.0
+			if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {
+				pagesasheapButton.setSelection(configuration.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, MassifLaunchConstants.DEFAULT_MASSIF_PAGESASHEAP));
+			}
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -367,7 +380,6 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, heapButton.getSelection());
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, heapAdminSpinner.getSelection());
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, stacksButton.getSelection());
-		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, pagesasheapButton.getSelection());
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_DEPTH, depthSpinner.getSelection());
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALLOCFN, Arrays.asList(allocFnList.getItems()));
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_IGNOREFN, Arrays.asList(ignoreFnList.getItems()));
@@ -389,6 +401,11 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, maxSnapshotsSpinner.getSelection());
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, alignmentButton.getSelection());
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, alignmentSpinner.getSelection());
+		
+		// VG >= 3.6.0
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {
+			configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, pagesasheapButton.getSelection());
+		}
 	}
 
 	@Override
@@ -422,10 +439,15 @@ public class MassifToolPage extends AbstractLaunchConfigurationTab
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS);
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_BOOL);
 		configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL);
+		
+		// VG >= 3.6.0
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {
+			configuration.setAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, MassifLaunchConstants.DEFAULT_MASSIF_PAGESASHEAP);
+		}
 	}
 	
 	public void setValgrindVersion(Version ver) {
-		// Not used
+		valgrindVersion = ver;
 	}
 
 	protected void createHorizontalSpacer(Composite comp, int numlines) {

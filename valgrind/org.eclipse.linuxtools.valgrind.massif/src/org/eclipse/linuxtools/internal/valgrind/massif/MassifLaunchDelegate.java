@@ -41,6 +41,8 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 	private static final String EQUALS = "="; //$NON-NLS-1$
 	private static final String NO = "no"; //$NON-NLS-1$
 	private static final String YES = "yes"; //$NON-NLS-1$
+	private static final Version VER_3_6_0 = new Version(3, 6, 0);
+
 
 	protected MassifOutput output;
 
@@ -83,7 +85,6 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 		opts.add(MassifCommandConstants.OPT_HEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAP, MassifLaunchConstants.DEFAULT_MASSIF_HEAP) ? YES : NO));
 		opts.add(MassifCommandConstants.OPT_HEAPADMIN + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_HEAPADMIN, MassifLaunchConstants.DEFAULT_MASSIF_HEAPADMIN));
 		opts.add(MassifCommandConstants.OPT_STACKS + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_STACKS, MassifLaunchConstants.DEFAULT_MASSIF_STACKS) ? YES : NO));
-		opts.add(MassifCommandConstants.OPT_PAGESASHEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, MassifLaunchConstants.DEFAULT_MASSIF_PAGESASHEAP) ? YES : NO));
 		opts.add(MassifCommandConstants.OPT_DEPTH + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_DEPTH, MassifLaunchConstants.DEFAULT_MASSIF_DEPTH));
 		List<String> allocFns = config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALLOCFN, MassifLaunchConstants.DEFAULT_MASSIF_ALLOCFN);
 		for (String func : allocFns) {
@@ -100,6 +101,11 @@ public class MassifLaunchDelegate implements IValgrindLaunchDelegate {
 		opts.add(MassifCommandConstants.OPT_MAXSNAPSHOTS + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_MAXSNAPSHOTS, MassifLaunchConstants.DEFAULT_MASSIF_MAXSNAPSHOTS));
 		if (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_BOOL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_BOOL)) {
 			opts.add(MassifCommandConstants.OPT_ALIGNMENT + EQUALS + config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_ALIGNMENT_VAL, MassifLaunchConstants.DEFAULT_MASSIF_ALIGNMENT_VAL));
+		}
+		
+		// VG >= 3.6.0
+		if (ver == null || ver.compareTo(VER_3_6_0) >= 0) {
+			opts.add(MassifCommandConstants.OPT_PAGESASHEAP + EQUALS + (config.getAttribute(MassifLaunchConstants.ATTR_MASSIF_PAGESASHEAP, MassifLaunchConstants.DEFAULT_MASSIF_PAGESASHEAP) ? YES : NO));
 		}
 
 		return opts.toArray(new String[opts.size()]);

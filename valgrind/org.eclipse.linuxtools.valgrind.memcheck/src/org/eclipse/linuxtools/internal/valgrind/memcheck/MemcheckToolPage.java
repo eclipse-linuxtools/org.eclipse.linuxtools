@@ -43,6 +43,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	public static final String MEMCHECK = "memcheck"; //$NON-NLS-1$
 	public static final String PLUGIN_ID = MemcheckPlugin.PLUGIN_ID;
 	private static final Version VER_3_4_0 = new Version(3, 4, 0);
+	private static final Version VER_3_6_0 = new Version(3, 6, 0);
 	
 	// MEMCHECK controls
 	protected Button leakCheckButton;
@@ -54,16 +55,17 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 	protected Button gccWorkaroundButton;
 	protected Button alignmentButton;
 	protected Spinner alignmentSpinner;
-	
-	// VG >= 3.4.0
-	protected Button trackOriginsButton;
-	
-	protected Button showPossiblyLostButton;
 	protected Button mallocFillButton;
 	protected Text mallocFillText;
 	protected Button freeFillButton;
 	protected Text freeFillText;
 	protected List ignoreRangesList;
+	
+	// VG >= 3.4.0
+	protected Button trackOriginsButton;
+	
+	// VG >= 3.6.0
+	protected Button showPossiblyLostButton;
 	
 	protected boolean isInitializing = false;
 	protected Version valgrindVersion;
@@ -128,6 +130,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		undefValueButton.setText(Messages.getString("MemcheckToolPage.undef_value_errors")); //$NON-NLS-1$
 		undefValueButton.addSelectionListener(selectListener);
 
+		// VG >= 3.4.0
 		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 			trackOriginsButton = new Button(top, SWT.CHECK);
 			trackOriginsButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -160,13 +163,17 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		alignmentSpinner.setMaximum(4096);
 		alignmentSpinner.addModifyListener(modifyListener);
 
-		showPossiblyLostButton = new Button(top, SWT.CHECK);
-		showPossiblyLostButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		showPossiblyLostButton.setText(Messages.getString("MemcheckToolPage.Show_Possibly_Lost")); //$NON-NLS-1$
-		showPossiblyLostButton.addSelectionListener(selectListener);
+		// VG >= 3.6.0
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {
+			showPossiblyLostButton = new Button(top, SWT.CHECK);
+			showPossiblyLostButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			showPossiblyLostButton.setText(Messages.getString("MemcheckToolPage.Show_Possibly_Lost")); //$NON-NLS-1$
+			showPossiblyLostButton.addSelectionListener(selectListener);
+		}
 	
 		Composite mallocFillTop = new Composite(top, SWT.NONE);
 		GridLayout mallocFillLayout = new GridLayout(2, false);
+		mallocFillLayout.marginWidth = mallocFillLayout.marginHeight = 0;
 		mallocFillTop.setLayout(mallocFillLayout);
 		mallocFillTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
@@ -186,6 +193,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 
 		Composite freeFillTop = new Composite(top, SWT.NONE);
 		GridLayout freeFillLayout = new GridLayout(2, false);
+		freeFillLayout.marginWidth = freeFillLayout.marginHeight = 0;
 		freeFillTop.setLayout(freeFillLayout);
 		freeFillTop.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
@@ -293,12 +301,16 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 			checkAlignmentEnablement();
 			alignmentSpinner.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL));
 			
-			// 3.4.0 specific
+			// VG >= 3.4.0
 			if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 				trackOriginsButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS));
 			}
 
-			showPossiblyLostButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL));
+			// VG >= 3.6.0
+			if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {
+				showPossiblyLostButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL));
+			}
+			
 			mallocFillButton.setSelection(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_BOOL));
 			checkMallocFillEnablement();
 			mallocFillText.setText(configuration.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_VAL));
@@ -326,11 +338,16 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, alignmentButton.getSelection());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, alignmentSpinner.getSelection());
 		
+		// VG >= 3.4.0
 		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, trackOriginsButton.getSelection());
 		}
 		
-		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, showPossiblyLostButton.getSelection());
+		// VG >= 3.6.0
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {
+			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, showPossiblyLostButton.getSelection());
+		}
+		
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_BOOL, mallocFillButton.getSelection());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_VAL, mallocFillText.getText());
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_FREEFILL_BOOL, freeFillButton.getSelection());
@@ -351,7 +368,7 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 				setErrorMessage(Messages.getString("MemcheckToolPage.Alignment_must_be_power_2")); //$NON-NLS-1$
 			}
 			else {
-				// 3.4.0 specific
+				// VG >= 3.4.0
 				if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 					// check track-origins
 					boolean trackOrigins = launchConfig.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
@@ -385,11 +402,16 @@ public class MemcheckToolPage extends AbstractLaunchConfigurationTab implements 
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_BOOL);
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_ALIGNMENT_VAL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_ALIGNMENT_VAL);
 		
+		// VG >= 3.4.0
 		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_4_0) >= 0) {
 			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS);
 		}
 		
-		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL);
+		// VG >= 3.6.0
+		if (valgrindVersion == null || valgrindVersion.compareTo(VER_3_6_0) >= 0) {
+			configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL);
+		}
+		
 		configuration.setAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_IGNORE_RANGES, MemcheckLaunchConstants.DEFAULT_MEMCHECK_IGNORE_RANGES);
 	}
 		
