@@ -40,7 +40,7 @@ public class ExpandCollapseTest extends AbstractHelgrindTest {
 	
 	public void testExpand() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDefaults"); //$NON-NLS-1$
+		doLaunch(config, "testHelgrindGeneric"); //$NON-NLS-1$
 		
 		ValgrindViewPart view = ValgrindUIPlugin.getDefault().getView();
 		viewer = view.getMessagesViewer();

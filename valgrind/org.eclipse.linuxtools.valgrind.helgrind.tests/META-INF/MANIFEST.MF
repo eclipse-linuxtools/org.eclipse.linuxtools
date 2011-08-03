@@ -7,7 +7,9 @@ Bundle-Activator: org.eclipse.linuxtools.internal.valgrind.helgrind.tests.Helgri
 Bundle-Vendor: %Bundle-Vendor.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.junit;bundle-version="4.7.0"
+ org.junit;bundle-version="4.7.0",
+ org.eclipse.ui.ide.application,
+ org.eclipse.cdt.managedbuilder.gnu.ui
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

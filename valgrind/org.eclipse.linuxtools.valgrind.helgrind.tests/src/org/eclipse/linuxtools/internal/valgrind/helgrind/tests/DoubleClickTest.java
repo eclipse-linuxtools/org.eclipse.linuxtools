@@ -73,30 +73,10 @@ public class DoubleClickTest extends AbstractHelgrindTest {
 		deleteProject(proj);
 		super.tearDown();
 	}
-
-	public void testDoubleClickFile() throws Exception {
-		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDoubleClickFile"); //$NON-NLS-1$
-
-		doDoubleClick();
-		
-		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-		IEditorInput input = editor.getEditorInput();
-		if (input instanceof IFileEditorInput) {
-			IFileEditorInput fileInput = (IFileEditorInput) input;
-			File expectedFile = new File(proj.getProject().getLocation().toOSString(), frame.getFile());
-			File actualFile = fileInput.getFile().getLocation().toFile();
-			
-			assertEquals(expectedFile.getCanonicalPath(), actualFile.getCanonicalPath());
-		}
-		else {
-			fail();
-		}
-	}
 	
 	public void testDoubleClickLine() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+		doLaunch(config, "testHelgrindGeneric"); //$NON-NLS-1$
 
 		doDoubleClick();
 		
@@ -122,7 +102,7 @@ public class DoubleClickTest extends AbstractHelgrindTest {
 	
 	public void testDoubleClickLaunchRemoved() throws Exception {
 		ILaunchConfiguration config = createConfiguration(proj.getProject());
-		ILaunch launch = doLaunch(config, "testDoubleClickLine"); //$NON-NLS-1$
+		ILaunch launch = doLaunch(config, "testHelgrindGeneric"); //$NON-NLS-1$
 		
 		// Remove launch - tests #284919
 		DebugPlugin.getDefault().getLaunchManager().removeLaunch(launch);
