@@ -79,11 +79,11 @@ public class RemoteConnection {
 		try {
 			hostName = config.getAttribute(RemoteLaunchConstants.ATTR_REMOTE_HOSTID, RemoteLaunchConstants.DEFAULT_REMOTE_HOSTID);
 		} catch (CoreException e1) {
-			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_launch_failed);
+			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_launch_failed, e1);
 		}
 		
 		if (hostName == null)
-			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host);
+			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host, null);
 		
 		IHost[] hosts = registry.getHosts();
 		for (int i = 0; i < hosts.length; ++i) {
@@ -95,7 +95,7 @@ public class RemoteConnection {
 		}
 		
 		if (rseHost == null)
-			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host);
+			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_host, null);
 		
 		// Get pertinent remote RSE services
 		ISubSystem[] subSystems = registry.getSubSystems(rseHost);
@@ -111,7 +111,7 @@ public class RemoteConnection {
 		try {
 			fs.connect(new NullProgressMonitor(), false);
 		} catch (Exception e) {
-			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_fs);
+			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_no_fs, e);
 		}
 
 	}
@@ -159,7 +159,7 @@ public class RemoteConnection {
 				fs.upload(f.getAbsolutePath().toString(), "UTF-8", remotePath.append(f.getName()).toString(), "UTF-8", monitor);
 			}
 		} catch (SystemMessageException e1) {
-			throw new RemoteConnectionException(e1.getLocalizedMessage());
+			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
 
@@ -176,7 +176,7 @@ public class RemoteConnection {
 			IRemoteFile rf = fs.getRemoteFileObject(remoteFolderPath.toString(), monitor);
 			fs.createFolder(rf, new NullProgressMonitor());
 		} catch (SystemMessageException e1) {
-			throw new RemoteConnectionException(e1.getLocalizedMessage());
+			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
 	
@@ -207,7 +207,7 @@ public class RemoteConnection {
 				outputLines[i] = output.toString();
 			}
 		} catch (Exception e1) {
-			throw new RemoteConnectionException(e1.getLocalizedMessage());
+			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 		return outputLines;
 	}
@@ -226,7 +226,7 @@ public class RemoteConnection {
 			IRemoteFile rf = fs.getRemoteFileObject(remotePath.toString(), monitor);
 			deleteRecursive(rf, monitor);
 		} catch (SystemMessageException e1) {
-			throw new RemoteConnectionException(e1.getLocalizedMessage());
+			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
 	
@@ -241,7 +241,7 @@ public class RemoteConnection {
 			}
 			fs.delete(rf,  monitor);
 		} catch (SystemMessageException e1) {
-			throw new RemoteConnectionException(e1.getLocalizedMessage());
+			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
 
@@ -262,7 +262,7 @@ public class RemoteConnection {
 			downloadRecursive(rf, localPath, monitor);
 		} catch (SystemMessageException e1) {
 			// TODO Auto-generated catch block
-			throw new RemoteConnectionException(e1.getLocalizedMessage());
+			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 
 	}
@@ -285,7 +285,7 @@ public class RemoteConnection {
 				fs.download(rf, localPath.append(rf.getName()).toString(), "UTF-8", monitor);
 			}
 		} catch (SystemMessageException e1) {
-			throw new RemoteConnectionException(e1.getLocalizedMessage());
+			throw new RemoteConnectionException(e1.getLocalizedMessage(), e1);
 		}
 	}
 	

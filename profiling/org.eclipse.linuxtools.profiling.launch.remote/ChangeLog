@@ -1,3 +1,11 @@
+2011-08-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteConnectionException.java (RemoteConnectionException):
+	Rewrite class to inherit from CoreException and to accept a low-level throwable as argument
+	to constructor. 
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteConnection.java: Change all
+	RemoteConnectionExceptions to include a throwable argument or null.
+	
 2011-07-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* icons/system_view.gif: New icon.
