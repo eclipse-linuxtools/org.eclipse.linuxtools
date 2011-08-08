@@ -1,3 +1,7 @@
+2011-08-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Remove TCF references.
+
 2011-07-06  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Fix profiling remote launch dependency.
