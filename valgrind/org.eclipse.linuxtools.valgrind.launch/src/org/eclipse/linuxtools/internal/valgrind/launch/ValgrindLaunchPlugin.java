@@ -145,10 +145,16 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyC
 	}
 	
 	private void findValgrindLocation() throws CoreException {
-		try {
-			valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
-		} catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
+		if (getValgrindCommand().isEnabled()) {
+			try {
+				valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
+			} catch (IOException e) {
+				IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
+				throw new CoreException(status);
+			}
+		}
+		else {
+			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Error_Valgrind_Disabled")); //$NON-NLS-1$
 			throw new CoreException(status);
 		}
 	}
@@ -315,7 +321,9 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyC
 	}
 
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event.getProperty().equals(ValgrindPreferencePage.VALGRIND_PATH)) {
+		String prop = event.getProperty();
+		if (prop.equals(ValgrindPreferencePage.VALGRIND_PATH)
+				|| prop.equals(ValgrindPreferencePage.VALGRIND_ENABLE)) {
 			// Reset Valgrind location and version
 			valgrindLocation = null;
 			valgrindVersion = null;
