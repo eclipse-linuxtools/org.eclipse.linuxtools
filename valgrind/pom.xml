@@ -64,7 +64,7 @@
     <module>org.eclipse.linuxtools.valgrind.doc</module>
     <module>org.eclipse.linuxtools.valgrind-feature</module>
     <module>org.eclipse.linuxtools.valgrind.helgrind</module>
-    <!--<module>org.eclipse.linuxtools.valgrind.helgrind.tests</module>-->
+    <module>org.eclipse.linuxtools.valgrind.helgrind.tests</module>
     <module>org.eclipse.linuxtools.valgrind.launch</module>
     <!--<module>org.eclipse.linuxtools.valgrind.launch.remote</module>-->
     <module>org.eclipse.linuxtools.valgrind.massif</module>
