@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.eclipse.linuxtools.rpmstubby;singleton:=true
 Bundle-Version: 0.3.0.qualifier
-Bundle-Activator: org.eclipse.linuxtools.rpmstubby.StubbyPlugin
+Bundle-Activator: org.eclipse.linuxtools.internal.rpmstubby.StubbyPlugin
 Bundle-Vendor: %provider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,

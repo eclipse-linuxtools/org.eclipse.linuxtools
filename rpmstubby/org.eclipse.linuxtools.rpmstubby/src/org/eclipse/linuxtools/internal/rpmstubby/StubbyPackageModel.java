@@ -8,7 +8,7 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby;
+package org.eclipse.linuxtools.internal.rpmstubby;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,10 +24,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.linuxtools.rpmstubby.model.IPackage;
-import org.eclipse.linuxtools.rpmstubby.model.IPackagePreamble;
-import org.eclipse.linuxtools.rpmstubby.model.MainPackage;
-import org.eclipse.linuxtools.rpmstubby.model.PackageItem;
+import org.eclipse.linuxtools.internal.rpmstubby.model.IPackage;
+import org.eclipse.linuxtools.internal.rpmstubby.model.IPackagePreamble;
+import org.eclipse.linuxtools.internal.rpmstubby.model.MainPackage;
+import org.eclipse.linuxtools.internal.rpmstubby.model.PackageItem;
 import org.eclipse.update.core.IIncludedFeatureReference;
 import org.eclipse.update.core.VersionedIdentifier;
 import org.eclipse.update.core.model.FeatureModel;

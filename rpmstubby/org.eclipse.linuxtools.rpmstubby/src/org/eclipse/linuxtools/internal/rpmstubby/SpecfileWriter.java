@@ -8,7 +8,7 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby;
+package org.eclipse.linuxtools.internal.rpmstubby;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.linuxtools.rpmstubby.model.MainPackage;
-import org.eclipse.linuxtools.rpmstubby.model.SubPackage;
+import org.eclipse.linuxtools.internal.rpmstubby.model.MainPackage;
+import org.eclipse.linuxtools.internal.rpmstubby.model.SubPackage;
 
 /**
  * Utility class used for writing the generated specfile to a file.

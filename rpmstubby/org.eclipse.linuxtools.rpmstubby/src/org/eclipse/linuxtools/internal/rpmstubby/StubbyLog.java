@@ -9,7 +9,7 @@
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpmstubby;
+package org.eclipse.linuxtools.internal.rpmstubby;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

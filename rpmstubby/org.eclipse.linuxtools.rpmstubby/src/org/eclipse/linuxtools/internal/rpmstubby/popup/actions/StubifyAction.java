@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby.popup.actions;
+package org.eclipse.linuxtools.internal.rpmstubby.popup.actions;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.jface.action.IAction;

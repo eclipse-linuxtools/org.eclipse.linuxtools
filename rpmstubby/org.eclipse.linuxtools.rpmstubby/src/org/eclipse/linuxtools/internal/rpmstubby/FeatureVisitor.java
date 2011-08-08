@@ -8,7 +8,7 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby;
+package org.eclipse.linuxtools.internal.rpmstubby;
 
 import java.util.ArrayList;
 import java.util.List;

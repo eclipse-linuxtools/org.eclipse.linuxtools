@@ -8,10 +8,10 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby.preferences;
+package org.eclipse.linuxtools.internal.rpmstubby.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.linuxtools.rpmstubby.StubbyPlugin;
+import org.eclipse.linuxtools.internal.rpmstubby.StubbyPlugin;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 

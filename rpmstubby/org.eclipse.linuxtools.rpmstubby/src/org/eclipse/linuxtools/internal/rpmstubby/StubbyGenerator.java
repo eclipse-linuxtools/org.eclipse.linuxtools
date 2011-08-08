@@ -8,7 +8,7 @@
  * Contributors:
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby;
+package org.eclipse.linuxtools.internal.rpmstubby;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,9 +24,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.linuxtools.rpmstubby.model.MainPackage;
-import org.eclipse.linuxtools.rpmstubby.model.PackageItem;
-import org.eclipse.linuxtools.rpmstubby.model.SubPackage;
+import org.eclipse.linuxtools.internal.rpmstubby.model.MainPackage;
+import org.eclipse.linuxtools.internal.rpmstubby.model.PackageItem;
+import org.eclipse.linuxtools.internal.rpmstubby.model.SubPackage;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;

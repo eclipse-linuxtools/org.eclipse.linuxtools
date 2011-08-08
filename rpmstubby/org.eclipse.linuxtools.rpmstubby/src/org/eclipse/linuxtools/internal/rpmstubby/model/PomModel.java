@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby.model;
+package org.eclipse.linuxtools.internal.rpmstubby.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,21 +9,10 @@
  *    Alphonse Van Assche - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.linuxtools.rpmstubby.preferences;
-
-import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-
+package org.eclipse.linuxtools.internal.rpmstubby.preferences;
 
 /**
- * Class used to initialize default preference values.
+ * Constant definitions for stubby plug-in preferences.
  */
-public class PreferenceInitializer extends AbstractPreferenceInitializer {
-	
-	/**
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
-	@Override
-	public void initializeDefaultPreferences() {
-	}
-
+public class PreferenceConstants {
 }

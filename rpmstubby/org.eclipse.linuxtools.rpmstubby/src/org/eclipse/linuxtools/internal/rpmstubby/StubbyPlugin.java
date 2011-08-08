@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat Incorporated - initial API and implementation
  *******************************************************************************/
-package org.eclipse.linuxtools.rpmstubby;
+package org.eclipse.linuxtools.internal.rpmstubby;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class StubbyPlugin extends AbstractUIPlugin {
 
 	/** The plug-in ID. */
-	public static final String PLUGIN_ID = "org.eclipse.linuxtools.rpmstubby";
+	public static final String PLUGIN_ID = "org.eclipse.linuxtools.internal.rpmstubby";
 
 	// The shared instance
 	private static StubbyPlugin plugin;
