@@ -35,6 +35,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindError;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.profiling.ui.ProfileUIUtils;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
@@ -99,8 +100,11 @@ public class CoreMessagesViewer {
 				if (element instanceof ValgrindStackFrame) {
 					image = DebugUITools.getImage(IDebugUIConstants.IMG_OBJS_STACKFRAME);
 				}
-				else {
+				else if (element instanceof ValgrindError)  {
 					image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+				}
+				else {
+					image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK);
 				}
 				return image;
 			}

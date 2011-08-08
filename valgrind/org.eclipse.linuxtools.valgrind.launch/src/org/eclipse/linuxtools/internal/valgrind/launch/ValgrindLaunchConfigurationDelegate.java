@@ -48,6 +48,7 @@ import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstant
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCoreParser;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindError;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindInfo;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindStackFrame;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindUIPlugin;
 import org.eclipse.linuxtools.internal.valgrind.ui.ValgrindViewPart;
@@ -201,6 +202,11 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		for (File log : outputPath.toFile().listFiles(LOG_FILTER)) {
 			ValgrindCoreParser parser = new ValgrindCoreParser(log, launch);
 			IValgrindMessage[] results = parser.getMessages();
+			
+			if (results.length == 0){
+				results = new IValgrindMessage[1];
+				results[0] = new ValgrindInfo(null, Messages.getString("ValgrindOutputView.No_output"), launch);
+			}
 			messages.addAll(Arrays.asList(results));
 			createMarkers(results);
 		}
