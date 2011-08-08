@@ -16,6 +16,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -62,6 +64,7 @@ public class ValgrindPreferencePage extends PreferencePage implements
 			
 			public void widgetSelected(SelectionEvent e) {
 				checkValgrindEnablement();
+				updateApplyButton();
 			}
 			
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -93,6 +96,12 @@ public class ValgrindPreferencePage extends PreferencePage implements
 		binTextData.horizontalAlignment = SWT.FILL;
 		binTextData.grabExcessHorizontalSpace = true;
 		binText.setLayoutData(binTextData);
+		binText.addModifyListener(new ModifyListener() {
+			
+			public void modifyText(ModifyEvent e) {
+				updateApplyButton();
+			}
+		});
 
 		// Button
 		browseButton = new Button(locationTop, SWT.PUSH);
@@ -155,8 +164,12 @@ public class ValgrindPreferencePage extends PreferencePage implements
 	@Override
 	public boolean performOk() {
 		if (isValid()) {
-			store.setValue(VALGRIND_ENABLE, enableButton.getSelection());
-			store.setValue(VALGRIND_PATH, binText.getText());
+			boolean enabled = enableButton.getSelection();
+			store.setValue(VALGRIND_ENABLE, enabled);
+			// Only store path if enabled
+			if (enabled) {
+				store.setValue(VALGRIND_PATH, binText.getText());
+			}
 			ValgrindPlugin.getDefault().savePluginPreferences();
 			return true;
 		}
@@ -168,16 +181,18 @@ public class ValgrindPreferencePage extends PreferencePage implements
 	@Override
 	public boolean isValid() {
 		setErrorMessage(null);
-		// Check the Binary Path is valid
-		String path = binText.getText();
-		File file = new File(path);
-		// Can be more strict if necessary
-		if (file.exists() && !file.isDirectory()) {
-			return true;
-		} else {
-			setErrorMessage(Messages.getString("ValgrindPreferencePage.Error_invalid_message")); //$NON-NLS-1$
-			return false;
+		// Disregard the location if disabled
+		if (enableButton.getSelection()) {
+			// Check the Binary Path is valid
+			String path = binText.getText();
+			File file = new File(path);
+			// Can be more strict if necessary
+			if (!file.exists() || file.isDirectory()) {
+				setErrorMessage(Messages.getString("ValgrindPreferencePage.Error_invalid_message")); //$NON-NLS-1$
+				return false;
+			}
 		}
+		return true;
 	}
 
 }
