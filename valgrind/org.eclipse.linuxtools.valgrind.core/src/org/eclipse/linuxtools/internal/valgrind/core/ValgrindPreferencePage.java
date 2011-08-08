@@ -38,43 +38,67 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ValgrindPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
+	/**
+	 * Boolean to allow user to disable Valgrind integration
+	 * @since 0.8
+	 */
+	public static final String VALGRIND_ENABLE = "VALGRIND_ENABLE"; //$NON-NLS-1$
 	public static final String VALGRIND_PATH = "VALGRIND_PATH"; //$NON-NLS-1$
 	private Text binText;
-	private Button button;
+	private Button browseButton;
 	private IPreferenceStore store;
+	private Button enableButton;
 
 	@Override
 	protected Control createContents(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NULL);
+		Composite enableTop = new Composite(parent, SWT.NONE);
+		enableTop.setLayout(new GridLayout());
+		GridData enableData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		enableTop.setLayoutData(enableData);
+		
+		enableButton = new Button(enableTop, SWT.CHECK);
+		enableButton.setText(Messages.getString("ValgrindPreferencePage.Button_Enable_Valgrind")); //$NON-NLS-1$
+		enableButton.addSelectionListener(new SelectionListener() {
+			
+			public void widgetSelected(SelectionEvent e) {
+				checkValgrindEnablement();
+			}
+			
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		
+		Composite locationTop = new Composite(enableTop, SWT.NONE);
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 3;
-		composite.setLayout(layout);
+		layout.marginTop = 0;
+		locationTop.setLayout(layout);
 
 		GridData data = new GridData();
 		data.verticalAlignment = SWT.FILL;
 		data.horizontalAlignment = SWT.FILL;
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
-		composite.setLayoutData(data);
+		locationTop.setLayoutData(data);
 
 		// Path Label
-		Label pathLabel = new Label(composite, SWT.NONE);
+		Label pathLabel = new Label(locationTop, SWT.NONE);
 		pathLabel.setText(Messages
 				.getString("ValgrindPreferencePage.Binary_path")); //$NON-NLS-1$
 
 		// Path Text Field
-		binText = new Text(composite, SWT.SINGLE | SWT.BORDER);
+		binText = new Text(locationTop, SWT.SINGLE | SWT.BORDER);
 		GridData binTextData = new GridData();
 		binTextData.horizontalAlignment = SWT.FILL;
 		binTextData.grabExcessHorizontalSpace = true;
 		binText.setLayoutData(binTextData);
 
 		// Button
-		button = new Button(composite, SWT.PUSH);
-		button.setText(Messages
+		browseButton = new Button(locationTop, SWT.PUSH);
+		browseButton.setText(Messages
 				.getString("ValgrindPreferencePage.Browse_button")); //$NON-NLS-1$
-		button.addSelectionListener(new SelectionListener() {
+		browseButton.addSelectionListener(new SelectionListener() {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
@@ -94,9 +118,17 @@ public class ValgrindPreferencePage extends PreferencePage implements
 		return parent;
 	}
 
+	private void checkValgrindEnablement() {
+		boolean enabled = enableButton.getSelection();
+		binText.setEnabled(enabled);
+		browseButton.setEnabled(enabled);
+	}
+
 	// Loading preferences into controls
 	private void loadPreferences() {
+		enableButton.setSelection(store.getBoolean(VALGRIND_ENABLE));
 		binText.setText(store.getString(VALGRIND_PATH));
+		checkValgrindEnablement();
 	}
 
 	// Get the PreferenceStore for this Plugin
@@ -112,39 +144,40 @@ public class ValgrindPreferencePage extends PreferencePage implements
 
 	@Override
 	protected void performDefaults() {
-		super.performDefaults();
+		store.setValue(VALGRIND_ENABLE, store.getDefaultBoolean(VALGRIND_ENABLE));
+		enableButton.setSelection(store.getDefaultBoolean(VALGRIND_ENABLE));
+		
 		store.setValue(VALGRIND_PATH, store.getDefaultString(VALGRIND_PATH));
 		binText.setText(store.getDefaultString(VALGRIND_PATH));
+		super.performDefaults();
 	}
 
 	@Override
 	public boolean performOk() {
-		if (passesValidityChecks()) {
+		if (isValid()) {
+			store.setValue(VALGRIND_ENABLE, enableButton.getSelection());
+			store.setValue(VALGRIND_PATH, binText.getText());
 			ValgrindPlugin.getDefault().savePluginPreferences();
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
-
-	private boolean passesValidityChecks() {
+	
+	@Override
+	public boolean isValid() {
+		setErrorMessage(null);
 		// Check the Binary Path is valid
-		File file = new File(binText.getText());
+		String path = binText.getText();
+		File file = new File(path);
 		// Can be more strict if necessary
 		if (file.exists() && !file.isDirectory()) {
-			store.setValue(VALGRIND_PATH, binText.getText());
+			return true;
 		} else {
-			performDefaults();
-			Shell shell = new Shell();
-			MessageDialog
-					.openError(
-							shell,
-							Messages.getString("ValgrindPreferencePage.Error_invalid_title"), //$NON-NLS-1$
-							Messages.getString("ValgrindPreferencePage.Error_invalid_message")); //$NON-NLS-1$
+			setErrorMessage(Messages.getString("ValgrindPreferencePage.Error_invalid_message")); //$NON-NLS-1$
 			return false;
 		}
-
-		return true;
 	}
 
 }

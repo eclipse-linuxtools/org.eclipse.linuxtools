@@ -62,9 +62,11 @@ public class ValgrindPlugin extends AbstractUIPlugin {
 	protected void initializeDefaultPreferences(IPreferenceStore store) {
 		ValgrindCommand valCommand = new ValgrindCommand();
 		try {
+			store.setDefault(ValgrindPreferencePage.VALGRIND_ENABLE, true);
 			store.setDefault(ValgrindPreferencePage.VALGRIND_PATH, valCommand.whichValgrind());
 		} catch (IOException e) {
-			e.printStackTrace();
+			// No Valgrind installed, make disabled by default
+			store.setDefault(ValgrindPreferencePage.VALGRIND_ENABLE, false);
 		}
 	}
 
