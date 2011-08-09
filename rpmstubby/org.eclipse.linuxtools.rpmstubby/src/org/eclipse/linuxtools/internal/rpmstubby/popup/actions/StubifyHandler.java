@@ -17,15 +17,18 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.linuxtools.internal.rpmstubby.SpecfileWriter;
+import org.eclipse.linuxtools.rpmstubby.Generator;
+import org.eclipse.linuxtools.rpmstubby.InputType;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
- * Action handling stybifying RPM spec file from a Eclipse feature.xml file.
- * 
+ * Common functionality for all the stubify commands.
+ *
  */
-public class StubifyFeatureAction extends AbstractHandler {
-
+public abstract class StubifyHandler extends AbstractHandler {
+	
+	protected abstract InputType getInputType();
+	
 	public Object execute(ExecutionEvent event) {
 
 		IFile featureFile = null;
@@ -39,11 +42,12 @@ public class StubifyFeatureAction extends AbstractHandler {
 							.getAdapter(IFile.class);
 				}
 				if (featureFile != null) {
-					SpecfileWriter specfileWriter = new SpecfileWriter();
-					specfileWriter.write(featureFile);
+					Generator generator = new Generator(getInputType());
+					generator.generate(featureFile);
 				}
 			}
 		}
 		return null;
 	}
+
 }
