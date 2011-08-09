@@ -374,7 +374,7 @@ public class SpecfileNewWizardPage extends WizardPage {
 		updateStatus(null);
 	}
 
-	private void updateStatus(String message) {
+	protected void updateStatus(String message) {
 		setErrorMessage(message);
 		setPageComplete(message == null);
 	}
@@ -438,6 +438,34 @@ public class SpecfileNewWizardPage extends WizardPage {
 		IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 				IStatus.OK, message, null);
 		throw new CoreException(status);
+	}
+	
+	public Text getNameText() {
+		return nameText;
+	}
+
+	public Text getProjectText() {
+		return projectText;
+	}
+
+	public Text getVersionText() {
+		return versionText;
+	}
+
+	public Text getUrlText() {
+		return urlText;
+	}
+
+	public Text getLicenseText() {
+		return licenseText;
+	}
+
+	public Text getSourceText() {
+		return source0Text;
+	}
+
+	public Text getSummaryText() {
+		return summaryText;
 	}
 
 }
