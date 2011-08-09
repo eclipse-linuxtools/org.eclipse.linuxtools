@@ -40,5 +40,10 @@ public class ValgrindStubCommand extends ValgrindCommand {
 	public Process getProcess() {
 		return null;
 	}
+	
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 
 }

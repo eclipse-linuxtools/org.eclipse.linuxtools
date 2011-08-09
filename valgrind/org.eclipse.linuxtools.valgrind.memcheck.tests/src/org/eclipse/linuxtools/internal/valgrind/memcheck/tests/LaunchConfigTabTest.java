@@ -105,7 +105,7 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 
 			assertTrue(cmd.contains("--leak-check=yes")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--show-reachable=no")); //$NON-NLS-1$
-			assertTrue(cmd.contains("--leak-resolution=low")); //$NON-NLS-1$
+			assertTrue(cmd.contains("--leak-resolution=high")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--freelist-vol=10000000")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--workaround-gcc296-bugs=no")); //$NON-NLS-1$
 			assertTrue(cmd.contains("--partial-loads-ok=no")); //$NON-NLS-1$
