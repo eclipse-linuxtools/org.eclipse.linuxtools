@@ -1,3 +1,12 @@
+2011-08-10  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java:
+		(existsConfiguration): Clean up function.
+		(finishLaunch): Do not create a launch configuration per profiling run.
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchWizard.java:
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph:
+		Reflect new changes.
+
 2010-06-02  Roland Grunberg  <rgrunber@redhat.com>
 
 	* build.properties: Externalize some strings in the Manifest.

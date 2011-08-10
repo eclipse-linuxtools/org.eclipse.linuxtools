@@ -170,18 +170,17 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		tab.setDefaults(wc);
 	}
 
-	protected ILaunchConfiguration checkForExistingConfiguration() {
+	protected boolean existsConfiguration(ILaunchConfigurationWorkingCopy wc) {
 		ILaunchConfigurationType configType = getLaunchConfigType();
 		try {
 			ILaunchConfiguration[] configs = DebugPlugin.getDefault()
 					.getLaunchManager().getLaunchConfigurations(configType);
 
 			for (int i = 0; i < configs.length; i++) {
-				if (configs[i].exists() && configs[i] != null
-						&& !config.equals(configs[i])) {
-					if (checkIfAttributesAreEqual(config, configs[i])) {
-						config.delete();
+				if (configs[i] != null && configs[i].exists()) {
+					if (checkIfAttributesAreEqual(wc, configs[i])){
 						config = configs[i];
+						return true;
 					}
 				}
 			}
@@ -190,8 +189,7 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			e.printStackTrace();
 		}
 
-		return config;
-
+		return false;
 	}
 
 	/**
@@ -205,16 +203,15 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 */
 	private boolean checkIfAttributesAreEqual(ILaunchConfiguration first,
 			ILaunchConfiguration second) {
-		boolean isEqual = false;
 
 		try {
 			if (first.getAttributes().equals(second.getAttributes()))
-				isEqual = true;
+				return true;
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-
-		return isEqual;
+		
+		return false;
 	}
 
 	/**
@@ -225,25 +222,17 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * If scriptPath has not been set, the setScriptPath() method will be
 	 * called.
 	 * 
-	 * @param name
-	 *            : Used to generate the name of the new configuration
-	 * @param bin
-	 *            : Affiliated executable
-	 * @param mode
-	 *            : Mode setting
+	 * @param name : Used to generate the name of the new configuration
+	 * @param bin : Affiliated executable
+	 * @param mode : Mode setting
+	 * @param wc : A working copy of the launch configuration
 	 * @throws Exception
 	 */
-	protected void finishLaunch(String name, String mode) throws Exception {
+	protected void finishLaunch(String name, String mode, ILaunchConfigurationWorkingCopy wc) throws Exception {
 		if (!finishLaunchHelper())
 			return;
 
-		ILaunchConfigurationWorkingCopy wc = null;
-		if (config != null) {
-			try {
-				wc = config.getWorkingCopy(); //$NON-NLS-1$
-			} catch (CoreException e1) {
-				e1.printStackTrace();
-			}
+		if (wc != null) {
 
 			wc.setAttribute(LaunchConfigurationConstants.SCRIPT_PATH,scriptPath);
 
@@ -260,16 +249,20 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 			wc.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewID);
 			wc.setAttribute(LaunchConfigurationConstants.SECONDARY_VIEW_ID, setSecondaryViewID());
 
-			try {
-				config = wc.doSave();
+			
+			/**
+			 * Enable this to save the default launch configuration
+			 */
+			/*try {
+				if (!existsConfiguration(wc)) {
+					config = wc.doSave();
+				}
 			} catch (CoreException e) {
 				e.printStackTrace();
-			}
-
-			checkForExistingConfiguration();
+			}*/
 
 			if (!testMode)
-				DebugUITools.launch(config, mode);
+				DebugUITools.launch(wc, mode);
 		} else
 			throw new Exception(
 					Messages
@@ -395,21 +388,19 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 * @param name
 	 * @return
 	 */
-	protected ILaunchConfiguration createConfiguration(String name) {
-		ILaunchConfiguration config = null;
+	protected ILaunchConfigurationWorkingCopy createConfiguration(String name) {
+		ILaunchConfigurationWorkingCopy wc = null;
 		try {
 			ILaunchConfigurationType configType = getLaunchConfigType();
-			ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-					getLaunchManager()
+			wc = configType.newInstance(null,getLaunchManager()
 							.generateUniqueLaunchConfigurationNameFrom(name));
 
 			setDefaultProfileAttributes(wc);
 
-			config = wc.doSave();
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		return config;
+		return wc;
 	}
 
 	/**
@@ -423,17 +414,15 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 	 *            - Customize the name based on the shortcut being launched
 	 * @return A launch configuration, or null
 	 */
-	protected ILaunchConfiguration createConfiguration(IBinary bin, String name) {
+	protected ILaunchConfigurationWorkingCopy createConfiguration(IBinary bin,
+			String name) {
+		ILaunchConfigurationWorkingCopy wc = null;
 		if (bin != null) {
-			config = null;
 			try {
-				String projectName = bin.getResource().getProjectRelativePath()
-						.toString();
+				String projectName = bin.getResource().getProjectRelativePath().toString();
 				ILaunchConfigurationType configType = getLaunchConfigType();
-				ILaunchConfigurationWorkingCopy wc = configType.newInstance(
-						null, getLaunchManager()
-								.generateUniqueLaunchConfigurationNameFrom(
-										name + " - " + bin.getElementName())); //$NON-NLS-1$
+				wc = configType.newInstance(null,getLaunchManager()
+						.generateUniqueLaunchConfigurationNameFrom(name + " - " + bin.getElementName())); //$NON-NLS-1$
 
 				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME,projectName);
 				wc.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, bin.getCProject().getElementName());
@@ -442,25 +431,21 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 
 				setDefaultProfileAttributes(wc);
 
-				config = wc.doSave();
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
-		} else
+		} else {
+
 			try {
-				ILaunchConfigurationWorkingCopy wc = getLaunchConfigType()
-						.newInstance(
-								null,
-								getLaunchManager()
-										.generateUniqueLaunchConfigurationNameFrom(
-												name)); //$NON-NLS-1$
+				wc = getLaunchConfigType().newInstance(null,
+								getLaunchManager().generateUniqueLaunchConfigurationNameFrom(name)); //$NON-NLS-1$
 				setDefaultProfileAttributes(wc);
-				config = wc.doSave();
 			} catch (CoreException e) {
 				e.printStackTrace();
 				return null;
 			}
-		return config;
+		}
+		return wc;
 	}
 
 	/**
@@ -943,11 +928,11 @@ public abstract class SystemTapLaunchShortcut extends ProfileLaunchShortcut {
 		
 		try {
 			 
-			config = createConfiguration(bin, name);
+			ILaunchConfigurationWorkingCopy wc = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
 			outputPath = PluginConstants.getDefaultIOPath();
-			finishLaunch(name, mode);
+			finishLaunch(name, mode, wc);
 
 		} catch (IOException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
