@@ -1,3 +1,8 @@
+2011-08-10  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/sleepingthreads/launch/LaunchSleepingThreads.java: 
+		Update to work with slight changes in api.
+
 2010-09-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Add zest plug-in dependencies rather than import packages

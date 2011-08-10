@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -248,9 +249,9 @@ public class LaunchWizard extends SystemTapLaunchShortcut {
 					scriptPath = scriptLocation.getText();
 					binaryPath = binaryLocation.getText();
 					arguments = argumentsLocation.getText();
-					config = createConfiguration(null, name);
+					ILaunchConfigurationWorkingCopy wc = createConfiguration(null, name);
 					try {
-						finishLaunch(scriptPath + ": " + binName, mode);//$NON-NLS-1$
+						finishLaunch(scriptPath + ": " + binName, mode, wc);//$NON-NLS-1$
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					} 

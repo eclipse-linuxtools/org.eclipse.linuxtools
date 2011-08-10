@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import org.eclipse.cdt.core.model.IBinary;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapUIErrorMessages;
 import org.eclipse.ui.IEditorPart;
@@ -69,7 +70,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		
 		try {
 			 
-			config = createConfiguration(bin, name);
+			ILaunchConfigurationWorkingCopy wc = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
 			outputPath = PluginConstants.getDefaultIOPath();
@@ -80,7 +81,7 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 				return;
 
 			needToGenerate = true;
-			finishLaunch(name, mode);
+			finishLaunch(name, mode, wc);
 
 		} catch (IOException e) {
 			SystemTapUIErrorMessages mess = new SystemTapUIErrorMessages(
