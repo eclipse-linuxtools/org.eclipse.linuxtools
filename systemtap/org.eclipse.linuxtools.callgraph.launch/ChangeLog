@@ -1,3 +1,10 @@
+2011-08-11  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapOptionsTab.java:
+		Set up verbosity level.
+	* src/org/eclipse/linuxtools/callgraph/launch/ConfigurationOptionsSetter.java:
+		Handle verbosity level.
+	 
 2011-08-10  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapLaunchShortcut.java:

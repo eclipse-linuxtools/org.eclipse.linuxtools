@@ -98,7 +98,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected Button viewerButton;
 
 
-	protected Button button_v;
 	protected Button button_k;
 	protected Button button_u;
 	protected Button button_w;
@@ -119,6 +118,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	protected Spinner button_p_Spinner;
 	protected Spinner button_s_Spinner;
 	protected Spinner button_x_Spinner;
+	protected Spinner button_v_Spinner;
 	
 	private Button useColourButton;
 //	private Button generateScriptButton;
@@ -662,13 +662,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		buttonsTop.setLayoutData(buttonsData);
 
 		
-		button_v = new Button(buttonsTop, SWT.CHECK);
-		button_v.setText(Messages.getString("SystemTapOptionsTab.18")); //$NON-NLS-1$
-		button_v.addSelectionListener(selectListener);
-		button_v.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		button_v.setToolTipText(Messages.getString("SystemTapOptionsTab.2") + //$NON-NLS-1$
-								Messages.getString("SystemTapOptionsTab.4")); //$NON-NLS-1$
-		
 		button_k = new Button(buttonsTop, SWT.CHECK);
 		button_k.setText(Messages.getString("SystemTapOptionsTab.20")); //$NON-NLS-1$
 		button_k.addSelectionListener(selectListener);
@@ -677,7 +670,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				Messages.getString("SystemTapOptionsTab.5") + //$NON-NLS-1$
 				Messages.getString("SystemTapOptionsTab.6") + //$NON-NLS-1$
 				Messages.getString("SystemTapOptionsTab.7")); //$NON-NLS-1$
-		
 		
 		button_g = new Button(buttonsTop, SWT.CHECK);
 		button_g.setText(Messages.getString("SystemTapOptionsTab.21")); //$NON-NLS-1$
@@ -792,6 +784,18 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 				Messages.getString("SystemTapOptionsTab.39") + //$NON-NLS-1$
 				Messages.getString("SystemTapOptionsTab.40")); //$NON-NLS-1$
 		
+		Composite button_v_Spinner_Top = new Composite(buttonsTop, SWT.NONE);
+		button_v_Spinner_Top.setLayout(new GridLayout(2, false));
+		Label button_v_Spinner_Label = new Label(button_v_Spinner_Top, SWT.NONE);
+		button_v_Spinner_Label.setText(Messages.getString("SystemTapOptionsTab.18")); //$NON-NLS-1$
+		button_v_Spinner = new Spinner(button_v_Spinner_Top, SWT.BORDER);
+		button_v_Spinner.setMaximum(3);
+		button_v_Spinner.addModifyListener(modifyListener);
+		button_v_Spinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		button_v_Spinner_Label.setToolTipText(
+				Messages.getString("SystemTapOptionsTab.2") + //$NON-NLS-1$
+				Messages.getString("SystemTapOptionsTab.4")); //$NON-NLS-1$
+
 		button_graphicsMode = new Button(buttonsTop, SWT.CHECK);
 		button_graphicsMode.setText(Messages.getString("SystemTapOptionsTab.3")); //$NON-NLS-1$
 		button_graphicsMode.addSelectionListener(graphicsModeListener);
@@ -828,7 +832,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		workspacePath = location.toString();
 		
 		try {
-			button_v.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE, LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE));
 			button_k.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_KEEP_TEMPORARY, LaunchConfigurationConstants.DEFAULT_COMMAND_KEEP_TEMPORARY));
 			button_u.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_NO_CODE_ELISION, LaunchConfigurationConstants.DEFAULT_COMMAND_NO_CODE_ELISION));
 			button_w.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_DISABLE_WARNINGS, LaunchConfigurationConstants.DEFAULT_COMMAND_DISABLE_WARNINGS));
@@ -842,6 +845,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 			button_F.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_LEAVE_RUNNING, LaunchConfigurationConstants.DEFAULT_COMMAND_LEAVE_RUNNING));
 			button_s_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_BUFFER_BYTES, LaunchConfigurationConstants.DEFAULT_COMMAND_BUFFER_BYTES));
 			button_x_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, LaunchConfigurationConstants.DEFAULT_COMMAND_TARGET_PID));
+			button_v_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE, LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE));
 			button_p_Spinner.setSelection(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_PASS, LaunchConfigurationConstants.DEFAULT_COMMAND_PASS));
 			
 			button_D_text.setText(configuration.getAttribute(LaunchConfigurationConstants.COMMAND_C_DIRECTIVES, LaunchConfigurationConstants.DEFAULT_COMMAND_C_DIRECTIVES));
@@ -874,7 +878,6 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		
 		getControl().setRedraw(false);
 
-		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE, button_v.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_KEEP_TEMPORARY, button_k.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_GURU, button_g.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_PROLOGUE_SEARCH, button_P.getSelection());
@@ -889,6 +892,7 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_PASS, button_p_Spinner.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_BUFFER_BYTES, button_s_Spinner.getSelection());
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_TARGET_PID, button_x_Spinner.getSelection());
+		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE, button_v_Spinner.getSelection());
 		
 		configuration.setAttribute(LaunchConfigurationConstants.PARSER_CLASS, parser.getText());
 		configuration.setAttribute(LaunchConfigurationConstants.VIEW_CLASS, viewer.getText());

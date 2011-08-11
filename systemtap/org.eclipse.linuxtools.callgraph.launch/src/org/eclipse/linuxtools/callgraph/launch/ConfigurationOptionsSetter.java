@@ -26,10 +26,17 @@ public class ConfigurationOptionsSetter {
 	public static String setOptions(ILaunchConfiguration config) {
 		StringBuilder options = new StringBuilder(); //$NON-NLS-1$
 		try {
-			if (config.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,
-					LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE)) {
-				options.append("-v "); //$NON-NLS-1$
-			}
+
+		int verboseLevel = config.getAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE,
+				LaunchConfigurationConstants.DEFAULT_COMMAND_VERBOSE);
+		if (verboseLevel > 0) {
+			StringBuilder builder = new StringBuilder();
+			builder.append("-"); //$NON-NLS-1$
+			for (int i = 0; i < verboseLevel; i++)
+				builder.append("v"); //$NON-NLS-1$
+			builder.append(" "); //$NON-NLS-1$
+			options.append(builder.toString());
+		}
 
 
 		if (config.getAttribute(LaunchConfigurationConstants.COMMAND_PASS,

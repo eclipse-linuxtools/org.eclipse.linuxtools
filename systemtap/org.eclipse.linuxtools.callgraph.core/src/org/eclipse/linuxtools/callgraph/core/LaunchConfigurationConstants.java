@@ -59,7 +59,7 @@ public final class LaunchConfigurationConstants {
 	public static final String COMMAND = ".COMMAND"; //$NON-NLS-1$
 	
 	//Defaults	
-	public static final boolean DEFAULT_COMMAND_VERBOSE = false;
+	public static final int DEFAULT_COMMAND_VERBOSE = 0;
 	public static final int DEFAULT_COMMAND_PASS = 0;
 	public static final boolean DEFAULT_COMMAND_KEEP_TEMPORARY = false;
 	public static final boolean DEFAULT_COMMAND_GURU = false;
