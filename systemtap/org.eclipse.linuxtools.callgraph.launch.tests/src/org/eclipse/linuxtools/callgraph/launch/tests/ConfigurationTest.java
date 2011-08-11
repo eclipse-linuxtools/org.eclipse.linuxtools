@@ -48,7 +48,7 @@ public class ConfigurationTest extends TestCase{
 			ILaunchConfiguration config = shortcut.outsideGetLaunchConfigType().newInstance(null, "Temp name");
 			ILaunchConfigurationWorkingCopy wc = config.copy("Testing configuration");
 
-			wc.setAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE, true);
+			wc.setAttribute(LaunchConfigurationConstants.COMMAND_VERBOSE, 1);
 			wc.setAttribute(LaunchConfigurationConstants.COMMAND_KEEP_TEMPORARY, true);
 			wc.setAttribute(LaunchConfigurationConstants.COMMAND_GURU, true);
 			wc.setAttribute(LaunchConfigurationConstants.COMMAND_PROLOGUE_SEARCH, true);
