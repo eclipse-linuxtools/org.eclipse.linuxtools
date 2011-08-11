@@ -19,6 +19,12 @@
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
+  <parent>
+    <groupId>org.eclipse</groupId>
+    <artifactId>eclipse-parent</artifactId>
+    <version>2</version>
+  </parent>
+  
 
   <groupId>org.eclipse.linuxtools</groupId>
   <artifactId>linuxtools-parent</artifactId>
@@ -55,7 +61,7 @@
       <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
     </pluginRepository>
   </pluginRepositories>
-
+  
   <profiles>
     <profile>
       <id>platform-indigo</id>
@@ -111,6 +117,10 @@
       <id>cdt</id>
       <layout>p2</layout>
       <url>${cdt-site}</url>
+    </repository>
+    <repository>
+      <id>maven.eclipse.org</id>
+      <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
     </repository>
   </repositories>
   
@@ -178,42 +188,6 @@
           <version>1.6</version>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>findbugs-maven-plugin</artifactId>
-          <version>2.3.2</version>
-          <configuration>
-            <findbugsXmlOutput>true</findbugsXmlOutput>
-            <failOnError>false</failOnError>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-pmd-plugin</artifactId>
-          <version>2.5</version>
-          <configuration>
-            <sourceEncoding>utf-8</sourceEncoding>
-            <minimumTokens>100</minimumTokens>
-            <targetJdk>1.5</targetJdk>
-            <format>xml</format>
-            <failOnViolation>false</failOnViolation>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>check</goal>
-                <goal>cpd-check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.2.1</version>
@@ -224,7 +198,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.0-beta-3</version>
+          <version>3.0</version>
         </plugin>
       </plugins>
     </pluginManagement>

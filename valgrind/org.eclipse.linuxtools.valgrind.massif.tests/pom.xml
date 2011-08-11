@@ -36,19 +36,11 @@
           </excludes>
           <testSuite>org.eclipse.linuxtools.valgrind.massif.tests</testSuite>
           <testClass>org.eclipse.linuxtools.internal.valgrind.massif.tests.AllTests</testClass>
-       	  <useUIHarness>true</useUIHarness>
+          <useUIHarness>true</useUIHarness>
           <useUIThread>true</useUIThread>
           <product>org.eclipse.sdk.ide</product>
           <argLine>-Declipse.valgrind.tests.runValgrind=no</argLine>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
