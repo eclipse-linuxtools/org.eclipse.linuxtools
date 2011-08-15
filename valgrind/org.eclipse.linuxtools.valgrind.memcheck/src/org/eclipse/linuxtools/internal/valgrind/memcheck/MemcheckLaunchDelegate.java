@@ -50,12 +50,14 @@ public class MemcheckLaunchDelegate implements IValgrindLaunchDelegate {
 		
 		// VG >= 3.4.0
 		if (ver == null || ver.compareTo(VER_3_4_0) >= 0) {
-			opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
+			if (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) != MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS)
+				opts.add(MemcheckCommandConstants.OPT_TRACKORIGINS + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_TRACKORIGINS, MemcheckLaunchConstants.DEFAULT_MEMCHECK_TRACKORIGINS) ? YES : NO));
 		}
 		
 		// VG >= 3.6.0
 		if (ver == null || ver.compareTo(VER_3_6_0) >= 0) {
-			opts.add(MemcheckCommandConstants.OPT_SHOW_POSSIBLY_LOST + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL) ? YES : NO));
+			if (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL) != MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL)
+				opts.add(MemcheckCommandConstants.OPT_SHOW_POSSIBLY_LOST + EQUALS + (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_POSSIBLY_LOST_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_POSSIBLY_LOST_BOOL) ? YES : NO));
 		}
 		
 		if (config.getAttribute(MemcheckLaunchConstants.ATTR_MEMCHECK_MALLOCFILL_BOOL, MemcheckLaunchConstants.DEFAULT_MEMCHECK_MALLOCFILL_BOOL)) {

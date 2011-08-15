@@ -1,3 +1,9 @@
+2011-08-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/memcheck/MemcheckLaunchDelegate.java (getCommandArray): 
+	Add check when dealing with versioned options to omit them if they
+	are the default.
+
 2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Remove internal deps.
