@@ -1,3 +1,9 @@
+2011-08-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchConfigurationDelegate.java: 
+	(getValgrindArgumentsArray): Add check when dealing with versioned options to omit them if they
+	are the default.
+
 2011-05-20  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindExportWizardPage.java (isValid): Add

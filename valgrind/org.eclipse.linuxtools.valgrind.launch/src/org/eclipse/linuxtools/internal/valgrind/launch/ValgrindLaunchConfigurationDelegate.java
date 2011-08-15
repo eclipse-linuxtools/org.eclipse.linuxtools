@@ -337,7 +337,8 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		
 		// 3.6.0 specific
 		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
-			opts.add(CommandLineConstants.OPT_DSYMUTIL + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL) ? YES : NO));
+			if (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL) != LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL)
+				opts.add(CommandLineConstants.OPT_DSYMUTIL + EQUALS + (config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_DSYMUTIL, LaunchConfigurationConstants.DEFAULT_GENERAL_DSYMUTIL) ? YES : NO));
 		}
 		
 		List<?> suppFiles = config.getAttribute(LaunchConfigurationConstants.ATTR_GENERAL_SUPPFILES, LaunchConfigurationConstants.DEFAULT_GENERAL_SUPPFILES); 
