@@ -12,6 +12,7 @@
 package org.eclipse.linuxtools.internal.valgrind.launch.remote;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
@@ -104,7 +105,9 @@ ValgrindLaunchConfigurationDelegate {
 			// ask tool extension for arguments
 			dynamicDelegate = getDynamicDelegate(toolID);
 			String[] opts = getValgrindArgumentsArray(config);
+			@SuppressWarnings({ "unused", "unchecked" })
 			Map<String, String> env = (Map<String, String>) config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, (Map<String, String>) null);
+			@SuppressWarnings("unused")
 			boolean usePty = config.getAttribute(
 					ICDTLaunchConfigurationConstants.ATTR_USE_TERMINAL,
 					ICDTLaunchConfigurationConstants.USE_TERMINAL_DEFAULT);
@@ -120,18 +123,28 @@ ValgrindLaunchConfigurationDelegate {
 			for (String argument : arguments) {
 				command += " " + argument; //$NON-NLS-1$
 			}
-			@SuppressWarnings("unused")
-			String[] output = rc.runCommand(command, remoteDir, new SubProgressMonitor(monitor, 1));
+			ArrayList<String> commandOutput = new ArrayList<String>();
+			int returnValue = rc.runCommand(command, remoteDir, commandOutput, new SubProgressMonitor(monitor, 1));
 
 			// delete remote binary
 			rc.delete(remoteBinFile, new SubProgressMonitor(monitor, 1));
 
+			if (returnValue == 0)
 			// move remote log files to local directory
-			rc.download(outputPath, localOutputDir, new SubProgressMonitor(monitor, 1));
+				rc.download(outputPath, localOutputDir, new SubProgressMonitor(monitor, 1));
 
 			// remove remote log dir and all files under it
 			rc.delete(outputPath, new SubProgressMonitor(monitor, 1));
 			
+			if (returnValue != 0) {
+				StringBuffer buf = new StringBuffer();
+				for (int i = 0; i < commandOutput.size(); ++i) {
+					buf.append(commandOutput.get(i));
+					buf.append("\n"); //$NON-NLS-1$
+				}
+				abort(buf.toString(), null, ICDTLaunchConfigurationConstants.ERR_INTERNAL_ERROR);
+			}
+	
 			// store these for use by other classes
 			getPlugin().setCurrentLaunchConfiguration(config);
 			getPlugin().setCurrentLaunch(launch);
