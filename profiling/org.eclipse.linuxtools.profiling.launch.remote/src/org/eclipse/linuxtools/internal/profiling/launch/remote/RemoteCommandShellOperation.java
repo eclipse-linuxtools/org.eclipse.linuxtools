@@ -77,6 +77,7 @@ public abstract class RemoteCommandShellOperation
 	private String _cmdSeparator = ";"; //$NON-NLS-1$
 
 	private Random _random;
+	private int rc;
 
 	/**
 	 * Constructor
@@ -139,12 +140,12 @@ public abstract class RemoteCommandShellOperation
 
 	private String getEchoCmd(CommandAlias alias)
 	{
-		return "echo " + getEchoResult(alias); //$NON-NLS-1$
+		return "echo " + getEchoResult(alias) + "$?"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private String getEchoResult(CommandAlias alias)
 	{
-		return "BEGIN-END-TAG:" + alias.getAlias() + " done"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "BEGIN-END-TAG:" + alias.getAlias() + " done "; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public String getCurrentCommand()
@@ -157,6 +158,10 @@ public abstract class RemoteCommandShellOperation
 	    return null;
 	}
 
+	public int getReturnCode() {
+		return rc;
+	}
+	
 	/**
 	 * Send a command to the running command shell.
 	 * @param cmd the command to run in the shell
@@ -272,6 +277,7 @@ public abstract class RemoteCommandShellOperation
 					String text = rmtOutput.getText();
 					if (commandMatches(text, firstCommand))
 					{
+						_remoteCmdShell.removeOutput(output);
 						_commandStack.remove(0);
 						handleCommandFinished(firstCommand.getCommand());
 						handledOutput = true;
@@ -292,8 +298,14 @@ public abstract class RemoteCommandShellOperation
 	protected boolean commandMatches(String outputEcho, CommandAlias firstCommand)
 	{
 	    String expected = getEchoResult(firstCommand);
-	    if (outputEcho.equals(expected))
+	    if (outputEcho.startsWith(expected))
 	    {
+	    	try {
+	    		int k = Integer.valueOf(outputEcho.substring(expected.length()));
+	    		rc = k;
+	    	} catch (NumberFormatException e) {
+	    		// do nothing
+	    	}
 	        return true;
 	    }
 	    else

@@ -1,3 +1,14 @@
+2011-08-15  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteConnection.java (runCommand): Change to
+	return return-code and to save output in ArrayList argument.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/RemoteCommandShellOperation.java (getReturnCode):
+	New method.
+	(getEchoResult): Add blank after "done".
+	(getEchoCmd): Add $? to get return code of command.
+	(commandMatches): Add return code support.  Remove extraneous echo statement from output that is used
+	to get return code.
+	
 2011-08-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Remove TCF references.
