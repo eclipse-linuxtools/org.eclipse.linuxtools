@@ -1,3 +1,8 @@
+2011-08-16  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* pom.xml: Bump up feature to 3.0.1.
+	* feature.xml: Ditto.
+
 2011-05-10  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves: #342895
