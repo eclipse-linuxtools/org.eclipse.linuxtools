@@ -41,7 +41,11 @@ public class ManParser {
 		StringBuilder sb = new StringBuilder();
 		try {
 			process = builder.start();
-			process.waitFor();
+			if (!(System.getProperty("os.name").toLowerCase() //$NON-NLS-1$
+					.indexOf("windows") == 0)) { //$NON-NLS-1$
+				process.waitFor();
+			}
+
 			InputStream manContent = process.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					manContent));
@@ -69,5 +73,4 @@ public class ManParser {
 		}
 		return sb;
 	}
-
 }
