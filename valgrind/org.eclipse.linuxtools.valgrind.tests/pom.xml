@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-valgrind-parent</artifactId>
     <groupId>org.eclipse.linuxtools.valgrind</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.8.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.valgrind.tests</artifactId>
