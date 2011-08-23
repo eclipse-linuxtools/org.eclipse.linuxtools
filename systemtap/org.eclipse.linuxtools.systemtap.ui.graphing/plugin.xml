@@ -75,8 +75,8 @@
 			description="%category.file.desc"
 			id="org.eclipse.linuxtools.systemtap.ui.graphing.category.file"/>
 			 <command
-                        name="%action.modifyParsing.name"
-                        description="%action.modifyParsing.desc"
+                        name="%command.modifyParsing.name"
+                        description="%command.modifyParsing.desc"
                         categoryId="org.eclipse.linuxtools.systemtap.ui.graphing.category.edit"
                         id="org.eclipse.linuxtools.systemtap.ui.graphing.commands.ModifyParsing"/>
 
