@@ -11,7 +11,7 @@
 package org.eclipse.linuxtools.man.views;
 
 import org.eclipse.jface.text.TextPresentation;
-import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.linuxtools.man.parser.ManDocument;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * Text viewer for a man page.
  * 
  */
-public class ManTextViewer extends TextViewer {
+public class ManTextViewer extends SourceViewer {
 
 	/**
 	 * Creates a resizable text viewer.
@@ -29,7 +29,7 @@ public class ManTextViewer extends TextViewer {
 	 * @param parent
 	 */
 	public ManTextViewer(Composite parent) {
-		super(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		super(parent, null, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		// setEditable(false);
 	}
 
