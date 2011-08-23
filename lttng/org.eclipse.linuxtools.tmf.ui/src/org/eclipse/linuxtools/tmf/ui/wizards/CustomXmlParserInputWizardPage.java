@@ -383,6 +383,8 @@ public class CustomXmlParserInputWizardPage extends WizardPage {
                         inputElement = new InputElement(getChildNameSuggestion(null), false, CustomXmlTraceDefinition.TAG_IGNORE, 0, "", null); //$NON-NLS-1$
                         definition.rootInputElement = inputElement;
                         feelingLucky(inputElement);
+                    } else {
+                    	return;
                     }
                 } else if (treeViewer.getSelection().isEmpty()) {
                     return;
