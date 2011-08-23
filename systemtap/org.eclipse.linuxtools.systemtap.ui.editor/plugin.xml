@@ -9,8 +9,8 @@
 	<extension
 		point="org.eclipse.ui.commands">
 		<command
-			name="%command.open.name"
-			description="%command.open.desc"
+			name="%action.open.name"
+			description="%action.open.desc"
 			categoryId="org.eclipse.linuxtools.systemtap.ui.editor.category.file"
 			id="org.eclipse.linuxtools.systemtap.ui.editor.commands.file.OpenFileCommand"/>
 		<category
