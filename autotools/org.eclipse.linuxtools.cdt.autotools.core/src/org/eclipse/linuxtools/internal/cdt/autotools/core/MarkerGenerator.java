@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.core;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.IMarkerGenerator;
-import org.eclipse.cdt.core.ProblemMarkerInfo;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -123,10 +125,15 @@ public abstract class MarkerGenerator {
 			if (info.externalPath != null) {
 				marker.setAttribute(IAutotoolsMarker.MARKER_EXTERNAL_LOCATION, info.externalPath.toOSString());
 			}
-			if (info.libraryInfo != null) {
-				marker.setAttribute(IAutotoolsMarker.MARKER_LIBRARY_INFO, info.libraryInfo);
+
+			// Add all other client defined attributes.
+			Map<String, String> attributes = info.myGetAttributes();
+			if (attributes != null){
+				for (Entry<String, String> entry : attributes.entrySet()) {
+					marker.setAttribute(entry.getKey(), entry.getValue());
+				}
 			}
-			marker.setAttribute(IAutotoolsMarker.MARKER_PROBLEM_TYPE, info.getType());
+
 			
 		}
 		catch (CoreException e) {

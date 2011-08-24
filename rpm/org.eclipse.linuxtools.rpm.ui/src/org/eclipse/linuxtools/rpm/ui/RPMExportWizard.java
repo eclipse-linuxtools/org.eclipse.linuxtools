@@ -87,8 +87,9 @@ public class RPMExportWizard extends Wizard implements IExportWizard {
 				// nothing we can do
 			}
 		}
-
-		mainPage = new RPMExportPage(project);
-		addPage(mainPage);
+		if (project != null) {
+			mainPage = new RPMExportPage(project);
+			addPage(mainPage);
+		}
 	}
 }

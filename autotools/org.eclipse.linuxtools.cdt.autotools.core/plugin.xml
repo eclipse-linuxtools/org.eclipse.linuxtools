@@ -556,13 +556,13 @@
        </markerResolutionGenerator>
     </extension>
     <extension
-          id="id1"
-          name="name"
+          id="AutoconfErrorParser"
+          name="AutoconfErrorParser"
           point="org.eclipse.cdt.core.ErrorParser">
        <errorparser
              class="org.eclipse.linuxtools.internal.cdt.autotools.core.ErrorParser"
              id="org.eclipse.linuxtools.internal.cdt.autotools.core.ErrorParser"
-             name="AutoconfErrorParser">
+             name="Autoconf Error Parser">
        </errorparser>
     </extension>
 </plugin>

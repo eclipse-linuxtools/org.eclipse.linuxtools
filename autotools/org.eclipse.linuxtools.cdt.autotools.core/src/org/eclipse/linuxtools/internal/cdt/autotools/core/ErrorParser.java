@@ -73,6 +73,7 @@ public class ErrorParser extends MarkerGenerator implements IErrorParser{
 				Method method = eoParser.getClass().getMethod("addProblemMarker", ProblemMarkerInfo.class);
 				try {
 					method.invoke(eoParser, marker);
+					return true;
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -125,7 +126,7 @@ public class ErrorParser extends MarkerGenerator implements IErrorParser{
 			// Find the log file containing this check
 			AutotoolsProblemMarkerInfo.Type type = getCheckType(m.group(1));
 			if (type != null)
-				return new AutotoolsProblemMarkerInfo(getProject(), -1, "Missing " + type + " " + m.group(1), SEVERITY_INFO, m.group(1), type);
+				return new AutotoolsProblemMarkerInfo(getProject(), "Missing " + type + " " + m.group(1), SEVERITY_INFO, m.group(1), type);
 		}
 
 		return null;
@@ -207,7 +208,6 @@ public class ErrorParser extends MarkerGenerator implements IErrorParser{
 					.compile("configure:(\\d+): checking for " + name); //$NON-NLS-1$
 			String line = reader.readLine();
 			while (line != null) {
-				// configure:9751: checking for windres
 				Matcher m = errorPattern.matcher(line);
 
 				if (m.matches()) {

@@ -12,7 +12,10 @@ package org.eclipse.linuxtools.rpm.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.linuxtools.rpm.core.IRPMConstants;
+import org.eclipse.linuxtools.rpm.core.RPMCorePlugin;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.core.RPMProjectLayout;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
@@ -50,7 +53,11 @@ public class RPMExportPage extends WizardPage implements Listener {
 		setDescription(Messages
 				.getString("RPMExportPage.Select_project_export")); //$NON-NLS-1$
 		try {
-			this.rpmProject = new RPMProject(rpmProject, RPMProjectLayout.FLAT);
+			if (rpmProject.getPersistentProperty(new QualifiedName(RPMCorePlugin.ID, IRPMConstants.SOURCES_FOLDER)) != null){
+				this.rpmProject = new RPMProject(rpmProject, RPMProjectLayout.RPMBUILD);
+			} else {
+				this.rpmProject = new RPMProject(rpmProject, RPMProjectLayout.FLAT);
+			}
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
