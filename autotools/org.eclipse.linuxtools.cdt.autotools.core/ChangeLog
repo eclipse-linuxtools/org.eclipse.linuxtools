@@ -1,3 +1,19 @@
+2011-08-24  Sami Wagiaalla  <swagiaal@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerGenerator.java (addMarker):
+	Add all attributes using the attribute map.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/ErrorParser.java:
+	Small cleanups.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsProblemMarkerInfo.java:
+	Use attribute setter and getter.
+	(getProblemType): New.
+	(getLibraryInfo): New.
+	(mySetType): New.
+	(mySetAttribute): New.
+	(myGetAttribute): New.
+	(myGetAttributes): New.
+	* plugin.xml: Set AutoconfErrorParser name and id.
+
 2011-08-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Bump version to 1.0.2.
