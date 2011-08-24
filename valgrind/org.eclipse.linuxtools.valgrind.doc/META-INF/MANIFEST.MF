@@ -6,5 +6,4 @@ Bundle-Version: 0.9.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.help
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Localization: plugin
