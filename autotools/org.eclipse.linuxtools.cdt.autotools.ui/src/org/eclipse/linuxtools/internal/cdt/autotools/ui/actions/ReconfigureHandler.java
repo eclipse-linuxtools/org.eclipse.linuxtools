@@ -12,8 +12,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.actions;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.expressions.IEvaluationContext;
-import org.eclipse.core.resources.IContainer;
 
 /**
  * @author Jeff Johnston
@@ -22,16 +20,7 @@ import org.eclipse.core.resources.IContainer;
 public class ReconfigureHandler extends AbstractAutotoolsHandler {
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ReconfigureAction a = new ReconfigureAction();
-		Object o = event.getApplicationContext();
-		if (o instanceof IEvaluationContext) {
-			IContainer container = getContainer((IEvaluationContext)o);
-			if (container != null) {
-				a.setSelectedContainer(container);
-				a.run(null);
-			}
-		}
-		return null;
+		return execute(event, new ReconfigureAction());
 	}
 
 }

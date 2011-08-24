@@ -1,3 +1,19 @@
+2011-08-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Fix for #355134
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/AbstractAutotoolsHandler.java (execute): New
+	method that uses HandlerUtil to get selection for action to use.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/ReconfigureHandler.java (execute): Fix
+	to use AbstractAutotoolsHandler execute method.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/LibtoolizeHandler.java (execute): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/AutoreconfHandler.java (execute): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/AutomakeHandler.java (execute): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/AclocalHandler.java (execute): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/AutoconfHandler.java (execute): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/actions/AutoheaderHandler.java (execute): Ditto.
+	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/IAutotoolsEditor.java: Remove extraneous
+	getAdapter prototype.
+
 2011-06-16  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/cdt/autotools/ui/editors/parser/IAutoconfMacroValidator.java (validateMacroCall): Add
