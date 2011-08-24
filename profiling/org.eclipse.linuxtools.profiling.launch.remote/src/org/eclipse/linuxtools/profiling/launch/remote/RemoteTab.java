@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.ProfileRemoteLaunchPlugin;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteLaunchConstants;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteMessages;
+import org.eclipse.rse.core.RSECorePlugin;
 import org.eclipse.rse.core.events.ISystemModelChangeEvent;
 import org.eclipse.rse.core.events.ISystemModelChangeListener;
 import org.eclipse.rse.core.model.IHost;
@@ -132,6 +133,16 @@ public abstract class RemoteTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
+		while (RSECorePlugin.isInitComplete(RSECorePlugin.INIT_ALL)) {
+			try {
+				RSECorePlugin.waitForInitCompletion();
+			} catch (InterruptedException e2) {
+				// do nothing
+			}
+		}
+
+		ISystemRegistry registry = SystemStartHere.getSystemRegistry();
+		hosts = registry.getHosts();
 		tableViewer.setInput(hosts);
 		
 		localCreateControl(top);

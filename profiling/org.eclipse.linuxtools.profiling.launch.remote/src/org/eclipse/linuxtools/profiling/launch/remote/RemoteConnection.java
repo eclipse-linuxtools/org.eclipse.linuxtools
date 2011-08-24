@@ -21,6 +21,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteCommandShellOperation;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteLaunchConstants;
 import org.eclipse.linuxtools.internal.profiling.launch.remote.RemoteMessages;
+import org.eclipse.rse.core.RSECorePlugin;
 import org.eclipse.rse.core.model.IHost;
 import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.rse.core.model.SystemStartHere;
@@ -75,6 +76,11 @@ public class RemoteConnection {
 	}
 	
 	private void initialize() throws RemoteConnectionException {
+		try {
+			RSECorePlugin.waitForInitCompletion();
+		} catch (InterruptedException e2) {
+			throw new RemoteConnectionException(RemoteMessages.RemoteLaunchDelegate_error_interrupted, e2);
+		}
 		ISystemRegistry registry = SystemStartHere.getSystemRegistry();
 		String hostName = null;
 		try {

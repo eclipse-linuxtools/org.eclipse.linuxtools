@@ -1,3 +1,14 @@
+2011-08-24  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/remoteMessages.properties: Add
+	new message.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/remote/RemoteMessages.java (RemoteLaunchDelegate_error_interrupted): 
+	Ditto.
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteTab.java (createControl): Add
+	wait for RSE init so hosts list won't be empty and will at least
+	contain local host.
+	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteConnection.java (initialize): Ditto
+
 2011-08-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/remote/RemoteConnection.java (runCommand): Change to

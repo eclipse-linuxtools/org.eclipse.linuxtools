@@ -21,6 +21,7 @@ public class RemoteMessages extends NLS {
 	public static String RemoteLaunchDelegate_error_no_proc;
 	public static String RemoteLaunchDelegate_error_no_streams;
 	public static String RemoteLaunchDelegate_task_name;
+	public static String RemoteLaunchDelegate_error_interrupted;
 	public static String RemoteProcess_error_proc_not_term;
 	public static String RemoteTab_error_dest_wd;
 	public static String RemoteTab_error_location_VG;
