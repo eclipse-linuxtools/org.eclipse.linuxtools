@@ -16,6 +16,7 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindInfo;
 import org.eclipse.linuxtools.valgrind.core.IValgrindMessage;
 import org.eclipse.linuxtools.valgrind.ui.IValgrindToolView;
 import org.eclipse.swt.SWT;
@@ -84,6 +85,13 @@ public class ValgrindViewPart extends ViewPart {
 		if (dynamicView != null) {
 			dynamicView.dispose();
 		}
+	
+		// remove old messages
+		if (messages != null){
+			messagesViewer.getTreeViewer().setInput(null);
+			messages = null;
+		}
+		
 		for (Control child : dynamicViewHolder.getChildren()) {
 			if (!child.isDisposed()) {
 				child.dispose();
@@ -145,7 +153,7 @@ public class ValgrindViewPart extends ViewPart {
 			messagesViewer.getTreeViewer().setInput(messages);
 			
 			// decide which page to show
-			if (hasDynamicContent && messages.length == 0) {
+			if (hasDynamicContent && messages[0] instanceof ValgrindInfo) {
 				// no valgrind messages to show
 				showCoreAction.setEnabled(false);
 				showToolPage();
