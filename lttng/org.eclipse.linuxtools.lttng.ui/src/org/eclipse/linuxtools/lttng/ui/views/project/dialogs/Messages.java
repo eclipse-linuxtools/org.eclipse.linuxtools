@@ -16,6 +16,12 @@ public class Messages extends NLS {
 	public static String NewProjectWizard_Title;
 	public static String TraceErrorDialog_DalogTitle;
 	public static String TraceErrorDialog_DialogMsgLabel;
+	public static String TraceLibraryPath_label;
+	public static String TraceLibraryPath_browseBtn;
+	public static String TraceLibraryPathWizardPage_SpecifiedTraceLibraryLocation_notExists;
+	public static String TraceLibraryPathWizardPage_TraceLoaderLibrary_notExists;
+	public static String TraceLibraryPathWizardPage_Title;
+	public static String TraceLibraryPathWizardPage_Description;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
