@@ -1,3 +1,19 @@
+2011-08-26  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (extractSynchronizeModelInfo): 
+	Create PatchFile using IResource.
+	(getWorkspaceFile): Removed.
+	(filterNonExistentFiles): Ditto.
+	(guessFunctionNames): Fix to remove usage of FileStoreEditorInput which
+	does not work with TextDocumentProvider.  Switch to use FileEditorInput and
+	pass IResource from PatchFile.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFileComparator.java (compare): Use
+	resource paths to compare.
+	* src/org/eclipse/linuxtools/changelog/core/actions/PatchFile.java (PatchFile): 
+	Change constructor to take an IResource.
+	(getPath): Fix to use IResource to get path.
+	(equals): Compare resources rather than paths.
+
 2011-08-24  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* build.properties: Add icons to binary.

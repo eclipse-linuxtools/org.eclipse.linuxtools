@@ -23,14 +23,10 @@ import org.eclipse.compare.rangedifferencer.RangeDifference;
 import org.eclipse.compare.rangedifferencer.RangeDifferencer;
 import org.eclipse.compare.structuremergeviewer.Differencer;
 import org.eclipse.compare.structuremergeviewer.IDiffElement;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -65,11 +61,10 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IURIEditorInput;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 import org.eclipse.ui.editors.text.StorageDocumentProvider;
-import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
 
 
@@ -184,14 +179,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 					extractSynchronizeModelInfo((ISynchronizeModelElement)element, newPath, newList, removeList, changeList);
 				else {
 					if (!(d.getName().equals("ChangeLog"))) { //$NON-NLS-1$
-						IPath finalPath = path.append(d.getName());
-						PatchFile p = new PatchFile(finalPath);
+						PatchFile p = new PatchFile(d.getResource());
 						int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
 						if (kind == Differencer.CHANGE) {
 							changeList.add(p);
-							// Save the resource so we can later figure out what
-							// lines changed
-							p.setResource(d.getResource());
 						} else if (kind == Differencer.ADDITION) {
 							p.setNewfile(true);
 							newList.add(p);
@@ -206,14 +197,10 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			}
 		} else {
 			if (!(d.getName().equals("ChangeLog"))) { //$NON-NLS-1$
-				IPath finalPath = path.append(d.getName());
-				PatchFile p = new PatchFile(finalPath);
+				PatchFile p = new PatchFile(d.getResource());
 				int kind = d.getKind() & Differencer.CHANGE_TYPE_MASK;
 				if (kind == Differencer.CHANGE) {
 					changeList.add(p);
-					// Save the resource so we can later figure out what lines
-					// changed
-					p.setResource(d.getResource());
 				} else if (kind == Differencer.ADDITION) {
 					p.setNewfile(true);
 					newList.add(p);
@@ -332,7 +319,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			// New, Removed, and Changed lists.
 			for (SyncInfo info : infos) {
 				int kind = SyncInfo.getChange(info.getKind());
-				PatchFile p = new PatchFile(info.getLocal().getFullPath());
+				PatchFile p = new PatchFile(info.getLocal());
 
 				// Check the type of entry and sort into lists.  Do not add an entry
 				// for ChangeLog files.
@@ -346,8 +333,6 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 					} else if (kind == SyncInfo.CHANGE) {
 						if (info.getLocal().getType() == IResource.FILE) {
 							changeList.add(p);
-							// Save the resource so we can later figure out which lines were changed
-							p.setResource(info.getLocal());
 						}
 					}
 				} else {
@@ -556,13 +541,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 		// check if the file type is supported
 
 		// get editor input for target file
-		IPath path = getWorkspaceRoot().getLocation().append(patchFileInfo.getPath());
-		IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
-		IFile workspaceFile = getWorkspaceFile(fileStore);
-		IURIEditorInput fei = null;
-		if (workspaceFile != null)
-			fei =  new FileEditorInput(workspaceFile);
-		fei = new FileStoreEditorInput(fileStore);
+
+		IFileEditorInput fei =  new FileEditorInput((IFile)patchFileInfo.getResource());
 		
 		SourceEditorInput sei = new SourceEditorInput(patchFileInfo.getStorage());
 
@@ -622,31 +602,8 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			ChangelogPlugin.getDefault().getLog().log(
 					new Status(IStatus.ERROR, ChangelogPlugin.PLUGIN_ID, IStatus.ERROR,
 							e.getMessage(), e));
+			e.printStackTrace();
 		}
 		return fnames;
-	}
-	
-	private static IFile getWorkspaceFile(IFileStore fileStore) {
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IFile[] files = root.findFilesForLocationURI(fileStore.toURI());
-		files = filterNonExistentFiles(files);
-		if (files == null || files.length == 0)
-			return null;
-
-		// for now only return the first file
-				return files[0];
-	}
-
-	private static IFile[] filterNonExistentFiles(IFile[] files) {
-		if (files == null)
-			return null;
-
-		int length = files.length;
-		ArrayList<IFile> existentFiles = new ArrayList<IFile>(length);
-		for (int i = 0; i < length; i++) {
-			if (files[i].exists())
-				existentFiles.add(files[i]);
-		}
-		return existentFiles.toArray(new IFile[existentFiles.size()]);
 	}
 }

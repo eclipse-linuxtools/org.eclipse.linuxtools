@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 
 /**
  * 
@@ -26,7 +25,6 @@ import org.eclipse.core.runtime.Path;
  */
 public class PatchFile {
 
-	private IPath fpath;
 	private IStorage storage;
 	private ArrayList<PatchRangeElement> pranges = new ArrayList<PatchRangeElement>();
 	
@@ -51,14 +49,10 @@ public class PatchFile {
 		this.removedfile = removedfile;
 	}
 	
-	public PatchFile(String filePath) {
-		fpath = new Path(filePath);
+	public PatchFile(IResource resource) {
+		this.resource = resource;
 	}
 	
-	public PatchFile(IPath filePath) {
-		fpath = filePath;
-	}
-
 	public void addLineRange(int from, int to, boolean localChange) {
 	
 		pranges.add(new PatchRangeElement(from, to, localChange));
@@ -76,7 +70,7 @@ public class PatchFile {
 
 
 	public IPath getPath() {
-		return fpath;
+		return resource.getFullPath();
 	}
 	
 	public IStorage getStorage() {
@@ -85,10 +79,6 @@ public class PatchFile {
 
 	public void setStorage(IStorage storage) {
 		this.storage = storage;
-	}
-	
-	public void setResource(IResource resource) {
-		this.resource = resource;
 	}
 	
 	public IResource getResource() {
@@ -107,7 +97,7 @@ public class PatchFile {
 		
 		PatchFile that = (PatchFile) o;
 		// check  fpath  +  count
-		if (!this.fpath.removeTrailingSeparator().toString().equals(that.getPath().removeTrailingSeparator().toString()) ||
+		if (!this.resource.equals(that.resource) ||
 				this.countRanges() != that.countRanges())
 			return false;
 		
