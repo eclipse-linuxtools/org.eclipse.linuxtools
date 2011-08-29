@@ -872,10 +872,11 @@ public class TmfExperiment<T extends TmfEvent> extends TmfEventProvider<T> imple
 						public void handleCompleted() {
 //							System.out.println("Request completed at: " + timestamp[0]);
 							if (getNbRead() < CHUNK_SIZE[0]) {
-							    if (isCancelled()) { 
+							    if (this.isCancelled()) { 
 							        eventRequest.cancel();
-							    }
-							    else {
+							    } else if (this.isFailed()) {
+							        eventRequest.fail();
+							    } else {
 							        eventRequest.done();
 							    }
 								isFinished[0] = Boolean.TRUE;
