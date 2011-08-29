@@ -1,3 +1,16 @@
+2011-08-29  Roland Grunberg  <rgrunber@redhat.com>
+
+	* op_error_key: New file that maps some error key word to the corresponding key
+		value of the externalized string representing that error.
+	* src/org/eclipse/linuxtools/oprofile/core/OprofileCorePlugin.java
+		(getPluginLocation): New method
+	* src/org/eclipse/linuxtools/oprofile/core/linux/OpControlErrorHandler.java
+		(handleError): New class to handle errors from running opcontrol
+	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpcontrolProvider.java
+		(_runOpcontrol): Move error handling into OpcontrolErrorHandler.
+	* src/org/eclipse/linuxtools/oprofile/core/oprofile.properties:
+		Externalize "Events must be distinct" error.
+
 2011-07-20  Severin Gehwolf  <sgehwolf@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/linux/OpxmlRunner.java (getEventNames): 

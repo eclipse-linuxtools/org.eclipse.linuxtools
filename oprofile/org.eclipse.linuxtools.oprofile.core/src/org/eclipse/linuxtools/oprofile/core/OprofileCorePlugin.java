@@ -12,8 +12,13 @@
 
 package org.eclipse.linuxtools.oprofile.core;
 
+import java.io.IOException;
+import java.net.URL;
+
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -21,6 +26,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.linux.LinuxOpxmlProvider;
 import org.eclipse.swt.widgets.Display;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -178,6 +184,25 @@ public class OprofileCorePlugin extends Plugin {
 	 */
 	public static void log(int severity, String msg, Throwable cause) {
 	      plugin.getLog().log(new Status(severity, PLUGIN_ID, Status.OK, msg, cause));
+	}
+	
+	/**
+	 * Returns the location of the plugin by checking the path of the bundle's 
+	 * locationURL.
+	 * 
+	 * @return An absolute path representing the location of this plugin
+	 */
+	public String getPluginLocation() {
+		Bundle bundle = getBundle();
+
+		URL locationUrl = FileLocator.find(bundle,new Path("/"), null); //$NON-NLS-1$
+		URL fileUrl = null;
+		try {
+			fileUrl = FileLocator.toFileURL(locationUrl);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return fileUrl.getFile();
 	}
 
 }

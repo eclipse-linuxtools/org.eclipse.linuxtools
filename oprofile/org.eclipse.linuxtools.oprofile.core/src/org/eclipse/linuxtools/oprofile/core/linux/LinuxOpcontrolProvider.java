@@ -21,16 +21,13 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.linuxtools.oprofile.core.IOpcontrolProvider;
 import org.eclipse.linuxtools.oprofile.core.OpcontrolException;
 import org.eclipse.linuxtools.oprofile.core.Oprofile;
 import org.eclipse.linuxtools.oprofile.core.OprofileCorePlugin;
-import org.eclipse.linuxtools.oprofile.core.OprofileProperties;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonEvent;
 import org.eclipse.linuxtools.oprofile.core.daemon.OprofileDaemonOptions;
 import org.eclipse.linuxtools.oprofile.core.opxml.sessions.SessionManager;
-import org.eclipse.osgi.util.NLS;
 
 /**
  * A class which encapsulates running opcontrol.
@@ -289,45 +286,9 @@ public class LinuxOpcontrolProvider implements IOpcontrolProvider {
 
 				int ret = p.waitFor();
 				if (ret != 0) {
-					// give some hints which may be helpful for discovering the real
-					// reason of weird problems.
-					boolean extraInfo = false;
-
-					if (!errOutput.trim().equals("")) { //$NON-NLS-1$
-						extraInfo = true;
-						OprofileCorePlugin
-								.log(Status.ERROR,
-										NLS.bind(
-												OprofileProperties
-														.getString("process.log.stderr"), "opcontrol", errOutput)); //$NON-NLS-1$ //$NON-NLS-2$
-					}
-					if (!output.trim().equals("")) { //$NON-NLS-1$
-						extraInfo = true;
-						OprofileCorePlugin
-								.log(Status.ERROR, // log as error, since stderr
-												   // output might be masked as
-												   // stdout
-										NLS.bind(
-												OprofileProperties
-														.getString("process.log.stdout"), "opcontrol", output)); //$NON-NLS-1$ //$NON-NLS-2$
-					}
-
-					// Red Hat BZ #694631: NMI Watchdog problem.
-					// Give better advice as to what the problem might be.
-					if (output.contains("nmi_watchdog") && output.startsWith("Error:")) { //$NON-NLS-1$ $NON-NLS-2$
-						throw new OpcontrolException(
-								OprofileCorePlugin.createErrorStatus(
-										"opcontrolNmiWatchdog", null)); //$NON-NLS-1$
-					} else if (extraInfo) {
-						throw new OpcontrolException(
-								OprofileCorePlugin
-										.createErrorStatus(
-												"opcontrolNonZeroExitCodeExtraInfo", null)); //$NON-NLS-1$
-					} else {
-						throw new OpcontrolException(
-								OprofileCorePlugin.createErrorStatus(
-										"opcontrolNonZeroExitCode", null)); //$NON-NLS-1$
-					}
+					OpControlErrorHandler errHandler = OpControlErrorHandler.getInstance();
+					OpcontrolException ex = errHandler.handleError(output, errOutput);
+					throw ex;
 				}
 				
 				if (errOutput.length() != 0) {
