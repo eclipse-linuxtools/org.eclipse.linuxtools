@@ -13,7 +13,10 @@
 		</topic>
 		<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html" label="User Interface">
 			<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#LTTng_Perspective" label="LTTng Perspective">
-				<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Project_View" label="Project View"></topic>
+				<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Project_View" label="Project View">
+					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Creating_a_Project" label="Creating a Project"></topic>
+					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Importing_Traces_in_a_Project" label="Importing Traces in a Project"></topic>
+				</topic>
 				<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Events_View" label="Events View">
 					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Searching_and_Filtering" label="Searching and Filtering">
 						<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Searching" label="Searching"></topic>
@@ -40,7 +43,7 @@
 					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Start_a_Trace" label="Start a Trace"></topic>
 					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Pause_a_Trace" label="Pause a Trace"></topic>
 					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Stop_a_Trace" label="Stop a Trace"></topic>
-					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Import_a_Trace_in_the__LTTng_Perspective" label="Import a Trace in the  LTTng Perspective"></topic>
+					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Import_a_Trace_in_the_LTTng_Perspective" label="Import a Trace in the LTTng Perspective"></topic>
 					<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Delete_a_Trace" label="Delete a Trace"></topic>
 				</topic>
 				<topic href="Linux_Tools_Project/LTTng/User_Guide/User-Interface.html#Property_View" label="Property View"></topic>

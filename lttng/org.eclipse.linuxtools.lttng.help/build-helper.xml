@@ -5,6 +5,7 @@
     </description>
 
 	<!-- Set correct values -->
+    <!-- setproxy proxyhost="www-proxy.lmc.ericsson.se" proxyport="8080"/ -->
     <property name="help.doc.url.base" value="http://wiki.eclipse.org" />
     <property name="ug.path"  value="Linux_Tools_Project/LTTng/User_Guide" />
     <property name="ug.title" value="LTTng Plug-in User Guide" />
