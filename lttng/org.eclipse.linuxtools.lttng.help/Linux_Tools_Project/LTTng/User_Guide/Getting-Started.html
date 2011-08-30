@@ -115,35 +115,18 @@ Configuration:
 ...
   &lt;more options&gt;
 </pre>
-		<p>Once the parsing libraries are installed, it is necessary to let Eclipse know where they sit otherwise the LTTng plugin won't be able to parse the traces. You basically have 4 options at this point:</p>
-		<p>a) ldconfig</p>
-		<ul style="list-style: square">
-			<li>Create a text file named 
-				<i>lttng.conf</i> in /etc/ld.so.conf.d
-				<br/>
-			</li>
-			<li>In lttng.conf, add a line containing the path to the LTTng parser libraries (e.g. /usr/local/lib)
-				<br/>
-			</li>
-			<li>and then:
-				<br/>
-			</li>
-		</ul>
-		<pre>
-&gt; ldconfig
-</pre>
-		<p>The loader should now be able to find and cache the parsing libraries.</p>
-		<p>b) Eclipse.ini</p>
+		<p>Once the parsing libraries are installed, it is necessary to let Eclipse know where they sit otherwise the LTTng plugin won't be able to parse the traces. You basically have 3 options at this point:</p>
+		<p>a) Eclipse.ini</p>
 		<p>In the eclipse.ini (in the Eclipse folder), add the following line to the VM arguments:</p>
 		<pre>
 -Djava.library.path=/usr/local/lib
 </pre>
-		<p>c) LD_LIBRARY_PATH</p>
+		<p>b) LD_LIBRARY_PATH</p>
 		<p>Alternatively, you can specify the libraries location using LD_LIBRARY_PATH on the command line/script when you start your Eclipse.</p>
 		<pre>
 &gt; LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH" ./eclipse
 </pre>
-		<p>d) Project trace library path</p>
+		<p>c) Project trace library path</p>
 		<p>If you are customizing your own LTTng parsing libraries, you might have a number of variants sitting on your system and you might want to have the freedom to dynamically associate a parser to a project. The LTTng plugin allows you to do so (see 
 			<a href="http://wiki.eclipse.org/index.php/Linux_Tools_Project/LTTng/User_Guide#Project_View">Project View</a>).
 		</p>
