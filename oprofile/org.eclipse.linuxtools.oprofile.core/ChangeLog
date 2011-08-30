@@ -1,3 +1,11 @@
+2011-08-30  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/info/InfoAdapter.java:
+		Implement timer-mode support.
+		(InfoAdapter): Check for timer-mode before running ophelp.
+		(createDOM): Minor change to support creating a DOM without ophelp XML.
+		(process): Don't attempt to find events if we are in timer-mode.
+
 2011-08-29  Roland Grunberg  <rgrunber@redhat.com>
 
 	* op_error_key: New file that maps some error key word to the corresponding key
