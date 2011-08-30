@@ -74,6 +74,8 @@ public class InfoAdapter extends AbstractDataAdapter{
 	private Element oldRoot; // the root of the document with data from ophelp
 	private Element newRoot; // the root of the document we intent to build
 	
+	private static boolean hasTimerSupport;
+
 	public InfoAdapter (){
 		try {
 			if (hasTimerSupport()){
@@ -183,7 +185,14 @@ public class InfoAdapter extends AbstractDataAdapter{
 	 * Determine whether the cpu supports timer mode
 	 * @return true if it is true, and false otherwise
 	 */
-	private boolean hasTimerSupport() {
+	public static boolean hasTimerSupport() {
+		return hasTimerSupport;
+	}
+
+	/**
+	 * Set whether the cpu supports timer mode
+	 */
+	public static void checkTimerSupport() {
 		File file = new File(CPUTYPE);
 
 		try {
@@ -191,18 +200,17 @@ public class InfoAdapter extends AbstractDataAdapter{
 			String cpuType = bi.readLine();
 			bi.close();
 			if (cpuType.equals(TIMER)) {
-				return true;
+				hasTimerSupport = true;
 			} else {
-				return false;
+				hasTimerSupport = false;
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		return false;
 	}
+
 
 	/**
 	 * Get the system's cpu frequency

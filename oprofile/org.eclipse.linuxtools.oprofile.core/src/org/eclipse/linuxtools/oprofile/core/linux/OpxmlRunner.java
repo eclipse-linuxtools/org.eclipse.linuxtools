@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -87,6 +88,9 @@ public class OpxmlRunner {
 		reader.setContentHandler(_handler);
 		reader.setErrorHandler(_handler);
 		
+		// Check for timer support
+		InfoAdapter.checkTimerSupport();
+
 		// Run opxml
 		try {
 			File file = constructFile(args);
@@ -178,8 +182,15 @@ public class OpxmlRunner {
 	private boolean handleModelData (String [] args){
 		Process p;
 		try {
-			String cmd[] = {"opreport", "-X", "--details", "event:" + args[1]};
-			p = Runtime.getRuntime().exec(cmd); //$NON-NLS-1$
+			ArrayList<String> cmd = new ArrayList<String>();
+			cmd.add("opreport"); //$NON-NLS-1$
+			cmd.add("-X"); //$NON-NLS-1$
+			cmd.add("--details"); //$NON-NLS-1$
+			if (!InfoAdapter.hasTimerSupport()){
+				cmd.add("event:" + args[1]); //$NON-NLS-1$
+			}
+			String [] a = {};
+			p = Runtime.getRuntime().exec(cmd.toArray(a));
 			
 			StringBuilder output = new StringBuilder();
 			StringBuilder errorOutput = new StringBuilder();
@@ -316,14 +327,26 @@ public class OpxmlRunner {
 				Document doc = builder.parse(is);
 				Element root = (Element) doc.getElementsByTagName(ModelDataAdapter.PROFILE).item(0);
 
+				String eventOrTimerSetup;
+				String eventOrTimerName;
+
+				// Determine if we are in timer-mode or not as the XML will vary
+				if (!InfoAdapter.hasTimerSupport()){
+					eventOrTimerSetup = ModelDataAdapter.EVENT_SETUP;
+					eventOrTimerName = ModelDataAdapter.EVENT_NAME;
+				}else{
+					eventOrTimerSetup = ModelDataAdapter.TIMER_SETUP;
+					eventOrTimerName = ModelDataAdapter.RTC_INTERRUPTS;
+				}
+
 				Element setupTag = (Element) root.getElementsByTagName(ModelDataAdapter.SETUP).item(0);
-				NodeList eventSetupList = setupTag.getElementsByTagName(ModelDataAdapter.EVENT_SETUP);
+				NodeList eventSetupList = setupTag.getElementsByTagName(eventOrTimerSetup);
 
 				// get the event names for the current session
 				ret = new String[eventSetupList.getLength()];
 				for (int i = 0; i < eventSetupList.getLength(); i++) {
 					Element elm = (Element) eventSetupList.item(i);
-					ret[i] = elm.getAttribute(ModelDataAdapter.EVENT_NAME);
+					ret[i] = elm.getAttribute(eventOrTimerName);
 				}
 			}
 		} catch (IOException e) {

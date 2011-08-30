@@ -5,6 +5,16 @@
 		(InfoAdapter): Check for timer-mode before running ophelp.
 		(createDOM): Minor change to support creating a DOM without ophelp XML.
 		(process): Don't attempt to find events if we are in timer-mode.
+		(checkTimerSupport): New Method - Actual check for timer support
+		(hasTimerSupport): Cached check for timer support.
+	* src/org/eclipse/linuxtools/oprofile/core/linux/OpxmlRunner.java
+		(handleModelData): Determine what flags to give ophelp depending on whether
+		we are in timer-mode.
+		(getEventNames): Determine what elements to check in ophelp XML depending on
+		whether we are in timer-mode.
+		(run): Check for timer-mode support here.
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/modeldata/ModelDataAdapter.java
+		(createXML): We do not need to set any event count in timer-mode.
 
 2011-08-29  Roland Grunberg  <rgrunber@redhat.com>
 

@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.linuxtools.oprofile.core.opxml.AbstractDataAdapter;
+import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -43,8 +44,10 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	
 	public final static String SETUP = "setup"; //$NON-NLS-1$
 	public final static String EVENT_SETUP = "eventsetup"; //$NON-NLS-1$
+	public final static String TIMER_SETUP = "timersetup"; //$NON-NLS-1$
 	public final static String SETUP_COUNT = "setupcount"; //$NON-NLS-1$
 	public final static String EVENT_NAME = "eventname"; //$NON-NLS-1$
+	public final static String RTC_INTERRUPTS = "rtcinterrupts"; //$NON-NLS-1$
 	
 	public final static String PROFILE = "profile"; //$NON-NLS-1$
 	public final static String MODEL_DATA = "model-data"; //$NON-NLS-1$
@@ -112,11 +115,14 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 		String imageCount = countTag.getTextContent().trim();
 		newImage.setAttribute(COUNT, imageCount);
 		
-		// get the count that was used to profile
-		Element setupTag = (Element) oldRoot.getElementsByTagName(SETUP).item(0);
-		Element eventSetupTag = (Element) setupTag.getElementsByTagName(EVENT_SETUP).item(0);
-		String setupcount = eventSetupTag.getAttribute(SETUP_COUNT);
-		newImage.setAttribute(SETUP_COUNT, setupcount);
+		// There is no setup count in timer mode
+		if (!InfoAdapter.hasTimerSupport()){
+			// get the count that was used to profile
+			Element setupTag = (Element) oldRoot.getElementsByTagName(SETUP).item(0);
+			Element eventSetupTag = (Element) setupTag.getElementsByTagName(EVENT_SETUP).item(0);
+			String setupcount = eventSetupTag.getAttribute(SETUP_COUNT);
+			newImage.setAttribute(SETUP_COUNT, setupcount);
+		}
 		
 		newRoot.appendChild(newImage);
 		
