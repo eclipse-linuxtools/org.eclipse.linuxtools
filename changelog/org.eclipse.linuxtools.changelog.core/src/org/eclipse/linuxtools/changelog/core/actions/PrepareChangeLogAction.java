@@ -87,6 +87,7 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 
 	protected boolean changeLogModified = false;
 	protected boolean newEntryWritten = false;
+	protected boolean createChangeLog = true;
 	
 	private class MyDocumentProvider extends FileDocumentProvider {
 
@@ -456,13 +457,19 @@ public class PrepareChangeLogAction extends ChangeLogAction {
 			else
 				changelog = getChangelog(entryFileName);
 
-			// If there isn't a ChangeLog, we will not create one here.
-			// This prevents the situation whereby a project has an inline
-			// ChangeLog formatter and some other files have been modified
-			// as well (e.g. an rpm project).  In that case, we don't want
-			// to create a separate ChangeLog for the end-user.
-			if (changelog == null)
+			// If there isn't a ChangeLog, we will ask for one here.
+			// We originally avoided this to prevent a problem for rpm
+			// projects whereby the changelog is inlined in a single file
+			// and not presented externally.  This has been changed in
+			// response to bug #347703.  If the user cancels the ask
+			// dialog, then the prepare operation doesn't try to create
+			// one.
+			if (createChangeLog && changelog == null)
+				changelog = askChangeLogLocation(entryPath.toOSString());
+			if (changelog == null) {
+				createChangeLog = false;
 				return;
+			}
 		}
 		if ((changelog instanceof ChangeLogEditor) && (!this.newEntryWritten)) {
 			ChangeLogEditor editor = (ChangeLogEditor) changelog;

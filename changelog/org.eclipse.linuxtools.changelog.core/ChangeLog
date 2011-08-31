@@ -1,3 +1,9 @@
+2011-08-31  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #347703
+	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (outputMultipleEntryChangeLog): Ask
+	for ChangeLog location at least once if one does not exist.
+
 2011-08-26  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/changelog/core/actions/PrepareChangeLogAction.java (extractSynchronizeModelInfo): 
