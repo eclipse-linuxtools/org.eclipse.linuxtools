@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.callgraph.launch;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -73,8 +74,10 @@ public class CallgraphLaunchPlugin extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(LaunchConfigurationConstants.PLUGIN_ID, path);
 	}
-	
 
+	public static Shell getActiveWorkbenchShell() {
+		return getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
 }
 
 

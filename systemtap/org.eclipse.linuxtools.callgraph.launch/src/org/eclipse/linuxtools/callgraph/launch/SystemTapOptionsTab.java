@@ -14,6 +14,13 @@ package org.eclipse.linuxtools.callgraph.launch;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.eclipse.cdt.core.model.IBinary;
+import org.eclipse.cdt.core.model.ICElement;
+import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.launch.ui.CLaunchConfigurationTab;
+import org.eclipse.cdt.ui.CElementLabelProvider;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -26,11 +33,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.window.Window;
 import org.eclipse.linuxtools.callgraph.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.callgraph.core.PluginConstants;
 import org.eclipse.linuxtools.callgraph.core.SystemTapView;
@@ -58,6 +65,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.dialogs.TwoPaneElementSelector;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
@@ -66,7 +74,7 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
  * Options tab for SystemTap. Currently does NOT contain all possible options
  *
  */
-public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
+public class SystemTapOptionsTab extends CLaunchConfigurationTab{
 
 	//Control creation objects
 	protected Composite top;
@@ -822,6 +830,70 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 		return Messages.getString("SystemTapOptionsTab.MainTabName"); //$NON-NLS-1$
 	}
 
+	protected Shell getActiveWorkbenchShell() {
+		return CallgraphLaunchPlugin.getActiveWorkbenchShell();
+	}
+
+
+	private IBinary chooseBinary(IBinary[] binaries) {
+		ILabelProvider programLabelProvider = new CElementLabelProvider() {
+			public String getText(Object element) {
+				if (element instanceof IBinary) {
+					IBinary bin = (IBinary)element;
+					StringBuffer name = new StringBuffer();
+					name.append(bin.getPath().lastSegment());
+					return name.toString();
+				}
+				return super.getText(element);
+			}
+		};
+
+		ILabelProvider qualifierLabelProvider = new CElementLabelProvider() {
+			public String getText(Object element) {
+				if (element instanceof IBinary) {
+					IBinary bin = (IBinary)element;
+					StringBuffer name = new StringBuffer();
+					name.append(bin.getCPU() + (bin.isLittleEndian() ? "le" : "be")); //$NON-NLS-1$ //$NON-NLS-2$
+					name.append(" - "); //$NON-NLS-1$
+					name.append(bin.getPath().toString());
+					return name.toString();
+				}
+				return super.getText(element);
+			}
+		};
+
+		TwoPaneElementSelector dialog = new TwoPaneElementSelector(getActiveWorkbenchShell(), programLabelProvider, qualifierLabelProvider);
+		dialog.setElements(binaries);
+		dialog.setTitle(Messages.getString("SystemtTapOptionsTab.Callgraph")); //$NON-NLS-1$
+		dialog.setMessage(Messages.getString("SystemtTapOptionsTab.Choose_a_local_application")); //$NON-NLS-1$
+		dialog.setUpperListLabel(Messages.getString("SystemtTapOptionsTab.Binaries")); //$NON-NLS-1$
+		dialog.setLowerListLabel(Messages.getString("SystemtTapOptionsTab.Qualifier")); //$NON-NLS-1$
+		dialog.setMultipleSelection(false);
+		if (dialog.open() == Window.OK) {
+			return (IBinary) dialog.getFirstResult();
+		}
+
+		return null;
+	}
+
+	private IBinary getBinary(ILaunchConfiguration config) {
+		try {
+			ICProject project =  CDebugUtils.verifyCProject(config);
+			IBinary[] binaries = project.getBinaryContainer().getBinaries();
+			if (binaries != null && binaries.length > 0) {
+				if (binaries.length == 1 && binaries[0] instanceof IBinary) {
+					return (IBinary) binaries[0];
+				} else
+					return chooseBinary(binaries);
+			}
+			return null;
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+
+
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		
@@ -972,6 +1044,27 @@ public class SystemTapOptionsTab extends AbstractLaunchConfigurationTab{
 	
 		configuration.setAttribute(LaunchConfigurationConstants.COMMAND_LIST, ConfigurationOptionsSetter.setOptions(configuration));
 	
+
+		ICElement cElement = null;
+		cElement = getContext(configuration, getPlatform(configuration));
+		if (cElement != null) {
+			initializeCProject(cElement, configuration);
+		} else {
+			// don't want to remember the interim value from before
+			configuration.setMappedResources(null);
+		}
+
+		IBinary bin = null;
+		bin = getBinary(configuration);
+		if (bin != null) {
+			String programName = bin.getResource().getProjectRelativePath().toString();
+			configuration.setAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_NAME, programName);
+			configuration.setAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, (String) null);
+
+			LaunchStapGraph launch = new LaunchStapGraph();
+			launch.setTestMode(true); //Do not run callgraph
+			launch.launch(bin, "", configuration); //$NON-NLS-1$
+		}
 	}
 	
 

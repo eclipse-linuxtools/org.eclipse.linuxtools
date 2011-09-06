@@ -55,6 +55,10 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 	}
 	
 	public void launch(IBinary bin, String mode) {
+		launch(bin, mode, null);
+	}
+
+	public void launch(IBinary bin, String mode, ILaunchConfigurationWorkingCopy wc) {
 		super.initialize();
 		this.bin = bin;
 		name = "SystemTapGraph";  //$NON-NLS-1$
@@ -69,8 +73,8 @@ public class LaunchStapGraph extends SystemTapLaunchShortcut {
 		projectName = bin.getCProject().getElementName();
 		
 		try {
-			 
-			ILaunchConfigurationWorkingCopy wc = createConfiguration(bin, name);
+			if (wc == null)
+				wc = createConfiguration(bin, name);
 			binaryPath = bin.getResource().getLocation().toString();
 			arguments = binaryPath;
 			outputPath = PluginConstants.getDefaultIOPath();

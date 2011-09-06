@@ -1,3 +1,15 @@
+2011-08-11  Otavio Pontes <obusatto@br.ibm.com>
+
+	* src/org/eclipse/linuxtools/callgraph/launch/CallgraphLaunchPlugin.java:
+		Adding function to get the active Workbench Window.
+	* src/org/eclipse/linuxtools/callgraph/launch/LaunchStapGraph.java:
+		Launch StapGraph with custom Launch Configuration.
+	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapOptionsTab.java:
+		Fill default configuration with the same attributes that are used by
+		LaunchStapGraph.
+	* src/org/eclipse/linuxtools/callgraph/launch/messages.properties:
+		Adding messages for choose binary window.
+
 2011-08-11  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/callgraph/launch/SystemTapOptionsTab.java:
