@@ -1,3 +1,11 @@
+2011-09-08  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #354342
+	
+	2011-09-08  Martin Oberhuber  <martin.oberhuber@windriver.com>
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindOptionsTab.java (setValgrindVersion): New method.
+	(getValgrindVersion): Ditto.
+
 2011-08-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchConfigurationDelegate.java: 
