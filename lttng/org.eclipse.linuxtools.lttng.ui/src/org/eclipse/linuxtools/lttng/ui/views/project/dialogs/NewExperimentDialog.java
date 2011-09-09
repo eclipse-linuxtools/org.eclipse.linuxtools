@@ -74,7 +74,7 @@ public class NewExperimentDialog extends SelectionStatusDialog {
     public NewExperimentDialog(Shell parentShell, LTTngExperimentFolderNode experimentFolder) {
 	super(parentShell);
 	this.container = experimentFolder.getFolder();
-	setTitle(org.eclipse.linuxtools.lttng.ui.views.project.dialogs.IDEWorkbenchMessages.NewExperimentDialog_DialogTitle);
+	setTitle(Messages.NewExperimentDialog_DialogTitle);
 	setStatusLineAboveButtons(true);
     }
 
@@ -158,7 +158,7 @@ public class NewExperimentDialog extends SelectionStatusDialog {
 	// new folder label
 	Label folderLabel = new Label(folderGroup, SWT.NONE);
 	folderLabel.setFont(font);
-	folderLabel.setText(org.eclipse.linuxtools.lttng.ui.views.project.dialogs.IDEWorkbenchMessages.NewExperimentDialog_ExperimentLabel);
+	folderLabel.setText(Messages.NewExperimentDialog_ExperimentLabel);
 
 	// new folder name entry field
 	folderNameField = new Text(folderGroup, SWT.BORDER);

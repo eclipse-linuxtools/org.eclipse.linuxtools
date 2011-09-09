@@ -16,6 +16,8 @@ public class Messages extends NLS {
 	public static String ImportTraceWizardPage_BadTraceVersionMsg2;
 	public static String NewProjectWizard_Description;
 	public static String NewProjectWizard_Title;
+	public static String NewExperimentDialog_DialogTitle;
+	public static String NewExperimentDialog_ExperimentLabel;
 	public static String TraceErrorDialog_DalogTitle;
 	public static String TraceErrorDialog_DialogMsgLabel;
 	public static String TraceLibraryPath_label;
