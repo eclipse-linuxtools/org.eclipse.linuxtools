@@ -149,7 +149,7 @@ public class ValgrindViewPart extends ViewPart {
 	}
 
 	public void refreshView() {
-		if (messages != null) {
+		if (messages != null && messages.length > 0) {
 			messagesViewer.getTreeViewer().setInput(messages);
 			
 			// decide which page to show
