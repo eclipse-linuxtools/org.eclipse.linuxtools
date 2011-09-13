@@ -404,41 +404,23 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 				f.createNewFile();
 			if (f.exists()) {
 				PrintWriter p = new PrintWriter(new BufferedWriter(new FileWriter(f)));
-				Map<String, IAConfiguration> cfgs = getSavedConfigs(project);
-				if (cfgs == null)
-					return;
-				p.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
-				p.println("<configurations>"); // $NON-NLS-1$
-				Option[] optionList = AutotoolsConfiguration.getOptionList();
-				HashSet<String> savedIds = new HashSet<String>();
-				setSyncing(true);
-				for (int x = 0; x < cfgds.length; ++x) {
-					ICConfigurationDescription cfgd = cfgds[x];
-					@SuppressWarnings("unused")
-					CConfigurationData data = cfgd.getConfigurationData();
-					String id = cfgd.getId();
-					savedIds.add(id);
-					IAConfiguration cfg = getTmpConfiguration(project, cfgd);
-					cfgs.put(id, cfg); // add to list in case we have a new configuration not yet added to Project Description
-					p.println("<configuration id=\"" + id + "\">"); //$NON-NLS-1$ //$NON-NLS-2$ 
-					for (int j = 0; j < optionList.length; ++j) {
-						Option option = optionList[j];
-						IConfigureOption opt = cfg.getOption(option.getName());
-						if (!opt.isCategory())
-							p.println("<option id=\"" + option.getName() + "\" value=\"" + opt.getValue() + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
-					}
-					p.println("</configuration>"); //$NON-NLS-1$
-					syncNameField(cfgd);
-				}
-				setSyncing(false);
-
-				// Put all the remaining configurations already saved back into the file.
-				// These represent deleted configurations, but confirmation has not occurred.
-				for (Iterator<String> i = cfgs.keySet().iterator(); i.hasNext(); ) {
-					String id = i.next();
-					// A remaining id won't appear in our savedIds list.
-					if (!savedIds.contains(id)) {
-						IAConfiguration cfg = cfgs.get(id);
+				try {
+					Map<String, IAConfiguration> cfgs = getSavedConfigs(project);
+					if (cfgs == null)
+						return;
+					p.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
+					p.println("<configurations>"); // $NON-NLS-1$
+					Option[] optionList = AutotoolsConfiguration.getOptionList();
+					HashSet<String> savedIds = new HashSet<String>();
+					setSyncing(true);
+					for (int x = 0; x < cfgds.length; ++x) {
+						ICConfigurationDescription cfgd = cfgds[x];
+						@SuppressWarnings("unused")
+						CConfigurationData data = cfgd.getConfigurationData();
+						String id = cfgd.getId();
+						savedIds.add(id);
+						IAConfiguration cfg = getTmpConfiguration(project, cfgd);
+						cfgs.put(id, cfg); // add to list in case we have a new configuration not yet added to Project Description
 						p.println("<configuration id=\"" + id + "\">"); //$NON-NLS-1$ //$NON-NLS-2$ 
 						for (int j = 0; j < optionList.length; ++j) {
 							Option option = optionList[j];
@@ -447,10 +429,31 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 								p.println("<option id=\"" + option.getName() + "\" value=\"" + opt.getValue() + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
 						}
 						p.println("</configuration>"); //$NON-NLS-1$
+						syncNameField(cfgd);
 					}
+					setSyncing(false);
+
+					// Put all the remaining configurations already saved back into the file.
+					// These represent deleted configurations, but confirmation has not occurred.
+					for (Iterator<String> i = cfgs.keySet().iterator(); i.hasNext(); ) {
+						String id = i.next();
+						// A remaining id won't appear in our savedIds list.
+						if (!savedIds.contains(id)) {
+							IAConfiguration cfg = cfgs.get(id);
+							p.println("<configuration id=\"" + id + "\">"); //$NON-NLS-1$ //$NON-NLS-2$ 
+							for (int j = 0; j < optionList.length; ++j) {
+								Option option = optionList[j];
+								IConfigureOption opt = cfg.getOption(option.getName());
+								if (!opt.isCategory())
+									p.println("<option id=\"" + option.getName() + "\" value=\"" + opt.getValue() + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
+							}
+							p.println("</configuration>"); //$NON-NLS-1$
+						}
+					}
+					p.println("</configurations>");
+				} finally {
+					p.close();
 				}
-				p.println("</configurations>");
-				p.close();
 			}
 		} catch (IOException e) {
 			AutotoolsPlugin.log(e);
