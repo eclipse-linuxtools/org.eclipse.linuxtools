@@ -11,11 +11,17 @@
 package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 
-public class CompletionProposalComparator implements Comparator<ICompletionProposal> {
+public class CompletionProposalComparator implements Comparator<ICompletionProposal>, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor for CompletionProposalComparator.

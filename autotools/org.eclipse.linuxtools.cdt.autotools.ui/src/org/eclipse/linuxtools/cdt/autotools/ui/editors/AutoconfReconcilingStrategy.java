@@ -22,13 +22,13 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 public class AutoconfReconcilingStrategy implements IReconcilingStrategy {
 
 	AutoconfContentOutlinePage outline;
-	int lastRegionOffset;
+//	int lastRegionOffset;
 	AutoconfEditor editor;
 	IDocumentProvider documentProvider;
 	
 	public AutoconfReconcilingStrategy(AutoconfEditor editor) {
 		outline= editor.getOutlinePage();
-		lastRegionOffset = Integer.MAX_VALUE;
+//		lastRegionOffset = Integer.MAX_VALUE;
 		this.editor = editor;
 		documentProvider = editor.getDocumentProvider();
 	}

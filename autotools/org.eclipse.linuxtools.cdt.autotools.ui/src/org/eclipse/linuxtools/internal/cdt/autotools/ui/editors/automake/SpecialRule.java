@@ -19,11 +19,11 @@ public abstract class SpecialRule extends Rule implements ISpecialRule {
 
 	public SpecialRule(Directive parent, Target target, String[] reqs, Command[] cmds) {
 		super(parent, target, cmds);
-		prerequisites = reqs;
+		prerequisites = reqs.clone();
 	}
 
 	public String[] getPrerequisites() {
-		return prerequisites;
+		return prerequisites.clone();
 	}
 
 	public String toString() {

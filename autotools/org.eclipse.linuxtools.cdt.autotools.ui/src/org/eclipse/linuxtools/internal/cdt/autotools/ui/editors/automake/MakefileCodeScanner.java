@@ -39,7 +39,7 @@ public class MakefileCodeScanner extends AbstractMakefileCodeScanner {
 		"shell", "origin", "foreach", "call" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	};
 
-	public static final String[] fTokenProperties = new String[] {
+	static final String[] fTokenProperties = new String[] {
 			ColorManager.MAKE_COMMENT_COLOR,
 			ColorManager.MAKE_KEYWORD_COLOR,
 			ColorManager.MAKE_FUNCTION_COLOR,

@@ -85,7 +85,7 @@ public class HoverMessages {
 		} catch (MissingResourceException e) {
 			return "!" + key + "!";//$NON-NLS-2$ //$NON-NLS-1$
 		}
-		return MessageFormat.format(format, new Object[] { new Boolean(arg) });
+		return MessageFormat.format(format, new Object[] { Boolean.valueOf(arg) });
 	}
 
 }

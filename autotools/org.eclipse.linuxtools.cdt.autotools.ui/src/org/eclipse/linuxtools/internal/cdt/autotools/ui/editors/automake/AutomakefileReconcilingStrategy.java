@@ -43,9 +43,7 @@ public class AutomakefileReconcilingStrategy implements IReconcilingStrategy {
 		fManager= AutomakeEditorFactory.getDefault().getWorkingCopyManager();
 		fDocumentProvider= AutomakeEditorFactory.getDefault().getAutomakefileDocumentProvider();
 		fErrorHandler= new AutomakeErrorHandler(fDocumentProvider.getDocument(input));
-		if (fEditor instanceof IReconcilingParticipant) {
-			fMakefileReconcilingParticipant= (IReconcilingParticipant)fEditor;
-		}
+		fMakefileReconcilingParticipant= (IReconcilingParticipant)fEditor;
 	}
 	
 	/**

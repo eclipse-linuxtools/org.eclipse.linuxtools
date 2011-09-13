@@ -84,7 +84,7 @@ public class AutoconfOutlineErrorHandler {
 		}
 		
 		// FIXME:  add severity level
-		map.put(IMarker.SEVERITY, new Integer(e.getSeverity()));
+		map.put(IMarker.SEVERITY, Integer.valueOf(e.getSeverity()));
 		
 		try {
 			MarkerUtilities.createMarker(file, map, PARSE_ERROR_MARKER_ID);
@@ -126,7 +126,7 @@ public class AutoconfOutlineErrorHandler {
 	
 	private Integer getCharOffset(int lineNumber, int columnNumber)	{
 		try	{
-			return new Integer(document.getLineOffset(lineNumber) + columnNumber);
+			return Integer.valueOf(document.getLineOffset(lineNumber) + columnNumber);
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 			return null;

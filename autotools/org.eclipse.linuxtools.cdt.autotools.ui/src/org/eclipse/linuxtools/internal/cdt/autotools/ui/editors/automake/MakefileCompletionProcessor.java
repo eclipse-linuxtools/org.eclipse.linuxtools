@@ -64,7 +64,7 @@ public class MakefileCompletionProcessor implements IContentAssistProcessor {
 		}
 	}
 
-	public class DirectiveComparator implements Comparator<Object>{
+	public static class DirectiveComparator implements Comparator<Object>{
 
 		/* (non-Javadoc)
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -185,13 +185,11 @@ public class MakefileCompletionProcessor implements IContentAssistProcessor {
 			}
 			statements = makefile.getBuiltinMacroDefinitions();
 			for (int i = 0; i < statements.length; i++) {
-				if (statements[i] instanceof IMacroDefinition) {
-					String name = ((IMacroDefinition) statements[i]).getName();
-					if (name != null && name.equals(wordPart.toString())) {
-						String value = ((IMacroDefinition) statements[i]).getValue().toString();
-						if (value != null && value.length() > 0) {
-							contextList.add(value);
-						}
+				String name = ((IMacroDefinition) statements[i]).getName();
+				if (name != null && name.equals(wordPart.toString())) {
+					String value = ((IMacroDefinition) statements[i]).getValue().toString();
+					if (value != null && value.length() > 0) {
+						contextList.add(value);
 					}
 				}
 			}

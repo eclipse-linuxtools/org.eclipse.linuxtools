@@ -60,7 +60,7 @@ public class LexicalSortingAction extends Action {
 		}
 	}
 	
-	private class LexicalCSorter extends ViewerSorter {		
+	private static class LexicalCSorter extends ViewerSorter {		
 		@SuppressWarnings("unused")
 		public boolean isSorterProperty(Object element, Object property) {
 			return true;

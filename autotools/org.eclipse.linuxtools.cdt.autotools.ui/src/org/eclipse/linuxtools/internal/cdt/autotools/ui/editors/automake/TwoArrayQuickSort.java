@@ -24,7 +24,7 @@ public class TwoArrayQuickSort {
 		int original_left= left;
 		int original_right= right;
 		
-		String mid= keys[(left + right) / 2]; 
+		String mid= keys[(left + right) >>> 1]; 
 		do { 
 			while (smaller(keys[left], mid, ignoreCase)) { 
 				left++; 

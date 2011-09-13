@@ -58,10 +58,7 @@ public class AutomakeEditorPreferencePage extends AbstractEditorPreferencePage {
 	private TableViewer fHighlightingColorListViewer;
 	private final List<HighlightingColorListItem> fHighlightingColorList= new ArrayList<HighlightingColorListItem>(5);
 
-	ColorEditor fAppearanceColorEditor;
-	Button fAppearanceColorDefault;
 	ColorEditor fSyntaxForegroundColorEditor;
-	ColorEditor fBackgroundColorEditor;
 	Button fBoldCheckBox;
 	Button fItalicCheckBox;
 	
@@ -73,7 +70,7 @@ public class AutomakeEditorPreferencePage extends AbstractEditorPreferencePage {
 	 * 
 	 * @since 3.0
 	 */
-	private class HighlightingColorListItem {
+	private static class HighlightingColorListItem {
 		/** Display name */
 		private String fDisplayName;
 		/** Color preference key */
@@ -143,7 +140,7 @@ public class AutomakeEditorPreferencePage extends AbstractEditorPreferencePage {
 	 * 
 	 * @since 3.0
 	 */
-	private class ColorListLabelProvider extends LabelProvider implements IColorProvider {
+	private static class ColorListLabelProvider extends LabelProvider implements IColorProvider {
 
 		/*
 		 * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
@@ -172,7 +169,7 @@ public class AutomakeEditorPreferencePage extends AbstractEditorPreferencePage {
 	 * 
 	 * @since 3.0
 	 */
-	private class ColorListContentProvider implements IStructuredContentProvider {
+	private static class ColorListContentProvider implements IStructuredContentProvider {
 
 		/*
 		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)

@@ -888,9 +888,11 @@ public class AutoconfParser {
 
 	private void validateMacroParameterCount(AutoconfMacroElement macro, Token token, int count) {
 		if (macro.getParameterCount() < count) {
-			handleError(macro, token, AutoconfEditorMessages.getFormattedString("M4MacroArgsTooFew", macro.getName(), new Integer(2))); //$NON-NLS-1$ 
+			handleError(macro, token, AutoconfEditorMessages.getFormattedString("M4MacroArgsTooFew", 
+					macro.getName(), Integer.valueOf(2))); //$NON-NLS-1$ 
 		} else if (macro.getParameterCount() > count) {
-			handleError(macro, token, AutoconfEditorMessages.getFormattedString("M4MacroArgsTooMany", macro.getName(), new Integer(2))); //$NON-NLS-1$
+			handleError(macro, token, AutoconfEditorMessages.getFormattedString("M4MacroArgsTooMany", 
+					macro.getName(), Integer.valueOf(2))); //$NON-NLS-1$
 		}
 	}
 

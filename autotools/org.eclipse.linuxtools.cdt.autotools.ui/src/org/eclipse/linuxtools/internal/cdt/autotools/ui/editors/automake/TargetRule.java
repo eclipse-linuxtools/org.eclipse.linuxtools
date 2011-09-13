@@ -40,15 +40,15 @@ public class TargetRule extends Rule implements ITargetRule {
 
 	public TargetRule(Directive parent, Target target, String[] reqs, Command[] commands) {
 		super(parent, target, commands);
-		prerequisites = reqs;
+		prerequisites = reqs.clone();
 	}
 
 	public String[] getPrerequisites() {
-		return prerequisites;
+		return prerequisites.clone();
 	}
 
 	public void setDependecies(String[] reqs) {
-		prerequisites = reqs;
+		prerequisites = reqs.clone();
 	}
 
 	/**

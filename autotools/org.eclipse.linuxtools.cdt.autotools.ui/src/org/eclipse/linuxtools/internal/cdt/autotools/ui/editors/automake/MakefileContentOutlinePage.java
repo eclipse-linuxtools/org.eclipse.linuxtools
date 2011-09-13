@@ -159,7 +159,7 @@ public class MakefileContentOutlinePage extends ContentOutlinePage implements IC
 
 	}
 
-	private class MakefileLabelProvider extends LabelProvider implements ILabelProvider {
+	private static class MakefileLabelProvider extends LabelProvider implements ILabelProvider {
 
 		/* (non-Javadoc)
 		* @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)

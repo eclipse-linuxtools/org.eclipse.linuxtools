@@ -19,7 +19,7 @@ public class GNUTargetRule extends TargetRule {
 
 	public GNUTargetRule(Directive parent, Target target, boolean double_colon, String[] normal_prereqs, String[] order_prereqs, Command[] commands) {
 		super(parent, target, normal_prereqs, commands);
-		orderOnlyPrerequisites = order_prereqs;
+		orderOnlyPrerequisites = order_prereqs.clone();
 		doubleColon = double_colon;
 	}
 
@@ -32,7 +32,7 @@ public class GNUTargetRule extends TargetRule {
 	}
 
 	public String[] getOrderOnlyPrerequisites() {
-		return orderOnlyPrerequisites;
+		return orderOnlyPrerequisites.clone();
 	}
 
 

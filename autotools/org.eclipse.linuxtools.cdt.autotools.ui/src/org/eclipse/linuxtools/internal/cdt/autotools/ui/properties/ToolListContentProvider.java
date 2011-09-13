@@ -42,7 +42,7 @@ public class ToolListContentProvider implements ITreeContentProvider {
 	
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof AutotoolsConfiguration) {
-			return elements;
+			return elements.clone();
 		}
 		return ((ToolListElement)parentElement).getChildren();	
 	}
@@ -56,7 +56,7 @@ public class ToolListContentProvider implements ITreeContentProvider {
 	}
 
 	public Object[] getElements(Object inputElement) {
-		return elements;
+		return elements.clone();
 	}
 
 	public void dispose() {

@@ -92,7 +92,7 @@ public class AutoconfEditor extends TextEditor implements IAutotoolsEditor, IPro
     private AutoconfPartitionScanner fPartitionScanner;
     private RuleBasedScanner fCodeScanner;
     private RuleBasedScanner fMacroCodeScanner;
-    private static AutoconfDocumentProvider fDocumentProvider;
+    private static volatile AutoconfDocumentProvider fDocumentProvider;
     private AutoconfElement rootElement;
     private AutoconfContentOutlinePage outlinePage;
     private AutoconfParser fParser;

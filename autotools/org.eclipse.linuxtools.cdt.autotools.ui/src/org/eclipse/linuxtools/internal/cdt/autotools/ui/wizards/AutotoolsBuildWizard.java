@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.wizards;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.SortedMap;
 
 import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyManager;
@@ -52,8 +53,8 @@ public class AutotoolsBuildWizard extends AbstractCWizard {
 		// look for Autotools project type
 		EntryDescriptor oldsRoot = null;
 		SortedMap<String, IProjectType> sm = ManagedBuildManager.getExtensionProjectTypeMap();
-		for (String s : sm.keySet()) {
-			IProjectType pt = (IProjectType)sm.get(s);
+		for (Map.Entry<String, IProjectType> e : sm.entrySet()) {
+			IProjectType pt = e.getValue();
 			if (pt.getId().equals(AUTOTOOLS_PROJECTTYPE_ID)) {
 				AutotoolsBuildWizardHandler h = new AutotoolsBuildWizardHandler(pt, parent, wizard);
 				IToolChain[] tcs = ManagedBuildManager.getExtensionToolChains(pt);

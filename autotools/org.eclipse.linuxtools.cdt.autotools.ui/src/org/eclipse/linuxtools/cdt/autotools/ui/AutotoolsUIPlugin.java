@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -46,6 +47,7 @@ public class AutotoolsUIPlugin extends AbstractUIPlugin {
 	 * The constructor.
 	 */
 	public AutotoolsUIPlugin() {
+		Assert.isTrue(plugin == null);
 		plugin = this;
 		try {
 			resourceBundle = ResourceBundle.getBundle(PLUGIN_ID + ".Resources"); //$NON-NLS-1$

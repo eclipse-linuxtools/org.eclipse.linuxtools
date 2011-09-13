@@ -60,9 +60,10 @@ public class AutotoolsBuildWizardHandler extends MBSWizardHandler {
 		IScannerConfigBuilderInfo2Set baseCbi = ScannerConfigProfileManager.createScannerConfigBuildInfo2Set(project);
 		Map<InfoContext, IScannerConfigBuilderInfo2> baseInfoMap = baseCbi.getInfoMap();
 		Map<CfgInfoContext, IScannerConfigBuilderInfo2> infoMap = cbi.getInfoMap();
-		for (CfgInfoContext cfgInfoContext : infoMap.keySet()) {
+		for (Map.Entry<CfgInfoContext, IScannerConfigBuilderInfo2> e : infoMap.entrySet()) {
 			@SuppressWarnings("unused")
 			String s = null;
+			CfgInfoContext cfgInfoContext = e.getKey();
 			IResourceInfo rcInfo = cfgInfoContext.getResourceInfo();
 			if (rcInfo == null) { // per configuration
 				s = cfgInfoContext.getConfiguration().getName();

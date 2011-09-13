@@ -48,10 +48,16 @@ public class MacroDefinition extends Directive implements IMacroDefinition {
 		return buffer.toString();
 	}
 
-	public boolean equals(MacroDefinition v) {
-		return v.getName().equals(getName());
+	public boolean equals(Object v) {
+		if (v instanceof MacroDefinition)
+			return ((MacroDefinition)v).getName().equals(getName());
+		return false;
 	}
 
+	public int hashCode() {
+		return getName().hashCode();
+	}
+	
 	public void setFromCommand(boolean from) {
 		fromCommand = from;
 	}

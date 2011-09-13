@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.ListenerList;
 
 public class AutotoolsPropertyManager implements IPropertyChangeManager {
 
-	private static AutotoolsPropertyManager fInstance;
+	private static volatile AutotoolsPropertyManager fInstance;
 	private Map<IProject, ListenerList> projectList;
 	
 	private AutotoolsPropertyManager() {

@@ -19,8 +19,8 @@ public class Include extends Parent implements IInclude {
 
 	public Include(Directive parent, String[] files, String[] directories) {
 		super(parent);
-		filenames = files;
-		dirs = directories;
+		filenames = files.clone();
+		dirs = directories.clone();
 	}
 
 	public String toString() {
@@ -32,7 +32,7 @@ public class Include extends Parent implements IInclude {
 	}
 
 	public String[] getFilenames() {
-		return filenames;
+		return filenames.clone();
 	}
 
 	public IDirective[] getDirectives() {

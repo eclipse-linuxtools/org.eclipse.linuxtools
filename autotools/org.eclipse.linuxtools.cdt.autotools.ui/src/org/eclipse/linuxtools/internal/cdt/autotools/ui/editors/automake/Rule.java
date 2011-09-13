@@ -45,8 +45,14 @@ public abstract class Rule extends Parent implements IRule {
 		target = tgt;
 	}
 
-	public boolean equals(Rule r) {
-		return r.getTarget().equals(getTarget());
+	public boolean equals(Object r) {
+		if (r instanceof Rule)
+			return ((Rule)r).getTarget().equals(getTarget());
+		return false;
+	}
+	
+	public int hashCode() {
+		return getTarget().hashCode();
 	}
 
 }

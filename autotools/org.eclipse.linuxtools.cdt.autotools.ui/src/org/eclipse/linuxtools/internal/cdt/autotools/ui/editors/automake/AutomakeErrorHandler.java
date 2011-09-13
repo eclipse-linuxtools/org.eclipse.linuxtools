@@ -33,7 +33,7 @@ public class AutomakeErrorHandler {
 	public static final String CDT_ANNOTATION_ERROR = "org.eclipse.cdt.ui.error";
 	
 	// TODO: no quickfixes yet implemented, but maybe in the future
-	private class AutomakeAnnotation extends Annotation implements IQuickFixableAnnotation {
+	private static class AutomakeAnnotation extends Annotation implements IQuickFixableAnnotation {
 		public AutomakeAnnotation(String annotationType, boolean persist, String message) {
 			super(annotationType, persist, message);
 		}
@@ -75,7 +75,7 @@ public class AutomakeErrorHandler {
 			} else if (directive instanceof BadDirective) {
 				int lineNumber = directive.getStartLine();
 				Integer charStart = getCharOffset(lineNumber - 1, 0);
-				Integer charEnd = new Integer(getCharOffset(directive.getEndLine() - 1, -1).intValue());
+				Integer charEnd = Integer.valueOf(getCharOffset(directive.getEndLine() - 1, -1).intValue());
 				
 				String annotationType = CDT_ANNOTATION_ERROR;
 				Annotation annotation = new AutomakeAnnotation(annotationType, true, "Bad directive"); //$NON-NLS-1$
@@ -97,8 +97,8 @@ public class AutomakeErrorHandler {
 		try
 		{
 			if (columnNumber >= 0)
-				return new Integer(document.getLineOffset(lineNumber) + columnNumber);
-			return new Integer(document.getLineOffset(lineNumber) + document.getLineLength(lineNumber));
+				return Integer.valueOf(document.getLineOffset(lineNumber) + columnNumber);
+			return Integer.valueOf(document.getLineOffset(lineNumber) + document.getLineLength(lineNumber));
 		}
 		catch (BadLocationException e)
 		{

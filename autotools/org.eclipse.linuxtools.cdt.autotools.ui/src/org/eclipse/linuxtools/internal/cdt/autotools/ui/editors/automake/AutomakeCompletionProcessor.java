@@ -63,7 +63,7 @@ public class AutomakeCompletionProcessor implements IContentAssistProcessor {
 			}
 		}
 
-		public class DirectiveComparator implements Comparator<Object> {
+		public static class DirectiveComparator implements Comparator<Object> {
 
 			/* (non-Javadoc)
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -184,7 +184,7 @@ public class AutomakeCompletionProcessor implements IContentAssistProcessor {
 				}
 				statements = makefile.getBuiltinMacroDefinitions();
 				for (int i = 0; i < statements.length; i++) {
-					if (statements[i] instanceof IMacroDefinition) {
+					if (statements[i] != null) {
 						String name = ((IMacroDefinition) statements[i]).getName();
 						if (name != null && name.equals(wordPart.toString())) {
 							String value = ((IMacroDefinition) statements[i]).getValue().toString();
