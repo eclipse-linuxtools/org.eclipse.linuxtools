@@ -58,7 +58,7 @@ public class AutoconfCodeScanner extends RuleBasedScanner {
 		"else",	"fi", "for",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		"in", "then" };       //$NON-NLS-1$ //$NON-NLS-2$
 
-	public static final String[] fTokenProperties = new String[] {
+	static final String[] fTokenProperties = new String[] {
 		ColorManager.AUTOCONF_COMMENT_COLOR,
 		ColorManager.AUTOCONF_KEYWORD_COLOR,
 		ColorManager.AUTOCONF_ACMACRO_COLOR,

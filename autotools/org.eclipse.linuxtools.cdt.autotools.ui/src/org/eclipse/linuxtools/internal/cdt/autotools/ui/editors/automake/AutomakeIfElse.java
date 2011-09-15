@@ -15,8 +15,6 @@ package org.eclipse.linuxtools.internal.cdt.autotools.ui.editors.automake;
 
 public class AutomakeIfElse extends Parent {
 	String condition;
-	int startLine;
-	int endLine;
 	String type;
 	public AutomakeIfElse(Directive parent, String type, String condition) {
 		super(parent);
@@ -28,10 +26,6 @@ public class AutomakeIfElse extends Parent {
 	}
 	public void setCondition(String condition) {
 		this.condition = condition;
-	}
-	public void setLines(int startLine, int endLine) {
-		this.startLine = startLine;
-		this.endLine = endLine;
 	}
 	public String getType() {
 		return type;

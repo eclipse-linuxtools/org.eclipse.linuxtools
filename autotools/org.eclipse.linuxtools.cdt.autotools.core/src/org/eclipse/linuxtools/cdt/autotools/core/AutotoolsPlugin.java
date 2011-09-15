@@ -22,6 +22,7 @@ import org.eclipse.cdt.managedbuilder.core.ManagedCProjectNature;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -52,6 +53,7 @@ public class AutotoolsPlugin extends AbstractUIPlugin {
 	 * The constructor.
 	 */
 	public AutotoolsPlugin() {
+		Assert.isTrue(plugin == null);
 		plugin = this;
 		try {
 			resourceBundle = ResourceBundle.getBundle(PLUGIN_ID + ".Resources"); //$NON-NLS-1$

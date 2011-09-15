@@ -46,7 +46,7 @@ public class Util {
 	}
 
 	public static int indexOf(String line, char c) {
-		return indexOf(line, new Character(c).toString());
+		return indexOf(line, Character.valueOf(c).toString());
 	}
 
 	/**

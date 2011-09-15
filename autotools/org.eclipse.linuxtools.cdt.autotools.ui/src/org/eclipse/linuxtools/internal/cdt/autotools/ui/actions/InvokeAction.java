@@ -96,9 +96,9 @@ public abstract class InvokeAction extends AbstractTargetAction {
 			String currentWord = st.nextToken().trim();
 
 			if (currentWord.startsWith("'")) { //$NON-NLS-1$
-				String tmpTarget = ""; //$NON-NLS-1$
+				StringBuffer tmpTarget = new StringBuffer();
 				while (!currentWord.endsWith("'")) { //$NON-NLS-1$
-					tmpTarget += currentWord + " "; //$NON-NLS-1$
+					tmpTarget.append(currentWord + " "); //$NON-NLS-1$
 					if (!st.hasMoreTokens()) {
 						// quote not closed properly, so return null
 						return null;
@@ -106,15 +106,15 @@ public abstract class InvokeAction extends AbstractTargetAction {
 					currentWord = st.nextToken().trim();
 				}
 
-				tmpTarget += currentWord;
-				targetList.add(tmpTarget);
+				tmpTarget.append(currentWord);
+				targetList.add(tmpTarget.toString());
 				continue;
 			}
 
 			if (currentWord.startsWith("\"")) { //$NON-NLS-1$
-				String tmpTarget = ""; //$NON-NLS-1$
+				StringBuffer tmpTarget = new StringBuffer();
 				while (!currentWord.endsWith("\"")) { //$NON-NLS-1$
-					tmpTarget += currentWord + " "; //$NON-NLS-1$
+					tmpTarget.append(currentWord + " "); //$NON-NLS-1$
 					if (!st.hasMoreTokens()) {
 						// double quote not closed properly, so return null
 						return null;
@@ -122,8 +122,8 @@ public abstract class InvokeAction extends AbstractTargetAction {
 					currentWord = st.nextToken().trim();
 				}
 
-				tmpTarget += currentWord;
-				targetList.add(tmpTarget);
+				tmpTarget.append(currentWord);
+				targetList.add(tmpTarget.toString());
 				continue;
 			}
 
@@ -227,7 +227,7 @@ public abstract class InvokeAction extends AbstractTargetAction {
 		return cwd;
 	}
 	
-	private class ExecuteProgressDialog implements IRunnableWithProgress {
+	private static class ExecuteProgressDialog implements IRunnableWithProgress {
 		private IPath command;
 		private String[] argumentList;
 		private String[] envList;
@@ -396,11 +396,11 @@ public abstract class InvokeAction extends AbstractTargetAction {
 						        if (Platform.getOS().equals(Platform.OS_WIN32)
 						                || Platform.getOS().equals(Platform.OS_MACOSX)) {
 						            // Neither Mac or Windows support calling scripts directly.
-						            String command = strippedCommand;
+						            StringBuffer command = new StringBuffer(strippedCommand);
 						            for (String arg : argumentList) {
-						            	command += " " + arg;
+						            	command.append(" " + arg);
 						            }
-						            newArgumentList = new String[] { "-c", command };
+						            newArgumentList = new String[] { "-c", command.toString() };
 						        } else {
 						        	// Otherwise, we don't need the -c argument and can present the command
 						        	// name and arguments as individual arguments
@@ -409,7 +409,8 @@ public abstract class InvokeAction extends AbstractTargetAction {
 						        	else
 						        		newArgumentList = new String[argumentList.length + 1];
 						        	newArgumentList[0] = strippedCommand;
-									System.arraycopy(argumentList, 0, newArgumentList, 1, argumentList.length);
+						        	if (argumentList != null)
+						        		System.arraycopy(argumentList, 0, newArgumentList, 1, argumentList.length);
 						        }
 						        
 						        OutputStream stdout = consoleOutStream;

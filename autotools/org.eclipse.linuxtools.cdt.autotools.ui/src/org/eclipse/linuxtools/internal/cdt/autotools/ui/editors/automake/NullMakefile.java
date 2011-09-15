@@ -50,7 +50,7 @@ public class NullMakefile extends AbstractMakefile {
 	}
 
 	public String toString() {
-		return new String();
+		return "";
 	}
 
 	/* (non-Javadoc)

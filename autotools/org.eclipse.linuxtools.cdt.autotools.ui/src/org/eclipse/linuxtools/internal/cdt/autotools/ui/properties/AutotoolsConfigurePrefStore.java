@@ -23,13 +23,13 @@ import org.eclipse.linuxtools.internal.cdt.autotools.core.configure.IConfigureOp
  */
 public class AutotoolsConfigurePrefStore implements IPreferenceStore {
 
-	public final static String EMPTY_STRING = new String();
+	public final static String EMPTY_STRING = "";
 	public final static String ALL_OPTIONS_ID = EMPTY_STRING;
 	
 	private static AutotoolsConfigurePrefStore instance = null;
 	private ToolListElement selectedElement;
 	private IAConfiguration cfg;
-	private ListenerList listenerList;
+	private ListenerList listenerList = new ListenerList();
 	private boolean isdirty;
 
 	private AutotoolsConfigurePrefStore() {

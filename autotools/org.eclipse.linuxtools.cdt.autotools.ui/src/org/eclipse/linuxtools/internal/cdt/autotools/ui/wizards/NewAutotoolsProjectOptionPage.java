@@ -35,10 +35,9 @@ public class NewAutotoolsProjectOptionPage extends NewCProjectWizardOptionPage {
 	
 	public static final String PAGE_ID = "org.eclipse.cdt.managedbuilder.ui.wizard.projectOptionsPage"; //$NON-NLS-1$
 	
-	public class ManagedWizardOptionBlock extends ManagedProjectOptionBlock {
+	public static class ManagedWizardOptionBlock extends ManagedProjectOptionBlock {
 		
 		NewAutotoolsProjectOptionPage parent;
-		ErrorParserBlock errorParsers;
 		IndexerBlock indexBlock;
 		
 
@@ -62,10 +61,6 @@ public class NewAutotoolsProjectOptionPage extends NewCProjectWizardOptionPage {
 			}
 		}
 		public void updateProjectTypeProperties() {
-			//  Update the error parser list
-			if (errorParsers != null) {
-				errorParsers.updateValues();
-			}
 		}
 
 		/* (non-Javadoc)

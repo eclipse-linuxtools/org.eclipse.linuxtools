@@ -40,4 +40,9 @@ public class AutoconfMacro implements Comparable<Object> {
 		AutoconfMacro y = (AutoconfMacro) x;
 		return getName().compareTo(y.getName());
 	}
+	
+	public boolean equals(Object x) {
+		AutoconfMacro y = (AutoconfMacro)x;
+		return getName().equals(y.getName());
+	}
 }

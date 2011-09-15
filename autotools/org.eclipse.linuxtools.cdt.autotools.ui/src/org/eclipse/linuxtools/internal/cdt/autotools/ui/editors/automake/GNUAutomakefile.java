@@ -57,8 +57,8 @@ import org.eclipse.linuxtools.cdt.autotools.ui.AutotoolsUIPlugin;
 
 public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 
-	public static String PATH_SEPARATOR = System.getProperty("path.separator", ":"); //$NON-NLS-1$ //$NON-NLS-2$
-	public static String FILE_SEPARATOR = System.getProperty("file.separator", "/"); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String PATH_SEPARATOR = System.getProperty("path.separator", ":"); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String FILE_SEPARATOR = System.getProperty("file.separator", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	String[] includeDirectories = new String[0];
 	IDirective[] builtins = null;
@@ -69,11 +69,11 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 
 	public void parse(String name) throws IOException {
 		FileReader stream = new FileReader(name);
-		parse(name, stream);
-		if (stream != null) {
-			try {
+		try {
+			parse(name, stream);
+		} finally {
+			if (stream != null) {
 				stream.close();
-			} catch (IOException e) {
 			}
 		}
 	}
@@ -644,7 +644,7 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 		}
 		directories = (String[]) dirs.toArray(new String[0]);
 		if (pattern == null) {
-			pattern = new String();
+			pattern = "";
 		}
 		return new VPath(this, pattern, directories);
 	}
@@ -921,15 +921,15 @@ public class GNUAutomakefile extends AbstractMakefile implements IGNUMakefile {
 				builtins = new IDirective[0];
 			}
 		}
-		return builtins;
+		return builtins.clone();
 	}
 
 	public void setIncludeDirectories(String[] dirs) {
-		includeDirectories = dirs;
+		includeDirectories = dirs.clone();
 	}
 
 	public String[] getIncludeDirectories() {
-		return includeDirectories;
+		return includeDirectories.clone();
 	}
 
 	/**

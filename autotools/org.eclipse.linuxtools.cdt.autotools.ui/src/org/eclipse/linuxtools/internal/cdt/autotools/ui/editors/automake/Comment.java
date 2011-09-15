@@ -29,7 +29,14 @@ public class Comment extends Directive implements IComment {
 		return buffer.toString();
 	}
 
-	public boolean equals(Comment cmt) {
-		return cmt.toString().equals(toString());
+	public boolean equals(Object cmt) {
+		if (cmt instanceof Comment)
+			return cmt.toString().equals(toString());
+		return false;
 	}
+	
+	public int hashCode() {
+		return toString().hashCode();
+	}
+
 }

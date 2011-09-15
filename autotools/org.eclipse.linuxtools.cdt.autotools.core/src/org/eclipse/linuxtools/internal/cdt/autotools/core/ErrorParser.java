@@ -179,6 +179,7 @@ public class ErrorParser extends MarkerGenerator implements IErrorParser{
 				}
 				line = reader.readLine();
 			}
+			stream.close();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -216,7 +217,8 @@ public class ErrorParser extends MarkerGenerator implements IErrorParser{
 
 				line = reader.readLine();
 			}
-
+			stream.close();
+			
 		} catch (Exception e) {
 			return -1;
 		}

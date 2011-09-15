@@ -70,12 +70,12 @@ public class AutomakeTextHover implements ITextHover, ITextHoverExtension {
 			case '?':
 				preReqs = target.getPrerequisites();
 				if (preReqs != null && preReqs.length > 0) {
-					String toReturn = "";
-					toReturn = preReqs[0];
+					StringBuffer toReturn = new StringBuffer();
+					toReturn.append(preReqs[0]);
 					for (int i = 1; i < preReqs.length; i++) {
-						toReturn += " " + preReqs[i];
+						toReturn.append(" " + preReqs[i]);
 					}
-					return toReturn;
+					return toReturn.toString();
 				}
 				break;
 			case '%':

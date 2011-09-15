@@ -56,7 +56,7 @@ public abstract class AbstractMakefile extends Parent implements IMakefile {
 		IRule[] rules = getRules();
 		List<IRule> array = new ArrayList<IRule>(rules.length);
 		for (int i = 0; i < rules.length; i++) {
-			if (rules[i].getTarget().equals(target)) {
+			if (rules[i].getTarget().toString().equals(target)) {
 				array.add(rules[i]);
 			}
 		}
@@ -78,7 +78,7 @@ public abstract class AbstractMakefile extends Parent implements IMakefile {
 		IInferenceRule[] irules = getInferenceRules();
 		List<IInferenceRule> array = new ArrayList<IInferenceRule>(irules.length);
 		for (int i = 0; i < irules.length; i++) {
-			if (irules[i].getTarget().equals(target)) {
+			if (irules[i].getTarget().toString().equals(target)) {
 				array.add(irules[i]);
 			}
 		}
@@ -100,7 +100,7 @@ public abstract class AbstractMakefile extends Parent implements IMakefile {
 		ITargetRule[] trules = getTargetRules();
 		List<ITargetRule> array = new ArrayList<ITargetRule>(trules.length);
 		for (int i = 0; i < trules.length; i++) {
-			if (trules[i].getTarget().equals(target)) {
+			if (trules[i].getTarget().toString().equals(target)) {
 				array.add(trules[i]);
 			}
 		}
@@ -166,7 +166,7 @@ public abstract class AbstractMakefile extends Parent implements IMakefile {
 		IInferenceRule[] irules = getBuiltinInferenceRules();
 		List<IInferenceRule> array = new ArrayList<IInferenceRule>(irules.length);
 		for (int i = 0; i < irules.length; i++) {
-			if (irules[i].getTarget().equals(target)) {
+			if (irules[i].getTarget().toString().equals(target)) {
 				array.add(irules[i]);
 			}
 		}

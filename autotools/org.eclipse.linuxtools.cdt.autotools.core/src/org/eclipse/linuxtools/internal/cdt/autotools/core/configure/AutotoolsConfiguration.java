@@ -174,7 +174,7 @@ public class AutotoolsConfiguration implements IAConfiguration {
 	}
 	
 	public static Option[] getOptionList() {
-		return configOpts;
+		return configOpts.clone();
 	}
 
 	public static Option[] getChildOptions(String name) {
@@ -208,7 +208,7 @@ public class AutotoolsConfiguration implements IAConfiguration {
 	}
 	
 	public static Option[] getTools() {
-		return toolList;
+		return toolList.clone();
 	}
 	
 	public IConfigureOption getOption(String name) {

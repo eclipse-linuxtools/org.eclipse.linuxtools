@@ -83,10 +83,16 @@ public class Command extends Directive implements ICommand {
 		return cmd.toString();
 	}
 
-	public boolean equals(Command cmd) {
-		return cmd.toString().equals(toString());
+	public boolean equals(Object cmd) {
+		if (cmd instanceof Command)
+			return cmd.toString().equals(toString());
+		return false;
 	}
 
+	public int hashCode() {
+		return toString().hashCode();
+	}
+	
 	char getPrefix() {
 		return prefix;
 	}

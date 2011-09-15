@@ -41,7 +41,7 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 	}
 	
 	// TODO: no quickfixes yet implemented, but maybe in the future
-	private class AutoconfAnnotation extends Annotation implements IQuickFixableAnnotation {
+	private static class AutoconfAnnotation extends Annotation implements IQuickFixableAnnotation {
 		public AutoconfAnnotation(String annotationType, boolean persist, String message) {
 			super(annotationType, persist, message);
 		}
@@ -64,8 +64,8 @@ public class AutoconfErrorHandler implements IAutoconfErrorHandler {
 	 * @see org.eclipse.linuxtools.cdt.autotools.ui.editors.IAutoconfErrorHandler#handleError(org.eclipse.linuxtools.cdt.autotools.core.ui.editors.parser.ParseException)
 	 */
 	public void handleError(ParseException e) {
-		Integer charStart = new Integer(e.getStartOffset());
-		Integer charEnd = new Integer(e.getEndOffset());
+		Integer charStart = Integer.valueOf(e.getStartOffset());
+		Integer charEnd = Integer.valueOf(e.getEndOffset());
 		
 		String annotationType = CDT_ANNOTATION_INFO;
 		if (e.getSeverity() == CDT_ERROR)

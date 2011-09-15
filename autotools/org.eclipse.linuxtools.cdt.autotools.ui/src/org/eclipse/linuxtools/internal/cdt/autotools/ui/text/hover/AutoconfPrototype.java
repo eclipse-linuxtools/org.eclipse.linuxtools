@@ -47,7 +47,7 @@ public class AutoconfPrototype {
 	}
 	
 	public void setMinParms(int prototypeNum, int value) {
-		minParms.add(prototypeNum, new Integer(value));
+		minParms.add(prototypeNum, Integer.valueOf(value));
 	}
 	
 	public int getMaxParms(int prototypeNum) {
@@ -55,7 +55,7 @@ public class AutoconfPrototype {
 	}
 	
 	public void setMaxParms(int prototypeNum, int value) {
-		maxParms.add(prototypeNum, new Integer(value));
+		maxParms.add(prototypeNum, Integer.valueOf(value));
 	}
 	
 	public String getParmName(int prototypeNum, int parmNum) {

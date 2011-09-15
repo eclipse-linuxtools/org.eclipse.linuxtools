@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.Color;
 public class AutomakeEditorFactory {
 	private IWorkingCopyManager workingCopyManager;
 	private IMakefileDocumentProvider automakeFileDocumentProvider;
-	private static AutomakeEditorFactory factory;
+	private static volatile AutomakeEditorFactory factory;
 
 	/**
 	 * The constructor.

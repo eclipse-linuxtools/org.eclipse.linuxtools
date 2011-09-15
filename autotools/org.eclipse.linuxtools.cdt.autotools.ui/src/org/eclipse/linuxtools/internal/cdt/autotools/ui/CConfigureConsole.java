@@ -10,13 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.cdt.autotools.ui;
 
-import org.eclipse.cdt.ui.IBuildConsoleManager;
-import org.eclipse.core.resources.IProject;
 
 public class CConfigureConsole extends Console {
-	IProject project;
-	IBuildConsoleManager fConsoleManager;
-	
 	private static final String CONTEXT_MENU_ID = "CAutotoolsConfigureConsole"; //$NON-NLS-1$
 	private static final String CONSOLE_NAME = ConsoleMessages.getString("ConfigureConsole.name"); //$NON-NLS-1$
 	

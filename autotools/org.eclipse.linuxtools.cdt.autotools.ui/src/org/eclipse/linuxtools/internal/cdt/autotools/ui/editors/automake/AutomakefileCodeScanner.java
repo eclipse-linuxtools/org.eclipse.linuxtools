@@ -50,7 +50,7 @@ public class AutomakefileCodeScanner extends AbstractMakefileCodeScanner {
 	private final static String[] automaticVariables = { "$<" , "$*" , "$@" , "$?" , "$%"
 	};
 
-	public static final String[] fTokenProperties = new String[] {
+	static final String[] fTokenProperties = new String[] {
 			ColorManager.MAKE_COMMENT_COLOR,
 			ColorManager.MAKE_KEYWORD_COLOR,
 			ColorManager.MAKE_FUNCTION_COLOR,

@@ -33,7 +33,7 @@ public class ConfigurationLabelProvider	extends LabelProvider implements ITableL
 			else
 				return ( tmpConfig.getName() + " ( " + tmpConfig.getDescription() + " )");	//$NON-NLS-1$	//$NON-NLS-2$
 		}
-		return new String();
+		return "";
 	}
 
 	public Image getColumnImage(Object obj, int index) {

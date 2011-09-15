@@ -30,7 +30,7 @@ public class AutotoolsCategoryPropertyOptionPage extends
 	private String catName = "";
 	private IAConfiguration cfg;
 	//  Label class for a preference page.
-	class LabelFieldEditor extends FieldEditor {
+	static class LabelFieldEditor extends FieldEditor {
 		private String fTitle;
 		private Label fTitleLabel;
 

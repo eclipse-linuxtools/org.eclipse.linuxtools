@@ -51,6 +51,10 @@ public class ExternalEditorInput implements ITranslationUnitEditorInput, IPersis
 			return false;
 		}
 	}
+	
+	public int hashCode() {
+		return externalFile.hashCode();
+	}
 
 	/*
 	* @see IEditorInput#exists()

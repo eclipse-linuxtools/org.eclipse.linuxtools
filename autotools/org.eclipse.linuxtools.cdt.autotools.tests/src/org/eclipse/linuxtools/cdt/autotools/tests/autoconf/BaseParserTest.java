@@ -163,8 +163,8 @@ public abstract class BaseParserTest extends TestCase {
 		for (Iterator iter = errors.iterator(); iter.hasNext(); ) {
 			ParseException exc = (ParseException) iter.next();
 			if (exc.getMessage().contains(msgKey)) {
-				int curDistance = Math.abs(possible.getLineNumber() - line);
-				if (possible == null || curDistance < distance) {
+				int curDistance = Math.abs(exc.getLineNumber() - line);
+				if (curDistance < distance) {
 					possible = exc;
 					distance = curDistance;
 				}

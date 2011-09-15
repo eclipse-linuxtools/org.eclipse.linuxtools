@@ -24,7 +24,7 @@ public class AutoconfPartitionScanner extends RuleBasedPartitionScanner {
 	
 	public final static String AUTOCONF_MACRO = "autoconf_macro"; //$NON-NLS-1$
 	public final static String AUTOCONF_COMMENT = "autoconf_comment"; //$NON-NLS-1$
-	public final static String[] AUTOCONF_PARTITION_TYPES= 
+	final static String[] AUTOCONF_PARTITION_TYPES= 
 		new String[] { AUTOCONF_MACRO, AUTOCONF_COMMENT };
 	
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Red Hat, Inc.
+ * Copyright (c) 2008, 2011 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elliott Baron <ebaron@redhat.com> - initial API and implementation
+ * Martin Oberhuber (Wind River) - [354342] make valgrind version changeable
  *******************************************************************************/ 
 package org.eclipse.linuxtools.internal.valgrind.launch;
 
@@ -112,6 +113,24 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		}
 	}	
 
+	/**
+	 * Set the version of Valgrind that the Launch UI shall use.
+	 * Since the valgrind version affects existence or non-existence of UI controls, the
+	 * version can only be changed while no version-dependent Tab is being displayed.
+	 * @param v the valgrind version, or <code>null</code> is no version is known (typically, all UI features enabled).
+	 */
+	public void setValgrindVersion(Version v) {
+		valgrindVersion = v;
+	}
+	
+	/**
+	 * Return the version of Valgrind that the Launch UI is being configured against
+	 * @return the valgrind version, or <code>null</code> if no version has been detected or set.
+	 */
+	public Version getValgrindVersion() {
+		return valgrindVersion;
+	}
+	
 	protected SelectionListener selectListener = new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {

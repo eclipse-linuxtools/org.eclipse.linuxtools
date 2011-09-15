@@ -18,7 +18,7 @@ public class VPath extends Directive implements IVPath {
 	public VPath(Directive parent, String pat, String[] dirs) {
 		super(parent);
 		pattern = pat;
-		directories = dirs;
+		directories = dirs.clone();
 	}
 
 	public String toString() {
@@ -33,7 +33,7 @@ public class VPath extends Directive implements IVPath {
 	}
 
 	public String[] getDirectories() {
-		return directories;
+		return directories.clone();
 	}
 
 	public String getPattern() {

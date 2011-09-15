@@ -49,7 +49,7 @@ public class MakefileReader extends LineNumberReader {
 			} else if (escapedCommand && line.length() > 0) {
 				// Only eat the first tab
 				if (line.charAt(0) == '\t') {
-					line.substring(1);
+					line = line.substring(1);
 				}
 			}
 

@@ -28,11 +28,11 @@ public class Else extends Conditional implements IAutomakeConditional, ICommand 
 	}
 	
 	public Rule[] getRules() {
-		return rules;
+		return rules.clone();
 	}
 
 	public void setRules(Rule[] rules) {
-		this.rules = rules;
+		this.rules = rules.clone();
 	}
 	
 	public void setAutomake(boolean value) {

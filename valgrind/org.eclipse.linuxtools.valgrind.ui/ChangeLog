@@ -1,3 +1,8 @@
+2011-09-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/ui/ValgrindViewPart.java (refreshView): Add
+	check for empty messages array in addition to messages being null.
+
 2010-08-03  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* src/org/eclipse/linuxtools/valgrind/ui/ValgrindUIConstants.java: New file.

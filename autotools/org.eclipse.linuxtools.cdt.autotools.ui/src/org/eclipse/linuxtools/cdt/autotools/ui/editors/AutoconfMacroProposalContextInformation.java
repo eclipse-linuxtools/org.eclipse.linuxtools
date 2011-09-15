@@ -69,6 +69,11 @@ public class AutoconfMacroProposalContextInformation implements IContextInformat
 		return false;
 	}
 	
+	public int hashCode() {
+		String combined = fInformationDisplayString.toLowerCase().concat(fContextDisplayString.toLowerCase());
+		return combined.hashCode();
+	}
+	
 	/*
 	 * @see IContextInformation#getInformationDisplayString()
 	 */

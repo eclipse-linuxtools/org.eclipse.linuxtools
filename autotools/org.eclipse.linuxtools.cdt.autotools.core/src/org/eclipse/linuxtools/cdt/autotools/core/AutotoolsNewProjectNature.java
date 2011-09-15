@@ -106,7 +106,7 @@ public class AutotoolsNewProjectNature implements IProjectNature {
 		if (newCommands.length == commands.length) {
 			boolean hasCorrectBuilderCommands = true;
 			for (int j = 0; j < commands.length; ++j) {
-				if (!commands[j].getBuilderName().equals(newCommands[j])) {
+				if (!commands[j].getBuilderName().equals(newCommands[j].getBuilderName())) {
 					hasCorrectBuilderCommands = false;
 					break;
 				}

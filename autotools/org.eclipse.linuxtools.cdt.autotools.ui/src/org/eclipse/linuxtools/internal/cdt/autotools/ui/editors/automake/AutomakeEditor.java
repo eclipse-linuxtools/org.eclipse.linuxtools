@@ -29,9 +29,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 public class AutomakeEditor extends MakefileEditor {
 	
-	protected AutomakefileContentOutlinePage page;
+	protected AutomakefileContentOutlinePage ampage;
 	private AutomakefileSourceConfiguration sourceViewerConfiguration;
-	private AutomakeErrorHandler errorHandler;
 	private static AutomakeEditor fgInstance;
 	private IEditorInput input;
 	
@@ -83,12 +82,12 @@ public class AutomakeEditor extends MakefileEditor {
 	}
 	
 	public AutomakefileContentOutlinePage getAutomakeOutlinePage() {
-		if (page == null) {
-			page = new AutomakefileContentOutlinePage(this);
-			page.addSelectionChangedListener(this);
-			page.setInput(getEditorInput());
+		if (ampage == null) {
+			ampage = new AutomakefileContentOutlinePage(this);
+			ampage.addSelectionChangedListener(this);
+			ampage.setInput(getEditorInput());
 		}
-		return page;
+		return ampage;
 	}
 	
 	/* (non-Javadoc)
@@ -124,7 +123,4 @@ public class AutomakeEditor extends MakefileEditor {
 		return getSourceViewer();
 	}
 	
-	public AutomakeErrorHandler getAutomakeErrorHandler() {
-		return errorHandler;
-	}
 }
