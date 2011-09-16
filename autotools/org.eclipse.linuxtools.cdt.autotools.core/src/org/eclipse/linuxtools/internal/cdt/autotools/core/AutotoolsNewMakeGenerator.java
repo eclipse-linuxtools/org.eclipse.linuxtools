@@ -610,47 +610,47 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 	 * @return stripped command
 	 */
 	public static String stripEnvVars(String command, ArrayList<String> envVars) {
-		Pattern p1 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s+)\\w+.*");
-		Pattern p2 = Pattern.compile("(\\w+[=]'.*?'\\s+)\\w+.*");
-		Pattern p3 = Pattern.compile("(\\w+[=][^\\s]+\\s+)\\w+.*");
-		Pattern p4 = Pattern.compile("\\w+\\s+(\\w+[=]\\\".*?\\\"\\s*)+.*");
-		Pattern p5 = Pattern.compile("\\w+\\s+(\\w+[=]'.*?'\\s*)+.*"); 
-		Pattern p6 = Pattern.compile("\\w+\\s+(\\w+[=][^\\s]+).*");
+		Pattern p = Pattern.compile("(\\w+[=]([$]?\\w+[:;]?)+\\s+)\\w+.*");
+		Pattern p2 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s+)\\w+.*");
+		Pattern p3 = Pattern.compile("(\\w+[=]'.*?'\\s+)\\w+.*");
+		Pattern p4 = Pattern.compile("\\w+\\s+(\\w+[=]([$]?\\w+[:;]?)+).*");
+		Pattern p5 = Pattern.compile("\\w+\\s+(\\w+[=]\\\".*?\\\"\\s*)+.*");
+		Pattern p6 = Pattern.compile("\\w+\\s+(\\w+[=]'.*?'\\s*)+.*"); 
 		boolean finished = false;
 		while (!finished) {
-			Matcher m1 = p1.matcher(command);
-			if (m1.matches()) {
-				command = command.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
-				String s = m1.group(1).trim();
-				envVars.add(s.replaceAll("\\\"", ""));
+			Matcher m = p.matcher(command);
+			if (m.matches()) {
+				command = command.replaceFirst("\\w+[=]([$]?\\w+[:;]?)+", "").trim();
+				envVars.add(m.group(1).trim());
 			} else {
 				Matcher m2 = p2.matcher(command);
 				if (m2.matches()) {
-					command = command.replaceFirst("\\w+[=]'.*?'", "").trim();
+					command = command.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
 					String s = m2.group(1).trim();
-					envVars.add(s.replaceAll("'", ""));
+					envVars.add(s.replaceAll("\\\"", ""));
 				} else {
 					Matcher m3 = p3.matcher(command);
 					if (m3.matches()) {
-						command = command.replaceFirst("\\w+[=][^\\s]+", "").trim();
-						envVars.add(m3.group(1).trim());
+						command = command.replaceFirst("\\w+[=]'.*?'", "").trim();
+						String s = m3.group(1).trim();
+						envVars.add(s.replaceAll("'", ""));
 					} else {
 						Matcher m4 = p4.matcher(command);
 						if (m4.matches()) {
-							command = command.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
-							String s = m4.group(1).trim();
-							envVars.add(s.replaceAll("\\\"", ""));
+							command = command.replaceFirst("\\w+[=]([$]?\\w+[:;]?)+", "").trim();
+							envVars.add(m4.group(1).trim());
 						} else {
 							Matcher m5 = p5.matcher(command);
 							if (m5.matches()) {
-								command = command.replaceFirst("\\w+[=]'.*?'", "").trim();
+								command = command.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
 								String s = m5.group(1).trim();
-								envVars.add(s.replaceAll("'", ""));
-							} else {						
+								envVars.add(s.replaceAll("\\\"", ""));
+							} else {
 								Matcher m6 = p6.matcher(command);
 								if (m6.matches()) {
-									command = command.replaceFirst("\\w+[=][^\\s+]+", "").trim();
-									envVars.add(m6.group(1).trim());
+									command = command.replaceFirst("\\w+[=]'.*?'", "").trim();
+									String s = m6.group(1).trim();
+									envVars.add(s.replaceAll("'", ""));
 								} else {
 									finished = true;
 								}
@@ -663,45 +663,6 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 		return command;
 	}
 	
-	/**
-	 * Strip a configure option of VAR=VALUE pairs and add
-	 * them to a list of environment variables.
-	 *
-	 * @param str - string to strip
-	 * @param envVars - ArrayList to add environment variables to
-	 * @return stripped option
-	 */
-	public static String stripEnvVarsFromOption(String str, ArrayList<String> envVars) {
-		Pattern p1 = Pattern.compile("(\\w+[=]\\\".*?\\\"\\s*).*");
-		Pattern p2 = Pattern.compile("(\\w+[=]'.*?'\\s*).*");
-		Pattern p3 = Pattern.compile("(\\w+[=][^\\s]+).*");
-		boolean finished = false;
-		while (!finished) {
-			Matcher m1 = p1.matcher(str);
-			if (m1.matches()) {
-				str = str.replaceFirst("\\w+[=]\\\".*?\\\"","").trim();
-				String s = m1.group(1).trim();
-				envVars.add(s.replaceAll("\\\"", ""));
-			} else {
-				Matcher m2 = p2.matcher(str);
-				if (m2.matches()) {
-					str = str.replaceFirst("\\w+[=]'.*?'", "").trim();
-					String s = m2.group(1).trim();
-					envVars.add(s.replaceAll("'", ""));
-				} else {
-					Matcher m3 = p3.matcher(str);
-					if (m3.matches()) {
-						str = str.replaceFirst("\\w+[=][^\\s]+", "").trim();
-						envVars.add(m3.group(1).trim());
-					} else {
-						finished = true;
-					}
-				}
-			}
-		}
-		return str;
-	}
-
 	private IPath getBuildPath(){
 		return new Path(this.buildDir); 
 	}
@@ -1040,10 +1001,6 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 							" ", //$NON-NLS-1$
 							IBuildMacroProvider.CONTEXT_CONFIGURATION,
 							cfg);
-				// strip any env-var settings from options
-				// fix for bug #356278
-				if (resolved.charAt(0) != '-')
-					resolved = stripEnvVarsFromOption(resolved, additionalEnvs);
 				configTargets[i] = resolved;
 			} catch (BuildMacroException e) {
 			}
@@ -1075,20 +1032,6 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 			buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
 			buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
 
-			// Display command-line environment variables that have been stripped by us
-			// because launch showCommand won't do this.
-			if (additionalEnvs.size() > 0) {
-				buf.append(AutotoolsPlugin
-							.getResourceString("MakeGenerator.commandline.envvars"));
-				buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
-				buf.append("\t");
-				for (int i = 0; i < additionalEnvs.size(); ++i) {
-					String envvar = additionalEnvs.get(i);
-					buf.append(envvar.replaceFirst("(\\w+=)(.*)"," $1\"$2\""));
-				}
-				buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
-				buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
-			}
 			consoleOutStream.write(buf.toString().getBytes());
 			consoleOutStream.flush();
 

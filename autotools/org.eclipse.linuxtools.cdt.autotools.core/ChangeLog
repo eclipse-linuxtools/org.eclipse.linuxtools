@@ -1,14 +1,3 @@
-2011-09-15  Jeff Johnston  <jjohnstn@redhat.com>
-
-	Resolves bug#356278
-	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (stripEnvVarsFromOption): New
-	method.
-	(runScript): Strip env-vars from script options.  Also display any env-vars stripped from command and options.
-	(stripEnvVars): Rewrite so quoted strings are checked first and then simplify the last type of specifier to
-	just non-space value.
-	* src/org/eclipse/linuxtools/cdt/autotools/core/Resources.properties: Add new
-	message.
-
 2011-08-24  Sami Wagiaalla  <swagiaal@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/MarkerGenerator.java (addMarker):
