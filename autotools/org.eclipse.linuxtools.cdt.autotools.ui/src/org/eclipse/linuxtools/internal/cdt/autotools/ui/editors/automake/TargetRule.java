@@ -47,10 +47,6 @@ public class TargetRule extends Rule implements ITargetRule {
 		return prerequisites.clone();
 	}
 
-	public void setDependecies(String[] reqs) {
-		prerequisites = reqs.clone();
-	}
-
 	/**
 	 * @see java.lang.Object#toString()
 	 */

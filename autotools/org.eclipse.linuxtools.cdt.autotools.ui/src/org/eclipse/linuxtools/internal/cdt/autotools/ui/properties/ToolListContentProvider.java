@@ -56,7 +56,9 @@ public class ToolListContentProvider implements ITreeContentProvider {
 	}
 
 	public Object[] getElements(Object inputElement) {
-		return elements.clone();
+		if (elements != null)
+			return elements.clone();
+		return null;
 	}
 
 	public void dispose() {

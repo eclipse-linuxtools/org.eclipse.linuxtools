@@ -32,7 +32,7 @@ public class StaticTargetRule extends InferenceRule implements IInferenceRule {
 		return prereqPatterns.clone();
 	}
 
-	public void setPrerequesitePatterns(String[] prereqs) {
+	public void setPrerequisitePatterns(String[] prereqs) {
 		prereqPatterns = prereqs.clone();
 	}
 

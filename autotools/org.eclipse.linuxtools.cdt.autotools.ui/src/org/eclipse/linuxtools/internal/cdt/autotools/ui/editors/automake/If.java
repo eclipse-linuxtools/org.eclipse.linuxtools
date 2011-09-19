@@ -27,11 +27,16 @@ public class If extends Conditional implements IAutomakeConditional, ICommand {
 	}
 
 	public Rule[] getRules() {
-		return rules.clone();
+		if (rules != null)
+			return rules.clone();
+		return null;
 	}
 	
 	public void setRules(Rule[] rules) {
-		this.rules = rules.clone();
+		if (rules != null)
+			this.rules = rules.clone();
+		else
+			this.rules = rules;
 	}
 	
 	public boolean isIf() {
