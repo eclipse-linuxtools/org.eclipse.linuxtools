@@ -81,15 +81,13 @@ public class RunScriptChartAction extends RunScriptAction implements IWorkbenchW
 					serverfileName = fileName.substring(fileName.lastIndexOf('/')+1);
 					tmpfileName="/tmp/"+ serverfileName;
 					 scpclient.transfer(fileName,tmpfileName);
-			        }catch(Exception e){e.printStackTrace();}
-			
-			String[] script = buildScript();
-			
-			String[] envVars = getEnvironmentVariables();
-			
-			
+			        }catch(Exception e){ continueRun = false;}
+			String[] script = null;
+		 
+			if(continueRun) script = buildScript();
 			if(continueRun) {
 				//createClientSession();
+				    String[] envVars = getEnvironmentVariables();
 			    	ScriptConsole console = ScriptConsole.getInstance(serverfileName);
 	                console.run(script, envVars, new PasswordPrompt(IDESessionSettings.password), new StapErrorParser());
 	            

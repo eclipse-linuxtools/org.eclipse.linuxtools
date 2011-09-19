@@ -12,11 +12,11 @@ import org.eclipse.linuxtools.systemtap.ui.consolelog.preferences.ConsoleLogPref
 import java.io.*;
 
 @SuppressWarnings("deprecation")
-public class ScpClient{
+public class ScpClient {
 	
 	private Session session;
   
-	public ScpClient() {
+	public ScpClient() throws Exception {
 	//public static void main(String[] arg){
      
   
@@ -43,10 +43,11 @@ public class ScpClient{
       {
     	  e.printStackTrace(System.err);
     	  new ErrorMessage("Error in connection", "File Transfer failed.\n See stderr for more details").open();
+    	  throw e;
       }
     }
 
-    public void transfer(String fromFile, String toFile) {
+    public void transfer(String fromFile, String toFile) throws Exception {
       // exec 'scp -t rfile' remotely
     	FileInputStream fis=null;	
       String rfile=toFile;
@@ -109,7 +110,7 @@ public class ScpClient{
     }
     catch(Exception e){
       try{if(fis!=null)fis.close();}catch(Exception ee){}
-
+      throw e;
     }
   }
 
