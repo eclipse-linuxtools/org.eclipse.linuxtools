@@ -122,7 +122,7 @@
 		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.cdt\.autotools.*/*">
 		</activityPatternBinding>
-		
+ 		
 		<activityPatternBinding
 		    activityId="org.eclipse.linuxtools.profiling.general.ui.capabilities"
 		    pattern="org\.eclipse\.linuxtools\.changelog.*/*">
@@ -134,6 +134,7 @@
 		</activityPatternBinding>
 		
 		<defaultEnablement id="org.eclipse.linuxtools.profiling.ui.capabilities"/>
+		<defaultEnablement id="org.eclipse.linuxtools.profiling.general.ui.capabilities"/>
 		
    </extension>
 </plugin>
