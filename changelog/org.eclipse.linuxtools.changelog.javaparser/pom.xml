@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-changelog-parent</artifactId>
     <groupId>org.eclipse.linuxtools.changelog</groupId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.changelog.parsers.java</artifactId>

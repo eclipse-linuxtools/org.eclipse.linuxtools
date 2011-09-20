@@ -23,12 +23,12 @@
   <parent>
     <groupId>org.eclipse.linuxtools</groupId>
     <artifactId>linuxtools-parent</artifactId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.1</version>
   </parent>
 
   <groupId>org.eclipse.linuxtools.rpmstubby</groupId>
   <artifactId>linuxtools-rpmstubby-parent</artifactId>
-  <version>0.8.1-SNAPSHOT</version>
+  <version>0.8.1</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools RPM Stubby Parent</name>

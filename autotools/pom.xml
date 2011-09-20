@@ -23,12 +23,12 @@
   <parent>
     <groupId>org.eclipse.linuxtools</groupId>
     <artifactId>linuxtools-parent</artifactId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.1</version>
   </parent>
 
   <groupId>org.eclipse.linuxtools.cdt.autotools</groupId>
   <artifactId>linuxtools-cdt-autotools-parent</artifactId>
-  <version>0.8.1-SNAPSHOT</version>
+  <version>0.8.1</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Linux Tools Autotools Parent</name>

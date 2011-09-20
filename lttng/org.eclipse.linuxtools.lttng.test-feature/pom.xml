@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-lttng-parent</artifactId>
     <groupId>org.eclipse.linuxtools.lttng</groupId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.lttng.test-feature</artifactId>

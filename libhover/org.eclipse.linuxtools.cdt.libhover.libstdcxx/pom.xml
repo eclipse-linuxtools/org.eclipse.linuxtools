@@ -14,7 +14,7 @@
   <parent>
     <artifactId>linuxtools-libhover-parent</artifactId>
     <groupId>org.eclipse.linuxtools.cdt.libhover</groupId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.1</version>
   </parent>
 
   <artifactId>org.eclipse.linuxtools.cdt.libhover.libstdcxx</artifactId>
