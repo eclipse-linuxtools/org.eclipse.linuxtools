@@ -288,7 +288,6 @@ public class InfoAdapter extends AbstractDataAdapter{
 			Element event = (Element) eventList.item(i);
 			String name = event.getAttribute(EVENT_NAME); 
 			String desc = event.getAttribute(DESC);
-			String value = getValue(name);
 			String min_count = event.getAttribute(MIN_COUNT);
 			
 			// create the data for the new event
@@ -297,14 +296,11 @@ public class InfoAdapter extends AbstractDataAdapter{
 			nameTag.setTextContent(name);
 			Element descTag = newDoc.createElement(DESCRIPTION);
 			descTag.setTextContent(desc);
-			Element valueTag = newDoc.createElement(VALUE);
-			valueTag.setTextContent(value);
 			Element minimumTag = newDoc.createElement(MINIMUM);
 			minimumTag.setTextContent(min_count);
 			
 			newEventTag.appendChild(nameTag);
 			newEventTag.appendChild(descTag);
-			newEventTag.appendChild(valueTag);
 			newEventTag.appendChild(minimumTag);
 			
 			Element unitMaskTag = (Element) event.getElementsByTagName(UNIT_MASKS).item(0);
@@ -375,14 +371,6 @@ public class InfoAdapter extends AbstractDataAdapter{
 			eventListTag.setAttribute(COUNTER, String.valueOf(i));
 			newRoot.appendChild(eventListTag);
 		}
-	}
-
-	/**
-	 * @param name the name of the event
-	 * @return the int value converted to a string that is the id of the event
-	 */
-	private String getValue(String name) {
-		return String.valueOf(EventIdCache.getInstance().getEventIDWithName(name));
 	}
 
 	@Override

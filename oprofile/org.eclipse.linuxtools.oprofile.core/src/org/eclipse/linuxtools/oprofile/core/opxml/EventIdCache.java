@@ -23,9 +23,7 @@ import org.xml.sax.SAXException;
  * made. The first given call to check-event will take roughly O(n), and all
  * other calls whether they be new or recurring take O(1). Note that recurring
  * calls are handled by an entirely different cache. This particular class
- * simply parses the XML from ophelp -X and stores it. Since ophelp can only be
- * queried for the event name, and returns the event id, this cache saves time
- * for the reverse lookup.
+ * simply parses the XML from ophelp -X and stores it.
  */
 public class EventIdCache {
 	
@@ -36,10 +34,9 @@ public class EventIdCache {
 
 	private Document eventDoc; // the document to hold the xml from ophelp
 	private Element eventRoot; // the root corresponding to the xml from ophelp
-	// id - the id of the event
-	// Object [] - an array with 0th being the string name and 1st being DOM node
-	private HashMap<Integer, Object[]> idMap;
-	private HashMap<String, Integer> nameMap;
+	// name - the name of the event
+	// Element - the DOM node
+	private HashMap<String, Element> nameMap;
 	private static EventIdCache single;
 	
 	public static EventIdCache getInstance(){
@@ -51,51 +48,26 @@ public class EventIdCache {
 	
 	/**
 	 * @param id the id corresponding to an event
-	 * @return the name of the event corresponding to the id, or null if none
-	 * could be found.
-	 */
-	public String getEventNameWithID (int id){
-		if (single.idMap == null){
-			readXML();
-			buildCache();
-		}
-		return single.idMap.get(id) != null ? (String)single.idMap.get(id)[0] : null;
-	}
-	
-	public int getEventIDWithName(String name) {
-		if (single.idMap == null){
-			readXML();
-			buildCache();
-		}
-		return single.nameMap.get(name);
-	}
-	
-	/**
-	 * @param id the id corresponding to an event
 	 * @return the DOM Element corresponding to the event tag
 	 */
-	public Element getElementWithID (int id){
-		if (single.idMap == null){
+	public Element getElementWithName (String name) {
+		if (single.nameMap == null){
 			readXML();
 			buildCache();
 		}
-		return single.idMap.get(id) != null ? (Element)single.idMap.get(id)[1] : null;
+		return single.nameMap.get(name) != null ? (Element)single.nameMap.get(name) : null;
 	}
 
 	/**
 	 * Build the cache
 	 */
 	private void buildCache() {
-		single.idMap = new HashMap<Integer, Object []> ();
-		single.nameMap = new HashMap<String, Integer> ();
+		single.nameMap = new HashMap<String, Element> ();
 		NodeList eventList = single.eventRoot.getElementsByTagName(EVENT);
-		// FIXME: Temporary fix for Eclipse Bz 338270. Apparently
-		// there is still some dead code due to opxml removal.
-		for (int val = 0; val < eventList.getLength(); val++){
-			Element elem = (Element) eventList.item(val);
+		for (int i = 0; i < eventList.getLength(); i++){
+			Element elem = (Element) eventList.item(i);
 			String eventName = elem.getAttribute(EVENT_NAME);
-			single.idMap.put(val, new Object[] { eventName, elem });
-			single.nameMap.put(eventName, val);
+			single.nameMap.put(eventName, elem);
 		}
 	}
 

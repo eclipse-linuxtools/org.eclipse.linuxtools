@@ -16,7 +16,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.linuxtools.oprofile.core.opxml.EventIdCache;
 import org.eclipse.linuxtools.oprofile.core.opxml.checkevent.CheckEventAdapter;
 import org.eclipse.linuxtools.oprofile.core.opxml.info.InfoAdapter;
 import org.w3c.dom.Document;
@@ -32,7 +31,6 @@ import org.xml.sax.SAXException;
 public class TestCheckEventsPreParse extends TestCase {
 
 	private static final String REL_PATH_TO_CHECKEVENT_BAD_COUNTER = "resources/test_check-event_invalid_counter.xml";
-	private static final String REL_PATH_TO_CHECKEVENT_BAD_EVENT = "resources/test_check-event_invalid_event.xml";
 	private static final String REL_PATH_TO_CHECKEVENT_BAD_UMASK = "resources/test_check-event_invalid_umask.xml";
 	private static final String REL_PATH_TO_CHECKEVENT_OK = "resources/test_check-event_ok.xml";
 	
@@ -68,8 +66,6 @@ public class TestCheckEventsPreParse extends TestCase {
 				if (line.contains("name:")){
 					int start = line.indexOf("name:") + 5;
 					int end = line.indexOf(" ", start);
-					String eventName = line.substring(start, end);
-					event = String.valueOf(EventIdCache.getInstance().getEventIDWithName(eventName));
 					
 					// get the string that references the unit mask type
 					start = line.indexOf("um:") + 3;
@@ -101,11 +97,6 @@ public class TestCheckEventsPreParse extends TestCase {
 	public void testBadCounter () {
 		ctr = "999";
 		assertValidity(REL_PATH_TO_CHECKEVENT_BAD_COUNTER);
-	}
-	
-	public void testBadEvent (){
-		event = "999";
-		assertValidity(REL_PATH_TO_CHECKEVENT_BAD_EVENT);
 	}
 	
 	public void testBadUnitMask (){

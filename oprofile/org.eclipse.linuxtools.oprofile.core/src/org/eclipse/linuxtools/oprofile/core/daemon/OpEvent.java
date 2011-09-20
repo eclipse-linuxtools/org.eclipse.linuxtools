@@ -19,9 +19,6 @@ public class OpEvent {
 	// The Oprofile event name, i.e., "CPU_CLK_UNHALTED"
 	private String _name;
 	
-	// The Oprofile event number
-	private int _number;
-	
 	 //  A description of the event
 	private String _description;
 
@@ -68,15 +65,6 @@ public class OpEvent {
 	}
 
 	/**
-	 * Sets oprofile's event number for this event.
-	 * Only called from XML parsers.
-	 * @param num the number
-	 */
-	public void _setNumber(int num) {
-		_number = num;
-	}
-
-	/**
 	 * Returns the unit mask corresponding to this event.
 	 * @return the unit mask
 	 */
@@ -106,13 +94,5 @@ public class OpEvent {
 	 */
 	public int getMinCount() {
 		return _minCount;
-	}
-	
-	/**
-	 * Returns oprofile's event number for this event.
-	 * @return the event number
-	 */
-	public int getNumber() {
-		return _number;
 	}
 }

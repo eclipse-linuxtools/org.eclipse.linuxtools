@@ -84,27 +84,21 @@ public class TestInfoParse extends TestCase {
 				ctr1_e1 = ctr1_events[0], ctr1_e2 = ctr1_events[1], ctr1_e3 = ctr1_events[2];
 		//events must be ordered alphabetically
 		assertEquals(6000, ctr0_e1.getMinCount());
-		assertEquals(60, ctr0_e1.getNumber());
 		assertEquals("CPU_CLK_UNHALTED", ctr0_e1.getText()); //$NON-NLS-1$
 		assertEquals("Clock cycles when not halted", ctr0_e1.getTextDescription()); //$NON-NLS-1$
 		assertEquals(500, ctr0_e2.getMinCount());
-		assertEquals(8, ctr0_e2.getNumber());
 		assertEquals("DTLB_MISSES", ctr0_e2.getText()); //$NON-NLS-1$
 		assertEquals("DTLB miss events", ctr0_e2.getTextDescription()); //$NON-NLS-1$
 		assertEquals(6000, ctr0_e3.getMinCount());
-		assertEquals(192, ctr0_e3.getNumber());
 		assertEquals("INST_RETIRED_ANY_P", ctr0_e3.getText()); //$NON-NLS-1$
 		assertEquals("number of instructions retired", ctr0_e3.getTextDescription()); //$NON-NLS-1$
 		assertEquals(500, ctr1_e1.getMinCount());
-		assertEquals(58, ctr1_e1.getNumber());
 		assertEquals("EIST_TRANS_ALL", ctr1_e1.getText()); //$NON-NLS-1$
 		assertEquals("Intel(tm) Enhanced SpeedStep(r) Technology transitions", ctr1_e1.getTextDescription()); //$NON-NLS-1$
 		assertEquals(500, ctr1_e2.getMinCount());
-		assertEquals(38, ctr1_e2.getNumber());
 		assertEquals("L2_LINES_OUT", ctr1_e2.getText()); //$NON-NLS-1$
 		assertEquals("number of recovered lines from L2", ctr1_e2.getTextDescription()); //$NON-NLS-1$
 		assertEquals(500, ctr1_e3.getMinCount());
-		assertEquals(37, ctr1_e3.getNumber());
 		assertEquals("L2_M_LINES_IN", ctr1_e3.getText()); //$NON-NLS-1$
 		assertEquals("number of modified lines allocated in L2", ctr1_e3.getTextDescription()); //$NON-NLS-1$
 		

@@ -20,7 +20,6 @@ import org.eclipse.linuxtools.oprofile.core.opxml.XMLProcessor;
 public class CheckEventsProcessor extends XMLProcessor {
 	public static final int INVALID_UNKNOWN = 0;	//unexpected error
 	public static final int EVENT_OK = 1;			//valid
-	public static final int INVALID_EVENT = 2;		//invalid event number
 	public static final int INVALID_UMASK = 3;		//invalid unit mask value
 	public static final int INVALID_COUNTER = 4;	//invalid event for given counter number
 
@@ -28,7 +27,6 @@ public class CheckEventsProcessor extends XMLProcessor {
 	private static final String _CHECK_EVENTS_TAG ="check-events"; //$NON-NLS-1$
 
 	private static final String _EVENT_OK = "ok"; //$NON-NLS-1$
-	private static final String _INVALID_EVENT = "invalid-event"; //$NON-NLS-1$
 	private static final String _INVALID_UMASK = "invalid-um"; //$NON-NLS-1$
 	private static final String _INVALID_COUNTER = "invalid-counter"; //$NON-NLS-1$
 
@@ -48,8 +46,6 @@ public class CheckEventsProcessor extends XMLProcessor {
 		if (name.equals(_RESULT_TAG)) {
 			if (_characters.equals(_EVENT_OK)) {
 				_result = EVENT_OK;
-			} else if (_characters.equals(_INVALID_EVENT)) {
-					_result = INVALID_EVENT;
 			} else if (_characters.equals(_INVALID_UMASK)) {
 				_result = INVALID_UMASK;
 			} else if (_characters.equals(_INVALID_COUNTER)) {

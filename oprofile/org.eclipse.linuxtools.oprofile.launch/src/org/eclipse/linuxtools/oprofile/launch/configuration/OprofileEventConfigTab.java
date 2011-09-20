@@ -179,7 +179,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 							}
 	
 							// Next ask oprofile if it is valid
-							if (!checkEventSetupValidity(counters[i].getNumber(), counters[i].getEvent().getNumber(), counters[i].getEvent().getUnitMask().getMaskValue())) {
+							if (!checkEventSetupValidity(counters[i].getNumber(), counters[i].getEvent().getText(), counters[i].getEvent().getUnitMask().getMaskValue())) {
 								valid = false;
 								break;
 							}
@@ -277,12 +277,12 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * Returns whether the event's unit mask is valid
 	 * @param counter counter number
-	 * @param number event number (oprofile internal number)
+	 * @param name event name
 	 * @param maskValue unit mask value
 	 * @return true if valid config, false otherwise
 	 */
-	protected boolean checkEventSetupValidity(int counter, int number, int maskValue) {
-		return OprofileLaunchPlugin.getCache().checkEvent(counter, number, maskValue);
+	protected boolean checkEventSetupValidity(int counter, String name, int maskValue) {
+		return OprofileLaunchPlugin.getCache().checkEvent(counter, name, maskValue);
 	}
 
 	/**

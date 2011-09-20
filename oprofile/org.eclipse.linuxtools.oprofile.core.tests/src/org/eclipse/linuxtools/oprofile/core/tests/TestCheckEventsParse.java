@@ -25,10 +25,9 @@ import org.xml.sax.XMLReader;
 
 public class TestCheckEventsParse extends TestCase {
 	private static final String REL_PATH_TO_TEST_XML_OK = "resources/test_check-event_ok.xml"; //$NON-NLS-1$
-	private static final String REL_PATH_TO_TEST_XML_INVALID_EVENT = "resources/test_check-event_invalid_event.xml"; //$NON-NLS-1$
 	private static final String REL_PATH_TO_TEST_XML_INVALID_UMASK = "resources/test_check-event_invalid_umask.xml"; //$NON-NLS-1$
 	private static final String REL_PATH_TO_TEST_XML_INVALID_COUNTER = "resources/test_check-event_invalid_counter.xml"; //$NON-NLS-1$
-	private int[] test_ok, test_invalid_event, test_invalid_umask, test_invalid_counter;
+	private int[] test_ok, test_invalid_umask, test_invalid_counter;
 
 	public TestCheckEventsParse() {
 		super("test check-event parsers"); //$NON-NLS-1$
@@ -38,8 +37,6 @@ public class TestCheckEventsParse extends TestCase {
 	protected void setUp() throws Exception {
 		test_ok = new int[1];
 		setUpHelper(REL_PATH_TO_TEST_XML_OK, test_ok);
-		test_invalid_event = new int[1];
-		setUpHelper(REL_PATH_TO_TEST_XML_INVALID_EVENT, test_invalid_event);
 		test_invalid_umask = new int[1];
 		setUpHelper(REL_PATH_TO_TEST_XML_INVALID_UMASK, test_invalid_umask);
 		test_invalid_counter = new int[1];
@@ -66,7 +63,6 @@ public class TestCheckEventsParse extends TestCase {
 	
 	public void testParse() {
 		assertEquals(CheckEventsProcessor.EVENT_OK, test_ok[0]);
-		assertEquals(CheckEventsProcessor.INVALID_EVENT, test_invalid_event[0]);
 		assertEquals(CheckEventsProcessor.INVALID_UMASK, test_invalid_umask[0]);
 		assertEquals(CheckEventsProcessor.INVALID_COUNTER, test_invalid_counter[0]);
 	}

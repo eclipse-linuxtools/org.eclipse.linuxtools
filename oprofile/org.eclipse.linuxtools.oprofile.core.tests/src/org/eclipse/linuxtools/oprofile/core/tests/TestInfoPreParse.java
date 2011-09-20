@@ -115,7 +115,7 @@ public class TestInfoPreParse extends TestCase {
 	}
 	
 	public void testEventData (){
-		final String [] eventTags = new String [] {InfoAdapter.NAME, InfoAdapter.DESCRIPTION, InfoAdapter.VALUE, InfoAdapter.MINIMUM};
+		final String [] eventTags = new String [] {InfoAdapter.NAME, InfoAdapter.DESCRIPTION, InfoAdapter.MINIMUM};
 		final String [] unitMaskTags = new String [] {InfoAdapter.TYPE, InfoAdapter.DEFAULT};
 		final String [] maskTags = new String [] {InfoAdapter.VALUE};
 		

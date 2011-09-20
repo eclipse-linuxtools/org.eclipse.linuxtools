@@ -1,3 +1,23 @@
+2011-09-20  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/info/InfoAdapter.java:
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/info/EventListProcessor.java:
+		Do not create an element for the event id.
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/checkevent/CheckEventsProcessor.java:
+		Remove the invalid event error.
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/checkevent/CheckEventAdapter.java:
+		Remove any methods related to the event id and instead use the
+		event name to refer to an event.
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/EventIdCache.java:
+		Remove any methods related to the event id but instead add a
+		method to map the event name to it's corresponding info node.
+	* src/org/eclipse/linuxtools/oprofile/core/daemon/OpEvent.java:
+		Remove event id related methods/fields.
+	* src/org/eclipse/linuxtools/oprofile/core/linux/LinuxOpxmlProvider.java
+	* src/org/eclipse/linuxtools/oprofile/core/Oprofile.java
+	* src/org/eclipse/linuxtools/oprofile/core/IOpxmlProvider.java
+		(checkEvents): Change event argument from int to String.
+
 2011-09-02  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/opxml/modeldata/ModelDataAdapter.java:

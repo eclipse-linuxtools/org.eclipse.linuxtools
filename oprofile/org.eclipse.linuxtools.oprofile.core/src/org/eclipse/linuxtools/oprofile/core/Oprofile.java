@@ -160,11 +160,11 @@ public class Oprofile
 	/**
 	 * Checks the requested counter, event, and unit mask for vailidity.
 	 * @param ctr	the counter
-	 * @param event	the event number
+	 * @param event	the event name
 	 * @param um	the unit mask
 	 * @return whether the requested event is valid
 	 */
-	public static Boolean checkEvent(int ctr, int event, int um) {
+	public static Boolean checkEvent(int ctr, String event, int um) {
 		int[] validResult = new int[1];
 		try {
 			IRunnableWithProgress opxml = OprofileCorePlugin.getDefault().getOpxmlProvider().checkEvents(ctr, event, um, validResult);

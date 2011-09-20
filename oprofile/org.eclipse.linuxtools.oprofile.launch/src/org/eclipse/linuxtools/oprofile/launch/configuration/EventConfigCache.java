@@ -24,11 +24,12 @@ import org.eclipse.linuxtools.oprofile.core.Oprofile;
 public class EventConfigCache {
 	//a cache entry for an event check, used as the hashmap key 
 	class CheckEventEntry {
-		public Integer counterNum, eventNum, maskValue;
+		public Integer counterNum, maskValue;
+		public String eventName;
 		
-		public CheckEventEntry(int counterNum, int eventNum, int maskValue) {
+		public CheckEventEntry(int counterNum, String eventName, int maskValue) {
 			this.counterNum = new Integer(counterNum);
-			this.eventNum = new Integer(eventNum);
+			this.eventName = new String(eventName);
 			this.maskValue = new Integer(maskValue);
 		}
 		
@@ -36,7 +37,7 @@ public class EventConfigCache {
 		public boolean equals(Object obj) {
 			if (obj instanceof CheckEventEntry) {
 				CheckEventEntry other = (CheckEventEntry)obj;
-				return (counterNum.equals(other.counterNum) && eventNum.equals(other.eventNum) && maskValue.equals(other.maskValue));
+				return (counterNum.equals(other.counterNum) && eventName.equals(other.eventName) && maskValue.equals(other.maskValue));
 			} else {
 				return false;
 			}
@@ -46,7 +47,7 @@ public class EventConfigCache {
 		public int hashCode() {
 			int prime = 11, result = 3;
 			result = prime*result + counterNum.hashCode();
-			result = prime*result + eventNum.hashCode();
+			result = prime*result + eventName.hashCode();
 			result = prime*result + maskValue.hashCode();
 			return result;
 		}
@@ -66,11 +67,11 @@ public class EventConfigCache {
 	 * the cache for the result of a previous check of the same values,
 	 * or otherwise will spawn opxml to check properly.
 	 * @param counter counter number
-	 * @param event event number
+	 * @param event event name
 	 * @param mask unit mask value
 	 * @return true or false, depending if the event config is valid
 	 */
-	public boolean checkEvent(int counter, int event, int mask) {
+	public boolean checkEvent(int counter, String event, int mask) {
 		CheckEventEntry e = new CheckEventEntry(counter, event, mask);
 		Boolean result = null;
 		

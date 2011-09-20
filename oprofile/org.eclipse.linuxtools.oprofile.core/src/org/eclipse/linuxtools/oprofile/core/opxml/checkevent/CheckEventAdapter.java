@@ -27,7 +27,7 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	public static final String MASK = "mask"; //$NON-NLS-1$
 	
 	private Element event; // the element corresponding to the event id
-	private int eventId; // the id corresponding to the event
+	private String eventName; // the id corresponding to the event
 	private String unitMask; // the unit mask for the event
 	private String cpuCounter; // the cpu counter used for profiling
 	private Document resultDoc; // the document to hold the generated xml
@@ -36,9 +36,10 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	
 	public CheckEventAdapter(String ctr, String event, String umask) {
 		cpuCounter = ctr;
-		eventId = Integer.parseInt(event);
+		eventName = event;
 		unitMask = umask;
 		
+		this.event = EventIdCache.getInstance().getElementWithName(eventName);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		try {
@@ -57,11 +58,6 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 	private void setReturnCode() {
 		if (! isValidCounter()){
 			returnCode = "invalid-counter"; //$NON-NLS-1$
-			return;
-		}
-		
-		if (! isValidEvent()){
-			returnCode = "invalid-event"; //$NON-NLS-1$
 			return;
 		}
 		
@@ -99,7 +95,6 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 		}
 		
 		// type:bitmask unit mask support
-		String eventName = EventIdCache.getInstance().getEventNameWithID(eventId);
 		String unitMaskType = EventIdCache.getInstance().getUnitMaskType(eventName);
 		if (unitMaskType.equals("bitmask")){ //$NON-NLS-1$
 			int tmp_val = Integer.parseInt(unitMask);
@@ -114,20 +109,6 @@ public class CheckEventAdapter extends AbstractDataAdapter {
 			return true;
 		}
 		
-		return false;
-	}
-
-	/**
-	 * Check if the event identifier corresponds to some event name.
-	 * @return true if the event identifier corresponds to some event name
-	 * and false otherwise.
-	 */
-	private boolean isValidEvent() {
-		String name = EventIdCache.getInstance().getEventNameWithID(eventId);
-		event = EventIdCache.getInstance().getElementWithID(eventId);
-		if (name != null){
-			return true;
-		}
 		return false;
 	}
 

@@ -45,12 +45,12 @@ public interface IOpxmlProvider {
 	 * Returns an <code>IRunnableWithProgress</code> that checks the validity of the given
 	 * event, unit mask, and counter combination 
 	 * @param ctr the counter
-	 * @param event the integer event number
+	 * @param event the String event name
 	 * @param um the integer unit mask
 	 * @param eventValid a size one array to hold the return result (see <code>CheckEventsProcessor</code>)
 	 * @return <code>IRunnableWithProgress</code> that may be run by the caller
 	 */
-	public IRunnableWithProgress checkEvents(int ctr, int event, int um, int[] eventValid);
+	public IRunnableWithProgress checkEvents(int ctr, String event, int um, int[] eventValid);
 	
 	/**
 	 * Returns an /code>IRunnableWithProgress</code> that fetches the list of sessions

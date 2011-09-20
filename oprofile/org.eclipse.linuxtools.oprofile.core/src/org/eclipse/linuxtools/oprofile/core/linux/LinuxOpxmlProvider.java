@@ -75,14 +75,14 @@ public class LinuxOpxmlProvider implements IOpxmlProvider {
 		return runnable;
 	}
 		
-	public IRunnableWithProgress checkEvents(final int ctr, final int event, final int um, final int[] eventValid) {
+	public IRunnableWithProgress checkEvents(final int ctr, final String event, final int um, final int[] eventValid) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				OpxmlRunner runner = new OpxmlRunner();
 				String[] args = new String[] {
 					OpxmlConstants.CHECKEVENTS_TAG,
 					Integer.toString(ctr),
-					Integer.toString(event),
+									event,
 					Integer.toString(um)
 				};
 				

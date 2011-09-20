@@ -215,9 +215,6 @@ public class EventListProcessor extends XMLProcessor {
 		} else if (name.equals(_NAME_TAG)) {
 			// Set event's name
 			_currentEvent._setText(_characters);
-		} else if (name.equals(_VALUE_TAG)) {
-			// Set event's value
-			_currentEvent._setNumber(Integer.parseInt(_characters));
 		} else if (name.equals(_DESCRIPTION_TAG)) {
 			// Set event's description
 			_currentEvent._setTextDescription(_characters);
