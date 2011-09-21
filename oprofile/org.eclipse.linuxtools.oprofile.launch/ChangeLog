@@ -1,3 +1,12 @@
+2011-09-21  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/launch/configuration/OprofileSetupTab.java: 
+	* src/org/eclipse/linuxtools/oprofile/launch/configuration/OprofileEventConfigTab.java: 
+	* src/org/eclipse/linuxtools/oprofile/launch/configuration/OprofileCounter.java: 
+	* src/org/eclipse/linuxtools/oprofile/launch/configuration/EventConfigCache.java:
+		Use Integer.ValueOf rather than declaring a new Integer and don't
+		allocate a new String.
+
 2011-09-20  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/launch/configuration/OprofileEventConfigTab.java: 

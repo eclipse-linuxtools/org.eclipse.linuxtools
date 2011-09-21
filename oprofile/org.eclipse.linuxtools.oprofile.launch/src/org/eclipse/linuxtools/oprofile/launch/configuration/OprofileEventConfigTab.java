@@ -652,7 +652,7 @@ public class OprofileEventConfigTab extends AbstractLaunchConfigurationTab {
 		 */
 		private String getMinCountErrorMessage(int min) {
 			String msg = OprofileLaunchMessages.getString("tab.event.counterSettings.count.too-small"); //$NON-NLS-1$
-			Object[] args = new Object[] { new Integer(min) };
+			Object[] args = new Object[] { Integer.valueOf(min) };
 			return MessageFormat.format(msg, args);
 		}
 		

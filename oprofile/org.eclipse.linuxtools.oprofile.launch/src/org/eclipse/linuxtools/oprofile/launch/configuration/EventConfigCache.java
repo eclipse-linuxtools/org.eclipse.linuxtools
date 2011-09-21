@@ -28,9 +28,9 @@ public class EventConfigCache {
 		public String eventName;
 		
 		public CheckEventEntry(int counterNum, String eventName, int maskValue) {
-			this.counterNum = new Integer(counterNum);
-			this.eventName = new String(eventName);
-			this.maskValue = new Integer(maskValue);
+			this.counterNum = Integer.valueOf(counterNum);
+			this.eventName = eventName;
+			this.maskValue = Integer.valueOf(maskValue);
 		}
 		
 		@Override

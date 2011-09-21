@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.oprofile.ui.view;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.runtime.CoreException;
@@ -93,8 +94,8 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 					if (map.isEmpty()) {
 						ProfileUIUtils.openEditorAndSelect(fileName, 1);
 					} else {
-						for (String loc : map.keySet()) {
-							ProfileUIUtils.openEditorAndSelect(loc, map.get(loc)[0], map.get(loc)[1]);
+						for (Entry<String, int []> ent : map.entrySet()) {
+							ProfileUIUtils.openEditorAndSelect(ent.getKey(), ent.getValue()[0], ent.getValue()[1]);
 						}
 					}
 
@@ -103,8 +104,8 @@ public class OprofileViewDoubleClickListener implements IDoubleClickListener {
 					// try to find the file name that has this function
 					map = ProfileUIUtils.findFunctionsInProject(project, functionName, numOfArgs, null, true);
 
-					for (String loc : map.keySet()) {
-						ProfileUIUtils.openEditorAndSelect(loc, map.get(loc)[0], map.get(loc)[1]);
+					for (Entry<String, int []> ent : map.entrySet()) {
+						ProfileUIUtils.openEditorAndSelect(ent.getKey(), ent.getValue()[0], ent.getValue()[1]);
 					}
 				} else if (fileName.length() > 0) {
 					// can this ever happen ?

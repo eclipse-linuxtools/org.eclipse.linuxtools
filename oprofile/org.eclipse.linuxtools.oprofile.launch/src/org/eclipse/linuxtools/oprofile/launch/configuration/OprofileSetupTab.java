@@ -238,7 +238,7 @@ public class OprofileSetupTab extends AbstractLaunchConfigurationTab {
 			_options.setKernelImageFile(filename);
 		} else {
 			// no kernel image file
-			_options.setKernelImageFile(new String());
+			_options.setKernelImageFile(""); //$NON-NLS-1$
 		}
 
 		// Update dialog and error message

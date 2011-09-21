@@ -171,7 +171,7 @@ public class OprofileCounter {
 	 * @return the label to use in widgets referring to this counter
 	 */
 	public String getText() {
-		Object[] args = new Object[] {new Integer(_number)};
+		Object[] args = new Object[] {Integer.valueOf(_number)};
 		return MessageFormat.format(COUNTER_STRING, args);
 	}
 	

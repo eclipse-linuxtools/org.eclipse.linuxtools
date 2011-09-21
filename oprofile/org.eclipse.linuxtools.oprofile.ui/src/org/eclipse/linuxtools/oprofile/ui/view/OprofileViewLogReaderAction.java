@@ -79,7 +79,7 @@ class LogReader implements Runnable, IRunnableWithProgress {
 		//only reread it if it has been modified since the last run
 		if (modified != _lastModified) {
 			_lastModified = modified;
-			_contents = new String();
+			_contents = "";
 			
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(logFile));
@@ -87,6 +87,7 @@ class LogReader implements Runnable, IRunnableWithProgress {
 				while ((line = reader.readLine()) != null) {
 					_contents += line + "\n"; //$NON-NLS-1$
 				}
+				reader.close();
 			} catch (FileNotFoundException e) {
 				// The file doesn't exist or was erased. Try again next time.
 				_contents = OprofileUiMessages.getString("oprofiled.logreader.error.fileNotFound"); //$NON-NLS-1$
