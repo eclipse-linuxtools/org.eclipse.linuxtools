@@ -13,6 +13,7 @@ package org.eclipse.linuxtools.internal.rpmstubby;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -101,11 +102,11 @@ public class StubbyPomGenerator {
 	}
 
 	private void generateRequires(StringBuilder buffer) {
-		for (String dependency: model.getDependencies()) {
-			buffer.append("BuildRequires: "+dependency+"\n");
+		for (Map.Entry<String,String> entry : model.getDependencies().entrySet()) {
+			buffer.append("BuildRequires: mvn("+entry.getKey()+":"+entry.getValue()+")\n");
 		}
-		for (String dependency: model.getDependencies()) {
-			buffer.append("Requires: "+dependency+"\n");
+		for (Map.Entry<String,String> entry : model.getDependencies().entrySet()) {
+			buffer.append("Requires: mvn("+entry.getKey()+":"+entry.getValue()+")\n");
 		}
 	}
 
@@ -130,11 +131,8 @@ public class StubbyPomGenerator {
 		buffer.append("# jars\n");
 		buffer.append("install -d -m 0755 %{buildroot}%{_javadir}\n");
 		buffer
-				.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}\n\n");
+				.append("install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}.jar\n\n");
 
-		buffer.append("%add_to_maven_depmap " + model.getGroupId() + " "
-				+ model.getArtifactId() + " %{version} JPP "
-				+ model.getArtifactId() + "\n\n");
 
 		buffer.append("# poms\n");
 		buffer
@@ -143,6 +141,8 @@ public class StubbyPomGenerator {
 		buffer
 				.append("    %{buildroot}%{_mavenpomdir}/JPP.%{name}.pom\n\n");
 
+		buffer.append("%add_maven_depmap JPP.%{name}.pom %{name}.jar\n\n");
+		
 		buffer.append("# javadoc\n");
 		buffer
 				.append("install -d -m 0755 %{buildroot}%{_javadocdir}/%{name}\n");

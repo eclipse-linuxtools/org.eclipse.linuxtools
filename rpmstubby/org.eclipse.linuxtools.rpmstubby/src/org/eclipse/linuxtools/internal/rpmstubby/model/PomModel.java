@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.rpmstubby.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -52,29 +52,6 @@ public class PomModel {
 		// TODO make it return names suitable for Fedora's package naming
 		// guidelines.
 		return xpathEval("/project/artifactId");
-	}
-
-	/**
-	 * Returns the artifact id xpath:/project/artifactId .
-	 *
-	 * @return The artifact id.
-	 */
-	public String getArtifactId() {
-		return xpathEval("/project/artifactId");
-	}
-
-	/**
-	 * Returns the group id (xpath:/project/groupId) or the groupId of the
-	 * parent (xpath:/project/parent/groupId) if groupId is not present.
-	 *
-	 * @return The group id.
-	 */
-	public String getGroupId() {
-		String groupId = xpathEval("/project/groupId");
-		if (groupId.equals("")) {
-			groupId = xpathEval("/project/parent/groupId");
-		}
-		return groupId;
 	}
 
 	/**
@@ -130,7 +107,6 @@ public class PomModel {
 	 * @return The project description.
 	 */
 	public String getDescription() {
-		getDependencies();
 		return xpathEval("/project/description");
 	}
 
@@ -138,12 +114,17 @@ public class PomModel {
 	 * Returns the dependencies.
 	 * @return All the dependencies.
 	 */
-	public List<String> getDependencies() {
-		List<String> dependencies = new ArrayList<String>();
-		NodeList nodes = xpathEvalNodes("/project/dependencies/dependency/artifactId");
+	public Map<String, String> getDependencies() {
+		Map<String, String> dependencies = new HashMap<String, String>();
+		NodeList nodes = xpathEvalNodes("/project/dependencies/dependency");
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);
-			dependencies.add(node.getTextContent());
+			try {
+				dependencies.put(xpath.evaluate("groupId", node), xpath.evaluate("artifactId", node));
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return dependencies;
 	}
