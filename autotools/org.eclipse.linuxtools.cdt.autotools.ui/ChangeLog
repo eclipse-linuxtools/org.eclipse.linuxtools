@@ -1,3 +1,10 @@
+2011-09-23  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsCategoryPropertyOptionPage.java (createFieldEditors): Add
+	flag value support.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/AutotoolsConfigurePrefStore.java (getBoolean): Modify for
+	flag value support.
+
 2011-09-19  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/ui/properties/ToolListContentProvider.java (getElements): Add check for
