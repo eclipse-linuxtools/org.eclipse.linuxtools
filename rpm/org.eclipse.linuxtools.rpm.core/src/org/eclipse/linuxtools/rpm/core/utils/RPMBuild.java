@@ -66,19 +66,12 @@ public class RPMBuild {
 	/**
 	 * Prepares the sources for a given spec file.
 	 * 
-	 * @param specFile
-	 *            the spec file
-	 * @throws CoreException
-	 *             if the operation fails
-	 */
-	/**
-	 * Prepares the sources for a given spec file.
-	 * 
 	 * @param specFile the spec file
 	 * @param outStream The stream to write the output to.
 	 * @throws CoreException If the operation fails.
 	 */
-	public void buildPrep(IResource specFile, OutputStream outStream) throws CoreException {
+	public void buildPrep(IResource specFile, OutputStream outStream)
+			throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bp"); //$NON-NLS-1$
@@ -97,18 +90,20 @@ public class RPMBuild {
 	 * 
 	 * @param specFile
 	 *            the spec file
-	 * @param outStream The stream to write the output to.
+	 * @param outStream
+	 *            The stream to write the output to.
+	 * @return The return code of the build job.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public void buildBinary(IResource specFile, OutputStream outStream) throws CoreException {
+	public int buildBinary(IResource specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bb"); //$NON-NLS-1$
 		command.add(specFile.getLocation().toString());
 		try {
-			Utils.runCommand(outStream, command
-					.toArray(new String[command.size()]));
+			return Utils.runCommand(outStream,
+					command.toArray(new String[command.size()]));
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
 					e.getMessage(), e));
@@ -118,20 +113,20 @@ public class RPMBuild {
 	/**
 	 * Builds both a binary and source RPM for a given spec file.
 	 * 
-	 * @param specFile
-	 *            the spec file
+	 * @param specFile the spec file
 	 * @param outStream The stream to write the output to.
+	 * @return The return code of the build job.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public void buildAll(IResource specFile, OutputStream outStream) throws CoreException {
+	public int buildAll(IResource specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-ba"); //$NON-NLS-1$
 		command.add(specFile.getLocation().toString());
 		try {
-			Utils.runCommand(outStream, command
-					.toArray(new String[command.size()]));
+			return Utils.runCommand(outStream, command
+									.toArray(new String[command.size()]));
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
 					e.getMessage(), e));
@@ -141,20 +136,20 @@ public class RPMBuild {
 	/**
 	 * Builds a source RPM for a given spec file.
 	 * 
-	 * @param specFile
-	 *            the spec file
+	 * @param specFile the spec file
 	 * @param outStream The stream to write the output to.
+	 * @return The return code of the build job.
 	 * @throws CoreException
 	 *             if the operation fails
 	 */
-	public void buildSource(IResource specFile, OutputStream outStream) throws CoreException {
+	public int buildSource(IResource specFile, OutputStream outStream) throws CoreException {
 		List<String> command = new ArrayList<String>();
 		command.addAll(Arrays.asList(macroDefines));
 		command.add("-bs"); //$NON-NLS-1$
 		command.add(specFile.getLocation().toString());
 		try {
-			Utils.runCommand(outStream, command
-					.toArray(new String[command.size()]));
+			return Utils.runCommand(outStream, command
+									.toArray(new String[command.size()]));
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, RPMCorePlugin.ID,
 					e.getMessage(), e));

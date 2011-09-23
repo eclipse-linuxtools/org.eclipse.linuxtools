@@ -39,13 +39,13 @@ public class Utils {
 	 * @throws IOException
 	 *             If IOException occurs.
 	 */
-	public static BufferedInputStream runCommandToInputStream(String... command)
+	public static BufferedProcessInputStream runCommandToInputStream(String... command)
 			throws IOException {
-		BufferedInputStream in = null;
+		BufferedProcessInputStream in = null;
 		ProcessBuilder pBuilder = new ProcessBuilder(command);
 		pBuilder = pBuilder.redirectErrorStream(true);
 		Process child = pBuilder.start();
-		in = new BufferedInputStream(child.getInputStream());
+		in = new BufferedProcessInputStream(child);
 		return in;
 	}
 
@@ -57,9 +57,10 @@ public class Utils {
 	 * 
 	 * @param command
 	 *            The command with all parameters.
+	 * @return int The return value of the command.
 	 * @throws IOException If an IOException occurs.
 	 */
-	public static void runCommand(final OutputStream outStream,
+	public static int runCommand(final OutputStream outStream,
 			String... command) throws IOException {
 		ProcessBuilder pBuilder = new ProcessBuilder(command);
 		pBuilder = pBuilder.redirectErrorStream(true);
@@ -79,7 +80,6 @@ public class Utils {
 					outStream.close();
 					in.close();
 				} catch (IOException e) {
-					e.printStackTrace();
 					return Status.CANCEL_STATUS;
 				}
 				return Status.OK_STATUS;
@@ -92,9 +92,10 @@ public class Utils {
 			child.waitFor();
 			readinJob.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			child.destroy();
+			readinJob.cancel();
 		}
+		return child.exitValue();
 	}
 
 	/**

@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.linuxtools.rpm.core.RPMProject;
 import org.eclipse.linuxtools.rpm.ui.IRPMUIConstants.BuildType;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
@@ -25,7 +26,7 @@ import org.eclipse.ui.console.IOConsoleOutputStream;
 
 /**
  * Job for handling rpm exports.
- *
+ * 
  */
 public class RPMExportOperation extends Job {
 	private IProgressMonitor monitor;
@@ -34,6 +35,7 @@ public class RPMExportOperation extends Job {
 
 	/**
 	 * Creates the job for exporting rpms.
+	 * 
 	 * @param rpmProject The project to use as base for the export operation.
 	 * @param exportType The export type.
 	 */
@@ -57,43 +59,19 @@ public class RPMExportOperation extends Job {
 		monitor.beginTask(Messages.getString("RPMExportOperation.Starting"), //$NON-NLS-1$
 				totalWork);
 		monitor.worked(1);
-		IOConsole myConsole = findConsole(); 
-		IOConsoleOutputStream out = myConsole.newOutputStream();
-		myConsole.clearConsole();
-		myConsole.activate();
-		switch (exportType) {
-		case ALL:
-			try {
-				monitor.setTaskName(Messages
-						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
-				rpmProject.buildAll(out);
-			} catch (CoreException e) {
-				return new Status(IStatus.ERROR, RPMUIPlugin.ID, e.getMessage(), e);
+		BuildThread bt = new BuildThread(exportType, rpmProject);
+		bt.start();
+		while (bt.getState() != Thread.State.TERMINATED) {
+			if (monitor.isCanceled()) {
+				bt.interrupt();
+				return Status.CANCEL_STATUS;
 			}
-			break;
-
-		case BINARY:
-			monitor.setTaskName(Messages
-					.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
-			try {
-				rpmProject.buildBinaryRPM(out);
-			} catch (CoreException e) {
-				return new Status(IStatus.ERROR, RPMUIPlugin.ID, e.getMessage(), e);
-			}
-			break;
-
-		case SOURCE:
-			monitor.setTaskName(Messages
-					.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
-			try {
-				rpmProject.buildSourceRPM(out);
-			} catch (CoreException e) {
-				return new Status(IStatus.ERROR, RPMUIPlugin.ID, e.getMessage(), e);
-			}
-			break;
 		}
 		monitor.worked(1);
 		monitor.done();
+		if (bt.getResult() != null){
+			return bt.getResult();
+		}
 		return Status.OK_STATUS;
 	}
 
@@ -110,4 +88,68 @@ public class RPMExportOperation extends Job {
 		return myConsole;
 	}
 
+	private class BuildThread extends Thread {
+		BuildType exportType;
+		RPMProject rpmProject;
+		Status result = null;
+
+		public BuildThread(BuildType exportType, RPMProject rpmProject) {
+			this.exportType = exportType;
+			this.rpmProject = rpmProject;
+		}
+
+		@Override
+		public void run() {
+			IOConsole myConsole = findConsole();
+			IOConsoleOutputStream out = myConsole.newOutputStream();
+			myConsole.clearConsole();
+			myConsole.activate();
+			int returnCode = 0;
+			switch (exportType) {
+			case ALL:
+				try {
+					monitor.setTaskName(Messages
+							.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
+					returnCode = rpmProject.buildAll(out);
+				} catch (CoreException e) {
+					result = new Status(IStatus.ERROR, RPMUIPlugin.ID,
+							e.getMessage(), e);
+				}
+				break;
+
+			case BINARY:
+				monitor.setTaskName(Messages
+						.getString("RPMExportOperation.Executing_RPM_Export")); //$NON-NLS-1$
+				try {
+					returnCode = rpmProject.buildBinaryRPM(out);
+				} catch (CoreException e) {
+					result = new Status(IStatus.ERROR, RPMUIPlugin.ID,
+							e.getMessage(), e);
+				}
+				break;
+
+			case SOURCE:
+				monitor.setTaskName(Messages
+						.getString("RPMExportOperation.Executing_SRPM_Export")); //$NON-NLS-1$
+				try {
+					returnCode = rpmProject.buildSourceRPM(out);
+				} catch (CoreException e) {
+					result = new Status(IStatus.ERROR, RPMUIPlugin.ID,
+							e.getMessage(), e);
+				}
+				break;
+			}
+			if (returnCode != 0){
+				result = new Status(
+						IStatus.WARNING,
+						RPMUIPlugin.ID,
+						NLS.bind(
+								Messages.getString("RPMExportOperation.BadExitCode"), returnCode), null); //$NON-NLS-1$
+			}
+		}
+		
+		public Status getResult(){
+			return result;
+		}
+	}
 }

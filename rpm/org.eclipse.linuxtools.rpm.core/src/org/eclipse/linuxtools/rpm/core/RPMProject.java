@@ -102,9 +102,9 @@ public class RPMProject {
 
 	}
 
-	public void buildAll(OutputStream outStream) throws CoreException {
+	public int buildAll(OutputStream outStream) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildAll(getSpecFile(), outStream);
+		int result = rpmbuild.buildAll(getSpecFile(), outStream);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
@@ -112,26 +112,29 @@ public class RPMProject {
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
+		return result;
 	}
 
-	public void buildBinaryRPM(OutputStream out) throws CoreException {
+	public int buildBinaryRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildBinary(getSpecFile(), out);
+		int result = rpmbuild.buildBinary(getSpecFile(), out);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getRpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
+		return result;
 	}
 
-	public void buildSourceRPM(OutputStream out) throws CoreException {
+	public int buildSourceRPM(OutputStream out) throws CoreException {
 		RPMBuild rpmbuild = new RPMBuild(getConfiguration());
-		rpmbuild.buildSource(getSpecFile(), out);
+		int result = rpmbuild.buildSource(getSpecFile(), out);
 
 		getConfiguration().getBuildFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
 		getConfiguration().getSrpmsFolder().refreshLocal(
 				IResource.DEPTH_INFINITE, null);
+		return result;
 	}
 
 	public void buildPrep(OutputStream out) throws CoreException {

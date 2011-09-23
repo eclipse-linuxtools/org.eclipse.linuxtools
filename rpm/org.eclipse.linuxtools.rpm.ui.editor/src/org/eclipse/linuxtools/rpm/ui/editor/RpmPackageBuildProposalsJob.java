@@ -15,7 +15,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 
@@ -26,8 +25,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.linuxtools.rpm.core.utils.BufferedProcessInputStream;
 import org.eclipse.linuxtools.rpm.core.utils.Utils;
 import org.eclipse.linuxtools.rpm.ui.editor.preferences.PreferenceConstants;
+import org.eclipse.osgi.util.NLS;
 
 public final class RpmPackageBuildProposalsJob extends Job {
 
@@ -139,7 +140,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 			monitor.beginTask(Messages.RpmPackageBuildProposalsJob_1,
 					IProgressMonitor.UNKNOWN);
 			if (Utils.fileExist("/bin/sh")) { //$NON-NLS-1$
-				InputStream in = Utils.runCommandToInputStream(
+				BufferedProcessInputStream in = Utils.runCommandToInputStream(
 						"/bin/sh", "-c", rpmListCmd); //$NON-NLS-1$ //$NON-NLS-2$
 				// backup pkg list file
 				File rpmListFile = new File(rpmListFilepath);
@@ -157,6 +158,7 @@ public final class RpmPackageBuildProposalsJob extends Job {
 					monitor.subTask(line);
 					out.write(line + "\n"); //$NON-NLS-1$
 					if (monitor.isCanceled()) {
+						in.destroyProcess();
 						in.close();
 						out.close();
 						// restore backup
@@ -171,6 +173,14 @@ public final class RpmPackageBuildProposalsJob extends Job {
 				in.close();
 				out.close();
 				bkupFile.delete();
+				if (in.getExitValue() != 0){
+					SpecfileLog
+							.log(IStatus.WARNING,
+									in.getExitValue(),
+									NLS.bind(
+											Messages.RpmPackageBuildProposalsJob_NonZeroReturn,
+											in.getExitValue()), null);
+				}
 			}
 		} catch (IOException e) {
 			SpecfileLog.logError(e);

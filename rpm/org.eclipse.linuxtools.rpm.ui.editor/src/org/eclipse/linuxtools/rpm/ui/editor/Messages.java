@@ -19,6 +19,7 @@ public final class Messages extends NLS {
 	public static String RpmPackageBuildProposalsJob_1;
 	public static String RpmPackageBuildProposalsJob_2;
 	public static String RpmPackageBuildProposalsJob_3;
+	public static String RpmPackageBuildProposalsJob_NonZeroReturn;
 	public static String RpmPackageProposalsList_0;
 	public static String RpmPackageProposalsList_1;
 	public static String RpmPackageProposalsList_2;
