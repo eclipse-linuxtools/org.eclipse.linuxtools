@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc.
+ * Copyright (c) 2009, 2011 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,10 @@ public abstract class AbstractConfigurationOption implements IConfigureOption {
 		return ConfigureMessages.getConfigureTip(msgName);
 	}
 
+	public String getMsgName() {
+		return msgName;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -56,6 +60,14 @@ public abstract class AbstractConfigurationOption implements IConfigureOption {
 	}
 
 	public boolean isCategory() {
+		return false;
+	}
+	
+	public boolean isFlag() {
+		return false;
+	}
+	
+	public boolean isFlagValue() {
 		return false;
 	}
 

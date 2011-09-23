@@ -63,6 +63,14 @@ public class ConfigureOptionCategory implements IConfigureOption {
 	public boolean isMultiArg() {
 		return false;
 	}
+	
+	public boolean isFlag() {
+		return false;
+	}
+	
+	public boolean isFlagValue() {
+		return false;
+	}
 
 	public int getType() {
 		return CATEGORY;

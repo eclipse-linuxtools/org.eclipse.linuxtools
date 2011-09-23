@@ -20,6 +20,8 @@ public interface IConfigureOption {
 	public final static int INTERNAL = 3;
 	public final static int MULTIARG = 4;
 	public final static int TOOL = 5;
+	public final static int FLAG = 6;
+	public final static int FLAGVALUE = 7;
 	public String getName();
 	public String getParameter();
 	public ArrayList<String> getParameters();
@@ -31,5 +33,7 @@ public interface IConfigureOption {
 	public String getValue();
 	public boolean isCategory();
 	public boolean isMultiArg();
+	public boolean isFlag();
+	public boolean isFlagValue();
 	public int getType();
 }

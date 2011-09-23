@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Red Hat Inc.
+ * Copyright (c) 2009, 2010, 2011 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -216,6 +217,23 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 								Node value = optionAttrs.getNamedItem("value"); // $NON-NLS-1$
 								if (id != null && value != null)
 									cfg.setOption(id.getNodeValue(), value.getNodeValue());
+							} else if (child.getNodeName().equals("flag")) { //$NON-NLS-1$
+								// read in flag values
+								NamedNodeMap optionAttrs = child.getAttributes();
+								Node id = optionAttrs.getNamedItem("id"); // $NON-NLS-1$
+								IConfigureOption opt = cfg.getOption(id.getNodeValue());
+								if (opt instanceof FlagConfigureOption) {
+									NodeList l2 = child.getChildNodes();
+									for (int z = 0; z < l2.getLength(); ++z) {
+										Node flagChild = l2.item(z);
+										if (flagChild.getNodeName().equals("flagvalue")) { //$NON-NLS-1$
+											NamedNodeMap optionAttrs2 = flagChild.getAttributes();
+											Node id2 = optionAttrs2.getNamedItem("id"); // $NON-NLS-1$
+											Node value = optionAttrs2.getNamedItem("value"); // $NON-NLS-1$
+											cfg.setOption(id2.getNodeValue(), value.getNodeValue());		
+										}
+									}
+								}
 							}
 						}
 						cfg.setDirty(false);
@@ -369,7 +387,18 @@ public class AutotoolsConfigurationManager implements IResourceChangeListener {
 					for (int j = 0; j < optionList.length; ++j) {
 						Option option = optionList[j];
 						IConfigureOption opt = cfg.getOption(option.getName());
-						if (!opt.isCategory())
+						if (opt.isFlag()) {
+							p.println("<flag id=\"" + option.getName() + "\">"); //$NON-NLS-1$ //$NON-NLS-2$
+							FlagConfigureOption fco = (FlagConfigureOption)opt;
+							ArrayList<String> children = fco.getChildren();
+							for (int k = 0; k < children.size(); ++k) {
+								String childName = children.get(k);
+								IConfigureOption childopt = cfg.getOption(childName);
+								p.println("<flagvalue id=\"" + childopt.getName() + "\" value=\"" + xmlEscape(childopt.getValue()) + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
+							}
+							p.println("</flag>"); //$NON-NLS-1$
+						}
+						else if (!opt.isCategory() && !opt.isFlagValue())
 							p.println("<option id=\"" + option.getName() + "\" value=\"" + xmlEscape(opt.getValue()) + "\"/>"); //$NON-NLS-1$ //$NON-NLS-2$ // $NON-NLS-3$
 					}
 					p.println("</configuration>"); //$NON-NLS-1$

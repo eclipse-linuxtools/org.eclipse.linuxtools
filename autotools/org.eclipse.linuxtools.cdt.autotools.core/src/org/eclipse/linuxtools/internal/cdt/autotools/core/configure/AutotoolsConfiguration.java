@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc.
+ * Copyright (c) 2009, 2011 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -101,6 +101,10 @@ public class AutotoolsConfiguration implements IAConfiguration {
 		new Option("program-transform-name", "program_transform_name", IConfigureOption.STRING), // $NON-NLS-1$
 		new Option("features", IConfigureOption.CATEGORY), // $NON-NLS-1$
 		new Option("enable-maintainer-mode", "enable_maintainer_mode", IConfigureOption.BIN), // $NON-NLS-1$
+		new Option("CFLAGS", IConfigureOption.FLAG), // $NON-NLS-1$
+		new Option("cflags-debug", "cflags_debug", IConfigureOption.FLAGVALUE), // $NON-NLS-1$ // $NON-NLS-2$
+		new Option("cflags-gprof", "cflags_gprof", IConfigureOption.FLAGVALUE), // $NON-NLS-1$ // $NON-NLS-2$ 
+		new Option("cflags-gcov", "cflags_gcov", IConfigureOption.FLAGVALUE), // $NON-NLS-1$ // $NON-NLS-2$ 
 		new Option("user", IConfigureOption.MULTIARG), // $NON-NLS-1$
 		new Option("autogen", "autogen", "autogen.sh", IConfigureOption.TOOL), // $NON-NLS-1$
 		new Option("options", IConfigureOption.CATEGORY), // $NON-NLS-1$
@@ -130,6 +134,7 @@ public class AutotoolsConfiguration implements IAConfiguration {
 	private void initConfigOptions() {
 		// Put configure options in hash map.  Ignore categories.
 		ArrayList<Option> tools = new ArrayList<Option>();
+		FlagConfigureOption lastFlag = null;
 		for (int i = 0; i < configOpts.length; ++i) {
 			Option opt = configOpts[i];
 			String defaultValue = opt.getDefaultValue();
@@ -168,6 +173,23 @@ public class AutotoolsConfiguration implements IAConfiguration {
 				break;
 			case IConfigureOption.CATEGORY:
 				configOptions.put(opt.name, new ConfigureOptionCategory(opt.name));
+				break;
+			case IConfigureOption.FLAG:
+				FlagConfigureOption f = new FlagConfigureOption(opt.name, opt.transformedName, this);
+				if (defaultValue != null)
+					f.setValue(defaultValue);
+				lastFlag = f;
+				configOptions.put(opt.name, f);
+				break;
+			case IConfigureOption.FLAGVALUE:
+				FlagValueConfigureOption fv 
+					= new FlagValueConfigureOption(opt.name, opt.transformedName, 
+							this, ConfigureMessages.getParameter(opt.transformedName));
+				if (defaultValue != null)
+					fv.setValue(defaultValue);
+				lastFlag.addChild(opt.name);
+				configOptions.put(opt.name, fv);
+				break;
 			}
 		}
 		toolList = tools.toArray(new Option[tools.size()]);
