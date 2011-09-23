@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc.
+ * Copyright (c) 2009, 2011 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -96,11 +96,18 @@ public class AutotoolsCategoryPropertyOptionPage extends
 				fieldEditors.add(f);
 				break;
 			case IConfigureOption.BIN:
+			case IConfigureOption.FLAGVALUE:
 				parent = getFieldEditorParent();
 				BooleanFieldEditor b = new BooleanFieldEditor(option.getName(), option.getDescription(), parent);
 				b.getDescriptionControl(parent).setToolTipText(option.getToolTip());
 				addField(b);
 				fieldEditors.add(b);
+				break;
+			case IConfigureOption.FLAG:
+				parent = getFieldEditorParent();
+				FieldEditor l = createLabelEditor(parent, option.getName());
+				addField(l);
+				fieldEditors.add(l);
 				break;
 			}
 		}

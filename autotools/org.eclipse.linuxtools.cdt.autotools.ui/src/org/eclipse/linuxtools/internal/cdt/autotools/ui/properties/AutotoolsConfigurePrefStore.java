@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat Inc.
+ * Copyright (c) 2009, 2011 Red Hat Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -84,7 +84,8 @@ public class AutotoolsConfigurePrefStore implements IPreferenceStore {
 	 */
 	public boolean getBoolean(String name) {
 		IConfigureOption option = cfg.getOption(name);
-		if (option != null && option.getType() == IConfigureOption.BIN) {
+		if (option != null && (option.getType() == IConfigureOption.BIN ||
+				option.getType() == IConfigureOption.FLAGVALUE)) {
 			return Boolean.parseBoolean(option.getValue());
 		}
 		// otherwise punt
