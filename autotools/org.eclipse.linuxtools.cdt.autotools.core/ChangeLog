@@ -1,3 +1,20 @@
+2011-10-03  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AbstractConfigurationOption.java (isFlag): New method.
+	(isFlagValue): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfigurationManager.java (getSavedConfigs): Add
+	support for flags and flag values.
+	(saveConfigs): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfiguration.java (initConfigOptions): Ditto.
+	(configOpts): New CFLAGS and value options.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/ConfigureMessages.java (getParameter): New method.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/ConfigureOptionCategory.java (isFlagValue): New method.
+	(isFlag): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/IConfigureOption.java (isFlag): New method.
+	(isFlagValue): Ditto.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/ConfigureMessages.properties: Add new messages
+	for CFLAGS settings.
+
 2011-09-27  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (runScript): Add
