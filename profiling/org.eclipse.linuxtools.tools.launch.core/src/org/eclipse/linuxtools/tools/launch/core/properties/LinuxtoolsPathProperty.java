@@ -18,6 +18,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 public class LinuxtoolsPathProperty {
 	public static final String LINUXTOOLS_PATH_NAME = Activator.PLUGIN_ID + ".LinuxtoolsPath"; //$NON-NLS-1$
+	public static final String LINUXTOOLS_PATH_SYSTEM_NAME = Activator.PLUGIN_ID + ".LinuxtoolsSystemEnvPath"; //$NON-NLS-1$
 	public static final String LINUXTOOLS_PATH_DEFAULT = ""; //$NON-NLS-1$
 	public static String getLinuxtoolsPath(IProject project) {
 		if (project == null)
@@ -26,6 +27,10 @@ public class LinuxtoolsPathProperty {
 		ScopedPreferenceStore store = new ScopedPreferenceStore(
 				new ProjectScope(project),
 				Activator.PLUGIN_ID);
+		boolean systemPathSelected = store.getBoolean(LINUXTOOLS_PATH_SYSTEM_NAME);
+		if (systemPathSelected)
+			return LINUXTOOLS_PATH_DEFAULT;
+
 		String path = store.getString(LINUXTOOLS_PATH_NAME);
 		if (path == null || path.equals(""))
 			return LINUXTOOLS_PATH_DEFAULT;
