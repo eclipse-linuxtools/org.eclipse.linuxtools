@@ -14,7 +14,7 @@ public class LaunchThreadProfiler extends SystemTapLaunchShortcut{
 			binaryPath = binaryPath.replaceAll("\\(", "\\\\\\(").replaceAll("\\)", "\\\\\\)").replaceAll(" ", "\\ ");
 			arguments = binaryPath;
 			
-			finishLaunch(name, mode);
+			finishLaunch(name, mode, config.getWorkingCopy());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
