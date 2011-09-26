@@ -197,9 +197,13 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				// name of the symbol
 				newSymbol.setAttribute(NAME, symbolData.get(NAME));
 				// decode the address with addr2line
-				String file = addrToFileMap.get(symbolData.get(STARTING_ADDR));
-				file = (file != null) ? file : "?"; //$NON-NLS-1$
-				newSymbol.setAttribute(FILE, file);
+				String symbolFile = addrToFileMap.get(symbolData.get(STARTING_ADDR));
+				symbolFile = (symbolFile != null) ? symbolFile : "??:0"; //$NON-NLS-1$
+				int index = symbolFile.indexOf(':');
+				String symbolLine = symbolFile.substring(index + 1);
+				symbolFile = symbolFile.substring(0, index);
+				newSymbol.setAttribute(FILE, symbolFile);
+				newSymbol.setAttribute(LINE, symbolLine);
 
 				// get the symboldetails entry corresponding to the id of this symbol
 				NodeList detailDataList = oldDetailTableListMap.get(idref);
@@ -211,30 +215,38 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				for (int l = 0; l < detailDataList.getLength(); l++) {
 
 					Element detailData = (Element) detailDataList.item(l);
-					String line = addrToLineMap.get(detailData.getAttribute(VMA_OFFSET));
-					line = (line != null) ? line : "0"; //$NON-NLS-1$
+					String sampleFile = addrToLineMap.get(detailData.getAttribute(VMA_OFFSET));
+					sampleFile = (sampleFile != null) ? sampleFile : "??:0"; //$NON-NLS-1$
+
+					index = sampleFile.indexOf(':');
+					String sampleLine = sampleFile.substring(index + 1);
+					sampleFile = sampleFile.substring(0, index);
 
 					Element detailDataCount = (Element) detailData.getElementsByTagName(COUNT).item(0);
 					String count = detailDataCount.getTextContent().trim();
 
 					// if a sample at this line already exists then increase count for that line.
-					if (tmp.containsKey(line)) {
-						Element elem = (Element) tmp.get(line).getElementsByTagName(COUNT).item(0);
+					if (tmp.containsKey(sampleLine)) {
+						Element elem = (Element) tmp.get(sampleLine).getElementsByTagName(COUNT).item(0);
 						int val = Integer.parseInt(elem.getTextContent().trim()) + Integer.parseInt(count);
 						elem.setTextContent(String.valueOf(val));
 					} else {
 						Element sampleTag = newDoc.createElement(SAMPLE);
 
+						Element fileTag = newDoc.createElement(FILE);
+						fileTag.setTextContent(sampleFile);
+
 						Element lineTag = newDoc.createElement(LINE);
-						lineTag.setTextContent(line);
+						lineTag.setTextContent(sampleLine);
 
 						Element sampleCountTag = newDoc.createElement(COUNT);
 						sampleCountTag.setTextContent(count);
 
+						sampleTag.appendChild(fileTag);
 						sampleTag.appendChild(lineTag);
 						sampleTag.appendChild(sampleCountTag);
 
-						tmp.put(line, sampleTag);
+						tmp.put(sampleLine, sampleTag);
 					}
 				}
 
@@ -331,8 +343,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 			int count = 0;
 			String line;
 			while ((line = bi.readLine()) != null){
-				int index = line.indexOf(':');
-				ret.put(starting_addrs[count], line.substring(0, index));
+				ret.put(starting_addrs[count], line);
 				count++;
 			}
 			bi.close();
@@ -371,8 +382,7 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 			int count = 0;
 			String line;
 			while ((line = bi.readLine()) != null){
-				int index = line.indexOf(':');
-				ret.put(vma_offsets.get(count), line.substring(index + 1));
+				ret.put(vma_offsets.get(count), line);
 				count++;
 			}
 			bi.close();

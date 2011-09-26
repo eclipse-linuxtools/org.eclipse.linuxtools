@@ -18,6 +18,7 @@ package org.eclipse.linuxtools.oprofile.core.model;
 public class OpModelSample {
 	private int _count;
 	private int _line;
+	private String _file;
 
 	public OpModelSample() {
 		_count = 0;
@@ -32,12 +33,19 @@ public class OpModelSample {
 		this._line = _line;
 	}
 
+	public void _setFilePath(String _file) {
+		this._file = _file;
+	}
+
 	public int getCount() {
 		return _count;
 	}
 
 	public int getLine() {
 		return _line;
+	}
+	public String getFilePath() {
+		return _file;
 	}
 
 	@Override

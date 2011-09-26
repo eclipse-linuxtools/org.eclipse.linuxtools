@@ -30,6 +30,7 @@ public class SymbolsProcessor extends XMLProcessor {
 	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 	private static final String ATTR_FILE = "file"; //$NON-NLS-1$
 	private static final String ATTR_COUNT = "count";	 //$NON-NLS-1$
+	private static final String ATTR_LINE = "line";	 //$NON-NLS-1$
 	
 	//the current symbol being constructed
 	private OpModelSymbol _symbol;
@@ -52,7 +53,8 @@ public class SymbolsProcessor extends XMLProcessor {
 		if (name.equals(SYMBOL_TAG)) {
 			_symbol._setName(valid_string(attrs.getValue(ATTR_NAME)));
 			_symbol._setCount(Integer.parseInt(attrs.getValue(ATTR_COUNT)));
-			_symbol._setFile(valid_string(attrs.getValue(ATTR_FILE)));
+			_symbol._setFilePath(valid_string(attrs.getValue(ATTR_FILE)));
+			_symbol.setLine(Integer.parseInt(attrs.getValue(ATTR_LINE)));
 		} else if (name.equals(SAMPLE_TAG)) {
 			OprofileSAXHandler.getInstance(callData).push(_samplesProcessor);
 		}

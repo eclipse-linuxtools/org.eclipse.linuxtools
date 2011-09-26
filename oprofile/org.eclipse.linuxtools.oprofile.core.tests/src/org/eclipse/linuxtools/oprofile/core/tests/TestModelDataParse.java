@@ -81,10 +81,10 @@ public class TestModelDataParse extends TestCase {
 		assertEquals(2, symbols.length);
 		OpModelSymbol sym1 = symbols[0], sym2 = symbols[1];
 		assertEquals("TestFunction1(int)", sym1.getName()); //$NON-NLS-1$
-		assertEquals("/test/path/for/src/image.cpp", sym1.getFile()); //$NON-NLS-1$
+		assertEquals("/test/path/for/src/image.cpp", sym1.getFilePath()); //$NON-NLS-1$
 		assertEquals(180000, sym1.getCount());
 		assertEquals("TestFunction2(int, int)", sym2.getName()); //$NON-NLS-1$
-		assertEquals("/test/path/for/src/image2.cpp", sym2.getFile()); //$NON-NLS-1$
+		assertEquals("/test/path/for/src/image2.cpp", sym2.getFilePath()); //$NON-NLS-1$
 		assertEquals(20000, sym2.getCount());
 		
 		//test samples
@@ -130,12 +130,12 @@ public class TestModelDataParse extends TestCase {
 		assertEquals("/lib64/ld-2.9.so", dep2.getName()); //$NON-NLS-1$
 		assertEquals(300, dep2.getCount());
 		assertEquals("do_lookup_x", dep2_sym1.getName()); //$NON-NLS-1$
-		assertEquals("dl-lookup.c", dep2_sym1.getFile()); //$NON-NLS-1$
+		assertEquals("dl-lookup.c", dep2_sym1.getFilePath()); //$NON-NLS-1$
 		assertEquals(299, dep2_sym1.getCount());
 		assertEquals(299, dep2_sym1_spl1.getCount());
 		assertEquals(0, dep2_sym1_spl1.getLine());
 		assertEquals("_dl_unload_cache", dep2_sym2.getName()); //$NON-NLS-1$
-		assertEquals("rawmemchr.c", dep2_sym2.getFile()); //$NON-NLS-1$
+		assertEquals("rawmemchr.c", dep2_sym2.getFilePath()); //$NON-NLS-1$
 		assertEquals(1, dep2_sym2.getCount());
 		assertEquals(1, dep2_sym2_spl1.getCount());
 		assertEquals(0, dep2_sym2_spl1.getLine());
@@ -155,12 +155,12 @@ public class TestModelDataParse extends TestCase {
 		assertEquals("/lib64/libc-2.9.so", dep4.getName()); //$NON-NLS-1$
 		assertEquals(140, dep4.getCount());
 		assertEquals("_IO_new_file_seekoff", dep4_sym1.getName()); //$NON-NLS-1$
-		assertEquals("", dep4_sym1.getFile()); //$NON-NLS-1$
+		assertEquals("", dep4_sym1.getFilePath()); //$NON-NLS-1$
 		assertEquals(100, dep4_sym1.getCount());
 		assertEquals(100, dep4_sym1_spl1.getCount());
 		assertEquals(0, dep4_sym1_spl1.getLine());
 		assertEquals("bool std::operator!=<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)", dep4_sym2.getName()); //$NON-NLS-1$
-		assertEquals("", dep4_sym2.getFile()); //$NON-NLS-1$
+		assertEquals("", dep4_sym2.getFilePath()); //$NON-NLS-1$
 		assertEquals(40, dep4_sym2.getCount());
 		assertEquals(40, dep4_sym2_spl1.getCount());
 		assertEquals(0, dep4_sym2_spl1.getLine());

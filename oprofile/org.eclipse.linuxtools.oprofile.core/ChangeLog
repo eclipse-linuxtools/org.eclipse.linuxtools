@@ -1,3 +1,14 @@
+2011-09-26  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/modeldata/ModelDataAdapter.java:
+		Provide file paths for each sample and the line number for each symbol.
+	* src/org/eclipse/linuxtools/oprofile/core/model/OpModelSample.java:
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/modeldata/SamplesProcessor.java:
+		Save the file path corresponding to each sample.
+	* src/org/eclipse/linuxtools/oprofile/core/model/OpModelSymbol.java:
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/modeldata/SymbolsProcessor.java:
+		Save the line number for each symbol.
+
 2011-09-21  Roland Grunberg  <rgrunber@redhat.com>
 
 	* build.properties: Remove non-existant schema folder.

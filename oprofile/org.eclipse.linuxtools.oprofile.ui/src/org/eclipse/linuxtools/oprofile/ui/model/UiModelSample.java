@@ -38,6 +38,10 @@ public class UiModelSample implements IUiModelElement {
 		return _sample.getLine();
 	}
 	
+	public String getFile(){
+		return _sample.getFilePath();
+	}
+
 	public double getCountPercentage() {
 		return (double)_sample.getCount() / (double)_totalCount;
 	}

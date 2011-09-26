@@ -14,7 +14,7 @@
 	</image>
 	<image name="/lib64/libdl-2.9.so" count="2">
 		<symbols>
-			<symbol name="__do_global_dtors_aux" file="crtstuff.c" count="2">
+			<symbol name="__do_global_dtors_aux" file="crtstuff.c" count="2" line="0">
 				<sample>
 					<count>2</count>
 					<line>0</line>
@@ -24,141 +24,163 @@
 	</image>
 	<image name="/lib64/ld-2.9.so" count="36">
 		<symbols>
-			<symbol name="_dl_start" file="rtld.c" count="1">
+			<symbol name="_dl_start" file="rtld.c" count="1" line="0">
 				<sample>
 					<count>1</count>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="dl_main" file="rtld.c" count="3">
+			<symbol name="dl_main" file="rtld.c" count="3" line="0">
 				<sample>
 					<count>3</count>
+					<file>rtld.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="init_tls" file="rtld.c" count="1">
+			<symbol name="init_tls" file="rtld.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rtld.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="open_verify" file="dl-load.c" count="2">
+			<symbol name="open_verify" file="dl-load.c" count="2" line="0">
 				<sample>
 					<count>2</count>
+					<file>dl-load.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_setup_hash" file="rawmemchr.c" count="1">
+			<symbol name="_dl_setup_hash" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_init_internal" file="rawmemchr.c" count="1">
+			<symbol name="_dl_init_internal" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_important_hwcaps" file="rawmemchr.c" count="2">
+			<symbol name="_dl_important_hwcaps" file="rawmemchr.c" count="2" line="0">
 				<sample>
 					<count>2</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="munmap" file="rawmemchr.c" count="1">
+			<symbol name="munmap" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_load_cache_lookup" file="rawmemchr.c" count="1">
+			<symbol name="_dl_load_cache_lookup" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_fini" file="rawmemchr.c" count="2">
+			<symbol name="_dl_fini" file="rawmemchr.c" count="2" line="0">
 				<sample>
 					<count>2</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="__GI_memset" file="rawmemchr.c" count="1">
+			<symbol name="__GI_memset" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_init_paths" file="rawmemchr.c" count="3">
+			<symbol name="_dl_init_paths" file="rawmemchr.c" count="3" line="0">
 				<sample>
 					<count>3</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="__brk" file="rawmemchr.c" count="1">
+			<symbol name="__brk" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_name_match_p" file="rawmemchr.c" count="1">
+			<symbol name="_dl_name_match_p" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="index" file="rawmemchr.c" count="2">
+			<symbol name="index" file="rawmemchr.c" count="2" line="0">
 				<sample>
 					<count>2</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_resolve_conflicts" file="rawmemchr.c" count="1">
+			<symbol name="_dl_resolve_conflicts" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_cache_libcmp" file="rawmemchr.c" count="2">
+			<symbol name="_dl_cache_libcmp" file="rawmemchr.c" count="2" line="0">
 				<sample>
 					<count>2</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="strcmp" file="rawmemchr.c" count="2">
+			<symbol name="strcmp" file="rawmemchr.c" count="2" line="0">
 				<sample>
 					<count>2</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_start_user" file="rawmemchr.c" count="1">
+			<symbol name="_dl_start_user" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="strlen" file="rawmemchr.c" count="1">
+			<symbol name="strlen" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_sort_fini" file="rawmemchr.c" count="1">
+			<symbol name="_dl_sort_fini" file="rawmemchr.c" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="_dl_map_object_deps" file="rawmemchr.c" count="4">
+			<symbol name="_dl_map_object_deps" file="rawmemchr.c" count="4" line="0">
 				<sample>
 					<count>4</count>
+					<file>rawmemchr.c</file>
 					<line>0</line>
 				</sample>
 			</symbol>
-			<symbol name="__libc_memalign" file="" count="1">
+			<symbol name="__libc_memalign" file="" count="1" line="0">
 				<sample>
 					<count>1</count>
+					<file></file>
 					<line>0</line>
 				</sample>
 			</symbol>
@@ -170,7 +192,7 @@
 	</image>
 	<image name="/lib64/libm-2.9.so" count="2">
 		<symbols>
-			<symbol name="__dubsin" file="interp.c" count="2">
+			<symbol name="__dubsin" file="interp.c" count="2" line="0">
 				<sample>
 					<count>2</count>
 					<line>0</line>

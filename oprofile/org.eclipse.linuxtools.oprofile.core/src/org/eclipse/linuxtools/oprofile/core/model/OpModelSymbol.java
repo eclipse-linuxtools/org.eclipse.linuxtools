@@ -20,6 +20,7 @@ package org.eclipse.linuxtools.oprofile.core.model;
 public class OpModelSymbol {
 	private String _name;
 	private String _file;
+	private int _line;
 	private int _count;
 	private OpModelSample[] _samples;
 	private String _printTabs = ""; 	//for nice output //$NON-NLS-1$
@@ -35,8 +36,12 @@ public class OpModelSymbol {
 		this._name = _name;
 	}
 
-	public void _setFile(String _file) {
+	public void _setFilePath(String _file) {
 		this._file = _file;
+	}
+
+	public void setLine(int _line){
+		this._line = _line;
 	}
 
 	public void _setCount(int _count) {
@@ -51,8 +56,12 @@ public class OpModelSymbol {
 		return _name;
 	}
 
-	public String getFile() {
+	public String getFilePath() {
 		return _file;
+	}
+
+	public int getLine(){
+		return _line;
 	}
 
 	public int getCount() {

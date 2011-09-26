@@ -59,18 +59,22 @@ public class UiModelSymbol implements IUiModelElement {
 		String percentage = OprofileUiPlugin.getPercentageString(countPercentage);
 		
 		//a hack to get `basename` type functionality
-		String fileName = (new File(_symbol.getFile())).getName();
+		String fileName = (new File(_symbol.getFilePath())).getName();
 //		String fileName = _symbol.getFile();
 
 		return percentage + " " + OprofileUiMessages.getString("uimodel.percentage.in") + _symbol.getName() + (fileName.length() == 0 ? "" : " [" + fileName + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 	
 	public String getFileName() {
-		return _symbol.getFile();
+		return _symbol.getFilePath();
 	}
 	
 	public String getFunctionName(){
 		return _symbol.getName();
+	}
+
+	public int getLineNumber(){
+		return _symbol.getLine();
 	}
 
 	/** IUiModelElement functions **/

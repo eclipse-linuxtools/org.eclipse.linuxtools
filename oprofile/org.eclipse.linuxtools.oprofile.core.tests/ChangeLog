@@ -1,3 +1,12 @@
+2011-09-26  Roland Grunberg  <rgrunber@redhat.com>
+
+	* resources/test_model-data.xml:
+	* resources/test_model-data_multiple_image.xml:
+		Update xml to reflect new format.
+		Added line attribute for a symbol, and file tag for a sample.
+	* src/org/eclipse/linuxtools/oprofile/core/tests/TestModelDataParse.java:
+		Method name change getFile => getFilePath
+
 2011-09-20  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/tests/TestInfoPreParse.java:

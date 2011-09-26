@@ -28,6 +28,7 @@ public class SamplesProcessor extends XMLProcessor {
 	private static final String COUNT_TAG = "count"; //$NON-NLS-1$
 	private static final String LINE_TAG = "line";  //$NON-NLS-1$
 	private static final String SYMBOL_TAG = "symbol";  //$NON-NLS-1$
+	private static final String FILE_TAG = "file";  //$NON-NLS-1$
 	
 	//the current sample being constructed
 	private OpModelSample _sample;
@@ -47,6 +48,8 @@ public class SamplesProcessor extends XMLProcessor {
 			_sample._setCount(Integer.parseInt(_characters));
 		} else if (name.equals(LINE_TAG)) {
 			_sample._setLine(Integer.parseInt(_characters));
+		} else if (name.equals(FILE_TAG)) {
+			_sample._setFilePath(_characters);
 		} else if (name.equals(SAMPLE_TAG)) {
 			_sampleList.add(_sample);
 			_sample = new OpModelSample();

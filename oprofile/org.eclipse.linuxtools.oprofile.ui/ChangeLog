@@ -1,3 +1,14 @@
+2011-09-26  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/ui/model/UiModelSample.java:
+		Add support for getting the file path of a sample.
+	* src/org/eclipse/linuxtools/oprofile/ui/model/UiModelSymbol.java:
+		Add support for getting the line number of a symbol.
+	* src/org/eclipse/linuxtools/oprofile/ui/view/OprofileViewDoubleClickListener.java:
+		Switch to using the file path, and line number from opreport rather
+		than relying on the CDT Indexer. Also use the file path and line
+		number defined for each sample within opreport.
+
 2011-09-21  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/ui/view/OprofileViewLogReaderAction.java:

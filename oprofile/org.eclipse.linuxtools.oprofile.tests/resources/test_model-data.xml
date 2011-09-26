@@ -2,35 +2,42 @@
 <model-data>
 	<image name="/test/path/for/image" count="205000">
 		<symbols>
-			<symbol name="TestFunction1(int)" file="/test/path/for/src/image.cpp" count="180000">
+			<symbol name="TestFunction1(int)" file="/test/path/for/src/image.cpp" line="1" count="180000">
 				<sample>
 					<count>130000</count>
+					<file>/test/path/for/src/image.cpp</file>
 					<line>42</line>
 				</sample>
 				<sample>
 					<count>40000</count>
+					<file>/test/path/for/src/image.cpp</file>
 					<line>36</line>
 				</sample>
 				<sample>
 					<count>9999</count>
+					<file>/test/path/for/src/image.cpp</file>
 					<line>31</line>
 				</sample>
 				<sample>
 					<count>1</count>
+					<file>/test/path/for/src/image.cpp</file>
 					<line>39</line>
 				</sample>
 			</symbol>
-			<symbol name="TestFunction2(int, int)" file="/test/path/for/src/image2.cpp" count="20000">
+			<symbol name="TestFunction2(int, int)" file="/test/path/for/src/image2.cpp" line="50" count="20000">
 				<sample>
 					<count>19998</count>
+					<file>/test/path/for/src/image2.cpp</file>
 					<line>94</line>
 				</sample>
 				<sample>
 					<count>1</count>
+					<file>/test/path/for/src/image2.cpp</file>
 					<line>12</line>
 				</sample>
 				<sample>
 					<count>1</count>
+					<file>/test/path/for/src/image2.cpp</file>
 					<line>55</line>
 				</sample>
 			</symbol>
@@ -40,15 +47,17 @@
 			</image>
 			<image name="/lib64/ld-2.9.so" count="300">
 				<symbols>
-					<symbol name="do_lookup_x" file="dl-lookup.c" count="299">
+					<symbol name="do_lookup_x" file="dl-lookup.c" line="0" count="299">
 						<sample>
 							<count>299</count>
+							<file>dl-lookup.c</file>
 							<line>0</line>
 						</sample>
 					</symbol>
-					<symbol name="_dl_unload_cache" file="rawmemchr.c" count="1">
+					<symbol name="_dl_unload_cache" file="rawmemchr.c" line="0" count="1">
 						<sample>
 							<count>1</count>
+							<file>rawmemchr.c</file>
 							<line>0</line>
 						</sample>
 					</symbol>
@@ -58,15 +67,17 @@
 			</image>
 			<image name="/lib64/libc-2.9.so" count="140">
 				<symbols>
-					<symbol name="_IO_new_file_seekoff" file="" count="100">
+					<symbol name="_IO_new_file_seekoff" file="" line="0" count="100">
 						<sample>
 							<count>100</count>
+							<file></file>
 							<line>0</line>
 						</sample>
 					</symbol>
-					<symbol name="bcopy" file="" count="40">
+					<symbol name="bcopy" file="" line="0" count="40">
 						<sample>
 							<count>40</count>
+							<file></file>
 							<line>0</line>
 						</sample>
 					</symbol>
