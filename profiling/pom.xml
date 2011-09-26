@@ -58,6 +58,7 @@
   </build>
 
   <modules>
+    <module>org.eclipse.linuxtools.tools.launch.core</module>
     <module>org.eclipse.linuxtools.binutils</module>
     <module>org.eclipse.linuxtools.dataviewers</module>
     <module>org.eclipse.linuxtools.dataviewers.charts</module>
