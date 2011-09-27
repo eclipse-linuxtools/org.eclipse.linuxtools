@@ -1,9 +1,7 @@
 package org.eclipse.linuxtools.oprofile.core.opxml.modeldata;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -31,7 +29,6 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	public final static String IDREF = "idref"; //$NON-NLS-1$
 	public final static String NAME = "name"; //$NON-NLS-1$
 	public final static String COUNT = "count"; //$NON-NLS-1$
-	public final static String VMA_OFFSET = "vmaoffset"; //$NON-NLS-1$
 	public final static String SAMPLE = "sample"; //$NON-NLS-1$
 	public final static String LINE = "line"; //$NON-NLS-1$
 	
@@ -39,7 +36,6 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	public final static String SYMBOL_DETAILS = "symboldetails"; //$NON-NLS-1$
 	public final static String SYMBOL = "symbol"; //$NON-NLS-1$
 	
-	public final static String STARTING_ADDR = "startingaddr"; //$NON-NLS-1$
 	public final static String FILE = "file"; //$NON-NLS-1$
 	
 	public final static String SETUP = "setup"; //$NON-NLS-1$
@@ -63,8 +59,6 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 	public final static String DETAIL_TABLE = "detailtable"; //$NON-NLS-1$
 	
 	public final static String DETAIL_DATA = "detaildata"; //$NON-NLS-1$
-	
-	public final static String ADDR2LINE = "addr2line -e"; //$NON-NLS-1$
 	
 	private boolean isParseable;
 	private Document newDoc; // the document we intend to build
@@ -133,10 +127,6 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 		HashMap<String, HashMap<String, String>> oldSymbolDataListMap = parseDataList (oldSymbolDataList);
 		HashMap<String, NodeList> oldDetailTableListMap = parseDetailTable (oldDetailTableList);
 		
-		// parse the data into HashMaps using just one call to addr2line. (many calls are very slow)
-		HashMap <String, String> addrToFileMap = hashStartingAddresses(binName, oldSymbolDataList);
-		HashMap <String, String> addrToLineMap = hashVMAOffset(binName, oldDetailTableList);
-		
 		// An ArrayList to hold the binary and other modules
 		ArrayList<Element> oldImageList = new ArrayList<Element>();
 		// The first element is the original binary!
@@ -194,16 +184,9 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 
 				// get the symboltable entry corresponding to the id of this symbol
 				HashMap<String, String> symbolData = oldSymbolDataListMap.get(idref);
-				// name of the symbol
 				newSymbol.setAttribute(NAME, symbolData.get(NAME));
-				// decode the address with addr2line
-				String symbolFile = addrToFileMap.get(symbolData.get(STARTING_ADDR));
-				symbolFile = (symbolFile != null) ? symbolFile : "??:0"; //$NON-NLS-1$
-				int index = symbolFile.indexOf(':');
-				String symbolLine = symbolFile.substring(index + 1);
-				symbolFile = symbolFile.substring(0, index);
-				newSymbol.setAttribute(FILE, symbolFile);
-				newSymbol.setAttribute(LINE, symbolLine);
+				newSymbol.setAttribute(FILE, symbolData.get(FILE));
+				newSymbol.setAttribute(LINE, symbolData.get(LINE));
 
 				// get the symboldetails entry corresponding to the id of this symbol
 				NodeList detailDataList = oldDetailTableListMap.get(idref);
@@ -215,13 +198,21 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 				for (int l = 0; l < detailDataList.getLength(); l++) {
 
 					Element detailData = (Element) detailDataList.item(l);
-					String sampleFile = addrToLineMap.get(detailData.getAttribute(VMA_OFFSET));
-					sampleFile = (sampleFile != null) ? sampleFile : "??:0"; //$NON-NLS-1$
+					String sampleFile = detailData.getAttribute(FILE);
+					String sampleLine = detailData.getAttribute(LINE);
 
-					index = sampleFile.indexOf(':');
-					String sampleLine = sampleFile.substring(index + 1);
-					sampleFile = sampleFile.substring(0, index);
-
+					// The sample has a line number but no file
+					// This means that the file is the same as the symbol (parent)
+					if (sampleFile.equals("") && !sampleLine.equals("")){ //$NON-NLS-1$ $NON-NLS-2$
+						sampleFile = symbolData.get(FILE);
+					}else{
+						if (sampleFile.equals("")){ //$NON-NLS-1$
+							sampleFile = "??"; //$NON-NLS-1$
+						}
+						if (sampleLine.equals("")){ //$NON-NLS-1$
+							sampleLine = "0"; //$NON-NLS-1$
+						}
+					}
 					Element detailDataCount = (Element) detailData.getElementsByTagName(COUNT).item(0);
 					String count = detailDataCount.getTextContent().trim();
 
@@ -311,85 +302,19 @@ public class ModelDataAdapter extends AbstractDataAdapter {
 			Element symbolData = (Element) oldSymbolDataList.item(j);
 			String id = symbolData.getAttribute(ID);
 			String name = symbolData.getAttribute(NAME);
-			String starting_addr = symbolData.getAttribute(STARTING_ADDR);
+			String file = symbolData.getAttribute(FILE);
+			if (file.equals("")){ //$NON-NLS-1$
+				file = "??"; //$NON-NLS-1$
+			}
+			String line = symbolData.getAttribute(LINE);
+			if (line.equals("")){ //$NON-NLS-1$
+				line = "0"; //$NON-NLS-1$
+			}
 			tmp.put(NAME, name);
-			tmp.put(STARTING_ADDR, starting_addr);
+			tmp.put(FILE, file);
+			tmp.put(LINE, line);
 			ret.put(id, tmp);
 		}
-		return ret;
-	}
-	
-	/**
-	 * @param binName the binary to query against
-	 * @param oldSymbolDataList the list of 'symboldata' tags within symboltable
-	 * @return a HashMap where the keys are the adresses and values are the
-	 * corresponding file locations
-	 */
-	private HashMap<String, String> hashStartingAddresses (String binName, NodeList oldSymbolDataList){
-		StringBuffer arg = new StringBuffer();
-		String [] starting_addrs = new String [oldSymbolDataList.getLength()];
-		HashMap<String, String> ret = new HashMap<String, String> ();
-		for (int j = 0; j < oldSymbolDataList.getLength(); j++){
-			Element symbolData = (Element) oldSymbolDataList.item(j);
-			String starting_addr = symbolData.getAttribute(STARTING_ADDR);
-			starting_addrs[j] = starting_addr;
-			arg.append(" " + starting_addr);
-		}
-		
-		try {
-			Process p = Runtime.getRuntime().exec(ADDR2LINE + " " + binName + arg);
-			BufferedReader bi = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			
-			int count = 0;
-			String line;
-			while ((line = bi.readLine()) != null){
-				ret.put(starting_addrs[count], line);
-				count++;
-			}
-			bi.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
-	}
-	
-	/**
-	 * 
-	 * @param binName the binary to query against
-	 * @param oldDetailTableList the list of 'symboldetails' tags within detailtable
-	 * @return a HashMap where the keys are the vma offsets and values are the
-	 * corresponding line numbers
-	 */
-	private HashMap<String, String> hashVMAOffset (String binName, NodeList oldDetailTableList){
-		StringBuffer arg = new StringBuffer();
-		ArrayList<String> vma_offsets = new ArrayList<String>();
-		HashMap<String, String> ret = new HashMap<String, String> ();
-		for (int i = 0; i < oldDetailTableList.getLength(); i++){
-			Element symbolDetails = (Element) oldDetailTableList.item(i);
-			NodeList detailDataList = symbolDetails.getElementsByTagName(DETAIL_DATA);
-			for (int j = 0; j < detailDataList.getLength(); j++){
-				String vma_offset = ((Element)detailDataList.item(j)).getAttribute(VMA_OFFSET);
-				vma_offsets.add(vma_offset);
-				arg.append(" " + vma_offset);
-			}
-		}
-		
-		try {
-			Process p = Runtime.getRuntime().exec(ADDR2LINE + " " + binName + arg);
-			BufferedReader bi = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			
-			int count = 0;
-			String line;
-			while ((line = bi.readLine()) != null){
-				ret.put(vma_offsets.get(count), line);
-				count++;
-			}
-			bi.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		return ret;
 	}
 

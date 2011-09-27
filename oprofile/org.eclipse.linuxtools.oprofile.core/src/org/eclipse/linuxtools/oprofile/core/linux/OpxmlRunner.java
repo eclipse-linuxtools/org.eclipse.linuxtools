@@ -184,8 +184,7 @@ public class OpxmlRunner {
 		try {
 			ArrayList<String> cmd = new ArrayList<String>();
 			cmd.add("opreport"); //$NON-NLS-1$
-			cmd.add("-X"); //$NON-NLS-1$
-			cmd.add("--details"); //$NON-NLS-1$
+			cmd.add("-Xdg"); //$NON-NLS-1$
 			if (!InfoAdapter.hasTimerSupport()){
 				cmd.add("event:" + args[1]); //$NON-NLS-1$
 			}
