@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.callgraph.tests"
+      id="org.eclipse.linuxtools.callgraph.tests-feature"
       label="%featureName"
       version="0.9.0.qualifier"
       provider-name="%featureProvider">
