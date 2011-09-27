@@ -1,3 +1,8 @@
+2011-09-27  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/AutotoolsNewMakeGenerator.java (runScript): Add
+	check for additionalEnvs not being null to prevent NPE.
+
 2011-09-15  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Resolves bug#356278

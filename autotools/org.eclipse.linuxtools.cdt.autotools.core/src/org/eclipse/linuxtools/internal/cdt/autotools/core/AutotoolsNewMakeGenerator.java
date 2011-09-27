@@ -1077,7 +1077,7 @@ public class AutotoolsNewMakeGenerator extends MarkerGenerator {
 
 			// Display command-line environment variables that have been stripped by us
 			// because launch showCommand won't do this.
-			if (additionalEnvs.size() > 0) {
+			if (additionalEnvs != null && additionalEnvs.size() > 0) {
 				buf.append(AutotoolsPlugin
 							.getResourceString("MakeGenerator.commandline.envvars"));
 				buf.append(System.getProperty("line.separator", "\n")); //$NON-NLS-1$	//$NON-NLS-2$
