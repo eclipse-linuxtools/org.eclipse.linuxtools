@@ -1,3 +1,14 @@
+2011-09-28 Otavio Pontes <obusatto@br.ibm.com>
+
+	Related to bug #353056
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCommand.java:
+	Removing dependency for ValgrindPreferencePage
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindPlugin.java: 
+	Removing dependency for ValgrindPreferencePage
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindPreferencePage.java:
+	Removing this preference page. This page is not longer needed because we will be
+	able to set the linuxtools PATH environment variable in Project Properties.
+
 2011-10-18  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* META-INF/MANIFEST.MF: Hide internal package except from other Valgrind plug-ins.

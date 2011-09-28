@@ -27,30 +27,11 @@ public class ValgrindCommand {
 	public String whichValgrind() throws IOException {
 		String ret;
 		
-		// Valgrind binary location in preferences overrides default location
-		String valgrindPreferedPath = ValgrindPlugin.getDefault().getPreferenceStore().getString(ValgrindPreferencePage.VALGRIND_PATH);
-		if (valgrindPreferedPath.equals("")) { //$NON-NLS-1$
-			// No preference, check Valgrind exists in the user's PATH
-			StringBuffer out = new StringBuffer();
-			Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
-			// Throws IOException if which command is unsuccessful
-			readIntoBuffer(out, p);
-			ret = out.toString().trim();
-		}
-		else {
-			ret = valgrindPreferedPath;
-		}
-		return ret;
-	}
-	
-	/**
-	 * Returns whether Valgrind integration is enabled
-	 * @since 0.8
-	 */
-	public boolean isEnabled() {
-		// Check preference page for Valgrind enablement
-		boolean enabled = ValgrindPlugin.getDefault().getPreferenceStore().getBoolean(ValgrindPreferencePage.VALGRIND_ENABLE);
-		return enabled;
+		StringBuffer out = new StringBuffer();
+		Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
+		// Throws IOException if which command is unsuccessful
+		readIntoBuffer(out, p);
+		return out.toString().trim();
 	}
 
 	public String whichVersion(String whichValgrind) throws IOException {

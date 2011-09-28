@@ -1,3 +1,9 @@
+2011-09-28 Otavio Pontes <obusatto@br.ibm.com>
+
+	Related to bug #353056
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchPlugin.java:
+	Removing dependency for ValgrindPreferencePage
+
 2011-10-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #360085 - apply Martin Oberhuber's patch and add remove marker capability.

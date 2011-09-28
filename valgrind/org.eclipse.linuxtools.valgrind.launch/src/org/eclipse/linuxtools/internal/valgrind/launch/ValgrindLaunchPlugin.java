@@ -33,7 +33,6 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.linuxtools.internal.valgrind.core.PluginConstants;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin;
-import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindLaunchDelegate;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindOutputDirectoryProvider;
 import org.eclipse.linuxtools.valgrind.launch.IValgrindToolPage;
@@ -42,7 +41,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 
-public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyChangeListener {
+public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = PluginConstants.LAUNCH_PLUGIN_ID;
@@ -94,9 +93,6 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyC
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
-		// Register as listener for changes to the property page
-		ValgrindPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this);
 	}
 
 	/*
@@ -145,16 +141,10 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyC
 	}
 	
 	private void findValgrindLocation() throws CoreException {
-		if (getValgrindCommand().isEnabled()) {
-			try {
-				valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
-			} catch (IOException e) {
-				IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
-				throw new CoreException(status);
-			}
-		}
-		else {
-			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Error_Valgrind_Disabled")); //$NON-NLS-1$
+		try {
+			valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
+		} catch (IOException e) {
+			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
 			throw new CoreException(status);
 		}
 	}
@@ -319,15 +309,4 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin implements IPropertyC
 		}
 		return toolMap;
 	}
-
-	public void propertyChange(PropertyChangeEvent event) {
-		String prop = event.getProperty();
-		if (prop.equals(ValgrindPreferencePage.VALGRIND_PATH)
-				|| prop.equals(ValgrindPreferencePage.VALGRIND_ENABLE)) {
-			// Reset Valgrind location and version
-			valgrindLocation = null;
-			valgrindVersion = null;
-		}
-	}
-	
 }

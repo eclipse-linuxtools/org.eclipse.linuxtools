@@ -39,7 +39,6 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.linuxtools.internal.valgrind.core.LaunchConfigurationConstants;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPlugin;
-import org.eclipse.linuxtools.internal.valgrind.core.ValgrindPreferencePage;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
 import org.eclipse.linuxtools.profiling.tests.AbstractTest;
@@ -70,10 +69,7 @@ public abstract class AbstractValgrindTest extends AbstractTest {
 		
 		// Substitute Valgrind command line interaction
 		ValgrindLaunchPlugin.getDefault().setValgrindCommand(getValgrindCommand());
-		
-		// Ensure Valgrind is enabled
-		ValgrindPlugin.getDefault().getPreferenceStore().setValue(ValgrindPreferencePage.VALGRIND_ENABLE, true);
-		
+
 		super.setUp();
 	}
 

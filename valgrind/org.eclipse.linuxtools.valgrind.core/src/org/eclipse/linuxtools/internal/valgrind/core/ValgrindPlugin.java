@@ -56,21 +56,5 @@ public class ValgrindPlugin extends AbstractUIPlugin {
 	public static ValgrindPlugin getDefault() {
 		return plugin;
 	}
-	
-	
-	@Override
-	protected void initializeDefaultPreferences(IPreferenceStore store) {
-		ValgrindCommand valCommand = new ValgrindCommand();
-		try {
-			store.setDefault(ValgrindPreferencePage.VALGRIND_ENABLE, true);
-			if(System.getProperty("os.name").toLowerCase().startsWith("windows")) //$NON-NLS-1$ //$NON-NLS-2$
-				store.setDefault(ValgrindPreferencePage.VALGRIND_PATH, "");
-			else
-				store.setDefault(ValgrindPreferencePage.VALGRIND_PATH, valCommand.whichValgrind());
-		} catch (IOException e) {
-			// No Valgrind installed, make disabled by default
-			store.setDefault(ValgrindPreferencePage.VALGRIND_ENABLE, false);
-		}
-	}
 
 }
