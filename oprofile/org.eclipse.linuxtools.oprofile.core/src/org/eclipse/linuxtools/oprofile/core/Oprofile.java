@@ -59,7 +59,7 @@ public class Oprofile
 		//it still may not have loaded, if not, critical error
 		if (!isKernelModuleLoaded()) {
 			OprofileCorePlugin.showErrorDialog("oprofileInit", null); //$NON-NLS-1$
-			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded")); //$NON-NLS-1$
+//			throw new ExceptionInInitializerError(OprofileProperties.getString("fatal.kernelModuleNotLoaded")); //$NON-NLS-1$
 		} else {
 			_initializeOprofileCore();
 		}
@@ -104,6 +104,9 @@ public class Oprofile
 	 * @return the number of counters
 	 */
 	public static int getNumberOfCounters() {
+		if (!isKernelModuleLoaded()){
+			return 0;
+		}
 		return _info.getNrCounters();
 	}
 	
@@ -154,6 +157,9 @@ public class Oprofile
 	 * @return true if oprofile is in timer mode, false otherwise
 	 */
 	public static boolean getTimerMode() {
+		if (! isKernelModuleLoaded()){
+			return true;
+		}
 		return _info.getTimerMode();
 	}
 	

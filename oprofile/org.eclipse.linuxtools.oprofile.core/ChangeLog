@@ -1,3 +1,12 @@
+2011-09-28  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/oprofile/core/opxml/info/InfoAdapter.java
+		(checkTimerSupport): Set timer support to true even if the kernel
+		module fails to load.
+	* src/org/eclipse/linuxtools/oprofile/core/Oprofile.java
+		(initializeOprofileModule): Let the Oprofile class load even if
+		the kernel module fails to do so.
+
 2011-09-27  Roland Grunberg  <rgrunber@redhat.com>
 
 	* src/org/eclipse/linuxtools/oprofile/core/linux/OpxmlRunner.java

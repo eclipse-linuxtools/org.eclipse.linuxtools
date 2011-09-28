@@ -205,8 +205,9 @@ public class InfoAdapter extends AbstractDataAdapter{
 				hasTimerSupport = false;
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			hasTimerSupport = true;
 		} catch (IOException e) {
+			hasTimerSupport = true;
 			e.printStackTrace();
 		}
 	}
