@@ -26,6 +26,7 @@ import org.eclipse.cdt.launch.AbstractCLaunchDelegate;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -98,6 +99,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 		this.config = config;
 		this.launch	= launch;
 		try {
+			IProject project = CDebugUtils.verifyCProject(config).getProject();
 			command = getValgrindCommand();
 
 			// remove any output from previous run
@@ -105,11 +107,10 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			// reset stored launch data
 			getPlugin().setCurrentLaunchConfiguration(null);
 			getPlugin().setCurrentLaunch(null);
-			
-			// find Valgrind binary if not already done
-			IPath valgrindLocation = getPlugin().getValgrindLocation();
+
+			String valgrindCommand= getValgrindCommand().getValgrindCommand();
 			// also ensure Valgrind version is usable
-			valgrindVersion = getPlugin().getValgrindVersion();
+			valgrindVersion = getPlugin().getValgrindVersion(project);
 
 			monitor.worked(1);
 			IPath exePath = CDebugUtils.verifyProgramPath(config);
@@ -136,7 +137,7 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 			setDefaultSourceLocator(launch, config);
 
 			ArrayList<String> cmdLine = new ArrayList<String>(1 + arguments.length);
-			cmdLine.add(valgrindLocation.toOSString());
+			cmdLine.add(valgrindCommand);
 			cmdLine.addAll(Arrays.asList(opts));
 			cmdLine.add(exePath.toOSString());
 			cmdLine.addAll(Arrays.asList(arguments));
@@ -149,7 +150,8 @@ public class ValgrindLaunchConfigurationDelegate extends AbstractCLaunchDelegate
 				return;
 			}
 			// call Valgrind
-			command.execute(commandArray, getEnvironment(config), workDir, valgrindLocation.toOSString(), usePty);
+
+			command.execute(commandArray, getEnvironment(config), workDir, valgrindCommand, usePty, project);
 			monitor.worked(3);
 			process = createNewProcess(launch, command.getProcess(), commandArray[0]);
 			// set the command line used

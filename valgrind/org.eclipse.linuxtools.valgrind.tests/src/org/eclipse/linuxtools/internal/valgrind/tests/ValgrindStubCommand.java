@@ -13,26 +13,22 @@ package org.eclipse.linuxtools.internal.valgrind.tests;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 
 public class ValgrindStubCommand extends ValgrindCommand {
 	protected static final String VERSION_FILE = ".version"; //$NON-NLS-1$
 	
 	protected int exitcode;
-	
+
 	@Override
-	public String whichValgrind() throws IOException {
-		return "/path/to/valgrind"; //$NON-NLS-1$
-	}
-	
-	@Override
-	public String whichVersion(String whichValgrind) throws IOException {
+	public String whichVersion(IProject project) throws IOException {
 		return "valgrind-3.4.0"; //$NON-NLS-1$
 	}
 	
 	@Override
 	public void execute(String[] commandArray, Object env, File wd, String exeFile,
-			boolean usePty) throws IOException {
+			boolean usePty, IProject project) throws IOException {
 		args = commandArray;
 	}
 	

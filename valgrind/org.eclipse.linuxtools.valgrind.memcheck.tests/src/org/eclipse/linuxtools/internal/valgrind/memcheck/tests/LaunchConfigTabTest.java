@@ -12,6 +12,8 @@ package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
 import java.util.Arrays;
 
+import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -112,7 +114,8 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 			assertTrue(cmd.contains("--undef-value-errors=yes")); //$NON-NLS-1$
 			
 			// 3.4.0 specific
-			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
+			IProject project = CDebugUtils.verifyCProject(wc).getProject();
+			Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(project);
 			if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 				assertFalse(cmd.contains("--track-origins")); //$NON-NLS-1$
 			}
@@ -463,7 +466,8 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	
 	public void testMainStackSize() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
+		IProject project = CDebugUtils.verifyCProject(wc).getProject();
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(project);
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			assertFalse(tab.getMainStackSizeSpinner().isEnabled());
 			tab.getMainStackSizeButton().setSelection(true);
@@ -489,7 +493,8 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	
 	public void testTrackOrigins() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
+		IProject project = CDebugUtils.verifyCProject(config).getProject();
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(project);
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			dynamicTab.getTrackOriginsButton().setSelection(true);
 			ILaunch launch = saveAndLaunch(wc, "testTrackOrigins"); //$NON-NLS-1$
@@ -510,7 +515,8 @@ public class LaunchConfigTabTest extends AbstractMemcheckTest {
 	
 	public void testTrackOriginsValidity() throws Exception {
 		ILaunchConfigurationWorkingCopy wc = initConfig();
-		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
+		IProject project = CDebugUtils.verifyCProject(config).getProject();
+		Version ver = ValgrindLaunchPlugin.getDefault().getValgrindVersion(project);
 		if (ver.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
 			dynamicTab.getTrackOriginsButton().setSelection(true);
 			tab.performApply(wc);

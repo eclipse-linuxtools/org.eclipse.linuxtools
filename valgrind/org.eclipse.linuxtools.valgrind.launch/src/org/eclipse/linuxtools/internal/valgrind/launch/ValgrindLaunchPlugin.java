@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.eclipse.cdt.launch.LaunchUtils;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -72,8 +73,6 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 	protected HashMap<String, IConfigurationElement> toolMap;
 	
 	private ValgrindCommand valgrindCommand;
-	private IPath valgrindLocation;
-	private Version valgrindVersion;
 	private ILaunchConfiguration config;
 	private ILaunch launch;
 
@@ -113,49 +112,10 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	public IPath getValgrindLocation() throws CoreException {
-		if (valgrindLocation == null) {
-			findValgrindLocation();
-		}
-		
-		return valgrindLocation;
-	}
-	
-	public void setValgrindLocation(IPath valgrindLocation) {
-		this.valgrindLocation = valgrindLocation;
-	}
-	
-	public Version getValgrindVersion() throws CoreException {
-		if (valgrindVersion == null) {
-			findValgrindVersion();
-		}
-		// check for minimum supported version
-		if (valgrindVersion.compareTo(MIN_VER) < 0) {
-			throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Error_min_version"), valgrindVersion.toString(), MIN_VER.toString()))); //$NON-NLS-1$
-		}
-		return valgrindVersion;
-	}
-	
-	public void setValgrindVersion(Version valgrindVersion) {
-		this.valgrindVersion = valgrindVersion;
-	}
-	
-	private void findValgrindLocation() throws CoreException {
+	public Version getValgrindVersion(IProject project) throws CoreException {
+		Version valgrindVersion;
 		try {
-			valgrindLocation = Path.fromOSString(getValgrindCommand().whichValgrind());
-		} catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Please_ensure_Valgrind"), e); //$NON-NLS-1$
-			throw new CoreException(status);
-		}
-	}
-	
-	private void findValgrindVersion() throws CoreException {
-		try {
-			if (valgrindLocation == null) {
-				findValgrindLocation();
-			}
-			
-			String verString = getValgrindCommand().whichVersion(valgrindLocation.toOSString());
+			String verString = getValgrindCommand().whichVersion(project);
 			verString = verString.replace(VERSION_PREFIX, ""); //$NON-NLS-1$
 			if (verString.indexOf(VERSION_DELIMITER) > 0) {
 				verString = verString.substring(0, verString.indexOf(VERSION_DELIMITER));
@@ -164,12 +124,18 @@ public class ValgrindLaunchPlugin extends AbstractUIPlugin {
 				valgrindVersion = Version.parseVersion(verString);
 			}
 			else {
-				throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation))); //$NON-NLS-1$
+				throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"))); //$NON-NLS-1$
 			}
 		} catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), valgrindLocation), e); //$NON-NLS-1$
+			IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, Messages.getString("ValgrindLaunchPlugin.Couldn't_determine_version"), e); //$NON-NLS-1$
 			throw new CoreException(status);
 		}
+
+		// check for minimum supported version
+		if (valgrindVersion.compareTo(MIN_VER) < 0) {
+			throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, NLS.bind(Messages.getString("ValgrindLaunchPlugin.Error_min_version"), valgrindVersion.toString(), MIN_VER.toString()))); //$NON-NLS-1$
+		}
+		return valgrindVersion;
 	}
 	
 	public void setValgrindCommand(ValgrindCommand command) {

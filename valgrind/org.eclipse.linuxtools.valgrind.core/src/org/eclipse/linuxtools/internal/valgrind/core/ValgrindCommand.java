@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.cdt.utils.pty.PTY;
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory;
+import org.eclipse.linuxtools.tools.launch.core.factory.RuntimeProcessFactory;
 
 public class ValgrindCommand {
 	protected static final String WHICH_CMD = "which"; //$NON-NLS-1$
@@ -24,27 +26,21 @@ public class ValgrindCommand {
 	protected Process process;
 	protected String[] args;
 
-	public String whichValgrind() throws IOException {
-		String ret;
-		
-		StringBuffer out = new StringBuffer();
-		Process p = Runtime.getRuntime().exec(WHICH_CMD + " " + VALGRIND_CMD); //$NON-NLS-1$
-		// Throws IOException if which command is unsuccessful
-		readIntoBuffer(out, p);
-		return out.toString().trim();
+	public String getValgrindCommand() {
+		return VALGRIND_CMD;
 	}
 
-	public String whichVersion(String whichValgrind) throws IOException {
+	public String whichVersion(IProject project) throws IOException {
 		StringBuffer out = new StringBuffer();
-		Process p = Runtime.getRuntime().exec(new String[] { whichValgrind, CommandLineConstants.OPT_VERSION });
+		Process p = RuntimeProcessFactory.getFactory().exec(new String[] { VALGRIND_CMD, CommandLineConstants.OPT_VERSION }, project);
 		readIntoBuffer(out, p);
 		return out.toString().trim();
 	}
 	
-	public void execute(String[] commandArray, Object env, File wd, String exeFile, boolean usePty) throws IOException {
+	public void execute(String[] commandArray, Object env, File wd, String exeFile, boolean usePty, IProject project) throws IOException {
 		args = commandArray;
 		try {
-			process = startProcess(commandArray, env, wd, exeFile, usePty);
+			process = startProcess(commandArray, env, wd, exeFile, usePty, project);
 		}
 		catch (IOException e) {
 			if (process != null) {
@@ -66,15 +62,15 @@ public class ValgrindCommand {
 		return ret.toString().trim();
 	}
 	
-	protected Process startProcess(String[] commandArray, Object env, File workDir, String binPath, boolean usePty) throws IOException {
+	protected Process startProcess(String[] commandArray, Object env, File workDir, String binPath, boolean usePty, IProject project) throws IOException {
 		if (workDir == null) {
-			return ProcessFactory.getFactory().exec(commandArray, (String[]) env);
+			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, project);
 		}
 		if (PTY.isSupported() && usePty) {
-			return ProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, new PTY());
+			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, new PTY(), project);
 		}
 		else {
-			return ProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir);
+			return CdtSpawnerProcessFactory.getFactory().exec(commandArray, (String[]) env, workDir, project);
 		}
 	}
 

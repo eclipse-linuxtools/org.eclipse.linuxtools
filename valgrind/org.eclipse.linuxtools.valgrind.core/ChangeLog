@@ -1,3 +1,11 @@
+2011-09-29 Otavio Pontes <obusatto@br.ibm.com>
+
+	Related to bug #353056
+	* META-INF/MANIFEST.MF: Require org.eclipse.linuxtools.tools.launch.core
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCommand.java:
+	Using factories from org.eclipse.linuxtools.tools.launch.core to run
+	valgrind command.
+
 2011-09-28 Otavio Pontes <obusatto@br.ibm.com>
 
 	Related to bug #353056

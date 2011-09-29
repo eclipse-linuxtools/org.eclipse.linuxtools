@@ -1,3 +1,10 @@
+2011-09-29 Otavio Pontes <obusatto@br.ibm.com>
+
+	Related to bug #353056
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchConfigurationDelegate.java:
+	Using factories from org.eclipse.linuxtools.tools.launch.core to run
+	valgrind commands.
+
 2011-09-28 Otavio Pontes <obusatto@br.ibm.com>
 
 	Related to bug #353056

@@ -13,6 +13,8 @@ package org.eclipse.linuxtools.internal.valgrind.launch;
 
 import java.util.Arrays;
 
+import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -77,6 +79,7 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected String[] tools;
 
 	protected Composite top;
+	protected Composite mainStackSizeTop;
 	protected ScrolledComposite scrollTop;
 	protected Combo toolsCombo;
 	protected TabFolder optionsFolder;
@@ -94,23 +97,14 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 	protected Exception ex;
 	
 	private Version valgrindVersion;
+	private boolean checkVersion;
 	
 	public ValgrindOptionsTab() {
 		this(true);
 	}
 	
 	public ValgrindOptionsTab(boolean checkVersion) {
-		if (checkVersion) {
-			try {
-				valgrindVersion = getPlugin().getValgrindVersion();
-			} catch (CoreException e) {
-				ex = e;
-			}
-		}
-		else {
-			// Do not check version
-			valgrindVersion = null;
-		}
+		this.checkVersion = checkVersion;
 	}	
 
 	/**
@@ -322,32 +316,44 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		maxStackFrameSpinner.addModifyListener(modifyListener);	
 		maxStackFrameSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0) {
-			Composite mainStackSizeTop = new Composite(errorTop, SWT.NONE);
-			GridLayout mainStackSizeLayout = new GridLayout(2, false);
-			mainStackSizeLayout.marginHeight = mainStackSizeLayout.marginWidth = 0;
-			mainStackSizeTop.setLayout(mainStackSizeLayout);
-			mainStackSizeButton = new Button(mainStackSizeTop, SWT.CHECK);
-			mainStackSizeButton.setText(Messages.getString("ValgrindOptionsTab.Main_stack_size")); //$NON-NLS-1$
-			mainStackSizeButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					checkMainStackEnablement();
-					updateLaunchConfigurationDialog();
-				}
-			});
-			mainStackSizeSpinner = new Spinner(mainStackSizeTop, SWT.BORDER);
-			mainStackSizeSpinner.setMaximum(Integer.MAX_VALUE);
-			mainStackSizeSpinner.addModifyListener(modifyListener);
-			mainStackSizeSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
+		//Option only visible for valgrind > 3.4.0
+		mainStackSizeTop = new Composite(errorTop, SWT.NONE);
+		GridLayout mainStackSizeLayout = new GridLayout(2, false);
+		mainStackSizeLayout.marginHeight = mainStackSizeLayout.marginWidth = 0;
+		mainStackSizeTop.setLayout(mainStackSizeLayout);
+		mainStackSizeButton = new Button(mainStackSizeTop, SWT.CHECK);
+		mainStackSizeButton.setText(Messages.getString("ValgrindOptionsTab.Main_stack_size")); //$NON-NLS-1$
+		mainStackSizeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				checkMainStackEnablement();
+				updateLaunchConfigurationDialog();
+			}
+		});
+		mainStackSizeSpinner = new Spinner(mainStackSizeTop, SWT.BORDER);
+		mainStackSizeSpinner.setMaximum(Integer.MAX_VALUE);
+		mainStackSizeSpinner.addModifyListener(modifyListener);
+		mainStackSizeSpinner.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		mainStackSizeTop.setVisible(false);
 		
-		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0) {
-			dSymUtilButton = new Button(errorTop, SWT.CHECK);
-			dSymUtilButton.setText(Messages.getString("ValgrindOptionsTab.dsymutil")); //$NON-NLS-1$
-			dSymUtilButton.addSelectionListener(selectListener);
-			dSymUtilButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
+		//Option only visible for valgrind > 3.6.0
+		dSymUtilButton = new Button(errorTop, SWT.CHECK);
+		dSymUtilButton.setText(Messages.getString("ValgrindOptionsTab.dsymutil")); //$NON-NLS-1$
+		dSymUtilButton.addSelectionListener(selectListener);
+		dSymUtilButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		dSymUtilButton.setVisible(false);
+	}
+
+	private void updateErrorOptions() {
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_4_0) >= 0)
+			mainStackSizeTop.setVisible(true);
+		else
+			mainStackSizeTop.setVisible(false);
+
+		if (valgrindVersion == null || valgrindVersion.compareTo(ValgrindLaunchPlugin.VER_3_6_0) >= 0)
+			dSymUtilButton.setVisible(true);
+		else
+			dSymUtilButton.setVisible(false);
 	}
 
 	protected void createSuppressionsOption(Composite top) {
@@ -486,6 +492,17 @@ public class ValgrindOptionsTab extends AbstractLaunchConfigurationTab {
 		getControl().setRedraw(false);
 		launchConfiguration = configuration;
 		launchConfigurationWorkingCopy = null;
+
+		if (checkVersion) {
+			try {
+				IProject project = CDebugUtils.verifyCProject(configuration).getProject();
+				valgrindVersion = getPlugin().getValgrindVersion(project);
+			} catch (CoreException e) {
+				ex = e;
+			}
+		}
+
+		updateErrorOptions();
 
 		try {
 			tool = configuration.getAttribute(LaunchConfigurationConstants.ATTR_TOOL, LaunchConfigurationConstants.DEFAULT_TOOL);
