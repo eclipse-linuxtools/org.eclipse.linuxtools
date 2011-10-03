@@ -40,12 +40,14 @@ public class FlagConfigureOption extends AbstractConfigurationOption {
 		StringBuffer parm = new StringBuffer(getName()+"=\""); //$NON-NLS-1$
 		boolean haveParm = false;
 		if (isParmSet()) {
+			String separator = "";
 			for (int i = 0; i < children.size(); ++i) {
 				String fvname = children.get(i);
 				IConfigureOption o = cfg.getOption(fvname);
 				if (o.isParmSet()) {
 					if (o instanceof IFlagConfigureValueOption) {
-						parm.append(" " + ((IFlagConfigureValueOption)o).getFlags()); //$NON-NLS-1$
+						parm.append(separator + ((IFlagConfigureValueOption)o).getFlags()); //$NON-NLS-1$
+						separator = " ";
 						haveParm = true;
 					}
 				}

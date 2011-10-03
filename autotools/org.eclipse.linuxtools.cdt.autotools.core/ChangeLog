@@ -1,5 +1,12 @@
 2011-10-03  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/FlagConfigureOption.java (getParameter): Remote
+	extraneous space at beginning of CFLAGS constructed string.
+	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/ConfigureMessages.properties: Fix tips for
+	various CFLAGS settings.
+
+2011-10-03  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AbstractConfigurationOption.java (isFlag): New method.
 	(isFlagValue): Ditto.
 	* src/org/eclipse/linuxtools/internal/cdt/autotools/core/configure/AutotoolsConfigurationManager.java (getSavedConfigs): Add
