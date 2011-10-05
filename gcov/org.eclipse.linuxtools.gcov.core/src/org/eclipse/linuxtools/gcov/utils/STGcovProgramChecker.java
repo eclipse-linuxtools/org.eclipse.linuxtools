@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.WeakHashMap;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.binutils.utils.STNMFactory;
 import org.eclipse.linuxtools.binutils.utils.STNMSymbolsHandler;
@@ -31,32 +33,32 @@ public class STGcovProgramChecker implements STNMSymbolsHandler {
 		this.timestamp = timestamp;
 	}
 	
-	private static STGcovProgramChecker getProgramChecker(IBinaryObject object) throws IOException {
+	private static STGcovProgramChecker getProgramChecker(IBinaryObject object, IProject project) throws IOException {
 		File program = object.getPath().toFile();
 		STGcovProgramChecker pg = map.get(program);
 		if (pg == null) {
 			pg = new STGcovProgramChecker(program.lastModified());
-			STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg);
+			STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg, project);
 			map.put(program, pg);
 		} else {
 			long fileTime = program.lastModified();
 			if (fileTime > pg.timestamp) {
 				pg.timestamp = fileTime;
 				pg.gcovFound = false;
-				STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg);
+				STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg, project);
 			}
 		}
 		return pg;
 	}
 	
-	public static boolean isGCovCompatible(String s) throws IOException {
+	public static boolean isGCovCompatible(String s, IProject project) throws IOException {
 		IBinaryObject object = STSymbolManager.sharedInstance.getBinaryObject(new Path(s));
 		if (object == null) return false;
-		return isGCovCompatible(object);
+		return isGCovCompatible(object, project);
 	}
 	
-	public static boolean isGCovCompatible(IBinaryObject object) throws IOException {
-		STGcovProgramChecker pg = getProgramChecker(object);
+	public static boolean isGCovCompatible(IBinaryObject object, IProject project) throws IOException {
+		STGcovProgramChecker pg = getProgramChecker(object, project);
 		return pg.gcovFound;
 	}
 

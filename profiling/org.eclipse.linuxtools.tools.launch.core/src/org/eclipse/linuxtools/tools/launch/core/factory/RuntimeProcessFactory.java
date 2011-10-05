@@ -40,12 +40,21 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 	}
 
 	private String[] fillPathCommand(String[] cmdarray, String[] envp) throws IOException {
-		Process p = Runtime.getRuntime().exec(new String[] {WHICH_CMD, cmdarray[0]}, envp);
+		cmdarray[0] = whichCommand(cmdarray[0], envp);
+		return cmdarray;
+	}
 
+	public String whichCommand(String command, IProject project) throws IOException {
+		System.out.println(whichCommand(command, updateEnvironment(null, project)));
+		return whichCommand(command, updateEnvironment(null, project));
+	}
+
+	public String whichCommand(String command, String[] envp) throws IOException {
+		Process p = Runtime.getRuntime().exec(new String[] {WHICH_CMD, command}, envp);
 		try {
 			if (p.waitFor() == 0) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				cmdarray[0] = reader.readLine();
+				command = reader.readLine();
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 				throw new IOException(reader.readLine());
@@ -53,8 +62,7 @@ public class RuntimeProcessFactory extends LinuxtoolsProcessFactory {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		return cmdarray;
+		return command;
 	}
 
 	public static RuntimeProcessFactory getFactory() {

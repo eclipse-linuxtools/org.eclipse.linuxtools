@@ -18,7 +18,8 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.linuxtools.tools.launch.core.factory.CdtSpawnerProcessFactory;
 
 /**
  * This class launches NM and parses output
@@ -38,11 +39,23 @@ public class STNM {
 	 * @throws IOException
 	 */
 	public STNM(String command, String[] params, String file, STNMSymbolsHandler handler) throws IOException {
-		this.handler = handler;
-		if (handler != null) init(command, params, file);
+		this(command, params, file, handler, null);
 	}
-	
-	private void init(String command, String[] params, String file) throws IOException {
+
+	/**
+	 * Constructor
+	 * @param command the nm to call
+	 * @param params nm params
+	 * @param file file to parse
+	 * @param project the project to get the path to use to run nm
+	 * @throws IOException
+	 */
+	public STNM(String command, String[] params, String file, STNMSymbolsHandler handler, IProject project) throws IOException {
+		this.handler = handler;
+		if (handler != null) init(command, params, file, project);
+	}
+
+	private void init(String command, String[] params, String file, IProject project) throws IOException {
 		String[] args = null;
 		if (params == null || params.length == 0) {
 			args = new String[] {command, file}; //$NON-NLS-1$
@@ -52,7 +65,7 @@ public class STNM {
 			args[params.length+1] = file;
 			System.arraycopy(params, 0, args, 1, params.length);
 		}
-		Process process = ProcessFactory.getFactory().exec(args);
+		Process process = CdtSpawnerProcessFactory.getFactory().exec(args, project);
 		parseOutput(process.getInputStream());
 		process.destroy();
 	}

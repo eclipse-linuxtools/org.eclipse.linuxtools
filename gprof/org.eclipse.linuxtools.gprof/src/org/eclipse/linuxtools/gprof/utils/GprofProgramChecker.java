@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.util.WeakHashMap;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.binutils.utils.STNMFactory;
 import org.eclipse.linuxtools.binutils.utils.STNMSymbolsHandler;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-
 
 public class GprofProgramChecker implements STNMSymbolsHandler {
 
@@ -32,12 +32,12 @@ public class GprofProgramChecker implements STNMSymbolsHandler {
 		this.timestamp = timestamp;
 	}
 
-	private static GprofProgramChecker getProgramChecker(IBinaryObject object) throws IOException {
+	private static GprofProgramChecker getProgramChecker(IBinaryObject object, IProject project) throws IOException {
 		File program = object.getPath().toFile();
 		GprofProgramChecker pg = map.get(program);
 		if (pg == null) {
 			pg = new GprofProgramChecker(program.lastModified());
-			STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg);
+			STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg, project);
 			map.put(program, pg);
 		} else {
 			long fileTime = program.lastModified();
@@ -45,20 +45,20 @@ public class GprofProgramChecker implements STNMSymbolsHandler {
 				pg.timestamp = fileTime;
 				pg.mcleanupFound = false;
 				pg.mcountFound = false;
-				STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg);
+				STNMFactory.getNM(object.getCPU(), object.getPath().toOSString(), pg, project);
 			}
 		}
 		return pg;
 	}
 
-	public static boolean isGProfCompatible(String s) throws IOException {
+	public static boolean isGProfCompatible(String s, IProject project) throws IOException {
 		IBinaryObject object = STSymbolManager.sharedInstance.getBinaryObject(new Path(s));
 		if (object == null) return false;
-		return isGProfCompatible(object);
+		return isGProfCompatible(object, project);
 	}
 
-	public static boolean isGProfCompatible(IBinaryObject object) throws IOException {
-		GprofProgramChecker pg = getProgramChecker(object);
+	public static boolean isGProfCompatible(IBinaryObject object, IProject project) throws IOException {
+		GprofProgramChecker pg = getProgramChecker(object, project);
 		return pg.mcleanupFound && pg.mcountFound;
 	}
 

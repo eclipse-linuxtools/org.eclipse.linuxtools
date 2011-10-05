@@ -108,7 +108,7 @@ public class GprofTest extends TestCase {
 
 			IBinaryObject binary = STSymbolManager.sharedInstance.getBinaryObject(
 					new Path(binaryFile.getAbsolutePath()));
-			final GmonDecoder gd = new GmonDecoder(binary);
+			final GmonDecoder gd = new GmonDecoder(binary, null);
 			try {
 				gd.read(gmonFile.getAbsolutePath());
 			} catch (IOException e) {

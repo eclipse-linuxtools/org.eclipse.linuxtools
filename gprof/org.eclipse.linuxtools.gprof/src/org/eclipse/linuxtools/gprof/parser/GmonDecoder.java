@@ -22,12 +22,12 @@ import java.util.HashMap;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.cdt.core.IBinaryParser.ISymbol;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.gprof.utils.LEDataInputStream;
 import org.eclipse.linuxtools.gprof.view.histogram.HistRoot;
-
 
 /** 
  * Parser of gmon file
@@ -58,6 +58,7 @@ public class GmonDecoder {
 	private int tag = -1;
 	
 	private final HashMap<ISymbol, String> filenames = new HashMap<ISymbol, String>();
+	private IProject project;
 	
 	// for dump
 	private boolean shouldDump = false;
@@ -68,8 +69,8 @@ public class GmonDecoder {
 	 * @param program 
 	 * @throws IOException 
 	 */
-	public GmonDecoder(IBinaryObject program) {
-		this(program, null);
+	public GmonDecoder(IBinaryObject program, IProject project) {
+		this(program, null, project);
 	}
 	
 	
@@ -78,9 +79,10 @@ public class GmonDecoder {
 	 * @param program 
 	 * @throws IOException 
 	 */
-	public GmonDecoder(IBinaryObject program, PrintStream ps) {
+	public GmonDecoder(IBinaryObject program, PrintStream ps, IProject project) {
 		this.program = program;
 		this.ps = ps;
+		this.project = project;
 		program.getBinaryParser().getFormat();
 		String cpu = program.getCPU();
 		if ("x86_64".equals(cpu) || "ppc64".equals(cpu)){
@@ -270,7 +272,7 @@ public class GmonDecoder {
 	public String getFileName(ISymbol s) {
 		String ret = filenames.get(s);
 		if (ret == null) {
-			ret = STSymbolManager.sharedInstance.getFilename(s);
+			ret = STSymbolManager.sharedInstance.getFilename(s, project);
 			if (ret == null) ret = "??";
 			filenames.put(s, ret);
 		}
@@ -294,5 +296,7 @@ public class GmonDecoder {
 		this.shouldDump = shouldDump;
 	}
 
-	
+	public IProject getProject() {
+		return this.project;
+	}
 }

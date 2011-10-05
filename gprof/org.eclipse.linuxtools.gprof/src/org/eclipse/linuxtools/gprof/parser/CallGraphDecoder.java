@@ -86,7 +86,7 @@ public class CallGraphDecoder {
 		}
 		CallGraphArc arc = parentNode.getOutputArc(childNode);
 		if (arc == null) {
-			arc = new CallGraphArc(parentNode, parentAddress, childNode, count, decoder.getProgram());
+			arc = new CallGraphArc(parentNode, parentAddress, childNode, count, decoder.getProgram(), decoder.getProject());
 			parentNode.getChildren().add(arc);
 			childNode.getParents().add(arc);
 		} else {

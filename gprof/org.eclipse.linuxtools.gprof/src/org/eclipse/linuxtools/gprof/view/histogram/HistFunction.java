@@ -16,11 +16,11 @@ import java.util.LinkedList;
 import org.eclipse.cdt.core.IAddress;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.cdt.core.IBinaryParser.ISymbol;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
 import org.eclipse.linuxtools.gprof.symbolManager.Bucket;
 import org.eclipse.linuxtools.gprof.symbolManager.CallGraphArc;
 import org.eclipse.linuxtools.gprof.symbolManager.CallGraphNode;
-
 
 /**
  * Tree node corresponding to a function
@@ -67,7 +67,7 @@ public class HistFunction extends AbstractTreeElement {
 	void addBucket(Bucket b, IBinaryObject program) {
 		int lineNumber = -1;
 		IAddress address = program.getAddressFactory().createAddress(String.valueOf(b.start_addr));
-		lineNumber = STSymbolManager.sharedInstance.getLineNumber(program, address);
+		lineNumber = STSymbolManager.sharedInstance.getLineNumber(program, address, getProject());
 		HistLine hf = getChild(lineNumber);
 		hf.addBucket(b);
 		histSym.put(symbol, b.time + histSym.get(symbol));
@@ -106,7 +106,7 @@ public class HistFunction extends AbstractTreeElement {
 	 * @see org.eclipse.linuxtools.gprof.view.histogram.TreeElement#getName()
 	 */
 	public String getName() {
-		return STSymbolManager.sharedInstance.demangle(this.symbol);
+		return STSymbolManager.sharedInstance.demangle(this.symbol, getProject());
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class HistFunction extends AbstractTreeElement {
 	 * @see org.eclipse.linuxtools.gprof.view.histogram.AbstractTreeElement#getSourceLine()
 	 */
 	public int getSourceLine() {
-		return STSymbolManager.sharedInstance.getLineNumber(symbol);
+		return STSymbolManager.sharedInstance.getLineNumber(symbol, getProject());
 	}
 
 	/* 
@@ -146,6 +146,10 @@ public class HistFunction extends AbstractTreeElement {
 		if (histSym.containsKey(sym))
 			return histSym.get(sym);
 		else return 0;
+	}
+
+	private IProject getProject() {
+		return ((HistRoot)getParent().getParent()).getProject();
 	}
 
 }

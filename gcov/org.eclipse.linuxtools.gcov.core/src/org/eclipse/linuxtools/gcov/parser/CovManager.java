@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -44,7 +45,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-
 
 /**
  * @author Xavier Raynaud <xavier.raynaud@st.com>
@@ -66,17 +66,26 @@ public class CovManager implements Serializable {
 	private long nbrPgmRuns = 0;
 	// for view
 	private CovRootTreeElement rootNode;
+	private IProject project;
+
+	/**
+	 * Constructor
+	 * @param binaryPath
+	 * @param project the project that will be used to get the path to run commands
+	 */
+	public CovManager(String binaryPath, IProject project) {
+		this.binaryPath = binaryPath;
+		this.project = project;
+	}
 
 	/**
 	 * Constructor
 	 * @param binaryPath
 	 */
 	public CovManager(String binaryPath) {
-		this.binaryPath = binaryPath;
+		this(binaryPath, null);
 	}
 
-
-	
 	/**
 	 * parse coverage files, execute resolve graph algorithm, process counts for functions, 
 	 * lines and folders.    
@@ -227,7 +236,7 @@ public class CovManager implements Serializable {
 
 				for (GcnoFunction fnctn : src.getFnctns()) {
 					String name = fnctn.getName();
-					name = STSymbolManager.sharedInstance.demangle(binaryObject, name);
+					name = STSymbolManager.sharedInstance.demangle(binaryObject, name, project);;
 					srcTreeElem.addChild(new CovFunctionTreeElement(
 							srcTreeElem, name, fnctn.getSrcFile(), fnctn
 							.getFirstLineNmbr(), fnctn.getCvrge()

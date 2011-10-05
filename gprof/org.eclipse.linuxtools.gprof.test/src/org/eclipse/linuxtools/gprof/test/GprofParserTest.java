@@ -51,7 +51,7 @@ public class GprofParserTest extends TestCase{
 	
 	public static void testProcessGmonFile(File gmonFile, File binaryFile, File parserRefFile, File parserDumpFile) throws Exception {
 		IBinaryObject binary = STSymbolManager.sharedInstance.getBinaryObject(binaryFile.getAbsolutePath());
-		final GmonDecoder gmondecoder = new GmonDecoder(binary, new PrintStream(parserDumpFile));
+		final GmonDecoder gmondecoder = new GmonDecoder(binary, new PrintStream(parserDumpFile), null);
 		gmondecoder.setShouldDump(true);	
 		gmondecoder.read(gmonFile.getAbsolutePath());
 		STJunitUtils.compareIgnoreEOL(parserDumpFile.getAbsolutePath(), parserRefFile.getAbsolutePath(), true);

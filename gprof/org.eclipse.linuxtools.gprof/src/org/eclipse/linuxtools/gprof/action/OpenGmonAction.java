@@ -23,6 +23,7 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -33,7 +34,6 @@ import org.eclipse.linuxtools.gprof.view.GmonView;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorLauncher;
 import org.eclipse.ui.PlatformUI;
-
 
 /**
  * Action performed when user clicks on a gmon file
@@ -52,7 +52,9 @@ public class OpenGmonAction implements IEditorLauncher {
 			return;
 		}
 		String binaryPath = d.getBinaryFile();
-		GmonView.displayGprofView(binaryPath, file.toOSString(), Integer.toString(instanceNum++));
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(file).getProject();
+		System.out.println(project);
+		GmonView.displayGprofView(binaryPath, file.toOSString(), Integer.toString(instanceNum++), project);
 	}
 
 	private String getDefaultBinary(IPath file) {

@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import org.eclipse.cdt.utils.Addr2line;
 import org.eclipse.cdt.utils.CPPFilt;
+import org.eclipse.core.resources.IProject;
 
 /**
  * binutils factory (especially used for cross-compile tools)
@@ -21,11 +22,11 @@ import org.eclipse.cdt.utils.CPPFilt;
  */
 public interface ISTBinutilsFactory {
 
-	Addr2line getAddr2line(String path) throws IOException;
+	Addr2line getAddr2line(String path, IProject project) throws IOException;
 
-	CPPFilt getCPPFilt() throws IOException;
+	CPPFilt getCPPFilt(IProject project) throws IOException;
 
-	STNM getNM(String path, STNMSymbolsHandler handler) throws IOException;
+	STNM getNM(String path, STNMSymbolsHandler handler, IProject project) throws IOException;
 	
 	boolean testAvailability();
 }

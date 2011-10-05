@@ -14,10 +14,10 @@ import java.util.LinkedList;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
 import org.eclipse.cdt.core.IBinaryParser.ISymbol;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.gprof.parser.GmonDecoder;
 import org.eclipse.linuxtools.gprof.symbolManager.Bucket;
 import org.eclipse.linuxtools.gprof.symbolManager.CallGraphNode;
-
 
 /**
  * Root node of histogram
@@ -97,6 +97,10 @@ public class HistRoot extends AbstractTreeElement {
 	 */
 	public int getCalls() {
 		return -1;
+	}
+
+	public IProject getProject() {
+		return decoder.getProject();
 	}
 
 }

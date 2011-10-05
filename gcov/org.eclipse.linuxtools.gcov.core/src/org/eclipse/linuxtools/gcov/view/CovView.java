@@ -141,8 +141,13 @@ public class CovView extends AbstractSTDataView {
 
 	public static void displayCovDetailedResult(String binaryPath, String gcdaFile) {
 		try {
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+			IFile binary = root.getFileForLocation(new Path(binaryPath));
+			IProject project = null;
+			if (binary != null) project = binary.getProject();
+
 			// parse and process coverage data
-			CovManager cvrgeMnger = new CovManager(binaryPath);
+			CovManager cvrgeMnger = new CovManager(binaryPath, project);
 			List<String> gcdaPaths = new LinkedList<String>();
 			gcdaPaths.add(gcdaFile);
 			cvrgeMnger.processCovFiles(gcdaPaths, gcdaFile);
@@ -150,10 +155,6 @@ public class CovView extends AbstractSTDataView {
 			cvrgeMnger.fillGcovView();
 			
 			for (SourceFile sf : cvrgeMnger.getSourceMap().values()) {
-				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-				IFile binary = root.getFileForLocation(new Path(binaryPath));
-				IProject project = null;
-				if (binary != null) project = binary.getProject();
 				OpenSourceFileAction.sharedInstance.openAnnotatedSourceFile(project, 
 						binary, sf, 0);
 			}
@@ -176,8 +177,14 @@ public class CovView extends AbstractSTDataView {
 	
 	public static CovView displayCovResults(String binaryPath, String gcda) {
 		try {
+
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+			IFile binary = root.getFileForLocation(new Path(binaryPath));
+			IProject project = null;
+			if (binary != null) project = binary.getProject();
+
 			// parse and process coverage data
-			CovManager cvrgeMnger = new CovManager(binaryPath);
+			CovManager cvrgeMnger = new CovManager(binaryPath, project);
 			List<String> gcdaPaths = cvrgeMnger.getGCDALocations();
 			cvrgeMnger.processCovFiles(gcdaPaths, gcda);
 			// generate model for view

@@ -12,8 +12,8 @@ package org.eclipse.linuxtools.gprof.symbolManager;
 
 import org.eclipse.cdt.core.IAddress;
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.linuxtools.binutils.utils.STSymbolManager;
-
 
 /**
  * Arc structure for call-graph.
@@ -27,6 +27,7 @@ public class CallGraphArc {
     public final CallGraphNode child;
     /** number of occurence */
     private int count;
+	private IProject project;
     
     /** The location (source path) of the function call */
     public String parentPath;
@@ -41,12 +42,13 @@ public class CallGraphArc {
      * @param count how many function calls have been performed
      * @param program the program
      */
-    public CallGraphArc(CallGraphNode parent, IAddress parentAddress, CallGraphNode child, int count, IBinaryObject program) {
+    public CallGraphArc(CallGraphNode parent, IAddress parentAddress, CallGraphNode child, int count, IBinaryObject program, IProject project) {
     	this.parent = parent;
     	this.child  = child;
     	this.count  = count;
-    	this.parentPath = STSymbolManager.sharedInstance.getFileName(program, parentAddress);
-    	this.parentLine = STSymbolManager.sharedInstance.getLineNumber(program, parentAddress);
+		this.parentPath = STSymbolManager.sharedInstance.getFileName(program, parentAddress, project);
+		this.parentLine = STSymbolManager.sharedInstance.getLineNumber(program, parentAddress, project);
+		this.project = project;
     }
 
 	/**
@@ -73,6 +75,10 @@ public class CallGraphArc {
 		System.out.print(this.child.getSymbol().getName());
 		System.out.print(" :: ");
 		System.out.println(this.count);
+	}
+
+	public IProject getProject() {
+		return this.project;
 	}
     
     

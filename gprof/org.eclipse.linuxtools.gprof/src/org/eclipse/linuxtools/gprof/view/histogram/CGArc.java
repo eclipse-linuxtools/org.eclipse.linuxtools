@@ -89,7 +89,7 @@ public class CGArc extends AbstractTreeElement {
 		} else {
 			symbol = arc.parent.getSymbol();
 		}
-		String functionName = STSymbolManager.sharedInstance.demangle(symbol); 
+		String functionName = STSymbolManager.sharedInstance.demangle(symbol, arc.getProject()); 
 		return functionName;
 	}
 	
@@ -112,7 +112,7 @@ public class CGArc extends AbstractTreeElement {
 		CGCategory category = (CGCategory) o;
 		if (CGCategory.CHILDREN.equals(category.category)) {
 			ISymbol symbol = arc.child.getSymbol();
-			return STSymbolManager.sharedInstance.getLineNumber(symbol);
+			return STSymbolManager.sharedInstance.getLineNumber(symbol, arc.getProject());
 		} else {
 			return arc.parentLine;
 		}

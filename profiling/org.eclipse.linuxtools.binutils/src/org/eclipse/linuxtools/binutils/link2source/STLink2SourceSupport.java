@@ -74,9 +74,9 @@ public class STLink2SourceSupport {
 	 * @param symbol
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 */
-	public boolean openSourceFileAtSymbol(ISymbol symbol) {
+	public boolean openSourceFileAtSymbol(ISymbol symbol, IProject project) {
 		if (symbol == null) return false;
-		return openSourceFileAtSymbol(symbol.getBinaryObject(), symbol);
+		return openSourceFileAtSymbol(symbol.getBinaryObject(), symbol, project);
 	}
 
 	/**
@@ -124,9 +124,9 @@ public class STLink2SourceSupport {
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 * @throws IOException 
 	 */
-	public boolean openSourceFileAtAddress(String binaryLoc, long address) throws IOException {
+	public boolean openSourceFileAtAddress(String binaryLoc, long address, IProject project) throws IOException {
 		if (binaryLoc == null) return false;
-		return openSourceFileAtAddress(new Path(binaryLoc), address);
+		return openSourceFileAtAddress(new Path(binaryLoc), address, project);
 	}
 
 	/**
@@ -136,9 +136,9 @@ public class STLink2SourceSupport {
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 * @throws IOException 
 	 */
-	public boolean openSourceFileAtAddress(String binaryLoc, String address) throws IOException {
+	public boolean openSourceFileAtAddress(String binaryLoc, String address, IProject project) throws IOException {
 		if (binaryLoc == null) return false;
-		return openSourceFileAtAddress(new Path(binaryLoc), address);
+		return openSourceFileAtAddress(new Path(binaryLoc), address, project);
 		
 	}
 
@@ -240,10 +240,10 @@ public class STLink2SourceSupport {
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 * @throws IOException 
 	 */
-	public boolean openSourceFileAtAddress(IPath binaryLoc, long address) throws IOException {
+	public boolean openSourceFileAtAddress(IPath binaryLoc, long address, IProject project) throws IOException {
 		IBinaryObject bf = STSymbolManager.sharedInstance.getBinaryObject(binaryLoc);
 		if (bf != null) {
-			return openSourceFileAtAddress(bf, address);
+			return openSourceFileAtAddress(bf, address, project);
 		}
 		return false;
 	}
@@ -255,10 +255,10 @@ public class STLink2SourceSupport {
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 * @throws IOException 
 	 */
-	public boolean openSourceFileAtAddress(IPath binaryLoc, String address) throws IOException {
+	public boolean openSourceFileAtAddress(IPath binaryLoc, String address, IProject project) throws IOException {
 		IBinaryObject bf = STSymbolManager.sharedInstance.getBinaryObject(binaryLoc);
 		if (bf != null) {
-			return openSourceFileAtAddress(bf, address);
+			return openSourceFileAtAddress(bf, address, project);
 		}
 		return false;
 	}
@@ -313,9 +313,9 @@ public class STLink2SourceSupport {
 	 * @param symbol
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 */
-	public boolean openSourceFileAtSymbol(IBinaryObject binary, ISymbol symbol) {
+	public boolean openSourceFileAtSymbol(IBinaryObject binary, ISymbol symbol, IProject project) {
 		if (symbol == null) return false;
-		String loc = STSymbolManager.sharedInstance.getLine(symbol);
+		String loc = STSymbolManager.sharedInstance.getLine(symbol, project);
 		return openSourceFileAtLocation(binary, loc);
 	}
 
@@ -366,9 +366,9 @@ public class STLink2SourceSupport {
 	 * @param address 
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 */
-	public boolean openSourceFileAtAddress(IBinaryObject binary, IAddress address) {
+	public boolean openSourceFileAtAddress(IBinaryObject binary, IAddress address, IProject project) {
 		if (binary == null) return false;
-		String loc = STSymbolManager.sharedInstance.getLine(binary, address);
+		String loc = STSymbolManager.sharedInstance.getLine(binary, address, project);
 		return openSourceFileAtLocation(binary, loc);
 	}
 
@@ -378,9 +378,9 @@ public class STLink2SourceSupport {
 	 * @param address 
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 */
-	public boolean openSourceFileAtAddress(IBinaryObject binary, long address) {
+	public boolean openSourceFileAtAddress(IBinaryObject binary, long address, IProject project) {
 		String addr = Long.toString(address);
-		return openSourceFileAtAddress(binary, addr);
+		return openSourceFileAtAddress(binary, addr, project);
 	}
 
 	/**
@@ -389,7 +389,7 @@ public class STLink2SourceSupport {
 	 * @param address 
 	 * @return <code>true</code> if the link-to-source was successful, <code>false</code> otherwise
 	 */
-	public boolean openSourceFileAtAddress(IBinaryObject binary, String address) {
+	public boolean openSourceFileAtAddress(IBinaryObject binary, String address, IProject project) {
 		if (binary == null) return false;
 		IAddressFactory factory = binary.getAddressFactory();
 		IAddress addr;
@@ -398,7 +398,7 @@ public class STLink2SourceSupport {
 		} else {
 			addr = factory.createAddress(address);
 		}
-		return openSourceFileAtAddress(binary, addr);
+		return openSourceFileAtAddress(binary, addr, project);
 	}
 	
 	private boolean openFileImpl(IProject project, IPath sourceLoc, int lineNumber) {

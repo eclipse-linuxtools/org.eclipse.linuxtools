@@ -11,6 +11,7 @@
 package org.eclipse.linuxtools.gprof.view;
 
 import org.eclipse.cdt.core.IBinaryParser.IBinaryObject;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -44,7 +45,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-
 
 /**
  * The view where gmon file is displayed
@@ -196,7 +196,7 @@ public class GmonView extends AbstractSTDataView {
 	 * @param gmonPath
 	 * @param instanceName
 	 */
-	public static GmonView displayGprofView(String binaryPath, String gmonPath, String instanceName){
+	public static GmonView displayGprofView(String binaryPath, String gmonPath, String instanceName, IProject project){
 		IBinaryObject binary = STSymbolManager.sharedInstance.getBinaryObject(new Path(binaryPath));
 		if (binary == null) {
 			MessageDialog.openError(
@@ -207,7 +207,7 @@ public class GmonView extends AbstractSTDataView {
 		} else if (binary.getCPU().equals("ppc64"))
 			binary = new PPC64ElfBinaryObjectWrapper(binary.getBinaryParser(), binary.getPath(), binary.getType());
 
-		GmonDecoder decoder = new GmonDecoder(binary);
+		GmonDecoder decoder = new GmonDecoder(binary, project);
 		try {
 			decoder.read(gmonPath);
 		} catch(Exception e) {
