@@ -10,19 +10,28 @@
  *******************************************************************************/
 package org.eclipse.linuxtools.internal.valgrind.memcheck.tests;
 
+import java.io.IOException;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.linuxtools.internal.valgrind.core.ValgrindCommand;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindLaunchPlugin;
 import org.eclipse.linuxtools.internal.valgrind.launch.ValgrindOptionsTab;
+import org.eclipse.linuxtools.internal.valgrind.tests.ValgrindStubCommand;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.osgi.framework.Version;
 
 public class MinVersionTest extends AbstractMemcheckTest {
-	private static final Version VER_3_2_1 = new Version(3, 2, 1);
-	private Version verSave;
+	private ValgrindCommand valgrindSave;
+
+	class ValgrindIncorrectVersion extends ValgrindStubCommand {
+		@Override
+		public String whichVersion(IProject project) throws IOException {
+			 return "valgrind-3.2.1"; //$NON-NLS-1$
+		}
+	}
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -33,9 +42,8 @@ public class MinVersionTest extends AbstractMemcheckTest {
 	}
 
 	private void saveVersion() throws CoreException {
-	//	verSave = ValgrindLaunchPlugin.getDefault().getValgrindVersion();
-	//	ValgrindLaunchPlugin.getDefault().setValgrindVersion(VER_3_2_1);
-	//	TODO: Fix test
+		valgrindSave = ValgrindLaunchPlugin.getDefault().getValgrindCommand();
+		ValgrindLaunchPlugin.getDefault().setValgrindCommand(new ValgrindIncorrectVersion());
 	}
 	
 	@Override
@@ -47,8 +55,7 @@ public class MinVersionTest extends AbstractMemcheckTest {
 	}
 
 	private void restoreVersion() {
-	//	ValgrindLaunchPlugin.getDefault().setValgrindVersion(verSave);
-	//	TODO: Fix test
+		ValgrindLaunchPlugin.getDefault().setValgrindCommand(valgrindSave);
 	}
 		
 	public void testLaunchBadVersion() throws Exception {
