@@ -1,5 +1,9 @@
 2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* plugin.xml: Add new nature field and specify RDT remoteNature.
+	
+2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* META-INF/MANIFEST.MF: Add bundle localization.
 	* plugin.properties: New file.
 	* plugin.xml: New file that uses RemoteProxyManager extension.
