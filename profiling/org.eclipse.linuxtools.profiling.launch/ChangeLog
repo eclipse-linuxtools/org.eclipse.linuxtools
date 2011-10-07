@@ -1,3 +1,15 @@
+2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* META-INF/MANIFEST.MF: Add new dependencies.
+	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java: New file.
+	* src/org/eclipse/linuxtools/profiling/launch/IRemoteProxyManager.java: New file.
+	* src/org/eclipse/linuxtools/profiling/launch/IRemoteFileProxy.java: New file.
+	* src/org/eclipse/linuxtools/profiling/launch/IRemoteCommandLauncher.java: New file.
+	* src/org/eclipse/linuxtools/profiling/launch/IProcess.java: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/LocalProcess.java: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/LocalLauncher.java: New file.
+	* src/org/eclipse/linuxtools/internal/profiling/launch/LocalFileProxy.java: New file.
+
 2010-07-26  Elliott Baron  <ebaron@fedoraproject.org>
 
 	* META-INF/MANIFEST.MF: Bump version.
