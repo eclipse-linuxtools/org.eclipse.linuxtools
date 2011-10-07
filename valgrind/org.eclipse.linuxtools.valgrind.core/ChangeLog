@@ -1,3 +1,8 @@
+2011-10-07  Roland Grunberg  <rgrunber@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/valgrind/core/ValgrindCoreParser.java
+		(ValgrindCoreParser): Handle output resulting from insufficient memory. BZ# 360225.
+
 2011-01-06  Elliott Baron  <ebaron@fedoraproject.org>
 
 	Bug #333640

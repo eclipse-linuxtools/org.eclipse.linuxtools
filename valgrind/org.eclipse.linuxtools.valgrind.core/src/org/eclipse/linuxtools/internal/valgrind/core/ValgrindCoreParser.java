@@ -70,14 +70,29 @@ public class ValgrindCoreParser {
 						indentStack.push(indent);
 					}
 					else if (indent > 1) {
-						// find this message's parent
-						while (indent <= indentStack.peek()) {
-							messageStack.pop();
-							indentStack.pop();
+						/**
+						 * We assume that an indented child message has a
+						 * parent, but this may not be the case.
+						 * See BZ #360225
+						 */
+						if (indentStack.isEmpty()){
+							// pretend this is a top level message
+							IValgrindMessage message = getMessage(null, line);
+							messages.add(message);
+							messageStack.clear();
+							messageStack.push(message);
+							indentStack.clear();
+							indentStack.push(1);
+						}else{
+							// find this message's parent
+							while (indent <= indentStack.peek()) {
+								messageStack.pop();
+								indentStack.pop();
+							}
+							
+							messageStack.push(getMessage(messageStack.peek(), line));
+							indentStack.push(indent);
 						}
-
-						messageStack.push(getMessage(messageStack.peek(), line));
-						indentStack.push(indent);
 					}
 				}
 			}
