@@ -1,5 +1,11 @@
 2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* META-INF/MANIFEST.MF: Add bundle localization.
+	* plugin.properties: New file.
+	* plugin.xml: New file that uses RemoteProxyManager extension.
+	
+2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTProcess.java: New file.
 	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTFileProxy.java: New file.
 	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTCommandLauncher.java: New file.
