@@ -1,0 +1,10 @@
+2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTProcess.java: New file.
+	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTFileProxy.java: New file.
+	* src/org/eclipse/linuxtools/internal/rdt/proxy/RDTCommandLauncher.java: New file.
+	* build.properties: New file.
+	* META-INF/MANIFEST.MF: New file.
+	* src/org/eclipse/linuxtools/rdt/proxy/Resources.properties: New file.
+	* src/org/eclipse/linuxtools/rdt/proxy/RDTProxyManager.java: New file.
+	* src/org/eclipse/linuxtools/rdt/proxy/Activator.java: New file.
