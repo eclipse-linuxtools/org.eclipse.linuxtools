@@ -1,5 +1,17 @@
 2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
 
+	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java (getRemoteManager): Fill in
+	logic to use RemoteProxyManager extension.
+	* src/org/eclipse/linuxtools/profiling/launch/IRemoteProxyManager.java (EXTENSION_POINT_ID): New field.
+	(MANAGER_NAME): Ditto.
+	(NATURE_ID): Ditto.
+	* build.properties: Add schema and plugin.xml.
+	* plugin.xml: New file with RemoteProxyManager extension.
+	* META-INF/MANIFEST.MF: Make singleton and bump version.
+	* schema/RemoteProxyManager.exsd: New file.
+
+2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
+
 	* META-INF/MANIFEST.MF: Add new dependencies.
 	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java: New file.
 	* src/org/eclipse/linuxtools/profiling/launch/IRemoteProxyManager.java: New file.
