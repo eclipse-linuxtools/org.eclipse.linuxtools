@@ -22,7 +22,7 @@
     <version>0.9.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.man</artifactId>
+  <artifactId>org.eclipse.linuxtools.man.core</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 

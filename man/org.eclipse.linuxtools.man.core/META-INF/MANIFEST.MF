@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: org.eclipse.linuxtools.man;singleton:=true
+Bundle-SymbolicName: org.eclipse.linuxtools.man.core;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.eclipse.linuxtools.man.Activator
 Require-Bundle: org.eclipse.ui,
