@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.cdt.libhover.devhelp"
+      id="org.eclipse.linuxtools.cdt.libhover.devhelp.feature"
       label="%featureName"
       version="0.7.1.qualifier"
       provider-name="%provider">
