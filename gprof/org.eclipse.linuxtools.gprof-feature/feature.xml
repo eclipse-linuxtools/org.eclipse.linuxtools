@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.linuxtools.gprof"
+      id="org.eclipse.linuxtools.gprof.feature"
       label="%featureName"
       version="0.7.0.qualifier"
       provider-name="%provider">
