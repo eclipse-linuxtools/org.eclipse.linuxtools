@@ -7,19 +7,19 @@
    <feature url="features/org.eclipse.linuxtools.cdt.autotools_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.autotools" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.newlib.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.newlib.feature" version="0.0.0">
       <category name="Linux Tools Additional Library API Hoverhelp"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.cdt.libhover.devhelp_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.devhelp" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.cdt.libhover.devhelp.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.cdt.libhover.devhelp.feature" version="0.0.0">
       <category name="Linux Tools Additional Library API Hoverhelp"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.changelog_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.changelog" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.gprof_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gprof" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.gprof.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.gprof.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.man_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man" version="0.0.0">
@@ -34,10 +34,10 @@
    <feature url="features/org.eclipse.linuxtools.rpm_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpm" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpm.ui.editor" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.rpm.ui.editor.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpm.ui.editor.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.rpmstubby_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpmstubby" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.rpmstubby.feature_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.rpmstubby.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.systemtap_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.systemtap" version="0.0.0">
