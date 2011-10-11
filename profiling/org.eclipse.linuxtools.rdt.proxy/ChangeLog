@@ -1,3 +1,7 @@
+2011-10-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* plugin.xml: Add support for RDT sync'd projects.
+
 2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* plugin.xml: Add new nature field and specify RDT remoteNature.
