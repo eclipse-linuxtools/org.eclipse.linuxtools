@@ -1,3 +1,11 @@
+2011-10-11  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java (getLauncher): Add
+	missing logic for RDT projects.
+	(getOS): Ditto.
+	(RDT_SYNC_NATURE): New nature to look for.
+	(getFileProxy): Add support for RDT_SYNC_NATURE.
+
 2011-10-07  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/profiling/launch/RemoteProxyManager.java (getRemoteManager): Fill in
