@@ -25,7 +25,8 @@ import org.eclipse.linuxtools.internal.profiling.launch.ProfileLaunchPlugin;
 public class RemoteProxyManager implements IRemoteProxyManager {
 	
 	public final static String RDT_NATURE = "org.eclipse.ptp.rdt.core.remoteNature"; //$NON-NLS-1$
-
+	public final static String RDT_SYNC_NATURE = "org.eclipse.ptp.rdt.sync.core.remoteSyncNature"; //$NON-NLS-1$
+	
 	private static final String EXT_ATTR_CLASS = "class"; //$NON-NLS-1$
 	
 	private static RemoteProxyManager manager;
@@ -73,14 +74,24 @@ public class RemoteProxyManager implements IRemoteProxyManager {
 	public IRemoteFileProxy getFileProxy(IProject project) throws CoreException {
 		if (project.hasNature(RDT_NATURE))
 			return getRemoteManager(RDT_NATURE).getFileProxy(project);
+		else if (project.hasNature(RDT_SYNC_NATURE))
+			return getRemoteManager(RDT_SYNC_NATURE).getFileProxy(project);
 		return getLocalFileProxy();
 	}
 	
 	public IRemoteCommandLauncher getLauncher(IProject project) throws CoreException {
+		if (project.hasNature(RDT_NATURE))
+			return getRemoteManager(RDT_NATURE).getLauncher(project);
+		else if (project.hasNature(RDT_SYNC_NATURE))
+			return getRemoteManager(RDT_SYNC_NATURE).getLauncher(project);
 		return new LocalLauncher();
 	}
 
 	public String getOS(IProject project) throws CoreException {
+		if (project.hasNature(RDT_NATURE))
+			return getRemoteManager(RDT_NATURE).getOS(project);
+		else if (project.hasNature(RDT_SYNC_NATURE))
+			return getRemoteManager(RDT_SYNC_NATURE).getOS(project);
 		return Platform.getOS();
 	}
 }
