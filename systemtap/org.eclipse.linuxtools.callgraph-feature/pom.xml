@@ -16,7 +16,7 @@
     <version>0.9.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.eclipse.linuxtools.callgraph-feature</artifactId>
+  <artifactId>org.eclipse.linuxtools.callgraph.feature</artifactId>
   <version>0.9.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
 

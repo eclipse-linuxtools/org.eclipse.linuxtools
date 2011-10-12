@@ -25,7 +25,7 @@
    <feature url="features/org.eclipse.linuxtools.man_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.man" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.oprofile_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile-feature" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.oprofile_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.oprofile.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.profiling_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.profiling" version="0.0.0">
@@ -43,7 +43,7 @@
    <feature url="features/org.eclipse.linuxtools.systemtap_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.systemtap" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
-   <feature url="features/org.eclipse.linuxtools.callgraph_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.callgraph-feature" version="0.0.0">
+   <feature url="features/org.eclipse.linuxtools.callgraph_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.callgraph.feature" version="0.0.0">
       <category name="Linux Tools"/>
    </feature>
    <feature url="features/org.eclipse.linuxtools.valgrind_0.0.0.qualifier.jar" id="org.eclipse.linuxtools.valgrind" version="0.0.0">
