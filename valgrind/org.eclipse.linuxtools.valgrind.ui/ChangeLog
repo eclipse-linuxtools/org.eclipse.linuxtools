@@ -1,3 +1,13 @@
+2011-10-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #360085
+	
+	* plugin.xml: Add new annotation icons for Valgrind markers.
+	* icons/valgrind-error.gif: New file.
+	* icons/valgrind-warning.gif: New file.
+	* icons/valgrind-info.gif: New file.
+	* plugin.properties: Add new labels for new additions to plugin.xml.
+
 2011-09-12  Jeff Johnston  <jjohnstn@redhat.com>
 
 	* src/org/eclipse/linuxtools/internal/valgrind/ui/ValgrindViewPart.java (refreshView): Add
