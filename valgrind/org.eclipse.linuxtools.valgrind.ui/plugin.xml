@@ -31,5 +31,49 @@
          </separator>
       </menuContribution>
    </extension>
+    <extension
+          point="org.eclipse.ui.editors.annotationTypes">
+       <type
+             markerSeverity="2"
+             markerType="org.eclipse.linuxtools.valgrind.launch.marker"
+             name="org.eclipse.linuxtools.valgrind.annotation.error"
+             super="org.eclipse.ui.workbench.texteditor.error">
+       </type>
+       <type
+             markerSeverity="1"
+             markerType="org.eclipse.linuxtools.valgrind.launch.marker"
+             name="org.eclipse.linuxtools.valgrind.annotation.warning"
+             super="org.eclipse.ui.workbench.texteditor.warning">
+       </type>
+       <type
+             markerSeverity="0"
+             markerType="org.eclipse.linuxtools.valgrind.launch.marker"
+             name="org.eclipse.linuxtools.valgrind.annotation.info"
+             super="org.eclipse.ui.workbench.texteditor.info">
+       </type>
+    </extension>
+      <extension
+         point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+      		annotationType="org.eclipse.linuxtools.valgrind.annotation.error"
+            label="%marker.editor.error"
+            icon="icons/valgrind-error.gif"
+            quickFixIcon="icons/valgrind_error.gif"
+            presentationLayer="6">
+      </specification>
+            <specification
+      		annotationType="org.eclipse.linuxtools.valgrind.annotation.warning"
+            label="%marker.editor.warning"
+            icon="icons/valgrind-warning.gif"
+            quickFixIcon="icons/valgrind_warning.gif"
+            presentationLayer="5">
+      </specification>
+            <specification
+      		annotationType="org.eclipse.linuxtools.valgrind.annotation.info"
+            label="%marker.editor.info"
+            icon="icons/valgrind-info.gif"
+            presentationLayer="4">
+      </specification>
+         </extension>
 
 </plugin>
