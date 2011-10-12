@@ -1,3 +1,13 @@
+2011-10-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+	Bug #360085 - apply Martin Oberhuber's patch and add remove marker capability.
+	
+	* plugin.xml: Add clear markers command button in Valgrind view.
+	* plugin.properties: New messages for clear markers command.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ClearMarkersHandler.java: New file.
+	* src/org/eclipse/linuxtools/internal/valgrind/launch/ValgrindLaunchConfigurationDelegate.java (finalLaunchCheck): Clear
+	markers on new launch.
+
 2011-09-08  Jeff Johnston  <jjohnstn@redhat.com>
 
 	Bug #354342
